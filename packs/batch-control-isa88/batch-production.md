@@ -1,0 +1,24 @@
+---
+title: "Batch production"
+source: https://en.wikipedia.org/wiki/Batch_production
+domain: batch-control-isa88
+license: CC-BY-SA-4.0
+tags: isa-88 batch control, batch process control, batch recipe model, batch manufacturing standard
+fetched: 2026-07-02
+---
+
+# Batch production
+
+**Batch production** is a method of manufacturing in which products are made as specified groups or amounts, within a time frame. A batch can go through a series of steps in a large manufacturing process to make the final desired product. Batch production is used for many types of manufacturing that may need smaller amounts of production at a time to ensure specific quality standards or changes in the process. This is opposed to large mass production or continuous production methods, where the product or process does not need to be checked or changed as frequently or periodically.
+
+## Characteristics
+
+In the manufacturing batch production process, the machines are in chronological order directly related to the manufacturing process. The batch production method is also used so any temporary changes or modifications can be made to the product if necessary during the manufacturing process. For example, if a product needed a sudden change in material or details changed, it can be done in between batches. As opposed to assembly production or mass production where such changes cannot be easily made. The time between batches is called cycle time. Each batch may be assigned a lot number.
+
+### Advantages
+
+Because batch production involves small batches, it is good for quality control. For example, if there is a mistake in the process, it can be fixed without as much loss compared to mass production. This can also save money by taking less risk for newer plans and products etc. As a result, this allows batch manufacturing to be changed or modified depending on company needs. In certain cases, batch production may require less expensive equipment, thus reducing the capital cost required to set up this type of system.
+
+### Disadvantages
+
+There can be downtime between individual batches. Or if the product is constantly changing or being modified throughout the process, this also can cost downtime. Other disadvantages are that smaller batches need more planning, scheduling and control over the process and collecting data. Because of these factors, items made using batch production may have higher unit cost and take more time compared to continuous production.

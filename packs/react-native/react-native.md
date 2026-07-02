@@ -1,0 +1,88 @@
+---
+title: "React Native"
+source: https://en.wikipedia.org/wiki/React_Native
+domain: react-native
+license: CC-BY-SA-4.0
+tags: react native, javascript native bridge, mobile component tree, hot reload workflow
+fetched: 2026-07-02
+---
+
+# React Native
+
+**React Native** is an open-source UI software framework developed by Meta Platforms (formerly Facebook Inc.). It is used to develop applications for Android, Android TV, iOS, macOS, tvOS, Vega OS, Web, Windows and UWP by enabling developers to use the React framework along with native platform capabilities. It is used to develop Android and iOS applications at Facebook, Microsoft, and Shopify. It is also being used to develop virtual reality applications at Oculus.
+
+## History
+
+In 2012 Mark Zuckerberg commented, "The biggest mistake we made as a company was betting too much on HTML5 as opposed to native". Using HTML5 for Facebook's mobile version resulted in an unstable application that retrieved data slowly. He promised Facebook would soon deliver a better mobile experience.
+
+Inside Facebook, Jordan Walke developed software that generated UI elements for iOS from a background JavaScript thread, which became the basis for the React web framework. They decided to organize an internal hackathon to perfect this prototype in order to be able to build native apps with this technology.
+
+In 2015, after months of development, Facebook released the first version for the React JavaScript Configuration. During a technical talk, Christopher Chedeau explained that Facebook was already using React Native in production for its Group App and its Ads Manager App.
+
+In October 2025, Meta announced that it would donate React, React Native, and JSX (JavaScript XML) to a new React Foundation, part of the Linux Foundation.
+
+## Implementation
+
+The working principles of React Native are virtually identical to React except that React Native does not manipulate the DOM via the Virtual DOM. It runs in a background process (which interprets the JavaScript written by the developers) directly on the end-device and communicates with the native platform via serialized data over an asynchronous and batched bridge.
+
+React components wrap existing native code and interact with native APIs via React's declarative UI paradigm and JavaScript. TypeScript is often used over JavaScript in modern React Native applications due to its increased type safety.
+
+While React Native styling has a similar syntax to CSS, it does not use HTML or CSS. Instead, messages from the JavaScript thread are used to manipulate native views. Using plugins, Tailwind can also be used with React Native.
+
+React Native is also available for both Windows and macOS, which is currently maintained by Microsoft.
+
+## "Hello, World!" example
+
+A "Hello, World!" program in React Native looks like this:
+
+```mw
+import { AppRegistry, Text, View, Button } from 'react-native';
+import React from 'react';
+
+const HelloWorldApp = () => {
+  const [count, setCount] = React.useState(0);
+
+  const incrementCount = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  return (
+    <View>
+      <Text>Hello world!</Text>
+      <Text>{count}</Text>
+      <Button onPress={incrementCount} title="Increase Count" />
+    </View>
+  );
+};
+
+export default HelloWorldApp;
+
+AppRegistry.registerComponent('HelloWorld', () => HelloWorldApp);
+```
+
+## TypeScript example
+
+In TypeScript, a counter component looks like this:
+
+```mw
+import { Button, Text, View } from "react-native";
+import React from "react";
+
+interface CounterProps {
+    title: string; // Required prop
+    baseNumber?: number; // Optional prop
+}
+
+const Counter: React.FC<CounterProps> = ({ title, baseNumber }) => {
+    const [count, setCount] = React.useState<number>(baseNumber || 0);
+
+    const incrementCount = (): void => setCount((prevCount) => prevCount + 1);
+
+    return (
+        <View>
+            <Text>{count}</Text>
+            <Button onPress={incrementCount} title={title}></Button>
+        </View>
+    );
+};
+```

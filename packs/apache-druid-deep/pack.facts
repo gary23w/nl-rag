@@ -1,0 +1,454 @@
+# nl-rag distilled facts — domain: apache-druid-deep
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:apache-druid-deep/apache-druid] Druid is commonly used in business intelligence-OLAP applications to analyze high volumes of real-time and historical data.
+[src:apache-druid-deep/apache-druid] Druid is used in production by technology companies such as Alibaba, Airbnb, Nielsen, Cisco, eBay, Lyft, Netflix, PayPal, Pinterest, Reddit, Twitter, Walmart, Wikimedia Foundation and Yahoo.
+[src:apache-druid-deep/apache-druid] Druid was started in 2011 by Eric Tschetter, Fangjin Yang, Gian Merlino and Vadim Ogievetsky to power the analytics product of Metamarkets.
+[src:apache-druid-deep/apache-druid] The project was open-sourced under the GPL license in October 2012, and moved to an Apache License in February 2015.
+[src:apache-druid-deep/apache-druid] Fully deployed, Druid runs as a cluster of specialized processes (called nodes in Druid) to support a fault-tolerant architecture where data is stored redundantly, and there is no single point of failure.
+[src:apache-druid-deep/apache-druid] The cluster includes external dependencies for coordination (Apache ZooKeeper), metadata storage (e.g.
+[src:apache-druid-deep/apache-druid] MySQL, PostgreSQL, or Derby), and a deep storage facility (e.g.
+[src:apache-druid-deep/apache-druid] HDFS, or Amazon S3) for permanent data backup.
+[src:apache-druid-deep/apache-druid] Client queries first hit broker nodes, which forward them to the appropriate data nodes (either historical or real-time).
+[src:apache-druid-deep/apache-druid] Since Druid segments may be partitioned, an incoming query can require data from multiple segments and partitions (or shards) stored on different nodes in the cluster.
+[src:apache-druid-deep/apache-druid] Brokers are able to learn which nodes have the required data, and also merge partial results before returning the aggregated result.
+[src:apache-druid-deep/apache-druid] Operations relating to data management in historical nodes are overseen by coordinator nodes.
+[src:apache-druid-deep/apache-druid] Apache ZooKeeper is used to register all nodes, manage certain aspects of internode communications, and provide for leader elections.
+[src:apache-druid-deep/apache-druid] In 2019, researchers compared the performance of Hive, Presto, and Druid using a denormalized Star Schema Benchmark based on the TPC-H standard.
+[src:apache-druid-deep/apache-druid] Druid was tested using both a “Druid Best” configuration using tables with hashed partitions and a “Druid Suboptimal” configuration which does not use hashed partitions.
+[src:apache-druid-deep/apache-druid] Tests were conducted by running the 13 TPC-H queries using TPC-H Scale Factor 30 (a 30GB database), Scale Factor 100 (a 100GB database), and Scale Factor 300 (a 300GB database).
+[src:apache-druid-deep/apache-druid] Druid performance was measured as at least 98% faster than Hive and at least 90% faster than Presto in each scenario, even when using the Druid Suboptimized configuration.
+[src:apache-druid-deep/architecture] Druid has a distributed architecture that is designed to be cloud-friendly and easy to operate.
+[src:apache-druid-deep/architecture] You can configure and scale services independently for maximum flexibility over cluster operations.
+[src:apache-druid-deep/architecture] This design includes enhanced fault tolerance: an outage of one component does not immediately affect other components.
+[src:apache-druid-deep/architecture] The following diagram shows the services that make up the Druid architecture, their typical arrangement across servers, and how queries and data flow through this architecture.
+[src:apache-druid-deep/architecture] The following sections describe the components of this architecture.
+[src:apache-druid-deep/architecture] You can deploy Druid services according to your preferences.
+[src:apache-druid-deep/architecture] For ease of deployment, we recommend organizing them into three server types: Master, Query, and Data.
+[src:apache-druid-deep/architecture] A Master server manages data ingestion and availability.
+[src:apache-druid-deep/architecture] It is responsible for starting new ingestion jobs and coordinating availability of data on the Data server.
+[src:apache-druid-deep/architecture] Master servers divide operations between Coordinator and Overlord services.
+[src:apache-druid-deep/architecture] Coordinator services watch over the Historical services on the Data servers.
+[src:apache-druid-deep/architecture] They are responsible for assigning segments to specific servers, and for ensuring segments are well-balanced across Historicals.
+[src:apache-druid-deep/architecture] Overlord services watch over the Middle Manager services on the Data servers and are the controllers of data ingestion into Druid.
+[src:apache-druid-deep/architecture] They are responsible for assigning ingestion tasks to Middle Managers and for coordinating segment publishing.
+[src:apache-druid-deep/architecture] A Query server provides the endpoints that users and client applications interact with, routing queries to Data servers or other Query servers (and optionally proxied Master server requests).
+[src:apache-druid-deep/architecture] Query servers divide operations between Broker and Router services.
+[src:apache-druid-deep/architecture] Broker services receive queries from external clients and forward those queries to Data servers.
+[src:apache-druid-deep/architecture] When Brokers receive results from those subqueries, they merge those results and return them to the caller.
+[src:apache-druid-deep/architecture] Typically, you query Brokers rather than querying Historical or Middle Manager services on Data servers directly.
+[src:apache-druid-deep/architecture] The Router service also runs the web console, a UI for loading data, managing datasources and tasks, and viewing server status and segment information.
+[src:apache-druid-deep/architecture] A Data server executes ingestion jobs and stores queryable data.
+[src:apache-druid-deep/architecture] Data servers divide operations between Historical and Middle Manager services.
+[src:apache-druid-deep/architecture] The Indexer is designed to be easier to configure and deploy compared to the MiddleManager + Peon system and to better enable resource sharing across tasks, which can help streaming ingestion.
+[src:apache-druid-deep/architecture] The Indexer is currently designated experimental.
+[src:apache-druid-deep/architecture] Typically, you would deploy one of the following: MiddleManagers, MiddleManager-less ingestion using Kubernetes, or Indexers.
+[src:apache-druid-deep/architecture] You wouldn't deploy more than one of these options.
+[src:apache-druid-deep/architecture] Colocating Druid services by server type generally results in better utilization of hardware resources for most clusters.
+[src:apache-druid-deep/architecture] For very large scale clusters, it can be desirable to split the Druid services such that they run on individual servers to avoid resource contention.
+[src:apache-druid-deep/architecture] This section describes guidelines and configuration parameters related to service colocation.
+[src:apache-druid-deep/architecture] The workload on the Coordinator service tends to increase with the number of segments in the cluster.
+[src:apache-druid-deep/architecture] The Overlord's workload also increases based on the number of segments in the cluster, but to a lesser degree than the Coordinator.
+[src:apache-druid-deep/architecture] In clusters with very high segment counts, it can make sense to separate the Coordinator and Overlord services to provide more resources for the Coordinator's segment balancing workload.
+[src:apache-druid-deep/architecture] You can run the Coordinator and Overlord services as a single combined service by setting the `druid.coordinator.asOverlord.enabled` property.
+[src:apache-druid-deep/architecture] For more information, see Coordinator Operation.
+[src:apache-druid-deep/architecture] With higher levels of ingestion or query load, it can make sense to deploy the Historical and Middle Manager services on separate hosts to to avoid CPU and memory contention.
+[src:apache-druid-deep/architecture] The Historical service also benefits from having free memory for memory mapped segments, which can be another reason to deploy the Historical and Middle Manager services separately.
+[src:apache-druid-deep/architecture] In addition to its built-in service types, Druid also has three external dependencies.
+[src:apache-druid-deep/architecture] These are intended to be able to leverage existing infrastructure, where present.
+[src:apache-druid-deep/architecture] Druid uses deep storage to store any data that has been ingested into the system.
+[src:apache-druid-deep/architecture] Deep storage is shared file storage accessible by every Druid server.
+[src:apache-druid-deep/architecture] In a clustered deployment, this is typically a distributed object store like S3 or HDFS, or a network mounted filesystem.
+[src:apache-druid-deep/architecture] In a single-server deployment, this is typically local disk.
+[src:apache-druid-deep/architecture] Historical services cache data segments on local disk and serve queries from that cache as well as from an in-memory cache.
+[src:apache-druid-deep/architecture] Segments on disk for Historical services provide the low latency querying performance Druid is known for.
+[src:apache-druid-deep/architecture] You can also query directly from deep storage.
+[src:apache-druid-deep/architecture] When you query segments that exist only in deep storage, you trade some performance for the ability to query more of your data without necessarily having to scale your Historical services.
+[src:apache-druid-deep/architecture] Deep storage is an important part of Druid's elastic, fault-tolerant design.
+[src:apache-druid-deep/architecture] Druid bootstraps from deep storage even if every single data server is lost and re-provisioned.
+[src:apache-druid-deep/architecture] For more details, please see the Deep storage page.
+[src:apache-druid-deep/architecture] The metadata storage holds various shared system metadata such as segment usage information and task information.
+[src:apache-druid-deep/architecture] In a clustered deployment, this is typically a traditional RDBMS like PostgreSQL or MySQL.
+[src:apache-druid-deep/architecture] In a single-server deployment, it is typically a locally-stored Apache Derby database.
+[src:apache-druid-deep/architecture] For more details, please see the Metadata storage page.
+[src:apache-druid-deep/architecture] Used for internal service discovery, coordination, and leader election.
+[src:apache-druid-deep/architecture] For more details, please see the ZooKeeper page.
+[src:apache-druid-deep/column-oriented-dbms] The choice of data orientation is a trade-off and an architectural decision in databases, query engines, and numerical simulations.
+[src:apache-druid-deep/column-oriented-dbms] As a result of these tradeoffs, row-oriented formats are more commonly used in online transaction processing (OLTP) and column-oriented formats are more commonly used in online analytical processing (OLAP).
+[src:apache-druid-deep/column-oriented-dbms] Examples of column-oriented formats include Apache ORC, Apache Parquet, Apache Arrow, formats used by BigQuery, Amazon Redshift and Snowflake.
+[src:apache-druid-deep/column-oriented-dbms] Predominant examples of row-oriented formats include CSV, formats used in most relational databases (Oracle, MySQL etc.), the in-memory format of Apache Spark, and Apache Avro.
+[src:apache-druid-deep/column-oriented-dbms] Tabular data is two dimensional — data is modeled as rows and columns.
+[src:apache-druid-deep/column-oriented-dbms] However, computer systems represent data in a linear memory model, both in-disk and in-memory.
+[src:apache-druid-deep/column-oriented-dbms] Therefore, a table in a linear memory model requires mapping its two-dimensional scheme into a one-dimensional space.
+[src:apache-druid-deep/column-oriented-dbms] Data orientation is to the decision taken in this mapping.
+[src:apache-druid-deep/column-oriented-dbms] There are two prominent mappings: row-oriented and column-oriented.
+[src:apache-druid-deep/column-oriented-dbms] I.e. each row of the table is located one after the other.
+[src:apache-druid-deep/column-oriented-dbms] In this orientation, values in the same row are close in space (e.g. similar address in an addressable space).
+[src:apache-druid-deep/column-oriented-dbms] I.e. each column of the table is located one after the other.
+[src:apache-druid-deep/column-oriented-dbms] In this orientation, values on the same column are close in space (e.g. similar address in an addressable space).
+[src:apache-druid-deep/column-oriented-dbms] See list of column-oriented DBMSes for more examples.
+[src:apache-druid-deep/column-oriented-dbms] Data orientation is an important architectural decision of systems handling data because it results in important tradeoffs in performance and storage.
+[src:apache-druid-deep/column-oriented-dbms] Below are selected dimensions of this tradeoff.
+[src:apache-druid-deep/column-oriented-dbms] Row-oriented benefits from fast random access of rows.
+[src:apache-druid-deep/column-oriented-dbms] Column-oriented benefits from fast random access of columns.
+[src:apache-druid-deep/column-oriented-dbms] In both cases, this is the result of fewer page or cache misses when accessing the data.
+[src:apache-druid-deep/column-oriented-dbms] Row-oriented benefits from fast insertion of a new row.
+[src:apache-druid-deep/column-oriented-dbms] Column-oriented benefits from fast insertion of a new column.
+[src:apache-druid-deep/column-oriented-dbms] This dimension is an important reason why row-oriented formats are more commonly used in online transaction processing (OLTP), as it results in faster transactions in comparison to column-oriented.
+[src:apache-druid-deep/column-oriented-dbms] Row-oriented benefits from fast access under a filter.
+[src:apache-druid-deep/column-oriented-dbms] Column-oriented benefits from fast access under a projection.
+[src:apache-druid-deep/column-oriented-dbms] Column-oriented benefits from fast analytics operations.
+[src:apache-druid-deep/column-oriented-dbms] This is the result of being able to leverage SIMD instructions.
+[src:apache-druid-deep/column-oriented-dbms] Column-oriented benefits from smaller uncompressed size.
+[src:apache-druid-deep/column-oriented-dbms] This is the result of the possibility that this orientation offers to represent certain data types with dedicated encodings.
+[src:apache-druid-deep/column-oriented-dbms] For example, a table of 128 rows with a Boolean column requires 128 bytes in a row-oriented format (one byte per Boolean) but 128 bits (16 bytes) in a column-oriented format (via a bitmap).
+[src:apache-druid-deep/column-oriented-dbms] Another example is the use of run-length encoding to encode a column.
+[src:apache-druid-deep/column-oriented-dbms] Column-oriented benefits from smaller compressed size.
+[src:apache-druid-deep/column-oriented-dbms] This is the result of a higher homogeneity within a column than within multiple rows.
+[src:apache-druid-deep/column-oriented-dbms] Because both orientations represent the same data, it is possible to convert a row-oriented dataset to a column-oriented dataset and vice versa at the expense of compute.
+[src:apache-druid-deep/column-oriented-dbms] In particular, advanced query engines often leverage each orientation's advantages, and convert from one orientation to the other as part of their execution.
+[src:apache-druid-deep/data-warehouse] In computing, a **data warehouse** (**DW** or **DWH**), also known as an **enterprise data warehouse** (**EDW**), is a system used for reporting and data analysis and is a core component of business intelligence.
+[src:apache-druid-deep/data-warehouse] Data warehouses are central repositories of data integrated from disparate sources.
+[src:apache-druid-deep/data-warehouse] They store current and historical data organized in a way that is optimized for data analysis, generation of reports, and developing insights across the integrated data.
+[src:apache-druid-deep/data-warehouse] They are intended to be used by analysts and managers to help make organizational decisions.
+[src:apache-druid-deep/data-warehouse] The data stored in the warehouse is uploaded from operational systems (such as marketing or sales).
+[src:apache-druid-deep/data-warehouse] The data may pass through an operational data store and may require data cleansing for additional operations to ensure data quality before it is used in the data warehouse for reporting.
+[src:apache-druid-deep/data-warehouse] The two main workflows for building a data warehouse system are extract, transform, load (ETL) and extract, load, transform (ELT).
+[src:apache-druid-deep/data-warehouse] Operational databases are optimized for the preservation of data integrity and speed of recording of business transactions through use of database normalization and an entity–relationship model.
+[src:apache-druid-deep/data-warehouse] Operational system designers generally follow database normalization to ensure data integrity.
+[src:apache-druid-deep/data-warehouse] Fully normalized database designs often result in information from a business transaction being stored in dozens to hundreds of tables.
+[src:apache-druid-deep/data-warehouse] Relational databases are efficient at managing the relationships between these tables.
+[src:apache-druid-deep/data-warehouse] The databases have very fast insert/update performance because only a small amount of data in those tables is affected by each transaction.
+[src:apache-druid-deep/data-warehouse] To improve performance, older data are periodically purged.
+[src:apache-druid-deep/data-warehouse] Data warehouses are optimized for analytic access patterns, which usually involve selecting specific fields rather than all fields as is common in operational databases.
+[src:apache-druid-deep/data-warehouse] Because of these differences in access, operational databases (loosely, OLTP) benefit from the use of a row-oriented database management system (DBMS), whereas analytics databases (loosely, OLAP) benefit from the use of a column-oriented DBMS.
+[src:apache-druid-deep/data-warehouse] Operational systems maintain a snapshot of the business, while warehouses maintain historic data through ETL processes that periodically migrate data from the operational systems to the warehouse.
+[src:apache-druid-deep/data-warehouse] Online analytical processing (OLAP) is characterized by a low rate of transactions and complex queries that involve aggregations.
+[src:apache-druid-deep/data-warehouse] Response time is an effective performance measure of OLAP systems.
+[src:apache-druid-deep/data-warehouse] OLAP applications are widely used for data mining.
+[src:apache-druid-deep/data-warehouse] OLAP databases store aggregated, historical data in multi-dimensional schemas (usually star schemas).
+[src:apache-druid-deep/data-warehouse] OLAP systems typically have a data latency of a few hours, while data mart latency is closer to one day.
+[src:apache-druid-deep/data-warehouse] The OLAP approach is used to analyze multidimensional data from multiple sources and perspectives.
+[src:apache-druid-deep/data-warehouse] The three basic operations in OLAP are roll-up (consolidation), drill-down, and slicing & dicing.
+[src:apache-druid-deep/data-warehouse] Online transaction processing (OLTP) is characterized by a large numbers of short online transactions (INSERT, UPDATE, DELETE).
+[src:apache-druid-deep/data-warehouse] OLTP systems emphasize fast query processing and maintaining data integrity in multi-access environments.
+[src:apache-druid-deep/data-warehouse] For OLTP systems, performance is the number of transactions per second.
+[src:apache-druid-deep/data-warehouse] OLTP databases contain detailed and current data.
+[src:apache-druid-deep/data-warehouse] The schema used to store transactional databases is the entity model (usually 3NF).
+[src:apache-druid-deep/data-warehouse] Normalization is the norm for data modeling techniques in this system.
+[src:apache-druid-deep/data-warehouse] Predictive analytics is about finding and quantifying hidden patterns in the data using complex mathematical models to prepare for different future outcomes, including demand for products, and make better decisions.
+[src:apache-druid-deep/data-warehouse] By contrast, OLAP focuses on historical data analysis and is reactive.
+[src:apache-druid-deep/data-warehouse] Predictive systems are also used for customer relationship management (CRM).
+[src:apache-druid-deep/data-warehouse] A Database is an organized collection of data that is stored and managed electronically.
+[src:apache-druid-deep/data-warehouse] It is designed to store, retrieve and manage structured data using a DBMS(Database Management Software) for querying and manipulating the data.
+[src:apache-druid-deep/data-warehouse] A data mart is a simple data warehouse focused on a single subject or functional area.
+[src:apache-druid-deep/data-warehouse] Hence it draws data from a limited number of sources such as sales, finance or marketing.
+[src:apache-druid-deep/data-warehouse] Data marts are often built and controlled by a single department in an organization.
+[src:apache-druid-deep/data-warehouse] The sources could be internal operational systems, a central data warehouse, or external data.
+[src:apache-druid-deep/data-warehouse] Types of data marts include dependent, independent, and hybrid data marts.
+[src:apache-druid-deep/data-warehouse] A Data lake is a centralized repository that stores large volume of data in raw format that is processed at the run time.
+[src:apache-druid-deep/data-warehouse] It can collect data from multiple sources such as APIs, Files, databases, sensors, websites, etc.
+[src:apache-druid-deep/data-warehouse] Unlike data warehouses, data lakes stores data is structured, semi-structured and unstructured format that makes them usable for machine learning and big data processing.
+[src:apache-druid-deep/data-warehouse] The typical extract, transform, load (ETL)-based data warehouse uses staging, data integration, and access layers to house its key functions.
+[src:apache-druid-deep/data-warehouse] The staging layer or staging database stores raw data extracted from each of the disparate source data systems.
+[src:apache-druid-deep/data-warehouse] The integration layer integrates disparate data sets by transforming the data from the staging layer, often storing this transformed data in an operational data store (ODS) database.
+[src:apache-druid-deep/data-warehouse] The integrated data are then moved to yet another database, often called the data warehouse database, where the data is arranged into hierarchical groups, often called dimensions, and into facts and aggregate facts.
+[src:apache-druid-deep/data-warehouse] The combination of facts and dimensions is sometimes called a star schema.
+[src:apache-druid-deep/data-warehouse] The access layer helps users retrieve data.
+[src:apache-druid-deep/data-warehouse] The main source of the data is cleansed, transformed, catalogued, and made available for use by managers and other business professionals for data mining, online analytical processing, market research and decision support.
+[src:apache-druid-deep/data-warehouse] However, the means to retrieve and analyze data, to extract, transform, and load data, and to manage the data dictionary are also considered essential components of a data warehousing system.
+[src:apache-druid-deep/data-warehouse] Many references to data warehousing use this broader context.
+[src:apache-druid-deep/data-warehouse] Thus, an expanded definition of data warehousing includes business intelligence tools, tools to extract, transform, and load data into the repository, and tools to manage and retrieve metadata.
+[src:apache-druid-deep/data-warehouse] ELT-based data warehousing gets rid of a separate ETL tool for data transformation.
+[src:apache-druid-deep/data-warehouse] Instead, it maintains a staging area inside the data warehouse itself.
+[src:apache-druid-deep/data-warehouse] In this approach, data gets extracted from heterogeneous source systems and are then directly loaded into the data warehouse, before any transformation occurs.
+[src:apache-druid-deep/data-warehouse] All necessary transformations are then handled inside the data warehouse itself.
+[src:apache-druid-deep/data-warehouse] Finally, the manipulated data gets loaded into target tables in the same data warehouse.
+[src:apache-druid-deep/data-warehouse] A data warehouse maintains a copy of information from the source transaction systems.
+[src:apache-druid-deep/data-warehouse] The concept of data warehousing dates back to the late 1980s when IBM researchers Barry Devlin and Paul Murphy developed the "business data warehouse".
+[src:apache-druid-deep/data-warehouse] In essence, the data warehousing concept was intended to provide an architectural model for the flow of data from operational systems to decision support environments.
+[src:apache-druid-deep/data-warehouse] The concept attempted to address the various problems associated with this flow, mainly the high costs associated with it.
+[src:apache-druid-deep/data-warehouse] In the absence of a data warehousing architecture, an enormous amount of redundancy was required to support multiple decision support environments.
+[src:apache-druid-deep/data-warehouse] In larger corporations, it was typical for multiple decision support environments to operate independently.
+[src:apache-druid-deep/data-warehouse] Though each environment served different users, they often required much of the same stored data.
+[src:apache-druid-deep/data-warehouse] The process of gathering, cleaning and integrating data from various sources, usually from long-term existing operational systems (usually referred to as legacy systems), was typically in part replicated for each environment.
+[src:apache-druid-deep/data-warehouse] Moreover, the operational systems were frequently reexamined as new decision support requirements emerged.
+[src:apache-druid-deep/data-warehouse] Often new requirements necessitated gathering, cleaning and integrating new data from "data marts" that was tailored for ready access by users.
+[src:apache-druid-deep/data-warehouse] Additionally, with the publication of The IRM Imperative (Wiley & Sons, 1991) by James M.
+[src:apache-druid-deep/data-warehouse] Kerr, the idea of managing and putting a dollar value on an organization's data resources and then reporting that value as an asset on a balance sheet became popular.
+[src:apache-druid-deep/data-warehouse] In the book, Kerr described a way to populate subject-area databases from data derived from transaction-driven systems to create a storage area where summary data could be further leveraged to inform executive decision-making.
+[src:apache-druid-deep/data-warehouse] This concept served to promote further thinking of how a data warehouse could be developed and managed in a practical way within any enterprise.
+[src:apache-druid-deep/data-warehouse] A fact is a value or measurement in the system being managed.
+[src:apache-druid-deep/data-warehouse] Raw facts are ones reported by the reporting entity.
+[src:apache-druid-deep/data-warehouse] Raw facts are aggregated to higher levels in various dimensions to extract information more relevant to the service or business.
+[src:apache-druid-deep/data-warehouse] These are called aggregated facts or summaries.
+[src:apache-druid-deep/data-warehouse] For example, if there are three BTSs in a city, then the facts above can be aggregated to the city level in the network dimension.
+[src:apache-druid-deep/data-warehouse] The two most important approaches to store data in a warehouse are dimensional and normalized.
+[src:apache-druid-deep/data-warehouse] The dimensional approach uses a star schema as proposed by Ralph Kimball.
+[src:apache-druid-deep/data-warehouse] The normalized approach, also called the third normal form (3NF) is an entity-relational normalized model proposed by Bill Inmon.
+[src:apache-druid-deep/data-warehouse] In a dimensional approach, transaction data is partitioned into "facts", which are usually numeric transaction data, and "dimensions", which are the reference information that gives context to the facts.
+[src:apache-druid-deep/data-warehouse] This dimensional approach makes data easier to understand and speeds up data retrieval.
+[src:apache-druid-deep/data-warehouse] Dimensional structures are easy for business users to understand because the structure is divided into measurements/facts and context/dimensions.
+[src:apache-druid-deep/data-warehouse] Facts are related to the organization's business processes and operational system, and dimensions are the context about them (Kimball, Ralph 2008).
+[src:apache-druid-deep/data-warehouse] Another advantage is that the dimensional model does not involve a relational database every time.
+[src:apache-druid-deep/data-warehouse] Thus, this type of modeling technique is very useful for end-user queries in data warehouse.
+[src:apache-druid-deep/data-warehouse] The model of facts and dimensions can also be understood as a data cube, where dimensions are the categorical coordinates in a multi-dimensional cube, the fact is a value corresponding to the coordinates.
+[src:apache-druid-deep/data-warehouse] It is difficult to modify the warehouse structure if the organization changes the way it does business.
+[src:apache-druid-deep/data-warehouse] In the normalized approach, the data in the warehouse are stored following, to a degree, database normalization rules.
+[src:apache-druid-deep/data-warehouse] Normalized relational database tables are grouped into *subject areas* (for example, customers, products and finance).
+[src:apache-druid-deep/data-warehouse] When used in large enterprises, the result is dozens of tables linked by a web of joins.(Kimball, Ralph 2008).
+[src:apache-druid-deep/data-warehouse] The main advantage of this approach is that it is straightforward to add information into the database.
+[src:apache-druid-deep/data-warehouse] Disadvantages include that, because of the large number of tables, it can be difficult for users to join data from different sources into meaningful information and access the information without a precise understanding of the date sources and the data structure of the data warehouse.
+[src:apache-druid-deep/data-warehouse] Both normalized and dimensional models can be represented in entity–relationship diagrams because both contain joined relational tables.
+[src:apache-druid-deep/data-warehouse] The difference between them is the degree of normalization.
+[src:apache-druid-deep/data-warehouse] These approaches are not mutually exclusive, and there are other approaches.
+[src:apache-druid-deep/data-warehouse] Dimensional approaches can involve normalizing data to a degree (Kimball, Ralph 2008).
+[src:apache-druid-deep/data-warehouse] In *Information-Driven Business*, Robert Hillard compares the two approaches based on the information needs of the business problem.
+[src:apache-druid-deep/data-warehouse] He concludes that normalized models hold far more information than their dimensional equivalents (even when the same fields are used in both models) but at the cost of usability.
+[src:apache-druid-deep/data-warehouse] The technique measures information quantity in terms of information entropy and usability in terms of the Small Worlds data transformation measure.
+[src:apache-druid-deep/data-warehouse] In the *bottom-up* approach, data marts are first created to provide reporting and analytical capabilities for specific business processes.
+[src:apache-druid-deep/data-warehouse] These data marts can then be integrated to create a comprehensive data warehouse.
+[src:apache-druid-deep/data-warehouse] The data warehouse bus architecture is primarily an implementation of "the bus", a collection of confirmed dimensions and confirmed facts, which are dimensions that are shared (in a specific way) between facts in two or more data marts.
+[src:apache-druid-deep/data-warehouse] The *top-down* approach is designed using a normalized enterprise data model.
+[src:apache-druid-deep/data-warehouse] "Atomic" data, that is, data at the greatest level of detail, are stored in the data warehouse.
+[src:apache-druid-deep/data-warehouse] Dimensional data marts containing data needed for specific business processes or specific departments are created from the data warehouse.
+[src:apache-druid-deep/data-warehouse] Data warehouses often use a spoke–hub distribution paradigm.
+[src:apache-druid-deep/data-warehouse] Legacy systems feeding the warehouse often include customer relationship management and enterprise resource planning, generating large amounts of data.
+[src:apache-druid-deep/data-warehouse] To consolidate these various data models and facilitate the extract transform load process, data warehouses often make use of an operational data store, the information from which is parsed into the actual data warehouse.
+[src:apache-druid-deep/data-warehouse] To reduce data redundancy, larger systems often store the data in a normalized way.
+[src:apache-druid-deep/data-warehouse] Data marts for specific reports can then be built on top of the data warehouse.
+[src:apache-druid-deep/data-warehouse] A hybrid (also called ensemble) data warehouse database is kept on third normal form to eliminate data redundancy.
+[src:apache-druid-deep/data-warehouse] A normal relational database, however, is not efficient for business intelligence reports where dimensional modelling is prevalent.
+[src:apache-druid-deep/data-warehouse] Small data marts can shop for data from the consolidated warehouse and use the filtered, specific data for the fact tables and dimensions required.
+[src:apache-druid-deep/data-warehouse] The data warehouse provides a single source of information from which the data marts can read, providing a wide range of business information.
+[src:apache-druid-deep/data-warehouse] The hybrid architecture allows a data warehouse to be replaced with a master data management repository where operational (not static) information could reside.
+[src:apache-druid-deep/data-warehouse] The data vault modeling components follow hub and spokes architecture.
+[src:apache-druid-deep/data-warehouse] This modeling style is a hybrid design, consisting of the best practices from both third normal form and star schema.
+[src:apache-druid-deep/data-warehouse] The data vault model is not a true third normal form, and breaks some of its rules, but it is a top-down architecture with a bottom up design.
+[src:apache-druid-deep/data-warehouse] The data vault model is geared to be strictly a data warehouse.
+[src:apache-druid-deep/data-warehouse] It is not geared to be end-user accessible, which, when built, still requires the use of a data mart or star schema-based release area for business purposes.
+[src:apache-druid-deep/data-warehouse] There are basic features that define the data in the data warehouse that include subject orientation, data integration, time-variant, nonvolatile data, and data granularity.
+[src:apache-druid-deep/data-warehouse] Unlike the operational systems, the data in the data warehouse revolves around the subjects of the enterprise.
+[src:apache-druid-deep/data-warehouse] Subject orientation is not database normalization.
+[src:apache-druid-deep/data-warehouse] Subject orientation can be really useful for decision-making.
+[src:apache-druid-deep/data-warehouse] Gathering the required objects is called subject-oriented.
+[src:apache-druid-deep/data-warehouse] The data found within the data warehouse is integrated.
+[src:apache-druid-deep/data-warehouse] Since it comes from several operational systems, all inconsistencies must be removed.
+[src:apache-druid-deep/data-warehouse] Consistencies include naming conventions, measurement of variables, encoding structures, physical attributes of data, and so forth.
+[src:apache-druid-deep/data-warehouse] While operational systems reflect current values as they support day-to-day operations, data warehouse data represents a long time horizon (up to 10 years) which means it stores mostly historical data.
+[src:apache-druid-deep/data-warehouse] It is mainly meant for data mining and forecasting.
+[src:apache-druid-deep/data-warehouse] The data in the data warehouse is read-only, which means it cannot be updated, created, or deleted (unless there is a regulatory or statutory obligation to do so).
+[src:apache-druid-deep/data-warehouse] In the data warehouse process, data can be aggregated in data marts at different levels of abstraction.
+[src:apache-druid-deep/data-warehouse] The user may start looking at the total sale units of a product in an entire region.
+[src:apache-druid-deep/data-warehouse] Then the user looks at the states in that region.
+[src:apache-druid-deep/data-warehouse] Finally, they may examine the individual stores in a certain state.
+[src:apache-druid-deep/data-warehouse] Therefore, typically, the analysis starts at a higher level and drills down to lower levels of details.
+[src:apache-druid-deep/data-warehouse] With data virtualization, the data used remains in its original locations and real-time access is established to allow analytics across multiple sources creating a virtual data warehouse.
+[src:apache-druid-deep/data-warehouse] This can aid in resolving some technical difficulties such as compatibility problems when combining data from various platforms, lowering the risk of error caused by faulty data, and guaranteeing that the newest data is used.
+[src:apache-druid-deep/data-warehouse] Furthermore, avoiding the creation of a new database containing personal information can make it easier to comply with privacy regulations.
+[src:apache-druid-deep/data-warehouse] However, with data virtualization, the connection to all necessary data sources must be operational as there is no local copy of the data, which is one of the main drawbacks of the approach.
+[src:apache-druid-deep/data-warehouse] The different methods used to construct/organize a data warehouse specified by an organization are numerous.
+[src:apache-druid-deep/data-warehouse] The hardware utilized, software created and data resources specifically required for the correct functionality of a data warehouse are the main components of the data warehouse architecture.
+[src:apache-druid-deep/data-warehouse] All data warehouses have multiple phases in which the requirements of the organization are modified and fine-tuned.
+[src:apache-druid-deep/data-warehouse] Data warehouses in this stage of evolution are updated on a regular time cycle (usually daily, weekly or monthly) from the operational systems and the data is stored in an integrated reporting-oriented database.
+[src:apache-druid-deep/data-warehouse] Data warehouses at this stage are updated from data in the operational systems on a regular basis and the data warehouse data are stored in a data structure designed to facilitate reporting.
+[src:apache-druid-deep/data-warehouse] These data warehouses assemble data from different areas of business, so users can look up the information they need across other systems.
+[src:apache-druid-deep/data-warehouse] In the healthcare sector, data warehouses are critical components of health informatics, enabling the integration, storage, and analysis of large volumes of clinical, administrative, and operational data.
+[src:apache-druid-deep/data-warehouse] These systems consolidate information from disparate sources such as electronic health records (EHRs), laboratory information systems, picture archiving and communication systems (PACS), and medical billing platforms.
+[src:apache-druid-deep/data-warehouse] By centralizing data, healthcare data warehouses support a range of functions including population health, clinical decision support, quality improvement, public health surveillance, and medical research.
+[src:apache-druid-deep/data-warehouse] These warehouses enable data-driven healthcare by supporting retrospective studies, comparative effectiveness research, and predictive analytics, often with the use of healthcare-applied artificial intelligence.
+[src:apache-druid-deep/design-segments] Apache Druid stores its data and indexes in *segment files* partitioned by time.
+[src:apache-druid-deep/design-segments] Druid creates a segment for each segment interval that contains data.
+[src:apache-druid-deep/design-segments] If an interval is empty—that is, containing no rows—no segment exists for that time interval.
+[src:apache-druid-deep/design-segments] Druid may create multiple segments for the same interval if you ingest data for that period via different ingestion jobs.
+[src:apache-druid-deep/design-segments] Compaction is the Druid process that attempts to combine these segments into a single segment per interval for optimal performance.
+[src:apache-druid-deep/design-segments] The time interval is configurable in the `segmentGranularity` parameter of the `granularitySpec`.
+[src:apache-druid-deep/design-segments] For Druid to operate well under heavy query load, it is important for the segment file size to be within the recommended range of 300-700 MB.
+[src:apache-druid-deep/design-segments] If your segment files are larger than this range, then consider either changing the granularity of the segment time interval or partitioning your data and/or adjusting the `targetRowsPerSegment` in your `partitionsSpec`.
+[src:apache-druid-deep/design-segments] A good starting point for this parameter is 5 million rows.
+[src:apache-druid-deep/design-segments] See the Sharding section below and the "Partitioning specification" section of the Batch ingestion documentation for more guidance.
+[src:apache-druid-deep/design-segments] Segment files are *columnar*: the data for each column is laid out in separate data structures.
+[src:apache-druid-deep/design-segments] By storing each column separately, Druid decreases query latency by scanning only those columns actually needed for a query.
+[src:apache-druid-deep/design-segments] Timestamp and metrics type columns are arrays of integer or floating point values compressed with LZ4.
+[src:apache-druid-deep/design-segments] Once a query identifies which rows to select, it decompresses them, pulls out the relevant rows, and applies the desired aggregation operator.
+[src:apache-druid-deep/design-segments] If a query doesn’t require a column, Druid skips over that column's data.
+[src:apache-druid-deep/design-segments] Note that the bitmap is different from the dictionary and list data structures: the dictionary and list grow linearly with the size of the data, but the size of the bitmap section is the product of data size and column cardinality.
+[src:apache-druid-deep/design-segments] That is, there is one bitmap per separate column value.
+[src:apache-druid-deep/design-segments] Columns with the same value share the same bitmap.
+[src:apache-druid-deep/design-segments] For each row in the list of column data, there is only a single bitmap that has a non-zero entry.
+[src:apache-druid-deep/design-segments] This means that high cardinality columns have extremely sparse, and therefore highly compressible, bitmaps.
+[src:apache-druid-deep/design-segments] Druid exploits this using compression algorithms that are specially suited for bitmaps, such as Roaring bitmap compression.
+[src:apache-druid-deep/design-segments] String columns always store the null value if present in any row as id 0, the first position in the value dictionary and an associated entry in the bitmap value indexes used to filter null values.
+[src:apache-druid-deep/design-segments] Numeric columns also store a null value bitmap index to indicate the null valued rows, which is used to null check aggregations and for filter matching null values.
+[src:apache-druid-deep/design-segments] Druid segments for the same datasource may have different schemas.
+[src:apache-druid-deep/design-segments] If a string column (dimension) exists in one segment but not another, queries that involve both segments still work.
+[src:apache-druid-deep/design-segments] In default mode, queries for the segment without the dimension behave as if the dimension contains only blank values.
+[src:apache-druid-deep/design-segments] In SQL-compatible mode, queries for the segment without the dimension behave as if the dimension contains only null values.
+[src:apache-druid-deep/design-segments] Similarly, if one segment has a numeric column (metric) but another does not, queries on the segment without the metric generally operate as expected.
+[src:apache-druid-deep/design-segments] Aggregations over the missing metric operate as if the metric doesn't exist.
+[src:apache-druid-deep/design-segments] A `ColumnDescriptor` is Jackson-serialized instance of the internal Druid `ColumnDescriptor` class .
+[src:apache-druid-deep/design-segments] It allows the use of Jackson's polymorphic deserialization to add new and interesting methods of serialization with minimal impact to the code.
+[src:apache-druid-deep/design-segments] It consists of some metadata about the column (for example: type, whether it's multi-value) and a list of serialization/deserialization logic that can deserialize the rest of the binary.
+[src:apache-druid-deep/design-segments] A multi-value column allows a single row to contain multiple strings for a column.
+[src:apache-druid-deep/design-segments] You can think of it as an array of strings.
+[src:apache-druid-deep/design-segments] If a datasource uses multi-value columns, then the data structures within the segment files look a bit different.
+[src:apache-druid-deep/design-segments] Note the changes to the second row in the list of column data and the `Ke$ha` bitmap.
+[src:apache-druid-deep/design-segments] If a row has more than one value for a column, its entry in the list is an array of values.
+[src:apache-druid-deep/design-segments] Additionally, a row with *n* values in the list has *n* non-zero valued entries in bitmaps.
+[src:apache-druid-deep/design-segments] Druid uses LZ4 by default to compress blocks of values for string, long, float, and double columns.
+[src:apache-druid-deep/design-segments] Druid uses Roaring to compress bitmaps for string columns and numeric null values.
+[src:apache-druid-deep/design-segments] We recommend that you use these defaults unless you've experimented with your data and query patterns suggest that non-default options will perform better in your specific case.
+[src:apache-druid-deep/design-segments] Druid also supports Concise bitmap compression.
+[src:apache-druid-deep/design-segments] For string column bitmaps, the differences between using Roaring and Concise are most pronounced for high cardinality columns.
+[src:apache-druid-deep/design-segments] In this case, Roaring is substantially faster on filters that match many values, but in some cases Concise can have a lower footprint due to the overhead of the Roaring format (but is still slower when many values are matched).
+[src:apache-druid-deep/design-segments] You configure compression at the segment level, not for individual columns.
+[src:apache-druid-deep/design-segments] Segment identifiers typically contain the segment datasource, interval start time (in ISO 8601 format), interval end time (in ISO 8601 format), and version information.
+[src:apache-druid-deep/design-segments] Multiple segments can exist for a single time interval and datasource.
+[src:apache-druid-deep/design-segments] These segments form a `block` for an interval.
+[src:apache-druid-deep/design-segments] Depending on the type of `shardSpec` used to shard the data, Druid queries may only complete if a `block` is complete.
+[src:apache-druid-deep/design-segments] Linear shard specs are an exception to this rule.
+[src:apache-druid-deep/design-segments] Linear shard specs do not enforce "completeness" so queries can complete even if shards are not completely loaded.
+[src:apache-druid-deep/design-segments] For example, if a real-time ingestion creates three segments that were sharded with linear shard spec, and only two of the segments are loaded, queries return results for those two segments.
+[src:apache-druid-deep/design-segments] In the codebase, segments have an internal format version.
+[src:apache-druid-deep/design-segments] The current segment format version is `v9`.
+[src:apache-druid-deep/design-segments] Druid uses versioning to manage updates to create a form of multi-version concurrency control (MVCC).
+[src:apache-druid-deep/design-segments] These MVCC versions are distinct from the segment format version discussed above.
+[src:apache-druid-deep/design-segments] Note that updates that span multiple segment intervals are only atomic within each interval.
+[src:apache-druid-deep/design-segments] They are not atomic across the entire update.
+[src:apache-druid-deep/design-segments] `v2` segments are loaded into the cluster as soon as they are built and replace `v1` segments for the period of time the segments overlap.
+[src:apache-druid-deep/design-segments] Before `v2` segments are completely loaded, the cluster may contain a mixture of `v1` and `v2` segments.
+[src:apache-druid-deep/design-segments] In this case, queries may hit a mixture of `v1` and `v2` segments.
+[src:apache-druid-deep/latest-design] Apache Druid is a real-time analytics database designed for fast slice-and-dice analytics ("OLAP" queries) on large data sets.
+[src:apache-druid-deep/latest-design] Most often, Druid powers use cases where real-time ingestion, fast query performance, and high uptime are important.
+[src:apache-druid-deep/latest-design] Druid is commonly used as the database backend for GUIs of analytical applications, or for highly-concurrent APIs that need fast aggregations.
+[src:apache-druid-deep/latest-design] Druid works best with event-oriented data.
+[src:apache-druid-deep/latest-design] If you are experimenting with a new use case for Druid or have questions about Druid's capabilities and features, join the Apache Druid Slack channel.
+[src:apache-druid-deep/latest-design] There, you can connect with Druid experts, ask questions, and get help in real time.
+[src:apache-druid-deep/latest-design] Druid's core architecture combines ideas from data warehouses, timeseries databases, and logsearch systems.
+[src:apache-druid-deep/latest-design] **Scalable distributed system.** Typical Druid deployments span clusters ranging from tens to hundreds of servers.
+[src:apache-druid-deep/latest-design] Druid can ingest data at the rate of millions of records per second while retaining trillions of records and maintaining query latencies ranging from the sub-second to a few seconds.
+[src:apache-druid-deep/latest-design] **Massively parallel processing.** Druid can process each query in parallel across the entire cluster.
+[src:apache-druid-deep/latest-design] **Realtime or batch ingestion.** Druid can ingest data either real-time or in batches.
+[src:apache-druid-deep/latest-design] Ingested data is immediately available for querying.
+[src:apache-druid-deep/latest-design] **Self-healing, self-balancing, easy to operate.** As an operator, you add servers to scale out or remove servers to scale down.
+[src:apache-druid-deep/latest-design] The Druid cluster re-balances itself automatically in the background without any downtime.
+[src:apache-druid-deep/latest-design] If a Druid server fails, the system automatically routes data around the damage until the server can be replaced.
+[src:apache-druid-deep/latest-design] Druid is designed to run continuously without planned downtime for any reason.
+[src:apache-druid-deep/latest-design] This is true for configuration changes and software updates.
+[src:apache-druid-deep/latest-design] **Cloud-native, fault-tolerant architecture that won't lose data.** After ingestion, Druid safely stores a copy of your data in deep storage.
+[src:apache-druid-deep/latest-design] Deep storage is typically cloud storage, HDFS, or a shared filesystem.
+[src:apache-druid-deep/latest-design] You can recover your data from deep storage even in the unlikely case that all Druid servers fail.
+[src:apache-druid-deep/latest-design] For a limited failure that affects only a few Druid servers, replication ensures that queries are still possible during system recoveries.
+[src:apache-druid-deep/latest-design] **Indexes for quick filtering.** Druid uses Roaring or CONCISE compressed bitmap indexes to create indexes to enable fast filtering and searching across multiple columns.
+[src:apache-druid-deep/latest-design] **Time-based partitioning.** Druid first partitions data by time.
+[src:apache-druid-deep/latest-design] You can optionally implement additional partitioning based upon other fields.
+[src:apache-druid-deep/latest-design] Time-based queries only access the partitions that match the time range of the query which leads to significant performance improvements.
+[src:apache-druid-deep/latest-design] **Approximate algorithms.** Druid includes algorithms for approximate count-distinct, approximate ranking, and computation of approximate histograms and quantiles.
+[src:apache-druid-deep/latest-design] These algorithms offer bounded memory usage and are often substantially faster than exact computations.
+[src:apache-druid-deep/latest-design] For situations where accuracy is more important than speed, Druid also offers exact count-distinct and exact ranking.
+[src:apache-druid-deep/latest-design] **Automatic summarization at ingest time.** Druid optionally supports data summarization at ingestion time.
+[src:apache-druid-deep/latest-design] This summarization partially pre-aggregates your data, potentially leading to significant cost savings and performance boosts.
+[src:apache-druid-deep/latest-design] Druid is used by many companies of various sizes for many different use cases.
+[src:apache-druid-deep/latest-design] For more information see Powered by Apache Druid.
+[src:apache-druid-deep/online-analytical-processing] In computing, **online analytical processing (OLAP)** (/ˈoʊlæp/), is an approach to quickly answer multi-dimensional analytical (MDA) queries.
+[src:apache-druid-deep/online-analytical-processing] The term *OLAP* was created as a slight modification of the traditional database term online transaction processing (OLTP).
+[src:apache-druid-deep/online-analytical-processing] OLAP is part of the broader category of business intelligence, which also encompasses relational databases, report writing and data mining.
+[src:apache-druid-deep/online-analytical-processing] Typical applications of OLAP include business reporting for sales, marketing, management reporting, business process management (BPM), budgeting and forecasting, financial reporting and similar areas, with new applications emerging, such as agriculture.
+[src:apache-druid-deep/online-analytical-processing] OLAP tools enable users to analyse multidimensional data interactively from multiple perspectives.
+[src:apache-druid-deep/online-analytical-processing] OLAP consists of three basic analytical operations: consolidation (roll-up), drill-down, and slicing and dicing.
+[src:apache-druid-deep/online-analytical-processing] Consolidation involves the aggregation of data that can be accumulated and computed in one or more dimensions.
+[src:apache-druid-deep/online-analytical-processing] For example, all sales offices are rolled up to the sales department or sales division to anticipate sales trends.
+[src:apache-druid-deep/online-analytical-processing] By contrast, the drill-down is a technique that allows users to navigate through the details.
+[src:apache-druid-deep/online-analytical-processing] For instance, users can view the sales by individual products that make up a region's sales.
+[src:apache-druid-deep/online-analytical-processing] Slicing and dicing is a feature whereby users can take out (slicing) a specific set of data of the OLAP cube and view (dicing) the slices from different viewpoints.
+[src:apache-druid-deep/online-analytical-processing] These viewpoints are sometimes called dimensions (such as looking at the same sales by salesperson, or by date, or by customer, or by product, or by region, etc.).
+[src:apache-druid-deep/online-analytical-processing] Databases configured for OLAP use a multidimensional data model, allowing for complex analytical and ad hoc queries with a rapid execution time.
+[src:apache-druid-deep/online-analytical-processing] They borrow aspects of navigational databases, hierarchical databases and relational databases.
+[src:apache-druid-deep/online-analytical-processing] OLAP is typically contrasted to OLTP (online transaction processing), which is generally characterized by much less complex queries, in a larger volume, to process transactions rather than for the purpose of business intelligence or reporting.
+[src:apache-druid-deep/online-analytical-processing] Whereas OLAP systems are mostly optimized for read, OLTP has to process all kinds of queries (read, insert, update and delete).
+[src:apache-druid-deep/online-analytical-processing] At the core of any OLAP system is an OLAP cube (also called a 'multidimensional cube' or a hypercube).
+[src:apache-druid-deep/online-analytical-processing] It consists of numeric facts called *measures* that are categorized by *dimensions*.
+[src:apache-druid-deep/online-analytical-processing] The measures are placed at the intersections of the hypercube, which is spanned by the dimensions as a vector space.
+[src:apache-druid-deep/online-analytical-processing] The usual interface to manipulate an OLAP cube is a matrix interface, like Pivot tables in a spreadsheet program, which performs projection operations along the dimensions, such as aggregation or averaging.
+[src:apache-druid-deep/online-analytical-processing] The cube metadata is typically created from a star schema or snowflake schema or fact constellation of tables in a relational database.
+[src:apache-druid-deep/online-analytical-processing] Measures are derived from the records in the fact table and dimensions are derived from the dimension tables.
+[src:apache-druid-deep/online-analytical-processing] Each *measure* can be thought of as having a set of *labels*, or meta-data associated with it.
+[src:apache-druid-deep/online-analytical-processing] A *dimension* is what describes these *labels*; it provides information about the *measure*.
+[src:apache-druid-deep/online-analytical-processing] A simple example would be a cube that contains a store's sales as a *measure*, and Date/Time as a *dimension*.
+[src:apache-druid-deep/online-analytical-processing] Each Sale has a Date/Time *label* that describes more about that sale.
+[src:apache-druid-deep/online-analytical-processing] Multidimensional structure is defined as "a variation of the relational model that uses multidimensional structures to organize data and express the relationships between data".
+[src:apache-druid-deep/online-analytical-processing] The structure is broken into cubes and the cubes are able to store and access data within the confines of each cube.
+[src:apache-druid-deep/online-analytical-processing] "Each cell within a multidimensional structure contains aggregated data related to elements along each of its dimensions".
+[src:apache-druid-deep/online-analytical-processing] Even when data is manipulated it remains easy to access and continues to constitute a compact database format.
+[src:apache-druid-deep/online-analytical-processing] Multidimensional structure is quite popular for analytical databases that use online analytical processing (OLAP) applications.
+[src:apache-druid-deep/online-analytical-processing] Analytical databases use these databases because of their ability to deliver answers to complex business queries swiftly.
+[src:apache-druid-deep/online-analytical-processing] Data can be viewed from different angles, which gives a broader perspective of a problem unlike other models.
+[src:apache-druid-deep/online-analytical-processing] It has been claimed that for complex queries OLAP cubes can produce an answer in around 0.1% of the time required for the same query on OLTP relational data.
+[src:apache-druid-deep/online-analytical-processing] The most important mechanism in OLAP which allows it to achieve such performance is the use of *aggregations*.
+[src:apache-druid-deep/online-analytical-processing] Aggregations are built from the fact table by changing the granularity on specific dimensions and aggregating up data along these dimensions, using an aggregate function (or *aggregation function*).
+[src:apache-druid-deep/online-analytical-processing] The number of possible aggregations is determined by every possible combination of dimension granularities.
+[src:apache-druid-deep/online-analytical-processing] The combination of all possible aggregations and the base data contains the answers to every query which can be answered from the data.
+[src:apache-druid-deep/online-analytical-processing] Because usually there are many aggregations that can be calculated, often only a predetermined number are fully calculated; the remainder are solved on demand.
+[src:apache-druid-deep/online-analytical-processing] The problem of deciding which aggregations (views) to calculate is known as the view selection problem.
+[src:apache-druid-deep/online-analytical-processing] View selection can be constrained by the total size of the selected set of aggregations, the time to update them from changes in the base data, or both.
+[src:apache-druid-deep/online-analytical-processing] The objective of view selection is typically to minimize the average time to answer OLAP queries, although some studies also minimize the update time.
+[src:apache-druid-deep/online-analytical-processing] Many approaches to the problem have been explored, including greedy algorithms, randomized search, genetic algorithms and A* search algorithm.
+[src:apache-druid-deep/online-analytical-processing] Some aggregation functions can be computed for the entire OLAP cube by precomputing values for each cell, and then computing the aggregation for a roll-up of cells by aggregating these aggregates, applying a divide and conquer algorithm to the multidimensional problem to compute them efficiently.
+[src:apache-druid-deep/online-analytical-processing] For example, the overall sum of a roll-up is just the sum of the sub-sums in each cell.
+[src:apache-druid-deep/online-analytical-processing] Functions that can be decomposed in this way are called decomposable aggregation functions, and include `COUNT`, `MAX`, `MIN`, and `SUM`, which can be computed for each cell and then directly aggregated; these are known as self-decomposable aggregation functions.
+[src:apache-druid-deep/online-analytical-processing] In other cases, the aggregate function cannot be computed without analyzing the entire set at once, though in some cases approximations can be computed; examples include `DISTINCT COUNT`, `MEDIAN`, and `MODE`; for example, the median of a set is not the median of medians of subsets.
+[src:apache-druid-deep/online-analytical-processing] These latter are difficult to implement efficiently in OLAP, as they require computing the aggregate function on the base data, either computing them online (slow) or precomputing them for possible rollouts (large space).
+[src:apache-druid-deep/online-analytical-processing] OLAP systems have been traditionally categorized using the following taxonomy.
+[src:apache-druid-deep/online-analytical-processing] MOLAP (multi-dimensional online analytical processing) is the classic form of OLAP and is sometimes referred to as just OLAP.
+[src:apache-druid-deep/online-analytical-processing] MOLAP stores this data in an optimized multi-dimensional array storage, rather than in a relational database.
+[src:apache-druid-deep/online-analytical-processing] Some MOLAP tools require the pre-computation and storage of derived data, such as consolidations – the operation known as processing.
+[src:apache-druid-deep/online-analytical-processing] Such MOLAP tools generally utilize a pre-calculated data set referred to as a data cube.
+[src:apache-druid-deep/online-analytical-processing] The data cube contains all the possible answers to a given range of questions.
+[src:apache-druid-deep/online-analytical-processing] As a result, they have a very fast response to queries.
+[src:apache-druid-deep/online-analytical-processing] On the other hand, updating can take a long time depending on the degree of pre-computation.
+[src:apache-druid-deep/online-analytical-processing] Pre-computation can also lead to what is known as data explosion.
+[src:apache-druid-deep/online-analytical-processing] Other MOLAP tools, particularly those that implement the functional database model do not pre-compute derived data but make all calculations on demand other than those that were previously requested and stored in a cache.
+[src:apache-druid-deep/online-analytical-processing] Examples of commercial products that use MOLAP are Cognos Powerplay, Oracle Database OLAP Option, MicroStrategy, Microsoft Analysis Services, Essbase, TM1, Jedox, and icCube.
+[src:apache-druid-deep/online-analytical-processing] While ROLAP uses a relational database source, generally the database must be carefully designed for ROLAP use.
+[src:apache-druid-deep/online-analytical-processing] A database which was designed for OLTP will not function well as a ROLAP database.
+[src:apache-druid-deep/online-analytical-processing] Therefore, ROLAP still involves creating an additional copy of the data.
+[src:apache-druid-deep/online-analytical-processing] However, since it is a database, a variety of technologies can be used to populate the database.
+[src:apache-druid-deep/online-analytical-processing] In the OLAP industry ROLAP is usually perceived as being able to scale for large data volumes but suffering from slower query performance as opposed to MOLAP.
+[src:apache-druid-deep/online-analytical-processing] The OLAP Survey, the largest independent survey across all major OLAP products, being conducted for 6 years (2001 to 2006) have consistently found that companies using ROLAP report slower performance than those using MOLAP even when data volumes were taken into consideration.
+[src:apache-druid-deep/online-analytical-processing] However, as with any survey there are a number of subtle issues that must be taken into account when interpreting the results.
+[src:apache-druid-deep/online-analytical-processing] Some companies select ROLAP because they intend to re-use existing relational database tables—these tables will frequently not be optimally designed for OLAP use.
+[src:apache-druid-deep/online-analytical-processing] The superior flexibility of ROLAP tools allows this less-than-optimal design to work, but performance suffers.
+[src:apache-druid-deep/online-analytical-processing] MOLAP tools in contrast would force the data to be re-loaded into an optimal OLAP design.
+[src:apache-druid-deep/online-analytical-processing] The undesirable trade-off between additional ETL cost and slow query performance has ensured that most commercial OLAP tools now use a "Hybrid OLAP" (HOLAP) approach, which allows the model designer to decide which portion of the data will be stored in MOLAP and which portion in ROLAP.
+[src:apache-druid-deep/online-analytical-processing] There is no clear agreement across the industry as to what constitutes "Hybrid OLAP", except that a database will divide data between relational and specialized storage.
+[src:apache-druid-deep/online-analytical-processing] For example, for some vendors, a HOLAP database will use relational tables to hold the larger quantities of detailed data and use specialized storage for at least some aspects of the smaller quantities of more-aggregate or less-detailed data.
+[src:apache-druid-deep/online-analytical-processing] HOLAP addresses the shortcomings of MOLAP and ROLAP by combining the capabilities of both approaches.
+[src:apache-druid-deep/online-analytical-processing] HOLAP tools can utilize both pre-calculated cubes and relational data sources.
+[src:apache-druid-deep/online-analytical-processing] In this mode HOLAP stores *aggregations* in MOLAP for fast query performance, and detailed data in ROLAP to optimize time of cube *processing*.
+[src:apache-druid-deep/online-analytical-processing] In this mode HOLAP stores some slice of data, usually the more recent one (i.e. sliced by Time dimension) in MOLAP for fast query performance, and older data in ROLAP.
+[src:apache-druid-deep/online-analytical-processing] Moreover, we can store some dices in MOLAP and others in ROLAP, leveraging the fact that in a large cuboid, there will be dense and sparse subregions.
+[src:apache-druid-deep/online-analytical-processing] The first product to provide HOLAP storage was Holos, but the technology also became available in other commercial products such as Microsoft Analysis Services, Oracle Database OLAP Option, MicroStrategy and SAP AG BI Accelerator.
+[src:apache-druid-deep/online-analytical-processing] The hybrid OLAP approach combines ROLAP and MOLAP technology, benefiting from the greater scalability of ROLAP and the faster computation of MOLAP.
+[src:apache-druid-deep/online-analytical-processing] For example, a HOLAP server may store large volumes of detailed data in a relational database, while aggregations are kept in a separate MOLAP store.
+[src:apache-druid-deep/online-analytical-processing] Each type has certain benefits, although there is disagreement about the specifics of the benefits between providers.
+[src:apache-druid-deep/online-analytical-processing] Unlike relational databases, which had SQL as the standard query language, and widespread APIs such as ODBC, JDBC and OLEDB, there was no such unification in the OLAP world for a long time.
+[src:apache-druid-deep/online-analytical-processing] The first real standard API was OLE DB for OLAP specification from Microsoft which appeared in 1997 and introduced the MDX query language.
+[src:apache-druid-deep/online-analytical-processing] Several OLAP vendors – both server and client – adopted it.
+[src:apache-druid-deep/online-analytical-processing] In 2001 Microsoft and Hyperion announced the XML for Analysis specification, which was endorsed by most of the OLAP vendors.
+[src:apache-druid-deep/online-analytical-processing] Since this also used MDX as a query language, MDX became the de facto standard.
+[src:apache-druid-deep/online-analytical-processing] Since September-2011 LINQ can be used to query SSAS OLAP cubes from Microsoft .NET.
+[src:apache-druid-deep/online-analytical-processing] The first product that performed OLAP queries was *Express,* which was released in 1970 (and acquired by Oracle in 1995 from Information Resources).
+[src:apache-druid-deep/online-analytical-processing] However, the term did not appear until 1993 when it was coined by Edgar F.
+[src:apache-druid-deep/online-analytical-processing] Codd, who has been described as "the father of the relational database".
+[src:apache-druid-deep/online-analytical-processing] Codd's paper resulted from a short consulting assignment which Codd undertook for former Arbor Software (later Hyperion Solutions, and in 2007 acquired by Oracle), as a sort of marketing coup.
+[src:apache-druid-deep/online-analytical-processing] The company had released its own OLAP product, *Essbase*, a year earlier.
+[src:apache-druid-deep/online-analytical-processing] As a result, Codd's "twelve laws of online analytical processing" were explicit in their reference to Essbase.
+[src:apache-druid-deep/online-analytical-processing] There was some ensuing controversy and when Computerworld learned that Codd was paid by Arbor, it retracted the article.
+[src:apache-druid-deep/online-analytical-processing] The OLAP market experienced strong growth in the late 1990s with dozens of commercial products going into market.
+[src:apache-druid-deep/online-analytical-processing] In 1998, Microsoft released its first OLAP Server – Microsoft Analysis Services, which drove wide adoption of OLAP technology and moved it into the mainstream.
+[src:apache-druid-deep/online-analytical-processing] OLAP clients include many spreadsheet programs like Excel, web application, SQL, dashboard tools, etc.
+[src:apache-druid-deep/online-analytical-processing] Many clients support interactive data exploration where users select dimensions and measures of interest.
+[src:apache-druid-deep/online-analytical-processing] Some dimensions are used as filters (for slicing and dicing the data) while others are selected as the axes of a pivot table or pivot chart.
+[src:apache-druid-deep/online-analytical-processing] Users can also vary aggregation level (for drilling-down or rolling-up) the displayed view.
+[src:apache-druid-deep/online-analytical-processing] Clients can also offer a variety of graphical widgets such as sliders, geographic maps, heat maps and more which can be grouped and coordinated as dashboards.
+[src:apache-druid-deep/online-analytical-processing] An extensive list of clients appears in the visualization column of the comparison of OLAP servers table.
+[src:apache-druid-deep/online-analytical-processing] Below is a list of top OLAP vendors in 2006, with figures in millions of US Dollars.

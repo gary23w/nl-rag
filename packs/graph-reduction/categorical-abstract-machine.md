@@ -1,0 +1,22 @@
+---
+title: "Categorical abstract machine"
+source: https://en.wikipedia.org/wiki/Categorical_abstract_machine
+domain: graph-reduction
+license: CC-BY-SA-4.0
+tags: graph reduction, combinator graph reduction, spineless tagless G-machine, supercombinator compilation
+fetched: 2026-07-02
+---
+
+# Categorical abstract machine
+
+The **categorical abstract machine** (**CAM**) is a model of computation for programs that preserves the abilities of applicative, functional, or compositional style. It is based on the techniques of applicative computing.
+
+## Overview
+
+The notion of the categorical abstract machine arose in the mid-1980s. It took its place in computer science as a kind of theory of computation for programmers, represented by Cartesian closed category and embedded into the combinatory logic. CAM is a transparent and sound mathematical representation for the languages of functional programming. The machine code can be optimized using the equational form of a theory of computation. Using CAM, the various mechanisms of computation such as recursion or lazy evaluation can be emulated as well as parameter passing, such as call by name, call by value, and so on. In theory, CAM preserves all the advantages of object approach towards programming or computing.
+
+The main current implementation is OCaml, which added class inheritance and dynamic method dispatch to Caml the Categorical Abstract Machine Language. Both are variants of MetaLanguage ML, and all three languages implement type inference.
+
+## Implementation
+
+One of the implementation approaches to functional languages is given by the machinery based on supercombinators, or an SK-machine, by D. Turner. The notion of CAM gives an alternative approach. The structure of CAM consists of syntactic, semantic, and computational constituents. Syntax is based on de Bruijn’s notation, which overcomes the difficulties of using bound variables. The evaluations are similar to those of P. Landin’s SECD machine. With this coverage, CAM gives a sound ground for syntax, semantics, and theory of computation. This comprehension arises as being influenced by the functional style of programming.

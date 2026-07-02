@@ -1,0 +1,913 @@
+# nl-rag distilled facts — domain: mercury-logic
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:mercury-logic/constraint-logic-programming] As in regular logic programming, programs are queried about the provability of a goal, which itself may contain constraints in addition to literals.
+[src:mercury-logic/constraint-logic-programming] A proof for a goal is composed of clauses whose bodies are satisfiable constraints and literals that can in turn be proved using other clauses.
+[src:mercury-logic/constraint-logic-programming] Execution is performed by an interpreter, which starts from the goal and recursively scans the clauses trying to prove the goal.
+[src:mercury-logic/constraint-logic-programming] Constraints encountered during this scan are placed in a set called the **constraint store**.
+[src:mercury-logic/constraint-logic-programming] If this set is found out to be unsatisfiable, the interpreter backtracks, trying to use other clauses for proving the goal.
+[src:mercury-logic/constraint-logic-programming] In practice, satisfiability of the constraint store may be checked using an incomplete algorithm, which does not always detect inconsistency.
+[src:mercury-logic/constraint-logic-programming] Formally, constraint logic programs are like regular logic programs, but the body of clauses can contain constraints, in addition to the regular logic programming literals.
+[src:mercury-logic/constraint-logic-programming] As an example, `X>0` is a constraint, and is included in the last clause of the following constraint logic program.
+[src:mercury-logic/constraint-logic-programming] Like in regular logic programming, evaluating a goal such as `A(X,1)` requires evaluating the body of the last clause with `Y=1`.
+[src:mercury-logic/constraint-logic-programming] Like in regular logic programming, this in turn requires proving the goal `B(X,1)`.
+[src:mercury-logic/constraint-logic-programming] Contrary to regular logic programming, this also requires a constraint to be satisfied: `X>0`, the constraint in the body of the last clause.
+[src:mercury-logic/constraint-logic-programming] Whether a constraint is satisfied cannot always be determined when the constraint is encountered.
+[src:mercury-logic/constraint-logic-programming] In this case, for example, the value of `X` is not determined when the last clause is evaluated.
+[src:mercury-logic/constraint-logic-programming] As a result, the constraint `X>0` is neither satisfied nor violated at this point.
+[src:mercury-logic/constraint-logic-programming] In general, the evaluation of a constraint logic program proceeds as does a regular logic program.
+[src:mercury-logic/constraint-logic-programming] However, constraints encountered during evaluation are placed in a set called a constraint store.
+[src:mercury-logic/constraint-logic-programming] As an example, the evaluation of the goal `A(X,1)` proceeds by evaluating the body of the first clause with `Y=1`; this evaluation adds `X>0` to the constraint store and requires the goal `B(X,1)` to be proven.
+[src:mercury-logic/constraint-logic-programming] While trying to prove this goal, the first clause is applied but its evaluation adds `X<0` to the constraint store.
+[src:mercury-logic/constraint-logic-programming] This addition makes the constraint store unsatisfiable.
+[src:mercury-logic/constraint-logic-programming] The interpreter then backtracks, removing the last addition from the constraint store.
+[src:mercury-logic/constraint-logic-programming] The evaluation of the second clause adds `X=1` and `Y>0` to the constraint store.
+[src:mercury-logic/constraint-logic-programming] Since the constraint store is satisfiable and no other literal is left to prove, the interpreter stops with the solution `X=1, Y=1`.
+[src:mercury-logic/constraint-logic-programming] The semantics of constraint logic programs can be defined in terms of a virtual interpreter that maintains a pair $\langle G,S\rangle$ during execution.
+[src:mercury-logic/constraint-logic-programming] The first element of this pair is called current goal; the second element is called constraint store.
+[src:mercury-logic/constraint-logic-programming] The *current goal* contains the literals the interpreter is trying to prove and may also contain some constraints it is trying to satisfy; the *constraint store* contains all constraints the interpreter has assumed satisfiable so far.
+[src:mercury-logic/constraint-logic-programming] Initially, the current goal is the goal and the constraint store is empty.
+[src:mercury-logic/constraint-logic-programming] The interpreter proceeds by removing the first element from the current goal and analyzing it.
+[src:mercury-logic/constraint-logic-programming] The details of this analysis are explained below, but in the end this analysis may produce a successful termination or a failure.
+[src:mercury-logic/constraint-logic-programming] This analysis may involve recursive calls and addition of new literals to the current goal and new constraint to the constraint store.
+[src:mercury-logic/constraint-logic-programming] The interpreter backtracks if a failure is generated.
+[src:mercury-logic/constraint-logic-programming] A successful termination is generated when the current goal is empty and the constraint store is satisfiable.
+[src:mercury-logic/constraint-logic-programming] The details of the analysis of a literal removed from the goal is as follows.
+[src:mercury-logic/constraint-logic-programming] After having removed this literal from the front of the goal, it is checked whether it is a constraint or a literal.
+[src:mercury-logic/constraint-logic-programming] If it is a constraint, it is added to the constraint store.
+[src:mercury-logic/constraint-logic-programming] Some checks are done during these operations.
+[src:mercury-logic/constraint-logic-programming] In particular, the constraint store is checked for consistency every time a new constraint is added to it.
+[src:mercury-logic/constraint-logic-programming] In principle, whenever the constraint store is unsatisfiable the algorithm could backtrack.
+[src:mercury-logic/constraint-logic-programming] However, checking unsatisfiability at each step would be inefficient.
+[src:mercury-logic/constraint-logic-programming] For this reason, an incomplete satisfiability checker may be used instead.
+[src:mercury-logic/constraint-logic-programming] In practice, satisfiability is checked using methods that simplify the constraint store, that is, rewrite it into an equivalent but simpler-to-solve form.
+[src:mercury-logic/constraint-logic-programming] These methods can sometimes but not always prove unsatisfiability of an unsatisfiable constraint store.
+[src:mercury-logic/constraint-logic-programming] The interpreter has proved the goal when the current goal is empty and the constraint store is not detected unsatisfiable.
+[src:mercury-logic/constraint-logic-programming] The result of execution is the current set of (simplified) constraints.
+[src:mercury-logic/constraint-logic-programming] This set may include constraints such as $X=2$ that force variables to a specific value, but may also include constraints like $X>2$ that only bound variables without giving them a specific value.
+[src:mercury-logic/constraint-logic-programming] Formally, the semantics of constraint logic programming is defined in terms of *derivations*.
+[src:mercury-logic/constraint-logic-programming] A transition is a pair of pairs goal/store, noted $\langle G,S\rangle \rightarrow \langle G',S'\rangle$ .
+[src:mercury-logic/constraint-logic-programming] Such a pair states the possibility of going from state $\langle G,S\rangle$ to state $\langle G',S'\rangle$ .
+[src:mercury-logic/constraint-logic-programming] A sequence of transitions is a derivation.
+[src:mercury-logic/constraint-logic-programming] A goal G can be proved if there exists a derivation from $\langle G,\emptyset \rangle$ to $\langle \emptyset ,S\rangle$ for some satisfiable constraint store S.
+[src:mercury-logic/constraint-logic-programming] This semantics formalizes the possible evolutions of an interpreter that arbitrarily chooses the literal of the goal to process and the clause to replace literals.
+[src:mercury-logic/constraint-logic-programming] In other words, a goal is proved under this semantics if there exists a sequence of choices of literals and clauses, among the possibly many ones, that lead to an empty goal and satisfiable store.
+[src:mercury-logic/constraint-logic-programming] Actual interpreters process the goal elements in a LIFO order: elements are added in the front and processed from the front.
+[src:mercury-logic/constraint-logic-programming] They also choose the clause of the second rule according to the order in which they are written, and rewrite the constraint store when it is modified.
+[src:mercury-logic/constraint-logic-programming] The third possible kind of transition is a replacement of the constraint store with an equivalent one.
+[src:mercury-logic/constraint-logic-programming] This replacement is limited to those done by specific methods, such as constraint propagation.
+[src:mercury-logic/constraint-logic-programming] The semantics of constraint logic programming is parametric not only to the kind of constraints used but also to the method for rewriting the constraint store.
+[src:mercury-logic/constraint-logic-programming] The specific methods used in practice replace the constraint store with one that is simpler to solve.
+[src:mercury-logic/constraint-logic-programming] If the constraint store is unsatisfiable, this simplification may detect this unsatisfiability sometimes, but not always.
+[src:mercury-logic/constraint-logic-programming] The result of evaluating a goal against a constraint logic program is defined if the goal is proved.
+[src:mercury-logic/constraint-logic-programming] In this case, there exists a derivation from the initial pair to a pair where the goal is empty.
+[src:mercury-logic/constraint-logic-programming] The constraint store of this second pair is considered the result of the evaluation.
+[src:mercury-logic/constraint-logic-programming] This is because the constraint store contains all constraints assumed satisfiable to prove the goal.
+[src:mercury-logic/constraint-logic-programming] In other words, the goal is proved for all variable evaluations that satisfy these constraints.
+[src:mercury-logic/constraint-logic-programming] The pairwise equality of the arguments of two literals is often compactly denoted by $L(t_{1},\ldots ,t_{n})=L(t_{1}',\ldots ,t_{n}')$ : this is a shorthand for the constraints $t_{1}=t_{1}',\ldots ,t_{n}=t_{n}'$ .
+[src:mercury-logic/constraint-logic-programming] A common variant of the semantics for constraint logic programming adds $L(t_{1},\ldots ,t_{n})=L(t_{1}',\ldots ,t_{n}')$ directly to the constraint store rather than to the goal.
+[src:mercury-logic/constraint-logic-programming] Different definitions of terms are used, generating different kinds of constraint logic programming: over trees, reals, or finite domains.
+[src:mercury-logic/constraint-logic-programming] A kind of constraint that is always present is the equality of terms.
+[src:mercury-logic/constraint-logic-programming] Such constraints are necessary because the interpreter adds `t1=t2` to the goal whenever a literal `P(...t1...)` is replaced with the body of a clause fresh variant whose head is `P(...t2...)`.
+[src:mercury-logic/constraint-logic-programming] Constraint logic programming with tree terms emulates regular logic programming by storing substitutions as constraints in the constraint store.
+[src:mercury-logic/constraint-logic-programming] Terms are variables, constants, and function symbols applied to other terms.
+[src:mercury-logic/constraint-logic-programming] The only constraints considered are equalities and disequalities between terms.
+[src:mercury-logic/constraint-logic-programming] Equality is particularly important, as constraints like `t1=t2` are often generated by the interpreter.
+[src:mercury-logic/constraint-logic-programming] A constraint `t1=t2` can be simplified if both terms are function symbols applied to other terms.
+[src:mercury-logic/constraint-logic-programming] If the two function symbols are the same and the number of subterms is also the same, this constraint can be replaced with the pairwise equality of subterms.
+[src:mercury-logic/constraint-logic-programming] If the terms are composed of different function symbols or the same functor but on different number of terms, the constraint is unsatisfiable.
+[src:mercury-logic/constraint-logic-programming] If one of the two terms is a variable, the only allowed value the variable can take is the other term.
+[src:mercury-logic/constraint-logic-programming] As a result, the other term can replace the variable in the current goal and constraint store, thus practically removing the variable from consideration.
+[src:mercury-logic/constraint-logic-programming] In the particular case of equality of a variable with itself, the constraint can be removed as always satisfied.
+[src:mercury-logic/constraint-logic-programming] In this form of constraint satisfaction, variable values are terms.
+[src:mercury-logic/constraint-logic-programming] Constraint logic programming with real numbers uses real expressions as terms.
+[src:mercury-logic/constraint-logic-programming] When no function symbols are used, terms are expressions over reals, possibly including variables.
+[src:mercury-logic/constraint-logic-programming] In this case, each variable can only take a real number as a value.
+[src:mercury-logic/constraint-logic-programming] To be precise, terms are expressions over variables and real constants.
+[src:mercury-logic/constraint-logic-programming] Equality between terms is a kind of constraint that is always present, as the interpreter generates equality of terms during execution.
+[src:mercury-logic/constraint-logic-programming] As an example, if the first literal of the current goal is `A(X+1)` and the interpreter has chosen a clause that is `A(Y-1):-Y=1` after rewriting is variables, the constraints added to the current goal are `X+1=Y-1` and $Y=1$ .
+[src:mercury-logic/constraint-logic-programming] The rules of simplification used for function symbols are obviously not used: `X+1=Y-1` is not unsatisfiable just because the first expression is built using `+` and the second using `-`.
+[src:mercury-logic/constraint-logic-programming] Reals and function symbols can be combined, leading to terms that are expressions over reals and function symbols applied to other terms.
+[src:mercury-logic/constraint-logic-programming] Formally, variables and real constants are expressions, as any arithmetic operator over other expressions.
+[src:mercury-logic/constraint-logic-programming] Variables, constants (zero-arity-function symbols), and expressions are terms, as any function symbol applied to terms.
+[src:mercury-logic/constraint-logic-programming] In other words, terms are built over expressions, while expressions are built over numbers and variables.
+[src:mercury-logic/constraint-logic-programming] In this case, variables ranges over real numbers *and terms*.
+[src:mercury-logic/constraint-logic-programming] In other words, a variable can take a real number as a value, while another takes a term.
+[src:mercury-logic/constraint-logic-programming] Equality of two terms can be simplified using the rules for tree terms if none of the two terms is a real expression.
+[src:mercury-logic/constraint-logic-programming] For example, if the two terms have the same function symbol and number of subterms, their equality constraint can be replaced with the equality of subterms.
+[src:mercury-logic/constraint-logic-programming] The third class of constraints used in constraint logic programming is that of finite domains.
+[src:mercury-logic/constraint-logic-programming] Values of variables are in this case taken from a finite domain, often that of integer numbers.
+[src:mercury-logic/constraint-logic-programming] For each variable, a different domain can be specified: `X::[1..5]` for example means that the value of `X` is between `1` and `5`.
+[src:mercury-logic/constraint-logic-programming] The domain of a variable can also be given by enumerating all values a variable can take; therefore, the above domain declaration can be also written `X::[1,2,3,4,5]`.
+[src:mercury-logic/constraint-logic-programming] This second way of specifying a domain allows for domains that are not composed of integers, such as `X::[george,mary,john]`.
+[src:mercury-logic/constraint-logic-programming] If the domain of a variable is not specified, it is assumed to be the set of integers representable in the language.
+[src:mercury-logic/constraint-logic-programming] A group of variables can be given the same domain using a declaration like `[X,Y,Z]::[1..5]`.
+[src:mercury-logic/constraint-logic-programming] The domain of a variable may be reduced during execution.
+[src:mercury-logic/constraint-logic-programming] Indeed, as the interpreter adds constraints to the constraint store, it performs constraint propagation to enforce a form of local consistency, and these operations may reduce the domain of variables.
+[src:mercury-logic/constraint-logic-programming] If the domain of a variable becomes empty, the constraint store is inconsistent, and the algorithm backtracks.
+[src:mercury-logic/constraint-logic-programming] If the domain of a variable becomes a singleton, the variable can be assigned the unique value in its domain.
+[src:mercury-logic/constraint-logic-programming] The forms of consistency typically enforced are arc consistency, hyper-arc consistency, and bound consistency.
+[src:mercury-logic/constraint-logic-programming] The current domain of a variable can be inspected using specific literals; for example, `dom(X,D)` finds out the current domain `D` of a variable `X`.
+[src:mercury-logic/constraint-logic-programming] As for domains of reals, functors can be used with domains of integers.
+[src:mercury-logic/constraint-logic-programming] In this case, a term can be an expression over integers, a constant, or the application of a functor over other terms.
+[src:mercury-logic/constraint-logic-programming] A variable can take an arbitrary term as a value, if its domain has not been specified to be a set of integers or constants.
+[src:mercury-logic/constraint-logic-programming] The constraint store contains the constraints that are currently assumed satisfiable.
+[src:mercury-logic/constraint-logic-programming] It can be considered what the current substitution is for regular logic programming.
+[src:mercury-logic/constraint-logic-programming] When only tree terms are allowed, the constraint store contains constraints in the form `t1=t2`; these constraints are simplified by unification, resulting in constraints of the form `variable=term`; such constraints are equivalent to a substitution.
+[src:mercury-logic/constraint-logic-programming] However, the constraint store may also contain constraints in the form `t1!=t2`, if the difference `!=` between terms is allowed.
+[src:mercury-logic/constraint-logic-programming] When constraints over reals or finite domains are allowed, the constraint store may also contain domain-specific constraints like `X+2=Y/2`, etc.
+[src:mercury-logic/constraint-logic-programming] The constraint store extends the concept of current substitution in two ways.
+[src:mercury-logic/constraint-logic-programming] First, it contains not only the constraints derived from equating a literal with the head of a fresh variant of a clause, but also the constraints of the body of clauses.
+[src:mercury-logic/constraint-logic-programming] Second, it contains not only constraints of the form `variable=value` but also constraints on the considered constraint language.
+[src:mercury-logic/constraint-logic-programming] While the result of a successful evaluation of a regular logic program is the final substitution, the result for a constraint logic program is the final constraint store, which may contain constraints of the form `variable=value` but also arbitrary constraints.
+[src:mercury-logic/constraint-logic-programming] If a variable appears in a real or finite domain expression, it can only take a value in the reals or the finite domain.
+[src:mercury-logic/constraint-logic-programming] Such a variable cannot take a term made of a functor applied to other terms as a value.
+[src:mercury-logic/constraint-logic-programming] The constraint store is unsatisfiable if a variable is bound to take both a value of the specific domain and a functor applied to terms.
+[src:mercury-logic/constraint-logic-programming] After a constraint is added to the constraint store, some operations are performed on the constraint store.
+[src:mercury-logic/constraint-logic-programming] Which operations are performed depends on the considered domain and constraints.
+[src:mercury-logic/constraint-logic-programming] For example, unification is used for finite tree equalities, variable elimination for polynomial equations over reals, constraint propagation to enforce a form of local consistency for finite domains.
+[src:mercury-logic/constraint-logic-programming] These operations are aimed at making the constraint store simpler to be checked for satisfiability and solved.
+[src:mercury-logic/constraint-logic-programming] As a result of these operations, the addition of new constraints may change the old ones.
+[src:mercury-logic/constraint-logic-programming] It is essential that the interpreter is able to undo these changes when it backtracks.
+[src:mercury-logic/constraint-logic-programming] The simplest case method is for the interpreter to save the complete state of the store every time it makes a choice (it chooses a clause to rewrite a goal).
+[src:mercury-logic/constraint-logic-programming] More efficient methods for allowing the constraint store to return to a previous state exist.
+[src:mercury-logic/constraint-logic-programming] In particular, one may just save the changes to the constraint store made between two points of choice, including the changes made to the old constraints.
+[src:mercury-logic/constraint-logic-programming] This can be done by simply saving the old value of the constraints that have been modified; this method is called *trailing*.
+[src:mercury-logic/constraint-logic-programming] A more advanced method is to save the changes that have been done on the modified constraints.
+[src:mercury-logic/constraint-logic-programming] For example, a linear constraint is changed by modifying its coefficient: saving the difference between the old and new coefficient allows reverting a change.
+[src:mercury-logic/constraint-logic-programming] This second method is called *semantic backtracking*, because the semantics of the change is saved rather than the old version of the constraints only.
+[src:mercury-logic/constraint-logic-programming] The labeling literals are used on variables over finite domains to check satisfiability or partial satisfiability of the constraint store and to find a satisfying assignment.
+[src:mercury-logic/constraint-logic-programming] A labeling literal is of the form `labeling([variables])`, where the argument is a list of variables over finite domains.
+[src:mercury-logic/constraint-logic-programming] Whenever the interpreter evaluates such a literal, it performs a search over the domains of the variables of the list to find an assignment that satisfies all relevant constraints.
+[src:mercury-logic/constraint-logic-programming] Typically, this is done by a form of backtracking: variables are evaluated in order, trying all possible values for each of them, and backtracking when inconsistency is detected.
+[src:mercury-logic/constraint-logic-programming] The first use of the labeling literal is to actual check satisfiability or partial satisfiability of the constraint store.
+[src:mercury-logic/constraint-logic-programming] When the interpreter adds a constraint to the constraint store, it only enforces a form of local consistency on it.
+[src:mercury-logic/constraint-logic-programming] This operation may not detect inconsistency even if the constraint store is unsatisfiable.
+[src:mercury-logic/constraint-logic-programming] A labeling literal over a set of variables enforces a satisfiability check of the constraints over these variables.
+[src:mercury-logic/constraint-logic-programming] As a result, using all variables mentioned in the constraint store results in checking satisfiability of the store.
+[src:mercury-logic/constraint-logic-programming] The second use of the labeling literal is to actually determine an evaluation of the variables that satisfies the constraint store.
+[src:mercury-logic/constraint-logic-programming] Without the labeling literal, variables are assigned values only when the constraint store contains a constraint of the form `X=value` and when local consistency reduces the domain of a variable to a single value.
+[src:mercury-logic/constraint-logic-programming] A labeling literal over some variables forces these variables to be evaluated.
+[src:mercury-logic/constraint-logic-programming] In other words, after the labeling literal has been considered, all variables are assigned a value.
+[src:mercury-logic/constraint-logic-programming] Typically, constraint logic programs are written in such a way labeling literals are evaluated only after as many constraints as possible have been accumulated in the constraint store.
+[src:mercury-logic/constraint-logic-programming] This is because labeling literals enforce search, and search is more efficient if there are more constraints to be satisfied.
+[src:mercury-logic/constraint-logic-programming] When the interpreter evaluates the goal `solve(args)`, it places the body of a fresh variant of the first clause in the current goal.
+[src:mercury-logic/constraint-logic-programming] Since the first goal is `constraints(X')`, the second clause is evaluated, and this operation moves all constraints in the current goal and eventually in the constraint store.
+[src:mercury-logic/constraint-logic-programming] The literal `labeling(X')` is then evaluated, forcing a search for a solution of the constraint store.
+[src:mercury-logic/constraint-logic-programming] Since the constraint store contains exactly the constraints of the original constraint satisfaction problem, this operation searches for a solution of the original problem.
+[src:mercury-logic/constraint-logic-programming] A given constraint logic program may be reformulated to improve its efficiency.
+[src:mercury-logic/constraint-logic-programming] A first rule is that labeling literals should be placed after as much constraints on the labeled literals are accumulated in the constraint store.
+[src:mercury-logic/constraint-logic-programming] While in theory `A(X):-labeling(X),X>0` is equivalent to `A(X):-X>0,labeling(X)`, the search that is performed when the interpreter encounters the labeling literal is on a constraint store that does not contain the constraint `X>0`.
+[src:mercury-logic/constraint-logic-programming] As a result, it may generate solutions, such as `X=-1`, that are later found out not to satisfy this constraint.
+[src:mercury-logic/constraint-logic-programming] On the other hand, in the second formulation the search is performed only when the constraint is already in the constraint store.
+[src:mercury-logic/constraint-logic-programming] As a result, search only returns solutions that are consistent with it, taking advantage of the fact that additional constraints reduce the search space.
+[src:mercury-logic/constraint-logic-programming] A second reformulation that can increase efficiency is to place constraints before literals in the body of clauses.
+[src:mercury-logic/constraint-logic-programming] However, the first may require more computation.
+[src:mercury-logic/constraint-logic-programming] For example, if the constraint store contains the constraint `X<-2`, the interpreter recursively evaluates `B(X)` in the first case; if it succeeds, it then finds out that the constraint store is inconsistent when adding `X>0`.
+[src:mercury-logic/constraint-logic-programming] In the second case, when evaluating that clause, the interpreter first adds `X>0` to the constraint store and then possibly evaluates `B(X)`.
+[src:mercury-logic/constraint-logic-programming] Since the constraint store after the addition of `X>0` turns out to be inconsistent, the recursive evaluation of `B(X)` is not performed at all.
+[src:mercury-logic/constraint-logic-programming] A third reformulation that can increase efficiency is the addition of redundant constraints.
+[src:mercury-logic/constraint-logic-programming] If the programmer knows (by whatever means) that the solution of a problem satisfies a specific constraint, they can include that constraint to cause inconsistency of the constraint store as soon as possible.
+[src:mercury-logic/constraint-logic-programming] For example, if it is known beforehand that the evaluation of `B(X)` will result in a positive value for `X`, the programmer may add `X>0` before any occurrence of `B(X)`.
+[src:mercury-logic/constraint-logic-programming] As an example, `A(X,Y):-B(X),C(X)` will fail on the goal `A(-2,Z)`, but this is only found out during the evaluation of the subgoal `B(X)`.
+[src:mercury-logic/constraint-logic-programming] On the other hand, if the above clause is replaced by `A(X,Y):-X>0,A(X),B(X)`, the interpreter backtracks as soon as the constraint `X>0` is added to the constraint store, which happens before the evaluation of `B(X)` even starts.
+[src:mercury-logic/constraint-logic-programming] Constraint handling rules were initially defined as a stand-alone formalism for specifying constraint solvers, and were later embedded in logic programming.
+[src:mercury-logic/constraint-logic-programming] There are two kinds of constraint handling rules.
+[src:mercury-logic/constraint-logic-programming] The rules of the first kind specify that, under a given condition, a set of constraints is equivalent to another one.
+[src:mercury-logic/constraint-logic-programming] The rules of the second kind specify that, under a given condition, a set of constraints implies another one.
+[src:mercury-logic/constraint-logic-programming] In a constraint logic programming language supporting constraint handling rules, a programmer can use these rules to specify possible rewritings of the constraint store and possible additions of constraints to it.
+[src:mercury-logic/constraint-logic-programming] The first rule tells that, if `B(X)` is entailed by the store, the constraint `A(X)` can be rewritten as `C(X)`.
+[src:mercury-logic/constraint-logic-programming] As an example, `N*X>0` can be rewritten as `X>0` if the store implies that `N>0`.
+[src:mercury-logic/constraint-logic-programming] The symbol `<=>` resembles equivalence in logic, and tells that the first constraint is equivalent to the latter.
+[src:mercury-logic/constraint-logic-programming] In practice, this implies that the first constraint can be *replaced* with the latter.
+[src:mercury-logic/constraint-logic-programming] The second rule instead specifies that the latter constraint is a consequence of the first, if the constraint in the middle is entailed by the constraint store.
+[src:mercury-logic/constraint-logic-programming] As a result, if `A(X)` is in the constraint store and `B(X)` is entailed by the constraint store, then `C(X)` can be added to the store.
+[src:mercury-logic/constraint-logic-programming] Differently from the case of equivalence, this is an addition and not a replacement: the new constraint is added but the old one remains.
+[src:mercury-logic/constraint-logic-programming] Equivalence allows for simplifying the constraint store by replacing some constraints with simpler ones; in particular, if the third constraint in an equivalence rule is `true`, and the second constraint is entailed, the first constraint is removed from the constraint store.
+[src:mercury-logic/constraint-logic-programming] Inference allows for the addition of new constraints, which may lead to proving inconsistency of the constraint store, and may generally reduce the amount of search needed to establish its satisfiability.
+[src:mercury-logic/constraint-logic-programming] Logic programming clauses in conjunction with constraint handling rules can be used to specify a method for establishing the satisfiability of the constraint store.
+[src:mercury-logic/constraint-logic-programming] Different clauses are used to implement the different choices of the method; the constraint handling rules are used for rewriting the constraint store during execution.
+[src:mercury-logic/constraint-logic-programming] As an example, one can implement backtracking with unit propagation this way.
+[src:mercury-logic/constraint-logic-programming] Let `holds(L)` represents a propositional clause, in which the literals in the list `L` are in the same order as they are evaluated.
+[src:mercury-logic/constraint-logic-programming] The algorithm can be implemented using clauses for the choice of assigning a literal to true or false, and constraint handling rules to specify propagation.
+[src:mercury-logic/constraint-logic-programming] These rules specify that `holds([l|L])` can be removed if `l=true` follows from the store, and it can be rewritten as `holds(L)` if `l=false` follows from the store.
+[src:mercury-logic/constraint-logic-programming] Similarly, `holds([l])` can be replaced by `l=true`.
+[src:mercury-logic/constraint-logic-programming] In this example, the choice of value for a variable is implemented using clauses of logic programming; however, it can be encoded in constraint handling rules using an extension called disjunctive constraint handling rules or CHR∨.
+[src:mercury-logic/constraint-logic-programming] The standard strategy of evaluation of logic programs is top-down and depth-first: from the goal, a number of clauses are identified as being possibly able to prove the goal, and recursion over the literals of their bodies is performed.
+[src:mercury-logic/constraint-logic-programming] An alternative strategy is to start from the facts and use clauses to derive new facts; this strategy is called bottom-up.
+[src:mercury-logic/constraint-logic-programming] It is considered better than the top-down one when the aim is that of producing all consequences of a given program, rather than proving a single goal.
+[src:mercury-logic/constraint-logic-programming] In particular, finding all consequences of a program in the standard top-down and depth-first manner may not terminate while the bottom-up evaluation strategy terminates.
+[src:mercury-logic/constraint-logic-programming] The bottom-up evaluation strategy maintains the set of facts proved so far during evaluation.
+[src:mercury-logic/constraint-logic-programming] With each step, new facts are derived by applying a program clause to the existing facts, and are added to the set.
+[src:mercury-logic/constraint-logic-programming] The set of consequences is initially empty.
+[src:mercury-logic/constraint-logic-programming] At the first step, `A(q)` is the only clause whose body can be proved (because it is empty), and `A(q)` is therefore added to the current set of consequences.
+[src:mercury-logic/constraint-logic-programming] At the second step, since `A(q)` is proved, the second clause can be used and `B(q)` is added to the consequences.
+[src:mercury-logic/constraint-logic-programming] Since no other consequence can be proved from `{A(q),B(q)}`, execution terminates.
+[src:mercury-logic/constraint-logic-programming] The advantage of the bottom-up evaluation over the top-down one is that cycles of derivations do not produce an infinite loop.
+[src:mercury-logic/constraint-logic-programming] This is because adding a consequence to the current set of consequences that already contains it has no effect.
+[src:mercury-logic/constraint-logic-programming] In other words, the only consequence `A(q)` is produced first, but then the algorithm cycles over derivations that do not produce any other answer.
+[src:mercury-logic/constraint-logic-programming] More generally, the top-down evaluation strategy may cycle over possible derivations, possibly when other ones exist.
+[src:mercury-logic/constraint-logic-programming] The bottom-up strategy does not have the same drawback, as consequences that were already derived has no effect.
+[src:mercury-logic/constraint-logic-programming] In the above example, the only used facts were ground literals.
+[src:mercury-logic/constraint-logic-programming] In general, every clause that only contains constraints in the body is considered a fact.
+[src:mercury-logic/constraint-logic-programming] For example, a clause `A(X):-X>0,X<10` is considered a fact as well.
+[src:mercury-logic/constraint-logic-programming] For this extended definition of facts, some facts may be equivalent while not syntactically equal.
+[src:mercury-logic/constraint-logic-programming] For example, `A(q)` is equivalent to `A(X):-X=q` and both are equivalent to `A(X):-X=Y, Y=q`.
+[src:mercury-logic/constraint-logic-programming] To solve this problem, facts are translated into a normal form in which the head contains a tuple of all-different variables; two facts are then equivalent if their bodies are equivalent on the variables of the head, that is, their sets of solutions are the same when restricted to these variables.
+[src:mercury-logic/constraint-logic-programming] As described, the bottom-up approach has the advantage of not considering consequences that have already been derived.
+[src:mercury-logic/constraint-logic-programming] However, it still may derive consequences that are entailed by those already derived while not being equal to any of them.
+[src:mercury-logic/constraint-logic-programming] The bottom-up evaluation algorithm first derives that `A(X)` is true for `X=0` and `X>0`.
+[src:mercury-logic/constraint-logic-programming] In the second step, the first fact with the third clause allows for the derivation of `A(1)`.
+[src:mercury-logic/constraint-logic-programming] In the third step, `A(2)` is derived, etc.
+[src:mercury-logic/constraint-logic-programming] However, these facts are already entailed by the fact that `A(X)` is true for any nonnegative `X`.
+[src:mercury-logic/constraint-logic-programming] This drawback can be overcome by checking for entailment facts that are to be added to the current set of consequences.
+[src:mercury-logic/constraint-logic-programming] If the new consequence is already entailed by the set, it is not added to it.
+[src:mercury-logic/constraint-logic-programming] Since facts are stored as clauses, possibly with "local variables", entailment is restricted over the variables of their heads.
+[src:mercury-logic/constraint-logic-programming] The concurrent versions of constraint logic programming are aimed at programming concurrent processes rather than solving constraint satisfaction problems.
+[src:mercury-logic/constraint-logic-programming] Goals in constraint logic programming are evaluated concurrently; a concurrent process is therefore programmed as the evaluation of a goal by the interpreter.
+[src:mercury-logic/constraint-logic-programming] Syntactically, concurrent constraints logic programs are similar to non-concurrent programs, the only exception being that clauses includes *guards*, which are constraints that may block the applicability of the clause under some conditions.
+[src:mercury-logic/constraint-logic-programming] Semantically, concurrent constraint logic programming differs from its non-concurrent versions because a goal evaluation is intended to realize a concurrent process rather than finding a solution to a problem.
+[src:mercury-logic/constraint-logic-programming] Most notably, this difference affects how the interpreter behaves when more than one clause is applicable: non-concurrent constraint logic programming recursively tries all clauses; concurrent constraint logic programming chooses only one.
+[src:mercury-logic/constraint-logic-programming] This is the most evident effect of an intended *directionality* of the interpreter, which never revises a choice it has previously taken.
+[src:mercury-logic/constraint-logic-programming] Other effects of this are the semantical possibility of having a goal that cannot be proved while the whole evaluation does not fail, and a particular way for equating a goal and a clause head.
+[src:mercury-logic/constraint-logic-programming] Constraint logic programming has been applied to a number of fields, such as automated scheduling, type inference, civil engineering, mechanical engineering, digital circuit verification, air traffic control, finance, and others.
+[src:mercury-logic/constraint-logic-programming] Constraint logic programming was introduced by Jaffar and Lassez in 1987.
+[src:mercury-logic/constraint-logic-programming] They generalized the observation that the term equations and disequations of Prolog II were a specific form of constraints, and generalized this idea to arbitrary constraint languages.
+[src:mercury-logic/constraint-logic-programming] The first implementations of this concept were Prolog III, CLP(R), and CHIP.
+[src:mercury-logic/declarative-programming] In computer science, **declarative programming** is a programming paradigm that expresses the logic of a computation without fully describing its control flow.
+[src:mercury-logic/declarative-programming] This is in contrast with imperative programming, which implements algorithms in explicit steps.
+[src:mercury-logic/declarative-programming] Declarative programming may consider programs as theories of a formal logic, and computations as deductions in that logical theory.
+[src:mercury-logic/declarative-programming] Declarative programming at times simplifies the writing of parallel programs.
+[src:mercury-logic/declarative-programming] Common declarative language paradigms include logic programming (e.g., Prolog, Datalog, answer set programming), and algebraic modeling systems.
+[src:mercury-logic/declarative-programming] Declarative programming is often defined as any style of programming that is not imperative.
+[src:mercury-logic/declarative-programming] A number of other common definitions attempt to define it by simply contrasting it with imperative programming.
+[src:mercury-logic/declarative-programming] These definitions overlap substantially.
+[src:mercury-logic/declarative-programming] Declarative programming is a non-imperative style of programming in which programs describe their desired results without explicitly listing commands or steps that must be performed.
+[src:mercury-logic/declarative-programming] Logic programming languages are characterized by a mostly declarative programming style.
+[src:mercury-logic/declarative-programming] In logic programming, programs consist of sentences expressed in logical form, and computation uses those sentences to solve problems, which are also expressed in logical form.
+[src:mercury-logic/declarative-programming] In a pure functional language, such as Haskell, all functions are without side effects, and state changes are only represented as functions that transform the state, which is explicitly represented as a first-class object in the program.
+[src:mercury-logic/declarative-programming] Although pure functional languages are non-imperative, they often provide a facility for describing the effect of a function as a series of steps.
+[src:mercury-logic/declarative-programming] Other functional languages, such as Lisp, OCaml and Erlang, support a mixture of procedural and functional programming.
+[src:mercury-logic/declarative-programming] Some logic programming languages, such as Prolog, and database query languages, such as SQL, while declarative in principle, also support a procedural style of programming.
+[src:mercury-logic/declarative-programming] Declarative programming is an umbrella term that includes a number of better-known programming paradigms.
+[src:mercury-logic/declarative-programming] Constraint programming states relations between variables in the form of constraints that specify the properties of the target solution.
+[src:mercury-logic/declarative-programming] The set of constraints is solved by giving a value to each variable so that the solution is consistent with the maximum number of constraints.
+[src:mercury-logic/declarative-programming] Constraint programming often complements other paradigms: functional, logical, or even imperative programming.
+[src:mercury-logic/declarative-programming] Makefiles, for example, specify dependencies in a declarative fashion, but include an imperative list of actions to take as well.
+[src:mercury-logic/declarative-programming] Similarly, yacc specifies a context free grammar declaratively, but includes code snippets from a host language, which is usually imperative (such as C).
+[src:mercury-logic/declarative-programming] Logic programming languages, such as Prolog, Datalog and answer set programming, compute by proving that a goal is a logical consequence of the program, or by showing that the goal is true in a model defined by the program.
+[src:mercury-logic/declarative-programming] Prolog computes by reducing goals to subgoals, top-down using backward reasoning, whereas most Datalog systems compute bottom-up using forward reasoning.
+[src:mercury-logic/declarative-programming] Answer set programs typically use SAT solvers to generate a model of the program.
+[src:mercury-logic/declarative-programming] Models, or mathematical representations, of physical systems may be implemented in computer code that is declarative.
+[src:mercury-logic/declarative-programming] The code contains a number of equations, not imperative assignments, that describe ("declare") the behavioral relationships.
+[src:mercury-logic/declarative-programming] When a model is expressed in this formalism, a computer is able to perform algebraic manipulations to best formulate the solution algorithm.
+[src:mercury-logic/declarative-programming] The mathematical causality is typically imposed at the boundaries of the physical system, while the behavioral description of the system itself is declarative or acausal.
+[src:mercury-logic/declarative-programming] Declarative modeling languages and environments include Analytica, Modelica and Simile.
+[src:mercury-logic/declarative-programming] Prolog (1972) stands for "PROgramming in LOGic." It was developed for natural language question answering, using SL resolution both to deduce answers to queries and to parse and generate natural language sentences.
+[src:mercury-logic/declarative-programming] The building blocks of a Prolog program are *facts* and *rules*.
+[src:mercury-logic/declarative-programming] Given this program, the query `eat(tom,jerry)` succeeds, while `eat(jerry,tom)` fails.
+[src:mercury-logic/declarative-programming] Moreover, the query `eat(X,jerry)` succeeds with the answer substitution `X=tom`.
+[src:mercury-logic/declarative-programming] Prolog executes programs top-down, using SLD resolution to reason backwards, reducing goals to subgoals.
+[src:mercury-logic/declarative-programming] In this example, it uses the last rule of the program to reduce the goal of answering the query `eat(X,jerry)` to the subgoals of first finding an X such that `big(X)` holds and then of showing that `small(jerry)` holds.
+[src:mercury-logic/declarative-programming] It repeatedly uses rules to further reduce subgoals to other subgoals, until it eventually succeeds in unifying all subgoals with facts in the program.
+[src:mercury-logic/declarative-programming] This backward reasoning, goal-reduction strategy treats rules in logic programs as procedures, and makes Prolog both a declarative and procedural programming language.
+[src:mercury-logic/declarative-programming] The broad range of Prolog applications is highlighted in the Year of Prolog Book, celebrating the 50 year anniversary of Prolog.
+[src:mercury-logic/declarative-programming] The origins of Datalog date back to the beginning of logic programming, but it was identified as a separate area around 1977.
+[src:mercury-logic/declarative-programming] Syntactically and semantically, it is a subset of Prolog.
+[src:mercury-logic/declarative-programming] But because it lacks compound terms, it is not Turing-complete.
+[src:mercury-logic/declarative-programming] Most Datalog systems execute programs bottom-up, using rules to reason forwards, deriving new facts from existing facts, and terminating when there are no new facts that can be derived, or when the derived facts unify with the query.
+[src:mercury-logic/declarative-programming] Datalog has been applied to such problems as data integration, information extraction, networking, security, cloud computing and machine learning.
+[src:mercury-logic/declarative-programming] Answer set programming (ASP) evolved in the late 1990s, based on the stable model (answer set) semantics of logic programming.
+[src:mercury-logic/declarative-programming] Like Datalog, it is a subset of Prolog; and, because it lacks compound terms, it is not Turing-complete.
+[src:mercury-logic/declarative-programming] Most implementations of ASP execute a program by first *grounding* the program, replacing all variables in rules by constants in all possible ways, and then using a propositional SAT solver, such as the DPLL algorithm to generate one or more models of the program.
+[src:mercury-logic/declarative-programming] Its applications are oriented towards solving difficult search problems and knowledge representation.
+[src:mercury-logic/horn-clause] In mathematical logic and logic programming, a **Horn clause** is a logical formula of a particular rule-like form that gives it useful properties for use in logic programming, formal specification, universal algebra and model theory.
+[src:mercury-logic/horn-clause] Horn clauses are named for the logician Alfred Horn, who first pointed out their significance in 1951.
+[src:mercury-logic/horn-clause] A Horn clause is a disjunctive clause (a disjunction of literals) with at most one positive, i.e. unnegated, literal.
+[src:mercury-logic/horn-clause] Conversely, a disjunction of literals with at most one negated literal is called a **dual-Horn clause**.
+[src:mercury-logic/horn-clause] A Horn clause with exactly one positive literal is a **definite clause** or a **strict Horn clause**; a definite clause with no negative literals is a **unit clause**, and a unit clause without variables is a **fact**; a Horn clause without a positive literal is a **goal clause**.
+[src:mercury-logic/horn-clause] The empty clause, consisting of no literals (which is equivalent to *false*), is a goal clause.
+[src:mercury-logic/horn-clause] All variables in a clause are implicitly universally quantified with the scope being the entire clause.
+[src:mercury-logic/horn-clause] Horn clauses play a basic role in constructive logic and computational logic.
+[src:mercury-logic/horn-clause] They are important in automated theorem proving by first-order resolution, because the resolvent of two Horn clauses is itself a Horn clause, and the resolvent of a goal clause and a definite clause is a goal clause.
+[src:mercury-logic/horn-clause] These properties of Horn clauses can lead to greater efficiency of proving a theorem: the goal clause is the negation of this theorem; see *Goal clause* in the above table.
+[src:mercury-logic/horn-clause] Intuitively, if we wish to prove φ, we assume ¬φ (the goal) and check whether such assumption leads to a contradiction.
+[src:mercury-logic/horn-clause] This way, a mechanical proving tool needs to maintain only one set of formulas (assumptions), rather than two sets (assumptions and (sub)goals).
+[src:mercury-logic/horn-clause] Propositional Horn clauses are also of interest in computational complexity.
+[src:mercury-logic/horn-clause] The problem of finding truth-value assignments to make a conjunction of propositional Horn clauses true is known as HORNSAT.
+[src:mercury-logic/horn-clause] This problem is P-complete and solvable in linear time.
+[src:mercury-logic/horn-clause] In contrast, the unrestricted Boolean satisfiability problem is an NP-complete problem.
+[src:mercury-logic/horn-clause] In universal algebra, definite Horn clauses are generally called quasi-identities; classes of algebras definable by a set of quasi-identities are called quasivarieties and enjoy some of the good properties of the more restrictive notion of a variety, i.e., an equational class.
+[src:mercury-logic/horn-clause] From the model-theoretical point of view, Horn sentences are important since they are exactly (up to logical equivalence) those sentences preserved under reduced products; in particular, they are preserved under direct products.
+[src:mercury-logic/horn-clause] On the other hand, there are sentences that are not Horn but are nevertheless preserved under arbitrary direct products.
+[src:mercury-logic/horn-clause] In fact, the resolution of a goal clause with a definite clause to produce a new goal clause is the basis of the SLD resolution inference rule, used in implementation of the logic programming language Prolog.
+[src:mercury-logic/horn-clause] In logic programming, a definite clause behaves as a goal-reduction procedure.
+[src:mercury-logic/horn-clause] represents the negation of a problem to be solved.
+[src:mercury-logic/horn-clause] This notation is ambiguous in the sense that it can be read either as a statement of the problem or as a statement of the denial of the problem.
+[src:mercury-logic/horn-clause] In both cases, solving the problem amounts to deriving the empty clause.
+[src:mercury-logic/horn-clause] If the top-level goal clause is read as the denial of the problem, then the empty clause represents *false* and the proof of the empty clause is a refutation of the denial of the problem.
+[src:mercury-logic/horn-clause] If the top-level goal clause is read as the problem itself, then the empty clause represents *true*, and the proof of the empty clause is a proof that the problem has a solution.
+[src:mercury-logic/horn-clause] The solution of the problem is a substitution of terms for the variables *X* in the top-level goal clause, which can be extracted from the resolution proof.
+[src:mercury-logic/horn-clause] Used in this way, goal clauses are similar to conjunctive queries in relational databases, and Horn clause logic is equivalent in computational power to a universal Turing machine.
+[src:mercury-logic/horn-clause] Van Emden and Kowalski (1976) investigated the model-theoretic properties of Horn clauses in the context of logic programming, showing that every set of definite clauses **D** has a unique minimal model **M**.
+[src:mercury-logic/horn-clause] An atomic formula **A** is logically implied by **D** if and only if **A** is true in **M**.
+[src:mercury-logic/horn-clause] It follows that a problem **P** represented by an existentially quantified conjunction of positive literals is logically implied by **D** if and only if **P** is true in **M**.
+[src:mercury-logic/horn-clause] The minimal model semantics of Horn clauses is the basis for the stable model semantics of logic programs.
+[src:mercury-logic/logic-programming-p01] `A` is called the *head* of the rule, `B1`, ..., `Bn` is called the *body*, and the `Bi` are called *literals* or conditions.
+[src:mercury-logic/logic-programming-p01] In the simplest case of Horn clauses (or "definite" clauses), all of the A, B1, ..., Bn are atomic formulae of the form p(t1 ,..., tm), where p is a predicate symbol naming a relation, like "motherhood", and the ti are terms naming objects (or individuals).
+[src:mercury-logic/logic-programming-p01] Terms include both constant symbols, like "charles", and variables, such as X, which start with an upper case letter.
+[src:mercury-logic/logic-programming-p01] Given a query, the program produces answers.
+[src:mercury-logic/logic-programming-p01] For instance the program can be queried both to generate grandparents and to generate grandchildren.
+[src:mercury-logic/logic-programming-p01] Although Horn clause logic programs are Turing complete, for most practical applications, Horn clause programs need to be extended to "normal" logic programs with negative conditions.
+[src:mercury-logic/logic-programming-p01] Logic programming languages that include negative conditions have the knowledge representation capabilities of a non-monotonic logic.
+[src:mercury-logic/logic-programming-p01] In ASP and Datalog, logic programs have only a declarative reading, and their execution is performed by means of a proof procedure or model generator whose behaviour is not meant to be controlled by the programmer.
+[src:mercury-logic/logic-programming-p01] However, in the Prolog family of languages, logic programs also have a procedural interpretation as goal-reduction procedures.
+[src:mercury-logic/logic-programming-p01] Negative conditions in the bodies of clauses also have a procedural interpretation, known as *negation as failure*: A negative literal `not B` is deemed to hold if and only if the positive literal `B` fails to hold.
+[src:mercury-logic/logic-programming-p01] Much of the research in the field of logic programming has been concerned with trying to develop a logical semantics for negation as failure and with developing other semantics and other implementations for negation.
+[src:mercury-logic/logic-programming-p01] These developments have been important, in turn, for supporting the development of formal methods for logic-based program verification and program transformation.
+[src:mercury-logic/logic-programming-p01] The use of mathematical logic to represent and execute computer programs is also a feature of the lambda calculus, developed by Alonzo Church in the 1930s.
+[src:mercury-logic/logic-programming-p01] However, the first proposal to use the clausal form of logic for representing computer programs was made by Cordell Green.
+[src:mercury-logic/logic-programming-p01] This used an axiomatization of a subset of LISP, together with a representation of an input-output relation, to compute the relation by simulating the execution of the program in LISP.
+[src:mercury-logic/logic-programming-p01] Foster and Elcock's Absys, on the other hand, employed a combination of equations and lambda calculus in an assertional programming language that places no constraints on the order in which operations are performed.
+[src:mercury-logic/logic-programming-p01] Logic programming, with its current syntax of facts and rules, can be traced back to debates in the late 1960s and early 1970s about declarative versus procedural representations of knowledge in artificial intelligence.
+[src:mercury-logic/logic-programming-p01] Advocates of declarative representations were notably working at Stanford, associated with John McCarthy, Bertram Raphael, and Cordell Green, and in Edinburgh, with John Alan Robinson (an academic visitor from Syracuse University), Pat Hayes, and Robert Kowalski.
+[src:mercury-logic/logic-programming-p01] Advocates of procedural representations were mainly centered at MIT, under the leadership of Marvin Minsky and Seymour Papert.
+[src:mercury-logic/logic-programming-p01] Although it was based on the proof methods of logic, Planner, developed by Carl Hewitt at MIT, was the first language to emerge within this proceduralist paradigm.
+[src:mercury-logic/logic-programming-p01] Planner featured pattern-directed invocation of procedural plans from goals (i.e. goal-reduction or backward chaining) and from assertions (i.e. forward chaining).
+[src:mercury-logic/logic-programming-p01] The most influential implementation of Planner was the subset of Planner, called Micro-Planner, implemented by Gerry Sussman, Eugene Charniak, and Terry Winograd.
+[src:mercury-logic/logic-programming-p01] Winograd used Micro-Planner to implement the landmark, natural-language understanding program SHRDLU.
+[src:mercury-logic/logic-programming-p01] For the sake of efficiency, Planner used a backtracking control structure so that only one possible computation path had to be stored at a time.
+[src:mercury-logic/logic-programming-p01] Planner gave rise to the programming languages QA4, Popler, Conniver, QLISP, and the concurrent language Ether.
+[src:mercury-logic/logic-programming-p01] Hayes and Kowalski in Edinburgh tried to reconcile the logic-based declarative approach to knowledge representation with Planner's procedural approach.
+[src:mercury-logic/logic-programming-p01] Hayes (1973) developed an equational language, Golux, in which different procedures could be obtained by altering the behavior of the theorem prover.
+[src:mercury-logic/logic-programming-p01] In the meanwhile, Alain Colmerauer in Marseille was working on natural-language understanding, using logic to represent semantics and using resolution for question-answering.
+[src:mercury-logic/logic-programming-p01] During the summer of 1971, Colmerauer invited Kowalski to Marseille, and together they discovered that the clausal form of logic could be used to represent formal grammars and that resolution theorem provers could be used for parsing.
+[src:mercury-logic/logic-programming-p01] They observed that some theorem provers, like hyper-resolution, behave as bottom-up parsers and others, like SL resolution (1971) behave as top-down parsers.
+[src:mercury-logic/logic-programming-p01] It was in the following summer of 1972, that Kowalski, again working with Colmerauer, developed the procedural interpretation of implications in clausal form.
+[src:mercury-logic/logic-programming-p01] It also became clear that such clauses could be restricted to definite clauses or Horn clauses, and that SL-resolution could be restricted (and generalised) to SLD resolution.
+[src:mercury-logic/logic-programming-p01] Kowalski's procedural interpretation and SLD were described in a 1973 memo, published in 1974.
+[src:mercury-logic/logic-programming-p01] Colmerauer, with Philippe Roussel, used the procedural interpretation as the basis of Prolog, which was implemented in the summer and autumn of 1972.
+[src:mercury-logic/logic-programming-p01] The first Prolog program, also written in 1972 and implemented in Marseille, was a French question-answering system.
+[src:mercury-logic/logic-programming-p01] The use of Prolog as a practical programming language was given great momentum by the development of a compiler by David H.
+[src:mercury-logic/logic-programming-p01] Experiments demonstrated that Edinburgh Prolog could compete with the processing speed of other symbolic programming languages such as Lisp.
+[src:mercury-logic/logic-programming-p01] Edinburgh Prolog became the *de facto* standard and strongly influenced the definition of ISO standard Prolog.
+[src:mercury-logic/logic-programming-p01] Logic programming gained international attention during the 1980s, when it was chosen by the Japanese Ministry of International Trade and Industry to develop the software for the Fifth Generation Computer Systems (FGCS) project.
+[src:mercury-logic/logic-programming-p01] The FGCS project aimed to use logic programming to develop advanced Artificial Intelligence applications on massively parallel computers.
+[src:mercury-logic/logic-programming-p01] Although the project initially explored the use of Prolog, it later adopted the use of concurrent logic programming, because it was closer to the FGCS computer architecture.
+[src:mercury-logic/logic-programming-p01] However, the committed choice feature of concurrent logic programming interfered with the language's logical semantics and with its suitability for knowledge representation and problem solving applications.
+[src:mercury-logic/logic-programming-p01] Moreover, the parallel computer systems developed in the project failed to compete with advances taking place in the development of more conventional, general-purpose computers.
+[src:mercury-logic/logic-programming-p01] Together these two issues resulted in the FGCS project failing to meet its objectives.
+[src:mercury-logic/logic-programming-p01] Interest in both logic programming and AI fell into world-wide decline.
+[src:mercury-logic/logic-programming-p01] In the meanwhile, more declarative logic programming approaches, including those based on the use of Prolog, continued to make progress independently of the FGCS project.
+[src:mercury-logic/logic-programming-p01] In particular, although Prolog was developed to combine declarative and procedural representations of knowledge, the purely declarative interpretation of logic programs became the focus for applications in the field of deductive databases.
+[src:mercury-logic/logic-programming-p01] Work in this field became prominent around 1977, when Hervé Gallaire and Jack Minker organized a workshop on logic and databases in Toulouse.
+[src:mercury-logic/logic-programming-p01] The field was eventually renamed as *Datalog*.
+[src:mercury-logic/logic-programming-p01] This focus on the logical, declarative reading of logic programs was given further impetus by the development of constraint logic programming in the 1980s and Answer Set Programming in the 1990s.
+[src:mercury-logic/logic-programming-p01] The Association for Logic Programming (ALP) was founded in 1986 to promote Logic Programming.
+[src:mercury-logic/logic-programming-p01] Its official journal until 2000, was *The Journal of Logic Programming*.
+[src:mercury-logic/logic-programming-p01] In 2001, the journal was renamed *The Journal of Logic and Algebraic Programming*, and the official journal of ALP became *Theory and Practice of Logic Programming*, published by Cambridge University Press.
+[src:mercury-logic/logic-programming-p01] Logic programs enjoy a rich variety of semantics and problem solving methods, as well as a wide range of applications in programming, databases, knowledge representation, and problem solving.
+[src:mercury-logic/logic-programming-p01] The procedural interpretation of logic programs, which uses backward reasoning to reduce goals to subgoals, is a special case of the use of a problem-solving strategy to **control** the use of a declarative, **logical** representation of knowledge to obtain the behaviour of an **algorithm**.
+[src:mercury-logic/logic-programming-p01] More generally, different problem-solving strategies can be applied to the same logical representation to obtain different algorithms.
+[src:mercury-logic/logic-programming-p01] Alternatively, different algorithms can be obtained with a given problem-solving strategy by using different logical representations.
+[src:mercury-logic/logic-programming-p01] The two main problem-solving strategies are backward reasoning (goal reduction) and forward reasoning, also known as top-down and bottom-up reasoning, respectively.
+[src:mercury-logic/logic-programming-p01] In the simple case of a propositional Horn clause program and a top-level atomic goal, backward reasoning determines an and-or tree, which constitutes the search space for solving the goal.
+[src:mercury-logic/logic-programming-p01] The top-level goal is the root of the tree.
+[src:mercury-logic/logic-programming-p01] Given any node in the tree and any clause whose head matches the node, there exists a set of child nodes corresponding to the sub-goals in the body of the clause.
+[src:mercury-logic/logic-programming-p01] These child nodes are grouped together by an "and".
+[src:mercury-logic/logic-programming-p01] The alternative sets of children corresponding to alternative ways of solving the node are grouped together by an "or".
+[src:mercury-logic/logic-programming-p01] Any search strategy can be used to search this space.
+[src:mercury-logic/logic-programming-p01] Prolog uses a sequential, last-in-first-out, backtracking strategy, in which only one alternative and one sub-goal are considered at a time.
+[src:mercury-logic/logic-programming-p01] For example, subgoals can be solved in parallel, and clauses can also be tried in parallel.
+[src:mercury-logic/logic-programming-p01] The first strategy is called **and-parallel** and the second strategy is called **or-parallel**.
+[src:mercury-logic/logic-programming-p01] Other search strategies, such as intelligent backtracking, or best-first search to find an optimal solution, are also possible.
+[src:mercury-logic/logic-programming-p01] In the more general, non-propositional case, where sub-goals can share variables, other strategies can be used, such as choosing the subgoal that is most highly instantiated or that is sufficiently instantiated so that only one procedure applies.
+[src:mercury-logic/logic-programming-p01] Such strategies are used, for example, in concurrent logic programming.
+[src:mercury-logic/logic-programming-p01] In most cases, backward reasoning from a query or goal is more efficient than forward reasoning.
+[src:mercury-logic/logic-programming-p01] But sometimes with Datalog and Answer Set Programming, there may be no query that is separate from the set of clauses as a whole, and then generating all the facts that can be derived from the clauses is a sensible problem-solving strategy.
+[src:mercury-logic/logic-programming-p01] Here the relation `fibonacci(N, M)` stands for the function `fibonacci(N) = M`, and the predicate `N is Expression` is Prolog notation for the predicate that instantiates the variable `N` to the value of `Expression`.
+[src:mercury-logic/logic-programming-p01] Given the goal of computing the fibonacci number of `n`, backward reasoning reduces the goal to the two subgoals of computing the fibonacci numbers of n-1 and n-2.
+[src:mercury-logic/logic-programming-p01] It reduces the subgoal of computing the fibonacci number of n-1 to the two subgoals of computing the fibonacci numbers of n-2 and n-3, redundantly computing the fibonacci number of n-2.
+[src:mercury-logic/logic-programming-p01] This process of reducing one fibonacci subgoal to two fibonacci subgoals continues until it reaches the numbers 0 and 1.
+[src:mercury-logic/logic-programming-p01] In contrast, forward reasoning generates the sequence of fibonacci numbers, starting from 0 and 1 without any recomputation, and its complexity is linear with respect to n.
+[src:mercury-logic/logic-programming-p01] Prolog cannot perform forward reasoning directly.
+[src:mercury-logic/logic-programming-p01] But it can achieve the effect of forward reasoning within the context of backward reasoning by means of tabling: Subgoals are maintained in a table, along with their solutions.
+[src:mercury-logic/logic-programming-p01] If a subgoal is re-encountered, it is solved directly by using the solutions already in the table, instead of re-solving the subgoals redundantly.
+[src:mercury-logic/logic-programming-p01] Logic programming can be viewed as a generalisation of functional programming, in which functions are a special case of relations.
+[src:mercury-logic/logic-programming-p01] For example, the function, mother(X) = Y, (every X has only one mother Y) can be represented by the relation mother(X, Y).
+[src:mercury-logic/logic-programming-p01] In this respect, logic programs are similar to relational databases, which also represent functions as relations.
+[src:mercury-logic/logic-programming-p01] Compared with relational syntax, functional syntax is more compact for nested functions.
+[src:mercury-logic/logic-programming-p01] However, nested syntax can be regarded as syntactic sugar for unnested syntax.
+[src:mercury-logic/logic-programming-p01] Ciao Prolog, for example, transforms functional syntax into relational form and executes the resulting logic program using the standard Prolog execution strategy.
+[src:mercury-logic/logic-programming-p01] Moreover, the same transformation can be used to execute nested relations that are not functional.
+[src:mercury-logic/logic-programming-p01] The term *relational programming* has been used to cover a variety of programming languages that treat functions as a special case of relations.
+[src:mercury-logic/logic-programming-p01] Some of these languages, such as miniKanren and relational linear programming are logic programming languages in the sense of this article.
+[src:mercury-logic/logic-programming-p01] However, the relational language RML is an imperative programming language whose core construct is a relational expression, which is similar to an expression in first-order predicate logic.
+[src:mercury-logic/logic-programming-p01] Other relational programming languages are based on the relational calculus or relational algebra.
+[src:mercury-logic/logic-programming-p01] Viewed in purely logical terms, there are two approaches to the declarative semantics of Horn clause logic programs: One approach is the original *logical consequence semantics*, which understands solving a goal as showing that the goal is a theorem that is true in all models of the program.
+[src:mercury-logic/logic-programming-p01] In this approach, computation is theorem-proving in first-order logic; and both backward reasoning, as in SLD resolution, and forward reasoning, as in hyper-resolution, are correct and complete theorem-proving methods.
+[src:mercury-logic/logic-programming-p01] Sometimes such theorem-proving methods are also regarded as providing a separate proof-theoretic (or operational) semantics for logic programs.
+[src:mercury-logic/logic-programming-p01] But from a logical point of view, they are proof methods, rather than semantics.
+[src:mercury-logic/logic-programming-p01] The other approach to the declarative semantics of Horn clause programs is the *satisfiability semantics*, which understands solving a goal as showing that the goal is true (or satisfied) in some intended (or standard) model of the program.
+[src:mercury-logic/logic-programming-p01] For Horn clause programs, there always exists such a standard model: It is the unique *minimal model* of the program.
+[src:mercury-logic/logic-programming-p01] Informally speaking, a minimal model is a model that, when it is viewed as the set of all (variable-free) facts that are true in the model, contains no smaller set of facts that is also a model of the program.
+[src:mercury-logic/logic-programming-p01] For example, the following facts represent the minimal model of the family relationships example in the introduction of this article.
+[src:mercury-logic/logic-programming-p01] The satisfiability semantics also has an alternative, more mathematical characterisation as the least fixed point of the function that uses the rules in the program to derive new facts from existing facts in one step of inference.
+[src:mercury-logic/logic-programming-p01] Backward reasoning, which succeeds by reducing a goal to subgoals, until all subgoals are solved by facts, ensures that the goal is true in the minimal model, without generating the model explicitly.
+[src:mercury-logic/logic-programming-p01] The difference between the two declarative semantics can be seen with the definitions of addition and multiplication in successor arithmetic, which represents the natural numbers `0, 1, 2, ...` as a sequence of terms of the form `0, s(0), s(s(0)), ...`.
+[src:mercury-logic/logic-programming-p01] The two declarative semantics both give the same answers for the same existentially quantified conjunctions of addition and multiplication goals.
+[src:mercury-logic/logic-programming-p01] However, with the logical-consequence semantics, there are non-standard models of the program, in which, for example, `add(s(s(0)), s(s(0)), s(s(s(s(s(0)))))),` i.e.
+[src:mercury-logic/logic-programming-p01] But with the satisfiability semantics, there is only one model, namely the standard model of arithmetic, in which `2 + 2 = 5` is false.
+[src:mercury-logic/logic-programming-p01] In the satisfiability semantics, the failure of the goal means that the truth value of the goal is false.
+[src:mercury-logic/logic-programming-p01] But in the logical consequence semantics, the failure means that the truth value of the goal is unknown.
+[src:mercury-logic/logic-programming-p01] Negation as failure (NAF), as a way of concluding that a negative condition `not p` holds by showing that the positive condition `p` fails to hold, was already a feature of early Prolog systems.
+[src:mercury-logic/logic-programming-p01] The resulting extension of SLD resolution is called SLDNF.
+[src:mercury-logic/logic-programming-p01] A similar construct, called "thnot", also existed in Micro-Planner.
+[src:mercury-logic/logic-programming-p01] The logical semantics of NAF was unresolved until Keith Clark showed that, under certain natural conditions, NAF is an efficient, correct (and sometimes complete) way of reasoning with the logical consequence semantics using the *completion* of a logic program in first-order logic.
+[src:mercury-logic/logic-programming-p01] The completion also includes axioms of equality, which correspond to unification.
+[src:mercury-logic/logic-programming-p01] Clark showed that proofs generated by SLDNF are structurally similar to proofs generated by a natural deduction style of reasoning with the completion of the program.
+[src:mercury-logic/logic-programming-p01] This is because tom is a thief, and it cannot be shown that tom should be rehabilitated.
+[src:mercury-logic/logic-programming-p01] It cannot be shown that tom should be rehabilitated, because it cannot be shown that tom is a minor.
+[src:mercury-logic/logic-programming-p01] This property of withdrawing a conclusion when new information is added, is called non-monotonicity, and it makes logic programming a non-monotonic logic.
+[src:mercury-logic/logic-programming-p01] The notion of completion is closely related to John McCarthy's circumscription semantics for default reasoning, and to Ray Reiter's closed world assumption.
+[src:mercury-logic/logic-programming-p01] The completion semantics for negation is a logical consequence semantics, for which SLDNF provides a proof-theoretic implementation.
+[src:mercury-logic/logic-programming-p01] However, in the 1980s, the satisfiability semantics became more popular for logic programs with negation.
+[src:mercury-logic/logic-programming-p01] In the satisfiability semantics, negation is interpreted according to the classical definition of truth in an intended or standard model of the logic program.
+[src:mercury-logic/logic-programming-p01] In the case of logic programs with negative conditions, there are two main variants of the satisfiability semantics: In the well-founded semantics, the intended model of a logic program is a unique, three-valued, minimal model, which always exists.
+[src:mercury-logic/logic-programming-p01] The well-founded semantics generalises the notion of inductive definition in mathematical logic.
+[src:mercury-logic/logic-programming-p01] XSB Prolog implements the well-founded semantics using SLG resolution.
+[src:mercury-logic/logic-programming-p01] In the alternative stable model semantics, there may be no intended models or several intended models, all of which are minimal and two-valued.
+[src:mercury-logic/logic-programming-p01] The stable model semantics underpins answer set programming (ASP).
+[src:mercury-logic/logic-programming-p01] Both the well-founded and stable model semantics apply to arbitrary logic programs with negation.
+[src:mercury-logic/logic-programming-p01] However, both semantics coincide for stratified logic programs.
+[src:mercury-logic/logic-programming-p01] Attempts to understand negation in logic programming have also contributed to the development of abstract argumentation frameworks.
+[src:mercury-logic/logic-programming-p01] In an argumentation interpretation of negation, the initial argument that tom should be punished because he is a thief, is attacked by the argument that he should be rehabilitated because he is a minor.
+[src:mercury-logic/logic-programming-p01] But the fact that tom is violent undermines the argument that tom should be rehabilitated and reinstates the argument that tom should be punished.
+[src:mercury-logic/logic-programming-p01] Metaprogramming, in which programs are treated as data, was already a feature of early Prolog implementations.
+[src:mercury-logic/logic-programming-p01] For example, the Edinburgh DEC10 implementation of Prolog included "an interpreter and a compiler, both written in Prolog itself".
+[src:mercury-logic/logic-programming-p01] where true represents an empty conjunction, and (B,C) is a composite term representing the conjunction of B and C.
+[src:mercury-logic/logic-programming-p01] The predicate clause(A,B) means that there is a clause of the form A :- B.
+[src:mercury-logic/logic-programming-p01] Metaprogramming is an application of the more general use of a *metalogic* or *metalanguage* to describe and reason about another language, called the *object language*.
+[src:mercury-logic/logic-programming-p01] Metalogic programming allows object-level and metalevel representations to be combined, as in natural language.
+[src:mercury-logic/logic-programming-p01] In his popular Introduction to Cognitive Science, Paul Thagard includes logic and rules as alternative approaches to modelling human thinking.
+[src:mercury-logic/logic-programming-p01] He argues that rules, which have the form *IF condition THEN action*, are "very similar" to logical conditionals, but they are simpler and have greater psychological plausibility (page 51).
+[src:mercury-logic/logic-programming-p01] Among other differences between logic and rules, he argues that logic uses deduction, but rules use search (page 45) and can be used to reason either forward or backward (page 47).
+[src:mercury-logic/logic-programming-p01] Sentences in logic "have to be interpreted as *universally true*", but rules can be *defaults*, which admit exceptions (page 44).
+[src:mercury-logic/logic-programming-p01] He states that "unlike logic, rule-based systems can also easily represent strategic information about what to do" (page 45).
+[src:mercury-logic/logic-programming-p01] For example, "IF you want to go home for the weekend, and you have bus fare, THEN you can catch a bus".
+[src:mercury-logic/logic-programming-p01] All of these characteristics of rule-based systems - search, forward and backward reasoning, default reasoning, and goal-reduction - are also defining characteristics of logic programming.
+[src:mercury-logic/logic-programming-p01] Other arguments showing how logic programming can be used to model aspects of human thinking are presented by Keith Stenning and Michiel van Lambalgen in their book, Human Reasoning and Cognitive Science.
+[src:mercury-logic/logic-programming-p01] They show how the non-monotonic character of logic programs can be used to explain human performance on a variety of psychological tasks.
+[src:mercury-logic/logic-programming-p01] In The Proper Treatment of Events, Michiel van Lambalgen and Fritz Hamm investigate the use of constraint logic programming to code "temporal notions in natural language by looking at the way human beings construct time".
+[src:mercury-logic/logic-programming-p01] The use of logic to represent procedural knowledge and strategic information was one of the main goals contributing to the early development of logic programming.
+[src:mercury-logic/logic-programming-p01] Moreover, it continues to be an important feature of the Prolog family of logic programming languages today.
+[src:mercury-logic/logic-programming-p01] However, many applications of logic programming, including Prolog applications, increasingly focus on the use of logic to represent purely declarative knowledge.
+[src:mercury-logic/logic-programming-p01] These applications include both the representation of general commonsense knowledge and the representation of domain specific expertise.
+[src:mercury-logic/logic-programming-p01] Commonsense includes knowledge about cause and effect, as formalised, for example, in the situation calculus, event calculus and action languages.
+[src:mercury-logic/logic-programming-p01] Here is a simplified example, which illustrates the main features of such formalisms.
+[src:mercury-logic/logic-programming-p01] The first clause states that a fact holds immediately after an event initiates (or causes) the fact.
+[src:mercury-logic/logic-programming-p01] The second clause is a *frame axiom*, which states that a fact that holds at a time continues to hold at the next time unless it is terminated by an event that happens at the time.
+[src:mercury-logic/logic-programming-p01] Here `holds` is a meta-predicate, similar to `solve` above.
+[src:mercury-logic/logic-programming-p01] However, whereas `solve` has only one argument, which applies to general clauses, the first argument of `holds` is a fact and the second argument is a time (or state).
+[src:mercury-logic/logic-programming-p01] The atomic formula `holds(Fact, Time)` expresses that the `Fact` holds at the `Time`.
+[src:mercury-logic/logic-programming-p01] Such time-varying facts are also called fluents.
+[src:mercury-logic/logic-programming-p01] The atomic formula `happens(Event, Time)` expresses that the Event happens at the `Time`.
+[src:mercury-logic/logic-programming-p01] The following example illustrates how these clauses can be used to reason about causality in a toy blocks world.
+[src:mercury-logic/logic-programming-p01] Here, in the initial state at time 0, a green block is on a table and a red block is stacked on the green block (like a traffic light).
+[src:mercury-logic/logic-programming-p01] At time 0, the red block is moved to the table.
+[src:mercury-logic/logic-programming-p01] At time 1, the green block is moved onto the red block.
+[src:mercury-logic/logic-programming-p01] Forward reasoning and backward reasoning generate the same answers to the goal `holds(Fact, Time)`.
+[src:mercury-logic/logic-programming-p01] But forward reasoning generates fluents *progressively* in temporal order, and backward reasoning generates fluents *regressively*, as in the domain-specific use of regression in the situation calculus.
+[src:mercury-logic/logic-programming-p01] Logic programming has also proved to be useful for representing domain-specific expertise in expert systems.
+[src:mercury-logic/logic-programming-p01] But human expertise, like general-purpose commonsense, is mostly implicit and tacit, and it is often difficult to represent such implicit knowledge in explicit rules.
+[src:mercury-logic/logic-programming-p01] This difficulty does not arise, however, when logic programs are used to represent the existing, explicit rules of a business organisation or legal authority.
+[src:mercury-logic/logic-programming-p01] More recently, the PROLEG system, initiated in 2009 and consisting of approximately 2500 rules and exceptions of civil code and supreme court case rules in Japan, has become possibly the largest legal rule base in the world.
+[src:mercury-logic/logic-programming-p02] The SLD resolution rule of inference is neutral about the order in which subgoals in the bodies of clauses can be *selected* for solution.
+[src:mercury-logic/logic-programming-p02] For the sake of efficiency, Prolog restricts this order to the order in which the subgoals are written.
+[src:mercury-logic/logic-programming-p02] SLD is also neutral about the strategy for searching the space of SLD proofs.
+[src:mercury-logic/logic-programming-p02] Prolog searches this space, top-down, depth-first, trying different clauses for solving the same (sub)goal in the order in which the clauses are written.
+[src:mercury-logic/logic-programming-p02] This search strategy has the advantage that the current branch of the tree can be represented efficiently by a stack.
+[src:mercury-logic/logic-programming-p02] When a goal clause at the top of the stack is reduced to a new goal clause, the new goal clause is pushed onto the top of the stack.
+[src:mercury-logic/logic-programming-p02] Backtracking can be restricted by using a subgoal, called *cut*, written as !, which always succeeds but cannot be backtracked.
+[src:mercury-logic/logic-programming-p02] Cut can be used to improve efficiency, but can also interfere with the logical meaning of clauses.
+[src:mercury-logic/logic-programming-p02] In many cases, the use of cut can be replaced by negation as failure.
+[src:mercury-logic/logic-programming-p02] Prolog provides other features, in addition to cut, that do not have a logical interpretation.
+[src:mercury-logic/logic-programming-p02] These include the built-in predicates *assert* and *retract* for destructively updating the state of the program during program execution.
+[src:mercury-logic/logic-programming-p02] Various extensions of logic programming have been developed to provide a logical framework for such destructive change of state.
+[src:mercury-logic/logic-programming-p02] The broad range of Prolog applications, both in isolation and in combination with other languages is highlighted in the Year of Prolog Book, celebrating the 50 year anniversary of Prolog in 2022.
+[src:mercury-logic/logic-programming-p02] Prolog has also contributed to the development of other programming languages, including ALF, Fril, Gödel, Mercury, Oz, Ciao, Visual Prolog, XSB, and λProlog.
+[src:mercury-logic/logic-programming-p02] Constraint logic programming (CLP) combines Horn clause logic programming with constraint solving.
+[src:mercury-logic/logic-programming-p02] It extends Horn clauses by allowing some predicates, declared as constraint predicates, to occur as literals in the body of a clause.
+[src:mercury-logic/logic-programming-p02] Constraint predicates are not defined by the facts and rules in the program, but are predefined by some domain-specific model-theoretic structure or theory.
+[src:mercury-logic/logic-programming-p02] Procedurally, subgoals whose predicates are defined by the program are solved by goal-reduction, as in ordinary logic programming, but constraints are simplified and checked for satisfiability by a domain-specific constraint-solver, which implements the semantics of the constraint predicates.
+[src:mercury-logic/logic-programming-p02] An initial problem is solved by reducing it to a satisfiable conjunction of constraints.
+[src:mercury-logic/logic-programming-p02] Interestingly, the first version of Prolog already included a constraint predicate dif(term1, term2), from Philippe Roussel's 1972 PhD thesis, which succeeds if both of its arguments are different terms, but which is delayed if either of the terms contains a variable.
+[src:mercury-logic/logic-programming-p02] Here `≤` and `<` are constraint predicates, with their usual intended semantics.
+[src:mercury-logic/logic-programming-p02] Constraint logic programming has been used to solve problems in such fields as civil engineering, mechanical engineering, digital circuit verification, automated timetabling, air traffic control, and finance.
+[src:mercury-logic/logic-programming-p02] It is closely related to abductive logic programming.
+[src:mercury-logic/logic-programming-p02] Datalog is a database definition language, which combines a relational view of data, as in relational databases, with a logical view, as in logic programming.
+[src:mercury-logic/logic-programming-p02] Relational databases use a relational calculus or relational algebra, with relational operations, such as *union*, *intersection*, *set difference* and *cartesian product* to specify queries, which access a database.
+[src:mercury-logic/logic-programming-p02] Datalog uses logical connectives, such as *or*, *and* and *not* in the bodies of rules to define relations as part of the database itself.
+[src:mercury-logic/logic-programming-p02] It was recognized early in the development of relational databases that recursive queries cannot be expressed in either relational algebra or relational calculus, and that this deficiency can be remedied by introducing a least-fixed-point operator.
+[src:mercury-logic/logic-programming-p02] In contrast, recursive relations can be defined naturally by rules in logic programs, without the need for any new logical connectives or operators.
+[src:mercury-logic/logic-programming-p02] Datalog differs from more general logic programming by having only constants and variables as terms.
+[src:mercury-logic/logic-programming-p02] Moreover, all facts are variable-free, and rules are restricted, so that if they are executed bottom-up, then the derived facts are also variable-free.
+[src:mercury-logic/logic-programming-p02] However, top-down execution with tabling gives the same answers and terminates without looping.
+[src:mercury-logic/logic-programming-p02] Like Datalog, Answer Set programming (ASP) is not Turing-complete.
+[src:mercury-logic/logic-programming-p02] Moreover, instead of separating goals (or queries) from the program to be used in solving the goals, ASP treats the whole program as a goal, and solves the goal by generating a stable model that makes the goal true.
+[src:mercury-logic/logic-programming-p02] For this purpose, it uses the stable model semantics, according to which a logic program can have zero, one or more intended models.
+[src:mercury-logic/logic-programming-p02] To represent the standard version of the map colouring problem, we need to add a constraint that two adjacent countries cannot be coloured the same colour.
+[src:mercury-logic/logic-programming-p02] The addition of constraints of the form `:- Body.` eliminates models in which `Body` is true.
+[src:mercury-logic/logic-programming-p02] Confusingly, *constraints in ASP* are different from *constraints in CLP*.
+[src:mercury-logic/logic-programming-p02] Constraints in CLP are predicates that qualify answers to queries (and solutions of goals).
+[src:mercury-logic/logic-programming-p02] Constraints in ASP are clauses that eliminate models that would otherwise satisfy goals.
+[src:mercury-logic/logic-programming-p02] Constraints in ASP are like integrity constraints in databases.
+[src:mercury-logic/logic-programming-p02] This combination of ordinary logic programming clauses and constraint clauses illustrates the generate-and-test methodology of problem solving in ASP: The ordinary clauses define a search space of possible solutions, and the constraints filter out unwanted solutions.
+[src:mercury-logic/logic-programming-p02] Most implementations of ASP proceed in two steps: First they instantiate the program in all possible ways, reducing it to a propositional logic program (known as *grounding*).
+[src:mercury-logic/logic-programming-p02] Then they apply a propositional logic problem solver, such as the DPLL algorithm or a Boolean SAT solver.
+[src:mercury-logic/logic-programming-p02] However, some implementations, such as s(CASP) use a goal-directed, top-down, SLD resolution-like procedure without grounding.
+[src:mercury-logic/logic-programming-p02] Abductive logic programming (ALP), like CLP, extends normal logic programming by allowing the bodies of clauses to contain literals whose predicates are not defined by clauses.
+[src:mercury-logic/logic-programming-p02] In ALP, these predicates are declared as *abducible* (or *assumable*), and are used as in abductive reasoning to explain observations, or more generally to add new facts to the program (as assumptions) to solve goals.
+[src:mercury-logic/logic-programming-p02] The goal can represent an observation, in which case a solution is an explanation of the observation.
+[src:mercury-logic/logic-programming-p02] Or the goal can represent a desired future state of affairs, in which case a solution is a plan for achieving the goal.
+[src:mercury-logic/logic-programming-p02] ALP solves the goal by reasoning backwards and adding assumptions to the program, to solve abducible subgoals.
+[src:mercury-logic/logic-programming-p02] Here `tick` is an event that marks the passage of time without initiating or terminating any fluents.
+[src:mercury-logic/logic-programming-p02] There are also solutions in which the two `move` events happen at the same time.
+[src:mercury-logic/logic-programming-p02] Abductive logic programming has been used for fault diagnosis, planning, natural language processing and machine learning.
+[src:mercury-logic/logic-programming-p02] It has also been used to interpret negation as failure as a form of abductive reasoning.
+[src:mercury-logic/logic-programming-p02] Inductive logic programming (ILP) is an approach to machine learning that induces logic programs as hypothetical generalisations of positive and negative examples.
+[src:mercury-logic/logic-programming-p02] Given a logic program representing background knowledge and positive examples together with constraints representing negative examples, an ILP system induces a logic program that generalises the positive examples while excluding the negative examples.
+[src:mercury-logic/logic-programming-p02] ILP is similar to ALP, in that both can be viewed as generating hypotheses to explain observations, and as employing constraints to exclude undesirable hypotheses.
+[src:mercury-logic/logic-programming-p02] But in ALP the hypotheses are variable-free facts, and in ILP the hypotheses are general rules.
+[src:mercury-logic/logic-programming-p02] Stuart Russell has referred to such invention of new concepts as the most important step needed for reaching human-level AI.
+[src:mercury-logic/logic-programming-p02] Recent work in ILP, combining logic programming, learning and probability, has given rise to the fields of statistical relational learning and probabilistic inductive logic programming.
+[src:mercury-logic/logic-programming-p02] Concurrent logic programming integrates concepts of logic programming with concurrent programming.
+[src:mercury-logic/logic-programming-p02] Its development was given a big impetus in the 1980s by its choice for the systems programming language of the Japanese Fifth Generation Project (FGCS).
+[src:mercury-logic/logic-programming-p02] The conjunction `G1, ... , Gn` is called the guard of the clause, and | is the commitment operator.
+[src:mercury-logic/logic-programming-p02] However, procedurally, when there are several clauses whose heads `H` match a given goal, then all of the clauses are executed in parallel, checking whether their guards `G1, ... , Gn` hold.
+[src:mercury-logic/logic-programming-p02] If the guards of more than one clause hold, then a committed choice is made to one of the clauses, and execution proceeds with the subgoals `B1, ..., Bn` of the chosen clause.
+[src:mercury-logic/logic-programming-p02] These subgoals can also be executed in parallel.
+[src:mercury-logic/logic-programming-p02] Thus concurrent logic programming implements a form of "don't care nondeterminism", rather than "don't know nondeterminism".
+[src:mercury-logic/logic-programming-p02] Here, `[]` represents the empty list, and `[Head | Tail]` represents a list with first element `Head` followed by list `Tail`, as in Prolog.
+[src:mercury-logic/logic-programming-p02] The program will non-deterministically generate a single solution, for example `Merge = [ace, queen, 1, king, 4, 2]`.
+[src:mercury-logic/logic-programming-p02] Carl Hewitt has argued that, because of the indeterminacy of concurrent computation, concurrent logic programming cannot implement general concurrency.
+[src:mercury-logic/logic-programming-p02] However, according to the logical semantics, any result of a computation of a concurrent logic program is a logical consequence of the program, even though not all logical consequences can be derived.
+[src:mercury-logic/logic-programming-p02] Concurrent constraint logic programming combines concurrent logic programming and constraint logic programming, using constraints to control concurrency.
+[src:mercury-logic/logic-programming-p02] A clause can contain a guard, which is a set of constraints that may block the applicability of the clause.
+[src:mercury-logic/logic-programming-p02] When the guards of several clauses are satisfied, concurrent constraint logic programming makes a committed choice to use only one.
+[src:mercury-logic/logic-programming-p02] Several researchers have extended logic programming with higher-order programming features derived from higher-order logic, such as predicate variables.
+[src:mercury-logic/logic-programming-p02] Such languages include the Prolog extensions HiLog and λProlog.
+[src:mercury-logic/logic-programming-p02] Basing logic programming within linear logic has resulted in the design of logic programming languages that are considerably more expressive than those based on classical logic.
+[src:mercury-logic/logic-programming-p02] Horn clause programs can only represent state change by the change in arguments to predicates.
+[src:mercury-logic/logic-programming-p02] In linear logic programming, one can use the ambient linear logic to support state change.
+[src:mercury-logic/logic-programming-p02] Some early designs of logic programming languages based on linear logic include LO, Lolli, ACL, and Forum.
+[src:mercury-logic/logic-programming-p02] Forum provides a goal-directed interpretation of all linear logic.
+[src:mercury-logic/logic-programming-p02] F-logic extends logic programming with objects and the frame syntax.
+[src:mercury-logic/logic-programming-p02] Logtalk extends the Prolog programming language with support for objects, protocols, and other OOP concepts.
+[src:mercury-logic/logic-programming-p02] It supports most standard-compliant Prolog systems as backend compilers.
+[src:mercury-logic/logic-programming-p02] Transaction logic is an extension of logic programming with a logical theory of state-modifying updates.
+[src:mercury-logic/logic-programming-p02] It has both a model-theoretic semantics and a procedural one.
+[src:mercury-logic/logic-programming-p02] An implementation of a subset of Transaction logic is available in the Flora-2 system.
+[src:mercury-logic/mercury-programming-language] Mercury is a purely declarative logic programming language.
+[src:mercury-logic/mercury-programming-language] It is related to both Prolog and Haskell.
+[src:mercury-logic/mercury-programming-language] It features a strong, static, polymorphic type system, and a strong mode and determinism system.
+[src:mercury-logic/mercury-programming-language] The official implementation, the Melbourne Mercury Compiler, is available for most Unix and Unix-like platforms, including Linux, macOS, and for Windows.
+[src:mercury-logic/mercury-programming-language] Mercury is based on the logic programming language Prolog.
+[src:mercury-logic/mercury-programming-language] It has the same syntax and the same basic concepts such as the selective linear definite clause resolution (SLD) algorithm.
+[src:mercury-logic/mercury-programming-language] It can be viewed as a pure subset of Prolog with strong types and modes.
+[src:mercury-logic/mercury-programming-language] As such, it is often compared to its predecessor in features and run-time efficiency.
+[src:mercury-logic/mercury-programming-language] The language is designed using software engineering principles.
+[src:mercury-logic/mercury-programming-language] Unlike the original implementations of Prolog, it has a separate compilation phase, rather than being directly interpreted.
+[src:mercury-logic/mercury-programming-language] This allows a much wider range of errors to be detected before running a program.
+[src:mercury-logic/mercury-programming-language] It features a strict static type and mode system and a module system.
+[src:mercury-logic/mercury-programming-language] By using information obtained at compile time (such as type and mode), programs written in Mercury typically perform significantly faster than equivalent programs written in Prolog.
+[src:mercury-logic/mercury-programming-language] Its authors claim that Mercury is the fastest logic language in the world, by a wide margin.
+[src:mercury-logic/mercury-programming-language] Mercury is a purely declarative language, unlike Prolog, since it lacks *extra-logical* Prolog statements such as `!` (cut) and imperative input/output (I/O).
+[src:mercury-logic/mercury-programming-language] This enables advanced static program analysis and program optimization, including compile-time garbage collection, but it can make certain programming constructs (such as a switch over a number of options, with a default) harder to express.
+[src:mercury-logic/mercury-programming-language] While Mercury does allow impure functionality, it serves mainly as a way to call foreign language code.
+[src:mercury-logic/mercury-programming-language] All impure code must be explicitly marked.
+[src:mercury-logic/mercury-programming-language] Operations which would typically be impure (such as input/output) are expressed using pure constructs in Mercury using linear types, by threading a dummy *world* value through all relevant code.
+[src:mercury-logic/mercury-programming-language] Notable programs written in Mercury include the Mercury compiler and the Prince XML formatter.
+[src:mercury-logic/mercury-programming-language] The Software company ODASE has also been using Mercury to develop its Ontology-Centric software development platform, ODASE.
+[src:mercury-logic/mercury-programming-language] Mercury also features a foreign language interface, allowing code in other languages (depending on the chosen back-end) to be linked with Mercury code.
+[src:mercury-logic/mercury-programming-language] Other languages can then be interfaced to by calling them from these languages.
+[src:mercury-logic/mercury-programming-language] However, this means that foreign language code may need to be written several times for the different backends, otherwise portability between backends will be lost.
+[src:mercury-logic/mercury-programming-language] The most commonly used back-end is the original low-level C back-end.
+[src:mercury-logic/mercury-programming-language] The stable release naming scheme was 0.1 up to 0.13 for the first thirteen stable releases.
+[src:mercury-logic/mercury-programming-language] In February 2010 the Mercury project decided to name each stable release by using the year and month of the release.
+[src:mercury-logic/mercury-programming-language] For example 10.04 is for a release made in April 2010.
+[src:mercury-logic/prolog] Prolog has its roots in first-order logic, a formal logic.
+[src:mercury-logic/prolog] Unlike many other programming languages, Prolog is intended primarily as a declarative programming language: the program is a set of facts and rules, which define relations.
+[src:mercury-logic/prolog] A computation is initiated by running a *query* over the program.
+[src:mercury-logic/prolog] Prolog was one of the first logic programming languages and remains the most popular such language today, with several free and commercial implementations available.
+[src:mercury-logic/prolog] The language has been used for theorem proving, expert systems, term rewriting, type systems, automated planning, and question answering as well as its original intended field of use, natural language processing.
+[src:mercury-logic/prolog] Prolog is a Turing-complete, general-purpose programming language, which is well-suited for intelligent knowledge-processing applications.
+[src:mercury-logic/prolog] The name *Prolog* was chosen by Philippe Roussel, at the suggestion of his wife, as an abbreviation for ****Pro**grammation en **log**ique** (French for *Programming in logic*).
+[src:mercury-logic/prolog] It was created around 1972 by Alain Colmerauer with Philippe Roussel, from the *Artificial Intelligence Group* of the Faculty of Sciences of Luminy of Aix-Marseille II University of France.
+[src:mercury-logic/prolog] According to Robert Kowalski, the first Prolog system was developed in 1972 by Colmerauer and Phillipe Roussel.
+[src:mercury-logic/prolog] The first implementation of Prolog was an interpreter written in Fortran by Gerard Battani and Henri Meloni.
+[src:mercury-logic/prolog] Warren took this interpreter to the University of Edinburgh, and there implemented an alternative front-end, which came to define the "***Edinburgh Prolog***" syntax used by most modern implementations.
+[src:mercury-logic/prolog] Warren also implemented the first compiler for Prolog, creating the influential DEC-10 Prolog in collaboration with Fernando Pereira.
+[src:mercury-logic/prolog] Warren later generalised the ideas behind DEC-10 Prolog, to create the Warren Abstract Machine (**WAM**).
+[src:mercury-logic/prolog] European AI researchers favored Prolog while Americans favored Lisp, reportedly causing many nationalistic debates on the merits of the languages.
+[src:mercury-logic/prolog] Much of the modern development of Prolog came from the impetus of the Fifth Generation Computer Systems project (FGCS), which developed a variant of Prolog named *Kernel Language* for its first operating system.
+[src:mercury-logic/prolog] Pure Prolog was soon extended, however, to include negation as failure, in which negative conditions of the form not(Bi) are shown by trying and failing to solve the corresponding positive conditions Bi.
+[src:mercury-logic/prolog] Subsequent extensions of Prolog by the original team introduced constraint logic programming abilities into the implementations.
+[src:mercury-logic/prolog] Although Prolog is widely used in research and education, Prolog and other logic programming languages have not had a significant impact on the computer industry in general.
+[src:mercury-logic/prolog] Most applications are small by industrial standards, with few exceeding 100,000 lines of code.
+[src:mercury-logic/prolog] Programming in the large is considered to be complex because not all Prolog compilers support modules, and there are compatibility problems between the module systems of the major Prolog compilers.
+[src:mercury-logic/prolog] Software developed in Prolog has been criticised for having a high performance penalty compared to conventional programming languages.
+[src:mercury-logic/prolog] In particular, Prolog's non-deterministic evaluation strategy can be problematic when programming deterministic computations, or when even using "don't care non-determinism" (where a single choice is made instead of backtracking over all possibilities).
+[src:mercury-logic/prolog] Cuts and other language constructs may have to be used to achieve desirable performance, destroying one of Prolog's main attractions, the ability to run programs "backwards and forwards".
+[src:mercury-logic/prolog] Prolog is not purely declarative: because of constructs like the cut operator, a procedural reading of a Prolog program is needed to understand it.
+[src:mercury-logic/prolog] The order of clauses in a Prolog program is significant, as the execution strategy of the language depends on it.
+[src:mercury-logic/prolog] Other logic programming languages, such as Datalog, are truly declarative but restrict the language.
+[src:mercury-logic/prolog] As a result, many practical Prolog programs are written to conform to Prolog's depth-first search order, rather than as purely declarative logic programs.
+[src:mercury-logic/prolog] Watson uses IBM's DeepQA software and the Apache UIMA (Unstructured Information Management Architecture) framework.
+[src:mercury-logic/prolog] The system was written in various languages, including Java, C++, and Prolog, and runs on the SUSE Linux Enterprise Server 11 operating system using Apache Hadoop framework to provide distributed computing.
+[src:mercury-logic/prolog] Prolog is used for pattern matching over natural language parse trees.
+[src:mercury-logic/prolog] The developers have stated: "We required a language in which we could conveniently express pattern matching rules over the parse trees and other annotations (such as named entity recognition results), and a technology that could execute these rules very efficiently.
+[src:mercury-logic/prolog] We found that Prolog was the ideal choice for the language due to its simplicity and expressiveness." Prolog is being used in the Low-Code Development Platform GeneXus, which is focused around AI.
+[src:mercury-logic/prolog] Open source graph database TerminusDB is implemented in Prolog.
+[src:mercury-logic/prolog] TerminusDB is designed for collaboratively building and curating knowledge graphs.
+[src:mercury-logic/prolog] In Prolog, program logic is expressed in terms of relations, and a computation is initiated by running a *query* over these relations.
+[src:mercury-logic/prolog] Relations and queries are constructed using Prolog's single data type, the *term*.
+[src:mercury-logic/prolog] Given a query, the Prolog engine attempts to find a resolution refutation of the negated query.
+[src:mercury-logic/prolog] If the negated query can be refuted, i.e., an instantiation for all free variables is found that makes the union of clauses and the singleton set consisting of the negated query false, it follows that the original query, with the found instantiation applied, is a logical consequence of the program.
+[src:mercury-logic/prolog] This makes Prolog (and other logic programming languages) particularly useful for database, symbolic mathematics, and language parsing applications.
+[src:mercury-logic/prolog] Because Prolog allows impure predicates, checking the truth value of certain special predicates may have some deliberate side effect, such as printing a value to the screen.
+[src:mercury-logic/prolog] Because of this, the programmer is permitted to use some amount of conventional imperative programming when the logical paradigm is inconvenient.
+[src:mercury-logic/prolog] It has a purely logical subset, called "pure Prolog", as well as a number of extralogical features.
+[src:mercury-logic/prolog] Prolog's single data type is the *term*.
+[src:mercury-logic/prolog] Terms are either *atoms*, *numbers*, *variables* or *compound terms*.
+[src:mercury-logic/prolog] Prolog programs describe relations, defined by means of clauses.
+[src:mercury-logic/prolog] Pure Prolog is restricted to Horn clauses.
+[src:mercury-logic/prolog] Two types of Horn clauses are used to define Prolog programs: rules and facts.
+[src:mercury-logic/prolog] and is read as "Head is true if Body is true".
+[src:mercury-logic/prolog] A rule's body consists of calls to predicates, which are called the rule's **goals**.
+[src:mercury-logic/prolog] The built-in logical operator `,/2` (meaning an arity 2 operator with name `,`) denotes conjunction of goals, and `;/2` denotes disjunction.
+[src:mercury-logic/prolog] Conjunctions and disjunctions can only appear in the body, not in the head of a rule.
+[src:mercury-logic/prolog] Clauses with empty bodies are called **facts**.
+[src:mercury-logic/prolog] The built-in predicate `true/0` is always true.
+[src:mercury-logic/prolog] Clauses with bodies are called **rules**.
+[src:mercury-logic/prolog] A *predicate* (or *procedure definition*) is a collection of clauses whose heads have the same name and arity.
+[src:mercury-logic/prolog] We use the notation *name/arity* to refer to predicates.
+[src:mercury-logic/prolog] A *logic program* is a set of predicates.
+[src:mercury-logic/prolog] Predicate `father_child/2` has three clauses, all of which are facts, and predicate `parent_child/2` has two clauses, both are rules.
+[src:mercury-logic/prolog] Due to the relational nature of many built-in predicates, they can typically be used in several directions.
+[src:mercury-logic/prolog] For example, `length/2` can be used to determine the length of a list (`length(List, L)`, given a list `List`), and to generate a list skeleton of a given length (`length(X, 5)`), and to generate both list skeletons and their lengths together (`length(X, L)`).
+[src:mercury-logic/prolog] Similarly, `append/3` can be used both to append two lists (`append(ListA, ListB, X)` given lists `ListA` and `ListB`), and to split a given list into parts (`append(X, Y, List)`, given a list `List`).
+[src:mercury-logic/prolog] For this reason, a comparatively small set of library predicates suffices for many Prolog programs.
+[src:mercury-logic/prolog] As a general purpose language, Prolog also provides various built-in predicates to perform routine activities like input/output, using graphics and otherwise communicating with the operating system.
+[src:mercury-logic/prolog] These predicates are not given a relational meaning and are only useful for the side-effects they exhibit on the system.
+[src:mercury-logic/prolog] For example, the predicate `write/1` displays a term on the screen.
+[src:mercury-logic/prolog] Iterative algorithms can be implemented by means of recursive predicates.
+[src:mercury-logic/prolog] Consider the `parent_child/2` predicate defined in the family relation program above.
+[src:mercury-logic/prolog] It expresses that X is an ancestor of Y if X is parent of Y or X is parent of an ancestor of Y.
+[src:mercury-logic/prolog] It is recursive because it is defined in terms of itself (there is a call to predicate `ancestor/2` in the body of the second clause).
+[src:mercury-logic/prolog] Execution of a Prolog program is initiated by the user's posting of a single goal, called the query.
+[src:mercury-logic/prolog] Logically, the Prolog engine tries to find a resolution refutation of the negated query.
+[src:mercury-logic/prolog] The resolution method used by Prolog is called SLD resolution.
+[src:mercury-logic/prolog] If the negated query can be refuted, it follows that the query, with the appropriate variable bindings in place, is a logical consequence of the program.
+[src:mercury-logic/prolog] In that case, all generated variable bindings are reported to the user, and the query is said to have succeeded.
+[src:mercury-logic/prolog] Operationally, Prolog's execution strategy can be thought of as a generalization of function calls in other languages, one difference being that multiple clause heads can match a given call.
+[src:mercury-logic/prolog] In that case, the system creates a choice-point, unifies the goal with the clause head of the first alternative, and continues with the goals of that first alternative.
+[src:mercury-logic/prolog] If any goal fails in the course of executing the program, all variable bindings that were made since the most recent choice-point was created are undone, and execution continues with the next alternative of that choice-point.
+[src:mercury-logic/prolog] This execution strategy is called chronological backtracking.
+[src:mercury-logic/prolog] The next goal to be proved is the leftmost one of this conjunction, i.e., `parent_child(Z, sally)`.
+[src:mercury-logic/prolog] The system creates a choice-point and tries the first alternative, whose body is `father_child(Z, sally)`.
+[src:mercury-logic/prolog] This goal can be proved using the fact `father_child(tom, sally)`, so the binding `Z = tom` is generated, and the next goal to be proved is the second part of the above conjunction: `parent_child(tom, erica)`.
+[src:mercury-logic/prolog] Again, this can be proved by the corresponding fact.
+[src:mercury-logic/prolog] Since all goals could be proved, the query succeeds.
+[src:mercury-logic/prolog] Since the query contained no variables, no bindings are reported to the user.
+[src:mercury-logic/prolog] enumerates all valid answers on backtracking.
+[src:mercury-logic/prolog] Notice that with the code as stated above, the query `?- sibling(sally, sally).` also succeeds.
+[src:mercury-logic/prolog] One would insert additional goals to describe the relevant restrictions, if desired.
+[src:mercury-logic/prolog] The built-in Prolog predicate `\+/1` provides negation as failure, which allows for non-monotonic reasoning.
+[src:mercury-logic/prolog] is evaluated as follows: Prolog attempts to prove `illegal(X)`.
+[src:mercury-logic/prolog] If a proof for that goal can be found, the original goal (i.e., `\+ illegal(X)`) fails.
+[src:mercury-logic/prolog] If no proof can be found, the original goal succeeds.
+[src:mercury-logic/prolog] Therefore, the `\+/1` prefix operator is called the "not provable" operator, since the query `?- \+ Goal.` succeeds if Goal is not provable.
+[src:mercury-logic/prolog] This kind of negation is sound if its argument is "ground" (i.e. contains no variables).
+[src:mercury-logic/prolog] Soundness is lost if the argument contains variables and the proof procedure is complete.
+[src:mercury-logic/prolog] In particular, the query `?- legal(X).` now cannot be used to enumerate all things that are legal.
+[src:mercury-logic/prolog] In Prolog, loading code is referred to as *consulting*.
+[src:mercury-logic/prolog] Prolog can be used interactively by entering queries at the Prolog prompt `?-`.
+[src:mercury-logic/prolog] If there is no solution, Prolog writes `no`.
+[src:mercury-logic/prolog] If a solution exists then it is printed.
+[src:mercury-logic/prolog] If there are multiple solutions to the query, then these can be requested by entering a semi-colon `;`.
+[src:mercury-logic/prolog] There are guidelines on good programming practice to improve code efficiency, readability and maintainability.
+[src:mercury-logic/prolog] Here follow some example programs written in Prolog.
+[src:mercury-logic/prolog] This comparison shows the prompt ("?-" vs "| ?-") and resolution status ("true". vs "yes", "false". vs "no") can differ from one Prolog implementation to another.
+[src:mercury-logic/prolog] Any computation can be expressed declaratively as a sequence of state transitions.
+[src:mercury-logic/prolog] A design pattern is a general reusable solution to a commonly occurring problem in software design.
+[src:mercury-logic/prolog] Some design patterns in Prolog are skeletons, techniques, cliches, program schemata, logic description schemata, and higher-order programming.
+[src:mercury-logic/prolog] A higher-order predicate is a predicate that takes one or more other predicates as arguments.
+[src:mercury-logic/prolog] Although support for higher-order programming takes Prolog outside the domain of first-order logic, which does not allow quantification over predicates, ISO Prolog now has some built-in higher-order predicates such as `call/1`, `call/2`, `call/3`, `findall/3`, `setof/3`, and `bagof/3`.
+[src:mercury-logic/prolog] To convert solutions from temporal representation (answer substitutions on backtracking) to spatial representation (terms), Prolog has various all-solutions predicates that collect all answer substitutions of a given query in a list.
+[src:mercury-logic/prolog] This can be used for list comprehension.
+[src:mercury-logic/prolog] This can be used to enumerate perfect numbers, and to check if a number is perfect.
+[src:mercury-logic/prolog] When `P` is a predicate that for all `X`, `P(X,Y)` unifies `Y` with a single unique value, `maplist(P, Xs, Ys)` is equivalent to applying the map function in functional programming as `Ys = map(Function, Xs)`.
+[src:mercury-logic/prolog] Higher-order programming style in Prolog was pioneered in HiLog and λProlog.
+[src:mercury-logic/prolog] For programming in the large, Prolog provides a module system, which is in the ISO Standard.
+[src:mercury-logic/prolog] However, while most Prolog systems support structuring the code into modules, virtually no implementation adheres to the modules part of the ISO standard.
+[src:mercury-logic/prolog] Instead, most Prolog systems have decided to support as *de-facto* module standard the Quintus/SICStus module system.
+[src:mercury-logic/prolog] However, further convenience predicates concerning modules are provided by some implementations only and often have subtle differences in their semantics.
+[src:mercury-logic/prolog] Some systems chose to implement module concepts as source-to-source compilation into base ISO Prolog, as is the case of Logtalk.
+[src:mercury-logic/prolog] GNU Prolog initially diverted from ISO modules, opting instead for Contextual Logic Programming, in which unit (module) loading and unloading can be made dynamically.
+[src:mercury-logic/prolog] Ciao designed a strict module system that, while being basically compatible with the *de-facto* standard used by other Prolog systems, is amenable to precise static analysis, supports term hiding, and facilitates programming in the large.
+[src:mercury-logic/prolog] XSB takes a different approach and offers an *atom-based* module system.
+[src:mercury-logic/prolog] The latter two Prolog systems allow controlling the *visibility of terms* in addition to that of predicates.
+[src:mercury-logic/prolog] There is a special notation called definite clause grammars.
+[src:mercury-logic/prolog] A rule defined via `-->/2` instead of `:-/2` is expanded by the preprocessor (`expand_term/2`, a facility analogous to macros in other languages) according to a few straightforward rewriting rules, resulting in ordinary Prolog clauses.
+[src:mercury-logic/prolog] Most notably, the rewriting equips the predicate with two additional arguments, which can be used to implicitly thread state around, analogous to monads in other languages.
+[src:mercury-logic/prolog] Definite clause grammars are often used to write parsers or list generators, as they also provide a convenient interface to difference lists.
+[src:mercury-logic/prolog] Prolog is a homoiconic language and provides many facilities for reflective programming (reflection).
+[src:mercury-logic/prolog] where `true` represents an empty conjunction, and `clause(Head, Body)` unifies with clauses in the database of the form `Head :- Body`.
+[src:mercury-logic/prolog] Since Prolog programs are themselves sequences of Prolog terms (`:-/2` is an infix operator) that are easily read and inspected using built-in mechanisms (like `read/1`), it is possible to write customized interpreters that augment Prolog with domain-specific features.
+[src:mercury-logic/prolog] and clauses represented as `clause_cf(Head, Body, Certainty)`.
+[src:mercury-logic/prolog] Given those, it can be called as `solve(Goal, Certainty)` to execute `Goal` and obtain a measure of certainty about the result.
+[src:mercury-logic/prolog] Pure Prolog is based on a subset of first-order predicate logic, Horn clauses, which is Turing-complete.
+[src:mercury-logic/prolog] This machine performs incrementation by one of a number in unary encoding: It loops over any number of "1" cells and appends an additional "1" at the end.
+[src:mercury-logic/prolog] This illustrates how any computation can be expressed declaratively as a sequence of state transitions, implemented in Prolog as a relation between successive states of interest.
+[src:mercury-logic/prolog] The International Organization for Standardization (ISO) Prolog technical standard consists of two parts.
+[src:mercury-logic/prolog] ISO/IEC 13211-1, published in 1995, aims to standardize the existing practices of the many implementations of the core elements of Prolog.
+[src:mercury-logic/prolog] It has clarified aspects of the language that were previously ambiguous and leads to portable programs.
+[src:mercury-logic/prolog] ISO/IEC 13211-2, published in 2000, adds support for modules to the standard.
+[src:mercury-logic/prolog] The standard is maintained by the ISO/IEC JTC1/SC22/WG17 working group.
+[src:mercury-logic/prolog] ANSI X3J17 is the US Technical Advisory Group for the standard.
+[src:mercury-logic/prolog] For efficiency, Prolog code is typically compiled to abstract machine code, often influenced by the register-based Warren Abstract Machine instruction set.
+[src:mercury-logic/prolog] Some implementations employ abstract interpretation to derive type and mode information of predicates at compile time, or compile to real machine code for high performance.
+[src:mercury-logic/prolog] Devising efficient implementation methods for Prolog code is a field of active research in the logic programming community, and various other execution methods are employed in some implementations.
+[src:mercury-logic/prolog] These include clause binarization and stack-based virtual machines.
+[src:mercury-logic/prolog] Prolog systems typically implement a well-known optimization method called tail call optimization for deterministic predicates exhibiting tail recursion or, more generally, tail calls: A clause's stack frame is discarded before performing a call in a tail position.
+[src:mercury-logic/prolog] Therefore, deterministic tail-recursive predicates are executed with constant stack space, like loops in other languages.
+[src:mercury-logic/prolog] Finding clauses that are unifiable with a term in a query is linear in the number of clauses.
+[src:mercury-logic/prolog] Term indexing uses a data structure that enables sub-linear-time lookups.
+[src:mercury-logic/prolog] Indexing only affects program performance, it does not affect semantics.
+[src:mercury-logic/prolog] Most Prologs only use indexing on the first term, as indexing on all terms is expensive, but techniques based on *field-encoded words* or *superimposed codewords* provide fast indexing across the full query and head.
+[src:mercury-logic/prolog] Some Prolog systems, such as WIN-PROLOG and SWI-Prolog, now implement hashing to help handle large datasets more efficiently.
+[src:mercury-logic/prolog] This tends to yield very large performance gains when working with large corpora such as WordNet.
+[src:mercury-logic/prolog] Some Prolog systems, (B-Prolog, XSB, SWI-Prolog, YAP, and Ciao), implement a memoization method called *tabling*, which frees the user from manually storing intermediate results.
+[src:mercury-logic/prolog] Tabling can be extended in various directions.
+[src:mercury-logic/prolog] It can support recursive predicates through **SLG resolution** or linear tabling.
+[src:mercury-logic/prolog] In a multi-threaded Prolog system tabling results could be kept private to a thread or shared among all threads.
+[src:mercury-logic/prolog] And in incremental tabling, tabling might react to changes.
+[src:mercury-logic/prolog] During the Fifth Generation Computer Systems project, there were attempts to implement Prolog in hardware with the aim of achieving faster execution with dedicated architectures.
+[src:mercury-logic/prolog] Furthermore, Prolog has a number of properties that may allow speed-up through parallel execution.
+[src:mercury-logic/prolog] A more recent approach has been to compile restricted Prolog programs to a field-programmable gate array.
+[src:mercury-logic/prolog] However, rapid progress in general-purpose hardware has consistently overtaken more specialised architectures.
+[src:mercury-logic/prolog] In 1982, computers operated at around 10,000 to 100,000 logical inferences per second (LIPS).
+[src:mercury-logic/prolog] The FGCS planned to produce computers operating at 0.1 to 1 GLIPS.
+[src:mercury-logic/prolog] The Institute for New Generation Computer Technology documents estimated that 1 LIP took about 100 operations on a conventional computer.
+[src:mercury-logic/prolog] The plan was to produce at the end of the project (in 1992) a machine with 1000 processors achieving 1 GLIPS, implying at least 1 MLIPS per processor.
+[src:mercury-logic/prolog] Sega implemented Prolog for use with the Sega AI Computer, released for the Japanese market in 1986.
+[src:mercury-logic/prolog] Prolog was used for reading natural language inputs, in the Japanese language, via a touch pad.
+[src:mercury-logic/prolog] Various implementations have been developed from Prolog to extend logic programming abilities in many directions.
+[src:mercury-logic/prolog] Attempts to introduce and extend Prolog with types began in the 1980s, and continue as of 2008.
+[src:mercury-logic/prolog] Type information is useful not only for type safety but also for reasoning about Prolog programs.
+[src:mercury-logic/prolog] The syntax of Prolog does not specify which arguments of a predicate are inputs and which are outputs.
+[src:mercury-logic/prolog] However, this information is significant and it is recommended that it be included in the comments.
+[src:mercury-logic/prolog] Modes provide valuable information when reasoning about Prolog programs and can also be used to accelerate execution.
+[src:mercury-logic/prolog] Constraint logic programming extends Prolog to include concepts from constraint satisfaction.
+[src:mercury-logic/prolog] A constraint logic program allows constraints in the body of clauses, such as: `A(X,Y) :- X+Y>0.` It is suited to large-scale combinatorial optimisation problems and is thus useful for applications in industrial settings, such as automated time-tabling and production scheduling.
+[src:mercury-logic/prolog] Most Prolog systems ship with at least one constraint solver for finite domains, and often also with solvers for other domains like rational numbers.
+[src:mercury-logic/prolog] Flora-2 is an object-oriented knowledge representation and reasoning system based on F-logic and incorporates HiLog, transaction logic, and defeasible reasoning.
+[src:mercury-logic/prolog] Logtalk is an object-oriented logic programming language that can use most Prolog implementations as a back-end compiler.
+[src:mercury-logic/prolog] As a multi-paradigm language, it includes support for both prototypes and classes.
+[src:mercury-logic/prolog] Oblog is a small, portable, object-oriented extension to Prolog by Margaret McDougall of EdCAAD, University of Edinburgh.
+[src:mercury-logic/prolog] Objlog was a frame-based language combining objects and Prolog II from CNRS, Marseille, France.
+[src:mercury-logic/prolog] Prolog++ was developed by Logic Programming Associates and first released in 1989 for MS-DOS PCs.
+[src:mercury-logic/prolog] Support for other platforms was added, and a second version was released in 1995.
+[src:mercury-logic/prolog] A book about Prolog++ by Chris Moss was published by Addison-Wesley in 1994.
+[src:mercury-logic/prolog] Visual Prolog is a multi-paradigm language with interfaces, classes, implementations and object expressions.
+[src:mercury-logic/prolog] Prolog systems that provide a graphics library are SWI-Prolog, Visual Prolog, WIN-PROLOG, and B-Prolog.
+[src:mercury-logic/prolog] Prolog-MPI is an open-source SWI-Prolog extension for distributed computing over the Message Passing Interface.
+[src:mercury-logic/prolog] Also there are various concurrent Prolog programming languages.
+[src:mercury-logic/prolog] Some Prolog implementations, notably Visual Prolog, SWI-Prolog and Ciao, support server-side web programming with support for web protocols, HTML and XML.
+[src:mercury-logic/prolog] There are also extensions to support semantic web formats such as Resource Description Framework and Web Ontology Language.
+[src:mercury-logic/prolog] Prolog has also been suggested as a client-side language.
+[src:mercury-logic/prolog] In addition, Visual Prolog supports JSON-RPC and Websockets.
+[src:mercury-logic/unification-computer-science] In logic and computer science, specifically automated reasoning, **unification** is an algorithmic process of solving equations between symbolic expressions, each of the form *Left-hand side = Right-hand side*.
+[src:mercury-logic/unification-computer-science] For example, using *x*,*y*,*z* as variables, and taking *f* to be an uninterpreted function, the singleton equation set { *f*(1,*y*) = *f*(*x*,2) } is a syntactic first-order unification problem that has the substitution { *x* ↦ 1, *y* ↦ 2 } as its only solution.
+[src:mercury-logic/unification-computer-science] Conventions differ on what values variables may assume and which expressions are considered equivalent.
+[src:mercury-logic/unification-computer-science] In first-order syntactic unification, variables range over first-order terms and equivalence is syntactic.
+[src:mercury-logic/unification-computer-science] This version of unification has a unique "best" answer and is used in logic programming and programming language type system implementation, especially in Hindley–Milner based type inference algorithms.
+[src:mercury-logic/unification-computer-science] In higher-order unification, possibly restricted to **higher-order pattern unification**, terms may include lambda expressions, and equivalence is up to beta-reduction.
+[src:mercury-logic/unification-computer-science] This version is used in proof assistants and higher-order logic programming, for example Isabelle, Twelf, and lambdaProlog.
+[src:mercury-logic/unification-computer-science] Finally, in semantic unification or E-unification, equality is subject to background knowledge and variables range over a variety of domains.
+[src:mercury-logic/unification-computer-science] This version is used in SMT solvers, term rewriting algorithms, and cryptographic protocol analysis.
+[src:mercury-logic/unification-computer-science] A *unification problem* is a finite set *E*={ *l*1 ≐ *r*1, ..., *l**n* ≐ *r**n* } of equations to solve, where *l**i*, *r**i* are in the set T of *terms* or *expressions*.
+[src:mercury-logic/unification-computer-science] Depending on which expressions or terms are allowed to occur in an equation set or unification problem, and which expressions are considered equal, several frameworks of unification are distinguished.
+[src:mercury-logic/unification-computer-science] If higher-order variables, that is, variables representing functions, are allowed in an expression, the process is called **higher-order unification**, otherwise *first-order unification*.
+[src:mercury-logic/unification-computer-science] If a solution is required to make both sides of each equation literally equal, the process is called **syntactic** or *free* **unification**, otherwise *semantic* or *equational unification*, or **E-unification**, or *unification modulo theory*.
+[src:mercury-logic/unification-computer-science] If the right side of each equation is closed (no free variables), the problem is called (pattern) *matching*.
+[src:mercury-logic/unification-computer-science] The left side (with variables) of each equation is called the *pattern*.
+[src:mercury-logic/unification-computer-science] As an example of how the set of terms and theory affects the set of solutions, the syntactic first-order unification problem { *y* = *cons*(2,*y*) } has no solution over the set of finite terms.
+[src:mercury-logic/unification-computer-science] However, it has the single solution { *y* ↦ *cons*(2,*cons*(2,*cons*(2,...))) } over the set of infinite tree terms.
+[src:mercury-logic/unification-computer-science] Similarly, the semantic first-order unification problem { *a*⋅*x* = *x*⋅*a* } has each substitution of the form { *x* ↦ *a*⋅...⋅*a* } as a solution in a semigroup, i.e. if (⋅) is considered associative.
+[src:mercury-logic/unification-computer-science] But the same problem, viewed in an abelian group, where (⋅) is considered also commutative, has any substitution at all as a solution.
+[src:mercury-logic/unification-computer-science] As an example of higher-order unification, the singleton set { *a* = *y*(*x*) } is a syntactic second-order unification problem, since *y* is a function variable.
+[src:mercury-logic/unification-computer-science] One solution is { *x* ↦ *a*, *y* ↦ (identity function) }; another one is { *y* ↦ (constant function mapping each value to *a*), *x* ↦ *(any value)* }.
+[src:mercury-logic/unification-computer-science] *Applying* that substitution to a term t is written in postfix notation as $t\{x_{1}\mapsto t_{1},...,x_{k}\mapsto t_{k}\}$ ; it means to (simultaneously) replace every occurrence of each variable $x_{i}$ in the term t by $t_{i}$ .
+[src:mercury-logic/unification-computer-science] The result $t\tau$ of applying a substitution $\tau$ to a term t is called an *instance* of that term t .
+[src:mercury-logic/unification-computer-science] If a term t has an instance equivalent to a term u , that is, if $t\sigma \equiv u$ for some substitution $\sigma$ , then t is called *more general* than u , and u is called *more special* than, or *subsumed* by, t .
+[src:mercury-logic/unification-computer-science] For example, $x\oplus a$ is more general than $a\oplus b$ if ⊕ is commutative, since then $(x\oplus a)\{x\mapsto b\}=b\oplus a\equiv a\oplus b$ .
+[src:mercury-logic/unification-computer-science] If ≡ is literal (syntactic) identity of terms, a term may be both more general and more special than another one only if both terms differ just in their variable names, not in their syntactic structure; such terms are called *variants*, or *renamings* of each other.
+[src:mercury-logic/unification-computer-science] The latter term is therefore properly more special than the former one.
+[src:mercury-logic/unification-computer-science] For arbitrary $\equiv$ , a term may be both more general and more special than a structurally different term.
+[src:mercury-logic/unification-computer-science] For example, if ⊕ is idempotent, that is, if always $x\oplus x\equiv x$ , then the term $x\oplus y$ is more general than z , and vice versa, although $x\oplus y$ and z are of different structure.
+[src:mercury-logic/unification-computer-science] A substitution $\sigma$ is *more special* than, or *subsumed* by, a substitution $\tau$ if $t\sigma$ is subsumed by $t\tau$ for each term t .
+[src:mercury-logic/unification-computer-science] We also say that $\tau$ is more general than $\sigma$ .
+[src:mercury-logic/unification-computer-science] More formally, take a nonempty infinite set V of auxiliary variables such that no equation $l_{i}\doteq r_{i}$ in the unification problem contains variables from V .
+[src:mercury-logic/unification-computer-science] Then a substitution $\sigma$ is subsumed by another substitution $\tau$ if there is a substitution $\theta$ such that for all terms $X\notin V$ , $X\sigma \equiv X\tau \theta$ .
+[src:mercury-logic/unification-computer-science] For instance $\{x\mapsto a,y\mapsto a\}$ is subsumed by $\tau =\{x\mapsto y\}$ , using $\theta =\{y\mapsto a\}$ , but $\sigma =\{x\mapsto a\}$ is not subsumed by $\tau =\{x\mapsto y\}$ , as $f(x,y)\sigma =f(a,y)$ is not an instance of $f(x,y)\tau =f(y,y)$ .
+[src:mercury-logic/unification-computer-science] A substitution σ is a *solution* of the unification problem *E* if *l**i*σ ≡ *r**i*σ for $i=1,...,n$ .
+[src:mercury-logic/unification-computer-science] Such a substitution is also called a *unifier* of *E*.
+[src:mercury-logic/unification-computer-science] For a given unification problem *E*, a set *S* of unifiers is called *complete* if each solution substitution is subsumed by some substitution in *S*.
+[src:mercury-logic/unification-computer-science] A complete substitution set always exists (e.g. the set of all solutions), but in some frameworks (such as unrestricted higher-order unification) the problem of determining whether any solution exists (i.e., whether the complete substitution set is nonempty) is undecidable.
+[src:mercury-logic/unification-computer-science] The set *S* is called *minimal* if none of its members subsumes another one.
+[src:mercury-logic/unification-computer-science] Depending on the framework, a complete and minimal substitution set may have zero, one, finitely many, or infinitely many members, or may not exist at all due to an infinite chain of redundant members.
+[src:mercury-logic/unification-computer-science] Thus, in general, unification algorithms compute a finite approximation of the complete set, which may or may not be minimal, although most algorithms avoid redundant unifiers when possible.
+[src:mercury-logic/unification-computer-science] For first-order syntactical unification, Martelli and Montanari gave an algorithm that reports unsolvability or computes a single unifier that by itself forms a complete and minimal substitution set, called the **most general unifier**.
+[src:mercury-logic/unification-computer-science] Jacques Herbrand discussed the basic concepts of unification and sketched an algorithm in 1930.
+[src:mercury-logic/unification-computer-science] But most authors attribute the first unification algorithm to John Alan Robinson (cf. box).
+[src:mercury-logic/unification-computer-science] Robinson's algorithm had worst-case exponential behavior in both time and space.
+[src:mercury-logic/unification-computer-science] Numerous authors have proposed more efficient unification algorithms.
+[src:mercury-logic/unification-computer-science] The following algorithm is commonly presented and originates from Martelli & Montanari (1982).
+[src:mercury-logic/unification-computer-science] A set of this form can be read as a substitution.
+[src:mercury-logic/unification-computer-science] If there is no solution the algorithm terminates with ⊥; other authors use "Ω", or "*fail*" in that case.
+[src:mercury-logic/unification-computer-science] The operation of substituting all occurrences of variable *x* in problem *G* with term *t* is denoted *G* {*x* ↦ *t*}.
+[src:mercury-logic/unification-computer-science] For simplicity, constant symbols are regarded as function symbols having zero arguments.
+[src:mercury-logic/unification-computer-science] An attempt to unify a variable *x* with a term containing *x* as a strict subterm *x* ≐ *f*(..., *x*, ...) would lead to an infinite term as solution for *x*, since *x* would occur as a subterm of itself.
+[src:mercury-logic/unification-computer-science] In the set of (finite) first-order terms as defined above, the equation *x* ≐ *f*(..., *x*, ...) has no solution; hence the *eliminate* rule may only be applied if *x* ∉ *vars*(*t*).
+[src:mercury-logic/unification-computer-science] Since that additional check, called *occurs check*, slows down the algorithm, it is omitted e.g. in most Prolog systems.
+[src:mercury-logic/unification-computer-science] From a theoretical point of view, omitting the check amounts to solving equations over infinite trees, see #Unification of infinite terms below.
+[src:mercury-logic/unification-computer-science] When rule *eliminate* is applied, *n**var* decreases, since *x* is eliminated from *G* and kept only in { *x* ≐ *t* }.
+[src:mercury-logic/unification-computer-science] Applying any other rule can never increase *n**var* again.
+[src:mercury-logic/unification-computer-science] When rule *decompose*, *conflict*, or *swap* is applied, *n**lhs* decreases, since at least the left hand side's outermost *f* disappears.
+[src:mercury-logic/unification-computer-science] Applying any of the remaining rules *delete* or *check* can't increase *n**lhs*, but decreases *n**eqn*.
+[src:mercury-logic/unification-computer-science] Hence, any rule application decreases the triple $\langle n_{var},n_{lhs},n_{eqn}\rangle$ with respect to the lexicographical order, which is possible only a finite number of times.
+[src:mercury-logic/unification-computer-science] Conor McBride observes that "by expressing the structure which unification exploits" in a dependently typed language such as Epigram, Robinson's unification algorithm can be made recursive on the number of variables, in which case a separate termination proof becomes unnecessary.
+[src:mercury-logic/unification-computer-science] In the Prolog syntactical convention a symbol starting with an upper case letter is a variable name; a symbol that starts with a lowercase letter is a function symbol; the comma is used as the logical *and* operator.
+[src:mercury-logic/unification-computer-science] For mathematical notation, *x,y,z* are used as variables, *f,g* as function symbols, and *a,b* as constants.
+[src:mercury-logic/unification-computer-science] The most general unifier of a syntactic first-order unification problem of size n may have a size of 2*n*.
+[src:mercury-logic/unification-computer-science] In order to avoid exponential time complexity caused by such blow-up, advanced unification algorithms work on directed acyclic graphs (dags) rather than trees.
+[src:mercury-logic/unification-computer-science] The concept of unification is one of the main ideas behind logic programming.
+[src:mercury-logic/unification-computer-science] Specifically, unification is a basic building block of resolution, a rule of inference for determining formula satisfiability.
+[src:mercury-logic/unification-computer-science] In Prolog, the equality symbol `=` implies first-order syntactic unification.
+[src:mercury-logic/unification-computer-science] It represents the mechanism of binding the contents of variables and can be viewed as a kind of one-time assignment.
+[src:mercury-logic/unification-computer-science] Two constants can be unified only if they are identical.
+[src:mercury-logic/unification-computer-science] Similarly, a term can be unified with another term if the top function symbols and arities of the terms are identical and if the parameters can be unified simultaneously.
+[src:mercury-logic/unification-computer-science] So for example `1+2 = 3` is not satisfiable because they are syntactically different.
+[src:mercury-logic/unification-computer-science] The use of integer arithmetic constraints `#=` introduces a form of E-unification for which these operations are interpreted and evaluated.
+[src:mercury-logic/unification-computer-science] Type inference algorithms are typically based on unification, particularly Hindley-Milner type inference which is used by the functional languages Haskell and ML.
+[src:mercury-logic/unification-computer-science] For example, when attempting to infer the type of the Haskell expression `True : ['x']`, the compiler will use the type `a -> [a] -> [a]` of the list construction function `(:)`, the type `Bool` of the first argument `True`, and the type `[Char]` of the second argument `['x']`.
+[src:mercury-logic/unification-computer-science] The polymorphic type variable `a` will be unified with `Bool` and the second argument `[a]` will be unified with `[Char]`.
+[src:mercury-logic/unification-computer-science] `a` cannot be both `Bool` and `Char` at the same time, therefore this expression is not correctly typed.
+[src:mercury-logic/unification-computer-science] Two type constants unify only if they are the same type.
+[src:mercury-logic/unification-computer-science] Two type constructions unify only if they are applications of the same type constructor and all of their component types recursively unify.
+[src:mercury-logic/unification-computer-science] Unification has been used in different research areas of computational linguistics.
+[src:mercury-logic/unification-computer-science] After incorporating this algorithm into a clause-based automated theorem prover, he could solve a benchmark problem by translating it into order-sorted logic, thereby boiling it down an order of magnitude, as many unary predicates turned into sorts.
+[src:mercury-logic/unification-computer-science] Smolka generalized order-sorted logic to allow for parametric polymorphism.
+[src:mercury-logic/unification-computer-science] In his framework, subsort declarations are propagated to complex type expressions.
+[src:mercury-logic/unification-computer-science] Schmidt-Schauß generalized order-sorted logic to allow for term declarations.
+[src:mercury-logic/unification-computer-science] As an example, assuming subsort declarations *even* ⊆ *int* and *odd* ⊆ *int*, a term declaration like ∀ *i* : *int*.
+[src:mercury-logic/unification-computer-science] (*i* + *i*) : *even* allows to declare a property of integer addition that could not be expressed by ordinary overloading.
+[src:mercury-logic/unification-computer-science] For example, if a and b are distinct constants, the equation ⁠ $x*a\doteq y*b$ ⁠ has no solution with respect to purely syntactic unification, where nothing is known about the operator ⁠ * ⁠.
+[src:mercury-logic/unification-computer-science] The background knowledge *E* could state the commutativity of ⁠ * ⁠ by the universal equality "⁠ $u*v=v*u$ ⁠ for all *u*, *v*".
+[src:mercury-logic/unification-computer-science] It is said that *unification is decidable* for a theory, if a unification algorithm has been devised for it that terminates for *any* input problem.
+[src:mercury-logic/unification-computer-science] It is said that *unification is semi-decidable* for a theory, if a unification algorithm has been devised for it that terminates for any *solvable* input problem, but may keep searching forever for solutions of an unsolvable input problem.
+[src:mercury-logic/unification-computer-science] If there is a convergent term rewriting system *R* available for *E*, the *one-sided paramodulation* algorithm can be used to enumerate all solutions of given equations.
+[src:mercury-logic/unification-computer-science] Starting with *G* being the unification problem to be solved and *S* being the identity substitution, rules are applied nondeterministically until the empty set appears as the actual *G*, in which case the actual *S* is a unifying substitution.
+[src:mercury-logic/unification-computer-science] Depending on the order the paramodulation rules are applied, on the choice of the actual equation from *G*, and on the choice of *R*'s rules in *mutate*, different computations paths are possible.
+[src:mercury-logic/unification-computer-science] Only some lead to a solution, while others end at a *G* ≠ {} where no further rule is applicable (e.g.
+[src:mercury-logic/unification-computer-science] For an example, a term rewrite system *R* is used defining the *append* operator of lists built from *cons* and *nil*; where *cons*(*x*,*y*) is written in infix notation as *x*.*y* for brevity; e.g.
+[src:mercury-logic/unification-computer-science] The equational theory *E* corresponding to *R* is the congruence closure of *R*, both viewed as binary relations on terms.
+[src:mercury-logic/unification-computer-science] The paramodulation algorithm enumerates solutions to equations with respect to that *E* when fed with the example *R*.
+[src:mercury-logic/unification-computer-science] A successful example computation path for the unification problem { *app*(*x*,*app*(*y*,*x*)) ≐ *a*.*a*.*nil* } is shown below.
+[src:mercury-logic/unification-computer-science] To avoid variable name clashes, rewrite rules are consistently renamed each time before their use by rule *mutate*; *v*2, *v*3, ... are computer-generated variable names for this purpose.
+[src:mercury-logic/unification-computer-science] In each line, the chosen equation from *G* is highlighted in red.
+[src:mercury-logic/unification-computer-science] Each time the *mutate* rule is applied, the chosen rewrite rule (*1* or *2*) is indicated in parentheses.
+[src:mercury-logic/unification-computer-science] From the last line, the unifying substitution *S* = { *y* ↦ *nil*, *x* ↦ *a*.*nil* } can be obtained.
+[src:mercury-logic/unification-computer-science] A second successful computation path, obtainable by choosing "mutate(1), mutate(2), mutate(2), mutate(1)" leads to the substitution *S* = { *y* ↦ *a*.*a*.*nil*, *x* ↦ *nil* }; it is not shown here.
+[src:mercury-logic/unification-computer-science] If *R* is a convergent term rewriting system for *E*, an approach alternative to the previous section consists in successive application of "**narrowing** steps"; this will eventually enumerate all solutions of a given equation.
+[src:mercury-logic/unification-computer-science] The situation that *s* can be narrowed to *t* is commonly denoted as *s* ↝ *t*.
+[src:mercury-logic/unification-computer-science] Intuitively, a sequence of narrowing steps *t*1 ↝ *t*2 ↝ ... ↝ *t**n* can be thought of as a sequence of rewrite steps *t*1 → *t*2 → ... → *t**n*, but with the initial term *t*1 being further and further instantiated, as necessary to make each of the used rules applicable.
+[src:mercury-logic/unification-computer-science] The last term, *v*2.*v*2.*nil* can be syntactically unified with the original right hand side term *a*.*a*.*nil*.
+[src:mercury-logic/unification-computer-science] The *narrowing lemma* ensures that whenever an instance of a term *s* can be rewritten to a term *t* by a convergent term rewriting system, then *s* and *t* can be narrowed and rewritten to a term *s*′ and *t*′, respectively, such that *t*′ is an instance of *s*′.
+[src:mercury-logic/unification-computer-science] Formally: whenever *sσ* →∗ *t* holds for some substitution σ, then there exist terms *s*′, *t*′ such that *s* ↝∗ *s*′ and *t* →∗ *t*′ and *s*′ *τ* = *t*′ for some substitution τ.
+[src:mercury-logic/unification-computer-science] Many applications require one to consider the unification of typed lambda-terms instead of first-order terms.
+[src:mercury-logic/unification-computer-science] Such unification is often called *higher-order unification*.
+[src:mercury-logic/unification-computer-science] Higher-order unification is undecidable, and such unification problems do not have most general unifiers.
+[src:mercury-logic/unification-computer-science] A well studied branch of higher-order unification is the problem of unifying simply typed lambda terms modulo the equality determined by αβη conversions.
+[src:mercury-logic/unification-computer-science] Gérard Huet gave a semi-decidable (pre-)unification algorithm that allows a systematic search of the space of unifiers (generalizing the unification algorithm of Martelli-Montanari with rules for terms containing higher-order variables) that seems to work sufficiently well in practice.
+[src:mercury-logic/unification-computer-science] Huet and Gilles Dowek have written articles surveying this topic.
+[src:mercury-logic/unification-computer-science] Several subsets of higher-order unification are well-behaved, in that they are decidable and have a most-general unifier for solvable problems.
+[src:mercury-logic/unification-computer-science] One such subset is the previously described first-order terms.
+[src:mercury-logic/unification-computer-science] **Higher-order pattern unification**, due to Dale Miller, is another such subset.
+[src:mercury-logic/unification-computer-science] A superset of pattern unification called functions-as-constructors unification is also well-behaved.
+[src:mercury-logic/unification-computer-science] The Zipperposition theorem prover has an algorithm integrating these well-behaved subsets into a full higher-order unification algorithm.
+[src:mercury-logic/unification-computer-science] In computational linguistics, one of the most influential theories of elliptical construction is that ellipses are represented by free variables whose values are then determined using Higher-Order Unification.
+[src:mercury-logic/unification-computer-science] For instance, the semantic representation of "Jon likes Mary and Peter does too" is like(*j*, *m*) ∧ R(*p*) and the value of R (the semantic representation of the ellipsis) is determined by the equation like(*j*, *m*) = R(*j*) .
+[src:mercury-logic/unification-computer-science] The process of solving such equations is called Higher-Order Unification.
+[src:mercury-logic/unification-computer-science] Wayne Snyder gave a generalization of both higher-order unification and E-unification, i.e. an algorithm to unify lambda-terms modulo an equational theory.

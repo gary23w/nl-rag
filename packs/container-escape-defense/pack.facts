@@ -1,0 +1,490 @@
+# nl-rag distilled facts — domain: container-escape-defense
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:container-escape-defense/cgroups] Engineers at Google started the work on this feature in 2006 under the name "process containers".
+[src:container-escape-defense/cgroups] In late 2007, the nomenclature changed to "control groups" to avoid confusion caused by multiple meanings of the term "container" in the Linux kernel context, and the control groups functionality was merged into the Linux kernel mainline in kernel version 2.6.24, which was released in January 2008.
+[src:container-escape-defense/cgroups] Since then, developers have added controllers for the kernel's own memory allocation, netfilter firewalling, the OOM killer, and many other parts.
+[src:container-escape-defense/cgroups] A major change in the history of cgroups is **cgroup v2**, which removes the ability to use multiple process hierarchies and to discriminate between threads as found in the original cgroup (now called "v1").
+[src:container-escape-defense/cgroups] Work on the single, unified hierarchy started with the repurposing of v1's dummy hierarchy as a place for holding all controllers not yet used by others in 2014. cgroup v2 was merged in Linux kernel 4.5 (2016).
+[src:container-escape-defense/cgroups] One of the design goals of cgroups is to provide a unified interface to many different use cases, from controlling single processes (by using nice, for example) to full operating system-level virtualization (as provided by OpenVZ, Linux-VServer or LXC, for example).
+[src:container-escape-defense/cgroups] A control group (abbreviated as cgroup) is a collection of processes that are bound by the same criteria and associated with a set of parameters or limits.
+[src:container-escape-defense/cgroups] These groups can be hierarchical, meaning that each group inherits limits from its parent group.
+[src:container-escape-defense/cgroups] The kernel provides access to multiple controllers (also called subsystems) through the cgroup interface; for example, the "memory" controller limits memory use, "cpuacct" accounts CPU usage, etc.
+[src:container-escape-defense/cgroups] The Linux kernel documentation contains some technical details of the setup and use of control groups version 1 and version 2.
+[src:container-escape-defense/cgroups] Both versions of cgroup act through a pseudo-filesystem (`cgroup` for v1 and `cgroup2` for v2).
+[src:container-escape-defense/cgroups] Like all filesystems they can be mounted on any path, but the general convention is to mount one of the versions (generally v2) on `/sys/fs/cgroup` under the sysfs default location of `/sys`.
+[src:container-escape-defense/cgroups] As mentioned before the two cgroup versions can be active at the same time; this too applies to the filesystems so long as they are mounted to a different path.
+[src:container-escape-defense/cgroups] For the description below we assume a setup where the v2 hierarchy lies in `/sys/fs/cgroup`.
+[src:container-escape-defense/cgroups] The v1 hierarchy, if ever required, will be mounted at a different location.
+[src:container-escape-defense/cgroups] At initialization cgroup2 should have no defined control groups except the top-level one.
+[src:container-escape-defense/cgroups] In other words, `/sys/fs/cgroup` should have no directories, only a number of files that control the system as a whole.
+[src:container-escape-defense/cgroups] These files are named according to the controllers that handle them.
+[src:container-escape-defense/cgroups] For example, `cgroup.*` deal with the cgroup system itself and `memory.*` deal with the memory subsystem.
+[src:container-escape-defense/cgroups] Example: to request the kernel to 1 gigabyte of memory from anywhere in the system, one can run `echo "1G swappiness=50" > /sys/fs/cgroup/memory.reclaim`.
+[src:container-escape-defense/cgroups] To create a subgroup, one simply creates a new directory under an existing group (including the top-level one).
+[src:container-escape-defense/cgroups] The files corresponding to available controls for this group are automatically created.
+[src:container-escape-defense/cgroups] For example, running `mkdir /sys/fs/cgroup/example; ls /sys/fs/cgroup/example` would produce a list of files largely similar to the one above, but with noticeable changes.
+[src:container-escape-defense/cgroups] These changes are not unexpected because some controls and statistics only make sense on a subset of processes (e.g. nice level being the CPU priority of processes relative to the rest of the system).
+[src:container-escape-defense/cgroups] Processes are assigned to subgroups by writing to `/proc/<PID>/cgroup`.
+[src:container-escape-defense/cgroups] The cgroup a process is in can be found by reading the same file.
+[src:container-escape-defense/cgroups] On systems based on systemd, a hierarchy of subgroups is predefined to encapsulate every process directly and indirectly launched by systemd under a subgroup: the very basis of how systemd manages processes.
+[src:container-escape-defense/cgroups] An explanation of the nomenclature of these groups can be found in the Red Hat Enterprise Linux 7 manual.
+[src:container-escape-defense/cgroups] Red Hat also provides a guide on creating a systemd service file that causes a process to run in a separate cgroup.
+[src:container-escape-defense/cgroups] `systemd-cgtop` command can be used to show top control groups by their resource usage.
+[src:container-escape-defense/cgroups] On a system with v2, v1 can still be mounted and given access to controllers *not* in use by v2.
+[src:container-escape-defense/cgroups] However, a modern system typically already places all controllers in use in v2, so there is no controller available for v1 at all even if a hierarchy is created.
+[src:container-escape-defense/cgroups] It is possible to clear all uses of a controller from v2 and hand it to v1, but moving controllers between hierarchies after the system is up and running is cumbersome and not recommended.
+[src:container-escape-defense/cgroups] Redesign of cgroups started in 2013, with additional changes brought by versions 3.15 and 3.16 of the Linux kernel.
+[src:container-escape-defense/cgroups] The following changes concern the kernel before 4.5/4.6, i.e. when cgroups-v2 were added.
+[src:container-escape-defense/cgroups] In other words they describe how cgroups-v1 had been changed, though most of them have also been inherited into v2 (after all, v1 and v2 share the same codebase).
+[src:container-escape-defense/cgroups] While not technically part of the cgroups work, a related feature of the Linux kernel is *namespace isolation*, where groups of processes are separated such that they cannot "see" resources in other groups.
+[src:container-escape-defense/cgroups] For example, a PID namespace provides a separate enumeration of process identifiers within each namespace.
+[src:container-escape-defense/cgroups] Also available are mount, user, UTS (Unix Time Sharing), network and SysV IPC namespaces.
+[src:container-escape-defense/cgroups] Namespaces are created with the "unshare" command or syscall, or as "new" flags in a "clone" syscall.
+[src:container-escape-defense/cgroups] The "ns" subsystem was added early in cgroups development to integrate namespaces and control groups.
+[src:container-escape-defense/cgroups] If the "ns" cgroup was mounted, each namespace would also create a new group in the cgroup hierarchy.
+[src:container-escape-defense/cgroups] This was an experiment that was later judged to be a poor fit for the cgroups API, and removed from the kernel.
+[src:container-escape-defense/cgroups] Linux namespaces were inspired by the more general namespace functionality used heavily throughout Plan 9 from Bell Labs.
+[src:container-escape-defense/cgroups] Kernfs was introduced into the Linux kernel with version 3.14 in March 2014, the main author being Tejun Heo.
+[src:container-escape-defense/cgroups] One of the main motivators for a separate kernfs is the cgroups file system.
+[src:container-escape-defense/cgroups] Kernfs is basically created by splitting off some of the sysfs logic into an independent entity, thus easing for other kernel subsystems the implementation of their own virtual file system with handling for device connect and disconnect, dynamic creation and removal, and other attributes.
+[src:container-escape-defense/cgroups] This does not affect how cgroups is used, but makes maintaining the code easier.
+[src:container-escape-defense/cgroups] Support for per-group netfilter setup was added in 2014.
+[src:container-escape-defense/cgroups] The unified hierarchy was added in 2014.
+[src:container-escape-defense/cgroups] It repurposes of v1's dummy hierarchy to hold all controllers not yet used by others.
+[src:container-escape-defense/cgroups] This changed dummy hierarchy would become the only available hierarchy in v2.
+[src:container-escape-defense/cgroups] Unlike v1, cgroup v2 has only a single process hierarchy and discriminates between processes, not threads.
+[src:container-escape-defense/cgroups] Linux Kernel 4.19 (October 2018) introduced cgroup awareness of OOM killer implementation which adds an ability to kill a cgroup as a single unit and so guarantee the integrity of the workload.
+[src:container-escape-defense/cgroups] Various projects use cgroups as their basis, including CoreOS, Docker (in 2013), Hadoop, Jelastic, Kubernetes, lmctfy (Let Me Contain That For You), LXC (Linux Containers), systemd, Mesos and Mesosphere, HTCondor, and Flatpak.
+[src:container-escape-defense/cgroups] Major Linux distributions also adopted it such as Red Hat Enterprise Linux (RHEL) 6.0 in November 2010, three years before adoption by the mainline Linux kernel.
+[src:container-escape-defense/cgroups] On 29 October 2019, the Fedora Project modified Fedora 31 to use CgroupsV2 by default.
+[src:container-escape-defense/kernel-operating-system-p01] A **kernel** is a computer program at the core of a computer's operating system that always has complete control over everything in the system.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel is also responsible for preventing and mitigating conflicts between different processes.
+[src:container-escape-defense/kernel-operating-system-p01] It is the portion of the operating system that is always resident in memory and facilitates interactions between hardware and software components.
+[src:container-escape-defense/kernel-operating-system-p01] A full kernel controls all hardware resources (e.g.
+[src:container-escape-defense/kernel-operating-system-p01] I/O, memory, cryptography) via device drivers, arbitrates conflicts between processes concerning such resources, and optimizes the use of common resources, such as CPU, cache, file systems, and network sockets.
+[src:container-escape-defense/kernel-operating-system-p01] On most systems, the kernel is one of the first programs loaded on startup (after the bootloader).
+[src:container-escape-defense/kernel-operating-system-p01] It handles the rest of startup as well as memory, peripherals, and input/output (I/O) requests from software, translating them into data-processing instructions for the central processing unit.
+[src:container-escape-defense/kernel-operating-system-p01] The critical code of the kernel is usually loaded into a separate area of memory, which is protected from access by application software or other less critical parts of the operating system.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel performs its tasks, such as scheduling processes, managing hardware devices such as the hard disk, and handling interrupts, in this protected kernel space.
+[src:container-escape-defense/kernel-operating-system-p01] In contrast, application programs such as browsers, word processors, or audio or video players use a separate area of memory, user space.
+[src:container-escape-defense/kernel-operating-system-p01] This prevents user data and kernel data from interfering with each other and causing instability and slowness, as well as preventing malfunctioning applications from affecting other applications or crashing the entire operating system.
+[src:container-escape-defense/kernel-operating-system-p01] Even in systems where the kernel is included in application address spaces, memory protection is used to prevent unauthorized applications from modifying the kernel.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel's interface is a low-level abstraction layer.
+[src:container-escape-defense/kernel-operating-system-p01] When a process requests a service from the kernel, it must invoke a system call, usually through a wrapper function.
+[src:container-escape-defense/kernel-operating-system-p01] There are different kernel architecture designs.
+[src:container-escape-defense/kernel-operating-system-p01] Monolithic kernels run entirely in a single address space with the CPU executing in supervisor mode, mainly for speed.
+[src:container-escape-defense/kernel-operating-system-p01] Microkernels run most but not all of their services in user space, like user processes do, mainly for resilience and modularity.
+[src:container-escape-defense/kernel-operating-system-p01] MINIX 3 is a notable example of microkernel design.
+[src:container-escape-defense/kernel-operating-system-p01] Some kernels, such as the Linux kernel, are both monolithic and modular, since they can insert and remove loadable kernel modules at runtime.
+[src:container-escape-defense/kernel-operating-system-p01] This central component of a computer system is responsible for executing programs.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel takes responsibility for deciding at any time which of the many running programs should be allocated to the processor or processors.
+[src:container-escape-defense/kernel-operating-system-p01] Random-access memory (RAM) is used to store both program instructions and data.
+[src:container-escape-defense/kernel-operating-system-p01] Typically, both need to be present in memory for a program to execute.
+[src:container-escape-defense/kernel-operating-system-p01] Often, multiple programs will want memory access, frequently demanding more memory than the computer has available.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel is responsible for deciding which memory each process can use, and determining what to do when insufficient memory is available.
+[src:container-escape-defense/kernel-operating-system-p01] I/O devices include, but are not limited to, peripherals such as keyboards, mice, disk drives, printers, USB devices, network adapters, and display devices.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel provides convenient methods for applications to use these devices, which are typically abstracted by the kernel so that applications do not need to know their implementation details.
+[src:container-escape-defense/kernel-operating-system-p01] Key aspects necessary in resource management are defining the execution domain (address space) and the protection mechanism used to mediate access to the resources within a domain.
+[src:container-escape-defense/kernel-operating-system-p01] Kernels also provide methods for synchronization and inter-process communication (IPC).
+[src:container-escape-defense/kernel-operating-system-p01] These implementations may be located within the kernel itself or the kernel can also rely on other processes it is running.
+[src:container-escape-defense/kernel-operating-system-p01] Although the kernel must provide IPC in order to provide access to the facilities provided by each other, kernels must also provide running programs with a method to make requests to access these facilities.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel is also responsible for context switching between processes or threads.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel has full access to the system's memory and must allow processes to safely access this memory as they require it.
+[src:container-escape-defense/kernel-operating-system-p01] Often the first step in doing this is virtual addressing, usually achieved by paging and/or segmentation.
+[src:container-escape-defense/kernel-operating-system-p01] Virtual addressing allows the kernel to make a given physical address appear to be another address, the virtual address.
+[src:container-escape-defense/kernel-operating-system-p01] Virtual address spaces may be different for different processes; the memory that one process accesses at a particular (virtual) address may be different memory from what another process accesses at the same address.
+[src:container-escape-defense/kernel-operating-system-p01] This allows every program to behave as if it is the only one (apart from the kernel) running and thus prevents applications from crashing each other.
+[src:container-escape-defense/kernel-operating-system-p01] On many systems, a program's virtual address may refer to data that is not currently in memory.
+[src:container-escape-defense/kernel-operating-system-p01] The layer of indirection provided by virtual addressing allows the operating system to use other data stores, like a hard drive, to store what would otherwise have to remain in main memory (RAM).
+[src:container-escape-defense/kernel-operating-system-p01] As a result, operating systems can allow programs to use more memory than the system has physically available.
+[src:container-escape-defense/kernel-operating-system-p01] When a program needs data that is not currently in RAM, the CPU signals to the kernel that this has happened, and the kernel responds by writing the contents of an inactive memory block to disk (if necessary) and replacing it with the data requested by the program.
+[src:container-escape-defense/kernel-operating-system-p01] The program can then be resumed from the point where it was stopped.
+[src:container-escape-defense/kernel-operating-system-p01] This scheme is generally known as demand paging.
+[src:container-escape-defense/kernel-operating-system-p01] Virtual addressing also allows creation of virtual partitions of memory in two disjoint areas, one being reserved for the kernel (kernel space) and the other for the applications (user space).
+[src:container-escape-defense/kernel-operating-system-p01] The applications are not permitted by the processor to address kernel memory, thus preventing an application from damaging the running kernel.
+[src:container-escape-defense/kernel-operating-system-p01] This fundamental partition of memory space has contributed much to the current designs of actual general-purpose kernels and is almost universal in such systems, although some research kernels (e.g., Singularity) take other approaches.
+[src:container-escape-defense/kernel-operating-system-p01] To perform useful functions, processes need access to the peripherals connected to the computer, which are controlled by the kernel through device drivers.
+[src:container-escape-defense/kernel-operating-system-p01] A device driver is a computer program encapsulating, monitoring and controlling a hardware device (via its hardware/software interface (HSI)) on behalf of the OS.
+[src:container-escape-defense/kernel-operating-system-p01] It provides the operating system with an API, procedures and information about how to control and communicate with a certain piece of hardware.
+[src:container-escape-defense/kernel-operating-system-p01] Device drivers are an important and vital dependency for all OS and their applications.
+[src:container-escape-defense/kernel-operating-system-p01] The design goal of a driver is abstraction; the function of the driver is to translate the OS-mandated abstract function calls (programming calls) into device-specific calls.
+[src:container-escape-defense/kernel-operating-system-p01] In theory, a device should work correctly with a suitable driver.
+[src:container-escape-defense/kernel-operating-system-p01] Device drivers are used for e.g. host adapters, video cards, sound cards, printers, scanners, modems, and network interface controllers.
+[src:container-escape-defense/kernel-operating-system-p01] For example, to show the user something on the screen, an application would make a request to the kernel, which would forward the request to its display driver, which is then responsible for actually plotting the character/pixel.
+[src:container-escape-defense/kernel-operating-system-p01] A kernel must maintain a list of available devices.
+[src:container-escape-defense/kernel-operating-system-p01] In plug-and-play systems, a device manager first performs a scan on different peripheral buses, such as Peripheral Component Interconnect (PCI) or Universal Serial Bus (USB), to detect installed devices, then searches for the appropriate drivers.
+[src:container-escape-defense/kernel-operating-system-p01] As device management is a very OS-specific topic, these drivers are handled differently by each kind of kernel design, but in every case, the kernel has to provide the I/O to allow drivers to physically access their devices through some port or memory location.
+[src:container-escape-defense/kernel-operating-system-p01] Important decisions have to be made when designing the device management system, as in some designs accesses may involve context switches, making the operation very CPU-intensive and easily causing a significant performance overhead.
+[src:container-escape-defense/kernel-operating-system-p01] In computing, a system call is how a process requests a service from an operating system's kernel that it does not normally have permission to run.
+[src:container-escape-defense/kernel-operating-system-p01] System calls provide the interface between a process and the operating system.
+[src:container-escape-defense/kernel-operating-system-p01] Most operations interacting with the system require permissions not available to a user-level process, e.g., I/O performed with a device present on the system, or any form of communication with other processes requires the use of system calls.
+[src:container-escape-defense/kernel-operating-system-p01] A system call is a mechanism that is used by the application program to request a service from the operating system.
+[src:container-escape-defense/kernel-operating-system-p01] They use a machine-code instruction that causes the processor to change mode.
+[src:container-escape-defense/kernel-operating-system-p01] An example would be from supervisor mode to protected mode.
+[src:container-escape-defense/kernel-operating-system-p01] This is where the operating system performs actions like accessing hardware devices or the memory management unit.
+[src:container-escape-defense/kernel-operating-system-p01] Generally the operating system provides a library that sits between the operating system and normal user programs.
+[src:container-escape-defense/kernel-operating-system-p01] Usually it is a C library such as Glibc or Windows API.
+[src:container-escape-defense/kernel-operating-system-p01] The library handles the low-level details of passing information to the kernel and switching to supervisor mode.
+[src:container-escape-defense/kernel-operating-system-p01] System calls include close, open, read, wait and write.
+[src:container-escape-defense/kernel-operating-system-p01] To actually perform useful work, a process must be able to access the services provided by the kernel.
+[src:container-escape-defense/kernel-operating-system-p01] This is implemented differently by each kernel, but most provide a C library or an API, which in turn invokes the related kernel functions.
+[src:container-escape-defense/kernel-operating-system-p01] The method of invoking the kernel function varies from kernel to kernel.
+[src:container-escape-defense/kernel-operating-system-p01] If memory isolation is in use, it is impossible for a user process to call the kernel directly, because that would be a violation of the processor's access control rules.
+[src:container-escape-defense/kernel-operating-system-p01] An important consideration in the design of a kernel is the support it provides for protection from faults (fault tolerance) and from malicious behaviours (security).
+[src:container-escape-defense/kernel-operating-system-p01] These two aspects are usually not clearly distinguished, and the adoption of this distinction in the kernel design leads to the rejection of a hierarchical structure for protection.
+[src:container-escape-defense/kernel-operating-system-p01] Support for hierarchical protection domains is typically implemented using CPU modes.
+[src:container-escape-defense/kernel-operating-system-p01] Many kernels implement "capabilities", i.e., objects provided to user code that allow limited access to an underlying object managed by the kernel.
+[src:container-escape-defense/kernel-operating-system-p01] A common example is file handling: a file is a representation of information stored on a permanent storage device.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel may be able to perform many different operations, including read, write, delete or execute, but a user-level application may only be permitted to perform some of these operations (e.g., it may only be allowed to read the file).
+[src:container-escape-defense/kernel-operating-system-p01] A common implementation of this is for the kernel to provide an object to the application (typically called a "file handle") that the application may then invoke operations on, the validity of which the kernel checks at the time the operation is requested.
+[src:container-escape-defense/kernel-operating-system-p01] Such a system may be extended to cover all objects that the kernel manages, and indeed to objects provided by other user applications.
+[src:container-escape-defense/kernel-operating-system-p01] An efficient and simple way to provide hardware support of capabilities is to delegate to the memory management unit (MMU) the responsibility of checking access-rights for every memory access, a mechanism called capability-based addressing.
+[src:container-escape-defense/kernel-operating-system-p01] Most commercial computer architectures lack such MMU support for capabilities; the Capability Hardware Enhanced RISC Instructions (CHERI) project is developing capability-based mechanisms for several architectures.
+[src:container-escape-defense/kernel-operating-system-p01] An alternative approach is to simulate capabilities using commonly supported hierarchical domains.
+[src:container-escape-defense/kernel-operating-system-p01] In this approach, each protected object must reside in an address space that the application does not have access to; the kernel also maintains a list of capabilities in such memory.
+[src:container-escape-defense/kernel-operating-system-p01] The performance cost of address space switching limits the practicality of this approach in systems with complex interactions between objects, but it is used in current operating systems for objects that are not accessed frequently or that are not expected to perform quickly.
+[src:container-escape-defense/kernel-operating-system-p01] If the firmware does not support protection mechanisms, it is possible to simulate protection at a higher level, for example by simulating capabilities by manipulating page tables, but there are performance implications.
+[src:container-escape-defense/kernel-operating-system-p01] Lack of hardware support may not be an issue, however, for systems that choose to use language-based protection.
+[src:container-escape-defense/kernel-operating-system-p01] An important kernel design decision is the choice of the abstraction levels where the security mechanisms and policies should be implemented.
+[src:container-escape-defense/kernel-operating-system-p01] Kernel security mechanisms play a critical role in supporting security at higher levels.
+[src:container-escape-defense/kernel-operating-system-p01] One approach is to use firmware and kernel support for fault tolerance (see above), and build the security policy for malicious behavior on top of that (adding features such as cryptography mechanisms where necessary), delegating some responsibility to the compiler.
+[src:container-escape-defense/kernel-operating-system-p01] Approaches that delegate enforcement of security policy to the compiler and/or the application level are often called *language-based security*.
+[src:container-escape-defense/kernel-operating-system-p01] The lack of many critical security mechanisms in current mainstream operating systems impedes the implementation of adequate security policies at the application abstraction level.
+[src:container-escape-defense/kernel-operating-system-p01] In fact, a common misconception in computer security is that any security policy can be implemented in an application regardless of kernel support.
+[src:container-escape-defense/kernel-operating-system-p01] According to Mars Research Group developers, a lack of isolation is one of the main factors undermining kernel security.
+[src:container-escape-defense/kernel-operating-system-p01] They propose their driver isolation framework for protection, primarily in the Linux kernel.
+[src:container-escape-defense/kernel-operating-system-p01] Typical computer systems today use hardware-enforced rules about what programs are allowed to access what data.
+[src:container-escape-defense/kernel-operating-system-p01] The processor monitors the execution and stops a program that violates a rule, such as a user process that tries to write to kernel memory.
+[src:container-escape-defense/kernel-operating-system-p01] In systems that lack support for capabilities, processes are isolated from each other by using separate address spaces.
+[src:container-escape-defense/kernel-operating-system-p01] Calls from user processes into the kernel are regulated by requiring them to use one of the above-described system call methods.
+[src:container-escape-defense/kernel-operating-system-p01] An alternative approach is to use language-based protection.
+[src:container-escape-defense/kernel-operating-system-p01] In a language-based protection system, the kernel will only allow code to execute that has been produced by a trusted language compiler.
+[src:container-escape-defense/kernel-operating-system-p01] The language may then be designed such that it is impossible for the programmer to instruct it to do something that will violate a security requirement.
+[src:container-escape-defense/kernel-operating-system-p01] Examples of systems with language-based protection include JX and Microsoft's Singularity.
+[src:container-escape-defense/kernel-operating-system-p01] Edsger Dijkstra proved that from a logical point of view, atomic lock and unlock operations operating on binary semaphores are sufficient primitives to express any functionality of process cooperation.
+[src:container-escape-defense/kernel-operating-system-p01] Nonetheless, this approach is generally held to be lacking in terms of safety and efficiency, whereas a message passing approach is more flexible.
+[src:container-escape-defense/kernel-operating-system-p01] A number of other approaches (either lower- or higher-level) are available as well, with many modern kernels providing support for systems such as shared memory and remote procedure calls.
+[src:container-escape-defense/kernel-operating-system-p01] The idea of a kernel where I/O devices are handled uniformly with other processes, as parallel co-operating processes, was first proposed and implemented by Brinch Hansen (although similar ideas were suggested in 1967).
+[src:container-escape-defense/kernel-operating-system-p01] In Hansen's description of this, the "common" processes are called *internal processes*, while the I/O devices are called *external processes*.
+[src:container-escape-defense/kernel-operating-system-p01] Similar to physical memory, allowing applications direct access to controller ports and registers can cause the controller to malfunction, or system to crash.
+[src:container-escape-defense/kernel-operating-system-p01] With this, depending on the complexity of the device, some devices can get surprisingly complex to program, and use several different controllers.
+[src:container-escape-defense/kernel-operating-system-p01] Because of this, providing a more abstract interface to manage the device is important.
+[src:container-escape-defense/kernel-operating-system-p01] This interface is normally done by a device driver or hardware abstraction layer.
+[src:container-escape-defense/kernel-operating-system-p01] Frequently, applications will require access to these devices.
+[src:container-escape-defense/kernel-operating-system-p01] The kernel must maintain the list of these devices by querying the system for them in some way.
+[src:container-escape-defense/kernel-operating-system-p01] This can be done through the BIOS, or through one of the various system buses (such as PCI/PCIE, or USB).
+[src:container-escape-defense/kernel-operating-system-p01] Using an example of a video driver, when an application requests an operation on a device, such as displaying a character, the kernel needs to send this request to the current active video driver.
+[src:container-escape-defense/kernel-operating-system-p01] The video driver, in turn, needs to carry out this request.
+[src:container-escape-defense/kernel-operating-system-p01] This is an example of inter-process communication (IPC).
+[src:container-escape-defense/kernel-operating-system-p01] The above listed tasks and features can be provided in many ways that differ from each other in design and implementation.
+[src:container-escape-defense/kernel-operating-system-p01] The principle of *separation of mechanism and policy* is the substantial difference between the two main philosophies of microkernels and monolithic kernels.
+[src:container-escape-defense/kernel-operating-system-p01] Here a *mechanism* is the support that allows the implementation of many different policies, while a *policy* is a particular "mode of operation".
+[src:container-escape-defense/kernel-operating-system-p01] Because the mechanism and policy are separated, the policy can be easily changed to, e.g., require the use of a security token.
+[src:container-escape-defense/kernel-operating-system-p01] A monolithic kernel instead tends to include many policies, therefore restricting the rest of the system to rely on them.
+[src:container-escape-defense/kernel-operating-system-p01] Computer scientist Per Brinch Hansen argued in favour of separation of mechanism and policy.
+[src:container-escape-defense/kernel-operating-system-p01] The failure to properly fulfill this separation is one of the major causes of the lack of substantial innovation in existing operating systems, a problem common in computer architecture.
+[src:container-escape-defense/kernel-operating-system-p01] The monolithic design is induced by the "kernel mode"/"user mode" architectural approach to protection (technically called hierarchical protection domains), which is common in conventional commercial systems; in fact, every module needing protection is therefore preferably included into the kernel.
+[src:container-escape-defense/kernel-operating-system-p01] While monolithic kernels execute all of their code in the same address space (kernel space), microkernels try to run most of their services in user space, aiming to improve maintainability and modularity of their codebase.
+[src:container-escape-defense/kernel-operating-system-p01] Most kernels do not fit exactly into one of these categories, but are rather found in between these two designs.
+[src:container-escape-defense/kernel-operating-system-p01] More exotic designs such as nanokernels and exokernels are available, but are seldom used for production systems.
+[src:container-escape-defense/kernel-operating-system-p01] The Xen hypervisor, for example, is an exokernel.
+[src:container-escape-defense/kernel-operating-system-p01] In a monolithic kernel, all OS services are part of the kernel and run in kernel mode, thus also residing in the same memory area.
+[src:container-escape-defense/kernel-operating-system-p01] This approach provides rich and powerful hardware access.
+[src:container-escape-defense/kernel-operating-system-p01] UNIX developer Ken Thompson stated that "it is in [his] opinion easier to implement a monolithic kernel".
+[src:container-escape-defense/kernel-operating-system-p01] The main disadvantages of monolithic kernels are the dependencies between system components – a bug in a device driver might crash the entire system, for example – and the fact that large kernels can become very difficult to maintain.
+[src:container-escape-defense/kernel-operating-system-p01] Thompson also stated that "It is also easier for [a monolithic kernel] to turn into a mess in a hurry as it is modified".
+[src:container-escape-defense/kernel-operating-system-p01] Monolithic kernels, which have traditionally been used by Unix-like operating systems, contain all the operating system core functions and the device drivers.
+[src:container-escape-defense/kernel-operating-system-p01] A monolithic kernel is one single program that contains all of the code necessary to perform every kernel-related task.
+[src:container-escape-defense/kernel-operating-system-p01] Every part that is to be accessed by a program that cannot be put in a library is in the kernel space, including drivers, schedulers, memory management, file systems, and network stacks.
+[src:container-escape-defense/kernel-operating-system-p01] Many system calls are provided to applications, to allow them to access all those services.
+[src:container-escape-defense/kernel-operating-system-p01] A monolithic kernel, while initially loaded with subsystems that may not be needed, can be tuned to a point where it is as fast as or faster than one that was specifically designed for the hardware, although more relevant in a general sense.
+[src:container-escape-defense/kernel-operating-system-p01] Most work in the monolithic kernel is done via system calls.
+[src:container-escape-defense/kernel-operating-system-p01] These are interfaces, usually kept in a tabular structure, that access some subsystem within the kernel, such as disk operations.
+[src:container-escape-defense/kernel-operating-system-p01] Essentially, calls are made within programs and a checked copy of the request is passed through the system call.
+[src:container-escape-defense/kernel-operating-system-p01] The monolithic Linux kernel can be made extremely small not only because of its ability to dynamically load modules but also because of its ease of customization.
+[src:container-escape-defense/kernel-operating-system-p01] In fact, there are some versions that are small enough to fit together with a large number of utilities and other programs on a single floppy disk and still provide a fully functional operating system (one of the most popular of which is muLinux).
+[src:container-escape-defense/kernel-operating-system-p01] This ability to miniaturize its kernel has also led to a rapid growth in the use of Linux in embedded systems.
+[src:container-escape-defense/kernel-operating-system-p01] These types of kernels consist of the core functions of the operating system and the device drivers with the ability to load modules at runtime.
+[src:container-escape-defense/kernel-operating-system-p01] They provide rich and powerful abstractions of the underlying hardware.
+[src:container-escape-defense/kernel-operating-system-p01] They provide a small set of simple hardware abstractions and use applications called servers to provide more functionality.
+[src:container-escape-defense/kernel-operating-system-p01] This particular approach defines a high-level virtual interface over the hardware, with a set of system calls to implement operating system services such as process management, concurrency and memory management in several modules that run in supervisor mode.
+[src:container-escape-defense/kernel-operating-system-p01] A microkernel that is designed for a specific platform or device is only ever going to have what it needs to operate.
+[src:container-escape-defense/kernel-operating-system-p01] The microkernel approach consists of defining a simple abstraction over the hardware, with a set of primitives or system calls to implement minimal OS services such as memory management, multitasking, and inter-process communication.
+[src:container-escape-defense/kernel-operating-system-p01] Other services, including those normally provided by the kernel, such as networking, are implemented in user-space programs, referred to as *servers*.
+[src:container-escape-defense/kernel-operating-system-p01] Microkernels are easier to maintain than monolithic kernels, but the large number of system calls and context switches might slow down the system because they typically generate more overhead than plain function calls.
+[src:container-escape-defense/kernel-operating-system-p01] Only parts that really require being in a privileged mode are in kernel space, such as IPC (Inter-Process Communication), a basic scheduler or scheduling primitives, basic memory handling, and basic I/O primitives.
+[src:container-escape-defense/kernel-operating-system-p01] Many critical parts are now running in user space, including the complete scheduler, memory handling, file systems, and network stacks.
+[src:container-escape-defense/kernel-operating-system-p01] Microkernels were invented as a reaction to traditional "monolithic" kernel design, whereby all system functionality was put in one static program running in a special "system" mode of the processor.
+[src:container-escape-defense/kernel-operating-system-p01] In the microkernel, only the most fundamental of tasks are performed at this level, such as being able to access some (not necessarily all) of the hardware, manage memory and coordinate message passing between the processes.
+[src:container-escape-defense/kernel-operating-system-p01] Some systems that use microkernels are QNX and GNU Hurd.
+[src:container-escape-defense/kernel-operating-system-p01] In the case of QNX and GNU Hurd, user sessions can be entire snapshots of the system itself, or "views" as it is referred to.
+[src:container-escape-defense/kernel-operating-system-p01] Most microkernels use a message passing system to handle requests from one server to another.
+[src:container-escape-defense/kernel-operating-system-p01] The message passing system generally operates on a port basis with the microkernel.
+[src:container-escape-defense/kernel-operating-system-p01] As an example, if a request for more memory is sent, a port is opened with the microkernel and the request sent through.
+[src:container-escape-defense/kernel-operating-system-p01] Once within the microkernel, the steps are similar to system calls.
+[src:container-escape-defense/kernel-operating-system-p01] The rationale was that it would bring modularity in the system architecture, which would entail a cleaner system that is easier to debug or dynamically modify, customizable to users' needs, and higher performing.
+[src:container-escape-defense/kernel-operating-system-p01] Microkernels are part of operating systems like GNU Hurd, MINIX, MkLinux, QNX and Redox OS.
+[src:container-escape-defense/kernel-operating-system-p01] Although microkernels are very small by themselves, in combination with all their required auxiliary code they are, in fact, often larger than monolithic kernels.
+[src:container-escape-defense/kernel-operating-system-p01] Advocates of monolithic kernels also point out that the two-tiered structure of microkernel systems, in which most of the operating system does not interact directly with the hardware, creates a not-insignificant cost in terms of system efficiency.
+[src:container-escape-defense/kernel-operating-system-p01] These types of kernels normally provide only the minimal services such as defining memory address spaces, inter-process communication (IPC) and process management.
+[src:container-escape-defense/kernel-operating-system-p01] Other functions, such as running hardware processes, are not handled directly by microkernels.
+[src:container-escape-defense/kernel-operating-system-p01] Proponents of microkernels point out those monolithic kernels have the disadvantage that an error in the kernel can cause the entire system to crash.
+[src:container-escape-defense/kernel-operating-system-p01] With a microkernel, however, if a kernel process crashes, it is still possible to prevent a crash of the system as a whole by merely restarting the service that caused the error.
+[src:container-escape-defense/kernel-operating-system-p01] Other services provided by the kernel such as networking are implemented in user-space programs referred to as *servers*.
+[src:container-escape-defense/kernel-operating-system-p01] Servers allow the operating system to be modified by simply starting and stopping programs.
+[src:container-escape-defense/kernel-operating-system-p01] For a machine without networking support, for instance, the networking server is not started.
+[src:container-escape-defense/kernel-operating-system-p01] The task of moving in and out of the kernel to move data between the various applications and servers creates overhead that is detrimental to the efficiency of microkernels in comparison with monolithic kernels.
+[src:container-escape-defense/kernel-operating-system-p01] Disadvantages in the microkernel exist, however.
+[src:container-escape-defense/kernel-operating-system-p01] The disadvantages for microkernels are extremely context-based.
+[src:container-escape-defense/kernel-operating-system-p01] As an example, they work well for small single-purpose (and critical) systems because if not many processes need to run, then the complications of process management are effectively mitigated.
+[src:container-escape-defense/kernel-operating-system-p01] A microkernel allows the implementation of the remaining part of the operating system as programs running in user mode, and the use of different operating systems on top of the same unchanged kernel.
+[src:container-escape-defense/kernel-operating-system-p01] It is also possible to dynamically switch among operating systems and to have more than one active simultaneously.
+[src:container-escape-defense/kernel-operating-system-p01] As the computer kernel grows, so grows the size and vulnerability of its trusted computing base, in addition to its memory footprint.
+[src:container-escape-defense/kernel-operating-system-p01] This is mitigated to some degree by perfecting a virtual memory system, but not all computer architectures have virtual memory support.
+[src:container-escape-defense/kernel-operating-system-p01] To reduce the kernel's footprint, extensive editing has to be performed to carefully remove unneeded code, which can be very difficult with non-obvious interdependencies between parts of a kernel with millions of lines of code.
+[src:container-escape-defense/kernel-operating-system-p01] By the early 1990s, due to the various shortcomings of monolithic kernels versus microkernels, monolithic kernels were considered obsolete by virtually all operating system researchers.
+[src:container-escape-defense/kernel-operating-system-p01] As a result, the design of Linux as a monolithic kernel rather than a microkernel was the topic of a famous debate between Linus Torvalds and Andrew Tanenbaum.
+[src:container-escape-defense/kernel-operating-system-p01] There is merit on both sides of the argument presented in the Tanenbaum–Torvalds debate.
+[src:container-escape-defense/kernel-operating-system-p01] Monolithic kernels are designed to have all of their code in the same address space (kernel space), which some developers argue is necessary to increase the performance of the system.
+[src:container-escape-defense/kernel-operating-system-p01] Some developers also maintain that monolithic systems are extremely efficient if well written.
+[src:container-escape-defense/kernel-operating-system-p01] The monolithic model tends to be more efficient through the use of shared kernel memory, rather than the slower IPC system of microkernel designs, which is typically based on message passing.
+[src:container-escape-defense/kernel-operating-system-p01] The performance of microkernels was poor in both the 1980s and early 1990s.
+[src:container-escape-defense/kernel-operating-system-p01] Studies that empirically measured the performance of these microkernels did not analyze the reasons of such inefficiency.
+[src:container-escape-defense/kernel-operating-system-p01] The explanations of this data were left to "folklore", with the assumption that they were due to the increased frequency of switches from "kernel-mode" to "user-mode", to the increased frequency of inter-process communication and to the increased frequency of context switches.
+[src:container-escape-defense/kernel-operating-system-p01] In fact, as guessed in 1995, the reasons for the poor performance of microkernels might as well have been: (1) an actual inefficiency of the whole microkernel *approach*, (2) the particular *concepts* implemented in those microkernels, and (3) the particular *implementation* of those concepts.
+[src:container-escape-defense/kernel-operating-system-p01] Therefore it remained to be studied if the solution to build an efficient microkernel was, unlike previous attempts, to apply the correct construction techniques.
+[src:container-escape-defense/kernel-operating-system-p01] Hybrid kernels are used in some commercial operating systems, including most versions of Microsoft Windows to date (NT 3.1, NT 3.5, NT 3.51, NT 4.0, 2000, XP, Vista, 7, 8, 8.1, 10 and 11).
+[src:container-escape-defense/kernel-operating-system-p01] Apple's macOS uses a hybrid kernel called XNU, which is based upon code from OSF/1's Mach kernel (OSFMK 7.3) and FreeBSD's monolithic kernel.
+[src:container-escape-defense/kernel-operating-system-p01] Hybrid kernels are similar to microkernels, except they include some additional code in kernel-space to increase performance.
+[src:container-escape-defense/kernel-operating-system-p01] These kernels represent a compromise that was implemented by some developers to accommodate the major advantages of both monolithic and microkernels.
+[src:container-escape-defense/kernel-operating-system-p01] These types of kernels are extensions of microkernels with some properties of monolithic kernels.
+[src:container-escape-defense/kernel-operating-system-p01] Unlike monolithic kernels, these types of kernels are unable to load modules at runtime on their own.
+[src:container-escape-defense/kernel-operating-system-p01] This implies running some services (such as the network stack or the filesystem) in kernel space to reduce the performance overhead of a traditional microkernel, but still running kernel code (such as device drivers) as servers in user space.
+[src:container-escape-defense/kernel-operating-system-p01] Many traditionally monolithic kernels support loadable kernel modules.
+[src:container-escape-defense/kernel-operating-system-p01] The most well known of these kernels is the Linux kernel.
+[src:container-escape-defense/kernel-operating-system-p01] The modular kernel essentially can have parts of it that are built into the core kernel binary or binaries that load into memory on demand.
+[src:container-escape-defense/kernel-operating-system-p01] A code-tainted module has the potential to destabilize a running kernel.
+[src:container-escape-defense/kernel-operating-system-p01] By contrast, it is possible to write a driver for a microkernel in a completely separate memory space and test it before "going" live.
+[src:container-escape-defense/kernel-operating-system-p01] When a kernel module is loaded, it accesses the monolithic portion's memory space by adding to it what it needs, therefore opening the doorway to possible pollution.
+[src:container-escape-defense/kernel-operating-system-p01] Modules, generally, communicate with the kernel using a module interface of some sort.
+[src:container-escape-defense/kernel-operating-system-p01] The interface is generalized (although particular to a given operating system) so it is not always possible to use modules.
+[src:container-escape-defense/kernel-operating-system-p01] Often the device drivers may need more flexibility than the module interface affords.
+[src:container-escape-defense/kernel-operating-system-p01] Essentially, it is two system calls and often the safety checks that only have to be done once in the monolithic kernel now may be done twice.
+[src:container-escape-defense/kernel-operating-system-p01] A nanokernel delegates virtually all services – including even the most basic ones like interrupt controllers or the timer – to device drivers to make the kernel memory requirement even smaller than a traditional microkernel.
+[src:container-escape-defense/kernel-operating-system-p01] Exokernels are a still-experimental approach to operating system design.
+[src:container-escape-defense/kernel-operating-system-p01] They differ from other types of kernels in limiting their functionality to the protection of and multiplexing of access to the raw hardware, providing no hardware abstractions on top of which to develop applications.
+[src:container-escape-defense/kernel-operating-system-p01] This separation of hardware protection from hardware management enables application developers to determine how to make the most efficient use of the available hardware for each specific program.
+[src:container-escape-defense/kernel-operating-system-p01] Exokernels in themselves are extremely small.
+[src:container-escape-defense/kernel-operating-system-p01] Nonetheless, they are accompanied by library operating systems (see also unikernel), providing application developers with the functionalities of a conventional operating system.
+[src:container-escape-defense/kernel-operating-system-p01] A major advantage of exokernel-based systems is that they can incorporate multiple library operating systems, each exporting a different API, for example one for high level UI development and one for real-time control.
+[src:container-escape-defense/kernel-operating-system-p01] A multikernel operating system treats a multi-core machine as a network of independent cores, as if it were a distributed system.
+[src:container-escape-defense/kernel-operating-system-p01] It does not assume shared memory but rather implements inter-process communications as message passing.
+[src:container-escape-defense/kernel-operating-system-p01] Barrelfish was the first operating system to be described as a multikernel.
+[src:container-escape-defense/kernel-operating-system-p02] Strictly speaking, an operating system (and thus, a kernel) is not *required* to run a computer.
+[src:container-escape-defense/kernel-operating-system-p02] Programs can be directly loaded and executed on the "bare metal" machine, provided that the authors of those programs are willing to work without any hardware abstraction or operating system support.
+[src:container-escape-defense/kernel-operating-system-p02] Most early computers operated this way during the 1950s and early 1960s, which were reset and reloaded between the execution of different programs.
+[src:container-escape-defense/kernel-operating-system-p02] Eventually, small ancillary programs such as program loaders and debuggers were left in memory between runs, or loaded from ROM.
+[src:container-escape-defense/kernel-operating-system-p02] As these were developed, they formed the basis of what became early operating system kernels.
+[src:container-escape-defense/kernel-operating-system-p02] The "bare metal" approach is still used today on some video game consoles and embedded systems, but in general, newer computers use modern operating systems and kernels.
+[src:container-escape-defense/kernel-operating-system-p02] In 1969, the RC 4000 Multiprogramming System introduced the system design philosophy of a small nucleus "upon which operating systems for different purposes could be built in an orderly manner", what would be called the microkernel approach.
+[src:container-escape-defense/kernel-operating-system-p02] In the decade preceding Unix, computers had grown enormously in power – to the point where computer operators were looking for new ways to get people to use their spare time on their machines.
+[src:container-escape-defense/kernel-operating-system-p02] One of the major developments during this era was time-sharing, whereby a number of users would get small slices of computer time, at a rate at which it appeared they were each connected to their own, slower, machine.
+[src:container-escape-defense/kernel-operating-system-p02] The development of time-sharing systems led to a number of problems.
+[src:container-escape-defense/kernel-operating-system-p02] One was that users, particularly at universities where the systems were being developed, wanted to hack the system to get more CPU time.
+[src:container-escape-defense/kernel-operating-system-p02] For this reason, security and access control became a major focus of the Multics project in 1965.
+[src:container-escape-defense/kernel-operating-system-p02] Another ongoing issue was properly handling computing resources: users spent most of their time staring at the terminal and thinking about what to input instead of actually using the resources of the computer, and a time-sharing system should give the CPU time to an active user during these periods.
+[src:container-escape-defense/kernel-operating-system-p02] Finally, the systems typically offered a memory hierarchy several layers deep, and partitioning this expensive resource led to major developments in virtual memory systems.
+[src:container-escape-defense/kernel-operating-system-p02] The Commodore Amiga was released in 1985, and was among the first – and certainly most successful – home computers to feature an advanced kernel architecture.
+[src:container-escape-defense/kernel-operating-system-p02] The AmigaOS kernel's executive component, *exec.library*, uses a microkernel message-passing design, but there are other kernel components, like *graphics.library*, that have direct access to the hardware.
+[src:container-escape-defense/kernel-operating-system-p02] There is no memory protection, and the kernel is almost always running in user mode.
+[src:container-escape-defense/kernel-operating-system-p02] Only special actions are executed in kernel mode, and user-mode applications can ask the operating system to execute their code in kernel mode.
+[src:container-escape-defense/kernel-operating-system-p02] During the design phase of Unix, programmers decided to model every high-level device as a file, because they believed the purpose of computation was data transformation.
+[src:container-escape-defense/kernel-operating-system-p02] For instance, printers were represented as a "file" at a known location – when data was copied to the file, it printed out.
+[src:container-escape-defense/kernel-operating-system-p02] Other systems, to provide a similar functionality, tended to virtualize devices at a lower level – that is, both devices *and* files would be instances of some lower level concept.
+[src:container-escape-defense/kernel-operating-system-p02] Virtualizing the system at the file level allowed users to manipulate the entire system using their existing file management utilities and concepts, dramatically simplifying operation.
+[src:container-escape-defense/kernel-operating-system-p02] As an extension of the same paradigm, Unix allows programmers to manipulate files using a series of small programs, using the concept of pipes, which allowed users to complete operations in stages, feeding a file through a chain of single-purpose tools.
+[src:container-escape-defense/kernel-operating-system-p02] Although the end result was the same, using smaller programs in this way dramatically increased flexibility as well as ease of development and use, allowing the user to modify their workflow by adding or removing a program from the chain.
+[src:container-escape-defense/kernel-operating-system-p02] In the Unix model, the *operating system* consists of two parts: first, the huge collection of utility programs that drive most operations; second, the kernel that runs the programs.
+[src:container-escape-defense/kernel-operating-system-p02] Over the years the computing model changed, and Unix's treatment of everything as a file or byte stream no longer was as universally applicable as it was before.
+[src:container-escape-defense/kernel-operating-system-p02] Although a terminal could be treated as a file or a byte stream, which is printed to or read from, the same did not seem to be true for a graphical user interface.
+[src:container-escape-defense/kernel-operating-system-p02] Even if network communication can be compared to file access, the low-level packet-oriented architecture dealt with discrete chunks of data and not with whole files.
+[src:container-escape-defense/kernel-operating-system-p02] As the capability of computers grew, Unix became increasingly cluttered with code.
+[src:container-escape-defense/kernel-operating-system-p02] It is also because the modularity of the Unix kernel is extensively scalable.
+[src:container-escape-defense/kernel-operating-system-p02] While kernels might have had 100,000 lines of code in the seventies and eighties, kernels like Linux, of modern Unix successors like GNU, have more than 13 million lines.
+[src:container-escape-defense/kernel-operating-system-p02] Modern Unix-derivatives are generally based on module-loading monolithic kernels.
+[src:container-escape-defense/kernel-operating-system-p02] Examples of this are the Linux kernel in the many distributions of GNU, IBM AIX, as well as the Berkeley Software Distribution variant kernels such as FreeBSD, DragonFly BSD, OpenBSD, NetBSD, and macOS.
+[src:container-escape-defense/kernel-operating-system-p02] Apart from these alternatives, amateur developers maintain an active operating system development community, populated by self-written hobby kernels that mostly end up sharing many features with Linux, FreeBSD, DragonflyBSD, OpenBSD, or NetBSD kernels and/or being compatible with them.
+[src:container-escape-defense/kernel-operating-system-p02] Apple first launched its classic Mac OS in 1984, bundled with its Macintosh personal computer.
+[src:container-escape-defense/kernel-operating-system-p02] Apple moved to a nanokernel design in Mac OS 8.6.
+[src:container-escape-defense/kernel-operating-system-p02] Against this, the modern macOS (originally named Mac OS X) is based on Darwin, which uses a hybrid kernel called XNU, which was created by combining the 4.3BSD kernel and the Mach kernel.
+[src:container-escape-defense/kernel-operating-system-p02] Microsoft Windows was first released in 1985 as an add-on to MS-DOS.
+[src:container-escape-defense/kernel-operating-system-p02] Because of its dependence on another operating system, initial releases of Windows, prior to Windows 95, were considered an operating environment (not to be confused with an operating system).
+[src:container-escape-defense/kernel-operating-system-p02] This product line continued to evolve through the 1980s and 1990s, with the Windows 9x series adding 32-bit addressing and pre-emptive multitasking; but ended with the release of Windows Me in 2000.
+[src:container-escape-defense/kernel-operating-system-p02] Microsoft also developed Windows NT, an operating system with a very similar interface, but intended for high-end and business users.
+[src:container-escape-defense/kernel-operating-system-p02] This line started with the release of Windows NT 3.1 in 1993, and was introduced to general users with the release of Windows XP in October 2001—replacing Windows 9x with a completely different, much more sophisticated operating system.
+[src:container-escape-defense/kernel-operating-system-p02] This is the line that continues with Windows 11.
+[src:container-escape-defense/kernel-operating-system-p02] The architecture of Windows NT's kernel is considered a hybrid kernel because the kernel itself contains tasks such as the Window Manager and the IPC Managers, with a client/server layered subsystem model.
+[src:container-escape-defense/kernel-operating-system-p02] It was designed as a modified microkernel, as the Windows NT kernel was influenced by the Mach microkernel but does not meet all of the criteria of a pure microkernel.
+[src:container-escape-defense/kernel-operating-system-p02] Supervisory program or supervisor is a computer program, usually part of an operating system, that controls the execution of other routines and regulates work scheduling, input/output operations, error actions, and similar functions and regulates the flow of work in a data processing system.
+[src:container-escape-defense/kernel-operating-system-p02] Historically, this term was essentially associated with IBM's line of mainframe operating systems starting with OS/360.
+[src:container-escape-defense/kernel-operating-system-p02] In other operating systems, the supervisor is generally called the kernel.
+[src:container-escape-defense/kernel-operating-system-p02] In the 1970s, IBM further abstracted the supervisor state from the hardware, resulting in a hypervisor that enabled full virtualization, i.e. the capacity to run multiple operating systems on the same machine totally independent of each other.
+[src:container-escape-defense/kernel-operating-system-p02] Hence the first such system was called *Virtual Machine* or *VM*.
+[src:container-escape-defense/kernel-operating-system-p02] Although Mach, developed by Richard Rashid at Carnegie Mellon University, is the best-known general-purpose microkernel, other microkernels have been developed with more specific aims.
+[src:container-escape-defense/kernel-operating-system-p02] The L4 microkernel family (mainly the L3 and the L4 kernel) was created to demonstrate that microkernels are not necessarily slow.
+[src:container-escape-defense/kernel-operating-system-p02] Newer implementations such as Fiasco and Pistachio are able to run Linux next to other L4 processes in separate address spaces.
+[src:container-escape-defense/kernel-operating-system-p02] Additionally, QNX is a microkernel that is principally used in embedded systems, and the open-source software MINIX, while originally created for educational purposes, is now focused on being a highly reliable and self-healing microkernel OS.
+[src:container-escape-defense/os-level-virtualization] On Unix-like operating systems, this feature can be seen as an advanced implementation of the standard chroot mechanism, which changes the apparent root folder for the current running process and its children.
+[src:container-escape-defense/os-level-virtualization] In addition to isolation mechanisms, the kernel often provides resource-management features to limit the impact of one container's activities on other containers.
+[src:container-escape-defense/os-level-virtualization] Linux containers are all based on the virtualization, isolation, and resource management mechanisms provided by the Linux kernel, notably Linux namespaces and cgroups.
+[src:container-escape-defense/os-level-virtualization] Although the word *container* most commonly refers to OS-level virtualization, it is sometimes used to refer to fuller virtual machines operating in varying degrees of concert with the host OS, such as Microsoft's Hyper-V containers.
+[src:container-escape-defense/os-level-virtualization] For an overview of virtualization since 1960, see Timeline of virtualization technologies.
+[src:container-escape-defense/os-level-virtualization] On ordinary operating systems for personal computers, a computer program can see (even though it might not be able to access) all the system's resources.
+[src:container-escape-defense/os-level-virtualization] The operating system may allow or deny access to such resources based on which program requests them and the user account in the context in which it runs.
+[src:container-escape-defense/os-level-virtualization] The operating system may also hide those resources, so that when the computer program enumerates them, they do not appear in the enumeration results.
+[src:container-escape-defense/os-level-virtualization] Nevertheless, from a programming point of view, the computer program has interacted with those resources and the operating system has managed an act of interaction.
+[src:container-escape-defense/os-level-virtualization] With operating-system-virtualization, or containerization, it is possible to run programs within containers, to which only parts of these resources are allocated.
+[src:container-escape-defense/os-level-virtualization] A program expecting to see the whole computer, once run inside a container, can only see the allocated resources and believes them to be all that is available.
+[src:container-escape-defense/os-level-virtualization] Several containers can be created on each operating system, to each of which a subset of the computer's resources is allocated.
+[src:container-escape-defense/os-level-virtualization] Each container may contain any number of computer programs.
+[src:container-escape-defense/os-level-virtualization] These programs may run concurrently or separately, and may even interact with one another.
+[src:container-escape-defense/os-level-virtualization] Containerization has similarities to application virtualization: In the latter, only one computer program is placed in an isolated container and the isolation applies to file system only.
+[src:container-escape-defense/os-level-virtualization] Operating-system level virtualization is commonly used in virtual hosting environments, where it is useful for securely allocating finite hardware resources among a large number of mutually-distrusting users.
+[src:container-escape-defense/os-level-virtualization] System administrators may also use it for consolidating server hardware by moving services on separate hosts into containers on the one server.
+[src:container-escape-defense/os-level-virtualization] Operating-system level virtualization can also be used to run software created for a certain Linux distribution on another distribution, an example is Distrobox.
+[src:container-escape-defense/os-level-virtualization] Other typical scenarios include separating several programs to separate containers for improved security, hardware independence, and added resource management features.
+[src:container-escape-defense/os-level-virtualization] The improved security provided by the use of a chroot mechanism, however, is not perfect.
+[src:container-escape-defense/os-level-virtualization] Operating-system-level virtualization implementations capable of live migration can also be used for dynamic load balancing of containers between nodes in a cluster.
+[src:container-escape-defense/os-level-virtualization] This form of virtualization also does not require hardware support for efficient performance.
+[src:container-escape-defense/os-level-virtualization] Operating-system level virtualization is not as flexible as other virtualization approaches since it cannot host a guest operating system different from the host one, or a different guest kernel.
+[src:container-escape-defense/os-level-virtualization] For example, with Linux, different distributions are fine, but other operating systems such as Windows cannot be hosted.
+[src:container-escape-defense/os-level-virtualization] Operating systems using variable input systematics are subject to limitations within the virtualized architecture.
+[src:container-escape-defense/os-level-virtualization] Adaptation methods including cloud-server relay analytics maintain the OS-level virtual environment within these applications.
+[src:container-escape-defense/os-level-virtualization] Solaris partially overcomes the limitation described above with its branded zones feature, which provides the ability to run an environment within a container that emulates an older Solaris 8 or 9 version in a Solaris 10 host.
+[src:container-escape-defense/os-level-virtualization] However, in 2010 Linux branded zones were removed from Solaris; in 2014 they were reintroduced in Illumos, which is the open source Solaris fork, supporting 32-bit Linux kernels.
+[src:container-escape-defense/os-level-virtualization] Some implementations provide file-level copy-on-write (CoW) mechanisms.
+[src:container-escape-defense/os-level-virtualization] (Most commonly, a standard file system is shared between partitions, and those partitions that change the files automatically create their own copies.) This is easier to back up, more space-efficient and simpler to cache than the block-level copy-on-write schemes common on whole-system virtualizers.
+[src:container-escape-defense/os-level-virtualization] Whole-system virtualizers, however, can work with non-native file systems and create and roll back snapshots of the entire system state.
+[src:container-escape-defense/privilege-escalation] Most computer systems are designed for use with multiple user accounts, each of which has abilities known as privileges.
+[src:container-escape-defense/privilege-escalation] Common privileges include viewing and editing files or modifying system files.
+[src:container-escape-defense/privilege-escalation] Privilege escalation means users receive privileges they are not entitled to.
+[src:container-escape-defense/privilege-escalation] These privileges can be used to delete files, view private information, or install unwanted programs such as viruses.
+[src:container-escape-defense/privilege-escalation] It usually occurs when a system has a bug that allows security to be bypassed or, alternatively, has flawed design assumptions about how it will be used.
+[src:container-escape-defense/privilege-escalation] This type of privilege escalation occurs when the user or process is able to obtain a higher level of access than an administrator or system developer intended, possibly by performing kernel-level operations.
+[src:container-escape-defense/privilege-escalation] In some cases, a high-privilege application assumes that it would only be provided with input matching its interface specification, thus doesn't validate this input.
+[src:container-escape-defense/privilege-escalation] Android phones can be officially rooted by either going through manufacturers controlled process, using an exploit to gain root, or installing a rooting modification.
+[src:container-escape-defense/privilege-escalation] Manufacturers allow rooting through a process they control, while some allow the phone to be rooted simply by pressing specific key combinations at boot time, or by other self-administered methods.
+[src:container-escape-defense/privilege-escalation] Using a manufacturers method almost always factory resets the device, making rooting useless to people who want to view the data, and also voids the warranty permanently, even if the device is derooted and reflashed.
+[src:container-escape-defense/privilege-escalation] Software exploits commonly either target a root-level process that is accessible to the user, by using an exploit specific to the phone's kernel, or using a known Android exploit that has been patched in newer versions; by not upgrading the phone, or intentionally downgrading the version.
+[src:container-escape-defense/privilege-escalation] Recent research has shown what can effectively provide protection against privilege escalation attacks.
+[src:container-escape-defense/privilege-escalation] These include the proposal of the additional kernel observer (AKO), which specifically prevents attacks focused on OS vulnerabilities.
+[src:container-escape-defense/privilege-escalation] Research shows that AKO is in fact effective against privilege escalation attacks.
+[src:container-escape-defense/privilege-escalation] Horizontal privilege escalation occurs when an application allows the attacker to gain access to resources which normally would have been protected from an application or user.
+[src:container-escape-defense/privilege-escalation] Compared to the vertical privilege escalation, horizontal requires no upgrading the privilege of accounts.
+[src:container-escape-defense/privilege-escalation] It often relies on the bugs in the system.
+[src:container-escape-defense/privilege-escalation] This problem often occurs in web applications.
+[src:container-escape-defense/privilege-escalation] This malicious activity may be possible due to common web application weaknesses or vulnerabilities.
+[src:container-escape-defense/sandbox-computer-security] In computer security, a **sandbox** is a security mechanism for separating running programs, usually in an effort to mitigate system failures and/or software vulnerabilities from spreading.
+[src:container-escape-defense/sandbox-computer-security] The sandbox metaphor derives from the concept of a child's sandbox—a play area where children can build, destroy, and experiment without causing any real-world damage.
+[src:container-escape-defense/sandbox-computer-security] It is often used to analyze untested or untrusted programs or code, possibly originating from unverified or untrusted third parties, suppliers, users or websites, without risking harm to the host machine or operating system.
+[src:container-escape-defense/sandbox-computer-security] A sandbox typically provides a tightly controlled set of resources for guest programs to run in, such as storage and memory scratch space.
+[src:container-escape-defense/sandbox-computer-security] Network access, the ability to inspect the host system, or read from input devices are usually disallowed or heavily restricted.
+[src:container-escape-defense/sandbox-computer-security] In the sense of providing a highly controlled environment, sandboxing can be comparable to virtualization.
+[src:container-escape-defense/sandbox-computer-security] Sandboxing is frequently used to test unverified programs that may contain a virus or other malicious code without allowing the software to harm the host device.
+[src:container-escape-defense/sandbox-computer-security] A sandbox is implemented by executing the software in a restricted operating system environment, thus controlling the resources (e.g. file descriptors, memory, file system space, etc.) that a process may use.
+[src:container-escape-defense/vulnerability-computer-security] In computer security, a **vulnerability** is a flaw or weakness in a system's design, implementation, or management that can be exploited by a malicious actor to compromise its security.
+[src:container-escape-defense/vulnerability-computer-security] Despite a system administrator's best efforts to achieve complete correctness, virtually all hardware and software contain bugs where the system does not behave as expected.
+[src:container-escape-defense/vulnerability-computer-security] If the bug could enable an attacker to compromise the confidentiality, integrity, or availability of system resources, it can be considered a vulnerability.
+[src:container-escape-defense/vulnerability-computer-security] Insecure software development practices as well as design factors such as complexity can increase the burden of vulnerabilities.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerability management includes identifying systems and prioritizing which are most important, scanning for vulnerabilities, and taking action to secure the system.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerability management typically is a combination of remediation, mitigation, and acceptance.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerabilities can be scored for severity according to the Common Vulnerability Scoring System (CVSS) and added to vulnerability databases such as the Common Vulnerabilities and Exposures (CVE) database.
+[src:container-escape-defense/vulnerability-computer-security] As of April 2026, more than 327,000 vulnerabilities had been recorded in the CVE database.
+[src:container-escape-defense/vulnerability-computer-security] A vulnerability is initiated when it is introduced into hardware or software.
+[src:container-escape-defense/vulnerability-computer-security] It becomes active and exploitable when the software or hardware containing the vulnerability is running.
+[src:container-escape-defense/vulnerability-computer-security] The vulnerability may be discovered by the administrator, vendor, or a third party.
+[src:container-escape-defense/vulnerability-computer-security] Publicly disclosing the vulnerability (through a patch or otherwise) is associated with an increased risk of compromise, as attackers can use this knowledge to target existing systems before patches are implemented.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerabilities will eventually end when the system is either patched or removed from use.
+[src:container-escape-defense/vulnerability-computer-security] Despite a system administrator's best efforts, virtually all hardware and software contain bugs.
+[src:container-escape-defense/vulnerability-computer-security] If a bug creates a security risk, it is called a vulnerability.
+[src:container-escape-defense/vulnerability-computer-security] Software patches are often released to fix identified vulnerabilities, but zero-days are still liable for exploitation.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerabilities vary in their ability to be exploited by malicious actors, and the actual risk is dependent on the nature of the vulnerability as well as the value of the surrounding system.
+[src:container-escape-defense/vulnerability-computer-security] Although some vulnerabilities can only be used for denial-of-service attacks, more dangerous ones allow the attacker to perform code injection without the user's awareness.
+[src:container-escape-defense/vulnerability-computer-security] Only a minority of vulnerabilities allow for privilege escalation, which is typically necessary for more severe attacks.
+[src:container-escape-defense/vulnerability-computer-security] Without a vulnerability, an exploit typically cannot gain access.
+[src:container-escape-defense/vulnerability-computer-security] It is also possible for malware to be installed directly, without an exploit, through social engineering or poor physical security such as an unlocked door or exposed port.
+[src:container-escape-defense/vulnerability-computer-security] Poor software development practices can affect the likelihood of introducing vulnerabilities to a code base.
+[src:container-escape-defense/vulnerability-computer-security] Lack of knowledge or training regarding secure software development, excessive pressure to deliver, or an excessively complex code base can all allow vulnerabilities to be introduced and left unnoticed.
+[src:container-escape-defense/vulnerability-computer-security] These factors can also be exacerbated if security is not prioritized by the company culture.
+[src:container-escape-defense/vulnerability-computer-security] Inadequate code reviews can also lead to missed bugs, but there are also static code analysis tools that can be used during the code review process to help find some vulnerabilities.
+[src:container-escape-defense/vulnerability-computer-security] DevOps, a development workflow that emphasizes automated testing and deployment to speed up the deployment of new features, often requires that many developers be granted access to change configurations, which can lead to deliberate or inadvertent inclusion of vulnerabilities.
+[src:container-escape-defense/vulnerability-computer-security] Compartmentalizing dependencies, which is often part of DevOps workflows, can reduce the attack surface by paring down dependencies to only what is necessary.
+[src:container-escape-defense/vulnerability-computer-security] If software as a service is used, rather than the organization's own hardware and software, the organization is dependent on the cloud services provider to prevent vulnerabilities.
+[src:container-escape-defense/vulnerability-computer-security] Access control vulnerabilities enable an attacker to access a system that is supposed to be restricted to them, or engage in privilege escalation.
+[src:container-escape-defense/vulnerability-computer-security] When the system fails to handle and exceptional or unanticipated condition correctly, an attacker can exploit the situation to gain access.
+[src:container-escape-defense/vulnerability-computer-security] Configuration vulnerability come into existence when configuration settings cause risks to the system security, leading to such faults as unpatched software or file system permissions that do not sufficiently restrict access.
+[src:container-escape-defense/vulnerability-computer-security] A race condition—when timing or other external factors change the outcome and lead to inconsistent or unpredictable results—can cause a vulnerability.
+[src:container-escape-defense/vulnerability-computer-security] Deliberate security bugs can be introduced during or after manufacturing and cause the integrated circuit not to behave as expected under certain specific circumstances.
+[src:container-escape-defense/vulnerability-computer-security] Testing for security bugs in hardware is quite difficult due to limited time and the complexity of twenty-first century chips, while the globalization of design and manufacturing has increased the opportunity for these bugs to be introduced by malicious actors.
+[src:container-escape-defense/vulnerability-computer-security] Although operating system vulnerabilities vary depending on the operating system in use, a common problem is privilege escalation bugs that enable the attacker to gain more access than they should be allowed.
+[src:container-escape-defense/vulnerability-computer-security] Open-source operating systems such as Linux and Android have a freely accessible source code and allow anyone to contribute, which could enable the introduction of vulnerabilities.
+[src:container-escape-defense/vulnerability-computer-security] However, the same vulnerabilities also occur in proprietary operating systems such as Microsoft Windows and Apple operating systems.
+[src:container-escape-defense/vulnerability-computer-security] All reputable vendors of operating systems provide patches regularly.
+[src:container-escape-defense/vulnerability-computer-security] Client–server applications are downloaded onto the end user's computers and are typically updated less frequently than web applications.
+[src:container-escape-defense/vulnerability-computer-security] Unlike web applications, they interact directly with a user's operating system.
+[src:container-escape-defense/vulnerability-computer-security] Because they are inherently less secure than other applications, they are a leading source of data breaches and other security incidents.
+[src:container-escape-defense/vulnerability-computer-security] There is little evidence about the effectiveness and cost-effectiveness of different cyberattack prevention measures.
+[src:container-escape-defense/vulnerability-computer-security] Although estimating the risk of an attack is not straightforward, the mean time to breach and expected cost can be considered to determine the priority for remediating or mitigating an identified vulnerability and whether it is cost effective to do so.
+[src:container-escape-defense/vulnerability-computer-security] Although attention to security can reduce the risk of attack, achieving perfect security for a complex system is impossible, and many security measures have unacceptable cost or usability downsides.
+[src:container-escape-defense/vulnerability-computer-security] For example, reducing the complexity and functionality of the system is effective at reducing the attack surface.
+[src:container-escape-defense/vulnerability-computer-security] Successful vulnerability management usually involves a combination of remediation (closing a vulnerability), mitigation (increasing the difficulty, and reducing the consequences, of exploits), and accepting some residual risk.
+[src:container-escape-defense/vulnerability-computer-security] Often a defense in depth strategy is used for multiple barriers to attack.
+[src:container-escape-defense/vulnerability-computer-security] Some organizations scan for only the highest-risk vulnerabilities as this enables prioritization in the context of lacking the resources to fix every vulnerability.
+[src:container-escape-defense/vulnerability-computer-security] Increasing expenses is likely to have diminishing returns.
+[src:container-escape-defense/vulnerability-computer-security] Remediation fixes vulnerabilities, for example by downloading a software patch.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerability scanners are typically unable to detect zero-day vulnerabilities, but are more effective at finding known vulnerabilities based on a database.
+[src:container-escape-defense/vulnerability-computer-security] These systems can find some known vulnerabilities and advise fixes, such as a patch.
+[src:container-escape-defense/vulnerability-computer-security] However, they have limitations including false positives.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerabilities can only be exploited when they are active-the software in which they are embedded is actively running on the system.
+[src:container-escape-defense/vulnerability-computer-security] Before the code containing the vulnerability is configured to run on the system, it is considered a carrier.
+[src:container-escape-defense/vulnerability-computer-security] Dormant vulnerabilities can run, but are not currently running.
+[src:container-escape-defense/vulnerability-computer-security] Software containing dormant and carrier vulnerabilities can sometimes be uninstalled or disabled, removing the risk.
+[src:container-escape-defense/vulnerability-computer-security] Active vulnerabilities, if distinguished from the other types, can be prioritized for patching.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerability mitigation is measures that do not close the vulnerability, but make it more difficult to exploit or reduce the consequences of an attack.
+[src:container-escape-defense/vulnerability-computer-security] Reducing the attack surface, particularly for parts of the system with root (administrator) access, and closing off opportunities for exploits to engage in privilege exploitation is a common strategy for reducing the harm that a cyberattack can cause.
+[src:container-escape-defense/vulnerability-computer-security] If a patch for third-party software is unavailable, it may be possible to temporarily disable the software.
+[src:container-escape-defense/vulnerability-computer-security] A penetration test attempts to enter the system via an exploit to see if the system is insecure.
+[src:container-escape-defense/vulnerability-computer-security] If a penetration test fails, it does not necessarily mean that the system is secure.
+[src:container-escape-defense/vulnerability-computer-security] Some penetration tests can be conducted with automated software that tests against existing exploits for known vulnerabilities.
+[src:container-escape-defense/vulnerability-computer-security] Other penetration tests are conducted by trained hackers.
+[src:container-escape-defense/vulnerability-computer-security] Many companies prefer to contract out this work as it simulates an outsider attack.
+[src:container-escape-defense/vulnerability-computer-security] The vulnerability lifecycle begins when vulnerabilities are introduced into hardware or software.
+[src:container-escape-defense/vulnerability-computer-security] Detection of vulnerabilities can be by the software vendor, or by a third party.
+[src:container-escape-defense/vulnerability-computer-security] In the latter case, it is considered most ethical to immediately disclose the vulnerability to the vendor so it can be fixed.
+[src:container-escape-defense/vulnerability-computer-security] Government or intelligence agencies buy vulnerabilities that have not been publicly disclosed and may use them in an attack, stockpile them, or notify the vendor.
+[src:container-escape-defense/vulnerability-computer-security] As of 2013, the Five Eyes (United States, United Kingdom, Canada, Australia, and New Zealand) captured the plurality of the market and other significant purchasers included Russia, India, Brazil, Malaysia, Singapore, North Korea, and Iran.
+[src:container-escape-defense/vulnerability-computer-security] Organized criminal groups also buy vulnerabilities, although they typically prefer exploit kits.
+[src:container-escape-defense/vulnerability-computer-security] Even vulnerabilities that are publicly known or patched are often exploitable for an extended period.
+[src:container-escape-defense/vulnerability-computer-security] Security patches can take months to develop, or may never be developed.
+[src:container-escape-defense/vulnerability-computer-security] A patch can have negative effects on the functionality of software and users may need to test the patch to confirm functionality and compatibility.
+[src:container-escape-defense/vulnerability-computer-security] Larger organizations may fail to identify and patch all dependencies, while smaller enterprises and personal users may not install patches.
+[src:container-escape-defense/vulnerability-computer-security] Research suggests that risk of cyberattack increases if the vulnerability is made publicly known or a patch is released.
+[src:container-escape-defense/vulnerability-computer-security] Cybercriminals can reverse engineer the patch to find the underlying vulnerability and develop exploits, often faster than users install the patch.
+[src:container-escape-defense/vulnerability-computer-security] Vulnerabilities become deprecated when the software or vulnerable versions fall out of use.
+[src:container-escape-defense/vulnerability-computer-security] This can take an extended period of time; in particular, industrial software may not be feasible to replace even if the manufacturer stops supporting it.
+[src:container-escape-defense/vulnerability-computer-security] A commonly used scale for assessing the severity of vulnerabilities is the open-source specification Common Vulnerability Scoring System (CVSS).
+[src:container-escape-defense/vulnerability-computer-security] CVSS evaluates the possibility to exploit the vulnerability and compromise data confidentiality, availability, and integrity.
+[src:container-escape-defense/vulnerability-computer-security] It also considers how the vulnerability could be used and how complex an exploit would need to be.
+[src:container-escape-defense/vulnerability-computer-security] The amount of access needed for exploitation and whether it could take place without user interaction are also factored in to the overall score.
+[src:container-escape-defense/vulnerability-computer-security] Someone who discovers a vulnerability may disclose it immediately (full disclosure) or wait until a patch has been developed (responsible disclosure, or coordinated disclosure).
+[src:container-escape-defense/vulnerability-computer-security] The former approach is praised for its transparency, but the drawback is that the risk of attack is likely to be increased after disclosure with no patch available.
+[src:container-escape-defense/vulnerability-computer-security] Some vendors pay bug bounties to those who report vulnerabilities to them.
+[src:container-escape-defense/vulnerability-computer-security] Not all companies respond positively to disclosures, as they can cause legal liability and operational overhead.
+[src:container-escape-defense/vulnerability-computer-security] There is no law requiring disclosure of vulnerabilities.
+[src:container-escape-defense/vulnerability-computer-security] If a vulnerability is discovered by a third party that does not disclose to the vendor or the public, it is called a zero-day vulnerability, often considered the most dangerous type because fewer defenses exist.
+[src:container-escape-defense/vulnerability-computer-security] The most commonly used vulnerability dataset is Common Vulnerabilities and Exposures (CVE), maintained by Mitre Corporation.
+[src:container-escape-defense/vulnerability-computer-security] This information is shared into other databases, including the United States' National Vulnerability Database, where each vulnerability is given a risk score using Common Vulnerability Scoring System (CVSS), Common Platform Enumeration (CPE) scheme, and Common Weakness Enumeration.
+[src:container-escape-defense/vulnerability-computer-security] CVE and other databases typically do not track vulnerabilities in software as a service products.
+[src:container-escape-defense/vulnerability-computer-security] Submitting a CVE is voluntary for companies that discovered a vulnerability.
+[src:container-escape-defense/vulnerability-computer-security] The software vendor is usually not legally liable for the cost if a vulnerability is used in an attack, which creates an incentive to make cheaper but less secure software.
+[src:container-escape-defense/vulnerability-computer-security] Some companies are covered by laws, such as PCI, HIPAA, and Sarbanes-Oxley, that place legal requirements on vulnerability management.

@@ -1,0 +1,24 @@
+---
+title: "Chunking (computing)"
+source: https://en.wikipedia.org/wiki/Chunking_(computing)
+domain: document-chunking
+license: CC-BY-SA-4.0
+tags: document chunking, text segmentation strategy, passage splitting, retrieval context window, overlapping chunk windows
+fetched: 2026-07-02
+---
+
+# Chunking (computing)
+
+In computer programming, **chunking** has multiple meanings.
+
+## In memory management
+
+Typical modern software systems allocate memory dynamically from structures known as heaps. Calls are made to heap-management routines to allocate and free memory. Heap management involves some computation time and can be a performance issue. **Chunking** refers to strategies for improving performance by using special knowledge of a situation to aggregate related memory-allocation requests. For example, if it is known that a certain kind of object will typically be required in groups of eight, instead of allocating and freeing each object individually, making sixteen calls to the heap manager, one could allocate and free an array of eight of the objects, reducing the number of calls to two.
+
+## In HTTP message transmission
+
+**Chunking** is a specific feature of the HTTP 1.1 protocol. Here, the meaning is the opposite of that used in memory management. It refers to a facility that allows inconveniently large messages to be broken into conveniently-sized smaller "chunks".
+
+## In data deduplication, data synchronization and remote data compression
+
+In data deduplication, data synchronization and remote data compression, Chunking is a process to split a file into smaller pieces called chunks by the chunking algorithm. It can help to eliminate duplicate copies of repeating data on storage, or reduces the amount of data sent over the network by only selecting changed chunks. The Content-Defined Chunking (CDC) algorithm like Rolling hash and its variants have been the most popular data deduplication algorithms for the last 15 years.

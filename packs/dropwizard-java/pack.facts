@@ -1,0 +1,415 @@
+# nl-rag distilled facts — domain: dropwizard-java
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:dropwizard-java/getting-started] Dropwizard straddles the line between being a library and a framework.
+[src:dropwizard-java/getting-started] Its goal is to provide performant, reliable implementations of everything a production-ready web application needs.
+[src:dropwizard-java/getting-started] Because this functionality is extracted into a reusable library, your application remains lean and focused, reducing both time-to-market and maintenance burdens.
+[src:dropwizard-java/getting-started] Because you can’t be a web application without HTTP, Dropwizard uses the Jetty HTTP library to embed an incredibly tuned HTTP server directly into your project.
+[src:dropwizard-java/getting-started] Instead of handing your application off to a complicated application server, Dropwizard projects have a `main` method which spins up an HTTP server.
+[src:dropwizard-java/getting-started] For building RESTful web applications, we’ve found nothing beats Jersey (the JAX-RS reference implementation) in terms of features or performance.
+[src:dropwizard-java/getting-started] It allows you to write clean, testable classes which gracefully map HTTP requests to simple Java objects.
+[src:dropwizard-java/getting-started] It supports streaming output, matrix URI parameters, conditional `GET` requests, and much, much more.
+[src:dropwizard-java/getting-started] In terms of data formats, JSON has become the web’s *lingua franca*, and Jackson is the king of JSON on the JVM.
+[src:dropwizard-java/getting-started] In addition to being lightning fast, it has a sophisticated object mapper, allowing you to export your domain models directly.
+[src:dropwizard-java/getting-started] The Metrics library rounds things out, providing you with unparalleled insight into your code’s behavior in your production environment.
+[src:dropwizard-java/getting-started] In addition to Jetty, Jersey, and Jackson, Dropwizard also includes a number of libraries to help you ship more quickly and with fewer regrets.
+[src:dropwizard-java/getting-started] Now that you’ve gotten the lay of the land, let’s dig in!
+[src:dropwizard-java/getting-started] If you’re upgrading from an earlier version of Dropwizard, see the Upgrade Notes for Dropwizard 5.0.x for important information about the Java version requirement and other breaking changes.
+[src:dropwizard-java/getting-started] We recommend you use Maven for new Dropwizard applications.
+[src:dropwizard-java/getting-started] If you’re a big Ant / Ivy, Buildr, Gradle, SBT, Leiningen, or Gant fan, that’s cool, but we use Maven, and we’ll be using Maven as we go through this example application.
+[src:dropwizard-java/getting-started] If you have any questions about how Maven works, Maven: The Complete Reference should have what you’re looking for.
+[src:dropwizard-java/getting-started] We’ve got a Maven project set up now, and it’s time to start writing real code.
+[src:dropwizard-java/getting-started] Each Dropwizard application has its own subclass of the `Configuration` class which specifies environment-specific parameters.
+[src:dropwizard-java/getting-started] These parameters are specified in a YAML configuration file which is deserialized to an instance of your application’s configuration class and validated.
+[src:dropwizard-java/getting-started] The application we’ll be building is a high-performance Hello World service, and one of our requirements is that we need to be able to vary how it says hello from environment to environment.
+[src:dropwizard-java/getting-started] We’ll need to specify at least two things to begin with: a template for saying hello and a default name to use in case the user doesn’t specify their name.
+[src:dropwizard-java/getting-started] There’s a lot going on here, so let’s unpack a bit of it.
+[src:dropwizard-java/getting-started] When this class is deserialized from the YAML file, it will pull two root-level fields from the YAML object: `template`, the template for our Hello World saying, and `defaultName`, the default name to use.
+[src:dropwizard-java/getting-started] Both `template` and `defaultName` are annotated with `@NotEmpty`, so if the YAML configuration file has blank values for either or is missing `template` entirely an informative exception will be thrown, and your application won’t start.
+[src:dropwizard-java/getting-started] Both the getters and setters for `template` and `defaultName` are annotated with `@JsonProperty`, which allows Jackson to both deserialize the properties from a YAML file but also to serialize it.
+[src:dropwizard-java/getting-started] The mapping from YAML to your application’s `Configuration` instance is done by Jackson.
+[src:dropwizard-java/getting-started] This means your `Configuration` class can use all of Jackson’s object-mapping annotations.
+[src:dropwizard-java/getting-started] The validation of `@NotEmpty` is handled by Hibernate Validator, which has a wide range of built-in constraints for you to use.
+[src:dropwizard-java/getting-started] Dropwizard has *many* more configuration parameters than that, but they all have sane defaults so you can keep your configuration files small and focused.
+[src:dropwizard-java/getting-started] So save that YAML file in the directory you plan to run the fat jar from (see below) as `hello-world.yml`, because we’ll be getting up and running pretty soon, and we’ll need it.
+[src:dropwizard-java/getting-started] Next up, we’re creating our application class!
+[src:dropwizard-java/getting-started] Combined with your project’s `Configuration` subclass, its `Application` subclass forms the core of your Dropwizard application.
+[src:dropwizard-java/getting-started] The `Application` class pulls together the various bundles and commands which provide basic functionality.
+[src:dropwizard-java/getting-started] As you can see, `HelloWorldApplication` is parameterized with the application’s configuration type, `HelloWorldConfiguration`.
+[src:dropwizard-java/getting-started] An `initialize` method is used to configure aspects of the application required before the application is run, like bundles, configuration source providers, etc.
+[src:dropwizard-java/getting-started] Also, we’ve added a `static` `main` method, which will be our application’s entry point.
+[src:dropwizard-java/getting-started] Right now, we don’t have any functionality implemented, so our `run` method is a little boring.
+[src:dropwizard-java/getting-started] Before we can get into the nuts-and-bolts of our Hello World application, we need to stop and think about our API.
+[src:dropwizard-java/getting-started] The `id` field is a unique identifier for the saying, and `content` is the textual representation of the saying.
+[src:dropwizard-java/getting-started] This is a pretty simple POJO, but there are a few things worth noting here.
+[src:dropwizard-java/getting-started] This makes `Saying` instances *very* easy to reason about in multi-threaded environments as well as single-threaded environments.
+[src:dropwizard-java/getting-started] Second, it uses the JavaBeans standard for the `id` and `content` properties.
+[src:dropwizard-java/getting-started] This allows Jackson to serialize it to the JSON we need.
+[src:dropwizard-java/getting-started] The Jackson object mapping code will populate the `id` field of the JSON object with the return value of `#getId()`, likewise with `content` and `#getContent()`.
+[src:dropwizard-java/getting-started] The JSON serialization here is done by Jackson, which supports far more than simple JavaBean objects like this one.
+[src:dropwizard-java/getting-started] In addition to the sophisticated set of annotations, you can even write your custom serializers and deserializers.
+[src:dropwizard-java/getting-started] Now that we’ve got our representation class, it makes sense to start in on the resource it represents.
+[src:dropwizard-java/getting-started] Jersey resources are the meat-and-potatoes of a Dropwizard application.
+[src:dropwizard-java/getting-started] Each resource class is associated with a URI template.
+[src:dropwizard-java/getting-started] Let’s start from the top and work our way down.
+[src:dropwizard-java/getting-started] `HelloWorldResource` has two annotations: `@Path` and `@Produces`.
+[src:dropwizard-java/getting-started] `@Path("/hello-world")` tells Jersey that this resource is accessible at the URI `/hello-world`, and `@Produces(MediaType.APPLICATION_JSON)` lets Jersey’s content negotiation code know that this resource produces representations which are `application/json`.
+[src:dropwizard-java/getting-started] `HelloWorldResource` takes two parameters for construction: the `template` it uses to produce the saying and the `defaultName` used when the user declines to tell us their name.
+[src:dropwizard-java/getting-started] An `AtomicLong` provides us with a cheap, thread-safe way of generating unique(ish) IDs.
+[src:dropwizard-java/getting-started] Resource classes are used by multiple threads concurrently.
+[src:dropwizard-java/getting-started] In general, we recommend that resources be stateless/immutable, but it’s important to keep the context in mind.
+[src:dropwizard-java/getting-started] `#sayHello(Optional<String>)` is the meat of this class, and it’s a fairly simple method.
+[src:dropwizard-java/getting-started] The `@QueryParam("name")` annotation tells Jersey to map the `name` parameter from the query string to the `name` parameter in the method.
+[src:dropwizard-java/getting-started] If the client sends a request to `/hello-world?name=Dougie`, `sayHello` will be called with `Optional.of("Dougie")`; if there is no `name` parameter in the query string, `sayHello` will be called with `Optional.empty()`.
+[src:dropwizard-java/getting-started] If the client sends a request to `/hello-world?name=`, `sayHello` will be called with `Optional.of("")`.
+[src:dropwizard-java/getting-started] This may seem odd at first, but this follows the standards (an application may have different behavior depending on if a parameter is empty vs nonexistent).
+[src:dropwizard-java/getting-started] Inside the `sayHello` method, we increment the counter, format the template using `String.format(String, Object...)`, and return a new `Saying` instance.
+[src:dropwizard-java/getting-started] Because `sayHello` is annotated with `@Timed`, Dropwizard automatically records the duration and rate of its invocations as a Metrics Timer.
+[src:dropwizard-java/getting-started] Once `sayHello` has returned, Jersey takes the `Saying` instance and looks for a provider class which can write `Saying` instances as `application/json`.
+[src:dropwizard-java/getting-started] Dropwizard has one such provider built in which allows for producing and consuming Java objects as JSON objects.
+[src:dropwizard-java/getting-started] The provider writes out the JSON and the client receives a `200 OK` response with a content type of `application/json`.
+[src:dropwizard-java/getting-started] Before that will actually work, though, we need to go back to `HelloWorldApplication` and add this new resource class.
+[src:dropwizard-java/getting-started] When our application starts, we create a new instance of our resource class with the parameters from the configuration file and hand it off to the `Environment`, which acts like a registry of all the things your application can do.
+[src:dropwizard-java/getting-started] A Dropwizard application can contain *many* resource classes, each corresponding to its own URI pattern.
+[src:dropwizard-java/getting-started] Just add another `@Path`-annotated resource class and call `register` with an instance of the new class.
+[src:dropwizard-java/getting-started] Before we go too far, we should add a health check for our application.
+[src:dropwizard-java/getting-started] Health checks give you a way of adding small tests to your application to allow you to verify that your application is functioning correctly in production.
+[src:dropwizard-java/getting-started] We **strongly** recommend that all of your applications have at least a minimal set of health checks.
+[src:dropwizard-java/getting-started] We recommend this so strongly, in fact, that Dropwizard will nag you should you neglect to add a health check to your project.
+[src:dropwizard-java/getting-started] Since formatting strings is not likely to fail while an application is running (unlike, say, a database connection pool), we’ll have to get a little creative here.
+[src:dropwizard-java/getting-started] `TemplateHealthCheck` checks for two things: that the provided template is actually a well-formed format string, and that the template actually produces output with the given name.
+[src:dropwizard-java/getting-started] If the string is not a well-formed format string (for example, someone accidentally put `Hello, %s%` in the configuration file), then `String.format(String, Object...)` will throw an `IllegalFormatException` and the health check will implicitly fail.
+[src:dropwizard-java/getting-started] If the rendered saying doesn’t include the test string, the health check will explicitly fail by returning an unhealthy `Result`.
+[src:dropwizard-java/getting-started] We recommend that you build your Dropwizard applications as “fat” JAR files — single `.jar` files which contain *all* of the `.class` files required to run your application.
+[src:dropwizard-java/getting-started] This allows you to build a single deployable artifact which you can promote from your staging environment to your QA environment to your production environment without worrying about differences in installed libraries.
+[src:dropwizard-java/getting-started] To start building our Hello World application as a fat JAR, we need to configure a Maven plugin called `maven-shade`.
+[src:dropwizard-java/getting-started] If your application has a dependency which *must* be signed (e.g., a JCA/JCE provider or other trusted library), you have to add an exclusion to the `maven-shade-plugin` configuration for that library and include that JAR in the classpath.
+[src:dropwizard-java/getting-started] Since Dropwizard is using the Java ServiceLoader functionality to register and load extensions, the minimizeJar option of the *maven-shade-plugin* will lead to non-working application JARs.
+[src:dropwizard-java/getting-started] Dropwizard can also use the project version if it’s embedded in the JAR’s manifest as the `Implementation-Version`.
+[src:dropwizard-java/getting-started] This can be handy when trying to figure out what version of your application you have deployed on a machine.
+[src:dropwizard-java/getting-started] Once you’ve got that configured, go into your project directory and run `mvn package` (or run the `package` goal from your IDE).
+[src:dropwizard-java/getting-started] Now that you’ve built a JAR file, it’s time to run it.
+[src:dropwizard-java/getting-started] Dropwizard takes the first command line argument and dispatches it to a matching command.
+[src:dropwizard-java/getting-started] In this case, the only command available is `server`, which runs your application as an HTTP server.
+[src:dropwizard-java/getting-started] Your Dropwizard application is now listening on ports `8080` for application requests and `8081` for administration requests.
+[src:dropwizard-java/getting-started] If you press `^C`, the application will shut down gracefully, first closing the server socket, then waiting for in-flight requests to be processed, then shutting down the process itself.
+[src:dropwizard-java/getting-started] However, while it’s up, let’s give it a whirl!
+[src:dropwizard-java/getting-started] But that’s not all your application can do.
+[src:dropwizard-java/getting-started] One of the main reasons for using Dropwizard is the out-of-the-box operational tools it provides, all of which can be found on the admin port.
+[src:dropwizard-java/getting-started] If you click through to the metrics resource, you can see all of your application’s metrics represented as a JSON object.
+[src:dropwizard-java/getting-started] The threads resource allows you to quickly get a thread dump of all the threads running in that process.
+[src:dropwizard-java/getting-started] When a Jetty worker thread is handling an incoming HTTP request, the thread name is set to the method and URI of the request.
+[src:dropwizard-java/getting-started] This can be *very* helpful when debugging a poorly-behaving request.
+[src:dropwizard-java/getting-started] The healthcheck resource runs the health check class we wrote.
+[src:dropwizard-java/getting-started] `template` here is the result of your `TemplateHealthCheck`, which unsurprisingly passed.
+[src:dropwizard-java/getting-started] `deadlocks` is a built-in health check which looks for deadlocked JVM threads and prints out a listing if any are found.
+[src:dropwizard-java/getting-started] You’ve got a Hello World application ready for production (except for the lack of tests) that’s capable of doing 30,000-50,000 requests per second.
+[src:dropwizard-java/getting-started] Hopefully, you’ve gotten a feel for how Dropwizard combines Jetty, Jersey, Jackson, and other stable, mature libraries to provide a phenomenal platform for developing RESTful web applications.
+[src:dropwizard-java/getting-started] There’s a lot more to Dropwizard than is covered here (commands, bundles, servlets, advanced configuration, validation, HTTP clients, database clients, views, etc.), all of which is covered by the User Manual.
+[src:dropwizard-java/java-programming-language] Java gained popularity shortly after its release, and has been a popular programming language since then.
+[src:dropwizard-java/java-programming-language] Java was the third most popular programming language in 2022 according to GitHub.
+[src:dropwizard-java/java-programming-language] Although still widely popular, there has been a gradual decline in use of Java in recent years with other languages using JVM gaining popularity.
+[src:dropwizard-java/java-programming-language] Java was designed by James Gosling at Sun Microsystems.
+[src:dropwizard-java/java-programming-language] It was released in May 1995 as a core component of Sun's Java platform.
+[src:dropwizard-java/java-programming-language] The original and reference implementation Java compilers, virtual machines (VMs), and class libraries were released by Sun under proprietary licenses.
+[src:dropwizard-java/java-programming-language] As of May 2007, in compliance with the specifications of the Java Community Process, Sun had relicensed most of its Java technologies under the GPL-2.0-only license.
+[src:dropwizard-java/java-programming-language] Oracle, which bought Sun in 2010, offers its own HotSpot Java virtual machine.
+[src:dropwizard-java/java-programming-language] However, the official reference implementation is the OpenJDK JVM, which is open-source software used by most developers and is the default JVM for almost all Linux distributions.
+[src:dropwizard-java/java-programming-language] As of March 2026, Java 26 is the current version.
+[src:dropwizard-java/java-programming-language] James Gosling, Mike Sheridan, and Patrick Naughton initiated the Java language project in June 1991.
+[src:dropwizard-java/java-programming-language] Java was originally designed for interactive television, but it was too advanced for the digital cable television industry at the time.
+[src:dropwizard-java/java-programming-language] The language was initially called *Oak* after an oak tree that stood outside Gosling's office.
+[src:dropwizard-java/java-programming-language] Later the project went by the name *Green* and was finally renamed *Java*, from Java coffee, a type of coffee from Indonesia.
+[src:dropwizard-java/java-programming-language] Gosling designed Java with a C/C++-style syntax that system and application programmers would find familiar.
+[src:dropwizard-java/java-programming-language] Sun Microsystems released the first public implementation as Java 1.0 in 1996.
+[src:dropwizard-java/java-programming-language] It promised write once, run anywhere (WORA) functionality, providing no-cost run-times on popular platforms.
+[src:dropwizard-java/java-programming-language] Fairly secure and featuring configurable security, it allowed network- and file-access restrictions.
+[src:dropwizard-java/java-programming-language] Major web browsers soon incorporated the ability to run Java applets within web pages, and Java quickly became popular.
+[src:dropwizard-java/java-programming-language] The Java 1.0 compiler was re-written in Java by Arthur van Hoff to comply strictly with the Java 1.0 language specification.
+[src:dropwizard-java/java-programming-language] With the advent of Java 2 (released initially as J2SE 1.2 in December 1998 – 1999), new versions had multiple configurations built for different types of platforms.
+[src:dropwizard-java/java-programming-language] J2EE included technologies and APIs for enterprise applications typically run in server environments, while J2ME featured APIs optimized for mobile applications.
+[src:dropwizard-java/java-programming-language] In 2006, for marketing purposes, Sun renamed new J2 versions as *Java EE*, *Java ME*, and *Java SE*, respectively.
+[src:dropwizard-java/java-programming-language] In 1997, Sun Microsystems approached the ISO/IEC JTC 1 standards body and later the Ecma International to formalize Java, but it soon withdrew from the process.
+[src:dropwizard-java/java-programming-language] Java remains a *de facto* standard, controlled through the Java Community Process.
+[src:dropwizard-java/java-programming-language] At one time, Sun made most of its Java implementations available without charge, despite their proprietary software status.
+[src:dropwizard-java/java-programming-language] Sun generated revenue from Java through the selling of licenses for specialized products such as the Java Enterprise System.
+[src:dropwizard-java/java-programming-language] On November 13, 2006, Sun released much of its Java virtual machine (JVM) as free and open-source software (FOSS), under the terms of the GPL-2.0-only license.
+[src:dropwizard-java/java-programming-language] On May 8, 2007, Sun finished the process, making all of its JVM's core code available under free software/open-source distribution terms, aside from a small portion of code to which Sun did not hold the copyright.
+[src:dropwizard-java/java-programming-language] Sun's vice-president Rich Green said that Sun's ideal role with regard to Java was as an *evangelist*.
+[src:dropwizard-java/java-programming-language] Following Oracle Corporation's acquisition of Sun Microsystems in 2009–10, Oracle has described itself as the steward of Java technology with a relentless commitment to fostering a community of participation and transparency.
+[src:dropwizard-java/java-programming-language] This did not prevent Oracle from filing a lawsuit against Google shortly after that for using Java inside the Android SDK (see the *Android* section).
+[src:dropwizard-java/java-programming-language] On April 2, 2010, James Gosling resigned from Oracle.
+[src:dropwizard-java/java-programming-language] In January 2016, Oracle announced that Java run-time environments based on JDK 9 will discontinue the browser plugin.
+[src:dropwizard-java/java-programming-language] Java software runs on most devices from laptops to data centers, game consoles to scientific supercomputers.
+[src:dropwizard-java/java-programming-language] Oracle (and others) highly recommend uninstalling outdated and unsupported versions of Java, due to unresolved security issues in older versions.
+[src:dropwizard-java/java-programming-language] It must be architecture-neutral and portable.
+[src:dropwizard-java/java-programming-language] It must be interpreted, threaded, and dynamic.
+[src:dropwizard-java/java-programming-language] As of June 2026, Java 8, 11, 17, 21, and 25 are supported as long-term support (LTS) versions.
+[src:dropwizard-java/java-programming-language] Oracle released the last zero-cost public update for the legacy version Java 8 LTS in January 2019 for commercial use, although it will otherwise still support Java 8 with public updates for personal use indefinitely.
+[src:dropwizard-java/java-programming-language] Other vendors such as Adoptium continue to offer free builds of OpenJDK's long-term support (LTS) versions.
+[src:dropwizard-java/java-programming-language] These builds may include additional security patches and bug fixes.
+[src:dropwizard-java/java-programming-language] Sun has defined and supports four editions of Java targeting different application environments and segmented many of its APIs so that they belong to one of the platforms.
+[src:dropwizard-java/java-programming-language] The classes in the Java APIs are organized into separate groups called packages.
+[src:dropwizard-java/java-programming-language] Each package contains a set of related interfaces, classes, subpackages and exceptions.
+[src:dropwizard-java/java-programming-language] Sun also provided an edition called Personal Java that has been superseded by later, standards-based Java ME configuration-profile pairings.
+[src:dropwizard-java/java-programming-language] One design goal of Java is portability, which means that programs written for the Java platform must run similarly on any combination of hardware and operating system with adequate run time support.
+[src:dropwizard-java/java-programming-language] This is achieved by compiling the Java language code to an intermediate representation called JVM bytecode, instead of directly to architecture-specific machine code.
+[src:dropwizard-java/java-programming-language] JVM bytecode instructions are analogous to machine code, but they are intended to be executed by a virtual machine (VM) written specifically for the host hardware.
+[src:dropwizard-java/java-programming-language] End-users commonly use a Java Runtime Environment (JRE) installed on their device for standalone Java applications or a web browser for Java applets.
+[src:dropwizard-java/java-programming-language] Standard libraries provide a generic way to access host-specific features such as graphics, threading, and networking.
+[src:dropwizard-java/java-programming-language] The use of universal bytecode makes porting simple.
+[src:dropwizard-java/java-programming-language] However, the overhead of interpreting bytecode into machine instructions made interpreted programs almost always run more slowly than native executables.
+[src:dropwizard-java/java-programming-language] Just-in-time (JIT) compilers that compile byte-codes to machine code during runtime were introduced from an early stage.
+[src:dropwizard-java/java-programming-language] Java's Hotspot compiler is actually two compilers in one, with GraalVM (included in e.g.
+[src:dropwizard-java/java-programming-language] Java 11, but removed as of Java 16) allowing tiered compilation.
+[src:dropwizard-java/java-programming-language] Java itself is platform-independent and is adapted to the particular platform it is to run on by a Java virtual machine (JVM), which translates the JVM bytecode into the platform's machine language.
+[src:dropwizard-java/java-programming-language] Programs written in Java have a reputation for being slower and requiring more memory than those written in C++.
+[src:dropwizard-java/java-programming-language] With Java 1.5, the performance was improved with the addition of the `java.util.concurrent` package, including lock-free implementations of the ConcurrentMaps and other multi-core collections, and it was improved further with Java 1.6.
+[src:dropwizard-java/java-programming-language] Java uses an automatic garbage collector to manage memory in the object lifecycle.
+[src:dropwizard-java/java-programming-language] The programmer determines when objects are created, and the Java runtime is responsible for recovering the memory once objects are no longer in use.
+[src:dropwizard-java/java-programming-language] Once no references to an object remain, the unreachable memory becomes eligible to be freed automatically by the garbage collector.
+[src:dropwizard-java/java-programming-language] Something similar to a memory leak may still occur if a programmer's code holds a reference to an object that is no longer needed, typically when objects that are no longer needed are stored in containers that are still in use.
+[src:dropwizard-java/java-programming-language] If methods for a non-existent object are called, a null pointer exception is thrown.
+[src:dropwizard-java/java-programming-language] One of the ideas behind Java's automatic memory management model is that programmers can be spared the burden of having to perform manual memory management.
+[src:dropwizard-java/java-programming-language] In some languages, memory for the creation of objects is implicitly allocated on the stack or explicitly allocated and deallocated from the heap.
+[src:dropwizard-java/java-programming-language] In the latter case, the responsibility of managing memory resides with the programmer.
+[src:dropwizard-java/java-programming-language] If the program does not deallocate an object, a memory leak occurs.
+[src:dropwizard-java/java-programming-language] If the program attempts to access or deallocate memory that has already been deallocated, the result is undefined and difficult to predict, and the program is likely to become unstable or crash.
+[src:dropwizard-java/java-programming-language] This can be partially remedied by the use of smart pointers, but these add overhead and complexity.
+[src:dropwizard-java/java-programming-language] Garbage collection does not prevent logical memory leaks, i.e. those where the memory is still referenced but never used.
+[src:dropwizard-java/java-programming-language] Garbage collection may happen at any time.
+[src:dropwizard-java/java-programming-language] Ideally, it will occur when a program is idle.
+[src:dropwizard-java/java-programming-language] It is guaranteed to be triggered if there is insufficient free memory on the heap to allocate a new object; this can cause a program to stall momentarily.
+[src:dropwizard-java/java-programming-language] Explicit memory management is not possible in Java, however it is possible to make the JVM do garbage collection manually.
+[src:dropwizard-java/java-programming-language] Java does not support C/C++ style pointer arithmetic, where object addresses can be arithmetically manipulated (e.g. by adding or subtracting an offset).
+[src:dropwizard-java/java-programming-language] This allows the garbage collector to relocate referenced objects and ensures type safety and security.
+[src:dropwizard-java/java-programming-language] As in C++ and some other object-oriented languages, variables of Java's primitive data types are either stored directly in fields (for objects) or on the stack (for methods) rather than on the heap, as is commonly true for non-primitive data types (but see escape analysis).
+[src:dropwizard-java/java-programming-language] This was a conscious decision by Java's designers for performance reasons.
+[src:dropwizard-java/java-programming-language] Java contains multiple types of garbage collectors.
+[src:dropwizard-java/java-programming-language] Since Java 9, HotSpot uses the Garbage First Garbage Collector (G1GC) as the default.
+[src:dropwizard-java/java-programming-language] However, there are also several other garbage collectors that can be used to manage the heap, such as the Z Garbage Collector (ZGC) introduced in Java 11, and Shenandoah GC, introduced in Java 12 but unavailable in Oracle-produced OpenJDK builds.
+[src:dropwizard-java/java-programming-language] Shenandoah is instead available in third-party builds of OpenJDK, such as Eclipse Temurin.
+[src:dropwizard-java/java-programming-language] For most applications in Java, G1GC is sufficient.
+[src:dropwizard-java/java-programming-language] In prior versions of Java, such as Java 8, the Parallel Garbage Collector was used as the default garbage collector.
+[src:dropwizard-java/java-programming-language] Having solved the memory management problem does not relieve the programmer of the burden of handling properly other kinds of resources, like network or database connections, file handles, etc., especially in the presence of exceptions.
+[src:dropwizard-java/java-programming-language] The syntax of Java is largely influenced by C++ and C.
+[src:dropwizard-java/java-programming-language] Unlike C++, which combines the syntax for structured, generic, and object-oriented programming, Java was built almost exclusively as an object-oriented language.
+[src:dropwizard-java/java-programming-language] All code is written inside classes, and every data item is an object, with the exception of the primitive data types, (i.e. integers, floating-point numbers, boolean values, and characters), which are not objects for performance reasons.
+[src:dropwizard-java/java-programming-language] Unlike C++, Java does not support operator overloading or multiple inheritance for classes, though multiple inheritance is supported for interfaces.
+[src:dropwizard-java/java-programming-language] Java uses comments similar to those of C++.
+[src:dropwizard-java/java-programming-language] There are three different styles of comments: a single line style marked with two slashes (`//`), a multiple line style opened with `/*` and closed with `*/`, and the Javadoc commenting style opened with `/**` and closed with `*/`.
+[src:dropwizard-java/java-programming-language] The Javadoc style of commenting allows the user to run the Javadoc executable to create documentation for the program and can be read by some integrated development environments (IDEs) such as Eclipse to allow developers to access documentation within the IDE.
+[src:dropwizard-java/java-programming-language] Java applets were programs embedded in other applications, mainly in web pages displayed in web browsers.
+[src:dropwizard-java/java-programming-language] The Java applet API was deprecated with the release of Java 9 in 2017.
+[src:dropwizard-java/java-programming-language] Java servlet technology provides Web developers with a simple, consistent mechanism for extending the functionality of a Web server and for accessing existing business systems.
+[src:dropwizard-java/java-programming-language] Servlets are server-side Java EE components that generate responses to requests from clients.
+[src:dropwizard-java/java-programming-language] Most of the time, this means generating HTML pages in response to HTTP requests, although there are a number of other standard servlet classes available, for example for WebSocket communication.
+[src:dropwizard-java/java-programming-language] Typical implementations of these APIs on Application Servers or Servlet Containers use a standard servlet for handling all interactions with the HTTP requests and responses that delegate to the web service methods for the actual business logic.
+[src:dropwizard-java/java-programming-language] JavaServer Pages (JSP) are server-side Java EE components that generate responses, typically HTML pages, to HTTP requests from clients.
+[src:dropwizard-java/java-programming-language] JSPs embed Java code in an HTML page by using the special delimiters `<%` and `%>`.
+[src:dropwizard-java/java-programming-language] A JSP is compiled to a Java *servlet*, a Java application in its own right, the first time it is accessed.
+[src:dropwizard-java/java-programming-language] After that, the generated servlet creates the response.
+[src:dropwizard-java/java-programming-language] Swing is a graphical user interface library for the Java SE platform.
+[src:dropwizard-java/java-programming-language] It is possible to specify a different look and feel through the pluggable look and feel system of Swing.
+[src:dropwizard-java/java-programming-language] Clones of Windows, GTK+, and Motif are supplied by Sun.
+[src:dropwizard-java/java-programming-language] Apple also provides an Aqua look and feel for macOS.
+[src:dropwizard-java/java-programming-language] Where prior implementations of these looks and feels may have been considered lacking, Swing in Java SE 6 addresses this problem by using more native GUI widget drawing routines of the underlying platforms.
+[src:dropwizard-java/java-programming-language] JavaFX is a software platform for creating and delivering desktop applications, as well as rich web applications that can run across a wide variety of devices.
+[src:dropwizard-java/java-programming-language] JavaFX is intended to replace Swing as the standard graphical user interface (GUI) library for Java SE, but since JDK 11 JavaFX has not been in the core JDK and is instead available as a separate module.
+[src:dropwizard-java/java-programming-language] JavaFX has support for desktop computers and web browsers on Microsoft Windows, Linux, and macOS.
+[src:dropwizard-java/java-programming-language] JavaFX does not have support for native OS look and feels.
+[src:dropwizard-java/java-programming-language] In 2004, generics were added to the Java language, as part of J2SE 5.0.
+[src:dropwizard-java/java-programming-language] Prior to the introduction of generics, each variable declaration had to be of a specific type.
+[src:dropwizard-java/java-programming-language] For container classes, for example, this is a problem because there is no easy way to create a container that accepts only specific types of objects.
+[src:dropwizard-java/java-programming-language] Either the container operates on all subtypes of a class or interface, usually `Object`, or a different container class has to be created for each contained class.
+[src:dropwizard-java/java-programming-language] Generics allow compile-time type checking without having to create many container classes, each containing almost identical code.
+[src:dropwizard-java/java-programming-language] In addition to enabling more efficient code, certain runtime exceptions are prevented from occurring, by issuing compile-time errors.
+[src:dropwizard-java/java-programming-language] If Java prevented all runtime type errors (`ClassCastException`s) from occurring, it would be type safe.
+[src:dropwizard-java/java-programming-language] In 2016, the type system of Java was proven unsound in that it is possible to use generics to construct classes and methods that allow assignment of an instance of one class to a variable of another unrelated class.
+[src:dropwizard-java/java-programming-language] Such code is accepted by the compiler, but fails at run time with a class cast exception.
+[src:dropwizard-java/java-programming-language] Criticisms directed at Java include the implementation of generics, speed, the handling of unsigned numbers, the implementation of floating-point arithmetic, and a history of security vulnerabilities in the primary Java VM implementation HotSpot.
+[src:dropwizard-java/java-programming-language] Developers have criticized the complexity and verbosity of the Java Persistence API (JPA), a standard part of Java EE.
+[src:dropwizard-java/java-programming-language] This has led to increased adoption of higher-level abstractions like Spring Data JPA, which aims to simplify database operations and reduce boilerplate code.
+[src:dropwizard-java/java-programming-language] The growing popularity of such frameworks suggests limitations in the standard JPA implementation's ease-of-use for modern Java development.
+[src:dropwizard-java/java-programming-language] The Java Class Library is the standard library, developed to support application development in Java.
+[src:dropwizard-java/java-programming-language] It is controlled by Oracle in cooperation with others through the Java Community Process program.
+[src:dropwizard-java/java-programming-language] Companies or individuals participating in this process can influence the design and development of the APIs.
+[src:dropwizard-java/java-programming-language] This process has been a subject of controversy during the 2010s.
+[src:dropwizard-java/java-programming-language] Javadoc is a comprehensive documentation system, created by Sun Microsystems.
+[src:dropwizard-java/java-programming-language] It provides developers with an organized system for documenting their code.
+[src:dropwizard-java/java-programming-language] Javadoc comments have an extra asterisk at the beginning, i.e. the delimiters are `/**` and `*/`, whereas the normal multi-line comments in Java are delimited by `/*` and `*/`, and single-line comments start with `//`.
+[src:dropwizard-java/java-programming-language] Oracle Corporation owns the official implementation of the Java SE platform, due to its acquisition of Sun Microsystems on January 27, 2010.
+[src:dropwizard-java/java-programming-language] This implementation is based on the original implementation of Java by Sun.
+[src:dropwizard-java/java-programming-language] The Oracle implementation is available for Windows, macOS, Linux, and Solaris.
+[src:dropwizard-java/java-programming-language] Because Java lacks any formal standardization recognized by Ecma International, ISO/IEC, ANSI, or other third-party standards organizations, the Oracle implementation is the de facto standard.
+[src:dropwizard-java/java-programming-language] Oracle has also released GraalVM, a high performance Java dynamic compiler and interpreter.
+[src:dropwizard-java/java-programming-language] OpenJDK is another Java SE implementation that is licensed under the GNU GPL.
+[src:dropwizard-java/java-programming-language] The implementation started when Sun began releasing the Java source code under the GPL.
+[src:dropwizard-java/java-programming-language] As of Java SE 7, OpenJDK is the official Java reference implementation.
+[src:dropwizard-java/java-programming-language] The goal of Java is to make all implementations of Java compatible.
+[src:dropwizard-java/java-programming-language] Historically, Sun's trademark license for usage of the Java brand insists that all implementations be *compatible*.
+[src:dropwizard-java/java-programming-language] This resulted in a legal dispute with Microsoft after Sun claimed that the Microsoft implementation did not support Java remote method invocation (RMI) or Java Native Interface (JNI) and had added platform-specific features of their own.
+[src:dropwizard-java/java-programming-language] Sun sued in 1997, and, in 2001, won a settlement of US$20 million, as well as a court order enforcing the terms of the license from Sun.
+[src:dropwizard-java/java-programming-language] As a result, Microsoft no longer ships Java with Windows.
+[src:dropwizard-java/java-programming-language] Platform-independent Java is essential to Java EE, and an even more rigorous validation is required to certify an implementation.
+[src:dropwizard-java/java-programming-language] This environment enables portable server-side applications.
+[src:dropwizard-java/java-programming-language] The Java programming language requires the presence of a software platform in order for compiled programs to be executed.
+[src:dropwizard-java/java-programming-language] Oracle supplies the Java platform for use with Java.
+[src:dropwizard-java/java-programming-language] The Android SDK is an alternative software platform, used primarily for developing Android applications with its own GUI system.
+[src:dropwizard-java/java-programming-language] The Java language is a key pillar in Android, an open source mobile operating system.
+[src:dropwizard-java/java-programming-language] Although Android, built on the Linux kernel, is written largely in C, the Android SDK uses the Java language as the basis for Android applications but does not use any of its standard GUI, SE, ME or other established Java standards.
+[src:dropwizard-java/java-programming-language] The bytecode language supported by the Android SDK is incompatible with JVM bytecode and runs on its own virtual machine, optimized for low-memory devices such as smartphones and tablet computers.
+[src:dropwizard-java/java-programming-language] Depending on the Android version, the bytecode is either interpreted by the Dalvik virtual machine or compiled into native code by the Android Runtime.
+[src:dropwizard-java/java-programming-language] Android does not provide the full Java SE standard library, although the Android SDK does include an independent implementation of a large subset of it.
+[src:dropwizard-java/java-programming-language] It supports Java 6 and some Java 7 features, offering an implementation compatible with the standard library (Apache Harmony).
+[src:dropwizard-java/java-programming-language] The use of Java-related technology in Android led to a legal dispute between Oracle and Google.
+[src:dropwizard-java/java-programming-language] On May 7, 2012, a San Francisco jury found that if APIs could be copyrighted, then Google had infringed Oracle's copyrights by the use of Java in Android devices.
+[src:dropwizard-java/java-programming-language] District Judge William Alsup ruled on May 31, 2012, that APIs cannot be copyrighted, but this was reversed by the United States Court of Appeals for the Federal Circuit in May 2014.
+[src:dropwizard-java/java-programming-language] On May 26, 2016, the district court decided in favor of Google, ruling the copyright infringement of the Java API in Android constitutes fair use.
+[src:dropwizard-java/java-programming-language] In March 2018, this ruling was overturned by the Appeals Court, which sent down the case of determining the damages to federal court in San Francisco.
+[src:dropwizard-java/java-programming-language] Google filed a petition for writ of certiorari with the Supreme Court of the United States in January 2019 to challenge the two rulings that were made by the Appeals Court in Oracle's favor.
+[src:dropwizard-java/java-programming-language] On April 5, 2021, the Court ruled 6–2 in Google's favor, that its use of Java APIs should be considered fair use.
+[src:dropwizard-java/jetty-web-server] Jetty started as an independent open-source project in 1995.
+[src:dropwizard-java/jetty-web-server] Jetty often provides support for web services in an embedded Java application and it is already a component of the Eclipse IDE.
+[src:dropwizard-java/jetty-web-server] It provides support for a wide variety of specifications and protocols including JASPI, JMX, JNDI, OSGi, WebSocket, HTTP/2, and more.
+[src:dropwizard-java/jetty-web-server] Originally developed by software engineer Greg Wilkins, Jetty was an HTTP server component of Mort Bay Server.
+[src:dropwizard-java/jetty-web-server] It was originally called IssueTracker (its original application) and then MBServler (Mort Bay Servlet server).
+[src:dropwizard-java/jetty-web-server] Neither of these were much liked, so Jetty was finally picked.
+[src:dropwizard-java/jetty-web-server] Jetty was started in 1995 and was hosted by MortBay, creating version 1.x and 2.x, until 2000.
+[src:dropwizard-java/jetty-web-server] From 2000 to 2005, Jetty was hosted by sourceforge.net where version 3.x, 4.x, and 5.x were produced.
+[src:dropwizard-java/jetty-web-server] In 2005, the entire Jetty project moved to codehaus.org.
+[src:dropwizard-java/microservices] In software engineering, a **microservice** architecture is an architectural pattern that organizes an application into a collection of loosely coupled, fine-grained services that communicate through lightweight protocols.
+[src:dropwizard-java/microservices] This pattern allows teams to develop, deploy, and scale services independently, improving modularity, scalability, and adaptability.
+[src:dropwizard-java/microservices] However, it introduces additional complexity, particularly in managing distributed systems and inter-service communication, making the initial implementation more challenging compared to a monolithic architecture.
+[src:dropwizard-java/microservices] There is no single, universally agreed-upon definition of microservices.
+[src:dropwizard-java/microservices] However, they are generally characterized by a focus on modularity, with each service designed around a specific business capability.
+[src:dropwizard-java/microservices] These services are loosely coupled, independently deployable, and often developed and scaled separately, enabling greater flexibility and agility in managing complex systems.
+[src:dropwizard-java/microservices] Microservices architecture is closely associated with principles such as domain-driven design, decentralization of data and governance, and the flexibility to use different technologies for individual services to best meet their requirements.
+[src:dropwizard-java/microservices] It is common for microservices architectures to be adopted for cloud-native applications, serverless computing, and applications using lightweight container deployment via OS-level virtualization.
+[src:dropwizard-java/microservices] According to Fowler, because of the large number (when compared to monolithic application implementations) of services, decentralized continuous delivery and DevOps with holistic service monitoring are necessary to effectively develop, maintain, and operate such applications.
+[src:dropwizard-java/microservices] A consequence of (and rationale for) following this approach is that the individual microservices can be individually scaled.
+[src:dropwizard-java/microservices] In the monolithic approach, an application supporting three functions would have to be scaled in its entirety even if only one of these functions had a resource constraint.
+[src:dropwizard-java/microservices] With microservices, only the microservice supporting the function with resource constraints needs to be scaled out, thus providing resource and cost optimization benefits.
+[src:dropwizard-java/microservices] Despite its benefits, microservices architecture introduces challenges such as increased operational complexity, network latency, and the need for robust monitoring and fault tolerance mechanisms.
+[src:dropwizard-java/microservices] Cell-based architecture is a distributed computing design in which computational resources are organized into self-contained units called cells.
+[src:dropwizard-java/microservices] Each cell operates independently, handling a subset of requests while maintaining scalability, fault isolation, and availability.
+[src:dropwizard-java/microservices] A cell typically consists of multiple microservices and functions as an autonomous unit.
+[src:dropwizard-java/microservices] In some implementations, entire sets of microservices are replicated across multiple cells, enabling requests to be rerouted to another operational cell if one experiences a failure.
+[src:dropwizard-java/microservices] This approach is intended to improve system-wide resilience by limiting the impact of localized failures.
+[src:dropwizard-java/microservices] Some implementations incorporate circuit breakers within and between cells.
+[src:dropwizard-java/microservices] Within a cell, circuit breakers may be used to mitigate cascading failures among microservices, while inter-cell circuit breakers can isolate failing cells and redirect traffic to those that remain operational.
+[src:dropwizard-java/microservices] Cell-based architecture has been adopted in certain large-scale distributed systems where fault isolation and redundancy are design priorities.
+[src:dropwizard-java/microservices] Its implementation varies based on system requirements, infrastructure constraints, and specific operational goals.
+[src:dropwizard-java/microservices] In 1999, software developer Peter Rodgers had been working on the Dexter research project at Hewlett Packard Labs, whose aim was to make code less brittle and to make large-scale, complex software systems robust to change.
+[src:dropwizard-java/microservices] Ultimately this path of research led to the development of resource-oriented computing (ROC), a generalized computation abstraction in which REST is a special subset.
+[src:dropwizard-java/microservices] In 2005, during a presentation at the Web Services Edge conference, Rodgers argued for "REST-services" and stated that "Software components are Micro-Web-Services...
+[src:dropwizard-java/microservices] Micro-Services are composed using Unix-like pipelines (the Web meets Unix = true loose-coupling).
+[src:dropwizard-java/microservices] Services can call services (+multiple language run-times).
+[src:dropwizard-java/microservices] Complex service assemblies are abstracted behind simple URI interfaces.
+[src:dropwizard-java/microservices] Also in 2005, Alistair Cockburn wrote about hexagonal architecture which is a software design pattern that is used along with the microservices.
+[src:dropwizard-java/microservices] This pattern makes the design of the microservice possible since it isolates in layers the business logic from the auxiliary services needed in order to deploy and run the microservice completely independent from others.
+[src:dropwizard-java/microservices] Determining the appropriate level of (micro)service granularity in a microservices architecture often requires iterative collaboration between architects and developers.
+[src:dropwizard-java/microservices] This process involves evaluating user requirements, service responsibilities, and architectural characteristics, such as non-functional requirements.
+[src:dropwizard-java/microservices] Neal Ford highlights the role of integrator and disintegrator factors in this context.
+[src:dropwizard-java/microservices] Integrator factors, such as shared transactions or tightly coupled processes, favor combining services, while disintegrator factors, such as fault tolerance or independent scalability, encourage splitting services to meet operational and architectural goals.
+[src:dropwizard-java/microservices] Additionally, fitness functions, as proposed by Neal Ford, can be used to validate architectural decisions and service granularity by continuously measuring system qualities or behaviors that are critical to stakeholders, ensuring alignment with overall architectural objectives.
+[src:dropwizard-java/microservices] In microservices architectures, service granularity influences testing, deployment, performance, and reliability.
+[src:dropwizard-java/microservices] Very fine-grained microservices are typically easier to test and deploy independently, but they often experience lower performance and reduced overall reliability due to increased interservice communication and more complex service choreography.
+[src:dropwizard-java/microservices] Coarse-grained services exhibit contrasting characteristics.
+[src:dropwizard-java/microservices] They generally provide higher robustness and reliability by minimizing communication overhead and coordination complexity, but they are more challenging to test and deploy because modifications affect a broader functional scope.
+[src:dropwizard-java/microservices] The appropriate level of service granularity is determined by business drivers.
+[src:dropwizard-java/microservices] Architectural decisions commonly begin with identifying these drivers and then aligning architectural characteristics such as performance, scalability, reliability, or deployment flexibility to support them.
+[src:dropwizard-java/microservices] A bounded context, a fundamental concept in domain-driven design (DDD), defines a specific area within which a domain model is consistent and valid, ensuring clarity and separation of concerns.
+[src:dropwizard-java/microservices] In microservices architecture, a bounded context often maps to a microservice, but this relationship can vary depending on the design approach.
+[src:dropwizard-java/microservices] A one-to-one relationship, where each bounded context is implemented as a single microservice, is typically ideal as it maintains clear boundaries, reduces coupling, and enables independent deployment and scaling.
+[src:dropwizard-java/microservices] The choice of relationship should balance the principles of DDD with the system's business goals, technical constraints, and operational requirements.
+[src:dropwizard-java/microservices] The architecture introduces additional complexity and new problems to deal with, such as latency, message format design, backup/availability/consistency (BAC), load balancing and fault tolerance.
+[src:dropwizard-java/microservices] All of these problems have to be addressed at scale.
+[src:dropwizard-java/microservices] The complexity of a monolithic application does not disappear if it is re-implemented as a set of microservices.
+[src:dropwizard-java/microservices] Some of the complexity gets translated into operational complexity.
+[src:dropwizard-java/microservices] Other places where the complexity manifests itself are increased network traffic and slower performance.
+[src:dropwizard-java/microservices] Also, an application made up of any number of microservices has a larger number of interface points to access its respective ecosystem, which increases the architectural complexity.
+[src:dropwizard-java/microservices] Various organizing principles (such as hypermedia as the engine of application state (HATEOAS), interface and data model documentation captured via Swagger, etc.) have been applied to reduce the impact of such additional complexity.
+[src:dropwizard-java/microservices] Microservices are susceptible to the fallacies of distributed computing – a series of misconceptions that can lead to significant issues in software development and deployment.
+[src:dropwizard-java/microservices] Ideally, microservices follow a "share-nothing" architecture.
+[src:dropwizard-java/microservices] However, in practice, microservices architectures often encounter situations where code must be shared across services.
+[src:dropwizard-java/microservices] Each approach has its advantages and trade-offs, depending on the specific context and requirements.
+[src:dropwizard-java/microservices] Richards & Ford in *Fundamentals of software architecture* (2020) propose each microservice should have its own architectural characteristics (a.k.a. non functional requirements), and architects should not define uniform characteristics for the entire distributed system.
+[src:dropwizard-java/microservices] To avoid having to coordinate deployments across different microservices, Sam Newman suggests keeping the interfaces of microservices stable and making backwards-compatible changes as interfaces evolve.
+[src:dropwizard-java/microservices] On the topic of testing, Newman in *Building Microservices* (2015) proposes consumer-driven contract testing as a better alternative to traditional end-to-end testing in the context of microservices.
+[src:dropwizard-java/microservices] He also suggests the use of log aggregation and metrics aggregation as well as distributed tracing tools to ensure the observability of systems composed of microservices.
+[src:dropwizard-java/microservices] Computer microservices can be implemented in different programming languages and might use different infrastructures.
+[src:dropwizard-java/microservices] Therefore, the most important technology choices are the way microservices communicate with each other (synchronous, asynchronous, UI integration) and the protocols used for the communication (e.g.
+[src:dropwizard-java/microservices] In a traditional system, most technology choices like the programming language impact the whole system.
+[src:dropwizard-java/microservices] Therefore, the approach to choosing technologies is quite different.
+[src:dropwizard-java/microservices] The Eclipse Foundation has published a specification for developing microservices, Eclipse MicroProfile.
+[src:dropwizard-java/microservices] In a service mesh, each service instance is paired with an instance of a reverse proxy server, called a service proxy, sidecar proxy, or sidecar.
+[src:dropwizard-java/microservices] The service instance and sidecar proxy share a container, and the containers are managed by a container orchestration tool such as Kubernetes, Docker Swarm, or DC/OS.
+[src:dropwizard-java/microservices] The service proxies are responsible for communication with other service instances and can support capabilities such as service (instance) discovery, load balancing, authentication and authorization, secure communications, and others.
+[src:dropwizard-java/representational-state-transfer] REST has been employed throughout the software industry to create stateless, reliable, web-based applications.
+[src:dropwizard-java/representational-state-transfer] The term *representational state transfer* was introduced and defined in 2000 by computer scientist Roy Fielding in his doctoral dissertation.
+[src:dropwizard-java/representational-state-transfer] It means that a server will respond with the representation of a resource (today, it will most often be an HTML document) and that resource will contain hypermedia links that can be followed to make the state of the system change.
+[src:dropwizard-java/representational-state-transfer] Any such request will in turn receive the representation of a resource, and so on.
+[src:dropwizard-java/representational-state-transfer] An important consequence is that the only identifier that needs to be known is the identifier of the first resource requested, and all other identifiers will be discovered.
+[src:dropwizard-java/representational-state-transfer] This means that those identifiers can change without the need to inform the client beforehand and that client and server must be inherently loosely coupled.
+[src:dropwizard-java/representational-state-transfer] The Web began to enter everyday use in 1993–1994, when websites for general use started to become available.
+[src:dropwizard-java/representational-state-transfer] At the time, only a fragmented description existed of the Web's architecture, and there was pressure within the community to agree on a standard for the Web interface protocols.
+[src:dropwizard-java/representational-state-transfer] For instance, several experimental extensions had been added to the communication protocol (HTTP) to support proxies, and more extensions were being proposed, but there was a need for a formal Web architecture with which to evaluate the impact of these changes.
+[src:dropwizard-java/representational-state-transfer] The W3C and IETF working groups together started work on creating formal descriptions of the Web's three primary standards: URI, HTTP, and HTML.
+[src:dropwizard-java/representational-state-transfer] Fielding defined REST in his 2000 PhD dissertation "Architectural Styles and the Design of Network-based Software Architectures" at UC Irvine.
+[src:dropwizard-java/representational-state-transfer] To create the REST architectural style, Fielding identified the requirements that apply when creating a world-wide network-based application, such as the need for a low entry barrier to enable global adoption.
+[src:dropwizard-java/representational-state-transfer] He also surveyed many existing architectural styles for network-based applications, identifying which features are shared with other styles, such as caching and client–server features, and those which are unique to REST, such as the concept of resources.
+[src:dropwizard-java/representational-state-transfer] Fielding was trying to both categorise the existing architecture of the current implementation and identify which aspects should be considered central to the behavioural and performance requirements of the Web.
+[src:dropwizard-java/representational-state-transfer] By their nature, architectural styles are independent of any specific implementation, and while REST was created as part of the development of the Web standards, the implementation of the Web does not obey every constraint in the REST architectural style.
+[src:dropwizard-java/representational-state-transfer] Mismatches can occur due to ignorance or oversight, but the existence of the REST architectural style means that they can be identified before they become standardised.
+[src:dropwizard-java/representational-state-transfer] For example, Fielding identified the embedding of session information in URIs as a violation of the constraints of REST which can negatively affect shared caching and server scalability.
+[src:dropwizard-java/representational-state-transfer] HTTP cookies also violate REST constraints because they can become out of sync with the browser's application state, making them unreliable; they also contain opaque data that can be a concern for privacy and security.
+[src:dropwizard-java/representational-state-transfer] The REST architectural style is designed for network-based applications, specifically client-server applications.
+[src:dropwizard-java/representational-state-transfer] But more than that, it is designed for Internet-scale usage, so the coupling between the *user agent* (client) and the *origin server* must be as loose as possible to facilitate large-scale adoption.
+[src:dropwizard-java/representational-state-transfer] The REST architectural style defines six guiding constraints.
+[src:dropwizard-java/representational-state-transfer] When these constraints are applied to the system architecture, it gains desirable non-functional properties, such as performance, scalability, simplicity, modifiability, visibility, portability, and reliability.
+[src:dropwizard-java/representational-state-transfer] The uniform interface constraint is fundamental to the design of any RESTful system.
+[src:dropwizard-java/representational-state-transfer] It simplifies and decouples the architecture, which enables each part to evolve independently.
+[src:dropwizard-java/web-service] In a web service, a web technology such as HTTP is used for transferring machine-readable file formats such as XML and JSON.
+[src:dropwizard-java/web-service] In practice, a web service commonly provides an object-oriented web-based interface to a database server, utilized for example by another web server, or by a mobile app, that provides a user interface to the end-user.
+[src:dropwizard-java/web-service] Many organizations that provide data in formatted HTML pages will also provide that data on their server as XML or JSON, often through a Web service to allow syndication.
+[src:dropwizard-java/web-service] Another application offered to the end-user may be a mashup, where a Web server consumes several Web services at different machines and compiles the content into one user interface.
+[src:dropwizard-java/web-service] Asynchronous JavaScript and XML (AJAX) is a dominant technology for Web services.
+[src:dropwizard-java/web-service] Developing from the combination of HTTP servers, JavaScript clients and Plain Old XML (as distinct from SOAP and W3C Web Services), now it is frequently used with JSON as well as, or instead of, XML.
+[src:dropwizard-java/web-service] Representational State Transfer (REST) is an architecture for well-behaved Web services that can function at Internet scale.
+[src:dropwizard-java/web-service] A Web API is a development in Web services where emphasis has been moving to simpler representational state transfer (REST) based communications.
+[src:dropwizard-java/web-service] Restful APIs do not require XML-based Web service protocols (SOAP and WSDL) to support their interfaces.
+[src:dropwizard-java/web-service] W3C Web Services may use SOAP over HTTP protocol, allowing less costly (more efficient) interactions over the Internet than via proprietary solutions like EDI/B2B.
+[src:dropwizard-java/web-service] Besides SOAP over HTTP, Web services can also be implemented on other reliable transport mechanisms like FTP.
+[src:dropwizard-java/web-service] The term "Web service" describes a standardized way of integrating Web-based applications using the XML, SOAP, WSDL and UDDI open standards over an Internet Protocol backbone.
+[src:dropwizard-java/web-service] XML is the data format used to contain the data and provide metadata around it, SOAP is used to transfer the data, WSDL is used for describing the services available and UDDI lists what services are available.
+[src:dropwizard-java/web-service] A Web service is a method of communication between two electronic devices over a network.
+[src:dropwizard-java/web-service] It is a software function provided at a network address over the Web with the service *always-on* as in the concept of utility computing.
+[src:dropwizard-java/web-service] Many organizations use multiple software systems for management.
+[src:dropwizard-java/web-service] Different software systems often need to exchange data with each other, and a Web service is a method of communication that allows two software systems to exchange this data over the Internet.
+[src:dropwizard-java/web-service] The software system that requests data is called a *service requester*, whereas the software system that would process the request and provide the data is called a *service provider*.
+[src:dropwizard-java/web-service] Different software may use different programming languages, and hence there is a need for a method of data exchange that doesn't depend upon a particular programming language.
+[src:dropwizard-java/web-service] Most types of software can, however, interpret XML tags.
+[src:dropwizard-java/web-service] Thus, Web services can use XML files for data exchange.
+[src:dropwizard-java/web-service] All of these rules for communication are defined in a file called WSDL (Web Services Description Language), which has a `.wsdl` extension.
+[src:dropwizard-java/web-service] A directory called UDDI (Universal Description, Discovery, and Integration) defines which software system should be contacted for which type of data.
+[src:dropwizard-java/web-service] So when one software system needs one particular report/data, it would go to the UDDI and find out which other systems it can contact for receiving that data.
+[src:dropwizard-java/web-service] Once the software system finds out which other systems it should contact, it would then contact that system using a special protocol called SOAP (Simple Object Access Protocol).
+[src:dropwizard-java/web-service] The service provider system would first validate the data request by referring to the WSDL file, and then process the request and send the data under the SOAP protocol.
+[src:dropwizard-java/web-service] Automated tools can aid in the creation of a Web service.
+[src:dropwizard-java/web-service] For services using WSDL, it is possible to either automatically generate WSDL for existing classes (a bottom-up model) or to generate a class skeleton given existing WSDL (a top-down model).
+[src:dropwizard-java/web-service] Critics of non-RESTful Web services often complain that they are too complex and based upon large software vendors or integrators, rather than typical open source implementations.
+[src:dropwizard-java/web-service] There are also concerns about performance due to Web services' use of XML as a message format and SOAP/HTTP in enveloping and transporting.
+[src:dropwizard-java/web-service] Functional and non-functional testing of Web services is done with the help of WSDL parsing.
+[src:dropwizard-java/web-service] Regression testing is performed by identifying the changes made to upgrade software.
+[src:dropwizard-java/web-service] Web service regression testing needs can be categorized in three different ways, namely, changes in WSDL, changes in the code, and selective re-testing of operations.
+[src:dropwizard-java/web-service] We can capture the above three needs in three intermediate forms of Subset WSDL, namely, Difference WSDL (DWSDL), Unit WSDL (UWSDL), and Reduced WSDL (RWSDL), respectively.
+[src:dropwizard-java/web-service] These three Subset WSDLs are then combined to form Combined WSDL (CWSDL) that is further used for regression testing of the Web service.
+[src:dropwizard-java/web-service] This will help in Automated Web Service Change Management (AWSCM), by performing the selection of the relevant test cases to construct a reduced test suite from the old test suite.
+[src:dropwizard-java/web-service] Web services testing can also be automated using several test automation tools like SoapUI, Oracle Application Testing Suite (OATS), Unified Functional Testing, Selenium, etc.
+[src:dropwizard-java/web-service] Work-related to the capture and visualization of changes made to a Web service.
+[src:dropwizard-java/web-service] Visualization and computation of changes can be done in the form of intermediate artifacts (Subset WSDL).
+[src:dropwizard-java/web-service] The insight on the computation of change impact is helpful in testing, top-down development and reduce regression testing.
+[src:dropwizard-java/web-service] AWSCM is a tool that can identify subset operations in a WSDL file to construct a subset WSDL.
+[src:dropwizard-java/web-service] While UDDI was intended to serve as a service directory and become the means to discovering web services, many vendors discontinued their UDDI solutions or repositories between 2005 and 2008, including Microsoft, SAP, IBM, among others.
+[src:dropwizard-java/web-service] A key study published in WWW2008 Conference (Beijing, China) presented the state of SOAP-based web services and concluded that only 63% of the available SOAP-based web services at the time of the study were actually active or can be invoked.
+[src:dropwizard-java/web-service] The study also found that search engines were becoming an ideal source for searching for web services compared to that of service registries like the UDDI due its design complexity.

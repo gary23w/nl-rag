@@ -1,0 +1,473 @@
+# nl-rag distilled facts — domain: buffer-overflow-protection
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:buffer-overflow-protection/address-space-layout-randomization] The Linux PaX project first coined the term "ASLR", and published the first design and implementation of ASLR in July 2001 as a patch for the Linux kernel.
+[src:buffer-overflow-protection/address-space-layout-randomization] It is seen as a complete implementation, providing a patch for kernel stack randomization since October 2002.
+[src:buffer-overflow-protection/address-space-layout-randomization] The first mainstream operating system to support ASLR by default was OpenBSD version 3.4 in 2003, followed by Linux in 2005.
+[src:buffer-overflow-protection/address-space-layout-randomization] Address space randomization hinders some types of security attacks by making it more difficult for an attacker to predict target addresses.
+[src:buffer-overflow-protection/address-space-layout-randomization] For example, attackers trying to execute return-to-libc attacks must locate the code to be executed, while other attackers trying to execute shellcode injected on the stack have to find the stack first.
+[src:buffer-overflow-protection/address-space-layout-randomization] In both cases, the system makes related memory-addresses unpredictable from the attackers' point of view.
+[src:buffer-overflow-protection/address-space-layout-randomization] These values have to be guessed, and a mistaken guess is not usually recoverable due to the application crashing.
+[src:buffer-overflow-protection/address-space-layout-randomization] Address space layout randomization is based upon the low chance of an attacker guessing the locations of randomly placed areas.
+[src:buffer-overflow-protection/address-space-layout-randomization] Security is increased by increasing the search space.
+[src:buffer-overflow-protection/address-space-layout-randomization] Thus, address space randomization is more effective when more entropy is present in the random offsets.
+[src:buffer-overflow-protection/address-space-layout-randomization] Entropy is increased by either raising the amount of virtual memory area space over which the randomization occurs or reducing the period over which the randomization occurs.
+[src:buffer-overflow-protection/address-space-layout-randomization] The period is typically implemented as small as possible, so most systems must increase VMA space randomization.
+[src:buffer-overflow-protection/address-space-layout-randomization] To defeat the randomization, attackers must successfully guess the positions of all areas they wish to attack.
+[src:buffer-overflow-protection/address-space-layout-randomization] For data areas such as stack and heap, where custom code or useful data can be loaded, more than one state can be attacked by using NOP slides for code or repeated copies of data.
+[src:buffer-overflow-protection/address-space-layout-randomization] This allows an attack to succeed if the area is randomized to one of a handful of values.
+[src:buffer-overflow-protection/address-space-layout-randomization] In contrast, code areas such as library base and main executable need to be discovered exactly.
+[src:buffer-overflow-protection/address-space-layout-randomization] Often these areas are mixed, for example stack frames are injected onto the stack and a library is returned into.
+[src:buffer-overflow-protection/address-space-layout-randomization] To calculate the probability of an attacker succeeding, a number of attempts α carried out without being interrupted by a signature-based IPS, law enforcement, or other factor must be assumed; in the case of brute forcing, the daemon cannot be restarted.
+[src:buffer-overflow-protection/address-space-layout-randomization] The number of relevant bits and how many are being attacked in each attempt must also be calculated, leaving however many bits the attacker has to defeat.
+[src:buffer-overflow-protection/address-space-layout-randomization] The following formulas represent the probability of success for a given set of α attempts on N bits of entropy.
+[src:buffer-overflow-protection/address-space-layout-randomization] In many systems, $2^{N}$ can be in the thousands or millions.
+[src:buffer-overflow-protection/address-space-layout-randomization] On 32-bit systems, a typical amount of entropy *N* is 8 bits.
+[src:buffer-overflow-protection/address-space-layout-randomization] For 2004 computer speeds, Shacham and co-workers state "...
+[src:buffer-overflow-protection/address-space-layout-randomization] 16 bits of address randomization can be defeated by a brute force attack within minutes." (The authors' statement depends on the ability to attack the same application multiple times without any delay.
+[src:buffer-overflow-protection/address-space-layout-randomization] Proper implementations of ASLR, like that included in grsecurity, provide several methods to make such brute force attacks infeasible.
+[src:buffer-overflow-protection/address-space-layout-randomization] One method involves preventing an executable from executing for a configurable amount of time if it has crashed a certain number of times.) On modern 64-bit systems, these numbers typically reach the millions at least.
+[src:buffer-overflow-protection/address-space-layout-randomization] Android, and possibly other systems, implement *Library Load Order Randomization*, a form of ASLR which randomizes the order in which libraries are loaded.
+[src:buffer-overflow-protection/address-space-layout-randomization] An approximation of the number of bits of entropy supplied per needed library appears below; this does not yet account for varied library sizes, so the actual entropy gained is really somewhat higher.
+[src:buffer-overflow-protection/address-space-layout-randomization] Attackers usually need only one library; the math is more complex with multiple libraries, and shown below as well.
+[src:buffer-overflow-protection/address-space-layout-randomization] The case of an attacker using only one library is a simplification of the more complex formula for $l=1$ .
+[src:buffer-overflow-protection/address-space-layout-randomization] These values tend to be low even for large values of l, most importantly since attackers typically can use only the C standard library and thus one can often assume that $\beta \,=1$ .
+[src:buffer-overflow-protection/address-space-layout-randomization] However, even for a small number of libraries there are a few bits of entropy gained here; it is thus potentially interesting to combine library load order randomization with VMA address randomization to gain a few extra bits of entropy.
+[src:buffer-overflow-protection/address-space-layout-randomization] These extra bits of entropy will not apply to other mmap() segments, only libraries.
+[src:buffer-overflow-protection/address-space-layout-randomization] Attackers may make use of several methods to reduce the entropy present in a randomized address space, ranging from simple information leaks to attacking multiple bits of entropy per attack (such as by heap spraying).
+[src:buffer-overflow-protection/address-space-layout-randomization] There is little that can be done about this.
+[src:buffer-overflow-protection/address-space-layout-randomization] It is possible to leak information about memory layout using format string vulnerabilities.
+[src:buffer-overflow-protection/address-space-layout-randomization] Format string functions such as printf use a variable argument list to do their job; format specifiers describe what the argument list looks like.
+[src:buffer-overflow-protection/address-space-layout-randomization] Because of the way arguments are typically passed, each format specifier moves closer to the top of the stack frame.
+[src:buffer-overflow-protection/address-space-layout-randomization] Eventually, the return pointer and stack frame pointer can be extracted, revealing the address of a vulnerable library and the address of a known stack frame; this can eliminate library and stack randomization as an obstacle to an attacker.
+[src:buffer-overflow-protection/address-space-layout-randomization] One can also decrease entropy in the stack or heap.
+[src:buffer-overflow-protection/address-space-layout-randomization] The stack typically must be aligned to 16 bytes, and so this is the smallest possible randomization interval; while the heap must be page-aligned, typically 4096 bytes.
+[src:buffer-overflow-protection/address-space-layout-randomization] When attempting an attack, it is possible to align duplicate attacks with these intervals; a NOP slide may be used with shellcode injection, and the string '`/bin/sh`' can be replaced with '`////////bin/sh`' for an arbitrary number of slashes when attempting to return to *system*.
+[src:buffer-overflow-protection/address-space-layout-randomization] The number of bits removed is exactly $\log _{2}\!\left(n\right)$ for n intervals attacked.
+[src:buffer-overflow-protection/address-space-layout-randomization] Such decreases are limited due to the amount of data in the stack or heap.
+[src:buffer-overflow-protection/address-space-layout-randomization] The stack, for example, is typically limited to 8 MB and grows to much less; this allows for at most 19 bits, although a more conservative estimate would be around 8–10 bits corresponding to 4–16 KB of stack stuffing.
+[src:buffer-overflow-protection/address-space-layout-randomization] The heap on the other hand is limited by the behavior of the memory allocator; in the case of glibc, allocations above 128 KB are created using mmap, limiting attackers to 5 bits of reduction.
+[src:buffer-overflow-protection/address-space-layout-randomization] This is also a limiting factor when brute forcing; although the number of attacks to perform can be reduced, the size of the attacks is increased enough that the behavior could in some circumstances become apparent to intrusion detection systems.
+[src:buffer-overflow-protection/address-space-layout-randomization] ASLR-protected addresses can be leaked by various side channels, removing mitigation utility.
+[src:buffer-overflow-protection/address-space-layout-randomization] Recent attacks have used information leaked by the CPU branch target predictor buffer (BTB) or memory management unit (MMU) walking page tables.
+[src:buffer-overflow-protection/address-space-layout-randomization] It is not clear if this class of ASLR attack can be mitigated.
+[src:buffer-overflow-protection/address-space-layout-randomization] If they cannot, the benefit of ASLR is reduced or eliminated.
+[src:buffer-overflow-protection/address-space-layout-randomization] In August 2024 a paper was published with an empirical analysis of major desktop platforms, including Linux, macOS, and Windows, by examining the variability in the placement of memory objects across various processes, threads, and system restarts.
+[src:buffer-overflow-protection/address-space-layout-randomization] The results show that while some systems as of 2024, like Linux distributions, provide robust randomization, others, like Windows and macOS, often fail to adequately randomize key areas like executable code and libraries.
+[src:buffer-overflow-protection/address-space-layout-randomization] Moreover, they found a significant reduction in the entropy of libraries after the Linux 5.18 version and identify correlation paths that an attacker could leverage to reduce exploitation complexity significantly.
+[src:buffer-overflow-protection/address-space-layout-randomization] Several mainstream, general-purpose operating systems implement ASLR.
+[src:buffer-overflow-protection/address-space-layout-randomization] Android 4.0 Ice Cream Sandwich provides address space layout randomization (ASLR) to help protect system and third-party applications from exploits due to memory-management issues.
+[src:buffer-overflow-protection/address-space-layout-randomization] Position-independent executable support was added in Android 4.1.
+[src:buffer-overflow-protection/address-space-layout-randomization] Android 5.0 dropped non-PIE support and requires all dynamically linked binaries to be position independent.
+[src:buffer-overflow-protection/address-space-layout-randomization] Library load ordering randomization was accepted into the Android open-source project on 26 October 2015, and was included in the Android 7.0 release.
+[src:buffer-overflow-protection/address-space-layout-randomization] DragonFly BSD has an implementation of ASLR based upon OpenBSD's model, added in 2010.
+[src:buffer-overflow-protection/address-space-layout-randomization] It is off by default, and can be enabled by setting the sysctl vm.randomize_mmap to 1.
+[src:buffer-overflow-protection/address-space-layout-randomization] Support for ASLR appeared in FreeBSD 13.0.
+[src:buffer-overflow-protection/address-space-layout-randomization] Apple introduced ASLR in iOS 4.3 (released March 2011).
+[src:buffer-overflow-protection/address-space-layout-randomization] The randomized kernel base is `0x01000000 + ((1+0xRR) * 0x00200000)`, where `0xRR` is a random byte from SHA1 (random data) generated by iBoot (the 2nd-stage iOS Boot Loader).
+[src:buffer-overflow-protection/address-space-layout-randomization] The Linux kernel enabled a weak form of ASLR by default since the kernel version 2.6.12, released in June 2005.
+[src:buffer-overflow-protection/address-space-layout-randomization] The PaX and Exec Shield patchsets to the Linux kernel provide more complete implementations.
+[src:buffer-overflow-protection/address-space-layout-randomization] The Exec Shield patch for Linux supplies 19 bits of stack entropy on a period of 16 bytes, and 8 bits of mmap base randomization on a period of 1 page of 4096 bytes.
+[src:buffer-overflow-protection/address-space-layout-randomization] This places the stack base in an area 8 MB wide containing 524,288 possible positions, and the mmap base in an area 1 MB wide containing 256 possible positions.
+[src:buffer-overflow-protection/address-space-layout-randomization] ASLR can be disabled for a specific process by changing its execution domain, using `personality(2)`.
+[src:buffer-overflow-protection/address-space-layout-randomization] A number of sysctl options control the behavior of mainline ASLR.
+[src:buffer-overflow-protection/address-space-layout-randomization] For example, `kernel.randomize_va_space` controls *what* to randomize; the strongest option is 2.
+[src:buffer-overflow-protection/address-space-layout-randomization] `vm.mmap_rnd_bits` controls how many bits to randomize for mmap.
+[src:buffer-overflow-protection/address-space-layout-randomization] Position-independent executable (PIE) implements a random base address for the main executable binary and has been in place since April 18, 2004.
+[src:buffer-overflow-protection/address-space-layout-randomization] It provides the same address randomness to the main executable as being used for the shared libraries.
+[src:buffer-overflow-protection/address-space-layout-randomization] The PIE feature cannot be used together with the prelink feature for the same executable.
+[src:buffer-overflow-protection/address-space-layout-randomization] The prelink tool implements randomization at prelink time rather than runtime, because by design prelink aims to handle relocating libraries before the dynamic linker has to, which allows the relocation to occur once for many runs of the program.
+[src:buffer-overflow-protection/address-space-layout-randomization] As a result, real address space randomization would defeat the purpose of prelinking.
+[src:buffer-overflow-protection/address-space-layout-randomization] In 2014, Marco-Gisbert and Ripoll disclosed *offset2lib* technique that weakens Linux ASLR for PIE executables.
+[src:buffer-overflow-protection/address-space-layout-randomization] Linux kernels load PIE executables right after their libraries; as a result, there is a fixed offset between the executable and the library functions.
+[src:buffer-overflow-protection/address-space-layout-randomization] If an attacker finds a way to find the address of a function in the executable, the library addresses are also known.
+[src:buffer-overflow-protection/address-space-layout-randomization] They demonstrated an attack that finds the address in fewer than 400 tries.
+[src:buffer-overflow-protection/address-space-layout-randomization] They proposed a new `randomize_va_space=3` option to randomize the placement of the executable relative to the library, but it is yet to be incorporated into the upstream as of 2024.
+[src:buffer-overflow-protection/address-space-layout-randomization] The Linux kernel 5.18 released May 2022 reduced the effectiveness of both 32-bit and 64-bit implementations.
+[src:buffer-overflow-protection/address-space-layout-randomization] Linux filesystems call `thp_get_unmapped_area` to respond to a file-backed mmap.
+[src:buffer-overflow-protection/address-space-layout-randomization] With a change in 5.18, files greater than 2 MiB are made to return 2 MiB-aligned addresses, so they can be potentially backed by huge pages.
+[src:buffer-overflow-protection/address-space-layout-randomization] For 32-bit Linux, many distributions show no randomization *at all* in the placement of the libc.
+[src:buffer-overflow-protection/address-space-layout-randomization] For 64-bit Linux, the 28 bits of entropy is reduced to 19 bits.
+[src:buffer-overflow-protection/address-space-layout-randomization] In response, Ubuntu has increased its `mmap_rnd_bits` setting.
+[src:buffer-overflow-protection/address-space-layout-randomization] Martin Doucha added a Linux Test Project testcase to detect this issue.
+[src:buffer-overflow-protection/address-space-layout-randomization] Kernel address space layout randomization (KASLR) enables address space randomization for the Linux kernel image by randomizing where the kernel code is placed at boot time.
+[src:buffer-overflow-protection/address-space-layout-randomization] KASLR was merged into the Linux kernel mainline in kernel version 3.14, released on 30 March 2014.
+[src:buffer-overflow-protection/address-space-layout-randomization] When compiled in, it can be disabled at boot time by specifying nokaslr as one of the kernel's boot parameters.
+[src:buffer-overflow-protection/address-space-layout-randomization] There are several side-channel attacks in x86 processors that could leak kernel addresses.
+[src:buffer-overflow-protection/address-space-layout-randomization] In late 2017, kernel page-table isolation (KPTI aka KAISER) was developed to defeat these attacks.
+[src:buffer-overflow-protection/address-space-layout-randomization] However, this method cannot protect against side-channel attacks utilizing collisions in branch predictor structures.
+[src:buffer-overflow-protection/address-space-layout-randomization] As of 2021, finer grained kernel address space layout randomization (or function granular KASLR, FGKASLR) is a planned extension of KASLR to randomize down to the function level by placing functions in separate sections and reordering them at boot time.
+[src:buffer-overflow-protection/address-space-layout-randomization] Microsoft's Windows Vista (released *to manufacturing* November 2006, generally available January 2007) and later have ASLR enabled only for executables and dynamic link libraries that are specifically linked to be ASLR-enabled.
+[src:buffer-overflow-protection/address-space-layout-randomization] For compatibility, it is not enabled by default for other applications.
+[src:buffer-overflow-protection/address-space-layout-randomization] Typically, only older software is incompatible and ASLR can be fully enabled by editing a registry entry `HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\MoveImages`, or by installing Microsoft's Enhanced Mitigation Experience Toolkit.
+[src:buffer-overflow-protection/address-space-layout-randomization] The locations of the heap, stack, Process Environment Block, and Thread Environment Block are also randomized.
+[src:buffer-overflow-protection/address-space-layout-randomization] A security whitepaper from Symantec noted that ASLR in 32-bit Windows Vista may not be as robust as expected, and Microsoft has acknowledged a weakness in its implementation.
+[src:buffer-overflow-protection/address-space-layout-randomization] Host-based intrusion prevention systems such as *WehnTrust* and *Ozone* also offer ASLR for Windows XP and Windows Server 2003 operating systems.
+[src:buffer-overflow-protection/address-space-layout-randomization] Complete details of Ozone's implementation are not available.
+[src:buffer-overflow-protection/address-space-layout-randomization] It was noted in February 2012 that ASLR on 32-bit Windows systems prior to Windows 8 can have its effectiveness reduced in low memory situations.
+[src:buffer-overflow-protection/address-space-layout-randomization] A similar effect also had been achieved on Linux in the same research.
+[src:buffer-overflow-protection/address-space-layout-randomization] The test code caused the Mac OS X 10.7.3 system to kernel panic, so it was left unclear about its ASLR behavior in this scenario.
+[src:buffer-overflow-protection/address-space-layout-randomization] Support for ASLR in userland appeared in NetBSD 5.0 (released April 2009), and was enabled by default in NetBSD-current in April 2016.
+[src:buffer-overflow-protection/address-space-layout-randomization] Kernel ASLR support on amd64 was added in NetBSD-current in October 2017, making NetBSD the first BSD system to support KASLR.
+[src:buffer-overflow-protection/address-space-layout-randomization] In 2003, OpenBSD became the first mainstream operating system to support a strong form of ASLR and to activate it by default.
+[src:buffer-overflow-protection/address-space-layout-randomization] OpenBSD completed its ASLR support in 2008 when it added support for PIE binaries.
+[src:buffer-overflow-protection/address-space-layout-randomization] OpenBSD 4.4's malloc(3) was designed to improve security by taking advantage of ASLR and gap page features implemented as part of OpenBSD's `mmap` system call, and to detect use-after-free bugs.
+[src:buffer-overflow-protection/address-space-layout-randomization] Released in 2013, OpenBSD 5.3 was the first mainstream operating system to enable position-independent executables by default on multiple hardware platforms, and OpenBSD 5.7 activated position-independent static binaries (Static-PIE) by default.
+[src:buffer-overflow-protection/address-space-layout-randomization] In Mac OS X Leopard 10.5 (released October 2007), Apple introduced randomization for system libraries.
+[src:buffer-overflow-protection/address-space-layout-randomization] In Mac OS X Lion 10.7 (released July 2011), Apple expanded their implementation to cover all applications, stating "address space layout randomization (ASLR) has been improved for all applications.
+[src:buffer-overflow-protection/address-space-layout-randomization] As of OS X Mountain Lion 10.8 (released July 2012) and later, the entire system including the kernel as well as kexts and zones are randomly relocated during system boot.
+[src:buffer-overflow-protection/address-space-layout-randomization] ASLR has been introduced in Solaris beginning with Solaris 11.1 (released October 2012).
+[src:buffer-overflow-protection/address-space-layout-randomization] ASLR in Solaris 11.1 can be set system-wide, per zone, or on a per-binary basis.
+[src:buffer-overflow-protection/address-space-layout-randomization] A side-channel attack utilizing branch target buffer was demonstrated to bypass ASLR protection.
+[src:buffer-overflow-protection/address-space-layout-randomization] In 2017, an attack named "ASLR⊕Cache" was demonstrated which could defeat ASLR in a web browser using JavaScript.
+[src:buffer-overflow-protection/bounds-checking] In computer programming, **bounds checking** is any method of detecting whether a variable is within some bounds before it is used.
+[src:buffer-overflow-protection/bounds-checking] It is usually used to ensure that a number fits into a given type (range checking), or that a variable being used as an array index is within the bounds of the array (index checking).
+[src:buffer-overflow-protection/bounds-checking] A failed bounds check usually results in the generation of some sort of exception signal.
+[src:buffer-overflow-protection/bounds-checking] As performing bounds checking during each use can be time-consuming, it is not always done.
+[src:buffer-overflow-protection/bounds-checking] Bounds-checking elimination is a compiler optimization technique that eliminates unneeded bounds checking.
+[src:buffer-overflow-protection/bounds-checking] A range check is a check to make sure a number is within a certain range; for example, to ensure that a value about to be assigned to a 16-bit integer is within the capacity of a 16-bit integer (i.e. checking against wrap-around).
+[src:buffer-overflow-protection/bounds-checking] This is not quite the same as type checking.
+[src:buffer-overflow-protection/bounds-checking] Other range checks may be more restrictive; for example, a variable to hold the number of a calendar month may be declared to accept only the range 1 to 12.
+[src:buffer-overflow-protection/bounds-checking] Index checking means that, in all expressions indexing an array, the index value is checked against the bounds of the array (which were established when the array was defined), and if the index is out-of-bounds, further execution is suspended via some sort of error.
+[src:buffer-overflow-protection/bounds-checking] Because reading or especially writing a value outside the bounds of an array may cause the program to malfunction or crash or enable security vulnerabilities (see buffer overflow), index checking is a part of many high-level languages.
+[src:buffer-overflow-protection/bounds-checking] Early compiled programming languages with index checking ability included ALGOL 60, ALGOL 68 and Pascal, as well as interpreted programming languages such as BASIC.
+[src:buffer-overflow-protection/bounds-checking] Many programming languages, such as C, never perform automatic bounds checking to raise speed.
+[src:buffer-overflow-protection/bounds-checking] However, this leaves many off-by-one errors and buffer overflows uncaught.
+[src:buffer-overflow-protection/bounds-checking] Many programmers believe these languages sacrifice too much for rapid execution.
+[src:buffer-overflow-protection/bounds-checking] Mainstream languages that enforce run time checking include Ada, C#, Haskell, Java, JavaScript, Lisp, PHP, Python, Ruby, Rust, and Visual Basic.
+[src:buffer-overflow-protection/bounds-checking] The D and OCaml languages have run time bounds checking that is enabled or disabled with a compiler switch.
+[src:buffer-overflow-protection/bounds-checking] In C++ run time checking is not part of the language, but part of the STL and is enabled with a compiler switch (_GLIBCXX_DEBUG=1 or _LIBCPP_DEBUG=1).
+[src:buffer-overflow-protection/bounds-checking] C# also supports *unsafe regions*: sections of code that (among other things) temporarily suspend bounds checking to raise efficiency.
+[src:buffer-overflow-protection/bounds-checking] These are useful for speeding up small time-critical bottlenecks without sacrificing the safety of a whole program.
+[src:buffer-overflow-protection/bounds-checking] The JS++ programming language is able to analyze if an array index or map key is out-of-bounds at compile time using existent types, which is a nominal type describing whether the index or key is within-bounds or out-of-bounds and guides code generation.
+[src:buffer-overflow-protection/bounds-checking] Existent types have been shown to add only 1ms overhead to compile times.
+[src:buffer-overflow-protection/bounds-checking] The safety added by bounds checking necessarily costs CPU time if the checking is performed in software; however, if the checks could be performed by hardware, then the safety can be provided "for free" with no runtime cost.
+[src:buffer-overflow-protection/bounds-checking] An early system with hardware bounds checking was the ICL 2900 Series mainframe announced in 1974.
+[src:buffer-overflow-protection/bounds-checking] The VAX computer has an INDEX assembly instruction for array index checking which takes six operands, all of which can use any VAX addressing mode.
+[src:buffer-overflow-protection/bounds-checking] The B6500 and similar Burroughs computers performed bound checking via hardware, irrespective of which computer language had been compiled to produce the machine code.
+[src:buffer-overflow-protection/bounds-checking] A limited number of later CPUs have specialised instructions for checking bounds, e.g., the CHK2 instruction on the Motorola 68000 series.
+[src:buffer-overflow-protection/bounds-checking] Research has been underway since at least 2005 regarding methods to use x86's built-in virtual memory management unit to ensure safety of array and buffer accesses.
+[src:buffer-overflow-protection/bounds-checking] In 2015 Intel provided their Intel MPX extensions in their Skylake processor architecture which stores bounds in a CPU register and table in memory.
+[src:buffer-overflow-protection/bounds-checking] As of early 2017 at least GCC supports MPX extensions.
+[src:buffer-overflow-protection/buffer-overflow-protection] Typically, buffer overflow protection modifies the organization of stack-allocated data so it includes a *canary* value that, when destroyed by a stack buffer overflow, shows that a buffer preceding it in memory has been overflowed.
+[src:buffer-overflow-protection/buffer-overflow-protection] By verifying the canary value, execution of the affected program can be terminated, preventing it from misbehaving or from allowing an attacker to take control over it.
+[src:buffer-overflow-protection/buffer-overflow-protection] Other buffer overflow protection techniques include *bounds checking*, which checks accesses to each allocated block of memory so they cannot go beyond the actually allocated space, and *tagging*, which ensures that memory allocated for storing data cannot contain executable code.
+[src:buffer-overflow-protection/buffer-overflow-protection] Overfilling a buffer allocated on the stack is more likely to influence program execution than overfilling a buffer on the heap because the stack contains the return addresses for all active function calls.
+[src:buffer-overflow-protection/buffer-overflow-protection] However, similar implementation-specific protections also exist against heap-based overflows.
+[src:buffer-overflow-protection/buffer-overflow-protection] There are several implementations of buffer overflow protection, including those for the GNU Compiler Collection, LLVM, Microsoft Visual Studio, and other compilers.
+[src:buffer-overflow-protection/buffer-overflow-protection] A stack buffer overflow occurs when a program writes to a memory address on the program's call stack outside of the intended data structure, which is usually a fixed-length buffer.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack buffer overflow bugs are caused when a program writes more data to a buffer located on the stack than what is actually allocated for that buffer.
+[src:buffer-overflow-protection/buffer-overflow-protection] This almost always results in corruption of adjacent data on the stack, and in cases where the overflow was triggered by mistake, will often cause the program to crash or operate incorrectly.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack buffer overflow is a type of the more general programming malfunction known as buffer overflow (or buffer overrun).
+[src:buffer-overflow-protection/buffer-overflow-protection] Overfilling a buffer on the stack is more likely to derail program execution than overfilling a buffer on the heap because the stack contains the return addresses for all active function calls.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack buffer overflow can be caused deliberately as part of an attack known as stack smashing.
+[src:buffer-overflow-protection/buffer-overflow-protection] This is one of the oldest and more reliable methods for attackers to gain unauthorized access to a computer.
+[src:buffer-overflow-protection/buffer-overflow-protection] Typically, buffer overflow protection modifies the organization of data in the stack frame of a function call to include a "canary" value that, when destroyed, shows that a buffer preceding it in memory has been overflowed.
+[src:buffer-overflow-protection/buffer-overflow-protection] This provides the benefit of preventing an entire class of attacks.
+[src:buffer-overflow-protection/buffer-overflow-protection] According to some researchers, the performance impact of these techniques is negligible.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack-smashing protection is unable to protect against certain forms of attack.
+[src:buffer-overflow-protection/buffer-overflow-protection] For example, it cannot protect against buffer overflows in the heap.
+[src:buffer-overflow-protection/buffer-overflow-protection] There is no sane way to alter the layout of data within a structure; structures are expected to be the same between modules, especially with shared libraries.
+[src:buffer-overflow-protection/buffer-overflow-protection] Any data in a structure after a buffer is impossible to protect with canaries; thus, programmers must be very careful about how they organize their variables and use their structures.
+[src:buffer-overflow-protection/buffer-overflow-protection] The terminology is a reference to the historic practice of using canaries in coal mines, since they would be affected by toxic gases earlier than the miners, thus providing a biological warning system.
+[src:buffer-overflow-protection/buffer-overflow-protection] Canaries are alternately known as *stack cookies*, which is meant to evoke the image of a "broken cookie" when the value is corrupted.
+[src:buffer-overflow-protection/buffer-overflow-protection] There are three types of canaries in use: *terminator*, *random*, and *random XOR*.
+[src:buffer-overflow-protection/buffer-overflow-protection] Current versions of StackGuard support all three, while ProPolice supports *terminator* and *random* canaries.
+[src:buffer-overflow-protection/buffer-overflow-protection] Normally, a random canary is generated at program initialization, and stored in a global variable.
+[src:buffer-overflow-protection/buffer-overflow-protection] This variable is usually padded by unmapped pages so that attempting to read it using any kinds of tricks that exploit bugs to read off RAM cause a segmentation fault, terminating the program.
+[src:buffer-overflow-protection/buffer-overflow-protection] It may still be possible to read the canary if the attacker knows where it is or can get the program to read from the stack.
+[src:buffer-overflow-protection/buffer-overflow-protection] Random XOR canaries have the same vulnerabilities as random canaries, except that the "read from stack" method of getting the canary is a bit more complicated.
+[src:buffer-overflow-protection/buffer-overflow-protection] The attacker must get the canary, the algorithm, and the control data in order to re-generate the original canary needed to spoof the protection.
+[src:buffer-overflow-protection/buffer-overflow-protection] In addition, random XOR canaries can protect against a certain type of attack involving overflowing a buffer in a structure into a pointer to change the pointer to point at a piece of control data.
+[src:buffer-overflow-protection/buffer-overflow-protection] Because of the XOR encoding, the canary will be wrong if the control data or return value is changed.
+[src:buffer-overflow-protection/buffer-overflow-protection] Because of the pointer, the control data or return value can be changed without overflowing over the canary.
+[src:buffer-overflow-protection/buffer-overflow-protection] Although these canaries protect the control data from being altered by clobbered pointers, they do not protect any other data or the pointers themselves.
+[src:buffer-overflow-protection/buffer-overflow-protection] Function pointers especially are a problem here, as they can be overflowed into and can execute shellcode when called.
+[src:buffer-overflow-protection/buffer-overflow-protection] Bounds checking is a compiler-based technique that adds run-time bounds information for each allocated block of memory, and checks all pointers against those at run-time.
+[src:buffer-overflow-protection/buffer-overflow-protection] For C and C++, bounds checking can be performed at pointer calculation time or at dereference time.
+[src:buffer-overflow-protection/buffer-overflow-protection] Implementations of this approach use either a central repository, which describes each allocated block of memory, or fat pointers, which contain both the pointer and additional data, describing the region that they point to.
+[src:buffer-overflow-protection/buffer-overflow-protection] Tagging is a compiler-based or hardware-based (requiring a tagged architecture) technique for tagging the type of a piece of data in memory, used mainly for type checking.
+[src:buffer-overflow-protection/buffer-overflow-protection] By marking certain areas of memory as non-executable, it effectively prevents memory allocated to store data from containing executable code.
+[src:buffer-overflow-protection/buffer-overflow-protection] Also, certain areas of memory can be marked as non-allocated, preventing buffer overflows.
+[src:buffer-overflow-protection/buffer-overflow-protection] Historically, tagging has been used for implementing high-level programming languages; with appropriate support from the operating system, tagging can also be used to detect buffer overflows.
+[src:buffer-overflow-protection/buffer-overflow-protection] An example is the NX bit hardware feature, supported by Intel, AMD and ARM processors.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack-smashing protection was first implemented by *StackGuard* in 1997, and published at the 1998 USENIX Security Symposium.
+[src:buffer-overflow-protection/buffer-overflow-protection] StackGuard was introduced as a set of patches to the Intel x86 backend of GCC 2.7.
+[src:buffer-overflow-protection/buffer-overflow-protection] StackGuard was maintained for the Immunix Linux distribution from 1998 to 2003, and was extended with implementations for terminator, random and random XOR canaries.
+[src:buffer-overflow-protection/buffer-overflow-protection] StackGuard was suggested for inclusion in GCC 3.x at the GCC 2003 Summit Proceedings, but this was never achieved.
+[src:buffer-overflow-protection/buffer-overflow-protection] From 2001 to 2005, IBM developed GCC patches for stack-smashing protection, known as *ProPolice*.
+[src:buffer-overflow-protection/buffer-overflow-protection] It improved on the idea of StackGuard by placing buffers after local pointers and function arguments in the stack frame.
+[src:buffer-overflow-protection/buffer-overflow-protection] This helped avoid the corruption of pointers, preventing access to arbitrary memory locations.
+[src:buffer-overflow-protection/buffer-overflow-protection] Red Hat engineers identified problems with ProPolice though, and in 2005 re-implemented stack-smashing protection for inclusion in GCC 4.1.
+[src:buffer-overflow-protection/buffer-overflow-protection] This work introduced the -fstack-protector flag, which protects only some vulnerable functions, and the -fstack-protector-all flag, which protects all functions whether they need it or not.
+[src:buffer-overflow-protection/buffer-overflow-protection] In 2012, Google engineers implemented the -fstack-protector-strong flag to strike a better balance between security and performance.
+[src:buffer-overflow-protection/buffer-overflow-protection] This flag protects more kinds of vulnerable functions than -fstack-protector does, but not every function, providing better performance than -fstack-protector-all.
+[src:buffer-overflow-protection/buffer-overflow-protection] It is available in GCC since its version 4.9.
+[src:buffer-overflow-protection/buffer-overflow-protection] All Fedora packages are compiled with -fstack-protector since Fedora Core 5, and -fstack-protector-strong since Fedora 20.
+[src:buffer-overflow-protection/buffer-overflow-protection] Most packages in Ubuntu are compiled with -fstack-protector since 6.10.
+[src:buffer-overflow-protection/buffer-overflow-protection] Every Arch Linux package is compiled with -fstack-protector since 2011.
+[src:buffer-overflow-protection/buffer-overflow-protection] All Arch Linux packages built since 4 May 2014 use -fstack-protector-strong.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack protection is only used for some packages in Debian, and only for the FreeBSD base system since 8.0.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack protection is standard in certain operating systems, including OpenBSD, Hardened Gentoo and DragonFly BSD.
+[src:buffer-overflow-protection/buffer-overflow-protection] StackGuard and ProPolice cannot protect against overflows in automatically allocated structures that overflow into function pointers.
+[src:buffer-overflow-protection/buffer-overflow-protection] ProPolice at least will rearrange the allocation order to get such structures allocated before function pointers.
+[src:buffer-overflow-protection/buffer-overflow-protection] A separate mechanism for pointer protection was proposed in PointGuard and is available on Microsoft Windows.
+[src:buffer-overflow-protection/buffer-overflow-protection] The compiler suite from Microsoft implements buffer overflow protection since version 2003 through the /GS command-line switch, which is enabled by default since version 2005.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack-smashing protection can be turned on by the compiler flag `-qstackprotect`.
+[src:buffer-overflow-protection/buffer-overflow-protection] Clang supports the same -fstack-protector options as GCC and a stronger "safe stack" (-fsanitize=safe-stack) system with similarly low performance impact.
+[src:buffer-overflow-protection/buffer-overflow-protection] Clang also has three buffer overflow detectors, namely AddressSanitizer (`-fsanitize=address`), UBSan (`-fsanitize=bounds`), and the unofficial SafeCode (last updated for LLVM 3.0).
+[src:buffer-overflow-protection/buffer-overflow-protection] These systems have different tradeoffs in terms of performance penalty, memory overhead, and classes of detected bugs.
+[src:buffer-overflow-protection/buffer-overflow-protection] Stack protection is standard in certain operating systems, including OpenBSD.
+[src:buffer-overflow-protection/buffer-overflow-protection] Intel's C and C++ compiler supports stack-smashing protection with options similar to those provided by GCC and Microsoft Visual Studio.
+[src:buffer-overflow-protection/buffer-overflow-protection] Invented by Mike Frantzen, StackGhost is a simple tweak to the register window spill–fill routines which makes buffer overflows much more difficult to exploit.
+[src:buffer-overflow-protection/buffer-overflow-protection] The performance impact is negligible: less than one percent.
+[src:buffer-overflow-protection/buffer-overflow-protection] The resulting gdb issues were resolved by Mark Kettenis two years later, allowing enabling of the feature.
+[src:buffer-overflow-protection/buffer-overflow-protection] Following this event, the StackGhost code was integrated (and optimized) into the SPARC version of the OpenBSD operating system.
+[src:buffer-overflow-protection/buffer-overflow] In programming and information security, a **buffer overflow** or **buffer overrun** is an anomaly whereby a program writes data to a buffer beyond the buffer's allocated memory, overwriting adjacent memory locations.
+[src:buffer-overflow-protection/buffer-overflow] Buffers are areas of memory set aside to hold data, often while moving it from one section of a program to another, or between programs.
+[src:buffer-overflow-protection/buffer-overflow] Buffer overflows can often be triggered by malformed inputs; if one assumes all inputs will be smaller than a certain size and the buffer is created to be that size, then an anomalous transaction that produces more data could cause it to write past the end of the buffer.
+[src:buffer-overflow-protection/buffer-overflow] If this overwrites adjacent data or executable code, this may result in erratic program behavior, including memory access errors, incorrect results, and crashes.
+[src:buffer-overflow-protection/buffer-overflow] Exploiting the behavior of a buffer overflow is a well-known security exploit.
+[src:buffer-overflow-protection/buffer-overflow] Files specifically created to exploit buffer overflow vulnerabilities are often called 'crafted' files.
+[src:buffer-overflow-protection/buffer-overflow] On many systems, the memory layout of a program, or the system as a whole, is well defined.
+[src:buffer-overflow-protection/buffer-overflow] Buffers are widespread in operating system (OS) code, so it is possible to make attacks that perform privilege escalation and gain unlimited access to the computer's resources.
+[src:buffer-overflow-protection/buffer-overflow] The famed Morris worm in 1988 used this as one of its attack techniques.
+[src:buffer-overflow-protection/buffer-overflow] Bounds checking can prevent buffer overflows, but requires additional code and processing time.
+[src:buffer-overflow-protection/buffer-overflow] Modern operating systems use a variety of techniques to combat malicious buffer overflows, notably by randomizing the layout of memory, or deliberately leaving space between buffers and looking for actions that write into those areas ("canaries").
+[src:buffer-overflow-protection/buffer-overflow] A buffer overflow occurs when data written to a buffer also corrupts data values in memory addresses adjacent to the destination buffer due to insufficient bounds checking.
+[src:buffer-overflow-protection/buffer-overflow] This can occur when copying data from one buffer to another without first checking that the data fits within the destination buffer.
+[src:buffer-overflow-protection/buffer-overflow] In the following example expressed in C, a program has two variables which are adjacent in memory: an 8-byte-long string buffer, `a`, and a two-byte big-endian integer, `b`.
+[src:buffer-overflow-protection/buffer-overflow] Initially, `a` contains nothing but zero bytes, and `b` contains the number 1979.
+[src:buffer-overflow-protection/buffer-overflow] Now, the program attempts to store the null-terminated string `"excessive"` with ASCII encoding in the A buffer.
+[src:buffer-overflow-protection/buffer-overflow] `"excessive"` is 9 characters long and encodes to 10 bytes including the null terminator, but `a` can take only 8 bytes.
+[src:buffer-overflow-protection/buffer-overflow] `b`'s value has now been inadvertently replaced by a number formed from part of the character string.
+[src:buffer-overflow-protection/buffer-overflow] In this example "e" followed by a zero byte would become 25856.
+[src:buffer-overflow-protection/buffer-overflow] Writing data past the end of allocated memory can sometimes be detected by the operating system to generate a segmentation fault error that terminates the process.
+[src:buffer-overflow-protection/buffer-overflow] When available, the strlcpy library function is preferred over strncpy which does not null-terminate the destination buffer if the source string's length is greater than or equal to the size of the buffer (the third argument passed to the function).
+[src:buffer-overflow-protection/buffer-overflow] Therefore a may not be null-terminated and cannot be treated as a valid C-style string.
+[src:buffer-overflow-protection/buffer-overflow] The techniques to exploit a buffer overflow vulnerability vary by architecture, operating system, and memory region.
+[src:buffer-overflow-protection/buffer-overflow] For example, exploitation on the heap (used for dynamically allocated memory), differs markedly from exploitation on the call stack.
+[src:buffer-overflow-protection/buffer-overflow] In general, heap exploitation depends on the heap manager used on the target system, while stack exploitation depends on the calling convention used by the architecture and compiler.
+[src:buffer-overflow-protection/buffer-overflow] The attacker designs data to cause one of these exploits, then places this data in a buffer supplied to users by the vulnerable code.
+[src:buffer-overflow-protection/buffer-overflow] If the address of the user-supplied data used to affect the stack buffer overflow is unpredictable, exploiting a stack buffer overflow to cause remote code execution becomes much more difficult.
+[src:buffer-overflow-protection/buffer-overflow] One technique that can be used to exploit such a buffer overflow is called "trampolining".
+[src:buffer-overflow-protection/buffer-overflow] Here, an attacker will find a pointer to the vulnerable stack buffer and compute the location of their shellcode relative to that pointer.
+[src:buffer-overflow-protection/buffer-overflow] The attacker will then use the overwrite to jump to an instruction already in memory which will make a second jump, this time relative to the pointer.
+[src:buffer-overflow-protection/buffer-overflow] That second jump will branch execution into the shellcode.
+[src:buffer-overflow-protection/buffer-overflow] Suitable instructions are often present in large code.
+[src:buffer-overflow-protection/buffer-overflow] The Metasploit Project, for example, maintains a database of suitable opcodes, though it lists only those found in the Windows operating system.
+[src:buffer-overflow-protection/buffer-overflow] A buffer overflow occurring in the heap data area is referred to as a heap overflow and is exploitable in a manner different from that of stack-based overflows.
+[src:buffer-overflow-protection/buffer-overflow] Memory on the heap is dynamically allocated by the application at run-time and typically contains program data.
+[src:buffer-overflow-protection/buffer-overflow] Exploitation is performed by corrupting this data in specific ways to cause the application to overwrite internal structures such as linked list pointers.
+[src:buffer-overflow-protection/buffer-overflow] The canonical heap overflow technique overwrites dynamic memory allocation linkage (such as malloc meta data) and uses the resulting pointer exchange to overwrite a program function pointer.
+[src:buffer-overflow-protection/buffer-overflow] Microsoft's GDI+ vulnerability in handling JPEGs is an example of the danger a heap overflow can present.
+[src:buffer-overflow-protection/buffer-overflow] Manipulation of the buffer, which occurs before it is read or executed, may lead to the failure of an exploitation attempt.
+[src:buffer-overflow-protection/buffer-overflow] These manipulations can mitigate the threat of exploitation, but may not make it impossible.
+[src:buffer-overflow-protection/buffer-overflow] Manipulations could include conversion to upper or lower case, removal of metacharacters and filtering out of non-alphanumeric strings.
+[src:buffer-overflow-protection/buffer-overflow] However, techniques exist to bypass these filters and manipulations, such as alphanumeric shellcode, polymorphic code, self-modifying code, and return-to-libc attacks.
+[src:buffer-overflow-protection/buffer-overflow] The same methods can be used to avoid detection by intrusion detection systems.
+[src:buffer-overflow-protection/buffer-overflow] In some cases, including where code is converted into Unicode, the threat of the vulnerability has been misrepresented by the disclosers as only Denial of Service when in fact the remote execution of arbitrary code is possible.
+[src:buffer-overflow-protection/buffer-overflow] In real-world exploits there are a variety of challenges which need to be overcome for exploits to operate reliably.
+[src:buffer-overflow-protection/buffer-overflow] These factors include null bytes in addresses, variability in the location of shellcode, differences between environments, and various counter-measures in operation.
+[src:buffer-overflow-protection/buffer-overflow] A NOP-sled is the oldest and most widely known technique for exploiting stack buffer overflows.
+[src:buffer-overflow-protection/buffer-overflow] It solves the problem of finding the exact address of the buffer by effectively increasing the size of the target area.
+[src:buffer-overflow-protection/buffer-overflow] To do this, much larger sections of the stack are corrupted with the no-op machine instruction.
+[src:buffer-overflow-protection/buffer-overflow] At the end of the attacker-supplied data, after the no-op instructions, the attacker places an instruction to perform a relative jump to the top of the buffer where the shellcode is located.
+[src:buffer-overflow-protection/buffer-overflow] This collection of no-ops is referred to as the "NOP-sled" because if the return address is overwritten with any address within the no-op region of the buffer, the execution will "slide" down the no-ops until it is redirected to the actual malicious code by the jump at the end.
+[src:buffer-overflow-protection/buffer-overflow] This technique requires the attacker to guess where on the stack the NOP-sled is instead of the comparatively small shellcode.
+[src:buffer-overflow-protection/buffer-overflow] Because of the popularity of this technique, many vendors of intrusion prevention systems will search for this pattern of no-op machine instructions in an attempt to detect shellcode in use.
+[src:buffer-overflow-protection/buffer-overflow] A NOP-sled does not necessarily contain only traditional no-op machine instructions.
+[src:buffer-overflow-protection/buffer-overflow] Any instruction that does not corrupt the machine state to a point where the shellcode will not run can be used in place of the hardware assisted no-op.
+[src:buffer-overflow-protection/buffer-overflow] As a result, it has become common practice for exploit writers to compose the no-op sled with randomly chosen instructions which will have no real effect on the shellcode execution.
+[src:buffer-overflow-protection/buffer-overflow] While this method greatly improves the chances that an attack will be successful, it is not without problems.
+[src:buffer-overflow-protection/buffer-overflow] Exploits using this technique still must rely on some amount of luck that they will guess offsets on the stack that are within the NOP-sled region.
+[src:buffer-overflow-protection/buffer-overflow] An incorrect guess will usually result in the target program crashing and could alert the system administrator to the attacker's activities.
+[src:buffer-overflow-protection/buffer-overflow] Another problem is that the NOP-sled requires a much larger amount of memory in which to hold a NOP-sled large enough to be of any use.
+[src:buffer-overflow-protection/buffer-overflow] This can be a problem when the allocated size of the affected buffer is too small and the current depth of the stack is shallow (i.e., there is not much space from the end of the current stack frame to the start of the stack).
+[src:buffer-overflow-protection/buffer-overflow] Despite its problems, the NOP-sled is often the only method that will work for a given platform, environment, or situation, and as such it is still an important technique.
+[src:buffer-overflow-protection/buffer-overflow] The "jump to register" technique allows for reliable exploitation of stack buffer overflows without the need for extra room for a NOP-sled and without having to guess stack offsets.
+[src:buffer-overflow-protection/buffer-overflow] The strategy is to overwrite the return pointer with something that will cause the program to jump to a known pointer stored within a register which points to the controlled buffer and thus the shellcode.
+[src:buffer-overflow-protection/buffer-overflow] For example, if register A contains a pointer to the start of a buffer then any jump or call taking that register as an operand can be used to gain control of the flow of execution.
+[src:buffer-overflow-protection/buffer-overflow] In practice a program may not intentionally contain instructions to jump to a particular register.
+[src:buffer-overflow-protection/buffer-overflow] The traditional solution is to find an unintentional instance of a suitable opcode at a fixed location somewhere within the program memory.
+[src:buffer-overflow-protection/buffer-overflow] Figure E on the left contains an example of such an unintentional instance of the i386 `jmp esp` instruction.
+[src:buffer-overflow-protection/buffer-overflow] The opcode for this instruction is `FF E4`.
+[src:buffer-overflow-protection/buffer-overflow] This two-byte sequence can be found at a one-byte offset from the start of the instruction `call DbgPrint` at address `0x7C941EED`.
+[src:buffer-overflow-protection/buffer-overflow] If an attacker overwrites the program return address with this address the program will first jump to `0x7C941EED`, interpret the opcode `FF E4` as the `jmp esp` instruction, and will then jump to the top of the stack and execute the attacker's code.
+[src:buffer-overflow-protection/buffer-overflow] When this technique is possible the severity of the vulnerability increases considerably.
+[src:buffer-overflow-protection/buffer-overflow] This is because exploitation will work reliably enough to automate an attack with a virtual guarantee of success when it is run.
+[src:buffer-overflow-protection/buffer-overflow] For this reason, this is the technique most commonly used in Internet worms that exploit stack buffer overflow vulnerabilities.
+[src:buffer-overflow-protection/buffer-overflow] This method also allows shellcode to be placed after the overwritten return address on the Windows platform.
+[src:buffer-overflow-protection/buffer-overflow] Since executables are mostly based at address `0x00400000` and x86 is a little endian architecture, the last byte of the return address must be a null, which terminates the buffer copy and nothing is written beyond that.
+[src:buffer-overflow-protection/buffer-overflow] This limits the size of the shellcode to the size of the buffer, which may be overly restrictive.
+[src:buffer-overflow-protection/buffer-overflow] DLLs are located in high memory (above `0x01000000`) and so have addresses containing no null bytes, so this method can remove null bytes (or other disallowed characters) from the overwritten return address.
+[src:buffer-overflow-protection/buffer-overflow] Used in this way, the method is often referred to as **DLL trampolining**.
+[src:buffer-overflow-protection/buffer-overflow] Various techniques have been used to detect or prevent buffer overflows, with various tradeoffs.
+[src:buffer-overflow-protection/buffer-overflow] The following sections describe the choices and implementations available.
+[src:buffer-overflow-protection/buffer-overflow] Assembly, C, and C++ are popular programming languages that are vulnerable to buffer overflow in part because they allow direct access to memory and are not strongly typed.
+[src:buffer-overflow-protection/buffer-overflow] C provides no built-in protection against accessing or overwriting data in any part of memory.
+[src:buffer-overflow-protection/buffer-overflow] More specifically, it does not check that data written to a buffer is within the boundaries of that buffer.
+[src:buffer-overflow-protection/buffer-overflow] The standard C++ libraries provide many ways of safely buffering data, and C++'s Standard Template Library (STL) provides containers that can optionally perform bounds checking if the programmer explicitly calls for checks while accessing data.
+[src:buffer-overflow-protection/buffer-overflow] For example, a `vector`'s member function `at()` performs a bounds check and throws an `out_of_range` exception if the bounds check fails.
+[src:buffer-overflow-protection/buffer-overflow] However, C++ behaves just like C if the bounds check is not explicitly called.
+[src:buffer-overflow-protection/buffer-overflow] Techniques to avoid buffer overflows also exist for C.
+[src:buffer-overflow-protection/buffer-overflow] Languages that are strongly typed and do not allow direct memory access, such as COBOL, Java, Eiffel, Python, and others, prevent buffer overflow in most cases.
+[src:buffer-overflow-protection/buffer-overflow] Examples of such languages include Ada, Eiffel, Lisp, Modula-2, Smalltalk, OCaml and some systems programming languages such as Cyclone, Rust and D.
+[src:buffer-overflow-protection/buffer-overflow] The Java and .NET Framework bytecode environments also require bounds checking on all arrays.
+[src:buffer-overflow-protection/buffer-overflow] Nearly every interpreted language will protect against buffer overflow, signaling a well-defined error condition.
+[src:buffer-overflow-protection/buffer-overflow] Languages that provide enough type information to do bounds checking often provide an option to enable or disable it.
+[src:buffer-overflow-protection/buffer-overflow] Static code analysis can remove many dynamic bound and type checks, but poor implementations and awkward cases can significantly decrease performance.
+[src:buffer-overflow-protection/buffer-overflow] Software engineers should carefully consider the tradeoffs of safety versus performance costs when deciding which language and compiler setting to use.
+[src:buffer-overflow-protection/buffer-overflow] The problem of buffer overflows is common in the C and C++ languages because they expose low level representational details of buffers as containers for data types.
+[src:buffer-overflow-protection/buffer-overflow] Buffer overflows can be avoided by maintaining a high degree of correctness in code that performs buffer management.
+[src:buffer-overflow-protection/buffer-overflow] It has also long been recommended to avoid standard library functions that are not bounds checked, such as `gets`, `scanf` and `strcpy`.
+[src:buffer-overflow-protection/buffer-overflow] The Morris worm exploited a `gets` call in fingerd.
+[src:buffer-overflow-protection/buffer-overflow] Well-written and tested abstract data type libraries that centralize and automatically perform buffer management, including bounds checking, can reduce the occurrence and impact of buffer overflows.
+[src:buffer-overflow-protection/buffer-overflow] The primary data types in languages in which buffer overflows are common are strings and arrays.
+[src:buffer-overflow-protection/buffer-overflow] Thus, libraries preventing buffer overflows in these data types can provide the vast majority of the necessary coverage.
+[src:buffer-overflow-protection/buffer-overflow] However, failure to use these safe libraries correctly can result in buffer overflows and other vulnerabilities, and naturally any bug in the library is also a potential vulnerability.
+[src:buffer-overflow-protection/buffer-overflow] "Safe" library implementations include "The Better String Library", Vstr and Erwin.
+[src:buffer-overflow-protection/buffer-overflow] The OpenBSD operating system's C library provides the strlcpy and strlcat functions, but these are more limited than full safe library implementations.
+[src:buffer-overflow-protection/buffer-overflow] In September 2007, Technical Report 24731, prepared by the C standards committee, was published.
+[src:buffer-overflow-protection/buffer-overflow] It specifies a set of functions that are based on the standard C library's string and IO functions, with additional buffer-size parameters.
+[src:buffer-overflow-protection/buffer-overflow] However, the efficacy of these functions for reducing buffer overflows is disputable.
+[src:buffer-overflow-protection/buffer-overflow] They require programmer intervention on a per function call basis that is equivalent to intervention that could make the analogous older standard library functions buffer overflow safe.
+[src:buffer-overflow-protection/buffer-overflow] Buffer overflow protection is used to detect the most common buffer overflows by checking that the stack has not been altered when a function returns.
+[src:buffer-overflow-protection/buffer-overflow] If it has been altered, the program exits with a segmentation fault.
+[src:buffer-overflow-protection/buffer-overflow] Three such systems are Libsafe, and the *StackGuard* and *ProPolice* gcc patches.
+[src:buffer-overflow-protection/buffer-overflow] Microsoft's implementation of Data Execution Prevention (DEP) mode explicitly protects the pointer to the Structured Exception Handler (SEH) from being overwritten.
+[src:buffer-overflow-protection/buffer-overflow] Stronger stack protection is possible by splitting the stack in two: one for data and one for function returns.
+[src:buffer-overflow-protection/buffer-overflow] This split is present in the Forth language, though it was not a security-based design decision.
+[src:buffer-overflow-protection/buffer-overflow] Regardless, this is not a complete solution to buffer overflows, as sensitive data other than the return address may still be overwritten.
+[src:buffer-overflow-protection/buffer-overflow] This type of protection is also not entirely accurate because it does not detect all attacks.
+[src:buffer-overflow-protection/buffer-overflow] Systems like StackGuard are more centered around the behavior of the attacks, which makes them efficient and faster in comparison to range-check systems.
+[src:buffer-overflow-protection/buffer-overflow] Buffer overflows work by manipulating pointers, including stored addresses.
+[src:buffer-overflow-protection/buffer-overflow] PointGuard was proposed as a compiler-extension to prevent attackers from reliably manipulating pointers and addresses.
+[src:buffer-overflow-protection/buffer-overflow] The approach works by having the compiler add code to automatically XOR-encode pointers before and after they are used.
+[src:buffer-overflow-protection/buffer-overflow] Theoretically, because the attacker does not know what value will be used to encode and decode the pointer, one cannot predict what the pointer will point to if it is overwritten with a new value.
+[src:buffer-overflow-protection/buffer-overflow] PointGuard was never released, but Microsoft implemented a similar approach beginning in Windows XP SP2 and Windows Server 2003 SP1.
+[src:buffer-overflow-protection/buffer-overflow] Rather than implement pointer protection as an automatic feature, Microsoft added an API routine that can be called.
+[src:buffer-overflow-protection/buffer-overflow] This allows for better performance (because it is not used all of the time), but places the burden on the programmer to know when its use is necessary.
+[src:buffer-overflow-protection/buffer-overflow] Because XOR is linear, an attacker may be able to manipulate an encoded pointer by overwriting only the lower bytes of an address.
+[src:buffer-overflow-protection/buffer-overflow] This can allow an attack to succeed if the attacker can attempt the exploit multiple times or complete an attack by causing a pointer to point to one of several locations (such as any location within a NOP sled).
+[src:buffer-overflow-protection/buffer-overflow] Microsoft added a random rotation to their encoding scheme to address this weakness to partial overwrites.
+[src:buffer-overflow-protection/buffer-overflow] Executable-space protection is an approach to buffer overflow protection that prevents execution of code on the stack or the heap.
+[src:buffer-overflow-protection/buffer-overflow] An attacker may use buffer overflows to insert arbitrary code into the memory of a program, but with executable-space protection, any attempt to execute that code will cause an exception.
+[src:buffer-overflow-protection/buffer-overflow] Some CPUs support a feature called NX ("No eXecute") or XD ("eXecute Disabled") bit, which in conjunction with software, can be used to mark pages of data (such as those containing the stack and the heap) as readable and writable but not executable.
+[src:buffer-overflow-protection/buffer-overflow] OpenBSD, macOS) ship with executable-space protection (e.g.
+[src:buffer-overflow-protection/buffer-overflow] Newer variants of Microsoft Windows also support executable-space protection, called Data Execution Prevention.
+[src:buffer-overflow-protection/buffer-overflow] Executable-space protection does not generally protect against return-to-libc attacks, or any other attack that does not rely on the execution of the attackers code.
+[src:buffer-overflow-protection/buffer-overflow] However, on 64-bit systems using ASLR, as described below, executable-space protection makes it far more difficult to execute such attacks.
+[src:buffer-overflow-protection/buffer-overflow] CHERI (Capability Hardware Enhanced RISC Instructions) is a computer processor technology designed to improve security.
+[src:buffer-overflow-protection/buffer-overflow] It operates at a hardware level by providing a hardware-enforced type (a CHERI capability) that authorises access to memory.
+[src:buffer-overflow-protection/buffer-overflow] Traditional pointers are replaced by addresses accompanied by metadata that limit what can be accessed through any given pointer.
+[src:buffer-overflow-protection/buffer-overflow] Address space layout randomization (ASLR) is a computer security feature that involves arranging the positions of key data areas, usually including the base of the executable and position of libraries, heap, and stack, randomly in a process' address space.
+[src:buffer-overflow-protection/buffer-overflow] Randomization of the virtual memory addresses at which functions and variables can be found can make exploitation of a buffer overflow more difficult, but not impossible.
+[src:buffer-overflow-protection/buffer-overflow] It also forces the attacker to tailor the exploitation attempt to the individual system, which foils the attempts of internet worms.
+[src:buffer-overflow-protection/buffer-overflow] A similar but less effective method is to rebase processes and libraries in the virtual address space.
+[src:buffer-overflow-protection/buffer-overflow] The use of deep packet inspection (DPI) can detect, at the network perimeter, very basic remote attempts to exploit buffer overflows by use of attack signatures and heuristics.
+[src:buffer-overflow-protection/buffer-overflow] This technique can block packets that have the signature of a known attack.
+[src:buffer-overflow-protection/buffer-overflow] It was formerly used in situations in which a long series of No-Operation instructions (known as a NOP-sled) was detected and the location of the exploit's payload was slightly variable.
+[src:buffer-overflow-protection/buffer-overflow] Packet scanning is not an effective method since it can only prevent known attacks and there are many ways that a NOP-sled can be encoded.
+[src:buffer-overflow-protection/buffer-overflow] Shellcode used by attackers can be made alphanumeric, metamorphic, or self-modifying to evade detection by heuristic packet scanners and intrusion detection systems.
+[src:buffer-overflow-protection/buffer-overflow] Checking for buffer overflows and patching the bugs that cause them helps prevent buffer overflows.
+[src:buffer-overflow-protection/buffer-overflow] One common automated technique for discovering them is fuzzing.
+[src:buffer-overflow-protection/buffer-overflow] Edge case testing can also uncover buffer overflows, as can static analysis.
+[src:buffer-overflow-protection/buffer-overflow] Once a potential buffer overflow is detected it should be patched.
+[src:buffer-overflow-protection/buffer-overflow] This makes the testing approach useful for software that is in development, but less useful for legacy software that is no longer maintained or supported.
+[src:buffer-overflow-protection/buffer-overflow] This can be used to inject code into the monitor that will permit the user to seize control of the machine." Today, the monitor would be referred to as the kernel.
+[src:buffer-overflow-protection/buffer-overflow] The earliest documented hostile exploitation of a buffer overflow was in 1988.
+[src:buffer-overflow-protection/buffer-overflow] It was one of several exploits used by the Morris worm to propagate itself over the Internet.
+[src:buffer-overflow-protection/buffer-overflow] The program exploited was a service on Unix called finger.
+[src:buffer-overflow-protection/buffer-overflow] Later, in 1995, Thomas Lopatic independently rediscovered the buffer overflow and published his findings on the Bugtraq security mailing list.
+[src:buffer-overflow-protection/buffer-overflow] A year later, in 1996, Elias Levy (also known as Aleph One) published in *Phrack* magazine the paper "Smashing the Stack for Fun and Profit", a step-by-step introduction to exploiting stack-based buffer overflow vulnerabilities.
+[src:buffer-overflow-protection/buffer-overflow] Since then, at least two major internet worms have exploited buffer overflows to compromise a large number of systems.
+[src:buffer-overflow-protection/buffer-overflow] In 2001, the Code Red worm exploited a buffer overflow in Microsoft's Internet Information Services (IIS) 5.0 and in 2003 the SQL Slammer worm compromised machines running Microsoft SQL Server 2000.
+[src:buffer-overflow-protection/buffer-overflow] In 2003, buffer overflows present in licensed Xbox games have been exploited to allow unlicensed software, including homebrew games, to run on the console without the need for hardware modifications, known as modchips.
+[src:buffer-overflow-protection/buffer-overflow] The PS2 Independence Exploit also used a buffer overflow to achieve the same for the PlayStation 2.
+[src:buffer-overflow-protection/buffer-overflow] The Twilight hack accomplished the same with the Wii, using a buffer overflow in *The Legend of Zelda: Twilight Princess*.
+[src:buffer-overflow-protection/heap-overflow] A **heap overflow**, **heap overrun**, or **heap smashing** is a type of buffer overflow that occurs in the heap data area.
+[src:buffer-overflow-protection/heap-overflow] Heap overflows are exploitable in a different manner to that of stack-based overflows.
+[src:buffer-overflow-protection/heap-overflow] Memory on the heap is dynamically allocated at runtime and typically contains program data.
+[src:buffer-overflow-protection/heap-overflow] The canonical heap overflow technique overwrites dynamic memory allocation linkage (such as `malloc` metadata) and uses the resulting pointer exchange to overwrite a program function pointer.
+[src:buffer-overflow-protection/heap-overflow] For example, on older versions of Linux, two buffers allocated next to each other on the heap could result in the first buffer overwriting the second buffer's metadata.
+[src:buffer-overflow-protection/heap-overflow] By setting the in-use bit to zero of the second buffer and setting the length to a small negative value which allows null bytes to be copied, when the program calls `free()` on the first buffer it will attempt to merge these two buffers into a single buffer.
+[src:buffer-overflow-protection/heap-overflow] When this happens, the buffer that is assumed to be freed will be expected to hold two pointers FD and BK in the first 8 bytes of the formerly allocated buffer.
+[src:buffer-overflow-protection/heap-overflow] BK gets written into FD and can be used to overwrite a pointer.
+[src:buffer-overflow-protection/heap-overflow] An accidental overflow may result in data corruption or unexpected behavior by any process that accesses the affected memory area.
+[src:buffer-overflow-protection/heap-overflow] On operating systems without memory protection, this could be any process on the system.
+[src:buffer-overflow-protection/heap-overflow] For example, a Microsoft JPEG GDI+ buffer overflow vulnerability could allow remote execution of code on the affected machine.
+[src:buffer-overflow-protection/heap-overflow] iOS jailbreaking often uses heap overflows to gain arbitrary code execution.
+[src:buffer-overflow-protection/heap-overflow] As with buffer overflows there are primarily three ways to protect against heap overflows.
+[src:buffer-overflow-protection/heap-overflow] Several modern operating systems such as Windows and Linux provide some implementation of all three.
+[src:buffer-overflow-protection/heap-overflow] Since version 2.3.6 the GNU libc includes protections that can detect heap overflows after the fact, for example by checking pointer consistency when calling `unlink`.
+[src:buffer-overflow-protection/heap-overflow] However, those protections against prior exploits were almost immediately shown to also be exploitable.
+[src:buffer-overflow-protection/heap-overflow] In addition, Linux has included support for ASLR since 2005, although PaX introduced a better implementation years before.
+[src:buffer-overflow-protection/heap-overflow] Also Linux has included support for NX-bit since 2004.
+[src:buffer-overflow-protection/heap-overflow] Microsoft has included protections against heap resident buffer overflows since April 2003 in Windows Server 2003 and August 2004 in Windows XP with Service Pack 2.
+[src:buffer-overflow-protection/heap-overflow] These mitigations were safe unlinking and heap entry header cookies.
+[src:buffer-overflow-protection/heap-overflow] Normal Data Execution Prevention (DEP) and ASLR also help to mitigate this attack.
+[src:buffer-overflow-protection/heap-overflow] The most common detection method for heap overflows is online dynamic analysis.
+[src:buffer-overflow-protection/heap-overflow] This method observes the runtime execution of programs to identify vulnerabilities through the detection of security breaches.
+[src:buffer-overflow-protection/stack-buffer-overflow] In software, a **stack buffer overflow** or **stack buffer overrun** occurs when a program writes to a memory address on the program's call stack outside of the intended data structure, which is usually a fixed-length buffer.
+[src:buffer-overflow-protection/stack-buffer-overflow] A stack buffer overflow can be caused deliberately as part of an attack known as **stack smashing**.
+[src:buffer-overflow-protection/stack-buffer-overflow] If the affected program is running with special privileges, or accepts data from untrusted network hosts (e.g. a webserver) then the bug is a potential security vulnerability.
+[src:buffer-overflow-protection/stack-buffer-overflow] If the stack buffer is filled with data supplied from an untrusted user then that user can corrupt the stack in such a way as to inject executable code into the running program and take control of the process.
+[src:buffer-overflow-protection/stack-buffer-overflow] The canonical method for exploiting a stack-based buffer overflow is to overwrite the function return address with a pointer to attacker-controlled data (usually on the stack itself).
+[src:buffer-overflow-protection/stack-buffer-overflow] This code takes an argument from the command line and copies it to a local stack variable `c`.
+[src:buffer-overflow-protection/stack-buffer-overflow] This works fine for command-line arguments smaller than 12 characters (as can be seen in figure B below).
+[src:buffer-overflow-protection/stack-buffer-overflow] Any arguments larger than 11 characters long will result in corruption of the stack.
+[src:buffer-overflow-protection/stack-buffer-overflow] (The maximum number of characters that is safe is one less than the size of the buffer here because in the C programming language, strings are terminated by a null byte character.
+[src:buffer-overflow-protection/stack-buffer-overflow] A twelve-character input thus requires thirteen bytes to store, the input followed by the sentinel zero byte.
+[src:buffer-overflow-protection/stack-buffer-overflow] In figure C above, when an argument larger than 11 bytes is supplied on the command line `foo()` overwrites local stack data, the saved frame pointer, and most importantly, the return address.
+[src:buffer-overflow-protection/stack-buffer-overflow] When `foo()` returns, it pops the return address off the stack and jumps to that address (i.e. starts executing instructions from that address).
+[src:buffer-overflow-protection/stack-buffer-overflow] Thus, the attacker has overwritten the return address with a pointer to the stack buffer `char c[12]`, which now contains attacker-supplied data.
+[src:buffer-overflow-protection/stack-buffer-overflow] In an actual stack buffer overflow exploit the string of "A"'s would instead be shellcode suitable to the platform and desired function.
+[src:buffer-overflow-protection/stack-buffer-overflow] If this program had special privileges (e.g. the SUID bit set to run as the superuser), then the attacker could use this vulnerability to gain superuser privileges on the affected machine.
+[src:buffer-overflow-protection/stack-buffer-overflow] The attacker can also modify internal variable values to exploit some bugs.
+[src:buffer-overflow-protection/stack-buffer-overflow] There are typically two methods that are used to alter the stored address in the stack - direct and indirect.
+[src:buffer-overflow-protection/stack-buffer-overflow] Attackers started developing indirect attacks, which have fewer dependencies, in order to bypass protection measures that were made to reduce direct attacks.
+[src:buffer-overflow-protection/stack-buffer-overflow] A number of platforms have subtle differences in their implementation of the call stack that can affect the way a stack buffer overflow exploit will work.
+[src:buffer-overflow-protection/stack-buffer-overflow] Some machine architectures store the top-level return address of the call stack in a register.
+[src:buffer-overflow-protection/stack-buffer-overflow] This means that any overwritten return address will not be used until a later unwinding of the call stack.
+[src:buffer-overflow-protection/stack-buffer-overflow] Another example of a machine-specific detail that can affect the choice of exploitation techniques is the fact that most RISC-style machine architectures will not allow unaligned access to memory.
+[src:buffer-overflow-protection/stack-buffer-overflow] Combined with a fixed length for machine opcodes, this machine limitation can make the technique of jumping to the stack almost impossible to implement (with the one exception being when the program actually contains the unlikely code to explicitly jump to the stack register).
+[src:buffer-overflow-protection/stack-buffer-overflow] Within the topic of stack buffer overflows, an often-discussed-but-rarely-seen architecture is one in which the stack grows in the opposite direction.
+[src:buffer-overflow-protection/stack-buffer-overflow] This change in architecture is frequently suggested as a solution to the stack buffer overflow problem because any overflow of a stack buffer that occurs within the same stack frame cannot overwrite the return pointer.
+[src:buffer-overflow-protection/stack-buffer-overflow] However, any overflow that occurs in a buffer from a previous stack frame will still overwrite a return pointer and allow for malicious exploitation of the bug.
+[src:buffer-overflow-protection/stack-buffer-overflow] For instance, in the example above, the return pointer for `foo` will not be overwritten because the overflow actually occurs within the stack frame for `memcpy`.
+[src:buffer-overflow-protection/stack-buffer-overflow] However, because the buffer that overflows during the call to `memcpy` resides in a previous stack frame, the return pointer for `memcpy` will have a numerically higher memory address than the buffer.
+[src:buffer-overflow-protection/stack-buffer-overflow] This means that instead of the return pointer for `foo` being overwritten, the return pointer for `memcpy` will be overwritten.
+[src:buffer-overflow-protection/stack-buffer-overflow] At most, this means that growing the stack in the opposite direction will change some details of how stack buffer overflows are exploitable, but it will not reduce significantly the number of exploitable bugs.
+[src:buffer-overflow-protection/stack-buffer-overflow] Over the years, a number of control-flow integrity schemes have been developed to inhibit malicious stack buffer overflow exploitation.
+[src:buffer-overflow-protection/stack-buffer-overflow] Stack canaries, named for their analogy to a canary in a coal mine, are used to detect a stack buffer overflow before execution of malicious code can occur.
+[src:buffer-overflow-protection/stack-buffer-overflow] This method works by placing a small integer, the value of which is randomly chosen at program start, in memory just before the stack return pointer.
+[src:buffer-overflow-protection/stack-buffer-overflow] Most buffer overflows overwrite memory from lower to higher memory addresses, so in order to overwrite the return pointer (and thus take control of the process) the canary value must also be overwritten.
+[src:buffer-overflow-protection/stack-buffer-overflow] This value is checked to make sure it has not changed before a routine uses the return pointer on the stack.
+[src:buffer-overflow-protection/stack-buffer-overflow] This technique can greatly increase the difficulty of exploiting a stack buffer overflow because it forces the attacker to gain control of the instruction pointer by some non-traditional means such as corrupting other important variables on the stack.
+[src:buffer-overflow-protection/stack-buffer-overflow] Another approach to preventing stack buffer overflow exploitation is to enforce a memory policy on the stack memory region that disallows execution from the stack (W^X, "Write XOR Execute").
+[src:buffer-overflow-protection/stack-buffer-overflow] This means that in order to execute shellcode from the stack an attacker must either find a way to disable the execution protection from memory, or find a way to put their shellcode payload in a non-protected region of memory.
+[src:buffer-overflow-protection/stack-buffer-overflow] This method is becoming more popular now that hardware support for the no-execute flag is available in most desktop processors.
+[src:buffer-overflow-protection/stack-buffer-overflow] While this method prevents the canonical stack smashing exploit, stack overflows can be exploited in other ways.
+[src:buffer-overflow-protection/stack-buffer-overflow] First, it is common to find ways to store shellcode in unprotected memory regions like the heap, and so very little need change in the way of exploitation.
+[src:buffer-overflow-protection/stack-buffer-overflow] Another attack is the so-called return to libc method for shellcode creation.
+[src:buffer-overflow-protection/stack-buffer-overflow] In this attack the malicious payload will load the stack not with shellcode, but with a proper call stack so that execution is vectored to a chain of standard library calls, usually with the effect of disabling memory execute protections and allowing shellcode to run as normal.
+[src:buffer-overflow-protection/stack-buffer-overflow] This works because the execution never actually vectors to the stack itself.
+[src:buffer-overflow-protection/stack-buffer-overflow] A variant of return-to-libc is return-oriented programming (ROP), which sets up a series of return addresses, each of which executes a small sequence of cherry-picked machine instructions within the existing program code or system libraries, sequence which ends with a return.
+[src:buffer-overflow-protection/stack-buffer-overflow] These so-called *gadgets* each accomplish some simple register manipulation or similar execution before returning, and stringing them together achieves the attacker's ends.
+[src:buffer-overflow-protection/stack-buffer-overflow] It is even possible to use "returnless" return-oriented programming by exploiting instructions or groups of instructions that behave much like a return instruction.
+[src:buffer-overflow-protection/stack-buffer-overflow] Instead of separating the code from the data, another mitigation technique is to introduce randomization to the memory space of the executing program.
+[src:buffer-overflow-protection/stack-buffer-overflow] Since the attacker needs to determine where executable code that can be used resides, either an executable payload is provided (with an executable stack) or one is constructed using code reuse such as in ret2libc or return-oriented programming (ROP).
+[src:buffer-overflow-protection/stack-buffer-overflow] Randomizing the memory layout will, as a concept, prevent the attacker from knowing where any code is.
+[src:buffer-overflow-protection/stack-buffer-overflow] However, implementations typically will not randomize everything; usually the executable itself is loaded at a fixed address and hence even when ASLR (address space layout randomization) is combined with a non-executable stack the attacker can use this fixed region of memory.
+[src:buffer-overflow-protection/stack-buffer-overflow] Therefore, all programs should be compiled with PIE (position-independent executables) such that even this region of memory is randomized.
+[src:buffer-overflow-protection/stack-buffer-overflow] The entropy of the randomization is different from implementation to implementation and a low enough entropy can in itself be a problem in terms of brute forcing the memory space that is randomized.
+[src:buffer-overflow-protection/stack-buffer-overflow] The previous mitigations make the steps of the exploitation harder.
+[src:buffer-overflow-protection/stack-buffer-overflow] But it is still possible to exploit a stack buffer overflow if some vulnerabilities are presents or if some conditions are met.
+[src:buffer-overflow-protection/stack-buffer-overflow] An attacker is able to exploit the format string vulnerability for revealing the memory locations in the vulnerable program.
+[src:buffer-overflow-protection/stack-buffer-overflow] When Data Execution Prevention is enabled to forbid any execute access to the stack, the attacker can still use the overwritten return address (the instruction pointer) to point to data in a code segment (.text on Linux) or every other executable section of the program.
+[src:buffer-overflow-protection/stack-buffer-overflow] Consists to overwrite the return pointer a bit before a return instruction (ret in x86) of the program.
+[src:buffer-overflow-protection/stack-buffer-overflow] The instructions between the new return pointer and the return instruction will be executed and the return instruction will return to the payload controlled by the exploiter.
+[src:buffer-overflow-protection/stack-buffer-overflow] Jump Oriented Programming is a technique that uses jump instructions to reuse code instead of the ret instruction.
+[src:buffer-overflow-protection/stack-buffer-overflow] A limitation of ASLR realization on 64-bit systems is that it is vulnerable to memory disclosure and information leakage attacks.
+[src:buffer-overflow-protection/stack-buffer-overflow] The attacker can launch the ROP by revealing a single function address using information leakage attack.
+[src:buffer-overflow-protection/stack-buffer-overflow] The following section describes the similar existing strategy for breaking down the ASLR protection.

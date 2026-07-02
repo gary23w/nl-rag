@@ -1,0 +1,72 @@
+---
+title: "Dead-code elimination"
+source: https://en.wikipedia.org/wiki/Dead-code_elimination
+domain: static-single-assignment
+license: CC-BY-SA-4.0
+tags: static single assignment, phi function, dominance frontier, SSA form
+fetched: 2026-07-02
+---
+
+# Dead-code elimination
+
+In compiler theory, **dead-code elimination** (**DCE**, **dead-code removal**, **dead-code stripping**, or **dead-code strip**) is a compiler optimization to remove dead code (code that does not affect the program results). Removing such code has several benefits: it shrinks program size (an important consideration in some contexts); reduces resource usage, such as the number of bytes to be transferred; and allows the running program to avoid executing irrelevant operations, which reduces its running time. It can also enable further optimizations by simplifying program structure. Dead code includes code that can never be executed (unreachable code) and code that only affects dead variables (written to, but never read again), that is, irrelevant to the program.
+
+## Examples
+
+Consider the following example written in C.
+
+```mw
+int foo(void) {
+    int a = 24;
+    int b = 25; // Assignment to dead variable
+    int c;
+    c = a * 4;
+    return c;
+    b = 24; // Unreachable code
+    return 0;
+}
+```
+
+Simple analysis of the uses of values would show that the value of `b` after the first assignment is not used inside `foo`. Furthermore, `b` is declared as a local variable inside `foo`, so its value cannot be used outside `foo`. Thus, the variable `b` is *dead* and an optimizer can reclaim its storage space and eliminate its initialization.
+
+Furthermore, because the first return statement is executed unconditionally and there is no label after it which a "goto" could reach, no feasible execution path reaches the second assignment to `b`. Thus, the assignment is *unreachable* and can be removed. If the procedure had a more complex control flow, such as a label after the return statement and a `goto` elsewhere in the procedure, then a feasible execution path might exist to the assignment to `b`.
+
+Also, even though some calculations are performed in the function, their values are not stored in locations accessible outside the scope of this function. Furthermore, given the function returns a static value (96), it may be simplified to the value it returns (this simplification is called constant folding).
+
+Most advanced compilers have options to activate dead-code elimination, sometimes at varying levels. A lower level might only remove instructions that cannot be executed. A higher level might also not reserve space for unused variables. A yet higher level might determine instructions or functions that serve no purpose and eliminate them.
+
+A common use of dead-code elimination is as an alternative to optional code inclusion via a preprocessor. Consider the following code.
+
+```mw
+// set DEBUG_MODE to false
+constexpr bool DEBUG_MODE = false;
+
+int main(void) {
+    int a = 5;
+    int b = 6;
+    int c;
+    c = a * (b / 2);
+    if (DEBUG_MODE) {
+        printf("%d\n", c);
+    }
+    return c;
+}
+```
+
+Because the constant `DEBUG_MODE` will always evaluate to false (due to being defined as so), the code inside the if statement can never be executed, and dead-code elimination would remove it entirely from the optimized program. This technique is common in debugging to optionally activate blocks of code; using an optimizer with dead-code elimination eliminates the need for using a preprocessor to perform the same task.
+
+In practice, much of the dead code that an optimizer finds is created by other transformations in the optimizer. For example, the classic techniques for operator strength reduction insert new computations into the code and render the older, more expensive computations dead. Subsequent dead-code elimination removes those calculations and completes the effect (without complicating the strength-reduction algorithm).
+
+Historically, dead-code elimination was performed using information derived from data-flow analysis. An algorithm based on static single-assignment form (SSA) appears in the original journal article on *SSA* form by Ron Cytron et al. Robert Shillingsburg (aka Shillner) improved on the algorithm and developed a companion algorithm for removing useless control-flow operations.
+
+## Dynamic dead-code elimination
+
+Dead code is normally considered dead *unconditionally*. Therefore, it is reasonable attempting to remove dead code through dead-code elimination at compile time.
+
+However, in practice it is also common for code sections to represent dead or unreachable code only *under certain conditions*, which may not be known at the time of compilation or assembly. Such conditions may be imposed by different runtime environments (for example different versions of an operating system, or different sets and combinations of drivers or services loaded in a particular target environment), which may require different sets of special cases in the code, but at the same time become conditionally dead code for the other cases. Also, the software (for example, a driver or resident service) may be configurable to include or exclude certain features depending on user preferences, rendering unused code portions useless in a particular scenario. While modular software may be developed to dynamically load libraries on demand only, in most cases, it is not possible to load only the relevant routines from a particular library, and even if this would be supported, a routine may still include code sections which can be considered dead code in a given scenario, but could not be ruled out at compile time, already.
+
+The techniques used to dynamically detect demand, identify and resolve dependencies, remove such conditionally dead code, and to recombine the remaining code at load or runtime are called **dynamic dead-code elimination** or **dynamic dead-instruction elimination**.
+
+Most programming languages, compilers and operating systems offer no or little more support than dynamic loading of libraries and late linking, therefore software utilizing dynamic dead-code elimination is very rare in conjunction with languages compiled ahead-of-time or written in assembly language. However, language implementations doing just-in-time compilation may dynamically optimize for dead-code elimination.
+
+Although with a rather different focus, similar approaches are sometimes also utilized for dynamic software updating and hot patching.

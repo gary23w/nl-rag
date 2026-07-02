@@ -1,0 +1,42 @@
+---
+title: "Operational historian"
+source: https://en.wikipedia.org/wiki/Operational_historian
+domain: scada-historian
+license: CC-BY-SA-4.0
+tags: scada historian, operational historian, process data historian, time-series process archive
+fetched: 2026-07-02
+---
+
+# Operational historian
+
+In manufacturing, an **operational historian** is a time-series database application that is developed for operational process data. Historian software is often embedded or used in conjunction with standard DCS and PLC control systems to provide enhanced data capture, validation, compression, and aggregation capabilities. Historians have been deployed in almost every industry and contribute to functions such as supervisory control, performance monitoring, quality assurance, and, more recently, machine learning applications which can learn from vast quantities of historical data.
+
+These systems were originally developed to capture instrumentation and control data, which led many to use the term "tag" for a stream of process data, referring to the physical "tags" which had been placed on instrumentation for manually capturing data. Raw data may be accessed via OPC HDA, SQL, or REST API interfaces.
+
+## Operational Support
+
+Operational historians are typically used within the manufacturing facility by engineers and operators for supervisory functions and analysis. An operational historian will typically capture all instrumentation and control data, whereas an enterprise historian that is deployed to support business functions will capture only a subset of the plant data.
+
+Typically, these applications offer data access through dedicated APIs (Application Programming Interfaces) and SDKs (Software Development Kits) which offer high-performance read and write operations. These operate through vendor-specific or custom applications. Front-end tools for trending process data over time are the most common interfaces to these databases.
+
+Because these applications are typically deployed next to or near the source of their process data, they are often marketed and sold as 'real-time database systems.' This distinction varies among vendors, who often have to make tradeoffs in performance between data capture and presentation, and application and analysis functionality.
+
+The following is a list of typical challenges for operational historians:
+
+- data collection from instrumentation and controls
+- storage and archiving of very large volumes of data
+- organization of data in the form of "tags" or "points"
+- limiting of monitoring (alarms) and validation
+- aggregation and interpolation
+- manual data entry (MDE)
+
+## Data access
+
+As opposed to enterprise historians, the data access layer in the operational historian is designed to offer sophisticated data fetching modes without complex information analysis facilities. The following settings are typically available for data access operations:
+
+- Data scope (single point or tag, history based on time range, history based on sample count)
+- Request modes (raw data, last-known value, aggregation, interpolation)
+- Sampling (single point, all points without sampling, all points with interval sampling)
+- Data omission (based on the sample quality, based on the sample value, based on the count)
+
+Even though the operational historians are rarely relational database management systems, they often offer SQL-based interfaces to query the database. In most of such implementations, the dialect does not follow the SQL standard in order to provide syntax for specifying data access operations parameters.

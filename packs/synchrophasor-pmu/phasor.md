@@ -1,0 +1,208 @@
+---
+title: "Phasor"
+source: https://en.wikipedia.org/wiki/Phasor
+domain: synchrophasor-pmu
+license: CC-BY-SA-4.0
+tags: synchrophasor measurement, phasor measurement unit, wide-area monitoring, grid phasor telemetry
+fetched: 2026-07-02
+---
+
+# Phasor
+
+In physics and engineering, a **phasor** (a portmanteau of **phase vector**) is a complex number representing a sinusoidal function whose amplitude A and initial phase θ are time-invariant and whose angular frequency ω is fixed. It is related to a more general concept called analytic representation, which decomposes a sinusoid into the product of a complex constant and a factor depending on time and frequency. The complex constant, which depends on amplitude and phase, is known as a **phasor**, or **complex amplitude**, and (in older texts) **sinor** or even **complexor**.
+
+A common application is in the steady-state analysis of an electrical network powered by time varying current where all signals are assumed to be sinusoidal with a common frequency. Phasor representation allows the analyst to represent the amplitude and phase of the signal using a single complex number. The only difference in their analytic representations is the complex amplitude (phasor). A linear combination of such functions can be represented as a linear combination of phasors (known as **phasor arithmetic** or **phasor algebra**) and the time/frequency dependent factor that they all have in common.
+
+The origin of the term phasor rightfully suggests that a (diagrammatic) calculus somewhat similar to that possible for vectors is possible for phasors as well. An important additional feature of the phasor transform is that differentiation and integration of sinusoidal signals (having constant amplitude, period and phase) corresponds to simple algebraic operations on the phasors; the phasor transform thus allows the analysis (calculation) of the AC steady state of RLC circuits by solving simple algebraic equations (albeit with complex coefficients) in the phasor domain instead of solving differential equations (with real coefficients) in the time domain. The originator of the phasor transform was Charles Proteus Steinmetz working at General Electric in the late 19th century. He got his inspiration from Oliver Heaviside. Heaviside's operational calculus was modified so that the variable p becomes jω. The complex number j has simple meaning: phase shift.
+
+Glossing over some mathematical details, the phasor transform can also be seen as a particular case of the Laplace transform (limited to a single frequency), which, in contrast to phasor representation, can be used to (simultaneously) derive the transient response of an RLC circuit. However, the Laplace transform is mathematically more difficult to apply and the effort may be unjustified if only steady state analysis is required.
+
+## Notation
+
+**Phasor notation** (also known as **angle notation**) is a mathematical notation used in electronics engineering and electrical engineering. A vector whose polar coordinates are magnitude A and angle $\theta$ is written $A\angle \theta .$ $1\angle \theta$ can represent either the vector $(\cos \theta ,\,\sin \theta )$ or the complex number $\cos \theta +i\sin \theta =e^{i\theta }$ , according to Euler's formula with $i^{2}=-1$ , both of which have magnitudes of 1.
+
+The angle may be stated in degrees with an implied conversion from degrees to radians. For example $1\angle 90$ would be assumed to be $1\angle 90^{\circ },$ which is the vector $(0,\,1)$ or the number $e^{i\pi /2}=i.$
+
+Multiplication and division of complex numbers become straight forward through the phasor notation. Given the vectors $v_{1}=A_{1}\angle \theta _{1}$ and $v_{2}=A_{2}\angle \theta _{2}$ , the following is true:
+
+$v_{1}\cdot v_{2}=A_{1}\cdot A_{2}\angle (\theta _{1}+\theta _{2})$
+
+,
+
+${\frac {v_{1}}{v_{2}}}={\frac {A_{1}}{A_{2}}}\angle (\theta _{1}-\theta _{2})$
+
+.
+
+## Definition
+
+A real-valued sinusoid with constant amplitude, frequency, and phase has the form:
+
+$A\cos(\omega t+\theta ),$
+
+where only parameter t is time-variant. The inclusion of an imaginary component:
+
+$i\cdot A\sin(\omega t+\theta )$
+
+gives it, in accordance with Euler's formula, the factoring property described in the lead paragraph:
+
+$A\cos(\omega t+\theta )+i\cdot A\sin(\omega t+\theta )=Ae^{i(\omega t+\theta )}=Ae^{i\theta }\cdot e^{i\omega t},$
+
+whose real part is the original sinusoid. The benefit of the complex representation is that linear operations with other complex representations produces a complex result whose real part reflects the same linear operations with the real parts of the other complex sinusoids. Furthermore, all the mathematics can be done with just the phasors $Ae^{i\theta },$ and the common factor $e^{i\omega t}$ is reinserted prior to the real part of the result.
+
+The function $Ae^{i(\omega t+\theta )}$ is an *analytic representation* of $A\cos(\omega t+\theta ).$ Figure 2 depicts it as a rotating vector in the complex plane. It is sometimes convenient to refer to the entire function as a *phasor*, as we do in the next section.
+
+## Arithmetic
+
+### Multiplication by a constant (scalar)
+
+Multiplication of the phasor $Ae^{i\theta }e^{i\omega t}$ by a complex constant, $Be^{i\phi }$ , produces another phasor. That means its only effect is to change the amplitude and phase of the underlying sinusoid: ${\begin{aligned}&\operatorname {Re} \left(\left(Ae^{i\theta }\cdot Be^{i\phi }\right)\cdot e^{i\omega t}\right)\\={}&\operatorname {Re} \left(\left(ABe^{i(\theta +\phi )}\right)\cdot e^{i\omega t}\right)\\={}&AB\cos(\omega t+(\theta +\phi )).\end{aligned}}$
+
+In electronics, $Be^{i\phi }$ would represent an impedance, which is independent of time. In particular it is *not* the shorthand notation for another phasor. Multiplying a phasor current by an impedance produces a phasor voltage. But the product of two phasors (or squaring a phasor) would represent the product of two sinusoids, which is a non-linear operation that produces new frequency components. Phasor notation can only represent systems with one frequency, such as a linear system stimulated by a sinusoid.
+
+### Addition
+
+The sum of multiple phasors produces another phasor. That is because the sum of sinusoids with the same frequency is also a sinusoid with that frequency: ${\begin{aligned}&A_{1}\cos(\omega t+\theta _{1})+A_{2}\cos(\omega t+\theta _{2})\\[3pt]={}&\operatorname {Re} \left(A_{1}e^{i\theta _{1}}e^{i\omega t}\right)+\operatorname {Re} \left(A_{2}e^{i\theta _{2}}e^{i\omega t}\right)\\[3pt]={}&\operatorname {Re} \left(A_{1}e^{i\theta _{1}}e^{i\omega t}+A_{2}e^{i\theta _{2}}e^{i\omega t}\right)\\[3pt]={}&\operatorname {Re} \left(\left(A_{1}e^{i\theta _{1}}+A_{2}e^{i\theta _{2}}\right)e^{i\omega t}\right)\\[3pt]={}&\operatorname {Re} \left(\left(A_{3}e^{i\theta _{3}}\right)e^{i\omega t}\right)\\[3pt]={}&A_{3}\cos(\omega t+\theta _{3}),\end{aligned}}$ where: $A_{3}^{2}=(A_{1}\cos \theta _{1}+A_{2}\cos \theta _{2})^{2}+(A_{1}\sin \theta _{1}+A_{2}\sin \theta _{2})^{2},$
+
+and, if we take ${\textstyle \theta _{3}\in \left[-{\frac {\pi }{2}},{\frac {3\pi }{2}}\right]}$ , then $\theta _{3}$ is:
+
+- ${\textstyle \operatorname {sgn}(A_{1}\sin(\theta _{1})+A_{2}\sin(\theta _{2}))\cdot {\frac {\pi }{2}},}$ if $A_{1}\cos \theta _{1}+A_{2}\cos \theta _{2}=0,$ with $\operatorname {sgn}$ the signum function;
+- $\arctan \left({\frac {A_{1}\sin \theta _{1}+A_{2}\sin \theta _{2}}{A_{1}\cos \theta _{1}+A_{2}\cos \theta _{2}}}\right),$ if $A_{1}\cos \theta _{1}+A_{2}\cos \theta _{2}>0$ ;
+- $\pi +\arctan \left({\frac {A_{1}\sin \theta _{1}+A_{2}\sin \theta _{2}}{A_{1}\cos \theta _{1}+A_{2}\cos \theta _{2}}}\right),$ if $A_{1}\cos \theta _{1}+A_{2}\cos \theta _{2}<0$ .
+
+or, via the law of cosines on the complex plane (or the trigonometric identity for angle differences): $A_{3}^{2}=A_{1}^{2}+A_{2}^{2}-2A_{1}A_{2}\cos(180^{\circ }-\Delta \theta )=A_{1}^{2}+A_{2}^{2}+2A_{1}A_{2}\cos(\Delta \theta ),$ where $\Delta \theta =\theta _{1}-\theta _{2}.$
+
+A key point is that *A*3 and *θ*3 do not depend on *ω* or *t*, which is what makes phasor notation possible. The time and frequency dependence can be suppressed and re-inserted into the outcome as long as the only operations used in between are ones that produce another phasor. In angle notation, the operation shown above is written: $A_{1}\angle \theta _{1}+A_{2}\angle \theta _{2}=A_{3}\angle \theta _{3}.$
+
+Another way to view addition is that two **vectors** with coordinates [*A*1 cos(*ωt* + *θ*1), *A*1 sin(*ωt* + *θ*1)] and [*A*2 cos(*ωt* + *θ*2), *A*2 sin(*ωt* + *θ*2)] are added vectorially to produce a resultant vector with coordinates [*A*3 cos(*ωt* + *θ*3), *A*3 sin(*ωt* + *θ*3)] (see animation).
+
+In physics, this sort of addition occurs when sinusoids interfere with each other, constructively or destructively. The static vector concept provides useful insight into questions like this: "What phase difference would be required between three identical sinusoids for perfect cancellation?" In this case, simply imagine taking three vectors of equal length and placing them head to tail such that the last head matches up with the first tail. Clearly, the shape which satisfies these conditions is an equilateral triangle, so the angle between each phasor to the next is 120° (2π⁄3 radians), or one third of a wavelength *λ*⁄3. So the phase difference between each wave must also be 120°, as is the case in three-phase power.
+
+In other words, what this shows is that: $\cos(\omega t)+\cos \left(\omega t+{\frac {2\pi }{3}}\right)+\cos \left(\omega t-{\frac {2\pi }{3}}\right)=0.$
+
+In the example of three waves, the phase difference between the first and the last wave was 240°, while for two waves destructive interference happens at 180°. In the limit of many waves, the phasors must form a circle for destructive interference, so that the first phasor is nearly parallel with the last. This means that for many sources, destructive interference happens when the first and last wave differ by 360 degrees, a full wavelength $\lambda$ . This is why in single slit diffraction, the minima occur when light from the far edge travels a full wavelength further than the light from the near edge.
+
+As the single vector rotates in an anti-clockwise direction, its tip at point A will rotate one complete revolution of 360° or 2π radians representing one complete cycle. If the length of its moving tip is transferred at different angular intervals in time to a graph as shown above, a sinusoidal waveform would be drawn starting at the left with zero time. Each position along the horizontal axis indicates the time that has elapsed since zero time, *t* = 0. When the vector is horizontal the tip of the vector represents the angles at 0°, 180°, and at 360°.
+
+Likewise, when the tip of the vector is vertical it represents the positive peak value, (+*A*max) at 90° or π⁄2 and the negative peak value, (−*A*max) at 270° or 3π⁄2. Then the time axis of the waveform represents the angle either in degrees or radians through which the phasor has moved. So we can say that a phasor represents a scaled voltage or current value of a rotating vector which is "frozen" at some point in time, (t) and in our example above, this is at an angle of 30°.
+
+Sometimes when we are analysing alternating waveforms we may need to know the position of the phasor, representing the alternating quantity at some particular instant in time especially when we want to compare two different waveforms on the same axis. For example, voltage and current. We have assumed in the waveform above that the waveform starts at time *t* = 0 with a corresponding phase angle in either degrees or radians.
+
+But if a second waveform starts to the left or to the right of this zero point, or if we want to represent in phasor notation the relationship between the two waveforms, then we will need to take into account this phase difference, *Φ* of the waveform. Consider the diagram below from the previous Phase Difference tutorial.
+
+### Differentiation and integration
+
+The time derivative or integral of a phasor produces another phasor. For example: ${\begin{aligned}&\operatorname {Re} \left({\frac {\mathrm {d} }{\mathrm {d} t}}{\mathord {\left(Ae^{i\theta }\cdot e^{i\omega t}\right)}}\right)\\={}&\operatorname {Re} \left(Ae^{i\theta }\cdot i\omega e^{i\omega t}\right)\\={}&\operatorname {Re} \left(Ae^{i\theta }\cdot e^{i\pi /2}\omega e^{i\omega t}\right)\\={}&\operatorname {Re} \left(\omega Ae^{i(\theta +\pi /2)}\cdot e^{i\omega t}\right)\\={}&\omega A\cdot \cos \left(\omega t+\theta +{\frac {\pi }{2}}\right).\end{aligned}}$
+
+Therefore, in phasor representation, the time derivative of a sinusoid becomes just multiplication by the constant ${\textstyle i\omega =e^{i\pi /2}\cdot \omega }$ .
+
+Similarly, integrating a phasor corresponds to multiplication by ${\textstyle {\frac {1}{i\omega }}={\frac {e^{-i\pi /2}}{\omega }}.}$ The time-dependent factor, $e^{i\omega t},$ is unaffected.
+
+When we solve a linear differential equation with phasor arithmetic, we are merely factoring $e^{i\omega t}$ out of all terms of the equation, and reinserting it into the answer. For example, consider the following differential equation for the voltage across the capacitor in an RC circuit: ${\frac {\mathrm {d} \,v_{\text{C}}(t)}{\mathrm {d} t}}+{\frac {1}{RC}}v_{\text{C}}(t)={\frac {1}{RC}}v_{\text{S}}(t).$
+
+When the voltage source in this circuit is sinusoidal: $v_{\text{S}}(t)=V_{\text{P}}\cdot \cos(\omega t+\theta ),$
+
+we may substitute $v_{\text{S}}(t)=\operatorname {Re} \left(V_{\text{s}}\cdot e^{i\omega t}\right).$
+
+$v_{\text{C}}(t)=\operatorname {Re} \left(V_{\text{c}}\cdot e^{i\omega t}\right),$ where phasor $V_{\text{s}}=V_{\text{P}}e^{i\theta },$ and phasor $V_{\text{c}}$ is the unknown quantity to be determined.
+
+In the phasor shorthand notation, the differential equation reduces to: $i\omega V_{\text{c}}+{\frac {1}{RC}}V_{\text{c}}={\frac {1}{RC}}V_{\text{s}}.$
+
+Derivation
+
+| ${\frac {\mathrm {d} }{\mathrm {d} t}}\operatorname {Re} \left(V_{\text{c}}\cdot e^{i\omega t}\right)+{\frac {1}{RC}}\operatorname {Re} (V_{\text{c}}\cdot e^{i\omega t})={\frac {1}{RC}}\operatorname {Re} \left(V_{\text{s}}\cdot e^{i\omega t}\right)$ |   | Eq.1 |
+|---|---|---|
+
+Since this must hold for all t , specifically: ${\textstyle t-{\frac {\pi }{2\omega }},}$ it follows that:
+
+| ${\frac {\mathrm {d} }{\mathrm {d} t}}\operatorname {Im} \left(V_{\text{c}}\cdot e^{i\omega t}\right)+{\frac {1}{RC}}\operatorname {Im} \left(V_{\text{c}}\cdot e^{i\omega t}\right)={\frac {1}{RC}}\operatorname {Im} \left(V_{\text{s}}\cdot e^{i\omega t}\right).$ |   | Eq.2 |
+|---|---|---|
+
+It is also readily seen that: ${\begin{aligned}{\frac {\mathrm {d} }{\mathrm {d} t}}\operatorname {Re} \left(V_{\text{c}}\cdot e^{i\omega t}\right)&=\operatorname {Re} \left({\frac {\mathrm {d} }{\mathrm {d} t}}{\mathord {\left(V_{\text{c}}\cdot e^{i\omega t}\right)}}\right)=\operatorname {Re} \left(i\omega V_{\text{c}}\cdot e^{i\omega t}\right)\\{\frac {\mathrm {d} }{\mathrm {d} t}}\operatorname {Im} \left(V_{\text{c}}\cdot e^{i\omega t}\right)&=\operatorname {Im} \left({\frac {\mathrm {d} }{\mathrm {d} t}}{\mathord {\left(V_{\text{c}}\cdot e^{i\omega t}\right)}}\right)=\operatorname {Im} \left(i\omega V_{\text{c}}\cdot e^{i\omega t}\right).\end{aligned}}$
+
+Substituting these into **Eq.1** and **Eq.2**, multiplying **Eq.2** by $i,$ and adding both equations gives: ${\begin{aligned}i\omega V_{\text{c}}\cdot e^{i\omega t}+{\frac {1}{RC}}V_{\text{c}}\cdot e^{i\omega t}&={\frac {1}{RC}}V_{\text{s}}\cdot e^{i\omega t}\\\left(i\omega V_{\text{c}}+{\frac {1}{RC}}V_{\text{c}}\right)\!\cdot e^{i\omega t}&=\left({\frac {1}{RC}}V_{\text{s}}\right)\cdot e^{i\omega t}\\i\omega V_{\text{c}}+{\frac {1}{RC}}V_{\text{c}}&={\frac {1}{RC}}V_{\text{s}}.\end{aligned}}$
+
+Solving for the phasor capacitor voltage gives: $V_{\text{c}}={\frac {1}{1+i\omega RC}}\cdot V_{\text{s}}={\frac {1-i\omega RC}{1+(\omega RC)^{2}}}\cdot V_{\text{P}}e^{i\theta }.$
+
+As we have seen, the factor multiplying $V_{\text{s}}$ represents differences of the amplitude and phase of $v_{\text{C}}(t)$ relative to $V_{\text{P}}$ and $\theta .$
+
+In polar coordinate form, the first term of the last expression is: ${\frac {1-i\omega RC}{1+(\omega RC)^{2}}}={\frac {1}{\sqrt {1+(\omega RC)^{2}}}}\cdot e^{-i\phi (\omega )},$ where $\phi (\omega )=\arctan(\omega RC)$ .
+
+Therefore: $v_{\text{C}}(t)=\operatorname {Re} \left(V_{\text{c}}\cdot e^{i\omega t}\right)={\frac {1}{\sqrt {1+(\omega RC)^{2}}}}\cdot V_{\text{P}}\cos(\omega t+\theta -\phi (\omega )).$
+
+### Ratio of phasors
+
+A quantity called complex impedance is the ratio of two phasors, which is not a phasor, because it does not correspond to a sinusoidally varying function.
+
+## Applications
+
+### Circuit laws
+
+With phasors, the techniques for solving DC circuits can be applied to solve linear AC circuits.
+
+**Ohm's law for resistors**
+
+A
+
+resistor
+
+has no time delays and therefore doesn't change the phase of a signal therefore
+
+V
+
+=
+
+IR
+
+remains valid.
+
+**Ohm's law for resistors, inductors, and capacitors**
+
+V
+
+=
+
+IZ
+
+where
+
+Z
+
+is the complex
+
+impedance
+
+.
+
+**Kirchhoff's circuit laws**
+
+Work with voltages and current as complex phasors.
+
+In an AC circuit we have real power (P) which is a representation of the average power into the circuit and reactive power (*Q*) which indicates power flowing back and forth. We can also define the complex power *S* = *P* + *jQ* and the apparent power which is the magnitude of S. The power law for an AC circuit expressed in phasors is then *S* = *VI** (where *I** is the complex conjugate of *I*, and the magnitudes of the voltage and current phasors *V* and of *I* are the RMS values of the voltage and current, respectively).
+
+Given this we can apply the techniques of analysis of resistive circuits with phasors to analyze single frequency linear AC circuits containing resistors, capacitors, and inductors. Multiple frequency linear AC circuits and AC circuits with different waveforms can be analyzed to find voltages and currents by transforming all waveforms to sine wave components (using Fourier series) with magnitude and phase then analyzing each frequency separately, as allowed by the superposition theorem. This solution method applies only to inputs that are sinusoidal and for solutions that are in steady state, i.e., after all transients have died out.
+
+The concept is frequently involved in representing an electrical impedance. In this case, the phase angle is the phase difference between the voltage applied to the impedance and the current driven through it.
+
+### Power engineering
+
+In analysis of three-phase AC power systems, usually a set of phasors is defined as the three complex cube roots of unity, graphically represented as unit magnitudes at angles of 0, 120 and 240 degrees. By treating polyphase AC circuit quantities as phasors, balanced circuits can be simplified and unbalanced circuits can be treated as an algebraic combination of symmetrical components. This approach greatly simplifies the work required in electrical calculations of voltage drop, power flow, and short-circuit currents. In the context of power systems analysis, the phase angle is often given in degrees, and the magnitude in RMS value rather than the peak amplitude of the sinusoid.
+
+The technique of synchrophasors uses digital instruments to measure the phasors representing transmission system voltages at widespread points in a transmission network. Differences among the phasors indicate power flow and system stability.
+
+### Telecommunications: analog modulations
+
+The rotating frame picture using phasor can be a powerful tool to understand analog modulations such as amplitude modulation (and its variants) and frequency modulation.
+
+$x(t)=\operatorname {Re} \left(Ae^{i\theta }\cdot e^{i2\pi f_{0}t}\right),$ where the term in brackets is viewed as a rotating vector in the complex plane.
+
+The phasor has length A , rotates anti-clockwise at a rate of $f_{0}$ revolutions per second, and at time $t=0$ makes an angle of $\theta$ with respect to the positive real axis.
+
+The waveform $x(t)$ can then be viewed as a projection of this vector onto the real axis. A modulated waveform is represented by this phasor (the carrier) and two additional phasors (the modulation phasors). If the modulating signal is a single tone of the form $Am\cos {2\pi f_{m}t}$ , where m is the modulation depth and $f_{m}$ is the frequency of the modulating signal, then for amplitude modulation the two modulation phasors are given by,
+
+${1 \over 2}Ame^{i\theta }\cdot e^{i2\pi (f_{0}+f_{m})t},$ ${1 \over 2}Ame^{i\theta }\cdot e^{i2\pi (f_{0}-f_{m})t}.$
+
+The two modulation phasors are phased such that their vector sum is always in phase with the carrier phasor. An alternative representation is two phasors counter rotating around the end of the carrier phasor at a rate $f_{m}$ relative to the carrier phasor. That is,
+
+${1 \over 2}Ame^{i\theta }\cdot e^{i2\pi f_{m}t},$ ${1 \over 2}Ame^{i\theta }\cdot e^{-i2\pi f_{m}t}.$
+
+Frequency modulation is a similar representation except that the modulating phasors are not in phase with the carrier. In this case the vector sum of the modulating phasors is shifted 90° from the carrier phase. Strictly, frequency modulation representation requires additional small modulation phasors at $2f_{m},3f_{m}$ etc., but for most practical purposes these are ignored because their effect is very small.

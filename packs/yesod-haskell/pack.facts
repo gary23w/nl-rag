@@ -1,0 +1,473 @@
+# nl-rag distilled facts — domain: yesod-haskell
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:yesod-haskell/book-basics] The first step with any new technology is getting it running.
+[src:yesod-haskell/book-basics] The goal of this chapter is to get you started with a simple Yesod application, and cover some of the basic concepts and terminology.
+[src:yesod-haskell/book-basics] If you save that code in `helloworld.hs` and run it with `runhaskell helloworld.hs`, you’ll get a web server running on port 3000.
+[src:yesod-haskell/book-basics] Note, if you followed the quick start guide and installed yesod with `stack` then you will not have `runhaskell` and will need to run `stack runghc helloworld.hs` instead.
+[src:yesod-haskell/book-basics] We’ll refer back to this example through the rest of the chapter.
+[src:yesod-haskell/book-basics] Like most modern web frameworks, Yesod follows a front controller pattern.
+[src:yesod-haskell/book-basics] This means that every request to a Yesod application enters at the same point and is routed from there.
+[src:yesod-haskell/book-basics] As a contrast, in systems like PHP and ASP you usually create a number of different files, and the web server automatically directs requests to the relevant file.
+[src:yesod-haskell/book-basics] In addition, Yesod uses a declarative style for specifying routes.
+[src:yesod-haskell/book-basics] In English, all this means is: In the HelloWorld application, create one route.
+[src:yesod-haskell/book-basics] I’d like to call it `HomeR`, it should listen for requests to `/` (the root of the application), and should answer `GET` requests.
+[src:yesod-haskell/book-basics] We call `HomeR` a resource, which is where the "R" suffix comes from.
+[src:yesod-haskell/book-basics] The `mkYesod` TH function generates quite a bit of code here: a route data type, parser/render functions, a dispatch function, and some helper types.
+[src:yesod-haskell/book-basics] We’ll look at this in more detail in the routing chapter.
+[src:yesod-haskell/book-basics] But by using the `-ddump-splices` GHC option, we can get an immediate look at the generated code.
+[src:yesod-haskell/book-basics] We can see that the `RenderRoute` class defines an *associated data type* providing the routes for our application.
+[src:yesod-haskell/book-basics] In this simple example, we have just one route: `HomeR`.
+[src:yesod-haskell/book-basics] In real life applications, we’ll have many more, and they will be more complicated than our `HomeR`.
+[src:yesod-haskell/book-basics] `renderRoute` takes a route and turns it into path segments and query string parameters.
+[src:yesod-haskell/book-basics] Again, our example is simple, so the code is likewise simple: both values are empty lists.
+[src:yesod-haskell/book-basics] `ParseRoute` provides the inverse function, `parseRoute`.
+[src:yesod-haskell/book-basics] Here we see the first strong motivation for our reliance on Template Haskell: it ensures that the parsing and rendering of routes correspond correctly with each other.
+[src:yesod-haskell/book-basics] This kind of code can easily become difficult to keep in sync when written by hand.
+[src:yesod-haskell/book-basics] By relying on code generation, we’re letting the compiler (and Yesod) handle those details for us.
+[src:yesod-haskell/book-basics] `YesodDispatch` provides a means of taking an input request and passing it to the appropriate handler function.
+[src:yesod-haskell/book-basics] The code generation follows a simple format for matching routes to handler function names, which we’ll describe in the next section.
+[src:yesod-haskell/book-basics] Finally, we have a simple type synonym defining `Handler` to make our code a little easier to write.
+[src:yesod-haskell/book-basics] There’s a lot more going on here than we’ve described.
+[src:yesod-haskell/book-basics] The generated dispatch code actually uses the view patterns language extension for efficiency, more type class instances are created, and there are other cases to handle such as subsites.
+[src:yesod-haskell/book-basics] We’ll get into the details as we go through the book, especially in the “Understanding a Request” chapter.
+[src:yesod-haskell/book-basics] So we have a route named `HomeR`, and it responds to `GET` requests.
+[src:yesod-haskell/book-basics] Yesod follows a standard naming scheme for these functions: it’s the lower case method name (e.g., `GET` becomes `get`) followed by the route name.
+[src:yesod-haskell/book-basics] In this case, the function name would be `getHomeR`.
+[src:yesod-haskell/book-basics] Most of the code you write in Yesod lives in handler functions.
+[src:yesod-haskell/book-basics] This is where you process user input, perform database queries and create responses.
+[src:yesod-haskell/book-basics] In our simple example, we create a response using the `defaultLayout` function.
+[src:yesod-haskell/book-basics] This function wraps up the content it’s given in your site’s template.
+[src:yesod-haskell/book-basics] By default, it produces an HTML file with a doctype and `html`, `head` and `body` tags.
+[src:yesod-haskell/book-basics] As we’ll see in the Yesod typeclass chapter, this function can be overridden to do much more.
+[src:yesod-haskell/book-basics] In our example, we pass `[whamlet|Hello World!|]` to `defaultLayout`.
+[src:yesod-haskell/book-basics] In this case, it converts Hamlet syntax into a Widget.
+[src:yesod-haskell/book-basics] Hamlet is the default HTML templating engine in Yesod.
+[src:yesod-haskell/book-basics] Together with its siblings Cassius, Lucius and Julius, you can create HTML, CSS and JavaScript in a fully type-safe and compile-time-checked manner.
+[src:yesod-haskell/book-basics] We’ll see much more about this in the Shakespeare chapter.
+[src:yesod-haskell/book-basics] Widgets are another cornerstone of Yesod.
+[src:yesod-haskell/book-basics] They allow you to create modular components of a site consisting of HTML, CSS and JavaScript and reuse them throughout your site.
+[src:yesod-haskell/book-basics] We’ll get into more detail on them in the widgets chapter.
+[src:yesod-haskell/book-basics] The word ‘HelloWorld’ shows up a number of times in our example.
+[src:yesod-haskell/book-basics] Every Yesod application has a foundation datatype.
+[src:yesod-haskell/book-basics] This datatype must be an instance of the `Yesod` typeclass, which provides a central place for declaring a number of different settings controlling the execution of our application.
+[src:yesod-haskell/book-basics] In our case, this datatype is pretty boring: it doesn’t contain any information.
+[src:yesod-haskell/book-basics] Nonetheless, the foundation is central to how our example runs: it ties together the routes with the instance declaration and lets it all be run.
+[src:yesod-haskell/book-basics] We’ll see throughout this book that the foundation pops up in a whole bunch of places.
+[src:yesod-haskell/book-basics] But foundations don’t have to be boring: they can be used to store lots of useful information, usually stuff that needs to be initialized at program launch and used throughout.
+[src:yesod-haskell/book-basics] Once again we mention `HelloWorld` in our main function.
+[src:yesod-haskell/book-basics] Our foundation contains all the information we need to route and respond to requests in our application; now we just need to convert it into something that can run.
+[src:yesod-haskell/book-basics] A useful function for this in Yesod is `warp`, which runs the Warp web server with a number of default settings enabled on the specified port (here, it’s 3000).
+[src:yesod-haskell/book-basics] One of the features of Yesod is that you aren’t tied down to a single deployment strategy.
+[src:yesod-haskell/book-basics] Yesod is built on top of the Web Application Interface (WAI), allowing it to run on FastCGI, SCGI, Warp, or even as a desktop application using the Webkit library.
+[src:yesod-haskell/book-basics] We’ll discuss some of these options in the deployment chapter.
+[src:yesod-haskell/book-basics] And at the end of this chapter, we will explain the development server.
+[src:yesod-haskell/book-basics] Warp is the premiere deployment option for Yesod.
+[src:yesod-haskell/book-basics] It is a lightweight, highly efficient web server developed specifically for hosting Yesod.
+[src:yesod-haskell/book-basics] It is also used outside of Yesod for other Haskell development (both framework and non-framework applications), as well as a standard file server in a number of production environments.
+[src:yesod-haskell/book-basics] In our hello world, we defined just a single resource (`HomeR`).
+[src:yesod-haskell/book-basics] A web application is usually much more exciting with more than one page on it.
+[src:yesod-haskell/book-basics] Overall, this is very similar to Hello World.
+[src:yesod-haskell/book-basics] Our foundation is now `Links` instead of `HelloWorld`, and in addition to the `HomeR` resource, we’ve added `Page1R` and `Page2R`.
+[src:yesod-haskell/book-basics] As such, we’ve also added two more handler functions: `getPage1R` and `getPage2R`.
+[src:yesod-haskell/book-basics] The only truly new feature is inside the `whamlet` quasi-quotation.
+[src:yesod-haskell/book-basics] creates a link to the `Page1R` resource.
+[src:yesod-haskell/book-basics] The important thing to note here is that `Page1R` is a data constructor.
+[src:yesod-haskell/book-basics] By making each resource a data constructor, we have a feature called *type-safe URLs*.
+[src:yesod-haskell/book-basics] Instead of splicing together strings to create URLs, we simply create a plain old Haskell value.
+[src:yesod-haskell/book-basics] By using at-sign interpolation (`@{…}`), Yesod automatically renders those values to textual URLs before sending things off to the user.
+[src:yesod-haskell/book-basics] In the `Route` associated type for `Links`, we have additional constructors for `Page1R` and `Page2R`.
+[src:yesod-haskell/book-basics] We also now have a better glimpse of the return values for `renderRoute`.
+[src:yesod-haskell/book-basics] The first part of the tuple gives the path pieces for the given route.
+[src:yesod-haskell/book-basics] The second part gives the query string parameters; for almost all use cases, this will be an empty list.
+[src:yesod-haskell/book-basics] It’s hard to over-estimate the value of type-safe URLs.
+[src:yesod-haskell/book-basics] They give you a huge amount of flexibility and robustness when developing your application.
+[src:yesod-haskell/book-basics] You can move URLs around at will without ever breaking links.
+[src:yesod-haskell/book-basics] In the routing chapter, we’ll see that routes can take parameters, such as a blog entry URL taking the blog post ID.
+[src:yesod-haskell/book-basics] Let’s say you want to switch from routing on the numerical post ID to a year/month/slug setup.
+[src:yesod-haskell/book-basics] In a traditional web framework, you would need to go through every single reference to your blog post route and update appropriately.
+[src:yesod-haskell/book-basics] If you miss one, you’ll have 404s at runtime.
+[src:yesod-haskell/book-basics] In Yesod, all you do is update your route and compile: GHC will pinpoint every single line of code that needs to be corrected.
+[src:yesod-haskell/book-basics] Yesod can serve up any kind of content you want, and has first-class support for many commonly used response formats.
+[src:yesod-haskell/book-basics] We’ll cover JSON responses in more detail in later chapters, including how to automatically switch between HTML and JSON representations depending on the `Accept` request header.
+[src:yesod-haskell/book-basics] We’ll use `stack` to install the Yesod libraries and the `yesod` helper executable.
+[src:yesod-haskell/book-basics] Then we’ll use `stack new` to create a scaffolded site.
+[src:yesod-haskell/book-basics] It will generate a folder containing the default scaffolded site.
+[src:yesod-haskell/book-basics] Inside that folder, you can run `stack install --only-dependencies` to build any extra dependencies (such as your database backends), and then `yesod devel` to run your site.
+[src:yesod-haskell/book-basics] The scaffolded site gives you a lot of best practices out of the box, setting up files and dependencies in a time-tested approach used by most production Yesod sites.
+[src:yesod-haskell/book-basics] However, all this convenience can get in the way of actually learning Yesod.
+[src:yesod-haskell/book-basics] Therefore, most of this book will avoid the scaffolding tool, and instead deal directly with Yesod as a library.
+[src:yesod-haskell/book-basics] But if you’re going to build a real site, I strongly recommend using the scaffolding.
+[src:yesod-haskell/book-basics] We will cover the structure of the scaffolded site in the scaffolding chapter.
+[src:yesod-haskell/book-basics] One of the advantages interpreted languages have over compiled languages is fast prototyping: you save changes to a file and hit refresh.
+[src:yesod-haskell/book-basics] If we want to make any changes to our Yesod apps above, we’ll need to call *runhaskell* from scratch, which can be a bit tedious.
+[src:yesod-haskell/book-basics] Fortunately, there’s a solution to this: `yesod devel` automatically rebuilds and reloads your code for you.
+[src:yesod-haskell/book-basics] This can be a great way to develop your Yesod projects, and when you’re ready to move to production, you still get to compile down to incredibly efficient code.
+[src:yesod-haskell/book-basics] The Yesod scaffolding automatically sets things up for you.
+[src:yesod-haskell/book-basics] This gives you the best of both worlds: rapid prototyping *and* fast production code.
+[src:yesod-haskell/book-basics] It’s a little bit more involved to set up your code to be used by *yesod devel*, so our examples will just use `warp`.
+[src:yesod-haskell/book-basics] Fortunately, the scaffolded site is fully configured to use the development server, so when you’re ready to move over to the real world, it will be waiting for you.
+[src:yesod-haskell/book-basics] Every Yesod application is built around a foundation datatype.
+[src:yesod-haskell/book-basics] We associate some resources with that datatype and define some handler functions, and Yesod handles all of the routing.
+[src:yesod-haskell/book-basics] These resources are also data constructors, which lets us have type-safe URLs.
+[src:yesod-haskell/book-basics] By being built on top of WAI, Yesod applications can run with a number of different backends.
+[src:yesod-haskell/book-basics] For simple apps, the `warp` function provides a convenient way to use the Warp web server.
+[src:yesod-haskell/book-basics] For rapid development, using `yesod devel` is a good choice.
+[src:yesod-haskell/book-basics] And when you’re ready to move to production, you have the full power and flexibility to configure Warp (or any other WAI handler) to suit your needs.
+[src:yesod-haskell/book-basics] When developing in Yesod, we get a number of choices for coding style: quasi-quotation or external files, `warp` or `yesod devel`, and so on.
+[src:yesod-haskell/book-basics] The examples in this book will tend towards using the choices that are easiest to copy-and-paste, but the more powerful options will be available when you start building real Yesod applications.
+[src:yesod-haskell/domain-specific-language] A **domain-specific language** (**DSL**) is a computer language specialized to a specific application domain.
+[src:yesod-haskell/domain-specific-language] This is in contrast to a general-purpose language (GPL), which is broadly applicable across domains.
+[src:yesod-haskell/domain-specific-language] There are a wide variety of DSLs, ranging from widely used languages for common domains, such as HTML for web pages, down to languages used by only one or a few pieces of software, such as MUSH soft code.
+[src:yesod-haskell/domain-specific-language] DSLs can be further subdivided by the kind of language, and include domain-specific *markup* languages, domain-specific *modeling* languages (more generally, specification languages), and domain-specific *programming* languages.
+[src:yesod-haskell/domain-specific-language] Special-purpose computer languages have always existed in the computer age, but the term "domain-specific language" has become more popular due to the rise of domain-specific modeling.
+[src:yesod-haskell/domain-specific-language] Simpler DSLs, specifically ones used by a single application, are sometimes informally called **mini-languages**.
+[src:yesod-haskell/domain-specific-language] For example, Perl was originally developed as a text-processing and glue language, for the same domain as AWK and shell scripts, but was mostly used as a general-purpose programming language later on.
+[src:yesod-haskell/domain-specific-language] In contrast, PostScript is a Turing-complete language, and in principle can be used for any task, but in practice is narrowly used as a page description language.
+[src:yesod-haskell/domain-specific-language] The design and use of appropriate DSLs is a key part of domain engineering, by using a language suitable to the domain at hand – this may consist of using an existing DSL or GPL, or developing a new DSL.
+[src:yesod-haskell/domain-specific-language] Language-oriented programming considers the creation of special-purpose languages for expressing problems as standard part of the problem-solving process.
+[src:yesod-haskell/domain-specific-language] Pragmatically, a DSL may be specialized to a specific problem domain, a specific problem representation technique, a specific solution technique, or other aspects of a domain.
+[src:yesod-haskell/domain-specific-language] A domain-specific language is created specifically to solve problems in a specific domain and is not intended to be able to solve problems outside of it (although that may be technically possible).
+[src:yesod-haskell/domain-specific-language] In contrast, general-purpose languages are created to solve problems in many domains.
+[src:yesod-haskell/domain-specific-language] A domain-specific language is somewhere between a tiny programming language and a scripting language, and is often used in a way analogous to a programming library.
+[src:yesod-haskell/domain-specific-language] The boundaries between these concepts are quite blurry, much like the boundary between scripting languages and general-purpose languages.
+[src:yesod-haskell/domain-specific-language] Domain-specific languages are languages (or often, declared syntaxes or grammars) with very specific goals in design and implementation.
+[src:yesod-haskell/domain-specific-language] A domain-specific language can be one of a visual diagramming language, such as those created by the Generic Eclipse Modeling System, programmatic abstractions, such as the Eclipse Modeling Framework, or textual languages.
+[src:yesod-haskell/domain-specific-language] For instance, the command line utility grep has a regular expression syntax which matches patterns in lines of text.
+[src:yesod-haskell/domain-specific-language] The sed utility defines a syntax for matching and replacing regular expressions.
+[src:yesod-haskell/domain-specific-language] Often, these tiny languages can be used together inside a shell to perform more complex programming tasks.
+[src:yesod-haskell/domain-specific-language] The line between domain-specific languages and scripting languages is somewhat blurred, but domain-specific languages often lack low-level functions for file system access, interprocess control, and other functions that characterize full-featured programming languages, scripting or otherwise.
+[src:yesod-haskell/domain-specific-language] Further blurring this line, many domain-specific languages have exposed APIs, and can be accessed from other programming languages without breaking the flow of execution or calling a separate process, and can thus operate as programming libraries.
+[src:yesod-haskell/domain-specific-language] Some domain-specific languages expand over time to include full-featured programming tools, which further complicates the question of whether a language is domain-specific or not.
+[src:yesod-haskell/domain-specific-language] In model-driven engineering, many examples of domain-specific languages may be found like Object Constraint Language (OCL), a language for decorating models with assertions or Query/View/Transformation (QVT), a domain-specific transformation language.
+[src:yesod-haskell/domain-specific-language] However, languages like Unified Modeling Language (UML) are typically general-purpose modeling languages.
+[src:yesod-haskell/domain-specific-language] To summarize, an analogy is useful: a *very little language* is like a knife, which can be used in thousands of different ways, from cutting food to self-defense.
+[src:yesod-haskell/domain-specific-language] A *domain-specific language* is like an electric drill: it is a powerful tool with a wide variety of uses, but a specific context, namely, making holes in things.
+[src:yesod-haskell/domain-specific-language] A *general purpose language* is a complete workbench, with a variety of tools intended for performing a variety of tasks.
+[src:yesod-haskell/domain-specific-language] Domain-specific languages should be used by programmers who, looking at their current workbench, realize they need a better drill and find that a given domain-specific language provides exactly that.
+[src:yesod-haskell/domain-specific-language] DSLs implemented via an independent interpreter or compiler are termed *external domain specific languages*.
+[src:yesod-haskell/domain-specific-language] A separate category termed *embedded (or internal) domain specific languages* are typically implemented within a host language as a library and tend to be limited to the syntax of the host language, though this depends on host language abilities.
+[src:yesod-haskell/domain-specific-language] Adopting a domain-specific language approach to software engineering involves both risks and opportunities.
+[src:yesod-haskell/domain-specific-language] The well-designed domain-specific language manages to find the proper balance between these.
+[src:yesod-haskell/domain-specific-language] GML is a domain-specific language used by GameMaker Studio designed to help novice programmers learn the fundamentals of coding more easily.
+[src:yesod-haskell/domain-specific-language] It functions as a blend of several languages, including Delphi, C++, and BASIC.
+[src:yesod-haskell/domain-specific-language] Most GML functions, once compiled, call runtime functions written in the specific language of the target platform; consequently, their final implementation remains hidden from the user.
+[src:yesod-haskell/domain-specific-language] The language's primary goal is to lower the barrier to entry for game development.
+[src:yesod-haskell/domain-specific-language] The GameMaker runtime, which manages the main game loop and handles function implementation, allows a simple game to use only a few lines of code instead of thousands.
+[src:yesod-haskell/domain-specific-language] ColdFusion's associated scripting language is another example of a domain-specific language for data-driven websites.
+[src:yesod-haskell/domain-specific-language] The language is used to weave together languages and services such as Java, .NET, C++, SMS, email, email servers, http, ftp, exchange, directory services, and file systems for use in websites.
+[src:yesod-haskell/domain-specific-language] The ColdFusion Markup Language (CFML) includes a set of tags that can be used in ColdFusion pages to interact with data sources, manipulate data, and display output.
+[src:yesod-haskell/domain-specific-language] CFML tag syntax is similar to HTML element syntax.
+[src:yesod-haskell/domain-specific-language] Although the FilterMeister language reproduces a significant portion of the C language and function library, it contains only those features which can be used within the context of Photoshop plug-ins and adds a number of specific features only useful in this specific domain.
+[src:yesod-haskell/domain-specific-language] The *Template* feature of MediaWiki is an embedded domain-specific language whose fundamental purpose is to support the creation of page templates and the transclusion (inclusion by reference) of MediaWiki pages into other MediaWiki pages.
+[src:yesod-haskell/domain-specific-language] There has been much interest in domain-specific languages to improve the productivity and quality of software engineering.
+[src:yesod-haskell/domain-specific-language] Domain-specific language could possibly provide a robust set of tools for efficient software engineering.
+[src:yesod-haskell/domain-specific-language] Such tools are beginning to make their way into the development of critical software systems.
+[src:yesod-haskell/domain-specific-language] The Software Cost Reduction Toolkit is an example of this.
+[src:yesod-haskell/domain-specific-language] A newer development is language-oriented programming, an integrated software engineering methodology based mainly on creating, optimizing, and using domain-specific languages.
+[src:yesod-haskell/domain-specific-language] Complementing language-oriented programming, and all other forms of domain-specific languages, are the class of compiler writing tools called metacompilers.
+[src:yesod-haskell/domain-specific-language] Such compiler is useful for generating parsers and code generators for domain-specific languages, and a metacompiler compiles a domain-specific metalanguage specifically designed for the domain of metaprogramming.
+[src:yesod-haskell/domain-specific-language] Besides parsing domain-specific languages, metacompilers are useful for generating a wide range of software engineering and analysis tools.
+[src:yesod-haskell/domain-specific-language] The meta-compiler methodology is often found in program transformation systems.
+[src:yesod-haskell/domain-specific-language] Metacompilers that played a significant role in both computer science and the computer industry include META II, and its descendant TreeMeta.
+[src:yesod-haskell/domain-specific-language] Unreal and Unreal Tournament unveiled a language named UnrealScript.
+[src:yesod-haskell/domain-specific-language] This allowed rapid development of modifications relative to the competitor Quake (using the Id Tech 2 engine).
+[src:yesod-haskell/domain-specific-language] The Id Tech engine used standard C code meaning C had to be learned and properly applied, while UnrealScript was optimized for ease of use and efficiency.
+[src:yesod-haskell/domain-specific-language] Similarly, more recent games have introduced their own specific languages for development.
+[src:yesod-haskell/domain-specific-language] One more common example is Lua for scripting.
+[src:yesod-haskell/domain-specific-language] Various business rules engines have been developed for automating policy and business rules used in both government and private industry.
+[src:yesod-haskell/domain-specific-language] ILOG, Oracle Policy Automation, DTRules, Drools and others provide support for DSLs aimed to support various problem domains.
+[src:yesod-haskell/domain-specific-language] DTRules goes so far as to define an interface for the use of multiple DSLs within a rule set.
+[src:yesod-haskell/domain-specific-language] The purpose of business rules engines is to define a representation of business logic in as human-readable fashion as possible.
+[src:yesod-haskell/domain-specific-language] This allows both subject-matter experts and developers to work with and understand the same representation of the business logic.
+[src:yesod-haskell/domain-specific-language] Most rules engines provide both an approach to simplifying the control structures for business logic (for example, using declarative rules or decision tables) coupled with alternatives to programming syntax in favor of DSLs.
+[src:yesod-haskell/domain-specific-language] Statistical modelers have developed domain-specific languages such as R (an implementation of the S language), Bugs, Jags, and Stan.
+[src:yesod-haskell/domain-specific-language] These languages provide a syntax for describing a Bayesian model and generate a method for solving it using simulation.
+[src:yesod-haskell/domain-specific-language] Generate object handling and services based on an Interface Description Language for a domain-specific language such as JavaScript for web applications, HTML for documentation, C++ for high-performance code, etc.
+[src:yesod-haskell/domain-specific-language] This is done by cross-language frameworks such as Apache Thrift or Google Protocol Buffers.
+[src:yesod-haskell/domain-specific-language] Gherkin is a language designed to define test cases to check the behavior of software, without specifying how that behavior is implemented.
+[src:yesod-haskell/domain-specific-language] It is meant to be read and used by non-technical users using a natural language syntax and a line-oriented design.
+[src:yesod-haskell/domain-specific-language] The tests defined with Gherkin must then be implemented in a general programming language.
+[src:yesod-haskell/domain-specific-language] Then, the steps in a Gherkin program acts as a syntax for method invocation accessible to non-developers.
+[src:yesod-haskell/haskell] Haskell's semantics are historically based on those of the Miranda programming language, which served to focus the efforts of the initial Haskell working group.
+[src:yesod-haskell/haskell] The last formal specification of the language was made in July 2010, while the development of GHC continues to expand Haskell via language extensions.
+[src:yesod-haskell/haskell] Haskell is used in academia and industry.
+[src:yesod-haskell/haskell] As of May 2021, Haskell was the 28th most popular programming language by Google searches for tutorials, and made up less than 1% of active users on the GitHub source code repository.
+[src:yesod-haskell/haskell] After the release of Miranda by Research Software Ltd. in 1985, interest in lazy functional languages grew.
+[src:yesod-haskell/haskell] By 1987, more than a dozen non-strict, purely functional programming languages existed.
+[src:yesod-haskell/haskell] Miranda was the most widely used, but it was proprietary software.
+[src:yesod-haskell/haskell] At the conference on Functional Programming Languages and Computer Architecture (FPCA '87) in Portland, Oregon, there was a strong consensus that a committee be formed to define an open standard for such languages.
+[src:yesod-haskell/haskell] The committee's purpose was to consolidate existing functional languages into a common one to serve as a basis for future research in functional-language design.
+[src:yesod-haskell/haskell] Haskell was developed by a committee, attempting to bring together off-the-shelf solutions where possible.
+[src:yesod-haskell/haskell] Type classes were first proposed by Philip Wadler and Stephen Blott to address the ad hoc handling of equality types and arithmetic overloading in languages at the time.
+[src:yesod-haskell/haskell] In early versions of Haskell up until and including version 1.2, user interaction and input/output (IO) were handled by both streams-based and continuation-based mechanisms, which were widely considered unsatisfactory.
+[src:yesod-haskell/haskell] In version 1.3, monadic IO was introduced, along with the generalisation of type classes to higher kinds (type constructors).
+[src:yesod-haskell/haskell] Along with "do notation", which provides syntactic sugar for the `Monad` type class, this gave Haskell an effect system that maintained referential transparency and was convenient.
+[src:yesod-haskell/haskell] Another notable change in early versions was the moving of the "sequential evaluation" operation `seq` (which creates a data dependency between values, and is used in lazy languages to avoid excessive memory consumption) from a type class to a standard function to make refactoring more practical.
+[src:yesod-haskell/haskell] The first version of Haskell ("Haskell 1.0") was defined in 1990.
+[src:yesod-haskell/haskell] The committee's efforts resulted in a series of language definitions (1.0, 1.1, 1.2, 1.3, and 1.4).
+[src:yesod-haskell/haskell] In late 1997, the series culminated in *Haskell 98*, intended to specify a stable, minimal, portable version of the language and an accompanying standard library for teaching, and as a base for future extensions.
+[src:yesod-haskell/haskell] The committee expressly welcomed creating extensions and variants of Haskell 98 via adding and incorporating experimental features.
+[src:yesod-haskell/haskell] In February 1999, the Haskell 98 language standard was originally published as *The Haskell 98 Report*.
+[src:yesod-haskell/haskell] In January 2003, a revised version was published as *Haskell 98 Language and Libraries: The Revised Report*.
+[src:yesod-haskell/haskell] The language continues to evolve rapidly, with the Glasgow Haskell Compiler (GHC) implementation representing the current *de facto* standard.
+[src:yesod-haskell/haskell] In early 2006, the process of defining a successor to the Haskell 98 standard, informally named *Haskell Prime*, began.
+[src:yesod-haskell/haskell] This was intended to be an ongoing incremental process to revise the language definition, producing a new revision up to once per year.
+[src:yesod-haskell/haskell] The first revision, named *Haskell 2010*, was announced in November 2009 and published in July 2010.
+[src:yesod-haskell/haskell] Haskell 2010 added several well-used and uncontroversial features previously enabled via compiler-specific flags.
+[src:yesod-haskell/haskell] The next formal specification had been planned for 2020.
+[src:yesod-haskell/haskell] On 29 October 2021, with GHC version 9.2.1, the GHC2021 extension was released.
+[src:yesod-haskell/haskell] While this is not a formal language spec, it combines several stable, widely used GHC extensions to Haskell 2010.
+[src:yesod-haskell/haskell] Haskell features lazy evaluation, lambda expressions, pattern matching, list comprehension, type classes and type polymorphism.
+[src:yesod-haskell/haskell] It is a purely functional programming language, which means that functions generally have no side effects.
+[src:yesod-haskell/haskell] A distinct construct exists to represent side effects, orthogonal to the type of functions.
+[src:yesod-haskell/haskell] A pure function can return a side effect that is subsequently executed, modeling the impure functions of other languages.
+[src:yesod-haskell/haskell] Haskell has a strong, static type system based on Hindley–Milner type inference.
+[src:yesod-haskell/haskell] Its principal innovation in this area is type classes, originally conceived as a principled way to add overloading to the language, but since finding many more uses.
+[src:yesod-haskell/haskell] The construct that represents side effects is an example of a monad: a general framework which can model various computations such as error handling, nondeterminism, parsing and software transactional memory.
+[src:yesod-haskell/haskell] They are defined as ordinary datatypes, but Haskell provides some syntactic sugar for their use.
+[src:yesod-haskell/haskell] Haskell has an open, published specification, and multiple implementations exist.
+[src:yesod-haskell/haskell] Its main implementation, the Glasgow Haskell Compiler (GHC), is both an interpreter and native-code compiler that runs on most platforms.
+[src:yesod-haskell/haskell] GHC is noted for its rich type system incorporating recent innovations such as generalized algebraic data types and type families.
+[src:yesod-haskell/haskell] The Computer Language Benchmarks Game also highlights its high-performance implementation of concurrency and parallelism.
+[src:yesod-haskell/haskell] An active, growing community exists around the language, and more than 5,400 third-party open-source libraries and tools are available in the online package repository *Hackage*.
+[src:yesod-haskell/haskell] Using Haskell's Fixed-point combinator allows this function to be written without any explicit recursion.
+[src:yesod-haskell/haskell] As the *Integer* type has arbitrary-precision, this code will compute values such as `factorial 100000` (a 456,574-digit number), with no loss of precision.
+[src:yesod-haskell/haskell] All listed implementations are distributed under open source licenses.
+[src:yesod-haskell/haskell] Jan-Willem Maessen, in 2002, and Simon Peyton Jones, in 2003, discussed problems associated with lazy evaluation while also acknowledging the theoretical motives for it.
+[src:yesod-haskell/haskell] In addition to purely practical considerations such as improved performance, they note that lazy evaluation makes it more difficult for programmers to reason about the performance of their code (particularly its space use).
+[src:yesod-haskell/haskell] In particular it disables type classes by default.
+[src:yesod-haskell/haskell] Ben Lippmeier designed Disciple as a strict-by-default (lazy by explicit annotation) dialect of Haskell with a type-and-effect system, to address Haskell's difficulties in reasoning about lazy evaluation and in using traditional data structures such as mutable arrays.
+[src:yesod-haskell/haskell] Robert Harper, one of the authors of Standard ML, has given his reasons for not using Haskell to teach introductory programming.
+[src:yesod-haskell/haskell] Among these are the difficulty of reasoning about resource use with non-strict evaluation, that lazy evaluation complicates the definition of datatypes and inductive reasoning, and the "inferiority" of Haskell's (old) class system compared to ML's module system.
+[src:yesod-haskell/haskell] Haskell's build tool, Cabal, has historically been criticized for poorly handling multiple versions of the same library, a problem known as "Cabal hell".
+[src:yesod-haskell/haskell] The Stackage server and Stack build tool were made in response to these criticisms.
+[src:yesod-haskell/haskell] Cabal has since addressed this problem by borrowing ideas from the package manager Nix, with the new approach becoming the default in 2019.
+[src:yesod-haskell/haskell] Clean is a close, slightly older relative of Haskell.
+[src:yesod-haskell/haskell] Its biggest deviation from Haskell is in the use of uniqueness types instead of monads for input/output (I/O) and side effects.
+[src:yesod-haskell/haskell] Haskell events have been regularly held concurrent with the International Conference on Functional Programming (ICFP) including workshops such as the Haskell Symposium (formerly the Haskell Workshop) and Commercial Users of Functional Programming.
+[src:yesod-haskell/haskell] Other events include the Haskell Implementors Workshop, ZuriHac in Zurich, and Hac: The Haskell Hackathon.
+[src:yesod-haskell/type-safety] In computer science, **type safety** is the extent to which a programming language discourages or prevents type errors.
+[src:yesod-haskell/type-safety] Type-safe languages are sometimes also called **strongly** or **strictly typed**.
+[src:yesod-haskell/type-safety] The behaviors classified as type errors by a given programming language are usually those that result from attempts to perform operations on values that are not of the appropriate data type, e.g. trying to add a string to an integer.
+[src:yesod-haskell/type-safety] Type enforcement can be static (catching potential errors at compile time), dynamic (associating type information with values at run-time and consulting them as needed to detect imminent errors), or a combination of both.
+[src:yesod-haskell/type-safety] Dynamic type enforcement can often run programs that would be invalid under static enforcement, but at the cost of introducing errors at runtime.
+[src:yesod-haskell/type-safety] In the context of static (compile-time) type systems, type safety usually involves (among other things) a guarantee that the eventual value of any expression will be a legitimate member of that expression's static type.
+[src:yesod-haskell/type-safety] The precise requirement is more subtle than this — see, for example, subtyping and polymorphism for complications.
+[src:yesod-haskell/type-safety] In other words, if a type system is *sound*, then expressions accepted by that type system must evaluate to a value of the appropriate type (rather than produce a value of some other, unrelated type or crash with a type error).
+[src:yesod-haskell/type-safety] A language is type-safe if the only operations that can be performed on data in the language are those sanctioned by the type of the data.
+[src:yesod-haskell/type-safety] However, what precisely it means for a program to be "well typed" or to "go wrong" are properties of its static and dynamic semantics, which are specific to each programming language.
+[src:yesod-haskell/type-safety] Consequently, a precise, formal definition of type soundness depends upon the style of formal semantics used to specify a language.
+[src:yesod-haskell/type-safety] In 1994, Andrew Wright and Matthias Felleisen formulated what has become the standard definition and proof technique for type safety in languages defined by operational semantics, which is closest to the notion of type safety as understood by most programmers.
+[src:yesod-haskell/type-safety] or can be reduced towards a value in some well-defined way.
+[src:yesod-haskell/type-safety] In other words, the program never gets into an undefined state where no further transitions are possible.
+[src:yesod-haskell/type-safety] A number of other formal treatments of type soundness have also been published in terms of denotational semantics and structural operational semantics.
+[src:yesod-haskell/type-safety] In isolation, type soundness is a relatively weak property, as it essentially just states that the rules of a type system are internally consistent and cannot be subverted.
+[src:yesod-haskell/type-safety] Type safety is usually a requirement for any toy language (i.e., esoteric language) proposed in academic programming language research.
+[src:yesod-haskell/type-safety] However, many languages are too big for human-generated type safety proofs, as they often require checking thousands of cases.
+[src:yesod-haskell/type-safety] Nevertheless, some languages such as Standard ML, which has rigorously defined semantics, have been proved to meet one definition of type safety.
+[src:yesod-haskell/type-safety] Regardless of the properties of the language definition, certain errors may occur at run-time due to bugs in the implementation, or in linked libraries written in other languages; such errors could render a given implementation type unsafe in certain circumstances.
+[src:yesod-haskell/type-safety] An early version of Sun's Java virtual machine was vulnerable to this sort of problem.
+[src:yesod-haskell/type-safety] Programming languages are often colloquially classified as strongly typed or weakly typed (also loosely typed) to refer to certain aspects of type safety.
+[src:yesod-haskell/type-safety] Type safety is closely linked to memory safety.
+[src:yesod-haskell/type-safety] Conversely, if the language is memory-safe, it cannot allow an arbitrary integer to be used as a pointer, hence there must be a separate pointer or reference type.
+[src:yesod-haskell/type-safety] As a minimal condition, a type-safe language must not allow dangling pointers across allocations of different types.
+[src:yesod-haskell/type-safety] But most languages enforce the proper use of abstract data types defined by programmers even when this is not strictly necessary for memory safety or for the prevention of any kind of catastrophic failure.
+[src:yesod-haskell/type-safety] Allocations are given a type describing its contents, and this type is fixed for the duration of the allocation.
+[src:yesod-haskell/type-safety] This allows type-based alias analysis to infer that allocations of different types are distinct.
+[src:yesod-haskell/type-safety] Most type-safe languages use garbage collection.
+[src:yesod-haskell/type-safety] Pierce says, "it is extremely difficult to achieve type safety in the presence of an explicit deallocation operation", due to the dangling pointer problem.
+[src:yesod-haskell/type-safety] However Rust is generally considered type-safe and uses a borrow checker to achieve memory safety, instead of garbage collection.
+[src:yesod-haskell/type-safety] In object-oriented languages type safety is usually intrinsic in the fact that a type system is in place.
+[src:yesod-haskell/type-safety] This is expressed in terms of class definitions.
+[src:yesod-haskell/type-safety] A class essentially defines the structure of the objects derived from it and an API as a *contract* for handling these objects.
+[src:yesod-haskell/type-safety] Each time a new object is created it will *comply* with that contract.
+[src:yesod-haskell/type-safety] Each function that exchanges objects derived from a specific class, or implementing a specific interface, will adhere to that contract: hence in that function the operations permitted on that object will be only those defined by the methods of the class the object implements.
+[src:yesod-haskell/type-safety] This will guarantee that the object integrity will be preserved.
+[src:yesod-haskell/type-safety] Exceptions to this are object oriented languages that allow dynamic modification of the object structure, or the use of reflection to modify the content of an object to overcome the constraints imposed by the class methods definitions.
+[src:yesod-haskell/type-safety] Ada was designed to be suitable for embedded systems, device drivers and other forms of system programming, but also to encourage type-safe programming.
+[src:yesod-haskell/type-safety] To resolve these conflicting goals, Ada confines type-unsafety to a certain set of special constructs whose names usually begin with the string Unchecked_.
+[src:yesod-haskell/type-safety] Unchecked_Deallocation can be effectively banned from a unit of Ada text by applying pragma Pure to this unit.
+[src:yesod-haskell/type-safety] It is expected that programmers will use Unchecked_ constructs very carefully and only when necessary; programs that do not use them are type-safe.
+[src:yesod-haskell/type-safety] The SPARK programming language is a subset of Ada eliminating all its potential ambiguities and insecurities while at the same time adding statically checked contracts to the language features available.
+[src:yesod-haskell/type-safety] SPARK avoids the issues with dangling pointers by disallowing allocation at run time entirely.
+[src:yesod-haskell/type-safety] Ada2012 adds statically checked contracts to the language itself (in form of pre-, and post-conditions, as well as type invariants).
+[src:yesod-haskell/type-safety] The C programming language is type-safe in limited contexts; for example, a compile-time error is generated when an attempt is made to convert a pointer to one type of structure to a pointer to another type of structure, unless an explicit cast is used.
+[src:yesod-haskell/type-safety] However, a number of very common operations are non-type-safe; for example, the usual way to print an integer is something like `printf("%d", 12)`, where the `%d` tells `printf` at run-time to expect an integer argument.
+[src:yesod-haskell/type-safety] In addition, C, like Ada, provides unspecified or undefined explicit conversions; and unlike in Ada, idioms that use these conversions are very common, and have helped to give C a type-unsafe reputation.
+[src:yesod-haskell/type-safety] For example, the standard way to allocate memory on the heap is to invoke a memory allocation function, such as `malloc`, with an argument indicating how many bytes are required.
+[src:yesod-haskell/type-safety] The function returns a void pointer (`void*`), which the calling code must explicitly or implicitly cast to the appropriate pointer type.
+[src:yesod-haskell/type-safety] Pre-standardized implementations of C required an explicit cast to do so, therefore for an allocation of some `struct Foo`, the code `Foo* foo = (struct Foo*)malloc(sizeof(struct Foo))` became the accepted practice.
+[src:yesod-haskell/type-safety] `malloc()` returns `void*` which does not need to be explicitly cast in C, but in C++ this casting is made mandatory for type safety.
+[src:yesod-haskell/type-safety] It has support for untyped pointers, but this must be accessed using the "unsafe" keyword which can be prohibited at the compiler level.
+[src:yesod-haskell/type-safety] It has inherent support for run-time cast validation.
+[src:yesod-haskell/type-safety] Casts can be validated by using the "as" keyword that will return a null reference if the cast is invalid, or by using a C-style cast that will throw an exception if the cast is invalid.
+[src:yesod-haskell/type-safety] Undue reliance on the object type (from which all other types are derived) runs the risk of defeating the purpose of the C# type system.
+[src:yesod-haskell/type-safety] It is usually better practice to abandon object references in favour of generics, similar to templates in C++ and generics in Java.
+[src:yesod-haskell/type-safety] The Java language is designed to enforce type safety.
+[src:yesod-haskell/type-safety] Anything in Java *happens* inside an object and each object is an instance of a class.
+[src:yesod-haskell/type-safety] To implement the *type safety* enforcement, each object, before usage, needs to be allocated.
+[src:yesod-haskell/type-safety] Java allows usage of primitive types but only inside properly allocated objects.
+[src:yesod-haskell/type-safety] Sometimes a part of the type safety is implemented indirectly: e.g. the class BigDecimal represents a floating point number of arbitrary precision, but handles only numbers that can be expressed with a finite representation.
+[src:yesod-haskell/type-safety] The operation BigDecimal.divide() calculates a new object as the division of two numbers expressed as BigDecimal.
+[src:yesod-haskell/type-safety] In this case if the division has no finite representation, as when one computes e.g.
+[src:yesod-haskell/type-safety] 1/3=0.33333..., the divide() method can raise an exception if no rounding mode is defined for the operation.
+[src:yesod-haskell/type-safety] Hence the library, rather than the language, guarantees that the object respects the contract implicit in the class definition.
+[src:yesod-haskell/type-safety] Standard ML has rigorously defined semantics and is known to be type-safe.
+[src:yesod-haskell/type-safety] However, some implementations, including Standard ML of New Jersey (SML/NJ), its syntactic variant Mythryl and MLton, provide libraries that offer unsafe operations.
+[src:yesod-haskell/type-safety] These facilities are often used in conjunction with those implementations' foreign function interfaces to interact with non-ML code (such as C libraries) that may require data laid out in specific ways.
+[src:yesod-haskell/type-safety] Another example is the SML/NJ interactive toplevel itself, which must use unsafe operations to execute ML code entered by the user.
+[src:yesod-haskell/type-safety] Modula-2 is a strongly-typed language with a design philosophy to require any unsafe facilities to be explicitly marked as unsafe.
+[src:yesod-haskell/type-safety] This is achieved by "moving" such facilities into a built-in pseudo-library called SYSTEM from where they must be imported before they can be used.
+[src:yesod-haskell/type-safety] The import thus makes it visible when such facilities are used.
+[src:yesod-haskell/type-safety] Unfortunately, this was not consequently implemented in the original language report and its implementation.
+[src:yesod-haskell/type-safety] There still remained unsafe facilities such as the type cast syntax and variant records (inherited from Pascal) that could be used without prior import.
+[src:yesod-haskell/type-safety] The difficulty in moving these facilities into the SYSTEM pseudo-module was the lack of any identifier for the facility that could then be imported since only identifiers can be imported, but not syntax.
+[src:yesod-haskell/type-safety] The ISO Modula-2 standard corrected this for the type cast facility by changing the type cast syntax into a function called CAST which has to be imported from pseudo-module SYSTEM.
+[src:yesod-haskell/type-safety] However, other unsafe facilities such as variant records remained available without any import from pseudo-module SYSTEM.
+[src:yesod-haskell/type-safety] A recent revision of the language applied the original design philosophy rigorously.
+[src:yesod-haskell/type-safety] First, pseudo-module SYSTEM was renamed to UNSAFE to make the unsafe nature of facilities imported from there more explicit.
+[src:yesod-haskell/type-safety] Then all remaining unsafe facilities where either removed altogether (for example variant records) or moved to pseudo-module UNSAFE.
+[src:yesod-haskell/type-safety] For facilities where there is no identifier that could be imported, enabling identifiers were introduced.
+[src:yesod-haskell/type-safety] In order to enable such a facility, its corresponding enabling identifier must be imported from pseudo-module UNSAFE.
+[src:yesod-haskell/type-safety] No unsafe facilities remain in the language that do not require import from UNSAFE.
+[src:yesod-haskell/type-safety] Pascal has had a number of type safety requirements, some of which are kept in some compilers.
+[src:yesod-haskell/type-safety] Where a Pascal compiler dictates "strict typing", two variables cannot be assigned to each other unless they are either compatible (such as conversion of integer to real) or assigned to the identical subtype.
+[src:yesod-haskell/type-safety] Under strict typing, a variable defined as TwoTypes is *not compatible* with DualTypes (because they are not identical, even though the components of that user defined type are identical) and an assignment of `T1 := D2;` is illegal.
+[src:yesod-haskell/type-safety] An assignment of `T1 := T2;` would be legal because the subtypes they are defined to *are* identical.
+[src:yesod-haskell/type-safety] However, an assignment such as `T1.Q := D1.Q;` would be legal.
+[src:yesod-haskell/type-safety] In general, Common Lisp is a type-safe language.
+[src:yesod-haskell/type-safety] A Common Lisp compiler is responsible for inserting dynamic checks for operations whose type safety cannot be proven statically.
+[src:yesod-haskell/type-safety] However, a programmer may indicate that a program should be compiled with a lower level of dynamic type-checking.
+[src:yesod-haskell/type-safety] A program compiled in such a mode cannot be considered type-safe.
+[src:yesod-haskell/type-safety] The following examples illustrates how C++ cast operators can break type safety when used incorrectly.
+[src:yesod-haskell/type-safety] In this example, `reinterpret_cast` explicitly prevents the compiler from performing a safe conversion from integer to floating-point value.
+[src:yesod-haskell/type-safety] When the program runs it will output a garbage floating-point value.
+[src:yesod-haskell/type-safety] The two child classes have members of different types.
+[src:yesod-haskell/type-safety] When downcasting a parent class pointer to a child class pointer, then the resulting pointer may not point to a valid object of correct type.
+[src:yesod-haskell/type-safety] In the example, this leads to garbage value being printed.
+[src:yesod-haskell/type-safety] The problem could have been avoided by replacing `static_cast` with `dynamic_cast` that throws an exception on invalid casts.
+[src:yesod-haskell/web-framework] A **web framework** (**WF**), **web application framework** (**WAF**), or **web development framework** is a software framework that is designed to support the development of web applications including web services, web resources, and web APIs.
+[src:yesod-haskell/web-framework] Web frameworks provide a standard way to build and deploy web applications on the World Wide Web.
+[src:yesod-haskell/web-framework] Web frameworks aim to automate the overhead associated with common activities performed in web development.
+[src:yesod-haskell/web-framework] For example, many web frameworks provide libraries for database access, templating frameworks, and session management, and they often promote code reuse.
+[src:yesod-haskell/web-framework] Although they often target development of dynamic web sites, they are also applicable to static websites.
+[src:yesod-haskell/web-framework] As the design of the World Wide Web was not inherently dynamic, early hypertext consisted of hand-coded HTML text files that were published on web servers.
+[src:yesod-haskell/web-framework] Any modifications to published pages needed to be performed by the pages' author.
+[src:yesod-haskell/web-framework] In 1993, the Common Gateway Interface (CGI) standard was introduced for interfacing external applications with web servers, to provide a dynamic web page that reflected user inputs.
+[src:yesod-haskell/web-framework] Original implementations of the CGI interface typically had adverse effects on the server load however, because each request started a separate process.
+[src:yesod-haskell/web-framework] More recent implementations utilize persistent processes amongst other techniques to reduce the footprint in the server's resources and offer a general performance boost.
+[src:yesod-haskell/web-framework] In 1995, fully integrated server/language development environments first emerged and new web-specific languages were introduced, such as ColdFusion, PHP, and Active Server Pages.
+[src:yesod-haskell/web-framework] Although the vast majority of languages for creating dynamic web pages have libraries to help with common tasks, web applications often require specific libraries for particular tasks, such as creating HTML (for example, Jakarta Faces).
+[src:yesod-haskell/web-framework] In the late 1990s, mature, "full stack" frameworks began to appear, that often gathered multiple libraries useful for web development into a single cohesive software stack for web developers to use.
+[src:yesod-haskell/web-framework] Most web frameworks are based on the model–view–controller (MVC) pattern.
+[src:yesod-haskell/web-framework] Many frameworks follow the MVC architectural pattern to separate the data model into business rules (the "controller") and the user interface (the "view").
+[src:yesod-haskell/web-framework] This is generally considered a good practice as it modularizes code, promotes code reuse, and allows multiple interfaces to be applied.
+[src:yesod-haskell/web-framework] In web applications, this permits different views to be presented, for example serving different web pages for mobile vs. desktop browsers, or providing machine-readable web service interfaces.
+[src:yesod-haskell/web-framework] Most MVC frameworks follow a push-based architecture also called "action-based".
+[src:yesod-haskell/web-framework] These frameworks use actions that do the required processing, and then "push" the data to the view layer to render the results.
+[src:yesod-haskell/web-framework] An alternative to this is pull-based architecture, sometimes also called "component-based".
+[src:yesod-haskell/web-framework] These frameworks start with the view layer, which can then "pull" results from multiple controllers as needed.
+[src:yesod-haskell/web-framework] In this architecture, multiple controllers can be involved with a single view.
+[src:yesod-haskell/web-framework] In three-tier organization, applications are structured around three physical tiers: client, application, and database.
+[src:yesod-haskell/web-framework] The application contains the business logic, running on a server and communicates with the client using HTTP.
+[src:yesod-haskell/web-framework] The client on web applications is a web browser that runs HTML generated by the application layer.
+[src:yesod-haskell/web-framework] The term should not be confused with MVC, where, unlike in three-tier architecture, it is considered a good practice to keep business logic away from the controller, the "middle layer".
+[src:yesod-haskell/web-framework] Web frameworks must function according to the architectural rules of browsers and protocols such as HTTP, which is stateless.
+[src:yesod-haskell/web-framework] Webpages are served up by a server and can then be modified by the browser using JavaScript.
+[src:yesod-haskell/web-framework] Either approach has its advantages and disadvantages.
+[src:yesod-haskell/web-framework] Server-side page changes typically require that the page be refreshed, but allow any language to be used and more computing power to be utilized.
+[src:yesod-haskell/web-framework] Client-side changes allow the page to be updated in small chunks which feels like a desktop application, but are limited to JavaScript and run in the user's browser, which may have limited computing power.
+[src:yesod-haskell/web-framework] Applications which make heavy use of JavaScript and only refresh parts of the page, are called single-page applications and typically make use of a client-side JavaScript web framework to organize the code.
+[src:yesod-haskell/web-framework] Examples include Backbone.js, AngularJS, Angular, Ember.js, ReactJS, jQuery UI, Svelte, and Vue.js.
+[src:yesod-haskell/web-framework] JavaScript-based web application frameworks, such as React and Vue, provide extensive capabilities but come with associated trade-offs.
+[src:yesod-haskell/web-framework] These frameworks often extend or enhance features available through native web technologies, such as routing, component-based development, and state management.
+[src:yesod-haskell/web-framework] Frameworks can introduce abstraction layers that may contribute to performance overhead, larger bundle sizes, and increased complexity.
+[src:yesod-haskell/web-framework] Modern frameworks, such as React 18 and Vue 3, address these challenges with features like concurrent rendering, tree-shaking, and selective hydration.
+[src:yesod-haskell/web-framework] While these advancements improve rendering efficiency and resource management, their benefits depend on the specific application and implementation context.
+[src:yesod-haskell/web-framework] Lightweight frameworks, such as Svelte and Preact, take different architectural approaches, with Svelte eliminating the virtual DOM entirely in favor of compiling components to efficient JavaScript code, and Preact offering a minimal, compatible alternative to React.
+[src:yesod-haskell/web-framework] Framework choice depends on an application’s requirements, including the team’s expertise, performance goals, and development priorities.
+[src:yesod-haskell/web-framework] A newer category of web frameworks, including enhance.dev, Astro, and Fresh, leverages native web standards while minimizing abstractions and development tooling.
+[src:yesod-haskell/web-framework] These solutions emphasize progressive enhancement, server-side rendering, and optimizing performance.
+[src:yesod-haskell/web-framework] Astro renders static HTML by default while hydrating only interactive parts.
+[src:yesod-haskell/web-framework] Fresh focuses on server-side rendering with zero runtime overhead.
+[src:yesod-haskell/web-framework] Enhance.dev prioritizes progressive enhancement patterns using Web Components.
+[src:yesod-haskell/web-framework] While these tools reduce reliance on client-side JavaScript by shifting logic to build-time or server-side execution, they still use JavaScript where necessary for interactivity.
+[src:yesod-haskell/web-framework] This approach makes them particularly suitable for performance-critical and content-focused applications.
+[src:yesod-haskell/web-framework] Frameworks typically set the control flow of a program and allow the user of the framework to "hook into" that flow by exposing various events.
+[src:yesod-haskell/web-framework] This "inversion of control" design pattern is considered to be a defining principle of a framework, and benefits the code by enforcing a common flow for a team which everyone can customize in similar ways.
+[src:yesod-haskell/web-framework] For example, some popular "microframeworks" such as Ruby's Sinatra (which inspired Express.js) allow for "middleware" hooks prior to and after HTTP requests.
+[src:yesod-haskell/web-framework] These middleware functions can be anything, and allow the user to define logging, authentication and session management, and redirecting.
+[src:yesod-haskell/web-framework] Web caching is the caching of web documents in order to reduce bandwidth usage, server load, and perceived "lag".
+[src:yesod-haskell/web-framework] A web cache stores copies of documents passing through it; subsequent requests may be satisfied from the cache if certain conditions are met.
+[src:yesod-haskell/web-framework] Some application frameworks provide mechanisms for caching documents and bypassing various stages of the page's preparation, such as database access or template interpretation.
+[src:yesod-haskell/web-framework] Some web frameworks come with authentication and authorization frameworks, that enable the web server to identify the users of the application, and restrict access to functions based on some defined criteria.
+[src:yesod-haskell/web-framework] Drupal is one example that provides role-based access to pages, and provides a web-based interface for creating users and assigning them roles.
+[src:yesod-haskell/web-framework] Many web frameworks create a unified API to a database backend, enabling web applications to work with a variety of databases with no code changes, and allowing programmers to work with higher-level concepts.
+[src:yesod-haskell/web-framework] Additionally, some object-oriented frameworks contain mapping tools to provide object-relational mapping, which maps objects to tuples.
+[src:yesod-haskell/web-framework] Some frameworks minimize web application configuration through the use of introspection and/or following well-known conventions.
+[src:yesod-haskell/web-framework] For example, many Java frameworks use Hibernate as a persistence layer, which can generate a database schema at runtime capable of persisting the necessary information.
+[src:yesod-haskell/web-framework] This allows the application designer to design business objects without needing to explicitly define a database schema.
+[src:yesod-haskell/web-framework] Frameworks such as Ruby on Rails can also work in reverse, that is, define properties of model objects at runtime based on a database schema.
+[src:yesod-haskell/web-framework] Other features web frameworks may provide include transactional support and database migration tools.
+[src:yesod-haskell/web-framework] A framework's URL mapping or routing facility is the mechanism by which the framework interprets URLs.
+[src:yesod-haskell/web-framework] Some frameworks, such as Drupal and Django, match the provided URL against pre-determined patterns using regular expressions, while some others use rewriting techniques to translate the provided URL into one that the underlying engine will recognize.
+[src:yesod-haskell/web-framework] Another technique is that of graph traversal such as used by Zope, where a URL is decomposed in steps that traverse an object graph (of models and views).
+[src:yesod-haskell/web-framework] A URL mapping system that uses pattern matching or rewriting to route and handle requests allows for shorter more "friendly URLs" to be used, increasing the simplicity of the site and allowing for better indexing by search engines.
+[src:yesod-haskell/web-framework] For example, a URL that ends with "/page.cgi?cat=science&topic=physics" could be changed to simply "/page/science/physics".
+[src:yesod-haskell/web-framework] This makes the URL easier for people to remember, read and write, and provides search engines with better information about the structural layout of the site.
+[src:yesod-haskell/web-framework] A graph traversal approach also tends to result in the creation of friendly URLs.
+[src:yesod-haskell/web-framework] A shorter URL such as "/page/science" tends to exist by default as that is simply a shorter form of the longer traversal to "/page/science/physics".
+[src:yesod-haskell/web-framework] Ajax, shorthand for "*Asynchronous JavaScript and XML*", is a web development technique for creating web applications.
+[src:yesod-haskell/web-framework] The intent is to make web pages feel more responsive by exchanging small amounts of data with the server behind the scenes, so that the entire web page does not have to be reloaded each time the user requests a change.
+[src:yesod-haskell/web-framework] This is intended to increase a web page's interactivity, speed, maintainability, and usability.
+[src:yesod-haskell/web-framework] Due to the complexity of Ajax programming in JavaScript, there are numerous Ajax frameworks that exclusively deal with Ajax support.
+[src:yesod-haskell/web-framework] Some Ajax frameworks are even embedded as a part of larger frameworks.
+[src:yesod-haskell/web-framework] For example, the jQuery JavaScript library is included in Ruby on Rails.
+[src:yesod-haskell/web-framework] With the increased interest in developing "Web 2.0" rich web applications, the complexity of programming directly in Ajax and JavaScript has become so apparent that compiler technology has stepped in, to allow developers to code in high-level languages such as Java, Python and Ruby.
+[src:yesod-haskell/web-framework] The first of these compilers was Morfik followed by Google Web Toolkit, with ports to Python and Ruby in the form of Pyjs and RubyJS following some time after.
+[src:yesod-haskell/web-framework] These compilers and their associated widget set libraries make the development of rich media Ajax applications much more akin to that of developing desktop applications.
+[src:yesod-haskell/web-framework] Some frameworks provide tools for creating and providing web services.
+[src:yesod-haskell/web-framework] These utilities may offer similar tools as the rest of the web application.
+[src:yesod-haskell/web-framework] A number of newer Web 2.0 RESTful frameworks are now providing resource-oriented architecture (ROA) infrastructure for building collections of resources in a sort of Semantic Web ontology, based on concepts from Resource Description Framework (RDF).
+[src:yesod-haskell/yesod-web-framework] There are also web-like language snippet templates that admit code expression interpolations, making them fully type-checked at compile time.
+[src:yesod-haskell/yesod-web-framework] Yesod divides its functions in separate libraries (database, html rendering, forms, etc.) so functions may used as needed.
+[src:yesod-haskell/yesod-web-framework] Yesod uses the model–view–controller (MVC) software design pattern for its user interfaces.
+[src:yesod-haskell/yesod-web-framework] Yesod requires a data type that instantiates the model–view–controller classes.
+[src:yesod-haskell/yesod-web-framework] In the example below, it is named "MyApp".
+[src:yesod-haskell/yesod-web-framework] The REST model identifies a web resource with a web path.
+[src:yesod-haskell/yesod-web-framework] Here, REST resources are given names with an R suffix (like "HomeR") and are listed in a *parseRoutes* site map description template.
+[src:yesod-haskell/yesod-web-framework] From this list, route names and dispatch handler names are derived.
+[src:yesod-haskell/yesod-web-framework] Yesod makes use of Template Haskell metaprogramming to generate code from templates at compile time, assuring that the names in the templates match and everything typechecks (e.g. web resource names and handler names).
+[src:yesod-haskell/yesod-web-framework] Yesod follows the representational state transfer model of access to web documents, identifying docs. and directories as resources with a Route constructor, named with an uppercase R suffix (for example, HomeR).
+[src:yesod-haskell/yesod-web-framework] The parseRoutes template should list the resources specifying route pieces, resource name and dispatch methods to be accepted.
+[src:yesod-haskell/yesod-web-framework] URL segment capture as parameter is possible specifying a '#' prefix for single segment capture or '*' for multisegment capture, followed by the parameter type.
+[src:yesod-haskell/yesod-web-framework] Authentication plugins: OpenID, BrowserID, Email, GoogleEmail, HashDB, RpxNow.
+[src:yesod-haskell/yesod-web-framework] There is an important setting for automatic redirection after authentication.
+[src:yesod-haskell/yesod-web-framework] A success, failure or indicative message can be stored (*setMessage*) in the Session and will be shown, if it exists, by the *default_layout* routine through the `default_layout.hamlet` template, being cleared on consultation.
+[src:yesod-haskell/yesod-web-framework] Common URL prefix subsites for workflows, file serving or site partitioning.
+[src:yesod-haskell/yesod-web-framework] The *Form* type here is an object that is used in the *controller* to parse and process the form fields user input and produce a (FormResult, Widget) pair were the widget holds the layout of the next rendering of the form with error messages and marks.
+[src:yesod-haskell/yesod-web-framework] It can also be used to generate a new form with blanks or default values.
+[src:yesod-haskell/yesod-web-framework] The form type takes the shape of a function of an html snippet to be embedded in the view, that will hold security purpose hidden fields.
+[src:yesod-haskell/yesod-web-framework] A form object is generated from an Applicative – Monadic composition of fields for a combined, sequential parsing of field inputs.
+[src:yesod-haskell/yesod-web-framework] The field generators, whose names are composed by the form type initial `(a|m|i)` *followed by* `(req|opt){- required or optional -}`, have a fieldParse component and a fieldView one.
+[src:yesod-haskell/yesod-web-framework] The actual function parameters and types have changed through Yesod versions.
+[src:yesod-haskell/yesod-web-framework] Check the Yesod book and libraries signatures.
+[src:yesod-haskell/yesod-web-framework] Monadic forms permit free form layout and better treatment of hiddenField members.
+[src:yesod-haskell/yesod-web-framework] The types shown correspond to an older version, but the philosophy remains.
+[src:yesod-haskell/yesod-web-framework] The Handler monad returns content in one or more of several formats as components of types that implement the HasReps class {RepHtml, RepJson, RepXml, RepPlain, the dual RepHtmlJson, a pair or list of pairs `[(ContentType, Content)]`, ..}.
+[src:yesod-haskell/yesod-web-framework] The HasReps default implementation of chooseRep chooses the document representation to be returned according to the preferred content-type list of the client accept header.
+[src:yesod-haskell/yesod-web-framework] A Widget monad, based on a Writer one and argument to defaultLayout, facilitate to piece the widgets together.
+[src:yesod-haskell/yesod-web-framework] Automatic closing tags are generated only for the tag at line start position.
+[src:yesod-haskell/yesod-web-framework] Using non-English text in expressions requires use of the Unicode-aware type Text, since the Glasgow Haskell Compiler's (GHC's) show for the type String renders non-ASCII characters as escaped numerical codes.
+[src:yesod-haskell/yesod-web-framework] quasiquoter: introduces a JavaScript template.
+[src:yesod-haskell/yesod-web-framework] Yesod app messages are localizable (i18n).
+[src:yesod-haskell/yesod-web-framework] Actual i18n support is missing from the stack app template.
+[src:yesod-haskell/yesod-web-framework] The `mkMessage "MyApp" messagesFolder isoLangDefault` must be added to the "Foundation.hs" file to get the messages instantiated.
+[src:yesod-haskell/yesod-web-framework] There is first class support for PostgreSQL, SQLite, MongoDB, CouchDB and MySQL, with experimental support for Redis.
+[src:yesod-haskell/yesod-web-framework] The Database layout is described in a template listing the entities, fields and constraints.
+[src:yesod-haskell/yesod-web-framework] procedure, generated from the template content.
+[src:yesod-haskell/yesod-web-framework] Example for *persistent rawSQL* and *Esqueleto* queries.
+[src:yesod-haskell/yesod-web-framework] Keter is a process as a service that handles deployment and restart of Yesod web app servers, and, per *web app*, database creation for PostgreSQL.
+[src:yesod-haskell/yesod-web-framework] The console command `yesod keter` packs the web app. as a keter bundle for uploading to a keter folder named "incoming".
+[src:yesod-haskell/yesod-web-framework] Keter monitors the "incoming" folder and unpacks the app. to a temporary one, then assigns the web app a port to listen to, and starts it.
+[src:yesod-haskell/yesod-web-framework] Initially it worked with Nginx as reverse proxy (keter version 0.1*), adding virtual server entries to its configuration and making Nginx reload it, but now Keter itself provides its own *reverse proxy* functionality, removing Nginx dependency and acting as the main web server.

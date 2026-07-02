@@ -1,0 +1,28 @@
+---
+title: "Distance transform"
+source: https://en.wikipedia.org/wiki/Distance_transform
+domain: signed-distance-fields
+license: CC-BY-SA-4.0
+tags: signed distance field, sdf raymarching, distance transform rendering, sdf isosurface
+fetched: 2026-07-02
+---
+
+# Distance transform
+
+A **distance transform**, also known as **distance map** or **distance field**, is a derived representation of a digital image. The choice of the term depends on the point of view on the object in question: whether the initial image is transformed into another representation, or it is simply endowed with an additional map or field.
+
+Distance fields can also be signed, in the case where it is important to distinguish whether the point is inside or outside of the shape.
+
+The map labels each pixel of the image with the distance to the nearest *obstacle pixel*. A most common type of obstacle pixel is a *boundary pixel* in a binary image. See the image for an example of a Chebyshev distance transform on a binary image.
+
+Usually the transform/map is qualified with the chosen metric. For example, one may speak of **Manhattan distance transform**, if the underlying metric is Manhattan distance. Common metrics are:
+
+- Euclidean distance
+- Taxicab geometry, also known as *City block distance* or *Manhattan distance*.
+- Chebyshev distance
+
+There are several algorithms to compute the distance transform for these different distance metrics, however the computation of the exact Euclidean distance transform (EEDT) needs special treatment if it is computed on the image grid.
+
+Applications are digital image processing (e.g., blurring effects, skeletonizing), motion planning in robotics, medical-image analysis for prenatal genetic testing, and even pathfinding. Uniformly-sampled signed distance fields have been used for GPU-accelerated font smoothing, for example by Valve researchers.
+
+Signed distance fields can also be used for (3D) solid modelling. Rendering on typical GPU hardware requires conversion to polygon meshes, e.g. by the marching cubes algorithm.

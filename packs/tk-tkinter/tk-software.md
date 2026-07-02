@@ -1,0 +1,98 @@
+---
+title: "Tk (software)"
+source: https://en.wikipedia.org/wiki/Tk_(software)
+domain: tk-tkinter
+license: CC-BY-SA-4.0
+tags: tk toolkit, tkinter binding, tcl scripting, python gui
+fetched: 2026-07-02
+---
+
+# Tk (software)
+
+**Tk** is a cross-platform widget toolkit that provides a library of basic elements of GUI widgets for building a graphical user interface (GUI) in many programming languages. It is free and open-source software released under a BSD-style software license.
+
+Tk provides many widgets commonly needed to develop desktop applications, such as button, menu, canvas, text, frame, label, etc. Tk has been ported to run on most flavors of Linux, macOS, Unix, and Microsoft Windows. Like Tcl, Tk 8.6 supports Unicode within the Basic Multilingual Plane, while Tk 9 supports the full Unicode range.
+
+Tk was designed to be extended, and a wide range of extensions are available that offer new widgets or other capabilities.
+
+Since Tcl/Tk 8, it offers "native look and feel" (for instance, menus and buttons are displayed in the manner of "native" software for any given platform). Highlights of version 8.5 include a new theming engine, originally called Tk Tile, but it is now generally referred to as "themed Tk", as well as improved font rendering. Highlights of version 8.6 include PNG support and angled text.
+
+## History
+
+Tk was developed by John Ousterhout as an extension for the Tcl scripting language. It was first publicly released in 1991. Tk versioning was done separately from Tcl until version 8.0.
+
+Tk was written originally for Unix/X11, and proved extremely popular with programmers in the 1990s by virtue of its being easier to learn and use than Motif and other X11 toolkits of the time. Tk was also ported to Microsoft Windows and Macintosh platforms, starting with Tk 4.2 and improved with native look and feel in Tk 8.0 (released 1997). To mark the popularity and significance of Tk in the 1990s, Ousterhout was given the ACM Software System Award in 1997 for Tcl/Tk:
+
+ACM Software System Award Winner: John K Ousterhout
+
+> For the Tcl scripting language which allows developers to create complex systems from pre-existing components. The embedded Tk provides a simple mechanism for creating graphical user interfaces. Together they make a powerful addition to the software repertoire.
+
+Interest in Tk waned significantly from the late 1990s and onward. The default look and feel on Unix still emulated Motif, despite the mainstream replacement of Motif by toolkits such as FLTK, Qt, and GTK. Widgets that became commonly used in applications (e.g. trees, combo boxes, tabbed notebooks) were not available in the Tk core, but only via multiple, often competing add-ons.
+
+Tk 8.5, released in late 2007, corrected some of these problems by adding missing widgets to the core, introducing a new theming engine and modernizing the look and feel on Unix. However, because some code changes were required to incorporate these advancements, many existing applications retain the older Motif-inspired feel that Tk had become known for.
+
+## Architecture
+
+Tk is a platform-independent GUI framework developed for Tcl. From a Tcl shell (tclsh), Tk may be invoked using the command `package require Tk`. The program wish (WIndowing SHell) provides a way to run a tclsh shell in a graphical window as well as providing Tk.
+
+Tk has the following characteristics:
+
+- **Platform-independent**: Tk has been ported to multiple platforms and can easily run on all of them without modification.
+- **Customizable**: Almost all the features of a widget in Tk are customizable through options during the creation of the widget or later on through the configure command.
+- **Configurable**: Many of the options can be stored in an option database, making it very easy to parameterize the look of an application (such as the color scheme). This also means that storing the application-specific options is only a matter of saving the option add commands and executing them on loading the application.
+
+### Language bindings
+
+A library written in one programming language may be used in another language if bindings are written; Tk is integrated with the Tcl language. Various other languages have bindings for Tk, a partial list of which is on the Tk website. Bindings exist for additional languages which might not be listed, including Ada (called TASH), Go (through tk9.0), Haskell (called HTk), Perl, Python (called Tkinter), R (through the standard package: tcltk), Ruby, Rexx, and Common Lisp.
+
+There are several ways to use Tk from Perl: the Tcl::Tk and Tkx Perl modules, both of which use Tcl as a bridge to access Tk, and Perl/Tk, which provides native Perl access to Tk structures. The Python binding uses Tcl as a bridge to Tk.
+
+## Features
+
+Tk provides various widgets. Basic widgets are embedded into `toplevel` widgets, which in turn are usually hosted by the operating system in floating windows that can be moved around on the screen.
+
+### Basic widgets
+
+- `button`
+- `canvas`
+- `checkbutton`
+- `combobox`
+- `entry`
+- `frame`
+- `label`
+- `labelframe`
+- `listbox`
+- `menu`
+- `menubutton`
+- `message`
+- `notebook`
+- `panedwindow`
+- `progressbar`
+- `radiobutton`
+- `scale`
+- `scrollbar`
+- `separator`
+- `sizegrip`
+- `spinbox`
+- `text`
+- `tk_optionMenu`
+- `treeview`
+
+### Top-level widgets
+
+- `tk_chooseColor` – pops up a dialog box for the user to select a color.
+- `tk_chooseDirectory` – pops up a dialog box for the user to select a directory.
+- `tk_dialog` – creates a modal dialog and waits for a response.
+- `tk_getOpenFile` – pops up a dialog box for the user to select a file to open.
+- `tk_getSaveFile` – pops up a dialog box for the user to select a file to save.
+- `tk_messageBox` – pops up a message window and waits for a user response.
+- `tk_popup` – posts a popup menu.
+- `toplevel` – creates and manipulates toplevel widgets.
+
+### Geometry managers
+
+Basic widgets are arranged in `toplevel` windows using geometry managers:
+
+- `place` – positions widgets at absolute locations
+- `grid` – arranges widgets in a grid
+- `pack` – packs widgets into a cavity

@@ -1,0 +1,38 @@
+---
+title: "Cone tracing"
+source: https://en.wikipedia.org/wiki/Cone_tracing
+domain: voxel-global-illumination
+license: CC-BY-SA-4.0
+tags: voxel global illumination, voxel cone tracing, sparse voxel octree gi, voxel radiance
+fetched: 2026-07-02
+---
+
+# Cone tracing
+
+**Cone tracing** and beam tracing are a derivative of the ray tracing algorithm that replaces rays, which have no thickness, with thick rays.
+
+## Principles
+
+In ray tracing, rays are often modeled as geometric ray with no thickness to perform efficient geometric queries such as a ray-triangle intersection. From a physics of light transport point of view, however, this is an inaccurate model provided the pixel on the sensor plane has non-zero area.
+
+In the simplified pinhole camera optics model, the energy reaching the pixel comes from the integral of radiance from the solid angle by which the sensor pixel sees the scene through the pinhole at the focal plane. This yields the key notion of **pixel footprint** on surfaces or in the texture space, which is the back projection of the pixel on to the scene. Note that this approach can also represent a lens-based camera and thus depth of field effects, using a cone whose cross-section decreases from the lens size to zero at the focal plane, and then increases.
+
+Real optical system do not focus on exact points because of diffraction and imperfections. This can be modeled with a point spread function (PSF) weighted within a solid angle larger than the pixel.
+
+From a signal processing point of view, ignoring the point spread function and approximating the integral of radiance with a single, central sample (through a ray with no thickness) can lead to strong aliasing because the "projected geometric signal" has very high frequencies exceeding the Nyquist-Shannon maximal frequency that can be represented using the uniform pixel sampling rate.
+
+The physically based image formation model can be approximated by the convolution with the point spread function assuming the function is shift-invariant and linear. In practice, techniques such as multisample anti-aliasing estimate this cone-based model by oversampling the signal and then performing a convolution (the reconstruction filter). The backprojected cone footprint onto the scene can also be used to directly pre-filter the geometry and textures of the scene.
+
+Note that contrary to intuition, the reconstruction filter should not be the pixel footprint (as the pinhole camera model would suggest), since a box filter has poor spectral properties. Conversely, the ideal sinc function is not practical, having infinite support with possibly negative values which often creates ringing artifacts due to the Gibbs phenomenon. A Gaussian or a Lanczos filter are considered good compromises.
+
+## Computer graphics models
+
+Cone and Beam early papers rely on different simplifications: the first considers a circular section and treats the intersection with various possible shapes. The second treats an accurate pyramidal beam through the pixel and along a complex path, but it only works for polyhedrical shapes.
+
+Cone tracing solves certain problems related to sampling and aliasing, which can plague conventional ray tracing. However, cone tracing creates a host of problems of its own. For example, just intersecting a cone with scene geometry leads to an enormous variety of possible results. For this reason, cone tracing has remained mostly unpopular. In recent years, increases in computer speed have made Monte Carlo algorithms like distributed ray tracing - i.e. stochastic explicit integration of the pixel - much more used than cone tracing because the results are exact provided enough samples are used. But the convergence is so slow that even in the context of off-line rendering a huge amount of time can be required to avoid noise.
+
+Differential cone-tracing, considering a differential angular neighborhood around a ray, avoids the complexity of exact geometry intersection but requires a LOD representation of the geometry and appearance of the objects. MIPmapping is an approximation of it limited to the integration of the surface texture within a cone footprint. Differential ray-tracing extends it to textured surfaces viewed through complex paths of cones reflected or refracted by curved surfaces.
+
+Raymarching methods over signed distance fields (SDFs) naturally allow easy use of cone-like tracing, at zero additional cost to the tracing, and both speeds up tracing and improves quality.
+
+Voxel cone tracing is a real-time algorithm that uses a hierarchical voxel representation of scene geometry, such as a sparse voxel octree, to support fast cone tracing for indirect illumination. This approach allows for the approximation of effects like glossy reflections and ambient occlusion at interactive framerates without the need for precomputation.

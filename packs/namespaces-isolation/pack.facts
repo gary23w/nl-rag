@@ -1,0 +1,246 @@
+# nl-rag distilled facts — domain: namespaces-isolation
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:namespaces-isolation/cgroups] Engineers at Google started the work on this feature in 2006 under the name "process containers".
+[src:namespaces-isolation/cgroups] In late 2007, the nomenclature changed to "control groups" to avoid confusion caused by multiple meanings of the term "container" in the Linux kernel context, and the control groups functionality was merged into the Linux kernel mainline in kernel version 2.6.24, which was released in January 2008.
+[src:namespaces-isolation/cgroups] Since then, developers have added controllers for the kernel's own memory allocation, netfilter firewalling, the OOM killer, and many other parts.
+[src:namespaces-isolation/cgroups] A major change in the history of cgroups is **cgroup v2**, which removes the ability to use multiple process hierarchies and to discriminate between threads as found in the original cgroup (now called "v1").
+[src:namespaces-isolation/cgroups] Work on the single, unified hierarchy started with the repurposing of v1's dummy hierarchy as a place for holding all controllers not yet used by others in 2014. cgroup v2 was merged in Linux kernel 4.5 (2016).
+[src:namespaces-isolation/cgroups] One of the design goals of cgroups is to provide a unified interface to many different use cases, from controlling single processes (by using nice, for example) to full operating system-level virtualization (as provided by OpenVZ, Linux-VServer or LXC, for example).
+[src:namespaces-isolation/cgroups] A control group (abbreviated as cgroup) is a collection of processes that are bound by the same criteria and associated with a set of parameters or limits.
+[src:namespaces-isolation/cgroups] These groups can be hierarchical, meaning that each group inherits limits from its parent group.
+[src:namespaces-isolation/cgroups] The kernel provides access to multiple controllers (also called subsystems) through the cgroup interface; for example, the "memory" controller limits memory use, "cpuacct" accounts CPU usage, etc.
+[src:namespaces-isolation/cgroups] The Linux kernel documentation contains some technical details of the setup and use of control groups version 1 and version 2.
+[src:namespaces-isolation/cgroups] Both versions of cgroup act through a pseudo-filesystem (`cgroup` for v1 and `cgroup2` for v2).
+[src:namespaces-isolation/cgroups] Like all filesystems they can be mounted on any path, but the general convention is to mount one of the versions (generally v2) on `/sys/fs/cgroup` under the sysfs default location of `/sys`.
+[src:namespaces-isolation/cgroups] As mentioned before the two cgroup versions can be active at the same time; this too applies to the filesystems so long as they are mounted to a different path.
+[src:namespaces-isolation/cgroups] For the description below we assume a setup where the v2 hierarchy lies in `/sys/fs/cgroup`.
+[src:namespaces-isolation/cgroups] The v1 hierarchy, if ever required, will be mounted at a different location.
+[src:namespaces-isolation/cgroups] At initialization cgroup2 should have no defined control groups except the top-level one.
+[src:namespaces-isolation/cgroups] In other words, `/sys/fs/cgroup` should have no directories, only a number of files that control the system as a whole.
+[src:namespaces-isolation/cgroups] These files are named according to the controllers that handle them.
+[src:namespaces-isolation/cgroups] For example, `cgroup.*` deal with the cgroup system itself and `memory.*` deal with the memory subsystem.
+[src:namespaces-isolation/cgroups] Example: to request the kernel to 1 gigabyte of memory from anywhere in the system, one can run `echo "1G swappiness=50" > /sys/fs/cgroup/memory.reclaim`.
+[src:namespaces-isolation/cgroups] To create a subgroup, one simply creates a new directory under an existing group (including the top-level one).
+[src:namespaces-isolation/cgroups] The files corresponding to available controls for this group are automatically created.
+[src:namespaces-isolation/cgroups] For example, running `mkdir /sys/fs/cgroup/example; ls /sys/fs/cgroup/example` would produce a list of files largely similar to the one above, but with noticeable changes.
+[src:namespaces-isolation/cgroups] These changes are not unexpected because some controls and statistics only make sense on a subset of processes (e.g. nice level being the CPU priority of processes relative to the rest of the system).
+[src:namespaces-isolation/cgroups] Processes are assigned to subgroups by writing to `/proc/<PID>/cgroup`.
+[src:namespaces-isolation/cgroups] The cgroup a process is in can be found by reading the same file.
+[src:namespaces-isolation/cgroups] On systems based on systemd, a hierarchy of subgroups is predefined to encapsulate every process directly and indirectly launched by systemd under a subgroup: the very basis of how systemd manages processes.
+[src:namespaces-isolation/cgroups] An explanation of the nomenclature of these groups can be found in the Red Hat Enterprise Linux 7 manual.
+[src:namespaces-isolation/cgroups] Red Hat also provides a guide on creating a systemd service file that causes a process to run in a separate cgroup.
+[src:namespaces-isolation/cgroups] `systemd-cgtop` command can be used to show top control groups by their resource usage.
+[src:namespaces-isolation/cgroups] On a system with v2, v1 can still be mounted and given access to controllers *not* in use by v2.
+[src:namespaces-isolation/cgroups] However, a modern system typically already places all controllers in use in v2, so there is no controller available for v1 at all even if a hierarchy is created.
+[src:namespaces-isolation/cgroups] It is possible to clear all uses of a controller from v2 and hand it to v1, but moving controllers between hierarchies after the system is up and running is cumbersome and not recommended.
+[src:namespaces-isolation/cgroups] Redesign of cgroups started in 2013, with additional changes brought by versions 3.15 and 3.16 of the Linux kernel.
+[src:namespaces-isolation/cgroups] The following changes concern the kernel before 4.5/4.6, i.e. when cgroups-v2 were added.
+[src:namespaces-isolation/cgroups] In other words they describe how cgroups-v1 had been changed, though most of them have also been inherited into v2 (after all, v1 and v2 share the same codebase).
+[src:namespaces-isolation/cgroups] While not technically part of the cgroups work, a related feature of the Linux kernel is *namespace isolation*, where groups of processes are separated such that they cannot "see" resources in other groups.
+[src:namespaces-isolation/cgroups] For example, a PID namespace provides a separate enumeration of process identifiers within each namespace.
+[src:namespaces-isolation/cgroups] Also available are mount, user, UTS (Unix Time Sharing), network and SysV IPC namespaces.
+[src:namespaces-isolation/cgroups] Namespaces are created with the "unshare" command or syscall, or as "new" flags in a "clone" syscall.
+[src:namespaces-isolation/cgroups] The "ns" subsystem was added early in cgroups development to integrate namespaces and control groups.
+[src:namespaces-isolation/cgroups] If the "ns" cgroup was mounted, each namespace would also create a new group in the cgroup hierarchy.
+[src:namespaces-isolation/cgroups] This was an experiment that was later judged to be a poor fit for the cgroups API, and removed from the kernel.
+[src:namespaces-isolation/cgroups] Linux namespaces were inspired by the more general namespace functionality used heavily throughout Plan 9 from Bell Labs.
+[src:namespaces-isolation/cgroups] Kernfs was introduced into the Linux kernel with version 3.14 in March 2014, the main author being Tejun Heo.
+[src:namespaces-isolation/cgroups] One of the main motivators for a separate kernfs is the cgroups file system.
+[src:namespaces-isolation/cgroups] Kernfs is basically created by splitting off some of the sysfs logic into an independent entity, thus easing for other kernel subsystems the implementation of their own virtual file system with handling for device connect and disconnect, dynamic creation and removal, and other attributes.
+[src:namespaces-isolation/cgroups] This does not affect how cgroups is used, but makes maintaining the code easier.
+[src:namespaces-isolation/cgroups] Support for per-group netfilter setup was added in 2014.
+[src:namespaces-isolation/cgroups] The unified hierarchy was added in 2014.
+[src:namespaces-isolation/cgroups] It repurposes of v1's dummy hierarchy to hold all controllers not yet used by others.
+[src:namespaces-isolation/cgroups] This changed dummy hierarchy would become the only available hierarchy in v2.
+[src:namespaces-isolation/cgroups] Unlike v1, cgroup v2 has only a single process hierarchy and discriminates between processes, not threads.
+[src:namespaces-isolation/cgroups] Linux Kernel 4.19 (October 2018) introduced cgroup awareness of OOM killer implementation which adds an ability to kill a cgroup as a single unit and so guarantee the integrity of the workload.
+[src:namespaces-isolation/cgroups] Various projects use cgroups as their basis, including CoreOS, Docker (in 2013), Hadoop, Jelastic, Kubernetes, lmctfy (Let Me Contain That For You), LXC (Linux Containers), systemd, Mesos and Mesosphere, HTCondor, and Flatpak.
+[src:namespaces-isolation/cgroups] Major Linux distributions also adopted it such as Red Hat Enterprise Linux (RHEL) 6.0 in November 2010, three years before adoption by the mainline Linux kernel.
+[src:namespaces-isolation/cgroups] On 29 October 2019, the Fedora Project modified Fedora 31 to use CgroupsV2 by default.
+[src:namespaces-isolation/chroot] The chroot system call was introduced during development of Version 7 Unix in 1979.
+[src:namespaces-isolation/chroot] One source suggests that Bill Joy added it on 18 March 1982 – 17 months before 4.2BSD was released – in order to test its installation and build system.
+[src:namespaces-isolation/chroot] All versions of BSD that had a kernel have chroot(2).
+[src:namespaces-isolation/chroot] An early use of the term "jail" as applied to chroot comes from Bill Cheswick creating a honeypot to monitor a hacker in 1991.
+[src:namespaces-isolation/chroot] The first article about a jailbreak has been discussed on the security column of *SunWorld Online* which is written by Carole Fennelly; the August 1999 and January 1999 editions cover most of the chroot() topics.
+[src:namespaces-isolation/chroot] To make it useful for virtualization, FreeBSD expanded the concept and in its 4.0 release in 2000 introduced the jail command.
+[src:namespaces-isolation/chroot] By 2002, a French article by Nicolas Boiteux described how to create jails on Linux.
+[src:namespaces-isolation/chroot] By 2003, first internet microservices providers with Linux jails provide SaaS/PaaS (e.g., shell containers, proxy, ircd, bots, etc.) services billed for consumption into the jail by usage.
+[src:namespaces-isolation/chroot] By 2008, LXC (upon which Docker was later built) adopted the "container" terminology and gained popularity in 2013 due to inclusion into Linux kernel 3.8 of user namespaces.
+[src:namespaces-isolation/chroot] A chroot environment can be used to create and host a separate virtualized copy of the software system.
+[src:namespaces-isolation/chroot] A test environment can be set up in the chroot for software that would otherwise be too risky to deploy on a production system.
+[src:namespaces-isolation/chroot] Software can be developed, built and tested in a chroot populated only with its expected dependencies.
+[src:namespaces-isolation/chroot] This can prevent some kinds of linkage skew that can result from developers building projects with different sets of program libraries installed.
+[src:namespaces-isolation/chroot] must sometimes be run in a chroot because their supporting libraries or data files may otherwise clash in name or linkage with those of the host system.
+[src:namespaces-isolation/chroot] and network connections) into the chroot, which can simplify jail design by making it unnecessary to leave working files inside the chroot directory.
+[src:namespaces-isolation/chroot] This also simplifies the common arrangement of running the potentially vulnerable parts of a privileged program in a sandbox, in order to pre-emptively contain a security breach.
+[src:namespaces-isolation/chroot] Note that chroot is not necessarily enough to contain a process with root privileges.
+[src:namespaces-isolation/chroot] The chroot mechanism is not intended to defend against intentional tampering by privileged (root) users.
+[src:namespaces-isolation/chroot] A notable exception is NetBSD, on which chroot is considered a security mechanism and no escapes are known.
+[src:namespaces-isolation/chroot] On most systems, chroot contexts do not stack properly and chrooted programs with sufficient privileges may perform a second chroot to break out.
+[src:namespaces-isolation/chroot] To mitigate the risk of this security weakness, chrooted programs should relinquish root privileges as soon as practical after chrooting, or other mechanisms – such as FreeBSD jails – should be used instead.
+[src:namespaces-isolation/chroot] Note that some systems, such as FreeBSD, take precautions to prevent a second chroot attack.
+[src:namespaces-isolation/chroot] On systems that support device nodes on ordinary filesystems, a chrooted root user can still create device nodes and mount the file systems on them; thus, the chroot mechanism is not intended by itself to be used to block low-level access to system devices by privileged users.
+[src:namespaces-isolation/chroot] It is not intended to restrict the use of resources like I/O, bandwidth, disk space or CPU time.
+[src:namespaces-isolation/chroot] Most Unixes are not completely file system-oriented and leave potentially disruptive functionality like networking and process control available through the system call interface to a chrooted program.
+[src:namespaces-isolation/chroot] At startup, programs expect to find scratch space, configuration files, device nodes and shared libraries at certain preset locations.
+[src:namespaces-isolation/chroot] For a chrooted program to successfully start, the chroot directory must be populated with a minimum set of these files.
+[src:namespaces-isolation/chroot] This can make chroot difficult to use as a general sandboxing mechanism.
+[src:namespaces-isolation/chroot] Tools such as Jailkit can help to ease and automate this process.
+[src:namespaces-isolation/chroot] Only the root user can perform a chroot.
+[src:namespaces-isolation/chroot] This is intended to prevent users from putting a setuid program inside a specially crafted chroot jail (for example, with a fake /etc/passwd and /etc/shadow file) that would fool it into a privilege escalation.
+[src:namespaces-isolation/chroot] Some Unixes offer extensions of the chroot mechanism to address at least some of these limitations (see Implementations of operating system-level virtualization technology).
+[src:namespaces-isolation/chroot] The Postfix mail transfer agent may operate as a pipeline of individually chrooted helper programs.
+[src:namespaces-isolation/chroot] Like 4.2BSD before it, the Debian and Ubuntu internal package-building farms use chroots extensively to catch unintentional build dependencies between packages.
+[src:namespaces-isolation/chroot] SUSE uses a similar method with its *build* program.
+[src:namespaces-isolation/chroot] Fedora, Red Hat, and various other RPM-based distributions build all RPMs using a chroot tool such as mock.
+[src:namespaces-isolation/chroot] Many FTP servers for POSIX systems use the chroot mechanism to sandbox untrusted FTP clients.
+[src:namespaces-isolation/chroot] This may be done by forking a process to handle an incoming connection, then chrooting the child (to avoid having to populate the chroot with libraries required for program startup).
+[src:namespaces-isolation/chroot] If privilege separation is enabled, the OpenSSH daemon will chroot an unprivileged helper process into an empty directory to handle pre-authentication network traffic for each client.
+[src:namespaces-isolation/chroot] The daemon can also sandbox SFTP and shell sessions in a chroot (from version 4.9p1 onwards).
+[src:namespaces-isolation/chroot] ChromeOS can use a chroot to run a Linux instance using Crouton, providing an otherwise thin OS with access to hardware resources.
+[src:namespaces-isolation/chroot] The security implications related in this article apply here.
+[src:namespaces-isolation/chroot] To have a functional chroot environment in Linux, the kernel virtual file systems and configuration files also have to be mounted/copied from host to chroot.
+[src:namespaces-isolation/container-virtualization] In software engineering, **containerization** is operating-system-level virtualization or application-level virtualization over multiple resources so that software applications can run in isolated user spaces called *containers* in any cloud or non-cloud environment, regardless of type or vendor.
+[src:namespaces-isolation/container-virtualization] The term "container" has different meanings in different contexts, and it is important to ensure that the intended definition aligns with the audience's understanding.
+[src:namespaces-isolation/container-virtualization] Each *container* is basically a fully functional and portable cloud or non-cloud computing environment surrounding the application and keeping it independent of other environments running in parallel.
+[src:namespaces-isolation/container-virtualization] Individually, each container simulates a different software application and runs isolated processes by bundling related configuration files, libraries and dependencies.
+[src:namespaces-isolation/container-virtualization] But, collectively, multiple containers share a common operating system kernel (OS).
+[src:namespaces-isolation/container-virtualization] In recent times, containerization technology has been widely adopted by cloud computing platforms like Amazon Web Services, Microsoft Azure, Google Cloud Platform, and IBM Cloud.
+[src:namespaces-isolation/container-virtualization] Containerization has also been pursued by the U.S.
+[src:namespaces-isolation/container-virtualization] Department of Defense as a way of more rapidly developing and fielding software updates, with first application in its F-22 air superiority fighter.
+[src:namespaces-isolation/container-virtualization] Container orchestration or container management is mostly used in the context of application containers.
+[src:namespaces-isolation/container-virtualization] Implementations providing such orchestration include Kubernetes and Docker swarm.
+[src:namespaces-isolation/container-virtualization] This includes functionality to create a cluster, to upgrade the software or repair it, balance the load between existing instances, scale by starting or stopping instances to adapt to the number of users, to log activities and monitor produced logs or the application itself by querying sensors.
+[src:namespaces-isolation/container-virtualization] Open-source implementations of such software include OKD and Rancher.
+[src:namespaces-isolation/container-virtualization] Quite a number of companies provide container cluster management as a managed service, like Alibaba, Amazon, Google, and Microsoft.
+[src:namespaces-isolation/linux-namespaces] Linux namespaces, alongside cgroups (control groups), are the foundational technologies underpinning modern OS-level virtualization and Linux containerization platforms such as Docker, Kubernetes, LXC, and Podman.
+[src:namespaces-isolation/linux-namespaces] While cgroups dictate *how much* of a system's resources a process can use (such as CPU, memory, and disk I/O limits), namespaces dictate *what* a process is allowed to see and interact with.
+[src:namespaces-isolation/linux-namespaces] The term "namespace" is often used to denote a specific type of namespace (e.g., process ID namespace) as well as a particular space of names.
+[src:namespaces-isolation/linux-namespaces] A Linux system begins with a single initial namespace of each type, which is shared by all processes.
+[src:namespaces-isolation/linux-namespaces] Processes can subsequently create additional namespaces or join existing ones, allowing complex, nested isolation boundaries.
+[src:namespaces-isolation/linux-namespaces] Linux namespaces were heavily inspired by the wider namespace functionality utilized throughout the Plan 9 from Bell Labs operating system, which treated everything as a file and provided per-process namespace isolation.
+[src:namespaces-isolation/linux-namespaces] The Linux namespace implementation originated in 2002 with the release of the 2.4.19 kernel.
+[src:namespaces-isolation/linux-namespaces] The first namespace introduced was the mount namespace, pioneered by kernel developer Al Viro, which isolated filesystem mount points.
+[src:namespaces-isolation/linux-namespaces] Because it was the first of its kind, the system call flag introduced for it was simply named `CLONE_NEWNS` (New Namespace), a name that does not specify "mount" and is often considered a historical artifact.
+[src:namespaces-isolation/linux-namespaces] As of Linux kernel version 5.6, there are exactly eight kinds of namespaces.
+[src:namespaces-isolation/linux-namespaces] Namespace functionality operates uniformly across all kinds: each process is associated with a namespace and can only see or use the resources associated with that specific namespace, including its descendant namespaces where applicable.
+[src:namespaces-isolation/linux-namespaces] This provides each process (or group of processes) with a unique, compartmentalized view of the system.
+[src:namespaces-isolation/linux-namespaces] Mount namespaces, the first namespace to be added to Linux, control mount points.
+[src:namespaces-isolation/linux-namespaces] They provide a process with an isolated view of the filesystem hierarchy.
+[src:namespaces-isolation/linux-namespaces] Upon creation, the mounts from the current mount namespace are initially copied to the new namespace.
+[src:namespaces-isolation/linux-namespaces] However, mount points created or unmounted afterwards do not propagate between namespaces by default.
+[src:namespaces-isolation/linux-namespaces] Using the Linux shared subtrees feature, it is possible to configure specific mount points to propagate events (such as a USB drive being mounted) between the host and the container, or vice versa.
+[src:namespaces-isolation/linux-namespaces] The clone flag used to create a new namespace of this type is `CLONE_NEWNS`.
+[src:namespaces-isolation/linux-namespaces] The PID namespace provides processes with an independent set of process IDs (PIDs).
+[src:namespaces-isolation/linux-namespaces] When a new process is created within a new PID namespace, it will have a distinct PID for each namespace from its current namespace up to the initial (root) PID namespace.
+[src:namespaces-isolation/linux-namespaces] Hence, processes in the initial PID namespace (like the host operating system) are able to see all processes across all containers, albeit with different PIDs than those seen inside the containers.
+[src:namespaces-isolation/linux-namespaces] The first process created in a PID namespace is assigned process ID number 1.
+[src:namespaces-isolation/linux-namespaces] It receives much of the same special treatment as the host system's normal init process.
+[src:namespaces-isolation/linux-namespaces] Most notably, any orphaned processes within the namespace are automatically reparented to this PID 1 process.
+[src:namespaces-isolation/linux-namespaces] If this PID 1 process terminates, the kernel will immediately terminate all other processes within that PID namespace and any of its descendants by sending them a `SIGKILL` signal.
+[src:namespaces-isolation/linux-namespaces] Network namespaces virtualize the network stack.
+[src:namespaces-isolation/linux-namespaces] Upon creation, a new network namespace contains only a loopback interface (`lo`), which is initially down.
+[src:namespaces-isolation/linux-namespaces] Each network interface—whether physical or virtual—can only be present in exactly one network namespace at a time, but interfaces can be actively moved between namespaces by an administrator.
+[src:namespaces-isolation/linux-namespaces] Each network namespace maintains a private set of IP addresses, its own routing table, socket listing, connection tracking table, firewall rules (such as iptables or nftables), and other network-related resources.
+[src:namespaces-isolation/linux-namespaces] To grant a container network connectivity, administrators typically create a Virtual Ethernet (`veth`) pair, placing one end in the host namespace and the other inside the container's network namespace, and then bridge the host end to a physical network.
+[src:namespaces-isolation/linux-namespaces] Destroying a network namespace automatically destroys any virtual interfaces within it and moves any physical interfaces back to the initial network namespace.
+[src:namespaces-isolation/linux-namespaces] IPC namespaces isolate processes from SysV style inter-process communication mechanisms, as well as POSIX message queues.
+[src:namespaces-isolation/linux-namespaces] This prevents processes in different IPC namespaces from interacting with each other using common IPC identifiers.
+[src:namespaces-isolation/linux-namespaces] For example, two processes in different namespaces can use the same shared memory segment identifier to allocate memory via the SHM family of functions, and the kernel will guarantee that they are provided with two distinct, fully isolated regions of shared memory.
+[src:namespaces-isolation/linux-namespaces] UTS namespaces isolate two system identifiers: the hostname and the NIS domain name.
+[src:namespaces-isolation/linux-namespaces] The name "UTS" originates from the data structure passed to the `uname` system call, which historically stands for UNIX Time-Sharing System.
+[src:namespaces-isolation/linux-namespaces] When a process creates a new UTS namespace, the hostname and domain name are copied from the caller's namespace.
+[src:namespaces-isolation/linux-namespaces] The processes inside the new namespace can then change their hostname without affecting the host machine or other containers.
+[src:namespaces-isolation/linux-namespaces] User namespaces are a critical security feature designed to provide both privilege isolation and user identification segregation across multiple sets of processes.
+[src:namespaces-isolation/linux-namespaces] Introduced completely in kernel 3.8, they are the backbone of unprivileged containers.
+[src:namespaces-isolation/linux-namespaces] Like PID namespaces, user namespaces are nested, with each new namespace considered a child of the one that created it.
+[src:namespaces-isolation/linux-namespaces] A user namespace maintains a mapping table that converts user IDs (UIDs) and group IDs (GIDs) from the container's internal perspective to the host system's global perspective.
+[src:namespaces-isolation/linux-namespaces] This allows a process to possess root privileges (UID 0) inside the container, but mathematically map to an unprivileged, restricted user ID (e.g., UID 100000) on the underlying host machine.
+[src:namespaces-isolation/linux-namespaces] If a vulnerability allows the container's "root" process to break out of the namespace, the host system will still treat it as the restricted user ID, severely limiting the potential damage.
+[src:namespaces-isolation/linux-namespaces] The cgroup namespace hides the identity of the control group hierarchy to which a process belongs.
+[src:namespaces-isolation/linux-namespaces] Before this namespace existed, a process inside a container could inspect `/proc/self/cgroup` and see the entire path of its cgroup relative to the host system (e.g., `/sys/fs/cgroup/memory/docker/container_id`).
+[src:namespaces-isolation/linux-namespaces] By virtualizing the cgroup filesystem view, a process inside a cgroup namespace will see its own cgroup directory as the root (`/`).
+[src:namespaces-isolation/linux-namespaces] This prevents information leaks about the host's underlying infrastructure and allows container orchestration tools to seamlessly migrate containers between nodes without conflicting cgroup paths.
+[src:namespaces-isolation/linux-namespaces] This namespace type has existed since March 2016 in Linux 4.6.
+[src:namespaces-isolation/linux-namespaces] The time namespace allows processes to observe different system times.
+[src:namespaces-isolation/linux-namespaces] It was introduced in Linux 5.6 in March 2020.
+[src:namespaces-isolation/linux-namespaces] Specifically, it isolates two specific kernel clocks: `CLOCK_MONOTONIC` and `CLOCK_BOOTTIME`.
+[src:namespaces-isolation/linux-namespaces] When a container is migrated from one physical host to another or restored from a snapshot, the system uptime and monotonic clock values of the new host will naturally differ from the old one.
+[src:namespaces-isolation/linux-namespaces] The time namespace allows the container runtime to set clock offsets, ensuring that applications inside the container do not experience sudden, disruptive jumps in time.
+[src:namespaces-isolation/linux-namespaces] The syslog namespace was proposed by Rui Xiang, an engineer at Huawei, to isolate kernel logging rings.
+[src:namespaces-isolation/linux-namespaces] However, the proposal was not merged into the mainline Linux kernel.
+[src:namespaces-isolation/linux-namespaces] Instead, user-space solutions largely fulfilled this requirement; for instance, systemd introduced the concept of "journal namespaces" in February 2020 to provide isolated log environments.
+[src:namespaces-isolation/linux-namespaces] The Integrity Measurement Architecture (IMA) is a kernel security subsystem that measures files before they are accessed to ensure they have not been tampered with.
+[src:namespaces-isolation/linux-namespaces] Standard IMA operates globally, which causes conflicts in containerized environments.
+[src:namespaces-isolation/linux-namespaces] Ongoing development by the kernel community—with significant contributions from IBM and Huawei—aims to introduce an IMA namespace.
+[src:namespaces-isolation/linux-namespaces] This would allow each container to maintain isolated Platform Configuration Registers (PCR), unique Measurement Logs (ML), and independent appraisal keys, thereby bringing hardware-level cryptographic attestation directly to individual containers.
+[src:namespaces-isolation/linux-namespaces] To facilitate privilege isolation for administrative actions, every namespace type is tied to a user namespace.
+[src:namespaces-isolation/linux-namespaces] When a non-user namespace is created, it is considered "owned" by the user namespace that was active at the moment of its creation.
+[src:namespaces-isolation/linux-namespaces] A user with administrative privileges (specifically, possessing the `CAP_SYS_ADMIN` capability) in the owning user namespace is allowed to perform administrative actions on that namespace.
+[src:namespaces-isolation/linux-namespaces] For example, if a process has administrative permissions to change the IP address of a network interface, it may do so, but only if its active user namespace owns that specific network namespace.
+[src:namespaces-isolation/linux-namespaces] Because the initial (host) user namespace is the ancestor of all other namespaces, the host's root user inherently retains administrative control over all namespace types across the entire system.
+[src:namespaces-isolation/linux-namespaces] Namespaces are represented as virtual file objects within the kernel, accessible via the `procfs` pseudo-filesystem.
+[src:namespaces-isolation/linux-namespaces] The kernel exposes the namespace associations of each running process at the path `/proc/*pid*/ns/*kind*`.
+[src:namespaces-isolation/linux-namespaces] Like many non-file resources in `/proc`, these entries manifest as special symbolic links.
+[src:namespaces-isolation/linux-namespaces] Reading the link yields a string formatted as `*kind*:[*inode_number*]`.
+[src:namespaces-isolation/linux-namespaces] These inode numbers correspond one-to-one with unique namespace objects in the kernel memory.
+[src:namespaces-isolation/linux-namespaces] If two processes show the same inode number for a specific namespace kind (e.g., `net:[4026531969]`), they share that namespace.
+[src:namespaces-isolation/linux-namespaces] Additionally, for namespaces where children processes might inherit different traits than the parent itself (such as PID or user namespaces), the kernel provides `/proc/*pid*/ns/*kind*_for_children` links.
+[src:namespaces-isolation/linux-namespaces] If a namespace is no longer referenced by any part of the system, the kernel will automatically destroy it.
+[src:namespaces-isolation/linux-namespaces] The cleanup process for the contained resources varies depending on the namespace kind.
+[src:namespaces-isolation/linux-namespaces] Linux namespaces are ubiquitously adopted across the modern software landscape.
+[src:namespaces-isolation/linux-namespaces] They are universally combined with cgroups to build container technologies.
+[src:namespaces-isolation/linux-namespaces] Examples include Docker, LXC (Linux Containers), Podman, and container orchestration systems like Kubernetes.
+[src:namespaces-isolation/linux-namespaces] Beyond pure containers, namespaces are extensively utilized for process sandboxing and security.
+[src:namespaces-isolation/linux-namespaces] Google Chrome and Chromium heavily rely on user, PID, and network namespaces to sandbox web rendering processes, severely limiting the damage an attacker can inflict if a renderer is compromised.
+[src:namespaces-isolation/linux-namespaces] Package formats like Flatpak and Snap employ namespaces to isolate desktop applications from the host filesystem and user data.
+[src:namespaces-isolation/linux-namespaces] Furthermore, the init system systemd uses namespaces to secure system services.
+[src:namespaces-isolation/linux-namespaces] Directives such as `PrivateNetwork=yes` or `PrivateTmp=yes` in a systemd service file instruct the kernel to spawn the daemon inside isolated network and mount namespaces, respectively.
+[src:namespaces-isolation/linux-namespaces] Command-line utilities also make use of these features.
+[src:namespaces-isolation/linux-namespaces] The `util-linux` package includes the `unshare` command, which allows users to start shells or scripts inside newly created namespaces.
+[src:namespaces-isolation/linux-namespaces] This command spawns a process in new user, PID, and mount namespaces, effectively acting as a modern, far more secure equivalent to the traditional `chroot`.
+[src:namespaces-isolation/os-level-virtualization] On Unix-like operating systems, this feature can be seen as an advanced implementation of the standard chroot mechanism, which changes the apparent root folder for the current running process and its children.
+[src:namespaces-isolation/os-level-virtualization] In addition to isolation mechanisms, the kernel often provides resource-management features to limit the impact of one container's activities on other containers.
+[src:namespaces-isolation/os-level-virtualization] Linux containers are all based on the virtualization, isolation, and resource management mechanisms provided by the Linux kernel, notably Linux namespaces and cgroups.
+[src:namespaces-isolation/os-level-virtualization] Although the word *container* most commonly refers to OS-level virtualization, it is sometimes used to refer to fuller virtual machines operating in varying degrees of concert with the host OS, such as Microsoft's Hyper-V containers.
+[src:namespaces-isolation/os-level-virtualization] For an overview of virtualization since 1960, see Timeline of virtualization technologies.
+[src:namespaces-isolation/os-level-virtualization] On ordinary operating systems for personal computers, a computer program can see (even though it might not be able to access) all the system's resources.
+[src:namespaces-isolation/os-level-virtualization] The operating system may allow or deny access to such resources based on which program requests them and the user account in the context in which it runs.
+[src:namespaces-isolation/os-level-virtualization] The operating system may also hide those resources, so that when the computer program enumerates them, they do not appear in the enumeration results.
+[src:namespaces-isolation/os-level-virtualization] Nevertheless, from a programming point of view, the computer program has interacted with those resources and the operating system has managed an act of interaction.
+[src:namespaces-isolation/os-level-virtualization] With operating-system-virtualization, or containerization, it is possible to run programs within containers, to which only parts of these resources are allocated.
+[src:namespaces-isolation/os-level-virtualization] A program expecting to see the whole computer, once run inside a container, can only see the allocated resources and believes them to be all that is available.
+[src:namespaces-isolation/os-level-virtualization] Several containers can be created on each operating system, to each of which a subset of the computer's resources is allocated.
+[src:namespaces-isolation/os-level-virtualization] Each container may contain any number of computer programs.
+[src:namespaces-isolation/os-level-virtualization] These programs may run concurrently or separately, and may even interact with one another.
+[src:namespaces-isolation/os-level-virtualization] Containerization has similarities to application virtualization: In the latter, only one computer program is placed in an isolated container and the isolation applies to file system only.
+[src:namespaces-isolation/os-level-virtualization] Operating-system level virtualization is commonly used in virtual hosting environments, where it is useful for securely allocating finite hardware resources among a large number of mutually-distrusting users.
+[src:namespaces-isolation/os-level-virtualization] System administrators may also use it for consolidating server hardware by moving services on separate hosts into containers on the one server.
+[src:namespaces-isolation/os-level-virtualization] Operating-system level virtualization can also be used to run software created for a certain Linux distribution on another distribution, an example is Distrobox.
+[src:namespaces-isolation/os-level-virtualization] Other typical scenarios include separating several programs to separate containers for improved security, hardware independence, and added resource management features.
+[src:namespaces-isolation/os-level-virtualization] The improved security provided by the use of a chroot mechanism, however, is not perfect.
+[src:namespaces-isolation/os-level-virtualization] Operating-system-level virtualization implementations capable of live migration can also be used for dynamic load balancing of containers between nodes in a cluster.
+[src:namespaces-isolation/os-level-virtualization] This form of virtualization also does not require hardware support for efficient performance.
+[src:namespaces-isolation/os-level-virtualization] Operating-system level virtualization is not as flexible as other virtualization approaches since it cannot host a guest operating system different from the host one, or a different guest kernel.
+[src:namespaces-isolation/os-level-virtualization] For example, with Linux, different distributions are fine, but other operating systems such as Windows cannot be hosted.
+[src:namespaces-isolation/os-level-virtualization] Operating systems using variable input systematics are subject to limitations within the virtualized architecture.
+[src:namespaces-isolation/os-level-virtualization] Adaptation methods including cloud-server relay analytics maintain the OS-level virtual environment within these applications.
+[src:namespaces-isolation/os-level-virtualization] Solaris partially overcomes the limitation described above with its branded zones feature, which provides the ability to run an environment within a container that emulates an older Solaris 8 or 9 version in a Solaris 10 host.
+[src:namespaces-isolation/os-level-virtualization] However, in 2010 Linux branded zones were removed from Solaris; in 2014 they were reintroduced in Illumos, which is the open source Solaris fork, supporting 32-bit Linux kernels.
+[src:namespaces-isolation/os-level-virtualization] Some implementations provide file-level copy-on-write (CoW) mechanisms.
+[src:namespaces-isolation/os-level-virtualization] (Most commonly, a standard file system is shared between partitions, and those partitions that change the files automatically create their own copies.) This is easier to back up, more space-efficient and simpler to cache than the block-level copy-on-write schemes common on whole-system virtualizers.
+[src:namespaces-isolation/os-level-virtualization] Whole-system virtualizers, however, can work with non-native file systems and create and roll back snapshots of the entire system state.
+[src:namespaces-isolation/process-isolation] Process isolation can be implemented by giving each process its own virtual address space, where process A's address space is different from process B's address space – preventing A from writing onto B.
+[src:namespaces-isolation/process-isolation] In a system with process isolation, limited (controlled) interaction between processes may still be allowed over inter-process communication (IPC) channels such as shared memory, local sockets or Internet sockets.
+[src:namespaces-isolation/process-isolation] In this scheme, all of the process' memory is isolated from other processes except where the process is allowing input from collaborating processes.
+[src:namespaces-isolation/process-isolation] System policies may disallow IPC in some circumstances.
+[src:namespaces-isolation/process-isolation] For example, in mandatory access control systems, subjects with different sensitivity levels may not be allowed to communicate with each other.
+[src:namespaces-isolation/process-isolation] The security implications in these circumstances are broad and span applications in network key encryption systematics as well as distributed caching algorithms.
+[src:namespaces-isolation/process-isolation] Interface-defined protocols such as basic cloud access architecture and network sharing are similarly affected.
+[src:namespaces-isolation/process-isolation] On a system that supports process isolation, an application can use multiple processes to isolate components of the application from one another.
+[src:namespaces-isolation/process-isolation] This idea of process-per-instance would not be revisited until a decade afterwards, when tabbed browsing became more commonplace.
+[src:namespaces-isolation/process-isolation] This method (known popularly as **multiprocess** or **process-per-tab**) is meant to both manage memory and processing by allowing offending tabs to crash separately from the browser and other tabs and manage security.
+[src:namespaces-isolation/process-isolation] In Firefox, the execution of NPAPI plug-ins like Flash and Silverlight became isolated in separate processes for each plug-in, starting in version 3.6.4.
+[src:namespaces-isolation/process-isolation] The foundation of this process isolation eventually became a project called Electrolysis or e10s for short, which extended process isolation to web content, browser chrome, and add-ons.
+[src:namespaces-isolation/process-isolation] Pale Moon is a notable web browser that has intentionally not isolated browser chrome, web content, add-ons, and other non-plugin components to their own processes.
+[src:namespaces-isolation/process-isolation] Erlang (programming language) is providing a similar concept in user space, by realizing strictly separated lightweight processes.

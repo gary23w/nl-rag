@@ -443,6 +443,113 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | cloud-cdn | en.wikipedia.org | CC-BY-SA-4.0 |
 | cloud-vpn | en.wikipedia.org | CC-BY-SA-4.0 |
 | managed-kubernetes | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-athena | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-glue | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-emr | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-redshift-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-aurora | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-elasticache | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-msk | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-eventbridge | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-cognito | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-amplify | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-appsync | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-sagemaker | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-bedrock | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-fargate | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-batch | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-cloudtrail | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-config | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-guardduty | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-secrets-manager | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-systems-manager | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-transit-gateway | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-direct-connect | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-global-accelerator | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-elastic-beanstalk | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-lightsail | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-app-runner | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-lambda-layers | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-efs | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-fsx | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-storage-gateway | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-backup | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-datasync | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-glacier | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-neptune | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-timestream | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-documentdb | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-keyspaces | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-memorydb | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-opensearch-service | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-quicksight | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-kinesis-firehose | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-data-pipeline | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-lake-formation | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-sfn-workflows | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-cloudfront-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-waf | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-shield | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-macie | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-inspector | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-security-hub | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-organizations | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-control-tower | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-cost-explorer | en.wikipedia.org | CC-BY-SA-4.0 |
+| aws-x-ray | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-aks | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-app-service | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-sql-database | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-service-bus | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-event-hubs | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-data-factory | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-synapse | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-databricks | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-key-vault | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-active-directory | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-entra-id | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-monitor | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-application-insights | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-container-apps | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-openai-service | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-machine-learning | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-logic-apps | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-api-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-front-door | en.wikipedia.org | CC-BY-SA-4.0 |
+| azure-cdn | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-gke | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-cloud-run | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-cloud-sql | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-spanner | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-firestore | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-bigtable | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-dataflow | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-dataproc | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-vertex-ai | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-cloud-tasks | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-cloud-scheduler | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-secret-manager | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-iam | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-cloud-armor | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-anthos | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-apigee | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-looker | en.wikipedia.org | CC-BY-SA-4.0 |
+| gcp-pubsub-lite | en.wikipedia.org | CC-BY-SA-4.0 |
+| oracle-cloud-infrastructure | en.wikipedia.org | CC-BY-SA-4.0 |
+| ibm-cloud | en.wikipedia.org | CC-BY-SA-4.0 |
+| alibaba-cloud | en.wikipedia.org | CC-BY-SA-4.0 |
+| tencent-cloud | en.wikipedia.org | CC-BY-SA-4.0 |
+| linode-akamai | en.wikipedia.org | CC-BY-SA-4.0 |
+| ovhcloud | en.wikipedia.org | CC-BY-SA-4.0 |
+| hetzner-cloud | en.wikipedia.org | CC-BY-SA-4.0 |
+| scaleway | en.wikipedia.org | CC-BY-SA-4.0 |
+| supabase-platform | en.wikipedia.org | CC-BY-SA-4.0 |
+| planetscale-db | en.wikipedia.org | CC-BY-SA-4.0 |
+| upstash-serverless | en.wikipedia.org | CC-BY-SA-4.0 |
+| railway-platform | en.wikipedia.org | CC-BY-SA-4.0 |
+| render-cloud | en.wikipedia.org | CC-BY-SA-4.0 |
+| deno-deploy | en.wikipedia.org | CC-BY-SA-4.0 |
+| cloudflare-workers-ai | en.wikipedia.org | CC-BY-SA-4.0 |
 | apache-spark | en.wikipedia.org, spark.apache.org | CC-BY-SA-4.0 |
 | apache-flink | en.wikipedia.org, flink.apache.org | CC-BY-SA-4.0 |
 | apache-beam | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -607,6 +714,58 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | compact-bitmap-structure | en.wikipedia.org | CC-BY-SA-4.0 |
 | resizable-array-structure | en.wikipedia.org | CC-BY-SA-4.0 |
 | vector-search-index | en.wikipedia.org | CC-BY-SA-4.0 |
+| qt-framework | doc.qt.io, en.wikipedia.org | CC-BY-SA-4.0 |
+| qt-quick-qml | doc.qt.io, en.wikipedia.org | CC-BY-SA-4.0 |
+| gtk-toolkit | en.wikipedia.org | CC-BY-SA-4.0 |
+| gtk4 | docs.gtk.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| wxwidgets | en.wikipedia.org | CC-BY-SA-4.0 |
+| fltk-toolkit | en.wikipedia.org | CC-BY-SA-4.0 |
+| tk-tkinter | en.wikipedia.org | CC-BY-SA-4.0 |
+| dear-imgui | en.wikipedia.org | CC-BY-SA-4.0 |
+| egui-rust | en.wikipedia.org | CC-BY-SA-4.0 |
+| slint-ui | en.wikipedia.org | CC-BY-SA-4.0 |
+| iced-rust | en.wikipedia.org | CC-BY-SA-4.0 |
+| druid-rust | en.wikipedia.org | CC-BY-SA-4.0 |
+| electron-framework | en.wikipedia.org | CC-BY-SA-4.0 |
+| tauri-framework | en.wikipedia.org | CC-BY-SA-4.0 |
+| neutralinojs | en.wikipedia.org | CC-BY-SA-4.0 |
+| nwjs | en.wikipedia.org | CC-BY-SA-4.0 |
+| webview-native | en.wikipedia.org | CC-BY-SA-4.0 |
+| wpf-xaml | en.wikipedia.org | CC-BY-SA-4.0 |
+| winui | en.wikipedia.org | CC-BY-SA-4.0 |
+| uwp-apps | en.wikipedia.org | CC-BY-SA-4.0 |
+| windows-forms | en.wikipedia.org | CC-BY-SA-4.0 |
+| avalonia-ui | en.wikipedia.org | CC-BY-SA-4.0 |
+| maui-dotnet | en.wikipedia.org | CC-BY-SA-4.0 |
+| uno-platform | en.wikipedia.org | CC-BY-SA-4.0 |
+| gtk-sharp | en.wikipedia.org | CC-BY-SA-4.0 |
+| javafx | en.wikipedia.org | CC-BY-SA-4.0 |
+| java-swing | en.wikipedia.org | CC-BY-SA-4.0 |
+| java-awt | en.wikipedia.org | CC-BY-SA-4.0 |
+| kivy-framework | en.wikipedia.org | CC-BY-SA-4.0 |
+| pyqt-binding | en.wikipedia.org | CC-BY-SA-4.0 |
+| pyside-binding | en.wikipedia.org | CC-BY-SA-4.0 |
+| wxpython | en.wikipedia.org | CC-BY-SA-4.0 |
+| dearpygui | en.wikipedia.org | CC-BY-SA-4.0 |
+| flet-framework | en.wikipedia.org | CC-BY-SA-4.0 |
+| beeware-toga | en.wikipedia.org | CC-BY-SA-4.0 |
+| gnome-libadwaita | developer.gnome.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| kde-frameworks | en.wikipedia.org | CC-BY-SA-4.0 |
+| cocoa-appkit-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| catalyst-mac | en.wikipedia.org | CC-BY-SA-4.0 |
+| compose-multiplatform | en.wikipedia.org | CC-BY-SA-4.0 |
+| react-native | en.wikipedia.org | CC-BY-SA-4.0 |
+| ionic-framework | en.wikipedia.org | CC-BY-SA-4.0 |
+| capacitor-native | en.wikipedia.org | CC-BY-SA-4.0 |
+| nativescript | en.wikipedia.org | CC-BY-SA-4.0 |
+| quasar-framework | en.wikipedia.org | CC-BY-SA-4.0 |
+| sciter-ui | en.wikipedia.org | CC-BY-SA-4.0 |
+| cef-embedded | en.wikipedia.org | CC-BY-SA-4.0 |
+| ultralight-ui | en.wikipedia.org | CC-BY-SA-4.0 |
+| raygui | en.wikipedia.org | CC-BY-SA-4.0 |
+| nuklear-ui | en.wikipedia.org | CC-BY-SA-4.0 |
+| microui | en.wikipedia.org | CC-BY-SA-4.0 |
+| blend2d-graphics | en.wikipedia.org | CC-BY-SA-4.0 |
 | helm-charts | en.wikipedia.org, helm.sh | CC-BY-SA-4.0 |
 | prometheus-monitoring | en.wikipedia.org, prometheus.io | CC-BY-SA-4.0 |
 | grafana | en.wikipedia.org, grafana.com | CC-BY-SA-4.0 |
@@ -760,6 +919,58 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | battery-management-system | en.wikipedia.org | CC-BY-SA-4.0 |
 | energy-harvesting-circuits | en.wikipedia.org | CC-BY-SA-4.0 |
 | wireless-power-transfer | en.wikipedia.org | CC-BY-SA-4.0 |
+| misra-c | en.wikipedia.org | CC-BY-SA-4.0 |
+| threadx-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
+| zephyr-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
+| riot-os | en.wikipedia.org | CC-BY-SA-4.0 |
+| contiki-os | en.wikipedia.org | CC-BY-SA-4.0 |
+| mbed-os | en.wikipedia.org | CC-BY-SA-4.0 |
+| nuttx-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
+| ti-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
+| embos | en.wikipedia.org | CC-BY-SA-4.0 |
+| chibios | en.wikipedia.org | CC-BY-SA-4.0 |
+| rt-thread | en.wikipedia.org | CC-BY-SA-4.0 |
+| vxworks-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| qnx-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
+| integrity-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
+| sel4-microkernel | en.wikipedia.org | CC-BY-SA-4.0 |
+| real-time-linux-preempt | en.wikipedia.org | CC-BY-SA-4.0 |
+| xenomai | en.wikipedia.org | CC-BY-SA-4.0 |
+| u-boot-bootloader | en.wikipedia.org | CC-BY-SA-4.0 |
+| barebox | en.wikipedia.org | CC-BY-SA-4.0 |
+| tianocore-edk | en.wikipedia.org | CC-BY-SA-4.0 |
+| can-fd-bus | en.wikipedia.org | CC-BY-SA-4.0 |
+| lin-bus | en.wikipedia.org | CC-BY-SA-4.0 |
+| flexray | en.wikipedia.org | CC-BY-SA-4.0 |
+| automotive-ethernet | en.wikipedia.org | CC-BY-SA-4.0 |
+| some-ip | en.wikipedia.org | CC-BY-SA-4.0 |
+| doip-diagnostics | en.wikipedia.org | CC-BY-SA-4.0 |
+| uds-diagnostics | en.wikipedia.org | CC-BY-SA-4.0 |
+| obd-ii | en.wikipedia.org | CC-BY-SA-4.0 |
+| j1939 | en.wikipedia.org | CC-BY-SA-4.0 |
+| autosar-classic | en.wikipedia.org | CC-BY-SA-4.0 |
+| autosar-adaptive | en.wikipedia.org | CC-BY-SA-4.0 |
+| do-178c | en.wikipedia.org | CC-BY-SA-4.0 |
+| do-254 | en.wikipedia.org | CC-BY-SA-4.0 |
+| iec-61508 | en.wikipedia.org | CC-BY-SA-4.0 |
+| iec-62304-medical | en.wikipedia.org | CC-BY-SA-4.0 |
+| en-50128-railway | en.wikipedia.org | CC-BY-SA-4.0 |
+| arinc-653 | en.wikipedia.org | CC-BY-SA-4.0 |
+| functional-safety-concepts | en.wikipedia.org | CC-BY-SA-4.0 |
+| fault-tree-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| failure-mode-effects-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| safety-integrity-level | en.wikipedia.org | CC-BY-SA-4.0 |
+| watchdog-timer-design | en.wikipedia.org | CC-BY-SA-4.0 |
+| memory-protection-unit | en.wikipedia.org | CC-BY-SA-4.0 |
+| lockstep-cores | en.wikipedia.org | CC-BY-SA-4.0 |
+| ecc-memory-embedded | en.wikipedia.org | CC-BY-SA-4.0 |
+| bootloader-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| secure-firmware-update | en.wikipedia.org | CC-BY-SA-4.0 |
+| over-the-air-updates | en.wikipedia.org | CC-BY-SA-4.0 |
+| hardware-in-the-loop | en.wikipedia.org | CC-BY-SA-4.0 |
+| model-based-design | en.wikipedia.org | CC-BY-SA-4.0 |
+| simulink-embedded | en.wikipedia.org | CC-BY-SA-4.0 |
+| code-generation-embedded | en.wikipedia.org | CC-BY-SA-4.0 |
 | unity-engine | en.wikipedia.org | CC-BY-SA-4.0 |
 | unreal-engine | en.wikipedia.org | CC-BY-SA-4.0 |
 | cryengine | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -918,6 +1129,58 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | hardware-accelerator-design | en.wikipedia.org | CC-BY-SA-4.0 |
 | network-on-chip | en.wikipedia.org | CC-BY-SA-4.0 |
 | hbm-memory | en.wikipedia.org | CC-BY-SA-4.0 |
+| profinet | en.wikipedia.org | CC-BY-SA-4.0 |
+| ethercat | en.wikipedia.org | CC-BY-SA-4.0 |
+| modbus-protocol | en.wikipedia.org | CC-BY-SA-4.0 |
+| opc-ua-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| dnp3-protocol | en.wikipedia.org | CC-BY-SA-4.0 |
+| iec-61850 | en.wikipedia.org | CC-BY-SA-4.0 |
+| bacnet | en.wikipedia.org | CC-BY-SA-4.0 |
+| canopen | en.wikipedia.org | CC-BY-SA-4.0 |
+| devicenet | en.wikipedia.org | CC-BY-SA-4.0 |
+| profibus | en.wikipedia.org | CC-BY-SA-4.0 |
+| ethernet-ip | en.wikipedia.org | CC-BY-SA-4.0 |
+| powerlink | en.wikipedia.org | CC-BY-SA-4.0 |
+| sercos | en.wikipedia.org | CC-BY-SA-4.0 |
+| io-link | en.wikipedia.org | CC-BY-SA-4.0 |
+| hart-protocol | en.wikipedia.org | CC-BY-SA-4.0 |
+| foundation-fieldbus | en.wikipedia.org | CC-BY-SA-4.0 |
+| as-interface | en.wikipedia.org | CC-BY-SA-4.0 |
+| knx-building | en.wikipedia.org | CC-BY-SA-4.0 |
+| lonworks | en.wikipedia.org | CC-BY-SA-4.0 |
+| mbus-metering | en.wikipedia.org | CC-BY-SA-4.0 |
+| zigbee-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| z-wave-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| thread-matter | en.wikipedia.org | CC-BY-SA-4.0 |
+| wirelesshart | en.wikipedia.org | CC-BY-SA-4.0 |
+| isa-100 | en.wikipedia.org | CC-BY-SA-4.0 |
+| lorawan-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| nb-iot-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| sigfox | en.wikipedia.org | CC-BY-SA-4.0 |
+| wireless-mbus | en.wikipedia.org | CC-BY-SA-4.0 |
+| dali-lighting | en.wikipedia.org | CC-BY-SA-4.0 |
+| dmx512-lighting | en.wikipedia.org | CC-BY-SA-4.0 |
+| obix | en.wikipedia.org | CC-BY-SA-4.0 |
+| mtconnect | en.wikipedia.org | CC-BY-SA-4.0 |
+| opc-classic | en.wikipedia.org | CC-BY-SA-4.0 |
+| iec-60870 | en.wikipedia.org | CC-BY-SA-4.0 |
+| iec-62443-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| purdue-model | en.wikipedia.org | CC-BY-SA-4.0 |
+| industrial-control-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| smart-grid | en.wikipedia.org | CC-BY-SA-4.0 |
+| ami-metering | en.wikipedia.org | CC-BY-SA-4.0 |
+| iec-61970-cim | en.wikipedia.org | CC-BY-SA-4.0 |
+| synchrophasor-pmu | en.wikipedia.org | CC-BY-SA-4.0 |
+| demand-response | en.wikipedia.org | CC-BY-SA-4.0 |
+| scada-historian | en.wikipedia.org | CC-BY-SA-4.0 |
+| batch-control-isa88 | en.wikipedia.org | CC-BY-SA-4.0 |
+| iso-15926 | en.wikipedia.org | CC-BY-SA-4.0 |
+| packml | en.wikipedia.org | CC-BY-SA-4.0 |
+| weihenstephan-standards | en.wikipedia.org | CC-BY-SA-4.0 |
+| vehicle-to-grid | en.wikipedia.org | CC-BY-SA-4.0 |
+| home-energy-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| building-management-system | en.wikipedia.org | CC-BY-SA-4.0 |
+| predictive-maintenance-iiot | en.wikipedia.org | CC-BY-SA-4.0 |
 | lodash-utils | developer.mozilla.org, en.wikipedia.org, github.com, lodash.com | CC-BY-SA-4.0 |
 | ramda-functional | developer.mozilla.org, en.wikipedia.org, github.com, ramdajs.com | CC-BY-SA-4.0 |
 | axios-http | axios-http.com, developer.mozilla.org, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
@@ -1081,6 +1344,60 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | knot-theory | en.wikipedia.org | CC-BY-SA-4.0 |
 | graph-minors | en.wikipedia.org | CC-BY-SA-4.0 |
 | matroid-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| temporal-antialiasing | en.wikipedia.org | CC-BY-SA-4.0 |
+| screen-space-reflections | en.wikipedia.org | CC-BY-SA-4.0 |
+| screen-space-ao | en.wikipedia.org | CC-BY-SA-4.0 |
+| voxel-global-illumination | en.wikipedia.org | CC-BY-SA-4.0 |
+| light-probes | en.wikipedia.org | CC-BY-SA-4.0 |
+| irradiance-volumes | en.wikipedia.org | CC-BY-SA-4.0 |
+| clustered-shading | en.wikipedia.org | CC-BY-SA-4.0 |
+| forward-plus-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| gpu-driven-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| mesh-shaders | en.wikipedia.org | CC-BY-SA-4.0 |
+| virtual-geometry-nanite | en.wikipedia.org | CC-BY-SA-4.0 |
+| virtual-texturing | en.wikipedia.org | CC-BY-SA-4.0 |
+| sparse-voxel-octree | en.wikipedia.org | CC-BY-SA-4.0 |
+| signed-distance-fields | en.wikipedia.org | CC-BY-SA-4.0 |
+| volumetric-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| subsurface-scattering | en.wikipedia.org | CC-BY-SA-4.0 |
+| image-based-lighting | en.wikipedia.org | CC-BY-SA-4.0 |
+| tone-mapping-hdr | en.wikipedia.org | CC-BY-SA-4.0 |
+| bloom-effect | en.wikipedia.org | CC-BY-SA-4.0 |
+| motion-blur-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| depth-of-field-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| denoising-raytracing | en.wikipedia.org | CC-BY-SA-4.0 |
+| dlss-upscaling | en.wikipedia.org | CC-BY-SA-4.0 |
+| fsr-upscaling | en.wikipedia.org | CC-BY-SA-4.0 |
+| variable-rate-shading | en.wikipedia.org | CC-BY-SA-4.0 |
+| order-independent-transparency | en.wikipedia.org | CC-BY-SA-4.0 |
+| decal-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| terrain-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| ocean-rendering | en.wikipedia.org | CC-BY-SA-4.0 |
+| cloud-rendering-volumetric | en.wikipedia.org | CC-BY-SA-4.0 |
+| vvc-h266 | en.wikipedia.org | CC-BY-SA-4.0 |
+| av2-codec | en.wikipedia.org | CC-BY-SA-4.0 |
+| prores-codec | en.wikipedia.org | CC-BY-SA-4.0 |
+| jpeg-xl | en.wikipedia.org | CC-BY-SA-4.0 |
+| audio-reverb-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| audio-equalization | en.wikipedia.org | CC-BY-SA-4.0 |
+| dynamic-range-compression | en.wikipedia.org | CC-BY-SA-4.0 |
+| audio-limiter | en.wikipedia.org | CC-BY-SA-4.0 |
+| convolution-reverb | en.wikipedia.org | CC-BY-SA-4.0 |
+| spatial-audio-hrtf | en.wikipedia.org | CC-BY-SA-4.0 |
+| ambisonics | en.wikipedia.org | CC-BY-SA-4.0 |
+| wavetable-synthesis | en.wikipedia.org | CC-BY-SA-4.0 |
+| fm-synthesis | en.wikipedia.org | CC-BY-SA-4.0 |
+| granular-synthesis | en.wikipedia.org | CC-BY-SA-4.0 |
+| physical-modeling-synthesis | en.wikipedia.org | CC-BY-SA-4.0 |
+| midi-2 | en.wikipedia.org | CC-BY-SA-4.0 |
+| audio-time-stretching | en.wikipedia.org | CC-BY-SA-4.0 |
+| pitch-shifting | en.wikipedia.org | CC-BY-SA-4.0 |
+| nurbs-surfaces | en.wikipedia.org | CC-BY-SA-4.0 |
+| subdivision-surfaces | en.wikipedia.org | CC-BY-SA-4.0 |
+| voxel-modeling | en.wikipedia.org | CC-BY-SA-4.0 |
+| point-cloud-processing | en.wikipedia.org | CC-BY-SA-4.0 |
+| photogrammetry-3d | en.wikipedia.org | CC-BY-SA-4.0 |
+| marching-cubes | en.wikipedia.org | CC-BY-SA-4.0 |
 | tensorflow | en.wikipedia.org | CC-BY-SA-4.0 |
 | keras | en.wikipedia.org | CC-BY-SA-4.0 |
 | jax-ml | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -1136,6 +1453,222 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | graph-neural-networks | en.wikipedia.org | CC-BY-SA-4.0 |
 | knowledge-distillation | en.wikipedia.org | CC-BY-SA-4.0 |
 | mixture-of-experts | en.wikipedia.org | CC-BY-SA-4.0 |
+| flash-attention | en.wikipedia.org | CC-BY-SA-4.0 |
+| kv-cache-optimization | en.wikipedia.org | CC-BY-SA-4.0 |
+| rotary-position-embedding | en.wikipedia.org | CC-BY-SA-4.0 |
+| alibi-attention | en.wikipedia.org | CC-BY-SA-4.0 |
+| grouped-query-attention | en.wikipedia.org | CC-BY-SA-4.0 |
+| sliding-window-attention | en.wikipedia.org | CC-BY-SA-4.0 |
+| speculative-decoding | en.wikipedia.org | CC-BY-SA-4.0 |
+| gptq-quantization | en.wikipedia.org | CC-BY-SA-4.0 |
+| awq-quantization | en.wikipedia.org | CC-BY-SA-4.0 |
+| gguf-format | en.wikipedia.org | CC-BY-SA-4.0 |
+| model-pruning-ml | en.wikipedia.org | CC-BY-SA-4.0 |
+| neural-architecture-search | en.wikipedia.org | CC-BY-SA-4.0 |
+| mixture-of-depths | en.wikipedia.org | CC-BY-SA-4.0 |
+| retrieval-rerankers | en.wikipedia.org | CC-BY-SA-4.0 |
+| document-chunking | en.wikipedia.org | CC-BY-SA-4.0 |
+| react-agent-prompting | en.wikipedia.org | CC-BY-SA-4.0 |
+| chain-of-thought-prompting | en.wikipedia.org | CC-BY-SA-4.0 |
+| tree-of-thoughts | en.wikipedia.org | CC-BY-SA-4.0 |
+| self-consistency-decoding | en.wikipedia.org | CC-BY-SA-4.0 |
+| constitutional-ai | en.wikipedia.org | CC-BY-SA-4.0 |
+| instruction-tuning | en.wikipedia.org | CC-BY-SA-4.0 |
+| in-context-learning | en.wikipedia.org | CC-BY-SA-4.0 |
+| few-shot-learning | en.wikipedia.org | CC-BY-SA-4.0 |
+| zero-shot-learning | en.wikipedia.org | CC-BY-SA-4.0 |
+| chain-of-density | en.wikipedia.org | CC-BY-SA-4.0 |
+| guided-decoding | en.wikipedia.org | CC-BY-SA-4.0 |
+| structured-generation | en.wikipedia.org | CC-BY-SA-4.0 |
+| function-calling-llm | en.wikipedia.org | CC-BY-SA-4.0 |
+| tool-use-agents | en.wikipedia.org | CC-BY-SA-4.0 |
+| multi-agent-systems-ai | en.wikipedia.org | CC-BY-SA-4.0 |
+| object-tracking-cv | en.wikipedia.org | CC-BY-SA-4.0 |
+| pose-estimation | en.wikipedia.org | CC-BY-SA-4.0 |
+| optical-character-recognition | en.wikipedia.org | CC-BY-SA-4.0 |
+| face-recognition-cv | en.wikipedia.org | CC-BY-SA-4.0 |
+| image-captioning | en.wikipedia.org | CC-BY-SA-4.0 |
+| visual-question-answering | en.wikipedia.org | CC-BY-SA-4.0 |
+| depth-estimation | en.wikipedia.org | CC-BY-SA-4.0 |
+| image-super-resolution | en.wikipedia.org | CC-BY-SA-4.0 |
+| style-transfer-cv | en.wikipedia.org | CC-BY-SA-4.0 |
+| named-entity-recognition | en.wikipedia.org | CC-BY-SA-4.0 |
+| coreference-resolution | en.wikipedia.org | CC-BY-SA-4.0 |
+| text-summarization | en.wikipedia.org | CC-BY-SA-4.0 |
+| machine-translation-nlp | en.wikipedia.org | CC-BY-SA-4.0 |
+| question-answering-nlp | en.wikipedia.org | CC-BY-SA-4.0 |
+| sentiment-analysis-nlp | en.wikipedia.org | CC-BY-SA-4.0 |
+| topic-modeling | en.wikipedia.org | CC-BY-SA-4.0 |
+| text-classification | en.wikipedia.org | CC-BY-SA-4.0 |
+| dependency-parsing-nlp | en.wikipedia.org | CC-BY-SA-4.0 |
+| word-sense-disambiguation | en.wikipedia.org | CC-BY-SA-4.0 |
+| relation-extraction | en.wikipedia.org | CC-BY-SA-4.0 |
+| keyphrase-extraction | en.wikipedia.org | CC-BY-SA-4.0 |
+| language-identification | en.wikipedia.org | CC-BY-SA-4.0 |
+| text-to-speech-synthesis | en.wikipedia.org | CC-BY-SA-4.0 |
+| voice-cloning-ml | en.wikipedia.org | CC-BY-SA-4.0 |
+| music-generation-ai | en.wikipedia.org | CC-BY-SA-4.0 |
+| apache-ignite | en.wikipedia.org, ignite.apache.org | CC-BY-SA-4.0 |
+| hazelcast-imdg | docs.hazelcast.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| aerospike-db | aerospike.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| memgraph | en.wikipedia.org, github.com, memgraph.com | CC-BY-SA-4.0 |
+| janusgraph | docs.janusgraph.org, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| dgraph | docs.dgraph.io, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| tigergraph | docs.tigergraph.com, en.wikipedia.org, www.tigergraph.com | CC-BY-SA-4.0 |
+| nebula-graph | docs.nebula-graph.io, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| fauna-db | en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| edgedb | docs.geldata.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| surrealdb | en.wikipedia.org, github.com, surrealdb.com | CC-BY-SA-4.0 |
+| datomic | docs.datomic.com, en.wikipedia.org, www.datomic.com | CC-BY-SA-4.0 |
+| xtdb | docs.xtdb.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| eventstore-db | developers.eventstore.com, en.wikipedia.org, github.com, www.eventstore.com | CC-BY-SA-4.0 |
+| questdb | en.wikipedia.org, github.com, questdb.com | CC-BY-SA-4.0 |
+| victoriametrics | docs.victoriametrics.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| m3db | en.wikipedia.org, github.com, m3db.io | CC-BY-SA-4.0 |
+| apache-druid-deep | druid.apache.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| apache-pinot | docs.pinot.apache.org, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| apache-kudu | en.wikipedia.org, kudu.apache.org | CC-BY-SA-4.0 |
+| greenplum | docs.vmware.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| monetdb | en.wikipedia.org, www.monetdb.org | CC-BY-SA-4.0 |
+| firebird-db | en.wikipedia.org, firebirdsql.org | CC-BY-SA-4.0 |
+| hsqldb | en.wikipedia.org, hsqldb.org | CC-BY-SA-4.0 |
+| h2-database | en.wikipedia.org, www.h2database.com | CC-BY-SA-4.0 |
+| apache-derby | db.apache.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| apache-phoenix | en.wikipedia.org, phoenix.apache.org | CC-BY-SA-4.0 |
+| apache-accumulo | accumulo.apache.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| foundationdb | apple.github.io, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| tarantool | en.wikipedia.org, github.com, www.tarantool.io | CC-BY-SA-4.0 |
+| keydb | docs.keydb.dev, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| dragonfly-db | en.wikipedia.org, github.com, www.dragonflydb.io | CC-BY-SA-4.0 |
+| garnet-cache | en.wikipedia.org, github.com, microsoft.github.io | CC-BY-SA-4.0 |
+| immudb | docs.immudb.io, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| cratedb | cratedb.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| singlestore | docs.singlestore.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| materialize-db | en.wikipedia.org, github.com, materialize.com | CC-BY-SA-4.0 |
+| risingwave | docs.risingwave.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| ksqldb-streams | docs.ksqldb.io, en.wikipedia.org, kafka.apache.org | CC-BY-SA-4.0 |
+| apache-flink-sql | en.wikipedia.org, nightlies.apache.org | CC-BY-SA-4.0 |
+| airbyte-integration | docs.airbyte.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| fivetran-integration | en.wikipedia.org, fivetran.com | CC-BY-SA-4.0 |
+| singer-taps | en.wikipedia.org, github.com, hub.meltano.com, www.singer.io | CC-BY-SA-4.0 |
+| meltano | docs.meltano.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| apache-hop | en.wikipedia.org, hop.apache.org | CC-BY-SA-4.0 |
+| apache-camel | camel.apache.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| kestra-orchestration | en.wikipedia.org, github.com, kestra.io | CC-BY-SA-4.0 |
+| mage-ai | docs.mage.ai, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| flyte-workflows | docs.flyte.org, en.wikipedia.org, flyte.org, github.com | CC-BY-SA-4.0 |
+| metaflow | docs.metaflow.org, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| kedro-pipelines | docs.kedro.org, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| dbt-core-deep | docs.getdbt.com, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| great-expectations-deep | docs.greatexpectations.io, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| soda-data-quality | docs.soda.io, en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| apl-j-k | en.wikipedia.org | CC-BY-SA-4.0 |
+| kdb-q-lang | en.wikipedia.org | CC-BY-SA-4.0 |
+| bqn-array | en.wikipedia.org | CC-BY-SA-4.0 |
+| factor-stack | en.wikipedia.org | CC-BY-SA-4.0 |
+| joy-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| cat-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| postscript-lang | en.wikipedia.org | CC-BY-SA-4.0 |
+| simula-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| modula-2 | en.wikipedia.org | CC-BY-SA-4.0 |
+| modula-3 | en.wikipedia.org | CC-BY-SA-4.0 |
+| oberon-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| eiffel-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| sather-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| ada-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| pl-i-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| algol-family | en.wikipedia.org | CC-BY-SA-4.0 |
+| bcpl-b-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| mercury-logic | en.wikipedia.org | CC-BY-SA-4.0 |
+| curry-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| miranda-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| clean-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| unison-lang | en.wikipedia.org | CC-BY-SA-4.0 |
+| roc-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| koka-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| reasonml | en.wikipedia.org | CC-BY-SA-4.0 |
+| rescript-lang | en.wikipedia.org | CC-BY-SA-4.0 |
+| grain-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| ballerina-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| pony-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| chapel-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| x10-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| fortress-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| io-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| rebol-red | en.wikipedia.org | CC-BY-SA-4.0 |
+| tcl-tk-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| autoit | en.wikipedia.org | CC-BY-SA-4.0 |
+| applescript-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| powershell-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| vimscript-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| elisp-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| guile-scheme | en.wikipedia.org | CC-BY-SA-4.0 |
+| chicken-scheme | en.wikipedia.org | CC-BY-SA-4.0 |
+| gambit-scheme | en.wikipedia.org | CC-BY-SA-4.0 |
+| chez-scheme | en.wikipedia.org | CC-BY-SA-4.0 |
+| newlisp | en.wikipedia.org | CC-BY-SA-4.0 |
+| picolisp | en.wikipedia.org | CC-BY-SA-4.0 |
+| hy-lisp | en.wikipedia.org | CC-BY-SA-4.0 |
+| fennel-lisp | en.wikipedia.org | CC-BY-SA-4.0 |
+| janet-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| wren-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| gdscript-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| haxe-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| terra-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| futhark-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| dex-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| rails-deep | en.wikipedia.org, guides.rubyonrails.org | CC-BY-SA-4.0 |
+| sinatra-deep | en.wikipedia.org, sinatrarb.com | CC-BY-SA-4.0 |
+| hanami-ruby | en.wikipedia.org, guides.hanamirb.org | CC-BY-SA-4.0 |
+| roda-ruby | en.wikipedia.org, roda.jeremyevans.net | CC-BY-SA-4.0 |
+| phoenix-liveview | en.wikipedia.org, hexdocs.pm | CC-BY-SA-4.0 |
+| plug-elixir | en.wikipedia.org, hexdocs.pm | CC-BY-SA-4.0 |
+| litestar-python | docs.litestar.dev, en.wikipedia.org | CC-BY-SA-4.0 |
+| robyn-python | en.wikipedia.org, robyn.tech | CC-BY-SA-4.0 |
+| blacksheep-python | en.wikipedia.org, www.neoteroi.dev | CC-BY-SA-4.0 |
+| quart-async | en.wikipedia.org, quart.palletsprojects.com | CC-BY-SA-4.0 |
+| pyramid-framework | docs.pylonsproject.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| cherrypy-server | docs.cherrypy.dev, en.wikipedia.org | CC-BY-SA-4.0 |
+| web2py-framework | en.wikipedia.org | CC-BY-SA-4.0 |
+| masonite-python | docs.masoniteproject.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| adonisjs-node | docs.adonisjs.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| feathersjs-node | en.wikipedia.org, feathersjs.com | CC-BY-SA-4.0 |
+| loopback-node | en.wikipedia.org, loopback.io | CC-BY-SA-4.0 |
+| sails-node | en.wikipedia.org, sailsjs.com | CC-BY-SA-4.0 |
+| restify-node | en.wikipedia.org, restify.com | CC-BY-SA-4.0 |
+| polka-node | en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| hono-framework | en.wikipedia.org, hono.dev | CC-BY-SA-4.0 |
+| elysia-bun | elysiajs.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| oak-deno | en.wikipedia.org, jsr.io | CC-BY-SA-4.0 |
+| fresh-deno | en.wikipedia.org, fresh.deno.dev | CC-BY-SA-4.0 |
+| buffalo-go | en.wikipedia.org, gobuffalo.io | CC-BY-SA-4.0 |
+| beego-framework | beego.me, en.wikipedia.org | CC-BY-SA-4.0 |
+| revel-go | en.wikipedia.org, revel.github.io | CC-BY-SA-4.0 |
+| iris-go | en.wikipedia.org, www.iris-go.com | CC-BY-SA-4.0 |
+| chi-router-go | en.wikipedia.org, go-chi.io | CC-BY-SA-4.0 |
+| fasthttp-server | en.wikipedia.org, pkg.go.dev | CC-BY-SA-4.0 |
+| warp-rust-web | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
+| tide-rust-web | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
+| poem-rust-web | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
+| salvo-rust-web | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
+| dropwizard-java | en.wikipedia.org, www.dropwizard.io | CC-BY-SA-4.0 |
+| javalin-java | en.wikipedia.org, javalin.io | CC-BY-SA-4.0 |
+| spark-java-web | en.wikipedia.org, sparkjava.com | CC-BY-SA-4.0 |
+| vaadin-flow | en.wikipedia.org, vaadin.com | CC-BY-SA-4.0 |
+| grails-framework | docs.grails.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| ktor-server | en.wikipedia.org, ktor.io | CC-BY-SA-4.0 |
+| http4k-server | en.wikipedia.org, www.http4k.org | CC-BY-SA-4.0 |
+| finatra-scala | en.wikipedia.org, twitter.github.io | CC-BY-SA-4.0 |
+| akka-http-scala | doc.akka.io, en.wikipedia.org | CC-BY-SA-4.0 |
+| servant-haskell | docs.servant.dev, en.wikipedia.org | CC-BY-SA-4.0 |
+| yesod-haskell | en.wikipedia.org, www.yesodweb.com | CC-BY-SA-4.0 |
+| scotty-haskell | en.wikipedia.org, hackage.haskell.org | CC-BY-SA-4.0 |
+| actix-actor-model | actix.rs, en.wikipedia.org | CC-BY-SA-4.0 |
+| tower-middleware | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
+| api-gateway-patterns | en.wikipedia.org | CC-BY-SA-4.0 |
+| backend-for-frontend | en.wikipedia.org | CC-BY-SA-4.0 |
+| saga-orchestration | en.wikipedia.org | CC-BY-SA-4.0 |
+| circuit-breaker-pattern | en.wikipedia.org | CC-BY-SA-4.0 |
 | vxlan-overlay | en.wikipedia.org | CC-BY-SA-4.0 |
 | geneve-encapsulation | en.wikipedia.org | CC-BY-SA-4.0 |
 | network-overlays | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -1293,6 +1826,61 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | biophysics | en.wikipedia.org | CC-BY-SA-4.0 |
 | geophysics | en.wikipedia.org | CC-BY-SA-4.0 |
 | fluid-turbulence | en.wikipedia.org | CC-BY-SA-4.0 |
+| operational-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| denotational-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| axiomatic-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| small-step-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| big-step-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| lambda-cube | en.wikipedia.org | CC-BY-SA-4.0 |
+| system-f | en.wikipedia.org | CC-BY-SA-4.0 |
+| simply-typed-lambda | en.wikipedia.org | CC-BY-SA-4.0 |
+| dependent-types-pl | en.wikipedia.org | CC-BY-SA-4.0 |
+| linear-types | en.wikipedia.org | CC-BY-SA-4.0 |
+| affine-types | en.wikipedia.org | CC-BY-SA-4.0 |
+| refinement-types | en.wikipedia.org | CC-BY-SA-4.0 |
+| gradual-typing | en.wikipedia.org | CC-BY-SA-4.0 |
+| intersection-types | en.wikipedia.org | CC-BY-SA-4.0 |
+| subtyping-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| parametric-polymorphism | en.wikipedia.org | CC-BY-SA-4.0 |
+| ad-hoc-polymorphism | en.wikipedia.org | CC-BY-SA-4.0 |
+| type-inference-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| unification-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| hindley-milner-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| bidirectional-typing | en.wikipedia.org | CC-BY-SA-4.0 |
+| effect-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| algebraic-effects | en.wikipedia.org | CC-BY-SA-4.0 |
+| monad-transformers | en.wikipedia.org | CC-BY-SA-4.0 |
+| continuation-passing-style | en.wikipedia.org | CC-BY-SA-4.0 |
+| defunctionalization | en.wikipedia.org | CC-BY-SA-4.0 |
+| static-single-assignment | en.wikipedia.org | CC-BY-SA-4.0 |
+| control-flow-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| data-flow-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| abstract-interpretation | en.wikipedia.org | CC-BY-SA-4.0 |
+| partial-evaluation | en.wikipedia.org | CC-BY-SA-4.0 |
+| supercompilation | en.wikipedia.org | CC-BY-SA-4.0 |
+| pi-calculus | en.wikipedia.org | CC-BY-SA-4.0 |
+| calculus-of-communicating-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| communicating-sequential-processes | en.wikipedia.org | CC-BY-SA-4.0 |
+| session-types | en.wikipedia.org | CC-BY-SA-4.0 |
+| actor-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| process-calculus | en.wikipedia.org | CC-BY-SA-4.0 |
+| separation-logic | en.wikipedia.org | CC-BY-SA-4.0 |
+| hoare-logic-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| weakest-precondition | en.wikipedia.org | CC-BY-SA-4.0 |
+| denotational-domains | en.wikipedia.org | CC-BY-SA-4.0 |
+| cpo-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| fixed-point-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| game-semantics | en.wikipedia.org | CC-BY-SA-4.0 |
+| bisimulation | en.wikipedia.org | CC-BY-SA-4.0 |
+| coinduction | en.wikipedia.org | CC-BY-SA-4.0 |
+| structural-induction-pl | en.wikipedia.org | CC-BY-SA-4.0 |
+| term-rewriting | en.wikipedia.org | CC-BY-SA-4.0 |
+| confluence-rewriting | en.wikipedia.org | CC-BY-SA-4.0 |
+| knuth-bendix | en.wikipedia.org | CC-BY-SA-4.0 |
+| graph-reduction | en.wikipedia.org | CC-BY-SA-4.0 |
+| lazy-evaluation-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| strictness-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| closure-conversion | en.wikipedia.org | CC-BY-SA-4.0 |
 | win32-api | en.wikipedia.org | CC-BY-SA-4.0 |
 | windows-registry | en.wikipedia.org | CC-BY-SA-4.0 |
 | powershell-dsc | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -1609,6 +2197,59 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | runtime-security-falco | en.wikipedia.org | CC-BY-SA-4.0 |
 | ebpf-security-monitoring | en.wikipedia.org | CC-BY-SA-4.0 |
 | deception-technology-honeynets | en.wikipedia.org | CC-BY-SA-4.0 |
+| memory-safety | en.wikipedia.org | CC-BY-SA-4.0 |
+| use-after-free-defense | en.wikipedia.org | CC-BY-SA-4.0 |
+| buffer-overflow-protection | en.wikipedia.org | CC-BY-SA-4.0 |
+| stack-smashing-protection | en.wikipedia.org | CC-BY-SA-4.0 |
+| shadow-stack | en.wikipedia.org | CC-BY-SA-4.0 |
+| pointer-authentication | en.wikipedia.org | CC-BY-SA-4.0 |
+| memory-tagging-extension | en.wikipedia.org | CC-BY-SA-4.0 |
+| hardware-memory-safety | en.wikipedia.org | CC-BY-SA-4.0 |
+| rust-memory-safety | en.wikipedia.org | CC-BY-SA-4.0 |
+| fortify-source | en.wikipedia.org | CC-BY-SA-4.0 |
+| safe-stack | en.wikipedia.org | CC-BY-SA-4.0 |
+| spectre-mitigation | en.wikipedia.org | CC-BY-SA-4.0 |
+| meltdown-mitigation | en.wikipedia.org | CC-BY-SA-4.0 |
+| rowhammer-defense | en.wikipedia.org | CC-BY-SA-4.0 |
+| cache-timing-defense | en.wikipedia.org | CC-BY-SA-4.0 |
+| constant-time-crypto | en.wikipedia.org | CC-BY-SA-4.0 |
+| blinding-cryptography | en.wikipedia.org | CC-BY-SA-4.0 |
+| fault-injection-defense | en.wikipedia.org | CC-BY-SA-4.0 |
+| power-analysis-defense | en.wikipedia.org | CC-BY-SA-4.0 |
+| secure-boot-measured | en.wikipedia.org | CC-BY-SA-4.0 |
+| remote-attestation | en.wikipedia.org | CC-BY-SA-4.0 |
+| tpm-attestation | en.wikipedia.org | CC-BY-SA-4.0 |
+| uefi-secure-boot-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| dm-verity | en.wikipedia.org | CC-BY-SA-4.0 |
+| integrity-measurement | en.wikipedia.org | CC-BY-SA-4.0 |
+| slsa-framework | en.wikipedia.org, slsa.dev | CC-BY-SA-4.0 |
+| sigstore-signing | docs.sigstore.dev, en.wikipedia.org | CC-BY-SA-4.0 |
+| in-toto-attestation | en.wikipedia.org, in-toto.io | CC-BY-SA-4.0 |
+| reproducible-builds | en.wikipedia.org, reproducible-builds.org | CC-BY-SA-4.0 |
+| software-bill-of-materials-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| dependency-pinning | en.wikipedia.org | CC-BY-SA-4.0 |
+| vendoring-dependencies | en.wikipedia.org | CC-BY-SA-4.0 |
+| artifact-signing | en.wikipedia.org | CC-BY-SA-4.0 |
+| code-signing-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| notary-tuf | en.wikipedia.org | CC-BY-SA-4.0 |
+| seccomp-sandboxing | en.wikipedia.org | CC-BY-SA-4.0 |
+| linux-capabilities | en.wikipedia.org | CC-BY-SA-4.0 |
+| apparmor-mac | en.wikipedia.org | CC-BY-SA-4.0 |
+| selinux-policy | en.wikipedia.org | CC-BY-SA-4.0 |
+| landlock-lsm | en.wikipedia.org | CC-BY-SA-4.0 |
+| namespaces-isolation | en.wikipedia.org | CC-BY-SA-4.0 |
+| gvisor-sandbox | en.wikipedia.org | CC-BY-SA-4.0 |
+| kata-containers | en.wikipedia.org | CC-BY-SA-4.0 |
+| firecracker-microvm | en.wikipedia.org | CC-BY-SA-4.0 |
+| container-escape-defense | en.wikipedia.org | CC-BY-SA-4.0 |
+| kubernetes-pod-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-policy-k8s | en.wikipedia.org | CC-BY-SA-4.0 |
+| admission-controllers | en.wikipedia.org | CC-BY-SA-4.0 |
+| opa-gatekeeper | en.wikipedia.org | CC-BY-SA-4.0 |
+| falco-runtime | en.wikipedia.org | CC-BY-SA-4.0 |
+| ebpf-security-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| kernel-hardening | en.wikipedia.org | CC-BY-SA-4.0 |
+| grsecurity-concepts | en.wikipedia.org | CC-BY-SA-4.0 |
 | json-schema | en.wikipedia.org, json-schema.org | CC-BY-SA-4.0 |
 | apache-thrift | en.wikipedia.org | CC-BY-SA-4.0 |
 | messagepack | en.wikipedia.org | CC-BY-SA-4.0 |

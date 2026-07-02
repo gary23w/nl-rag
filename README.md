@@ -7,8 +7,8 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
 
 ## What's here
 
-- `packs/<domain>/` — one directory per knowledge domain (**2,030 domains, ~15,800 pack
-  files, ~450 MB**): every programming language and dialect (systems, JVM, .NET, functional,
+- `packs/<domain>/` — one directory per knowledge domain (**2,671 domains, ~18,000 pack
+  files**): every programming language and dialect (systems, JVM, .NET, functional,
   lisp family, scripting, assembly, the legacy canon), every paradigm and problem-solving
   method, the full embedded/IoT stack + hardware design & EDA (SystemVerilog, synthesis,
   SPICE, PCB, RF, microarchitecture), mathematics from arithmetic to category theory, quantum

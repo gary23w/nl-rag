@@ -1,0 +1,36 @@
+---
+title: "Video scaler"
+source: https://en.wikipedia.org/wiki/Video_scaler
+domain: dlss-upscaling
+license: CC-BY-SA-4.0
+tags: deep learning super sampling, dlss upscaling, neural image upscaling, temporal upscaling reconstruction
+fetched: 2026-07-02
+---
+
+# Video scaler
+
+A **video scaler** is a system that converts video signals from one display resolution to another; typically, scalers are used to convert a signal from a lower resolution (such as 480p standard definition) to a higher resolution (such as 1080i high definition), a process known as "upconversion" or "upscaling" (by contrast, converting from high to low resolution is known as "downconversion" or "downscaling").
+
+Video scalers are typically found inside consumer electronics devices such as televisions, video game consoles, and DVD or Blu-ray players, but can also be found in other AV equipment (such as video editing and television broadcasting equipment). Video scalers can also be completely separate devices, often providing simple video switching capabilities. These units are commonly found as part of home theatre or projected presentation systems. They are often combined with other video processing devices or algorithms to create a video processor that improves the apparent definition of video signals.
+
+Video scalers are primarily a digital device; however, they can be combined with an analog-to-digital converter (ADC, or digitizer) and a digital-to-analog converter (DAC) to support analog inputs and outputs.
+
+## Process
+
+The native resolution of a display is how many physical pixels make up each row and column of the visible area on the display's output surface. There are many different video signals in use which are not the same resolution (neither are all of the displays), thus some form of resolution adaptation is required to properly frame a video signal to a display device. For example, within the United States, there are NTSC, ATSC, and VESA video standards, each with several different resolution video formats. Multiple common resolutions are also used for high-definition television; 720p, 1080i, and 1080p.
+
+While scaling a video signal does allow it to match the size of a particular display, the process can result in an increased number of visual artifacts in the signal, such as ringing and posterization.
+
+## Scaling by television channels
+
+Television channels that air a mixture of 16:9 high-definition programming and 4:3 standard definition programming may employ scaling or cropping in order to make the programming fill the entire screen, as opposed to pillarboxing the feed instead, in order to maintain consistency in format. Likewise, broadcasters downscale programming produced in 16:9 for broadcast on their 4:3 feeds through letterboxing—either as a full 16:9 letterbox, or a partial 14:9 letterbox—a technique used primarily by European broadcasters during the transition to digital terrestrial television. The Active Format Description standard is a system of variables defining various scaling, letterboxing, and pillarboxing states; broadcasting equipment and televisions can be configured to automatically switch to the appropriate state based on the AFD flag encoded in the content and the aspect ratio of the display.
+
+When the U.S. cable network TNT introduced an HD feed in 2004, it controversially employed a stretching system known as FlexView (which was also offered to other broadcasters). FlexView used a nonlinear method to stretch more near the edges of the screen than in the center of it. The practice was imposed by the senior vice president of broadcast engineering at TNT, Clyde D. Smith, who argued that pillarboxing led to inconsistency between programs for viewers, could cause burn-in on plasma televisions, some older HDTVs could not stretch 4:3 content automatically, and the quality of stretching on some displays was poor. Despite TNT's intentions, the system was frequently criticized by viewers of high definition channels, with some nicknaming the effect "Stretch-O-Vision".
+
+In 2014, FXX faced similar criticism for its use of cropping and scaling on reruns of *The Simpsons* (which only started producing episodes in HD beginning in its 20th season), as its cropping method caused various visual gags to be lost. In February 2015, FXX announced that in response to these complaints, it would present these episodes in their original 4:3 aspect ratio on its video-on-demand service.
+
+Some series that were originally shot on 35 mm film—such as *Friends* and *Seinfeld*—have been converted to high-definition by cropping a widescreen image from the 4-perf pulldown.
+
+## AI upscaling
+
+In 2023, video upscaling products using generative artificial intelligence were previewed or released, such as NVIDIA's Video Super Resolution and Adobe's Project Res-Up. Unlike previous upscaling systems, these technologies generated new data based on provided video frames.

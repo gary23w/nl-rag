@@ -1,0 +1,55 @@
+---
+title: "SwiftUI"
+source: https://en.wikipedia.org/wiki/SwiftUI
+domain: catalyst-mac
+license: CC-BY-SA-4.0
+tags: mac catalyst, uikit on mac, ipad app port, apple platform bridge
+fetched: 2026-07-02
+---
+
+# SwiftUI
+
+**SwiftUI** is a declarative framework for building user interfaces for iOS, iPadOS, watchOS, tvOS, visionOS and macOS, developed by Apple Inc. for the Swift programming language.
+
+## Overview
+
+SwiftUI is declarative, contrasting with the imperative syntax used in other Apple development frameworks such as UIKit and AppKit. SwiftUI allows for 2D drawing, animations, event handling, widgets, and data binding. SwiftUI automatically synchronizes between UI views and data.
+
+SwiftUI integrates with other Apple technologies, such as Xcode and Swift Playgrounds to provide for real-time previews during editing, alongside support for debugging and other development features.
+
+SwiftUI allows for interoperability with UIKit and AppKit views via the `UIViewRepresentable` and `NSViewRepresentable` protocols respectively.
+
+## History
+
+SwiftUI was announced at the company's Worldwide Developers Conference (WWDC) on June 3, 2019, and was added in iOS 13 and macOS Catalina.
+
+During WWDC 2020 and the iOS 14 release cycle, Apple natively added support for maps with the `Map` view, with an interface based on Apple Maps via MapKit. MapKit allows for map annotation and satellite imagery.
+
+During WWDC 2021 and the iOS 15 release cycle, Apple added the `Canvas` element, adding support for Immediate mode drawing and performant 2D drawing.
+
+During WWDC 2022 and the iOS 16 release cycle, Apple released Swift Charts, a framework for making customizable and accessible charts.
+
+During WWDC 2023, Apple announced the Apple Vision Pro, and support for the device was added to SwiftUI, alongside new views for AR content such as `RealityView` and `ImmersiveSpace`.
+
+## Examples
+
+The following is an example of a simple Hello World program. The `@main` attribute defines the entry point into the app. It is standard practice in SwiftUI to separate the application struct and views into different structs, according to the Model–View–ViewModel (MVVM) architectural pattern.
+
+```mw
+import SwiftUI
+
+@main
+struct AnApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        Text("Hello, World!")
+    }
+}
+```

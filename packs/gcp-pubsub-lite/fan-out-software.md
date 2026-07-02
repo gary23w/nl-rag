@@ -1,0 +1,22 @@
+---
+title: "Fan-out (software)"
+source: https://en.wikipedia.org/wiki/Fan-out_(software)
+domain: gcp-pubsub-lite
+license: CC-BY-SA-4.0
+tags: gcp pubsub lite, low cost messaging gcp, partitioned messaging google, cost optimized pubsub
+fetched: 2026-07-02
+---
+
+# Fan-out (software)
+
+**Fan-out** has multiple meanings in software engineering.
+
+## Message-oriented middleware
+
+In message-oriented middleware solutions, **fan-out** is a messaging pattern used to model an information exchange that implies the delivery (or spreading) of a message to one or multiple destinations possibly in parallel, and not halting the process that executes the messaging to wait for any response to that message.
+
+## Software design and quality assurance
+
+In software construction, the fan-out of a class or method is the number of other classes used by that class or the number of other methods called by that method.
+
+Additionally, fan-out has impact on the quality of a software.
