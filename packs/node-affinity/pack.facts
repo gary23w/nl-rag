@@ -1,0 +1,1028 @@
+# nl-rag distilled facts — domain: node-affinity
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:node-affinity/assign-pod-node] You can constrain a Pod so that it is *restricted* to run on particular node(s), or to *prefer* to run on particular nodes.
+[src:node-affinity/assign-pod-node] There are several ways to do this and the recommended approaches all use label selectors to facilitate the selection.
+[src:node-affinity/assign-pod-node] Often, you do not need to set any such constraints; the scheduler will automatically do a reasonable placement (for example, spreading your Pods across nodes so as not place Pods on a node with insufficient free resources).
+[src:node-affinity/assign-pod-node] However, there are some circumstances where you may want to control which node the Pod deploys to, for example, to ensure that a Pod ends up on a node with an SSD attached to it, or to co-locate Pods from two different services that communicate a lot into the same availability zone.
+[src:node-affinity/assign-pod-node] Like many other Kubernetes objects, nodes have labels.
+[src:node-affinity/assign-pod-node] Kubernetes also populates a standard set of labels on all nodes in a cluster.
+[src:node-affinity/assign-pod-node] The value of these labels is cloud provider specific and is not guaranteed to be reliable.
+[src:node-affinity/assign-pod-node] may be the same as the node name in some environments and a different value in other environments.
+[src:node-affinity/assign-pod-node] Adding labels to nodes allows you to target Pods for scheduling on specific nodes or groups of nodes.
+[src:node-affinity/assign-pod-node] You can use this functionality to ensure that specific Pods only run on nodes with certain isolation, security, or regulatory properties.
+[src:node-affinity/assign-pod-node] If you use labels for node isolation, choose label keys that the kubelet cannot modify.
+[src:node-affinity/assign-pod-node] This prevents a compromised node from setting those labels on itself so that the scheduler schedules workloads onto the compromised node.
+[src:node-affinity/assign-pod-node] The `NodeRestriction` admission plugin prevents the kubelet from setting or modifying labels with a `node-restriction.kubernetes.io/` prefix.
+[src:node-affinity/assign-pod-node] Add labels with the `node-restriction.kubernetes.io/` prefix to your nodes, and use those labels in your node selectors.
+[src:node-affinity/assign-pod-node] For example, `example.com.node-restriction.kubernetes.io/fips=true` or `example.com.node-restriction.kubernetes.io/pci-dss=true`.
+[src:node-affinity/assign-pod-node] `nodeSelector` is the simplest recommended form of node selection constraint.
+[src:node-affinity/assign-pod-node] You can add the `nodeSelector` field to your Pod specification and specify the node labels you want the target node to have.
+[src:node-affinity/assign-pod-node] Kubernetes only schedules the Pod onto nodes that have each of the labels you specify.
+[src:node-affinity/assign-pod-node] See Assign Pods to Nodes for more information.
+[src:node-affinity/assign-pod-node] `nodeSelector` is the simplest way to constrain Pods to nodes with specific labels.
+[src:node-affinity/assign-pod-node] Affinity and anti-affinity expand the types of constraints you can define.
+[src:node-affinity/assign-pod-node] Node affinity is conceptually similar to `nodeSelector`, allowing you to constrain which nodes your Pod can be scheduled on based on node labels.
+[src:node-affinity/assign-pod-node] means that if the node labels change after Kubernetes schedules the Pod, the Pod continues to run.
+[src:node-affinity/assign-pod-node] You can specify node affinities using the `.spec.affinity.nodeAffinity` field in your Pod spec.
+[src:node-affinity/assign-pod-node] You can use the `operator` field to specify a logical operator for Kubernetes to use when interpreting the rules.
+[src:node-affinity/assign-pod-node] You can use `In`, `NotIn`, `Exists`, `DoesNotExist`, `Gt` and `Lt`.
+[src:node-affinity/assign-pod-node] Read Operators to learn more about how these work.
+[src:node-affinity/assign-pod-node] `NotIn` and `DoesNotExist` allow you to define node anti-affinity behavior.
+[src:node-affinity/assign-pod-node] Alternatively, you can use node taints to repel Pods from specific nodes.
+[src:node-affinity/assign-pod-node] If you specify both `nodeSelector` and `nodeAffinity`, *both* must be satisfied for the Pod to be scheduled onto a node.
+[src:node-affinity/assign-pod-node] If you specify multiple terms in `nodeSelectorTerms` associated with `nodeAffinity` types, then the Pod can be scheduled onto a node if one of the specified terms can be satisfied (terms are ORed).
+[src:node-affinity/assign-pod-node] If you specify multiple expressions in a single `matchExpressions` field associated with a term in `nodeSelectorTerms`, then the Pod can be scheduled onto a node only if all the expressions are satisfied (expressions are ANDed).
+[src:node-affinity/assign-pod-node] See Assign Pods to Nodes using Node Affinity for more information.
+[src:node-affinity/assign-pod-node] You can specify a `weight` between 1 and 100 for each instance of the `preferredDuringSchedulingIgnoredDuringExecution` affinity type.
+[src:node-affinity/assign-pod-node] When the scheduler finds nodes that meet all the other scheduling requirements of the Pod, the scheduler iterates through every preferred rule that the node satisfies and adds the value of the `weight` for that expression to a sum.
+[src:node-affinity/assign-pod-node] The final sum is added to the score of other priority functions for the node.
+[src:node-affinity/assign-pod-node] Nodes with the highest total score are prioritized when the scheduler makes a scheduling decision for the Pod.
+[src:node-affinity/assign-pod-node] When configuring multiple scheduling profiles, you can associate a profile with a node affinity, which is useful if a profile only applies to a specific set of nodes.
+[src:node-affinity/assign-pod-node] To do so, add an `addedAffinity` to the `args` field of the `NodeAffinity` plugin in the scheduler configuration.
+[src:node-affinity/assign-pod-node] The `addedAffinity` is applied to all Pods that set `.spec.schedulerName` to `foo-scheduler`, in addition to the NodeAffinity specified in the PodSpec.
+[src:node-affinity/assign-pod-node] That is, in order to match the Pod, nodes need to satisfy `addedAffinity` and the Pod's `.spec.NodeAffinity`.
+[src:node-affinity/assign-pod-node] Since the `addedAffinity` is not visible to end users, its behavior might be unexpected to them.
+[src:node-affinity/assign-pod-node] Use node labels that have a clear correlation to the scheduler profile name.
+[src:node-affinity/assign-pod-node] Inter-pod affinity and anti-affinity allow you to constrain which nodes your Pods can be scheduled on based on the labels of Pods already running on that node, instead of the node labels.
+[src:node-affinity/assign-pod-node] You express these rules (Y) as label selectors with an optional associated list of namespaces.
+[src:node-affinity/assign-pod-node] Pods are namespaced objects in Kubernetes, so Pod labels also implicitly have namespaces.
+[src:node-affinity/assign-pod-node] Any label selectors for Pod labels should specify the namespaces in which Kubernetes should look for those labels.
+[src:node-affinity/assign-pod-node] You express the topology domain (X) using a `topologyKey`, which is the key for the node label that the system uses to denote the domain.
+[src:node-affinity/assign-pod-node] For examples, see Well-Known Labels, Annotations and Taints.
+[src:node-affinity/assign-pod-node] Inter-pod affinity and anti-affinity require substantial amounts of processing which can slow down scheduling in large clusters significantly.
+[src:node-affinity/assign-pod-node] We do not recommend using them in clusters larger than several hundred nodes.
+[src:node-affinity/assign-pod-node] label, it can lead to unintended behavior.
+[src:node-affinity/assign-pod-node] For example, you could use `requiredDuringSchedulingIgnoredDuringExecution` affinity to tell the scheduler to co-locate Pods of two services in the same cloud provider zone because they communicate with each other a lot.
+[src:node-affinity/assign-pod-node] Similarly, you could use `preferredDuringSchedulingIgnoredDuringExecution` anti-affinity to spread Pods from a service across multiple cloud provider zones.
+[src:node-affinity/assign-pod-node] To use inter-pod affinity, use the `affinity.podAffinity` field in the Pod spec.
+[src:node-affinity/assign-pod-node] For inter-pod anti-affinity, use the `affinity.podAntiAffinity` field in the Pod spec.
+[src:node-affinity/assign-pod-node] If the current Pod being scheduled is the first in a series that have affinity to themselves, it is allowed to be scheduled if it passes all other affinity checks.
+[src:node-affinity/assign-pod-node] This is determined by verifying that no other Pod in the cluster matches the namespace and selector of this Pod, that the Pod matches its own terms, and the chosen node matches all requested topologies.
+[src:node-affinity/assign-pod-node] This ensures that there will not be a deadlock even if all the Pods have inter-pod affinity specified.
+[src:node-affinity/assign-pod-node] This example defines one Pod affinity rule and one Pod anti-affinity rule.
+[src:node-affinity/assign-pod-node] The Pod affinity rule uses the "hard" `requiredDuringSchedulingIgnoredDuringExecution`, while the anti-affinity rule uses the "soft" `preferredDuringSchedulingIgnoredDuringExecution`.
+[src:node-affinity/assign-pod-node] The affinity rule specifies that the scheduler is allowed to place the example Pod on a node only if that node belongs to a specific zone where other Pods have been labeled with `security=S1`.
+[src:node-affinity/assign-pod-node] For instance, if we have a cluster with a designated zone, let's call it "Zone V," consisting of nodes labeled with `topology.kubernetes.io/zone=V`, the scheduler can assign the Pod to any node within Zone V, as long as there is at least one Pod within Zone V already labeled with `security=S1`.
+[src:node-affinity/assign-pod-node] Conversely, if there are no Pods with `security=S1` labels in Zone V, the scheduler will not assign the example Pod to any node in that zone.
+[src:node-affinity/assign-pod-node] The anti-affinity rule specifies that the scheduler should try to avoid scheduling the Pod on a node if that node belongs to a specific zone where other Pods have been labeled with `security=S2`.
+[src:node-affinity/assign-pod-node] Conversely, the anti-affinity rule does not impact scheduling into Zone R if there are no Pods with `security=S2` labels.
+[src:node-affinity/assign-pod-node] To get yourself more familiar with the examples of Pod affinity and anti-affinity, refer to the design proposal.
+[src:node-affinity/assign-pod-node] You can use the `In`, `NotIn`, `Exists` and `DoesNotExist` values in the `operator` field for Pod affinity and anti-affinity.
+[src:node-affinity/assign-pod-node] In addition to `labelSelector` and `topologyKey`, you can optionally specify a list of namespaces which the `labelSelector` should match against using the `namespaces` field at the same level as `labelSelector` and `topologyKey`.
+[src:node-affinity/assign-pod-node] If omitted or empty, `namespaces` defaults to the namespace of the Pod where the affinity/anti-affinity definition appears.
+[src:node-affinity/assign-pod-node] You can also select matching namespaces using `namespaceSelector`, which is a label query over the set of namespaces.
+[src:node-affinity/assign-pod-node] The affinity term is applied to namespaces selected by both `namespaceSelector` and the `namespaces` field.
+[src:node-affinity/assign-pod-node] Note that an empty `namespaceSelector` ({}) matches all namespaces, while a null or empty `namespaces` list and null `namespaceSelector` matches the namespace of the Pod where the rule is defined.
+[src:node-affinity/assign-pod-node] The `matchLabelKeys` field is a beta-level field and is enabled by default in Kubernetes 1.36.
+[src:node-affinity/assign-pod-node] When you want to disable it, you have to disable it explicitly via the `MatchLabelKeysInPodAffinity` feature gate.
+[src:node-affinity/assign-pod-node] Kubernetes includes an optional `matchLabelKeys` field for Pod affinity or anti-affinity.
+[src:node-affinity/assign-pod-node] The field specifies keys for the labels that should match with the incoming Pod's labels, when satisfying the Pod (anti)affinity.
+[src:node-affinity/assign-pod-node] The keys are used to look up values from the Pod labels; those key-value labels are combined (using `AND`) with the match restrictions defined using the `labelSelector` field.
+[src:node-affinity/assign-pod-node] The combined filtering selects the set of existing Pods that will be taken into Pod (anti)affinity calculation.
+[src:node-affinity/assign-pod-node] with labels that might be updated directly on pods.
+[src:node-affinity/assign-pod-node] A common use case is to use `matchLabelKeys` with `pod-template-hash` (set on Pods managed as part of a Deployment, where the value is unique for each revision).
+[src:node-affinity/assign-pod-node] Using `pod-template-hash` in `matchLabelKeys` allows you to target the Pods that belong to the same revision as the incoming Pod, so that a rolling upgrade won't break affinity.
+[src:node-affinity/assign-pod-node] The `mismatchLabelKeys` field is a beta-level field and is enabled by default in Kubernetes 1.36.
+[src:node-affinity/assign-pod-node] Kubernetes includes an optional `mismatchLabelKeys` field for Pod affinity or anti-affinity.
+[src:node-affinity/assign-pod-node] The field specifies keys for the labels that should not match with the incoming Pod's labels, when satisfying the Pod (anti)affinity.
+[src:node-affinity/assign-pod-node] One example use case is to ensure Pods go to the topology domain (node, zone, etc) where only Pods from the same tenant or team are scheduled in.
+[src:node-affinity/assign-pod-node] In other words, you want to avoid running Pods from two different tenants on the same topology domain at the same time.
+[src:node-affinity/assign-pod-node] Inter-pod affinity and anti-affinity can be even more useful when they are used with higher level collections such as ReplicaSets, StatefulSets, Deployments, etc.
+[src:node-affinity/assign-pod-node] These rules allow you to configure that a set of workloads should be co-located in the same defined topology; for example, preferring to place two related Pods onto the same node.
+[src:node-affinity/assign-pod-node] For example: imagine a three-node cluster.
+[src:node-affinity/assign-pod-node] You use the cluster to run a web application and also an in-memory cache (such as Redis).
+[src:node-affinity/assign-pod-node] For this example, also assume that latency between the web application and the memory cache should be as low as is practical.
+[src:node-affinity/assign-pod-node] You could use inter-pod affinity and anti-affinity to co-locate the web servers with the cache as much as possible.
+[src:node-affinity/assign-pod-node] In the following example Deployment for the Redis cache, the replicas get the label `app=store`.
+[src:node-affinity/assign-pod-node] The `podAntiAffinity` rule tells the scheduler to avoid placing multiple replicas with the `app=store` label on a single node.
+[src:node-affinity/assign-pod-node] This creates each cache in a separate node.
+[src:node-affinity/assign-pod-node] The following example Deployment for the web servers creates replicas with the label `app=web-store`.
+[src:node-affinity/assign-pod-node] The Pod affinity rule tells the scheduler to place each replica on a node that has a Pod with the label `app=store`.
+[src:node-affinity/assign-pod-node] The Pod anti-affinity rule tells the scheduler never to place multiple `app=web-store` servers on a single node.
+[src:node-affinity/assign-pod-node] Creating the two preceding Deployments results in the following cluster layout, where each web server is co-located with a cache, on three separate nodes.
+[src:node-affinity/assign-pod-node] The overall effect is that each cache instance is likely to be accessed by a single client that is running on the same node.
+[src:node-affinity/assign-pod-node] This approach aims to minimize both skew (imbalanced load) and latency.
+[src:node-affinity/assign-pod-node] You might have other reasons to use Pod anti-affinity.
+[src:node-affinity/assign-pod-node] See the ZooKeeper tutorial for an example of a StatefulSet configured with anti-affinity for high availability, using the same technique as this example.
+[src:node-affinity/assign-pod-node] `nodeName` is a more direct form of node selection than affinity or `nodeSelector`.
+[src:node-affinity/assign-pod-node] If the `nodeName` field is not empty, the scheduler ignores the Pod and the kubelet on the named node tries to place the Pod on that node.
+[src:node-affinity/assign-pod-node] Using `nodeName` overrules using `nodeSelector` or affinity and anti-affinity rules.
+[src:node-affinity/assign-pod-node] is intended for use by custom schedulers or advanced use cases where you need to bypass any configured schedulers.
+[src:node-affinity/assign-pod-node] Bypassing the schedulers might lead to failed Pods if the assigned Nodes get oversubscribed.
+[src:node-affinity/assign-pod-node] to assign a Pod to a specific Node without bypassing the schedulers.
+[src:node-affinity/assign-pod-node] The above Pod will only run on the node `kube-01`.
+[src:node-affinity/assign-pod-node] `nominatedNodeName` can be used for external components to nominate node for a pending pod.
+[src:node-affinity/assign-pod-node] This nomination is best effort: it might be ignored if the scheduler determines the pod cannot go to a nominated node.
+[src:node-affinity/assign-pod-node] You can use *topology spread constraints* to control how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, or among any other topology domains that you define.
+[src:node-affinity/assign-pod-node] You might do this to improve performance, expected availability, or overall utilization.
+[src:node-affinity/assign-pod-node] Read Pod topology spread constraints to learn more about how these work.
+[src:node-affinity/assign-pod-node] Pods inherit the topology labels (`topology.kubernetes.io/zone` and `topology.kubernetes.io/region`) from their assigned Node if those labels are present.
+[src:node-affinity/assign-pod-node] These labels can then be utilized via the Downward API to provide the workload with node topology awareness.
+[src:node-affinity/assign-pod-node] The following are all the logical operators that you can use in the `operator` field for `nodeAffinity` and `podAffinity` mentioned above.
+[src:node-affinity/assign-pod-node] The following operators can only be used with `nodeAffinity`.
+[src:node-affinity/assign-pod-node] operators will not work with non-integer values.
+[src:node-affinity/assign-pod-node] If the given value doesn't parse as an integer, the Pod will fail to get scheduled.
+[src:node-affinity/bin-packing-problem] The **bin packing problem** is an optimization problem, in which items of different sizes must be packed into a finite number of bins or containers, each of a fixed given capacity, in a way that minimizes the number of bins used.
+[src:node-affinity/bin-packing-problem] The problem has many applications, such as filling up containers, loading trucks with weight capacity constraints, creating file backups in media, splitting a network prefix into multiple subnets, and technology mapping in FPGA semiconductor chip design.
+[src:node-affinity/bin-packing-problem] Computationally, the problem is NP-hard, and the corresponding decision problem, deciding if items can fit into a specified number of bins, is NP-complete.
+[src:node-affinity/bin-packing-problem] Despite its worst-case hardness, optimal solutions to very large instances of the problem can be produced with sophisticated algorithms.
+[src:node-affinity/bin-packing-problem] In addition, many approximation algorithms exist.
+[src:node-affinity/bin-packing-problem] For example, the first fit algorithm provides a fast but often non-optimal solution, involving placing each item into the first bin in which it will fit.
+[src:node-affinity/bin-packing-problem] It requires *Θ*(*n* log *n*) time, where *n* is the number of items to be packed.
+[src:node-affinity/bin-packing-problem] The algorithm can be made much more effective by first sorting the list of items into decreasing order (sometimes known as the first-fit decreasing algorithm), although this still does not guarantee an optimal solution and for longer lists may increase the running time of the algorithm.
+[src:node-affinity/bin-packing-problem] It is known, however, that there always exists at least one ordering of items that allows first-fit to produce an optimal solution.
+[src:node-affinity/bin-packing-problem] There are many variations of this problem, such as 2D packing, linear packing, packing by weight, packing by cost, and so on.
+[src:node-affinity/bin-packing-problem] The bin packing problem can also be seen as a special case of the cutting stock problem.
+[src:node-affinity/bin-packing-problem] When the number of bins is restricted to 1 and each item is characterized by both a volume and a value, the problem of maximizing the value of items that can fit in the bin is known as the knapsack problem.
+[src:node-affinity/bin-packing-problem] A variant of bin packing that occurs in practice is when items can share space when packed into a bin.
+[src:node-affinity/bin-packing-problem] Specifically, a set of items could occupy less space when packed together than the sum of their individual sizes.
+[src:node-affinity/bin-packing-problem] This variant is known as VM packing since when virtual machines (VMs) are packed in a server, their total memory requirement could decrease due to pages shared by the VMs that need only be stored once.
+[src:node-affinity/bin-packing-problem] If items can share space in arbitrary ways, the bin packing problem is hard to even approximate.
+[src:node-affinity/bin-packing-problem] However, if space sharing fits into a hierarchy, as is the case with memory sharing in virtual machines, the bin packing problem can be efficiently approximated.
+[src:node-affinity/bin-packing-problem] Another variant of bin packing of interest in practice is the so-called online bin packing.
+[src:node-affinity/bin-packing-problem] Here the items of different volume are supposed to arrive sequentially, and the decision maker has to decide whether to select and pack the currently observed item, or else to let it pass.
+[src:node-affinity/bin-packing-problem] In contrast, offline bin packing allows rearranging the items in the hope of achieving a better packing once additional items arrive.
+[src:node-affinity/bin-packing-problem] This of course requires additional storage for holding the items to be rearranged.
+[src:node-affinity/bin-packing-problem] In *Computers and Intractability* Garey and Johnson list the bin packing problem under the reference [SR1].
+[src:node-affinity/bin-packing-problem] They define its decision variant as follows.
+[src:node-affinity/bin-packing-problem] Instance: Finite set I of items, a size $s(i)\in \mathbb {Z} ^{+}$ for each $i\in I$ , a positive integer bin capacity B , and a positive integer K .
+[src:node-affinity/bin-packing-problem] Question: Is there a partition of I into disjoint sets $I_{1},\dots ,I_{K}$ such that the sum of the sizes of the items in each $I_{j}$ is B or less?
+[src:node-affinity/bin-packing-problem] Note that in the literature often an alternate, but not equivalent, notation is used, where $B=1$ and $s(i)\in \mathbb {Q} \cap (0,1]$ for each $i\in I$ .
+[src:node-affinity/bin-packing-problem] Furthermore, research is mostly interested in the optimization variant, which asks for the smallest possible value of K .
+[src:node-affinity/bin-packing-problem] A solution is *optimal* if it has minimal K .
+[src:node-affinity/bin-packing-problem] The K -value for an optimal solution for a set of items I is denoted by $\mathrm {OPT} (I)$ or just $\mathrm {OPT}$ if the set of items is clear from the context.
+[src:node-affinity/bin-packing-problem] where $y_{j}=1$ if bin j is used and $x_{ij}=1$ if item i is put into bin j .
+[src:node-affinity/bin-packing-problem] The bin packing problem is strongly NP-complete.
+[src:node-affinity/bin-packing-problem] This can be proven by reducing the strongly NP-complete 3-partition problem to bin packing.
+[src:node-affinity/bin-packing-problem] Furthermore, there can be no approximation algorithm with absolute approximation ratio smaller than ${\tfrac {3}{2}}$ unless ${\mathsf {P}}={\mathsf {NP}}$ .
+[src:node-affinity/bin-packing-problem] This can be proven by a reduction from the partition problem: given an instance of Partition where the sum of all input numbers is $2T$ , construct an instance of bin-packing in which the bin size is T.
+[src:node-affinity/bin-packing-problem] If there exists an equal partition of the inputs, then the optimal packing needs 2 bins; therefore, every algorithm with an approximation ratio smaller than ⁠3/2⁠ must return less than 3 bins, which must be 2 bins.
+[src:node-affinity/bin-packing-problem] In contrast, if there is no equal partition of the inputs, then the optimal packing needs at least 3 bins.
+[src:node-affinity/bin-packing-problem] On the other hand, bin packing is solvable in pseudo-polynomial time for any fixed number of bins K, and solvable in polynomial time for any fixed bin capacity B.
+[src:node-affinity/bin-packing-problem] To measure the performance of an approximation algorithm there are two approximation ratios considered in the literature.
+[src:node-affinity/bin-packing-problem] For a given list of items L the number $A(L)$ denotes the number of bins used when algorithm A is applied to list L , while $\mathrm {OPT} (L)$ denotes the optimum number for this list.
+[src:node-affinity/bin-packing-problem] Additionally, one can restrict the lists to those for which all items have a size of at most $\alpha$ .
+[src:node-affinity/bin-packing-problem] For such lists, the bounded size performance ratios are denoted as $R_{A}({\text{size}}\leq \alpha )$ and $R_{A}^{\infty }({\text{size}}\leq \alpha )$ .
+[src:node-affinity/bin-packing-problem] Offline heuristics, that modify the given list of items e.g. by sorting the items by size.
+[src:node-affinity/bin-packing-problem] These algorithms are no longer applicable to the online variant of this problem.
+[src:node-affinity/bin-packing-problem] However, they have an improved approximation guarantee while maintaining the advantage of their small time-complexity.
+[src:node-affinity/bin-packing-problem] A sub-category of offline heuristics is asymptotic approximation schemes.
+[src:node-affinity/bin-packing-problem] These algorithms have an approximation guarantee of the form $(1+\varepsilon )\mathrm {OPT} (L)+C$ for some constant that may depend on $1/\varepsilon$ .
+[src:node-affinity/bin-packing-problem] For an arbitrarily large $\mathrm {OPT} (L)$ these algorithms get arbitrarily close to $\mathrm {OPT} (L)$ .
+[src:node-affinity/bin-packing-problem] However, this comes at the cost of a (drastically) increased time complexity compared to the heuristical approaches.
+[src:node-affinity/bin-packing-problem] In the online version of the bin packing problem, the items arrive one after another and the (irreversible) decision where to place an item has to be made before knowing the next item or even if there will be another one.
+[src:node-affinity/bin-packing-problem] A diverse set of offline and online heuristics for bin-packing have been studied by David S.
+[src:node-affinity/bin-packing-problem] Otherwise, open a new bin and put the new item in it.
+[src:node-affinity/bin-packing-problem] Better approximation ratios are possible with heuristics that are not AnyFit.
+[src:node-affinity/bin-packing-problem] Yao proved in 1980 that there can be no online algorithm with an asymptotic competitive ratio smaller than ${\tfrac {3}{2}}$ .
+[src:node-affinity/bin-packing-problem] Brown and Liang improved this bound to 1.53635.
+[src:node-affinity/bin-packing-problem] Afterward, this bound was improved to 1.54014 by Vliet.
+[src:node-affinity/bin-packing-problem] In 2012, this lower bound was again improved by Békési and Galambos to ${\tfrac {248}{161}}\approx 1.54037$ .
+[src:node-affinity/bin-packing-problem] In the offline version of bin packing, the algorithm can see all the items before starting to place them into bins.
+[src:node-affinity/bin-packing-problem] This allows to attain improved approximation ratios.
+[src:node-affinity/bin-packing-problem] Fernandez de la Vega and Lueker presented a PTAS for bin packing.
+[src:node-affinity/bin-packing-problem] For this algorithm, they invented the method of *adaptive input rounding*: the input numbers are grouped and rounded up to the value of the maximum in each group.
+[src:node-affinity/bin-packing-problem] This yields an instance with a small number of different sizes, which can be solved exactly using the configuration linear program.
+[src:node-affinity/bin-packing-problem] The Karmarkar-Karp bin packing algorithm finds a solution with size at most $\mathrm {OPT} +{\mathcal {O}}(\log ^{2}(\mathrm {OPT} ))$ , and runs in time polynomial in n (the polynomial has a high degree, at least 8).
+[src:node-affinity/bin-packing-problem] Rothvoss presented an algorithm that generates a solution with at most $\mathrm {OPT} +{\mathcal {O}}(\log(\mathrm {OPT} )\cdot \log \log(\mathrm {OPT} ))$ bins.
+[src:node-affinity/bin-packing-problem] Hoberg and Rothvoss improved this algorithm to generate a solution with at most $\mathrm {OPT} +{\mathcal {O}}(\log(\mathrm {OPT} ))$ bins.
+[src:node-affinity/bin-packing-problem] The algorithm is randomized, and its running-time is polynomial in n.
+[src:node-affinity/bin-packing-problem] Martello and Toth developed an exact algorithm for the 1-dimensional bin-packing problem, called MTP.
+[src:node-affinity/bin-packing-problem] A faster alternative is the Bin Completion algorithm proposed by Richard E.
+[src:node-affinity/bin-packing-problem] A further improvement was presented by Schreiber and Korf in 2013.
+[src:node-affinity/bin-packing-problem] Which algorithm performs best depends on problem properties like the number of items, the optimal number of bins, unused space in the optimal solution and value precision.
+[src:node-affinity/bin-packing-problem] A special case of bin packing is when there is a small number *d* of different item sizes.
+[src:node-affinity/bin-packing-problem] There can be many different items of each size.
+[src:node-affinity/bin-packing-problem] This case is also called *high-multiplicity bin packing*, and It admits more efficient algorithms than the general problem.
+[src:node-affinity/bin-packing-problem] In the second variant, called **bin-packing with size-preserving fragmentation** (**BP-SPF**) each item has a size and a cost; fragmenting an item increases its cost but does not change its size.
+[src:node-affinity/bin-packing-problem] Mandal, Chakrabarti and Ghose proved that BP-SPF is NP-hard.
+[src:node-affinity/bin-packing-problem] Menakerman and Rom showed that BP-SIF and BP-SPF are both strongly NP-hard.
+[src:node-affinity/bin-packing-problem] Despite the hardness, they present several algorithms and investigate their performance.
+[src:node-affinity/bin-packing-problem] Their algorithms use classic algorithms for bin-packing, like next-fit and first-fit decreasing, as a basis for their algorithms.
+[src:node-affinity/bin-packing-problem] Bertazzi, Golden and Wang introduced a variant of BP-SIF with $1-x$ split rule: an item is allowed to be split in only one way according to its size.
+[src:node-affinity/bin-packing-problem] It is useful for the vehicle routing problem for example.
+[src:node-affinity/bin-packing-problem] In their paper, they provide the worst-case performance bound of the variant.
+[src:node-affinity/bin-packing-problem] Shachnai, Tamir and Yehezkeli developed approximation schemes for BP-SIF and BP-SPF; a dual PTAS (a PTAS for the dual version of the problem), an asymptotic PTAS called APTAS, and a dual asymptotic FPTAS called AFPTAS for both versions.
+[src:node-affinity/bin-packing-problem] Ekici introduced a variant of BP-SPF in which some items are in conflict, and it is forbidden to pack fragments of conflicted items into the same bin.
+[src:node-affinity/bin-packing-problem] They proved that this variant, too, is NP-hard.
+[src:node-affinity/bin-packing-problem] Cassazza and Ceselli introduced a variant with no cost and no overhead, and the number of bins is fixed.
+[src:node-affinity/bin-packing-problem] However, the number of fragmentations should be minimized.
+[src:node-affinity/bin-packing-problem] They present mathematical programming algorithms for both exact and approximate solutions.
+[src:node-affinity/bin-packing-problem] The problem of **fractional knapsack with penalties** was introduced by Malaguti, Monaci, Paronuzzi and Pferschy.
+[src:node-affinity/bin-packing-problem] They developed an FPTAS and a dynamic program for the problem, and they showed an extensive computational study comparing the performance of their models.
+[src:node-affinity/bin-packing-problem] An important special case of bin packing is that the item sizes form a *divisible sequence* (also called *factored*).
+[src:node-affinity/bin-packing-problem] A special case of divisible item sizes occurs in memory allocation in computer systems, where the item sizes are all powers of 2.
+[src:node-affinity/bin-packing-problem] If the item sizes are divisible, then some of the heuristic algorithms for bin packing find an optimal solution.
+[src:node-affinity/bin-packing-problem] There is a variant of bin packing in which there are cardinality constraints on the bins: each bin can contain at most *k* items, for some fixed integer *k*.
+[src:node-affinity/bin-packing-problem] In the bin packing problem, the *size* of the bins is fixed and their *number* can be enlarged (but should be as small as possible).
+[src:node-affinity/bin-packing-problem] In contrast, in the **multiway number partitioning** problem, the *number* of bins is fixed and their *size* can be enlarged.
+[src:node-affinity/bin-packing-problem] The objective is to find a partition in which the bin sizes are as nearly equal is possible (in the variant called **multiprocessor scheduling** problem or **minimum makespan** problem, the goal is specifically to minimize the size of the largest bin).
+[src:node-affinity/bin-packing-problem] In the **vector bin packing** problem, each item is a vector, and the size of each bin is also a vector.
+[src:node-affinity/bin-packing-problem] Let a bin has size w , and the sum of vectors in the bin be v , then the requirement is that $\forall i,v_{i}\leq w_{i}$ .
+[src:node-affinity/bin-packing-problem] In the **inverse bin packing** problem, both the number of bins and their sizes are fixed, but the item sizes can be changed.
+[src:node-affinity/bin-packing-problem] The objective is to achieve the minimum perturbation to the item size vector so that all the items can be packed into the prescribed number of bins.
+[src:node-affinity/bin-packing-problem] In the **maximum resource bin packing** problem, the goal is to *maximize* the number of bins used, such that, for some ordering of the bins, no item in a later bin fits in an earlier bin.
+[src:node-affinity/bin-packing-problem] In a dual problem, the number of bins is fixed, and the goal is to minimize the total number or the total size of items placed into the bins, such that no remaining item fits into an unfilled bin.
+[src:node-affinity/bin-packing-problem] In the **bin covering problem**, the bin size is bounded *from below*: the goal is to *maximize* the number of bins used such that the total size in each bin is at least a given threshold.
+[src:node-affinity/bin-packing-problem] In the **fair indivisible chore allocation** problem (a variant of **fair item allocation**), the items represent chores, and there are different people each of whom attributes a different difficulty-value to each chore.
+[src:node-affinity/bin-packing-problem] The goal is to allocate to each person a set of chores with an upper bound on its total difficulty-value (thus, each person corresponds to a bin).
+[src:node-affinity/bin-packing-problem] Many techniques from bin packing are used in this problem too.
+[src:node-affinity/bin-packing-problem] In the **guillotine cutting** problem, both the items and the "bins" are two-dimensional rectangles rather than one-dimensional numbers, and the items have to be cut from the bin using end-to-end cuts.
+[src:node-affinity/bin-packing-problem] In the **selfish bin packing** problem, each item is a player who wants to minimize its cost.
+[src:node-affinity/bin-packing-problem] There is also a variant of bin packing in which the cost that should be minimized is not the number of bins, but rather a certain concave function of the number of items in each bin.
+[src:node-affinity/bin-packing-problem] In **logistics and e-commerce**, three-dimensional bin packing underlies “cartonization,” where software selects a shipping carton and a feasible packing arrangement for a set of items; closely related industrial problems include container and pallet loading.
+[src:node-affinity/constraint-satisfaction] In artificial intelligence and operations research, **constraint satisfaction** is the process of finding a solution through a set of constraints that impose conditions that the variables must satisfy.
+[src:node-affinity/constraint-satisfaction] A solution is therefore an assignment of values to the variables that satisfies all constraints—that is, a point in the feasible region.
+[src:node-affinity/constraint-satisfaction] The techniques used in constraint satisfaction depend on the kind of constraints being considered.
+[src:node-affinity/constraint-satisfaction] Often used are constraints on a finite domain, to the point that constraint satisfaction problems are typically identified with problems based on constraints on a finite domain.
+[src:node-affinity/constraint-satisfaction] Such problems are usually solved via search, in particular a form of backtracking or local search.
+[src:node-affinity/constraint-satisfaction] Constraint propagation is another family of methods used on such problems; most of them are incomplete in general, that is, they may solve the problem or prove it unsatisfiable, but not always.
+[src:node-affinity/constraint-satisfaction] Constraint propagation methods are also used in conjunction with search to make a given problem simpler to solve.
+[src:node-affinity/constraint-satisfaction] Other considered kinds of constraints are on real or rational numbers; solving problems on these constraints is done via variable elimination or the simplex algorithm.
+[src:node-affinity/constraint-satisfaction] Constraint satisfaction as a general problem originated in the field of artificial intelligence in the 1970s (see for example (Laurière 1978)).
+[src:node-affinity/constraint-satisfaction] During the 1980s and 1990s, embedding of constraints into a programming language was developed.
+[src:node-affinity/constraint-satisfaction] The first language devised expressly with intrinsic support for constraint programming was Prolog.
+[src:node-affinity/constraint-satisfaction] Since then, constraint-programming libraries have become available in other languages, such as C++ or Java (e.g., Choco for Java).
+[src:node-affinity/constraint-satisfaction] As originally defined in artificial intelligence, constraints enumerate the possible values a set of variables may take in a given world.
+[src:node-affinity/constraint-satisfaction] A possible world is a total assignment of values to variables representing a way the world (real or imaginary) could be.
+[src:node-affinity/constraint-satisfaction] Informally, a finite domain is a finite set of arbitrary elements.
+[src:node-affinity/constraint-satisfaction] A constraint satisfaction problem on such domain contains a set of variables whose values can only be taken from the domain, and a set of constraints, each constraint specifying the allowed values for a group of variables.
+[src:node-affinity/constraint-satisfaction] A solution to this problem is an evaluation of the variables that satisfies all constraints.
+[src:node-affinity/constraint-satisfaction] In other words, a solution is a way for assigning a value to each variable in such a way that all constraints are satisfied by these values.
+[src:node-affinity/constraint-satisfaction] This is often the case in logic games such as Sudoku.
+[src:node-affinity/constraint-satisfaction] In practice, constraints are often expressed in compact form, rather than enumerating all the values of the variables that would satisfy the constraint.
+[src:node-affinity/constraint-satisfaction] One of the most-used constraints is the (obvious) one establishing that the values of the affected variables must be all different.
+[src:node-affinity/constraint-satisfaction] While usually not included in the above definition of a constraint satisfaction problem, arithmetic equations and inequalities bound the values of the variables they contain and can therefore be considered a form of constraints.
+[src:node-affinity/constraint-satisfaction] Their domain is the set of numbers (either integer, rational, or real), which is infinite: therefore, the relations of these constraints may be infinite as well; for example, $X=Y+1$ has an infinite number of pairs of satisfying values.
+[src:node-affinity/constraint-satisfaction] Arithmetic equations and inequalities are often not considered within the definition of a "constraint satisfaction problem", which is limited to finite domains.
+[src:node-affinity/constraint-satisfaction] They are however used often in constraint programming.
+[src:node-affinity/constraint-satisfaction] It can be shown that the arithmetic inequalities or equations present in some types of finite logic puzzles such as Futoshiki or Kakuro (also known as Cross Sums) can be dealt with as non-arithmetic constraints (see *Pattern-Based Constraint Satisfaction and Logic Puzzles*).
+[src:node-affinity/constraint-satisfaction] Constraint satisfaction problems on finite domains are typically solved using a form of search.
+[src:node-affinity/constraint-satisfaction] The most-used techniques are variants of backtracking, constraint propagation, and local search.
+[src:node-affinity/constraint-satisfaction] These techniques are used on problems with nonlinear constraints.
+[src:node-affinity/constraint-satisfaction] Variable elimination and the simplex algorithm are used for solving linear and polynomial equations and inequalities, and problems containing variables with infinite domain.
+[src:node-affinity/constraint-satisfaction] These are typically solved as optimization problems in which the optimized function is the number of violated constraints.
+[src:node-affinity/constraint-satisfaction] Solving a constraint satisfaction problem on a finite domain is an NP-complete problem with respect to the domain size.
+[src:node-affinity/constraint-satisfaction] Research has shown a number of tractable subcases, some limiting the allowed constraint relations, some requiring the scopes of constraints to form a tree, possibly in a reformulated version of the problem.
+[src:node-affinity/constraint-satisfaction] Research has also established relationships of the constraint satisfaction problem with problems in other areas such as finite model theory.
+[src:node-affinity/constraint-satisfaction] Constraint programming is the use of constraints as a programming language to encode and solve problems.
+[src:node-affinity/constraint-satisfaction] This is often done by embedding constraints into a programming language, which is called the host language.
+[src:node-affinity/constraint-satisfaction] Constraint programming originated from a formalization of equalities of terms in Prolog II, leading to a general framework for embedding constraints into a logic programming language.
+[src:node-affinity/constraint-satisfaction] The most common host languages are Prolog, C++, and Java, but other languages have been used as well.
+[src:node-affinity/constraint-satisfaction] A constraint logic program is a logic program that contains constraints in the bodies of clauses.
+[src:node-affinity/constraint-satisfaction] As an example, the clause `A(X):-X>0,B(X)` is a clause containing the constraint `X>0` in the body.
+[src:node-affinity/constraint-satisfaction] Constraints can also be present in the goal.
+[src:node-affinity/constraint-satisfaction] The constraints in the goal and in the clauses used to prove the goal are accumulated into a set called constraint store.
+[src:node-affinity/constraint-satisfaction] This set contains the constraints the interpreter has assumed satisfiable in order to proceed in the evaluation.
+[src:node-affinity/constraint-satisfaction] As a result, if this set is detected unsatisfiable, the interpreter backtracks.
+[src:node-affinity/constraint-satisfaction] Equations of terms, as used in logic programming, are considered a particular form of constraints, which can be simplified using unification.
+[src:node-affinity/constraint-satisfaction] As a result, the constraint store can be considered an extension of the concept of substitution that is used in regular logic programming.
+[src:node-affinity/constraint-satisfaction] The most common kinds of constraints used in constraint logic programming are constraints over integers/rational/real numbers and constraints over finite domains.
+[src:node-affinity/constraint-satisfaction] Concurrent constraint logic programming languages have also been developed.
+[src:node-affinity/constraint-satisfaction] They significantly differ from non-concurrent constraint logic programming in that they are aimed at programming concurrent processes that may not terminate.
+[src:node-affinity/constraint-satisfaction] Constraint handling rules can be seen as a form of concurrent constraint logic programming, but are also sometimes used within a non-concurrent constraint logic programming language.
+[src:node-affinity/constraint-satisfaction] They allow for rewriting constraints or to infer new ones based on the truth of conditions.
+[src:node-affinity/constraint-satisfaction] Constraint satisfaction toolkits are software libraries for imperative programming languages that are used to encode and solve a constraint satisfaction problem.
+[src:node-affinity/constraint-satisfaction] Constraint toolkits are a way for embedding constraints into an imperative programming language.
+[src:node-affinity/constraint-satisfaction] However, they are only used as external libraries for encoding and solving problems.
+[src:node-affinity/constraint-satisfaction] An approach in which constraints are integrated into an imperative programming language is taken in the Kaleidoscope programming language.
+[src:node-affinity/constraint-satisfaction] Constraints have also been embedded into functional programming languages.
+[src:node-affinity/kubernetes] The name *Kubernetes* comes from the Ancient Greek term κυβερνήτης, *kubernḗtēs* (helmsman, pilot), which is also the origin of the words *cybernetics* and (through Latin) *governor*.
+[src:node-affinity/kubernetes] "Kubernetes" is often abbreviated with the numerical contraction "K8s", meaning "the letter K, followed by 8 letters, followed by s".
+[src:node-affinity/kubernetes] Kubernetes assembles one or more computers, either virtual machines or bare metal, into a cluster which can run workloads in containers.
+[src:node-affinity/kubernetes] It works with various container runtimes, such as containerd and CRI-O.
+[src:node-affinity/kubernetes] Its suitability for running and managing workloads of all sizes and styles has led to its widespread adoption in clouds and data centers.
+[src:node-affinity/kubernetes] There are multiple distributions of this platform—from independent software vendors (ISVs) as well as hosted-on-cloud offerings from all the major public cloud vendors.
+[src:node-affinity/kubernetes] The software consists of a control plane and nodes on which the actual applications run.
+[src:node-affinity/kubernetes] It includes tools like `kubeadm` and `kubectl` which can be used to interact with its REST-based API.
+[src:node-affinity/kubernetes] Kubernetes was announced by Google on June 6, 2014.
+[src:node-affinity/kubernetes] The project was conceived and created by Google employees Joe Beda, Brendan Burns, and Craig McLuckie.
+[src:node-affinity/kubernetes] Others at Google soon joined to help build the project including Ville Aikas, Dawn Chen, Brian Grant, Tim Hockin, and Daniel Smith.
+[src:node-affinity/kubernetes] Other companies such as Red Hat and CoreOS joined the effort soon after, with notable contributors such as Clayton Coleman and Kelsey Hightower.
+[src:node-affinity/kubernetes] The design and development of Kubernetes was inspired by Google's Borg cluster manager and based on Promise Theory.
+[src:node-affinity/kubernetes] Many of its top contributors had previously worked on Borg; they codenamed Kubernetes "Project 7" after the *Star Trek* ex-Borg character Seven of Nine and gave its logo a seven-spoked ship's wheel (designed by Tim Hockin).
+[src:node-affinity/kubernetes] Unlike Borg, which was written in C++, Kubernetes is written in the Go language.
+[src:node-affinity/kubernetes] Kubernetes was announced in June, 2014 and version 1.0 was released on July 21, 2015.
+[src:node-affinity/kubernetes] Google worked with the Linux Foundation to form the Cloud Native Computing Foundation (CNCF) and offered Kubernetes as the seed technology.
+[src:node-affinity/kubernetes] Google was already offering a managed Kubernetes service, GKE, and Red Hat was supporting Kubernetes as part of OpenShift since the inception of the Kubernetes project in 2014.
+[src:node-affinity/kubernetes] On March 6, 2018, Kubernetes Project reached ninth place in the list of GitHub projects by the number of commits, and second place in authors and issues, after the Linux kernel.
+[src:node-affinity/kubernetes] Until version 1.18, Kubernetes followed an N-2 support policy, meaning that the three most recent minor versions receive security updates and bug fixes.
+[src:node-affinity/kubernetes] Starting with version 1.19, Kubernetes follows an N-3 support policy.
+[src:node-affinity/kubernetes] Kubernetes defines a set of building blocks ("primitives") that collectively provide mechanisms that deploy, maintain, and scale applications based on CPU, memory or custom metrics.
+[src:node-affinity/kubernetes] Kubernetes is loosely coupled and extensible to meet the needs of different workloads.
+[src:node-affinity/kubernetes] The internal components as well as extensions and containers that run on Kubernetes rely on the Kubernetes API.
+[src:node-affinity/kubernetes] The platform exerts its control over compute and storage resources by defining resources as objects, which can then be managed as such.
+[src:node-affinity/kubernetes] Kubernetes follows the primary/replica architecture.
+[src:node-affinity/kubernetes] The components of Kubernetes can be divided into those that manage an individual node and those that are part of the control plane.
+[src:node-affinity/kubernetes] The Kubernetes master node handles the Kubernetes control plane of the cluster, managing its workload and directing communication across the system.
+[src:node-affinity/kubernetes] The Kubernetes control plane consists of various components such as TLS encryption, role-based access control (RBAC) and a strong authentication method, network separation, each its own process, that can run both on a single master node or on multiple masters supporting high-availability clusters.
+[src:node-affinity/kubernetes] The various components of the Kubernetes control plane are as follows.
+[src:node-affinity/kubernetes] Etcd is a persistent, lightweight, distributed, key-value data store (originally developed as part of CoreOS).
+[src:node-affinity/kubernetes] It reliably stores the configuration data of the cluster, representing the overall state of the cluster at any given point of time.
+[src:node-affinity/kubernetes] Etcd favors consistency over availability in the event of a network partition (see CAP theorem).
+[src:node-affinity/kubernetes] The consistency is crucial for correctly scheduling and operating services.
+[src:node-affinity/kubernetes] The API server serves the Kubernetes API using JSON over HTTP, which provides both the internal and external interface to Kubernetes.
+[src:node-affinity/kubernetes] The API server processes, validates REST requests, and updates the state of the API objects in etcd, thereby allowing clients to configure workloads and containers across worker nodes.
+[src:node-affinity/kubernetes] The API server uses etcd's watch API to monitor the cluster, roll out critical configuration changes, or restore any divergences of the state of the cluster back to the desired state as declared in etcd.
+[src:node-affinity/kubernetes] As an example, a human operator may specify that three instances of a particular "pod" (see below) need to be running, and etcd stores this fact.
+[src:node-affinity/kubernetes] If the Deployment controller finds that only two instances are running (conflicting with the etcd declaration), it schedules the creation of an additional instance of that pod.
+[src:node-affinity/kubernetes] The scheduler is an extensible component that selects the node that an unscheduled pod (the basic unit of workloads to be scheduled) runs on, based on resource availability and other constraints.
+[src:node-affinity/kubernetes] The scheduler tracks resource allocation on each node to ensure that workload is not scheduled in excess of available resources.
+[src:node-affinity/kubernetes] For this purpose, the scheduler must know the resource requirements, resource availability, and other user-provided constraints or policy directives such as quality-of-service, affinity/anti-affinity requirements, and data locality.
+[src:node-affinity/kubernetes] The scheduler's role is to match resource "supply" to workload "demand".
+[src:node-affinity/kubernetes] Kubernetes allows running multiple schedulers within a single cluster.
+[src:node-affinity/kubernetes] As such, scheduler plug-ins may be developed and installed as in-process extensions to the native vanilla scheduler by running it as a separate scheduler, as long as they conform to the Kubernetes scheduling framework.
+[src:node-affinity/kubernetes] This allows cluster administrators to extend or modify the behavior of the default Kubernetes scheduler according to their needs.
+[src:node-affinity/kubernetes] A controller is a reconciliation loop that drives the actual cluster state toward the desired state, communicating with the API server to create, update, and delete the resources it manages (e.g., pods or service endpoints).
+[src:node-affinity/kubernetes] An example controller is a ReplicaSet controller, which handles replication and scaling by running a specified number of copies of a pod across the cluster.
+[src:node-affinity/kubernetes] The controller also handles creating replacement pods if the underlying node fails.
+[src:node-affinity/kubernetes] Other controllers that are part of the core Kubernetes system include a DaemonSet controller for running exactly one pod on every machine (or some subset of machines), and a Job controller for running pods that run to completion (e.g. as part of a batch job).
+[src:node-affinity/kubernetes] Labels selectors often form part of the controller's definition that specify the set of pods that a controller manages.
+[src:node-affinity/kubernetes] The controller manager is a single process that manages several core Kubernetes controllers (including the examples described above), is distributed as part of the standard Kubernetes installation and responding to the loss of nodes.
+[src:node-affinity/kubernetes] Custom controllers may also be installed in the cluster, further allowing the behavior and API of Kubernetes to be extended when used in conjunction with custom resources (see custom resources, controllers and operators below).
+[src:node-affinity/kubernetes] A node, also known as a worker or a minion, is a machine where containers (workloads) are deployed.
+[src:node-affinity/kubernetes] Every node in the cluster must run a container runtime, as well as the below-mentioned components, for communication with the primary network configuration of these containers.
+[src:node-affinity/kubernetes] kubelet is responsible for the running state of each node, ensuring that all containers on the node are healthy.
+[src:node-affinity/kubernetes] It takes care of starting, stopping, and maintaining application containers organized into pods as directed by the control plane. kubelet monitors the state of a pod, and if not in the desired state, the pod re-deploys to the same node.
+[src:node-affinity/kubernetes] Node status is relayed every few seconds via heartbeat messages to the API server.
+[src:node-affinity/kubernetes] Once the control plane detects a node failure, a higher-level controller is expected to observe this state change and launch pods on another healthy node.
+[src:node-affinity/kubernetes] A container runtime is responsible for the lifecycle of containers, including launching, reconciling and killing of containers. kubelet interacts with container runtimes via the Container Runtime Interface (CRI), which decouples the maintenance of core Kubernetes from the actual CRI implementation.
+[src:node-affinity/kubernetes] Originally, kubelet interfaced exclusively with the Docker runtime through a "dockershim".
+[src:node-affinity/kubernetes] However, from November 2020 up to April 2022, Kubernetes has deprecated the shim in favor of directly interfacing with the container through containerd, or replacing Docker with a runtime that is compliant with the Container Runtime Interface (CRI).
+[src:node-affinity/kubernetes] With the release of v1.24 in May 2022, the "dockershim" has been removed entirely.
+[src:node-affinity/kubernetes] Examples of popular container runtimes that are compatible with kubelet include containerd (initially supported via Docker) and CRI-O.
+[src:node-affinity/kubernetes] kube-proxy is an implementation of a network proxy and a load balancer, and it supports the service abstraction along with the other networking operations.
+[src:node-affinity/kubernetes] It is responsible for routing traffic to the appropriate container based on IP and port number of the incoming request.
+[src:node-affinity/kubernetes] In Kubernetes, namespaces are utilized to segregate the resources it handles into distinct and non-intersecting collections.
+[src:node-affinity/kubernetes] They are intended for use in environments with many users spread across multiple teams, or projects, or even separating environments like development, test, and production.
+[src:node-affinity/kubernetes] The basic scheduling unit in Kubernetes is a pod, which consists of one or more containers that are guaranteed to be co-located on the same node.
+[src:node-affinity/kubernetes] Each pod in Kubernetes is assigned a unique IP address within the cluster, allowing applications to use ports without the risk of conflict.
+[src:node-affinity/kubernetes] Within the pod, all containers can reference each other.
+[src:node-affinity/kubernetes] The container is the lowest level of a micro-service, which holds the running application, libraries, and their dependencies.
+[src:node-affinity/kubernetes] Kubernetes supports several abstractions of workloads that are at a higher level over simple pods.
+[src:node-affinity/kubernetes] This allows users to declaratively define and manage these high-level abstractions, instead of having to manage individual pods by themselves.
+[src:node-affinity/kubernetes] Several of these abstractions, supported by a standard installation of Kubernetes, are described below.
+[src:node-affinity/kubernetes] A ReplicaSet's purpose is to maintain a stable set of replica pods running at any given time.
+[src:node-affinity/kubernetes] As such, it is often used to guarantee the availability of a specified number of identical Pods.
+[src:node-affinity/kubernetes] The ReplicaSet can also be said to be a grouping mechanism that lets Kubernetes maintain the number of instances that have been declared for a given pod.
+[src:node-affinity/kubernetes] The definition of a ReplicaSet uses a selector, whose evaluation will result in identifying all pods that are associated with it.
+[src:node-affinity/kubernetes] A ReplicationController, similar to a ReplicaSet, serves the same purpose and behaves similarly to a ReplicaSet, which is to ensure that there will always be a specified number of pod replicas as desired.
+[src:node-affinity/kubernetes] The ReplicationController workload was the predecessor of a ReplicaSet, but was eventually deprecated in favor of ReplicaSet to make use of set-based label selectors.
+[src:node-affinity/kubernetes] Deployments are a higher-level management mechanism for ReplicaSets.
+[src:node-affinity/kubernetes] While the ReplicaSet controller manages the scale of the ReplicaSet, the Deployment controller manages what happens to the ReplicaSet – whether an update has to be rolled out, or rolled back, etc.
+[src:node-affinity/kubernetes] When Deployments are scaled up or down, this results in the declaration of the ReplicaSet changing, and this change in the declared state is managed by the ReplicaSet controller.
+[src:node-affinity/kubernetes] StatefulSets are controllers that enforce the properties of uniqueness and ordering amongst instances of a pod, and can be used to run stateful applications.
+[src:node-affinity/kubernetes] While scaling stateless applications is only a matter of adding more running pods, doing so for stateful workloads is harder, because the state needs to be preserved if a pod is restarted.
+[src:node-affinity/kubernetes] If the application is scaled up or down, the state may need to be redistributed.
+[src:node-affinity/kubernetes] Databases are an example of stateful workloads.
+[src:node-affinity/kubernetes] When run in high-availability mode, many databases come with the notion of a primary instance and secondary instances.
+[src:node-affinity/kubernetes] In this case, the notion of ordering of instances is important.
+[src:node-affinity/kubernetes] Other applications like Apache Kafka distribute the data amongst their brokers; hence, one broker is not the same as another.
+[src:node-affinity/kubernetes] In this case, the notion of instance uniqueness is important.
+[src:node-affinity/kubernetes] DaemonSets are responsible for ensuring that a pod is created on every single node in the cluster.
+[src:node-affinity/kubernetes] Generally, most workloads scale in response to a desired replica count, depending on the availability and performance requirements as needed by the application.
+[src:node-affinity/kubernetes] However, in other scenarios it may be necessary to deploy a pod to every single node in the cluster, scaling up the number of total pods as nodes are added and garbage collecting them as they are removed.
+[src:node-affinity/kubernetes] This is particularly helpful for use cases where the workload has some dependency on the actual node or host machine, such as log collection, ingress controllers, and storage services.
+[src:node-affinity/kubernetes] A Kubernetes service is a set of pods that work together, such as one tier of a multi-tier application.
+[src:node-affinity/kubernetes] The set of pods that constitute a service are defined by a label selector.
+[src:node-affinity/kubernetes] Kubernetes provides two modes of service discovery, using environment variables or using Kubernetes DNS.
+[src:node-affinity/kubernetes] Service discovery assigns a stable IP address and DNS name to the service, and load balances traffic in a round-robin manner to network connections of that IP address among the pods matching the selector (even as failures cause the pods to move from machine to machine).
+[src:node-affinity/kubernetes] By default a service is exposed inside a cluster (e.g., back end pods might be grouped into a service, with requests from the front-end pods load-balanced among them), but a service can also be exposed outside a cluster (e.g., for clients to reach front-end pods).
+[src:node-affinity/kubernetes] Filesystems in the Kubernetes container provide ephemeral storage, by default.
+[src:node-affinity/kubernetes] This means that a restart of the pod will wipe out any data on such containers, and therefore, this form of storage is quite limiting in anything but trivial applications.
+[src:node-affinity/kubernetes] A Kubernetes volume provides persistent storage that exists for the lifetime of the pod itself.
+[src:node-affinity/kubernetes] This storage can also be used as shared disk space for containers within the pod.
+[src:node-affinity/kubernetes] Volumes are mounted at specific mount points within the container, which are defined by the pod configuration, and cannot mount onto other volumes or link to other volumes.
+[src:node-affinity/kubernetes] The same volume can be mounted at different points in the file system tree by different containers.
+[src:node-affinity/kubernetes] A common application challenge is deciding where to store and manage configuration information, some of which may contain sensitive data.
+[src:node-affinity/kubernetes] Configuration data can be anything as fine-grained as individual properties, or coarse-grained information like entire configuration files such as JSON or XML documents.
+[src:node-affinity/kubernetes] Kubernetes provides two closely related mechanisms to deal with this need, known as ConfigMaps and Secrets, both of which allow for configuration changes to be made without requiring an application rebuild.
+[src:node-affinity/kubernetes] The data from ConfigMaps and Secrets will be made available to every single instance of the application to which these objects have been bound via the Deployment.
+[src:node-affinity/kubernetes] A Secret and/or a ConfigMap is sent to a node only if a pod on that node requires it, which will only be stored in memory on the node.
+[src:node-affinity/kubernetes] Once the pod that depends on the Secret or ConfigMap is deleted, the in-memory copy of all bound Secrets and ConfigMaps are deleted as well.
+[src:node-affinity/kubernetes] Mounted within a volume accessible within the container's filesystem, which supports automatic reloading without restarting the container.
+[src:node-affinity/kubernetes] The biggest difference between a Secret and a ConfigMap is that Secrets are specifically designed for containing secure and confidential data, although they are not encrypted at rest by default, and requires additional setup in order to fully secure the use of Secrets within the cluster.
+[src:node-affinity/kubernetes] Secrets are often used to store confidential or sensitive data like certificates, credentials to work with image registries, passwords, and ssh keys.
+[src:node-affinity/kubernetes] Kubernetes enables clients (users or internal components) to attach keys called labels to any API object in the system, such as pods and nodes.
+[src:node-affinity/kubernetes] Correspondingly, label selectors are queries against labels that resolve to matching objects.
+[src:node-affinity/kubernetes] When a service is defined, one can define the label selectors that will be used by the service router/load balancer to select the pod instances that the traffic will be routed to.
+[src:node-affinity/kubernetes] Thus, simply changing the labels of the pods or changing the label selectors on the service can be used to control which pods get traffic and which don't, which can be used to support various deployment patterns like blue–green deployments or A/B testing.
+[src:node-affinity/kubernetes] This capability to dynamically control how services utilize implementing resources provides a loose coupling within the infrastructure.
+[src:node-affinity/kubernetes] Just like labels, field selectors also let one select Kubernetes resources.
+[src:node-affinity/kubernetes] Unlike labels, the selection is based on the attribute values inherent to the resource being selected, rather than user-defined categorization.
+[src:node-affinity/kubernetes] `metadata.name` and `metadata.namespace` are field selectors that will be present on all Kubernetes objects.
+[src:node-affinity/kubernetes] Other selectors that can be used depend on the object/resource type.
+[src:node-affinity/kubernetes] Add-ons are additional features of the Kubernetes cluster implemented as applications running within it.
+[src:node-affinity/kubernetes] The pods may be managed by Deployments, ReplicationControllers, and so on.
+[src:node-affinity/kubernetes] Cluster DNS is a DNS server, in addition to the other DNS server(s) in the environment, which serves DNS records for Kubernetes services.
+[src:node-affinity/kubernetes] Containers started by Kubernetes automatically include this DNS server in their DNS searches.
+[src:node-affinity/kubernetes] This is a general purpose, web-based UI for Kubernetes clusters.
+[src:node-affinity/kubernetes] It allows administrators to manage and troubleshoot applications running in the cluster, as well as the cluster itself.
+[src:node-affinity/kubernetes] Container Resource Monitoring records metrics about containers in a central database, and provides a UI for browsing that data.
+[src:node-affinity/kubernetes] Kubernetes cost monitoring applications allow breakdown of costs by pods, nodes, namespaces, and labels.
+[src:node-affinity/kubernetes] To prevent the loss of event data in the event of node or pod failures, container logs can be saved to a central log store with a search/browsing interface.
+[src:node-affinity/kubernetes] Kubernetes provides no native storage for log data, but one can integrate many existing logging solutions into the Kubernetes cluster.
+[src:node-affinity/kubernetes] Containers emerged as a way to make software portable.
+[src:node-affinity/kubernetes] The container contains all the packages needed to run a service.
+[src:node-affinity/kubernetes] The provided file system makes containers extremely portable and easy to use in development.
+[src:node-affinity/kubernetes] A container can be moved from development to test or production with no or relatively few configuration changes.
+[src:node-affinity/kubernetes] Historically Kubernetes was suitable only for stateless services.
+[src:node-affinity/kubernetes] However, many applications have a database, which requires persistence, leading to the creation of persistent storage for Kubernetes.
+[src:node-affinity/kubernetes] Implementing persistent storage for containers is one of the top challenges of Kubernetes administrators, DevOps and cloud engineers.
+[src:node-affinity/kubernetes] Containers may be ephemeral, but more and more of their data is not, so one needs to ensure the data's survival in case of container termination or hardware failure.
+[src:node-affinity/kubernetes] When deploying containers with Kubernetes or containerized applications, organizations often realize that they need persistent storage.
+[src:node-affinity/kubernetes] They need to provide fast and reliable storage for databases, root images and other data used by the containers.
+[src:node-affinity/kubernetes] In addition to the landscape, the Cloud Native Computing Foundation (CNCF), has published other information about Kubernetes Persistent Storage including a blog helping to define the container attached storage pattern.
+[src:node-affinity/kubernetes] This pattern can be thought of as one that uses Kubernetes itself as a component of the storage system or service.
+[src:node-affinity/kubernetes] Container Attached Storage is a type of data storage that emerged as Kubernetes gained prominence.
+[src:node-affinity/kubernetes] The Container Attached Storage approach or pattern relies on Kubernetes itself for certain capabilities while delivering primarily block, file, object and interfaces to workloads running on Kubernetes.
+[src:node-affinity/kubernetes] Common attributes of Container Attached Storage include the use of extensions to Kubernetes, such as custom resource definitions, and the use of Kubernetes itself for functions that otherwise would be separately developed and deployed for storage or data management.
+[src:node-affinity/kubernetes] Examples of functionality delivered by custom resource definitions or by Kubernetes itself include retry logic, delivered by Kubernetes itself, and the creation and maintenance of an inventory of available storage media and volumes, typically delivered via a custom resource definition.
+[src:node-affinity/kubernetes] In Kubernetes version 1.9, the initial Alpha release of Container Storage Interface (CSI) was introduced.
+[src:node-affinity/kubernetes] Previously, storage volume plug-ins were included in the Kubernetes distribution.
+[src:node-affinity/kubernetes] By creating a standardized CSI, the code required to interface with external storage systems was separated from the core Kubernetes code base.
+[src:node-affinity/kubernetes] Just one year later, the CSI feature was made Generally Available (GA) in Kubernetes.
+[src:node-affinity/kubernetes] A key component of the Kubernetes control plane is the API Server, which exposes an HTTP API that can be invoked by other parts of the cluster as well as end users and external components.
+[src:node-affinity/kubernetes] This API is a REST API and is declarative in nature, and is the same API exposed to the control plane.
+[src:node-affinity/kubernetes] The API server is backed by etcd to store all records persistently.
+[src:node-affinity/kubernetes] In Kubernetes, all objects serve as the "record of intent" of the cluster's state, and are able to define the desired state that the writer of the object wishes for the cluster to be in.
+[src:node-affinity/kubernetes] All objects in Kubernetes are subject to the same API conventions.
+[src:node-affinity/kubernetes] The Kubernetes API can be extended using *Custom Resources*, which represent objects that are not part of the standard Kubernetes installation.
+[src:node-affinity/kubernetes] These custom resources are declared using *Custom Resource Definitions* (CRDs), which is a kind of resource that can be dynamically registered and unregistered without shutting down or restarting a cluster that is currently running.
+[src:node-affinity/kubernetes] Custom controllers are another extension mechanism that interact with the Kubernetes API, similar to the default controllers in the standard pre-installed Kubernetes controller manager.
+[src:node-affinity/kubernetes] These controllers may interact with custom resources to allow for a declarative API: users may declare the desired state of the system via the custom resources, and it is the responsibility of the custom controller to observe the change and reconcile it.
+[src:node-affinity/kubernetes] The combination of custom resources and custom controllers are often referred to as a *Kubernetes* *Operator*.
+[src:node-affinity/kubernetes] The key use case for operators are to capture the aim of a human operator who is managing a service or set of services and to implement them using automation, and with a declarative API supporting this automation.
+[src:node-affinity/kubernetes] Human operators who look after specific applications and services have deep knowledge of how the system ought to behave, how to deploy it, and how to react if there are problems.
+[src:node-affinity/kubernetes] Examples of problems solved by operators include taking and restoring backups of that application's state, and handling upgrades of the application code alongside related changes such as database schemas or extra configuration settings.
+[src:node-affinity/kubernetes] Several notable projects under the Cloud Native Computing Foundation's incubation program follow the operator pattern to extend Kubernetes, including Argo, Open Policy Agent and Istio.
+[src:node-affinity/kubernetes] Kubernetes defines the following strategies for controlling access to its API.
+[src:node-affinity/kubernetes] The Kubernetes API server listens on a TCP port that serves HTTPS traffic, in order to enforce transport layer security (TLS) using CA certificates.
+[src:node-affinity/kubernetes] In older versions of Kubernetes, the API server supported listening on both HTTP and HTTPS ports (with the HTTP port number having no transport security whatsoever).
+[src:node-affinity/kubernetes] This was deprecated in v1.10 and eventually dropped support in v1.20 of Kubernetes.
+[src:node-affinity/kubernetes] Users are typically expected to indicate and define cluster URL details along with the necessary credentials in a *kubeconfig* file, which are natively supported by other Kubernetes tools like kubectl and the official Kubernetes client libraries.
+[src:node-affinity/kubernetes] *Attribute-based access control (ABAC) mode*: Grants access rights to users through the use of defined access control policies which combine attributes together.
+[src:node-affinity/kubernetes] *Role-based access control (RBAC) mode*: Grants access rights to users based on roles that are granted to the user, where each role defines a list of actions that are allowed.
+[src:node-affinity/kubernetes] *Webhook mode*: Queries a REST API service to determine if a user is authorized to perform a given action.
+[src:node-affinity/kubernetes] The same API design principles have been used to define an API to harness a program in order to create, configure, and manage Kubernetes clusters.
+[src:node-affinity/kubernetes] A key concept embodied in the API is using Infrastructure as Software, or the notion that the Kubernetes cluster infrastructure is itself a resource / object that can be managed just like any other Kubernetes resources.
+[src:node-affinity/kubernetes] Similarly, machines that make up the cluster are also treated as a Kubernetes resource.
+[src:node-affinity/kubernetes] The API has two pieces – the core API, and a provider implementation.
+[src:node-affinity/kubernetes] The provider implementation consists of cloud-provider specific functions that let Kubernetes provide the cluster API in a fashion that is well-integrated with the cloud-provider's services and resources.
+[src:node-affinity/kubernetes] Kubernetes is commonly used as a way to host a microservice-based implementation, because it and its associated ecosystem of tools provide all the capabilities needed to address key concerns of any microservice architecture.
+[src:node-affinity/kubernetes] A common criticism of Kubernetes is that it is too complex.
+[src:node-affinity/kubernetes] Various vendors offer Kubernetes-based platforms or infrastructure as a service (IaaS) that deploy Kubernetes.
+[src:node-affinity/kubernetes] These are typically categorized according to open-source, commercial or managed distributions.
+[src:node-affinity/load-balancing-computing] In computing, **load balancing** is the process of distributing a set of tasks over a set of resources (computing units) with the aim of making their overall processing more efficient.
+[src:node-affinity/load-balancing-computing] Load balancing can optimize response time and avoid unevenly overloading some compute nodes while other compute nodes are left idle.
+[src:node-affinity/load-balancing-computing] Load balancing is the subject of research in the field of parallel computers.
+[src:node-affinity/load-balancing-computing] Two main approaches exist: static algorithms, which do not take into account the state of the different machines, and dynamic algorithms, which are usually more general and more efficient but require exchanges of information between the different computing units, at the risk of a loss of efficiency.
+[src:node-affinity/load-balancing-computing] A load-balancing algorithm always tries to answer a specific problem.
+[src:node-affinity/load-balancing-computing] Among other things, the nature of the tasks, the algorithmic complexity, the hardware architecture on which the algorithms will run as well as required error tolerance, must be taken into account.
+[src:node-affinity/load-balancing-computing] Therefore compromise must be found to best meet application-specific requirements.
+[src:node-affinity/load-balancing-computing] The efficiency of load balancing algorithms critically depends on the nature of the tasks.
+[src:node-affinity/load-balancing-computing] Therefore, the more information about the tasks is available at the time of decision making, the greater the potential for optimization.
+[src:node-affinity/load-balancing-computing] Perfect knowledge of the execution time of each of the tasks allows to reach an optimal load distribution (see algorithm of prefix sum).
+[src:node-affinity/load-balancing-computing] Unfortunately, this is in fact an idealized case.
+[src:node-affinity/load-balancing-computing] Knowing the exact execution time of each task is an extremely rare situation.
+[src:node-affinity/load-balancing-computing] For this reason, there are several techniques to get an idea of the different execution times.
+[src:node-affinity/load-balancing-computing] First of all, when tasks are relatively homogeneous size, it is possible to consider that each of them will require approximately the average execution time.
+[src:node-affinity/load-balancing-computing] If, on the other hand, the execution time is considerably irregular, other techniques may be used.
+[src:node-affinity/load-balancing-computing] One technique is to add some metadata to each task.
+[src:node-affinity/load-balancing-computing] Depending on the previous execution time for similar metadata, it is possible to make inferences for a future task based on statistics.
+[src:node-affinity/load-balancing-computing] In some cases, tasks depend on each other.
+[src:node-affinity/load-balancing-computing] These interdependencies can be illustrated by a directed acyclic graph.
+[src:node-affinity/load-balancing-computing] Intuitively, some tasks cannot begin until others are completed.
+[src:node-affinity/load-balancing-computing] Assuming that the required time for each of the tasks is known in advance, an optimal execution order must lead to the minimization of the total execution time.
+[src:node-affinity/load-balancing-computing] However, this is an NP-hard problem and therefore can be difficult to solve exactly.
+[src:node-affinity/load-balancing-computing] There are algorithms, like job scheduler, that calculate optimal task distributions using metaheuristic methods.
+[src:node-affinity/load-balancing-computing] Another feature of the tasks critical for the design of a load balancing algorithm is their ability to be broken down into subtasks during execution.
+[src:node-affinity/load-balancing-computing] The *tree-shaped computation* algorithm presented later takes great advantage of this specificity.
+[src:node-affinity/load-balancing-computing] A load balancing algorithm is "static" when it does not take into account the state of the system for the distribution of tasks.
+[src:node-affinity/load-balancing-computing] Thereby, the system state includes measures such as the load level (and sometimes even overload) of certain processors.
+[src:node-affinity/load-balancing-computing] Instead, assumptions about the overall system are made beforehand, such as the arrival times and resource requirements of incoming tasks.
+[src:node-affinity/load-balancing-computing] In addition, the number of processors, their respective power and communication speeds are known.
+[src:node-affinity/load-balancing-computing] Therefore, static load balancing aims to associate a known set of tasks with the available processors in order to minimize a certain performance function.
+[src:node-affinity/load-balancing-computing] The key design choice is the performance function.
+[src:node-affinity/load-balancing-computing] Static load balancing techniques are commonly centralized around a router, or master, which distributes the loads and optimizes the performance function.
+[src:node-affinity/load-balancing-computing] This minimization can take into account information related to the tasks to be distributed, and derive an expected execution time.
+[src:node-affinity/load-balancing-computing] The advantage of static algorithms is that they are easy to set up and can efficient in the case of fairly regular tasks (such as processing HTTP requests from a website).
+[src:node-affinity/load-balancing-computing] However, there is still some statistical variance in the assignment of tasks which can lead to the overloading of some computing units.
+[src:node-affinity/load-balancing-computing] Unlike static load distribution algorithms, dynamic algorithms take into account the current load of each of the computing units (also called nodes) in the system.
+[src:node-affinity/load-balancing-computing] In this approach, tasks can be moved dynamically from an overloaded node to an underloaded node in order to receive faster processing.
+[src:node-affinity/load-balancing-computing] While these algorithms are much more complicated to design, they can improve performance, in particular, when the execution time varies greatly from one task to another.
+[src:node-affinity/load-balancing-computing] Dynamic load balancing architecture can be more modular since it is not mandatory to have a specific node dedicated to the distribution of work.
+[src:node-affinity/load-balancing-computing] When tasks are uniquely assigned to a processor according to their state at a given moment, it is a unique assignment.
+[src:node-affinity/load-balancing-computing] If, on the other hand, the tasks can be permanently redistributed according to the state of the system and its evolution, this is called dynamic assignment.
+[src:node-affinity/load-balancing-computing] A load balancing algorithm that requires too much communication in order to reach its decisions runs the risk of slowing down the resolution of the overall problem.
+[src:node-affinity/load-balancing-computing] Parallel computing infrastructures are often composed of units of different computing power, which should be taken into account for the load distribution.
+[src:node-affinity/load-balancing-computing] For example, lower-powered units may receive requests that require a smaller amount of computation, or, in the case of homogeneous or unknown request sizes, receive fewer requests than larger units.
+[src:node-affinity/load-balancing-computing] For shared-memory computers, managing write conflicts greatly slows down the speed of individual execution of each computing unit.
+[src:node-affinity/load-balancing-computing] However, they can work perfectly well in parallel.
+[src:node-affinity/load-balancing-computing] Conversely, in the case of message exchange, each of the processors can work at full speed.
+[src:node-affinity/load-balancing-computing] On the other hand, when it comes to collective message exchange, all processors are forced to wait for the slowest processors to start the communication phase.
+[src:node-affinity/load-balancing-computing] In reality, few systems fall into exactly one of the categories.
+[src:node-affinity/load-balancing-computing] In general, the processors each have an internal memory to store the data needed for the next calculations and are organized in successive clusters.
+[src:node-affinity/load-balancing-computing] Often, these processing elements are then coordinated through distributed memory and message passing.
+[src:node-affinity/load-balancing-computing] Therefore, the load balancing algorithm should be uniquely adapted to a parallel architecture.
+[src:node-affinity/load-balancing-computing] Otherwise, there is a risk that the efficiency of parallel problem solving will be greatly reduced.
+[src:node-affinity/load-balancing-computing] Adapting to the hardware structures seen above, there are two main categories of load balancing algorithms.
+[src:node-affinity/load-balancing-computing] On the one hand, the one where tasks are assigned by “master” and executed by “workers” who keep the master informed of the progress of their work, and the master can then take charge of assigning or reassigning the workload in case of the dynamic algorithm.
+[src:node-affinity/load-balancing-computing] The literature refers to this as master-worker architecture.
+[src:node-affinity/load-balancing-computing] On the other hand, the control can be distributed between the different nodes.
+[src:node-affinity/load-balancing-computing] The load balancing algorithm is then executed on each of them and the responsibility for assigning tasks (as well as re-assigning and splitting as appropriate) is shared.
+[src:node-affinity/load-balancing-computing] The last category assumes a dynamic load balancing algorithm.
+[src:node-affinity/load-balancing-computing] Since the design of each load balancing algorithm is unique, the previous distinction must be qualified.
+[src:node-affinity/load-balancing-computing] Thus, it is also possible to have an intermediate strategy, with, for example, "master" nodes for each sub-cluster, which are themselves subject to a global "master".
+[src:node-affinity/load-balancing-computing] There are also multi-level organizations, with an alternation between master-slave and distributed control strategies.
+[src:node-affinity/load-balancing-computing] The latter strategies quickly become complex and are rarely encountered.
+[src:node-affinity/load-balancing-computing] Designers prefer algorithms that are easier to control.
+[src:node-affinity/load-balancing-computing] In the context of algorithms that run over the very long term (servers, cloud...), the computer architecture evolves over time.
+[src:node-affinity/load-balancing-computing] However, it is preferable not to have to design a new algorithm each time.
+[src:node-affinity/load-balancing-computing] One parameter of a load balancing algorithm is therefore its ability to adapt to scalable hardware architecture.
+[src:node-affinity/load-balancing-computing] This is called the scalability of the algorithm.
+[src:node-affinity/load-balancing-computing] An algorithm is called scalable for an input parameter when its performance remains relatively independent of the size of that parameter.
+[src:node-affinity/load-balancing-computing] When the algorithm is capable of adapting to a varying number of computing units, but the number of computing units must be fixed before execution, it is called moldable.
+[src:node-affinity/load-balancing-computing] If, on the other hand, the algorithm is capable of dealing with a fluctuating amount of processors during its execution, the algorithm is said to be malleable.
+[src:node-affinity/load-balancing-computing] Most load balancing algorithms are at least moldable.
+[src:node-affinity/load-balancing-computing] Especially in large-scale computing clusters, it is not tolerable to execute a parallel algorithm that cannot withstand the failure of one single component.
+[src:node-affinity/load-balancing-computing] Therefore, fault tolerant algorithms are being developed which can detect outages of processors and recover the computation.
+[src:node-affinity/load-balancing-computing] If the tasks are independent of each other, and if their respective execution time and the tasks can be subdivided, an optimal optimal algorithm is available under these assumptions.
+[src:node-affinity/load-balancing-computing] By dividing the tasks in such a way as to give the same amount of computation to each processor, all that remains to be done is to group the results together.
+[src:node-affinity/load-balancing-computing] Using a prefix sum algorithm, this division can be calculated in logarithmic time with respect to the number of processors.
+[src:node-affinity/load-balancing-computing] Most of the time, the execution time of a task is unknown and only rough approximations are available.
+[src:node-affinity/load-balancing-computing] This algorithm may be efficient under these assumptions, but is less applicable when task durations are unknown.
+[src:node-affinity/load-balancing-computing] Even if the execution time is not known in advance at all, static load distribution is always possible.
+[src:node-affinity/load-balancing-computing] In a round-robin algorithm, the first request is sent to the first server, then the next to the second, and so on down to the last.
+[src:node-affinity/load-balancing-computing] Then it is started again, assigning the next request to the first server, and so on.
+[src:node-affinity/load-balancing-computing] This algorithm can be weighted such that the most powerful units receive the largest number of requests and receive them first.
+[src:node-affinity/load-balancing-computing] Randomized static load balancing is simply a matter of randomly assigning tasks to the different servers.
+[src:node-affinity/load-balancing-computing] If, on the other hand, the number of tasks is known in advance, it is even more efficient to calculate a random permutation in advance.
+[src:node-affinity/load-balancing-computing] This avoids communication costs for each assignment.
+[src:node-affinity/load-balancing-computing] There is no longer a need for a distribution master because every processor knows what task is assigned to it.
+[src:node-affinity/load-balancing-computing] Even if the number of tasks is unknown, it is still possible to avoid communication with a pseudo-random assignment generation known to all processors.
+[src:node-affinity/load-balancing-computing] The performance of this strategy (measured in total execution time for a given fixed set of tasks) decreases with the maximum size of the tasks.
+[src:node-affinity/load-balancing-computing] Master-worker schemes are among the simplest dynamic load balancing algorithms.
+[src:node-affinity/load-balancing-computing] A master distributes the workload to all workers (also sometimes referred to as "slaves").
+[src:node-affinity/load-balancing-computing] Initially, all workers are idle and report this to the master.
+[src:node-affinity/load-balancing-computing] The master answers worker requests and distributes the tasks to them.
+[src:node-affinity/load-balancing-computing] When he has no more tasks to give, he informs the workers so that they stop asking for tasks.
+[src:node-affinity/load-balancing-computing] This scheme can distribute work evenly when assignment overhead is low.
+[src:node-affinity/load-balancing-computing] Without taking into account the time needed for the assignment, the execution time would be comparable to the prefix sum seen above.
+[src:node-affinity/load-balancing-computing] The problem with this algorithm is that it has difficulty adapting to a large number of processors because of the high amount of necessary communications.
+[src:node-affinity/load-balancing-computing] This lack of scalability makes it quickly inoperable in very large servers or very large parallel computers.
+[src:node-affinity/load-balancing-computing] However, the quality of the algorithm can be greatly improved by replacing the master with a task list that can be used by different processors.
+[src:node-affinity/load-balancing-computing] Although this algorithm can be said to be slightly more difficult to implement, it can improve scalability, although still insufficient for very large computing centers.
+[src:node-affinity/load-balancing-computing] Another technique to overcome scalability problems when the time needed for task completion is unknown is work stealing.
+[src:node-affinity/load-balancing-computing] The approach consists of assigning to each processor a certain number of tasks in a random or predefined manner, then allowing inactive processors to "steal" work from active or overloaded processors.
+[src:node-affinity/load-balancing-computing] Several implementations of this concept exist, defined by a task division model and by the rules determining the exchange between processors.
+[src:node-affinity/load-balancing-computing] While this technique can be particularly effective, it is difficult to implement because it is necessary to ensure that communication does not become the primary occupation of the processors instead of solving the problem.
+[src:node-affinity/load-balancing-computing] In the case of atomic tasks, two main strategies can be distinguished, those where the processors with low load offer their computing capacity to those with the highest load, and those were the most loaded units wish to lighten the workload assigned to them.
+[src:node-affinity/load-balancing-computing] It has been shown that when the network is heavily loaded, it is more efficient for the least loaded units to offer their availability and when the network is lightly loaded, it is the overloaded processors that require support from the most inactive ones.
+[src:node-affinity/load-balancing-computing] This rule of thumb limits the number of exchanged messages.
+[src:node-affinity/load-balancing-computing] In the case where one starts from a single large task that cannot be divided beyond an atomic level, a "Tree-Shaped computation" algorithm can be used, where the parent task is distributed in a work tree.
+[src:node-affinity/load-balancing-computing] Initially, many processors have an empty task, except one that works sequentially on it.
+[src:node-affinity/load-balancing-computing] Idle processors issue requests randomly to other processors (not necessarily active).
+[src:node-affinity/load-balancing-computing] If the latter is able to subdivide the task it is working on, it does so by sending part of its work to the node making the request.
+[src:node-affinity/load-balancing-computing] It is then necessary to send a termination signal to the parent processor when the subtask is completed so that it, in turn, sends the message to its parent until it reaches the root of the tree.
+[src:node-affinity/load-balancing-computing] When the first processor, i.e. the root, has finished, a global termination message can be broadcast.
+[src:node-affinity/load-balancing-computing] In the end, it is necessary to assemble the results by going back up the tree.
+[src:node-affinity/load-balancing-computing] The efficiency of such an algorithm is close to the prefix sum when the job cutting and communication time is not too high compared to the work to be done.
+[src:node-affinity/load-balancing-computing] To avoid too high communication costs, it is possible to imagine a list of jobs on shared memory.
+[src:node-affinity/load-balancing-computing] Therefore, a request is simply reading from a certain position on this shared memory at the request of the master processor.
+[src:node-affinity/load-balancing-computing] In addition to efficient problem solving through parallel computations, load balancing algorithms are widely used in HTTP request management where a site with a large audience must be able to handle a large number of requests per second.
+[src:node-affinity/load-balancing-computing] One of the most commonly used applications of load balancing is to provide a single Internet service from multiple servers, sometimes known as a server farm.
+[src:node-affinity/load-balancing-computing] Commonly load-balanced systems include popular web sites, large Internet Relay Chat networks, high-bandwidth File Transfer Protocol (FTP) sites, Network News Transfer Protocol (NNTP) servers, Domain Name System (DNS) servers, and databases.
+[src:node-affinity/load-balancing-computing] Round-robin DNS is an alternate method of load balancing that does not require a dedicated software or hardware node.
+[src:node-affinity/load-balancing-computing] In this technique, multiple IP addresses are associated with a single domain name; clients are given IP in a round-robin fashion.
+[src:node-affinity/load-balancing-computing] IP is assigned to clients with a short expiration so the client is more likely to use a different IP the next time they access the Internet service being requested.
+[src:node-affinity/load-balancing-computing] Another more effective technique for load-balancing using DNS is to delegate www.example.org as a sub-domain whose zone is served by each of the same servers that are serving the website.
+[src:node-affinity/load-balancing-computing] This technique works particularly well where individual servers are spread geographically on the Internet.
+[src:node-affinity/load-balancing-computing] However, the zone file for www.example.org on each server is different such that each server resolves its own IP Address as the A-record.
+[src:node-affinity/load-balancing-computing] This way, when a server is down, its DNS will not respond and the web service does not receive any traffic.
+[src:node-affinity/load-balancing-computing] If the line to one server is congested, the unreliability of DNS ensures less HTTP traffic reaches that server.
+[src:node-affinity/load-balancing-computing] Furthermore, the quickest DNS response to the resolver is nearly always the one from the network's closest server, ensuring geo-sensitive load-balancing .
+[src:node-affinity/load-balancing-computing] A short TTL on the A-record helps to ensure traffic is quickly diverted when a server goes down.
+[src:node-affinity/load-balancing-computing] Consideration must be given to the possibility that this technique may cause individual clients to switch between individual servers in mid-session.
+[src:node-affinity/load-balancing-computing] Another approach to load balancing is to deliver a list of server IPs to the client, and then to have the client randomly select the IP from the list on each connection.
+[src:node-affinity/load-balancing-computing] This essentially relies on all clients generating similar loads, and the law of large numbers to achieve a reasonably flat load distribution across servers.
+[src:node-affinity/load-balancing-computing] With this approach, the method of delivery of a list of IPs to the client can vary and may be implemented as a DNS list (delivered to all the clients without any round-robin), or via hardcoding it to the list.
+[src:node-affinity/load-balancing-computing] If a "smart client" is used, detecting that a randomly selected server is down and connecting randomly again, it also provides fault tolerance.
+[src:node-affinity/load-balancing-computing] For Internet services, a server-side load balancer is usually a software program that is listening on the port where external clients connect to access services.
+[src:node-affinity/load-balancing-computing] The load balancer forwards requests to one of the "backend" servers, which usually replies to the load balancer.
+[src:node-affinity/load-balancing-computing] This allows the load balancer to reply to the client without the client ever knowing about the internal separation of functions.
+[src:node-affinity/load-balancing-computing] It also prevents clients from contacting back-end servers directly, which may have security benefits by hiding the structure of the internal network and preventing attacks on the kernel's network stack or unrelated services running on other ports.
+[src:node-affinity/load-balancing-computing] Some load balancers provide a mechanism for doing something special in the event that all backend servers are unavailable.
+[src:node-affinity/load-balancing-computing] This might include forwarding to a backup load balancer or displaying a message regarding the outage.
+[src:node-affinity/load-balancing-computing] It is also important that the load balancer itself does not become a single point of failure.
+[src:node-affinity/load-balancing-computing] Usually, load balancers are implemented in high-availability pairs which may also replicate session persistence data if required by the specific application.
+[src:node-affinity/load-balancing-computing] Certain applications are programmed with immunity to this problem, by offsetting the load balancing point over differential sharing platforms beyond the defined network.
+[src:node-affinity/load-balancing-computing] The sequential algorithms paired to these functions are defined by flexible parameters unique to the specific database.
+[src:node-affinity/load-balancing-computing] Numerous scheduling algorithms, also called load-balancing methods, are used by load balancers to determine which back-end server to send a request to.
+[src:node-affinity/load-balancing-computing] Simple algorithms include random choice, round robin, or least connections.
+[src:node-affinity/load-balancing-computing] An important issue when operating a load-balanced service is how to handle information that must be kept across the multiple requests in a user's session.
+[src:node-affinity/load-balancing-computing] If this information is stored locally on one backend server, then subsequent requests going to different backend servers would not be able to find it.
+[src:node-affinity/load-balancing-computing] This might be cached information that can be recomputed, in which case load-balancing a request to a different backend server just introduces a performance issue.
+[src:node-affinity/load-balancing-computing] Ideally, the cluster of servers behind the load balancer should not be session-aware, so that if a client connects to any backend server at any time the user experience is unaffected.
+[src:node-affinity/load-balancing-computing] This is usually achieved with a shared database or an in-memory session database like Memcached.
+[src:node-affinity/load-balancing-computing] One basic solution to the session data issue is to send all requests in a user session consistently to the same backend server.
+[src:node-affinity/load-balancing-computing] This is known as "persistence" or "stickiness".
+[src:node-affinity/load-balancing-computing] A significant downside to this technique is its lack of automatic failover: if a backend server goes down, its per-session information becomes inaccessible, and any sessions depending on it are lost.
+[src:node-affinity/load-balancing-computing] The same problem is usually relevant to central database servers; even if web servers are "stateless" and not "sticky", the central database is (see below).
+[src:node-affinity/load-balancing-computing] Assignment to a particular server might be based on a username, client IP address, or random.
+[src:node-affinity/load-balancing-computing] Because of changes in the client's perceived address resulting from DHCP, network address translation, and web proxies this method may be unreliable.
+[src:node-affinity/load-balancing-computing] Random assignments must be remembered by the load balancer, which creates a burden on storage.
+[src:node-affinity/load-balancing-computing] If the load balancer is replaced or fails, this information may be lost, and assignments may need to be deleted after a timeout period or during periods of high load to avoid exceeding the space available for the assignment table.
+[src:node-affinity/load-balancing-computing] The random assignment method also requires that clients maintain some state, which can be a problem, for example when a web browser has disabled the storage of cookies.
+[src:node-affinity/load-balancing-computing] Sophisticated load balancers use multiple persistence techniques to avoid some of the shortcomings of any one method.
+[src:node-affinity/load-balancing-computing] Another solution is to keep the per-session data in a database.
+[src:node-affinity/load-balancing-computing] This can reduce performance because it increases the load on the database: the database is best used to store information less transient than per-session data.
+[src:node-affinity/load-balancing-computing] To prevent a database from becoming a single point of failure, and to improve scalability, the database is often replicated across multiple machines, and load balancing is used to spread the query load across those replicas.
+[src:node-affinity/load-balancing-computing] Microsoft's ASP.net State Server technology is an example of a session database.
+[src:node-affinity/load-balancing-computing] All servers in a web farm store their session data on State Server and any server in the farm can retrieve the data.
+[src:node-affinity/load-balancing-computing] When the client is a web browser, one approach is to store the per-session data in the browser itself.
+[src:node-affinity/load-balancing-computing] One way to achieve this is to use a browser cookie, suitably time-stamped and encrypted.
+[src:node-affinity/load-balancing-computing] Storing session data on the client is generally the preferred solution: then the load balancer is free to pick any backend server to handle a request.
+[src:node-affinity/load-balancing-computing] However, this method of state-data handling may be unsuitable for some complex business logic scenarios, where the session state payload is large and recomputing it with every request on a server is not feasible.
+[src:node-affinity/load-balancing-computing] URL rewriting has major security issues because the end-user can easily alter the submitted URL and thus change session streams.
+[src:node-affinity/load-balancing-computing] Yet another solution to storing persistent data is to associate a name with each block of data, and use a distributed hash table to pseudo-randomly assign that name to one of the available servers, and then store that block of data in the assigned server.
+[src:node-affinity/load-balancing-computing] Hardware and software load balancers may have a variety of special features.
+[src:node-affinity/load-balancing-computing] The fundamental feature of a load balancer is to be able to distribute incoming requests over a number of backend servers in the cluster according to a scheduling algorithm.
+[src:node-affinity/load-balancing-computing] A ratio can be manually assigned to cause some backend servers to get a greater share of the workload than others.
+[src:node-affinity/load-balancing-computing] This is sometimes used as a simple way to account for some servers having more capacity than others, though it may not always work as desired.
+[src:node-affinity/load-balancing-computing] When the number of available servers drops below a certain number, or the load gets too high, standby servers can be brought online.
+[src:node-affinity/load-balancing-computing] request can become a major part of the demand on the Web Server's CPU; as the demand increases, users will see slower response times, as the TLS overhead is distributed among Web servers.
+[src:node-affinity/load-balancing-computing] To remove this demand on Web servers, a balancer can terminate TLS connections, passing HTTPS requests as HTTP requests to the Web servers.
+[src:node-affinity/load-balancing-computing] If the balancer itself is not overloaded, this does not noticeably degrade the performance perceived by end-users.
+[src:node-affinity/load-balancing-computing] The downside of this approach is that all of the TLS processing is concentrated on a single device (the balancer) which can become a new bottleneck.
+[src:node-affinity/load-balancing-computing] Some load balancer appliances include specialized hardware to process TLS.
+[src:node-affinity/load-balancing-computing] Instead of upgrading the load balancer, which is quite expensive dedicated hardware, it may be cheaper to forgo TLS offload and add a few web servers.
+[src:node-affinity/load-balancing-computing] Also, some server vendors such as Oracle/Sun now incorporate cryptographic acceleration hardware into their CPUs such as the T2000.
+[src:node-affinity/load-balancing-computing] F5 Networks incorporates a dedicated TLS acceleration hardware card in their local traffic manager (LTM) which is used for encrypting and decrypting TLS traffic.
+[src:node-affinity/load-balancing-computing] One clear benefit to TLS offloading in the balancer is that it enables it to do balancing or content switching based on data in the HTTPS request.
+[src:node-affinity/load-balancing-computing] attacks and generally offload work from the servers to a more efficient platform.
+[src:node-affinity/load-balancing-computing] compression available in all modern web browsers.
+[src:node-affinity/load-balancing-computing] The larger the response and the further away the client is, the more this feature can improve response times.
+[src:node-affinity/load-balancing-computing] The trade-off is that this feature puts additional CPU demand on the load balancer and could be done by web servers instead.
+[src:node-affinity/load-balancing-computing] Different vendors use different terms for this, but the idea is that normally each HTTP request from each client is a different TCP connection.
+[src:node-affinity/load-balancing-computing] This feature utilises HTTP/1.1 to consolidate multiple HTTP requests from multiple clients into a single TCP socket to the back-end servers.
+[src:node-affinity/load-balancing-computing] The load balancer can buffer responses from the server and spoon-feed the data out to slow clients, allowing the webserver to free a thread for other tasks faster than it would if it had to send the entire request to the client directly.
+[src:node-affinity/load-balancing-computing] An option for asymmetrical load distribution, where request and reply have different network paths.
+[src:node-affinity/load-balancing-computing] The balancer polls servers for application layer health and removes failed servers from the pool.
+[src:node-affinity/load-balancing-computing] The balancer stores static content so that some requests can be handled without contacting the servers.
+[src:node-affinity/load-balancing-computing] Some balancers can arbitrarily modify traffic on the way through.
+[src:node-affinity/load-balancing-computing] Some balancers can hide HTTP error pages, remove server identification headers from HTTP responses, and encrypt cookies so that end users cannot manipulate them.
+[src:node-affinity/load-balancing-computing] , the ability to give different priorities to different traffic.
+[src:node-affinity/load-balancing-computing] Most load balancers can send requests to different servers based on the URL being requested, assuming the request is not encrypted (HTTP) or if it is encrypted (via HTTPS) that the HTTPS request is terminated (decrypted) at the load balancer.
+[src:node-affinity/load-balancing-computing] Authenticate users against a variety of authentication sources before allowing them access to a website.
+[src:node-affinity/load-balancing-computing] At least one balancer allows the use of a scripting language to allow custom balancing methods, arbitrary traffic manipulations, and more.
+[src:node-affinity/load-balancing-computing] Firewalls can prevent direct connections to backend servers, for network security reasons.
+[src:node-affinity/load-balancing-computing] Intrusion prevention systems offer application layer security in addition to the network/transport layer offered by firewall security.
+[src:node-affinity/load-balancing-computing] Load balancing can be useful in applications with redundant communications links.
+[src:node-affinity/load-balancing-computing] For example, a company may have multiple Internet connections ensuring network access if one of the connections fails.
+[src:node-affinity/load-balancing-computing] A failover arrangement would mean that one link is designated for normal use, while the second link is used only if the primary link fails.
+[src:node-affinity/load-balancing-computing] Using load balancing, both links can be in use all the time.
+[src:node-affinity/load-balancing-computing] A device or program monitors the availability of all links and selects the path for sending packets.
+[src:node-affinity/load-balancing-computing] The use of multiple links simultaneously increases the available bandwidth.
+[src:node-affinity/load-balancing-computing] TRILL (Transparent Interconnection of Lots of Links) facilitates an Ethernet to have an arbitrary topology, and enables per flow pair-wise load splitting by way of Dijkstra's algorithm, without configuration and user intervention.
+[src:node-affinity/load-balancing-computing] The catalyst for TRILL was an event at Beth Israel Deaconess Medical Center which began on 13 November 2002.
+[src:node-affinity/load-balancing-computing] The concept of Rbridges [sic] was first proposed to the Institute of Electrical and Electronics Engineers in the year 2004, whom in 2005 rejected what came to be known as TRILL, and in the years 2006 through 2012 devised an incompatible variation known as Shortest Path Bridging.
+[src:node-affinity/load-balancing-computing] The IEEE approved the IEEE 802.1aq standard in May 2012, also known as Shortest Path Bridging (SPB).
+[src:node-affinity/load-balancing-computing] SPB allows all links to be active through multiple equal-cost paths, provides faster convergence times to reduce downtime, and simplifies the use of load balancing in mesh network topologies (partially connected and/or fully connected) by allowing traffic to load share across all paths of a network.
+[src:node-affinity/load-balancing-computing] SPB is designed to reduce configuration errors and preserves the plug-and-play nature that established Ethernet as the de facto protocol at Layer 2.
+[src:node-affinity/load-balancing-computing] Many telecommunications companies have multiple routes through their networks or to external networks.
+[src:node-affinity/load-balancing-computing] They use sophisticated load balancing to shift traffic from one path to another to avoid network congestion on any particular link, and sometimes to minimize the cost of transit across external networks or improve network reliability.
+[src:node-affinity/load-balancing-computing] Another way of using load balancing is in network monitoring activities.
+[src:node-affinity/load-balancing-computing] Load balancers can be used to split huge data flows into several sub-flows and use several network analyzers, each reading a part of the original data.
+[src:node-affinity/load-balancing-computing] This can be used for monitoring fast networks like 10GbE or STM64, where complex processing of the data may not be possible at wire speed.
+[src:node-affinity/load-balancing-computing] Load balancing is widely used in data center networks to distribute traffic across many existing paths between any two servers.
+[src:node-affinity/load-balancing-computing] It allows more efficient use of network bandwidth and reduces provisioning costs.
+[src:node-affinity/load-balancing-computing] In general, load balancing in datacenter networks can be classified as either static or dynamic.
+[src:node-affinity/load-balancing-computing] Static load balancing distributes traffic by computing a hash of the source and destination addresses and port numbers of traffic flows and using it to determine how flows are assigned to one of the existing paths.
+[src:node-affinity/load-balancing-computing] Dynamic load balancing assigns traffic flows to paths by monitoring bandwidth use on different paths.
+[src:node-affinity/load-balancing-computing] Dynamic assignments can also be proactive or reactive.
+[src:node-affinity/load-balancing-computing] In the former case, the assignment is fixed once made, while in the latter the network logic keeps monitoring available paths and shifts flows across them as network utilization changes (with arrival of new flows or completion of existing ones).
+[src:node-affinity/load-balancing-computing] A comprehensive overview of load balancing in datacenter networks has been made available.
+[src:node-affinity/load-balancing-computing] Load balancing is often used to implement failover—the continuation of service after the failure of one or more of its components.
+[src:node-affinity/load-balancing-computing] The components are monitored continually (e.g., web servers may be monitored by fetching known pages), and when one becomes unresponsive, the load balancer is informed and no longer sends traffic to it.
+[src:node-affinity/load-balancing-computing] When a component comes back online, the load balancer starts rerouting traffic to it.
+[src:node-affinity/load-balancing-computing] For this to work, there must be at least one component in excess of the service's capacity (N+1 redundancy).
+[src:node-affinity/load-balancing-computing] This can be much less expensive and more flexible than failover approaches where every single live component is paired with a single backup component that takes over in the event of a failure (dual modular redundancy).
+[src:node-affinity/load-balancing-computing] Some RAID systems can also utilize hot spare for a similar effect.
+[src:node-affinity/load-balancing-computing] This technique can increase fault tolerance by enabling quick substitutions for the most complicated, most failure-prone parts of a system.
+[src:node-affinity/load-balancing-computing] However, it can make the load balancer itself a single point of failure.
+[src:node-affinity/load-balancing-computing] To maintain the necessary high throughput and low latency, organizations commonly deploy load balancing tools capable of advanced TCP optimizations, connection pooling, and adaptive scheduling.
+[src:node-affinity/load-balancing-computing] Such features help distribute incoming data requests evenly across servers or nodes, prevent congestion, and ensure that compute resources remain efficiently utilized.
+[src:node-affinity/load-balancing-computing] When deployed in large-scale or high-performance AI environments, load balancers also mitigate bandwidth constraints and accommodate varying data governance requirements—particularly when sensitive training data cannot be sent to third-party cloud services.
+[src:node-affinity/load-balancing-computing] By routing data locally (on-premises) or across private clouds, load balancers allow AI workflows to avoid public-cloud bandwidth limits, reduce transit costs, and maintain compliance with regulatory standards.
+[src:node-affinity/load-balancing-computing] As AI models expand in size (often measured by billions or even trillions of parameters), load balancing for data ingestion has grown in importance for maintaining the reliability, scalability, and cost efficiency of AI factories.
+[src:node-affinity/network-topology] Network topology is the topological structure of a network and may be depicted physically or logically.
+[src:node-affinity/network-topology] It is an application of graph theory wherein communicating devices are modeled as nodes and the connections between the devices are modeled as links or lines between the nodes.
+[src:node-affinity/network-topology] **Physical topology** is the placement of the various components of a network (e.g., device location and cable installation), while **logical topology** illustrates how data flows within a network.
+[src:node-affinity/network-topology] Distances between nodes, physical interconnections, transmission rates, or signal types may differ between two different networks, yet their logical topologies may be identical.
+[src:node-affinity/network-topology] A network's physical topology is a particular concern of the physical layer of the OSI model.
+[src:node-affinity/network-topology] Examples of network topologies are found in local area networks (LAN), a common computer network installation.
+[src:node-affinity/network-topology] Any given node in the LAN has one or more physical links to other devices in the network; graphically mapping these links results in a geometric shape that can be used to describe the physical topology of the network.
+[src:node-affinity/network-topology] A wide variety of physical topologies have been used in LANs, including ring, bus, mesh and star.
+[src:node-affinity/network-topology] Conversely, mapping the data flow between the components determines the logical topology of the network.
+[src:node-affinity/network-topology] In comparison, Controller Area Networks, common in vehicles, are primarily distributed control system networks of one or more controllers interconnected with sensors and actuators over, invariably, a physical bus topology.
+[src:node-affinity/network-topology] Two basic categories of network topologies exist: physical topologies and logical topologies.
+[src:node-affinity/network-topology] The transmission medium layout used to link devices is the physical topology of the network.
+[src:node-affinity/network-topology] For conductive or fiber optical mediums, this refers to the layout of cabling, the locations of nodes, and the links between the nodes and the cabling.
+[src:node-affinity/network-topology] The physical topology of a network is determined by the capabilities of the network access devices and media, the level of control or fault tolerance desired, and the cost associated with cabling or telecommunication circuits.
+[src:node-affinity/network-topology] In contrast, logical topology is the way that the signals act on the network media, or the way that the data passes through the network from one device to the next without regard to the physical interconnection of the devices.
+[src:node-affinity/network-topology] A network's logical topology is not necessarily the same as its physical topology.
+[src:node-affinity/network-topology] For example, the original twisted pair Ethernet using repeater hubs was a logical bus topology carried on a physical star topology.
+[src:node-affinity/network-topology] Token Ring is a logical ring topology, but is wired as a physical star from the media access unit.
+[src:node-affinity/network-topology] Logical topologies are often closely associated with media access control methods and protocols.
+[src:node-affinity/network-topology] Some networks are able to dynamically change their logical topology through configuration changes to their routers and switches.
+[src:node-affinity/network-topology] The transmission media (often referred to in the literature as the *physical media*) used to link devices to form a computer network include electrical cables (Ethernet, HomePNA, power line communication, G.hn), optical fiber (fiber-optic communication), and radio waves (wireless networking).
+[src:node-affinity/network-topology] In the OSI model, these are defined at layers 1 and 2 — the physical layer and the data link layer.
+[src:node-affinity/network-topology] A widely adopted *family* of transmission media used in local area network (LAN) technology is collectively known as Ethernet.
+[src:node-affinity/network-topology] The media and protocol standards that enable communication between networked devices over Ethernet are defined by IEEE 802.3.
+[src:node-affinity/network-topology] Ethernet transmits data over both copper and fiber cables.
+[src:node-affinity/network-topology] Wireless LAN standards (e.g., those defined by IEEE 802.11) use radio waves, or others use infrared signals as a transmission medium.
+[src:node-affinity/network-topology] Power line communication uses a building's power cabling to transmit data.
+[src:node-affinity/network-topology] The orders of the following wired technologies are, roughly, from slowest to fastest transmission speed.
+[src:node-affinity/network-topology] Price is a main factor distinguishing wired and wireless technology options in a business.
+[src:node-affinity/network-topology] Wireless options command a price premium that can make purchasing wired computers, printers and other devices a financial benefit.
+[src:node-affinity/network-topology] Before making the decision to purchase hard-wired technology products, a review of the restrictions and limitations of the selections is necessary.
+[src:node-affinity/network-topology] Business and employee needs may override any cost considerations.
+[src:node-affinity/network-topology] Both cases have a large round-trip delay time, which gives slow two-way communication, but does not prevent sending large amounts of information.
+[src:node-affinity/network-topology] Network nodes are the points of connection of the transmission medium to transmitters and receivers of the electrical, optical, or radio signals carried in the medium.
+[src:node-affinity/network-topology] Nodes may be associated with a computer, but certain types may have only a microcontroller at a node or possibly no programmable device at all.
+[src:node-affinity/network-topology] In the simplest of serial arrangements, one RS-232 transmitter can be connected by a pair of wires to one receiver, forming two nodes on one link, or a point-to-point topology.
+[src:node-affinity/network-topology] Some protocols permit a single node to only either transmit or receive (e.g., ARINC 429).
+[src:node-affinity/network-topology] Other protocols have nodes that can both transmit and receive into a single channel (e.g., CAN can have many transceivers connected to a single bus).
+[src:node-affinity/network-topology] A network interface controller (NIC) is computer hardware that provides a computer with the ability to access the transmission media, and has the ability to process low-level network information.
+[src:node-affinity/network-topology] For example, the NIC may have a connector for accepting a cable, or an aerial for wireless transmission and reception, and the associated circuitry.
+[src:node-affinity/network-topology] The NIC responds to traffic addressed to a network address for either the NIC or the computer as a whole.
+[src:node-affinity/network-topology] In Ethernet networks, each network interface controller has a unique Media Access Control (MAC) address—usually stored in the controller's permanent memory.
+[src:node-affinity/network-topology] To avoid address conflicts between network devices, the Institute of Electrical and Electronics Engineers (IEEE) maintains and administers MAC address uniqueness.
+[src:node-affinity/network-topology] The size of an Ethernet MAC address is six octets.
+[src:node-affinity/network-topology] The three most significant octets are reserved to identify NIC manufacturers.
+[src:node-affinity/network-topology] These manufacturers, using only their assigned prefixes, uniquely assign the three least-significant octets of every Ethernet interface they produce.
+[src:node-affinity/network-topology] A repeater is an electronic device that receives a network signal, cleans it of unnecessary noise and regenerates it.
+[src:node-affinity/network-topology] The signal may be reformed or retransmitted at a higher power level, to the other side of an obstruction, possibly using a different transmission medium, so that the signal can cover longer distances without degradation.
+[src:node-affinity/network-topology] Commercial repeaters have extended RS-232 segments from 15 meters to over a kilometer.
+[src:node-affinity/network-topology] In most twisted pair Ethernet configurations, repeaters are required for cable that runs longer than 100 meters.
+[src:node-affinity/network-topology] With fiber optics, repeaters can be tens or even hundreds of kilometers apart.
+[src:node-affinity/network-topology] Repeaters work within the physical layer of the OSI model; that is, there is no end-to-end change in the physical protocol across the repeater, or repeater pair, even if a different physical layer may be used between the ends of the repeater, or repeater pair.
+[src:node-affinity/network-topology] Repeaters require a small amount of time to regenerate the signal.
+[src:node-affinity/network-topology] This can cause a propagation delay that affects network performance and may affect proper function.
+[src:node-affinity/network-topology] As a result, many network architectures limit the number of repeaters that can be used in a row, e.g., the Ethernet 5-4-3 rule.
+[src:node-affinity/network-topology] A repeater with multiple ports is known as hub, an Ethernet hub in Ethernet networks, a USB hub in USB networks.
+[src:node-affinity/network-topology] A network bridge connects and filters traffic between two network segments at the data link layer (layer 2) of the OSI model to form a single network.
+[src:node-affinity/network-topology] This breaks the network's collision domain but maintains a unified broadcast domain.
+[src:node-affinity/network-topology] Network segmentation breaks down a large, congested network into an aggregation of smaller, more efficient networks.
+[src:node-affinity/network-topology] A network switch is a device that forwards and filters OSI layer 2 datagrams (frames) between ports based on the destination MAC address in each frame.
+[src:node-affinity/network-topology] A switch is distinct from a hub in that it only forwards the frames to the physical ports involved in the communication, rather than all ports connected.
+[src:node-affinity/network-topology] It can be thought of as a multi-port bridge.
+[src:node-affinity/network-topology] It learns to associate physical ports to MAC addresses by examining the source addresses of received frames.
+[src:node-affinity/network-topology] If an unknown destination is targeted, the switch broadcasts to all ports but the source.
+[src:node-affinity/network-topology] Switches normally have numerous ports, facilitating a star topology for devices and cascading additional switches.
+[src:node-affinity/network-topology] Multi-layer switches are capable of routing based on layer 3 addressing or additional logical levels.
+[src:node-affinity/network-topology] The term *switch* is often used loosely to include devices such as routers and bridges, as well as devices that may distribute traffic based on load or based on application content (e.g., a Web URL identifier).
+[src:node-affinity/network-topology] A router is an internetworking device that forwards packets between networks by processing the routing information included in the packet or datagram (Internet protocol information from layer 3).
+[src:node-affinity/network-topology] The routing information is often processed in conjunction with the routing table (or forwarding table).
+[src:node-affinity/network-topology] A router uses its routing table to determine where to forward packets.
+[src:node-affinity/network-topology] A destination in a routing table can include a black hole because data can go into it; however, no further processing is done for said data, i.e., the packets are dropped.
+[src:node-affinity/network-topology] Modems (MOdulator-DEModulator) are used to connect network nodes via wire not originally designed for digital network traffic, or for wireless.
+[src:node-affinity/network-topology] To do this, one or more carrier signals are modulated by the digital signal to produce an analog signal that can be tailored to give the required properties for transmission.
+[src:node-affinity/network-topology] Modems are commonly used for telephone lines, using a digital subscriber line technology.
+[src:node-affinity/network-topology] A firewall is a network device for controlling network security and access rules.
+[src:node-affinity/network-topology] Firewalls are typically configured to reject access requests from unrecognized sources while allowing actions from recognized ones.
+[src:node-affinity/network-topology] The vital role firewalls play in network security grows in parallel with the constant increase in cyber attacks.
+[src:node-affinity/network-topology] The study of network topology recognizes eight basic topologies: point-to-point, bus, star, ring or circular, mesh, tree, hybrid, or daisy chain.
+[src:node-affinity/network-topology] The simplest topology with a dedicated link between two endpoints.
+[src:node-affinity/network-topology] Easiest to understand of the variations of point-to-point topology is a point-to-point communication channel that appears, to the user, to be permanently associated with the two endpoints.
+[src:node-affinity/network-topology] A child's tin can telephone is one example of a *physical dedicated* channel.
+[src:node-affinity/network-topology] Using circuit-switching or packet-switching technologies, a point-to-point circuit can be set up dynamically and dropped when no longer needed.
+[src:node-affinity/network-topology] Switched point-to-point topologies are the basic model of conventional telephony.
+[src:node-affinity/network-topology] The value of a permanent point-to-point network is unimpeded communications between the two endpoints.
+[src:node-affinity/network-topology] The value of an on-demand point-to-point connection is proportional to the number of potential pairs of subscribers and has been expressed as Metcalfe's Law.
+[src:node-affinity/network-topology] Daisy chaining is accomplished by connecting each computer in series to the next.
+[src:node-affinity/network-topology] If a message is intended for a computer partway down the line, each system bounces it along in sequence until it reaches the destination.
+[src:node-affinity/network-topology] A daisy-chained network can take two basic forms: linear and ring.
+[src:node-affinity/network-topology] In local area networks using bus topology, each node is connected by interface connectors to a single central cable.
+[src:node-affinity/network-topology] This is the 'bus', also referred to as the backbone, or trunk – all data transmission between nodes in the network is transmitted over this common transmission medium and is able to be received by all nodes in the network simultaneously.
+[src:node-affinity/network-topology] A signal containing the address of the intended receiving machine travels from a source machine in both directions to all machines connected to the bus until it finds the intended recipient, which then accepts the data.
+[src:node-affinity/network-topology] If the machine address does not match the intended address for the data, the data portion of the signal is ignored.
+[src:node-affinity/network-topology] Since the bus topology consists of only one wire, it is less expensive to implement than other topologies, but the savings are offset by the higher cost of managing the network.
+[src:node-affinity/network-topology] Additionally, since the network is dependent on the single cable, it can be the single point of failure of the network.
+[src:node-affinity/network-topology] In this topology, data being transferred may be accessed by any node.
+[src:node-affinity/network-topology] In a linear bus network, all of the nodes of the network are connected to a common transmission medium, which has just two endpoints.
+[src:node-affinity/network-topology] When the electrical signal reaches the end of the bus, the signal is reflected back down the line, causing unwanted interference.
+[src:node-affinity/network-topology] To prevent this, the two endpoints of the bus are normally terminated with a device called a terminator.
+[src:node-affinity/network-topology] In star topology (also called hub-and-spoke), every peripheral node (computer workstation or any other peripheral) is connected to a central node called a hub or switch.
+[src:node-affinity/network-topology] The hub is the server and the peripherals are the clients.
+[src:node-affinity/network-topology] The network does not necessarily have to resemble a star to be classified as a star network, but all of the peripheral nodes on the network must be connected to one central hub.
+[src:node-affinity/network-topology] All traffic that traverses the network passes through the central hub, which acts as a signal repeater.
+[src:node-affinity/network-topology] The star topology is considered the easiest topology to design and implement.
+[src:node-affinity/network-topology] One advantage of the star topology is the simplicity of adding additional nodes.
+[src:node-affinity/network-topology] The primary disadvantage of the star topology is that the hub represents a single point of failure.
+[src:node-affinity/network-topology] Also, since all peripheral communication must flow through the central hub, the aggregate central bandwidth forms a network bottleneck for large clusters.
+[src:node-affinity/network-topology] The extended star network topology extends a physical star topology by one or more repeaters between the central node and the peripheral (or 'spoke') nodes.
+[src:node-affinity/network-topology] The repeaters are used to extend the maximum transmission distance of the physical layer, the point-to-point distance between the central node and the peripheral nodes.
+[src:node-affinity/network-topology] Repeaters allow greater transmission distance, further than would be possible using just the transmitting power of the central node.
+[src:node-affinity/network-topology] The use of repeaters can also overcome limitations from the standard upon which the physical layer is based.
+[src:node-affinity/network-topology] A physical extended star topology in which repeaters are replaced with hubs or switches is a type of hybrid network topology and is referred to as a physical hierarchical star topology, although some texts make no distinction between the two topologies.
+[src:node-affinity/network-topology] A physical hierarchical star topology can also be referred as a tier-star topology.
+[src:node-affinity/network-topology] This topology differs from a tree topology in the way star networks are connected together.
+[src:node-affinity/network-topology] A tier-star topology uses a central node, while a tree topology uses a central bus and can also be referred to as a star-bus network.
+[src:node-affinity/network-topology] A ring topology is a daisy chain in a closed loop.
+[src:node-affinity/network-topology] Data travels around the ring in one direction.
+[src:node-affinity/network-topology] When one node sends data to another, the data passes through each intermediate node on the ring until it reaches its destination.
+[src:node-affinity/network-topology] The intermediate nodes repeat (retransmit) the data to keep the signal strong.
+[src:node-affinity/network-topology] Every node is a peer; there is no hierarchical relationship of clients and servers.
+[src:node-affinity/network-topology] If one node is unable to retransmit data, it severs communication between the nodes before and after it in the bus.
+[src:node-affinity/network-topology] The value of fully meshed networks is proportional to the exponent of the number of subscribers, assuming that communicating groups of any two endpoints, up to and including all the endpoints, is approximated by Reed's Law.
+[src:node-affinity/network-topology] In a *fully connected network*, all nodes are interconnected.
+[src:node-affinity/network-topology] (In graph theory this is called a complete graph.) The simplest fully connected network is a two-node network.
+[src:node-affinity/network-topology] A fully connected network doesn't need to use packet switching or broadcasting.
+[src:node-affinity/network-topology] This makes it impractical for large networks.
+[src:node-affinity/network-topology] This kind of topology does not trip and affect other nodes in the network.
+[src:node-affinity/network-topology] In a partially connected network, certain nodes are connected to exactly one other node, but some nodes are connected to two or more other nodes with a point-to-point link.
+[src:node-affinity/network-topology] This makes it possible to make use of some of the redundancy of mesh topology that is physically fully connected, without the expense and complexity required for a connection between every node in the network.
+[src:node-affinity/network-topology] Hybrid topology is also known as hybrid network.
+[src:node-affinity/network-topology] Hybrid networks combine two or more topologies in such a way that the resulting network does not exhibit one of the standard topologies (e.g., bus, star, ring, etc.).
+[src:node-affinity/network-topology] For example, a tree network (or *star-bus network*) is a hybrid topology in which star networks are interconnected via bus networks.
+[src:node-affinity/network-topology] However, a tree network connected to another tree network is still topologically a tree network, not a distinct network type.
+[src:node-affinity/network-topology] A hybrid topology is always produced when two different basic network topologies are connected.
+[src:node-affinity/network-topology] A *star-ring* network consists of two or more ring networks connected using a multistation access unit (MAU) as a centralized hub.
+[src:node-affinity/network-topology] Two other hybrid network types are *hybrid mesh* and *hierarchical star*.
+[src:node-affinity/network-topology] The **star topology** reduces the probability of a network failure by connecting all of the peripheral nodes (computers, etc.) to a central node.
+[src:node-affinity/network-topology] When the physical star topology is applied to a logical bus network such as Ethernet, this central node (traditionally a hub) rebroadcasts all transmissions received from any peripheral node to all peripheral nodes on the network, sometimes including the originating node.
+[src:node-affinity/network-topology] All peripheral nodes may thus communicate with all others by transmitting to, and receiving from, the central node only.
+[src:node-affinity/network-topology] The failure of a transmission line linking any peripheral node to the central node will result in the isolation of that peripheral node from all others, but the remaining peripheral nodes will be unaffected.
+[src:node-affinity/network-topology] However, the disadvantage is that the failure of the central node will cause the failure of all of the peripheral nodes.
+[src:node-affinity/network-topology] If the central node is *passive*, the originating node must be able to tolerate the reception of an echo of its own transmission, delayed by the two-way round trip transmission time (i.e. to and from the central node) plus any delay generated in the central node.
+[src:node-affinity/network-topology] An *active* star network has an active central node that usually has the means to prevent echo-related problems.
+[src:node-affinity/network-topology] **hierarchical topology**) can be viewed as a collection of star networks arranged in a hierarchy.
+[src:node-affinity/network-topology] This tree structure has individual peripheral nodes (e.g., leaves) which are required to transmit to and receive from one other node only and are not required to act as repeaters or regenerators.
+[src:node-affinity/network-topology] Unlike the star network, the functionality of the central node may be distributed.
+[src:node-affinity/network-topology] As in the conventional star network, individual nodes may thus still be isolated from the network by a single-point failure of a transmission path to the node.
+[src:node-affinity/network-topology] If a link connecting a leaf fails, that leaf is isolated; if a connection to a non-leaf node fails, an entire section of the network becomes isolated from the rest.
+[src:node-affinity/network-topology] To alleviate the amount of network traffic that comes from broadcasting all signals to all nodes, more advanced central nodes were developed that are able to keep track of the identities of the nodes that are connected to the network.
+[src:node-affinity/network-topology] These network switches will *learn* the layout of the network by *listening* on each port during normal data transmission, examining the data packets and recording the address/identifier of each connected node and which port it is connected to in a lookup table held in memory.
+[src:node-affinity/network-topology] This lookup table then allows future transmissions to be forwarded to the intended destination only.
+[src:node-affinity/network-topology] Daisy chain topology is a way of connecting network nodes in a linear or ring structure.
+[src:node-affinity/network-topology] It is used to transmit messages from one node to the next until they reach the destination node.
+[src:node-affinity/network-topology] A daisy chain network can have two types: linear and ring.
+[src:node-affinity/network-topology] A linear daisy chain network is like an electrical series, where the first and last nodes are not connected.
+[src:node-affinity/network-topology] A ring daisy chain network is where the first and last nodes are connected, forming a loop.
+[src:node-affinity/network-topology] In a partially connected mesh topology, there are at least two nodes with two or more paths between them to provide redundant paths in case the link providing one of the paths fails.
+[src:node-affinity/network-topology] Decentralization is often used to compensate for the single-point-failure disadvantage that is present when using a single device as a central node (e.g., in star and tree networks).
+[src:node-affinity/network-topology] A special kind of mesh, limiting the number of hops between two nodes, is a hypercube.
+[src:node-affinity/network-topology] The number of arbitrary forks in mesh networks makes them more difficult to design and implement, but their decentralized nature makes them very useful.
+[src:node-affinity/network-topology] This is similar in some ways to a grid network, where a linear or ring topology is used to connect systems in multiple directions.
+[src:node-affinity/network-topology] A multidimensional ring has a toroidal topology, for instance.
+[src:node-affinity/network-topology] A *fully connected network*, *complete topology*, or *full mesh topology* is a network topology in which there is a direct link between all pairs of nodes.
+[src:node-affinity/network-topology] In a fully connected network with n nodes, there are ${\frac {n(n-1)}{2}}\,$ direct links.
+[src:node-affinity/network-topology] Networks designed with this topology are usually very expensive to set up, but provide a high degree of reliability due to the multiple paths for data that are provided by the large number of redundant links between nodes.
+[src:node-affinity/network-topology] This topology is mostly seen in military applications.
+[src:node-affinity/scheduling-computing] In computing, **scheduling** is the action of assigning resources to perform tasks.
+[src:node-affinity/scheduling-computing] The resources may be processors, network links or expansion cards.
+[src:node-affinity/scheduling-computing] The tasks may be threads, processes or data flows.
+[src:node-affinity/scheduling-computing] The scheduling activity is carried out by a mechanism called a **scheduler**.
+[src:node-affinity/scheduling-computing] Schedulers are often designed so as to keep all computer resources busy (as in load balancing), allow multiple users to share system resources effectively, or to achieve a target quality-of-service.
+[src:node-affinity/scheduling-computing] Scheduling is fundamental to computation itself, and an intrinsic part of the execution model of a computer system; the concept of scheduling makes it possible to have computer multitasking with a single central processing unit (CPU).
+[src:node-affinity/scheduling-computing] In practice, these goals often conflict (e.g. throughput versus latency), thus a scheduler will implement a suitable compromise.
+[src:node-affinity/scheduling-computing] Preference is measured by any one of the concerns mentioned above, depending upon the user's needs and objectives.
+[src:node-affinity/scheduling-computing] In real-time environments, such as embedded systems for automatic control in industry (for example robotics), the scheduler also must ensure that processes can meet deadlines; this is crucial for keeping the system stable.
+[src:node-affinity/scheduling-computing] Scheduled tasks can also be distributed to remote devices across a network and managed through an administrative back end.
+[src:node-affinity/scheduling-computing] The scheduler is an operating system module that selects the next jobs to be admitted into the system and the next process to run.
+[src:node-affinity/scheduling-computing] Operating systems may feature up to three distinct scheduler types: a *long-term scheduler* (also known as an admission scheduler or high-level scheduler), a *mid-term or medium-term scheduler*, and a *short-term scheduler*.
+[src:node-affinity/scheduling-computing] The names suggest the relative frequency with which their functions are performed.
+[src:node-affinity/scheduling-computing] The process scheduler is a part of the operating system that decides which process runs at a certain point in time.
+[src:node-affinity/scheduling-computing] It usually has the ability to pause a running process, move it to the back of the running queue and start a new process; such a scheduler is known as a *preemptive scheduler*.
+[src:node-affinity/scheduling-computing] If the scheduler cannot pause a running process and start a new process, the scheduler is a *cooperative scheduler*.
+[src:node-affinity/scheduling-computing] We distinguish between *long-term scheduling*, *medium-term scheduling*, and *short-term scheduling* based on how often decisions must be made.
+[src:node-affinity/scheduling-computing] Thus, this scheduler dictates what processes are to run on a system, the degree of concurrency to be supported at any one time – whether many or few processes are to be executed concurrently, and how the split between I/O-intensive and CPU-intensive processes is to be handled.
+[src:node-affinity/scheduling-computing] The long-term scheduler is responsible for controlling the degree of multiprogramming.
+[src:node-affinity/scheduling-computing] In general, most processes can be described as either I/O-bound or CPU-bound.
+[src:node-affinity/scheduling-computing] An I/O-bound process is one that spends more of its time doing I/O than it spends doing computations.
+[src:node-affinity/scheduling-computing] A CPU-bound process, in contrast, generates I/O requests infrequently, using more of its time doing computations.
+[src:node-affinity/scheduling-computing] It is important that a long-term scheduler selects a good process mix of I/O-bound and CPU-bound processes.
+[src:node-affinity/scheduling-computing] If all processes are I/O-bound, the ready queue will almost always be empty, and the short-term scheduler will have little to do.
+[src:node-affinity/scheduling-computing] On the other hand, if all processes are CPU-bound, the I/O waiting queue will almost always be empty, devices will go unused, and again the system will be unbalanced.
+[src:node-affinity/scheduling-computing] The system with the best performance will thus have a combination of CPU-bound and I/O-bound processes.
+[src:node-affinity/scheduling-computing] In modern operating systems, this is used to make sure that real-time processes get enough CPU time to finish their tasks.
+[src:node-affinity/scheduling-computing] Long-term scheduling is also important in large-scale systems such as batch processing systems, computer clusters, supercomputers, and render farms.
+[src:node-affinity/scheduling-computing] For example, in concurrent systems, coscheduling of interacting processes is often required to prevent them from blocking due to waiting on each other.
+[src:node-affinity/scheduling-computing] In these cases, special-purpose job scheduler software is typically used to assist these functions, in addition to any underlying admission scheduling support in the operating system.
+[src:node-affinity/scheduling-computing] Some operating systems only allow new tasks to be added if it is sure all real-time deadlines can still be met.
+[src:node-affinity/scheduling-computing] The specific heuristic algorithm used by an operating system to accept or reject new tasks is the *admission control mechanism*.
+[src:node-affinity/scheduling-computing] The *medium-term scheduler* temporarily removes processes from main memory and places them in secondary memory (such as a hard disk drive) or vice versa, which is commonly referred to as *swapping out* or *swapping in* (also incorrectly as *paging out* or *paging in*).
+[src:node-affinity/scheduling-computing] In many systems today (those that support mapping virtual address space to secondary storage other than the swap file), the medium-term scheduler may actually perform the role of the long-term scheduler, by treating binaries as *swapped-out processes* upon their execution.
+[src:node-affinity/scheduling-computing] In this way, when a segment of the binary is required, it can be swapped in on demand, or *lazy loaded*, also called demand paging.
+[src:node-affinity/scheduling-computing] The *short-term scheduler* (also known as the *CPU scheduler*) decides which of the ready, in-memory processes is to be executed (allocated a CPU) after a clock interrupt, an I/O interrupt, an operating system call or another form of signal.
+[src:node-affinity/scheduling-computing] Thus, the short-term scheduler makes scheduling decisions much more frequently than the long-term or mid-term schedulers – A scheduling decision will, at a minimum, have to be made after every time slice, and these are very short.
+[src:node-affinity/scheduling-computing] This scheduler can be preemptive, implying that it is capable of forcibly removing processes from a CPU when it decides to allocate that CPU to another process, or non-preemptive (also known as *voluntary* or *co-operative*), in which case the scheduler is unable to *force* processes off the CPU.
+[src:node-affinity/scheduling-computing] Another component that is involved in the CPU-scheduling function is the dispatcher, which is the module that gives control of the CPU to the process selected by the short-term scheduler.
+[src:node-affinity/scheduling-computing] It receives control in kernel mode as the result of an interrupt or system call.
+[src:node-affinity/scheduling-computing] The dispatcher should be as fast as possible since it is invoked during every process switch.
+[src:node-affinity/scheduling-computing] During the context switches, the processor is virtually idle for a fraction of time, thus unnecessary context switches should be avoided.
+[src:node-affinity/scheduling-computing] The time it takes for the dispatcher to stop one process and start another is known as the *dispatch latency*.
+[src:node-affinity/scheduling-computing] A **scheduling discipline** (also called **scheduling policy** or **scheduling algorithm**) is an algorithm used for distributing resources among parties that simultaneously and asynchronously request them.
+[src:node-affinity/scheduling-computing] Scheduling disciplines are used in routers (to handle packet traffic) as well as in operating systems (to share CPU time among both threads and processes), disk drives (I/O scheduling), printers (print spooler), most embedded systems, etc.
+[src:node-affinity/scheduling-computing] The main purposes of scheduling algorithms are to minimize resource starvation and to ensure fairness amongst the parties utilizing the resources.
+[src:node-affinity/scheduling-computing] Scheduling deals with the problem of deciding which of the outstanding requests is to be allocated resources.
+[src:node-affinity/scheduling-computing] There are many different scheduling algorithms.
+[src:node-affinity/scheduling-computing] In this section, we introduce several of them.
+[src:node-affinity/scheduling-computing] In packet-switched computer networks and other statistical multiplexing, the notion of a **scheduling algorithm** is used as an alternative to first-come first-served queuing of data packets.
+[src:node-affinity/scheduling-computing] The simplest best-effort scheduling algorithms are round-robin, fair queuing (a max-min fair scheduling algorithm), proportional-fair scheduling and maximum throughput.
+[src:node-affinity/scheduling-computing] If differentiated or guaranteed quality of service is offered, as opposed to best-effort communication, weighted fair queuing may be utilized.
+[src:node-affinity/scheduling-computing] In advanced packet radio wireless networks such as HSDPA (High-Speed Downlink Packet Access) 3.5G cellular system, **channel-dependent scheduling** may be used to take advantage of channel state information.
+[src:node-affinity/scheduling-computing] If the channel conditions are favourable, the throughput and system spectral efficiency may be increased.
+[src:node-affinity/scheduling-computing] In even more advanced systems such as LTE, the scheduling is combined by channel-dependent packet-by-packet dynamic channel allocation, or by assigning OFDMA multi-carriers or other frequency-domain equalization components to the users that best can utilize them.
+[src:node-affinity/scheduling-computing] Earliest deadline first (EDF) or *least time to go* is a dynamic scheduling algorithm used in real-time operating systems to place processes in a priority queue.
+[src:node-affinity/scheduling-computing] Whenever a scheduling event occurs (a task finishes, a new task is released, etc.), the queue will be searched for the process closest to its deadline, which will be the next to be scheduled for execution.
+[src:node-affinity/scheduling-computing] With this strategy the scheduler arranges processes with the least estimated processing time remaining to be next in the queue.
+[src:node-affinity/scheduling-computing] This requires advanced knowledge or estimations about the time required for a process to complete.
+[src:node-affinity/scheduling-computing] The operating system assigns a fixed-priority rank to every process, and the scheduler arranges the processes in the ready queue in order of their priority.
+[src:node-affinity/scheduling-computing] Lower-priority processes get interrupted by incoming higher-priority processes.
+[src:node-affinity/scheduling-computing] The scheduler assigns a fixed time unit per process, and cycles through them.
+[src:node-affinity/scheduling-computing] If the process completes within that time slice, it gets terminated otherwise, it is rescheduled after giving a chance to all other processes.
+[src:node-affinity/scheduling-computing] This is used for situations in which processes are easily divided into different groups.
+[src:node-affinity/scheduling-computing] For example, a common division is made between foreground (interactive) processes and background (batch) processes.
+[src:node-affinity/scheduling-computing] These two types of processes have different response-time requirements and so may have different scheduling needs.
+[src:node-affinity/scheduling-computing] It is very useful for shared memory problems.
+[src:node-affinity/scheduling-computing] A work-conserving scheduler is a scheduler that always tries to keep the scheduled resources busy if there are submitted jobs ready to be scheduled.
+[src:node-affinity/scheduling-computing] In contrast, a non-work-conserving scheduler is a scheduler that, in some cases, may leave the scheduled resources idle despite the presence of jobs ready to be scheduled.
+[src:node-affinity/scheduling-computing] A very common method in embedded systems is to schedule jobs manually.
+[src:node-affinity/scheduling-computing] This can, for example, be done in a time-multiplexed fashion.
+[src:node-affinity/scheduling-computing] Sometimes the kernel is divided in three or more parts: Manual scheduling, preemptive and interrupt level.
+[src:node-affinity/scheduling-computing] Exact methods for scheduling jobs are often proprietary.
+[src:node-affinity/scheduling-computing] When designing an operating system, a programmer must consider which scheduling algorithm will perform best for the use the system is going to see.
+[src:node-affinity/scheduling-computing] There is no universal *best* scheduling algorithm, and many operating systems use extended or combinations of the scheduling algorithms above.
+[src:node-affinity/scheduling-computing] For example, Windows NT/XP/Vista uses a multilevel feedback queue, a combination of fixed-priority preemptive scheduling, round-robin, and first-in, first-out algorithms.
+[src:node-affinity/scheduling-computing] In this system, threads can dynamically increase or decrease in priority depending on if it has been serviced already or if it has been waiting extensively.
+[src:node-affinity/scheduling-computing] Every priority level is represented by its own queue, with round-robin scheduling among the high-priority threads and FIFO among the lower-priority ones.
+[src:node-affinity/scheduling-computing] In this sense, response time is short for most threads, and short but critical system threads get completed very quickly.
+[src:node-affinity/scheduling-computing] Since threads can only use one time unit of the round-robin in the highest-priority queue, starvation can be a problem for longer high-priority threads.
+[src:node-affinity/scheduling-computing] The algorithm used may be as simple as round-robin in which each process is given equal time (for instance, 1 ms, usually between 1 ms and 100 ms) in a cycling list.
+[src:node-affinity/scheduling-computing] So, process A executes for 1 ms, then process B, then process C, then back to process A.
+[src:node-affinity/scheduling-computing] More advanced algorithms take into account process priority, or the importance of the process.
+[src:node-affinity/scheduling-computing] This allows some processes to use more time than others.
+[src:node-affinity/scheduling-computing] The kernel always uses whatever resources it needs to ensure proper functioning of the system, and so can be said to have infinite priority.
+[src:node-affinity/scheduling-computing] In SMP systems, processor affinity is considered to increase overall system performance, even if it may cause a process itself to run more slowly.
+[src:node-affinity/scheduling-computing] This generally improves performance by reducing cache thrashing.
+[src:node-affinity/scheduling-computing] IBM OS/360 was available with three different schedulers.
+[src:node-affinity/scheduling-computing] Later virtual storage versions of MVS added a *Workload Manager* feature to the scheduler, which schedules processor resources according to an elaborate scheme defined by the installation.
+[src:node-affinity/scheduling-computing] Very early MS-DOS and Microsoft Windows systems were non-multitasking, and as such did not feature a scheduler.
+[src:node-affinity/scheduling-computing] Windows 3.1x used a non-preemptive scheduler, meaning that it did not interrupt programs.
+[src:node-affinity/scheduling-computing] It relied on the program to end or tell the OS that it didn't need the processor so that it could move on to another process.
+[src:node-affinity/scheduling-computing] This is usually called cooperative multitasking.
+[src:node-affinity/scheduling-computing] Windows 95 introduced a rudimentary preemptive scheduler; however, for legacy support opted to let 16-bit applications run without preemption.
+[src:node-affinity/scheduling-computing] Windows NT-based operating systems use a multilevel feedback queue.
+[src:node-affinity/scheduling-computing] 32 priority levels are defined, 0 through 31, with priorities 0 through 15 being *normal* priorities and priorities 16 through 31 being soft real-time priorities, requiring privileges to assign.
+[src:node-affinity/scheduling-computing] User interfaces and APIs work with priority classes for the process and the threads in the process, which are then combined by the system into the absolute priority level.
+[src:node-affinity/scheduling-computing] The scheduler was modified in Windows Vista to use the cycle counter register of modern processors to keep track of exactly how many CPU cycles a thread has executed, rather than just using an interval-timer interrupt routine.
+[src:node-affinity/scheduling-computing] Vista also uses a priority scheduler for the I/O queue so that disk defragmenters and other such programs do not interfere with foreground operations.
+[src:node-affinity/scheduling-computing] Mac OS 9 uses cooperative scheduling for threads, where one process controls multiple cooperative threads, and also provides preemptive scheduling for multiprocessing tasks.
+[src:node-affinity/scheduling-computing] The kernel schedules multiprocessing tasks using a preemptive scheduling algorithm.
+[src:node-affinity/scheduling-computing] All Process Manager processes run within a special multiprocessing task, called the *blue task*.
+[src:node-affinity/scheduling-computing] Those processes are scheduled cooperatively, using a round-robin scheduling algorithm; a process yields control of the processor to another process by explicitly calling a blocking function such as `WaitNextEvent`.
+[src:node-affinity/scheduling-computing] Each process has its own copy of the Thread Manager that schedules that process's threads cooperatively; a thread yields control of the processor to another thread by calling `YieldToAnyThread` or `YieldToThread`.
+[src:node-affinity/scheduling-computing] macOS uses a multilevel feedback queue, with four priority bands for threads – normal, system high priority, kernel mode only, and real-time.
+[src:node-affinity/scheduling-computing] Threads are scheduled preemptively; macOS also supports cooperatively scheduled threads in its implementation of the Thread Manager in Carbon.
+[src:node-affinity/scheduling-computing] Threads are primarily of interest for applications that currently consist of several asynchronous processes.
+[src:node-affinity/scheduling-computing] These applications might impose a lighter load on the system if converted to a multithreaded structure.
+[src:node-affinity/scheduling-computing] AIX 5 implements the following scheduling policies: FIFO, round robin, and fair round robin.
+[src:node-affinity/scheduling-computing] The FIFO policy has three different implementations: FIFO, FIFO2, and FIFO3.
+[src:node-affinity/scheduling-computing] The round robin policy is named SCHED_RR in AIX, and the fair round robin is called SCHED_OTHER.
+[src:node-affinity/scheduling-computing] Linux 1.2 used a round-robin scheduling policy.
+[src:node-affinity/scheduling-computing] Linux 2.2 added scheduling classes and support for symmetric multiprocessing (SMP).
+[src:node-affinity/scheduling-computing] In Linux 2.4, an O(n) scheduler with a multilevel feedback queue with priority levels ranging from 0 to 140 was used; 0–99 are reserved for real-time tasks and 100–140 are considered nice task levels.
+[src:node-affinity/scheduling-computing] For real-time tasks, the time quantum for switching processes was approximately 200 ms, and for nice tasks approximately 10 ms.
+[src:node-affinity/scheduling-computing] The scheduler ran through the run queue of all ready processes, letting the highest priority processes go first and run through their time slices, after which they will be placed in an expired queue.
+[src:node-affinity/scheduling-computing] When the active queue is empty, the expired queue will become the active queue and vice versa.
+[src:node-affinity/scheduling-computing] However, some enterprise Linux distributions such as SUSE Linux Enterprise Server replaced this scheduler with a backport of the O(1) scheduler (which was maintained by Alan Cox in his Linux 2.4-ac Kernel series) to the Linux 2.4 kernel used by the distribution.
+[src:node-affinity/scheduling-computing] In versions 2.6.0 to 2.6.22, the kernel used an O(1) scheduler developed by Ingo Molnar and many other kernel developers during the Linux 2.5 development.
+[src:node-affinity/scheduling-computing] For many kernels in this time frame, Con Kolivas developed patch sets which improved interactivity with this scheduler or even replaced it with his own schedulers.
+[src:node-affinity/scheduling-computing] Con Kolivas' work, most significantly his implementation of fair scheduling named Rotating Staircase Deadline (RSDL), inspired Ingo Molnár to develop the Completely Fair Scheduler (CFS) as a replacement for the earlier O(1) scheduler, crediting Kolivas in his announcement.
+[src:node-affinity/scheduling-computing] CFS is the first implementation of a fair queuing process scheduler widely used in a general-purpose operating system.
+[src:node-affinity/scheduling-computing] The CFS uses a well-studied, classic scheduling algorithm called fair queuing originally invented for packet networks.
+[src:node-affinity/scheduling-computing] Fair queuing had been previously applied to CPU scheduling under the name stride scheduling.
+[src:node-affinity/scheduling-computing] The fair queuing CFS scheduler has a scheduling complexity of $O(\log N)$ , where N is the number of tasks in the runqueue.
+[src:node-affinity/scheduling-computing] Choosing a task can be done in constant time, but reinserting a task after it has run requires $O(\log N)$ operations, because the run queue is implemented as a red–black tree.
+[src:node-affinity/scheduling-computing] The Brain Fuck Scheduler, also created by Con Kolivas, is an alternative to the CFS.
+[src:node-affinity/scheduling-computing] In 2023, Peter Zijlstra proposed replacing CFS with an earliest eligible virtual deadline first scheduling (EEVDF) process scheduler.
+[src:node-affinity/scheduling-computing] The aim was to remove the need for CFS *latency nice* patches.
+[src:node-affinity/scheduling-computing] Linux 6.12 added support for scheduler extensions that can be added from userspace; this mechanism is known as sched_ext.
+[src:node-affinity/scheduling-computing] An eBPF program can be loaded into the kernel to implement a scheduling policy.
+[src:node-affinity/scheduling-computing] These schedulers can replace the default scheduler.
+[src:node-affinity/scheduling-computing] FreeBSD uses a multilevel feedback queue with priorities ranging from 0–255.
+[src:node-affinity/scheduling-computing] 0–63 are reserved for interrupts, 64–127 for the top half of the kernel, 128–159 for real-time user threads, 160–223 for time-shared user threads, and 224–255 for idle user threads.
+[src:node-affinity/scheduling-computing] Also, like Linux, it uses the active queue setup, but it also has an idle queue.
+[src:node-affinity/scheduling-computing] NetBSD uses a multilevel feedback queue with priorities ranging from 0–223.
+[src:node-affinity/scheduling-computing] 0–63 are reserved for time-shared threads (default, SCHED_OTHER policy), 64–95 for user threads that entered kernel space, 96–128 for kernel threads, 128–191 for user real-time threads (SCHED_FIFO and SCHED_RR policies), and 192–223 for software interrupts.
+[src:node-affinity/scheduling-computing] Solaris uses a multilevel feedback queue with priorities ranging between 0 and 169.
+[src:node-affinity/scheduling-computing] Priorities 0–59 are reserved for time-shared threads, 60–99 for system threads, 100–159 for real-time threads, and 160–169 for low priority interrupts.
+[src:node-affinity/scheduling-computing] Unlike Linux, when a process is done using its time quantum, it is given a new priority and put back in the queue.
+[src:node-affinity/scheduling-computing] Solaris 9 introduced two new scheduling classes, namely fixed-priority class and fair share class.
+[src:node-affinity/scheduling-computing] The threads with fixed priority have the same priority range as that of the time-sharing class, but their priorities are not dynamically adjusted.
+[src:node-affinity/scheduling-computing] The fair scheduling class uses CPU *shares* to prioritize threads for scheduling decisions.
+[src:node-affinity/scheduling-computing] CPU shares indicate the entitlement to CPU resources.
+[src:node-affinity/scheduling-computing] They are allocated to a set of processes, which are collectively known as a project.

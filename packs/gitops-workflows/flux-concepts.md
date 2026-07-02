@@ -1,0 +1,87 @@
+---
+title: "Core Concepts"
+source: https://fluxcd.io/flux/concepts/
+domain: gitops-workflows
+license: CC-BY-SA-4.0
+tags: gitops workflow, git as source of truth, pull based reconciliation, declarative delivery
+fetched: 2026-07-02
+---
+
+# Core Concepts
+
+Core Concepts of Flux.
+
+These are some core concepts in Flux.
+
+## GitOps
+
+*GitOps* is a way of managing your infrastructure and applications so that whole system is described declaratively and version controlled, and having an automated process that ensures that the deployed environment matches the state specified in one or more Git repositories.
+
+For more information, take a look at the following resources:
+
+- What is GitOps?
+- GitOps Principles
+
+## Gitless GitOps
+
+*Gitless GitOps* was pioneered by the Flux team back in 2022 with the introduction of the OCIRepository source type and Flux OCI Artifact media type.
+
+In the Gitless GitOps model, the Flux controllers are fully decoupled from Git, relying solely on container registries as the source of truth for the desired state of Kubernetes clusters. From a user perspective, Git remains the primary interface for managing the desired state, but the underlying implementation leverages OCI-compliant registries to store and distribute the configuration artifacts. This approach allows for greater flexibility and scalability, the Git server is no longer a production dependency, while the OCI registry becomes the unified source of truth for all configuration artifacts, SBOMs, cryptographic signatures, and app images.
+
+For more information, take a look at the following resources:
+
+- Flux OCI Artifacts documentation
+- OCI Bootstrap with Flux Operator
+- Gitless GitOps overview
+
+## GitOps Toolkit (gotk)
+
+In Flux, *GitOps Toolkit* refers to a collection of specialized tools, Flux Controllers, composable APIs, and reusable Go packages available under the fluxcd GitHub organization. These components are designed for the purpose of constructing Continuous Delivery workflows on Kubernetes using GitOps principles. The GitOps Toolkit serves as the foundation for managing and automating the deployment and configuration of applications and infrastructure within a Kubernetes cluster, promoting a declarative and version-controlled approach to operations.
+
+For more information, take a look at GitOps Toolkit components.
+
+## Reconciliation
+
+*Reconciliation* refers to ensuring that a given state (e.g. application running in the cluster, infrastructure) matches a desired state declaratively defined somewhere (e.g. a Git repository).
+
+There are various examples of these in Flux:
+
+- `OCIRepository` reconciliation: downloads and stores the contents of the OCI Artifact on a given interval, and records the observed digest and tag in the status of resource.
+- `HelmRelease` reconciliation: ensures the state of the Helm release matches what is defined in the resource, performs a release if this is not the case (including revision changes of a HelmChart resource).
+- `Kustomization` reconciliation: ensures the state of the application deployed on a cluster matches the resources defined in a Git or OCI repository or S3 bucket.
+
+## Kustomization
+
+The `Kustomization` custom resource represents a local set of Kubernetes resources (e.g. kustomize overlay) that Flux is supposed to reconcile in the cluster. The reconciliation runs every five minutes by default, but this can be changed with `.spec.interval`. If you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted. You either suspend the reconciliation or push your changes to a Git repository.
+
+For more information, take a look at the Kustomize FAQ and the Kustomization CRD.
+
+## Bootstrap
+
+The process of installing the Flux components in a GitOps manner is called a *bootstrap*. The manifests are applied to the cluster, a `GitRepository` and `Kustomization` are created for the Flux components, then the manifests are pushed to an existing Git repository (or a new one is created). Flux can manage itself just as it manages other resources. The bootstrap is done using the `flux` CLI or using our Terraform Provider.
+
+For more information, take a look at the bootstrap documentation.
+
+## Continuous Delivery
+
+*Continuous Delivery* refers to the practice of delivering software updates frequently and reliably.
+
+For more information, take a look at continuous delivery as defined in the CNCF.
+
+## Continuous Deployment
+
+*Continuous Deployment* is the practice of automatically deploying code changes to production once they have passed through automated testing.
+
+For more information, take a look at continuous delivery as defined in the CNCF Glossary.
+
+## Progressive Delivery
+
+*Progressive Delivery* builds on Continuous Delivery by gradually rolling out new features or updates to a subset of users, allowing developers to test and monitor the new features in a controlled environment and make necessary adjustments before releasing them to everyone.
+
+Developers can use techniques like feature flags, canary releases, and A/B testing to minimize the chances of introducing bugs or errors that could harm users or interrupt business operations. These strategies enable a controlled and gradual rollout of new features, ensuring a smooth and successful release that enhances user trust and improves the overall user experience.
+
+The Flux project offers a specialised controller called Flagger that implements various progressive delivery techniques. For more information, take a look at Flagger deployment strategies.
+
+Last modified 2026-04-20:
+
+Italicize new term introductions in core concepts (b36fcc8a)

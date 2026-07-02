@@ -1,0 +1,14 @@
+---
+title: "Port mirroring"
+source: https://en.wikipedia.org/wiki/Port_mirroring
+domain: traffic-mirroring
+license: CC-BY-SA-4.0
+tags: traffic mirroring, request shadowing, shadow deployment test, duplicated production traffic
+fetched: 2026-07-02
+---
+
+# Port mirroring
+
+**Port mirroring** is used on a network switch to send a copy of network packets seen on one switch port (or an entire VLAN) to a network monitoring connection on another switch port. This is commonly used for network appliances that require monitoring of network traffic such as an intrusion detection system, passive probe or real user monitoring (RUM) technology that is used to support application performance management (APM). Port mirroring on a Cisco Systems switch is generally referred to as *Switched Port Analyzer* (SPAN) or *Remote Switched Port Analyzer* (RSPAN). Other vendors have different names for it, such as *Roving Analysis Port* (RAP) on 3Com switches.
+
+Network engineers or administrators use port mirroring to analyze and debug data or diagnose errors on a network. It helps administrators keep a close eye on network performance and alerts them when problems occur. It can be used to mirror either inbound or outbound traffic (or both) on single or multiple interfaces.

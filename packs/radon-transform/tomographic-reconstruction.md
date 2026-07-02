@@ -1,0 +1,132 @@
+---
+title: "Tomographic reconstruction"
+source: https://en.wikipedia.org/wiki/Tomographic_reconstruction
+domain: radon-transform
+license: CC-BY-SA-4.0
+tags: radon transform, filtered back projection, tomographic reconstruction, projection-slice theorem
+fetched: 2026-07-02
+---
+
+# Tomographic reconstruction
+
+**Tomographic reconstruction** is a type of multidimensional inverse problem where the challenge is to yield an estimate of a specific system from a finite number of projections. The mathematical basis for tomographic imaging was laid down by Johann Radon. A notable example of applications is the reconstruction of computed tomography (CT) where cross-sectional images of patients are obtained in non-invasive manner. Recent developments have seen the Radon transform and its inverse used for tasks related to realistic object insertion required for testing and evaluating computed tomography use in airport security.
+
+This article applies in general to reconstruction methods for all kinds of tomography, but some of the terms and physical descriptions refer directly to the reconstruction of X-ray computed tomography.
+
+## Introducing formula
+
+The projection of an object, resulting from the tomographic measurement process at a given angle $\theta$ , is made up of a set of line integrals (see Fig. 1). A set of many such projections under different angles organized in 2D is called a sinogram (see Fig. 3). In X-ray CT, the line integral represents the total attenuation of the beam of X-rays as it travels in a straight line through the object. As mentioned above, the resulting image is a 2D (or 3D) model of the attenuation coefficient. That is, we wish to find the image $\mu (x,y)$ . The simplest and easiest way to visualise the method of scanning is the system of parallel projection, as used in the first scanners. For this discussion we consider the data to be collected as a series of parallel rays, at position r , across a projection at angle $\theta$ . This is repeated for various angles. Attenuation occurs exponentially in tissue:
+
+$I=I_{0}\exp \left({-\int \mu (x,y)\,ds}\right)$
+
+where $\mu (x,y)$ is the attenuation coefficient as a function of position. Therefore, generally the total attenuation p of a ray at position r , on the projection at angle $\theta$ , is given by the line integral:
+
+$p_{\theta }(r)=\ln \left({\frac {I}{I_{0}}}\right)=-\int \mu (x,y)\,ds$
+
+Using the coordinate system of Figure 1, the value of r onto which the point $(x,y)$ will be projected at angle $\theta$ is given by:
+
+$x\cos \theta +y\sin \theta =r\$
+
+So the equation above can be rewritten as
+
+$p_{\theta }(r)=\int _{-\infty }^{\infty }\int _{-\infty }^{\infty }f(x,y)\delta (x\cos \theta +y\sin \theta -r)\,dx\,dy$
+
+where $f(x,y)$ represents $\mu (x,y)$ and $\delta ()$ is the Dirac delta function. This function is known as the Radon transform (or *sinogram*) of the 2D object.
+
+The Fourier Transform of the projection can be written as
+
+$P_{\theta }(\omega )=\int _{-\infty }^{\infty }\int _{-\infty }^{\infty }f(x,y)\exp[-j\omega (x\cos \theta +y\sin \theta )]\,dx\,dy=F(\Omega _{1},\Omega _{2})$
+
+where
+
+$\Omega _{1}=\omega \cos \theta ,\Omega _{2}=\omega \sin \theta$
+
+$P_{\theta }(\omega )$
+
+represents a slice of the 2D Fourier transform of
+
+$f(x,y)$
+
+at angle
+
+$\theta$
+
+. Using the
+
+inverse Fourier transform
+
+, the inverse Radon transform formula can be easily derived.
+
+$f(x,y)={\frac {1}{2\pi }}\int \limits _{0}^{\pi }g_{\theta }(x\cos \theta +y\sin \theta )d\theta$
+
+where $g_{\theta }(x\cos \theta +y\sin \theta )$ is the derivative of the Hilbert transform of $p_{\theta }(r)$
+
+In theory, the inverse Radon transformation would yield the original image. The projection-slice theorem tells us that if we had an infinite number of one-dimensional projections of an object taken at an infinite number of angles, we could perfectly reconstruct the original object, $f(x,y)$ . However, there will only be a finite number of projections available in practice.
+
+Assuming $f(x,y)$ has effective diameter d and desired resolution is $R_{s}$ , a rule of thumb for the number of projections needed for reconstruction is $N>\pi d/R_{s}$
+
+## Reconstruction algorithms
+
+Practical reconstruction algorithms have been developed to implement the process of reconstruction of a three-dimensional object from its projections. These algorithms are designed largely based on the mathematics of the X-ray transform, statistical knowledge of the data acquisition process and geometry of the data imaging system.
+
+### Fourier-domain reconstruction algorithm
+
+Reconstruction can be made using interpolation. Assume N projections of $f(x,y)$ are generated at equally spaced angles, each sampled at the same rate. The discrete Fourier transform (DFT) on each projection yields sampling in the frequency domain. Combining all the frequency-sampled projections generates a polar raster in the frequency domain. The polar raster is sparse, so interpolation is used to fill the unknown DFT points, and reconstruction can be done through the inverse discrete Fourier transform. Reconstruction performance may improve by designing methods to change the sparsity of the polar raster, facilitating the effectiveness of interpolation.
+
+For instance, a concentric square raster in the frequency domain can be obtained by changing the angle between each projection as follows:
+
+$\theta '={\frac {R_{0}}{\max\{|\cos \theta |,|\sin \theta |\}}}$
+
+where $R_{0}$ is highest frequency to be evaluated.
+
+The concentric square raster improves computational efficiency by allowing all the interpolation positions to be on rectangular DFT lattice. Furthermore, it reduces the interpolation error. Yet, the Fourier-Transform algorithm has a disadvantage of producing inherently noisy output.
+
+### Back projection algorithm
+
+In practice of tomographic image reconstruction, often a stabilized and discretized version of the inverse Radon transform is used, known as the filtered back projection algorithm.
+
+With a sampled discrete system, the inverse Radon transform is
+
+$f(x,y)={\frac {1}{2\pi }}\sum _{i=0}^{N-1}\Delta \theta _{i}g_{\theta _{i}}(x\cos \theta _{i}+y\sin \theta _{i})$
+
+$g_{\theta }(t)=p_{\theta }(t)\cdot k(t)$
+
+where $\Delta \theta$ is the angular spacing between the projections and $k(t)$ is a Radon kernel with frequency response $|\omega |$ .
+
+The name *back-projection* comes from the fact that a one-dimensional projection needs to be filtered by a one-dimensional Radon kernel (back-projected) in order to obtain a two-dimensional signal. The filter used does not contain DC gain, so adding DC bias may be desirable. Reconstruction using back-projection allows better resolution than interpolation method described above. However, it induces greater noise because the filter is prone to amplify high-frequency content.
+
+### Iterative reconstruction algorithm
+
+The iterative algorithm is computationally intensive but it allows the inclusion of *a priori* information about the system $f(x,y)$ .
+
+Let N be the number of projections and $D_{i}$ be the distortion operator for the i th projection taken at an angle $\theta _{i}$ . $\{\lambda _{i}\}$ are a set of parameters to optimize the conversion of iterations.
+
+$f_{0}(x,y)=\sum _{i=1}^{N}\lambda _{i}p_{\theta _{i}}(r)$
+
+$f_{k}(x,y)=f_{k-1}(x,y)+\sum _{i=1}^{N}\lambda _{i}[p_{\theta _{i}}(r)-D_{i}f_{k-1}(x,y)]$
+
+An alternative family of recursive tomographic reconstruction algorithms are the algebraic reconstruction techniques and iterative sparse asymptotic minimum variance.
+
+### Fan-beam reconstruction
+
+Use of a noncollimated fan beam is common since a collimated beam of radiation is difficult to obtain. Fan beams will generate series of line integrals, not parallel to each other, as projections. The fan-beam system requires a 360-degree range of angles, which imposes mechanical constraints, but it allows faster signal acquisition time, which may be advantageous in certain settings such as in the field of medicine. Back projection follows a similar two-step procedure that yields reconstruction by computing weighted sum back-projections obtained from filtered projections.
+
+### Deep learning reconstruction
+
+Deep learning methods are widely applied to image reconstruction nowadays and have achieved impressive results in various image reconstruction tasks, including low-dose denoising, sparse-view reconstruction, limited angle tomography and metal artifact reduction. An excellent overview can be found in the special issue of IEEE Transaction on Medical Imaging. One group of deep learning reconstruction algorithms apply post-processing neural networks to achieve image-to-image reconstruction, where input images are reconstructed by conventional reconstruction methods. Artifact reduction using the U-Net in limited angle tomography is such an example application. However, incorrect structures may occur in an image reconstructed by such a completely data-driven method, as displayed in the figure. Therefore, integration of known operators into the architecture design of neural networks appears beneficial, as described in the concept of precision learning. For example, direct image reconstruction from projection data can be learnt from the framework of filtered back-projection. Another example is to build neural networks by unrolling iterative reconstruction algorithms. Except for precision learning, using conventional reconstruction methods with deep learning reconstruction prior is also an alternative approach to improve the image quality of deep learning reconstruction.
+
+## Tomographic reconstruction software
+
+Tomographic systems have significant variability in their applications and geometries (locations of sources and detectors). This variability creates the need for very specific, tailored implementations of the processing and reconstruction algorithms. Thus, most CT manufacturers provide their own custom proprietary software. This is done not only to protect intellectual property, but may also be enforced by a government regulatory agency. Regardless, there are a number of general purpose tomographic reconstruction software packages that have been developed over the last couple decades, both commercial and open-source.
+
+Most of the commercial software packages that are available for purchase focus on processing data for benchtop cone-beam CT systems. A few of these software packages include Volume Graphics, InstaRecon, iTomography, Livermore Tomography Tools (LTT), Cone Beam Software Tools (CST), and Bronnikov Algorithms Library.
+
+Some noteworthy examples of open-source reconstruction software include: Reconstruction Toolkit (RTK), CONRAD, TomoPy, the ASTRA toolbox, PYRO-NN, ODL, TIGRE, and LEAP.
+
+## Gallery
+
+Shown in the gallery is the complete process for a simple object tomography and the following tomographic reconstruction based on ART.
+
+- (Fig. 2: Phantom object, two kitty-corner squares.)Fig. 2: Phantom object, two kitty-corner squares.
+- (Fig. 3: Sinogram of the phantom object (Fig.2) resulting from tomography. 50 projection slices were taken over 180 degree angle, equidistantly sampled (only by coincidence the x-axis marks displacement at -50/50 units).)Fig. 3: Sinogram of the phantom object (Fig.2) resulting from tomography. 50 projection slices were taken over 180 degree angle, equidistantly sampled (only by coincidence the x-axis marks displacement at -50/50 units).
+- (Fig.4: ART based tomographic reconstruction of the sinogram of Fig.3, presented as animation over the iterative reconstruction process. The original object could be approximatively reconstructed, as the resulting image has some visual artifacts.)Fig.4: ART based tomographic reconstruction of the sinogram of Fig.3, presented as animation over the iterative reconstruction process. The original object could be approximatively reconstructed, as the resulting image has some visual artifacts.

@@ -1,0 +1,34 @@
+---
+title: "System image"
+source: https://en.wikipedia.org/wiki/System_image
+domain: immutable-infrastructure
+license: CC-BY-SA-4.0
+tags: immutable infrastructure, replace not patch, baked machine image, phoenix server
+fetched: 2026-07-02
+---
+
+# System image
+
+In computing, a **system image** is a serialized copy of the entire state of a computer system stored in some non-volatile form, such as a binary compressed file.
+
+If a system has all its state written to a disk (i.e. on a disk image), then a system image can be produced by copying the disk to a file elsewhere, often with disk cloning applications. On many systems, such as some embedded devices and many phones, a complete system image cannot be created by a disk cloning program running within that system because information can be held outside of disks and volatile memory, for example in non-volatile memory, such as boot ROMs, or disk cloning program usually has no such privileges.
+
+A system is said to be capable of using system images if it can be shut down and later restored to exactly the same state. In such cases, system images can be used for backup.
+
+Hibernation is an example that uses an image of the computer's entire RAM.
+
+## Process images
+
+A process image is a copy of a given process's state at a given point in time. It is often used to create persistence within an otherwise volatile system. A common example is a database management system (DBMS). Most DBMS can store the state of its database or databases to a file before being closed down (see database dump). The DBMS can then be restarted later with the information in the database intact and proceed as though the software had never stopped. Another example would be the hibernate feature of many operating systems. Here, the state of all RAM memory is stored to disk, the computer is brought into an energy saving mode, then later restored to normal operation.
+
+Some emulators provide a facility to save an image of the system being emulated. In video gaming this is often referred to as a savestate.
+
+Another use is code mobility: a mobile agent can migrate between machines by having its state saved, then copying the data to another machine and restarting there.
+
+### Programming language support
+
+Some programming languages provide a command to take a system image of a program. This is normally a standard feature in Smalltalk (inspired by FLEX) and Lisp, among other languages. Development in these languages is often quite different from many other programming languages. For example, in Lisp the programmer may load packages or other code into a running Lisp implementation using the read-eval-print loop, which usually compiles the programs. Data is loaded into the running Lisp system. The programmer may then dump a system image, containing that pre-compiled and possibly customized code—and also all loaded application data. Often this image is an executable, and can be run on other machines. This system image can be the form in which executable programs are distributed—this method has often been used by programs (such as TeX and Emacs) largely implemented in Lisp, Smalltalk, or idiosyncratic languages to avoid spending time repeating the same initialization work every time they start up.
+
+Similar, Lisp Machines were booted from Lisp images, called Worlds. The World contains the complete operating system, its applications and its data in a single file. It was also possible to save incremental Worlds, that contain only the changes from some base World. Before saving the World, the Lisp Machine operating system could optimize the contents of memory (better memory layout, compacting data structures, sorting data, ...).
+
+Although its purpose is different, a "system image" is often similar in structure to a core dump.

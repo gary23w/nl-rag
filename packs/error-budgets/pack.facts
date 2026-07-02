@@ -1,0 +1,994 @@
+# nl-rag distilled facts — domain: error-budgets
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:error-budgets/availability] Normally high availability systems might be specified as 99.98%, 99.999% or 99.9996%.
+[src:error-budgets/availability] The converse, **unavailability**, is 1 minus the availability.
+[src:error-budgets/availability] Average availability must be defined on an interval of the real line.
+[src:error-budgets/availability] Availability is the probability that an item will be in an operable and committable state at the start of a mission when the mission is called for at a random time, and is generally defined as uptime divided by total time (uptime plus downtime).
+[src:error-budgets/availability] Let's say a series component is composed of components A, B and C.
+[src:error-budgets/availability] Therefore, the combined availability of multiple components in a series is always lower than the availability of individual components.
+[src:error-budgets/availability] Using parallel components can exponentially increase the availability of the overall system.
+[src:error-budgets/availability] For example, if each of your hosts has only 50% availability, by using 10 of hosts in parallel, you can achieve 99.9023% availability.
+[src:error-budgets/availability] Note that redundancy doesn’t always lead to higher availability.
+[src:error-budgets/availability] In fact, redundancy increases complexity, which in turn reduces availability.
+[src:error-budgets/availability] Your system can reliably scale out and scale in redundant components.
+[src:error-budgets/availability] Furthermore, these methods are capable of identifying the most critical items and failure modes or events that impact availability.
+[src:error-budgets/availability] The impact of a one-off/non-repairable element (could be refurbished/remanufactured) on the availability of the system, in which it operates, equals the mean time to failure (MTTF)/(MTTF + the mean time to repair MTTR).
+[src:error-budgets/availability] It is based on quantities under the control of the designer.
+[src:error-budgets/availability] Outage due to equipment in hours per year = 1/rate = 1/MTTF = 0.01235 hours per year.
+[src:error-budgets/availability] Availability measures are classified by either the time interval of interest or the mechanisms for the system downtime.
+[src:error-budgets/availability] If the time interval of interest is the primary concern, we consider instantaneous, limiting, average, and limiting average availability.
+[src:error-budgets/availability] The aforementioned definitions are developed in Barlow and Proschan [1975], Lie, Hwang, and Tillman [1977], and Nachlas [1998].
+[src:error-budgets/availability] The second primary classification for availability is contingent on the various mechanisms for downtime, such as the inherent availability, achieved availability, and operational availability.
+[src:error-budgets/availability] Mi [1998] gives some comparison results of availability considering inherent availability.
+[src:error-budgets/availability] A very comprehensive recent book is by Trivedi and Bobbio [2017].
+[src:error-budgets/availability] Availability factor is used extensively in power plant engineering.
+[src:error-budgets/availability] For example, the North American Electric Reliability Corporation implemented the Generating Availability Data System in 1982.
+[src:error-budgets/embracing-risk] You might expect Google to try to build 100% reliable services—ones that never fail.
+[src:error-budgets/embracing-risk] It turns out that past a certain point, however, increasing reliability is worse for a service (and its users) rather than better!
+[src:error-budgets/embracing-risk] Extreme reliability comes at a cost: maximizing stability limits how fast new features can be developed and how quickly products can be delivered to users, and dramatically increases their cost, which in turn reduces the numbers of features a team can afford to offer.
+[src:error-budgets/embracing-risk] Further, users typically don’t notice the difference between high reliability and extreme reliability in a service, because the user experience is dominated by less reliable components like the cellular network or the device they are working with.
+[src:error-budgets/embracing-risk] Put simply, a user on a 99% reliable smartphone cannot tell the difference between 99.99% and 99.999% service reliability!
+[src:error-budgets/embracing-risk] With this in mind, rather than simply maximizing uptime, Site Reliability Engineering seeks to balance the risk of unavailability with the goals of rapid innovation and efficient service operations, so that users’ overall happiness—with features, service, and performance—is optimized.
+[src:error-budgets/embracing-risk] Unreliable systems can quickly erode users’ confidence, so we want to reduce the chance of system failure.
+[src:error-budgets/embracing-risk] However, experience shows that as we build systems, cost does not increase linearly as reliability increments—an incremental improvement in reliability may cost 100x more than the previous increment.
+[src:error-budgets/embracing-risk] The cost associated with redundant equipment that, for example, allows us to take systems offline for routine or unforeseen maintenance, or provides space for us to store parity code blocks that provide a minimum data durability guarantee.
+[src:error-budgets/embracing-risk] The cost borne by an organization when it allocates engineering resources to build systems or features that diminish risk instead of features that are directly visible to or usable by end users.
+[src:error-budgets/embracing-risk] These engineers no longer work on new features and products for end users.
+[src:error-budgets/embracing-risk] In SRE, we manage service reliability largely by managing risk.
+[src:error-budgets/embracing-risk] We give equal importance to figuring out how to engineer greater reliability into Google systems and identifying the appropriate level of tolerance for the services we run.
+[src:error-budgets/embracing-risk] Doing so allows us to perform a cost/benefit analysis to determine, for example, where on the (nonlinear) risk continuum we should place Search, Ads, Gmail, or Photos.
+[src:error-budgets/embracing-risk] Our goal is to explicitly align the risk taken by a given service with the risk the business is willing to bear.
+[src:error-budgets/embracing-risk] We strive to make a service reliable enough, but no *more* reliable than it needs to be.
+[src:error-budgets/embracing-risk] That is, when we set an availability target of 99.99%,we want to exceed it, but not by much: that would waste opportunities to add features to the system, clean up technical debt, or reduce its operational costs.
+[src:error-budgets/embracing-risk] In a sense, we view the availability target as both a minimum and a maximum.
+[src:error-budgets/embracing-risk] The key advantage of this framing is that it unlocks explicit, thoughtful risktaking.
+[src:error-budgets/embracing-risk] As standard practice at Google, we are often best served by identifying an objective metric to represent the property of a system we want to optimize.
+[src:error-budgets/embracing-risk] By setting a target, we can assess our current performance and track improvements or degradations over time.
+[src:error-budgets/embracing-risk] For service risk, it is not immediately clear how to reduce all of the potential factors into a single metric.
+[src:error-budgets/embracing-risk] Service failures can have many potential effects, including user dissatisfaction, harm, or loss of trust; direct or indirect revenue loss; brand or reputational impact; and undesirable press coverage.
+[src:error-budgets/embracing-risk] Clearly, some of these factors are very hard to measure.
+[src:error-budgets/embracing-risk] To make this problem tractable and consistent across many types of systems we run, we focus on *unplanned downtime*.
+[src:error-budgets/embracing-risk] For most services, the most straightforward way of representing risk tolerance is in terms of the acceptable level of unplanned downtime.
+[src:error-budgets/embracing-risk] Unplanned downtime is captured by the desired level of *service availability*, usually expressed in terms of the number of "nines" we would like to provide: 99.9%, 99.99%, or 99.999% availability.
+[src:error-budgets/embracing-risk] Each additional nine corresponds to an order of magnitude improvement toward 100% availability.
+[src:error-budgets/embracing-risk] For serving systems, this metric is traditionally calculated based on the proportion of system uptime (see Time-based availability).
+[src:error-budgets/embracing-risk] Using this formula over the period of a year, we can calculate the acceptable number of minutes of downtime to reach a given number of nines of availability.
+[src:error-budgets/embracing-risk] For example, a system with an availability target of 99.99% can be down for up to 52.56 minutes in a year and stay within its availability target; see Availability Table for a table.
+[src:error-budgets/embracing-risk] At Google, however, a time-based metric for availability is usually not meaningful because we are looking across globally distributed services.
+[src:error-budgets/embracing-risk] Our approach to fault isolation makes it very likely that we are serving at least a subset of traffic for a given service somewhere in the world at any given time (i.e., we are at least partially "up" at all times).
+[src:error-budgets/embracing-risk] Therefore, instead of using metrics around uptime, we define availability in terms of the *request success rate*.
+[src:error-budgets/embracing-risk] Aggregate availability shows how this yield-based metric is calculated over a rolling window (i.e., proportion of successful requests over a one-day window).
+[src:error-budgets/embracing-risk] For example, a system that serves 2.5M requests in a day with a daily availability target of 99.99% can serve up to 250 errors and still hit its target for that given day.
+[src:error-budgets/embracing-risk] In a typical application, not all requests are equal: failing a new user sign-up request is different from failing a request polling for new email in the background.
+[src:error-budgets/embracing-risk] In many cases, however, availability calculated as the request success rate over all requests is a reasonable approximation of unplanned downtime, as viewed from the end-user perspective.
+[src:error-budgets/embracing-risk] Quantifying unplanned downtime as a request success rate also makes this availability metric more amenable for use in systems that do not typically serve end users directly.
+[src:error-budgets/embracing-risk] Most nonserving systems (e.g., batch, pipeline, storage, and transactional systems) have a well-defined notion of successful and unsuccessful units of work.
+[src:error-budgets/embracing-risk] Indeed, while the systems discussed in this chapter are primarily consumer and infrastructure serving systems, many of the same principles also apply to nonserving systems with minimal modification.
+[src:error-budgets/embracing-risk] For example, a batch process that extracts, transforms, and inserts the contents of one of our customer databases into a data warehouse to enable further analysis may be set to run periodically.
+[src:error-budgets/embracing-risk] Using a request success rate defined in terms of records successfully and unsuccessfully processed, we can calculate a useful availability metric despite the fact that the batch system does not run constantly.
+[src:error-budgets/embracing-risk] Most often, we set quarterly availability targets for a service and track our performance against those targets on a weekly, or even daily, basis.
+[src:error-budgets/embracing-risk] This strategy lets us manage the service to a high-level availability objective by looking for, tracking down, and fixing meaningful deviations as they inevitably arise.
+[src:error-budgets/embracing-risk] See Service Level Objectives for more details.
+[src:error-budgets/embracing-risk] What does it mean to identify the risk tolerance of a service?
+[src:error-budgets/embracing-risk] In a formal environment or in the case of safety-critical systems, the risk tolerance of services is typically built directly into the basic product or service definition.
+[src:error-budgets/embracing-risk] At Google, services’ risk tolerance tends to be less clearly defined.
+[src:error-budgets/embracing-risk] To identify the risk tolerance of a service, SREs must work with the product owners to turn a set of business goals into explicit objectives to which we can engineer.
+[src:error-budgets/embracing-risk] In this case, the business goals we’re concerned about have a direct impact on the performance and reliability of the service offered.
+[src:error-budgets/embracing-risk] In practice, this translation is easier said than done.
+[src:error-budgets/embracing-risk] While consumer services often have clear product owners, it is unusual for infrastructure services (e.g., storage systems or a general-purpose HTTP caching layer) to have a similar structure of product ownership.
+[src:error-budgets/embracing-risk] We’ll discuss the consumer and infrastructure cases in turn.
+[src:error-budgets/embracing-risk] Our consumer services often have a product team that acts as the business owner for an application.
+[src:error-budgets/embracing-risk] For example, Search, Google Maps, and Google Docs each have their own product managers.
+[src:error-budgets/embracing-risk] These product managers are charged with understanding the users and the business, and for shaping the product for success in the marketplace.
+[src:error-budgets/embracing-risk] When a product team exists, that team is usually the best resource to discuss the reliability requirements for a service.
+[src:error-budgets/embracing-risk] In the absence of a dedicated product team, the engineers building the system often play this role either knowingly or unknowingly.
+[src:error-budgets/embracing-risk] The target level of availability for a given Google service usually depends on the function it provides and how the service is positioned in the marketplace.
+[src:error-budgets/embracing-risk] Consider the requirements of Google Apps for Work.
+[src:error-budgets/embracing-risk] The majority of its users are enterprise users, some large and some small.
+[src:error-budgets/embracing-risk] These enterprises depend on Google Apps for Work services (e.g., Gmail, Calendar, Drive, Docs) to provide tools that enable their employees to perform their daily work.
+[src:error-budgets/embracing-risk] Stated another way, an outage for a Google Apps for Work service is an outage not only for Google, but also for all the enterprises that critically depend on us.
+[src:error-budgets/embracing-risk] For a typical Google Apps for Work service, we might set an external quarterly availability target of 99.9%, and back this target with a stronger internal availability target and a contract that stipulates penalties if we fail to deliver to the external target.
+[src:error-budgets/embracing-risk] YouTube provides a contrasting set of considerations.
+[src:error-budgets/embracing-risk] When Google acquired YouTube, we had to decide on the appropriate availability target for the website.
+[src:error-budgets/embracing-risk] In 2006, YouTube was focused on consumers and was in a very different phase of its business lifecycle than Google was at the time.
+[src:error-budgets/embracing-risk] While YouTube already had a great product, it was still changing and growing rapidly.
+[src:error-budgets/embracing-risk] We set a lower availability target for YouTube than for our enterprise products because rapid feature development was correspondingly more important.
+[src:error-budgets/embracing-risk] The expected shape of failures for a given service is another important consideration.
+[src:error-budgets/embracing-risk] How resilient is our business to service downtime?
+[src:error-budgets/embracing-risk] Which is worse for the service: a constant low rate of failures, or an occasional full-site outage?
+[src:error-budgets/embracing-risk] Both types of failure may result in the same absolute number of errors, but may have vastly different impacts on the business.
+[src:error-budgets/embracing-risk] An illustrative example of the difference between full and partial outages naturally arises in systems that serve private information.
+[src:error-budgets/embracing-risk] Consider a contact management application, and the difference between intermittent failures that cause profile pictures to fail to render, versus a failure case that results in a user’s private contacts being shown to another user.
+[src:error-budgets/embracing-risk] The first case is clearly a poor user experience, and SREs would work to remediate the problem quickly.
+[src:error-budgets/embracing-risk] In the second case, however, the risk of exposing private data could easily undermine basic user trust in a significant way.
+[src:error-budgets/embracing-risk] As a result, taking down the service entirely would be appropriate during the debugging and potential clean-up phase for the second case.
+[src:error-budgets/embracing-risk] At the other end of services offered by Google, it is sometimes acceptable to have regular outages during maintenance windows.
+[src:error-budgets/embracing-risk] A number of years ago, the Ads Frontend used to be one such service.
+[src:error-budgets/embracing-risk] It is used by advertisers and website publishers to set up, configure, run, and monitor their advertising campaigns.
+[src:error-budgets/embracing-risk] Because most of this work takes place during normal business hours, we determined that occasional, regular, scheduled outages in the form of maintenance windows would be acceptable, and we counted these scheduled outages as planned downtime, not unplanned downtime.
+[src:error-budgets/embracing-risk] Cost is often the key factor in determining the appropriate availability target for a service.
+[src:error-budgets/embracing-risk] Ads is in a particularly good position to make this trade-off because request successes and failures can be directly translated into revenue gained or lost.
+[src:error-budgets/embracing-risk] In this case, if the cost of improving availability by one nine is less than $900, it is worth the investment.
+[src:error-budgets/embracing-risk] If the cost is greater than $900, the costs will exceed the projected increase in revenue.
+[src:error-budgets/embracing-risk] It may be harder to set these targets when we do not have a simple translation function between reliability and revenue.
+[src:error-budgets/embracing-risk] One useful strategy may be to consider the background error rate of ISPs on the Internet.
+[src:error-budgets/embracing-risk] If failures are being measured from the end-user perspective and it is possible to drive the error rate for the service below the background error rate, those errors will fall within the noise for a given user’s Internet connection.
+[src:error-budgets/embracing-risk] While there are significant differences between ISPs and protocols (e.g., TCP versus UDP, IPv4 versus IPv6), we’ve measured the typical background error rate for ISPs as falling between 0.01% and 1%.
+[src:error-budgets/embracing-risk] Examining the risk tolerance of services in relation to metrics besides availability is often fruitful.
+[src:error-budgets/embracing-risk] Understanding which metrics are important and which metrics aren’t important provides us with degrees of freedom when attempting to take thoughtful risks.
+[src:error-budgets/embracing-risk] Service latency for our Ads systems provides an illustrative example.
+[src:error-budgets/embracing-risk] When Google first launched Web Search, one of the service’s key distinguishing features was speed.
+[src:error-budgets/embracing-risk] When we introduced AdWords, which displays advertisements next to search results, a key requirement of the system was that the ads should not slow down the search experience.
+[src:error-budgets/embracing-risk] This requirement has driven the engineering goals in each generation of AdWords systems and is treated as an invariant.
+[src:error-budgets/embracing-risk] AdSense, Google’s ads system that serves contextual ads in response to requests from JavaScript code that publishers insert into their websites, has a very different latency goal.
+[src:error-budgets/embracing-risk] The latency goal for AdSense is to avoid slowing down the rendering of the third-party page when inserting contextual ads.
+[src:error-budgets/embracing-risk] The specific latency target, then, is dependent on the speed at which a given publisher’s page renders.
+[src:error-budgets/embracing-risk] This means that AdSense ads can generally be served hundreds of milliseconds slower than AdWords ads.
+[src:error-budgets/embracing-risk] This looser serving latency requirement has allowed us to make many smart trade-offs in provisioning (i.e., determining the quantity and locations of serving resources we use), which save us substantial cost over naive provisioning.
+[src:error-budgets/embracing-risk] In other words, given the relative insensitivity of the AdSense service to moderate changes in latency performance, we are able to consolidate serving into fewer geographical locations, reducing our operational overhead.
+[src:error-budgets/embracing-risk] The requirements for building and running infrastructure components differ from the requirements for consumer products in a number of ways.
+[src:error-budgets/embracing-risk] A fundamental difference is that, by definition, infrastructure components have multiple clients, often with varying needs.
+[src:error-budgets/embracing-risk] Consider Bigtable [Cha06], a massive-scale distributed storage system for structured data.
+[src:error-budgets/embracing-risk] Some consumer services serve data directly from Bigtable in the path of a user request.
+[src:error-budgets/embracing-risk] Such services need low latency and high reliability.
+[src:error-budgets/embracing-risk] Other teams use Bigtable as a repository for data that they use to perform offline analysis (e.g., MapReduce) on a regular basis.
+[src:error-budgets/embracing-risk] These teams tend to be more concerned about throughput than reliability.
+[src:error-budgets/embracing-risk] Risk tolerance for these two use cases is quite distinct.
+[src:error-budgets/embracing-risk] One approach to meeting the needs of both use cases is to engineer all infrastructure services to be ultra-reliable.
+[src:error-budgets/embracing-risk] Given the fact that these infrastructure services also tend to aggregate huge amounts of resources, such an approach is usually far too expensive in practice.
+[src:error-budgets/embracing-risk] To understand the different needs of the different types of users, you can look at the desired state of the request queue for each type of Bigtable user.
+[src:error-budgets/embracing-risk] The low-latency user wants Bigtable’s request queues to be (almost always) empty so that the system can process each outstanding request immediately upon arrival.
+[src:error-budgets/embracing-risk] (Indeed, inefficient queuing is often a cause of high tail latency.) The user concerned with offline analysis is more interested in system throughput, so that user wants request queues to never be empty.
+[src:error-budgets/embracing-risk] To optimize for throughput, the Bigtable system should never need to idle while waiting for its next request.
+[src:error-budgets/embracing-risk] As you can see, success and failure are antithetical for these sets of users.
+[src:error-budgets/embracing-risk] Success for the low-latency user is failure for the user concerned with offline analysis.
+[src:error-budgets/embracing-risk] One way to satisfy these competing constraints in a cost-effective manner is to partition the infrastructure and offer it at multiple independent levels of service.
+[src:error-budgets/embracing-risk] In the Bigtable example, we can build two types of clusters: low-latency clusters and throughput clusters.
+[src:error-budgets/embracing-risk] The low-latency clusters are designed to be operated and used by services that need low latency and high reliability.
+[src:error-budgets/embracing-risk] To ensure short queue lengths and satisfy more stringent client isolation requirements, the Bigtable system can be provisioned with a substantial amount of slack capacity for reduced contention and increased redundancy.
+[src:error-budgets/embracing-risk] The throughput clusters, on the other hand, can be provisioned to run very hot and with less redundancy, optimizing throughput over latency.
+[src:error-budgets/embracing-risk] In practice, we are able to satisfy these relaxed needs at a much lower cost, perhaps as little as 10–50% of the cost of a low-latency cluster.
+[src:error-budgets/embracing-risk] Given Bigtable’s massive scale, this cost savings becomes significant very quickly.
+[src:error-budgets/embracing-risk] The key strategy with regards to infrastructure is to deliver services with explicitly delineated levels of service, thus enabling the clients to make the right risk and cost trade-offs when building their systems.
+[src:error-budgets/embracing-risk] With explicitly delineated levels of service, the infrastructure providers can effectively externalize the difference in the cost it takes to provide service at a given level to clients.
+[src:error-budgets/embracing-risk] Exposing cost in this way motivates the clients to choose the level of service with the lowest cost that still meets their needs.
+[src:error-budgets/embracing-risk] Note that we can run multiple classes of services using identical hardware and software.
+[src:error-budgets/embracing-risk] We can provide vastly different service guarantees by adjusting a variety of service characteristics, such as the quantities of resources, the degree of redundancy, the geographical provisioning constraints, and, critically, the infrastructure software configuration.
+[src:error-budgets/embracing-risk] To demonstrate that these risk-tolerance assessment principles do not just apply to storage infrastructure, let’s look at another large class of service: Google’s frontend infrastructure.
+[src:error-budgets/embracing-risk] The frontend infrastructure consists of reverse proxy and load balancing systems running close to the edge of our network.
+[src:error-budgets/embracing-risk] These are the systems that, among other things, serve as one endpoint of the connections from end users (e.g., terminate TCP from the user’s browser).
+[src:error-budgets/embracing-risk] Given their critical role, we engineer these systems to deliver an extremely high level of reliability.
+[src:error-budgets/embracing-risk] While consumer services can often limit the visibility of unreliability in backends, these infrastructure systems are not so lucky.
+[src:error-budgets/embracing-risk] If a request never makes it to the application service frontend server, it is lost.
+[src:error-budgets/embracing-risk] We’ve explored the ways to identify the risk tolerance of both consumer and infrastructure services.
+[src:error-budgets/embracing-risk] Now, we’ll discuss using that tolerance level to manage unreliability via error budgets.
+[src:error-budgets/embracing-risk] Other chapters in this book discuss how tensions can arise between product development teams and SRE teams, given that they are generally evaluated on different metrics.
+[src:error-budgets/embracing-risk] Product development performance is largely evaluated on product velocity, which creates an incentive to push new code as quickly as possible.
+[src:error-budgets/embracing-risk] Meanwhile, SRE performance is (unsurprisingly) evaluated based upon reliability of a service, which implies an incentive to push back against a high rate of change.
+[src:error-budgets/embracing-risk] Information asymmetry between the two teams further amplifies this inherent tension.
+[src:error-budgets/embracing-risk] The product developers have more visibility into the time and effort involved in writing and releasing their code, while the SREs have more visibility into the service’s reliability (and the state of production in general).
+[src:error-budgets/embracing-risk] These tensions often reflect themselves in different opinions about the level of effort that should be put into engineering practices.
+[src:error-budgets/embracing-risk] How hardened do we make the software to unexpected events?
+[src:error-budgets/embracing-risk] Too little, and we have a brittle, unusable product.
+[src:error-budgets/embracing-risk] Too much, and we have a product no one wants to use (but that runs very stably).
+[src:error-budgets/embracing-risk] Again, not enough testing and you have embarrassing outages, privacy data leaks, or a number of other press-worthy events.
+[src:error-budgets/embracing-risk] Too much testing, and you might lose your market.
+[src:error-budgets/embracing-risk] How much should we work on reducing that risk, versus doing other work?
+[src:error-budgets/embracing-risk] How long do we wait, and how big is the canary?
+[src:error-budgets/embracing-risk] Usually, preexisting teams have worked out some kind of informal balance between them as to where the risk/effort boundary lies.
+[src:error-budgets/embracing-risk] Unfortunately, one can rarely prove that this balance is optimal, rather than just a function of the negotiating skills of the engineers involved.
+[src:error-budgets/embracing-risk] Nor should such decisions be driven by politics, fear, or hope.
+[src:error-budgets/embracing-risk] (Indeed, Google SRE’s unofficial motto is "Hope is not a strategy.") Instead, our goal is to define an objective metric, agreed upon by both sides, that can be used to guide the negotiations in a reproducible way.
+[src:error-budgets/embracing-risk] The more data-based the decision can be, the better.
+[src:error-budgets/embracing-risk] In order to base these decisions on objective data, the two teams jointly define a quarterly error budget based on the service’s service level objective, or SLO (see Service Level Objectives).
+[src:error-budgets/embracing-risk] The error budget provides a clear, objective metric that determines how unreliable the service is allowed to be within a single quarter.
+[src:error-budgets/embracing-risk] This metric removes the politics from negotiations between the SREs and the product developers when deciding how much risk to allow.
+[src:error-budgets/embracing-risk] For example, imagine that a service’s SLO is to successfully serve 99.999% of all queries per quarter.
+[src:error-budgets/embracing-risk] This means that the service’s error budget is a failure rate of 0.001% for a given quarter.
+[src:error-budgets/embracing-risk] If a problem causes us to fail 0.0002% of the expected queries for the quarter, the problem spends 20% of the service’s quarterly error budget.
+[src:error-budgets/embracing-risk] The main benefit of an error budget is that it provides a common incentive that allows both product development and SRE to focus on finding the right balance between innovation and reliability.
+[src:error-budgets/embracing-risk] Many products use this control loop to manage release velocity: as long as the system’s SLOs are met, releases can continue.
+[src:error-budgets/embracing-risk] If SLO violations occur frequently enough to expend the error budget, releases are temporarily halted while additional resources are invested in system testing and development to make the system more resilient, improve its performance, and so on.
+[src:error-budgets/embracing-risk] More subtle and effective approaches are available than this simple on/off technique:15 for instance, slowing down releases or rolling them back when the SLO-violation error budget is close to being used up.
+[src:error-budgets/embracing-risk] For example, if product development wants to skimp on testing or increase push velocity and SRE is resistant, the error budget guides the decision.
+[src:error-budgets/embracing-risk] When the budget is large, the product developers can take more risks.
+[src:error-budgets/embracing-risk] When the budget is nearly drained, the product developers themselves will push for more testing or slower push velocity, as they don’t want to risk using up the budget and stall their launch.
+[src:error-budgets/embracing-risk] In effect, the product development team becomes self-policing.
+[src:error-budgets/embracing-risk] They know the budget and can manage their own risk.
+[src:error-budgets/embracing-risk] What happens if a network outage or datacenter failure reduces the measured SLO?
+[src:error-budgets/embracing-risk] Such events also eat into the error budget.
+[src:error-budgets/embracing-risk] As a result, the number of new pushes may be reduced for the remainder of the quarter.
+[src:error-budgets/embracing-risk] The entire team supports this reduction because everyone shares the responsibility for uptime.
+[src:error-budgets/embracing-risk] The budget also helps to highlight some of the costs of overly high reliability targets, in terms of both inflexibility and slow innovation.
+[src:error-budgets/embracing-risk] If the team is having trouble launching new features, they may elect to loosen the SLO (thus increasing the error budget) in order to increase innovation.
+[src:error-budgets/embracing-risk] 14An early version of this section appeared as an article in *;login:* (August 2015, vol.
+[src:error-budgets/embracing-risk] 15Known as "bang/bang" control—see *https://en.wikipedia.org/wiki/Bang–bang_control*.
+[src:error-budgets/error-budget-policy] The Example Game Service allows Android and iPhone users to play a game with each other.
+[src:error-budgets/error-budget-policy] New releases of the backend code are pushed daily.
+[src:error-budgets/error-budget-policy] New releases of clients are pushed weekly.
+[src:error-budgets/error-budget-policy] This policy applies both to backend and client releases.
+[src:error-budgets/error-budget-policy] This policy is not intended to serve as a punishment for missing SLOs.
+[src:error-budgets/error-budget-policy] Halting change is undesirable; this policy gives teams permission to focus exclusively on reliability when data indicates that reliability is more important than other product features.
+[src:error-budgets/error-budget-policy] If the service is performing at or above its SLO, then releases (including data changes) will proceed according to the release policy.
+[src:error-budgets/error-budget-policy] If the service has exceeded its error budget for the preceding four-week window, we will halt all changes and releases other than P01 issues or security fixes until the service is back within its SLO.
+[src:error-budgets/error-budget-policy] Depending upon the cause of the SLO miss, the team may devote additional resources to working on reliability instead of feature work.
+[src:error-budgets/error-budget-policy] If a single incident consumes more than 20% of error budget over four weeks, then the team must conduct a postmortem.
+[src:error-budgets/error-budget-policy] The postmortem must contain at least one P0 action item to address the root cause.
+[src:error-budgets/error-budget-policy] If a single class of outage consumes more than 20% of error budget over a quarter, the team must have a P0 item on their quarterly planning document2 to address the issues in the following quarter.
+[src:error-budgets/error-budget-policy] In the event of a disagreement between parties regarding the calculation of the error budget or the specific actions it defines, the issue should be escalated to the CTO to make a decision.
+[src:error-budgets/error-budget-policy] Error budgets are the tool SRE uses to balance service reliability with the pace of innovation.
+[src:error-budgets/error-budget-policy] Changes are a major source of instability, representing roughly 70% of our outages, and development work for features competes with development work for stability.
+[src:error-budgets/error-budget-policy] The error budget forms a control mechanism for diverting attention to stability as needed.
+[src:error-budgets/error-budget-policy] An error budget is 1 minus the SLO of the service.
+[src:error-budgets/error-budget-policy] A 99.9% SLO service has a 0.1% error budget.
+[src:error-budgets/error-budget-policy] If our service receives 1,000,000 requests in four weeks, a 99.9% availability SLO gives us a budget of 1,000 errors over that period.
+[src:error-budgets/error-budget-policy] 1P0 is the highest priority of bug: all hands on deck; drop everything else until this is fixed.
+[src:error-budgets/error-budget-policy] 2At Google, quarterly planning is public, and teams are held accountable to their plans.
+[src:error-budgets/failure-rate] In real-world applications, the failure probability of a system usually differs over time; failures occur more frequently in early-life ("burning in"), or as a system ages ("wearing out").
+[src:error-budgets/failure-rate] This is known as the bathtub curve, where the middle region is called the "useful life period".
+[src:error-budgets/failure-rate] The mean time between failures (MTBF, $1/\lambda$ ) is often reported instead of the failure rate, as numbers such as "2,000 hours" are more intuitive than numbers such as "0.0005 per hour".
+[src:error-budgets/failure-rate] However, this is only valid if the failure rate $\lambda (t)$ is actually constant over time, such as within the flat region of the bathtub curve.
+[src:error-budgets/failure-rate] In many cases where MTBF is quoted, it refers only to this region; thus it cannot be used to give an accurate calculation of the average lifetime of a system, as it ignores the "burn-in" and "wear-out" regions.
+[src:error-budgets/failure-rate] MTBF appears frequently in engineering design requirements, and governs the frequency of required system maintenance and inspections.
+[src:error-budgets/failure-rate] A similar ratio used in the transport industries, especially in railways and trucking, is "mean distance between failures" (MDBF) - allowing maintenance to be scheduled based on distance travelled, rather than at regular time intervals.
+[src:error-budgets/failure-rate] which would depend on the number of systems under study, and the conditions over the time period.
+[src:error-budgets/failure-rate] To accurately model failures over time, a **cumulative failure distribution**, $F(t)$ must be defined, which can be any cumulative distribution function (CDF) that gradually increases from 0 to 1 .
+[src:error-budgets/failure-rate] where $\tau$ is a dummy integration variable.
+[src:error-budgets/failure-rate] A concept closely related but different to instantaneous failure rate $f(t)$ is the **hazard rate** (or **hazard function**), $h(t)$ .
+[src:error-budgets/failure-rate] In the many-system case, this is defined as the proportional failure rate of the systems *still functioning* at time t – as opposed to $f(t)$ , which is the expressed as a proportion of the *initial number* of systems.
+[src:error-budgets/failure-rate] Thus for a collection of identical systems, only one of hazard rate $h(t)$ , failure probability density $f(t)$ , or cumulative failure distribution $F(t)$ need be defined.
+[src:error-budgets/failure-rate] an exponential function with scaling constant $\lambda$ .
+[src:error-budgets/failure-rate] As seen in the figures above, this represents a gradually decreasing failure probability density.
+[src:error-budgets/failure-rate] which can be seen to gradually approach 1 as $t\to \infty ,$ representing the fact that eventually all systems under study will fail.
+[src:error-budgets/failure-rate] In other words, in this particular case *only*, the hazard rate is constant over time.
+[src:error-budgets/failure-rate] This illustrates the difference in hazard rate and failure probability density - as the number of systems surviving at time $t>0$ gradually reduces, the total failure rate also reduces, but the hazard rate **remains constant**.
+[src:error-budgets/failure-rate] In other words, the probabilities of each individual system failing do not change over time as the systems age - they are "memory-less".
+[src:error-budgets/failure-rate] For many systems, a constant hazard function may not be a realistic approximation; the chance of failure of an individual component may depend on its age.
+[src:error-budgets/failure-rate] Therefore, other distributions are often used.
+[src:error-budgets/failure-rate] For example, the deterministic distribution increases hazard rate over time (for systems where wear-out is the most important factor), while the Pareto distribution decreases it (for systems where early-life failures are more common).
+[src:error-budgets/failure-rate] The commonly used Weibull distribution combines both of these effects, as do the log-normal and hypertabastic distributions.
+[src:error-budgets/failure-rate] After modelling a given distribution and parameters for $h(t)$ , the failure probability density $f(t)$ and cumulative failure distribution $F(t)$ can be predicted using the given equations.
+[src:error-budgets/failure-rate] Failure rate data can be obtained in several ways.
+[src:error-budgets/failure-rate] From field failure rate reports, statistical analysis techniques can be used to estimate failure rates.
+[src:error-budgets/failure-rate] For accurate failure rates the analyst must have a good understanding of equipment operation, procedures for data collection, the key environmental variables impacting failure rates, how the equipment is used at the system level, and how the failure data will be used by system designers.
+[src:error-budgets/failure-rate] Many organizations maintain internal databases of failure information on the devices or systems that they produce, which can be used to calculate failure rates for those devices or systems.
+[src:error-budgets/failure-rate] For new devices or systems, the historical data for similar devices or systems can serve as a useful estimate.
+[src:error-budgets/failure-rate] Handbooks of failure rate data for various components are available from government and commercial sources.
+[src:error-budgets/failure-rate] that provides failure rate data for many military electronic components.
+[src:error-budgets/failure-rate] Several failure rate data sources are available commercially that focus on commercial components, including some non-electronic components.
+[src:error-budgets/failure-rate] Time lag is one of the serious drawbacks of all failure rate estimations.
+[src:error-budgets/failure-rate] Often by the time the failure rate data are available, the devices under study have become obsolete.
+[src:error-budgets/failure-rate] Due to this drawback, failure-rate prediction methods have been developed.
+[src:error-budgets/failure-rate] These methods may be used on newly designed devices to predict the device's failure rates and failure modes.
+[src:error-budgets/failure-rate] Two approaches have become well known, Cycle Testing and FMEDA.
+[src:error-budgets/failure-rate] The most accurate source of data is to test samples of the actual devices or systems in order to generate failure data.
+[src:error-budgets/failure-rate] This is often prohibitively expensive or impractical, so that the previous data sources are often used instead.
+[src:error-budgets/failure-rate] Mechanical movement is the predominant failure mechanism causing mechanical and electromechanical devices to wear out.
+[src:error-budgets/failure-rate] For many devices, the wear-out failure point is measured by the number of cycles performed before the device fails, and can be discovered by cycle testing.
+[src:error-budgets/failure-rate] In cycle testing, a device is cycled as rapidly as practical until it fails.
+[src:error-budgets/failure-rate] When a collection of these devices are tested, the test will run until 10% of the units fail dangerously.
+[src:error-budgets/failure-rate] (FMEDA) is a systematic analysis technique to obtain subsystem / product level failure rates, failure modes and design strength.
+[src:error-budgets/failure-rate] Given a component database calibrated with field failure data that is reasonably accurate, the method can predict product level failure rate and failure mode data for a given application.
+[src:error-budgets/failure-rate] The predictions have been shown to be more accurate than field warranty return analysis or even typical field failure analysis given that these methods depend on reports that typically do not have sufficient detail information in failure records.
+[src:error-budgets/failure-rate] A decreasing failure rate describes cases where early-life failures are common and corresponds to the situation where $h(t)$ is a decreasing function.
+[src:error-budgets/failure-rate] This can describe, for example, the period of infant mortality in humans, or the early failure of transistors due to manufacturing defects.
+[src:error-budgets/failure-rate] The hazard rate of aircraft air conditioning systems was found to have an exponentially decreasing distribution.
+[src:error-budgets/failure-rate] In special processes called renewal processes, where the time to recover from failure can be neglected, the likelihood of failure remains constant with respect to time.
+[src:error-budgets/failure-rate] For a renewal process with DFR renewal function, inter-renewal times are concave.
+[src:error-budgets/failure-rate] Brown conjectured the converse, that DFR is also necessary for the inter-renewal times to be concave, however it has been shown that this conjecture holds neither in the discrete case nor in the continuous case.
+[src:error-budgets/failure-rate] When the failure rate is decreasing the coefficient of variation is ⩾ 1, and when the failure rate is increasing the coefficient of variation is ⩽ 1.
+[src:error-budgets/failure-rate] Note that this result only holds when the failure rate is defined for all t ⩾ 0 and that the converse result (coefficient of variation determining nature of failure rate) does not hold.
+[src:error-budgets/failure-rate] Failure rates can be expressed using any measure of time, but **hours** is the most common unit in practice.
+[src:error-budgets/failure-rate] Other units, such as miles, revolutions, etc., can also be used in place of "time" units.
+[src:error-budgets/failure-rate] Failure rates are often expressed in engineering notation as failures per million, or 10−6, especially for individual components, since their failure rates are often very low.
+[src:error-budgets/failure-rate] The **Failures In Time** (**FIT**) rate of a device is the number of failures that can be expected in one billion (109) device-hours of operation (e.g.
+[src:error-budgets/failure-rate] This term is used particularly by the semiconductor industry.
+[src:error-budgets/failure-rate] however, this assumes that the failure rate $\lambda (t)$ is constant, and that the units are consistent (e.g. failures per million hours), and not expressed as a ratio or as probability densities.
+[src:error-budgets/failure-rate] This is useful to estimate the failure rate of a system when individual components or subsystems have already been tested.
+[src:error-budgets/failure-rate] When adding "redundant" components to eliminate a single point of failure, the quantity of interest is not the sum of individual failure rates but rather the "mission failure" rate, or the "mean time between critical failures" (MTBCF).
+[src:error-budgets/failure-rate] Combining failure or hazard rates that are time-dependent is more complicated.
+[src:error-budgets/failure-rate] For example, mixtures of Decreasing Failure Rate (DFR) variables are also DFR.
+[src:error-budgets/failure-rate] Mixtures of exponentially distributed failure rates are hyperexponentially distributed.
+[src:error-budgets/failure-rate] Suppose it is desired to estimate the failure rate of a certain component.
+[src:error-budgets/failure-rate] Ten identical components are each tested until they either fail or reach 1,000 hours, at which time the test is terminated.
+[src:error-budgets/failure-rate] A total of 7,502 component-hours of testing is performed, and 6 failures are recorded.
+[src:error-budgets/failure-rate] which could also be expressed as a MTBF of 1,250 hours, or approximately 800 failures for every million hours of operation.
+[src:error-budgets/reliability-engineering-p01] The *reliability function* is theoretically defined as the probability of success.
+[src:error-budgets/reliability-engineering-p01] In practice, it is calculated using different techniques, and its value ranges between 0 and 1, where 0 indicates no probability of success while 1 indicates definite success.
+[src:error-budgets/reliability-engineering-p01] This probability is estimated from detailed (physics of failure) analysis, previous data sets, or through reliability testing and reliability modeling.
+[src:error-budgets/reliability-engineering-p01] Availability, testability, maintainability, and maintenance are often defined as a part of "reliability engineering" in reliability programs.
+[src:error-budgets/reliability-engineering-p01] Reliability often plays a vital role in the cost-effectiveness of overall systems.
+[src:error-budgets/reliability-engineering-p01] Reliability engineering deals with the prediction, prevention, and management of high levels of "lifetime" engineering uncertainty and risks of failure.
+[src:error-budgets/reliability-engineering-p01] Although stochastic parameters define and affect reliability, reliability is not only achieved by mathematics and statistics.
+[src:error-budgets/reliability-engineering-p01] Reliability engineering relates closely to quality engineering, safety engineering, and system safety, in that they use common methods for their analysis and may require input from each other.
+[src:error-budgets/reliability-engineering-p01] It can be said that a system must be reliably safe.
+[src:error-budgets/reliability-engineering-p01] Reliability engineering focuses on the costs of failure caused by the system downtime, cost of spares, repair equipment, personnel, and cost of warranty claims.
+[src:error-budgets/reliability-engineering-p01] The word *reliability* can be traced back to 1816 and is first attested to the poet Samuel Taylor Coleridge.
+[src:error-budgets/reliability-engineering-p01] Before World War II the term was linked mostly to repeatability; a test (in any type of science) was considered "reliable" if the same results would be obtained repeatedly.
+[src:error-budgets/reliability-engineering-p01] In the 1920s, product improvement through the use of statistical process control was promoted by Dr.
+[src:error-budgets/reliability-engineering-p01] Shewhart at Bell Labs, around the time that Waloddi Weibull was working on statistical models for fatigue.
+[src:error-budgets/reliability-engineering-p01] The development of reliability engineering was here on a parallel path with quality.
+[src:error-budgets/reliability-engineering-p01] The modern use of the word reliability was defined by the U.S. military in the 1940s, characterizing a product that would operate when expected and for a specified period.
+[src:error-budgets/reliability-engineering-p01] In World War II, many reliability issues stemmed from the inherent unreliability of electronic equipment available at the time and from fatigue.
+[src:error-budgets/reliability-engineering-p01] Miner published a seminal paper titled "Cumulative Damage in Fatigue" in an ASME journal.
+[src:error-budgets/reliability-engineering-p01] A main application for reliability engineering in the military was for the vacuum tube as used in radar systems and other electronics, for which reliability proved to be very problematic and costly.
+[src:error-budgets/reliability-engineering-p01] The IEEE formed the Reliability Society in 1948.
+[src:error-budgets/reliability-engineering-p01] In 1950, the United States Department of Defense formed a group called the "Advisory Group on the Reliability of Electronic Equipment" (AGREE) to investigate reliability methods for military equipment.
+[src:error-budgets/reliability-engineering-p01] In the 1960s, more emphasis was given to reliability testing on component and system levels.
+[src:error-budgets/reliability-engineering-p01] The famous military standard MIL-STD-781 was created at that time.
+[src:error-budgets/reliability-engineering-p01] Around this period also the much-used predecessor to military handbook 217 was published by RCA and was used for the prediction of failure rates of electronic components.
+[src:error-budgets/reliability-engineering-p01] The emphasis on component reliability and empirical research (e.g.
+[src:error-budgets/reliability-engineering-p01] More pragmatic approaches, as used in the consumer industries, were being used.
+[src:error-budgets/reliability-engineering-p01] In the 1980s, televisions were increasingly made up of solid-state semiconductors.
+[src:error-budgets/reliability-engineering-p01] Automobiles rapidly increased their use of semiconductors with a variety of microcomputers under the hood and in the dash.
+[src:error-budgets/reliability-engineering-p01] Large air conditioning systems developed electronic controllers, as did microwave ovens and a variety of other appliances.
+[src:error-budgets/reliability-engineering-p01] Communications systems began to adopt electronics to replace older mechanical switching systems.
+[src:error-budgets/reliability-engineering-p01] Bellcore issued the first consumer prediction methodology for telecommunications, and SAE developed a similar document SAE870050 for automotive applications.
+[src:error-budgets/reliability-engineering-p01] The nature of predictions evolved during the decade, and it became apparent that die complexity wasn't the only factor that determined failure rates for integrated circuits (ICs).
+[src:error-budgets/reliability-engineering-p01] Kam Wong published a paper questioning the bathtub curve—see also reliability-centered maintenance.
+[src:error-budgets/reliability-engineering-p01] During this decade, the failure rate of many components dropped by a factor of 10.
+[src:error-budgets/reliability-engineering-p01] Software became important to the reliability of systems.
+[src:error-budgets/reliability-engineering-p01] By the 1990s, the pace of IC development was picking up.
+[src:error-budgets/reliability-engineering-p01] Wider use of stand-alone microcomputers was common, and the PC market helped keep IC densities following Moore's law and doubling about every 18 months.
+[src:error-budgets/reliability-engineering-p01] Reliability engineering was now changing as it moved towards understanding the physics of failure.
+[src:error-budgets/reliability-engineering-p01] Failure rates for components kept dropping, but system-level issues became more prominent.
+[src:error-budgets/reliability-engineering-p01] Systems thinking has become more and more important.
+[src:error-budgets/reliability-engineering-p01] For software, the CMM model (Capability Maturity Model) was developed, which gave a more qualitative approach to reliability.
+[src:error-budgets/reliability-engineering-p01] ISO 9000 added reliability measures to the design and development portion of certification.
+[src:error-budgets/reliability-engineering-p01] The expansion of the World Wide Web created new challenges of security and trust.
+[src:error-budgets/reliability-engineering-p01] The older problem of too little reliable information available had now been replaced by too much information of questionable value.
+[src:error-budgets/reliability-engineering-p01] Consumer reliability problems could now be discussed online in real-time using data.
+[src:error-budgets/reliability-engineering-p01] New technologies such as micro-electromechanical systems (MEMS), handheld GPS, and hand-held devices that combine cell phones and computers all represent challenges to maintaining reliability.
+[src:error-budgets/reliability-engineering-p01] Product development time continued to shorten through this decade and what had been done in three years was being done in 18 months.
+[src:error-budgets/reliability-engineering-p01] This meant that reliability tools and tasks had to be more closely tied to the development process itself.
+[src:error-budgets/reliability-engineering-p01] In many ways, reliability has become part of everyday life and consumer expectations.
+[src:error-budgets/reliability-engineering-p01] Reliability is the probability of a product performing its intended function under specified operating conditions in a manner that meets or exceeds customer expectations.
+[src:error-budgets/reliability-engineering-p01] To identify and correct the causes of failures that do occur despite the efforts to prevent them.
+[src:error-budgets/reliability-engineering-p01] To determine ways of coping with failures that do occur, if their causes have not been corrected.
+[src:error-budgets/reliability-engineering-p01] To apply methods for estimating the likely reliability of new designs, and for analysing reliability data.
+[src:error-budgets/reliability-engineering-p01] The reason for the priority emphasis is that it is by far the most effective way of working, in terms of minimizing costs and generating reliable products.
+[src:error-budgets/reliability-engineering-p01] The primary skills that are required, therefore, are the ability to understand and anticipate the possible causes of failures, and knowledge of how to prevent them.
+[src:error-budgets/reliability-engineering-p01] It is also necessary to know the methods that can be used for analyzing designs and data.
+[src:error-budgets/reliability-engineering-p01] Reliability engineering for "complex systems" requires a different, more elaborate systems approach than for non-complex systems.
+[src:error-budgets/reliability-engineering-p01] These analyses must be done properly and with much attention to detail to be effective.
+[src:error-budgets/reliability-engineering-p01] Consistent with the creation of safety cases, for example per ARP4761, the goal of reliability assessments is to provide a robust set of qualitative and quantitative evidence that the use of a component or system will not be associated with unacceptable risk.
+[src:error-budgets/reliability-engineering-p01] The risk here is the combination of probability and severity of the failure incident (scenario) occurring.
+[src:error-budgets/reliability-engineering-p01] The severity can be looked at from a system safety or a system availability point of view.
+[src:error-budgets/reliability-engineering-p01] Reliability for safety can be thought of as a very different focus from reliability for system availability.
+[src:error-budgets/reliability-engineering-p01] Availability and safety can exist in dynamic tension as keeping a system too available can be unsafe.
+[src:error-budgets/reliability-engineering-p01] Forcing an engineering system into a safe state too quickly can force false alarms that impede the availability of the system.
+[src:error-budgets/reliability-engineering-p01] In a *de minimis* definition, the severity of failures includes the cost of spare parts, man-hours, logistics, damage (secondary failures), and downtime of machines which may cause production loss.
+[src:error-budgets/reliability-engineering-p01] What is acceptable is determined by the managing authority or customers or the affected communities.
+[src:error-budgets/reliability-engineering-p01] Residual risk is the risk that is left over after all reliability activities have finished, and includes the unidentified risk—and is therefore not completely quantifiable.
+[src:error-budgets/reliability-engineering-p01] The complexity of the technical systems such as improvements of design and materials, planned inspections, fool-proof design, and backup redundancy decreases risk and increases the cost.
+[src:error-budgets/reliability-engineering-p01] The risk can be decreased to ALARA (as low as reasonably achievable) or ALAPA (as low as practically achievable) levels.
+[src:error-budgets/reliability-engineering-p01] Implementing a reliability program is not simply a software purchase; it is not just a checklist of items that must be completed that ensure one has reliable products and processes.
+[src:error-budgets/reliability-engineering-p01] A reliability program is a complex learning and knowledge-based system unique to one's products and processes.
+[src:error-budgets/reliability-engineering-p01] It is supported by leadership, built on the skills that one develops within a team, integrated into business processes, and executed by following proven standard work practices.
+[src:error-budgets/reliability-engineering-p01] A reliability program plan is used to document exactly what "best practices" (tasks, methods, tools, analysis, and tests) are required for a particular (sub)system, as well as clarify customer requirements for reliability assessment.
+[src:error-budgets/reliability-engineering-p01] For large-scale complex systems, the reliability program plan should be a separate document.
+[src:error-budgets/reliability-engineering-p01] Resource determination for manpower and budgets for testing and other tasks is critical for a successful program.
+[src:error-budgets/reliability-engineering-p01] In general, the amount of work required for an effective program for complex systems is large.
+[src:error-budgets/reliability-engineering-p01] A reliability program plan is essential for achieving high levels of reliability, testability, maintainability, and the resulting system availability, and is developed early during system development and refined over the system's life cycle.
+[src:error-budgets/reliability-engineering-p01] It specifies not only what the reliability engineer does, but also the tasks performed by other stakeholders.
+[src:error-budgets/reliability-engineering-p01] An effective reliability program plan must be approved by top program management, which is responsible for the allocation of sufficient resources for its implementation.
+[src:error-budgets/reliability-engineering-p01] A reliability program plan may also be used to evaluate and improve the availability of a system by the strategy of focusing on increasing testability & maintainability and not on reliability.
+[src:error-budgets/reliability-engineering-p01] Improving maintainability is generally easier than improving reliability.
+[src:error-budgets/reliability-engineering-p01] Maintainability estimates (repair rates) are also generally more accurate.
+[src:error-budgets/reliability-engineering-p01] However, because the uncertainties in the reliability estimates are in most cases very large, they are likely to dominate the availability calculation (prediction uncertainty problem), even when maintainability levels are very high.
+[src:error-budgets/reliability-engineering-p01] When reliability is not under control, more complicated issues may arise, like manpower (maintainers/customer service capability) shortages, spare part availability, logistic delays, lack of repair facilities, extensive retrofit and complex configuration management costs, and others.
+[src:error-budgets/reliability-engineering-p01] The problem of unreliability may be increased also due to the "domino effect" of maintenance-induced failures after repairs.
+[src:error-budgets/reliability-engineering-p01] Focusing only on maintainability is therefore not enough.
+[src:error-budgets/reliability-engineering-p01] If failures are prevented, none of the other issues are of any importance, and therefore reliability is generally regarded as the most important part of availability.
+[src:error-budgets/reliability-engineering-p01] Reliability needs to be evaluated and improved related to both availability and the total cost of ownership (TCO) due to the cost of spare parts, maintenance man-hours, transport costs, storage costs, part obsolete risks, etc.
+[src:error-budgets/reliability-engineering-p01] But, as GM and Toyota have belatedly discovered, TCO also includes the downstream liability costs when reliability calculations have not sufficiently or accurately addressed customers' bodily risks.
+[src:error-budgets/reliability-engineering-p01] Often a trade-off is needed between the two.
+[src:error-budgets/reliability-engineering-p01] There might be a maximum ratio between availability and cost of ownership.
+[src:error-budgets/reliability-engineering-p01] The testability of a system should also be addressed in the plan, as this is the link between reliability and maintainability.
+[src:error-budgets/reliability-engineering-p01] The maintenance strategy can influence the reliability of a system (e.g., by preventive and/or predictive maintenance), although it can never bring it above the inherent reliability.
+[src:error-budgets/reliability-engineering-p01] The reliability plan should clearly provide a strategy for availability control.
+[src:error-budgets/reliability-engineering-p01] Whether only availability or also cost of ownership is more important depends on the use of the system.
+[src:error-budgets/reliability-engineering-p01] A proper reliability plan should always address RAMT analysis in its total context.
+[src:error-budgets/reliability-engineering-p01] RAMT stands for reliability, availability, maintainability/maintenance, and testability in the context of the customer's needs.
+[src:error-budgets/reliability-engineering-p01] For any system, one of the first tasks of reliability engineering is to adequately specify the reliability and maintainability requirements allocated from the overall availability needs and, more importantly, derived from proper design failure analysis or preliminary prototype test results.
+[src:error-budgets/reliability-engineering-p01] Clear requirements (able to be designed to) should constrain the designers from designing particular unreliable items/constructions/interfaces/systems.
+[src:error-budgets/reliability-engineering-p01] Setting only availability, reliability, testability, or maintainability targets (e.g., max. failure rates) is not appropriate.
+[src:error-budgets/reliability-engineering-p01] This is a broad misunderstanding about Reliability Requirements Engineering.
+[src:error-budgets/reliability-engineering-p01] Reliability requirements address the system itself, including test and assessment requirements, and associated tasks and documentation.
+[src:error-budgets/reliability-engineering-p01] Reliability requirements are included in the appropriate system or subsystem requirements specifications, test plans, and contract statements.
+[src:error-budgets/reliability-engineering-p01] The creation of proper lower-level requirements is critical.
+[src:error-budgets/reliability-engineering-p01] The provision of only quantitative minimum targets (e.g., Mean Time Between Failure (MTBF) values or failure rates) is not sufficient for different reasons.
+[src:error-budgets/reliability-engineering-p01] Compare this problem with the continuous (re-)balancing of, for example, lower-level-system mass requirements in the development of an aircraft, which is already often a big undertaking.
+[src:error-budgets/reliability-engineering-p01] Notice that in this case, masses do only differ in terms of only some %, are not a function of time, and the data is non-probabilistic and available already in CAD models.
+[src:error-budgets/reliability-engineering-p01] In the case of reliability, the levels of unreliability (failure rates) may change with factors of decades (multiples of 10) as a result of very minor deviations in design, process, or anything else.
+[src:error-budgets/reliability-engineering-p01] The information is often not available without huge uncertainties within the development phase.
+[src:error-budgets/reliability-engineering-p01] This makes this allocation problem almost impossible to do in a useful, practical, valid manner that does not result in massive over- or under-specification.
+[src:error-budgets/reliability-engineering-p01] A pragmatic approach is therefore needed—for example: the use of general levels/classes of quantitative requirements depending only on severity of failure effects.
+[src:error-budgets/reliability-engineering-p01] Also, the validation of results is a far more subjective task than any other type of requirement.
+[src:error-budgets/reliability-engineering-p01] (Quantitative) reliability parameters—in terms of MTBF—are by far the most uncertain design parameters in any design.
+[src:error-budgets/reliability-engineering-p01] Furthermore, reliability design requirements should drive a (system or part) design to incorporate features that prevent failures from occurring, or limit consequences from failure in the first place.
+[src:error-budgets/reliability-engineering-p01] Not only would it aid in some predictions, this effort would keep from distracting the engineering effort into a kind of accounting work.
+[src:error-budgets/reliability-engineering-p01] A design requirement should be precise enough so that a designer can "design to" it and can also prove—through analysis or testing—that the requirement has been achieved, and, if possible, within some a stated confidence.
+[src:error-budgets/reliability-engineering-p01] Any type of reliability requirement should be detailed and could be derived from failure analysis (Finite-Element Stress and Fatigue analysis, Reliability Hazard Analysis, FTA, FMEA, Human Factor Analysis, Functional Hazard Analysis, etc.) or any type of reliability testing.
+[src:error-budgets/reliability-engineering-p01] Also, requirements are needed for verification tests (e.g., required overload stresses) and test time needed.
+[src:error-budgets/reliability-engineering-p01] To derive these requirements in an effective manner, a systems engineering-based risk assessment and mitigation logic should be used.
+[src:error-budgets/reliability-engineering-p01] Robust hazard log systems must be created that contain detailed information on why and how systems could or have failed.
+[src:error-budgets/reliability-engineering-p01] Requirements are to be derived and tracked in this way.
+[src:error-budgets/reliability-engineering-p01] These practical design requirements shall drive the design and not be used only for verification purposes.
+[src:error-budgets/reliability-engineering-p01] These requirements (often design constraints) are in this way derived from failure analysis or preliminary tests.
+[src:error-budgets/reliability-engineering-p01] Understanding of this difference compared to only purely quantitative (logistic) requirement specification (e.g., Failure Rate / MTBF target) is paramount in the development of successful (complex) systems.
+[src:error-budgets/reliability-engineering-p01] The maintainability requirements address the costs of repairs as well as repair time.
+[src:error-budgets/reliability-engineering-p01] Testability (not to be confused with test requirements) requirements provide the link between reliability and maintainability and should address detectability of failure modes (on a particular system level), isolation levels, and the creation of diagnostics (procedures).
+[src:error-budgets/reliability-engineering-p01] As indicated above, reliability engineers should also address requirements for various reliability tasks and documentation during system development, testing, production, and operation.
+[src:error-budgets/reliability-engineering-p01] These requirements are generally specified in the contract statement of work and depend on how much leeway the customer wishes to provide to the contractor.
+[src:error-budgets/reliability-engineering-p01] Reliability tasks include various analyses, planning, and failure reporting.
+[src:error-budgets/reliability-engineering-p01] Task selection depends on the criticality of the system as well as cost.
+[src:error-budgets/reliability-engineering-p01] A safety-critical system may require a formal failure reporting and review process throughout development, whereas a non-critical system may rely on final test reports.
+[src:error-budgets/reliability-engineering-p01] The most common reliability program tasks are documented in reliability program standards, such as MIL-STD-785 and IEEE 1332.
+[src:error-budgets/reliability-engineering-p01] Failure reporting analysis and corrective action systems are a common approach for product/process reliability monitoring.
+[src:error-budgets/reliability-engineering-p01] However, humans are also very good at detecting such failures, correcting them, and improvising when abnormal situations occur.
+[src:error-budgets/reliability-engineering-p01] Therefore, policies that completely rule out human actions in design and production processes to improve reliability may not be effective.
+[src:error-budgets/reliability-engineering-p01] Some tasks are better performed by humans and some are better performed by machines.
+[src:error-budgets/reliability-engineering-p01] Furthermore, human errors in management; the organization of data and information; or the misuse or abuse of items, may also contribute to unreliability.
+[src:error-budgets/reliability-engineering-p01] This is the core reason why high levels of reliability for complex systems can only be achieved by following a robust systems engineering process with proper planning and execution of the validation and verification tasks.
+[src:error-budgets/reliability-engineering-p01] This also includes the careful organization of data and information sharing and creating a "reliability culture", in the same way, that having a "safety culture" is paramount in the development of safety-critical systems.
+[src:error-budgets/reliability-engineering-p01] For existing systems, it is arguable that any attempt by a responsible program to correct the root cause of discovered failures may render the initial MTBF estimate invalid, as new assumptions (themselves subject to high error levels) of the effect of this correction must be made.
+[src:error-budgets/reliability-engineering-p01] Another practical issue is the general unavailability of detailed failure data, with those available often featuring inconsistent filtering of failure (feedback) data, and ignoring statistical errors (which are very high for rare events like reliability related failures).
+[src:error-budgets/reliability-engineering-p01] Very clear guidelines must be present to count and compare failures related to different type of root-causes (e.g. manufacturing-, maintenance-, transport-, system-induced or inherent design failures).
+[src:error-budgets/reliability-engineering-p01] Comparing different types of causes may lead to incorrect estimations and incorrect business decisions about the focus of improvement.
+[src:error-budgets/reliability-engineering-p01] To perform a proper quantitative reliability prediction for systems may be difficult and very expensive if done by testing.
+[src:error-budgets/reliability-engineering-p01] At the individual part-level, reliability results can often be obtained with comparatively high confidence, as testing of many sample parts might be possible using the available testing budget.
+[src:error-budgets/reliability-engineering-p01] However, these tests may lack validity at a system-level due to assumptions made at part-level testing.
+[src:error-budgets/reliability-engineering-p01] These authors emphasized the importance of initial part- or system-level testing until failure, and to learn from such failures to improve the system or part.
+[src:error-budgets/reliability-engineering-p01] The general conclusion is drawn that an accurate and absolute prediction – by either field-data comparison or testing – of reliability is in most cases not possible.
+[src:error-budgets/reliability-engineering-p01] An exception might be failures due to wear-out problems such as fatigue failures.
+[src:error-budgets/reliability-engineering-p01] In the introduction of MIL-STD-785 it is written that reliability prediction should be used with great caution, if not used solely for comparison in trade-off studies.
+[src:error-budgets/reliability-engineering-p01] Design for Reliability (DfR) is a process that encompasses tools and procedures to ensure that a product meets its reliability requirements, under its use environment, for the duration of its lifetime.
+[src:error-budgets/reliability-engineering-p01] DfR is implemented in the design stage of a product to proactively improve product reliability.
+[src:error-budgets/reliability-engineering-p01] DfR is often used as part of an overall Design for Excellence (DfX) strategy.
+[src:error-budgets/reliability-engineering-p01] Reliability design begins with the development of a (system) model.
+[src:error-budgets/reliability-engineering-p01] Reliability and availability models use block diagrams and Fault Tree Analysis to provide a graphical means of evaluating the relationships between different parts of the system.
+[src:error-budgets/reliability-engineering-p01] These models may incorporate predictions based on failure rates taken from historical data.
+[src:error-budgets/reliability-engineering-p01] While the (input data) predictions are often not accurate in an absolute sense, they are valuable to assess relative differences in design alternatives.
+[src:error-budgets/reliability-engineering-p01] Maintainability parameters, for example Mean time to repair (MTTR), can also be used as inputs for such models.
+[src:error-budgets/reliability-engineering-p01] The most important fundamental initiating causes and failure mechanisms are to be identified and analyzed with engineering tools.
+[src:error-budgets/reliability-engineering-p01] A diverse set of practical guidance as to performance and reliability should be provided to designers so that they can generate low-stressed designs and products that protect, or are protected against, damage and excessive wear.
+[src:error-budgets/reliability-engineering-p01] Proper validation of input loads (requirements) may be needed, in addition to verification for reliability "performance" by testing.
+[src:error-budgets/reliability-engineering-p01] One of the most important design techniques is redundancy.
+[src:error-budgets/reliability-engineering-p01] This means that if one part of the system fails, there is an alternate success path, such as a backup system.
+[src:error-budgets/reliability-engineering-p01] The reason why this is the ultimate design choice is related to the fact that high-confidence reliability evidence for new parts or systems is often not available, or is extremely expensive to obtain.
+[src:error-budgets/reliability-engineering-p01] By combining redundancy, together with a high level of failure monitoring, and the avoidance of common cause failures; even a system with relatively poor single-channel (part) reliability, can be made highly reliable at a system level (up to mission critical reliability).
+[src:error-budgets/reliability-engineering-p01] No testing of reliability has to be required for this.
+[src:error-budgets/reliability-engineering-p01] Redundancy can also be applied in systems engineering by double checking requirements, data, designs, calculations, software, and tests to overcome systematic failures.
+[src:error-budgets/reliability-engineering-p01] Another effective way to deal with reliability issues is to perform analysis that predicts degradation, enabling the prevention of unscheduled downtime events / failures.
+[src:error-budgets/reliability-engineering-p01] RCM (Reliability Centered Maintenance) programs can be used for this.
+[src:error-budgets/reliability-engineering-p01] For electronic assemblies, there has been an increasing shift towards a different approach called physics of failure.
+[src:error-budgets/reliability-engineering-p01] This technique relies on understanding the physical static and dynamic failure mechanisms.
+[src:error-budgets/reliability-engineering-p01] The material or component can be re-designed to reduce the probability of failure and to make it more robust against such variations.
+[src:error-budgets/reliability-engineering-p01] Another common design technique is component derating: i.e. selecting components whose specifications significantly exceed the expected stress levels, such as using heavier gauge electrical wire than might normally be specified for the expected electric current.
+[src:error-budgets/reliability-engineering-p01] Results from these methods are presented during reviews of part or system design, and logistics.
+[src:error-budgets/reliability-engineering-p01] Reliability is just one requirement among many for a complex part or system.
+[src:error-budgets/reliability-engineering-p01] Engineering trade-off studies are used to determine the optimum balance between reliability requirements and other constraints.
+[src:error-budgets/reliability-engineering-p01] Reliability engineers, whether using quantitative or qualitative methods to describe a failure or hazard, rely on language to pinpoint the risks and enable issues to be solved.
+[src:error-budgets/reliability-engineering-p01] The language used must help create an orderly description of the function/item/system and its complex surrounding as it relates to the failure of these functions/items/systems.
+[src:error-budgets/reliability-engineering-p01] Systems engineering is very much about finding the correct words to describe the problem (and related risks), so that they can be readily solved via engineering solutions.
+[src:error-budgets/reliability-engineering-p01] Jack Ring said that a systems engineer's job is to "language the project." (Ring et al.
+[src:error-budgets/reliability-engineering-p01] 2000) For part/system failures, reliability engineers should concentrate more on the "why and how", rather that predicting "when".
+[src:error-budgets/reliability-engineering-p01] Understanding "why" a failure has occurred (e.g. due to over-stressed components or manufacturing issues) is far more likely to lead to improvement in the designs and processes used than quantifying "when" a failure is likely to occur (e.g. via determining MTBF).
+[src:error-budgets/reliability-engineering-p01] To do this, first the reliability hazards relating to the part/system need to be classified and ordered (based on some form of qualitative and quantitative logic if possible) to allow for more efficient assessment and eventual improvement.
+[src:error-budgets/reliability-engineering-p01] This is partly done in pure language and proposition logic, but also based on experience with similar items.
+[src:error-budgets/reliability-engineering-p01] This can for example be seen in descriptions of events in fault tree analysis, FMEA analysis, and hazard (tracking) logs.
+[src:error-budgets/reliability-engineering-p01] In this sense language and proper grammar (part of qualitative analysis) plays an important role in reliability engineering, just like it does in safety engineering or in-general within systems engineering.
+[src:error-budgets/reliability-engineering-p01] Correct use of language can also be key to identifying or reducing the risks of human error, which are often the root cause of many failures.
+[src:error-budgets/reliability-engineering-p01] This can include proper instructions in maintenance manuals, operation manuals, emergency procedures, and others to prevent systematic human errors that may result in system failures.
+[src:error-budgets/reliability-engineering-p01] Reliability modeling is the process of predicting or understanding the reliability of a component or system prior to its implementation.
+[src:error-budgets/reliability-engineering-p01] Two types of analysis that are often used to model a complete system's availability behavior including effects from logistics issues like spare part provisioning, transport and manpower are fault tree analysis and reliability block diagrams.
+[src:error-budgets/reliability-engineering-p01] At a component level, the same types of analyses can be used together with others.
+[src:error-budgets/reliability-engineering-p01] The input for the models can come from many sources including testing; prior operational experience; field data; as well as data handbooks from similar or related industries.
+[src:error-budgets/reliability-engineering-p01] Regardless of source, all model input data must be used with great caution, as predictions are only valid in cases where the same product was used in the same context.
+[src:error-budgets/reliability-engineering-p01] As such, predictions are often only used to help compare alternatives.
+[src:error-budgets/reliability-engineering-p01] Reliability is defined as the probability that a device will perform its intended function during a specified period of time under stated conditions.
+[src:error-budgets/reliability-engineering-p01] where $f(x)\!$ is the failure probability density function and t is the length of the period of time (which is assumed to start from time zero).
+[src:error-budgets/reliability-engineering-p01] Reliability applies to a specified period of time.
+[src:error-budgets/reliability-engineering-p01] In practical terms, this means that a system has a specified chance that it will operate without failure before time $T\!$ .
+[src:error-budgets/reliability-engineering-p01] Reliability engineering ensures that components and materials will meet the requirements during the specified time.
+[src:error-budgets/reliability-engineering-p01] Note that units other than time may sometimes be used (e.g.
+[src:error-budgets/reliability-engineering-p01] Reliability is restricted to operation under stated (or explicitly defined) conditions.
+[src:error-budgets/reliability-engineering-p01] This constraint is necessary because it is impossible to design a system for unlimited conditions.
+[src:error-budgets/reliability-engineering-p01] A Mars rover will have different specified conditions than a family car.
+[src:error-budgets/reliability-engineering-p01] The operating environment must be addressed during design and testing.
+[src:error-budgets/reliability-engineering-p01] That same rover may be required to operate in varying conditions requiring additional scrutiny.
+[src:error-budgets/reliability-engineering-p01] Two notable references on reliability theory and its mathematical and statistical foundations are Barlow, R.
+[src:error-budgets/reliability-engineering-p01] Often, knowledge of the statistical dependence between component failures is unknown or only partially constrained.
+[src:error-budgets/reliability-engineering-p01] When it is desired to model such incomplete knowledge, reliability theory allows for analyses that characterize ranges or bounds on system failure probabilities rather than unique distributions, particularly for small multi-component systems.
+[src:error-budgets/reliability-engineering-p01] Quantitative requirements are specified using reliability parameters.
+[src:error-budgets/reliability-engineering-p01] The most common reliability parameter is the mean time to failure (MTTF), which can also be specified as the failure rate (this is expressed as a frequency or conditional probability density function (PDF)) or the number of failures during a given period.
+[src:error-budgets/reliability-engineering-p01] These parameters may be useful for higher system levels and systems that are operated frequently (i.e. vehicles, machinery, and electronic equipment).
+[src:error-budgets/reliability-engineering-p01] Reliability increases as the MTTF increases.
+[src:error-budgets/reliability-engineering-p01] The MTTF is usually specified in hours, but can also be used with other units of measurement, such as miles or cycles.
+[src:error-budgets/reliability-engineering-p01] Using MTTF values on lower system levels can be very misleading, especially if they do not specify the associated Failures Modes and Mechanisms (The F in MTTF).
+[src:error-budgets/reliability-engineering-p01] In other cases, reliability is specified as the probability of mission success.
+[src:error-budgets/reliability-engineering-p01] For example, reliability of a scheduled aircraft flight can be specified as a dimensionless probability or a percentage, as often used in system safety engineering.
+[src:error-budgets/reliability-engineering-p01] A special case of mission success is the single-shot device or system.
+[src:error-budgets/reliability-engineering-p01] These are devices or systems that remain relatively dormant and only operate once.
+[src:error-budgets/reliability-engineering-p01] Examples include automobile airbags, thermal batteries and missiles.
+[src:error-budgets/reliability-engineering-p01] Single-shot reliability is specified as a probability of one-time success or is subsumed into a related parameter.
+[src:error-budgets/reliability-engineering-p01] Single-shot missile reliability may be specified as a requirement for the probability of a hit.
+[src:error-budgets/reliability-engineering-p01] For such systems, the probability of failure on demand (PFD) is the reliability measure – this is actually an "unavailability" number.
+[src:error-budgets/reliability-engineering-p01] The PFD is derived from failure rate (a frequency of occurrence) and mission time for non-repairable systems.
+[src:error-budgets/reliability-engineering-p01] For repairable systems, it is obtained from failure rate, mean-time-to-repair (MTTR), and test interval.
+[src:error-budgets/reliability-engineering-p01] This measure may not be unique for a given system as this measure depends on the kind of demand.
+[src:error-budgets/reliability-engineering-p01] In addition to system level requirements, reliability requirements may be specified for critical subsystems.
+[src:error-budgets/reliability-engineering-p01] In most cases, reliability parameters are specified with appropriate statistical confidence intervals.
+[src:error-budgets/reliability-engineering-p02] The purpose of **reliability testing** or **reliability verification** is to discover potential problems with the design as early as possible and, ultimately, provide confidence that the system meets its reliability requirements.
+[src:error-budgets/reliability-engineering-p02] The reliability of the product in all environments such as expected use, transportation, or storage during the specified lifespan should be considered.
+[src:error-budgets/reliability-engineering-p02] Reliability verification is also called reliability testing, which refers to the use of modeling, statistics, and other methods to evaluate the reliability of the product based on the product's life span and expected performance.
+[src:error-budgets/reliability-engineering-p02] Most product on the market requires reliability testing, such as automotive, integrated circuit, heavy machinery used to mine nature resources, Aircraft auto software.
+[src:error-budgets/reliability-engineering-p02] Reliability testing may be performed at several levels and there are different types of testing.
+[src:error-budgets/reliability-engineering-p02] Complex systems may be tested at component, circuit board, unit, assembly, subsystem and system levels.
+[src:error-budgets/reliability-engineering-p02] (The test level nomenclature varies among applications.) For example, performing environmental stress screening tests at lower levels, such as piece parts or small assemblies, catches problems before they cause failures at higher levels.
+[src:error-budgets/reliability-engineering-p02] Testing proceeds during each level of integration through full-up system testing, developmental testing, and operational testing, thereby reducing program risk.
+[src:error-budgets/reliability-engineering-p02] However, testing does not mitigate unreliability risk.
+[src:error-budgets/reliability-engineering-p02] With each test both statistical type I and type II errors could be made, depending on sample size, test time, assumptions and the needed discrimination ratio.
+[src:error-budgets/reliability-engineering-p02] There is risk of incorrectly rejecting a good design (type I error) and the risk of incorrectly accepting a bad design (type II error).
+[src:error-budgets/reliability-engineering-p02] It is not always feasible to test all system requirements.
+[src:error-budgets/reliability-engineering-p02] Some systems are prohibitively expensive to test; some failure modes may take years to observe; some complex interactions result in a huge number of possible test cases; and some tests require the use of limited test ranges or other resources.
+[src:error-budgets/reliability-engineering-p02] In such cases, different approaches to testing can be used, such as (highly) accelerated life testing, design of experiments, and simulations.
+[src:error-budgets/reliability-engineering-p02] The desired level of statistical confidence also plays a role in reliability testing.
+[src:error-budgets/reliability-engineering-p02] Statistical confidence is increased by increasing either the test time or the number of items tested.
+[src:error-budgets/reliability-engineering-p02] Reliability test plans are designed to achieve the specified reliability at the specified confidence level with the minimum number of test units and test time.
+[src:error-budgets/reliability-engineering-p02] Different test plans result in different levels of risk to the producer and consumer.
+[src:error-budgets/reliability-engineering-p02] The desired reliability, statistical confidence, and risk levels for each side influence the ultimate test plan.
+[src:error-budgets/reliability-engineering-p02] The customer and developer should agree in advance on how reliability requirements will be tested.
+[src:error-budgets/reliability-engineering-p02] A key aspect of reliability testing is to define "failure".
+[src:error-budgets/reliability-engineering-p02] Although this may seem obvious, there are many situations where it is not clear whether a failure is really the fault of the system.
+[src:error-budgets/reliability-engineering-p02] Variations in test conditions, operator differences, weather and unexpected situations create differences between the customer and the system developer.
+[src:error-budgets/reliability-engineering-p02] One strategy to address this issue is to use a scoring conference process.
+[src:error-budgets/reliability-engineering-p02] A scoring conference includes representatives from the customer, the developer, the test organization, the reliability organization, and sometimes independent observers.
+[src:error-budgets/reliability-engineering-p02] The scoring conference process is defined in the statement of work.
+[src:error-budgets/reliability-engineering-p02] Each test case is considered by the group and "scored" as a success or failure.
+[src:error-budgets/reliability-engineering-p02] This scoring is the official result used by the reliability engineer.
+[src:error-budgets/reliability-engineering-p02] As part of the requirements phase, the reliability engineer develops a test strategy with the customer.
+[src:error-budgets/reliability-engineering-p02] The test strategy makes trade-offs between the needs of the reliability organization, which wants as much data as possible, and constraints such as cost, schedule and available resources.
+[src:error-budgets/reliability-engineering-p02] Test plans and procedures are developed for each reliability test, and results are documented.
+[src:error-budgets/reliability-engineering-p02] Reliability testing is common in the Photonics industry.
+[src:error-budgets/reliability-engineering-p02] Examples of reliability tests of lasers are life test and burn-in.
+[src:error-budgets/reliability-engineering-p02] These tests consist of the highly accelerated aging, under controlled conditions, of a group of lasers.
+[src:error-budgets/reliability-engineering-p02] The data collected from these life tests are used to predict laser life expectancy under the intended operating characteristics.
+[src:error-budgets/reliability-engineering-p02] The product life span can be split into four different for analysis.
+[src:error-budgets/reliability-engineering-p02] Useful life is the estimated economic life of the product, which is defined as the time can be used before the cost of repair do not justify the continue use to the product.
+[src:error-budgets/reliability-engineering-p02] Warranty life is the product should perform the function within the specified time period.
+[src:error-budgets/reliability-engineering-p02] Design life is where during the design of the product, designer take into consideration on the life time of competitive product and customer desire and ensure that the product do not result in customer dissatisfaction.
+[src:error-budgets/reliability-engineering-p02] Reliability test requirements can follow from any analysis for which the first estimate of failure probability, failure mode or effect needs to be justified.
+[src:error-budgets/reliability-engineering-p02] Evidence can be generated with some level of confidence by testing.
+[src:error-budgets/reliability-engineering-p02] With software-based systems, the probability is a mix of software and hardware-based failures.
+[src:error-budgets/reliability-engineering-p02] Testing reliability requirements is problematic for several reasons.
+[src:error-budgets/reliability-engineering-p02] A single test is in most cases insufficient to generate enough statistical data.
+[src:error-budgets/reliability-engineering-p02] Multiple tests or long-duration tests are usually very expensive.
+[src:error-budgets/reliability-engineering-p02] Some tests are simply impractical, and environmental conditions can be hard to predict over a systems life-cycle.
+[src:error-budgets/reliability-engineering-p02] Reliability engineering is used to design a realistic and affordable test program that provides empirical evidence that the system meets its reliability requirements.
+[src:error-budgets/reliability-engineering-p02] Statistical confidence levels are used to address some of these concerns.
+[src:error-budgets/reliability-engineering-p02] A certain parameter is expressed along with a corresponding confidence level: for example, an MTBF of 1000 hours at 90% confidence level.
+[src:error-budgets/reliability-engineering-p02] From this specification, the reliability engineer can, for example, design a test with explicit criteria for the number of hours and number of failures until the requirement is met or failed.
+[src:error-budgets/reliability-engineering-p02] The combination of required reliability level and required confidence level greatly affects the development cost and the risk to both the customer and producer.
+[src:error-budgets/reliability-engineering-p02] Care is needed to select the best combination of requirements—e.g. cost-effectiveness.
+[src:error-budgets/reliability-engineering-p02] Reliability testing may be performed at various levels, such as component, subsystem and system.
+[src:error-budgets/reliability-engineering-p02] For systems that must last many years, accelerated life tests may be needed.
+[src:error-budgets/reliability-engineering-p02] A systematic approach to reliability testing is to, first, determine reliability goal, then do tests that are linked to performance and determine the reliability of the product.
+[src:error-budgets/reliability-engineering-p02] A reliability verification test in modern industries should clearly determine how they relate to the product's overall reliability performance and how individual tests impact the warranty cost and customer satisfaction.
+[src:error-budgets/reliability-engineering-p02] The purpose of accelerated life testing (ALT test) is to induce field failure in the laboratory at a much faster rate by providing a harsher, but nonetheless representative, environment.
+[src:error-budgets/reliability-engineering-p02] In such a test, the product is expected to fail in the lab just as it would have failed in the field—but in much less time.
+[src:error-budgets/reliability-engineering-p02] Software reliability is a special aspect of reliability engineering.
+[src:error-budgets/reliability-engineering-p02] It focuses on foundations and techniques to make software more reliable, i.e., resilient to faults.
+[src:error-budgets/reliability-engineering-p02] System reliability, by definition, includes all parts of the system, including hardware, software, supporting infrastructure (including critical external interfaces), operators and procedures.
+[src:error-budgets/reliability-engineering-p02] Traditionally, reliability engineering focuses on critical hardware parts of the system.
+[src:error-budgets/reliability-engineering-p02] Since the widespread use of digital integrated circuit technology, software has become an increasingly critical part of most electronics and, hence, nearly all present day systems.
+[src:error-budgets/reliability-engineering-p02] Therefore, software reliability has gained prominence within the field of system reliability.
+[src:error-budgets/reliability-engineering-p02] There are significant differences, however, in how software and hardware behave.
+[src:error-budgets/reliability-engineering-p02] Most hardware unreliability is the result of a component or material failure that results in the system not performing its intended function.
+[src:error-budgets/reliability-engineering-p02] Repairing or replacing the hardware component restores the system to its original operating state.
+[src:error-budgets/reliability-engineering-p02] However, software does not fail in the same sense that hardware fails.
+[src:error-budgets/reliability-engineering-p02] Instead, software unreliability is the result of unanticipated results of software operations.
+[src:error-budgets/reliability-engineering-p02] Even relatively small software programs can have astronomically large combinations of inputs and states that are infeasible to exhaustively test.
+[src:error-budgets/reliability-engineering-p02] Restoring software to its original state only works until the same combination of inputs and states results in the same unintended result.
+[src:error-budgets/reliability-engineering-p02] Software reliability engineering must take this into account.
+[src:error-budgets/reliability-engineering-p02] As with hardware, software reliability depends on good requirements, design and implementation.
+[src:error-budgets/reliability-engineering-p02] Software reliability engineering relies heavily on a disciplined software engineering process to anticipate and design against unintended consequences.
+[src:error-budgets/reliability-engineering-p02] There is more overlap between software quality engineering and software reliability engineering than between hardware quality and reliability.
+[src:error-budgets/reliability-engineering-p02] A good software development plan is a key aspect of the software reliability program.
+[src:error-budgets/reliability-engineering-p02] The software development plan describes the design and coding standards, peer reviews, unit tests, configuration management, software metrics and software models to be used during software development.
+[src:error-budgets/reliability-engineering-p02] In modern distributed and microservices-based systems, reliability considerations increasingly extend beyond component-level correctness to include the behavior of applications at the business-logic level.
+[src:error-budgets/reliability-engineering-p02] It addresses scenarios in which individual system components may appear operational, while failures arise from service interactions or logic errors, potentially leading to degraded user experience or incorrect outcomes.
+[src:error-budgets/reliability-engineering-p02] Practices associated with application-level reliability include end-to-end observability, synthetic transaction testing, and validation of business-critical processes, complementing traditional infrastructure-focused reliability methods.
+[src:error-budgets/reliability-engineering-p02] A common reliability metric is the number of software faults per line of code (FLOC), usually expressed as faults per thousand lines of code.
+[src:error-budgets/reliability-engineering-p02] This metric, along with software execution time, is key to most software reliability models and estimates.
+[src:error-budgets/reliability-engineering-p02] The theory is that the software reliability increases as the number of faults (or fault density) decreases.
+[src:error-budgets/reliability-engineering-p02] Establishing a direct connection between fault density and mean-time-between-failure is difficult, however, because of the way software faults are distributed in the code, their severity, and the probability of the combination of inputs necessary to encounter the fault.
+[src:error-budgets/reliability-engineering-p02] Nevertheless, fault density serves as a useful indicator for the reliability engineer.
+[src:error-budgets/reliability-engineering-p02] Other software metrics, such as complexity, are also used.
+[src:error-budgets/reliability-engineering-p02] This metric remains controversial, since changes in software development and verification practices can have dramatic impact on overall defect rates.
+[src:error-budgets/reliability-engineering-p02] Software testing is an important aspect of software reliability.
+[src:error-budgets/reliability-engineering-p02] Even the best software development process results in some software faults that are nearly undetectable until tested.
+[src:error-budgets/reliability-engineering-p02] Software is tested at several levels, starting with individual units, through integration and full-up system testing.
+[src:error-budgets/reliability-engineering-p02] All phases of testing, software faults are discovered, corrected, and re-tested.
+[src:error-budgets/reliability-engineering-p02] Reliability estimates are updated based on the fault density and other metrics.
+[src:error-budgets/reliability-engineering-p02] At a system level, mean-time-between-failure data can be collected and used to estimate reliability.
+[src:error-budgets/reliability-engineering-p02] Unlike hardware, performing exactly the same test on exactly the same software configuration does not provide increased statistical confidence.
+[src:error-budgets/reliability-engineering-p02] Instead, software reliability uses different metrics, such as code coverage.
+[src:error-budgets/reliability-engineering-p02] The Software Engineering Institute's capability maturity model is a common means of assessing the overall software development process for reliability and quality purposes.
+[src:error-budgets/reliability-engineering-p02] Structural reliability or the reliability of structures is the application of reliability theory to the behavior of structures.
+[src:error-budgets/reliability-engineering-p02] It is used in both the design and maintenance of different types of structures including concrete and steel structures.
+[src:error-budgets/reliability-engineering-p02] In structural reliability studies both loads and resistances are modeled as probabilistic variables.
+[src:error-budgets/reliability-engineering-p02] Using this approach the probability of failure of a structure is calculated.
+[src:error-budgets/reliability-engineering-p02] Reliability for safety and reliability for availability are often closely related.
+[src:error-budgets/reliability-engineering-p02] Lost availability of an engineering system can cost money.
+[src:error-budgets/reliability-engineering-p02] If a subway system is unavailable the subway operator will lose money for each hour the system is down.
+[src:error-budgets/reliability-engineering-p02] The subway operator will lose more money if safety is compromised.
+[src:error-budgets/reliability-engineering-p02] The definition of reliability is tied to a probability of not encountering a failure.
+[src:error-budgets/reliability-engineering-p02] A failure can cause loss of safety, loss of availability or both.
+[src:error-budgets/reliability-engineering-p02] It is undesirable to lose safety or availability in a critical system.
+[src:error-budgets/reliability-engineering-p02] Reliability engineering is concerned with overall minimisation of failures that could lead to financial losses for the responsible entity, whereas safety engineering focuses on minimising a specific set of failure types that in general could lead to loss of life, injury or damage to equipment.
+[src:error-budgets/reliability-engineering-p02] Safety engineering is often highly specific, relating only to certain tightly regulated industries, applications, or areas.
+[src:error-budgets/reliability-engineering-p02] It primarily focuses on system safety hazards that could lead to severe accidents including: loss of life; destruction of equipment; or environmental damage.
+[src:error-budgets/reliability-engineering-p02] As such, the related system functional reliability requirements are often extremely high.
+[src:error-budgets/reliability-engineering-p02] Although it deals with unwanted failures in the same sense as reliability engineering, it, however, has less of a focus on direct costs, and is not concerned with post-failure repair actions.
+[src:error-budgets/reliability-engineering-p02] Another difference is the level of impact of failures on society, leading to a tendency for strict control by governments or regulatory bodies (e.g. nuclear, aerospace, defense, rail and oil industries).
+[src:error-budgets/reliability-engineering-p02] Safety can be increased using a 2oo2 cross checked redundant system.
+[src:error-budgets/reliability-engineering-p02] Availability can be increased by using "1oo2" (1 out of 2) redundancy at a part or system level.
+[src:error-budgets/reliability-engineering-p02] If both redundant elements disagree the more permissive element will maximize availability.
+[src:error-budgets/reliability-engineering-p02] A 1oo2 system should never be relied on for safety.
+[src:error-budgets/reliability-engineering-p02] Fault-tolerant systems often rely on additional redundancy (e.g.
+[src:error-budgets/reliability-engineering-p02] 2oo3 voting logic) where multiple redundant elements must agree on a potentially unsafe action before it is performed.
+[src:error-budgets/reliability-engineering-p02] This increases both availability and safety at a system level.
+[src:error-budgets/reliability-engineering-p02] This is common practice in aerospace systems that need continued availability and do not have a fail-safe mode.
+[src:error-budgets/reliability-engineering-p02] The above example of a 2oo3 fault tolerant system increases both mission reliability as well as safety.
+[src:error-budgets/reliability-engineering-p02] However, the "basic" reliability of the system will in this case still be lower than a non-redundant (1oo1) or 2oo2 system.
+[src:error-budgets/reliability-engineering-p02] Basic reliability engineering covers all failures, including those that might not result in system failure, but do result in additional cost due to: maintenance repair actions; logistics; spare parts etc.
+[src:error-budgets/reliability-engineering-p02] For example, replacement or repair of 1 faulty channel in a 2oo3 voting system, (the system is still operating, although with one failed channel it has actually become a 2oo2 system) is contributing to basic unreliability but not mission unreliability.
+[src:error-budgets/reliability-engineering-p02] As an example, the failure of the tail-light of an aircraft will not prevent the plane from flying (and so is not considered a mission failure), but it does need to be remedied (with a related cost, and so does contribute to the basic unreliability levels).
+[src:error-budgets/reliability-engineering-p02] When using fault tolerant (redundant) systems or systems that are equipped with protection functions, detectability of failures and avoidance of common cause failures becomes paramount for safe functioning and/or mission reliability.
+[src:error-budgets/reliability-engineering-p02] Quality often focuses on manufacturing defects during the warranty phase.
+[src:error-budgets/reliability-engineering-p02] Reliability looks at the failure intensity over the whole life of a product or engineering system from commissioning to decommissioning.
+[src:error-budgets/reliability-engineering-p02] Six Sigma has its roots in statistical control in quality of manufacturing.
+[src:error-budgets/reliability-engineering-p02] Reliability engineering is a specialty part of systems engineering.
+[src:error-budgets/reliability-engineering-p02] The systems engineering process is a discovery process that is often unlike a manufacturing process.
+[src:error-budgets/reliability-engineering-p02] A manufacturing process is often focused on repetitive activities that achieve high quality outputs with minimum cost and time.
+[src:error-budgets/reliability-engineering-p02] The everyday usage term "quality of a product" is loosely taken to mean its inherent degree of excellence.
+[src:error-budgets/reliability-engineering-p02] In industry, a more precise definition of quality as "conformance to requirements or specifications at the start of use" is used.
+[src:error-budgets/reliability-engineering-p02] Assuming the final product specification adequately captures the original requirements and customer/system needs, the quality level can be measured as the fraction of product units shipped that meet specifications.
+[src:error-budgets/reliability-engineering-p02] Manufactured goods quality often focuses on the number of warranty claims during the warranty period.
+[src:error-budgets/reliability-engineering-p02] Quality is a snapshot at the start of life through the warranty period and is related to the control of lower-level product specifications.
+[src:error-budgets/reliability-engineering-p02] This includes time-zero defects i.e. where manufacturing mistakes escaped final Quality Control.
+[src:error-budgets/reliability-engineering-p02] In theory the quality level might be described by a single fraction of defective products.
+[src:error-budgets/reliability-engineering-p02] Reliability, as a part of systems engineering, acts as more of an ongoing assessment of failure rates over many years.
+[src:error-budgets/reliability-engineering-p02] Theoretically, all items will fail over an infinite period of time.
+[src:error-budgets/reliability-engineering-p02] Defects that appear over time are referred to as reliability fallout.
+[src:error-budgets/reliability-engineering-p02] To describe reliability fallout a probability model that describes the fraction fallout over time is needed.
+[src:error-budgets/reliability-engineering-p02] This is known as the life distribution model.
+[src:error-budgets/reliability-engineering-p02] Some of these reliability issues may be due to inherent design issues, which may exist even though the product conforms to specifications.
+[src:error-budgets/reliability-engineering-p02] Even items that are produced perfectly will fail over time due to one or more failure mechanisms (e.g. due to human error or mechanical, electrical, and chemical factors).
+[src:error-budgets/reliability-engineering-p02] These reliability issues can also be influenced by acceptable levels of variation during initial production.
+[src:error-budgets/reliability-engineering-p02] Quality and reliability are, therefore, related to manufacturing.
+[src:error-budgets/reliability-engineering-p02] Reliability is more targeted towards clients who are focused on failures throughout the whole life of the product such as the military, airlines or railroads.
+[src:error-budgets/reliability-engineering-p02] Items that do not conform to product specification will generally do worse in terms of reliability (having a lower MTTF), but this does not always have to be the case.
+[src:error-budgets/reliability-engineering-p02] The full mathematical quantification (in statistical models) of this combined relation is in general very difficult or even practically impossible.
+[src:error-budgets/reliability-engineering-p02] In cases where manufacturing variances can be effectively reduced, six sigma tools have been shown to be useful to find optimal process solutions which can increase quality and reliability.
+[src:error-budgets/reliability-engineering-p02] Six Sigma may also help to design products that are more robust to manufacturing induced failures and infant mortality defects in engineering systems and manufactured product.
+[src:error-budgets/reliability-engineering-p02] In contrast with Six Sigma, reliability engineering solutions are generally found by focusing on reliability testing and system design.
+[src:error-budgets/reliability-engineering-p02] Furthermore, reliability engineering uses system-level solutions, like designing redundant and fault-tolerant systems for situations with high availability needs (see Reliability engineering vs Safety engineering above).
+[src:error-budgets/reliability-engineering-p02] Note: A "defect" in six-sigma/quality literature is not the same as a "failure" (Field failure | e.g. fractured item) in reliability.
+[src:error-budgets/reliability-engineering-p02] A six-sigma/quality defect refers generally to non-conformance with a requirement (e.g. basic functionality or a key dimension).
+[src:error-budgets/reliability-engineering-p02] Items can, however, fail over time, even if these requirements are all fulfilled.
+[src:error-budgets/reliability-engineering-p02] Quality is generally not concerned with asking the crucial question "are the requirements actually correct?", whereas reliability is.
+[src:error-budgets/reliability-engineering-p02] Once systems or parts are being produced, reliability engineering attempts to monitor, assess, and correct deficiencies.
+[src:error-budgets/reliability-engineering-p02] Monitoring includes electronic and visual surveillance of critical parameters identified during the fault tree analysis design stage.
+[src:error-budgets/reliability-engineering-p02] Data collection is highly dependent on the nature of the system.
+[src:error-budgets/reliability-engineering-p02] Most large organizations have quality control groups that collect failure data on vehicles, equipment and machinery.
+[src:error-budgets/reliability-engineering-p02] Consumer product failures are often tracked by the number of returns.
+[src:error-budgets/reliability-engineering-p02] For systems in dormant storage or on standby, it is necessary to establish a formal surveillance program to inspect and test random samples.
+[src:error-budgets/reliability-engineering-p02] Any changes to the system, such as field upgrades or recall repairs, require additional reliability testing to ensure the reliability of the modification.
+[src:error-budgets/reliability-engineering-p02] Since it is not possible to anticipate all the failure modes of a given system, especially ones with a human element, failures will occur.
+[src:error-budgets/reliability-engineering-p02] The reliability program also includes a systematic root cause analysis that identifies the causal relationships involved in the failure such that effective corrective actions may be implemented.
+[src:error-budgets/reliability-engineering-p02] When possible, system failures and corrective actions are reported to the reliability engineering organization.
+[src:error-budgets/reliability-engineering-p02] Some of the most common methods to apply to a reliability operational assessment are failure reporting, analysis, and corrective action systems (FRACAS).
+[src:error-budgets/reliability-engineering-p02] This systematic approach develops a reliability, safety, and logistics assessment based on failure/incident reporting, management, analysis, and corrective/preventive actions.
+[src:error-budgets/reliability-engineering-p02] Organizations today are adopting this method and utilizing commercial systems (such as Web-based FRACAS applications) that enable them to create a failure/incident data repository from which statistics can be derived to view accurate and genuine reliability, safety, and quality metrics.
+[src:error-budgets/reliability-engineering-p02] It is extremely important for an organization to adopt a common FRACAS system for all end items.
+[src:error-budgets/reliability-engineering-p02] Also, it should allow test results to be captured in a practical way.
+[src:error-budgets/reliability-engineering-p02] Failure to adopt one easy-to-use (in terms of ease of data-entry for field engineers and repair shop engineers) and easy-to-maintain integrated system is likely to result in a failure of the FRACAS program itself.
+[src:error-budgets/reliability-engineering-p02] Some of the common outputs from a FRACAS system include Field MTBF, MTTR, spares consumption, reliability growth, failure/incidents distribution by type, location, part no., serial no., and symptom.
+[src:error-budgets/reliability-engineering-p02] The use of past data to predict the reliability of new comparable systems/items can be misleading as reliability is a function of the context of use and can be affected by small changes in design/manufacturing.
+[src:error-budgets/reliability-engineering-p02] Systems of any significant complexity are developed by organizations of people, such as a commercial company or a government agency.
+[src:error-budgets/reliability-engineering-p02] The reliability engineering organization must be consistent with the company's organizational structure.
+[src:error-budgets/reliability-engineering-p02] For small, non-critical systems, reliability engineering may be informal.
+[src:error-budgets/reliability-engineering-p02] As complexity grows, the need arises for a formal reliability function.
+[src:error-budgets/reliability-engineering-p02] Because reliability is important to the customer, the customer may even specify certain aspects of the reliability organization.
+[src:error-budgets/reliability-engineering-p02] There are several common types of reliability organizations.
+[src:error-budgets/reliability-engineering-p02] The project manager or chief engineer may employ one or more reliability engineers directly.
+[src:error-budgets/reliability-engineering-p02] In larger organizations, there is usually a product assurance or specialty engineering organization, which may include reliability, maintainability, quality, safety, human factors, logistics, etc.
+[src:error-budgets/reliability-engineering-p02] In such case, the reliability engineer reports to the product assurance manager or specialty engineering manager.
+[src:error-budgets/reliability-engineering-p02] In some cases, a company may wish to establish an independent reliability organization.
+[src:error-budgets/reliability-engineering-p02] This is desirable to ensure that the system reliability, which is often expensive and time-consuming, is not unduly slighted due to budget and schedule pressures.
+[src:error-budgets/reliability-engineering-p02] In such cases, the reliability engineer works for the project day-to-day, but is actually employed and paid by a separate organization within the company.
+[src:error-budgets/reliability-engineering-p02] Because reliability engineering is critical to early system design, it has become common for reliability engineers, however, the organization is structured, to work as part of an integrated product team.
+[src:error-budgets/reliability-engineering-p02] Some universities offer graduate degrees in reliability engineering.
+[src:error-budgets/reliability-engineering-p02] Other reliability professionals typically have an engineering, statistics, math, or physics degree from a university or college program.
+[src:error-budgets/reliability-engineering-p02] Many engineering programs offer reliability courses, and some universities have entire reliability engineering programs.
+[src:error-budgets/reliability-engineering-p02] A reliability engineer must be registered as a professional engineer by the state or province by law, but not all reliability professionals are engineers.
+[src:error-budgets/reliability-engineering-p02] Reliability engineers are required in systems where public safety is at risk.
+[src:error-budgets/reliability-engineering-p02] There are many professional conferences and industry training programs available for reliability engineers.
+[src:error-budgets/reliability-engineering-p02] Several professional organizations exist for reliability engineers, including the American Society for Quality Reliability Division (ASQ-RD), the IEEE Reliability Society, the American Society for Quality (ASQ), and the Society of Reliability Engineers (SRE).
+[src:error-budgets/risk-management] Two types of events are analyzed in risk management: risks and opportunities.
+[src:error-budgets/risk-management] Negative events can be classified as risks while positive events are classified as opportunities.
+[src:error-budgets/risk-management] Risk management standards have been developed by various institutions, including the Project Management Institute, the National Institute of Standards and Technology, actuarial societies, and International Organization for Standardization.
+[src:error-budgets/risk-management] Methods, definitions and goals vary widely according to whether the risk management method is in the context of project management, security, engineering, industrial processes, financial portfolios, actuarial assessments, or public health and safety.
+[src:error-budgets/risk-management] Certain risk management standards have been criticized for having no measurable improvement on risk, whereas the confidence in estimates and decisions seems to increase.
+[src:error-budgets/risk-management] The opposite of these strategies can be used to respond to opportunities (uncertain future states with benefits).
+[src:error-budgets/risk-management] Risk analysts support the technical side of the organization's risk management approach: once risk data has been compiled and evaluated, analysts share their findings with their managers, who use those insights to decide among possible solutions.
+[src:error-budgets/risk-management] See also Chief Risk Officer, internal audit, and Financial risk management § Corporate finance.
+[src:error-budgets/risk-management] Risk is defined as the possibility that an event will occur that adversely affects the achievement of an objective.
+[src:error-budgets/risk-management] Uncertainty, therefore, is a key aspect of risk.
+[src:error-budgets/risk-management] Risk management appears in scientific and management literature since the 1920s.
+[src:error-budgets/risk-management] It became a formal science in the 1950s, when articles and books with "risk management" in the title also appear in library searches.
+[src:error-budgets/risk-management] Most of research was initially related to finance and insurance.
+[src:error-budgets/risk-management] One popular standard clarifying vocabulary used in risk management is *ISO Guide 31073:2022*, "Risk management — Vocabulary".
+[src:error-budgets/risk-management] Ideally in risk management, a prioritization process is followed.
+[src:error-budgets/risk-management] Whereby the risks with the greatest loss (or impact) and the greatest probability of occurring are handled first.
+[src:error-budgets/risk-management] Risks with lower probability of occurrence and lower loss are handled in descending order.
+[src:error-budgets/risk-management] In practice the process of assessing overall risk can be tricky, and organisation has to balance resources used to mitigate between risks with a higher probability but lower loss, versus a risk with higher loss but lower probability.
+[src:error-budgets/risk-management] Opportunity cost represents a unique challenge for risk managers.
+[src:error-budgets/risk-management] It can be difficult to determine when to put resources toward risk management and when to use those resources elsewhere.
+[src:error-budgets/risk-management] Again, ideal risk management optimises resource usage (spending, manpower etc), and also minimizes the negative effects of risks.
+[src:error-budgets/risk-management] Opportunities first appear in academic research or management books in the 1990s.
+[src:error-budgets/risk-management] The first PMBoK Project Management Body of Knowledge draft of 1987 doesn't mention opportunities at all.
+[src:error-budgets/risk-management] Modern project management school recognize the importance of opportunities.
+[src:error-budgets/risk-management] Opportunities have been included in project management literature since the 1990s, e.g. in PMBoK, and became a significant part of project risk management in the years 2000s, when articles titled "opportunity management" also begin to appear in library searches.
+[src:error-budgets/risk-management] Opportunity management thus became an important part of risk management.
+[src:error-budgets/risk-management] Modern risk management theory deals with all types of external events, both positive and negative.
+[src:error-budgets/risk-management] Positive risks are called *opportunities*.
+[src:error-budgets/risk-management] Similar to risks, opportunities have specific mitigation strategies: exploit, share, enhance, or ignore.
+[src:error-budgets/risk-management] In practice, risks are considered "usually negative".
+[src:error-budgets/risk-management] Risk-related research and practice focus significantly more on threats than on opportunities.
+[src:error-budgets/risk-management] This can lead to negative phenomena such as target fixation.
+[src:error-budgets/risk-management] Assess the vulnerability of critical assets to specific threats.
+[src:error-budgets/risk-management] Determine the risk (i.e. the expected likelihood and consequences of specific attacks on specific assets).
+[src:error-budgets/risk-management] **Identify Risks** – identifying individual project risks as well as sources.
+[src:error-budgets/risk-management] **Perform Qualitative Risk Analysis** – prioritizing individual project risks by assessing probability and impact.
+[src:error-budgets/risk-management] **Perform Quantitative Risk Analysis** – numerical analysis of the effects.
+[src:error-budgets/risk-management] **Plan Risk Responses** – developing options, selecting strategies and actions.
+[src:error-budgets/risk-management] **Implement Risk Responses** – implementing agreed-upon risk response plans.
+[src:error-budgets/risk-management] In the 4th Ed. of PMBoK, this process was included as an activity in the Monitor and Control process, but was later separated as a distinct process in PMBoK 6th Ed.
+[src:error-budgets/risk-management] **Monitor Risks** – monitoring the implementation.
+[src:error-budgets/risk-management] This process was known as Monitor and Control in the previous PMBoK 4th Ed., when it also included the "*Implement Risk Responses*" process.
+[src:error-budgets/risk-management] Benoit Mandelbrot distinguished between "mild" and "wild" risk and argued that risk assessment and management must be fundamentally different for the two types of risk.
+[src:error-budgets/risk-management] Mild risk follows normal or near-normal probability distributions, is subject to regression to the mean and the law of large numbers, and is therefore relatively predictable.
+[src:error-budgets/risk-management] Wild risk follows fat-tailed distributions, e.g., Pareto or power-law distributions, is subject to regression to the tail (infinite mean or variance, rendering the law of large numbers invalid or ineffective), and is therefore difficult or impossible to predict.
+[src:error-budgets/risk-management] A common error in risk assessment and management is to underestimate the wildness of risk, assuming risk to be mild when in fact it is wild, which must be avoided if risk assessment and management are to be valid and reliable, according to Mandelbrot.
+[src:error-budgets/risk-management] After establishing the context, the next step in the process of managing risk is to identify potential risks.
+[src:error-budgets/risk-management] Risks concern events that, when triggered, cause problems or benefits.
+[src:error-budgets/risk-management] Therefore, risk identification can begin either with the sources of problems and those of competitors (benefits) or with the consequences of the problems.
+[src:error-budgets/risk-management] Some examples of risk sources are: stakeholders of a project, employees of a company or the weather over an airport.
+[src:error-budgets/risk-management] When either source or problem is known, the events that a source may trigger or the events that can lead to a problem can be investigated.
+[src:error-budgets/risk-management] For example: stakeholders withdrawing during a project may endanger funding of the project; confidential information may be stolen by employees even within a closed network; lightning striking an aircraft during takeoff may make all people on board immediate casualties.
+[src:error-budgets/risk-management] The chosen method of identifying risks may depend on culture, industry practice and compliance.
+[src:error-budgets/risk-management] The identification methods are formed by templates or the development of templates for identifying source, problem or event.
+[src:error-budgets/risk-management] Once risks have been identified, they must then be assessed as to their potential severity of impact (generally a negative impact, such as damage or loss) and to the probability of occurrence.
+[src:error-budgets/risk-management] These quantities can be either simple to measure, in the case of the value of a lost building, or impossible to know for sure in the case of an unlikely event, the probability of occurrence of which is unknown.
+[src:error-budgets/risk-management] Therefore, in the assessment process it is critical to make the best educated decisions in order to properly prioritize the implementation of the risk management plan.
+[src:error-budgets/risk-management] Even a short-term positive improvement can have long-term negative impacts.
+[src:error-budgets/risk-management] A highway is widened to allow more traffic.
+[src:error-budgets/risk-management] More traffic capacity leads to greater development in the areas surrounding the improved traffic capacity.
+[src:error-budgets/risk-management] Over time, traffic thereby increases to fill available capacity.
+[src:error-budgets/risk-management] Turnpikes thereby need to be expanded in a seemingly endless cycles.
+[src:error-budgets/risk-management] There are many other engineering examples where expanded capacity (to do any function) is soon filled by increased demand.
+[src:error-budgets/risk-management] Since expansion comes at a cost, the resulting growth could become unsustainable without forecasting and management.
+[src:error-budgets/risk-management] The fundamental difficulty in risk assessment is determining the rate of occurrence since statistical information is not available on all kinds of past incidents and is particularly scanty in the case of catastrophic events, simply because of their infrequency.
+[src:error-budgets/risk-management] Furthermore, evaluating the severity of the consequences (impact) is often quite difficult for intangible assets.
+[src:error-budgets/risk-management] Asset valuation is another question that needs to be addressed.
+[src:error-budgets/risk-management] Thus, best educated opinions and available statistics are the primary sources of information.
+[src:error-budgets/risk-management] Nevertheless, risk assessment should produce such information for senior executives of the organization that the primary risks are easy to understand and that the risk management decisions may be prioritized within overall company goals.
+[src:error-budgets/risk-management] Thus, there have been several theories and attempts to quantify risks.
+[src:error-budgets/risk-management] Periodically re-assess risks that are accepted in ongoing processes as a normal feature of business operations and modify mitigation measures.
+[src:error-budgets/risk-management] Later research has shown that the financial benefits of risk management are less dependent on the formula used but are more dependent on the frequency and how risk assessment is performed.
+[src:error-budgets/risk-management] In business it is imperative to be able to present the findings of risk assessments in financial, market, or schedule terms.
+[src:error-budgets/risk-management] (IBM, 1970) proposed a formula for presenting risks in financial terms.
+[src:error-budgets/risk-management] The Courtney formula was accepted as the official risk analysis method for the US governmental agencies.
+[src:error-budgets/risk-management] The formula proposes calculation of ALE (annualized loss expectancy) and compares the expected loss value to the security control implementation costs (cost–benefit analysis).
+[src:error-budgets/risk-management] Planning for risk management uses four essential techniques.
+[src:error-budgets/risk-management] Under the acceptance technique, the business intentionally assumes risks without financial protections in the hopes that possible gains will exceed prospective losses.
+[src:error-budgets/risk-management] The transfer approach shields the business from losses by shifting risks to a third party, frequently in exchange for a fee, while the third-party benefits from the project.
+[src:error-budgets/risk-management] By choosing not to participate in high-risk ventures, the avoidance strategy avoids losses but also loses out on possibilities.
+[src:error-budgets/risk-management] Last but not least, the reduction approach lowers risks by implementing strategies like insurance, which provides protection for a variety of asset classes and guarantees reimbursement in the event of losses.
+[src:error-budgets/risk-management] Ideal use of these risk control strategies may not be possible.
+[src:error-budgets/risk-management] Some of them may involve trade-offs that are not acceptable to the organization or person making the risk management decisions.
+[src:error-budgets/risk-management] Another source, from the US Department of Defense (see link), Defense Acquisition University, calls these categories ACAT, for Avoid, Control, Accept, or Transfer.
+[src:error-budgets/risk-management] This use of the ACAT acronym is reminiscent of another ACAT (for Acquisition Category) used in US Defense industry procurements, in which Risk Management figures prominently in decision making and planning.
+[src:error-budgets/risk-management] Similarly to risks, opportunities have specific mitigation strategies: exploit, share, enhance, ignore.
+[src:error-budgets/risk-management] This includes not performing an activity that could present risk.
+[src:error-budgets/risk-management] Refusing to purchase a property or business to avoid legal liability is one such example.
+[src:error-budgets/risk-management] Avoiding airplane flights for fear of hijacking.
+[src:error-budgets/risk-management] Avoidance may seem like the answer to all risks, but avoiding risks also means losing out on the potential gain that accepting (retaining) the risk may have allowed.
+[src:error-budgets/risk-management] Not entering a business to avoid the risk of loss also avoids the possibility of earning profits.
+[src:error-budgets/risk-management] Increasing risk regulation in hospitals has led to avoidance of treating higher risk conditions, in favor of patients presenting with lower risk.
+[src:error-budgets/risk-management] Risk reduction or "optimization" involves reducing the severity of the loss or the likelihood of the loss from occurring.
+[src:error-budgets/risk-management] For example, sprinklers are designed to put out a fire to reduce the risk of loss by fire.
+[src:error-budgets/risk-management] This method may cause a greater loss by water damage and therefore may not be suitable.
+[src:error-budgets/risk-management] Halon fire suppression systems may mitigate that risk, but the cost may be prohibitive as a strategy.
+[src:error-budgets/risk-management] Acknowledging that risks can be positive or negative, optimizing risks means finding a balance between negative risk and the benefit of the operation or activity; and between risk reduction and effort applied.
+[src:error-budgets/risk-management] By effectively applying Health, Safety and Environment (HSE) management standards, organizations can achieve tolerable levels of residual risk.
+[src:error-budgets/risk-management] Modern software development methodologies reduce risk by developing and delivering software incrementally.
+[src:error-budgets/risk-management] Early methodologies suffered from the fact that they only delivered software in the final phase of development; any problems encountered in earlier phases meant costly rework and often jeopardized the whole project.
+[src:error-budgets/risk-management] By developing in iterations, software projects can limit effort wasted to a single iteration.
+[src:error-budgets/risk-management] Outsourcing could be an example of risk sharing strategy if the outsourcer can demonstrate higher capability at managing or reducing risks.
+[src:error-budgets/risk-management] For example, a company may outsource only its software development, the manufacturing of hard goods, or customer support needs to another company, while handling the business management itself.
+[src:error-budgets/risk-management] This way, the company can concentrate more on business development without having to worry as much about the manufacturing process, managing the development team, or finding a physical location for a center.
+[src:error-budgets/risk-management] Also, implanting controls can also be an option in reducing risk.
+[src:error-budgets/risk-management] Controls that either detect causes of unwanted events prior to the consequences occurring during use of the product, or detection of the root causes of unwanted failures that the team can then avoid.
+[src:error-budgets/risk-management] Controls may focus on management or decision-making processes.
+[src:error-budgets/risk-management] All these may help to make better decisions concerning risk.
+[src:error-budgets/risk-management] The term 'risk transfer' is often used in place of risk-sharing in the mistaken belief that you can transfer a risk to a third party through insurance or outsourcing.
+[src:error-budgets/risk-management] In practice, if the insurance company or contractor go bankrupt or end up in court, the original risk is likely to still revert to the first party.
+[src:error-budgets/risk-management] For example, a personal injuries insurance policy does not transfer the risk of a car accident to the insurance company.
+[src:error-budgets/risk-management] The risk still lies with the policyholder namely the person who has been in the accident.
+[src:error-budgets/risk-management] The insurance policy simply provides that if an accident (the event) occurs involving the policyholder then some compensation may be payable to the policyholder that is commensurate with the suffering/damage.
+[src:error-budgets/risk-management] Methods of managing risk fall into multiple categories.
+[src:error-budgets/risk-management] Risk-retention pools are technically retaining the risk for the group, but spreading it over the whole group involves transfer among individual members of the group.
+[src:error-budgets/risk-management] This is different from traditional insurance, in that no premium is exchanged between members of the group upfront, but instead, losses are assessed to all members of the group.
+[src:error-budgets/risk-management] Risk retention involves accepting the loss, or benefit of gain, from a risk when the incident occurs.
+[src:error-budgets/risk-management] True self-insurance falls in this category.
+[src:error-budgets/risk-management] Risk retention is a viable strategy for small risks where the cost of insuring against the risk would be greater over time than the total losses sustained.
+[src:error-budgets/risk-management] All risks that are not avoided or transferred are retained by default.
+[src:error-budgets/risk-management] This includes risks that are so large or catastrophic that either they cannot be insured against or the premiums would be infeasible.
+[src:error-budgets/risk-management] War is an example since most property and risks are not insured against war, so the loss attributed to war is retained by the insured.
+[src:error-budgets/risk-management] Also any amounts of potential loss (risk) over the amount insured is retained risk.
+[src:error-budgets/risk-management] This may also be acceptable if the chance of a very large loss is small or if the cost to insure for greater coverage amounts is so great that it would hinder the goals of the organization too much.
+[src:error-budgets/risk-management] Select appropriate controls or countermeasures to mitigate each risk.
+[src:error-budgets/risk-management] Risk mitigation needs to be approved by the appropriate level of management.
+[src:error-budgets/risk-management] For instance, a risk concerning the image of the organization should have top management decision behind it whereas IT management would have the authority to decide on computer virus risks.
+[src:error-budgets/risk-management] The risk management plan should propose applicable and effective security controls for managing the risks.
+[src:error-budgets/risk-management] For example, an observed high risk of computer viruses could be mitigated by acquiring and implementing antivirus software.
+[src:error-budgets/risk-management] A good risk management plan should contain a schedule for control implementation and responsible persons for those actions.
+[src:error-budgets/risk-management] There are four basic steps of risk management plan, which are threat assessment, vulnerability assessment, impact assessment and risk mitigation strategy development.
+[src:error-budgets/risk-management] According to ISO/IEC 27001, the stage immediately after completion of the risk assessment phase consists of preparing a Risk Treatment Plan, which should document the decisions about how each of the identified risks should be handled.
+[src:error-budgets/risk-management] Mitigation of risks often means selection of security controls, which should be documented in a Statement of Applicability, which identifies which particular control objectives and controls from the standard have been selected, and why.
+[src:error-budgets/risk-management] Implementation involves executing all planned methods for mitigating the effects of risks.
+[src:error-budgets/risk-management] This includes purchasing insurance policies for risks that have been decided to be transferred to an insurer, avoiding all risks that can be avoided without compromising the entity's goals, reducing other risks, and retaining the remainder.
+[src:error-budgets/risk-management] Initial risk management plans will never be perfect.
+[src:error-budgets/risk-management] Practice, experience, and actual loss results will necessitate changes in the plan and contribute information to allow possible different decisions to be made in dealing with the risks being faced.
+[src:error-budgets/risk-management] Risk analysis results and management plans should be updated periodically.
+[src:error-budgets/risk-management] 2. to evaluate the possible risk level changes in the business environment.
+[src:error-budgets/risk-management] For example, information risks are a good example of rapidly changing business environment.
+[src:error-budgets/risk-management] There are various defined frameworks here, where every probable risk can have a pre-formulated plan to deal with its possible consequences (to ensure *contingency* if the risk becomes a *liability*).
+[src:error-budgets/risk-management] Managers thus analyze and monitor both the internal and external environment facing the enterprise, addressing business risk generally, and any impact on the enterprise achieving its strategic goals.
+[src:error-budgets/risk-management] ERM thus overlaps various other disciplines - operational risk management, financial risk management etc. - but is differentiated by its strategic and long-term focus.
+[src:error-budgets/risk-management] ERM systems usually focus on safeguarding reputation, acknowledging its significant role in comprehensive risk management strategies.
+[src:error-budgets/risk-management] The concept of "contractual risk management" emphasises the use of risk management techniques in contract deployment, i.e. managing the risks which are accepted through entry into a contract.
+[src:error-budgets/risk-management] Norwegian academic Petri Keskitalo defines "contractual risk management" as "a practical, proactive and systematical contracting method that uses contract planning and governance to manage risks connected to business activities".
+[src:error-budgets/risk-management] Greengard recommends using industry-standard contract language as much as possible to reduce risk as much as possible and rely on clauses which have been in use and subject to established court interpretation over a number of years.
+[src:error-budgets/risk-management] ESRM is a security program management approach that links security activities to an enterprise's mission and business goals through risk management methods.
+[src:error-budgets/risk-management] The security leader's role in ESRM is to manage risks of harm to enterprise assets in partnership with the business leaders whose assets are exposed to those risks.
+[src:error-budgets/risk-management] For medical devices, risk management is a process for identifying, evaluating and mitigating risks associated with harm to people and damage to property or the environment.
+[src:error-budgets/risk-management] Risk management is an integral part of medical device design and development, production processes and evaluation of field experience, and is applicable to all types of medical devices.
+[src:error-budgets/risk-management] The evidence of its application is required by most regulatory bodies such as the US FDA.
+[src:error-budgets/risk-management] The management of risks for medical devices is described by the International Organization for Standardization (ISO) in ISO 14971:2019, Medical Devices—The application of risk management to medical devices, a product safety standard.
+[src:error-budgets/risk-management] The standard provides a process framework and associated requirements for management responsibilities, risk analysis and evaluation, risk controls and lifecycle risk management.
+[src:error-budgets/risk-management] Guidance on the application of the standard is available via ISO/TR 24971:2020.
+[src:error-budgets/risk-management] The European version of the risk management standard was updated in 2009 and again in 2012 to refer to the Medical Devices Directive (MDD) and Active Implantable Medical Device Directive (AIMDD) revision in 2007, as well as the In Vitro Medical Device Directive (IVDD).
+[src:error-budgets/risk-management] The differences include three "(informative)" Z Annexes that refer to the new MDD, AIMDD, and IVDD.
+[src:error-budgets/risk-management] These annexes indicate content deviations that include the requirement for risks to be reduced *as far as possible*, and the requirement that risks be mitigated by design and not by labeling on the medical device (i.e., labeling can no longer be used to mitigate risk).
+[src:error-budgets/risk-management] FTA analysis requires diagramming software.
+[src:error-budgets/risk-management] FMEA analysis can be done using a spreadsheet program.
+[src:error-budgets/risk-management] There are also integrated medical device risk management solutions.
+[src:error-budgets/risk-management] Through a draft guidance, the FDA has introduced another method named "Safety Assurance Case" for medical device safety assurance analysis.
+[src:error-budgets/risk-management] The safety assurance case is structured argument reasoning about systems appropriate for scientists and engineers, supported by a body of evidence, that provides a compelling, comprehensible and valid case that a system is safe for a given application in a given environment.
+[src:error-budgets/risk-management] With the guidance, a safety assurance case is expected for safety critical devices (e.g. infusion devices) as part of the pre-market clearance submission, e.g.
+[src:error-budgets/risk-management] In 2013, the FDA introduced another draft guidance expecting medical device manufacturers to submit cybersecurity risk analysis information.
+[src:error-budgets/risk-management] Project risk management must be considered at the different phases of acquisition.
+[src:error-budgets/risk-management] At the beginning of a project, the advancement of technical developments, or threats presented by a competitor's projects, may cause a risk or threat assessment and subsequent evaluation of alternatives (see Analysis of Alternatives).
+[src:error-budgets/risk-management] Megaprojects (sometimes also called "major programs") are large-scale investment projects, typically costing more than $1 billion per project.
+[src:error-budgets/risk-management] Megaprojects include major bridges, tunnels, highways, railways, airports, seaports, power plants, dams, wastewater projects, coastal flood protection schemes, oil and natural gas extraction projects, public buildings, information technology systems, aerospace projects, and defense systems.
+[src:error-budgets/risk-management] Megaprojects have been shown to be particularly risky in terms of finance, safety, and social and environmental impacts.
+[src:error-budgets/risk-management] Risk management is therefore particularly pertinent for megaprojects and special methods and special education have been developed for such risk management.
+[src:error-budgets/risk-management] It is important to assess risk in regard to natural disasters like floods, earthquakes, and so on.
+[src:error-budgets/risk-management] Outcomes of natural disaster risk assessment are valuable when considering future repair costs, business interruption losses and other downtime, effects on the environment, insurance costs, and the proposed costs of reducing the risk.
+[src:error-budgets/risk-management] The Sendai Framework for Disaster Risk Reduction is a 2015 international accord that has set goals and targets for disaster risk reduction in response to natural disasters.
+[src:error-budgets/risk-management] There are regular International Disaster and Risk Conferences in Davos to deal with integral risk management.
+[src:error-budgets/risk-management] Several tools can be used to assess risk and risk management of natural disasters and other climate events, including geospatial modeling, a key component of land change science.
+[src:error-budgets/risk-management] This modeling requires an understanding of geographic distributions of people as well as an ability to calculate the likelihood of a natural disaster occurring.
+[src:error-budgets/risk-management] The management of risks to persons and property in wilderness and remote natural areas has developed with increases in outdoor recreation participation and decreased social tolerance for loss.
+[src:error-budgets/risk-management] Organizations providing commercial wilderness experiences can now align with national and international consensus standards for training and equipment such as ANSI/NASBLA 101-2017 (boating), UIAA 152 (ice climbing tools), and European Norm 13089:2015 + A1:2015 (mountaineering equipment).
+[src:error-budgets/risk-management] The Association for Experiential Education offers accreditation for wilderness adventure programs.
+[src:error-budgets/risk-management] The Wilderness Risk Management Conference provides access to best practices, and specialist organizations provide wilderness risk management consulting and training.
+[src:error-budgets/risk-management] One popular models for risk assessment is the Risk Assessment and Safety Management (RASM) Model developed by Rick Curtis, author of The Backpacker's Field Manual.
+[src:error-budgets/risk-management] The formula for the RASM Model is: Risk = Probability of Accident × Severity of Consequences.
+[src:error-budgets/risk-management] The RASM Model weighs negative risk—the potential for loss, against positive risk—the potential for growth.
+[src:error-budgets/risk-management] IT risk is a risk related to information technology.
+[src:error-budgets/risk-management] This is a relatively new term due to an increasing awareness that information security is simply one facet of a multitude of risks that are relevant to IT and the real world processes it supports.
+[src:error-budgets/risk-management] "Cybersecurity is tied closely to the advancement of technology.
+[src:error-budgets/risk-management] It lags only long enough for incentives like black markets to evolve and new exploits to be discovered.
+[src:error-budgets/risk-management] ISACA's *Risk IT* framework ties IT risk to enterprise risk management.
+[src:error-budgets/risk-management] IT risk management includes "incident handling", an action plan for dealing with intrusions, cyber-theft, denial of service, fire, floods, and other security-related events.
+[src:error-budgets/risk-management] According to the SANS Institute, it is a six step process: Preparation, Identification, Containment, Eradication, Recovery, and Lessons Learned.
+[src:error-budgets/risk-management] Operational risk management (ORM) is the oversight of operational risk, including the risk of loss resulting from: inadequate or failed internal processes and systems; human factors; or external events.
+[src:error-budgets/risk-management] Given the nature of operations, ORM is typically a "continual" process, and will include ongoing risk assessment, risk decision making, and the implementation of risk controls.
+[src:error-budgets/risk-management] For the offshore oil and gas industry, operational risk management is regulated by the safety case regime in many countries.
+[src:error-budgets/risk-management] Further, diagrammatic representations of hazardous events are often expected by governmental regulators as part of risk management in safety case submissions; these are known as **bow-tie diagrams** (see Network theory in risk assessment).
+[src:error-budgets/risk-management] The technique is also used by organisations and regulators in mining, aviation, health, defence, industrial and finance.
+[src:error-budgets/risk-management] The principles and tools for quality risk management are increasingly being applied to different aspects of pharmaceutical quality systems.
+[src:error-budgets/risk-management] Risk management is also applied to the assessment of microbiological contamination in relation to pharmaceutical products and cleanroom manufacturing environments.
+[src:error-budgets/risk-management] Supply chain risk management (SCRM) aims at maintaining supply chain continuity in the event of scenarios or incidents which could interrupt normal business and hence profitability.
+[src:error-budgets/risk-management] Risks to the supply chain range from everyday to exceptional, including unpredictable natural events (such as tsunamis and pandemics) to counterfeit products, and reach across quality, security, to resiliency and product integrity.
+[src:error-budgets/risk-management] Mitigation of these risks can involve various elements of the business including logistics and cybersecurity, as well as the areas of finance and operations.
+[src:error-budgets/risk-management] Travel risk management is concerned with how organisations assess the risks to their staff when travelling, especially when travelling overseas.
+[src:error-budgets/risk-management] In the field of international standards, ISO 31030:2021 addresses good practice in travel risk management.
+[src:error-budgets/risk-management] The Global Business Travel Association's education and research arm, the GBTA Foundation. found in 2015 that most businesses covered by their research employed travel risk management protocols aimed at ensuring the safety and well-being of their business travelers.
+[src:error-budgets/risk-management] Six key principles of travel risk awareness put forward by the association are preparation, awareness of surroundings and people, keeping a low profile, adopting an unpredictable routine, communications and layers of protection.
+[src:error-budgets/risk-management] Traveler tracking using mobile tracking and messaging technologies had by 2015 become a widely used aspect of travel risk management.
+[src:error-budgets/risk-management] Risk communication is a complex cross-disciplinary academic field that is part of risk management and related to fields like crisis communication.
+[src:error-budgets/risk-management] The goal is to make sure that targeted audiences understand how risks affect them or their communities by appealing to their values.
+[src:error-budgets/risk-management] Risk communication is particularly important in disaster preparedness, public health, and preparation for major global catastrophic risk.
+[src:error-budgets/risk-management] For example, the impacts of climate change and climate risk effect every part of society, so communicating that risk is an important climate communication practice, in order for societies to plan for climate adaptation.
+[src:error-budgets/risk-management] Similarly, in pandemic prevention, understanding of risk helps communities stop the spread of disease and improve responses.
+[src:error-budgets/risk-management] Risk communication deals with possible risks and aims to raise awareness of those risks to encourage or persuade changes in behavior to relieve threats in the long term.
+[src:error-budgets/risk-management] On the other hand, crisis communication is aimed at raising awareness of a specific type of threat, the magnitude, outcomes, and specific behaviors to adopt to reduce the threat.
+[src:error-budgets/risk-management] Risk communication in food safety is part of the risk analysis framework.
+[src:error-budgets/risk-management] Together with risk assessment and risk management, risk communication aims to reduce foodborne illnesses.
+[src:error-budgets/risk-management] Food safety risk communication is an obligatory activity for food safety authorities in countries, which adopted the Agreement on the Application of Sanitary and Phytosanitary Measures.
+[src:error-budgets/risk-management] Risk communication also exists on a smaller scale.
+[src:error-budgets/risk-management] For instance, the risks associated with personal medical decisions have to be communicated to that individual along with their family.
+[src:error-budgets/service-level-objective] A **service-level objective** (**SLO**) is a target value or range of values for a service level that is measured by an SLI.
+[src:error-budgets/service-level-objective] An SLO is a key element of a service-level agreement (SLA) between a service provider and a customer.
+[src:error-budgets/service-level-objective] SLOs are agreed upon as a means of measuring the performance of the service provider and are outlined as a way of avoiding disputes between the two parties based on misunderstanding.
+[src:error-budgets/service-level-objective] There is often confusion in the use of SLAs and SLOs.
+[src:error-budgets/service-level-objective] The SLA is the entire agreement that specifies what service is to be provided, how it is supported, times, locations, costs, performance, and responsibilities of the parties involved.
+[src:error-budgets/service-level-objective] SLOs are specific measurable characteristics of the SLA such as availability, throughput, frequency, response time, or quality.
+[src:error-budgets/service-level-objective] These SLOs together are meant to define the expected service between the provider and the customer and vary depending on the service's urgency, resources, and budget.
+[src:error-budgets/service-level-objective] SLOs provide a quantitative means to define the level of service a customer can expect from a provider.
+[src:error-budgets/service-level-objective] The SLO are formed by setting goals for metrics (commonly called service level indicators, SLIs).
+[src:error-budgets/service-level-objective] As an example, an availability SLO may be defined as the expected measured value of an availability SLI over a prescribed duration (e.g. four weeks).
+[src:error-budgets/service-level-objective] The availability SLI used will vary based on the nature and architecture of the service.
+[src:error-budgets/service-level-objective] For example, a simple web service might use the ratio of successful responses served vs the total number of valid requests received.
+[src:error-budgets/service-level-objective] While Andrieux et al. define the SLO as "the quality of service aspect of the agreement.
+[src:error-budgets/service-level-objective] Syntactically, it is an assertion over the terms of the agreement as well as such qualities as date and time".
+[src:error-budgets/service-level-objective] Keller and Ludwig more concisely define an SLO as "commitment to maintain a particular state of the service in a given period" with respect to the state of the SLA parameters.
+[src:error-budgets/service-level-objective] Keller and Ludwig go on to state that while service providers will most often be the lead entity in taking on SLOs there is no firm definition as such and any entity can be responsible for an SLO.
+[src:error-budgets/service-level-objective] Optionally an EvaluationEvent maybe assigned to the SLO, an EvaluationEvent is defined as the measure by which the SLO will be checked to see whether it's meeting the expression.
+[src:error-budgets/service-level-objective] SLOs should generally be specified in terms of an achievement value or service level, a target measurement, a measurement period, and where and how they are measured.
+[src:error-budgets/service-level-objective] As an example, "90% of calls to the helpdesk should be answered in less than 20 seconds measured over a one-month period as reported by the ACD system".
+[src:error-budgets/service-level-objective] Results can be reported as a percent of time that the target answer time was achieved and then compared to the desired service level (90%).
+[src:error-budgets/service-level-objective] The SLO term is found in various scientific papers, for instance in the reference architecture of the SLA@SOI project, and it is used in the Open Grid Forum document on WS-Agreement.
+[src:error-budgets/site-reliability-engineering] Site Reliability Engineering originated at Google with Benjamin Treynor Sloss, who founded SRE team in 2003.
+[src:error-budgets/site-reliability-engineering] The concept expanded within the software development industry, leading various companies to employ site reliability engineers.
+[src:error-budgets/site-reliability-engineering] By March 2016, Google had more than 1,000 site reliability engineers on staff.
+[src:error-budgets/site-reliability-engineering] Dedicated SRE teams are common at larger web development companies.
+[src:error-budgets/site-reliability-engineering] In middle-sized and smaller companies, DevOps teams sometimes perform SRE, as well.
+[src:error-budgets/site-reliability-engineering] Organizations that have adopted the concept include Airbnb, Dropbox, IBM, LinkedIn, Netflix, and Wikimedia.
+[src:error-budgets/site-reliability-engineering] Site reliability engineers (SREs) are responsible for a combination of system availability, latency, performance, efficiency, change management, monitoring, emergency response, and capacity planning.
+[src:error-budgets/site-reliability-engineering] SREs often have backgrounds in software engineering, systems engineering, and/or system administration.
+[src:error-budgets/site-reliability-engineering] The focuses of SRE include automation, system design, and improvements to system resilience.
+[src:error-budgets/site-reliability-engineering] SRE is considered a specific implementation of DevOps; focusing specifically on building reliable systems, whereas DevOps covers a broader scope of operations.
+[src:error-budgets/site-reliability-engineering] Despite having different focuses, some companies have rebranded their operations teams to SRE teams.
+[src:error-budgets/site-reliability-engineering] SRE teams collaborate with other departments within organizations to guide the implementation of the mentioned principles.
+[src:error-budgets/site-reliability-engineering] Kitchen Sink refers to the expansive and often unbounded scope of services and workflows that SRE teams oversee.
+[src:error-budgets/site-reliability-engineering] Unlike traditional roles with clearly defined boundaries, SREs are tasked with various responsibilities, including system performance optimization, incident management, and automation.
+[src:error-budgets/site-reliability-engineering] This approach allows SREs to address multiple challenges, ensuring that systems run efficiently and evolve in response to changing demands and complexities.
+[src:error-budgets/site-reliability-engineering] Infrastructure SRE teams focus on maintaining and improving the reliability of systems that support other teams' workflows.
+[src:error-budgets/site-reliability-engineering] While they sometimes collaborate with platform engineering teams, their primary responsibility is ensuring up-time, performance, and efficiency.
+[src:error-budgets/site-reliability-engineering] Platform teams, on the other hand, primarily develop the software and systems used across the organization.
+[src:error-budgets/site-reliability-engineering] While reliability is a goal for both, platform teams prioritize creating and maintaining the tools and services used by internal stakeholders, whereas Infrastructure SRE teams are tasked with ensuring those systems run smoothly and meet reliability standards.
+[src:error-budgets/site-reliability-engineering] SRE teams utilize a variety of tools with the aim of measuring, maintaining, and enhancing system reliability.
+[src:error-budgets/site-reliability-engineering] These tools play a role in monitoring performance, identifying issues, and facilitating proactive maintenance.
+[src:error-budgets/site-reliability-engineering] For instance, Nagios Core is commonly employed for system monitoring and alerting, while Prometheus (software) is frequently used for collecting and querying metrics in cloud-native environments.
+[src:error-budgets/site-reliability-engineering] SRE teams dedicated to specific products or applications are common in large organizations.
+[src:error-budgets/site-reliability-engineering] These teams are responsible for ensuring the reliability, scalability, and performance of key services.
+[src:error-budgets/site-reliability-engineering] In larger companies, it's typical to have multiple SRE teams, each focusing on different products or applications, ensuring that each area receives specialized attention to meet performance and availability targets.
+[src:error-budgets/site-reliability-engineering] In an embedded model, individual SREs or small SRE pairs are integrated within software engineering teams.
+[src:error-budgets/site-reliability-engineering] These SREs collaborate with developers, applying core SRE principles—such as automation, monitoring, and incident response—directly to the software development lifecycle.
+[src:error-budgets/site-reliability-engineering] This approach aims to enhance reliability, performance, and collaboration between SREs and developers.
+[src:error-budgets/site-reliability-engineering] Consulting SRE teams specialize in advising organizations on the implementation of SRE principles and practices.
+[src:error-budgets/site-reliability-engineering] Typically composed of seasoned SREs with a history across various implementations, these teams provide insights and guidance for specific organizational needs.
+[src:error-budgets/site-reliability-engineering] In large organizations that have adopted SRE, a hybrid model is common.
+[src:error-budgets/site-reliability-engineering] This model includes various implementations, such as multiple Product/Application SRE teams dedicated to addressing the specific reliability needs of different products.
+[src:error-budgets/site-reliability-engineering] An Infrastructure SRE team may collaborate with a Platform engineering group to achieve shared reliability goals for a unified platform that supports all products and applications.
+[src:error-budgets/site-reliability-engineering] Since 2014, the USENIX organization has hosted the annual SREcon conference, bringing together site reliability engineers from various industries.
+[src:error-budgets/site-reliability-engineering] This conference is a platform for professionals to share knowledge, explore effective practices, and discuss trends in site reliability engineering.

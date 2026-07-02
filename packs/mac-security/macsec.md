@@ -1,0 +1,53 @@
+---
+title: "IEEE 802.1AE"
+source: https://en.wikipedia.org/wiki/MACsec
+domain: mac-security
+license: CC-BY-SA-4.0
+tags: macsec encryption, layer 2 encryption, link-layer security, media access encryption
+fetched: 2026-07-02
+---
+
+# IEEE 802.1AE
+
+(Redirected from
+
+MACsec
+
+)
+
+**IEEE 802.1AE** (also known as **MACsec**) is a network security standard that operates at the medium access control layer and defines connectionless data confidentiality and integrity for media access independent protocols. It is standardized by the IEEE 802.1 working group.
+
+## Details
+
+Key management and the establishment of secure associations is outside the scope of 802.1AE, but is specified by 802.1X-2010.
+
+The 802.1AE standard specifies the implementation of a *MAC Security Entities* (SecY) that can be thought of as part of the stations attached to the same LAN, providing secure MAC service to the client. The standard defines
+
+- **MACsec frame format**, which is similar to the Ethernet frame, but includes additional fields:
+  - *Security Tag*, which is an extension of the EtherType
+  - Message authentication code (Integrity Check Value, *ICV*)
+- Secure *Connectivity Associations* that represent groups of stations connected via unidirectional *Secure Channels*
+- *Security Associations* within each secure channel. Each association uses its own Secure Association Key (SAK). More than one association is permitted within the channel for the purpose of key change without traffic interruption (standard requires devices to support at least two)
+- A default cipher suite of GCM-AES-128 (Galois/Counter Mode of Advanced Encryption Standard cipher with 128-bit key)
+  - GCM-AES-256 using a 256 bit key was added to the standard 5 years later.
+
+The Security tag inside each frame in addition to EtherType includes:
+
+- A Connectivity Association (CA) number within the channel
+- A packet number (PN) to provide a unique initialization vector for encryption and authentication algorithms as well as protection against replay attacks
+- An optional LAN-wide Secure Channel Identifier (SCI), which is not required on point-to-point links.
+
+The IEEE 802.1AE (MACsec) standard specifies a set of protocols to meet the security requirements for protecting data traversing Ethernet LANs.
+
+MACsec allows unauthorized LAN connections to be identified and excluded from communication within the network. In common with IPsec and TLS, MACsec defines a security infrastructure to provide data confidentiality, data integrity and data origin authentication.
+
+By assuring that a frame comes from the station that claimed to have sent it, MACSec can mitigate attacks on Layer 2 protocols.
+
+Publishing history:
+
+- 2006 – Original publication (802.1AE-2006)
+- 2011 – 802.1AEbn amendment adds the option to use 256 bit keys to the standard. (802.1AEbn-2011)
+- 2013 – 802.1AEbw amendment defines GCM-AES-XPN-128 and GCM-AES-XPN-256 cipher suites in order to extend the packet number to 64 bits. (802.1AEbw-2013)
+- 2017 – 802.1AEcg amendment specifies Ethernet Data Encryption devices. (802.1AEcg-2017)
+- 2018 – 802.1AE-2018
+- 2023 – 802.1AEdk-2023 amendment adding the option to reduce the ability of external observers to correlate user data frames, their sizes, transmission timing and transmission frequency with users’ identities and activities.

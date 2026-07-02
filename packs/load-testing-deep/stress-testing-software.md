@@ -1,0 +1,82 @@
+---
+title: "Stress testing (software)"
+source: https://en.wikipedia.org/wiki/Stress_testing_(software)
+domain: load-testing-deep
+license: CC-BY-SA-4.0
+tags: load testing, stress spike soak test, throughput saturation test, performance test workload
+fetched: 2026-07-02
+---
+
+# Stress testing (software)
+
+**Stress testing** is a software testing activity that determines the robustness of software by testing beyond the limits of normal operation. Stress testing is particularly important for "mission critical" software, but is used for all types of software. Stress tests commonly put a greater emphasis on robustness, availability, and error handling under a heavy load, than on what would be considered correct behavior under normal circumstances.
+
+A system stress test refers to tests that put a greater emphasis on robustness, availability, and error handling under a heavy load, rather than on what would be considered correct behavior under normal circumstances. In particular, the goals of such tests may be to ensure the software does not crash in conditions of insufficient computational resources (such as memory or disk space), unusually high concurrency, or denial of service attacks.
+
+Examples:
+
+- A web server may be stress tested using scripts, bots, and various denial of service tools to observe the performance of a web site during peak loads. These attacks generally are under an hour long, or until a limit in the amount of data that the web server can tolerate is found.
+
+Stress testing may be contrasted with load testing:
+
+- Load testing examines the entire environment and database, while measuring the response time, whereas stress testing focuses on identified transactions, pushing to a level so as to break transactions or systems.
+- During stress testing, if transactions are selectively stressed, the database may not experience much load, but the transactions are heavily stressed. On the other hand, during load testing the database experiences a heavy load, while some transactions may not be stressed.
+- System stress testing, also known as stress testing, is loading the concurrent users over and beyond the level that the system can handle, so it breaks at the weakest link within the entire system.
+
+## Field experience
+
+Failures may be related to:
+
+- characteristics of non-production like environments, e.g. small test databases
+- complete lack of load or stress testing
+
+## Rationale
+
+Reasons for stress testing include:
+
+- The software being tested is "mission critical", that is, failure of the software (such as a crash) would have disastrous consequences.
+- The amount of time and resources dedicated to testing is usually not sufficient, with traditional testing methods, to test all of the situations in which the software will be used when it is released.
+- Even with sufficient time and resources for writing tests, it may not be possible to determine before hand all of the different ways in which the software will be used. This is particularly true for operating systems and middleware, which will eventually be used by software that doesn't even exist at the time of the testing.
+- Customers may use the software on computers that have significantly fewer computational resources (such as memory or disk space) than the computers used for testing.
+- Input data integrity cannot be guaranteed. Input data are software wide: it can be data files, streams and memory buffers, as well as arguments and options given to a command line executable or user inputs triggering actions in a GUI application. Fuzzing and monkey test methods can be used to find problems due to data corruption or incoherence.
+- Concurrency is particularly difficult to test with traditional testing methods. Stress testing may be necessary to find race conditions and deadlocks.
+- Software such as web servers that will be accessible over the Internet may be subject to denial of service attacks.
+- Under normal conditions, certain types of bugs, such as memory leaks, can be fairly benign and difficult to detect over the short periods of time in which testing is performed. However, these bugs can still be potentially serious. In a sense, stress testing for a relatively short period of time can be seen as simulating normal operation for a longer period of time.
+
+## Relationship to branch coverage
+
+*Branch coverage* (a specific type of code coverage) is a metric of the number of branches executed under test, where "100% branch coverage" means that every branch in a program has been executed at least once under some test. Branch coverage is one of the most important metrics for software testing; software for which the branch coverage is low is not generally considered to be thoroughly tested. Note that code coverage metrics are a property of the tests for a piece of software, not of the software being tested.
+
+Achieving high branch coverage often involves writing *negative* test variations, that is, variations where the software is supposed to fail in some way, in addition to the usual *positive* test variations, which test intended usage. An example of a negative variation would be calling a function with illegal parameters. There is a limit to the branch coverage that can be achieved even with negative variations, however, as some branches may only be used for handling of errors that are beyond the control of the test. For example, a test would normally have no control over memory allocation, so branches that handle an "out of memory" error are difficult to test.
+
+Stress testing can achieve higher branch coverage by producing the conditions under which certain error handling branches are followed. The coverage can be further improved by using fault injection.
+
+## Examples
+
+- A web server may be stress tested using scripts, bots, and various denial of service tools to observe the performance of a web site during peak loads.
+
+## Load test vs. stress test
+
+Stress testing usually consists of testing beyond specified limits in order to determine failure points and test failure recovery.
+
+Load testing implies a controlled environment moving from low loads to high. Stress testing focuses on more random events, chaos and unpredictability. Using a web application as an example here are ways stress might be introduced:
+
+- double the baseline number for concurrent users/HTTP connections
+- randomly shut down and restart ports on the network switches/routers that connect the servers (via SNMP commands for example)
+- take the database offline, then restart it
+- rebuild a RAID array while the system is running
+- run processes that consume resources (CPU, memory, disk, network) on the Web and database servers
+- observe how the system reacts to failure and recovers
+  - Does it save its state?
+  - Does the application hang and freeze or does it fail gracefully?
+  - On restart, is it able to recover from the last good state?
+  - Does the system output meaningful error messages to the user and to the logs?
+  - Is the security of the system compromised because of unexpected failures?
+
+## Reliability
+
+A Pattern-Based Software Testing Framework for Exploitability Evaluation of Metadata Corruption Vulnerabilities developed by Deng Fenglei, Wang Jian, Zhang Bin, Feng Chao, Jiang Zhiyuan, Su Yunfei discuss how there is increased attention in software quality assurance and protection. However, today's software still unfortunately fails to be protected from cyberattacks, especially in the presence of insecure organization of heap metadata. The authors aim to explore whether heap metadata could be corrupted and exploited by cyber-attackers, and they propose RELAY, a software testing framework to simulate human exploitation behavior for metadata corruption at the machine level. RELAY also makes use of the fewer resources consumed to solve a layout problem according to the exploit pattern, and generates the final exploit.
+
+A Methodology to Define Learning Objects Granularity developed by BENITTI, Fabiane Barreto Vavassori. The authors first discuss how learning object is one of the main research topics in the e-learning community in recent years and granularity is a key factor for learning object reuse. The authors then present a methodology to define the learning objects granularity in the computing area as well as a case study in software testing. Later, the authors carry out five experiments to evaluate the learning potential from the produced learning objects, as well as to demonstrate the possibility of learning object reuse. Results from the experiment are also presented in the article, which show that learning object promotes the understanding and application of the concepts.
+
+A recent article, Reliability Verification of Software Based on Cloud Service, have a ground breaking effect and it explores how software industry needs a way to measure reliability of each component of the software. In this article, a guarantee-verification method based on cloud service was proposed. The article first discusses how trustworthy each component's are will be defined in terms of component service guarantee-verification. Then an effective component model was defined in the article and based on the proposed model, the process of verifying a component service is illustrated in an application sample.

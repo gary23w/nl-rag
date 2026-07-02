@@ -1,0 +1,908 @@
+# nl-rag distilled facts — domain: exemplars-metrics
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:exemplars-metrics/feature-flags] Here is a list of features that are disabled by default since they are breaking changes or are considered experimental.
+[src:exemplars-metrics/feature-flags] Their behaviour can change in future releases which will be communicated via the release changelog .
+[src:exemplars-metrics/feature-flags] You can enable them using the `--enable-feature` flag with a comma separated list of features.
+[src:exemplars-metrics/feature-flags] They may be enabled by default in future versions.
+[src:exemplars-metrics/feature-flags] OpenMetrics introduces the ability for scrape targets to add exemplars to certain metrics.
+[src:exemplars-metrics/feature-flags] Exemplars are references to data outside of the MetricSet.
+[src:exemplars-metrics/feature-flags] A common use case are IDs of program traces.
+[src:exemplars-metrics/feature-flags] Exemplar storage is implemented as a fixed size circular buffer that stores exemplars in memory for all series.
+[src:exemplars-metrics/feature-flags] Enabling this feature will enable the storage of exemplars scraped by Prometheus.
+[src:exemplars-metrics/feature-flags] The config file block storage/exemplars can be used to control the size of circular buffer by # of exemplars.
+[src:exemplars-metrics/feature-flags] An exemplar with just a `trace_id=<jaeger-trace-id>` uses roughly 100 bytes of memory via the in-memory exemplar storage.
+[src:exemplars-metrics/feature-flags] If the exemplar storage is enabled, we will also append the exemplars to WAL for local persistence (for WAL duration).
+[src:exemplars-metrics/feature-flags] This takes a snapshot of the chunks that are in memory along with the series information when shutting down and stores it on disk.
+[src:exemplars-metrics/feature-flags] This will reduce the startup time since the memory state can now be restored with this snapshot and m-mapped chunks, while a WAL replay from disk is only needed for the parts of the WAL that are not part of the snapshot.
+[src:exemplars-metrics/feature-flags] When enabled, passing `stats=all` in a query request returns per-step statistics.
+[src:exemplars-metrics/feature-flags] The Prometheus server exposes two counters for observability: `prometheus_engine_query_samples_total` (samples loaded, full window per step) and `prometheus_engine_query_samples_read_total` (samples read, delta per step for range-vector).
+[src:exemplars-metrics/feature-flags] When disabled in either the engine or the query, per-step statistics are not computed at all.
+[src:exemplars-metrics/feature-flags] Enables PromQL functions that are considered experimental.
+[src:exemplars-metrics/feature-flags] These functions might change their name, syntax, or semantics.
+[src:exemplars-metrics/feature-flags] Start timestamps are injected as 0 valued samples when appropriate.
+[src:exemplars-metrics/feature-flags] From the above, Prometheus recommends `PrometheusProto`.
+[src:exemplars-metrics/feature-flags] This is because OpenMetrics 1.0 Start Timestamp information is shared as a `<metric>_created` metric and parsing those are prone to errors and expensive (thus, adding an overhead).
+[src:exemplars-metrics/feature-flags] You also need to be careful to not pollute your Prometheus with extra `_created` metrics.
+[src:exemplars-metrics/feature-flags] Besides enabling this feature in Prometheus, start timestamps need to be exposed by the application being scraped.
+[src:exemplars-metrics/feature-flags] Enables the storage of start timestamps (ST) per sample, through WAL, TSDB/Agent and Remote-Write 2.0.
+[src:exemplars-metrics/feature-flags] This option allows preserving the exact ST value as it was presented from scrape and receive protocols.
+[src:exemplars-metrics/feature-flags] In the future this feature is meant to be a replacement of `created-timestamp-zero-ingestion` which injects synthetic 0 samples.
+[src:exemplars-metrics/feature-flags] `PrometheusProto` is recommended, due to efficiency of ST passing.
+[src:exemplars-metrics/feature-flags] Enables the use of start timestamps (ST) in PromQL functions such as `rate()`, `irate()`, and `increase()`.
+[src:exemplars-metrics/feature-flags] This feature doesn't currently work with extended range selectors (`promql-extended-range-selectors`).
+[src:exemplars-metrics/feature-flags] Enables the synthesis of start timestamps (ST) for cumulative metrics (Counters, Classic Histograms, Native Histograms) when they are not provided by the source.
+[src:exemplars-metrics/feature-flags] Similar to the official OpenTelemetry metricstarttimeprocessor , it tracks previous values to detect resets and subtracts the initial reference point to synthesize a zero-based timeline from the first sample.
+[src:exemplars-metrics/feature-flags] By default, rule groups execute concurrently, but the rules within a group execute sequentially; this is because rules can use the output of a preceding rule as its input.
+[src:exemplars-metrics/feature-flags] However, if there is no detectable relationship between rules then there is no reason to run them sequentially.
+[src:exemplars-metrics/feature-flags] When the `concurrent-rule-eval` feature flag is enabled, rules without any dependency on other rules within a rule group will be evaluated concurrently.
+[src:exemplars-metrics/feature-flags] This has the potential to improve rule group evaluation latency and resource utilization at the expense of adding more concurrent query load.
+[src:exemplars-metrics/feature-flags] The number of concurrent rule evaluations can be configured with `--rules.max-concurrent-rule-evals`, which is set to `4` by default.
+[src:exemplars-metrics/feature-flags] Fall back to serving the old (Prometheus 2.x) web UI instead of the new UI.
+[src:exemplars-metrics/feature-flags] The new UI that was released as part of Prometheus 3.0 is a complete rewrite and aims to be cleaner, less cluttered, and more modern under the hood.
+[src:exemplars-metrics/feature-flags] However, it is not fully feature complete and battle-tested yet, so some users may still prefer using the old UI.
+[src:exemplars-metrics/feature-flags] When enabled, Prometheus will store metadata in-memory and keep track of metadata changes as WAL records on a per-series basis.
+[src:exemplars-metrics/feature-flags] This must be used if you would like to send metadata using the new remote write 2.0.
+[src:exemplars-metrics/feature-flags] A random offset, up to `10%` of the chunk range, is added to the Head compaction start time.
+[src:exemplars-metrics/feature-flags] This assists Prometheus instances in avoiding simultaneous compactions and reduces the load on shared resources.
+[src:exemplars-metrics/feature-flags] Only auto Head compactions and the operations directly resulting from them are subject to this delay.
+[src:exemplars-metrics/feature-flags] In the event of multiple consecutive Head compactions being possible, only the first compaction experiences this delay.
+[src:exemplars-metrics/feature-flags] Note that during this delay, the Head continues its usual operations, which include serving and appending series.
+[src:exemplars-metrics/feature-flags] Despite the delay in compaction, the blocks produced are time-aligned in the same manner as they would be if the delay was not in place.
+[src:exemplars-metrics/feature-flags] When enabled, Prometheus will change the way in which the `__name__` label is removed from PromQL query results (for functions and expressions for which this is necessary).
+[src:exemplars-metrics/feature-flags] Specifically, it will delay the removal to the last step of the query evaluation, instead of every time an expression or function creating derived metrics is evaluated.
+[src:exemplars-metrics/feature-flags] This allows optionally preserving the `__name__` label via the `label_replace` and `label_join` functions, and helps prevent the "vector cannot contain metrics with the same labelset" error, which can happen when applying a regex-matcher to the `__name__` label.
+[src:exemplars-metrics/feature-flags] Note that evaluating parts of the query separately will still trigger the labelset collision.
+[src:exemplars-metrics/feature-flags] This commonly happens when analyzing intermediate results of a query manually or with a tool like PromLens.
+[src:exemplars-metrics/feature-flags] If a query refers to the already removed `__name__` label, its behavior may change while this feature flag is set.
+[src:exemplars-metrics/feature-flags] (Example: `sum by (__name__) (rate({foo="bar"}[5m]))`, see details on GitHub .) These queries are rare to occur and easy to fix.
+[src:exemplars-metrics/feature-flags] It is possible to craft a query that aggregates by `__name__` and puts samples with and without delayed name removal into the same group.
+[src:exemplars-metrics/feature-flags] In that case, the name is removed from the affected group.
+[src:exemplars-metrics/feature-flags] Note that this case hardly occurs in queries that fulfill a practical purpose.
+[src:exemplars-metrics/feature-flags] When enabled, Prometheus will convert OTLP metrics from delta temporality to their cumulative equivalent, instead of dropping them.
+[src:exemplars-metrics/feature-flags] This cannot be enabled in conjunction with `otlp-native-delta-ingestion`.
+[src:exemplars-metrics/feature-flags] This uses deltatocumulative from the OTel collector, using its default settings.
+[src:exemplars-metrics/feature-flags] Delta conversion keeps in-memory state to aggregate delta changes per-series over time.
+[src:exemplars-metrics/feature-flags] When Prometheus restarts, this state is lost, starting the aggregation from zero again.
+[src:exemplars-metrics/feature-flags] This results in a counter reset in the cumulative series.
+[src:exemplars-metrics/feature-flags] This state is periodically (`max_stale`) cleared of inactive series.
+[src:exemplars-metrics/feature-flags] Enabling this *can* have negative impact on performance, because the in-memory state is mutex guarded.
+[src:exemplars-metrics/feature-flags] Cumulative-only OTLP requests are not affected.
+[src:exemplars-metrics/feature-flags] With this flag, arithmetic expressions can be used in time durations in range queries and offset durations.
+[src:exemplars-metrics/feature-flags] When using offset with duration expressions, you must wrap the expression in parentheses.
+[src:exemplars-metrics/feature-flags] Without parentheses, only the first duration value will be used in the offset calculation.
+[src:exemplars-metrics/feature-flags] `step()` can be used in duration expressions.
+[src:exemplars-metrics/feature-flags] For a **range query**, it resolves to the step width of the range query.
+[src:exemplars-metrics/feature-flags] For an **instant query**, it resolves to `0s`.
+[src:exemplars-metrics/feature-flags] `range()` can be used in duration expressions.
+[src:exemplars-metrics/feature-flags] For a **range query**, it resolves to the full range of the query (end time - start time).
+[src:exemplars-metrics/feature-flags] This is particularly useful in combination with `@end()` to look back over the entire query range, e.g., `max_over_time(metric[range()] @ end())`.
+[src:exemplars-metrics/feature-flags] `min_of(<duration>, <duration>)` and `max_of(<duration>, <duration>)` select between two duration expressions.
+[src:exemplars-metrics/feature-flags] `min_of` returns the smaller of the two, which is useful for capping a duration at a maximum value.
+[src:exemplars-metrics/feature-flags] `max_of` returns the larger of the two, which is useful for enforcing a minimum value.
+[src:exemplars-metrics/feature-flags] For example, `max_of(step(), 5s)` ensures the duration is never shorter than `5s`, while `min_of(range(), 1h)` caps the duration at `1h`.
+[src:exemplars-metrics/feature-flags] When enabled, allows for the native ingestion of delta OTLP metrics, storing the raw sample values without conversion.
+[src:exemplars-metrics/feature-flags] This cannot be enabled in conjunction with `otlp-deltatocumulative`.
+[src:exemplars-metrics/feature-flags] Currently, the StartTimeUnixNano field is ignored, and deltas are given the unknown metric metadata type.
+[src:exemplars-metrics/feature-flags] Delta support is in a very early stage of development and the ingestion and querying process my change over time.
+[src:exemplars-metrics/feature-flags] For the open proposal see prometheus/proposals#48 .
+[src:exemplars-metrics/feature-flags] We encourage users to experiment with deltas and existing PromQL functions; we will collect feedback and likely build features to improve the experience around querying deltas.
+[src:exemplars-metrics/feature-flags] Note that standard PromQL counter functions like `rate()` and `increase()` are designed for cumulative metrics and will produce incorrect results when used with delta metrics.
+[src:exemplars-metrics/feature-flags] These may not work well if the `<range>` is not a multiple of the collection interval of the metric.
+[src:exemplars-metrics/feature-flags] For example, if you do `sum_over_time(delta_metric[1m]) / 1m` range query (with a 1m step), but the collection interval of a metric is 10m, the graph will show a single point every 10 minutes with a high rate value, rather than 10 points with a lower, constant value.
+[src:exemplars-metrics/feature-flags] When enabled, Prometheus will start injecting additional, reserved `__type__` and `__unit__` labels as designed in the PROM-39 proposal .
+[src:exemplars-metrics/feature-flags] Those labels are sourced from the metadata structures of the existing scrape and ingestion formats like OpenMetrics Text, Prometheus Text, Prometheus Proto, Remote Write 2 and OTLP.
+[src:exemplars-metrics/feature-flags] All the user provided labels with `__type__` and `__unit__` will be overridden.
+[src:exemplars-metrics/feature-flags] PromQL layer will handle those labels the same way `__name__` is handled, e.g. dropped on certain operations like `-` or `+` and affected by `promql-delayed-name-removal` feature.
+[src:exemplars-metrics/feature-flags] This feature enables important metadata information to be accessible directly with samples and PromQL layer.
+[src:exemplars-metrics/feature-flags] In future more work is planned that will depend on this e.g. rich PromQL UX that helps when wrong types are used on wrong functions, automatic renames, delta types and more.
+[src:exemplars-metrics/feature-flags] When this feature is enabled and the metadata WAL records exists, in an unlikely situation when type or unit are different across those, the Prometheus outputs intends to prefer the `__type__` and `__unit__` labels values.
+[src:exemplars-metrics/feature-flags] For example on Remote Write 2.0, if the metadata record somehow (e.g. due to bug) says "counter", but `__type__="gauge"` the remote time series will be set to a gauge.
+[src:exemplars-metrics/feature-flags] Experimental and only available on Linux.
+[src:exemplars-metrics/feature-flags] When enabled, it makes chunks writing bypass the page cache.
+[src:exemplars-metrics/feature-flags] Its primary goal is to reduce confusion around page‐cache behavior and to prevent over‑allocation of memory in response to misleading cache growth.
+[src:exemplars-metrics/feature-flags] This is currently implemented using direct I/O.
+[src:exemplars-metrics/feature-flags] This setting enables the new XOR2 chunk encoding for float samples, which provides better disk compression than the default XOR encoding for typical Prometheus workloads.
+[src:exemplars-metrics/feature-flags] This format also allows storing Start Timestamp (ST).
+[src:exemplars-metrics/feature-flags] The encoding can also be controlled at each configuration reload via the `chunk_encoding.floats` field in the `storage.tsdb` section of the configuration file.
+[src:exemplars-metrics/feature-flags] Setting `chunk_encoding.floats: xor` forces standard XOR encoding even when `--enable-feature=xor2-encoding` is set; setting `chunk_encoding.floats: xor2` requires `--enable-feature=xor2-encoding` to be enabled.
+[src:exemplars-metrics/feature-flags] Without `st-storage`, XOR and XOR2 are compatible encodings, so an encoding change via `chunk_encoding.floats` does not cut the current chunk; the new encoding takes effect when the current chunk is next cut for any reason (size, time range, or sample count).
+[src:exemplars-metrics/feature-flags] When `st-storage` is also enabled, XOR and XOR2 are not compatible because XOR chunks do not store start timestamps, so the in-progress chunk is cut on the next append after the encoding changes.
+[src:exemplars-metrics/feature-flags] Note that `--enable-feature=st-storage` does not automatically enable XOR2 encoding.
+[src:exemplars-metrics/feature-flags] However, setting `chunk_encoding.floats: xor` while `st-storage` is active is rejected at config reload, because XOR chunks do not store start timestamps.
+[src:exemplars-metrics/feature-flags] Enables experimental `anchored` and `smoothed` modifiers for PromQL range and instant selectors.
+[src:exemplars-metrics/feature-flags] These modifiers provide more control over how range boundaries are handled in functions like `rate` and `increase`, especially with missing or irregular data.
+[src:exemplars-metrics/feature-flags] Native Histograms are not yet supported by the extended range selectors.
+[src:exemplars-metrics/feature-flags] Uses the most recent sample (within the lookback delta) at the beginning of the range, or alternatively the first sample within the range if there is no sample within the lookback delta.
+[src:exemplars-metrics/feature-flags] The last sample within the range is also used at the end of the range.
+[src:exemplars-metrics/feature-flags] No extrapolation or interpolation is applied, so this is useful to get the direct difference between sample values.
+[src:exemplars-metrics/feature-flags] Anchored range selector work with: `resets`, `changes`, `rate`, `increase`, and `delta`.
+[src:exemplars-metrics/feature-flags] In range selectors, linearly interpolates values at the range boundaries, using the sample values before and after the boundaries for an improved estimation that is robust against irregular scrapes and missing samples.
+[src:exemplars-metrics/feature-flags] However, it requires a sample after the evaluation interval to work properly, see note below.
+[src:exemplars-metrics/feature-flags] For instant selectors, values are linearly interpolated at the evaluation timestamp using the samples immediately before and after that point.
+[src:exemplars-metrics/feature-flags] Smoothed range selectors work with: `rate`, `increase`, and `delta`.
+[src:exemplars-metrics/feature-flags] Enables experimental `fill()`, `fill_left()`, and `fill_right()` modifiers for PromQL binary operators.
+[src:exemplars-metrics/feature-flags] These modifiers allow filling in missing matches on either side of a binary operation with a provided default sample value.
+[src:exemplars-metrics/feature-flags] See the fill modifiers documentation for more details and examples.
+[src:exemplars-metrics/feature-flags] Enables the experimental search API endpoints for discovering metric names, label names, and label values with fuzzy matching and filtering support.
+[src:exemplars-metrics/feature-flags] See the search API documentation for details.
+[src:exemplars-metrics/feature-flags] The `--web.search.max-limit` flag (default `10000`) bounds the `limit` query parameter accepted by the search endpoints.
+[src:exemplars-metrics/feature-flags] Requests with a higher `limit` are rejected with HTTP 400.
+[src:exemplars-metrics/feature-flags] The default response limit (100) is silently clamped to this maximum, so an operator setting a smaller cap does not break no-`limit` requests.
+[src:exemplars-metrics/feature-flags] Setting the flag to `0` disables the cap entirely; this is **not recommended** for endpoints exposed beyond a trusted network because a single client can then request the entire index in one response.
+[src:exemplars-metrics/histogram] A **histogram** is a visual representation of the distribution of quantitative data.
+[src:exemplars-metrics/histogram] To construct a histogram, the first step is to "bin" (or "bucket") the range of values— divide the entire range of values into a series of intervals—and then count how many values fall into each interval.
+[src:exemplars-metrics/histogram] The bins are usually specified as consecutive, non-overlapping intervals of a variable.
+[src:exemplars-metrics/histogram] The bins (intervals) are adjacent and are typically (but not required to be) of equal size.
+[src:exemplars-metrics/histogram] Histograms give a rough sense of the density of the underlying distribution of the data, and often for density estimation: estimating the probability density function of the underlying variable.
+[src:exemplars-metrics/histogram] The total area of a histogram used for probability density is always normalized to 1.
+[src:exemplars-metrics/histogram] If the length of the intervals on the *x*-axis are all 1, then a histogram is identical to a relative frequency plot.
+[src:exemplars-metrics/histogram] Histograms are sometimes confused with bar charts.
+[src:exemplars-metrics/histogram] In a histogram, each bin is for a different range of values, so altogether the histogram illustrates the distribution of values.
+[src:exemplars-metrics/histogram] But in a bar chart, each bar is for a different category of observations (e.g., each bar might be for a different population), so altogether the bar chart can be used to compare different categories.
+[src:exemplars-metrics/histogram] Some authors recommend that bar charts always have gaps between the bars to clarify that they are not histograms.
+[src:exemplars-metrics/histogram] The term *histogram* was first introduced by Karl Pearson, the founder of mathematical statistics, in lectures delivered in 1892 at University College London.
+[src:exemplars-metrics/histogram] Pearson's term is sometimes incorrectly said to combine the Greek root γραμμα (*gramma*; 'figure' or 'drawing') with the root ἱστορία (historia; 'inquiry or 'history').
+[src:exemplars-metrics/histogram] Alternatively the root ἱστίον (*histion*) is also proposed, meaning 'web' or 'tissue' (as in histology, the study of biological tissue).
+[src:exemplars-metrics/histogram] Both of these etymologies are incorrect, and in fact Pearson, who knew Ancient Greek well, derived the term from a different if homophonous Greek root, ἱστός ('something set upright' or 'mast'), referring to the vertical bars in the graph.
+[src:exemplars-metrics/histogram] Pearson's new term was embedded in a series of other analogous neologisms, such as *stigmogram* and *radiogram*.
+[src:exemplars-metrics/histogram] Pearson himself noted in 1895 that, although the term *histogram* was new, the type of graph it designates was "a common form of graphical representation".
+[src:exemplars-metrics/histogram] In fact the technique of using a bar graph to represent statistical measurements was devised by the Scottish economist, William Playfair, in his *Commercial and political atlas* (1786).
+[src:exemplars-metrics/histogram] The words used to describe the patterns in a histogram are: "symmetric", "skewed left" or "right", "unimodal", "bimodal" or "multimodal".
+[src:exemplars-metrics/histogram] It is a good idea to plot the data using several different bin widths to learn more about it.
+[src:exemplars-metrics/histogram] Here is an example on tips given in a restaurant.
+[src:exemplars-metrics/histogram] Census Bureau found that there were 124 million people who work outside of their homes.
+[src:exemplars-metrics/histogram] Using their data on the time occupied by travel to work, the table below shows the absolute number of people who responded with travel times "at least 30 but less than 35 minutes" is higher than the numbers for the categories above and below it.
+[src:exemplars-metrics/histogram] This is likely due to people rounding their reported journey time.
+[src:exemplars-metrics/histogram] The problem of reporting values as somewhat arbitrarily rounded numbers is a common phenomenon when collecting data from people.
+[src:exemplars-metrics/histogram] This histogram shows the number of cases per unit interval as the height of each block, so that the area of each block is equal to the number of people in the survey who fall into its category.
+[src:exemplars-metrics/histogram] The area under the curve represents the total number of cases (124 million).
+[src:exemplars-metrics/histogram] This type of histogram shows absolute numbers, with Q in thousands.
+[src:exemplars-metrics/histogram] This histogram differs from the first only in the vertical scale.
+[src:exemplars-metrics/histogram] The area of each block is the fraction of the total that each category represents, and the total area of all the bars is equal to 1 (the fraction meaning "all").
+[src:exemplars-metrics/histogram] The curve displayed is a simple density estimate.
+[src:exemplars-metrics/histogram] This version shows proportions, and is also known as a unit area histogram.
+[src:exemplars-metrics/histogram] In other words, a histogram represents a frequency distribution by means of rectangles whose widths represent class intervals and whose areas are proportional to the corresponding frequencies: the height of each is the average frequency density for the interval.
+[src:exemplars-metrics/histogram] The intervals are placed together in order to show that the data represented by the histogram, while exclusive, is also contiguous.
+[src:exemplars-metrics/histogram] (E.g., in a histogram it is possible to have two connecting intervals of 10.5–20.5 and 20.5–33.5, but not two connecting intervals of 10.5–20.5 and 22.5–32.5.
+[src:exemplars-metrics/histogram] The data used to construct a histogram are generated via a function *m**i* that counts the number of observations that fall into each of the disjoint categories (known as *bins*).
+[src:exemplars-metrics/histogram] A histogram can be thought of as a simplistic kernel density estimation, which uses a kernel to smooth frequencies over the bins.
+[src:exemplars-metrics/histogram] This yields a smoother probability density function, which will in general more accurately reflect distribution of the underlying variable.
+[src:exemplars-metrics/histogram] The density estimate could be plotted as an alternative to the histogram, and is usually drawn as a curve rather than a set of boxes.
+[src:exemplars-metrics/histogram] Histograms are nevertheless preferred in applications, when their statistical properties need to be modeled.
+[src:exemplars-metrics/histogram] The correlated variation of a kernel density estimate is very difficult to describe mathematically, while it is simple for a histogram where each bin varies independently.
+[src:exemplars-metrics/histogram] An alternative to kernel density estimation is the average shifted histogram, which is fast to compute and gives a smooth curve estimate of the density without using kernels.
+[src:exemplars-metrics/histogram] A cumulative histogram: a mapping that counts the cumulative number of observations in all of the bins up to the specified bin.
+[src:exemplars-metrics/histogram] There is no "best" number of bins, and different bin sizes can reveal different features of the data.
+[src:exemplars-metrics/histogram] Grouping data is at least as old as Graunt's work in the 17th century, but no systematic guidelines were given until Sturges's work in 1926.
+[src:exemplars-metrics/histogram] Using wider bins where the density of the underlying data points is low reduces noise due to sampling randomness; using narrower bins where the density is high (so the signal drowns the noise) gives greater precision to the density estimation.
+[src:exemplars-metrics/histogram] Thus varying the bin-width within a histogram can be beneficial.
+[src:exemplars-metrics/histogram] Nonetheless, equal-width bins are widely used.
+[src:exemplars-metrics/histogram] Some theoreticians have attempted to determine an optimal number of bins, but these methods generally make strong assumptions about the shape of the distribution.
+[src:exemplars-metrics/histogram] Depending on the actual data distribution and the goals of the analysis, different bin widths may be appropriate, so experimentation is usually needed to determine an appropriate width.
+[src:exemplars-metrics/histogram] There are, however, various useful guidelines and rules of thumb.
+[src:exemplars-metrics/histogram] The braces indicate the ceiling function.
+[src:exemplars-metrics/histogram] which takes the square root of the number of data points in the sample and rounds to the next integer.
+[src:exemplars-metrics/histogram] This rule is suggested by a number of elementary statistics textbooks and widely implemented in many software packages.
+[src:exemplars-metrics/histogram] Sturges's rule is derived from a binomial distribution and implicitly assumes an approximately normal distribution.
+[src:exemplars-metrics/histogram] Sturges's formula implicitly bases bin sizes on the range of the data, and can perform poorly if *n* < 30, because the number of bins will be small—less than seven—and unlikely to show trends in the data well.
+[src:exemplars-metrics/histogram] On the other extreme, Sturges's formula may overestimate bin width for very large datasets, resulting in oversmoothed histograms.
+[src:exemplars-metrics/histogram] It may also perform poorly if the data are not normally distributed.
+[src:exemplars-metrics/histogram] When compared to Scott's rule and the Terrell-Scott rule, two other widely accepted formulas for histogram bins, the output of Sturges's formula is closest when *n* ≈ 100.
+[src:exemplars-metrics/histogram] The Rice rule is presented as a simple alternative to Sturges's rule.
+[src:exemplars-metrics/histogram] Doane's formula is a modification of Sturges's formula which attempts to improve its performance with non-normal data.
+[src:exemplars-metrics/histogram] where ${\hat {\sigma }}$ is the sample standard deviation.
+[src:exemplars-metrics/histogram] Scott's normal reference rule is optimal for random samples of normally distributed data, in the sense that it minimizes the integrated mean squared error of the density estimate.
+[src:exemplars-metrics/histogram] This is the default rule used in Microsoft Excel.
+[src:exemplars-metrics/histogram] The Terrell–Scott rule is not a normal reference rule.
+[src:exemplars-metrics/histogram] It gives the minimum number of bins required for an asymptotically optimal histogram, where optimality is measured by the integrated mean squared error.
+[src:exemplars-metrics/histogram] The bound is derived by finding the 'smoothest' possible density, which turns out to be ${\frac {3}{4}}(1-x^{2})$ .
+[src:exemplars-metrics/histogram] Any other density will require more bins, hence the above estimate is also referred to as the 'oversmoothed' rule.
+[src:exemplars-metrics/histogram] The similarity of the formulas and the fact that Terrell and Scott were at Rice University when the proposed it suggests that this is also the origin of the Rice rule.
+[src:exemplars-metrics/histogram] which is based on the interquartile range, denoted by IQR.
+[src:exemplars-metrics/histogram] It replaces 3.5σ of Scott's rule with 2 IQR, which is less sensitive than the standard deviation to outliers in data.
+[src:exemplars-metrics/histogram] Here, $N_{k}$ is the number of datapoints in the *k*th bin, and choosing the value of *h* that minimizes *J* will minimize integrated mean squared error.
+[src:exemplars-metrics/histogram] Rather than choosing evenly spaced bins, for some applications it is preferable to vary the bin width.
+[src:exemplars-metrics/histogram] A common case is to choose *equiprobable bins*, where the number of samples in each bin is expected to be approximately equal.
+[src:exemplars-metrics/histogram] The bins may be chosen according to some known distribution or may be chosen based on the data so that each bin has $\approx n/k$ samples.
+[src:exemplars-metrics/histogram] When plotting the histogram, the *frequency density* is used for the dependent axis.
+[src:exemplars-metrics/histogram] While all bins have approximately equal area, the heights of the histogram approximate the density distribution.
+[src:exemplars-metrics/histogram] This choice of bins is motivated by maximizing the power of a Pearson chi-squared test testing whether the bins do contain equal numbers of samples.
+[src:exemplars-metrics/histogram] Where $\Phi ^{-1}$ is the probit function.
+[src:exemplars-metrics/histogram] Following this rule for $\alpha =0.05$ would give between $1.88n^{2/5}$ and $3.77n^{2/5}$ ; the coefficient of 2 is chosen as an easy-to-remember value from this broad optimum.
+[src:exemplars-metrics/histogram] A good reason why the number of bins should be proportional to ${\sqrt[{3}]{n}}$ is the following: suppose that the data are obtained as n independent realizations of a bounded probability distribution with smooth density.
+[src:exemplars-metrics/histogram] Then the histogram remains equally "rugged" as n tends to infinity.
+[src:exemplars-metrics/histogram] If s is the "width" of the distribution (e. g., the standard deviation or the inter-quartile range), then the number of units in a bin (the frequency) is of order $nh/s$ and the *relative* standard error is of order ${\sqrt {s/(nh)}}$ .
+[src:exemplars-metrics/histogram] Compared to the next bin, the relative change of the frequency is of order $h/s$ provided that the derivative of the density is non-zero.
+[src:exemplars-metrics/histogram] These two are of the same order if h is of order $s/{\sqrt[{3}]{n}}$ , so that k is of order ${\sqrt[{3}]{n}}$ .
+[src:exemplars-metrics/histogram] This simple cubic root choice can also be applied to bins with non-constant widths.
+[src:exemplars-metrics/latency-engineering] Latency is physically a consequence of the limited velocity at which any physical interaction can propagate.
+[src:exemplars-metrics/latency-engineering] The magnitude of this velocity is always less than or equal to the speed of light.
+[src:exemplars-metrics/latency-engineering] Therefore, every physical system with any physical separation (distance) between cause and effect will experience some sort of latency, regardless of the nature of the stimulation to which it has been exposed.
+[src:exemplars-metrics/latency-engineering] The precise definition of latency depends on the system being observed or the nature of the simulation.
+[src:exemplars-metrics/latency-engineering] In communications, the lower limit of latency is determined by the medium being used to transfer information.
+[src:exemplars-metrics/latency-engineering] In reliable two-way communication systems, latency limits the maximum rate at which information can be transmitted, as there is often a limit on the amount of information that is in-flight at any given moment.
+[src:exemplars-metrics/latency-engineering] Perceptible latency has a strong effect on user satisfaction and usability in the field of human–machine interaction.
+[src:exemplars-metrics/latency-engineering] Online games are sensitive to latency (lag), since fast response times to new events occurring during a game session are rewarded while slow response times may carry penalties.
+[src:exemplars-metrics/latency-engineering] Due to a delay in transmission of game events, a player with a high-latency internet connection may show slow responses in spite of appropriate reaction time.
+[src:exemplars-metrics/latency-engineering] This gives players with low-latency connections a technical advantage.
+[src:exemplars-metrics/latency-engineering] Trading using computers has developed to the point where millisecond improvements in network speeds offer a competitive advantage for financial institutions.
+[src:exemplars-metrics/latency-engineering] However, in a non-trivial network, a typical packet will be forwarded over multiple links and gateways, each of which will not begin to forward the packet until it has been completely received.
+[src:exemplars-metrics/latency-engineering] In such a network, the minimal latency is the sum of the transmission delay of each link, plus the forwarding latency of each gateway.
+[src:exemplars-metrics/latency-engineering] In practice, minimal latency also includes queuing and processing delays.
+[src:exemplars-metrics/latency-engineering] Queuing delay occurs when a gateway receives multiple packets from different sources heading toward the same destination.
+[src:exemplars-metrics/latency-engineering] Since typically only one packet can be transmitted at a time, some of the packets must queue for transmission, incurring additional delay.
+[src:exemplars-metrics/latency-engineering] Processing delays are incurred while a gateway determines what to do with a newly received packet.
+[src:exemplars-metrics/latency-engineering] Bufferbloat can also cause increased latency that is an order of magnitude or more.
+[src:exemplars-metrics/latency-engineering] The combination of propagation, serialization, queuing, and processing delays often produces a complex and variable network latency profile.
+[src:exemplars-metrics/latency-engineering] Latency limits total throughput in reliable two-way communication systems as described by the bandwidth-delay product.
+[src:exemplars-metrics/latency-engineering] Latency in optical fiber is largely a function of the speed of light.
+[src:exemplars-metrics/latency-engineering] This would equate to a latency of 3.33 μs for every kilometer of path length.
+[src:exemplars-metrics/latency-engineering] The index of refraction of most fiber optic cables is about 1.5, meaning that light travels about 1.5 times as fast in a vacuum as it does in the cable.
+[src:exemplars-metrics/latency-engineering] This works out to about 5.0 μs of latency for every kilometer.
+[src:exemplars-metrics/latency-engineering] In shorter metro networks, higher latency can be experienced due to extra distance in building risers and cross-connects.
+[src:exemplars-metrics/latency-engineering] To calculate the latency of a connection, one has to know the distance traveled by the fiber, which is rarely a straight line, since it has to traverse geographic contours and obstacles, such as roads and railway tracks, as well as other rights-of-way.
+[src:exemplars-metrics/latency-engineering] Due to imperfections in the fiber, light degrades as it is transmitted through it.
+[src:exemplars-metrics/latency-engineering] For distances of greater than 100 kilometers, amplifiers or regenerators are deployed.
+[src:exemplars-metrics/latency-engineering] Latency introduced by these components needs to be taken into account.
+[src:exemplars-metrics/latency-engineering] Low Earth orbit is sometimes used to cut this delay, at the expense of more complicated satellite tracking on the ground and requiring more satellites in the satellite constellation to ensure continuous coverage.
+[src:exemplars-metrics/latency-engineering] Audio latency is the delay between when an audio signal enters and when it emerges from a system.
+[src:exemplars-metrics/latency-engineering] Potential contributors to latency in an audio system include analog-to-digital conversion, buffering, digital signal processing, transmission time, digital-to-analog conversion and the speed of sound in air.
+[src:exemplars-metrics/latency-engineering] Video latency refers to the degree of delay between the time a transfer of a video stream is requested and the actual time that transfer begins.
+[src:exemplars-metrics/latency-engineering] Networks that exhibit relatively small delays are known as low-latency networks, while their counterparts are known as high-latency networks.
+[src:exemplars-metrics/latency-engineering] Any individual workflow within a system of workflows can be subject to some type of operational latency.
+[src:exemplars-metrics/latency-engineering] It may even be the case that an individual system may have more than one type of latency, depending on the type of participant or goal-seeking behavior.
+[src:exemplars-metrics/latency-engineering] This is best illustrated by the following two examples involving air travel.
+[src:exemplars-metrics/latency-engineering] From the point of view of a passenger, latency can be described as follows.
+[src:exemplars-metrics/latency-engineering] Suppose John Doe flies from London to New York.
+[src:exemplars-metrics/latency-engineering] The latency of his trip is the time it takes him to go from his house in England to the hotel he is staying at in New York.
+[src:exemplars-metrics/latency-engineering] This is independent of the throughput of the London-New York air link, whether there were 100 passengers a day making the trip or 10000, the latency of the trip would remain the same.
+[src:exemplars-metrics/latency-engineering] From the point of view of flight operations personnel, latency can be entirely different.
+[src:exemplars-metrics/latency-engineering] Consider the staff at the London and New York airports.
+[src:exemplars-metrics/latency-engineering] Only a limited number of planes are able to make the transatlantic journey, so when one lands, they must prepare it for the return trip as quickly as possible.
+[src:exemplars-metrics/latency-engineering] However, cleaning, refueling and loading the cargo can be done at the same time.
+[src:exemplars-metrics/latency-engineering] Passengers can only be loaded after cleaning is complete.
+[src:exemplars-metrics/latency-engineering] The people involved in the turnaround are interested only in the time it takes for their individual tasks.
+[src:exemplars-metrics/latency-engineering] When all of the tasks are done at the same time, however, it is possible to reduce the latency to the length of the longest task.
+[src:exemplars-metrics/latency-engineering] If some steps have prerequisites, it becomes more difficult to perform all steps in parallel.
+[src:exemplars-metrics/latency-engineering] In the example above, the requirement to clean the plane before loading passengers results in a minimum latency longer than any single task.
+[src:exemplars-metrics/latency-engineering] Any mechanical process encounters limitations modeled by Newtonian physics.
+[src:exemplars-metrics/latency-engineering] The behavior of disk drives provides an example of mechanical latency.
+[src:exemplars-metrics/latency-engineering] Here, it is the time seek time for the actuator arm to be positioned above the appropriate track and then rotational latency for the data encoded on a platter to rotate from its current position to a position under the disk read-and-write head.
+[src:exemplars-metrics/latency-engineering] Computers run instructions in the context of a process.
+[src:exemplars-metrics/latency-engineering] In the context of computer multitasking, the execution of the process can be postponed if other processes are also executing.
+[src:exemplars-metrics/latency-engineering] In addition, the operating system can schedule when to perform the action that the process is commanding.
+[src:exemplars-metrics/latency-engineering] For example, suppose a process commands that a computer card's voltage output be set high-low-high-low and so on at a rate of 1000 Hz.
+[src:exemplars-metrics/latency-engineering] The operating system schedules the process for each transition (high-low or low-high) based on a hardware clock, such as the High Precision Event Timer.
+[src:exemplars-metrics/latency-engineering] The latency is the delay between the events generated by the hardware clock and the actual transitions of voltage from high to low or low to high.
+[src:exemplars-metrics/latency-engineering] Many desktop operating systems have performance limitations that create additional latency.
+[src:exemplars-metrics/latency-engineering] The problem may be mitigated with real-time extensions and patches such as PREEMPT RT.
+[src:exemplars-metrics/latency-engineering] On embedded systems, the real-time execution of instructions is often supported by a real-time operating system.
+[src:exemplars-metrics/latency-engineering] Note that in software systems, benchmarking against *average* and *median* latency can be misleading because a few outliers can distort them.
+[src:exemplars-metrics/latency-engineering] Instead, software architects and software developers should use "99th percentile".
+[src:exemplars-metrics/latency-engineering] In simulation applications, latency refers to the time delay, often measured in milliseconds, between initial input and output clearly discernible to the simulator trainee or simulator subject.
+[src:exemplars-metrics/latency-engineering] Latency is sometimes also called *transport delay*.
+[src:exemplars-metrics/latency-engineering] Some authorities distinguish between latency and transport delay by using the term *latency* in the sense of the extra time delay of a system over and above the reaction time of the vehicle being simulated, but this requires detailed knowledge of the vehicle dynamics and can be controversial.
+[src:exemplars-metrics/latency-engineering] In simulators with both visual and motion systems, it is particularly important that the latency of the motion system not be greater than of the visual system, or symptoms of simulator sickness may result.
+[src:exemplars-metrics/latency-engineering] This is because, in the real world, motion cues are those of acceleration and are quickly transmitted to the brain, typically in less than 50 milliseconds; this is followed some milliseconds later by a perception of change in the visual scene.
+[src:exemplars-metrics/latency-engineering] The visual scene change is essentially one of change of perspective or displacement of objects, such as the horizon, which takes some time to build up to discernible amounts after the initial acceleration that caused the displacement.
+[src:exemplars-metrics/latency-engineering] A simulator should, therefore, reflect the real-world situation by ensuring that the motion latency is equal to or less than that of the visual system and not the other way round.
+[src:exemplars-metrics/metrics-data-model-p01] The OpenTelemetry data model for metrics consists of a protocol specification and semantic conventions for delivery of pre-aggregated metric timeseries data.
+[src:exemplars-metrics/metrics-data-model-p01] The data model is designed for importing data from existing systems and exporting data into existing systems, as well as to support internal OpenTelemetry use-cases for generating Metrics from streams of Spans or Logs.
+[src:exemplars-metrics/metrics-data-model-p01] Popular existing metrics data formats can be unambiguously translated into the OpenTelemetry data model for metrics, without loss of semantics or fidelity.
+[src:exemplars-metrics/metrics-data-model-p01] Translation from the Prometheus and Statsd exposition formats is explicitly specified.
+[src:exemplars-metrics/metrics-data-model-p01] The data model specifies a number of semantics-preserving data transformations for use on the collection path, supporting flexible system configuration.
+[src:exemplars-metrics/metrics-data-model-p01] The model supports reliability and statelessness controls, through the choice of cumulative and delta transport.
+[src:exemplars-metrics/metrics-data-model-p01] The model supports cost controls, through spatial and temporal reaggregation.
+[src:exemplars-metrics/metrics-data-model-p01] The OpenTelemetry Collector is designed to accept metrics data in a number of formats, transport data using the OpenTelemetry data model, and then export into existing systems.
+[src:exemplars-metrics/metrics-data-model-p01] The data model can be unambiguously translated into the Prometheus Remote Write protocol without loss of features or semantics, through well-defined translations of the data, including the ability to automatically remove attributes and lower histogram resolution.
+[src:exemplars-metrics/metrics-data-model-p01] The OTLP Metrics protocol is designed as a standard for transporting metric data.
+[src:exemplars-metrics/metrics-data-model-p01] The relationship between models is displayed in the diagram below.
+[src:exemplars-metrics/metrics-data-model-p01] This protocol was designed to meet the requirements of the OpenCensus Metrics system, particularly to meet its concept of Metrics Views.
+[src:exemplars-metrics/metrics-data-model-p01] Views are accomplished in the OpenTelemetry Metrics data model through support for data transformation on the collection path.
+[src:exemplars-metrics/metrics-data-model-p01] OpenTelemetry has identified three kinds of semantics-preserving Metric data transformation that are useful in building metrics collection systems as ways of controlling cost, reliability, and resource allocation.
+[src:exemplars-metrics/metrics-data-model-p01] The OpenTelemetry Metrics data model is designed to support these transformations both inside an SDK as the data originates, or as a reprocessing stage inside the OpenTelemetry collector.
+[src:exemplars-metrics/metrics-data-model-p01] Spatial reaggregation: Metrics that are produced with unwanted attributes can be re-aggregated into metrics having fewer attributes.
+[src:exemplars-metrics/metrics-data-model-p01] Delta-to-Cumulative: Metrics that are input and output with Delta temporality unburden the client from keeping high-cardinality state.
+[src:exemplars-metrics/metrics-data-model-p01] The use of deltas allows downstream services to bear the cost of conversion into cumulative timeseries, or to forego the cost and calculate rates directly.
+[src:exemplars-metrics/metrics-data-model-p01] OpenTelemetry Metrics data streams are designed so that these transformations can be applied automatically to streams of the same type, subject to conditions outlined below.
+[src:exemplars-metrics/metrics-data-model-p01] Every OTLP data stream has an intrinsic decomposable aggregate function making it semantically well-defined to merge data points across both temporal and spatial attributes.
+[src:exemplars-metrics/metrics-data-model-p01] Every OTLP data point also has two meaningful timestamps which, combined with intrinsic aggregation, make it possible to carry out the standard metric data transformations for each of the model’s basic points while ensuring that the result carries the intended meaning.
+[src:exemplars-metrics/metrics-data-model-p01] As in OpenCensus Metrics, metrics data can be transformed into one or more Views, just by selecting the aggregation interval and the desired attributes.
+[src:exemplars-metrics/metrics-data-model-p01] One stream of OTLP data can be transformed into multiple timeseries outputs by configuring different Views, and the required Views processing may be applied inside the SDK or by an external collector.
+[src:exemplars-metrics/metrics-data-model-p01] The metric data model is designed around a series of “core” use cases.
+[src:exemplars-metrics/metrics-data-model-p01] While this list is not exhaustive, it is meant to be representative of the scope and breadth of OTel metrics usage.
+[src:exemplars-metrics/metrics-data-model-p01] OTel SDK exports both 10 seconds resolution (e.g.
+[src:exemplars-metrics/metrics-data-model-p01] CPU, request latency) and 15 minutes resolution (e.g. room temperature) to a single OTel Collector.
+[src:exemplars-metrics/metrics-data-model-p01] The collector exports streams upstream with or without aggregation.
+[src:exemplars-metrics/metrics-data-model-p01] A number of OTel SDKs running locally each exports 10 second resolution, each reports to a single (local) OTel collector.
+[src:exemplars-metrics/metrics-data-model-p01] These are considered the “core” use-cases used to analyze trade-offs and design decisions within the metrics data model.
+[src:exemplars-metrics/metrics-data-model-p01] The metrics data model is NOT designed to be a perfect Rosetta Stone of metrics.
+[src:exemplars-metrics/metrics-data-model-p01] The event model is where recording of data happens.
+[src:exemplars-metrics/metrics-data-model-p01] Its foundation is made of Instruments, which are used to record data observations via events.
+[src:exemplars-metrics/metrics-data-model-p01] These raw events are then transformed in some fashion before being sent to some other system.
+[src:exemplars-metrics/metrics-data-model-p01] OpenTelemetry metrics are designed such that the same instrument and events can be used in different ways to generate metric streams.
+[src:exemplars-metrics/metrics-data-model-p01] Even though observation events could be reported directly to a backend, in practice this would be infeasible due to the sheer volume of data used in observability systems, and the limited amount of network/CPU resources available for telemetry collection purposes.
+[src:exemplars-metrics/metrics-data-model-p01] The best example of this is the Histogram metric where raw events are recorded in a compressed format rather than individual timeseries.
+[src:exemplars-metrics/metrics-data-model-p01] The above picture shows how one instrument can transform events into more than one type of metric stream.
+[src:exemplars-metrics/metrics-data-model-p01] There are caveats and nuances for when and how to do this.
+[src:exemplars-metrics/metrics-data-model-p01] Instrument and metric configuration are outlined in the metrics API specification.
+[src:exemplars-metrics/metrics-data-model-p01] While OpenTelemetry provides flexibility in how instruments can be transformed into metric streams, the instruments are defined such that a reasonable default mapping can be provided.
+[src:exemplars-metrics/metrics-data-model-p01] The exact OpenTelemetry instruments are detailed in the API specification.
+[src:exemplars-metrics/metrics-data-model-p01] In the Event model, the primary data are (instrument, number) points, originally observed in real time or on demand (for the synchronous and asynchronous cases, respectively).
+[src:exemplars-metrics/metrics-data-model-p01] This model may be viewed as an idealization of Prometheus Remote Write.
+[src:exemplars-metrics/metrics-data-model-p01] Like that protocol, we are additionally concerned with knowing when a point value is defined, as compared with being implicitly or explicitly absent.
+[src:exemplars-metrics/metrics-data-model-p01] A metric stream of delta data points defines time-interval values, not point-in-time values.
+[src:exemplars-metrics/metrics-data-model-p01] To precisely define presence and absence of data requires further development of the correspondence between these models.
+[src:exemplars-metrics/metrics-data-model-p01] Note: Prometheus is not the only possible timeseries model for OpenTelemetry to map into, but is used as a reference throughout this document.
+[src:exemplars-metrics/metrics-data-model-p01] The OpenTelemetry protocol (OTLP) data model is composed of Metric data streams.
+[src:exemplars-metrics/metrics-data-model-p01] These streams are in turn composed of metric data points.
+[src:exemplars-metrics/metrics-data-model-p01] Metric data streams can be converted directly into Timeseries.
+[src:exemplars-metrics/metrics-data-model-p01] The data point type, `unit`, and intrinsic properties are considered identifying, whereas the `description` field is explicitly not identifying in nature.
+[src:exemplars-metrics/metrics-data-model-p01] The `Metric` object contains individual streams, identified by the set of `Attributes`.
+[src:exemplars-metrics/metrics-data-model-p01] Within the individual streams, points are identified by one or two timestamps, details vary by data point type.
+[src:exemplars-metrics/metrics-data-model-p01] Within certain data point types (e.g., `Sum` and `Gauge`) there is variation permitted in the numeric point value; in this case, the associated variation (i.e., floating-point vs. integer) is not considered identifying.
+[src:exemplars-metrics/metrics-data-model-p01] Producers SHOULD prevent the presence of multiple `Metric` identities for a given `name` with the same `Resource` and `Scope` attributes.
+[src:exemplars-metrics/metrics-data-model-p01] Producers are expected to aggregate data for identical `Metric` objects as a basic feature, so the appearance of multiple `Metric`, considered a “semantic error”, generally requires duplicate conflicting instrument registration to have occurred somewhere.
+[src:exemplars-metrics/metrics-data-model-p01] If the potential conflict involves similar but disagreeing units (e.g., “ms” and “s”), an implementation MAY convert units to avoid semantic errors; otherwise an implementation SHOULD inform the user of a semantic error and pass through conflicting data.
+[src:exemplars-metrics/metrics-data-model-p01] If the potential conflict involves an `AggregationTemporality` property, an implementation MAY convert temporality using a Cumulative-to-Delta or a Delta-to-Cumulative transformation; otherwise, an implementation SHOULD inform the user of a semantic error and pass through conflicting data.
+[src:exemplars-metrics/metrics-data-model-p01] Generally, for potential conflicts involving an identifying property (i.e., all properties except `description`), the producer SHOULD inform the user of a semantic error and pass through conflicting data.
+[src:exemplars-metrics/metrics-data-model-p01] When semantic errors such as these occur inside an implementation of the OpenTelemetry API, there is an presumption of a fixed `Resource` value.
+[src:exemplars-metrics/metrics-data-model-p01] Consequently, SDKs implementing the OpenTelemetry API have complete information about the origin of duplicate instrument registration conflicts and are sometimes able to help users avoid semantic errors.
+[src:exemplars-metrics/metrics-data-model-p01] See the SDK specification for specific details.
+[src:exemplars-metrics/metrics-data-model-p01] Consumers MAY reject OpenTelemetry Metrics data containing semantic errors (i.e., more than one `Metric` identity for a given `name`, `Resource`, and `Scope`).
+[src:exemplars-metrics/metrics-data-model-p01] OpenTelemetry does not specify any means for conveying such an outcome to the end user, although this subject deserves attention.
+[src:exemplars-metrics/metrics-data-model-p01] A metric stream can use one of these basic point kinds, all of which satisfy the requirements above, meaning they define a decomposable aggregate function (also known as a “natural merge” function) for points of the same kind.
+[src:exemplars-metrics/metrics-data-model-p01] Comparing the OTLP Metric Data Stream and Timeseries data models, OTLP does not map 1:1 from its point types into timeseries points.
+[src:exemplars-metrics/metrics-data-model-p01] In OTLP, a Sum point can represent a monotonic count or a non-monotonic count.
+[src:exemplars-metrics/metrics-data-model-p01] This means an OTLP Sum is either translated into a Timeseries Counter, when the sum is monotonic, or a Gauge when the sum is not monotonic.
+[src:exemplars-metrics/metrics-data-model-p01] Specifically, in OpenTelemetry Sums always have an aggregate function where you can combine via addition.
+[src:exemplars-metrics/metrics-data-model-p01] So, for non-monotonic sums in OpenTelemetry we can aggregate (naturally) via addition.
+[src:exemplars-metrics/metrics-data-model-p01] In the timeseries model, you cannot assume that any particular Gauge is a sum, so the default aggregation would not be addition.
+[src:exemplars-metrics/metrics-data-model-p01] In addition to the core point kinds used in OTLP, there are also data types designed for compatibility with existing metric formats.
+[src:exemplars-metrics/metrics-data-model-p01] Metric points are the basic building blocks of metrics.
+[src:exemplars-metrics/metrics-data-model-p01] Depending on the point kind, a metric point may have different fields.
+[src:exemplars-metrics/metrics-data-model-p01] The following sections describe the fields for each point kind and how these points form metrics.
+[src:exemplars-metrics/metrics-data-model-p01] The aggregation temporality is used to understand the context in which the sum was calculated.
+[src:exemplars-metrics/metrics-data-model-p01] When the aggregation temporality is “delta”, we expect to have no overlap in time windows for metric streams, e.g.
+[src:exemplars-metrics/metrics-data-model-p01] There are various trade-offs between using Delta vs.
+[src:exemplars-metrics/metrics-data-model-p01] OTLP supports both models, and allows APIs, SDKs and users to determine the best trade-off for their use case.
+[src:exemplars-metrics/metrics-data-model-p01] A Gauge in OTLP represents a sampled value at a given time.
+[src:exemplars-metrics/metrics-data-model-p01] In OTLP, a point within a Gauge stream represents the last-sampled event for a given time window.
+[src:exemplars-metrics/metrics-data-model-p01] In this example, we can see an underlying timeseries we are sampling with our Gauge.
+[src:exemplars-metrics/metrics-data-model-p01] While the event model *can* sample more than once for a given metric reporting interval, only the last value is reported in the metric stream via OTLP.
+[src:exemplars-metrics/metrics-data-model-p01] Gauges do not provide an aggregation semantic, instead “last sample value” is used when performing operations like temporal alignment or adjusting resolution.
+[src:exemplars-metrics/metrics-data-model-p01] Gauges can be aggregated through transformation into histograms, or other metric types.
+[src:exemplars-metrics/metrics-data-model-p01] These operations are not done by default, and require direct user configuration.
+[src:exemplars-metrics/metrics-data-model-p01] Histogram metric data points convey a population of recorded measurements in a compressed format.
+[src:exemplars-metrics/metrics-data-model-p01] A histogram bundles a set of events into divided populations with an overall event count and aggregate sum for all events.
+[src:exemplars-metrics/metrics-data-model-p01] Like Sums, Histograms also define an aggregation temporality.
+[src:exemplars-metrics/metrics-data-model-p01] The picture above denotes Delta temporality where accumulated event counts are reset to zero after reporting and a new aggregation occurs.
+[src:exemplars-metrics/metrics-data-model-p01] Cumulative, on the other hand, continues to aggregate events, resetting with the use of a new start time.
+[src:exemplars-metrics/metrics-data-model-p01] The aggregation temporality also has implications on the min and max fields.
+[src:exemplars-metrics/metrics-data-model-p01] Min and max are more useful for Delta temporality, since the values represented by Cumulative min and max will stabilize as more events are recorded.
+[src:exemplars-metrics/metrics-data-model-p01] Additionally, it is possible to convert min and max from Delta to Cumulative, but not from Cumulative to Delta.
+[src:exemplars-metrics/metrics-data-model-p01] When converting from Cumulative to Delta, min and max can be dropped, or captured in an alternative representation such as a gauge.
+[src:exemplars-metrics/metrics-data-model-p01] A Histogram without buckets conveys a population in terms of only the sum and count, and may be interpreted as a histogram with single bucket covering `(-Inf, +Inf)`.
+[src:exemplars-metrics/metrics-data-model-p01] Bucket upper-bounds are inclusive (except for the case where the upper-bound is +Inf) while bucket lower-bounds are exclusive.
+[src:exemplars-metrics/metrics-data-model-p01] That is, buckets express the number of values that are greater than their lower bound and less than or equal to their upper bound.
+[src:exemplars-metrics/metrics-data-model-p01] Importers and exporters working with OpenTelemetry Metrics data are meant to disregard this specification when translating to and from histogram formats that use inclusive lower bounds and exclusive upper bounds.
+[src:exemplars-metrics/metrics-data-model-p01] Changing the inclusivity and exclusivity of bounds is an example of worst-case Histogram error; users should choose Histogram boundaries so that worst-case error is within their error tolerance.
+[src:exemplars-metrics/metrics-data-model-p01] ExponentialHistogram data points are an alternate representation to the Histogram data point, used to convey a population of recorded measurements in a compressed format.
+[src:exemplars-metrics/metrics-data-model-p01] ExponentialHistogram compresses bucket boundaries using an exponential formula, making it suitable for conveying high dynamic range data with small relative error, compared with alternative representations of similar size.
+[src:exemplars-metrics/metrics-data-model-p01] Statements about `Histogram` that refer to aggregation temporality, attributes, and timestamps, as well as the `sum`, `count`, `min`, `max` and `exemplars` fields, are the same for `ExponentialHistogram`.
+[src:exemplars-metrics/metrics-data-model-p01] These fields all share identical interpretation as for `Histogram`, only the bucket structure differs between these two types.
+[src:exemplars-metrics/metrics-data-model-p01] The resolution of the ExponentialHistogram is characterized by a parameter known as `scale`, with larger values of `scale` offering greater precision.
+[src:exemplars-metrics/metrics-data-model-p01] The symbol `**` in these formulas represents exponentiation, thus `2**x` is read “Two to the power of `x`”, typically computed by an expression like `math.Pow(2.0, x)`.
+[src:exemplars-metrics/metrics-data-model-p01] An important property of this design is described as “perfect subsetting”.
+[src:exemplars-metrics/metrics-data-model-p01] Buckets of an exponential Histogram with a given scale map exactly into buckets of exponential Histograms with lesser scales, which allows consumers to lower the resolution of a histogram (i.e., downscale) without introducing error.
+[src:exemplars-metrics/metrics-data-model-p01] The ExponentialHistogram bucket identified by `index`, a signed integer, represents values in the population that are greater than `base**index` and less than or equal to `base**(index+1)`.
+[src:exemplars-metrics/metrics-data-model-p01] The positive and negative ranges of the histogram are expressed separately.
+[src:exemplars-metrics/metrics-data-model-p01] Negative values are mapped by their absolute value into the negative range using the same scale as the positive range.
+[src:exemplars-metrics/metrics-data-model-p01] Note that in the negative range, therefore, histogram buckets use lower-inclusive boundaries.
+[src:exemplars-metrics/metrics-data-model-p01] Each range of the ExponentialHistogram data point uses a dense representation of the buckets, where a range of buckets is expressed as a single `offset` value, a signed integer, and an array of count values, where array element `i` represents the bucket count for bucket index `offset+i`.
+[src:exemplars-metrics/metrics-data-model-p01] For example, with `scale=3` there are `2**3` buckets between 1 and 2.
+[src:exemplars-metrics/metrics-data-model-p01] Note that the lower boundary for bucket index 4 in a `scale=3` histogram maps into the lower boundary for bucket index 2 in a `scale=2` histogram and maps into the lower boundary for bucket index 1 (i.e., the `base`) in a `scale=1` histogram—these are examples of perfect subsetting.
+[src:exemplars-metrics/metrics-data-model-p01] The ExponentialHistogram contains a special `zero_count` bucket and an optional `zero_threshold` field where `zero_count` contains the count of values whose absolute value is less than or equal to `zero_threshold`.
+[src:exemplars-metrics/metrics-data-model-p01] The precise value for the `zero_threshold` is arbitrary and not related to the scale.
+[src:exemplars-metrics/metrics-data-model-p01] When `zero_threshold` is unset or `0`, this bucket stores values that cannot be expressed using the standard exponential formula as well as values that have been rounded to zero.
+[src:exemplars-metrics/metrics-data-model-p01] Histograms with different `zero_threshold` can still be merged easily by taking the largest `zero_threshold` of all involved Histograms and merge the lower buckets of Histograms with a smaller `zero_threshold` into the common wider zero bucket.
+[src:exemplars-metrics/metrics-data-model-p01] If a merged `zero_threshold` is in the middle of a populated bucket, it needs to be increased to match the upper boundary of the bucket.
+[src:exemplars-metrics/metrics-data-model-p01] In special cases, a wider zero bucket could be used to limit the total number of populated buckets.
+[src:exemplars-metrics/metrics-data-model-p01] Boundaries cannot be exactly represented as floating point numbers for all scales.
+[src:exemplars-metrics/metrics-data-model-p01] Generally, producers SHOULD use a mapping function with an expected difference of at most 1 from the correct result for all inputs.
+[src:exemplars-metrics/metrics-data-model-p01] The ExponentialHistogram design makes it possible to express values that are too large or small to be represented in the 64 bit “double” floating point format.
+[src:exemplars-metrics/metrics-data-model-p01] Certain values for `scale`, while meaningful, are not necessarily useful.
+[src:exemplars-metrics/metrics-data-model-p01] The range of data represented by an ExponentialHistogram determines which scales can be usefully applied.
+[src:exemplars-metrics/metrics-data-model-p01] Regardless of scale, producers SHOULD ensure that the index of any encoded bucket falls within the range of a signed 32-bit integer.
+[src:exemplars-metrics/metrics-data-model-p01] This recommendation is applied to limit the width of integers used in standard processing pipelines such as the OpenTelemetry Collector.
+[src:exemplars-metrics/metrics-data-model-p01] The wire-level protocol could be extended for 64-bit bucket indexes in a future release.
+[src:exemplars-metrics/metrics-data-model-p01] Producers use a mapping function to compute bucket indexes.
+[src:exemplars-metrics/metrics-data-model-p01] Producers are presumed to support IEEE double-width floating-point numbers with 11-bit exponent and 52-bit significand.
+[src:exemplars-metrics/metrics-data-model-p01] The following choices of mapping function have been validated through reference implementations.
+[src:exemplars-metrics/metrics-data-model-p01] For scale zero, the index of a value equals its normalized base-2 exponent, meaning the value of *exponent* in the base-2 fractional representation `1._significand_ * 2**_exponent_`.
+[src:exemplars-metrics/metrics-data-model-p01] Normal IEEE 754 double-width floating point values have indexes in the range `[-1022, +1023]` and subnormal values have indexes in the range `[-1074, -1023]`.
+[src:exemplars-metrics/metrics-data-model-p01] For negative scales, the index of a value equals the normalized base-2 exponent (as by `MapToIndexScale0()` above) shifted to the right by `-scale`.
+[src:exemplars-metrics/metrics-data-model-p01] Note that because of sign extension, this shift performs correct rounding for the negative indexes.
+[src:exemplars-metrics/metrics-data-model-p01] Note that the reverse mapping function is expected to produce subnormal values even when the mapping function rounds them into normal values, since the lower boundary of the bucket containing the smallest normal value may be subnormal.
+[src:exemplars-metrics/metrics-data-model-p01] For example, at scale -4 the smallest normal value `0x1p-1022` falls into a bucket with lower boundary `0x1p-1024`.
+[src:exemplars-metrics/metrics-data-model-p01] The mapping and reverse-mapping functions for scale zero and negative scales above are recommended because they are exact.
+[src:exemplars-metrics/metrics-data-model-p01] At these scales, `math.Log()` could be inaccurate and more expensive than directly calculating the bucket index.
+[src:exemplars-metrics/metrics-data-model-p01] The methods in this section MAY be used at all scales, although they are definitely useful for positive scales.
+[src:exemplars-metrics/metrics-data-model-p01] The built-in natural logarithm function can be used to compute the bucket index by applying a scaling factor, derived as follows.
+[src:exemplars-metrics/metrics-data-model-p01] We want `index` where `base**index < value <= base**(index+1)`.
+[src:exemplars-metrics/metrics-data-model-p01] The scaling factor `1/log(base)` can be derived using the formulas in (1), (4), and (8).
+[src:exemplars-metrics/metrics-data-model-p01] The scaling factor equals `2**scale / log(2)` can be written as `math.Ldexp(math.Log2E, scale)` since the constant `math.Log2E` is defined as `1/log(2)`.
+[src:exemplars-metrics/metrics-data-model-p01] The use of `math.Log()` to calculate the bucket index is not guaranteed to be exactly correct near powers of two.
+[src:exemplars-metrics/metrics-data-model-p01] Values near a boundary could be mapped into the incorrect bucket due to inaccuracy.
+[src:exemplars-metrics/metrics-data-model-p01] Defining an exact mapping function is out of scope for this document.
+[src:exemplars-metrics/metrics-data-model-p01] However, when inputs are an exact power of two, it is possible to calculate the exactly correct bucket index.
+[src:exemplars-metrics/metrics-data-model-p01] Implementations are expected to verify that their mapping function and inverse mapping function are correct near the lowest and highest IEEE floating point values.
+[src:exemplars-metrics/metrics-data-model-p01] A mathematically correct formula may produce the wrong result, because of accumulated floating point calculation error or underflow/overflow of intermediate results.
+[src:exemplars-metrics/metrics-data-model-p01] In the Go reference implementation, for example, the above formula computes `+Inf` for the maximum-index bucket.
+[src:exemplars-metrics/metrics-data-model-p01] In this case, it is appropriate to subtract `1<<scale` from the index and multiply the result by `2`.
+[src:exemplars-metrics/metrics-data-model-p01] In the Go reference implementation, for example, the above formula does not accurately compute the lower boundary of the minimum-index bucket (it is a subnormal value).
+[src:exemplars-metrics/metrics-data-model-p01] In this case, it is appropriate to add `1<<scale` to the index and divide the result by `2`.
+[src:exemplars-metrics/metrics-data-model-p01] At the lowest or highest end of the 64 bit IEEE floating point, a bucket’s range may only be partially representable by the floating point number format.
+[src:exemplars-metrics/metrics-data-model-p01] When mapping a number in these buckets, a producer may correctly return the index of such a partially representable bucket.
+[src:exemplars-metrics/metrics-data-model-p01] For positive scales, the logarithm method is preferred because it requires very little code, is easy to validate and is nearly as fast and accurate as the lookup table approach.
+[src:exemplars-metrics/metrics-data-model-p01] For zero scale and negative scales, directly calculating the index from the floating-point representation is more efficient.
+[src:exemplars-metrics/metrics-data-model-p01] The use of a built-in logarithm function could lead to results that differ from the bucket index that would be computed using arbitrary precision or a lookup table, however producers are not required to perform an exact computation.
+[src:exemplars-metrics/metrics-data-model-p01] As a result, ExponentialHistogram exemplars could map into buckets with zero count.
+[src:exemplars-metrics/metrics-data-model-p01] We expect to find such values counted in the adjacent buckets.
+[src:exemplars-metrics/metrics-data-model-p01] ExponentialHistogram bucket indexes are expected to map into buckets where both the upper and lower boundaries can be represented using IEEE 754 double-width floating point values.
+[src:exemplars-metrics/metrics-data-model-p01] Consumers MAY round the unrepresentable boundary of a partially representable bucket index to the nearest representable value.
+[src:exemplars-metrics/metrics-data-model-p01] Consumers SHOULD reject ExponentialHistogram data with `scale` and bucket indexes that overflow or underflow this representation.
+[src:exemplars-metrics/metrics-data-model-p01] Consumers that reject such data SHOULD warn the user through error logging that out-of-range data was received.
+[src:exemplars-metrics/metrics-data-model-p01] The specification on bucket inclusivity made for explicit-boundary Histogram data applies equally to ExponentialHistogram data.
+[src:exemplars-metrics/metrics-data-model-p01] Summary metric data points convey quantile summaries, e.g.
+[src:exemplars-metrics/metrics-data-model-p01] What is the 99-th percentile latency of my HTTP server.
+[src:exemplars-metrics/metrics-data-model-p01] Unlike other point types in OpenTelemetry, Summary points cannot always be merged in a meaningful way.
+[src:exemplars-metrics/metrics-data-model-p01] This point type is not recommended for new applications and exists for compatibility with other formats.
+[src:exemplars-metrics/metrics-data-model-p01] Quantile values 0.0 and 1.0 are defined to be equal to the minimum and maximum values, respectively.
+[src:exemplars-metrics/metrics-data-model-p01] Quantile values do not need to represent values observed between `start_time_unix_nano` and `time_unix_nano` and are expected to be calculated against recent time windows, typically the last 5-10 minutes.
+[src:exemplars-metrics/metrics-data-model-p01] An exemplar is a recorded value that associates OpenTelemetry context to a metric event within a Metric.
+[src:exemplars-metrics/metrics-data-model-p01] One use case is to allow users to link Trace signals w/ Metrics.
+[src:exemplars-metrics/metrics-data-model-p01] For Histograms, when an exemplar exists, its value already participates in `bucket_counts`, `count` and `sum` reported by the histogram point.
+[src:exemplars-metrics/metrics-data-model-p01] For Sums, when an exemplar exists, its value is already included in the overall sum.
+[src:exemplars-metrics/metrics-data-model-p01] For Gauges, when an exemplar exists, its value was seen at some point within the gauge interval for the same source.
+[src:exemplars-metrics/metrics-data-model-p01] Certain flags can be applied to denote special data points.
+[src:exemplars-metrics/metrics-data-model-p01] A flag is a boolean property which can either be set to `true` or `false`.
+[src:exemplars-metrics/metrics-data-model-p01] Currently the following flag is supported.
+[src:exemplars-metrics/metrics-data-model-p01] If this flag is set on a data point, then this data point reflects explicitly missing data in a series.
+[src:exemplars-metrics/metrics-data-model-p01] It serves as an indicator that a previously present timeseries was removed and that this timeseries SHOULD NOT be returned in queries after such an indicator was received.
+[src:exemplars-metrics/metrics-data-model-p01] It is an equivalent of the Prometheus staleness marker.
+[src:exemplars-metrics/metrics-data-model-p01] If this flag is set, all other data point properties except attributes, time stamps, or time windows, SHOULD be ignored.
+[src:exemplars-metrics/metrics-data-model-p01] All metric data streams within OTLP MUST have one logical writer.
+[src:exemplars-metrics/metrics-data-model-p01] This means, conceptually, that any Timeseries created from the Protocol MUST have one originating source of truth.
+[src:exemplars-metrics/metrics-data-model-p01] In systems, there is the possibility of multiple writers sending data for the same metric stream (duplication).
+[src:exemplars-metrics/metrics-data-model-p01] For example, if an SDK implementation fails to find uniquely identifying Resource attributes for a component, then all instances of that component could be reporting metrics as if they are from the same resource.
+[src:exemplars-metrics/metrics-data-model-p01] In this case, metrics will be reported at inconsistent time intervals.
+[src:exemplars-metrics/metrics-data-model-p01] For metrics like cumulative sums, this could cause issues where pairs of points appear to reset the cumulative sum leading to unusable metrics.
+[src:exemplars-metrics/metrics-data-model-p01] Multiple writers for a metric stream is considered an error state, or misbehaving system.
+[src:exemplars-metrics/metrics-data-model-p01] Receivers SHOULD presume a single writer was intended and eliminate overlap / deduplicate.
+[src:exemplars-metrics/metrics-data-model-p01] Note: Identity is an important concept in most metrics systems.
+[src:exemplars-metrics/metrics-data-model-p01] For OTLP, the Single-Writer principle grants a way to reason over error scenarios and take corrective actions.
+[src:exemplars-metrics/metrics-data-model-p01] Additionally, it ensures that well-behaved systems can perform metric stream manipulation without undesired degradation or loss of visibility.
+[src:exemplars-metrics/metrics-data-model-p01] Note that violations of the Single-Writer principle are not semantic errors, generally they result from misconfiguration.
+[src:exemplars-metrics/metrics-data-model-p01] Whereas semantic errors can sometimes be corrected by configuring Views, violations of the Single-Writer principle can be corrected by differentiating the `Resource` used or by ensuring that streams for a given `Resource` and `Attribute` set do not overlap in time.
+[src:exemplars-metrics/metrics-data-model-p01] The notion of temporality refers to the way additive quantities are expressed, in relation to time, indicating whether reported values incorporate previous measurements or not.
+[src:exemplars-metrics/metrics-data-model-p01] Sum, Histogram, and ExponentialHistogram data points, in particular, support a choice of aggregation temporality.
+[src:exemplars-metrics/metrics-data-model-p01] Every OTLP metric data point has two associated timestamps.
+[src:exemplars-metrics/metrics-data-model-p01] The first, mandatory timestamp is the one associated with the observation, the moment when the measurement became current or took effect, and is referred to as `TimeUnixNano`.
+[src:exemplars-metrics/metrics-data-model-p01] The second, optional timestamp is used to indicate when a sequence of points is unbroken and to indicate when a timeseries began accumulating measurements.
+[src:exemplars-metrics/metrics-data-model-p01] The second timestamp is referred to as `StartTimeUnixNano`.
+[src:exemplars-metrics/metrics-data-model-p01] The second timestamp is strongly recommended for Sum, Histogram, and ExponentialHistogram points, as it is necessary to correctly interpret the rate from an OTLP stream, in a manner that is aware of restarts.
+[src:exemplars-metrics/metrics-data-model-p01] The use of `StartTimeUnixNano` to indicate the start of an unbroken sequence of points means it can also be used to encode implicit gaps in the stream.
+[src:exemplars-metrics/metrics-data-model-p01] The use of cumulative temporality for monotonic sums is common, exemplified by Prometheus.
+[src:exemplars-metrics/metrics-data-model-p01] Systems based in cumulative monotonic sums are naturally simpler, in terms of the cost of adding reliability.
+[src:exemplars-metrics/metrics-data-model-p01] When collection fails intermittently, gaps in the data are naturally averaged from cumulative measurements.
+[src:exemplars-metrics/metrics-data-model-p01] Cumulative data requires the sender to remember all previous measurements, an “up-front” memory cost proportional to cardinality.
+[src:exemplars-metrics/metrics-data-model-p01] The use of delta temporality for metric sums is also common, exemplified by Statsd.
+[src:exemplars-metrics/metrics-data-model-p01] There is a connection between OpenTelemetry tracing, in which a Span event commonly is translated into two metric events (a 1-count and a timing measurement).
+[src:exemplars-metrics/metrics-data-model-p01] Delta temporality enables sampling and supports shifting the cost of cardinality outside of the process.
+[src:exemplars-metrics/metrics-data-model-p02] When the `StartTimeUnixNano` field is present, it allows the consumer to observe when there are gaps and overlapping writers in a stream.
+[src:exemplars-metrics/metrics-data-model-p02] Correctly used, the consumer can observe both transient and ongoing violations of the single-writer principle as well as reset events.
+[src:exemplars-metrics/metrics-data-model-p02] In an unbroken sequence of observations, the `StartTimeUnixNano` always matches either the `TimeUnixNano` or the `StartTimeUnixNano` of other points in the same sequence.
+[src:exemplars-metrics/metrics-data-model-p02] A metric stream has a gap, where it is implicitly undefined, anywhere there is a range of time such that no point covers that range range with its `StartTimeUnixNano` and `TimeUnixNano` fields.
+[src:exemplars-metrics/metrics-data-model-p02] An unbroken stream of observations is resumed with a zero-duration point and non-zero value, as described above.
+[src:exemplars-metrics/metrics-data-model-p02] For points with cumulative aggregation temporality, the rate contributed to the timeseries by each point depends on the prior point value in the stream.
+[src:exemplars-metrics/metrics-data-model-p02] To correctly compute the rate contribution of the first point in an unbroken sequence requires knowing whether it is the first point.
+[src:exemplars-metrics/metrics-data-model-p02] Unknown start-time reset points appear with `TimeUnixNano` equal to the `StartTimeUnixNano` of a stream of points, in which case the rate contribution of the first point is considered zero.
+[src:exemplars-metrics/metrics-data-model-p02] An earlier sequence of observations is expected to have reported the same cumulative state prior to a gap in observations.
+[src:exemplars-metrics/metrics-data-model-p02] The presence or absence of a point with `TimeUnixNano` equal to the `StartTimeUnixNano` indicates how to count rate contribution from the first point in a sequence.
+[src:exemplars-metrics/metrics-data-model-p02] If the first point in an unknown start-time reset sequence is lost, the consumer of this data might overcount the rate contribution of the second point, as it then appears like a “true” reset.
+[src:exemplars-metrics/metrics-data-model-p02] Various approaches can be taken to avoid overcounting.
+[src:exemplars-metrics/metrics-data-model-p02] A system could use state from earlier in the stream to resolve start-time ambiguity, for example.
+[src:exemplars-metrics/metrics-data-model-p02] Later in the cumulative sequence are output relative to the initial value, thus appears as a true reset offset by an unknown constant.
+[src:exemplars-metrics/metrics-data-model-p02] This process is known as inserting true reset points, a special case of reaggregation for cumulative series.
+[src:exemplars-metrics/metrics-data-model-p02] Overlap occurs when more than one metric data point is defined for a metric stream within a time window.
+[src:exemplars-metrics/metrics-data-model-p02] Overlap is usually caused through mis-configuration, and it can lead to serious mis-interpretation of the data.
+[src:exemplars-metrics/metrics-data-model-p02] `StartTimeUnixNano` is recommended so that consumers can recognize and response to overlapping points.
+[src:exemplars-metrics/metrics-data-model-p02] When more than one process writes the same metric data stream, OTLP data points may appear to overlap.
+[src:exemplars-metrics/metrics-data-model-p02] This condition typically results from misconfiguration, but can also result from running identical processes (indicative of operating system or SDK bugs, like missing process attributes).
+[src:exemplars-metrics/metrics-data-model-p02] When there are overlapping points, receivers SHOULD eliminate points so that there are no overlaps.
+[src:exemplars-metrics/metrics-data-model-p02] Which data to select in overlapping cases is not specified.
+[src:exemplars-metrics/metrics-data-model-p02] OpenTelemetry collectors SHOULD export telemetry when they observe overlapping points in data streams, so that the user can monitor for erroneous configurations.
+[src:exemplars-metrics/metrics-data-model-p02] When one process starts just as another exits, the appearance of overlapping points may be expected.
+[src:exemplars-metrics/metrics-data-model-p02] In this case, OpenTelemetry collectors SHOULD modify points at the change-over using interpolation for Sum data points, to reduce gaps to zero width in these cases, without any overlap.
+[src:exemplars-metrics/metrics-data-model-p02] While OpenTelemetry (and some metric backends) allows both Delta and Cumulative sums to be reported, the timeseries model we target does not support delta counters.
+[src:exemplars-metrics/metrics-data-model-p02] To this end, converting from delta to cumulative needs to be defined so that backends can use this mechanism.
+[src:exemplars-metrics/metrics-data-model-p02] This is not the only possible Delta to Cumulative algorithm.
+[src:exemplars-metrics/metrics-data-model-p02] It is just one possible implementation that fits the OTel Data Model.
+[src:exemplars-metrics/metrics-data-model-p02] Converting from delta points to cumulative point is inherently a stateful operation.
+[src:exemplars-metrics/metrics-data-model-p02] To successfully translate, we need all incoming delta points to reach one destination which can keep the current counter state and generate a new cumulative stream of data (see single writer principle).
+[src:exemplars-metrics/metrics-data-model-p02] In all of these scenarios we do our best to give any cumulative metric knowledge that some data was lost, and reset the counter.
+[src:exemplars-metrics/metrics-data-model-p02] One degenerate case for the delta-to-cumulative algorithm is when timestamps are missing from metric data points.
+[src:exemplars-metrics/metrics-data-model-p02] While this shouldn’t be the case when using OpenTelemetry generated metrics, it can occur when adapting other metric formats, e.g.
+[src:exemplars-metrics/metrics-data-model-p02] In this scenario, the algorithm listed above would reset the cumulative sum on every data point due to not being able to determine alignment or point overlap.
+[src:exemplars-metrics/metrics-data-model-p02] For comparison, see the simple logic used in statsd sums where all points are added, and lost points are ignored.
+[src:exemplars-metrics/observability-software] In software engineering, more specifically in distributed computing, **observability** is the ability to collect data about programs' execution, modules' internal states, and the communication among components.
+[src:exemplars-metrics/observability-software] To improve observability, software engineers use a wide range of logging and tracing techniques to gather telemetry information, and tools to analyze and use it.
+[src:exemplars-metrics/observability-software] Observability is foundational to site reliability engineering, as it is the first step in triaging a service outage.
+[src:exemplars-metrics/observability-software] One of the goals of observability is to minimize the amount of prior knowledge needed to debug an issue.
+[src:exemplars-metrics/observability-software] The term is borrowed from control theory, where the "observability" of a system measures how well its state can be determined from its outputs.
+[src:exemplars-metrics/observability-software] Similarly, software observability measures how well a system's state can be understood from the obtained telemetry (metrics, logs, traces, profiling).
+[src:exemplars-metrics/observability-software] The term is frequently referred to as its numeronym **o11y** (where 11 stands for the number of letters between the first letter and the last letter of the word).
+[src:exemplars-metrics/observability-software] This is similar to other computer science abbreviations such as i18n and l10n and k8s.
+[src:exemplars-metrics/observability-software] Observability and monitoring are sometimes used interchangeably.
+[src:exemplars-metrics/observability-software] As tooling, commercial offerings and practices evolved in complexity, "monitoring" was re-branded as observability in order to differentiate new tools from the old.
+[src:exemplars-metrics/observability-software] The terms are commonly contrasted in that systems are *monitored* using predefined sets of *telemetry*, and monitored systems may be *observable*.
+[src:exemplars-metrics/observability-software] Majors et al. suggest that engineering teams that only have monitoring tools end up relying on expert foreknowledge (seniority), whereas teams that have observability tools rely on exploratory analysis (curiosity).
+[src:exemplars-metrics/observability-software] Observability relies on three main types of telemetry data: metrics, logs and traces.
+[src:exemplars-metrics/observability-software] Those are often referred to as "pillars of observability".
+[src:exemplars-metrics/observability-software] A metric is a point in time measurement (scalar) that represents some system state.
+[src:exemplars-metrics/observability-software] Monitoring tools are typically configured to emit alerts when certain metric values exceed set thresholds.
+[src:exemplars-metrics/observability-software] Thresholds are set based on knowledge about normal operating conditions and experience.
+[src:exemplars-metrics/observability-software] Metrics are typically tagged to facilitate grouping and searchability.
+[src:exemplars-metrics/observability-software] Application developers choose what kind of metrics to instrument their software with, before it is released.
+[src:exemplars-metrics/observability-software] As a result, when a previously unknown issue is encountered, it is impossible to add new metrics without shipping new code.
+[src:exemplars-metrics/observability-software] Furthermore, their cardinality can quickly make the storage size of telemetry data prohibitively expensive.
+[src:exemplars-metrics/observability-software] Since metrics are cardinality-limited, they are often used to represent aggregate values (for example: average page load time, or 5-second average of the request rate).
+[src:exemplars-metrics/observability-software] Without external context, it is impossible to correlate between events (such as user requests) and distinct metric values.
+[src:exemplars-metrics/observability-software] Logs, or log lines, are generally free-form, unstructured text blobs that are intended to be human readable.
+[src:exemplars-metrics/observability-software] Modern logging is structured to enable machine parsability.
+[src:exemplars-metrics/observability-software] As with metrics, an application developer must instrument the application upfront and ship new code if different logging information is required.
+[src:exemplars-metrics/observability-software] Logs typically include a timestamp and severity level.
+[src:exemplars-metrics/observability-software] An event (such as a user request) may be fragmented across multiple log lines and interweave with logs from concurrent events.
+[src:exemplars-metrics/observability-software] A cloud native application is typically made up of distributed services which together fulfill a single request.
+[src:exemplars-metrics/observability-software] A distributed trace is an interrelated series of discrete events (also called spans) that track the progression of a single user request.
+[src:exemplars-metrics/observability-software] A trace shows the causal and temporal relationships between the services that interoperate to fulfill a request.
+[src:exemplars-metrics/observability-software] Instrumenting an application with traces means sending span information to a tracing backend.
+[src:exemplars-metrics/observability-software] The tracing backend correlates the received spans to generate presentable traces.
+[src:exemplars-metrics/observability-software] To be able to follow a request as it traverses multiple services, spans are labeled with unique identifiers that enable constructing a parent-child relationship between spans.
+[src:exemplars-metrics/observability-software] Span information is typically shared in the HTTP headers of outbound requests.
+[src:exemplars-metrics/observability-software] Continuous profiling is another telemetry type used to precisely determine how an application consumes resources.
+[src:exemplars-metrics/observability-software] To be able to observe an application, telemetry about the application's behavior needs to be collected or exported.
+[src:exemplars-metrics/observability-software] Instrumentation means generating telemetry alongside the normal operation of the application.
+[src:exemplars-metrics/observability-software] Telemetry is then collected by an independent backend for later analysis.
+[src:exemplars-metrics/observability-software] Instrumentation can be automatic, or custom.
+[src:exemplars-metrics/observability-software] Automatic instrumentation offers blanket coverage and immediate value; custom instrumentation brings higher value but requires more intimate involvement with the instrumented application.
+[src:exemplars-metrics/observability-software] Instrumentation can be native - done in-code (modifying the code of the instrumented application) - or out-of-code (e.g. sidecar, eBPF).
+[src:exemplars-metrics/observability-software] Verifying new features in production by shipping them together with custom instrumentation is a practice called "observability-driven development".
+[src:exemplars-metrics/observability-software] Metrics, logs and traces are most commonly listed as the pillars of observability.
+[src:exemplars-metrics/observability-software] Self monitoring is a practice where observability stacks monitor each other, in order to reduce the risk of inconspicuous outages.
+[src:exemplars-metrics/observability-software] Self monitoring may be put in place in addition to high availability and redundancy to further avoid correlated failures.
+[src:exemplars-metrics/percentile] In statistics, a **percentile** or **percentile score**, also known as **centile** (often denoted as $P_{k}$ or Pk, for a given percentage *k*), is a score greater than a given percentage of all scores (or data point value) in a sample.
+[src:exemplars-metrics/percentile] I.e., a score in the *k*-th percentile would be above approximately *k*% of all scores in its sample.
+[src:exemplars-metrics/percentile] For example, the 97th percentile (P97) is the value such that 97% of the data points are less than it.
+[src:exemplars-metrics/percentile] Percentiles are a type of quantiles, obtained by a subdivision into 100 groups.
+[src:exemplars-metrics/percentile] The 25th percentile (P25) is also known as the first *quartile* (*Q*1), the 50th percentile (P50) as the *median* or second quartile (*Q*2), and the 75th percentile (P75) as the third quartile (*Q*3).
+[src:exemplars-metrics/percentile] For example, the 50th percentile (median) is the score *below* (or *at or below*, depending on the definition) which 50% of the scores in the distribution are found.
+[src:exemplars-metrics/percentile] Percentiles are expressed in the same unit of measurement as the input scores, *not* in percent; for example, if the scores refer to human weight, the corresponding percentiles will be expressed in kilograms or pounds.
+[src:exemplars-metrics/percentile] In the limit of an infinite sample size, the percentile approximates the *percentile function*, the inverse of the cumulative distribution function.
+[src:exemplars-metrics/percentile] A related quantity is the *percentile rank* of a given score, expressed as a percentage, which represents the fraction of scores in its distribution that are less than it, an exclusive definition.
+[src:exemplars-metrics/percentile] Percentile scores and percentile ranks are often used in the reporting of test scores from norm-referenced tests, but, as just noted, they are not the same.
+[src:exemplars-metrics/percentile] For percentile ranks, a score is given and a percentage is computed.
+[src:exemplars-metrics/percentile] Percentile ranks are exclusive: if the percentile rank for a specified score is 90%, then 90% of the scores were lower.
+[src:exemplars-metrics/percentile] In contrast, for percentiles a percentage is given and a corresponding score is determined, which can be either exclusive or inclusive.
+[src:exemplars-metrics/percentile] The score for a specified percentage (e.g., 90th) indicates a score below which (exclusive definition) or at or below which (inclusive definition) other scores in the distribution fall.
+[src:exemplars-metrics/percentile] There is no standard definition of percentile; however, all definitions yield similar results when the number of observations is very large and the probability distribution is continuous.
+[src:exemplars-metrics/percentile] In the limit, as the sample size approaches infinity, the 100*p*th percentile (0<*p*<1) approximates the inverse of the cumulative distribution function (CDF) thus formed, evaluated at *p*, as *p* approximates the CDF.
+[src:exemplars-metrics/percentile] This can be seen as a consequence of the Glivenko–Cantelli theorem.
+[src:exemplars-metrics/percentile] Some methods for calculating the percentiles are given below.
+[src:exemplars-metrics/percentile] The methods given in the *calculation methods* section (below) are approximations for use in small-sample statistics.
+[src:exemplars-metrics/percentile] In general terms, for very large populations following a normal distribution, percentiles may often be represented by reference to a normal curve plot.
+[src:exemplars-metrics/percentile] The normal distribution is plotted along an axis scaled to standard deviations, or sigma ( $\sigma$ ) units.
+[src:exemplars-metrics/percentile] Mathematically, the normal distribution extends to negative infinity on the left and positive infinity on the right.
+[src:exemplars-metrics/percentile] Note, however, that only a very small proportion of individuals in a population will fall outside the −3*σ* to +3*σ* range.
+[src:exemplars-metrics/percentile] For example, with human heights very few people are above the +3*σ* height level.
+[src:exemplars-metrics/percentile] Percentiles represent the area under the normal curve, increasing from left to right.
+[src:exemplars-metrics/percentile] Each standard deviation represents a fixed percentile.
+[src:exemplars-metrics/percentile] Thus, rounding to two decimal places, −3*σ* is the 0.13th percentile, −2*σ* the 2.28th percentile, −1*σ* the 15.87th percentile, 0*σ* the 50th percentile (both the mean and median of the distribution), +1*σ* the 84.13rd percentile, +2*σ* the 97.72nd percentile, and +3*σ* the 99.87th percentile.
+[src:exemplars-metrics/percentile] This is related to the 68–95–99.7 rule or the three-sigma rule.
+[src:exemplars-metrics/percentile] Note that in theory the 0th percentile falls at negative infinity and the 100th percentile at positive infinity, although in many practical applications, such as test results, natural lower and/or upper limits are enforced.
+[src:exemplars-metrics/percentile] When Internet service provider bill "burstable" internet bandwidth, the 95th or 98th percentile usually cuts off the top 5% or 2% of bandwidth peaks in each month, and then bills at the nearest rate.
+[src:exemplars-metrics/percentile] In this way, infrequent peaks are ignored, and the customer is charged in a fairer way.
+[src:exemplars-metrics/percentile] The reason this statistic is so useful in measuring data throughput is that it gives a very accurate picture of the cost of the bandwidth.
+[src:exemplars-metrics/percentile] The 95th percentile says that 95% of the time, the usage is below this amount: so, the remaining 5% of the time, the usage is above that amount.
+[src:exemplars-metrics/percentile] Physicians will often use infant and children's weight and height to assess their growth in comparison to national median and other percentiles which are found in growth charts.
+[src:exemplars-metrics/percentile] The 85th percentile speed of traffic on a road is often used as a guideline in setting speed limits and assessing whether such a limit is too high or low.
+[src:exemplars-metrics/percentile] In finance, value at risk is a standard measure to assess (in a model-dependent way) the quantity under which the value of the portfolio is not expected to sink within a given period of time and given a confidence value.
+[src:exemplars-metrics/percentile] There are many formulas or algorithms for a percentile score.
+[src:exemplars-metrics/percentile] Hyndman and Fan identified nine and most statistical and spreadsheet software use one of the methods they describe.
+[src:exemplars-metrics/percentile] Algorithms either return the value of a score that exists in the set of scores (nearest-rank methods) or interpolate between existing scores and are either exclusive or inclusive.
+[src:exemplars-metrics/percentile] The figure shows a 10-score distribution, illustrates the percentile scores that result from these different algorithms, and serves as an introduction to the examples given subsequently.
+[src:exemplars-metrics/percentile] The simplest are nearest-rank methods that return a score from the distribution, although compared to interpolation methods, results can be a bit crude.
+[src:exemplars-metrics/percentile] The Nearest-Rank Methods table shows the computational steps for exclusive and inclusive methods.
+[src:exemplars-metrics/percentile] Interpolation methods, as the name implies, can return a score that is between scores in the distribution.
+[src:exemplars-metrics/percentile] Algorithms used by statistical programs typically use interpolation methods, for example, the percentile.exc and percentile.inc functions in Microsoft Excel.
+[src:exemplars-metrics/percentile] The Interpolated Methods table shows the computational steps.
+[src:exemplars-metrics/percentile] One definition of percentile, often given in texts, is that the *P*-th percentile $(0<P\leq 100)$ of a list of *N* ordered values (sorted from least to greatest) is the smallest value in the list such that at least *P* percent of the data is less than or equal to that value.
+[src:exemplars-metrics/percentile] This is calculated by first calculating the ordinal rank and then taking the value from the ordered list that corresponds to that rank.
+[src:exemplars-metrics/percentile] The CDF method was described, e.g. by Langford.
+[src:exemplars-metrics/percentile] An alternative to rounding used in many applications is to use linear interpolation between adjacent ranks.
+[src:exemplars-metrics/percentile] , where $\lfloor x\rfloor$ uses the floor function to represent the integral part of x, whereas $x{\bmod {1}}$ uses the mod function to represent its fractional part (the remainder after division by 1).
+[src:exemplars-metrics/percentile] As we can see, x is the continuous version of the subscript i, linearly interpolating v between adjacent nodes.
+[src:exemplars-metrics/percentile] There are two ways in which the variant approaches differ.
+[src:exemplars-metrics/percentile] The second way in which the variants differ is in the definition of the function near the margins of the $[0,1]$ range of p: $f(p,N)$ should produce, or be forced to produce, a result in the range $[1,N]$ , which may mean the absence of a one-to-one correspondence in the wider region.
+[src:exemplars-metrics/percentile] One author has suggested a choice of $C={\tfrac {1}{2}}(1+\xi )$ where ξ is the shape of the Generalized extreme value distribution which is the extreme value limit of the sampled distribution.
+[src:exemplars-metrics/percentile] [Source: Some software packages, including NumPy and Microsoft Excel (up to and including version 2013 by means of the PERCENTILE.INC function).
+[src:exemplars-metrics/percentile] Note that the $x\leftrightarrow p$ relationship is one-to-one for $p\in [0,1]$ , the only one of the three variants with this property; hence the "INC" suffix, for *inclusive*, on the Excel function.
+[src:exemplars-metrics/percentile] (The primary variant recommended by NIST.
+[src:exemplars-metrics/percentile] Adopted by Microsoft Excel since 2010 by means of PERCENTIL.EXC function.
+[src:exemplars-metrics/percentile] In addition to the percentile function, there is also a *weighted percentile*, where the percentage in the total weight is counted instead of the total number.
+[src:exemplars-metrics/percentile] There is no standard function for a weighted percentile.
+[src:exemplars-metrics/percentile] One method extends the above approach in a natural way.
+[src:exemplars-metrics/percentile] Suppose we have positive weights $w_{1},w_{2},w_{3},\dots ,w_{N}$ associated, respectively, with our *N* sorted sample values.
+[src:exemplars-metrics/percentile] The 50% weighted percentile is known as the weighted median.
+[src:exemplars-metrics/sampling-statistics] In statistics, quality assurance, and survey methodology, **sampling** is the selection of a subset of individuals from within a statistical population to estimate characteristics of the whole population.
+[src:exemplars-metrics/sampling-statistics] The subset, called a **statistical sample** (or **sample**, for short), is meant to reflect the whole population, and statisticians attempt to collect samples that are representative of the population.
+[src:exemplars-metrics/sampling-statistics] Sampling has lower costs and faster data collection compared to a census recording data from the entire population (in many cases, collecting the whole population is impossible, like getting sizes of all stars in the universe).
+[src:exemplars-metrics/sampling-statistics] Thus, it can provide insights in cases where it is infeasible to measure an entire population.
+[src:exemplars-metrics/sampling-statistics] Each observation measures one or more properties (such as weight, location, colour or mass) of independent objects or individuals.
+[src:exemplars-metrics/sampling-statistics] In survey sampling, weights can be applied to the data to adjust for the sample design, particularly in stratified sampling.
+[src:exemplars-metrics/sampling-statistics] Results from probability theory and statistical theory are employed to guide the practice.
+[src:exemplars-metrics/sampling-statistics] In business and medical research, sampling is widely used for gathering information about a population.
+[src:exemplars-metrics/sampling-statistics] Acceptance sampling is used to determine if a production lot of material meets the governing specifications.
+[src:exemplars-metrics/sampling-statistics] Random sampling by using lots is an old idea, mentioned several times in the Bible.
+[src:exemplars-metrics/sampling-statistics] In 1786, Pierre Simon Laplace estimated the population of France by using a sample, along with ratio estimator.
+[src:exemplars-metrics/sampling-statistics] He also computed probabilistic estimates of the error.
+[src:exemplars-metrics/sampling-statistics] These were not expressed as modern confidence intervals but as the sample size that would be needed to achieve a particular upper bound on the sampling error with probability 1000/1001.
+[src:exemplars-metrics/sampling-statistics] His estimates used Bayes' theorem with a uniform prior probability and assumed that his sample was random.
+[src:exemplars-metrics/sampling-statistics] Alexander Ivanovich Chuprov introduced sample surveys to Imperial Russia in the 1870s.
+[src:exemplars-metrics/sampling-statistics] In the US, the 1936 *Literary Digest* prediction of a Republican win in the presidential election went badly awry, due to severe bias [1].
+[src:exemplars-metrics/sampling-statistics] More than two million people responded to the study with their names obtained through magazine subscription lists and telephone directories.
+[src:exemplars-metrics/sampling-statistics] It was not appreciated that these lists were heavily biased towards Republicans and the resulting sample, though very large, was deeply flawed.
+[src:exemplars-metrics/sampling-statistics] Successful statistical practice is based on focused problem definition.
+[src:exemplars-metrics/sampling-statistics] In sampling, this includes defining the "population" from which our sample is drawn.
+[src:exemplars-metrics/sampling-statistics] A population can be defined as including all people or items with the characteristics one wishes to understand.
+[src:exemplars-metrics/sampling-statistics] Because there is very rarely enough time or money to gather information from everyone or everything in a population, the goal becomes finding a representative sample (or subset) of that population.
+[src:exemplars-metrics/sampling-statistics] Sometimes what defines a population is obvious.
+[src:exemplars-metrics/sampling-statistics] For example, a manufacturer needs to decide whether a batch of material from production is of high enough quality to be released to the customer or should be scrapped or reworked due to poor quality.
+[src:exemplars-metrics/sampling-statistics] In this case, the batch is the population.
+[src:exemplars-metrics/sampling-statistics] Although the population of interest often consists of physical objects, sometimes it is necessary to sample over time, space, or some combination of these dimensions.
+[src:exemplars-metrics/sampling-statistics] For instance, an investigation of supermarket staffing could examine checkout line length at various times, or a study on endangered penguins might aim to understand their usage of various hunting grounds over time.
+[src:exemplars-metrics/sampling-statistics] For the time dimension, the focus may be on periods or discrete occasions.
+[src:exemplars-metrics/sampling-statistics] In other cases, the examined 'population' may be even less tangible.
+[src:exemplars-metrics/sampling-statistics] For example, Joseph Jagger studied the behaviour of roulette wheels at a casino in Monte Carlo, and used this to identify a biased wheel.
+[src:exemplars-metrics/sampling-statistics] In this case, the 'population' Jagger wanted to investigate was the overall behaviour of the wheel (i.e. the probability distribution of its results over infinitely many trials), while his 'sample' was formed from observed results from that wheel.
+[src:exemplars-metrics/sampling-statistics] Similar considerations arise when taking repeated measurements of properties of materials such as the electrical conductivity of copper.
+[src:exemplars-metrics/sampling-statistics] This situation often arises when seeking knowledge about the cause system of which the *observed* population is an outcome.
+[src:exemplars-metrics/sampling-statistics] In such cases, sampling theory may treat the observed population as a sample from a larger 'superpopulation'.
+[src:exemplars-metrics/sampling-statistics] For example, a researcher might study the success rate of a new 'quit smoking' program on a test group of 100 patients, in order to predict the effects of the program if it were made available nationwide.
+[src:exemplars-metrics/sampling-statistics] Here the superpopulation is "everybody in the country, given access to this treatment" – a group that does not yet exist since the program is not yet available to all.
+[src:exemplars-metrics/sampling-statistics] The population from which the sample is drawn may not be the same as the population from which information is desired.
+[src:exemplars-metrics/sampling-statistics] Often there is a large but not complete overlap between these two groups due to frame issues etc.
+[src:exemplars-metrics/sampling-statistics] Sometimes they may be entirely separate – for instance, one might study rats in order to get a better understanding of human health, or one might study records from people born in 2008 in order to make predictions about people born in 2009.
+[src:exemplars-metrics/sampling-statistics] Time spent in making the sampled population and population of concern precise is often well spent because it raises many issues, ambiguities, and questions that would otherwise have been overlooked at this stage.
+[src:exemplars-metrics/sampling-statistics] In the most straightforward case, such as the sampling of a batch of material from production (acceptance sampling by lots), it would be most desirable to identify and measure every single item in the population and to include any one of them in our sample.
+[src:exemplars-metrics/sampling-statistics] However, in the more general case this is not usually possible or practical.
+[src:exemplars-metrics/sampling-statistics] There is no way to identify all rats in the set of all rats.
+[src:exemplars-metrics/sampling-statistics] Where voting is not compulsory, there is no way to identify which people will vote at a forthcoming election (in advance of the election).
+[src:exemplars-metrics/sampling-statistics] These imprecise populations are not amenable to sampling in any of the ways below and to which we could apply statistical theory.
+[src:exemplars-metrics/sampling-statistics] As a remedy, we seek a sampling frame which has the property that we can identify every single element and include any in our sample.
+[src:exemplars-metrics/sampling-statistics] The most straightforward type of frame is a list of elements of the population (preferably the entire population) with appropriate contact information.
+[src:exemplars-metrics/sampling-statistics] For example, in an opinion poll, possible sampling frames include an electoral register and a telephone directory.
+[src:exemplars-metrics/sampling-statistics] A **probability sample** is a sample in which every unit in the population has a chance (greater than zero) of being selected in the sample, and this probability can be accurately determined.
+[src:exemplars-metrics/sampling-statistics] The combination of these traits makes it possible to produce unbiased estimates of population totals, by weighting sampled units according to their probability of selection.
+[src:exemplars-metrics/sampling-statistics] In the above example, not everybody has the same probability of selection; what makes it a probability sample is the fact that each person's probability is known.
+[src:exemplars-metrics/sampling-statistics] When every element in the population *does* have the same probability of selection, this is known as an 'equal probability of selection' (EPS) design.
+[src:exemplars-metrics/sampling-statistics] Such designs are also referred to as 'self-weighting' because all sampled units are given the same weight.
+[src:exemplars-metrics/sampling-statistics] Probability sampling includes: simple random sampling, systematic sampling, stratified sampling, probability-proportional-to-size sampling, and cluster or multistage sampling.
+[src:exemplars-metrics/sampling-statistics] 2. involves random selection at some point.
+[src:exemplars-metrics/sampling-statistics] Nonprobability sampling methods include convenience sampling, quota sampling, snowball sampling, and purposive sampling.
+[src:exemplars-metrics/sampling-statistics] In addition, nonresponse effects may turn *any* probability design into a nonprobability design if the characteristics of nonresponse are not well understood, since nonresponse effectively modifies each element's probability of being sampled.
+[src:exemplars-metrics/sampling-statistics] Within any of the types of frames identified above, a variety of sampling methods can be employed individually or in combination.
+[src:exemplars-metrics/sampling-statistics] In a simple random sample (SRS) of a given size, all subsets of a sampling frame have an equal probability of being selected.
+[src:exemplars-metrics/sampling-statistics] Each element of the frame thus has an equal probability of selection: the frame is not subdivided or partitioned.
+[src:exemplars-metrics/sampling-statistics] Furthermore, any given *pair* of elements has the same chance of selection as any other such pair (and similarly for triples, and so on).
+[src:exemplars-metrics/sampling-statistics] This minimizes bias and simplifies analysis of results.
+[src:exemplars-metrics/sampling-statistics] In particular, the variance between individual results within the sample is a good indicator of variance in the overall population, which makes it relatively easy to estimate the accuracy of results.
+[src:exemplars-metrics/sampling-statistics] Simple random sampling can be vulnerable to sampling error because the randomness of the selection may result in a sample that does not reflect the makeup of the population.
+[src:exemplars-metrics/sampling-statistics] For instance, a simple random sample of ten people from a given country will *on average* produce five men and five women, but any given trial is likely to overrepresent one sex and underrepresent the other.
+[src:exemplars-metrics/sampling-statistics] Systematic and stratified techniques attempt to overcome this problem by "using information about the population" to choose a more "representative" sample.
+[src:exemplars-metrics/sampling-statistics] Also, simple random sampling can be cumbersome and tedious when sampling from a large target population.
+[src:exemplars-metrics/sampling-statistics] In some cases, investigators are interested in research questions specific to subgroups of the population.
+[src:exemplars-metrics/sampling-statistics] For example, researchers might be interested in examining whether cognitive ability as a predictor of job performance is equally applicable across racial groups.
+[src:exemplars-metrics/sampling-statistics] Simple random sampling cannot accommodate the needs of researchers in this situation, because it does not provide subsamples of the population, and other sampling strategies, such as stratified sampling, can be used instead.
+[src:exemplars-metrics/sampling-statistics] Systematic sampling (also known as interval sampling) relies on arranging the study population according to some ordering scheme, and then selecting elements at regular intervals through that ordered list.
+[src:exemplars-metrics/sampling-statistics] Systematic sampling involves a random start and then proceeds with the selection of every *k*th element from then onwards.
+[src:exemplars-metrics/sampling-statistics] In this case, *k*=(population size/sample size).
+[src:exemplars-metrics/sampling-statistics] It is important that the starting point is not automatically the first in the list, but is instead randomly chosen from within the first to the *k*th element in the list.
+[src:exemplars-metrics/sampling-statistics] A simple example would be to select every 10th name from the telephone directory (an 'every 10th' sample, also referred to as 'sampling with a skip of 10').
+[src:exemplars-metrics/sampling-statistics] As long as the starting point is randomized, systematic sampling is a type of probability sampling.
+[src:exemplars-metrics/sampling-statistics] It is easy to implement and the stratification induced can make it efficient, *if* the variable by which the list is ordered is correlated with the variable of interest.
+[src:exemplars-metrics/sampling-statistics] 'Every 10th' sampling is especially useful for efficient sampling from databases.
+[src:exemplars-metrics/sampling-statistics] For example, suppose we wish to sample people from a long street that starts in a poor area (house No.
+[src:exemplars-metrics/sampling-statistics] 1) and ends in an expensive district (house No.
+[src:exemplars-metrics/sampling-statistics] A simple random selection of addresses from this street could easily end up with too many from the high end and too few from the low end (or vice versa), leading to an unrepresentative sample.
+[src:exemplars-metrics/sampling-statistics] Selecting (e.g.) every 10th street number along the street ensures that the sample is spread evenly along the length of the street, representing all of these districts.
+[src:exemplars-metrics/sampling-statistics] However, systematic sampling is especially vulnerable to periodicities in the list.
+[src:exemplars-metrics/sampling-statistics] If periodicity is present and the period is a multiple or factor of the interval used, the sample is especially likely to be *un*representative of the overall population, making the scheme less accurate than simple random sampling.
+[src:exemplars-metrics/sampling-statistics] For example, consider a street where the odd-numbered houses are all on the north (expensive) side of the road, and the even-numbered houses are all on the south (cheap) side.
+[src:exemplars-metrics/sampling-statistics] Another drawback of systematic sampling is that even in scenarios where it is more accurate than SRS, its theoretical properties make it difficult to *quantify* that accuracy.
+[src:exemplars-metrics/sampling-statistics] As described above, systematic sampling is an EPS method, because all elements have the same probability of selection (in the example given, one in ten).
+[src:exemplars-metrics/sampling-statistics] It is *not* 'simple random sampling' because different subsets of the same size have different selection probabilities – e.g., the set {4,14,24,...,994} has a one-in-ten probability of selection, but the set {4,13,24,34,...} has zero probability of selection.
+[src:exemplars-metrics/sampling-statistics] Systematic sampling can also be adapted to a non-EPS approach; for an example, see discussion of PPS samples below.
+[src:exemplars-metrics/sampling-statistics] When the population embraces a number of distinct categories, the frame can be organized by these categories into separate "strata." Each stratum is then sampled as an independent sub-population, out of which individual elements can be randomly selected.
+[src:exemplars-metrics/sampling-statistics] The ratio of the size of this random selection (or sample) to the size of the population is called a sampling fraction.
+[src:exemplars-metrics/sampling-statistics] There are several potential benefits to stratified sampling.
+[src:exemplars-metrics/sampling-statistics] First, dividing the population into distinct, independent strata can enable researchers to draw inferences about specific subgroups that may be lost in a more generalized random sample.
+[src:exemplars-metrics/sampling-statistics] Second, utilizing a stratified sampling method can lead to more efficient statistical estimates (provided that strata are selected based upon relevance to the criterion in question, instead of availability of the samples).
+[src:exemplars-metrics/sampling-statistics] Even if a stratified sampling approach does not lead to increased statistical efficiency, such a tactic will not result in less efficiency than would simple random sampling, provided that each stratum is proportional to the group's size in the population.
+[src:exemplars-metrics/sampling-statistics] Finally, since each stratum is treated as an independent population, different sampling approaches can be applied to different strata, potentially enabling researchers to use the approach best suited (or most cost-effective) for each identified subgroup within the population.
+[src:exemplars-metrics/sampling-statistics] There are, however, some potential drawbacks to using stratified sampling.
+[src:exemplars-metrics/sampling-statistics] First, identifying strata and implementing such an approach can increase the cost and complexity of sample selection, as well as leading to increased complexity of population estimates.
+[src:exemplars-metrics/sampling-statistics] Second, when examining multiple criteria, stratifying variables may be related to some, but not to others, further complicating the design, and potentially reducing the utility of the strata.
+[src:exemplars-metrics/sampling-statistics] The variables upon which the population is stratified are strongly correlated with the desired dependent variable.
+[src:exemplars-metrics/sampling-statistics] Allows use of different sampling techniques for different subpopulations.
+[src:exemplars-metrics/sampling-statistics] Improves the accuracy/efficiency of estimation.
+[src:exemplars-metrics/sampling-statistics] Permits greater balancing of statistical power of tests of differences between strata by sampling equal numbers from strata varying widely in size.
+[src:exemplars-metrics/sampling-statistics] Is not useful when there are no homogeneous subgroups.
+[src:exemplars-metrics/sampling-statistics] Stratification is sometimes introduced after the sampling phase in a process called "poststratification".
+[src:exemplars-metrics/sampling-statistics] This approach is typically implemented due to a lack of prior knowledge of an appropriate stratifying variable or when the experimenter lacks the necessary information to create a stratifying variable during the sampling phase.
+[src:exemplars-metrics/sampling-statistics] Although the method is susceptible to the pitfalls of post hoc approaches, it can provide several benefits in the right situation.
+[src:exemplars-metrics/sampling-statistics] Implementation usually follows a simple random sample.
+[src:exemplars-metrics/sampling-statistics] In addition to allowing for stratification on an ancillary variable, poststratification can be used to implement weighting, which can improve the precision of a sample's estimates.
+[src:exemplars-metrics/sampling-statistics] Choice-based sampling or oversampling is one of the stratified sampling strategies.
+[src:exemplars-metrics/sampling-statistics] In choice-based sampling, the data are stratified on the target and a sample is taken from each stratum so that rarer target classes will be more represented in the sample.
+[src:exemplars-metrics/sampling-statistics] The model is then built on this biased sample.
+[src:exemplars-metrics/sampling-statistics] The effects of the input variables on the target are often estimated with more precision with the choice-based sample even when a smaller overall sample size is taken, compared to a random sample.
+[src:exemplars-metrics/sampling-statistics] The results usually must be adjusted to correct for the oversampling.
+[src:exemplars-metrics/sampling-statistics] In some cases the sample designer has access to an "auxiliary variable" or "size measure", believed to be correlated to the variable of interest, for each element in the population.
+[src:exemplars-metrics/sampling-statistics] These data can be used to improve accuracy in sample design.
+[src:exemplars-metrics/sampling-statistics] One option is to use the auxiliary variable as a basis for stratification, as discussed above.
+[src:exemplars-metrics/sampling-statistics] Another option is probability proportional to size ('PPS') sampling, in which the selection probability for each element is set to be proportional to its size measure, up to a maximum of 1.
+[src:exemplars-metrics/sampling-statistics] In a simple PPS design, these selection probabilities can then be used as the basis for Poisson sampling.
+[src:exemplars-metrics/sampling-statistics] However, this has the drawback of variable sample size, and different portions of the population may still be over- or under-represented due to chance variation in selections.
+[src:exemplars-metrics/sampling-statistics] Systematic sampling theory can be used to create a probability proportionate to size sample.
+[src:exemplars-metrics/sampling-statistics] This is done by treating each count within the size variable as a single sampling unit.
+[src:exemplars-metrics/sampling-statistics] Samples are then identified by selecting at even intervals among these counts within the size variable.
+[src:exemplars-metrics/sampling-statistics] This method is sometimes called PPS-sequential or monetary unit sampling in the case of audits or forensic sampling.
+[src:exemplars-metrics/sampling-statistics] The PPS approach can improve accuracy for a given sample size by concentrating sample on large elements that have the greatest impact on population estimates.
+[src:exemplars-metrics/sampling-statistics] PPS sampling is commonly used for surveys of businesses, where element size varies greatly and auxiliary information is often available – for instance, a survey attempting to measure the number of guest-nights spent in hotels might use each hotel's number of rooms as an auxiliary variable.
+[src:exemplars-metrics/sampling-statistics] In some cases, an older measurement of the variable of interest can be used as an auxiliary variable when attempting to produce more current estimates.
+[src:exemplars-metrics/sampling-statistics] Sometimes it is more cost-effective to select respondents in groups ('clusters').
+[src:exemplars-metrics/sampling-statistics] Sampling is often clustered by geography or by time periods (nearly all samples are in some sense 'clustered' in time – although this is rarely taken into account in the analysis).
+[src:exemplars-metrics/sampling-statistics] For instance, if surveying households within a city, we might choose to select 100 city blocks and then interview every household within the selected blocks.
+[src:exemplars-metrics/sampling-statistics] Clustering can reduce travel and administrative costs.
+[src:exemplars-metrics/sampling-statistics] In the example above, an interviewer can make a single trip to visit several households in one block, rather than having to drive to a different block for each household.
+[src:exemplars-metrics/sampling-statistics] It also means that one does not need a sampling frame listing all elements in the target population.
+[src:exemplars-metrics/sampling-statistics] Instead, clusters can be chosen from a cluster-level frame, with an element-level frame created only for the selected clusters.
+[src:exemplars-metrics/sampling-statistics] In the example above, the sample only requires a block-level city map for initial selections, and then a household-level map of the 100 selected blocks, rather than a household-level map of the whole city.
+[src:exemplars-metrics/sampling-statistics] Cluster sampling (also known as clustered sampling) generally increases the variability of sample estimates above that of simple random sampling, depending on how the clusters differ between one another as compared to the within-cluster variation.
+[src:exemplars-metrics/sampling-statistics] For this reason, cluster sampling requires a larger sample than SRS to achieve the same level of accuracy – but cost savings from clustering might still make this a cheaper option.
+[src:exemplars-metrics/sampling-statistics] Cluster sampling is commonly implemented as multistage sampling.
+[src:exemplars-metrics/sampling-statistics] This is a complex form of cluster sampling in which two or more levels of units are embedded one in the other.
+[src:exemplars-metrics/sampling-statistics] The first stage consists of constructing the clusters that will be used to sample from.
+[src:exemplars-metrics/sampling-statistics] In the second stage, a sample of primary units is randomly selected from each cluster (rather than using all units contained in all selected clusters).
+[src:exemplars-metrics/sampling-statistics] In following stages, in each of those selected clusters, additional samples of units are selected, and so on.
+[src:exemplars-metrics/sampling-statistics] All ultimate units (individuals, for instance) selected at the last step of this procedure are then surveyed.
+[src:exemplars-metrics/sampling-statistics] This technique, thus, is essentially the process of taking random subsamples of preceding random samples.
+[src:exemplars-metrics/sampling-statistics] Multistage sampling can substantially reduce sampling costs, where the complete population list would need to be constructed (before other sampling methods could be applied).
+[src:exemplars-metrics/sampling-statistics] By eliminating the work involved in describing clusters that are not selected, multistage sampling can reduce the large costs associated with traditional cluster sampling.
+[src:exemplars-metrics/sampling-statistics] However, each sample may not be a full representative of the whole population.
+[src:exemplars-metrics/sampling-statistics] In *quota sampling*, the population is first segmented into mutually exclusive sub-groups, just as in stratified sampling.
+[src:exemplars-metrics/sampling-statistics] Then judgement is used to select the subjects or units from each segment based on a specified proportion.
+[src:exemplars-metrics/sampling-statistics] For example, an interviewer may be told to sample 200 females and 300 males between the age of 45 and 60.
+[src:exemplars-metrics/sampling-statistics] It is this second step which makes the technique one of nonprobability sampling.
+[src:exemplars-metrics/sampling-statistics] In quota sampling the selection of the sample is non-random.
+[src:exemplars-metrics/sampling-statistics] For example, interviewers might be tempted to interview those who look most helpful.
+[src:exemplars-metrics/sampling-statistics] The problem is that these samples may be biased because not everyone gets a chance of selection.
+[src:exemplars-metrics/sampling-statistics] This random element is its greatest weakness and quota versus probability has been a matter of controversy for several years.
+[src:exemplars-metrics/sampling-statistics] In imbalanced datasets, where the sampling ratio does not follow the population statistics, one can resample the dataset in a conservative manner called minimax sampling.
+[src:exemplars-metrics/sampling-statistics] The minimax sampling has its origin in Anderson minimax ratio whose value is proved to be 0.5: in a binary classification, the class-sample sizes should be chosen equally.
+[src:exemplars-metrics/sampling-statistics] This ratio can be proved to be minimax ratio only under the assumption of LDA classifier with Gaussian distributions.
+[src:exemplars-metrics/sampling-statistics] The notion of minimax sampling is recently developed for a general class of classification rules, called class-wise smart classifiers.
+[src:exemplars-metrics/sampling-statistics] In this case, the sampling ratio of classes is selected so that the worst case classifier error over all the possible population statistics for class prior probabilities, would be the best.
+[src:exemplars-metrics/sampling-statistics] Accidental sampling (sometimes known as **grab**, **convenience**, or **opportunity sampling**) is a type of nonprobability sampling which involves the sample being drawn from that part of the population which is close to hand.
+[src:exemplars-metrics/sampling-statistics] That is, a population is selected because it is readily available and convenient.
+[src:exemplars-metrics/sampling-statistics] It may be through meeting the person or including a person in the sample when one meets them or chosen by finding them through technological means such as the internet or through phone.
+[src:exemplars-metrics/sampling-statistics] The researcher using such a sample cannot scientifically make generalizations about the total population from this sample because it would not be representative enough.
+[src:exemplars-metrics/sampling-statistics] This type of sampling is most useful for pilot testing.
+[src:exemplars-metrics/sampling-statistics] Is there good reason to believe that a particular convenience sample would or should respond or behave differently than a random sample from the same population?
+[src:exemplars-metrics/sampling-statistics] Is the question being asked by the research one that can adequately be answered using a convenience sample?
+[src:exemplars-metrics/sampling-statistics] In social science research, snowball sampling is a similar technique, where existing study subjects are used to recruit more subjects into the sample.
+[src:exemplars-metrics/sampling-statistics] Some variants of snowball sampling, such as respondent driven sampling, allow calculation of selection probabilities and are probability sampling methods under certain conditions.
+[src:exemplars-metrics/sampling-statistics] The voluntary sampling method is a type of nonprobability sampling.
+[src:exemplars-metrics/sampling-statistics] Volunteers may be invited through advertisements in social media.
+[src:exemplars-metrics/sampling-statistics] The target population for advertisements can be selected by characteristics like location, age, sex, income, occupation, education, or interests using tools provided by the social medium.
+[src:exemplars-metrics/sampling-statistics] The advertisement may include a message about the research and link to a survey.
+[src:exemplars-metrics/sampling-statistics] After following the link and completing the survey, the volunteer submits the data to be included in the sample population.
+[src:exemplars-metrics/sampling-statistics] This method can reach a global population but is limited by the campaign budget.
+[src:exemplars-metrics/sampling-statistics] Volunteers outside the invited population may also be included in the sample.
+[src:exemplars-metrics/sampling-statistics] It is difficult to make generalizations from this sample because it may not represent the total population.
+[src:exemplars-metrics/sampling-statistics] Often, volunteers have a strong interest in the main topic of the survey.
+[src:exemplars-metrics/sampling-statistics] Line-intercept sampling is a method of sampling elements in a region whereby an element is sampled if a chosen line segment, called a "transect", intersects the element.
+[src:exemplars-metrics/sampling-statistics] Snowball sampling involves finding a small group of initial respondents and using them to recruit more respondents.
+[src:exemplars-metrics/sampling-statistics] It is particularly useful in cases where the population is hidden or difficult to enumerate.
+[src:exemplars-metrics/sampling-statistics] Theoretical sampling occurs when samples are selected on the basis of the results of the data collected so far with a goal of developing a deeper understanding of the area or develop theories.
+[src:exemplars-metrics/sampling-statistics] An initial, general sample is first collected with the goal of investigating general trends, where further sampling may consist of extreme or very specific cases might be selected in order to maximize the likelihood a phenomenon will actually be observable.
+[src:exemplars-metrics/sampling-statistics] In active sampling, the samples which are used for training a machine learning algorithm are actively selected, also compare active learning (machine learning).
+[src:exemplars-metrics/sampling-statistics] Judgement sampling, also known as expert or purposive sampling, is a type of non-random sampling where samples are selected based on the opinion of an expert, who can select participants based on how valuable the information they provide is.
+[src:exemplars-metrics/sampling-statistics] Haphazard sampling refers to the idea of using human judgement to simulate randomness.
+[src:exemplars-metrics/sampling-statistics] Despite samples being hand-picked, the goal is to ensure that no conscious bias exists within the choice of samples, but often fails due to selection bias.
+[src:exemplars-metrics/sampling-statistics] Haphazard sampling is generally opted for due to its convenience, when the tools or capacity to perform other sampling methods may not exist.
+[src:exemplars-metrics/sampling-statistics] The major weakness of such samples is that they often do not represent the characteristics of the entire population, but just a segment of the population.
+[src:exemplars-metrics/sampling-statistics] Because of this unbalanced representation, results from haphazard sampling are often biased.
+[src:exemplars-metrics/sampling-statistics] Sampling schemes may be *without replacement* ('WOR' – no element can be selected more than once in the same sample) or *with replacement* ('WR' – an element may appear multiple times in the one sample).
+[src:exemplars-metrics/sampling-statistics] For example, if we catch fish, measure them, and immediately return them to the water before continuing with the sample, this is a WR design, because we might end up catching and measuring the same fish more than once.
+[src:exemplars-metrics/sampling-statistics] However, if we do not return the fish to the water or tag and release each fish after catching it, this becomes a WOR design.
+[src:exemplars-metrics/sampling-statistics] Formulas, tables, and power function charts are well known approaches to determine sample size.
+[src:exemplars-metrics/sampling-statistics] Locate the column corresponding to the estimated effect size.
+[src:exemplars-metrics/sampling-statistics] The intersection of the column and row is the minimum sample size required.
+[src:exemplars-metrics/sampling-statistics] Sampling enables the selection of right data points from within the larger data set to estimate the characteristics of the whole population.
+[src:exemplars-metrics/sampling-statistics] For example, there are about 600 million tweets produced every day.
+[src:exemplars-metrics/sampling-statistics] It is not necessary to look at all of them to determine the topics that are discussed during the day, nor is it necessary to look at all the tweets to determine the sentiment on each of the topics.
+[src:exemplars-metrics/sampling-statistics] A theoretical formulation for sampling Twitter data has been developed.
+[src:exemplars-metrics/sampling-statistics] In manufacturing different types of sensory data such as acoustics, vibration, pressure, current, voltage, and controller data are available at short time intervals.
+[src:exemplars-metrics/sampling-statistics] To predict down-time it may not be necessary to look at all the data but a sample may be sufficient.
+[src:exemplars-metrics/sampling-statistics] Survey results are typically subject to some error.
+[src:exemplars-metrics/sampling-statistics] Total errors can be classified into sampling errors and non-sampling errors.
+[src:exemplars-metrics/sampling-statistics] The term "error" here includes systematic biases as well as random errors.
+[src:exemplars-metrics/sampling-statistics] Sampling errors and biases are induced by the sample design.
+[src:exemplars-metrics/sampling-statistics] Random sampling error: Random variation in the results due to the elements in the sample being selected at random.
+[src:exemplars-metrics/sampling-statistics] Non-sampling errors are other errors which can impact final survey estimates, caused by problems in data collection, processing, or sample design.
+[src:exemplars-metrics/sampling-statistics] Under-coverage: sampling frame does not include elements in the population.
+[src:exemplars-metrics/sampling-statistics] After sampling, a review is held of the exact process followed in sampling, rather than that intended, in order to study any effects that any divergences might have on subsequent analysis.
+[src:exemplars-metrics/sampling-statistics] A particular problem involves *non-response*.
+[src:exemplars-metrics/sampling-statistics] In survey sampling, many of the individuals identified as part of the sample may be unwilling to participate, not have the time to participate (opportunity cost), or survey administrators may not have been able to contact them.
+[src:exemplars-metrics/sampling-statistics] In this case, there is a risk of differences between respondents and nonrespondents, leading to biased estimates of population parameters.
+[src:exemplars-metrics/sampling-statistics] This is often addressed by improving survey design, offering incentives, and conducting follow-up studies which make a repeated attempt to contact the unresponsive and to characterize their similarities and differences with the rest of the frame.
+[src:exemplars-metrics/sampling-statistics] The effects can also be mitigated by weighting the data (when population benchmarks are available) or by imputing data based on answers to other questions.
+[src:exemplars-metrics/sampling-statistics] Nonresponse is particularly a problem in internet sampling.
+[src:exemplars-metrics/sampling-statistics] Reasons for this problem may include improperly designed surveys, over-surveying (or survey fatigue), and the fact that potential participants may have multiple e-mail addresses, which they do not use anymore or do not check regularly.
+[src:exemplars-metrics/sampling-statistics] In many situations, the sample fraction may be varied by stratum and data will have to be weighted to correctly represent the population.
+[src:exemplars-metrics/sampling-statistics] Thus for example, a simple random sample of individuals in the United Kingdom might not include some in remote Scottish islands who would be inordinately expensive to sample.
+[src:exemplars-metrics/sampling-statistics] A cheaper method would be to use a stratified sample with urban and rural strata.
+[src:exemplars-metrics/sampling-statistics] The rural sample could be under-represented in the sample, but weighted up appropriately in the analysis to compensate.
+[src:exemplars-metrics/sampling-statistics] More generally, data should usually be weighted if the sample design does not give each individual an equal chance of being selected.
+[src:exemplars-metrics/sampling-statistics] For instance, when households have equal selection probabilities but one person is interviewed from within each household, this gives people from large households a smaller chance of being interviewed.
+[src:exemplars-metrics/sampling-statistics] This can be accounted for using survey weights.
+[src:exemplars-metrics/sampling-statistics] Similarly, households with more than one telephone line have a greater chance of being selected in a random digit dialing sample, and weights can adjust for this.
+[src:exemplars-metrics/sampling-statistics] Weights can also serve other purposes, such as helping to correct for non-response.
+[src:exemplars-metrics/tracing-software] Logs that record program usage (such as a server log) or operating-system events primarily of interest to a system administrator (see for example *Event Viewer*) fall into a terminological gray area.
+[src:exemplars-metrics/tracing-software] Tracing is primarily used for anomaly detection, fault analysis, debugging or diagnostic purposes in distributed software systems, such as microservices or serverless functions.
+[src:exemplars-metrics/tracing-software] Software tracing is a tool for developers to gather information for debugging.
+[src:exemplars-metrics/tracing-software] This information is used both during development cycles and post-release.
+[src:exemplars-metrics/tracing-software] Unlike event logging, software tracing usually does not have the concept of a "class" of event or an "event code".
+[src:exemplars-metrics/tracing-software] OpenTelemetry is a CNCF open source project that provides comprehensive support for distributed tracing.
+[src:exemplars-metrics/tracing-software] Some vendors including Datadog, Dynatrace, New Relic, Splunk also offer tracing SaaS services.
+[src:exemplars-metrics/tracing-software] Google and Meta have developed their own tracing frameworks, named Dapper and Canopy respectively.
+[src:exemplars-metrics/tracing-software] In operating systems, tracing can be used in situations (such as booting) where some of the technologies used to provide event logging may not be available.
+[src:exemplars-metrics/tracing-software] Linux offers system-level and user-level tracing capabilities with kernel markers and LTTng. ftrace also supports Linux kernel tracing. syslog is another tool in various operating systems for logging and tracing system messages.
+[src:exemplars-metrics/tracing-software] FreeBSD and SmartOS employ DTrace for tracing in both user space and kernel space.
+[src:exemplars-metrics/tracing-software] In embedded software, tracing also requires special techniques for efficient instrumentation and logging and low CPU overhead.
+[src:exemplars-metrics/tracing-software] Trace generation of method calls can be done with source code instrumentation, runtime information collection, or under debugger control.
+[src:exemplars-metrics/tracing-software] Tracing macros, aspect-oriented programming and related instrumentation techniques can be employed.
+[src:exemplars-metrics/tracing-software] Libraries used in source code send data to an agent or directly to the collection component.
+[src:exemplars-metrics/tracing-software] To model execution trees, ISVis converts a rooted tree into a directed acyclic graph while Jinsight utilizes the call frame principle to gather and represent cumulative information about traces.
+[src:exemplars-metrics/tracing-software] The primary visualization method is the swimlane view, which is exemplified by tools like Jaeger and often includes annotations and key-value attributes.
+[src:exemplars-metrics/tracing-software] Despite its widespread use, this design lacks rigorous justification and users frequently face challenges like missing features and confusing navigation.
+[src:exemplars-metrics/tracing-software] Alternatives to swimlane views exist, like Jaeger’s service dependency view or SkyWalking’s List, Tree, and Table views.
+[src:exemplars-metrics/tracing-software] Aggregate visualizations are also used for analyzing large volumes of traces, with systems like Canopy offering queryable metrics and Jaeger providing trace comparison features.
+[src:exemplars-metrics/tracing-software] Event logging provides system administrators with information useful for diagnostics and auditing.
+[src:exemplars-metrics/tracing-software] The different classes of events that will be logged, as well as what details will appear in the event messages, are often considered early in the development cycle.
+[src:exemplars-metrics/tracing-software] Many event logging technologies allow or even require each class of event to be assigned a unique "code", which is used by the event logging software or a separate viewer (e.g., Event Viewer) to format and output a human-readable message.
+[src:exemplars-metrics/tracing-software] This facilitates localization and allows system administrators to more easily obtain information on problems that occur.
+[src:exemplars-metrics/tracing-software] Because event logging is used to log high-level information (often failure information), performance of the logging implementation is often less important.
+[src:exemplars-metrics/tracing-software] A special concern, preventing duplicate events from being recorded "too often" is taken care of through event throttling.
+[src:exemplars-metrics/tracing-software] Difficulties in making a clear distinction between event logging and software tracing arise from the fact that some of the same technologies are used for both, and further because many of the criteria that distinguish between the two are continuous rather than discrete.
+[src:exemplars-metrics/tracing-software] Enabling or disabling tracing during runtime often necessitates the inclusion of extra data in the binary.
+[src:exemplars-metrics/tracing-software] This can lead to performance degradation, even when tracing is not active.
+[src:exemplars-metrics/tracing-software] The overhead of tracing depends on the used framework and the activated features; in production servers, there is a trade-off between how fine-grained the tracing is and the incurred overhead.
+[src:exemplars-metrics/tracing-software] If tracing is enabled or disabled at compile-time, collecting trace data from a client's system hinges on their willingness and capability to install a version of the software specifically enabled for tracing, and subsequently replicate the issue.
+[src:exemplars-metrics/tracing-software] Tracing in software typically demands high standards of robustness, not only in the accuracy and reliability of the trace output but also in ensuring that the process being traced remains uninterrupted.
+[src:exemplars-metrics/tracing-software] Given its low-level nature, tracing can generate a large volume of messages.
+[src:exemplars-metrics/tracing-software] To mitigate performance issues, it's often necessary to have the option to deactivate software tracing, either at the time of compilation or during run-time.
+[src:exemplars-metrics/tracing-software] In proprietary software, tracing data may include sensitive information about the product's source code.

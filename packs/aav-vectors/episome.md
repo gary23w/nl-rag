@@ -1,0 +1,24 @@
+---
+title: "Episome"
+source: https://en.wikipedia.org/wiki/Episome
+domain: aav-vectors
+license: CC-BY-SA-4.0
+tags: adeno-associated virus, capsid serotype, tropism, packaging
+fetched: 2026-07-02
+---
+
+# Episome
+
+An **episome** is a special type of plasmid, which remains as a part of the eukaryotic genome without integration. Episomes manage this by replicating together with the rest of the genome and subsequently associating with metaphase chromosomes during mitosis. Episomes do not degrade, unlike standard plasmids, and can be designed so that they are not epigenetically silenced inside the eukaryotic cell nucleus. Episomes can be observed in nature in certain types of long-term infection by adeno-associated virus or Epstein-Barr virus. In 2004, it was proposed that non-viral episomes might be used in genetic therapy for long-term change in gene expression.
+
+As of 1999, there were many known sequences of DNA (deoxyribonucleic acid) that allow a standard plasmid to become episomally retained. One example is the S/MAR sequence.
+
+The length of episomal retention is fairly variable between different genetic constructs and there are many known features in the sequence of an episome which will affect the length and stability of genetic expression of the carried transgene. Among these features is the number of CpG sites which contribute to epigenetic silencing of the transgene carried by the episome.
+
+## Mechanism of episomal retention
+
+The mechanism behind episomal retention in the case of S/MAR episomes is still uncertain. As of 1985, in the case of latent Epstein-Barr virus infection, episomes seemed to be associated with nuclear proteins of the host cell through a set of viral proteins.
+
+## Episomes in prokaryotes
+
+Episomes in prokaryotes are special sequences which can divide either separate from or integrated into the prokaryotic chromosome.

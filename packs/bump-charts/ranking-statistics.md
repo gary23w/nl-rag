@@ -1,0 +1,50 @@
+---
+title: "Ranking (statistics)"
+source: https://en.wikipedia.org/wiki/Ranking_(statistics)
+domain: bump-charts
+license: CC-BY-SA-4.0
+tags: bump chart, rank correlation, ranked positions, ranking over time
+fetched: 2026-07-02
+---
+
+# Ranking (statistics)
+
+In statistics, **ranking** is the data transformation in which numerical or ordinal values are replaced by their rank when the data are sorted.
+
+For example, the ranks of the numerical data 3.4, 5.1, 2.6, 7.3 are 2, 3, 1, 4.
+
+As another example, the ordinal data hot, cold, warm would be replaced by 3, 1, 2. In these examples, the ranks are assigned to values in ascending order, although descending ranks can also be used.
+
+Ranks are related to the indexed list of order statistics, which consists of the original dataset rearranged into ascending order.
+
+## Use for testing
+
+Some kinds of statistical tests employ calculations based on ranks. Examples include:
+
+- Friedman test
+- Kruskal–Wallis test
+- Rank products
+- Spearman's rank correlation coefficient
+- Mann–Whitney U test
+- Wilcoxon signed-rank test
+- Van der Waerden test
+
+The distribution of values in decreasing order of rank is often of interest when values vary widely in scale; this is the rank-size distribution (or rank-frequency distribution), for example for city sizes or word frequencies. These often follow a power law.
+
+Some ranks can have non-integer values for tied data values. For example, when there is an even number of copies of the same data value, the fractional statistical rank of the tied data ends in ½. Percentile rank is another type of statistical ranking.
+
+## Computation
+
+Microsoft Excel provides two ranking functions, the Rank.EQ function which assigns competition ranks in the case of ties, and the Rank.AVG function which assigns fractional ranks to ties. For example, if the data being ranked was ("5, 7, 7, 10"), then Rank.EQ would return ("1, 2, 2, 4"), whereas Rank.AVG would return ("1, 2.5, 2.5, 4"). Note that Rank.AVG preserves rank sums in the case of ties, whereas Rank.EQ does not. This makes the latter undesirable in many statistical applications. The functions have the order argument, which is by default is set to *descending*, i.e. the largest number will have a rank 1. This is generally uncommon for statistics where the ranking is usually in ascending order, where the smallest number has a rank 1.
+
+## Comparison of rankings
+
+A rank correlation can be used to compare two rankings for the same set of objects. For example, Spearman's rank correlation coefficient is useful to measure the statistical dependence between the rankings of athletes in two tournaments. And the Kendall rank correlation coefficient is another approach. Alternatively, intersection/overlap-based approaches offer additional flexibility. One example is the "Rank–rank hypergeometric overlap" approach, which is designed to compare ranking of the genes that are at the "top" of two ordered lists of differentially expressed genes. A similar approach is taken by the "Rank Biased Overlap (RBO)", which also implements an adjustable probability, p, to customize the weight assigned at a desired depth of ranking. These approaches have the advantages of addressing disjoint sets, sets of different sizes, and top-weightedness (taking into account the absolute ranking position, which may be ignored in standard non-weighted rank correlation approaches).
+
+## Definition
+
+Let $X_{1},..X_{n}$ be a set of random variables. By sorting them into order, we have defined their order statistics
+
+$X_{n,(1)}\leq ...\leq X_{n,(n)}$
+
+If all the values are unique, the rank of variable number i is the unique solution $R_{n,i}$ to the equation $X_{i}=X_{N,(R_{n,i})}$ . In the presence of ties, we may either use a midrank (corresponding to the "fractional rank" mentioned above), defined as the average of all indices i such that $X_{j}=X_{N,(R_{n,j})}$ , or the uprank (corresponding to the "modified competition ranking") defined by $\sum _{j=1}^{n}1\{X_{j}\leq X_{i}\}$ .

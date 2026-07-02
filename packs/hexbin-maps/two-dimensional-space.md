@@ -1,0 +1,40 @@
+---
+title: "Two-dimensional space"
+source: https://en.wikipedia.org/wiki/Two-dimensional_space
+domain: hexbin-maps
+license: CC-BY-SA-4.0
+tags: hexagonal binning, data binning, aggregate bins, density gridding
+fetched: 2026-07-02
+---
+
+# Two-dimensional space
+
+A **two-dimensional space** is a mathematical space with two dimensions, meaning points have two degrees of freedom: their locations can be locally described with two coordinates or they can move in two independent directions. Common two-dimensional spaces are often called *planes* (especially the Euclidean plane), or, more generally, *surfaces*. These include analogs to physical spaces, like flat planes, and curved surfaces like spheres, cylinders, and cones, which can be infinite or finite. Some two-dimensional mathematical spaces are not used to represent physical positions, like an affine plane or complex plane.
+
+## Flat
+
+The most basic example is the flat Euclidean plane, an idealization of a flat surface in physical space such as a sheet of paper or a chalkboard. On the Euclidean plane, any two points can be joined by a unique straight line along which the distance can be measured. The space is flat because any two lines transversed by a third line perpendicular to both of them are parallel, meaning they never intersect and stay at uniform distance from each-other.
+
+## Curved
+
+Two-dimensional spaces can also be curved, for example the sphere and hyperbolic plane, sufficiently small portions of which appear like the flat plane, but on which straight lines which are locally parallel do not stay equidistant from each-other but eventually converge or diverge, respectively. Two-dimensional spaces with a locally Euclidean concept of distance but which can have non-uniform curvature are called Riemannian surfaces. (Not to be confused with Riemann surfaces.) Some surfaces are embedded in three-dimensional Euclidean space or some other ambient space, and inherit their structure from it; for example, ruled surfaces such as the cylinder and cone contain a straight line through each point, and minimal surfaces locally minimize their area, as is done physically by soap films.
+
+## Relativistic
+
+Lorentzian surfaces look locally like a two-dimensional slice of relativistic spacetime with one spatial and one time dimension; constant-curvature examples are the flat Lorentzian plane (a two-dimensional subspace of Minkowski space) and the curved de Sitter and anti-de Sitter planes.
+
+## Non-Euclidean
+
+Other types of mathematical planes and surfaces modify or do away with the structures defining the Euclidean plane. For example, the affine plane has a notion of parallel lines but no notion of distance; however, signed areas can be meaningfully compared, as they can in a more general symplectic surface. The projective plane does away with both distance and parallelism. A two-dimensional metric space has some concept of distance but it need not match the Euclidean version. A topological surface can be stretched, twisted, or bent without changing its essential properties. An algebraic surface is a two-dimensional set of solutions of a system of polynomial equations.
+
+## Information-holding
+
+Some mathematical spaces have additional arithmetical structure associated with their points. A vector plane is an affine plane whose points, called *vectors*, include a special designated origin or zero vector. Vectors can be added together or scaled by a number, and optionally have a Euclidean, Lorentzian, or Galilean concept of distance. The complex plane, hyperbolic number plane, and dual number plane each have points which are considered numbers themselves, and can be added and multiplied. A Riemann surface or Lorentz surface appear locally like the complex plane or hyperbolic number plane, respectively.
+
+## Definition and meaning
+
+Mathematical spaces are often defined or represented using numbers rather than geometric axioms. One of the most fundamental two-dimensional spaces is the real coordinate space, denoted $\mathbb {R} ^{2},$ consisting of pairs of real-number coordinates. Sometimes the space represents arbitrary quantities rather than geometric positions, as in the parameter space of a mathematical model or the configuration space of a physical system.
+
+### Non-real numbers
+
+More generally, other types of numbers can be used as coordinates. The complex plane is two-dimensional when considered to be formed from real-number coordinates, but one-dimensional in terms of complex-number coordinates. A two-dimensional complex space – such as the two-dimensional complex coordinate space, the complex projective plane, or a complex surface – has two complex dimensions, which can alternately be represented using four real dimensions. A two-dimensional lattice is an infinite grid of points which can be represented using integer coordinates. Some two-dimensional spaces, such as finite planes, have only a finite set of elements.

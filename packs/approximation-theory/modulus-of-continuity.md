@@ -1,0 +1,145 @@
+---
+title: "Modulus of continuity"
+source: https://en.wikipedia.org/wiki/Modulus_of_continuity
+domain: approximation-theory
+license: CC-BY-SA-4.0
+tags: approximation theory, remez algorithm, pade approximant, minimax approximation
+fetched: 2026-07-02
+---
+
+# Modulus of continuity
+
+In mathematical analysis, a **modulus of continuity** is a function ω : [0, ∞] → [0, ∞] used to measure quantitatively the uniform continuity of functions. So, a function *f* : *I* → **R** admits ω as a modulus of continuity if
+
+$|f(x)-f(y)|\leq \omega (|x-y|),$
+
+for all *x* and *y* in the domain of *f*. Since moduli of continuity are required to be infinitesimal at 0, a function turns out to be uniformly continuous if and only if it admits a modulus of continuity. Moreover, relevance to the notion is given by the fact that sets of functions sharing the same modulus of continuity are exactly equicontinuous families. For instance, the modulus ω(*t*) := *kt* describes the k-Lipschitz functions, the moduli ω(*t*) := *kt*α describe the Hölder continuity, the modulus ω(*t*) := *kt*(|log *t*|+1) describes the **almost Lipschitz** class, and so on. In general, the role of ω is to fix some explicit functional dependence of ε on δ in the (ε, δ) definition of uniform continuity. The same notions generalize naturally to functions between metric spaces. Moreover, a suitable local version of these notions allows to describe quantitatively the continuity at a point in terms of moduli of continuity.
+
+A special role is played by concave moduli of continuity, especially in connection with extension properties, and with approximation of uniformly continuous functions. For a function between metric spaces, it is equivalent to admit a modulus of continuity that is either concave, or subadditive, or uniformly continuous, or sublinear (in the sense of growth). Actually, the existence of such special moduli of continuity for a uniformly continuous function is always ensured whenever the domain is either a compact, or a convex subset of a normed space. However, a uniformly continuous function on a general metric space admits a concave modulus of continuity if and only if the ratios
+
+${\frac {d_{Y}(f(x),f(x'))}{d_{X}(x,x')}}$
+
+are uniformly bounded for all pairs (*x*, *x*′) bounded away from the diagonal of *X x X*. The functions with the latter property constitute a special subclass of the uniformly continuous functions, that in the following we refer to as the *special uniformly continuous* functions. Real-valued special uniformly continuous functions on the metric space *X* can also be characterized as the set of all functions that are restrictions to *X* of uniformly continuous functions over any normed space isometrically containing *X*. Also, it can be characterized as the uniform closure of the Lipschitz functions on *X*.
+
+## Formal definition
+
+Formally, a modulus of continuity is any increasing real-extended valued function ω : [0, ∞] → [0, ∞], vanishing at 0 and continuous at 0, that is
+
+$\lim _{t\to 0}\omega (t)=\omega (0)=0.$
+
+Moduli of continuity are mainly used to give a quantitative account both of the continuity at a point, and of the uniform continuity, for functions between metric spaces, according to the following definitions.
+
+A function *f* : (*X*, *dX*) → (*Y*, *dY*) admits ω as (local) modulus of continuity at the point *x* in *X* if and only if,
+
+$\forall x'\in X:d_{Y}(f(x),f(x'))\leq \omega (d_{X}(x,x')).$
+
+Also, *f* admits ω as (global) modulus of continuity if and only if,
+
+$\forall x,x'\in X:d_{Y}(f(x),f(x'))\leq \omega (d_{X}(x,x')).$
+
+One equivalently says that ω is a modulus of continuity (resp., at *x*) for *f*, or shortly, *f* is ω-continuous (resp., at *x*). Here, we mainly treat the global notion.
+
+### Elementary facts
+
+- If *f* has ω as modulus of continuity and ω1 ≥ ω, then *f* admits ω1 too as modulus of continuity.
+- If *f* : *X* → *Y* and *g* : *Y* → *Z* are functions between metric spaces with moduli respectively ω1 and ω2 then the composition map $g\circ f:X\to Z$ has modulus of continuity $\omega _{2}\circ \omega _{1}$ .
+- If *f* and *g* are functions from the metric space X to the Banach space *Y*, with moduli respectively ω1 and ω2, then any linear combination *af*+*bg* has modulus of continuity |*a*|ω1+|*b*|ω2. The set of all functions from *X* to *Y* that have ω as a modulus of continuity is a convex subset of the vector space *C*(*X*, *Y*), closed under pointwise convergence.
+- If *f* and *g* are bounded real-valued functions on the metric space *X*, with moduli respectively ω1 and ω2, then the pointwise product *fg* has modulus of continuity $\|g\|_{\infty }\omega _{1}+\|f\|_{\infty }\omega _{2}$ .
+- If $\{f_{\lambda }\}_{\lambda \in \Lambda }$ is a family of real-valued functions on the metric space *X* with common modulus of continuity ω, then the inferior envelope $\inf _{\lambda \in \Lambda }f_{\lambda }$ , respectively, the superior envelope $\sup _{\lambda \in \Lambda }f_{\lambda }$ , is a real-valued function with modulus of continuity ω, provided it is finite valued at every point. If ω is real-valued, it is sufficient that the envelope be finite at one point of *X* at least.
+
+### Remarks
+
+- Some authors do not require monotonicity, and some require additional properties such as ω being continuous. However, if f admits a modulus of continuity in the weaker definition, it also admits a modulus of continuity which is increasing and infinitely differentiable in (0, ∞). For instance, $\omega _{1}(t):=\sup _{s\leq t}\omega (s)$ is increasing, and ω1 ≥ ω; $\omega _{2}(t):={\frac {1}{t}}\int _{t}^{2t}\omega _{1}(s)ds$ is also continuous, and ω2 ≥ ω1, and a suitable variant of the preceding definition also makes ω2 infinitely differentiable in [0, ∞].
+- Any uniformly continuous function admits a minimal modulus of continuity ω*f*, that is sometimes referred to as *the* (optimal) modulus of continuity of *f*: $\omega _{f}(t):=\sup\{d_{Y}(f(x),f(x')):x\in X,x'\in X,d_{X}(x,x')\leq t\},\quad \forall t\geq 0.$ Similarly, any function continuous at the point *x* admits a minimal modulus of continuity at *x*, ω*f*(*t*; *x*) (*the* (optimal) modulus of continuity of *f* at *x*) : $\omega _{f}(t;x):=\sup\{d_{Y}(f(x),f(x')):x'\in X,d_{X}(x,x')\leq t\},\quad \forall t\geq 0.$ However, these restricted notions are not as relevant, for in most cases the optimal modulus of *f* could not be computed explicitly, but only bounded from above (by *any* modulus of continuity of *f*). Moreover, the main properties of moduli of continuity concern directly the unrestricted definition.
+- In general, the modulus of continuity of a uniformly continuous function on a metric space needs to take the value +∞. For instance, the function *f* : **N** → **R** such that *f*(*n*) := *n*2 is uniformly continuous with respect to the discrete metric on **N**, and its minimal modulus of continuity is ω*f*(*t*) = +∞ for any *t*≥1, and ω*f*(*t*) = 0 otherwise. However, the situation is different for uniformly continuous functions defined on compact or convex subsets of normed spaces.
+
+## Special moduli of continuity
+
+Special moduli of continuity also reflect certain global properties of functions such as extendibility and uniform approximation. In this section we mainly deal with moduli of continuity that are concave, or subadditive, or uniformly continuous, or sublinear. These properties are essentially equivalent in that, for a modulus ω (more precisely, its restriction on [0, ∞)) each of the following implies the next:
+
+- ω is concave;
+- ω is subadditive;
+- ω is uniformly continuous;
+- ω is sublinear, that is, there are constants *a* and *b* such that ω(*t*) ≤ *at*+*b* for all *t*;
+- ω is dominated by a concave modulus, that is, there exists a concave modulus of continuity ${\tilde {\omega }}$ such that $\omega (t)\leq {\tilde {\omega }}(t)$ for all *t*.
+
+Thus, for a function *f* between metric spaces it is equivalent to admit a modulus of continuity which is either concave, or subadditive, or uniformly continuous, or sublinear. In this case, the function *f* is sometimes called a *special uniformly continuous* map. This is always true in case of either compact or convex domains. Indeed, a uniformly continuous map *f* : *C* → *Y* defined on a convex set *C* of a normed space *E* always admits a subadditive modulus of continuity; in particular, real-valued as a function ω : [0, ∞) → [0, ∞). Indeed, it is immediate to check that the optimal modulus of continuity ω*f* defined above is subadditive if the domain of *f* is convex: we have, for all *s* and *t*:
+
+${\begin{aligned}\omega _{f}(s+t)&=\sup _{|x-x'|\leq t+s}d_{Y}(f(x),f(x'))\\&\leq \sup _{|x-x'|\leq t+s}\left\{d_{Y}\left(f(x),f\left(x-t{\frac {x-x'}{|x-x'|}}\right)\right)+d_{Y}\left(f\left(x-t{\frac {x-x'}{|x-x'|}}\right),f(x')\right)\right\}\\&\leq \omega _{f}(t)+\omega _{f}(s).\end{aligned}}$
+
+Note that as an immediate consequence, any uniformly continuous function on a convex subset of a normed space has a sublinear growth: there are constants *a* and *b* such that |*f*(*x*)| ≤ *a*|*x*|+*b* for all *x*. However, a uniformly continuous function on a general metric space admits a concave modulus of continuity if and only if the ratios $d_{Y}(f(x),f(x'))/d_{X}(x,x')$ are uniformly bounded for all pairs (*x*, *x*′) with distance bounded away from zero; this condition is certainly satisfied by any bounded uniformly continuous function; hence in particular, by any continuous function on a compact metric space.
+
+### Sublinear moduli, and bounded perturbations from Lipschitz
+
+A sublinear modulus of continuity can easily be found for any uniformly continuous function which is a bounded perturbation of a Lipschitz function: if *f* is a uniformly continuous function with modulus of continuity ω, and *g* is a *k* Lipschitz function with uniform distance *r* from *f*, then *f* admits the sublinear modulus of continuity min{ω(*t*), 2*r*+*kt*}. Conversely, at least for real-valued functions, any special uniformly continuous function is a bounded, uniformly continuous perturbation of some Lipschitz function; indeed more is true as shown below (Lipschitz approximation).
+
+### Subadditive moduli, and extendibility
+
+The above property for uniformly continuous function on convex domains admits a sort of converse at least in the case of real-valued functions: that is, every special uniformly continuous real-valued function *f* : *X* → **R** defined on a metric space *X*, which is a metric subspace of a normed space *E*, admits extensions over *E* that preserves any subadditive modulus ω of *f*. The least and the greatest of such extensions are respectively:
+
+${\begin{aligned}f_{*}(x)&:=\sup _{y\in X}\left\{f(y)-\omega (|x-y|)\right\},\\f^{*}(x)&:=\inf _{y\in X}\left\{f(y)+\omega (|x-y|)\right\}.\end{aligned}}$
+
+As remarked, any subadditive modulus of continuity is uniformly continuous: in fact, it admits itself as a modulus of continuity. Therefore, *f*∗ and *f** are respectively inferior and superior envelopes of ω-continuous families; hence still ω-continuous. Incidentally, by the Kuratowski embedding any metric space is isometric to a subset of a normed space. Hence, special uniformly continuous real-valued functions are essentially the restrictions of uniformly continuous functions on normed spaces. In particular, this construction provides a quick proof of the Tietze extension theorem on compact metric spaces. However, for mappings with values in more general Banach spaces than **R**, the situation is quite more complicated; the first non-trivial result in this direction is the Kirszbraun theorem.
+
+### Concave moduli and Lipschitz approximation
+
+Every special uniformly continuous real-valued function *f* : *X* → **R** defined on the metric space *X* is uniformly approximable by means of Lipschitz functions. Moreover, the speed of convergence in terms of the Lipschitz constants of the approximations is strictly related to the modulus of continuity of *f*. Precisely, let ω be the minimal concave modulus of continuity of *f*, which is
+
+$\omega (t)=\inf {\big \{}at+b\,:\,a>0,\,b>0,\,\forall x\in X,\,\forall x'\in X\,\,|f(x)-f(x')|\leq ad(x,x')+b{\big \}}.$
+
+Let δ(*s*) be the uniform distance between the function *f* and the set Lip*s* of all Lipschitz real-valued functions on *C* having Lipschitz constant *s* :
+
+$\delta (s):=\inf {\big \{}\|f-u\|_{\infty ,X}\,:\,u\in \mathrm {Lip} _{s}{\big \}}\leq +\infty .$
+
+Then the functions ω(*t*) and δ(*s*) can be related with each other via a Legendre transformation: more precisely, the functions 2δ(*s*) and −ω(−*t*) (suitably extended to +∞ outside their domains of finiteness) are a pair of conjugated convex functions, for
+
+$2\delta (s)=\sup _{t\geq 0}\left\{\omega (t)-st\right\},$
+
+$\omega (t)=\inf _{s\geq 0}\left\{2\delta (s)+st\right\}.$
+
+Since ω(*t*) = o(1) for *t* → 0+, it follows that δ(*s*) = o(1) for *s* → +∞, that exactly means that *f* is uniformly approximable by Lipschitz functions. Correspondingly, an optimal approximation is given by the functions
+
+$f_{s}:=\delta (s)+\inf _{y\in X}\{f(y)+sd(x,y)\},\quad \mathrm {for} \ s\in \mathrm {dom} (\delta ):$
+
+each function *fs* has Lipschitz constant *s* and
+
+$\|f-f_{s}\|_{\infty ,X}=\delta (s);$
+
+in fact, it is the greatest *s*-Lipschitz function that realize the distance δ(*s*). For example, the α-Hölder real-valued functions on a metric space are characterized as those functions that can be uniformly approximated by *s*-Lipschitz functions with speed of convergence $O(s^{-{\frac {\alpha }{1-\alpha }}}),$ while the almost Lipschitz functions are characterized by an exponential speed of convergence $O(e^{-as}).$
+
+## Examples of use
+
+- Let *f* : [*a*, *b*] → **R** a continuous function. In the proof that *f* is Riemann integrable, one usually bounds the distance between the upper and lower Riemann sums with respect to the Riemann partition *P* := {*t*0, ..., *tn*} in terms of the modulus of continuity of *f* and the mesh of the partition *P* (which is the number ${\textstyle |P|:=\max _{0\leq i<n}(t_{i+1}-t_{i})}$ ) $S^{*}(f;P)-S_{*}(f;P)\leq (b-a)\omega (|P|).$
+- For an example of use in the Fourier series, see Dini test.
+
+## History
+
+Steffens (2006, p. 160) attributes the first usage of omega for the modulus of continuity to Lebesgue (1909, p. 309/p. 75) where omega refers to the oscillation of a Fourier transform. De la Vallée Poussin (1919, pp. 7–8) mentions both names (1) "modulus of continuity" and (2) "modulus of oscillation" and then concludes "but we choose (1) to draw attention to the usage we will make of it".
+
+## The translation group of *Lp* functions, and moduli of continuity *Lp*.
+
+Let 1 ≤ *p*; let *f* : **R***n* → **R** a function of class *Lp*, and let *h* ∈ **R***n*. The *h*-translation of *f*, the function defined by (τ*h**f*)(*x*) := *f*(*x*−*h*), belongs to the *Lp* class; moreover, if 1 ≤ *p* < ∞, then as ǁ*h*ǁ → 0 we have:
+
+$\|\tau _{h}f-f\|_{p}=o(1).$
+
+Therefore, since translations are in fact linear isometries, also
+
+$\|\tau _{v+h}f-\tau _{v}f\|_{p}=o(1),$
+
+as ǁ*h*ǁ → 0, uniformly on *v* ∈ **R***n*.
+
+In other words, the map *h* → τ*h* defines a strongly continuous group of linear isometries of *Lp*. In the case *p* = ∞ the above property does not hold in general: actually, it exactly reduces to the uniform continuity, and defines the uniform continuous functions. This leads to the following definition, that generalizes the notion of a modulus of continuity of the uniformly continuous functions: a modulus of continuity *Lp* for a measurable function *f* : *X* → **R** is a modulus of continuity ω : [0, ∞] → [0, ∞] such that
+
+$\|\tau _{h}f-f\|_{p}\leq \omega (h).$
+
+This way, moduli of continuity also give a quantitative account of the continuity property shared by all *Lp* functions.
+
+## Modulus of continuity of higher orders
+
+It can be seen that formal definition of the modulus uses notion of finite difference of first order:
+
+${\displaystyle \omega _{f}(\delta )=\omega (f,\delta )=\sup \limits _{x;|h|<\delta$
+
+If we replace that difference with a difference of order *n*, we get a modulus of continuity of order *n*:
+
+${\displaystyle \omega _{n}(f,\delta )=\sup \limits _{x;|h|<\delta$

@@ -188,6 +188,62 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | probabilistic-sketches | en.wikipedia.org | CC-BY-SA-4.0 |
 | rsa-algorithm-steps | en.wikipedia.org | CC-BY-SA-4.0 |
 | diffie-hellman-exchange | en.wikipedia.org | CC-BY-SA-4.0 |
+| convex-hull-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| line-segment-intersection | en.wikipedia.org | CC-BY-SA-4.0 |
+| voronoi-fortune | en.wikipedia.org | CC-BY-SA-4.0 |
+| delaunay-triangulation-algo | en.wikipedia.org | CC-BY-SA-4.0 |
+| point-location | en.wikipedia.org | CC-BY-SA-4.0 |
+| range-searching | en.wikipedia.org | CC-BY-SA-4.0 |
+| nearest-neighbor-search-nns | en.wikipedia.org | CC-BY-SA-4.0 |
+| closest-pair-algorithm | en.wikipedia.org | CC-BY-SA-4.0 |
+| rotating-calipers | en.wikipedia.org | CC-BY-SA-4.0 |
+| polygon-triangulation | en.wikipedia.org | CC-BY-SA-4.0 |
+| minimum-enclosing-circle | en.wikipedia.org | CC-BY-SA-4.0 |
+| gift-wrapping | en.wikipedia.org | CC-BY-SA-4.0 |
+| sweep-line-paradigm | en.wikipedia.org | CC-BY-SA-4.0 |
+| hopcroft-karp-matching | en.wikipedia.org | CC-BY-SA-4.0 |
+| hungarian-assignment | en.wikipedia.org | CC-BY-SA-4.0 |
+| blossom-edmonds-contraction | en.wikipedia.org | CC-BY-SA-4.0 |
+| stable-roommates | en.wikipedia.org | CC-BY-SA-4.0 |
+| push-relabel-maxflow | en.wikipedia.org | CC-BY-SA-4.0 |
+| min-cost-max-flow | en.wikipedia.org | CC-BY-SA-4.0 |
+| gomory-hu-tree | en.wikipedia.org | CC-BY-SA-4.0 |
+| stoer-wagner-mincut | en.wikipedia.org | CC-BY-SA-4.0 |
+| karger-randomized-cut | en.wikipedia.org | CC-BY-SA-4.0 |
+| johnson-all-pairs | en.wikipedia.org | CC-BY-SA-4.0 |
+| yen-k-shortest | en.wikipedia.org | CC-BY-SA-4.0 |
+| suurballe-disjoint-paths | en.wikipedia.org | CC-BY-SA-4.0 |
+| eulerian-path-traversal | en.wikipedia.org | CC-BY-SA-4.0 |
+| hierholzer | en.wikipedia.org | CC-BY-SA-4.0 |
+| christofides-tsp | en.wikipedia.org | CC-BY-SA-4.0 |
+| held-karp-exact | en.wikipedia.org | CC-BY-SA-4.0 |
+| lin-kernighan | en.wikipedia.org | CC-BY-SA-4.0 |
+| boruvka-mst | en.wikipedia.org | CC-BY-SA-4.0 |
+| reverse-delete-pruning | en.wikipedia.org | CC-BY-SA-4.0 |
+| heavy-light-decomposition | en.wikipedia.org | CC-BY-SA-4.0 |
+| centroid-tree-divide | en.wikipedia.org | CC-BY-SA-4.0 |
+| lowest-common-ancestor | en.wikipedia.org | CC-BY-SA-4.0 |
+| euler-tour-technique | en.wikipedia.org | CC-BY-SA-4.0 |
+| mo-query-ordering | en.wikipedia.org | CC-BY-SA-4.0 |
+| sqrt-block-buckets | en.wikipedia.org | CC-BY-SA-4.0 |
+| persistent-segment-versioned | en.wikipedia.org | CC-BY-SA-4.0 |
+| li-chao-envelope | en.wikipedia.org | CC-BY-SA-4.0 |
+| convex-hull-trick | en.wikipedia.org | CC-BY-SA-4.0 |
+| aho-corasick-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| suffix-automaton | en.wikipedia.org | CC-BY-SA-4.0 |
+| z-function-prefix | en.wikipedia.org | CC-BY-SA-4.0 |
+| manacher-palindrome | en.wikipedia.org | CC-BY-SA-4.0 |
+| burrows-wheeler-bwt | en.wikipedia.org | CC-BY-SA-4.0 |
+| wavelet-tree-succinct | en.wikipedia.org | CC-BY-SA-4.0 |
+| hungarian-simplex | en.wikipedia.org | CC-BY-SA-4.0 |
+| simplex-method-pivoting | en.wikipedia.org | CC-BY-SA-4.0 |
+| karmarkar-interior-point | en.wikipedia.org | CC-BY-SA-4.0 |
+| ellipsoid-method | en.wikipedia.org | CC-BY-SA-4.0 |
+| gradient-descent-variants | en.wikipedia.org | CC-BY-SA-4.0 |
+| adam-optimizer | en.wikipedia.org | CC-BY-SA-4.0 |
+| quasi-newton-bfgs | en.wikipedia.org | CC-BY-SA-4.0 |
+| levenberg-marquardt | en.wikipedia.org | CC-BY-SA-4.0 |
+| expectation-maximization-inference | en.wikipedia.org | CC-BY-SA-4.0 |
 | ssrf-defense | cheatsheetseries.owasp.org, en.wikipedia.org | CC-BY-SA-4.0 |
 | xxe-prevention | cheatsheetseries.owasp.org, en.wikipedia.org | CC-BY-SA-4.0 |
 | insecure-deserialization | cheatsheetseries.owasp.org, en.wikipedia.org, owasp.org | CC-BY-SA-4.0 |
@@ -241,6 +297,59 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | iac-security-scanning | cheatsheetseries.owasp.org, en.wikipedia.org | CC-BY-SA-4.0 |
 | sast-dast-integration | cheatsheetseries.owasp.org, en.wikipedia.org | CC-BY-SA-4.0 |
 | software-composition-analysis | cheatsheetseries.owasp.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| cryo-em | en.wikipedia.org | CC-BY-SA-4.0 |
+| x-ray-crystallography-protein | en.wikipedia.org | CC-BY-SA-4.0 |
+| protein-nmr | en.wikipedia.org | CC-BY-SA-4.0 |
+| alphafold-prediction | en.wikipedia.org | CC-BY-SA-4.0 |
+| protein-design-computational | en.wikipedia.org | CC-BY-SA-4.0 |
+| molecular-docking-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| virtual-screening | en.wikipedia.org | CC-BY-SA-4.0 |
+| structure-based-drug-design | en.wikipedia.org | CC-BY-SA-4.0 |
+| pharmacophore-modeling | en.wikipedia.org | CC-BY-SA-4.0 |
+| qsar-modeling | en.wikipedia.org | CC-BY-SA-4.0 |
+| admet-prediction | en.wikipedia.org | CC-BY-SA-4.0 |
+| lead-optimization | en.wikipedia.org | CC-BY-SA-4.0 |
+| high-throughput-screening | en.wikipedia.org | CC-BY-SA-4.0 |
+| fragment-based-drug-discovery | en.wikipedia.org | CC-BY-SA-4.0 |
+| antibody-engineering | en.wikipedia.org | CC-BY-SA-4.0 |
+| monoclonal-antibodies | en.wikipedia.org | CC-BY-SA-4.0 |
+| car-t-therapy | en.wikipedia.org | CC-BY-SA-4.0 |
+| mrna-vaccines | en.wikipedia.org | CC-BY-SA-4.0 |
+| gene-therapy-vectors | en.wikipedia.org | CC-BY-SA-4.0 |
+| aav-vectors | en.wikipedia.org | CC-BY-SA-4.0 |
+| crispr-cas9-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| base-editing | en.wikipedia.org | CC-BY-SA-4.0 |
+| prime-editing | en.wikipedia.org | CC-BY-SA-4.0 |
+| rna-interference | en.wikipedia.org | CC-BY-SA-4.0 |
+| antisense-oligonucleotides | en.wikipedia.org | CC-BY-SA-4.0 |
+| synthetic-biology-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| genetic-circuits | en.wikipedia.org | CC-BY-SA-4.0 |
+| biosensors-synthetic | en.wikipedia.org | CC-BY-SA-4.0 |
+| metabolic-engineering | en.wikipedia.org | CC-BY-SA-4.0 |
+| directed-evolution | en.wikipedia.org | CC-BY-SA-4.0 |
+| protein-expression-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| cell-culture-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| flow-cytometry | en.wikipedia.org | CC-BY-SA-4.0 |
+| mass-spectrometry-proteomics | en.wikipedia.org | CC-BY-SA-4.0 |
+| single-cell-sequencing | en.wikipedia.org | CC-BY-SA-4.0 |
+| spatial-transcriptomics | en.wikipedia.org | CC-BY-SA-4.0 |
+| chip-seq | en.wikipedia.org | CC-BY-SA-4.0 |
+| atac-seq | en.wikipedia.org | CC-BY-SA-4.0 |
+| hi-c-chromatin | en.wikipedia.org | CC-BY-SA-4.0 |
+| organoids | en.wikipedia.org | CC-BY-SA-4.0 |
+| tissue-engineering | en.wikipedia.org | CC-BY-SA-4.0 |
+| biomaterials | en.wikipedia.org | CC-BY-SA-4.0 |
+| hydrogels-bio | en.wikipedia.org | CC-BY-SA-4.0 |
+| drug-delivery-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| nanoparticle-drug-delivery | en.wikipedia.org | CC-BY-SA-4.0 |
+| electron-microscopy-materials | en.wikipedia.org | CC-BY-SA-4.0 |
+| atomic-force-microscopy | en.wikipedia.org | CC-BY-SA-4.0 |
+| scanning-tunneling-microscopy | en.wikipedia.org | CC-BY-SA-4.0 |
+| x-ray-photoelectron-spectroscopy | en.wikipedia.org | CC-BY-SA-4.0 |
+| raman-spectroscopy | en.wikipedia.org | CC-BY-SA-4.0 |
+| differential-scanning-calorimetry | en.wikipedia.org | CC-BY-SA-4.0 |
+| thermogravimetric-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| rheology-materials | en.wikipedia.org | CC-BY-SA-4.0 |
 | molecular-biology | en.wikipedia.org | CC-BY-SA-4.0 |
 | cell-biology | en.wikipedia.org | CC-BY-SA-4.0 |
 | genetics-fundamentals | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -550,6 +659,59 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | render-cloud | en.wikipedia.org | CC-BY-SA-4.0 |
 | deno-deploy | en.wikipedia.org | CC-BY-SA-4.0 |
 | cloudflare-workers-ai | en.wikipedia.org | CC-BY-SA-4.0 |
+| approximation-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| online-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| streaming-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| sublinear-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| randomized-algorithms-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| las-vegas-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| derandomization | en.wikipedia.org | CC-BY-SA-4.0 |
+| parameterized-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| fixed-parameter-tractable | en.wikipedia.org | CC-BY-SA-4.0 |
+| kernelization | en.wikipedia.org | CC-BY-SA-4.0 |
+| exponential-time-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| exact-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| fine-grained-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| circuit-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| boolean-circuit | en.wikipedia.org | CC-BY-SA-4.0 |
+| communication-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| descriptive-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| proof-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| interactive-proofs | en.wikipedia.org | CC-BY-SA-4.0 |
+| probabilistically-checkable-proofs | en.wikipedia.org | CC-BY-SA-4.0 |
+| zero-knowledge-proofs-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| quantum-complexity-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| bqp-class | en.wikipedia.org | CC-BY-SA-4.0 |
+| counting-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| sharp-p | en.wikipedia.org | CC-BY-SA-4.0 |
+| polynomial-hierarchy | en.wikipedia.org | CC-BY-SA-4.0 |
+| space-complexity-classes | en.wikipedia.org | CC-BY-SA-4.0 |
+| pspace | en.wikipedia.org | CC-BY-SA-4.0 |
+| logspace | en.wikipedia.org | CC-BY-SA-4.0 |
+| nc-class | en.wikipedia.org | CC-BY-SA-4.0 |
+| parallel-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| average-case-complexity | en.wikipedia.org | CC-BY-SA-4.0 |
+| cryptographic-hardness | en.wikipedia.org | CC-BY-SA-4.0 |
+| one-way-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| pseudorandomness | en.wikipedia.org | CC-BY-SA-4.0 |
+| expander-graphs | en.wikipedia.org | CC-BY-SA-4.0 |
+| spectral-graph-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| property-testing | en.wikipedia.org | CC-BY-SA-4.0 |
+| learning-theory-pac | en.wikipedia.org | CC-BY-SA-4.0 |
+| vc-dimension | en.wikipedia.org | CC-BY-SA-4.0 |
+| computational-learning | en.wikipedia.org | CC-BY-SA-4.0 |
+| boosting-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| online-learning-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| regret-minimization | en.wikipedia.org | CC-BY-SA-4.0 |
+| mechanism-design | en.wikipedia.org | CC-BY-SA-4.0 |
+| algorithmic-game-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| price-of-anarchy | en.wikipedia.org | CC-BY-SA-4.0 |
+| nash-equilibrium-computation | en.wikipedia.org | CC-BY-SA-4.0 |
+| fair-division-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| stable-matching | en.wikipedia.org | CC-BY-SA-4.0 |
+| social-choice-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| distributed-algorithms-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| self-stabilization | en.wikipedia.org | CC-BY-SA-4.0 |
 | apache-spark | en.wikipedia.org, spark.apache.org | CC-BY-SA-4.0 |
 | apache-flink | en.wikipedia.org, flink.apache.org | CC-BY-SA-4.0 |
 | apache-beam | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -714,6 +876,66 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | compact-bitmap-structure | en.wikipedia.org | CC-BY-SA-4.0 |
 | resizable-array-structure | en.wikipedia.org | CC-BY-SA-4.0 |
 | vector-search-index | en.wikipedia.org | CC-BY-SA-4.0 |
+| statistical-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| bar-charts-variants | en.wikipedia.org | CC-BY-SA-4.0 |
+| line-area-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| scatter-bubble-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| pie-donut-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| histogram-density | en.wikipedia.org | CC-BY-SA-4.0 |
+| box-violin-plots | en.wikipedia.org | CC-BY-SA-4.0 |
+| heatmap-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| contour-plots | en.wikipedia.org | CC-BY-SA-4.0 |
+| parallel-coordinates | en.wikipedia.org | CC-BY-SA-4.0 |
+| radar-spider-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| treemap-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| sunburst-icicle | en.wikipedia.org | CC-BY-SA-4.0 |
+| sankey-diagrams | en.wikipedia.org | CC-BY-SA-4.0 |
+| chord-diagrams | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-graph-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| force-directed-layout | en.wikipedia.org | CC-BY-SA-4.0 |
+| node-link-diagrams | en.wikipedia.org | CC-BY-SA-4.0 |
+| adjacency-matrix-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| arc-diagrams | en.wikipedia.org | CC-BY-SA-4.0 |
+| dendrogram-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| hierarchical-edge-bundling | en.wikipedia.org | CC-BY-SA-4.0 |
+| streamgraph | en.wikipedia.org | CC-BY-SA-4.0 |
+| ridgeline-plots | en.wikipedia.org | CC-BY-SA-4.0 |
+| small-multiples | en.wikipedia.org | CC-BY-SA-4.0 |
+| choropleth-maps | en.wikipedia.org | CC-BY-SA-4.0 |
+| cartograms | en.wikipedia.org | CC-BY-SA-4.0 |
+| dot-density-maps | en.wikipedia.org | CC-BY-SA-4.0 |
+| flow-maps | en.wikipedia.org | CC-BY-SA-4.0 |
+| proportional-symbol-maps | en.wikipedia.org | CC-BY-SA-4.0 |
+| map-projections-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| hexbin-maps | en.wikipedia.org | CC-BY-SA-4.0 |
+| isopleth-maps | en.wikipedia.org | CC-BY-SA-4.0 |
+| gantt-charts-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| timeline-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| calendar-heatmaps | en.wikipedia.org | CC-BY-SA-4.0 |
+| waterfall-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| funnel-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| bullet-graphs | en.wikipedia.org | CC-BY-SA-4.0 |
+| sparklines | en.wikipedia.org | CC-BY-SA-4.0 |
+| candlestick-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| ohlc-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| marimekko-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| slope-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| bump-charts | en.wikipedia.org | CC-BY-SA-4.0 |
+| grammar-of-graphics | en.wikipedia.org | CC-BY-SA-4.0 |
+| visual-encoding | en.wikipedia.org | CC-BY-SA-4.0 |
+| color-scales-viz | en.wikipedia.org | CC-BY-SA-4.0 |
+| sequential-diverging-palettes | en.wikipedia.org | CC-BY-SA-4.0 |
+| perceptually-uniform-colormaps | en.wikipedia.org | CC-BY-SA-4.0 |
+| data-ink-ratio | en.wikipedia.org | CC-BY-SA-4.0 |
+| chart-junk | en.wikipedia.org | CC-BY-SA-4.0 |
+| preattentive-attributes | en.wikipedia.org | CC-BY-SA-4.0 |
+| gestalt-visualization | en.wikipedia.org | CC-BY-SA-4.0 |
+| dashboard-design | en.wikipedia.org | CC-BY-SA-4.0 |
+| interactive-visualization | en.wikipedia.org | CC-BY-SA-4.0 |
+| brushing-linking | en.wikipedia.org | CC-BY-SA-4.0 |
+| focus-plus-context | en.wikipedia.org | CC-BY-SA-4.0 |
+| scatterplot-matrix | en.wikipedia.org | CC-BY-SA-4.0 |
+| dimensionality-reduction-viz | en.wikipedia.org | CC-BY-SA-4.0 |
 | qt-framework | doc.qt.io, en.wikipedia.org | CC-BY-SA-4.0 |
 | qt-quick-qml | doc.qt.io, en.wikipedia.org | CC-BY-SA-4.0 |
 | gtk-toolkit | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -815,6 +1037,65 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | blue-green-deployment | en.wikipedia.org | CC-BY-SA-4.0 |
 | canary-deployment | en.wikipedia.org | CC-BY-SA-4.0 |
 | feature-flags | en.wikipedia.org | CC-BY-SA-4.0 |
+| distributed-tracing-deep | en.wikipedia.org, opentelemetry.io | CC-BY-SA-4.0 |
+| structured-logging | en.wikipedia.org, opentelemetry.io | CC-BY-SA-4.0 |
+| log-aggregation | en.wikipedia.org, opensearch.org, www.elastic.co | CC-BY-SA-4.0 |
+| metrics-cardinality | en.wikipedia.org, prometheus.io | CC-BY-SA-4.0 |
+| time-series-databases-obs | docs.influxdata.com, en.wikipedia.org, prometheus.io | CC-BY-SA-4.0 |
+| exemplars-metrics | en.wikipedia.org, opentelemetry.io, prometheus.io | CC-BY-SA-4.0 |
+| service-level-objectives | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| error-budgets | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| slo-burn-rate | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| golden-signals | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| red-method | en.wikipedia.org, grafana.com | CC-BY-SA-4.0 |
+| use-method | en.wikipedia.org, www.brendangregg.com | CC-BY-SA-4.0 |
+| apdex-score | en.wikipedia.org | CC-BY-SA-4.0 |
+| synthetic-monitoring-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| real-user-monitoring-deep | en.wikipedia.org, web.dev | CC-BY-SA-4.0 |
+| profiling-continuous | en.wikipedia.org, grafana.com | CC-BY-SA-4.0 |
+| flame-graphs | en.wikipedia.org, www.brendangregg.com | CC-BY-SA-4.0 |
+| ebpf-observability | docs.cilium.io, ebpf.io, en.wikipedia.org | CC-BY-SA-4.0 |
+| service-mesh-deep | en.wikipedia.org, istio.io, linkerd.io | CC-BY-SA-4.0 |
+| sidecar-proxy | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| envoy-filters | en.wikipedia.org, www.envoyproxy.io | CC-BY-SA-4.0 |
+| traffic-mirroring | en.wikipedia.org, istio.io | CC-BY-SA-4.0 |
+| progressive-delivery-deep | argo-rollouts.readthedocs.io, en.wikipedia.org, flagger.app | CC-BY-SA-4.0 |
+| deployment-strategies | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| rollback-strategies | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| immutable-infrastructure | developer.hashicorp.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| infrastructure-drift | developer.hashicorp.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| policy-as-code | en.wikipedia.org, www.openpolicyagent.org | CC-BY-SA-4.0 |
+| opa-rego-policy | en.wikipedia.org, www.openpolicyagent.org | CC-BY-SA-4.0 |
+| admission-control-k8s | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| cluster-autoscaling | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| horizontal-pod-autoscaling | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| vertical-pod-autoscaling | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| resource-quotas-k8s | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| pod-disruption-budgets | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| node-affinity | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| taints-tolerations | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| kubernetes-operators | en.wikipedia.org, kubernetes.io, sdk.operatorframework.io | CC-BY-SA-4.0 |
+| custom-resource-definitions | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| kubernetes-controllers | en.wikipedia.org, kubernetes.io | CC-BY-SA-4.0 |
+| gitops-workflows | argo-cd.readthedocs.io, en.wikipedia.org, fluxcd.io | CC-BY-SA-4.0 |
+| secrets-management-ops | cheatsheetseries.owasp.org, developer.hashicorp.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| external-secrets | en.wikipedia.org, external-secrets.io | CC-BY-SA-4.0 |
+| sealed-secrets | en.wikipedia.org, github.com | CC-BY-SA-4.0 |
+| backstage-idp | backstage.io, en.wikipedia.org | CC-BY-SA-4.0 |
+| internal-developer-platform | en.wikipedia.org, internaldeveloperplatform.org | CC-BY-SA-4.0 |
+| platform-engineering | en.wikipedia.org, platformengineering.org | CC-BY-SA-4.0 |
+| developer-experience | backstage.io, en.wikipedia.org | CC-BY-SA-4.0 |
+| golden-paths | backstage.io, en.wikipedia.org | CC-BY-SA-4.0 |
+| dora-metrics | dora.dev, en.wikipedia.org | CC-BY-SA-4.0 |
+| value-stream-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| incident-management-deep | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| blameless-postmortems | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| on-call-practices | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| runbook-automation | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| capacity-planning | en.wikipedia.org, sre.google | CC-BY-SA-4.0 |
+| load-testing-deep | en.wikipedia.org, jmeter.apache.org, k6.io | CC-BY-SA-4.0 |
+| cost-optimization-cloud | docs.aws.amazon.com, en.wikipedia.org | CC-BY-SA-4.0 |
+| finops-practices | en.wikipedia.org, www.finops.org | CC-BY-SA-4.0 |
 | hcl-config | en.wikipedia.org | CC-BY-SA-4.0 |
 | jsonnet | en.wikipedia.org, github.com, jsonnet.org | Apache-2.0 |
 | dhall-config | dhall-lang.org, en.wikipedia.org | CC-BY-SA-4.0 |
@@ -919,6 +1200,57 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | battery-management-system | en.wikipedia.org | CC-BY-SA-4.0 |
 | energy-harvesting-circuits | en.wikipedia.org | CC-BY-SA-4.0 |
 | wireless-power-transfer | en.wikipedia.org | CC-BY-SA-4.0 |
+| imu-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| accelerometer-mems | en.wikipedia.org | CC-BY-SA-4.0 |
+| gyroscope-mems | en.wikipedia.org | CC-BY-SA-4.0 |
+| magnetometer-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| pressure-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| temperature-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| humidity-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| gas-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| proximity-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| hall-effect-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| rotary-encoders | en.wikipedia.org | CC-BY-SA-4.0 |
+| load-cells-strain | en.wikipedia.org | CC-BY-SA-4.0 |
+| capacitive-sensing | en.wikipedia.org | CC-BY-SA-4.0 |
+| inductive-sensing | en.wikipedia.org | CC-BY-SA-4.0 |
+| ultrasonic-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| time-of-flight-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| lidar-sensors-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| image-sensors-cmos | en.wikipedia.org | CC-BY-SA-4.0 |
+| ccd-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| photodiodes | en.wikipedia.org | CC-BY-SA-4.0 |
+| thermocouples | en.wikipedia.org | CC-BY-SA-4.0 |
+| rtd-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| ph-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| flow-sensors | en.wikipedia.org | CC-BY-SA-4.0 |
+| current-sensing | en.wikipedia.org | CC-BY-SA-4.0 |
+| dc-motors | en.wikipedia.org | CC-BY-SA-4.0 |
+| stepper-motors-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| servo-motors-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| brushless-dc-motors | en.wikipedia.org | CC-BY-SA-4.0 |
+| ac-induction-motors | en.wikipedia.org | CC-BY-SA-4.0 |
+| motor-drivers-hbridge | en.wikipedia.org | CC-BY-SA-4.0 |
+| solenoids-relays | en.wikipedia.org | CC-BY-SA-4.0 |
+| piezoelectric-actuators | en.wikipedia.org | CC-BY-SA-4.0 |
+| shape-memory-alloys | en.wikipedia.org | CC-BY-SA-4.0 |
+| linear-actuators | en.wikipedia.org | CC-BY-SA-4.0 |
+| pneumatic-actuators | en.wikipedia.org | CC-BY-SA-4.0 |
+| hydraulic-actuators | en.wikipedia.org | CC-BY-SA-4.0 |
+| battery-chemistry-embedded | en.wikipedia.org | CC-BY-SA-4.0 |
+| lithium-battery-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| supercapacitors | en.wikipedia.org | CC-BY-SA-4.0 |
+| energy-harvesting-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| voltage-regulators-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| power-sequencing | en.wikipedia.org | CC-BY-SA-4.0 |
+| level-shifters | en.wikipedia.org | CC-BY-SA-4.0 |
+| gpio-expanders | en.wikipedia.org | CC-BY-SA-4.0 |
+| real-time-clock | en.wikipedia.org | CC-BY-SA-4.0 |
+| crystal-oscillators-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| watchdog-supervisors | en.wikipedia.org | CC-BY-SA-4.0 |
+| esd-protection-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| emc-design-embedded | en.wikipedia.org | CC-BY-SA-4.0 |
+| pcb-layout-embedded | en.wikipedia.org | CC-BY-SA-4.0 |
 | misra-c | en.wikipedia.org | CC-BY-SA-4.0 |
 | threadx-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
 | zephyr-rtos | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -1617,6 +1949,59 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | terra-language | en.wikipedia.org | CC-BY-SA-4.0 |
 | futhark-deep | en.wikipedia.org | CC-BY-SA-4.0 |
 | dex-language | en.wikipedia.org | CC-BY-SA-4.0 |
+| special-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| orthogonal-polynomials | en.wikipedia.org | CC-BY-SA-4.0 |
+| bessel-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| gamma-beta-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| elliptic-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| hypergeometric-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| spherical-harmonics | en.wikipedia.org | CC-BY-SA-4.0 |
+| laplace-transform | en.wikipedia.org | CC-BY-SA-4.0 |
+| z-transform | en.wikipedia.org | CC-BY-SA-4.0 |
+| mellin-transform | en.wikipedia.org | CC-BY-SA-4.0 |
+| hankel-transform | en.wikipedia.org | CC-BY-SA-4.0 |
+| radon-transform | en.wikipedia.org | CC-BY-SA-4.0 |
+| integral-transforms | en.wikipedia.org | CC-BY-SA-4.0 |
+| generating-functions-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| asymptotic-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| perturbation-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| singular-perturbation | en.wikipedia.org | CC-BY-SA-4.0 |
+| wkb-approximation | en.wikipedia.org | CC-BY-SA-4.0 |
+| calculus-of-variations-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| sturm-liouville-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| greens-functions | en.wikipedia.org | CC-BY-SA-4.0 |
+| boundary-value-problems | en.wikipedia.org | CC-BY-SA-4.0 |
+| finite-difference-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| finite-volume-method | en.wikipedia.org | CC-BY-SA-4.0 |
+| spectral-methods-numerical | en.wikipedia.org | CC-BY-SA-4.0 |
+| multigrid-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| krylov-subspace-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| conjugate-gradient-method | en.wikipedia.org | CC-BY-SA-4.0 |
+| preconditioning-numerical | en.wikipedia.org | CC-BY-SA-4.0 |
+| eigenvalue-algorithms | en.wikipedia.org | CC-BY-SA-4.0 |
+| qr-algorithm | en.wikipedia.org | CC-BY-SA-4.0 |
+| singular-value-decomposition-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| tensor-decomposition | en.wikipedia.org | CC-BY-SA-4.0 |
+| tensor-networks | en.wikipedia.org | CC-BY-SA-4.0 |
+| interpolation-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| spline-interpolation | en.wikipedia.org | CC-BY-SA-4.0 |
+| approximation-theory | en.wikipedia.org | CC-BY-SA-4.0 |
+| chebyshev-approximation | en.wikipedia.org | CC-BY-SA-4.0 |
+| numerical-quadrature | en.wikipedia.org | CC-BY-SA-4.0 |
+| gaussian-quadrature | en.wikipedia.org | CC-BY-SA-4.0 |
+| root-finding-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| fixed-point-iteration | en.wikipedia.org | CC-BY-SA-4.0 |
+| continuation-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| differential-algebraic-equations | en.wikipedia.org | CC-BY-SA-4.0 |
+| stochastic-differential-equations | en.wikipedia.org | CC-BY-SA-4.0 |
+| ito-stratonovich | en.wikipedia.org | CC-BY-SA-4.0 |
+| variational-inference-math | en.wikipedia.org | CC-BY-SA-4.0 |
+| information-geometry | en.wikipedia.org | CC-BY-SA-4.0 |
+| optimal-transport | en.wikipedia.org | CC-BY-SA-4.0 |
+| convex-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| nonlinear-optimization-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| interior-point-methods | en.wikipedia.org | CC-BY-SA-4.0 |
+| semidefinite-programming | en.wikipedia.org | CC-BY-SA-4.0 |
 | rails-deep | en.wikipedia.org, guides.rubyonrails.org | CC-BY-SA-4.0 |
 | sinatra-deep | en.wikipedia.org, sinatrarb.com | CC-BY-SA-4.0 |
 | hanami-ruby | en.wikipedia.org, guides.hanamirb.org | CC-BY-SA-4.0 |
@@ -1723,6 +2108,62 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | precision-time-protocol | en.wikipedia.org | CC-BY-SA-4.0 |
 | network-performance | en.wikipedia.org | CC-BY-SA-4.0 |
 | queue-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-automation | en.wikipedia.org | CC-BY-SA-4.0 |
+| netconf-yang | en.wikipedia.org | CC-BY-SA-4.0 |
+| restconf | en.wikipedia.org | CC-BY-SA-4.0 |
+| openconfig | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-telemetry-streaming | en.wikipedia.org | CC-BY-SA-4.0 |
+| gnmi-protocol | en.wikipedia.org | CC-BY-SA-4.0 |
+| p4-programming | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-verification | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-digital-twin | en.wikipedia.org | CC-BY-SA-4.0 |
+| intent-based-networking | en.wikipedia.org | CC-BY-SA-4.0 |
+| sd-wan | en.wikipedia.org | CC-BY-SA-4.0 |
+| sase-architecture | en.wikipedia.org | CC-BY-SA-4.0 |
+| zero-trust-network-access | en.wikipedia.org | CC-BY-SA-4.0 |
+| microsegmentation-network | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-access-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| 802-1x-authentication | en.wikipedia.org | CC-BY-SA-4.0 |
+| radius-protocol | en.wikipedia.org | CC-BY-SA-4.0 |
+| tacacs-plus | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-firewall-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| next-gen-firewall | en.wikipedia.org | CC-BY-SA-4.0 |
+| ids-ips-network | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-detection-response | en.wikipedia.org | CC-BY-SA-4.0 |
+| dns-security-extensions | en.wikipedia.org | CC-BY-SA-4.0 |
+| dns-filtering | en.wikipedia.org | CC-BY-SA-4.0 |
+| dhcp-snooping | en.wikipedia.org | CC-BY-SA-4.0 |
+| arp-spoofing-defense | en.wikipedia.org | CC-BY-SA-4.0 |
+| mac-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| port-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| storm-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| time-sensitive-networking | en.wikipedia.org | CC-BY-SA-4.0 |
+| ieee-802-1-tsn | en.wikipedia.org | CC-BY-SA-4.0 |
+| audio-video-bridging | en.wikipedia.org | CC-BY-SA-4.0 |
+| deterministic-networking | en.wikipedia.org | CC-BY-SA-4.0 |
+| precision-time-protocol-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| synchronous-ethernet | en.wikipedia.org | CC-BY-SA-4.0 |
+| carrier-ethernet | en.wikipedia.org | CC-BY-SA-4.0 |
+| metro-ethernet | en.wikipedia.org | CC-BY-SA-4.0 |
+| gpon-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| docsis-cable | en.wikipedia.org | CC-BY-SA-4.0 |
+| wifi-7 | en.wikipedia.org | CC-BY-SA-4.0 |
+| wifi-mesh | en.wikipedia.org | CC-BY-SA-4.0 |
+| cellular-6g | en.wikipedia.org | CC-BY-SA-4.0 |
+| private-5g | en.wikipedia.org | CC-BY-SA-4.0 |
+| open-ran | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-slicing-5g | en.wikipedia.org | CC-BY-SA-4.0 |
+| satellite-constellation | en.wikipedia.org | CC-BY-SA-4.0 |
+| starlink-networking | en.wikipedia.org | CC-BY-SA-4.0 |
+| li-fi | en.wikipedia.org | CC-BY-SA-4.0 |
+| bluetooth-mesh | en.wikipedia.org | CC-BY-SA-4.0 |
+| thread-network-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| zigbee-3 | en.wikipedia.org | CC-BY-SA-4.0 |
+| matter-protocol-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-congestion-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| active-queue-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| ecn-networking | en.wikipedia.org | CC-BY-SA-4.0 |
+| load-balancing-l4-l7 | en.wikipedia.org | CC-BY-SA-4.0 |
 | bgp-routing | en.wikipedia.org, www.rfc-editor.org | CC-BY-SA-4.0 |
 | ospf-routing | en.wikipedia.org, www.rfc-editor.org | CC-BY-SA-4.0 |
 | mpls | en.wikipedia.org, www.rfc-editor.org | CC-BY-SA-4.0 |
@@ -2250,6 +2691,59 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | ebpf-security-deep | en.wikipedia.org | CC-BY-SA-4.0 |
 | kernel-hardening | en.wikipedia.org | CC-BY-SA-4.0 |
 | grsecurity-concepts | en.wikipedia.org | CC-BY-SA-4.0 |
+| privacy-engineering | en.wikipedia.org | CC-BY-SA-4.0 |
+| differential-privacy-applied | en.wikipedia.org | CC-BY-SA-4.0 |
+| k-anonymity | en.wikipedia.org | CC-BY-SA-4.0 |
+| data-anonymization | en.wikipedia.org | CC-BY-SA-4.0 |
+| pseudonymization | en.wikipedia.org | CC-BY-SA-4.0 |
+| homomorphic-encryption-applied | en.wikipedia.org | CC-BY-SA-4.0 |
+| secure-aggregation | en.wikipedia.org | CC-BY-SA-4.0 |
+| privacy-preserving-ml | en.wikipedia.org | CC-BY-SA-4.0 |
+| gdpr-technical-controls | en.wikipedia.org | CC-BY-SA-4.0 |
+| ccpa-privacy | en.wikipedia.org | CC-BY-SA-4.0 |
+| consent-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| identity-federation | en.wikipedia.org | CC-BY-SA-4.0 |
+| single-sign-on-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| oauth2-flows-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| openid-connect-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| saml-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| scim-provisioning-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| decentralized-identity-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| verifiable-credentials | en.wikipedia.org | CC-BY-SA-4.0 |
+| self-sovereign-identity | en.wikipedia.org | CC-BY-SA-4.0 |
+| passkeys-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| fido2-ctap | en.wikipedia.org | CC-BY-SA-4.0 |
+| mutual-tls | en.wikipedia.org | CC-BY-SA-4.0 |
+| certificate-lifecycle | en.wikipedia.org | CC-BY-SA-4.0 |
+| acme-protocol | en.wikipedia.org | CC-BY-SA-4.0 |
+| hsm-key-ceremony | en.wikipedia.org | CC-BY-SA-4.0 |
+| key-management-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| envelope-encryption-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| tokenization-data | en.wikipedia.org | CC-BY-SA-4.0 |
+| format-preserving-encryption | en.wikipedia.org | CC-BY-SA-4.0 |
+| cloud-security-posture-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| cspm-tools | en.wikipedia.org | CC-BY-SA-4.0 |
+| cnapp | en.wikipedia.org | CC-BY-SA-4.0 |
+| cwpp | en.wikipedia.org | CC-BY-SA-4.0 |
+| cloud-entitlements-ciem | en.wikipedia.org | CC-BY-SA-4.0 |
+| container-security-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| kubernetes-threat-model | en.wikipedia.org | CC-BY-SA-4.0 |
+| serverless-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| api-gateway-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| waap | en.wikipedia.org | CC-BY-SA-4.0 |
+| bot-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| ddos-mitigation-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| iot-security-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| ot-security-ics | en.wikipedia.org | CC-BY-SA-4.0 |
+| industrial-control-security-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| iec-62443-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| purdue-model-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| network-detection-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| deception-technology-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| insider-threat | en.wikipedia.org | CC-BY-SA-4.0 |
+| data-loss-prevention-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| casb-security | en.wikipedia.org | CC-BY-SA-4.0 |
+| dspm | en.wikipedia.org | CC-BY-SA-4.0 |
 | json-schema | en.wikipedia.org, json-schema.org | CC-BY-SA-4.0 |
 | apache-thrift | en.wikipedia.org | CC-BY-SA-4.0 |
 | messagepack | en.wikipedia.org | CC-BY-SA-4.0 |
@@ -2300,6 +2794,62 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | rtp-streaming | en.wikipedia.org | CC-BY-SA-4.0 |
 | dns-over-https | en.wikipedia.org | CC-BY-SA-4.0 |
 | well-known-uri | en.wikipedia.org | CC-BY-SA-4.0 |
+| linear-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| multiple-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| logistic-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| poisson-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| generalized-linear-models | en.wikipedia.org | CC-BY-SA-4.0 |
+| ridge-lasso-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| elastic-net | en.wikipedia.org | CC-BY-SA-4.0 |
+| quantile-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| robust-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| nonlinear-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| polynomial-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| mixed-effects-models | en.wikipedia.org | CC-BY-SA-4.0 |
+| hierarchical-models | en.wikipedia.org | CC-BY-SA-4.0 |
+| generalized-additive-models | en.wikipedia.org | CC-BY-SA-4.0 |
+| splines-regression | en.wikipedia.org | CC-BY-SA-4.0 |
+| analysis-of-variance | en.wikipedia.org | CC-BY-SA-4.0 |
+| ancova | en.wikipedia.org | CC-BY-SA-4.0 |
+| manova | en.wikipedia.org | CC-BY-SA-4.0 |
+| experimental-design | en.wikipedia.org | CC-BY-SA-4.0 |
+| factorial-design | en.wikipedia.org | CC-BY-SA-4.0 |
+| response-surface-methodology | en.wikipedia.org | CC-BY-SA-4.0 |
+| hypothesis-testing-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| multiple-comparisons | en.wikipedia.org | CC-BY-SA-4.0 |
+| bonferroni-correction | en.wikipedia.org | CC-BY-SA-4.0 |
+| nonparametric-tests | en.wikipedia.org | CC-BY-SA-4.0 |
+| mann-whitney | en.wikipedia.org | CC-BY-SA-4.0 |
+| kruskal-wallis | en.wikipedia.org | CC-BY-SA-4.0 |
+| chi-squared-tests | en.wikipedia.org | CC-BY-SA-4.0 |
+| fishers-exact-test | en.wikipedia.org | CC-BY-SA-4.0 |
+| permutation-tests | en.wikipedia.org | CC-BY-SA-4.0 |
+| bootstrap-resampling | en.wikipedia.org | CC-BY-SA-4.0 |
+| jackknife-resampling | en.wikipedia.org | CC-BY-SA-4.0 |
+| cross-validation-stats | en.wikipedia.org | CC-BY-SA-4.0 |
+| survival-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| kaplan-meier | en.wikipedia.org | CC-BY-SA-4.0 |
+| cox-proportional-hazards | en.wikipedia.org | CC-BY-SA-4.0 |
+| hazard-models | en.wikipedia.org | CC-BY-SA-4.0 |
+| time-series-arima | en.wikipedia.org | CC-BY-SA-4.0 |
+| garch-models | en.wikipedia.org | CC-BY-SA-4.0 |
+| state-space-models | en.wikipedia.org | CC-BY-SA-4.0 |
+| kalman-filter-stats | en.wikipedia.org | CC-BY-SA-4.0 |
+| vector-autoregression | en.wikipedia.org | CC-BY-SA-4.0 |
+| cointegration | en.wikipedia.org | CC-BY-SA-4.0 |
+| spectral-analysis-stats | en.wikipedia.org | CC-BY-SA-4.0 |
+| multivariate-statistics | en.wikipedia.org | CC-BY-SA-4.0 |
+| factor-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| canonical-correlation | en.wikipedia.org | CC-BY-SA-4.0 |
+| discriminant-analysis | en.wikipedia.org | CC-BY-SA-4.0 |
+| cluster-analysis-stats | en.wikipedia.org | CC-BY-SA-4.0 |
+| mixture-models-em | en.wikipedia.org | CC-BY-SA-4.0 |
+| markov-chain-monte-carlo-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| gibbs-sampling | en.wikipedia.org | CC-BY-SA-4.0 |
+| metropolis-hastings | en.wikipedia.org | CC-BY-SA-4.0 |
+| hamiltonian-monte-carlo | en.wikipedia.org | CC-BY-SA-4.0 |
+| variational-bayes | en.wikipedia.org | CC-BY-SA-4.0 |
+| empirical-bayes | en.wikipedia.org | CC-BY-SA-4.0 |
 | tokio-async-rust | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
 | serde-rust | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
 | rayon-parallel | docs.rs, en.wikipedia.org | CC-BY-SA-4.0 |
@@ -2465,6 +3015,60 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | mes-manufacturing | en.wikipedia.org | CC-BY-SA-4.0 |
 | scada-security | en.wikipedia.org | CC-BY-SA-4.0 |
 | hvac-building-automation | en.wikipedia.org | CC-BY-SA-4.0 |
+| avionics-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| flight-management-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| autopilot-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| aircraft-navigation | en.wikipedia.org | CC-BY-SA-4.0 |
+| satellite-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| spacecraft-guidance | en.wikipedia.org | CC-BY-SA-4.0 |
+| orbital-mechanics-applied | en.wikipedia.org | CC-BY-SA-4.0 |
+| rocket-propulsion | en.wikipedia.org | CC-BY-SA-4.0 |
+| ground-station-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| gnss-positioning-deep | en.wikipedia.org | CC-BY-SA-4.0 |
+| radar-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| sonar-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| electronic-warfare | en.wikipedia.org | CC-BY-SA-4.0 |
+| defense-c4isr | en.wikipedia.org | CC-BY-SA-4.0 |
+| autonomous-vehicles | en.wikipedia.org | CC-BY-SA-4.0 |
+| self-driving-perception | en.wikipedia.org | CC-BY-SA-4.0 |
+| sensor-fusion-autonomous | en.wikipedia.org | CC-BY-SA-4.0 |
+| path-planning-autonomous | en.wikipedia.org | CC-BY-SA-4.0 |
+| vehicle-dynamics-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| drone-uav-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| uav-flight-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| swarm-robotics | en.wikipedia.org | CC-BY-SA-4.0 |
+| agricultural-robotics | en.wikipedia.org | CC-BY-SA-4.0 |
+| precision-agriculture | en.wikipedia.org | CC-BY-SA-4.0 |
+| crop-monitoring-remote | en.wikipedia.org | CC-BY-SA-4.0 |
+| irrigation-automation | en.wikipedia.org | CC-BY-SA-4.0 |
+| livestock-monitoring | en.wikipedia.org | CC-BY-SA-4.0 |
+| smart-farming-iot | en.wikipedia.org | CC-BY-SA-4.0 |
+| power-grid-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| transmission-distribution | en.wikipedia.org | CC-BY-SA-4.0 |
+| substation-automation | en.wikipedia.org | CC-BY-SA-4.0 |
+| renewable-integration | en.wikipedia.org | CC-BY-SA-4.0 |
+| solar-pv-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| wind-turbine-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| battery-storage-grid | en.wikipedia.org | CC-BY-SA-4.0 |
+| microgrid-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| demand-response-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| hvac-control-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| building-energy-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| manufacturing-execution-systems | en.wikipedia.org | CC-BY-SA-4.0 |
+| industry-4-0 | en.wikipedia.org | CC-BY-SA-4.0 |
+| additive-manufacturing | en.wikipedia.org | CC-BY-SA-4.0 |
+| cnc-machining | en.wikipedia.org | CC-BY-SA-4.0 |
+| robotic-process-automation | en.wikipedia.org | CC-BY-SA-4.0 |
+| warehouse-automation | en.wikipedia.org | CC-BY-SA-4.0 |
+| logistics-optimization | en.wikipedia.org | CC-BY-SA-4.0 |
+| fleet-management | en.wikipedia.org | CC-BY-SA-4.0 |
+| supply-chain-visibility | en.wikipedia.org | CC-BY-SA-4.0 |
+| cold-chain-monitoring | en.wikipedia.org | CC-BY-SA-4.0 |
+| construction-bim | en.wikipedia.org | CC-BY-SA-4.0 |
+| structural-health-monitoring | en.wikipedia.org | CC-BY-SA-4.0 |
+| water-treatment-control | en.wikipedia.org | CC-BY-SA-4.0 |
+| mining-automation | en.wikipedia.org | CC-BY-SA-4.0 |
+| oil-gas-scada | en.wikipedia.org | CC-BY-SA-4.0 |
 | spring-boot | docs.spring.io, en.wikipedia.org | CC-BY-SA-4.0 |
 | aspnet-core | en.wikipedia.org | CC-BY-SA-4.0 |
 | laravel | en.wikipedia.org, laravel.com | CC-BY-SA-4.0 |
@@ -2616,6 +3220,68 @@ nothing here relicenses upstream content. The `ragpull` tool itself is MIT (see 
 | shadow-dom | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-2.5 |
 | css-variables | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-2.5 |
 | viewport-responsive | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-2.5 |
+| web-workers | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| shared-array-buffer | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-assembly-js-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| broadcast-channel | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| message-channel | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| structured-clone | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-locks-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-crypto-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| credential-management | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-authentication-deep | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| payment-request-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-share-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| notifications-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| push-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| background-sync | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| periodic-background-sync | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-bluetooth | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-usb | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-serial | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-hid | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-nfc | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| geolocation-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| device-orientation | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| screen-orientation | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| fullscreen-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| pointer-events | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| pointer-lock | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| gamepad-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-midi | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| web-audio-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| media-source-extensions | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| encrypted-media | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| media-capabilities | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| webcodecs-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| media-recorder | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| image-capture | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| screen-capture | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| picture-in-picture | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| resize-observer | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| mutation-observer | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| performance-observer | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| navigation-timing | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| resource-timing | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| paint-timing | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| requestidlecallback | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| requestanimationframe | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| intersection-observer-deep | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| css-object-model | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| css-typed-om | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| css-paint-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| css-layout-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| houdini-worklets | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| custom-elements-deep | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| shadow-dom-deep | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| html-templates-slots | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| declarative-shadow-dom | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| dom-parsing-serialization | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| selection-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| clipboard-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| drag-and-drop-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| history-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
+| url-pattern-api | developer.mozilla.org, en.wikipedia.org | CC-BY-SA-4.0 |
 | java | docs.oracle.com, en.wikipedia.org | Oracle-BCL (tutorial excerpts) / CC-BY-SA-4.0 |
 | kotlin | kotlinlang.org | Apache-2.0 |
 | scala | docs.scala-lang.org, en.wikipedia.org | CC-BY-SA-4.0 |

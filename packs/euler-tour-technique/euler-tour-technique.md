@@ -1,0 +1,56 @@
+---
+title: "Euler tour technique"
+source: https://en.wikipedia.org/wiki/Euler_tour_technique
+domain: euler-tour-technique
+license: CC-BY-SA-4.0
+tags: euler tour technique, tree linearization, subtree query, parallel tree algorithm
+fetched: 2026-07-02
+---
+
+# Euler tour technique
+
+The **Euler tour technique** (**ETT**), named after Leonhard Euler, is a method in graph theory for representing trees. The tree is viewed as a directed graph that contains two directed edges for each edge in the tree. The tree can then be represented as a Eulerian circuit of the directed graph, known as the **Euler tour representation** (**ETR**) of the tree. The ETT allows for efficient, parallel computation of solutions to common problems in algorithmic graph theory. It was introduced by Tarjan and Vishkin in 1984.
+
+## Construction
+
+Given an undirected tree presented as a set of edges, the Euler tour representation (ETR) can be constructed in parallel as follows:
+
+- We construct a symmetric list of directed edges:
+  - For each undirected edge {*u*,*v*} in the tree, insert (*u*,*v*) and (*v*,*u*) in the edge list.
+- Sort the edge list lexicographically. (Here we assume that the nodes of the tree are ordered, and that the root is the first element in this order.)
+- Construct adjacency lists for each node (called *next*) and a map from nodes to the first entries of the adjacency lists (called *first*):
+  - For each edge (*u*,*v*) in the list, do in parallel:
+    - If the previous edge (*x*,*y*) has *x* ≠ *u*, i.e. starts from a different node, set first(*u*) = (*u*,*v*)
+    - Else if *x* = *u*, i.e. starts from the same node, set next(*x*,*y*) = (*u*,*v*)
+
+Construct an edge list (called *succ*) in Euler tour order by setting pointers succ(*u*,*v*) for all edges (*u*,*v*) in parallel according to the following rule:
+
+$\mathrm {succ} (u,v)={\begin{cases}\mathrm {next} (v,u)&\mathrm {next} (v,u)\neq \mathrm {nil} \\\mathrm {first} (v)&{\text{otherwise}}.\end{cases}}$
+
+The resulting list *succ* will be circular.
+
+The overall construction takes work *W*(*n*) = O(sort(*n*)) (the time it takes to sort *n* items in parallel) if the tree has *n* nodes, as in trees the number of edges is one less than the number of nodes.
+
+## Roots, advance and retreat edges
+
+If the tree has a root, we can split the circular list *succ* at that root. In that case, we can speak of *advance* and *retreat* edges: given a pair of nodes *u*,*v*, the first occurrence of either (*u*,*v*) or (*v*,*u*) in the ETR is called the *advance edge*, and the second occurrence is called the *retreat edge*. This appeals to the intuition that the first time such an edge is traversed the distance to the root is increased, while the second time the distance decreases.
+
+Rerooting the tree can be done in constant time O(1) by splitting the circular list *succ* at the new root.
+
+## Applications
+
+All of the following problems can be solved in O(Prefix sum(*n*)) (the time it takes to solve the prefix sum problem in parallel for a list of *n* items):
+
+1. Classifying advance and retreat edges: Do list ranking on the ETR and save the result in a two-dimensional array *A*. Then (*u*,*v*) is an advance edge iff *A*(*u*,*v*) < *A*(*v*,*u*), and a retreat edge otherwise.
+2. Determine the level of each node: Do a prefix sum on the ETR, where every advance edge counts as 1, and every retreat edge counts as −1. Then the value at the advance edge (*u*,*v*) is the level of *v*.
+3. Number of nodes in a subtree rooted at *v*: assume the parent of v is u, determine advance edge (*u*,*v*), and the retreat edge (*v*,*u*) in parallel, and then count the number of advance edges between (*u*,*v*) and (*v*,*u*) using prefix sum.
+4. The depth-first search index of a node *v*: count the number of advance edges up to and including (*u*,*v*).
+5. Determine the lowest common ancestor of two nodes.
+
+## Euler tour trees
+
+Henzinger and King suggest to represent a given tree by keeping its Euler tour in a balanced binary search tree, keyed by the index in the tour. So for example, the unbalanced tree in the example above, having 7 nodes, will be represented by a balanced binary tree with 14 nodes, one for each time each node appears on the tour.
+
+We can represent a forest (an acyclic graph) using a collection of ET trees - one ET tree for one forest tree. This representation allows us to quickly answer the question "what is the root of node v?" by just moving to the first node of the ET tree (since nodes in the ET tree are keyed by their location in the Euler tour, and the root is the first and last node in the tour). When the represented forest is updated (e.g. by connecting two trees to a single tree or by splitting a tree to two trees), the corresponding Euler-tour structure can be updated in time O(log(n)).
+
+Link/cut trees have similar performance guarantees. While LC trees are good for maintaining aggregates on paths of a tree (making it a good choice data structure in network flow algorithms), ET trees are better at keeping aggregate information on subtrees.

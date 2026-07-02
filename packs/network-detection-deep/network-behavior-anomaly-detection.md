@@ -1,0 +1,65 @@
+---
+title: "Network behavior anomaly detection"
+source: https://en.wikipedia.org/wiki/Network_behavior_anomaly_detection
+domain: network-detection-deep
+license: CC-BY-SA-4.0
+tags: network detection and response, deep packet inspection, network anomaly detection, traffic behavior analysis, packet capture analysis
+fetched: 2026-07-02
+---
+
+# Network behavior anomaly detection
+
+**Network behavior anomaly detection** (**NBAD**) is a security technique that provides network security threat detection. It is a complementary technology to systems that detect security threats based on packet signatures.
+
+NBAD is the continuous monitoring of a network for unusual events or trends. NBAD is an integral part of network behavior analysis (NBA), which offers security in addition to that provided by traditional anti-threat applications such as firewalls, intrusion detection systems, antivirus software and spyware-detection software. NBAD was designed and developed by Ted B Rybicki at Hewlett-Packard (HP) Roseville CA in the HP ProCurve Networking division and was first released in the HP ProCurve Plus (PCM) of Network Management products.
+
+## Description
+
+Most security monitoring systems utilize a signature-based approach to detect threats. They generally monitor packets on the network and look for patterns in the packets which match their database of signatures representing pre-identified known security threats. NBAD-based systems are particularly helpful in detecting security threat vectors in two instances where signature-based systems cannot: (i) new zero-day attacks, and (ii) when the threat traffic is encrypted such as the command and control channel for certain Botnets.
+
+An NBAD program tracks critical network characteristics in real time and generates an alarm if a strange event or trend is detected that could indicate the presence of a threat. Large-scale examples of such characteristics include traffic volume, bandwidth use and protocol use.
+
+NBAD solutions can also monitor the behavior of individual network subscribers. In order for NBAD to be optimally effective, a baseline of normal network or user behavior must be established over a period of time. Once certain parameters have been defined as normal, any departure from one or more of them is flagged as anomalous.
+
+NBAD technology/techniques are applied in a number of network and security monitoring domains including: (i) Log analysis (ii) Packet inspection systems (iii) Flow monitoring systems and (iv) Route analytics.
+
+NBAD has also been described as outlier detection, novelty detection, deviation detection and exception mining.
+
+## Popular threat detections within NBAD
+
+- Payload Anomaly Detection
+- Protocol Anomaly: MAC Spoofing
+- Protocol Anomaly: IP Spoofing
+- Protocol Anomaly: TCP/UDP Fanout
+- Protocol Anomaly: IP Fanout
+- Protocol Anomaly: Duplicate IP
+- Protocol Anomaly: Duplicate MAC
+- Virus Detection
+- Bandwidth Anomaly Detection
+- Connection Rate Detection
+
+## Commercial products
+
+- Palo Alto Networks – Cortex XDR
+- Darktrace - AI Enterprise Immune System | Antigena Autonomous Response
+- Allot Communications – Allot Communications DDoS Protection
+- Arbor Networks NSI – Arbor Network Security Intelligence
+- Cisco – Stealthwatch (formerly Lancope StealthWatch)
+- IBM – QRadar (since 2003)
+- Enterasys Networks – Enterasys Dragon
+- Exinda – Inbuilt (Application Performance Score (APS), Application Performance Metric (APM), SLA, and Adaptive Response)
+- ExtraHop Networks - Reveal(x)
+- Flowmon Networks – Flowmon ADS
+- FlowNBA – NetFlow
+- Juniper Networks – STRM
+- Lastline
+- McAfee – McAfee Network Threat Behavior Analysis
+- HP ProCurve – Network Immunity Manager
+- Riverbed Technology – Riverbed Cascade
+- Sourcefire – Sourcefire 3D
+- Symantec – Symantec Advanced Threat Protection
+- GREYCORTEX – Mendel (formerly TrustPort Threat Intelligence)
+- Vectra AI
+- ZOHO Corporation – ManageEngine NetFlow Analyzer's Advanced Security Analytics Module
+- Microsoft Corp – Windows Defender ATP and Advanced Threat Analytics
+- Vehere - PacketWorker Network Detection and Response

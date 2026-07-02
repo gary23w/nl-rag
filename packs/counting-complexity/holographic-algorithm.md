@@ -1,0 +1,80 @@
+---
+title: "Holographic algorithm"
+source: https://en.wikipedia.org/wiki/Holographic_algorithm
+domain: counting-complexity
+license: CC-BY-SA-4.0
+tags: counting complexity, permanent computation, toda theorem, counting problem
+fetched: 2026-07-02
+---
+
+# Holographic algorithm
+
+In computer science, a **holographic algorithm** is an algorithm that uses a holographic reduction. A holographic reduction is a constant-time reduction that maps solution fragments many-to-many such that the sum of the solution fragments remains unchanged. These concepts were introduced by Leslie Valiant, who called them *holographic* because "their effect can be viewed as that of producing interference patterns among the solution fragments". The algorithms are unrelated to laser holography, except metaphorically. Their power comes from the mutual cancellation of many contributions to a sum, analogous to the interference patterns in a hologram.
+
+Holographic algorithms have been used to find polynomial-time solutions to problems without such previously known solutions for special cases of satisfiability, vertex cover, and other graph problems. They have received notable coverage due to speculation that they are relevant to the P versus NP problem and their impact on computational complexity theory. Although some of the general problems are #P-hard problems, the special cases solved are not themselves #P-hard, and thus do not prove FP = #P.
+
+Holographic algorithms have some similarities with quantum computation, but are completely classical.
+
+## Holant problems
+
+Holographic algorithms exist in the context of Holant problems, which generalize counting constraint satisfaction problems (#CSP). A #CSP instance is a hypergraph *G*=(*V*,*E*) called the constraint graph. Each hyperedge represents a variable and each vertex v is assigned a constraint $f_{v}.$ A vertex is connected to an hyperedge if the constraint on the vertex involves the variable on the hyperedge. The counting problem is to compute
+
+$\sum _{\sigma :E\to \{0,1\}}\prod _{v\in V}f_{v}(\sigma |_{E(v)}),~~~~~~~~~~(1)$
+
+which is a sum over all variable assignments, the product of every constraint, where the inputs to the constraint $f_{v}$ are the variables on the incident hyperedges of v .
+
+A Holant problem is like a #CSP except the input must be a graph, not a hypergraph. Restricting the class of input graphs in this way is indeed a generalization. Given a #CSP instance, replace each hyperedge *e* of size *s* with a vertex *v* of degree *s* with edges incident to the vertices contained in *e*. The constraint on *v* is the equality function of arity *s*. This identifies all of the variables on the edges incident to *v*, which is the same effect as the single variable on the hyperedge *e*.
+
+In the context of Holant problems, the expression in (1) is called the Holant after a related exponential sum introduced by Valiant.
+
+## Holographic reduction
+
+A standard technique in complexity theory is a many-one reduction, where an instance of one problem is reduced to an instance of another (hopefully simpler) problem. However, holographic reductions between two computational problems preserve the sum of solutions without necessarily preserving correspondences between solutions. For instance, the total number of solutions in both sets can be preserved, even though individual problems do not have matching solutions. The sum can also be weighted, rather than simply counting the number of solutions, using linear basis vectors.
+
+### General example
+
+It is convenient to consider holographic reductions on bipartite graphs. A general graph can always be transformed it into a bipartite graph while preserving the Holant value. This is done by replacing each edge in the graph by a path of length 2, which is also known as the 2-stretch of the graph. To keep the same Holant value, each new vertex is assigned the binary equality constraint.
+
+Consider a bipartite graph *G*=(*U*,*V*,*E*) where the constraint assigned to every vertex $u\in U$ is $f_{u}$ and the constraint assigned to every vertex $v\in V$ is $f_{v}$ . Denote this counting problem by ${\text{Holant}}(G,f_{u},f_{v}).$ If the vertices in *U* are viewed as one large vertex of degree |*E*|, then the constraint of this vertex is the tensor product of $f_{u}$ with itself |*U*| times, which is denoted by $f_{u}^{\otimes |U|}.$ Likewise, if the vertices in *V* are viewed as one large vertex of degree |*E*|, then the constraint of this vertex is $f_{v}^{\otimes |V|}.$ Let the constraint $f_{u}$ be represented by its weighted truth table as a row vector and the constraint $f_{v}$ be represented by its weighted truth table as a column vector. Then the Holant of this constraint graph is simply $f_{u}^{\otimes |U|}f_{v}^{\otimes |V|}.$
+
+Now for any complex 2-by-2 invertible matrix *T* (the columns of which are the linear basis vectors mentioned above), there is a holographic reduction between ${\text{Holant}}(G,f_{u},f_{v})$ and ${\text{Holant}}(G,f_{u}T^{\otimes (\deg u)},(T^{-1})^{\otimes (\deg v)}f_{v}).$ To see this, insert the identity matrix $T^{\otimes |E|}(T^{-1})^{\otimes |E|}$ in between $f_{u}^{\otimes |U|}f_{v}^{\otimes |V|}$ to get
+
+$f_{u}^{\otimes |U|}f_{v}^{\otimes |V|}$
+
+$=f_{u}^{\otimes |U|}T^{\otimes |E|}(T^{-1})^{\otimes |E|}f_{v}^{\otimes |V|}$
+
+$=\left(f_{u}T^{\otimes (\deg u)}\right)^{\otimes |U|}\left(f_{v}(T^{-1})^{\otimes (\deg v)}\right)^{\otimes |V|}.$
+
+Thus, ${\text{Holant}}(G,f_{u},f_{v})$ and ${\text{Holant}}(G,f_{u}T^{\otimes (\deg u)},(T^{-1})^{\otimes (\deg v)}f_{v})$ have exactly the same Holant value for every constraint graph. They essentially define the same counting problem.
+
+### Specific examples
+
+#### Vertex covers and independent sets
+
+Let *G* be a graph. There is a 1-to-1 correspondence between the vertex covers of *G* and the independent sets of *G*. For any set *S* of vertices of *G*, *S* is a vertex cover in *G* if and only if the complement of *S* is an independent set in *G*. Thus, the number of vertex covers in *G* is exactly the same as the number of independent sets in *G*.
+
+The equivalence of these two counting problems can also be proved using a holographic reduction. For simplicity, let *G* be a 3-regular graph. The 2-stretch of *G* gives a bipartite graph *H*=(*U*,*V*,*E*), where *U* corresponds to the edges in *G* and *V* corresponds to the vertices in *G*. The Holant problem that naturally corresponds to counting the number of vertex covers in *G* is ${\text{Holant}}(H,{\text{OR}}_{2},{\text{EQUAL}}_{3}).$ The truth table of OR2 as a row vector is (0,1,1,1). The truth table of EQUAL3 as a column vector is $(1,0,0,0,0,0,0,1)^{T}={\begin{bmatrix}1\\0\end{bmatrix}}^{\otimes 3}+{\begin{bmatrix}0\\1\end{bmatrix}}^{\otimes 3}$ . Then under a holographic transformation by ${\begin{bmatrix}0&1\\1&0\end{bmatrix}},$
+
+${\text{OR}}_{2}^{\otimes |U|}{\text{EQUAL}}_{3}^{\otimes |V|}$
+
+$=(0,1,1,1)^{\otimes |U|}\left({\begin{bmatrix}1\\0\end{bmatrix}}^{\otimes 3}+{\begin{bmatrix}0\\1\end{bmatrix}}^{\otimes 3}\right)^{\otimes |V|}$
+
+$=(0,1,1,1)^{\otimes |U|}{\begin{bmatrix}0&1\\1&0\end{bmatrix}}^{\otimes |E|}{\begin{bmatrix}0&1\\1&0\end{bmatrix}}^{\otimes |E|}\left({\begin{bmatrix}1\\0\end{bmatrix}}^{\otimes 3}+{\begin{bmatrix}0\\1\end{bmatrix}}^{\otimes 3}\right)^{\otimes |V|}$
+
+$=\left((0,1,1,1){\begin{bmatrix}0&1\\1&0\end{bmatrix}}^{\otimes 2}\right)^{\otimes |U|}\left(\left({\begin{bmatrix}0&1\\1&0\end{bmatrix}}{\begin{bmatrix}1\\0\end{bmatrix}}\right)^{\otimes 3}+\left({\begin{bmatrix}0&1\\1&0\end{bmatrix}}{\begin{bmatrix}0\\1\end{bmatrix}}\right)^{\otimes 3}\right)^{\otimes |V|}$
+
+$=(1,1,1,0)^{\otimes |U|}\left({\begin{bmatrix}0\\1\end{bmatrix}}^{\otimes 3}+{\begin{bmatrix}1\\0\end{bmatrix}}^{\otimes 3}\right)^{\otimes |V|}$
+
+$={\text{NAND}}_{2}^{\otimes |U|}{\text{EQUAL}}_{3}^{\otimes |V|},$
+
+which is ${\text{Holant}}(H,{\text{NAND}}_{2},{\text{EQUAL}}_{3}),$ the Holant problem that naturally corresponds to counting the number of independent sets in *G*.
+
+## History
+
+As with any type of reduction, a holographic reduction does not, by itself, yield a polynomial time algorithm. In order to get a polynomial time algorithm, the problem being reduced to must also have a polynomial time algorithm. Valiant's original application of holographic algorithms used a holographic reduction to a problem where every constraint is realizable by matchgates, which he had just proved is tractable by a further reduction to counting the number of perfect matchings in a planar graph. The latter problem is tractable by the FKT algorithm, which dates to the 1960s.
+
+Soon after, Valiant found holographic algorithms with reductions to matchgates for #7Pl-Rtw-Mon-3CNF and #7Pl-3/2Bip-VC. These problems may appear somewhat contrived, especially with respect to the modulus. Both problems were already known to be #P-hard when ignoring the modulus and Valiant supplied proofs of #P-hardness modulo 2, which also used holographic reductions. Valiant found these two problems by a computer search that looked for problems with holographic reductions to matchgates. He called their algorithms *accidental algorithms*, saying "when applying the term accidental to an algorithm we intend to point out that the algorithm arises from satisfying an apparently onerous set of constraints." The "onerous" set of constraints in question are polynomial equations that, if satisfied, imply the existence of a holographic reduction to matchgate realizable constraints.
+
+After several years of developing (what is known as) matchgate signature theory, Jin-Yi Cai and Pinyan Lu were able to explain the existence of Valiant's two accidental algorithms. These two problems are just special cases of two much larger families of problems: #2k-1Pl-Rtw-Mon-kCNF and #2k-1Pl-k/2Bip-VC for any positive integer *k*. The modulus 7 is just the third Mersenne number and Cai and Lu showed that these types of problems with parameter *k* can be solved in polynomial time exactly when the modulus is the *k*th Mersenne number by using holographic reductions to matchgates and the Chinese remainder theorem.
+
+Around the same time, Jin-Yi Cai, Pinyan Lu and Mingji Xia gave the first holographic algorithm that did not reduce to a problem that is tractable by matchgates. Instead, they reduced to a problem that is tractable by Fibonacci gates, which are symmetric constraints whose truth tables satisfy a recurrence relation similar to one that defines the Fibonacci numbers. They also used holographic reductions to prove that certain counting problems are #P-hard. Since then, holographic reductions have been used extensively as ingredients in both polynomial time algorithms and proofs of #P-hardness.

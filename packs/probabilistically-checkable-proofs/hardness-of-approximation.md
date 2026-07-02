@@ -1,0 +1,26 @@
+---
+title: "Hardness of approximation"
+source: https://en.wikipedia.org/wiki/Hardness_of_approximation
+domain: probabilistically-checkable-proofs
+license: CC-BY-SA-4.0
+tags: probabilistically checkable proof, pcp theorem, proof verification, hardness of approximation
+fetched: 2026-07-02
+---
+
+# Hardness of approximation
+
+In computer science, **hardness of approximation** is a field that studies the algorithmic complexity of finding near-optimal solutions to optimization problems.
+
+## Scope
+
+Hardness of approximation complements the study of approximation algorithms by proving, for certain problems, a limit on the factors with which their solution can be efficiently approximated. Typically such limits show a factor of approximation beyond which a problem becomes NP-hard, implying that finding a polynomial time approximation for the problem is impossible unless NP=P. Some hardness of approximation results, however, are based on other hypotheses, a notable one among which is the unique games conjecture.
+
+## History
+
+Since the early 1970s it was known that many optimization problems could not be solved in polynomial time unless P = NP, but in many of these problems the optimal solution could be efficiently approximated to a certain degree. In the 1970s, Teofilo F. Gonzalez and Sartaj Sahni began the study of hardness of approximation, by showing that certain optimization problems were NP-hard even to approximate to within a given approximation ratio. That is, for these problems, there is a threshold such that any polynomial-time approximation with approximation ratio beyond this threshold could be used to solve NP-complete problems in polynomial time. In the early 1990s, with the development of PCP theory, it became clear that many more approximation problems were hard to approximate, and that (unless P = NP) many known approximation algorithms achieved the best possible approximation ratio.
+
+Hardness of approximation theory deals with studying the approximation threshold of such problems.
+
+## Examples
+
+For an example of an NP-hard optimization problem that is hard to approximate, see set cover and vertex cover.

@@ -1,0 +1,22 @@
+---
+title: "DHCP snooping"
+source: https://en.wikipedia.org/wiki/DHCP_snooping
+domain: dhcp-snooping
+license: CC-BY-SA-4.0
+tags: dhcp snooping, rogue dhcp defense, trusted ports, binding table
+fetched: 2026-07-02
+---
+
+# DHCP snooping
+
+In computer networking, **DHCP snooping** is a series of techniques applied to improve the security of a Dynamic Host Configuration Protocol (DHCP) infrastructure.
+
+## Techniques
+
+DHCP servers allocate IP addresses to clients on a LAN. DHCP snooping can be configured on LAN switches to exclude rogue DHCP servers and remove malicious or malformed DHCP traffic. In addition, information on hosts which have successfully completed a DHCP transaction is accrued in a database of *bindings* which may then be used by other security or accounting features.
+
+Other features may use DHCP snooping database information to ensure IP integrity on a Layer 2 switched domain. This information enables a network to:
+
+- Track the physical location of IP addresses when combined with AAA accounting or SNMP.
+- Ensure that hosts only use the IP addresses assigned to them when combined with source-guard; a.k.a. source-lockdown
+- Sanitize ARP requests when combined with arp-inspection; a.k.a. arp-protect

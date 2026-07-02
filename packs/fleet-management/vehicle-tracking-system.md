@@ -1,0 +1,108 @@
+---
+title: "Vehicle tracking system"
+source: https://en.wikipedia.org/wiki/Vehicle_tracking_system
+domain: fleet-management
+license: CC-BY-SA-4.0
+tags: fleet management, telematics, vehicle tracking, electronic logging device
+fetched: 2026-07-02
+---
+
+# Vehicle tracking system
+
+A **vehicle tracking system** is a type of tracking system that combines a hardware device installed in a vehicle, typically a GPS tracking unit, with a software platform to monitor its location and collect a wide range of operational data in near real-time. It is a component of fleet digitalization. While the primary function of these systems is to provide automatic vehicle location, they also gather data for more advanced applications.
+
+The location and operational data captured by a tracking system is gathered through Telemetry for modern telematics and comprehensive fleet management platforms. These advanced systems use tracking data as a starting point, integrating it with other vehicle and business information to provide features such as predictive maintenance, driver behavior analysis (Driver scoring), and route optimization. In fleet operations that use vehicles from different manufacturers, comprehensive solutions are developed to collect and manage this varied data in a single system.
+
+While common in commercial fleets, this technology is also used in many consumer services, including carsharing and ride-hailing services like Uber or Bolt. The scope of modern systems has expanded beyond location monitoring to focus on improving safety, efficiency, and reducing the total cost of ownership (TCO).
+
+## Core components and technology
+
+A vehicle tracking system integrates three main components: hardware to collect data, software to interpret and display it, and a connectivity network to transmit it.
+
+### Hardware (the tracking unit)
+
+The hardware component is a physical device, often called a GPS tracking unit or telematics device, installed in the vehicle. Its primary function is to collect data about the vehicle's location and operational status. While there are various types of devices, they are all built around several key internal components:
+
+- **GNSS receiver**: This is the core component that determines the vehicle's location. While commonly referred to as GPS, modern receivers often use multiple GNSS satellite systems, including GLONASS, for improved accuracy and reliability.
+- **Communications module**: A cellular (e.g., 4G/5G) or satellite modem is used to transmit the collected data from the vehicle to the central server in real-time.
+- **Processor and memory**: An onboard processor manages the device's functions, while memory is used to store data, especially when the vehicle is outside of network coverage (a feature known as store-and-forward).
+- **Sensors**: In addition to location data, an internal accelerometer is standard for detecting driving events like harsh braking, rapid acceleration, and collisions. Some systems also incorporate dashcams to provide video footage of these events. More advanced systems can also connect to the vehicle's internal computer via the CAN bus or OBD-II port to access a wealth of diagnostic information, such as fuel levels, engine RPM, and fault codes.
+
+In India, SIM-based vehicle tracking is widely deployed for road freight logistics as it requires no hardware installation — platforms cover millions of trucks by querying mobile network location signals via TRAI-compliant APIs.
+
+Common hardware form factors include hardwired devices connected directly to the vehicle's power supply, plug-and-play OBD trackers, and battery-powered devices for assets like trailers or containers.
+
+### Software (the management platform)
+
+The software component processes raw data from the hardware into usable information. Software platforms in this industry are often categorized into two main business models. Some solutions are sold as a *bundled* hardware and software package from a single provider, such as those from Geotab or Mix Telematics, where the software is exclusively designed to work with the company's own devices. In contrast, other platforms are *device-agnostic*, such as Wialon, meaning they are designed to be compatible with a wide variety of tracking devices from different hardware manufacturers. The software consists of a backend server that processes the data and frontend applications that allow users to interact with it.
+
+#### Backend (the server)
+
+The backend is a central server responsible for communicating with the tracking devices. Its primary functions are to securely receive the large volumes of data transmitted by the fleet, process it, and store it in a database. This server handles tasks like parsing location coordinates, sensor readings, and diagnostic codes, making the information ready for use by frontend applications.
+
+#### Frontend (user applications)
+
+The frontend is what the user interacts with. This is typically provided in two forms:
+
+- **Web application**: A comprehensive, browser-based platform used by fleet managers and dispatchers. It provides access to all features, including live mapping, detailed reporting and analytics, administrative settings, and historical data review.
+- **Mobile apps**: Android and iOS apps provide essential features for users on the go. Managers can monitor their fleet from a smartphone, while drivers might use a separate app for their schedules, route information, or vehicle inspections.
+
+Common features across these applications include live maps, historical route playback, alerts, and performance dashboards.
+
+#### Data integration
+
+Tracking data is often integrated with other software systems. The backend server typically provides an API (Application Programming Interface) that allows for the automated sharing of data with other platforms. This enables companies to feed vehicle location, mileage, and usage data directly into their ERP, accounting, payroll, or maintenance software, streamlining workflows and eliminating manual data entry.
+
+### Connectivity
+
+Connectivity links the hardware in the vehicle to the software platform. The choice of network depends on the operational needs of the fleet:
+
+- **Cellular networks**: The most common method, using 4G and 5G networks to transmit data. This is cost-effective and suitable for vehicles operating within areas of reliable cell coverage.
+- **Satellite communication**: Used for vehicles that operate in remote areas where cellular service is unavailable, such as in long-haul trucking, mining, or maritime operations. Iridium and Globalstar are some of such providers. Satellite connectivity is more expensive but ensures the vehicle is never out of contact.
+
+## Applications of vehicle tracking
+
+Vehicle tracking technology is utilized across a vast range of commercial and private sectors. The global market for commercial vehicle telematics is expanding rapidly, valued at over $85 billion in 2024 and projected to grow to more than $150 billion by 2028. The market is led by several major international players, including Geotab, Gurtam, Verizon Connect, and MiX Telematics.
+
+The market shows distinct regional distributions in its installed base of active systems. Europe and North America are the most mature markets, with an estimated 25.5 million and 30.1 million active units respectively at the end of 2023. Significant growth is also occurring in emerging markets. Latin America is projected to grow to 16.6 million active units by 2029, while Southeast Asia had over 2.7 million active systems at the end of 2023 and is expected to reach 5.4 million by 2028.
+
+### Common application scenarios
+
+Vehicle tracking technology has been adapted for a wide range of uses, from standard features in consumer cars to critical components of large-scale commercial and regulatory systems.
+
+#### Consumer and OEM applications
+
+Many vehicle manufacturers and aftermarket providers offer tracking systems directly to consumers. Key applications include:
+
+- **Stolen vehicle recovery and anti-theft**: This is a primary application for consumers. If a vehicle is stolen, the tracking system provides its real-time location to law enforcement for recovery. Advanced systems offer anti-theft features such as alerts for unauthorized movement (e.g., if the vehicle is towed) and the ability to remotely immobilize the engine to prevent a thief from restarting it.
+- **Usage-based insurance (UBI)**: Insurance companies offer UBI policies where premiums are based on data collected from the vehicle. Sometimes called Pay-As-You-Drive (PAYD) or Pay-How-You-Drive (PHYD), these programs use data on mileage, time of day, speed, and braking habits to calculate a personalized insurance rate.
+- **OEM telematics services**: Many vehicle manufacturers now include tracking technology as a standard feature. These built-in systems provide services like emergency assistance (eCall), remote diagnostics, and concierge services. Manufacturers also use the collected data for research, development, and to offer services like predictive maintenance.
+
+#### Regulatory and compliance
+
+Governments worldwide mandate the use of vehicle tracking for regulatory and compliance purposes across various sectors. These systems are used to ensure that commercial vehicles adhere to laws regarding road usage, safety, and taxation. Common regulatory applications include:
+
+- **Electronic road tolling**: In many countries, tracking systems are used for electronic tolling, where a vehicle's location and distance traveled on toll roads are automatically recorded to calculate fees, eliminating the need for physical toll booths.
+- **Road user charging**: Some jurisdictions use tracking to implement road usage charging schemes for heavy goods vehicles, taxing them based on the specific roads they use and the time of day.
+- **Security and control**: For vehicles transporting hazardous materials or high-value goods, tracking is often a legal requirement to monitor their routes and ensure they comply with safety regulations.
+
+#### Integration into mobility services
+
+Vehicle tracking is the technological basis of modern Mobility-as-a-Service (MaaS) platforms. Services like carsharing and ride-hailing services (e.g., Uber, Bolt, Cabify) rely on real-time tracking for their core functionality. The technology enables these platforms to match passengers with the nearest available driver, provide customers with real-time arrival estimates, calculate fares, and monitor driver behavior.
+
+#### Commercial fleet operations
+
+The most extensive application of vehicle tracking is within commercial fleet management, where the technology serves as a critical tool for improving operational efficiency, enhancing safety, and reducing costs, such as through fuel management and prevention of Gasoline theft. The implementation of these systems can deliver a return on investment by enabling greater control over a company's mobile assets. While the benefits are applicable to nearly all industries that operate a vehicle fleet, the technology is used in several sectors:
+
+- **Transportation and logistics**: In the trucking and delivery industry, tracking systems are essential for optimizing routes, providing customers with accurate estimated times of arrival (ETAs), monitoring cargo status (Track and trace), and managing driver Hours of Service (HOS) in compliance with regulations.
+- **Field services**: Companies with mobile workforces, such as those in the HVAC, plumbing, or utilities sectors, utilize vehicle tracking to dispatch the nearest technician to a service location, verify the duration of service calls, and improve customer satisfaction by providing precise arrival windows.
+- **Construction and heavy equipment**: In the construction sector, tracking systems are deployed to monitor the location and operational status of high-value assets like excavators and bulldozers. This helps to prevent theft and allows for preventative maintenance to be scheduled based on actual engine hours. The use of such systems has been identified as a key factor in improving project efficiency within the Greek construction industry, for example.
+- **Public transportation**: Municipal transit authorities employ tracking technology to offer the public real-time arrival information for buses and trains, which can be integrated into a Journey planner, monitor schedule adherence, and trigger automated stop announcements for passengers.
+- **Agriculture**: As a component of modern precision agriculture, tracking systems are installed on farm machinery, including tractors and harvesters. The technology is used to manage equipment during planting and harvesting operations and to provide precise location data for automated steering systems, thereby improving overall field efficiency.
+- **Waste management**: In this sector, tracking is employed to optimize collection routes, provide proof of service by confirming that all locations on a route have been visited, and improve the overall efficiency of the vehicle fleet.
+
+## Privacy concerns
+
+The widespread adoption of vehicle tracking systems raises significant privacy concerns, particularly in the context of employee monitoring and government surveillance. For commercial fleets, the technology provides employers with the ability to monitor driver behavior, location, and working hours in detail. While this is used to enhance safety and efficiency, it has also led to debates over the extent of employee privacy in the workplace.
+
+In the context of law enforcement, the use of GPS trackers for surveillance has been the subject of major legal challenges. In the United States, the landmark Supreme Court case *United States v. Jones* (2012) established that placing a GPS tracker on a suspect's vehicle without a warrant constitutes an unlawful search under the Fourth Amendment. This and subsequent rulings have begun to define the legal boundaries for the use of tracking technology by government agencies.

@@ -1,0 +1,34 @@
+---
+title: "Tucker decomposition"
+source: https://en.wikipedia.org/wiki/Tucker_decomposition
+domain: tensor-decomposition
+license: CC-BY-SA-4.0
+tags: tensor decomposition, tucker decomposition, canonical polyadic decomposition, tensor rank
+fetched: 2026-07-02
+---
+
+# Tucker decomposition
+
+In mathematics, **Tucker decomposition** decomposes a tensor into a set of matrices and one small core tensor. It is named after Ledyard R. Tucker although it goes back to Hitchcock in 1927. Initially described as a three-mode extension of factor analysis and principal component analysis it may actually be generalized to higher mode analysis, which is also called higher-order singular value decomposition (HOSVD) or the M-mode SVD. The algorithm to which the literature typically refers when discussing the Tucker decomposition or the HOSVD is the M-mode SVD algorithm introduced by Vasilescu and Terzopoulos, but misattributed to Tucker or De Lathauwer etal.
+
+It may be regarded as a more flexible PARAFAC (parallel factor analysis) model. In PARAFAC the core tensor is restricted to be "diagonal".
+
+In practice, Tucker decomposition is used as a modelling tool. For instance, it is used to model three-way (or higher way) data by means of relatively small numbers of components for each of the three or more modes, and the components are linked to each other by a three- (or higher-) way core array. The model parameters are estimated in such a way that, given fixed numbers of components, the modelled data optimally resemble the actual data in the least squares sense. The model gives a summary of the information in the data, in the same way as principal components analysis does for two-way data.
+
+For a 3rd-order tensor $T\in F^{n_{1}\times n_{2}\times n_{3}}$ , where F is either $\mathbb {R}$ or $\mathbb {C}$ , Tucker Decomposition can be denoted as follows, $T={\mathcal {T}}\times _{1}U^{(1)}\times _{2}U^{(2)}\times _{3}U^{(3)}$ where ${\mathcal {T}}\in F^{d_{1}\times d_{2}\times d_{3}}$ is the *core tensor*, a 3rd-order tensor that contains the 1-mode, 2-mode and 3-mode singular values of T , which are defined as the *Frobenius norm* of the 1-mode, 2-mode and 3-mode slices of tensor ${\mathcal {T}}$ respectively. $U^{(1)},U^{(2)},U^{(3)}$ are unitary matrices in $F^{d_{1}\times n_{1}},F^{d_{2}\times n_{2}},F^{d_{3}\times n_{3}}$ respectively. The *k*-mode product (*k* = 1, 2, 3) of ${\mathcal {T}}$ by $U^{(k)}$ is denoted as ${\mathcal {T}}\times U^{(k)}$ with entries as
+
+${\begin{aligned}({\mathcal {T}}\times _{1}U^{(1)})(i_{1},j_{2},j_{3})&=\sum _{j_{1}=1}^{d_{1}}{\mathcal {T}}(j_{1},j_{2},j_{3})U^{(1)}(j_{1},i_{1})\\({\mathcal {T}}\times _{2}U^{(2)})(j_{1},i_{2},j_{3})&=\sum _{j_{2}=1}^{d_{2}}{\mathcal {T}}(j_{1},j_{2},j_{3})U^{(2)}(j_{2},i_{2})\\({\mathcal {T}}\times _{3}U^{(3)})(j_{1},j_{2},i_{3})&=\sum _{j_{3}=1}^{d_{3}}{\mathcal {T}}(j_{1},j_{2},j_{3})U^{(3)}(j_{3},i_{3})\end{aligned}}$
+
+Altogether, the decomposition may also be written more directly as
+
+$T(i_{1},i_{2},i_{3})=\sum _{j_{1}=1}^{d_{1}}\sum _{j_{2}=1}^{d_{2}}\sum _{j_{3}=1}^{d_{3}}{\mathcal {T}}(j_{1},j_{2},j_{3})U^{(1)}(j_{1},i_{1})U^{(2)}(j_{2},i_{2})U^{(3)}(j_{3},i_{3})$
+
+Taking $d_{i}=n_{i}$ for all i is always sufficient to represent T exactly, but often T can be compressed or efficiently approximately by choosing $d_{i}<n_{i}$ . A common choice is $d_{1}=d_{2}=d_{3}=\min(n_{1},n_{2},n_{3})$ , which can be effective when the difference in dimension sizes is large.
+
+There are two special cases of Tucker decomposition:
+
+**Tucker1**: if $U^{(2)}$ and $U^{(3)}$ are identity, then $T={\mathcal {T}}\times _{1}U^{(1)}$
+
+**Tucker2**: if $U^{(3)}$ is identity, then $T={\mathcal {T}}\times _{1}U^{(1)}\times _{2}U^{(2)}$ .
+
+**RESCAL** decomposition can be seen as a special case of Tucker where $U^{(3)}$ is identity and $U^{(1)}$ is equal to $U^{(2)}$ .

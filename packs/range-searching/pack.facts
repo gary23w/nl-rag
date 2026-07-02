@@ -1,0 +1,358 @@
+# nl-rag distilled facts — domain: range-searching
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:range-searching/fractional-cascading] In computer science, **fractional cascading** is a technique to speed up a sequence of binary searches for the same value in a sequence of related data structures.
+[src:range-searching/fractional-cascading] The first binary search in the sequence takes a logarithmic amount of time, as is standard for binary searches, but successive searches in the sequence are faster.
+[src:range-searching/fractional-cascading] Later authors introduced more complex forms of fractional cascading that allow the data structure to be maintained as the data changes by a sequence of discrete insertion and deletion events.
+[src:range-searching/fractional-cascading] As a simple example of fractional cascading, consider the following problem.
+[src:range-searching/fractional-cascading] We are given as input a collection of k ordered lists $L_{i}$ of numbers, such that the total length $\sum _{i}|L_{i}|$ of all lists is n , and must process them so that we can perform binary searches for a query value q in each of the k lists.
+[src:range-searching/fractional-cascading] The simplest solution to this searching problem is just to store each list separately.
+[src:range-searching/fractional-cascading] If we do so, the space requirement is $O(n)$ , but the time to perform a query is $O{\bigl (}k\log(n/k){\bigr )}$ , as we must perform a separate binary search in each of k lists.
+[src:range-searching/fractional-cascading] The worst case for querying this structure occurs when each of the k lists has equal size $n/k$ , so each of the k binary searches involved in a query takes time $O{\bigl (}\log(n/k){\bigr )}$ .
+[src:range-searching/fractional-cascading] A second solution allows faster queries at the expense of more space: we may merge all the k lists into a single big list L , and associate with each item x of L a list of the results of searching for x in each of the smaller lists $L_{i}$ .
+[src:range-searching/fractional-cascading] This merged solution allows a query in time $O(k+\log n)$ : simply search for q in L and then report the results stored at the item x found by this search.
+[src:range-searching/fractional-cascading] However, this solution pays a high penalty in space complexity: it uses space $O(kn)$ as each of the n items in L must store a list of k search results.
+[src:range-searching/fractional-cascading] Fractional cascading allows this same searching problem to be solved with time and space bounds meeting the best of both worlds: query time $O(k+\log n)$ , and space $O(n)$ .
+[src:range-searching/fractional-cascading] The fractional cascading solution is to store a new sequence of lists $M_{i}$ .
+[src:range-searching/fractional-cascading] The final list in this sequence, $M_{k}$ , is equal to $L_{k}$ ; each earlier list $M_{i}$ is formed by merging $L_{i}$ with every second item from $M_{i+1}$ .
+[src:range-searching/fractional-cascading] With each item x in this merged list, we store two numbers: the position resulting from searching for x in $L_{i}$ and the position resulting from searching for x in $M_{i+1}$ .
+[src:range-searching/fractional-cascading] Suppose we wish to perform a query in this structure, for $q=50$ .
+[src:range-searching/fractional-cascading] We first do a standard binary search for q in $M_{1}$ , finding the value **64**[1,5].
+[src:range-searching/fractional-cascading] The "5" in **64**[1,5] tells us that the approximate location of q in $M_{2}$ is position 5.
+[src:range-searching/fractional-cascading] More precisely, binary searching for q in $M_{2}$ would return either the value 79[3,5] at position 5, or the value 62[3,3] one place earlier.
+[src:range-searching/fractional-cascading] By comparing q to 62, and observing that it is smaller, we determine that the correct search result in $M_{2}$ is 62[3,3].
+[src:range-searching/fractional-cascading] The first "3" in 62[3,3] tells us that the search for q in $L_{2}$ should return $L_{2}[3]$ , a flag value meaning that q is past the end of list $L_{2}$ .
+[src:range-searching/fractional-cascading] The second "3" in 62[3,3] tells us that the approximate location of q in $M_{3}$ is position 3.
+[src:range-searching/fractional-cascading] More precisely, binary searching for q in $M_{3}$ would return either the value 62[2,3] at position 3, or the value 44[1,2] one place earlier.
+[src:range-searching/fractional-cascading] A comparison of q with the smaller value 44 shows us that the correct search result in $M_{3}$ is 62[2,3].
+[src:range-searching/fractional-cascading] Thus, we have found q in each of our four lists, by doing a binary search in the single list $M_{1}$ followed by a single comparison in each of the successive lists.
+[src:range-searching/fractional-cascading] More generally, for any data structure of this type, we perform a query by doing a binary search for q in $M_{1}$ , and determining from the resulting value the position of q in $L_{1}$ .
+[src:range-searching/fractional-cascading] Then, for each $i>1$ , we use the known position of q in $M_{i}$ to find its position in $M_{i+1}$ .
+[src:range-searching/fractional-cascading] The value associated with the position of q in $M_{i}$ points to a position in $M_{i+1}$ that is either the correct result of the binary search for q in $M_{i+1}$ or is a single step away from that correct result, so stepping from i to $i+1$ requires only a single comparison.
+[src:range-searching/fractional-cascading] In our example, the fractionally cascaded lists have a total of 25 elements, less than twice that of the original input.
+[src:range-searching/fractional-cascading] Therefore, the total size of the data structure is at most $\sum |M_{i}|=\sum |L_{i}|\left(1+{\frac {1}{2}}+{\frac {1}{4}}+\cdots \right)\leq 2n=O(n),$ as may be seen by regrouping the contributions to the total size coming from the same input list $L_{i}$ together with each other.
+[src:range-searching/fractional-cascading] In general, fractional cascading begins with a *catalog graph*, a directed graph in which each vertex is labeled with an ordered list.
+[src:range-searching/fractional-cascading] A query in this data structure consists of a path in the graph and a query value *q*; the data structure must determine the position of *q* in each of the ordered lists associated with the vertices of the path.
+[src:range-searching/fractional-cascading] For the simple example above, the catalog graph is itself a path, with just four nodes.
+[src:range-searching/fractional-cascading] It is possible for later vertices in the path to be determined dynamically as part of a query, in response to the results found by the searches in earlier parts of the path.
+[src:range-searching/fractional-cascading] Each item in each augmented list stores with it the position of that item in the unaugmented list stored at the same vertex, and in each of the outgoing neighboring lists.
+[src:range-searching/fractional-cascading] In the simple example above, *d* = 1, and we augmented each list with a 1/2 fraction of the neighboring items.
+[src:range-searching/fractional-cascading] A query in this data structure consists of a standard binary search in the augmented list associated with the first vertex of the query path, together with simpler searches at each successive vertex of the path.
+[src:range-searching/fractional-cascading] In *dynamic fractional cascading*, the list stored at each node of the catalog graph may change dynamically, by a sequence of updates in which list items are inserted and deleted.
+[src:range-searching/fractional-cascading] This causes several difficulties for the data structure.
+[src:range-searching/fractional-cascading] First, when an item is inserted or deleted at a node of the catalog graph, it must be placed within the augmented list associated with that node, and may cause changes to propagate to other nodes of the catalog graph.
+[src:range-searching/fractional-cascading] Instead of storing the augmented lists in arrays, they should be stored as binary search trees, so that these changes can be handled efficiently while still allowing binary searches of the augmented lists.
+[src:range-searching/fractional-cascading] Second, an insertion or deletion may cause a change to the subset of the list associated with a node that is passed on to neighboring nodes of the catalog graph.
+[src:range-searching/fractional-cascading] It is no longer feasible, in the dynamic setting, for this subset to be chosen as the items at every *d*th position of the list, for some *d*, as this subset would change too drastically after every update.
+[src:range-searching/fractional-cascading] In this way, the distribution of the data among the nodes satisfies the properties needed for the query algorithm to be fast, while guaranteeing that the average number of binary search tree operations per data insertion or deletion is constant.
+[src:range-searching/fractional-cascading] However, this information would be too expensive to maintain in the dynamic setting.
+[src:range-searching/fractional-cascading] Inserting or deleting a single value *x* could cause the indexes stored at an unbounded number of other values to change.
+[src:range-searching/fractional-cascading] These data structures allow dynamic fractional cascading to be performed at a time of O(log *n*) per insertion or deletion, and a sequence of *k* binary searches following a path of length *k* in the catalog graph to be performed in time O(log *n* + *k* log log *n*).
+[src:range-searching/fractional-cascading] Typical applications of fractional cascading involve range search data structures in computational geometry.
+[src:range-searching/fractional-cascading] For example, consider the problem of *half-plane range reporting*: that is, intersecting a fixed set of *n* points with a query half-plane and listing all the points in the intersection.
+[src:range-searching/fractional-cascading] The problem is to structure the points in such a way that a query of this type may be answered efficiently in terms of the intersection size *h*.
+[src:range-searching/fractional-cascading] One structure that can be used for this purpose is the convex layers of the input point set, a family of nested convex polygons consisting of the convex hull of the point set and the recursively-constructed convex layers of the remaining points.
+[src:range-searching/fractional-cascading] The whole half-plane range reporting problem may be solved by repeating this search procedure starting from the outermost layer and continuing inwards until reaching a layer that is disjoint from the query halfspace.
+[src:range-searching/fractional-cascading] Fractional cascading speeds up the successive binary searches among the sequences of polygon edge slopes in each layer, leading to a data structure for this problem with space O(*n*) and query time O(log *n* + *h*).
+[src:range-searching/fractional-cascading] The data structure may be constructed in time O(*n* log *n*) by an algorithm of Chazelle (1985).
+[src:range-searching/fractional-cascading] As in our example, this application involves binary searches in a linear sequence of lists (the nested sequence of the convex layers), so the catalog graph is just a path.
+[src:range-searching/fractional-cascading] Another application of fractional cascading in geometric data structures concerns point location in a monotone subdivision, that is, a partition of the plane into polygons such that any vertical line intersects any polygon in at most two points.
+[src:range-searching/fractional-cascading] As Edelsbrunner, Guibas & Stolfi (1986) showed, this problem can be solved by finding a sequence of polygonal paths that stretch from left to right across the subdivision, and binary searching for the lowest of these paths that is above the query point.
+[src:range-searching/fractional-cascading] Testing whether the query point is above or below one of the paths can itself be solved as a binary search problem, searching for the x coordinate of the points among the x coordinates of the path vertices to determine which path edge might be above or below the query point.
+[src:range-searching/fractional-cascading] Thus, each point location query can be solved as an outer layer of binary search among the paths, each step of which itself performs a binary search among x coordinates of vertices.
+[src:range-searching/fractional-cascading] Fractional cascading can be used to speed up the time for the inner binary searches, reducing the total time per query to O(log *n*) using a data structure with space O(*n*).
+[src:range-searching/fractional-cascading] In this application the catalog graph is a tree representing the possible search sequences of the outer binary search.
+[src:range-searching/fractional-cascading] Beyond computational geometry, Lakshman & Stiliadis (1998) and Buddhikot, Suri & Waldvogel (1999) apply fractional cascading in the design of data structures for fast packet filtering in internet routers.
+[src:range-searching/fractional-cascading] (2004) use fractional cascading as a model for data distribution and retrieval in sensor networks.
+[src:range-searching/k-d-tree] In computer science, a ***k*-d tree** (short for *k-dimensional tree*) is a space-partitioning data structure for organizing points in a *k*-dimensional space.
+[src:range-searching/k-d-tree] K-dimensional is that which concerns exactly k orthogonal axes or a space of any number of dimensions.
+[src:range-searching/k-d-tree] The *k*-d tree is a binary tree in which *every* node is a *k*-dimensional point.
+[src:range-searching/k-d-tree] Every non-leaf node can be thought of as implicitly generating a splitting hyperplane that divides the space into two parts, known as half-spaces.
+[src:range-searching/k-d-tree] Points to the left of this hyperplane are represented by the left subtree of that node and points to the right of the hyperplane are represented by the right subtree.
+[src:range-searching/k-d-tree] The hyperplane direction is chosen in the following way: every node in the tree is associated with one of the *k* dimensions, with the hyperplane perpendicular to that dimension's axis.
+[src:range-searching/k-d-tree] So, for example, if for a particular split the "x" axis is chosen, all points in the subtree with a smaller "x" value than the node will appear in the left subtree and all points with a larger "x" value will be in the right subtree.
+[src:range-searching/k-d-tree] In such a case, the hyperplane would be set by the x value of the point, and its normal would be the unit x-axis.
+[src:range-searching/k-d-tree] Since there are many possible ways to choose axis-aligned splitting planes, there are many different ways to construct *k*-d trees.
+[src:range-searching/k-d-tree] This method leads to a balanced *k*-d tree, in which each leaf node is approximately the same distance from the root.
+[src:range-searching/k-d-tree] However, balanced trees are not necessarily optimal for all applications.
+[src:range-searching/k-d-tree] Note that it is not *required* to select the median point.
+[src:range-searching/k-d-tree] In the case where median points are not selected, there is no guarantee that the tree will be balanced.
+[src:range-searching/k-d-tree] To avoid coding a complex $O(n)$ median-finding algorithm or using an $O(n\log(n))$ sort such as heapsort or mergesort to sort all *n* points, a popular practice is to sort a *fixed* number of *randomly* *selected* points, and use the median of those points to serve as the splitting plane.
+[src:range-searching/k-d-tree] In practice, this technique often results in nicely balanced trees.
+[src:range-searching/k-d-tree] Given a list of *n* points, the following algorithm uses a median-finding sort to construct a balanced *k*-d tree containing those points.
+[src:range-searching/k-d-tree] It is common that points "after" the median include only the ones that are strictly greater than the median in the current dimension.
+[src:range-searching/k-d-tree] For points that lie on the median in the current dimension, it is possible to define a function that compares them in all dimensions.
+[src:range-searching/k-d-tree] In some cases, it is acceptable to let points equal to the median lie on one side of the median, for example, by splitting the points into a "lesser than" subset and a "greater than or equal to" subset.
+[src:range-searching/k-d-tree] This algorithm creates the invariant that for any node, all the nodes in the left subtree are on one side of a splitting plane, and all the nodes in the right subtree are on the other side.
+[src:range-searching/k-d-tree] Points that lie on the splitting plane may appear on either side.
+[src:range-searching/k-d-tree] The splitting plane of a node goes through the point associated with that node (referred to in the code as *node.location*).
+[src:range-searching/k-d-tree] Alternative algorithms for building a balanced *k*-d tree presort the data prior to building the tree.
+[src:range-searching/k-d-tree] Then, they maintain the order of the presort during tree construction and hence eliminate the costly step of finding the median at each level of subdivision.
+[src:range-searching/k-d-tree] Two such algorithms build a balanced *k*-d tree to sort triangles in order to improve the execution time of ray tracing for three-dimensional computer graphics.
+[src:range-searching/k-d-tree] These algorithms presort *n* triangles prior to building the *k*-d tree, then build the tree in $O(n\log n)$ time in the best case.
+[src:range-searching/k-d-tree] An algorithm that builds a balanced *k*-d tree to sort points has a worst-case complexity of $O(kn\log(n))$ .
+[src:range-searching/k-d-tree] This algorithm presorts *n* points in each of *k* dimensions using an $O(n\log(n))$ sort such as Heapsort or Mergesort prior to building the tree.
+[src:range-searching/k-d-tree] It then maintains the order of these *k* presorts during tree construction and thereby avoids finding the median at each level of subdivision.
+[src:range-searching/k-d-tree] One adds a new point to a *k*-d tree in the same way as one adds an element to any other search tree.
+[src:range-searching/k-d-tree] First, traverse the tree, starting from the root and moving to either the left or the right child depending on whether the point to be inserted is on the "left" or "right" side of the splitting plane.
+[src:range-searching/k-d-tree] Once you get to the node under which the child should be located, add the new point as either the left or right child of the leaf node, again depending on which side of the node's splitting plane contains the new node.
+[src:range-searching/k-d-tree] Adding points in this manner can cause the tree to become unbalanced, leading to decreased tree performance.
+[src:range-searching/k-d-tree] The rate of tree performance degradation is dependent upon the spatial distribution of tree points being added, and the number of points added in relation to the tree size.
+[src:range-searching/k-d-tree] If a tree becomes too unbalanced, it may need to be re-balanced to restore the performance of queries that rely on the tree balancing, such as nearest neighbour searching.
+[src:range-searching/k-d-tree] To remove a point from an existing *k*-d tree without breaking the invariant, the easiest way is to form the set of all nodes and leaves from the children of the target node and recreate that part of the tree.
+[src:range-searching/k-d-tree] Another approach is to find a replacement for the point removed.
+[src:range-searching/k-d-tree] First, find the node R that contains the point to be removed.
+[src:range-searching/k-d-tree] For the base case, where R is a leaf node, no replacement is required.
+[src:range-searching/k-d-tree] For the general case, find a replacement point, say p , from the subtree rooted at R .
+[src:range-searching/k-d-tree] For finding a replacement point, if R discriminates on x (say) and R has a right child, find the point with the minimum x value from the subtree rooted at the right child.
+[src:range-searching/k-d-tree] Otherwise, find the point with the maximum x value from the subtree rooted at the left child.
+[src:range-searching/k-d-tree] Balancing a *k*-d tree requires care because *k*-d trees are sorted in multiple dimensions, so the tree-rotation technique cannot be used to balance them as this may break the invariant.
+[src:range-searching/k-d-tree] Several variants of balanced *k*-d trees exist.
+[src:range-searching/k-d-tree] They include divided *k*-d tree, pseudo *k*-d tree, K-D-B-tree, hB-tree and Bkd-tree.
+[src:range-searching/k-d-tree] Many of these variants are adaptive k-d trees.
+[src:range-searching/k-d-tree] The nearest neighbour search (NN) algorithm aims to find the point in the tree that is nearest to a given input point.
+[src:range-searching/k-d-tree] This search can be done efficiently by using the tree properties to quickly eliminate large portions of the search space.
+[src:range-searching/k-d-tree] Once the algorithm reaches a leaf node, it checks the node point and if the distance is better than the "current best", that node point is saved as the "current best".
+[src:range-searching/k-d-tree] The algorithm checks whether there could be any points on the other side of the splitting plane that are closer to the search point than the current best.
+[src:range-searching/k-d-tree] In concept, this is done by intersecting the splitting hyperplane with a hypersphere around the search point that has a radius equal to the current nearest distance.
+[src:range-searching/k-d-tree] Since the hyperplanes are all axis-aligned this is implemented as a simple comparison to see whether the distance between the splitting coordinate of the search point and current node is less than the distance (overall coordinates) from the search point to the current best.
+[src:range-searching/k-d-tree] If the hypersphere doesn't intersect the splitting plane, then the algorithm continues walking up the tree, and the entire branch on the other side of that node is eliminated.
+[src:range-searching/k-d-tree] When the algorithm finishes this process for the root node, then the search is complete.
+[src:range-searching/k-d-tree] Generally the algorithm uses squared distances for comparison to avoid computing square roots.
+[src:range-searching/k-d-tree] Additionally, it can save computation by holding the squared current best distance in a variable for comparison.
+[src:range-searching/k-d-tree] The algorithm can be extended in several ways by simple modifications.
+[src:range-searching/k-d-tree] It can provide the *k* nearest neighbours to a point by maintaining *k* current bests instead of just one.
+[src:range-searching/k-d-tree] A branch is only eliminated when *k* points have been found and the branch cannot have points closer than any of the *k* current bests.
+[src:range-searching/k-d-tree] It can also be converted to an approximation algorithm to run faster.
+[src:range-searching/k-d-tree] For example, approximate nearest neighbour searching can be achieved by simply setting an upper bound on the number of points to examine in the tree or by interrupting the search process based upon a real time clock (which may be more appropriate in hardware implementations).
+[src:range-searching/k-d-tree] The nearest neighbour for points that are already in the tree can be achieved by not updating the refinement for nodes that give zero distance.
+[src:range-searching/k-d-tree] As a result, this has the downside of discarding points that are not unique but are co-located with the original search point.
+[src:range-searching/k-d-tree] Approximate nearest neighbour is useful in real-time applications such as robotics due to the significant speed increase gained by not searching for the best point exhaustively.
+[src:range-searching/k-d-tree] One of its implementations is best-bin-first search.
+[src:range-searching/k-d-tree] A range search searches for ranges of parameters.
+[src:range-searching/k-d-tree] For example, if a tree is storing values corresponding to income and age, then a range search might be something like looking for all members of the tree which have an age between 20 and 50 years and an income between 50,000 and 80,000.
+[src:range-searching/k-d-tree] Since k-d trees divide the range of a domain in half at each level of the tree, they are useful for performing range searches.
+[src:range-searching/k-d-tree] Analyses of binary search trees has found that the worst case time for range search in a *k*-dimensional *k*-d tree containing *n* nodes is given by the following equation.
+[src:range-searching/k-d-tree] In low-dimensional spaces, the nearest point is an $O(\log(n))$ operation on average, in the case of randomly distributed points, although analysis in general is tricky.
+[src:range-searching/k-d-tree] In high-dimensional spaces, the curse of dimensionality causes the algorithm to need to visit many more branches than in lower-dimensional spaces.
+[src:range-searching/k-d-tree] In particular, when the number of points is only slightly higher than the number of dimensions, the algorithm is only slightly better than a linear search of all of the points.
+[src:range-searching/k-d-tree] As a general rule, if the dimensionality is *k*, the number of points in the data, *n*, should be $n\gg 2^{k}$ .
+[src:range-searching/k-d-tree] Otherwise, when *k*-d trees are used with high-dimensional data, most of the points in the tree will be evaluated and the efficiency is no better than exhaustive search, and, if a good-enough fast answer is required, approximate nearest-neighbour methods should be used instead.
+[src:range-searching/k-d-tree] (In the worst case, consider a cloud of points distributed on the surface of a sphere centered at the origin.
+[src:range-searching/k-d-tree] This may result in a nearest neighbor search failing to return a nearest neighbor, which means no points are within this maximum distance from the query point.
+[src:range-searching/k-d-tree] Instead of points, a *k*-d tree can also contain rectangles or hyperrectangles.
+[src:range-searching/k-d-tree] Thus range search becomes the problem of returning all rectangles intersecting the search rectangle.
+[src:range-searching/k-d-tree] The tree is constructed the usual way with all the rectangles at the leaves.
+[src:range-searching/k-d-tree] In an orthogonal range search, the *opposite* coordinate is used when comparing against the median.
+[src:range-searching/k-d-tree] For example, if the current level is split along xhigh, we check the xlow coordinate of the search rectangle.
+[src:range-searching/k-d-tree] If the median is less than the xlow coordinate of the search rectangle, then no rectangle in the left branch can ever intersect with the search rectangle and so can be pruned.
+[src:range-searching/k-d-tree] Otherwise both branches should be traversed.
+[src:range-searching/k-d-tree] See also interval tree, which is a 1-dimensional special case.
+[src:range-searching/k-d-tree] It is also possible to define a *k*-d tree with points stored solely in leaves.
+[src:range-searching/k-d-tree] This form of *k*-d tree allows a variety of split mechanics other than the standard median split.
+[src:range-searching/k-d-tree] The midpoint splitting rule selects on the middle of the longest axis of the space being searched, regardless of the distribution of points.
+[src:range-searching/k-d-tree] This guarantees that the aspect ratio will be at most 2:1, but the depth is dependent on the distribution of points.
+[src:range-searching/k-d-tree] A variation, called sliding-midpoint, only splits on the middle if there are points on both sides of the split.
+[src:range-searching/k-d-tree] Otherwise, it splits on point nearest to the middle.
+[src:range-searching/k-d-tree] Maneewongvatana and Mount show that this offers "good enough" performance on common data sets.
+[src:range-searching/k-d-tree] Using sliding-midpoint, an approximate nearest neighbour query can be answered in $O\left({\tfrac {1}{{\epsilon \ }^{d}}}\log n\right)$ .
+[src:range-searching/k-d-tree] Approximate range counting can be answered in $O\left(\log n+{\left({\tfrac {1}{\epsilon \ }}\right)}^{d}\right)$ with this method.
+[src:range-searching/priority-search-tree] In computer science, a **priority search tree** is a tree data structure for storing points in two dimensions.
+[src:range-searching/priority-search-tree] It was originally introduced by Edward M.
+[src:range-searching/priority-search-tree] It is effectively an extension of the priority queue with the purpose of improving the search time from O(*n*) to O(*s* + log *n*) time, where *n* is the number of points in the tree and *s* is the number of points returned by the search.
+[src:range-searching/priority-search-tree] The priority search tree is used to store a set of 2-dimensional points ordered by priority and by a key value.
+[src:range-searching/priority-search-tree] This is accomplished by creating a hybrid of a priority queue and a binary search tree.
+[src:range-searching/priority-search-tree] The result is a tree where each node represents a point in the original dataset.
+[src:range-searching/priority-search-tree] The point contained by the node is the one with the lowest priority.
+[src:range-searching/priority-search-tree] In addition, each node also contains a key value used to divide the remaining points (usually the median of the keys, excluding the point of the node) into a left and right subtree.
+[src:range-searching/priority-search-tree] The points are divided by comparing their key values to the node key, delegating the ones with lower keys to the left subtree, and the ones strictly greater to the right subtree.
+[src:range-searching/priority-search-tree] The construction of the tree requires O(*n* log *n*) time and O(*n*) space.
+[src:range-searching/priority-search-tree] However, if the points are sorted by their key values then the tree can be constructed in linear time.
+[src:range-searching/priority-search-tree] This can easily be done by constructing a balanced binary tree over the key values (as leaves) in linear time.
+[src:range-searching/priority-search-tree] Each internal node stores a pointer to the lowest priority node and count of number of items in the subtree rooted at that node.
+[src:range-searching/priority-search-tree] Thus, the node with minimum priority can be identified in constant time.
+[src:range-searching/priority-search-tree] The median of remaining points and the item with next smallest priority can be identified in O(log n) time.
+[src:range-searching/priority-search-tree] Thus, the recurrence relation is T(n)=2T(n/2)+O(log n)=O(n).
+[src:range-searching/priority-search-tree] The priority search tree can be efficiently queried for a key in a closed interval and for a maximum priority value.
+[src:range-searching/priority-search-tree] That is, one can specify an interval [*min_key*, *max_key*] and another interval [-∞, *max_priority*] and return the points contained within it.
+[src:range-searching/range-query-data-structures] In computer science, the **range query** problem consists of efficiently answering several queries regarding a given interval of elements within an array.
+[src:range-searching/range-query-data-structures] For example, a common task, known as range minimum query, is finding the smallest value inside a given range within a list of numbers.
+[src:range-searching/range-query-data-structures] Given a function f that accepts an array, a range query $f_{q}(l,r)$ on an array $a=[a_{1},..,a_{n}]$ takes two indices l and r and returns the result of f when applied to the subarray $[a_{l},\ldots ,a_{r}]$ .
+[src:range-searching/range-query-data-structures] For example, for a function $\operatorname {sum}$ that returns the sum of all values in an array, the range query $\operatorname {sum} _{q}(l,r)$ returns the sum of all values in the range $[l,r]$ .
+[src:range-searching/range-query-data-structures] Range sum queries may be answered in constant time and linear space by pre-computing an array p of same length as the input such that for every index i, the element pi is the sum of the first i elements of a.
+[src:range-searching/range-query-data-structures] This strategy may be extended to any other binary operation f whose inverse function $f^{-1}$ is well-defined and easily computable.
+[src:range-searching/range-query-data-structures] It can also be extended to higher dimensions with a similar pre-processing.
+[src:range-searching/range-query-data-structures] A more difficult subset of the problem consists of executing range queries on dynamic data; that is, data that may mutate between each query.
+[src:range-searching/range-query-data-structures] In order to efficiently update array values, more sophisticated data structures like the segment tree or Fenwick tree are necessary.
+[src:range-searching/range-query-data-structures] When the function of interest in a range query is a semigroup operator, the notion of $f^{-1}$ is not always defined, so the strategy in the previous section does not work.
+[src:range-searching/range-query-data-structures] Andrew Yao showed that there exists an efficient solution for range queries that involve semigroup operators.
+[src:range-searching/range-query-data-structures] He proved that for any constant c, a pre-processing of time and space $\Theta (c\cdot n)$ allows to answer range queries on lists where f is a semigroup operator in $\theta (\alpha _{c}(n))$ time, where $\alpha _{c}$ is a certain functional inverse of the Ackermann function.
+[src:range-searching/range-query-data-structures] There are some semigroup operators that admit slightly better solutions.
+[src:range-searching/range-query-data-structures] For instance when $f\in \{\max ,\min \}$ .
+[src:range-searching/range-query-data-structures] Assume $f=\min$ then $\min(A[1..n])$ returns the index of the minimum element of $A[1..n]$ .
+[src:range-searching/range-query-data-structures] Then ${\textstyle \min _{i,j}(A)}$ denotes the corresponding minimum range query.
+[src:range-searching/range-query-data-structures] There are several data structures that allow to answer a range minimum query in $O(1)$ time using a pre-processing of time and space $O(n)$ .
+[src:range-searching/range-query-data-structures] One such solution is based on the equivalence between this problem and the lowest common ancestor problem.
+[src:range-searching/range-query-data-structures] The Cartesian tree $T_{A}$ of an array $A[1,n]$ has as root $a_{i}=\min\{a_{1},a_{2},\ldots ,a_{n}\}$ and as left and right subtrees the Cartesian tree of $A[1,i-1]$ and the Cartesian tree of $A[i+1,n]$ respectively.
+[src:range-searching/range-query-data-structures] A range minimum query ${\textstyle \min _{i,j}(A)}$ is the lowest common ancestor in $T_{A}$ of $a_{i}$ and $a_{j}$ .
+[src:range-searching/range-query-data-structures] Because the lowest common ancestor can be solved in constant time using a pre-processing of time and space $O(n)$ , range minimum query can as well.
+[src:range-searching/range-query-data-structures] The solution when $f=\max$ is analogous.
+[src:range-searching/range-query-data-structures] Cartesian trees can be constructed in linear time.
+[src:range-searching/range-query-data-structures] The mode of an array is the element that appears the most in it.
+[src:range-searching/range-query-data-structures] In case of a tie, any of the most frequent elements might be picked as the mode.
+[src:range-searching/range-query-data-structures] A range mode query consists in pre-processing $A[1,n]$ such that we can find the mode in any range of $A[1,n]$ .
+[src:range-searching/range-query-data-structures] Several data structures have been devised to solve this problem, we summarize some of the results in the following table.
+[src:range-searching/range-query-data-structures] Recently Jørgensen et al. proved a lower bound on the cell-probe model of $\Omega \left({\tfrac {\log n}{\log(Sw/n)}}\right)$ for any data structure that uses S cells.
+[src:range-searching/range-query-data-structures] This particular case is of special interest since finding the median has several applications.
+[src:range-searching/range-query-data-structures] On the other hand, the median problem, a special case of the selection problem, is solvable in *O*(*n*), using the median of medians algorithm.
+[src:range-searching/range-query-data-structures] However its generalization through range median queries is recent.
+[src:range-searching/range-query-data-structures] A range median query $\operatorname {median} (A,i,j)$ where *A,i* and *j* have the usual meanings returns the median element of $A[i,j]$ .
+[src:range-searching/range-query-data-structures] Equivalently, $\operatorname {median} (A,i,j)$ should return the element of $A[i,j]$ of rank ${\frac {j-i}{2}}$ .
+[src:range-searching/range-query-data-structures] Range median queries cannot be solved by following any of the previous methods discussed above including Yao's approach for semigroup operators.
+[src:range-searching/range-query-data-structures] There have been studied two variants of this problem, the offline version, where all the *k* queries of interest are given in a batch, and a version where all the pre-processing is done up front.
+[src:range-searching/range-query-data-structures] The offline version can be solved with $O(n\log k+k\log n)$ time and $O(n\log k)$ space.
+[src:range-searching/range-query-data-structures] The following pseudocode of the quickselect algorithm shows how to find the element of rank r in $A[i,j]$ an unsorted array of distinct elements, to find the range medians we set $r={\frac {j-i}{2}}$ .
+[src:range-searching/range-query-data-structures] Procedure `rangeMedian` partitions `A`, using `A`'s median, into two arrays `A.low` and `A.high`, where the former contains the elements of `A` that are less than or equal to the median `m` and the latter the rest of the elements of `A`.
+[src:range-searching/range-query-data-structures] If we know that the number of elements of $A[i,j]$ that end up in `A.low` is `t` and this number is bigger than `r` then we should keep looking for the element of rank `r` in `A.low`; otherwise we should look for the element of rank $(r-t)$ in `A.high`.
+[src:range-searching/range-query-data-structures] To find t, it is enough to find the maximum index $m\leq i-1$ such that $a_{m}$ is in `A.low` and the maximum index $l\leq j$ such that $a_{l}$ is in `A.high`.
+[src:range-searching/range-query-data-structures] The total cost for any query, without considering the partitioning part, is $\log n$ since at most $\log n$ recursion calls are done and only a constant number of operations are performed in each of them (to get the value of t fractional cascading should be used).
+[src:range-searching/range-query-data-structures] If a linear algorithm to find the medians is used, the total cost of pre-processing for k range median queries is $n\log k$ .
+[src:range-searching/range-query-data-structures] The algorithm can also be modified to solve the online version of the problem.
+[src:range-searching/range-query-data-structures] Finding frequent elements in a given set of items is one of the most important tasks in data mining.
+[src:range-searching/range-query-data-structures] Finding frequent elements might be a difficult task to achieve when most items have similar frequencies.
+[src:range-searching/range-query-data-structures] Therefore, it might be more beneficial if some threshold of significance was used for detecting such items.
+[src:range-searching/range-query-data-structures] One of the most famous algorithms for finding the majority of an array was proposed by Boyer and Moore which is also known as the Boyer–Moore majority vote algorithm.
+[src:range-searching/range-query-data-structures] Boyer and Moore proposed an algorithm to find the majority element of a string (if it has one) in $O(n)$ time and using $O(1)$ space.
+[src:range-searching/range-query-data-structures] In the context of Boyer and Moore's work and generally speaking, a majority element in a set of items (for example string or an array) is one whose number of instances is more than half of the size of that set.
+[src:range-searching/range-query-data-structures] Few years later, Misra and Gries proposed a more general version of Boyer and Moore's algorithm using $O\left(n\log \left({\frac {1}{\tau }}\right)\right)$ comparisons to find all items in an array whose relative frequencies are greater than some threshold $0<\tau <1$ .
+[src:range-searching/range-query-data-structures] A range $\tau$ -majority query is one that, given a subrange of a data structure (for example an array) of size $|R|$ , returns the set of all distinct items that appear more than (or in some publications equal to) $\tau |R|$ times in that given range.
+[src:range-searching/range-query-data-structures] In different structures that support range $\tau$ -majority queries, $\tau$ can be either static (specified during pre-processing) or dynamic (specified at query time).
+[src:range-searching/range-query-data-structures] Many of such approaches are based on the fact that, regardless of the size of the range, for a given $\tau$ there could be at most $O(1/\tau )$ distinct *candidates* with relative frequencies at least $\tau$ .
+[src:range-searching/range-query-data-structures] By verifying each of these candidates in constant time, $O(1/\tau )$ query time is achieved.
+[src:range-searching/range-query-data-structures] A range $\tau$ -majority query is decomposable in the sense that a $\tau$ -majority in a range R with partitions $R_{1}$ and $R_{2}$ must be a $\tau$ -majority in either $R_{1}$ or $R_{2}$ .
+[src:range-searching/range-query-data-structures] Gagie et al. proposed a data structure that supports range $\tau$ -majority queries on an $m\times n$ array A .
+[src:range-searching/range-query-data-structures] This data structure supports dynamic thresholds (specified at query time) and a pre-processing threshold $\alpha$ based on which it is constructed.
+[src:range-searching/range-query-data-structures] During the pre-processing, a set of *vertical* and *horizontal* intervals are built on the $m\times n$ array.
+[src:range-searching/range-query-data-structures] Together, a vertical and a horizontal interval form a *block.* Each block is part of a *superblock* nine times bigger than itself (three times the size of the block's horizontal interval and three times the size of its vertical one).
+[src:range-searching/range-query-data-structures] For each block a set of candidates (with ${\frac {9}{\alpha }}$ elements at most) is stored which consists of elements that have relative frequencies at least ${\frac {\alpha }{9}}$ (the pre-processing threshold as mentioned above) in its respective superblock.
+[src:range-searching/range-query-data-structures] These elements are stored in non-increasing order according to their frequencies and it is easy to see that, any element that has a relative frequency at least $\alpha$ in a block must appear its set of candidates.
+[src:range-searching/range-query-data-structures] Each $\tau$ -majority query is first answered by finding the *query block,* or the biggest block that is contained in the provided query rectangle in $O(1)$ time.
+[src:range-searching/range-query-data-structures] For the obtained query block, the first ${\frac {9}{\tau }}$ candidates are returned (without being verified) in $O(1/\tau )$ time, so this process might return some false positives.
+[src:range-searching/range-query-data-structures] Many other data structures (as discussed below) have proposed methods for verifying each candidate in constant time and thus maintaining the $O(1/\tau )$ query time while returning no false positives.
+[src:range-searching/range-query-data-structures] where $\beta$ is the pre-processing threshold of the i -th instance.
+[src:range-searching/range-query-data-structures] Thus, for query blocks smaller than $1/\alpha$ the $\lceil \log(1/\tau )\rceil$ -th instance is queried.
+[src:range-searching/range-query-data-structures] As mentioned above, this data structure has query time $O(1/\tau )$ and requires $O\left(mn(H+1)\log ^{2}\left({\frac {1}{\alpha }}\right)\right)$ bits of space by storing a Huffman-encoded copy of it (note the $\log({\frac {1}{\alpha }})$ factor and also see Huffman coding).
+[src:range-searching/range-query-data-structures] Chan et al. proposed a data structure that given a one-dimensional array A , a subrange R of A (specified at query time) and a threshold $\tau$ (specified at query time), is able to return the list of all $\tau$ -majorities in $O(1/\tau )$ time requiring $O(n\log n)$ words of space.
+[src:range-searching/range-query-data-structures] To answer such queries, Chan et al. begin by noting that there exists a data structure capable of returning the *top-k* most frequent items in a range in $O(k)$ time requiring $O(n)$ words of space.
+[src:range-searching/range-query-data-structures] For a one-dimensional array $A[0,..,n-1]$ , let a one-sided top-k range query to be of form $A[0..i]{\text{ for }}0\leq i\leq n-1$ .
+[src:range-searching/range-query-data-structures] For a maximal range of ranges $A[0..i]{\text{ through }}A[0..j]$ in which the frequency of a distinct element e in A remains unchanged (and equal to f ), a horizontal line segment is constructed.
+[src:range-searching/range-query-data-structures] The x -interval of this line segment corresponds to $[i,j]$ and it has a y -value equal to f .
+[src:range-searching/range-query-data-structures] Since adding each element to A changes the frequency of exactly one distinct element, the aforementioned process creates $O(n)$ line segments.
+[src:range-searching/range-query-data-structures] Moreover, for a vertical line $x=i$ all horizontal line segments intersecting it are sorted according to their frequencies.
+[src:range-searching/range-query-data-structures] Note that, each horizontal line segment with x -interval $[\ell ,r]$ corresponds to exactly one distinct element e in A , such that $A[\ell ]=e$ .
+[src:range-searching/range-query-data-structures] A top-k query can then be answered by shooting a vertical ray $x=i$ and reporting the first k horizontal line segments that intersect it (remember from above that these line segments are already sorted according to their frequencies) in $O(k)$ time.
+[src:range-searching/range-query-data-structures] Chan et al. first construct a range tree in which each branching node stores one copy of the data structure described above for one-sided range top-k queries and each leaf represents an element from A .
+[src:range-searching/range-query-data-structures] The top-k data structure at each node is constructed based on the values existing in the subtrees of that node and is meant to answer one-sided range top-k queries.
+[src:range-searching/range-query-data-structures] Please note that for a one-dimensional array A , a range tree can be constructed by dividing A into two halves and recursing on both halves; therefore, each node of the resulting range tree represents a range.
+[src:range-searching/range-query-data-structures] It can also be seen that this range tree requires $O(n\log n)$ words of space, because there are $O(\log n)$ levels and each level $\ell$ has $2^{\ell }$ nodes.
+[src:range-searching/range-query-data-structures] Moreover, since at each level $\ell$ of a range tree all nodes have a total of n elements of A at their subtrees and since there are $O(\log n)$ levels, the space complexity of this range tree is $O(n\log n)$ .
+[src:range-searching/range-query-data-structures] Using this structure, a range $\tau$ -majority query $A[i..j]$ on $A[0..n-1]$ with $0\leq i\leq j\leq n$ is answered as follows.
+[src:range-searching/range-query-data-structures] First, the lowest common ancestor (LCA) of leaf nodes i and j is found in constant time.
+[src:range-searching/range-query-data-structures] Note that there exists a data structure requiring $O(n)$ bits of space that is capable of answering the LCA queries in $O(1)$ time.
+[src:range-searching/range-query-data-structures] Let z denote the LCA of i and j , using z and according to the decomposability of range $\tau$ -majority queries (as described above and in ), the two-sided range query $A[i..j]$ can be converted into two one-sided range top-k queries (from z to i and j ).
+[src:range-searching/range-query-data-structures] These two one-sided range top-k queries return the top-( $1/\tau$ ) most frequent elements in each of their respective ranges in $O(1/\tau )$ time.
+[src:range-searching/range-query-data-structures] These frequent elements make up the set of *candidates* for $\tau$ -majorities in $A[i..j]$ in which there are $O(1/\tau )$ candidates some of which might be false positives.
+[src:range-searching/range-query-data-structures] Each candidate is then assessed in constant time using a linear-space data structure (as described in Lemma 3 in ) that is able to determine in $O(1)$ time whether or not a given subrange of an array A contains at least q instances of a particular element e .
+[src:range-searching/range-query-data-structures] Gagie et al. proposed a data structure which supports queries such that, given two nodes u and v in a tree, are able to report the list of elements that have a greater relative frequency than $\tau$ on the path from u to v .
+[src:range-searching/range-query-data-structures] More formally, let T be a labelled tree in which each node has a label from an alphabet of size $\sigma$ .
+[src:range-searching/range-query-data-structures] Let $label(u)\in [1,\dots ,\sigma ]$ denote the label of node u in T .
+[src:range-searching/range-query-data-structures] Let $P_{uv}$ denote the unique path from u to v in T in which middle nodes are listed in the order they are visited.
+[src:range-searching/range-query-data-structures] Given T , and a fixed (specified during pre-processing) threshold $0<\tau <1$ , a query $Q(u,v)$ must return the set of all labels that appear more than $\tau |P_{uv}|$ times in $P_{uv}$ .
+[src:range-searching/range-query-data-structures] To construct this data structure, first ${O}(\tau n)$ nodes are *marked*.
+[src:range-searching/range-query-data-structures] This can be done by marking any node that has distance at least $\lceil 1/\tau \rceil$ from the bottom of the three (height) and whose depth is divisible by $\lceil 1/\tau \rceil$ .
+[src:range-searching/range-query-data-structures] After doing this, it can be observed that the distance between each node and its nearest marked ancestor is less than $2\lceil 1/\tau \rceil$ .
+[src:range-searching/range-query-data-structures] for $0\leq i\leq \log(depth(x))$ where $\operatorname {par} (x)$ returns the label of the direct parent of node x .
+[src:range-searching/range-query-data-structures] Put another way, for each marked node, the set of all paths with a power of two length (plus one for the node itself) towards the root is stored.
+[src:range-searching/range-query-data-structures] Moreover, for each $P_{i}(x)$ , the set of all majority *candidates* $C_{i}(x)$ are stored.
+[src:range-searching/range-query-data-structures] It is easy to see that the set of candidates $C_{i}(x)$ can have at most $2/\tau$ distinct labels for each i .
+[src:range-searching/range-query-data-structures] The existence of such $P_{i}(x)$ implies that a $\tau$ -majority in the path from x to z must be a $(\tau /2)$ -majority in $P_{i}(x)$ , and thus must appear in $C_{i}(x)$ .
+[src:range-searching/range-query-data-structures] It is easy to see that this data structure require $O(n\log n)$ words of space, because as mentioned above in the construction phase $O(\tau n)$ nodes are marked and for each marked node some candidate sets are stored.
+[src:range-searching/range-query-data-structures] By definition, for each marked node $O(\log n)$ of such sets are stores, each of which contains $O(1/\tau )$ candidates.
+[src:range-searching/range-query-data-structures] Therefore, this data structure requires $O(\log n\times (1/\tau )\times \tau n)=O(n\log n)$ words of space.
+[src:range-searching/range-query-data-structures] Please note that each node x also stores $count(x)$ which is equal to the number of instances of $label(x)$ on the path from x to the root of T , this does not increase the space complexity since it only adds a constant number of words per node.
+[src:range-searching/range-query-data-structures] Each query between two nodes u and v can be answered by using the decomposability property (as explained above) of range $\tau$ -majority queries and by breaking the query path between u and v into four subpaths.
+[src:range-searching/range-query-data-structures] Let z be the lowest common ancestor of u and v , with x and y being the nearest marked ancestors of u and v respectively.
+[src:range-searching/range-query-data-structures] Please note that, boundary nodes have to be handled accordingly so that all of these subpaths are disjoint and from all of them a set of $O(1/\tau )$ candidates is derived.
+[src:range-searching/range-query-data-structures] Each of these candidates is then verified using a combination of the $labelanc(x,\ell )$ query which returns the lowest ancestor of node x that has label $\ell$ and the $count(x)$ fields of each node.
+[src:range-searching/range-query-data-structures] On a w -bit RAM and an alphabet of size $\sigma$ , the $labelanc(x,\ell )$ query can be answered in $O\left(\log \log _{w}\sigma \right)$ time whilst having linear space requirements.
+[src:range-searching/range-query-data-structures] Therefore, verifying each of the $O(1/\tau )$ candidates in $O\left(\log \log _{w}\sigma \right)$ time results in $O\left((1/\tau )\log \log _{w}\sigma \right)$ total query time for returning the set of all $\tau$ -majorities on the path from u to v .
+[src:range-searching/range-query-data-structures] All the problems described above have been studied for higher dimensions as well as their dynamic versions.
+[src:range-searching/range-query-data-structures] On the other hand, range queries might be extended to other data structures like trees, such as the level ancestor problem.
+[src:range-searching/range-query-data-structures] A similar family of problems are orthogonal range queries, also known as counting queries.
+[src:range-searching/range-searching] In computer science, the **range searching** problem consists of processing a set *S* of objects, in order to determine which objects from *S* intersect with a query object, called the *range*.
+[src:range-searching/range-searching] For example, if *S* is a set of points corresponding to the coordinates of several cities, find the subset of cities within a given range of latitudes and longitudes.
+[src:range-searching/range-searching] The range searching problem and the data structures that solve it are a fundamental topic of computational geometry.
+[src:range-searching/range-searching] Applications of the problem arise in areas such as geographical information systems (GIS), computer-aided design (CAD) and databases.
+[src:range-searching/range-searching] There are several variations of the problem, and different data structures may be necessary for different variations.
+[src:range-searching/range-searching] In orthogonal range searching, the set *S* consists of n points in d dimensions, and the query consists of intervals in each of those dimensions.
+[src:range-searching/range-searching] Thus, the query consists of a multi-dimensional axis-aligned rectangle.
+[src:range-searching/range-searching] With an output size of k , Jon Bentley used a k-d tree to achieve (in Big O notation) $O(n)$ space and $O{\big (}n^{1-{\frac {1}{d}}}+k{\big )}$ query time.
+[src:range-searching/range-searching] Bentley also proposed using range trees, which improved query time to $O(\log ^{d}n+k)$ but increased space to $O(n\log ^{d-1}n)$ .
+[src:range-searching/range-searching] Dan Willard used downpointers, a special case of fractional cascading to reduce the query time further to $O(\log ^{d-1}n+k)$ .
+[src:range-searching/range-searching] While the above results were achieved in the pointer machine model, further improvements have been made in the word RAM model of computation in low dimensions (2D, 3D, 4D).
+[src:range-searching/range-searching] Bernard Chazelle used compress range trees to achieve $O(\log n)$ query time and $O(n)$ space for range counting.
+[src:range-searching/range-searching] Joseph JaJa and others later improved this query time to $O\left({\dfrac {\log n}{\log \log n}}\right)$ for range counting, which matches a lower bound and is thus asymptotically optimal.
+[src:range-searching/range-searching] As of 2015, the best results (in low dimensions (2D, 3D, 4D)) for range reporting found by Timothy M.
+[src:range-searching/range-searching] In the orthogonal case, if one of the bounds is infinity, the query is called three-sided.
+[src:range-searching/range-searching] If two of the bounds are infinity, the query is two-sided, and if none of the bounds are infinity, then the query is four-sided.
+[src:range-searching/range-searching] While in static range searching the set *S* is known in advance, dynamic range searching, insertions and deletions of points are allowed.
+[src:range-searching/range-searching] In the incremental version of the problem, only insertions are allowed, whereas the decremental version only allows deletions.
+[src:range-searching/range-searching] For the orthogonal case, Kurt Mehlhorn and Stefan Näher created a data structure for dynamic range searching which uses dynamic fractional cascading to achieve $O(n\log n)$ space and $O(\log n\log \log n+k)$ query time.
+[src:range-searching/range-searching] Both incremental and decremental versions of the problem can be solved with $O(\log n+k)$ query time, but it is unknown whether general dynamic range searching can be done with that query time.
+[src:range-searching/range-searching] The problem of colored range counting considers the case where points have categorical attributes.
+[src:range-searching/range-searching] If the categories are considered as colors of points in geometric space, then a query is for how many colors appear in a particular range.
+[src:range-searching/range-searching] Prosenjit Gupta and others described a data structure in 1995 which solved 2D orthogonal colored range counting in $O(n^{2}\log ^{2}n)$ space and $O(\log ^{2}n)$ query time.
+[src:range-searching/range-searching] This was later on generalized to higher dimensions.
+[src:range-searching/range-searching] In addition to being considered in computational geometry, range searching, and orthogonal range searching in particular, has applications for range queries in databases.
+[src:range-searching/range-searching] Colored range searching is also used for and motivated by searching through categorical data.
+[src:range-searching/range-searching] For example, determining the rows in a database of bank accounts which represent people whose age is between 25 and 40 and who have between $10000 and $20000 might be an orthogonal range reporting problem where age and money are two dimensions.
+[src:range-searching/range-tree] In computer science, a **range tree** is an ordered tree data structure to hold a list of points.
+[src:range-searching/range-tree] It allows all points within a given range to be reported efficiently, and is typically used in two or higher dimensions.
+[src:range-searching/range-tree] Range trees were introduced by Jon Louis Bentley in 1979.
+[src:range-searching/range-tree] Similar data structures were discovered independently by Lueker, Lee and Wong, and Willard.
+[src:range-searching/range-tree] The range tree is an alternative to the *k*-d tree.
+[src:range-searching/range-tree] Compared to *k*-d trees, range trees offer faster query times of (in Big O notation) $O(\log ^{d}n+k)$ but worse storage of $O(n\log ^{d-1}n)$ , where *n* is the number of points stored in the tree, *d* is the dimension of each point and *k* is the number of points reported by a given query.
+[src:range-searching/range-tree] In 1990, Bernard Chazelle improved this to query time $O(\log ^{d-1}n+k)$ and space complexity $O\left(n\left({\frac {\log n}{\log \log n}}\right)^{d-1}\right)$ .
+[src:range-searching/range-tree] A range tree on a set of 1-dimensional points is a balanced binary search tree on those points.
+[src:range-searching/range-tree] The points stored in the tree are stored in the leaves of the tree; each internal node stores the largest value of its left subtree.
+[src:range-searching/range-tree] A range tree on a set of points in *d*-dimensions is a recursively defined multi-level binary search tree.
+[src:range-searching/range-tree] Each level of the data structure is a binary search tree on one of the *d*-dimensions.
+[src:range-searching/range-tree] The first level is a binary search tree on the first of the *d*-coordinates.
+[src:range-searching/range-tree] Each vertex *v* of this tree contains an associated structure that is a (*d*−1)-dimensional range tree on the last (*d*−1)-coordinates of the points stored in the subtree of *v*.
+[src:range-searching/range-tree] A 1-dimensional range tree on a set of *n* points is a binary search tree, which can be constructed in $O(n\log n)$ time.
+[src:range-searching/range-tree] Range trees in higher dimensions are constructed recursively by constructing a balanced binary search tree on the first coordinate of the points, and then, for each vertex *v* in this tree, constructing a (*d*−1)-dimensional range tree on the points contained in the subtree of *v*.
+[src:range-searching/range-tree] Constructing a range tree this way would require $O(n\log ^{d}n)$ time.
+[src:range-searching/range-tree] This construction time can be improved for 2-dimensional range trees to $O(n\log n)$ .
+[src:range-searching/range-tree] Let *S* be a set of *n* 2-dimensional points.
+[src:range-searching/range-tree] If *S* contains only one point, return a leaf containing that point.
+[src:range-searching/range-tree] Otherwise, construct the associated structure of *S*, a 1-dimensional range tree on the *y*-coordinates of the points in *S*.
+[src:range-searching/range-tree] Let *x*m be the median *x*-coordinate of the points.
+[src:range-searching/range-tree] Let *S*L be the set of points with *x*-coordinate less than or equal to *x*m and let *S*R be the set of points with *x*-coordinate greater than *x*m.
+[src:range-searching/range-tree] Recursively construct *v*L, a 2-dimensional range tree on *S*L, and *v*R, a 2-dimensional range tree on *S*R.
+[src:range-searching/range-tree] Create a vertex *v* with left-child *v*L and right-child *v*R.
+[src:range-searching/range-tree] If we sort the points by their *y*-coordinates at the start of the algorithm, and maintain this ordering when splitting the points by their *x*-coordinate, we can construct the associated structures of each subtree in linear time.
+[src:range-searching/range-tree] This reduces the time to construct a 2-dimensional range tree to $O(n\log n)$ , and also reduces the time to construct a *d*-dimensional range tree to $O(n\log ^{d-1}n)$ .
+[src:range-searching/range-tree] A range query on a range tree reports the set of points that lie inside a given interval.
+[src:range-searching/range-tree] To report the points that lie in the interval [*x*1, *x*2], we start by searching for *x*1 and *x*2.
+[src:range-searching/range-tree] At some vertex in the tree, the search paths to *x*1 and *x*2 will diverge.
+[src:range-searching/range-tree] Let *v*split be the last vertex that these two search paths have in common.
+[src:range-searching/range-tree] For every vertex *v* in the search path from *v*split to *x*1, if the value stored at *v* is greater than *x*1, report every point in the right-subtree of *v*.
+[src:range-searching/range-tree] If *v* is a leaf, report the value stored at *v* if it is inside the query interval.
+[src:range-searching/range-tree] Similarly, reporting all of the points stored in the left-subtrees of the vertices with values less than *x*2 along the search path from *v*split to *x*2, and report the leaf of this path if it lies within the query interval.
+[src:range-searching/range-tree] Since the range tree is a balanced binary tree, the search paths to *x*1 and *x*2 have length $O(\log n)$ .
+[src:range-searching/range-tree] Reporting all of the points stored in the subtree of a vertex can be done in linear time using any tree traversal algorithm.
+[src:range-searching/range-tree] It follows that the time to perform a range query is $O(\log n+k)$ , where *k* is the number of points in the query interval.
+[src:range-searching/range-tree] Range queries in *d*-dimensions are similar.
+[src:range-searching/range-tree] Instead of reporting all of the points stored in the subtrees of the search paths, perform a (*d*−1)-dimensional range query on the associated structure of each subtree.
+[src:range-searching/range-tree] Eventually, a 1-dimensional range query will be performed and the correct points will be reported.
+[src:range-searching/range-tree] Since a *d*-dimensional query consists of $O(\log n)$ (*d*−1)-dimensional range queries, it follows that the time required to perform a *d*-dimensional range query is $O(\log ^{d}n+k)$ , where *k* is the number of points in the query interval.
+[src:range-searching/range-tree] This can be reduced to $O(\log ^{d-1}n+k)$ using a variant of fractional cascading.

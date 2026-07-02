@@ -1,0 +1,205 @@
+---
+title: "WebAssembly"
+source: https://en.wikipedia.org/wiki/WebAssembly
+domain: envoy-filters
+license: CC-BY-SA-4.0
+tags: envoy http filter, listener filter chain, proxy filter extension, wasm filter
+fetched: 2026-07-02
+---
+
+# WebAssembly
+
+**WebAssembly** (**Wasm**) defines a portable binary code format and a corresponding text format for executable programs and software interfaces for facilitating communication between such programs and their host environment.
+
+The main goal of WebAssembly is to facilitate high-performance applications on web pages, but it is also designed to be usable in non-web environments. It is an open standard intended to support any language on any operating system, and in practice many of the most popular languages already have at least some level of support.
+
+Announced in 2015 (2015) and first released in March 2017 (2017-03), WebAssembly became a World Wide Web Consortium (W3C) recommendation on 5 December 2019 and it received the *Programming Languages Software Award* from the Association for Computing Machinery (ACM) SIGPLAN in 2021. The W3C maintains the standard with contributions from Mozilla, Microsoft, Google, Apple, Fastly, Intel, and Red Hat.
+
+## History
+
+The name "WebAssembly" is intended to suggest bringing assembly language programming to the World Wide Web, where it will be executed client-side, by the website-user's computer via the user's web browser. To accomplish this, WebAssembly must be much more hardware-independent than a true assembly language.
+
+WebAssembly was first announced in 2015, and the first demonstration was executing Unity's *Angry Bots* in Firefox, Google Chrome, and Microsoft Edge [Legacy]. The precursor technologies were asm.js from Mozilla and Google Native Client, and the initial implementation was based on the feature set of asm.js.
+
+In March 2017, the design of the minimum viable product (MVP) was declared to be finished and the preview phase ended. In late September 2017, Safari 11 was released with support. In February 2018, the WebAssembly Working Group published three public working drafts for the Core Specification, JavaScript Interface, and Web API.
+
+The MVP was focused on low-level languages such as C and C++, with the intent to add features useful for high-level languages in a future version.
+
+Multithreading is currently a draft, but has been supported by Chrome since version 75 in June 2019, Firefox version 79, and Safari version 14.1
+
+The WebAssembly 2.0 specification was finished in 2022 and became a W3C standard in December 2024. It adds many single instruction, multiple data (SIMD) related instructions and a new v128 datatype, with the ability for functions to return multiple values, mass memory initialize/copy instructions, and reference types, which are opaque pointers to objects outside of the linear memory.
+
+WebAssembly 3.0 was released in September 2025. New features include a 64-bit address space, multiple address spaces, exception handling, and garbage collected struct and array types. Support for garbage collection enables more efficient compiling for high-level languages, but WasmGC from WebAssembly 3.0 lacks the abilities needed by .NET runtime.
+
+## Implementations
+
+While WebAssembly was initially designed to permit near-native code execution speed in the web browser, it has been considered valuable outside of such, in more generalized contexts. A WebAssembly runtime environment is a low-level virtual stack machine, akin to JVM or Flash VM; it can be embedded into any host application, and thus there have been created standalone WebAssembly runtime environments, including Wasmtime , WebAssembly Micro Runtime , Wasmer , WasmEdge  and wazero . WebAssembly runtime environments are embedded in application servers to host "server-side" WebAssembly applications and in other applications to support plug-in-based software extension architectures, e.g., *WebAssembly for Proxies* (Proxy-Wasm) which specifies a WebAssembly-based application binary interface (ABI) to extend proxy servers.
+
+### Web browsers
+
+In November 2017, Mozilla declared support "in all major browsers", after WebAssembly was enabled by default in Edge [Legacy] 16. This support also includes mobile web browsers for iOS and Android. As of March 2024, 99% of tracked web browsers support WebAssembly (version 1.0), more than for its predecessor asm.js. For some extensions, from the 2.0 draft standard, support may be lower, but still more than 90% of web browsers may already support, e.g. the reference types extension.
+
+### Non-browser runtimes
+
+Non-browser WebAssembly runtimes include Wasmer, Wasmtime, WAMR, WAVM, wasm3, and others. These systems execute precompiled Wasm modules and often provide additional APIs for embedding WebAssembly in different environments. Use cases for wasm outside the browser include plug-in interfaces and lightweight virtualization.
+
+### Compilers
+
+WebAssembly implementations generally use either ahead-of-time (AOT) or just-in-time (JIT) compiling, though some may also use an interpreter. While the first implementations appeared in web browsers, there are now many non-browser implementations for general-purpose use.
+
+#### Compiler toolchains
+
+Because WebAssembly executables are precompiled, a variety of programming languages can target Wasm. Compiling is done either through direct output to Wasm or via intermediate virtual machines implemented in Wasm.
+
+Notable toolchains include:
+
+- Emscripten, which compiles C and C++ to Wasm using Clang as a frontend, Binaryen as an optimizer, and can also target any LLVM-supported language.
+- Standalone Clang (version 8 and later), which supports direct compiling to Wasm.
+- LLVM-based workflows for languages such as Rust and AssemblyScript.
+
+#### Language support
+
+As of 2021, around 40 programming languages support WebAssembly as a compiling target. Examples include:
+
+- C and C++: via Emscripten or Clang standalone.
+- Rust: via rustc with Wasm target.
+- AssemblyScript: a TypeScript-like language compiling directly to Wasm.
+- Go: native WebAssembly support introduced in Go 1.11.
+- .NET languages: C# (via Blazor), F# (via Bolero and Blazor).
+- Python: implementations such as Pyodide.
+- Java and Java virtual machine (JVM) languages: via CheerpJ, JWebAssembly, and TeaVM.
+- Kotlin: direct Wasm compiling support.
+- Haskell: supported via Glasgow Haskell Compiler (GHC) backend.
+- Julia: community implementations.
+- Ruby: supported through MRuby.
+- Ring: supported with Wasm backend.
+- Dart: supported WebAssembly as a compiling target when building Dart and Flutter applications for the web.
+- Scheme: GNU Guile via Hoot.
+
+## Limits
+
+Web browsers prevent WebAssembly code from directly manipulating the Document Object Model. Wasm code must defer to JavaScript for this.
+
+In an October 2023 survey of developers, less than half of the 303 participants were satisfied with the state of WebAssembly. A large majority cited the need for improvement in four areas: § WASI, debugging support, integration with JavaScript and browser APIs, and build tooling.
+
+For memory-intensive allocations in WebAssembly, there are "grave limitations that make many applications infeasible to be *reliably* deployed on mobile browsers [..] Currently allocating more than ~300MB of memory is not reliable on Chrome on Android without resorting to Chrome-specific workarounds, nor in Safari on iOS."
+
+All major browsers allow WebAssembly if `Content-Security-Policy` is not specified, or if the value `unsafe-eval` is used, but behave differently otherwise; Chrome *requires* `unsafe-eval`, though a worker thread can be a workaround.
+
+## Security considerations
+
+In June 2018, a security researcher presented the possibility of using WebAssembly to circumvent browser mitigations for Spectre and Meltdown security vulnerabilities once support for threads with shared memory is added. Due to this concern, WebAssembly developers put the feature on hold. However, in order to explore these future language extensions, Google Chrome added experimental support for the WebAssembly thread proposal in October 2018.
+
+WebAssembly has been criticized for allowing greater ease of hiding the evidence for malware writers, scammers and phishing attackers; WebAssembly is present on the user's machine only in its compiled form, which "[makes malware] detection difficult". Speed and the easy ability to conceal in WebAssembly have led to its use in hidden crypto mining within the website visitor's device. Coinhive, a now defunct service facilitating cryptocurrency mining in website visitors' browsers, claims their "miner uses WebAssembly and runs with about 65% of the performance of a native Miner." A June 2019 study from the Technische Universität Braunschweig analyzed the usage of WebAssembly in the Alexa top 1 million websites and found the prevalent use was for malicious crypto mining, and that malware accounted for more than half of the WebAssembly-using websites studied. An April 2021 study from Universität Stuttgart found that since then crypto mining has been marginalized, falling to below 1% of all WebAssembly modules gathered from a wide range of sources, also including the Alexa top 1 million websites.
+
+As WebAssembly supports only structured control flow, it is amenable toward security verification techniques including symbolic execution.
+
+## Performance
+
+Early on, the execution speed of a Wasm program was benchmarked to be around 91% of (or about 10% slower than) a comparable native program, not including load/instantiation time; however, various later benchmarks indicate a wide range of performance characteristics, from 33% to 200% of the execution speed of native code, depending on the task.
+
+In 2019, a group of researchers from the University of Massachusetts Amherst presented a comprehensive analysis of WebAssembly's performance compared to native code. This study used the SPEC CPU suite of benchmarks and a system called "Browsix-Wasm" to run *unmodified* Unix applications in the browser, thereby allowing for a test of real-world applications, finding a significant performance gap between Wasm execution and native execution; in particular, Wasm programs showed an average slowdown of 45% in Firefox and 55% in Chrome across the real-world benchmarks; peak slowdowns resulted in a Wasm program taking 2.08 times as long to run in Firefox and 2.5 times as long to run in Chrome. The paper identified several reasons for this performance difference, including missing optimizations, code generation issues in WebAssembly compilers, and inherent limits of the WebAssembly platform.
+
+A 2021 study suggested that WebAssembly is much faster than JavaScript in certain cases, such as running a complex function on a small file (*e.g.*, processing a graphics file); however, at the time, the JavaScript interpreter had some optimizations available that the WebAssembly implementations did not have (*e.g.*, Just-in-time compilation).
+
+In 2022, it was determined by researchers that a Wasm program runs at about 120% of (or 20% faster than) the speed of a comparable JavaScript program. Those findings align with the experience of a startup company named "Zaplib", whose founders summarized in a blog that it was shutting down due to lack of performance in WebAssembly. Their goal had been to significantly increase the performance of existing web apps by incrementally porting them to Rust/Wasm; however, porting a customer's simulator from JavaScript yielded only a 5% improvement in performance. Similarly, regarding Figma, they stated the following:
+
+> [Upon] closer inspection it seems that [Figma's] use of Wasm is more due to historical accidents—wanting to build in C++ to hedge for their native app—than for critical performance needs. Figma files are processed in C++/Wasm, and this is likely a huge speedup, but most of Figma's performance magic is due to their WebGL renderer.
+
+In 2023, a study of Wasm's performance for cryptographic tasks indicated that "when using the fastest runtime, WebAssembly was only about 2.32 times slower (median) than native code with architecture-specific optimizations." This result excluded 2 tests where the native code benefited from special instructions implemented directly in the CPU of the target platform; for those particular tests, the Wasm programs were "80 times slower than native code".
+
+Benchmarking has revealed several other pain-points for WebAssembly, such as poor performance because of no direct access to the DOM, a problem which is being addressed.
+
+## WASI
+
+WebAssembly System Interface (WASI) is a simple interface (application binary interface (ABI) and application programming interface (API)) designed by Mozilla, which is intended to be portable to any platform. It provides features similar to the Portable Operating System Interface (POSIX), such as file input/output (I/O) constrained by capability-based security. There are additional proposed ABI/APIs.
+
+WASI is influenced by CloudABI and Capsicum.
+
+Solomon Hykes, a co-founder of Docker, wrote in 2019, "If WASM+WASI existed in 2008, we wouldn't have needed to create Docker. That's how important it is. WebAssembly on the server is the future of computing."
+
+WASI 0.1 provides a few POSIX-like APIs such as file I/O, reading environment variables, and random-number generation, but has very little support for networking. WASI 0.2 is redesigned based on the WebAssembly Component Model. WASI 0.3 will add support for async functions; the host translates between blocking and async function calls, so an exported function that blocks may be called as an asynchronous function, and vice-versa.
+
+Starting in 0.2, WASI is defined in terms of the component model. Interfaces in the component model are specified in an IDL called WIT (WebAssembly Interface Types). While core wasm only supports integer and floating-point numbers, interfaces in WIT can express types such as strings, lists, and user-defined record and variant types, and are language-agnostic. Components cannot access each other's memory, and so interact only via imported and exported functions. The component model is designed around composition: two components can be composed into a single component when the exports of one component match another's imports, allowing any interface to be virtualized. Interfaces in WIT are grouped together into a "world". WASI 0.2 defines a CLI world similar to the POSIX-like API of WASI 0.1, and an HTTP proxy world for web servers.
+
+The component model is not currently supported by browsers.
+
+## Specification
+
+### Host environment
+
+The general standard provides core specifications for the JavaScript API and details on embedding.
+
+### Virtual machine
+
+Wasm code (binary code, i.e. bytecode) is intended to be run on a portable virtual stack machine (VM). The VM is designed to be faster to parse and execute than JavaScript and to have compact code representation. Any external functionality (like syscalls) that may be expected by Wasm binary code is not stipulated by the standard; instead, the standard specifies how the host environment can provide such an interface via a "module".
+
+### Wasm program
+
+A Wasm program is designed as a separate module containing collections of various Wasm-defined values and program type definitions. These are provided in either binary or textual format (see below) that have a common structure. Such a module may provide a start function that is executed upon instantiation of a wasm binary.
+
+#### Instruction set
+
+The core standard for the binary format of a Wasm program defines an instruction set architecture (ISA); each operation that can be executed by the VM is assigned a specific binary encoding (an "opcode"), but the exact way in which the operation is implemented is not specified, allowing for flexibility in the construction of a VM. The list of instruction types includes those for standard memory load/store, numeric, parametric, control flow, and Wasm-specific variables.
+
+The number of opcodes used in the original standard (§ MVP) was a bit fewer than 200 of the 256 possible opcodes. Subsequent versions of WebAssembly pushed the number of opcodes a bit over 200. The WebAssembly SIMD proposal (for parallel processing) introduces an alternate opcode prefix (0xfd) for 128-bit wide SIMD instructions; the concatenation of the SIMD prefix, plus an opcode that is valid after the SIMD prefix, forms each SIMD opcode. The SIMD opcodes bring an additional 236 instructions to the MVP's SIMD ability (for a total of around 436 instructions) This set of instructions are enabled by default across a number of important implementations:
+
+1. Google's V8 (in Google Chrome)
+2. The SpiderMonkey engine in Mozilla Firefox
+3. The JavaScriptCore engine in Apple's Safari
+
+These SIMD opcodes are both portable and intended to map directly to native instruction sets like x86-64 and ARM. In contrast, SIMD instructions are not directly supported by Java's JVM or .NET's CIL; however, both do have some APIs for parallel processing, which provide SIMD speedups. A newer set of "relaxed SIMD" instructions allow for a limited amount of implementation-defined behavior to improve performance.
+
+#### Code representation
+
+In March 2017, the WebAssembly Community Group reached consensus on the initial ("MVP") binary format, JavaScript API, and reference interpreter. It defines a WebAssembly binary format (`.wasm`), which is designed to be used by computers, not humans, and a text format that is human-readable (`.wat`), resembling a cross between S-expressions and traditional assembly languages. The binary format is straightforward and designed to allow streaming compiling, so compiling can begin before the module is finished downloading, and to allow functions to be compiled in parallel.
+
+The table below shows an example of a factorial function written in C and its corresponding WebAssembly code after compiling, shown both in .wat text format (a human-readable textual representation of WebAssembly) and in .wasm binary format (the raw bytecode, expressed below in hexadecimal), that is executed by a Web browser or run-time environment that supports WebAssembly.
+
+| C source code | WebAssembly .wat text format | WebAssembly .wasm binary format |
+|---|---|---|
+| int factorial(int n) { if (n == 0) { return 1; } else { return n * factorial(n - 1); } } | (func (param i64) (result i64) local.get 0 i64.eqz if (result i64) i64.const 1 else local.get 0 local.get 0 i64.const 1 i64.sub call 0 i64.mul end) | 00 61 73 6D 01 00 00 00 01 06 01 60 01 7E 01 7E 03 02 01 00 0A 17 01 15 00 20 00 50 04 7E 42 01 05 20 00 20 00 42 01 7D 10 00 7E 0B 0B |
+
+All integer constants are encoded using a space-efficient, variable-length LEB128 encoding.
+
+The WebAssembly text format is more canonically written in a folded format using S-expressions. For instructions and expressions, this format is purely syntactic sugar and has no behavioral differences with the linear format. Through `wasm2wat`, the code above decompiles to:
+
+```mw
+(module
+  (type $t0 (func (param i64) (result i64)))
+  (func $f0 (type $t0) (param $p0 i64) (result i64)
+    (if $I0 (result i64) ;; $I0 is an unused label name
+      (i64.eqz
+        (local.get $p0)) ;; the name $p0 is the same as 0 here
+      (then
+        (i64.const 1))
+      (else
+        (i64.mul
+          (local.get $p0)
+          (call $f0      ;; the name $f0 is the same as 0 here
+            (i64.sub
+              (local.get $p0)
+              (i64.const 1))))))))
+```
+
+A module is implicitly generated by the compiler. The function is referenced by an entry of the type table in the binary, hence a type section and the `type` emitted by the decompiler. The compiler and decompiler can be accessed online.
+
+#### Memory and variables
+
+Data in memory is stored in a large, growable array of bytes termed a *linear memory*. Linear memory is separate from the wasm module's call stack and code and the engine's memory. This allows running wasm code in the same process as the JavaScript virtual machine it's embedded in without violating memory safety.
+
+A module contains a list of global variables separate from linear memory, which may be mutable or immutable. Functions declare a list of local variables. A function's parameters are also local variables.
+
+Instructions operate on a stack of values. The stack layout is fixed (branches must push and pop the same number of operands), so wasm engines can compile the stack away, producing efficient machine code operations on registers, rather than managing a stack at runtime. A stack machine architecture was chosen as it can have higher code density than a register machine.
+
+#### Control flow
+
+Unlike typical assembly languages, wasm only uses structured control flow similar to high-level programming languages. The intentional lack of support for jump instructions makes it simple to validate and compile wasm code in a single pass, and makes it easier to read code disassembled into the text format.
+
+Blocks are delimited with the `block`, `loop`, and `if`/`else` constructs. Branch instructions contain a label that identifies the depth of a block it is nested in: `br 0` will branch to the block the instruction is contained in, `br 1` will branch to the block that block is contained in, and so on. Branches to a `block` or `if` jump to the end of the block like a break statement, while branches to a `loop` jump back to the *beginning* of the loop, similar to a continue statement. The `br_table` instruction takes an input index and jumps to a target from a list of labels. A C-style switch statement can be expressed with a `br_table` inside a series of nested blocks.
+
+Compilers targeting wasm convert unstructured control flow into high-level loops using Emscripten's Relooper algorithm, originally designed to target JavaScript.
+
+#### Functions
+
+Function declarations are listed in a separate section before the section containing the function bodies. Function pointers are emulated using an index into the global functions table, since code is not inside the linear memory. Functions can also be imported and exported, providing the foreign function interface to communicate with JavaScript or other embedders.

@@ -1,0 +1,120 @@
+---
+title: "Contactor"
+source: https://en.wikipedia.org/wiki/Contactor
+domain: solenoids-relays
+license: CC-BY-SA-4.0
+tags: solenoid coil, electromechanical relay, contactor switch, solenoid valve
+fetched: 2026-07-02
+---
+
+# Contactor
+
+A **contactor** is a type of relay (electrically operated switch) with high power rating (current rating and voltage rating). Contactors usually refer to devices switching more than 15 amperes or in circuits rated more than a few kilowatts. Contactors are typically used to control electric motors (combination motor starters), lighting, heating, capacitor banks, thermal evaporators, and other electrical loads. The physical size of contactors ranges from a device small enough to pick up with one hand, to large devices approximately a meter on a side.
+
+Contactors usually have provision for installation of additional contact blocks, rated for pilot duty, used in motor control circuits.
+
+## Differences between other electrical devices
+
+### Other relays
+
+Contactors have higher current, voltage and power ratings than other relays. Thus, contactors are typically used for higher current or higher voltage switching; other relays are typically used for lower current or lower voltage switching. Unlike other relays, contactors are designed to be directly connected to high-current load devices.
+
+A contactor joins 2 poles together, without a common circuit between them. Other relays may have a common contact that connects to a neutral position.
+
+Contactors are typically built for and used in three-phase applications; other relays are more commonly used in single-phase applications. Contactors generally have special structures for arc suppression to allow them to interrupt heavy currents, such as motor starting inrush current; other relays rely on other ways for arc suppression. Coil voltages for contactors are often from 24 V AC/DC all the way up to 600 V AC; coil voltages for other relays are rarely high.
+
+Other relays are usually designed for both *normally closed* and *normally open* applications. Apart from optional auxiliary low-current contacts, contactors are almost exclusively fitted with normally open ("form A") contacts.
+
+### Circuit breaker
+
+Unlike a circuit breaker, a contactor is not intended to interrupt a short circuit current. Contactors range from those having a breaking current of several amperes to thousands of amperes and 24 V DC to many kilovolts, not high enough to safely interrupt a short circuit current.
+
+## Construction
+
+A contactor has three components:
+
+- The *contacts* are the current-carrying part of the contactor. This includes power contacts, auxiliary contacts, and contact springs. Contact material is chosen for high electrical conductivity, mechanical strength, and stability under arcing and oxidation. Commonly used metals include alloys of tungsten, molybdenum, copper, and others. For example, motor circuit contactors may use contacts made of silver with cadmium oxide added to improved durability and arc resistance.
+- The *electromagnet* (or "*coil*") provides the driving force to close the contacts. The *enclosure* is a frame housing the contacts and the electromagnet. Enclosures are made of insulating materials such as Bakelite, Nylon 6, and thermosetting plastics to protect and insulate the contacts and to provide some measure of protection against personnel touching the contacts. Open-frame contactors may have a further enclosure to protect against dust, oil, explosion hazards and weather.
+- *Magnetic blowouts* use blowout coils to lengthen and move the electric arc. These are especially useful in DC power circuits. AC arcs have periods of low current, during which the arc can be extinguished with relative ease, but DC arcs have continuous high current, so blowing them out requires the arc to be stretched further than an AC arc of the same current. The magnetic blowouts in the pictured Albright contactor (which is designed for DC currents) more than double the current the contactor can break, increasing it from 600 A to 1,500 A.
+
+Sometimes an economizer circuit is also installed to reduce the power required to keep a contactor closed; an auxiliary contact reduces coil current after the contactor closes. A somewhat greater amount of power is required to initially close a contactor than is required to keep it closed. Such a circuit can save a substantial amount of power and allow the energized coil to stay cooler. Economizer circuits are nearly always applied on DC contactor coils and on large AC contactor coils.
+
+A basic contactor will have a coil input (which may be driven by either an AC or DC supply depending on the contactor design). Universal coils (driven by AC as well as DC) are also available in the market today. The coil may be energized at the same voltage as a motor the contactor is controlling, or may be separately controlled with a lower coil voltage better suited to control by programmable controllers and lower-voltage pilot devices. Certain contactors have series coils connected in the motor circuit; these are used, for example, for automatic acceleration control, where the next stage of resistance is not cut out until the motor current has dropped.
+
+## Operating principle
+
+When current passes through the electromagnet, a magnetic field is produced, which attracts the moving core of the contactor. The electromagnet coil draws more current initially, until its inductance increases when the metal core enters the coil. The moving contact is propelled by the moving core; the force developed by the electromagnet holds the moving and fixed contacts together. When the contactor coil is de-energized, gravity or a spring returns the electromagnet core to its initial position and opens the contacts.
+
+For contactors energized with alternating current, a small part of the core is surrounded with a shading coil, which slightly delays the magnetic flux in the core. The effect is to average out the alternating pull of the magnetic field and so prevent the core from buzzing at twice line frequency.
+
+Because arcing and consequent damage occurs just as the contacts are opening or closing, contactors are designed to open and close very rapidly; there is often an internal tipping-point mechanism to ensure rapid action.
+
+Rapid closing can, however, lead to increase contact bounce which causes additional unwanted open-close cycles. One solution is to have bifurcated contacts to minimize contact bounce; two contacts designed to close simultaneously, but bounce at different times so the circuit will not be briefly disconnected and cause an arc.
+
+Another technique for improving the life of contactors is contact wipe; the contacts move past each other after initial contact in order to wipe off any contamination.
+
+## Arc suppression
+
+Without adequate contact protection, the occurrence of electric current arcing causes significant degradation of the contacts, which suffer significant damage. An electrical arc occurs between the two contact points (electrodes) when they transition from a closed to an open (break arc) or from an open to a closed (make arc). The break arc is typically more energetic and thus more destructive.
+
+The heat developed by the resulting electrical arc is very high, ultimately causing the metal on the contact to migrate with the current. The extremely high temperature of the arc (tens of thousands of degrees Celsius) cracks the surrounding gas molecules creating ozone, carbon monoxide, and other compounds. The arc energy slowly destroys the contact metal, causing some material to escape into the air as fine particulate matter. This activity causes the material in the contacts to degrade over time, ultimately resulting in device failure. For example, a properly applied contactor will have a life span of 10,000 to 100,000 operations when run under power; which is significantly less than the mechanical (non-powered) life of the same device which can be in excess of 20 million operations.
+
+Most motor control contactors at low voltages (600 volts and less) are air break contactors; air at atmospheric pressure surrounds the contacts and extinguishes the arc when interrupting the circuit. Modern medium-voltage AC motor controllers use vacuum contactors. High voltage AC contactors (greater than 1,000 volts) may use vacuum or an inert gas around the contacts. High voltage DC contactors (greater than 600 V) still rely on air within specially designed arc-chutes to break the arc energy. High-voltage electric locomotives may be isolated from their overhead supply by roof-mounted circuit breakers actuated by compressed air; the same air supply may be used to "blow out" any arc that forms.
+
+## Ratings
+
+Contactors are rated by designed load current per contact (pole), maximum fault withstand current, duty cycle, design life expectancy, voltage, and coil voltage. A general purpose motor control contactor may be suitable for heavy starting duty on large motors; so-called "definite purpose" contactors are carefully adapted to such applications as air-conditioning compressor motor starting. North American and European ratings for contactors follow different philosophies, with North American general purpose machine tool contactors generally emphasizing simplicity of application while definite purpose and European rating philosophy emphasizes design for the intended life cycle of the application.
+
+### IEC utilization categories
+
+The current rating of the contactor depends on utilization category. Example IEC categories in standard 60947 are described as:
+
+- **AC-1** – Non-inductive or slightly inductive loads, resistance furnaces
+- **AC-2** – Starting of slip-ring motors: starting, switching-off
+- **AC-3** – Starting of squirrel-cage motors and switching-off only after the motor is up to speed. (Make Locked Rotor Amps (LRA), Break Full Load Amps (FLA))
+- **AC-4** – Starting of squirrel-cage motors with inching and plugging duty. Rapid Start/Stop. (Make and Break LRA)
+
+Relays and auxiliary contact blocks are rated according to IEC 60947-5-1:
+
+- **AC-15** – Control of electromagnetic loads (>72 VA)
+- **DC-13** – Control of electromagnets
+
+### NEMA
+
+NEMA contactors for low-voltage motors (less than 1,000 volts) are rated according to NEMA size, which gives a maximum continuous current rating and a rating by horsepower for attached induction motors. NEMA standard contactor sizes are designated 00, 0, 1, 2, 3 to 9.
+
+The horsepower ratings are based on voltage and on typical induction motor characteristics and duty cycle as stated in NEMA standard ICS2. Exceptional duty cycles or specialized motor types may require a different NEMA starter size than the nominal rating. Manufacturer's literature is used to guide selection for non-motor loads, for example, incandescent lighting or power factor correction capacitors. Contactors for medium-voltage motors (greater than 1,000 volts) are rated by voltage and current capacity.
+
+Auxiliary contacts of contactors are used in control circuits and are rated with NEMA contact ratings for the pilot circuit duty required. Normally these contacts are not used in motor circuits. The nomenclature is a letter followed by a three-digit number, the letter designates the current rating of the contacts and the current type (i.e., AC or DC) and the number designates the maximum voltage design values.
+
+## Applications
+
+### Lighting control
+
+Contactors are often used to provide central control of large lighting installations, such as an office building or retail building. To reduce power consumption in the contactor coils, latching contactors are used, which have two operating coils. One coil, momentarily energized, closes the power circuit contacts, which are then mechanically held closed; the second coil opens the contacts.
+
+### Magnetic starter
+
+A magnetic starter is a device designed to provide power to electric motors. It includes a contactor as an essential component, while also providing power-cutoff, under-voltage, and overload protection.
+
+### Vacuum contactor
+
+Vacuum contactors utilize vacuum bottle encapsulated contacts to suppress the arc. This arc suppression allows the contacts to be much smaller and use less space than air break contacts at higher currents. As the contacts are encapsulated, vacuum contactors are used fairly extensively in dirty applications, such as mining. Vacuum contactors are also widely used at medium voltages from 1000 to 5000 volts, effectively displacing oil-filled circuit breakers in many applications.
+
+Vacuum contactors are only applicable for use in AC systems. The AC arc generated upon opening of the contacts will self-extinguish at the zero-crossing of the current waveform, with the vacuum preventing a re-strike of the arc across the open contacts. Vacuum contactors are therefore very efficient at disrupting the energy of an electric arc and are used when relatively fast switching is required, as the maximum break time is determined by the periodicity of the AC waveform. In the case of 60 Hz power (North American standard), the power will discontinue within 1/120 of a second (8.3 ms).
+
+### Mercury relay
+
+A mercury relay, sometimes called a mercury displacement relay, or, mercury contactor, is a relay that uses the liquid-metal mercury in an insulated sealed container as the switching element.
+
+### Mercury-wetted relay
+
+A mercury-wetted relay is a form of relay, usually a reed relay, in which the contacts are wetted with mercury. These are not considered contactors because they are not intended for currents above 15 amps.
+
+### EV Charging
+
+To support charging at both 400 V and 800 V DC the Tesla Cybertruck uses a Double-Pole Double-Throw (DPDT) contactor. When charging the battery pack of two 400 V modules are connected in either parallel or series by the contactor depending on whether the available voltage is 400 V or 800 V. At 800 V the contactor can handle 350 kW.
+
+## Camshaft operation
+
+When a series of contactors is to be operated in sequence, this may be done by a camshaft instead of by individual electromagnets. The camshaft may be driven by an electric motor or a pneumatic cylinder. Before the advent of solid-state electronics, the camshaft system was commonly used for speed control in electric locomotives.

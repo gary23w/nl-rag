@@ -1,0 +1,20 @@
+---
+title: "Factor oracle"
+source: https://en.wikipedia.org/wiki/Factor_oracle
+domain: suffix-automaton
+license: CC-BY-SA-4.0
+tags: suffix automaton, directed acyclic word graph, substring recognition, minimal automaton
+fetched: 2026-07-02
+---
+
+# Factor oracle
+
+A **factor oracle** is a finite-state automaton that can efficiently search for factors (substrings) in a body of text. Older techniques, such as suffix trees, were time-efficient but required significant amounts of memory. Factor oracles, by contrast, can be constructed in linear time and space in an incremental fashion.
+
+## Overview
+
+Older techniques for matching strings include: suffix arrays, suffix trees, suffix automata or directed acyclic word graphs, and factor automata (Allauzen, Crochemore, Raffinot, 1999). In 1999, Allauzen, Crochemore, and Raffinot, presented the factor oracle algorithm as a memory efficient improvement upon these older techniques for string matching and compression. Starting in the mid-2000s, factor oracles have found application in computer music, as well.
+
+## Implementations
+
+The Computer Audition Laboratory provides a Matlab implementation of the factor oracle algorithm.

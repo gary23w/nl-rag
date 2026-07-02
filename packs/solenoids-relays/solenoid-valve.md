@@ -1,0 +1,105 @@
+---
+title: "Solenoid valve"
+source: https://en.wikipedia.org/wiki/Solenoid_valve
+domain: solenoids-relays
+license: CC-BY-SA-4.0
+tags: solenoid coil, electromechanical relay, contactor switch, solenoid valve
+fetched: 2026-07-02
+---
+
+# Solenoid valve
+
+A **solenoid valve** is an electromechanically operated valve used in heating systems, fuel pipelines, and industrial automation to regulate the flow of liquids or gases. It works by passing electric current through a coil of wire, which creates a magnetic field. The magnetic field attracts a plunger, which operates the valve mechanism, to open or close fluid passages.
+
+Solenoid valves differ in the characteristics of the specific electric current in which they use, the strength of the electromagnetic field that they generate, the mechanism they use to regulate the fluid, and the type and characteristics of fluid they control. The mechanism varies from linear action, plunger-type actuators to pivoted-armature actuators and rocker actuators. The valve can use a two-port design to regulate a flow or use a three or more port design to switch flows between ports. Multiple solenoid valves can be placed together on a manifold. The valve mechanism operated by the force of the magnetic plunger may be a spool valve, or a poppet-style valve. Simple solenoids may use a spring to return the valve to the idle position; more complex valves may have two or more coils to move a spool valve. Proportional valves allow a varying electrical current to adjust the position of a valve over a range, which can be used to control flow and thus speed of fluid power devices.
+
+Solenoid valves are the most frequently used control elements in fluidics. Their tasks are to shut off, release, dose, distribute or mix fluids. They are found in many application areas. Solenoids offer fast and safe switching, high-reliability, long service life, good medium compatibility of the materials used, low control power and compact design.
+
+## Operation
+
+There are many valve design variations. Ordinary valves can have many ports and fluid paths. A 2-way valve, for example, has 2 ports; if the valve is **open**, then the two ports are connected and fluid may flow between the ports; if the valve is **closed**, then ports are isolated. If the valve is open when the solenoid is not energized, then the valve is termed **normally open** (N.O.). Similarly, if the valve is closed when the solenoid is not energized, then the valve is termed **normally closed** (N.C.). There are also 3-way and more complicated designs. A 3-way valve has 3 ports; it connects one port to either of the two other ports (typically a supply port and an exhaust port).
+
+Solenoid valves are also characterized by how they operate. A small solenoid can generate a limited force. An approximate relationship between the required solenoid force *Fs*, the fluid pressure *P*, and the orifice area *A* for a direct acting solenoid valve is:
+
+$F_{s}=PA=P{\frac {\pi d^{2}}{4}}$
+
+where *d* is the orifice diameter. A typical solenoid force might be 15 N (3.4 lbf). An application might be a low pressure (e.g., 10 psi (69 kPa)) gas with a small orifice diameter (e.g., 3⁄8 in (9.5 mm) for an orifice area of 0.11 in2 (71 mm2) and approximate force of 1.1 lbf (4.9 N)).
+
+If the force required is low enough, the solenoid is able to directly actuate the main valve. These are simply called **Direct-Acting** solenoid valves. When electricity is supplied, electrical energy is converted to mechanical energy, physically moving a barrier to either obstruct flow (if it is N.O.) or allow flow (if it is N.C.). A spring is often used to return the valve to its resting position once power is shut off. Direct-acting valves are useful for their simplicity, although they do require a large amount of power relative to other types of solenoid valves.
+
+If fluid pressures are high and orifice diameter is large, a solenoid may not generate enough force on its own to actuate the valve. To solve this, a **Pilot-Operated** solenoid valve design can be used. Such a design uses the pressurized fluid itself to apply the forces required to actuate the valve, with the solenoid as a "pilot" directing the fluid (see subsection below). These valves are used in dishwashers, irrigation systems, and other applications where large pressures and/or volumes are desired. Pilot-operated solenoids tend to consume less energy than direct-action, although they will not work at all without sufficient fluid pressure and are more susceptible to getting clogged if the fluid has solid impurities.
+
+A direct-acting solenoid valve typically operates in 5 to 10 milliseconds. Pilot-operated valves are slightly slower; depending on their size, typical values range from 15 to 150 milliseconds.
+
+Power consumption and supply requirements of the solenoid vary with application, being primarily determined by fluid pressure and orifice diameter. For example, a popular 3⁄4-inch 150 psi sprinkler valve, intended for 24 VAC (50–60 Hz) residential systems, has a momentary inrush of 7.2 VA, and a holding power requirement of 4.6 VA. Comparatively, an industrial 1⁄2-inch 10,000 psi valve, intended for 12, 24, or 120 VAC systems in high-pressure fluid and cryogenic applications, has an inrush of 300 VA and a holding power of 22 VA. Neither valve lists a minimum pressure required to remain closed in the unpowered state.
+
+### Pilot-operated
+
+While there are multiple design variants, the following is a detailed breakdown of a typical pilot-operated solenoid valve. They may use metal seals or rubber seals, and may also have electrical interfaces to allow for easy control.
+
+The diagram to the right shows the design of a basic valve, controlling the flow of water in this example. The top half shows the valve in its closed state. An inlet stream of pressurized water enters at **A**. **B** is an elastic diaphragm and above it is a spring pushing it down. The diaphragm has a pinhole through its center which allows a very small amount of water to flow through. This water fills cavity **C** so that pressure is roughly equal on both sides of the diaphragm. However, the pressurized water in cavity **C** acts across a much greater area of the diaphragm than the water in inlet **A**. From the equation $F=P*A$ , the force from cavity **C** pushing downward is greater than the force from inlet **A** pushing upward, and the diaphragm remains closed.
+
+Diaphragm **B** will stay closed as long as small drain passage **D** remains blocked by a pin, which is controlled by solenoid **E**. In a normally closed valve, supplying an electric current to the solenoid will raise the pin via magnetic force, and the water in cavity **C** drains out through passage **D** faster than the pinhole can refill it. Less water in cavity **C** means the pressure on that side of the diaphragm drops, proportionately dropping the force too. With the downward force of cavity **C** now less than the upward force of inlet **A**, the diaphragm is pushed upward, thus opening the valve. Water now flows freely from **A** to **F**. When the solenoid is deactivated and passage **D** is closed, water once again accumulates in cavity **C**, closing the diaphragm once the downward force exerted is great enough.
+
+This process is the opposite for a normally open pilot-operated valve. In that case, the pin is naturally held open by a spring, passage **D** is open, and cavity **C** is never able to fill up enough, pushing open diaphragm **B** and allowing unobstructed flow. Supplying an electric current to the solenoid pushes the pin into a closed position, blocking passage **D**, allowing water to accumulate in cavity **C**, and ultimately closing diaphragm **B**.
+
+In this way, a pilot-operated solenoid valve can be conceptualized as two valves working together: a direct-acting solenoid valve which functions as the "brain" to direct the "muscle" of a much more powerful main valve which gets actuated pneumatically or hydraulically. This is why pilot-operated valves will not work without a sufficient pressure differential between input and output, the "muscle" needs to be strong enough to push back against the diaphragm and open it. Should the pressure at the output rise above that of the input, the valve would open regardless of the state of the solenoid and pilot valve.
+
+## Components
+
+Solenoid valve designs have many variations and challenges.
+
+Common components of a solenoid valve:
+
+- Solenoid subassembly
+  - Retaining clip (a.k.a. coil clip)
+  - Solenoid coil (with magnetic return path)
+  - Core tube (a.k.a. armature tube, plunger tube, solenoid valve tube, sleeve, guide assembly)
+  - Plugnut (a.k.a. fixed core)
+  - Shading coil (a.k.a. shading ring)
+  - Core spring (a.k.a. counter spring)
+  - Core (a.k.a. plunger, armature)
+- Core tube–bonnet seal
+- Bonnet (a.k.a. cover)
+- Bonnet–diaphragm–body seal
+- Hanger spring
+- Backup washer
+- Diaphragm
+  - Bleed hole
+- Disk
+- Valve body
+  - Seat
+
+The core or plunger is the magnetic component that moves when the solenoid is energized. The core is coaxial with the solenoid. The core's movement will make or break the seals that control the movement of the fluid. When the coil is not energized, springs will hold the core in its normal position.
+
+The plugnut is also coaxial.
+
+The core tube contains and guides the core. It also retains the plugnut and may seal the fluid. To optimize the movement of the core, the core tube needs to be nonmagnetic. If the core tube were magnetic, then it would offer a shunt path for the field lines. In some designs, the core tube is an enclosed metal shell produced by deep drawing. Such a design simplifies the sealing problems because the fluid cannot escape from the enclosure, but the design also increases the magnetic path resistance because the magnetic path must traverse the thickness of the core tube twice: once near the plugnut and once near the core. In some other designs, the core tube is not closed but rather an open tube that slips over one end of the plugnut. To retain the plugnut, the tube might be crimped to the plugnut. An O-ring seal between the tube and the plugnut will prevent the fluid from escaping.
+
+The solenoid coil consists of many turns of copper wire that surround the core tube and induce the movement of the core. The coil is often encapsulated in epoxy. The coil also has an iron frame that provides a low magnetic path resistance.
+
+### Materials
+
+The valve body must be compatible with the fluid; common materials are brass, stainless steel, aluminum, and plastic.
+
+The seals must be compatible with the fluid.
+
+To simplify the sealing issues, the plugnut, core, springs, shading ring, and other components are often exposed to the fluid, so they must be compatible as well. The requirements present some special problems. The core tube needs to be non-magnetic to pass the solenoid's field through to the plugnut and the core. The plugnut and core need a material with good magnetic properties such as iron, but iron is prone to corrosion. Stainless steels can be used because they come in both magnetic and non-magnetic varieties. For example, a solenoid valve might use 304 stainless steel for the body, 305 stainless steel for the core tube, 302 stainless steel for the springs, and 430 F stainless steel (a magnetic stainless steel) for the core and plugnut.
+
+## Types
+
+Many variations are possible on the basic, one-way, one-solenoid valve described above:
+
+- one- or two-solenoid valves;
+- direct current or alternating current powered;
+- different number of ways and positions;
+
+## Common uses
+
+Solenoid valves are used in fluid power pneumatic and hydraulic systems, to control cylinders, fluid power motors or larger industrial valves. Automatic irrigation sprinkler systems also use solenoid valves with an automatic controller. Domestic washing machines and dishwashers use solenoid valves to control water entry into the machine. They are also often used in paintball gun triggers to actuate the CO2 hammer valve. Solenoid valves are usually referred to simply as "solenoids."
+
+Solenoid valves can be used for a wide array of industrial applications, including general on-off control, calibration and test stands, pilot plant control loops, process control systems, and various original equipment manufacturer applications.
+
+## History and commercial development
+
+In 1910, ASCO Numatics became the first company to develop and manufacture the solenoid valve.

@@ -1,0 +1,428 @@
+# nl-rag distilled facts — domain: p4-programming
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:p4-programming/forwarding-information-base] A **forwarding information base** (**FIB**), also known as a **forwarding table** or **MAC** (**address**) **table**, is most commonly used in network bridging, routing, and similar functions to find the proper output network interface controller to which the input interface should forward a packet.
+[src:p4-programming/forwarding-information-base] It is a dynamic table that maps MAC addresses to ports.
+[src:p4-programming/forwarding-information-base] It is the essential mechanism that separates network switches from Ethernet hubs.
+[src:p4-programming/forwarding-information-base] Content-addressable memory (CAM) is typically used to efficiently implement the FIB, thus it is sometimes called a **CAM table**.
+[src:p4-programming/forwarding-information-base] At the data link layer, a FIB is most notably used to facilitate Ethernet bridging based on MAC addresses.
+[src:p4-programming/forwarding-information-base] Other data-link-layer technologies using FIBs include Frame Relay, Asynchronous Transfer Mode (ATM) and Multiprotocol Label Switching (MPLS).
+[src:p4-programming/forwarding-information-base] The role of an Ethernet switch is to forward Ethernet frames from one port to another.
+[src:p4-programming/forwarding-information-base] The presence of a FIB is one attribute that separates a switch from a hub.
+[src:p4-programming/forwarding-information-base] Without a functional FIB, all frames received by a network switch would be echoed back out to all other ports, much like an Ethernet hub.
+[src:p4-programming/forwarding-information-base] Switches learn the port on which they first saw a particular source address and associate that port with that address.
+[src:p4-programming/forwarding-information-base] When the bridge subsequently receives a frame with a destination address in its FIB, it sends the frame out the port stored in the FIB entry.
+[src:p4-programming/forwarding-information-base] The FIB is a memory construct used by Ethernet switch to map a station's MAC address to the switch port the station is connected to.
+[src:p4-programming/forwarding-information-base] This allows switches to facilitate communications between connected stations at high speed.
+[src:p4-programming/forwarding-information-base] While the exact mechanics of a forwarding table is implementation-specific, the general model for Frame Relay is that switches have statically defined forwarding tables, one per interface.
+[src:p4-programming/forwarding-information-base] When a frame with a given data link connection identifier (DLCI) is received on one interface, the table associated with that interface gives the outgoing interface, and the new DLCI to insert into the frame's address field.
+[src:p4-programming/forwarding-information-base] ATM switches have link-level forwarding tables much like those used in Frame Relay.
+[src:p4-programming/forwarding-information-base] Rather than a DLCI, however, interfaces have forwarding tables that specify the outgoing interface by *virtual path identifier* (VPI) and *virtual circuit identifier* (VCI).
+[src:p4-programming/forwarding-information-base] These tables may be configured statically, or they can be distributed by the Private Network-to-Network Interface (PNNI) protocol.
+[src:p4-programming/forwarding-information-base] When PNNI is in use, the ATM switches at the edges of the network map one of the standard ATM end-to-end identifiers, such as an NSAP address, to the next-hop VPI/VCI.
+[src:p4-programming/forwarding-information-base] MPLS has many similarities, at the forwarding level, to ATM.
+[src:p4-programming/forwarding-information-base] The label edge routers at the edges of an MPLS cloud map between the end-to-end identifier, such as an IP address, and a link-local label.
+[src:p4-programming/forwarding-information-base] At each MPLS hop, there is a forwarding table that tells the label-switched router which outgoing interface is to receive the MPLS packet, and what label to use when sending the packet out that interface.
+[src:p4-programming/forwarding-information-base] Network layer addresses, such as IP addresses, are used on different types of media and can be handled similarly in all cases.
+[src:p4-programming/forwarding-information-base] FIBs are optimized for fast lookup of destination addresses and can improve performance of forwarding compared to using the routing information base (RIB) directly.
+[src:p4-programming/forwarding-information-base] The RIB is optimized for efficient updating by routing protocols and other control plane methods, and contain the full set of routes learned by the router.
+[src:p4-programming/forwarding-information-base] Earlier implementations cached only a subset of the routes most frequently used in actual forwarding, and this worked reasonably well for enterprises where there is a meaningful most-frequently-used subset.
+[src:p4-programming/forwarding-information-base] Routers used for accessing the entire Internet, however, experienced severe performance degradation in refreshing routes cached in a small FIB, and various implementations moved to having FIBs in one-to-one correspondence with the RIB.
+[src:p4-programming/forwarding-information-base] FIBs can also play a role in an Internet best current practice (BCP) of ingress filtering.
+[src:p4-programming/forwarding-information-base] While the IETF document BCP 38 on ingress filtering does not specify a method of implementing source address filtering, some router vendors have implemented a mechanism that employs reverse-path forwarding lookups in the router's tables to perform this check.
+[src:p4-programming/forwarding-information-base] This is often implemented as a lookup in the FIB of the *source* address of the packet.
+[src:p4-programming/forwarding-information-base] If the interface has no route to the source address, the packet is assumed to be part of a denial of service attack, using a spoofed source address, and the router discards the packet.
+[src:p4-programming/forwarding-information-base] When the router is multihomed, ingress filtering becomes more complex.
+[src:p4-programming/forwarding-information-base] There are perfectly reasonable operational scenarios in which a packet could arrive on one interface, but that specific interface might not have a route to the source address.
+[src:p4-programming/forwarding-information-base] For the routers near the edge of the Internet, packet filters can provide a simpler and more effective solution than methods that employ routing information lookup, though this approach can be challenging when managing routers that are reconfigured often.
+[src:p4-programming/forwarding-information-base] Ingress filtering for multihomed routers will accept the packet if there is a route back to its source address from *any* interface on the router.
+[src:p4-programming/forwarding-information-base] For this type of filtering, the router may also maintain an *adjacency table*, also organized for fast lookup, that keeps track of the router interface addresses that are on all directly connected routers.
+[src:p4-programming/forwarding-information-base] Differentiated services provides an additional method to select outgoing interfaces, based on a field that indicates the forwarding priority of the packet, as well as the preference of the packet to be dropped in the presence of congestion.
+[src:p4-programming/forwarding-information-base] Routers that support differentiated service not only have to look up the output interface for the destination address, but need to send the packet to the interface that best matches the differentiated services requirements.
+[src:p4-programming/forwarding-information-base] In other words, as well as matching the destination address, the FIB has to match differentiated services code points (DSCP).
+[src:p4-programming/forwarding-information-base] Specific router implementations may, when a destination address or other FIB criterion is matched, specify another action to be done before forwarding (e.g., accounting or encryption), or apply an access control list that may cause the packet to be dropped.
+[src:p4-programming/forwarding-information-base] CAM tables can be targeted for setting up a man-in-the-middle attack.
+[src:p4-programming/forwarding-information-base] A threat agent which has control of a device connected to an Ethernet switch can use MAC flooding to attack the switch's CAM table.
+[src:p4-programming/forwarding-information-base] If the table fills up, other traffic is treated as broadcast, unknown-unicast and multicast traffic and is forwarded to all ports making it available to the attacker.
+[src:p4-programming/network-processor] A **network processor** is an integrated circuit which has a feature set specifically targeted at the networking application domain.
+[src:p4-programming/network-processor] Network processors are typically software programmable devices and would have generic characteristics similar to general purpose central processing units that are commonly used in many different types of equipment and products.
+[src:p4-programming/network-processor] The processing of these packets has resulted in the creation of integrated circuits (IC) that are optimised to deal with this form of packet data.
+[src:p4-programming/network-processor] Network processors have specific features or architectures that are provided to enhance and optimise packet processing within these networks.
+[src:p4-programming/network-processor] Network processors have evolved into ICs with specific functions.
+[src:p4-programming/network-processor] This evolution has resulted in more complex and more flexible ICs being created.
+[src:p4-programming/network-processor] The newer circuits are programmable and thus allow a single hardware IC design to undertake a number of different functions, where the appropriate software is installed.
+[src:p4-programming/network-processor] Reconfigurable Match-Tables were introduced in 2013 to allow switches to operate at high speeds while maintaining flexibility with respect to which network protocols are enabled on the device and/or how those protocols are processed.
+[src:p4-programming/network-processor] The company Barefoot Networks was based around these processors and was later purchased by Intel in 2019.
+[src:p4-programming/network-processor] An RMT pipeline relies on three main stages; the programmable parser, the Match-Action tables and the programmable deparser.
+[src:p4-programming/network-processor] The parser reads the packet in chunks and processes these chunks to find out which protocols are used in the packet (Ethernet, VLAN, IPv4...) and extracts certain fields from the packet into the Packet Header Vector (PHV).
+[src:p4-programming/network-processor] Certain fields in the PHV may be reserved for special uses such as present headers or total packet length.
+[src:p4-programming/network-processor] The protocols are typically programmable, and so are the fields to extract.
+[src:p4-programming/network-processor] The Match-Action tables are a series of units that read an input PHV and match certain fields in it using a crossbar and CAM memory.
+[src:p4-programming/network-processor] The result is a wide instruction that operates on one or more fields of the PHV and data to support this instruction.
+[src:p4-programming/network-processor] The output PHV is then sent to the next MA stage or to the deparser.
+[src:p4-programming/network-processor] The deparser takes in the PHV as well as the original packet and its metadata (to fill in missing bits that weren't extracted into the PHV) and then outputs the modified packet as chunks.
+[src:p4-programming/network-processor] The deparser, like the parser, is typically programmable and the two may share some configuration files.
+[src:p4-programming/network-processor] FlexNIC attempts to apply this model to Network Interface Controllers allowing servers to send and receive packets at high speeds while maintaining protocol flexibility and without increasing the CPU overhead.
+[src:p4-programming/network-processor] Modern network processors are also equipped with low-latency high-throughput on-chip interconnection networks optimized for the exchange of small messages among cores (few data words).
+[src:p4-programming/network-processor] Such networks can be used as an alternative facility for the efficient inter-core communication aside of the standard use of shared memory.
+[src:p4-programming/network-processor] Using the generic function of the network processor, a software program implements an application that the network processor executes, resulting in the piece of physical equipment performing a task or providing a service.
+[src:p4-programming/p4-programming-language] P4 was originally described in a 2014 SIGCOMM *CCR* paper titled “Programming Protocol-Independent Packet Processors”—the alliterative name shortens to "P4".
+[src:p4-programming/p4-programming-language] The first P4 workshop took place in June 2015 at Stanford University.
+[src:p4-programming/p4-programming-language] An updated specification of P4, called P4-16, was released between 2016 and 2017, replacing P4-14, the original specification of P4.
+[src:p4-programming/p4-programming-language] As the language is specifically targeted at packet forwarding applications, the list of requirements or design choices is somewhat specific to those use cases.
+[src:p4-programming/p4-programming-language] P4 programs are designed to be implementation-independent: they can be compiled against many different types of execution machines such as general-purpose CPUs, FPGAs, system(s)-on-chip, network processors, and ASICs.
+[src:p4-programming/p4-programming-language] These different types of machines are known as *P4 targets*, and each target must be provided along with a compiler that maps the P4 source code into a target switch model.
+[src:p4-programming/p4-programming-language] The compiler may be embedded in the target device, an externally running software, or even a cloud service.
+[src:p4-programming/p4-programming-language] As many of the initial targets for P4 programs were used for simple packet switching it is very common to hear the term "P4 switch" used, even though "P4 target" is more formally correct.
+[src:p4-programming/p4-programming-language] P4 is designed to be protocol-independent: the language has no native support for even common protocols such as IP, Ethernet, TCP, VxLAN, or MPLS.
+[src:p4-programming/p4-programming-language] Instead, the P4 programmer describes the header formats and field names of the required protocols in the program, which are in turn interpreted and processed by the compiled program and target device.
+[src:p4-programming/p4-programming-language] Protocol independence and the abstract language model allow for reconfigurability–P4 targets should be able to change the way they process packets (perhaps multiple times) after they are deployed.
+[src:p4-programming/p4-programming-language] This capability is traditionally associated with forwarding planes built on general-purpose CPUs or network processors, rather than the fixed function ASICs.
+[src:p4-programming/p4-programming-language] Although within the language there is nothing to prevent a given target from optimizing around a certain set of protocols, these optimizations are invisible to the language author and may ultimately reduce the system's flexibility and reconfigurability goals.
+[src:p4-programming/p4-programming-language] P4 allows the specification of custom packet header parsing logic including but not limited to parsing typical headers used in the TCP/IP protocol suite and application specific headers.
+[src:p4-programming/p4-programming-language] Header definitions describe packet formats and provide names for the fields within the packet.
+[src:p4-programming/p4-programming-language] The language allows customized header names and fields of arbitrary length, although many header definitions use widely known protocol names and fields widths.
+[src:p4-programming/p4-programming-language] For example, an 802.3 Ethernet header definition might be called “Ethernet” and consist of a 48-bit field named “dest” followed by a 48-bit “src” field, followed by a 16-bit “type” field.
+[src:p4-programming/p4-programming-language] The names in a header definition are used later in the P4 program to reference these fields.
+[src:p4-programming/p4-programming-language] The P4 parser is a finite state machine that walks an incoming byte-stream and extracts headers based on the programmed parse graph.
+[src:p4-programming/p4-programming-language] A simple example would be a parser that extracts the Ethernet source and destination and type fields, then performs a further extraction based on the value in the type field (common values might be ipv4, ipv6, or MPLS).
+[src:p4-programming/p4-programming-language] P4 allows the programmer to maintain state in the form of registers, counters and meters.
+[src:p4-programming/p4-programming-language] The primary component of a P4 program is a set of user-defined match action tables.
+[src:p4-programming/p4-programming-language] P4 treats all match action tables as generic, leaving the user to add their match-action rules via the control plane.
+[src:p4-programming/p4-programming-language] Fundamental to P4 is the concept of *match-action pipelines*.
+[src:p4-programming/p4-programming-language] Conceptually, forwarding network packets or frames can be broken down into a series of table lookups and corresponding header manipulations.
+[src:p4-programming/p4-programming-language] In P4 these manipulations are known as *actions* and generally consist of things such as copying byte fields from one location to another based on the lookup results on learned forwarding state.
+[src:p4-programming/p4-programming-language] P4 addresses only the data plane of a packet forwarding device.
+[src:p4-programming/p4-programming-language] It does not specify the control plane nor any exact protocol for communicating state between the control and data planes.
+[src:p4-programming/p4-programming-language] Instead, P4 uses the concept of tables to represent forwarding plane state.
+[src:p4-programming/p4-programming-language] An interface between the control plane and the various P4 tables must be provided to allow the control plane to inject/modify state in the program.
+[src:p4-programming/p4-programming-language] This interface is generally referred to as the *program API*.
+[src:p4-programming/p4-programming-language] P4 tables contain the state used to forward packets.
+[src:p4-programming/p4-programming-language] Tables are composed of lookup keys and a corresponding set of actions and their parameters.
+[src:p4-programming/p4-programming-language] A trivial example might be to store a set of destination MAC addresses as the lookup keys, and the corresponding action could set the output port on the device, and/or increment a counter.
+[src:p4-programming/p4-programming-language] Tables and their associated actions are almost always chained together in sequence to realize the full packet forwarding logic, although in the abstract it is possible to build a single table that includes all the lookup key information and the full output action set.
+[src:p4-programming/p4-programming-language] The control flow in P4 determines the relative sequence of tables, and allows for conditional execution of tables based on if/then/else constructions.
+[src:p4-programming/packet-switching] In telecommunications, **packet switching** is a method of grouping data into short messages in fixed format, i.e., *packets,* that are transmitted over a telecommunications network.
+[src:p4-programming/packet-switching] Packets consist of a header and a payload.
+[src:p4-programming/packet-switching] The header directs the packet to its destination, where the payload is extracted and used by an operating system, application software, or higher-layer protocols.
+[src:p4-programming/packet-switching] Packet switching is the primary basis for data communications in computer networks worldwide.
+[src:p4-programming/packet-switching] During the early 1960s, American engineer Paul Baran developed a concept he called *distributed adaptive message block switching* as part of a research program at the RAND Corporation, funded by the United States Department of Defense.
+[src:p4-programming/packet-switching] His proposal was to provide a fault-tolerant, efficient method for communication of voice messages using low-cost hardware to route the message blocks across a distributed network.
+[src:p4-programming/packet-switching] His ideas contradicted then-established principles of pre-allocation of network bandwidth, exemplified by the development of telecommunications in the Bell System.
+[src:p4-programming/packet-switching] The new concept found little resonance among network implementers until the independent work of British computer scientist Donald Davies at the National Physical Laboratory beginning in 1965.
+[src:p4-programming/packet-switching] Davies developed the concept for data communication using software switches in a high-speed computer network and coined the term *packet switching*.
+[src:p4-programming/packet-switching] His work inspired numerous packet switching networks in the decade following, including the incorporation of the concept into the design of the ARPANET in the United States and the CYCLADES network in France.
+[src:p4-programming/packet-switching] The ARPANET and CYCLADES were the primary precursor networks of the modern Internet.
+[src:p4-programming/packet-switching] Packet switching allows delivery of variable bit rate data streams, realized as sequences of short messages in fixed format, i.e.
+[src:p4-programming/packet-switching] *packets*, over a computer network which allocates transmission resources as needed using statistical multiplexing or dynamic bandwidth allocation techniques.
+[src:p4-programming/packet-switching] As they traverse networking hardware, such as switches and routers, packets are received, buffered, queued, and retransmitted (stored and forwarded), resulting in variable latency and throughput depending on link capacity and traffic load on the network.
+[src:p4-programming/packet-switching] Packet-based communication may be implemented with or without intermediate forwarding nodes (switches and routers).
+[src:p4-programming/packet-switching] In case of a shared physical medium (such as radio or 10BASE5), the packets may be delivered according to a multiple access scheme.
+[src:p4-programming/packet-switching] Packet switching contrasts with another principal networking paradigm, circuit switching, a method which pre-allocates dedicated network bandwidth specifically for each communication session, each having a constant bit rate and latency between nodes.
+[src:p4-programming/packet-switching] A packet switch has four components: input ports, output ports, routing processor, and switching fabric.
+[src:p4-programming/packet-switching] The concept of switching small blocks of data was invented independently by Paul Baran at the RAND Corporation during the early 1960s in the US and Donald Davies at the National Physical Laboratory (NPL) in the UK in 1965.
+[src:p4-programming/packet-switching] In the late 1950s, the US Air Force established a wide area network for the Semi-Automatic Ground Environment (SAGE) radar defense system.
+[src:p4-programming/packet-switching] Recognizing vulnerabilities in this network, the Air Force sought a system that might survive a nuclear attack to enable a response, thus diminishing the attractiveness of the first strike advantage by enemies (see Mutual assured destruction).
+[src:p4-programming/packet-switching] In the early 1960s, Baran invented the concept of *distributed adaptive message block switching* in support of the Air Force initiative.
+[src:p4-programming/packet-switching] The concept was first presented to the Air Force in the summer of 1961 as briefing B-265, later published as RAND report P-2626 in 1962, and finally in report RM 3420 in 1964.
+[src:p4-programming/packet-switching] The reports describe a general architecture for a large-scale, distributed, survivable communications network.
+[src:p4-programming/packet-switching] The proposal was composed of three key ideas: use of a decentralized network with multiple paths between any two points; dividing user messages into *message blocks;* and delivery of these messages by store and forward switching.
+[src:p4-programming/packet-switching] Baran's network design was focused on high-speed digital communication of voice messages using hardware switches that were low-cost electronics.
+[src:p4-programming/packet-switching] Christopher Strachey, who became Oxford University's first Professor of Computation, filed a patent application in the United Kingdom for time-sharing in February 1959.
+[src:p4-programming/packet-switching] In June that year, he gave a paper "Time Sharing in Large Fast Computers" at the UNESCO Information Processing Conference in Paris where he passed the concept on to J.
+[src:p4-programming/packet-switching] Licklider (along with John McCarthy) was instrumental in the development of time-sharing.
+[src:p4-programming/packet-switching] After conversations with Licklider about time-sharing with remote computers in 1965, Davies independently invented a similar data communication concept.
+[src:p4-programming/packet-switching] His insight was to use short messages in fixed format with high data transmission rates to achieve rapid communications.
+[src:p4-programming/packet-switching] He went on to develop a design for a hierarchical, high-speed computer network including interface computers and communication protocols.
+[src:p4-programming/packet-switching] He coined the term *packet switching*, and proposed building a commercial nationwide data network in the UK.
+[src:p4-programming/packet-switching] He gave a talk on the proposal in 1966, after which a person from the Ministry of Defence (MoD) told him about Baran's work.
+[src:p4-programming/packet-switching] Roger Scantlebury, a member of Davies' team, presented their work (and referenced that of Baran) at the October 1967 Symposium on Operating Systems Principles (SOSP).
+[src:p4-programming/packet-switching] At the conference, Scantlebury proposed packet switching for use in the ARPANET and persuaded Larry Roberts the economics were favorable to message switching.
+[src:p4-programming/packet-switching] Davies had chosen some of the same parameters for his original network design as did Baran, such as a packet size of 1024 bits.
+[src:p4-programming/packet-switching] Davies proposed that a local-area network should be built at the laboratory to serve the needs of NPL and prove the feasibility of packet switching.
+[src:p4-programming/packet-switching] After a pilot experiment in early 1969, the NPL Data Communications Network began service in 1970.
+[src:p4-programming/packet-switching] Davies was invited to Japan to give a series of lectures on packet switching.
+[src:p4-programming/packet-switching] The NPL team carried out simulation work on datagrams and congestion in networks on a scale to provide data communication across the United Kingdom.
+[src:p4-programming/packet-switching] Larry Roberts made the key decisions in the request for proposal to build the ARPANET.
+[src:p4-programming/packet-switching] Roberts met Baran in February 1967, but did not discuss networks.
+[src:p4-programming/packet-switching] Roberts was known for making decisions quickly.
+[src:p4-programming/packet-switching] Immediately after SOSP, he incorporated Davies' concepts and designs for packet switching to enable the data communications on the network, and sought input from Baran.
+[src:p4-programming/packet-switching] A contemporary of Roberts' from MIT, Leonard Kleinrock had researched the application of queueing theory in the field of message switching for his doctoral dissertation in 1961–62 and published it as a book in 1964.
+[src:p4-programming/packet-switching] Davies, in his 1966 paper on packet switching, applied Kleinrock's techniques to show that "there is an ample margin between the estimated performance of the [packet-switched] system and the stated requirement" in terms of a satisfactory response time for a human user.
+[src:p4-programming/packet-switching] This addressed a key question about the viability of computer networking.
+[src:p4-programming/packet-switching] Larry Roberts brought Kleinrock into the ARPANET project informally in early 1967.
+[src:p4-programming/packet-switching] Roberts and Taylor recognized the issue of response time was important, but did not apply Kleinrock's methods to assess this and based their design on a store-and-forward system that was not intended for real-time computing.
+[src:p4-programming/packet-switching] After SOSP, and after Roberts' direction to use packet switching, Kleinrock sought input from Baran and proposed to retain Baran and RAND as advisors.
+[src:p4-programming/packet-switching] The ARPANET working group assigned Kleinrock responsibility to prepare a report on software for the IMP.
+[src:p4-programming/packet-switching] In 1968, Roberts awarded Kleinrock a contract to establish a Network Measurement Center (NMC) at UCLA to measure and model the performance of packet switching in the ARPANET.
+[src:p4-programming/packet-switching] Bolt Beranek & Newman (BBN) won the contract to build the network.
+[src:p4-programming/packet-switching] Designed principally by Bob Kahn, it was the first wide-area packet-switched network with distributed control.
+[src:p4-programming/packet-switching] The BBN "IMP Guys" independently developed significant aspects of the network's internal operation, including the routing algorithm, flow control, software design, and network control.
+[src:p4-programming/packet-switching] The UCLA NMC and the BBN team also investigated network congestion.
+[src:p4-programming/packet-switching] The Network Working Group, led by Steve Crocker, a graduate student of Kleinrock's at UCLA, developed the host-to-host protocol, the Network Control Program, which was approved by Barry Wessler for ARPA, after he ordered certain more exotic elements to be dropped.
+[src:p4-programming/packet-switching] In 1970, Kleinrock extended his earlier analytic work on message switching to packet switching in the ARPANET.
+[src:p4-programming/packet-switching] The ARPANET was demonstrated at the International Conference on Computer Communication (ICCC) in Washington in October 1972.
+[src:p4-programming/packet-switching] However, fundamental questions about the design of packet-switched networks remained.
+[src:p4-programming/packet-switching] Roberts presented the idea of packet switching to communication industry professionals in the early 1970s.
+[src:p4-programming/packet-switching] Before ARPANET was operating, they argued that the router buffers would quickly run out.
+[src:p4-programming/packet-switching] After the ARPANET was operating, they argued that packet switching would never be economic without the government subsidy.
+[src:p4-programming/packet-switching] Baran had faced the same rejection and thus failed to convince the military to construct a packet switching network in the 1960s.
+[src:p4-programming/packet-switching] The CYCLADES network was designed by Louis Pouzin in the early 1970s to study internetworking.
+[src:p4-programming/packet-switching] It was the first to implement the end-to-end principle of Davies, and make the host computers responsible for the reliable delivery of data on a packet-switched network, rather than this being a service of the network itself.
+[src:p4-programming/packet-switching] His team was thus first to tackle the highly-complex problem of providing user applications with a reliable virtual circuit service while using a best-effort service, an early contribution to what will be the Transmission Control Protocol (TCP).
+[src:p4-programming/packet-switching] Bob Metcalfe and others at Xerox PARC outlined the idea of Ethernet and the PARC Universal Packet (PUP) for internetworking.
+[src:p4-programming/packet-switching] In May 1974, Vint Cerf and Bob Kahn described the Transmission Control Program, an internetworking protocol for sharing resources using packet-switching among the nodes.
+[src:p4-programming/packet-switching] The specifications of the TCP were then published in RFC 675 (*Specification of Internet Transmission Control Program*), written by Vint Cerf, Yogen Dalal and Carl Sunshine in December 1974.
+[src:p4-programming/packet-switching] The X.25 protocol, developed by Rémi Després and others, was built on the concept of virtual circuits.
+[src:p4-programming/packet-switching] In the mid-late 1970s and early 1980s, national and international public data networks emerged using X.25 which was developed with participation from France, the UK, Japan, USA and Canada.
+[src:p4-programming/packet-switching] It was complemented with X.75 to enable internetworking.
+[src:p4-programming/packet-switching] In the late 1970s, the monolithic Transmission Control Program was layered as the Transmission Control Protocol (TCP), atop the Internet Protocol (IP).
+[src:p4-programming/packet-switching] Many Internet pioneers developed this into the Internet protocol suite and the associated Internet architecture and governance that emerged in the 1980s.
+[src:p4-programming/packet-switching] Leonard Kleinrock carried out theoretical work at UCLA during the 1970s analyzing throughput and delay in the ARPANET.
+[src:p4-programming/packet-switching] Kleinrock published hundreds of research papers, which ultimately launched a new field of research on the theory and application of queuing theory to computer networks.
+[src:p4-programming/packet-switching] His work on hierarchical routing with student Farouk Kamoun became critical to the operation of the Internet.
+[src:p4-programming/packet-switching] Packet switching was shown to be optimal in the Huffman coding sense in 1978.
+[src:p4-programming/packet-switching] For a period in the 1980s and early 1990s, the network engineering community was polarized over the implementation of competing protocol suites, commonly known as the Protocol Wars.
+[src:p4-programming/packet-switching] It was unclear which of the Internet protocol suite and the OSI model would result in the best and most robust computer networks.
+[src:p4-programming/packet-switching] Complementary metal–oxide–semiconductor (CMOS) VLSI (very-large-scale integration) technology led to the development of high-speed broadband packet switching during the 1980s–1990s.
+[src:p4-programming/packet-switching] In the 1978 special edition of the Proceedings of the IEEE on packet switching, Bob Kahn, the guest editor, wrote that "analysis has had little direct impact on the network design problem".
+[src:p4-programming/packet-switching] In Roberts' paper on "Packet Switching Economics" for the L.M.
+[src:p4-programming/packet-switching] Ericsson prize for research in data communications in 1982, he referenced only Davies' 1967 paper for SOSP, not the work of Baran or Kleinrock.
+[src:p4-programming/packet-switching] Kleinrock's paper for the same prize was titled "Packet Switching Principles".
+[src:p4-programming/packet-switching] In Roberts' 1986 conference paper on "The ARPANET & Computer Networks", he also cites Baran's 1964 paper and one of his own papers from 1966; but only references Kleinrock's work from the 1970s, which addressed the ARPANET.
+[src:p4-programming/packet-switching] This paper was republished on the web by Roberts in 1995.
+[src:p4-programming/packet-switching] In 1997, along with seven other Internet pioneers, Roberts and Kleinrock co-wrote "Brief History of the Internet" published by the Internet Society.
+[src:p4-programming/packet-switching] In it, Kleinrock is described as having "published the first paper on packet switching theory in July 1961 and the first book on the subject in 1964".
+[src:p4-programming/packet-switching] Many sources about the history of the Internet began to reflect these claims as uncontroversial facts.
+[src:p4-programming/packet-switching] This became the subject of what Katie Hafner called a "paternity dispute" in The New York Times in 2001.
+[src:p4-programming/packet-switching] The disagreement about Kleinrock's contribution to packet switching escalated after a statement made on Kleinrock's profile on the UCLA Computer Science department website sometime in the 1990s.
+[src:p4-programming/packet-switching] Here, he was referred to as the "Inventor of the Internet Technology".
+[src:p4-programming/packet-switching] The webpage's depictions of Kleinrock's achievements provoked anger among some early Internet pioneers.
+[src:p4-programming/packet-switching] The dispute over priority became a public issue after Donald Davies posthumously published a paper in 2001 in which he denied that Kleinrock's work in the early 1960s was related to packet switching, stating "I can find no evidence that he understood the principles of packet switching".
+[src:p4-programming/packet-switching] Davies also described ARPANET project manager Larry Roberts as supporting Kleinrock, referring to Roberts' writings online and Kleinrock's UCLA webpage profile as "very misleading".
+[src:p4-programming/packet-switching] Walter Isaacson wrote that Kleinrock's claims "led to an outcry among many of the other Internet pioneers, who publicly attacked Kleinrock and said that his brief mention of breaking messages into smaller pieces did not come close to being a proposal for packet switching".
+[src:p4-programming/packet-switching] Davies' paper reignited a previous dispute over who deserves credit for getting the ARPANET online between engineers at Bolt, Beranek, and Newman (BBN) who had been involved in building and designing the ARPANET IMP on the one side, and ARPA-related researchers on the other.
+[src:p4-programming/packet-switching] This earlier dispute is exemplified by BBN's Will Crowther, who in a 1990 oral history described Paul Baran's packet switching design (which he called hot-potato routing), as "crazy" and non-sensical, despite the ARPA team having advocated for it.
+[src:p4-programming/packet-switching] Former IPTO director Bob Taylor also joined the debate, stating that "authors who have interviewed dozens of Arpanet pioneers know very well that the Kleinrock-Roberts claims are not believed".
+[src:p4-programming/packet-switching] Walter Isaacson notes that "until the mid-1990s Kleinrock had credited [Baran and Davies] with coming up with the idea of packet switching".
+[src:p4-programming/packet-switching] A subsequent version of Kleinrock's biography webpage was copyrighted in 2009 by Kleinrock.
+[src:p4-programming/packet-switching] He was called on to defend his position over subsequent decades.
+[src:p4-programming/packet-switching] A paper published in the journal *Internet Histories* in 2019 supported Kleinrock's view; the author interviewed Kleinrock and Roberts, and did not interview Scantlebury.
+[src:p4-programming/packet-switching] In 2023, Kleinrock acknowledged that his work published in the early 1960s was about message switching and claimed he was thinking about packet switching.
+[src:p4-programming/packet-switching] Primary sources and historians recognize Baran and Davies for independently inventing the concept of digital packet switching used in modern computer networking including the ARPANET and the Internet.
+[src:p4-programming/packet-switching] Kleinrock has received many awards for his ground-breaking applied mathematical research on packet switching, carried out in the 1970s, which was an extension of his pioneering work in the early 1960s on the optimization of message delays in communication networks.
+[src:p4-programming/packet-switching] Russell said "'Internet history' also suffers from a ... methodological, problem: it tends to be too close to its sources.
+[src:p4-programming/packet-switching] Many Internet pioneers are alive, active, and eager to shape the histories that describe their accomplishments.
+[src:p4-programming/packet-switching] Many museums and historians are equally eager to interview the pioneers and to publicize their stories".
+[src:p4-programming/packet-switching] Packet switching may be classified into connectionless packet switching, using datagrams, and connection-oriented packet switching, using virtual circuits.
+[src:p4-programming/packet-switching] Examples of connectionless systems are Ethernet, IP, and the User Datagram Protocol (UDP).
+[src:p4-programming/packet-switching] Connection-oriented systems include X.25, Frame Relay, Multiprotocol Label Switching (MPLS), and TCP.
+[src:p4-programming/packet-switching] In connectionless mode, each packet is labeled with a destination address, source address, and port numbers.
+[src:p4-programming/packet-switching] It may also be labeled with the sequence number of the packet.
+[src:p4-programming/packet-switching] This information eliminates the need for a pre-established path to help the packet find its way to its destination, but means that more information is needed in the packet header, which is therefore larger.
+[src:p4-programming/packet-switching] The packets are routed individually, sometimes taking different paths, resulting in out-of-order delivery.
+[src:p4-programming/packet-switching] At the destination, the original message may be reassembled in the correct order, based on the packet sequence numbers.
+[src:p4-programming/packet-switching] Thus, a virtual circuit carrying a byte stream is provided to the application by a transport layer protocol, although the network only provides a connectionless network layer service.
+[src:p4-programming/packet-switching] Connection-oriented transmission requires a setup phase to establish the parameters of communication before any packet is transferred.
+[src:p4-programming/packet-switching] The signaling protocols used for setup allow the application to specify its requirements and discover link parameters.
+[src:p4-programming/packet-switching] Acceptable values for service parameters may be negotiated.
+[src:p4-programming/packet-switching] The packets transferred may include a connection identifier rather than address information and the packet header can be smaller, as it only needs to contain this code and any information, such as length, timestamp, or sequence number, which is different for different packets.
+[src:p4-programming/packet-switching] In this case, address information is only transferred to each node during the connection setup phase, when the route to the destination is discovered and an entry is added to the switching table in each network node through which the connection passes.
+[src:p4-programming/packet-switching] When a connection identifier is used, routing a packet requires the node to look up the connection identifier in a table.
+[src:p4-programming/packet-switching] Connection-oriented transport layer protocols such as TCP provide a connection-oriented service by using an underlying connectionless network.
+[src:p4-programming/packet-switching] In this case, the end-to-end principle dictates that the end nodes, not the network itself, are responsible for the connection-oriented behavior.
+[src:p4-programming/packet-switching] In telecommunication networks, packet switching is used to optimize the usage of channel capacity and increase robustness.
+[src:p4-programming/packet-switching] Compared to circuit switching, packet switching is highly dynamic, allocating channel capacity based on usage instead of explicit reservations.
+[src:p4-programming/packet-switching] This can reduce wasted capacity caused by underutilized reservations at the cost of removing bandwidth guarantees.
+[src:p4-programming/packet-switching] In practice, congestion control is generally used in IP networks to dynamically negotiate capacity between connections.
+[src:p4-programming/packet-switching] Packet switching may also increase the robustness of networks in the face of failures.
+[src:p4-programming/packet-switching] If a node fails, connections do not need to be interrupted, as packets may be routed around the failure.
+[src:p4-programming/packet-switching] Packet switching is used in the Internet and most local area networks.
+[src:p4-programming/packet-switching] The Internet is implemented by the Internet Protocol Suite using a variety of link layer technologies.
+[src:p4-programming/packet-switching] For example, Ethernet and Frame Relay are common.
+[src:p4-programming/packet-switching] Newer mobile phone technologies (e.g., GSM, LTE) also use packet switching.
+[src:p4-programming/packet-switching] Packet switching is associated with connectionless networking because, in these systems, no connection agreement needs to be established between communicating parties prior to exchanging data.
+[src:p4-programming/packet-switching] X.25, the international CCITT standard of 1976, is a notable use of packet switching in that it provides to users a service of flow-controlled virtual circuits.
+[src:p4-programming/packet-switching] These virtual circuits reliably carry variable-length packets with data order preservation.
+[src:p4-programming/packet-switching] DATAPAC in Canada was the first public network to support X.25, followed by TRANSPAC in France.
+[src:p4-programming/packet-switching] Asynchronous Transfer Mode (ATM) is another virtual circuit technology.
+[src:p4-programming/packet-switching] It differs from X.25 in that it uses small fixed-length packets (cells), and that the network imposes no flow control to users.
+[src:p4-programming/packet-switching] Technologies such as MPLS and the Resource Reservation Protocol (RSVP) create virtual circuits on top of datagram networks.
+[src:p4-programming/packet-switching] MPLS and its predecessors, as well as ATM, have been called "fast packet" technologies.
+[src:p4-programming/packet-switching] MPLS, indeed, has been called "ATM without cells".
+[src:p4-programming/packet-switching] Virtual circuits are especially useful in building robust failover mechanisms and allocating bandwidth for delay-sensitive applications.
+[src:p4-programming/packet-switching] The work of Donald Davies in the late 1960s on data communication and computer network design became well known in the United States, Europe and Japan.
+[src:p4-programming/packet-switching] This was the "cornerstone" that inspired numerous packet switching networks in the decade following.
+[src:p4-programming/software-defined-networking] SDN was commonly associated with the OpenFlow protocol for remote communication with network plane elements to determine the path of network packets across network switches since OpenFlow's emergence in 2011.
+[src:p4-programming/software-defined-networking] However, since 2012, proprietary systems have also used the term.
+[src:p4-programming/software-defined-networking] These include Cisco Systems' Open Network Environment and Nicira's network virtualization platform.
+[src:p4-programming/software-defined-networking] SD-WAN applies similar technology to a wide area network (WAN).
+[src:p4-programming/software-defined-networking] In addition to WAN use cases, SDN is also increasingly applied in telecom backbones, where it is paired with operational inventory and automation platforms to provide real-time visibility, service assurance, and simplified provisioning across multi-vendor networks.
+[src:p4-programming/software-defined-networking] The history of SDN principles can be traced back to the separation of the control and data planes first used in public switched telephone networks.
+[src:p4-programming/software-defined-networking] This provided a manner of simplifying provisioning and management years before the architecture was used in data networks.
+[src:p4-programming/software-defined-networking] The Internet Engineering Task Force (IETF) began considering various ways to decouple the control and data forwarding functions in a proposed interface standard published in 2004 named Forwarding and Control Element Separation (ForCES).
+[src:p4-programming/software-defined-networking] The ForCES Working Group also proposed a companion SoftRouter architecture.
+[src:p4-programming/software-defined-networking] Additional early standards from the IETF that pursued separating control from data planes include the Linux Netlink as an IP services protocol, and a path computation element (PCE)-based architecture.
+[src:p4-programming/software-defined-networking] These early attempts failed to gain traction.
+[src:p4-programming/software-defined-networking] One reason is that many in the Internet community viewed separating control from data to be risky, especially given the potential for failure in the control plane.
+[src:p4-programming/software-defined-networking] Another reason is that vendors were concerned that creating standard application programming interfaces (APIs) between the control and data planes would result in increased competition.
+[src:p4-programming/software-defined-networking] In 2006 a young startup was founded around SDN style network topology and submitted a collection of SDN patents in 2007.
+[src:p4-programming/software-defined-networking] The use of open-source software in these separated architectures traces its roots to the Ethane project at Stanford's computer science department.
+[src:p4-programming/software-defined-networking] Ethane's simple switch design led to the creation of OpenFlow, and an API for OpenFlow was first created in 2008.
+[src:p4-programming/software-defined-networking] In that same year, NOX, an operating system for networks, was created.
+[src:p4-programming/software-defined-networking] SDN research included emulators such as vSDNEmul, EstiNet, and Mininet.
+[src:p4-programming/software-defined-networking] Work on OpenFlow continued at Stanford, including with the creation of testbeds to evaluate the use of the protocol in a single campus network, as well as across the WAN as a backbone for connecting multiple campuses.
+[src:p4-programming/software-defined-networking] In academic settings, there were several research and production networks based on OpenFlow switches from NEC and Hewlett-Packard, as well as those based on Quanta Computer white-boxes starting in about 2009.
+[src:p4-programming/software-defined-networking] Beyond academia, the first deployments were by Nicira in 2010 to control OVS from Onix, codeveloped with NTT and Google.
+[src:p4-programming/software-defined-networking] A notable deployment was Google's B4 in 2012.
+[src:p4-programming/software-defined-networking] Later, Google announced the first OpenFlow/Onix deployments in is datacenters.
+[src:p4-programming/software-defined-networking] Another large deployment exists at China Mobile.
+[src:p4-programming/software-defined-networking] The Open Networking Foundation was founded in 2011 to promote SDN and OpenFlow.
+[src:p4-programming/software-defined-networking] At the 2014 Interop and Tech Field Day, software-defined networking was demonstrated by Avaya using shortest-path bridging (IEEE 802.1aq) and OpenStack as an automated campus, extending automation from the data center to the end device and removing manual provisioning from service delivery.
+[src:p4-programming/software-defined-networking] SDN architectures decouple network control (control plane) and forwarding (data plane) functions, enabling the network control to become directly programmable and the underlying infrastructure to be abstracted from applications and network services.
+[src:p4-programming/software-defined-networking] The OpenFlow protocol is one of the protocols used in SDN technologies.
+[src:p4-programming/software-defined-networking] The explosion of mobile devices and content, server virtualization, and the advent of cloud services are among the trends driving the networking industry to re-examine traditional network architectures.
+[src:p4-programming/software-defined-networking] Many conventional networks are hierarchical, built with tiers of Ethernet switches arranged in a tree structure.
+[src:p4-programming/software-defined-networking] This design made sense when client-server computing was dominant, but such a static architecture may be ill-suited to the dynamic computing and storage needs of today's enterprise data centers, campuses, and carrier environments.
+[src:p4-programming/software-defined-networking] Within the enterprise data center, traffic patterns have changed significantly.
+[src:p4-programming/software-defined-networking] At the same time, users are changing network traffic patterns as they push for access to corporate content and applications from any type of device, connecting from anywhere, at any time.
+[src:p4-programming/software-defined-networking] model, which may include a private cloud, public cloud, or some mix of both, resulting in additional traffic across the wide-area network.
+[src:p4-programming/software-defined-networking] Users are increasingly employing mobile personal devices such as smartphones, tablets, and notebooks to access the corporate network.
+[src:p4-programming/software-defined-networking] IT is under pressure to accommodate these personal devices in a fine-grained manner while protecting corporate data and intellectual property and meeting compliance mandates.
+[src:p4-programming/software-defined-networking] Enterprises have enthusiastically embraced both public and private cloud services, resulting in unprecedented growth of these services.
+[src:p4-programming/software-defined-networking] Many enterprise businesses want the agility to access applications, infrastructure and other IT resources on demand and discretely.
+[src:p4-programming/software-defined-networking] IT planning for cloud services must be performed in an environment of increased security, compliance and auditing requirements, along with business reorganizations, consolidations and mergers that can rapidly change assumptions.
+[src:p4-programming/software-defined-networking] Providing self-service provisioning, whether in a private or public cloud, requires elastic scaling of computing, storage and network resources, ideally from a common viewpoint and with a common suite of tools.
+[src:p4-programming/software-defined-networking] requires massive parallel processing on thousands of servers, all of which need direct connections to each other.
+[src:p4-programming/software-defined-networking] is fueling a constant demand for additional network capacity in the data center.
+[src:p4-programming/software-defined-networking] Operators of hyperscale data center networks face the daunting task of scaling the network to previously unimaginable size, maintaining any-to-any connectivity within a limited budget.
+[src:p4-programming/software-defined-networking] emerged, the need for larger data centers has increased the energy consumption of those facilities.
+[src:p4-programming/software-defined-networking] applying existing routing techniques to dynamically adjust the network data plane to save energy.
+[src:p4-programming/software-defined-networking] Also techniques to improve control plane energy efficiency are being researched.
+[src:p4-programming/software-defined-networking] In addition, they may consume an abstracted view of the network for their internal decision-making purposes.
+[src:p4-programming/software-defined-networking] An SDN Application consists of SDN application logic and one or more NBI drivers.
+[src:p4-programming/software-defined-networking] SDN applications may themselves expose another layer of abstracted network control, thus offering one or more higher-level NBIs through respective NBI agents.
+[src:p4-programming/software-defined-networking] The SDN controller is a logically centralized entity in charge of (i) translating the requirements from the SDN application layer down to the SDN datapaths and (ii) providing the SDN applications with an abstract view of the network (which may include statistics and events).
+[src:p4-programming/software-defined-networking] An SDN controller consists of one or more NBI agents, the SDN control logic, and the control to data-plane interface (CDPI) driver.
+[src:p4-programming/software-defined-networking] The SDN datapath is a logical network device that exposes visibility and uncontested control over its advertised forwarding and data processing capabilities.
+[src:p4-programming/software-defined-networking] The logical representation may encompass all or a subset of the capabilities.
+[src:p4-programming/software-defined-networking] An SDN datapath consists of a CDPI agent and a set of one or more traffic forwarding engines and zero or more traffic processing functions.
+[src:p4-programming/software-defined-networking] These engines and functions may include simple forwarding between the datapath's external interfaces or internal traffic processing or termination functions.
+[src:p4-programming/software-defined-networking] One or more SDN datapaths may be contained in a single (physical) network element—an integrated physical combination of communications resources, managed as a unit.
+[src:p4-programming/software-defined-networking] An SDN datapath may also be defined across multiple physical network elements.
+[src:p4-programming/software-defined-networking] The SDN CDPI is the interface defined between an SDN controller and an SDN datapath, which provides at least programmatic control of all forwarding operations, capabilities advertisement, statistics reporting, and event notification.
+[src:p4-programming/software-defined-networking] One value of SDN lies in the expectation that the CDPI is implemented in an open, vendor-neutral and interoperable way.
+[src:p4-programming/software-defined-networking] SDN NBIs are interfaces between SDN applications and SDN controllers and typically provide abstract network views and enable direct expression of network behavior and requirements.
+[src:p4-programming/software-defined-networking] This may occur at any level of abstraction and across different sets of functionality.
+[src:p4-programming/software-defined-networking] The implementation of the SDN control plane can follow a centralized, hierarchical, or decentralized design.
+[src:p4-programming/software-defined-networking] Initial SDN control plane proposals focused on a centralized solution, where a single control entity had a global view of the network.
+[src:p4-programming/software-defined-networking] While this simplifies the implementation of the control logic, it has scalability limitations as the size and dynamics of the network increase.
+[src:p4-programming/software-defined-networking] To overcome these limitations, hierarchical and distributed approaches have been proposed.
+[src:p4-programming/software-defined-networking] In hierarchical solutions, controllers operate on a partitioned network view, while decisions that require network-wide knowledge are taken by a logically centralized root controller.
+[src:p4-programming/software-defined-networking] In distributed approaches, controllers operate on their local view or they may exchange synchronization messages to enhance their knowledge.
+[src:p4-programming/software-defined-networking] Distributed solutions are more suitable for supporting adaptive SDN applications.
+[src:p4-programming/software-defined-networking] A key issue when designing a distributed SDN control plane is to decide on the number and placement of control entities.
+[src:p4-programming/software-defined-networking] An important parameter to consider while doing so is the propagation delay between the controllers and the network devices, especially in the context of large networks.
+[src:p4-programming/software-defined-networking] Other objectives that have been considered involve control path reliability, fault tolerance, and application requirements.
+[src:p4-programming/software-defined-networking] In SDN, the data plane is responsible for processing data-carrying packets using a set of rules specified by the control plane.
+[src:p4-programming/software-defined-networking] The data plane may be implemented in physical hardware switches or in software, such as Open vSwitch.
+[src:p4-programming/software-defined-networking] The memory capacity of hardware switches may limit the number of rules that can be stored whereas software implementations may have higher capacity.
+[src:p4-programming/software-defined-networking] Flow table entries may be populated in a proactive, reactive, or hybrid fashion.
+[src:p4-programming/software-defined-networking] In the proactive mode, the controller populates flow table entries for all possible traffic matches for this switch in advance.
+[src:p4-programming/software-defined-networking] This mode can be compared with typical routing table entries today, where all static entries are installed ahead of time.
+[src:p4-programming/software-defined-networking] Following this, no request is sent to the controller since all incoming flows will find a matching entry.
+[src:p4-programming/software-defined-networking] A major advantage in proactive mode is that all packets are forwarded at line rate (considering all flow table entries in TCAM) and no delay is added.
+[src:p4-programming/software-defined-networking] In the reactive mode, entries are populated on demand.
+[src:p4-programming/software-defined-networking] If a packet arrives without a corresponding match rule in the flow table, the SDN agent sends a request to the controller for further instruction.
+[src:p4-programming/software-defined-networking] The controller examines the SDN agent requests and provides instructions, installing a rule in the flow table for the corresponding packet if necessary.
+[src:p4-programming/software-defined-networking] The hybrid mode uses the low-latency proactive forwarding mode for a portion of traffic while relying on the flexibility of reactive mode processing for the remaining traffic.
+[src:p4-programming/software-defined-networking] Software-defined mobile networking (SDMN) is an approach to the design of mobile networks where all protocol-specific features are implemented in software, maximizing the use of generic and commodity hardware and software in both the core network and radio access network.
+[src:p4-programming/software-defined-networking] It is proposed as an extension of SDN paradigm to incorporate mobile network specific functionalities.
+[src:p4-programming/software-defined-networking] Since 3GPP Rel.14, a Control User Plane Separation was introduced in the Mobile Core Network architectures with the PFCP protocol.
+[src:p4-programming/software-defined-networking] An SD-WAN is a WAN managed using the principles of software-defined networking.
+[src:p4-programming/software-defined-networking] The main driver of SD-WAN is to lower WAN costs using more affordable and commercially available leased lines, as an alternative or partial replacement of more expensive MPLS lines.
+[src:p4-programming/software-defined-networking] Control and management are administered separately from the hardware, with central controllers allowing for easier configuration and administration.
+[src:p4-programming/software-defined-networking] An SD-LAN is a Local area network (LAN) built around the principles of software-defined networking, though there are key differences in topology, network security, application visibility and control, management and quality of service.
+[src:p4-programming/software-defined-networking] SD-LAN decouples control, management and data planes to enable a policy-driven architecture for wired and wireless LANs.
+[src:p4-programming/software-defined-networking] SD-LANs are characterized by their use of a cloud management system and wireless connectivity without the presence of a physical controller.
+[src:p4-programming/software-defined-networking] SDN architecture may enable, facilitate or enhance network-related security applications due to the controller's central view of the network, and its capacity to modify behavior or the data plane at any time.
+[src:p4-programming/software-defined-networking] The security implications of SDN architecture remain under study.
+[src:p4-programming/software-defined-networking] Several research works on SDN have already investigated security applications built upon the SDN controller, with different aims in mind.
+[src:p4-programming/software-defined-networking] Distributed denial of service (DDoS) detection and mitigation, as well as botnet and worm propagation, are some concrete use cases of such applications.
+[src:p4-programming/software-defined-networking] Proposed applications periodically collect network statistics from the forwarding plane of the network in a standardized manner (e.g., using OpenFlow), and then apply classification algorithms on those statistics in order to detect any network anomalies.
+[src:p4-programming/software-defined-networking] If an anomaly is detected, the application instructs the controller how to reprogram the data plane in order to mitigate it.
+[src:p4-programming/software-defined-networking] Another kind of security application leverages the SDN controller by implementing some moving target defense (MTD) algorithms.
+[src:p4-programming/software-defined-networking] MTD algorithms are typically used to make any attack on a given system or network more difficult than usual by periodically hiding or changing key properties of that system or network.
+[src:p4-programming/software-defined-networking] In traditional networks, implementing MTD algorithms is not a trivial task since it is difficult to build a central authority able to determine, for each part of the system to be protected, which key properties are hidden or changed.
+[src:p4-programming/software-defined-networking] In an SDN network, such tasks become more straightforward thanks to the centrality of the controller.
+[src:p4-programming/software-defined-networking] One application can, for example, periodically assign virtual IPs to hosts within the network, and the mapping of virtual IP to real IP is then performed by the controller.
+[src:p4-programming/software-defined-networking] Another application can simulate some fake opened/closed/filtered ports on random hosts in the network in order to add significant noise during scanning performed by an attacker.
+[src:p4-programming/software-defined-networking] Additional value regarding security in SDN-enabled networks can also be gained using FlowVisor and FlowChecker.
+[src:p4-programming/software-defined-networking] The former tries to use a single hardware forwarding plane sharing multiple separated logical networks.
+[src:p4-programming/software-defined-networking] Following this approach, the same hardware resources can be used for production and development purposes as well as separating monitoring, configuration and Internet traffic, where each scenario can have its own logical topology, which is called a slice.
+[src:p4-programming/software-defined-networking] In conjunction with this approach, FlowChecker realizes the validation of new OpenFlow rules that are deployed by users using their own slice.
+[src:p4-programming/software-defined-networking] SDN controller applications are mostly deployed in large-scale scenarios, which requires comprehensive checks of possible programming errors.
+[src:p4-programming/software-defined-networking] A system to do this called NICE was described in 2012.
+[src:p4-programming/software-defined-networking] Introducing an overarching security architecture requires a comprehensive and protracted approach to SDN.
+[src:p4-programming/software-defined-networking] Since it was introduced, designers are looking at possible ways to secure SDN that do not compromise scalability.
+[src:p4-programming/software-defined-networking] One architecture called SN-SECA (SDN+NFV) Security Architecture.
+[src:p4-programming/software-defined-networking] Distributed applications that run across datacenters usually replicate data for the purpose of synchronization, fault resiliency, load balancing and getting data closer to users (which reduces latency to users and increases their perceived throughput).
+[src:p4-programming/software-defined-networking] Also, many applications, such as Hadoop, replicate data within a datacenter across multiple racks to increase fault tolerance and make data recovery easier.
+[src:p4-programming/software-defined-networking] All of these operations require data delivery from one machine or datacenter to multiple machines or datacenters.
+[src:p4-programming/software-defined-networking] The process of reliably delivering data from one machine to multiple machines is referred to as Reliable Group Data Delivery (RGDD).
+[src:p4-programming/software-defined-networking] SDN switches can be used for RGDD via installation of rules that allow forwarding to multiple outgoing ports.
+[src:p4-programming/software-defined-networking] For example, OpenFlow provides support for Group Tables since version 1.1 which makes this possible.
+[src:p4-programming/software-defined-networking] Using SDN, a central controller can carefully and intelligently setup forwarding trees for RGDD.
+[src:p4-programming/software-defined-networking] Such trees can be built while paying attention to network congestion/load status to improve performance.
+[src:p4-programming/software-defined-networking] For example, MCTCP is a scheme for delivery to many nodes inside datacenters that relies on regular and structured topologies of datacenter networks while DCCast and QuickCast are approaches for fast and efficient data and content replication across datacenters over private WANs.
+[src:p4-programming/software-defined-networking] Network Function Virtualization, or NFV for short, is a concept that complements SDN.
+[src:p4-programming/software-defined-networking] Thus, NFV is not dependent on SDN or SDN concepts.
+[src:p4-programming/software-defined-networking] NFV separates software from hardware to enable flexible network deployment and dynamic operation.
+[src:p4-programming/software-defined-networking] NFV deployments typically use commodity servers to run network services software versions that previously were hardware-based.
+[src:p4-programming/software-defined-networking] These software-based services that run in an NFV environment are called Virtual Network Functions (VNF).
+[src:p4-programming/software-defined-networking] SDN-NFV hybrid program was provided for high efficiency, elastic and scalable capabilities NFV aimed at accelerating service innovation and provisioning using standard IT virtualization technologies.
+[src:p4-programming/software-defined-networking] SDN provides the agility of controlling the generic forwarding devices such as the routers and switches by using SDN controllers.
+[src:p4-programming/software-defined-networking] On the other hand, NFV agility is provided for the network applications by using virtualized servers.
+[src:p4-programming/software-defined-networking] It is entirely possible to implement a virtualized network function (VNF) as a standalone entity using existing networking and orchestration paradigms.
+[src:p4-programming/software-defined-networking] However, there are inherent benefits in leveraging SDN concepts to implement and manage an NFV infrastructure, particularly when looking at the management and orchestration of VNFs, and that's why multivendor platforms are being defined that incorporate SDN and NFV in concerted ecosystems.
+[src:p4-programming/software-defined-networking] Deep packet inspection (DPI) provides network with application-awareness, while SDN provides applications with network-awareness.
+[src:p4-programming/software-defined-networking] Although SDN will radically change the generic network architectures, it should cope with working with traditional network architectures to offer high interoperability.
+[src:p4-programming/software-defined-networking] When using an SDN based model for transmitting multimedia traffic, an important aspect to take account is the QoE estimation.
+[src:p4-programming/software-defined-networking] To estimate the QoE, first we have to be able to classify the traffic and then, it's recommended that the system can solve critical problems on its own by analyzing the traffic.
+[src:p4-programming/ternary-content-addressable-memory] CAM is frequently used in networking devices where it speeds up forwarding information base and routing table operations.
+[src:p4-programming/ternary-content-addressable-memory] This kind of associative memory is also used in cache memory.
+[src:p4-programming/ternary-content-addressable-memory] In associative cache memory, address and content are stored side by side.
+[src:p4-programming/ternary-content-addressable-memory] When the address matches, the corresponding content is fetched from cache memory.
+[src:p4-programming/ternary-content-addressable-memory] Dudley Allen Buck invented the concept of content-addressable memory in 1955.
+[src:p4-programming/ternary-content-addressable-memory] Buck is credited with the idea of *recognition unit*.
+[src:p4-programming/ternary-content-addressable-memory] If the data word is found, the CAM returns a list of one or more storage addresses where the word was found.
+[src:p4-programming/ternary-content-addressable-memory] Thus, a CAM is the hardware embodiment of what in software terms would be called an associative array.
+[src:p4-programming/ternary-content-addressable-memory] A similar concept can be found in the *data word recognition unit*, as proposed by Dudley Allen Buck in 1955.
+[src:p4-programming/ternary-content-addressable-memory] A major interface definition for CAMs and other network search engines was specified in an interoperability agreement called the Look-Aside Interface (LA-1 and LA-1B) developed by the Network Processing Forum.
+[src:p4-programming/ternary-content-addressable-memory] Numerous devices conforming to the interoperability agreement have been produced by Integrated Device Technology, Cypress Semiconductor, IBM, Broadcom and others.
+[src:p4-programming/ternary-content-addressable-memory] On December 11, 2007, the OIF published the serial look-aside (SLA) interface agreement.
+[src:p4-programming/ternary-content-addressable-memory] CAM is much faster than RAM in data search applications.
+[src:p4-programming/ternary-content-addressable-memory] There are cost disadvantages to CAM, however.
+[src:p4-programming/ternary-content-addressable-memory] Unlike a RAM chip, which has simple storage cells, each individual memory bit in a fully parallel CAM must have its own associated comparison circuit to detect a match between the stored bit and the input bit.
+[src:p4-programming/ternary-content-addressable-memory] Additionally, match outputs from each cell in the data word must be combined to yield a complete data word match signal.
+[src:p4-programming/ternary-content-addressable-memory] The additional circuitry increases the physical size and manufacturing cost of the CAM chip.
+[src:p4-programming/ternary-content-addressable-memory] The extra circuitry also increases power dissipation since every comparison circuit is active on every clock cycle.
+[src:p4-programming/ternary-content-addressable-memory] Consequently, CAM is used only in specialized applications where searching speed cannot be accomplished using a less costly method.
+[src:p4-programming/ternary-content-addressable-memory] One successful early implementation was a General Purpose Associative Processor IC and System.
+[src:p4-programming/ternary-content-addressable-memory] In the early 2000s several semiconductor companies including Cypress, IDT, Netlogic, Sibercore, and MOSAID introduced CAM products targeting networking applications.
+[src:p4-programming/ternary-content-addressable-memory] These products were labelled Network Search Engines (NSE), Network Search Accelerators (NSA), and Knowledge-based Processors (KBP) but were essentially CAM with specialized interfaces and features optimized for networking.
+[src:p4-programming/ternary-content-addressable-memory] Currently Broadcom offers several families of KBPs.
+[src:p4-programming/ternary-content-addressable-memory] To achieve a different balance between speed, memory size and cost, some implementations emulate the function of CAM by using standard tree search or hashing designs in hardware, using hardware tricks like replication or pipelining to speed up effective performance.
+[src:p4-programming/ternary-content-addressable-memory] These designs are often used in routers.
+[src:p4-programming/ternary-content-addressable-memory] The Luleå algorithm is an efficient implementation for longest prefix match searches as required in internet routing tables.
+[src:p4-programming/ternary-content-addressable-memory] Content-addressable memory is often used in computer networking devices.
+[src:p4-programming/ternary-content-addressable-memory] For example, when a network switch receives a data frame from one of its ports, it updates an internal table with the frame's source MAC address and the port it was received on.
+[src:p4-programming/ternary-content-addressable-memory] It then looks up the destination MAC address in the table to determine what port the frame needs to be forwarded to, and sends it out on that port.
+[src:p4-programming/ternary-content-addressable-memory] The MAC address table is usually implemented with a binary CAM so the destination port can be found very quickly, reducing the switch's latency.
+[src:p4-programming/ternary-content-addressable-memory] Ternary CAMs are often used in network routers, where each address has two parts: the network prefix, which can vary in size depending on the subnet configuration, and the host address, which occupies the remaining bits.
+[src:p4-programming/ternary-content-addressable-memory] Each subnet has a network mask that specifies which bits of the address are the network prefix and which bits are the host address.
+[src:p4-programming/ternary-content-addressable-memory] Routing is done by consulting a routing table maintained by the router which contains each known destination network prefix, the associated network mask, and the information needed to route packets to that destination.
+[src:p4-programming/ternary-content-addressable-memory] In a simple software implementation, the router compares the destination address of the packet to be routed with each entry in the routing table, performing a bitwise AND with the network mask and comparing it with the network prefix.
+[src:p4-programming/ternary-content-addressable-memory] If they are equal, the corresponding routing information is used to forward the packet.
+[src:p4-programming/ternary-content-addressable-memory] Using a ternary CAM for the routing table makes the lookup process very efficient.
+[src:p4-programming/ternary-content-addressable-memory] The addresses are stored using *don't care* for the host part of the address, so looking up the destination address in the CAM immediately retrieves the correct routing entry; both the masking and comparison are done by the CAM hardware.
+[src:p4-programming/ternary-content-addressable-memory] This works if (a) the entries are stored in order of decreasing network mask length, and (b) the hardware returns only the first matching entry; thus, the match with the longest network mask (longest prefix match) is used.
