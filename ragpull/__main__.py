@@ -4,6 +4,7 @@
   python -m ragpull pull [domain ...]        # fetch + normalize + gate + index (all domains when none named)
   python -m ragpull verify [domain ...]      # re-audit the committed packs
   python -m ragpull index [domain ...]       # regenerate INDEX.md / pack.facts / atlas.json from packs on disk
+  python -m ragpull grow [--budget N]        # autonomously discover + admit new usable domains (CI grower)
 """
 
 import argparse
@@ -105,8 +106,11 @@ def _reindex(name):
 
 
 def _write_atlas():
+    # sorted by domain name so atlas.json diffs stay minimal as the hourly grower appends
+    # (the grower's rebuild_atlas uses the same order)
     manifest = {"name": "nl-rag", "generated": date.today().isoformat(), "domains": []}
-    for name, d in DOMAINS.items():
+    for name in sorted(DOMAINS):
+        d = DOMAINS[name]
         pack_dir = PACKS / name
         if not pack_dir.exists():
             continue
@@ -160,8 +164,10 @@ def main():
     p.add_argument("domains", nargs="*")
     p = sub.add_parser("index")
     p.add_argument("domains", nargs="*")
+    from .grow import add_parser as _grow_parser, cmd_grow
+    _grow_parser(sub)
     args = ap.parse_args()
-    fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index}[args.cmd]
+    fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index, "grow": cmd_grow}[args.cmd]
 
     # big-stack worker thread because the normalizer recurses to DOM depth and a raised
     # recursionlimit past the native stack is a silent process kill, not a Python exception

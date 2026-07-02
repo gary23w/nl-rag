@@ -1,0 +1,71 @@
+name: grow-rag
+
+# Autonomously grows the RAG once an hour: discovers NEW technical Wikipedia topics not yet in
+# the pack tree, fetches + normalizes them, admits only pages that clear the clean-data gates,
+# commits the new packs, and no-ops once the repo reaches its size limit. Runs entirely on GitHub's
+# runners — no local machine, no Claude, nothing to keep open.
+
+on:
+  schedule:
+    - cron: "17 * * * *"        # hourly at :17 (GitHub delays top-of-hour crons)
+  workflow_dispatch:
+    inputs:
+      budget:
+        description: "max new domains to admit this run"
+        required: false
+        default: "40"
+      max_repo_mb:
+        description: "stop growing when the repo reaches this many MB (GitHub soft limit is 1000)"
+        required: false
+        default: "950"
+
+# never let two grow runs race on the same branch; queue instead of cancelling (a cancel mid-write
+# could leave a half-written pack)
+concurrency:
+  group: grow-rag
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  grow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Grow the RAG (discover + gate + admit new usable domains)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # lets the size check read the repo's server-side size
+        run: |
+          python -m ragpull grow \
+            --budget "${{ github.event.inputs.budget || 40 }}" \
+            --max-repo-mb "${{ github.event.inputs.max_repo_mb || 950 }}"
+
+      - name: Verify anything new before committing
+        run: python -m ragpull verify | tail -1
+
+      - name: Commit & push if the tree grew
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "no changes — at the size limit, or no new usable topics found this run"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          n=$(python -c "import json;print(len(json.load(open('ragpull/sources/auto_domains.json'))))")
+          git add -A
+          git commit -m "chore(grow): hourly RAG grow — ${n} machine-grown domains total"
+          # main may have advanced since checkout; rebase our commit on top, then push (one retry)
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              echo "pushed"; break
+            fi
+            echo "push race, retrying ($i)"; sleep $((RANDOM % 8 + 2))
+          done

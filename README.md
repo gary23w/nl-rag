@@ -85,6 +85,7 @@ python -m ragpull pull              # fetch + normalize + clean-gate + index eve
 python -m ragpull pull rust zig     # just those domains
 python -m ragpull verify            # re-audit every committed pack file
 python -m ragpull index             # regenerate INDEX.md / pack.facts / atlas.json
+python -m ragpull grow --budget 40  # autonomously discover + admit new usable domains
 ```
 
 The pipeline per page: polite cached fetch (per-host rate limit, charset sniffing) →
@@ -93,6 +94,26 @@ markdown rendering (headings, fenced code, GFM tables, lists; man pages unwrappe
 `<pre>` into real sections) → **clean-data gates** (HTML-residue, boilerplate-phrase,
 prose-ratio, sentence-count checks — a page that fails is rejected, never shipped) →
 frontmattered emit with heading-boundary splitting.
+
+## Grows itself, hourly
+
+`.github/workflows/grow-rag.yml` runs `ragpull grow` **every hour on GitHub's runners** — no
+local machine, nothing to keep open. Each run:
+
+1. **checks the size limit** (the repo's server-side size vs GitHub's ~1 GB soft limit) and
+   **no-ops once the repo is full** — growth stops itself;
+2. **discovers new topics** the tree doesn't cover yet — a randomized walk over broad technical
+   Wikipedia categories (`ragpull/discover.py`) plus link-expansion outward from packs already
+   accepted, deduped against every existing pack and a rejected-candidate memory;
+3. **admits only usable data** — each candidate article and a handful of its on-topic neighbors
+   go through the exact same fetch → normalize → clean-data gates as the hand-curated packs; a
+   domain is committed only if ≥3 pages survive the gates (no thin or junk packs);
+4. appends the admitted domains to `ragpull/sources/auto_domains.json` (the `auto` registry
+   module folds them in, so they're permanent), regenerates `atlas.json`, then commits + pushes.
+
+So the corpus keeps acquiring fresh, verified content on its own and gracefully stops at the
+size ceiling. Tune per run with the workflow inputs `budget` (domains/run) and `max_repo_mb`,
+or run it by hand from the Actions tab.
 
 To add a domain: add an entry to a module under `ragpull/sources/` (tags, license, curated
 page URLs) and run `python -m ragpull pull <name>`. The registry is split into thematic
