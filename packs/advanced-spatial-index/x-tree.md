@@ -1,0 +1,16 @@
+---
+title: "X-tree"
+source: https://en.wikipedia.org/wiki/X-tree
+domain: advanced-spatial-index
+license: CC-BY-SA-4.0
+tags: ub-tree, x-tree structure, bx-tree, space-filling curve, point access method
+fetched: 2026-07-02
+---
+
+# X-tree
+
+In computer science tree data structures, an **X-tree** (for *eXtended node tree*) is an index tree structure based on the R-tree used for storing data in many dimensions. It appeared in 1996, and differs from R-trees (1984), R+-trees (1987) and R*-trees (1990) because it emphasizes prevention of overlap in the bounding boxes, which increasingly becomes a problem in high dimensions. In cases where nodes cannot be split without preventing overlap, the node split will be deferred, resulting in **super-nodes**. In extreme cases, the tree will linearize, which defends against worst-case behaviors observed in some other data structures.
+
+## Structure
+
+The X-tree consists of three different types of nodes—data nodes, normal directory nodes and supernodes. The data nodes of the X-tree contain rectilinear minimum bounding rectangles (MBRs) together with pointers to the actual data objects, and the directory nodes contain MBRs together with pointers to sub-MBRs. Supernodes are large directory nodes of variable size(a multiple of the usual block size). The basic goal of supernodes is to avoid splits in the directory that would result in an inefficient directory structure.

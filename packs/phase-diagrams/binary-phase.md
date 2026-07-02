@@ -1,0 +1,14 @@
+---
+title: "Binary phase"
+source: https://en.wikipedia.org/wiki/Binary_phase
+domain: phase-diagrams
+license: CC-BY-SA-4.0
+tags: phase diagram, eutectic system, lever rule, phase rule
+fetched: 2026-07-02
+---
+
+# Binary phase
+
+In materials chemistry, a **binary phase** or **binary compound** is a chemical compound containing two different elements. Some binary phase compounds are molecular, e.g. carbon tetrachloride (CCl4). More typically binary phase refers to extended solids. Famous examples zinc sulfide, which contains zinc and sulfur, and tungsten carbide, which contains tungsten and carbon.
+
+Phases with higher degrees of complexity feature more elements, e.g. three elements in ternary phases, four elements in quaternary phases. These phases exhibit a higher degree of complexity due to the interaction of these elements at different conditions.

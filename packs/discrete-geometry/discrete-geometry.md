@@ -1,0 +1,146 @@
+---
+title: "Discrete geometry"
+source: https://en.wikipedia.org/wiki/Discrete_geometry
+domain: discrete-geometry
+license: CC-BY-SA-4.0
+tags: discrete geometry, sphere packing, kissing number, geometric lattice
+fetched: 2026-07-02
+---
+
+# Discrete geometry
+
+**Discrete geometry** and **combinatorial geometry** are branches of geometry that study combinatorial properties and constructive methods of discrete geometric objects. Most questions in discrete geometry involve finite or discrete sets of basic geometric objects, such as points, lines, planes, circles, spheres, polygons, and so forth. The subject focuses on the combinatorial properties of these objects, such as how they intersect one another, or how they may be arranged to cover a larger object.
+
+Discrete geometry has a large overlap with convex geometry and computational geometry, and is closely related to subjects such as finite geometry, combinatorial optimization, digital geometry, discrete differential geometry, geometric graph theory, toric geometry, and combinatorial topology.
+
+## History
+
+Polyhedra and tessellations had been studied for many years by people such as Kepler and Cauchy, modern discrete geometry has its origins in the late 19th century. Early topics studied were: the density of circle packings by Thue, projective configurations by Reye and Steinitz, the geometry of numbers by Minkowski, and map colourings by Tait, Heawood, and Hadwiger.
+
+László Fejes Tóth, H.S.M. Coxeter, and Paul Erdős laid the foundations of *discrete geometry*.
+
+## Topics
+
+### Polyhedra and polytopes
+
+A **polytope** is a geometric object with flat sides, which exists in any general number of dimensions. A polygon is a polytope in two dimensions, a polyhedron in three dimensions, and so on in higher dimensions (such as a 4-polytope in four dimensions). Some theories further generalize the idea to include such objects as unbounded polytopes (apeirotopes and tessellations), and abstract polytopes.
+
+The following are some of the aspects of polytopes studied in discrete geometry:
+
+- Polyhedral combinatorics
+- Lattice polytopes
+- Ehrhart polynomials
+- Pick's theorem
+- Hirsch conjecture
+- Opaque set
+
+### Packings, coverings and tilings
+
+Packings, coverings, and tilings are all ways of arranging uniform objects (typically circles, spheres, or tiles) in a regular way on a surface or manifold.
+
+A **sphere packing** is an arrangement of non-overlapping spheres within a containing space. The spheres considered are usually all of identical size, and the space is usually three-dimensional Euclidean space. However, sphere packing problems can be generalised to consider unequal spheres, *n*-dimensional Euclidean space (where the problem becomes circle packing in two dimensions, or hypersphere packing in higher dimensions) or to non-Euclidean spaces such as hyperbolic space.
+
+A **tessellation** of a flat surface is the tiling of a plane using one or more geometric shapes, called tiles, with no overlaps and no gaps. In mathematics, tessellations can be generalized to higher dimensions.
+
+Specific topics in this area include:
+
+- Circle packings
+- Sphere packings
+- Kepler conjecture
+- Quasicrystals
+- Aperiodic tilings
+- Periodic graph
+- Finite subdivision rules
+
+### Structural rigidity and flexibility
+
+**Structural rigidity** is a combinatorial theory for predicting the flexibility of ensembles formed by rigid bodies connected by flexible linkages or hinges.
+
+Topics in this area include:
+
+- Cauchy's theorem
+- Flexible polyhedra
+
+### Incidence structures
+
+Incidence structures generalize planes (such as affine, projective, and Möbius planes) as can be seen from their axiomatic definitions. Incidence structures also generalize the higher-dimensional analogs and the finite structures are sometimes called finite geometries.
+
+Formally, an **incidence structure** is a triple
+
+$C=(P,L,I).\,$
+
+where *P* is a set of "points", *L* is a set of "lines" and $I\subseteq P\times L$ is the incidence relation. The elements of I are called **flags.** If
+
+$(p,l)\in I,$
+
+we say that point *p* "lies on" line l .
+
+Topics in this area include:
+
+- Configurations
+- Line arrangements
+- Hyperplane arrangements
+- Buildings
+
+### Oriented matroids
+
+An **oriented matroid** is a mathematical structure that abstracts the properties of directed graphs and of arrangements of vectors in a vector space over an ordered field (particularly for partially ordered vector spaces). In comparison, an ordinary (i.e., non-oriented) matroid abstracts the dependence properties that are common both to graphs, which are not necessarily *directed*, and to arrangements of vectors over fields, which are not necessarily *ordered*.
+
+### Geometric graph theory
+
+A **geometric graph** is a graph in which the vertices or edges are associated with geometric objects. Examples include Euclidean graphs, the 1-skeleton of a polyhedron or polytope, unit disk graphs, and visibility graphs.
+
+Topics in this area include:
+
+- Graph drawing
+- Polyhedral graphs
+- Random geometric graphs
+- Voronoi diagrams and Delaunay triangulations
+
+### Simplicial complexes
+
+A **simplicial complex** is a topological space of a certain kind, constructed by "gluing together" points, line segments, triangles, and their *n*-dimensional counterparts (see illustration). Simplicial complexes should not be confused with the more abstract notion of a simplicial set appearing in modern simplicial homotopy theory. The purely combinatorial counterpart to a simplicial complex is an abstract simplicial complex. See also random geometric complexes.
+
+### Topological combinatorics
+
+The discipline of combinatorial topology used combinatorial concepts in topology and in the early 20th century this turned into the field of algebraic topology.
+
+In 1978, the situation was reversed – methods from algebraic topology were used to solve a problem in combinatorics – when László Lovász proved the Kneser conjecture, thus beginning the new study of **topological combinatorics**. Lovász's proof used the Borsuk-Ulam theorem and this theorem retains a prominent role in this new field. This theorem has many equivalent versions and analogs and has been used in the study of fair division problems.
+
+Topics in this area include:
+
+- Sperner's lemma
+- Regular maps
+
+### Lattices and discrete groups
+
+A **discrete group** is a group *G* equipped with the discrete topology. With this topology, *G* becomes a topological group. A **discrete subgroup** of a topological group *G* is a subgroup *H* whose relative topology is the discrete one. For example, the integers, **Z**, form a discrete subgroup of the reals, **R** (with the standard metric topology), but the rational numbers, **Q**, do not.
+
+A **lattice** in a locally compact topological group is a discrete subgroup with the property that the quotient space has finite invariant measure. In the special case of subgroups of **R***n*, this amounts to the usual geometric notion of a lattice, and both the algebraic structure of lattices and the geometry of the totality of all lattices are relatively well understood. Deep results of Borel, Harish-Chandra, Mostow, Tamagawa, M. S. Raghunathan, Margulis, Zimmer obtained from the 1950s through the 1970s provided examples and generalized much of the theory to the setting of nilpotent Lie groups and semisimple algebraic groups over a local field. In the 1990s, Bass and Lubotzky initiated the study of *tree lattices*, which remains an active research area.
+
+Topics in this area include:
+
+- Reflection groups
+- Triangle groups
+
+### Digital geometry
+
+**Digital geometry** deals with discrete sets (usually discrete point sets) considered to be digitized models or images of objects of the 2D or 3D Euclidean space.
+
+Simply put, **digitizing** is replacing an object by a discrete set of its points. The images we see on the TV screen, the raster display of a computer, or in newspapers are in fact digital images.
+
+Its main application areas are computer graphics and image analysis.
+
+### Discrete differential geometry
+
+**Discrete differential geometry** is the study of discrete counterparts of notions in differential geometry. Instead of smooth curves and surfaces, there are polygons, meshes, and simplicial complexes. It is used in the study of computer graphics and topological combinatorics.
+
+Topics in this area include:
+
+- Discrete Laplace operator
+- Discrete exterior calculus
+- Discrete calculus
+- Discrete Morse theory
+- Topological combinatorics
+- Spectral shape analysis
+- Analysis on fractals

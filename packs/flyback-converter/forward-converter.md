@@ -1,0 +1,24 @@
+---
+title: "Forward converter"
+source: https://en.wikipedia.org/wiki/Forward_converter
+domain: flyback-converter
+license: CC-BY-SA-4.0
+tags: flyback converter, flyback transformer, forward converter, isolated converter
+fetched: 2026-07-02
+---
+
+# Forward converter
+
+The **forward converter** is a DC/DC converter that uses a transformer to increase or decrease the output voltage (depending on the transformer ratio) and provide galvanic isolation for the load. With multiple output windings, it is possible to provide both higher and lower voltage outputs simultaneously.
+
+While it looks superficially like a flyback converter, it operates in a fundamentally different way, and is generally more energy efficient. A flyback converter stores energy in the magnetic field in the transformer air gap during the time the converter switching element (transistor) is conducting. When the switch turns off, the stored magnetic field collapses and the energy is transferred to the output of the flyback converter as electric current. The flyback converter can be viewed as two inductors sharing a common core with opposite polarity windings.
+
+In contrast, the forward converter (which is based on a transformer with same-polarity windings, higher magnetizing inductance, and no air gap) does not store energy during the conduction time of the switching element — transformers cannot store a significant amount of energy, unlike inductors. Instead, energy is passed directly to the output of the forward converter by transformer action during the switch conduction phase.
+
+While the output voltage of a flyback converter is theoretically infinite, the maximum output voltage of the forward converter is constrained by the transformer turns ratio $\textstyle N_{\mathrm {S} }/N_{\mathrm {P} }$ :
+
+$V_{\mathrm {out} }=D\cdot {\frac {N_{\mathrm {S} }}{N_{\mathrm {P} }}}\cdot V_{\mathrm {supply} }$
+
+where D is the pulse width modulator duty cycle.
+
+The forward converter is typically used in off-line supplies to provide an intermediate power output level of 100–200 watts.

@@ -1,0 +1,84 @@
+---
+title: "Introsort"
+source: https://en.wikipedia.org/wiki/Introsort
+domain: introsort-algorithm
+license: CC-BY-SA-4.0
+tags: introsort algorithm, quicksort algorithm, heapsort algorithm, worst case bound
+fetched: 2026-07-02
+---
+
+# Introsort
+
+**Introsort** or **introspective sort** is a hybrid sorting algorithm that provides both fast average performance and (asymptotically) optimal worst-case performance. It begins with quicksort, it switches to heapsort when the recursion depth exceeds a level based on (the logarithm of) the number of elements being sorted and it switches to insertion sort when the number of elements is below some threshold. This combines the good parts of the three algorithms, with practical performance comparable to quicksort on typical data sets and worst-case O(*n* log *n*) runtime due to the heap sort. Since the three algorithms it uses are comparison sorts, it is also a comparison sort.
+
+Introsort was invented by David Musser in Musser (1997), in which he also introduced introselect, a hybrid selection algorithm based on quickselect (a variant of quicksort), which falls back to median of medians and thus provides worst-case linear complexity, which is optimal. Both algorithms were introduced with the purpose of providing generic algorithms for the C++ Standard Library which had both fast average performance and optimal worst-case performance, thus allowing the performance requirements to be tightened. Introsort is in-place and a non-stable algorithm.
+
+## Pseudocode
+
+If a heapsort implementation and partitioning functions of the type discussed in the quicksort article are available, the introsort can be described succinctly as
+
+```
+procedure sort(A : array):
+    maxdepth ← ⌊log2(length(A))⌋ × 2
+    introsort(A, maxdepth)
+
+procedure introsort(A, maxdepth):
+    n ← length(A)
+    if n < 16:
+        insertionsort(A)
+    else if maxdepth = 0:
+        heapsort(A)
+    else:
+        p ← partition(A)  // assume this function does pivot selection, p is the final position of the pivot
+        introsort(A[1:p-1], maxdepth - 1)
+        introsort(A[p+1:n], maxdepth - 1)
+```
+
+The factor 2 in the maximum depth is arbitrary; it can be tuned for practical performance. *A*[*i*:*j*] denotes the array slice of items i to j including both *A*[*i*] and *A*[*j*]. The indices are assumed to start with 1 (the first element of the A array is A[1]).
+
+## Analysis
+
+In quicksort, one of the critical operations is choosing the pivot: the element around which the list is partitioned. The simplest pivot selection algorithm is to take the first or the last element of the list as the pivot, causing poor behavior for the case of sorted or nearly sorted input. Niklaus Wirth's variant uses the middle element to prevent these occurrences, degenerating to O(*n*2) for contrived sequences. The median-of-3 pivot selection algorithm takes the median of the first, middle, and last elements of the list; however, even though this performs well on many real-world inputs, it is still possible to contrive a *median-of-3 killer* list that will cause dramatic slowdown of a quicksort based on this pivot selection technique.
+
+Musser reported that on a median-of-3 killer sequence of 100,000 elements, introsort's running time was 1/200 that of median-of-3 quicksort. Musser also considered the effect on caches of Sedgewick's delayed small sorting, where small ranges are sorted at the end in a single pass of insertion sort. He reported that it could double the number of cache misses, but that its performance with double-ended queues was significantly better and should be retained for template libraries, in part because the gain in other cases from doing the sorts immediately was not great.
+
+## Implementations
+
+Introsort or some variant is used in a number of standard library sort functions, including some C++ sort implementations.
+
+The June 2000 SGI C++ Standard Template Library stl_algo.h implementation of unstable sort uses the Musser introsort approach with the recursion depth to switch to heapsort passed as a parameter, median-of-3 pivot selection and the Knuth final insertion sort pass for partitions smaller than 16.
+
+The GNU Standard C++ library is similar: uses introsort with a maximum depth of 2×log2 *n*, followed by an insertion sort on partitions smaller than 16.
+
+LLVM libc++ also uses introsort with a maximum depth of 2×log2 *n*, however the size limit for insertion sort is different for different data types (30 if swaps are trivial, 6 otherwise). Also, arrays with sizes up to 5 are handled separately. Kutenin (2022) provides an overview for some changes made by LLVM, with a focus on the 2022 fix for quadraticness.
+
+The Microsoft .NET Framework Class Library, starting from version 4.5 (2012), uses introsort instead of simple quicksort.
+
+Go uses a modification of introsort: for slices of 12 or less elements it uses insertion sort, and for larger slices it uses pattern-defeating quicksort and more advanced median of three medians for pivot selection. Prior to version 1.19 it used shell sort for small slices.
+
+Java, starting from version 14 (2020), uses a hybrid sorting algorithm that uses merge sort for highly structured arrays (arrays that are composed of a small number of sorted subarrays) and introsort otherwise to sort arrays of ints, longs, floats and doubles.
+
+## Variants
+
+### pdqsort
+
+Pattern-defeating quicksort (pdqsort) is a variant of introsort developed by Orson Peters, incorporating the following improvements:
+
+- Median-of-three pivoting,
+- "BlockQuicksort" partitioning technique to mitigate branch misprediction penalties,
+- Linear time performance for certain input patterns (adaptive sort),
+- Use element shuffling on bad cases before trying the slower heapsort.
+- Improved adaptivity for low-cardinality inputs
+
+Pdqsort is used by Boost, GAP, Rust, and Zig.
+
+### fluxsort
+
+fluxsort is a stable variant of introsort incorporating the following improvements:
+
+- branchless sqrt(n) pivoting
+- Flux partitioning technique for stable partially-in-place partitioning
+- Significantly improved smallsort by utilizing branchless bi-directional parity merges
+- A fallback to quadsort, a branchless bi-directional mergesort, significantly increasing adaptivity for ordered inputs
+
+Improvements introduced by fluxsort and its unstable variant, crumsort, were adopted by crumsort-rs, glidesort, ipnsort, and driftsort. The overall performance increase on random inputs compared to pdqsort is around 50%.

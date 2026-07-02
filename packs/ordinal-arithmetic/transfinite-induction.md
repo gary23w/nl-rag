@@ -1,0 +1,252 @@
+---
+title: "Transfinite induction"
+source: https://en.wikipedia.org/wiki/Transfinite_induction
+domain: ordinal-arithmetic
+license: CC-BY-SA-4.0
+tags: ordinal arithmetic, ordinal number, transfinite induction, cantor normal form
+fetched: 2026-07-02
+---
+
+# Transfinite induction
+
+**Transfinite induction** is an extension of mathematical induction to ordinal numbers. Its correctness is a theorem of ZF, and relies on the fact that the ordinal numbers are well-ordered, and thus a statement that is not universally true for all ordinals must have a minimal counterexample. In fact, this principle is also true for arbitrary well-ordered sets, but since any well-ordered set can be indexed by ordinals in an order-preserving way, it suffices to establish the principle for ordinals.
+
+## Overview
+
+The principle of transfinite induction is as follows:
+
+Let
+
+$P(\alpha )$
+
+be a
+
+property
+
+defined for all ordinals
+
+$\alpha$
+
+. Suppose that whenever
+
+$P(\beta )$
+
+is true for all
+
+⁠
+
+$\beta <\alpha$
+
+⁠
+
+, then
+
+$P(\alpha )$
+
+is also true.
+
+Then
+
+P
+
+is true for all ordinals.
+
+This principle can be easily proved by considering the contrapositive form:
+
+If
+
+⁠
+
+P
+
+⁠
+
+is not true for all ordinals, then there exists an ordinal
+
+⁠
+
+$\alpha$
+
+⁠
+
+such that
+
+⁠
+
+$P(\beta )$
+
+⁠
+
+is true for all
+
+⁠
+
+$\beta <\alpha$
+
+⁠
+
+, but
+
+⁠
+
+$P(\alpha )$
+
+⁠
+
+is false.
+
+Such an ⁠ $\alpha$ ⁠ is just a minimal counterexample, the existence of which is guaranteed by the fact the class of ordinal numbers is well-ordered.
+
+### Induction by cases
+
+A proof by transfinite induction is often broken down into three cases:
+
+- **Zero case:** Prove that $P(0)$ is true.
+- **Successor case:** Prove that for any successor ordinal $\alpha +1$ , $P(\alpha +1)$ follows from $P(\alpha )$ (and, if necessary, $P(\beta )$ for all $\beta <\alpha$ ).
+- **Limit case:** Prove that for any limit ordinal $\lambda$ , if $P(\beta )$ holds for all $\beta <\lambda$ , then $P(\lambda )$ .
+
+All three cases are identical except for the type of ordinal considered. They do not formally need to be considered separately, but in practice the proofs are typically so different as to require separate presentations. Zero is sometimes considered a limit ordinal and then may sometimes be treated in proofs in the same case as limit ordinals.
+
+## Transfinite recursion
+
+**Transfinite recursion** is similar to transfinite induction; however, instead of proving that something holds for all ordinal numbers, we construct a sequence of objects, one for each ordinal.
+
+As an example, a basis for a (possibly infinite-dimensional) vector space can be created by starting with the empty set and for each ordinal *α > 0* choosing a vector that is not in the span of the vectors $\{v_{\beta }\mid \beta <\alpha \}$ . This process stops when no vector can be chosen.
+
+More formally, we can state the Transfinite Recursion Theorem as follows:
+
+**Transfinite Recursion Theorem (version 1)**. Given a class function *G*: *V* → *V* (where *V* is the class of all sets), there exists a unique transfinite sequence *F*: Ord → *V* (where Ord is the class of all ordinals) such that
+
+$F(\alpha )=G(F\upharpoonright \alpha )$
+
+for all ordinals
+
+α
+
+, where
+
+$\upharpoonright$
+
+denotes the restriction of
+
+F'
+
+s domain to ordinals <
+
+α
+
+.
+
+As in the case of induction, we may treat different types of ordinals separately: another formulation of transfinite recursion is the following:
+
+**Transfinite Recursion Theorem (version 2)**. Given a set *g*1, and class functions *G*2, *G*3, there exists a unique function *F*: Ord → *V* such that
+
+- *F*(0) = *g*1,
+- *F*(*α* + 1) = *G*2(*F*(*α*)), for all *α* ∈ Ord,
+- $F(\lambda )=G_{3}(F\upharpoonright \lambda )$ , for all limit *λ* ≠ 0.
+
+Note that we require the domains of *G*2, *G*3 to be broad enough to make the above properties meaningful. The uniqueness of the sequence satisfying these properties can be proved using transfinite induction.
+
+More generally, one can define objects by transfinite recursion on any well-founded relation *R*. (*R* need not even be a set; it can be a proper class, provided it is a set-like relation; i.e. for any *x*, the collection of all *y* such that *yRx* is a set.)
+
+## Relationship to the axiom of choice
+
+Proofs or constructions using induction and recursion often use the axiom of choice to produce a well-ordered relation that can be treated by transfinite induction. However, if the relation in question is already well-ordered, one can often use transfinite induction without invoking the axiom of choice. For example, many results about Borel sets are proved by transfinite induction on the ordinal rank of the set; these ranks are already well-ordered, so the axiom of choice is not needed to well-order them.
+
+The following construction of the Vitali set shows one way that the axiom of choice can be used in a proof by transfinite induction:
+
+First,
+
+well-order
+
+the
+
+real numbers
+
+(this is where the axiom of choice enters via the
+
+well-ordering theorem
+
+), giving a sequence
+
+$\langle r_{\alpha }\mid \alpha <\beta \rangle$
+
+, where
+
+β
+
+is an ordinal with the
+
+cardinality of the continuum
+
+. Let
+
+v
+
+0
+
+equal
+
+r
+
+0
+
+. Then let
+
+v
+
+1
+
+equal
+
+r
+
+α
+
+1
+
+, where
+
+α
+
+1
+
+is least such that
+
+r
+
+α
+
+1
+
+−
+
+v
+
+0
+
+is not a
+
+rational number
+
+. Continue; at each step use the least real from the
+
+r
+
+sequence that does not have a rational difference with any element thus far constructed in the
+
+v
+
+sequence. Continue until all the reals in the
+
+r
+
+sequence are exhausted. The final
+
+v
+
+sequence will enumerate the Vitali set.
+
+The above argument uses the axiom of choice in an essential way at the very beginning, in order to well-order the reals. After that step, the axiom of choice is not used again.
+
+Other uses of the axiom of choice are more subtle. For example, a construction by transfinite recursion frequently will not specify a *unique* value for *A**α*+1, given the sequence up to *α*, but will specify only a *condition* that *A**α*+1 must satisfy, and argue that there is at least one set satisfying this condition. If it is not possible to define a unique example of such a set at each stage, then it may be necessary to invoke (some form of) the axiom of choice to select one such at each step. For inductions and recursions of countable length, the weaker axiom of dependent choice is sufficient. Because there are models of Zermelo–Fraenkel set theory of interest to set theorists that satisfy the axiom of dependent choice but not the full axiom of choice, the knowledge that a particular proof only requires dependent choice can be useful.

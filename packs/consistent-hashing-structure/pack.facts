@@ -1,0 +1,688 @@
+# nl-rag distilled facts — domain: consistent-hashing-structure
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:consistent-hashing-structure/chord-peer-to-peer] In computing, **Chord** is a protocol and algorithm for a peer-to-peer distributed hash table.
+[src:consistent-hashing-structure/chord-peer-to-peer] A distributed hash table stores key-value pairs by assigning keys to different computers (known as "nodes"); a node will store the values for all the keys for which it is responsible.
+[src:consistent-hashing-structure/chord-peer-to-peer] Chord specifies how keys are assigned to nodes, and how a node can discover the value for a given key by first locating the node responsible for that key.
+[src:consistent-hashing-structure/chord-peer-to-peer] Chord is one of the four original distributed hash table protocols, along with CAN, Tapestry, and Pastry.
+[src:consistent-hashing-structure/chord-peer-to-peer] It was introduced in 2001 by Ion Stoica, Robert Morris, David Karger, Frans Kaashoek, and Hari Balakrishnan, and was developed at MIT.
+[src:consistent-hashing-structure/chord-peer-to-peer] The 2001 Chord paper won an ACM SIGCOMM Test of Time award in 2011.
+[src:consistent-hashing-structure/chord-peer-to-peer] Subsequent research by Pamela Zave has shown that the original Chord protocol (as specified in the 2001 SIGCOMM paper, the 2001 Technical report, the 2002 PODC paper, and the 2003 TON paper ) can mis-order the ring, produce several rings, and break the ring.
+[src:consistent-hashing-structure/chord-peer-to-peer] A corrected version of the protocol prevents these errors, without imposing additional overhead.
+[src:consistent-hashing-structure/chord-peer-to-peer] Nodes and keys are assigned an m -bit *identifier* using *consistent hashing*.
+[src:consistent-hashing-structure/chord-peer-to-peer] The SHA-1 algorithm is the base hashing function for consistent hashing.
+[src:consistent-hashing-structure/chord-peer-to-peer] Consistent hashing is integral to the robustness and performance of Chord because both keys and nodes (in fact, their IP addresses) are uniformly distributed in the same identifier space with a negligible possibility of collision.
+[src:consistent-hashing-structure/chord-peer-to-peer] Thus, it also allows nodes to join and leave the network without disruption.
+[src:consistent-hashing-structure/chord-peer-to-peer] In the protocol, the term *node* is used to refer to both a node itself and its identifier (ID) without ambiguity.
+[src:consistent-hashing-structure/chord-peer-to-peer] Using the Chord lookup protocol, nodes and keys are arranged in an identifier circle that has at most $2^{m}$ nodes, ranging from 0 to $2^{m}-1$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] ( m should be large enough to avoid collision.) Some of these nodes will map to machines or keys while others (most) will be empty.
+[src:consistent-hashing-structure/chord-peer-to-peer] Each node has a *successor* and a *predecessor*.
+[src:consistent-hashing-structure/chord-peer-to-peer] The successor to a node is the next node in the identifier circle in a clockwise direction.
+[src:consistent-hashing-structure/chord-peer-to-peer] If there is a node for each possible ID, the successor of node 0 is node 1, and the predecessor of node 0 is node $2^{m}-1$ ; however, normally there are "holes" in the sequence.
+[src:consistent-hashing-structure/chord-peer-to-peer] For example, the successor of node 153 may be node 167 (and nodes from 154 to 166 do not exist); in this case, the predecessor of node 167 will be node 153.
+[src:consistent-hashing-structure/chord-peer-to-peer] The concept of successor can be used for keys as well.
+[src:consistent-hashing-structure/chord-peer-to-peer] The *successor node* of a key k is the first node whose ID equals to k or follows k in the identifier circle, denoted by $successor(k)$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] Every key is assigned to (stored at) its successor node, so looking up a key k is to query $successor(k)$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] Since the successor (or predecessor) of a node may disappear from the network (because of failure or departure), each node records an arc of $2r+1$ nodes in the middle of which it stands, i.e., the list of r nodes preceding it and r nodes following it.
+[src:consistent-hashing-structure/chord-peer-to-peer] This list results in a high probability that a node is able to correctly locate its successor or predecessor, even if the network in question suffers from a high failure rate.
+[src:consistent-hashing-structure/chord-peer-to-peer] The core usage of the Chord protocol is to query a key from a client (generally a node as well), i.e. to find $successor(k)$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] The basic approach is to pass the query to a node's successor, if it cannot find the key locally.
+[src:consistent-hashing-structure/chord-peer-to-peer] This will lead to a $O(N)$ query time where N is the number of machines in the ring.
+[src:consistent-hashing-structure/chord-peer-to-peer] To avoid the linear search above, Chord implements a faster search method by requiring each node to keep a *finger table* containing up to m entries, recall that m is the number of bits in the hash key.
+[src:consistent-hashing-structure/chord-peer-to-peer] The first entry of finger table is actually the node's immediate successor (and therefore an extra successor field is not needed).
+[src:consistent-hashing-structure/chord-peer-to-peer] Every time a node wants to look up a key k , it will pass the query to the closest successor or predecessor (depending on the finger table) of k in its finger table (the "largest" one on the circle whose ID is smaller than k ), until a node finds out the key is stored in its immediate successor.
+[src:consistent-hashing-structure/chord-peer-to-peer] With such a finger table, the number of nodes that must be contacted to find a successor in an *N*-node network is $O(\log N)$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] Each key k is stored in $successor(k)$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] Each node's finger table should be correct.
+[src:consistent-hashing-structure/chord-peer-to-peer] To satisfy these invariants, a *predecessor* field is maintained for each node.
+[src:consistent-hashing-structure/chord-peer-to-peer] As the successor is the first entry of the finger table, we do not need to maintain this field separately any more.
+[src:consistent-hashing-structure/chord-peer-to-peer] Notify other nodes to update their predecessors and finger tables.
+[src:consistent-hashing-structure/chord-peer-to-peer] The new node takes over its responsible keys from its successor.
+[src:consistent-hashing-structure/chord-peer-to-peer] The predecessor of n can be easily obtained from the predecessor of $successor(n)$ (in the previous circle).
+[src:consistent-hashing-structure/chord-peer-to-peer] As for its finger table, there are various initialization methods.
+[src:consistent-hashing-structure/chord-peer-to-peer] The simplest one is to execute find successor queries for all m entries, resulting in $O(M\log N)$ initialization time.
+[src:consistent-hashing-structure/chord-peer-to-peer] A better method is to check whether $i^{th}$ entry in the finger table is still correct for the $(i+1)^{th}$ entry.
+[src:consistent-hashing-structure/chord-peer-to-peer] The best method is to initialize the finger table from its immediate neighbours and make some updates, which is $O(\log N)$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] To ensure correct lookups, all successor pointers must be up to date.
+[src:consistent-hashing-structure/chord-peer-to-peer] Therefore, a stabilization protocol is running periodically in the background which updates finger tables and successor pointers.
+[src:consistent-hashing-structure/chord-peer-to-peer] Suppose node n wishes to find the successor of key k .
+[src:consistent-hashing-structure/chord-peer-to-peer] We wish to find an upper bound for the number of steps it takes for a message to be routed from n to p .
+[src:consistent-hashing-structure/chord-peer-to-peer] Node n will examine its finger table and route the request to the closest predecessor of k that it has.
+[src:consistent-hashing-structure/chord-peer-to-peer] If f is the $i^{th}$ entry in n 's finger table, then both f and p are at distances between $2^{i-1}$ and $2^{i}$ from n along the identifier circle.
+[src:consistent-hashing-structure/chord-peer-to-peer] Hence, the distance between f and p along this circle is at most $2^{i-1}$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] Thus the distance from f to p is less than the distance from n to f : the new distance to p is at most half the initial distance.
+[src:consistent-hashing-structure/chord-peer-to-peer] This process of halving the remaining distance repeats itself, so after t steps, the distance remaining to p is at most $2^{m}/2^{t}$ ; in particular, after $\log N$ steps, the remaining distance is at most $2^{m}/N$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] Because nodes are distributed uniformly at random along the identifier circle, the expected number of nodes falling within an interval of this length is 1, and with high probability, there are fewer than $\log N$ such nodes.
+[src:consistent-hashing-structure/chord-peer-to-peer] Because the message always advances by at least one node, it takes at most $\log N$ steps for a message to traverse this remaining distance.
+[src:consistent-hashing-structure/chord-peer-to-peer] The total expected routing time is thus $O(\log N)$ .
+[src:consistent-hashing-structure/chord-peer-to-peer] Simply, the probability that all r nodes fail is $\left({{1} \over {4}}\right)^{r}=O\left({{1} \over {N}}\right)$ , which is a low probability; so with high probability at least one of them is alive and the node will have the correct pointer.
+[src:consistent-hashing-structure/consistent-hashing] In computer science, **consistent hashing** is a special kind of hashing technique such that when a hash table is resized, only $n/m$ keys need to be remapped on average where n is the number of keys and m is the number of slots.
+[src:consistent-hashing-structure/consistent-hashing] Consistent hashing evenly distributes cache keys across shards, even if some of the shards crash or become unavailable.
+[src:consistent-hashing-structure/consistent-hashing] In contrast, in most traditional hash tables, a change in the number of array slots causes nearly all keys to be remapped because the mapping between the keys and the slots is defined by a modular operation.
+[src:consistent-hashing-structure/consistent-hashing] Consistent hashing is used by Content Delivery Networks because it is useful for distributing requests for content from a rotating population of web servers.
+[src:consistent-hashing-structure/consistent-hashing] Tim Berners-Lee credits consistent hashing algorithms, and Daniel Lewin as their inventor, with solving the slashdotting problem which plagued the World Wide Web in the 1990s.
+[src:consistent-hashing-structure/consistent-hashing] The term "consistent hashing" was introduced by David Karger *et al.* at MIT for use in distributed caching, particularly for the web.
+[src:consistent-hashing-structure/consistent-hashing] This academic paper from 1997 in Symposium on Theory of Computing introduced the term "consistent hashing" as a way of distributing requests among a changing population of web servers.
+[src:consistent-hashing-structure/consistent-hashing] Each slot is then represented by a server in a distributed system or cluster.
+[src:consistent-hashing-structure/consistent-hashing] The addition of a server and the removal of a server (during scalability or outage) requires only $num\_keys/num\_slots$ items to be re-shuffled when the number of slots (i.e. servers) change.
+[src:consistent-hashing-structure/consistent-hashing] The authors mention linear hashing and its ability to handle sequential server addition and removal, while consistent hashing allows servers to be added and removed in an arbitrary order.
+[src:consistent-hashing-structure/consistent-hashing] The paper was later re-purposed to address technical challenge of keeping track of a file in peer-to-peer networks such as a distributed hash table.
+[src:consistent-hashing-structure/consistent-hashing] Teradata used this technique in their distributed database, released in 1986, although they did not use this term.
+[src:consistent-hashing-structure/consistent-hashing] Teradata still uses the concept of a hash table to fulfill exactly this purpose.
+[src:consistent-hashing-structure/consistent-hashing] Akamai Technologies was founded in 1998 by the scientists Daniel Lewin and F.
+[src:consistent-hashing-structure/consistent-hashing] Thomson Leighton (co-authors of the article coining "consistent hashing").
+[src:consistent-hashing-structure/consistent-hashing] In Akamai's content delivery network, consistent hashing is used to balance the load within a cluster of servers, while a stable marriage algorithm is used to balance load across clusters.
+[src:consistent-hashing-structure/consistent-hashing] Consistent hashing has also been used to reduce the impact of partial system failures in large web applications to provide robust caching without incurring the system-wide fallout of a failure.
+[src:consistent-hashing-structure/consistent-hashing] Consistent hashing is also the cornerstone of distributed hash tables (DHTs), which employ hash values to partition a keyspace across a distributed set of nodes, then construct an overlay network of connected nodes that provide efficient node retrieval by key.
+[src:consistent-hashing-structure/consistent-hashing] Rendezvous hashing, designed in 1996, is a simpler and more general technique .
+[src:consistent-hashing-structure/consistent-hashing] It achieves the goals of consistent hashing using the very different highest random weight (HRW) algorithm.
+[src:consistent-hashing-structure/consistent-hashing] However, when a server is added or removed during outage or scaling (when n changes), all the BLOBs in every server should be reassigned and moved due to rehashing, but this operation is expensive.
+[src:consistent-hashing-structure/consistent-hashing] Consistent hashing was designed to avoid the problem of having to reassign every BLOB when a server is added or removed throughout the cluster.
+[src:consistent-hashing-structure/consistent-hashing] The central idea is to use a hash function that maps both the BLOB and servers to a unit circle, usually $2\pi$ radians.
+[src:consistent-hashing-structure/consistent-hashing] For example, $\zeta =\Phi \ \%\ 360$ (where $\Phi$ is hash of a BLOB or server's identifier, like IP address or UUID).
+[src:consistent-hashing-structure/consistent-hashing] Each BLOB is then assigned to the next server that appears on the circle in clockwise order.
+[src:consistent-hashing-structure/consistent-hashing] This provides an even distribution of BLOBs to servers.
+[src:consistent-hashing-structure/consistent-hashing] But, more importantly, if a server fails and is removed from the circle, only the BLOBs that were mapped to the failed server need to be reassigned to the next server in clockwise order.
+[src:consistent-hashing-structure/consistent-hashing] Likewise, if a new server is added, it is added to the unit circle, and only the BLOBs mapped to that server need to be reassigned.
+[src:consistent-hashing-structure/consistent-hashing] Importantly, when a server is added or removed, the vast majority of the BLOBs maintain their prior server assignments, and the addition of $n^{th}$ server only causes $1/n$ fraction of the BLOBs to relocate.
+[src:consistent-hashing-structure/consistent-hashing] Although the process of moving BLOBs across cache servers in the cluster depends on the context, commonly, the newly added cache server identifies its "predecessor" and moves all the BLOBs, whose mapping belongs to this server (i.e. whose hash value is less than that of the new server), from it.
+[src:consistent-hashing-structure/consistent-hashing] However, in the case of web page caches, in most implementations there is no involvement of moving or copying, assuming the cached BLOB is small enough.
+[src:consistent-hashing-structure/consistent-hashing] When a request hits a newly added cache server, a cache miss happens and a request to the actual web server is made and the BLOB is cached locally for future requests.
+[src:consistent-hashing-structure/consistent-hashing] The redundant BLOBs on the previously used cache servers would be removed as per the cache eviction policies.
+[src:consistent-hashing-structure/consistent-hashing] Let $h_{b}(x)$ and $h_{s}(x)$ be the hash functions used for the BLOB and server's unique identifier respectively.
+[src:consistent-hashing-structure/consistent-hashing] In practice, a binary search tree (BST) is used to dynamically maintain the ${\text{server ID}}$ within a cluster or hashring, and to find the successor or minimum within the BST, tree traversal is used.
+[src:consistent-hashing-structure/consistent-hashing] To avoid skewness of multiple nodes within the radian, which happen due to lack of uniform distribution of the servers within the cluster, multiple labels are used.
+[src:consistent-hashing-structure/consistent-hashing] Those duplicate labels are called "virtual nodes" i.e. multiple labels which point to a single "real" label or server within the cluster.
+[src:consistent-hashing-structure/consistent-hashing] The amount of virtual nodes or duplicate labels used for a particular server within a cluster is called the "weight" of that particular server.
+[src:consistent-hashing-structure/consistent-hashing] A number of extensions to the basic technique are needed for effectively using consistent hashing for load balancing in practice.
+[src:consistent-hashing-structure/consistent-hashing] In the basic scheme above, if a server fails, all its BLOBs are reassigned to the next server in clockwise order, potentially doubling the load of that server.
+[src:consistent-hashing-structure/consistent-hashing] To ensure a more even redistribution of BLOBs on server failure, each server can be hashed to multiple locations on the unit circle.
+[src:consistent-hashing-structure/consistent-hashing] When a server fails, the BLOBs assigned to each of its replicas on the unit circle will get reassigned to a different server in clockwise order, thus redistributing the BLOBs more evenly.
+[src:consistent-hashing-structure/consistent-hashing] Another extension concerns a situation where a single BLOB gets "hot" and is accessed a large number of times and will have to be hosted in multiple servers.
+[src:consistent-hashing-structure/consistent-hashing] In this situation, the BLOB may be assigned to multiple contiguous servers by traversing the unit circle in clockwise order.
+[src:consistent-hashing-structure/consistent-hashing] A more complex practical consideration arises when two BLOBs are hashed near each other in the unit circle and both get "hot" at the same time.
+[src:consistent-hashing-structure/consistent-hashing] In this case, both BLOBs will use the same set of contiguous servers in the unit circle.
+[src:consistent-hashing-structure/consistent-hashing] This situation can be ameliorated by each BLOB choosing a different hash function for mapping servers to the unit circle.
+[src:consistent-hashing-structure/consistent-hashing] Rendezvous hashing, designed in 1996, is a simpler and more general technique, and permits fully distributed agreement on a set of k options out of a possible set of n options.
+[src:consistent-hashing-structure/consistent-hashing] It can in fact be shown that consistent hashing is a special case of rendezvous hashing.
+[src:consistent-hashing-structure/consistent-hashing] Because of its simplicity and generality, rendezvous hashing is now being used in place of Consistent Hashing in many applications.
+[src:consistent-hashing-structure/consistent-hashing] If key values will always increase monotonically, an alternative approach using a hash table with monotonic keys may be more suitable than consistent hashing.
+[src:consistent-hashing-structure/consistent-hashing] The $O(K/N)$ is an average cost for redistribution of keys and the $O(\log N)$ complexity for consistent hashing comes from the fact that a binary search among nodes angles is required to find the next node on the ring.
+[src:consistent-hashing-structure/distributed-hash-table] A **distributed hash table** (**DHT**) is a distributed system that provides a lookup service similar to a hash table.
+[src:consistent-hashing-structure/distributed-hash-table] Key–value pairs are stored in a DHT, and any participating node can efficiently retrieve the value associated with a given key.
+[src:consistent-hashing-structure/distributed-hash-table] The main advantage of a DHT is that nodes can be added or removed with minimum work around re-distributing keys.
+[src:consistent-hashing-structure/distributed-hash-table] *Keys* are unique identifiers which map to particular *values*, which in turn can be anything from addresses, to documents, to arbitrary data.
+[src:consistent-hashing-structure/distributed-hash-table] Responsibility for maintaining the mapping from keys to values is distributed among the nodes, in such a way that a change in the set of participants causes a minimal amount of disruption.
+[src:consistent-hashing-structure/distributed-hash-table] This allows a DHT to scale to extremely large numbers of nodes and to handle continual node arrivals, departures, and failures.
+[src:consistent-hashing-structure/distributed-hash-table] DHTs form an infrastructure that can be used to build more complex services, such as anycast, cooperative web caching, distributed file systems, domain name services, instant messaging, multicast, and also peer-to-peer file sharing and content distribution systems.
+[src:consistent-hashing-structure/distributed-hash-table] Notable distributed networks that use DHTs include BitTorrent's distributed tracker, the Kad network, the Storm botnet, the Tox instant messenger, Freenet, the YaCy search engine, and the InterPlanetary File System.
+[src:consistent-hashing-structure/distributed-hash-table] DHT research was originally motivated, in part, by peer-to-peer (P2P) systems such as Freenet, Gnutella, BitTorrent and Napster, which took advantage of resources distributed across the Internet to provide a single useful application.
+[src:consistent-hashing-structure/distributed-hash-table] In particular, they took advantage of increased bandwidth and hard disk capacity to provide a file-sharing service.
+[src:consistent-hashing-structure/distributed-hash-table] These systems differed in how they located the data offered by their peers.
+[src:consistent-hashing-structure/distributed-hash-table] Napster, the first large-scale P2P content delivery system, required a central index server: each node, upon joining, would send a list of locally held files to the server, which would perform searches and refer the queries to the nodes that held the results.
+[src:consistent-hashing-structure/distributed-hash-table] This central component left the system vulnerable to attacks and lawsuits.
+[src:consistent-hashing-structure/distributed-hash-table] Gnutella and similar networks moved to a query flooding model – in essence, each search would result in a message being broadcast to every machine in the network.
+[src:consistent-hashing-structure/distributed-hash-table] While avoiding a single point of failure, this method was significantly less efficient than Napster.
+[src:consistent-hashing-structure/distributed-hash-table] Later versions of Gnutella clients moved to a dynamic querying model which vastly improved efficiency.
+[src:consistent-hashing-structure/distributed-hash-table] Freenet is fully distributed, but employs a heuristic key-based routing in which each file is associated with a key, and files with similar keys tend to cluster on a similar set of nodes.
+[src:consistent-hashing-structure/distributed-hash-table] Queries are likely to be routed through the network to such a cluster without needing to visit many peers.
+[src:consistent-hashing-structure/distributed-hash-table] However, Freenet does not guarantee that data will be found.
+[src:consistent-hashing-structure/distributed-hash-table] Distributed hash tables use a more structured key-based routing in order to attain both the decentralization of Freenet and Gnutella, and the efficiency and guaranteed results of Napster.
+[src:consistent-hashing-structure/distributed-hash-table] One drawback is that, like Freenet, DHTs only directly support exact-match search, rather than keyword search, although Freenet's routing algorithm can be generalized to any key type where a closeness operation can be defined.
+[src:consistent-hashing-structure/distributed-hash-table] In 2001, four systems—CAN, Chord, Pastry, and Tapestry—brought attention to DHTs.
+[src:consistent-hashing-structure/distributed-hash-table] A project called the Infrastructure for Resilient Internet Systems (Iris) was funded by a $12 million grant from the United States National Science Foundation in 2002.
+[src:consistent-hashing-structure/distributed-hash-table] Researchers included Sylvia Ratnasamy, Ion Stoica, Hari Balakrishnan and Scott Shenker.
+[src:consistent-hashing-structure/distributed-hash-table] Outside academia, DHT technology has been adopted as a component of BitTorrent and in PlanetLab projects such as the Coral Content Distribution Network.
+[src:consistent-hashing-structure/distributed-hash-table] A key technique used to achieve these goals is that any one node needs to coordinate with only a few other nodes in the system‍— most commonly, O(log *n*) of the *n* participants (see below)‍— so that only a limited amount of work needs to be done for each change in membership.
+[src:consistent-hashing-structure/distributed-hash-table] Some DHT designs seek to be secure against malicious participants and to allow participants to remain anonymous, though this is less common than in many other peer-to-peer (especially file sharing) systems; see anonymous P2P.
+[src:consistent-hashing-structure/distributed-hash-table] The structure of a DHT can be decomposed into several main components.
+[src:consistent-hashing-structure/distributed-hash-table] The foundation is an abstract keyspace, such as the set of 160-bit strings.
+[src:consistent-hashing-structure/distributed-hash-table] A keyspace partitioning scheme splits ownership of this keyspace among the participating nodes.
+[src:consistent-hashing-structure/distributed-hash-table] An overlay network then connects the nodes, allowing them to find the owner of any given key in the keyspace.
+[src:consistent-hashing-structure/distributed-hash-table] Once these components are in place, a typical use of the DHT for storage and retrieval might proceed as follows.
+[src:consistent-hashing-structure/distributed-hash-table] Suppose the keyspace is the set of 160-bit strings.
+[src:consistent-hashing-structure/distributed-hash-table] To index a file with given filename and data in the DHT, the SHA-1 hash of filename is generated, producing a 160-bit key k, and a message *put*(*k, data*) is sent to any node participating in the DHT.
+[src:consistent-hashing-structure/distributed-hash-table] The message is forwarded from node to node through the overlay network until it reaches the single node responsible for key k as specified by the keyspace partitioning.
+[src:consistent-hashing-structure/distributed-hash-table] That node then stores the key and the data.
+[src:consistent-hashing-structure/distributed-hash-table] Any other client can then retrieve the contents of the file by again hashing filename to produce k and asking any DHT node to find the data associated with k with a message *get*(*k*).
+[src:consistent-hashing-structure/distributed-hash-table] The message will again be routed through the overlay to the node responsible for k, which will reply with the stored data.
+[src:consistent-hashing-structure/distributed-hash-table] The keyspace partitioning and overlay network components are described below with the goal of capturing the principal ideas common to most DHTs; many designs differ in the details.
+[src:consistent-hashing-structure/distributed-hash-table] Most DHTs use some variant of consistent hashing or rendezvous hashing to map keys to nodes.
+[src:consistent-hashing-structure/distributed-hash-table] The two algorithms appear to have been devised independently and simultaneously to solve the distributed hash table problem.
+[src:consistent-hashing-structure/distributed-hash-table] Both consistent hashing and rendezvous hashing have the essential property that removal or addition of one node changes only the set of keys owned by the nodes with adjacent IDs, and leaves all other nodes unaffected.
+[src:consistent-hashing-structure/distributed-hash-table] Contrast this with a traditional hash table in which addition or removal of one bucket causes nearly the entire keyspace to be remapped.
+[src:consistent-hashing-structure/distributed-hash-table] Since any change in ownership typically corresponds to bandwidth-intensive movement of objects stored in the DHT from one node to another, minimizing such reorganization is required to efficiently support high rates of churn (node arrival and failure).
+[src:consistent-hashing-structure/distributed-hash-table] Consistent hashing employs a function $\delta (k_{1},k_{2})$ that defines an abstract notion of the distance between the keys $k_{1}$ and $k_{2}$ , which is unrelated to geographical distance or network latency.
+[src:consistent-hashing-structure/distributed-hash-table] Each node is assigned a single key called its *identifier* (ID).
+[src:consistent-hashing-structure/distributed-hash-table] A node with ID $i_{x}$ owns all the keys $k_{m}$ for which $i_{x}$ is the closest ID, measured according to $\delta (k_{m},i_{x})$ .
+[src:consistent-hashing-structure/distributed-hash-table] For example, the Chord DHT uses consistent hashing, which treats nodes as points on a circle, and $\delta (k_{1},k_{2})$ is the distance traveling clockwise around the circle from $k_{1}$ to $k_{2}$ .
+[src:consistent-hashing-structure/distributed-hash-table] Thus, the circular keyspace is split into contiguous segments whose endpoints are the node identifiers.
+[src:consistent-hashing-structure/distributed-hash-table] If $i_{1}$ and $i_{2}$ are two adjacent IDs, with a shorter clockwise distance from $i_{1}$ to $i_{2}$ , then the node with ID $i_{2}$ owns all the keys that fall between $i_{1}$ and $i_{2}$ .
+[src:consistent-hashing-structure/distributed-hash-table] In rendezvous hashing, also called highest random weight (HRW) hashing, all clients use the same hash function $h()$ (chosen ahead of time) to associate a key to one of the *n* available servers.
+[src:consistent-hashing-structure/distributed-hash-table] Each client has the same list of identifiers {*S*1, *S*2, ..., *S**n* }, one for each server.
+[src:consistent-hashing-structure/distributed-hash-table] The client associates that key with the server corresponding to the highest hash weight for that key.
+[src:consistent-hashing-structure/distributed-hash-table] A server with ID $S_{x}$ owns all the keys $k_{m}$ for which the hash weight $h(S_{x},k_{m})$ is higher than the hash weight of any other node for that key.
+[src:consistent-hashing-structure/distributed-hash-table] Locality-preserving hashing ensures that similar keys are assigned to similar objects.
+[src:consistent-hashing-structure/distributed-hash-table] This can enable a more efficient execution of range queries, however, in contrast to using consistent hashing, there is no more assurance that the keys (and thus the load) is uniformly randomly distributed over the key space and the participating peers.
+[src:consistent-hashing-structure/distributed-hash-table] DHT protocols such as Self-Chord and Oscar address such issues.
+[src:consistent-hashing-structure/distributed-hash-table] Self-Chord decouples object keys from peer IDs and sorts keys along the ring with a statistical approach based on the swarm intelligence paradigm.
+[src:consistent-hashing-structure/distributed-hash-table] Sorting ensures that similar keys are stored by neighbour nodes and that discovery procedures, including range queries, can be performed in logarithmic time.
+[src:consistent-hashing-structure/distributed-hash-table] Oscar constructs a navigable small-world network based on random walk sampling also assuring logarithmic search time.
+[src:consistent-hashing-structure/distributed-hash-table] Each node maintains a set of links to other nodes (its *neighbors* or routing table).
+[src:consistent-hashing-structure/distributed-hash-table] Together, these links form the overlay network.
+[src:consistent-hashing-structure/distributed-hash-table] A node picks its neighbors according to a certain structure, called the network's topology.
+[src:consistent-hashing-structure/distributed-hash-table] All DHT topologies share some variant of the most essential property: for any key k, each node either has a node ID that owns k or has a link to a node whose node ID is *closer* to k, in terms of the keyspace distance defined above.
+[src:consistent-hashing-structure/distributed-hash-table] It is then easy to route a message to the owner of any key k using the following greedy algorithm (that is not necessarily globally optimal): at each step, forward the message to the neighbor whose ID is closest to k.
+[src:consistent-hashing-structure/distributed-hash-table] When there is no such neighbor, then we must have arrived at the closest node, which is the owner of k as defined above.
+[src:consistent-hashing-structure/distributed-hash-table] This style of routing is sometimes called key-based routing.
+[src:consistent-hashing-structure/distributed-hash-table] Of course, having shorter routes requires higher maximum degree.
+[src:consistent-hashing-structure/distributed-hash-table] The most common choice, $O(\log n)$ degree/route length, is not optimal in terms of degree/route length tradeoff, but such topologies typically allow more flexibility in choice of neighbors.
+[src:consistent-hashing-structure/distributed-hash-table] Many DHTs use that flexibility to pick neighbors that are close in terms of latency in the physical underlying network.
+[src:consistent-hashing-structure/distributed-hash-table] In general, all DHTs construct navigable small-world network topologies, which trade-off route length vs. network degree.
+[src:consistent-hashing-structure/distributed-hash-table] Maximum route length is closely related to diameter: the maximum number of hops in any shortest path between nodes.
+[src:consistent-hashing-structure/distributed-hash-table] Clearly, the network's worst case route length is at least as large as its diameter, so DHTs are limited by the degree/diameter tradeoff that is fundamental in graph theory.
+[src:consistent-hashing-structure/distributed-hash-table] Route length can be greater than diameter, since the greedy routing algorithm may not find shortest paths.
+[src:consistent-hashing-structure/distributed-hash-table] Aside from routing, there exist many algorithms that exploit the structure of the overlay network for sending a message to all nodes, or a subset of nodes, in a DHT.
+[src:consistent-hashing-structure/distributed-hash-table] These algorithms are used by applications to do overlay multicast, range queries, or to collect statistics.
+[src:consistent-hashing-structure/distributed-hash-table] Two systems that are based on this approach are Structella, which implements flooding and random walks on a Pastry overlay, and DQ-DHT, which implements a dynamic querying search algorithm over a Chord network.
+[src:consistent-hashing-structure/distributed-hash-table] Because of the decentralization, fault tolerance, and scalability of DHTs, they are inherently more resilient against a hostile attacker than a centralized system.
+[src:consistent-hashing-structure/distributed-hash-table] Open systems for distributed data storage that are robust against massive hostile attackers are feasible.
+[src:consistent-hashing-structure/distributed-hash-table] A DHT system that is carefully designed to have Byzantine fault tolerance can defend against a security weakness, known as the Sybil attack, which affects most current DHT designs.
+[src:consistent-hashing-structure/distributed-hash-table] Whanau is a DHT designed to be resistant to Sybil attacks.
+[src:consistent-hashing-structure/distributed-hash-table] Petar Maymounkov, one of the original authors of Kademlia, has proposed a way to circumvent the weakness to the Sybil attack by incorporating social trust relationships into the system design.
+[src:consistent-hashing-structure/distributed-hash-table] The new system, codenamed Tonika or also known by its domain name as 5ttt, is based on an algorithm design known as "electric routing" and co-authored with the mathematician Jonathan Kelner.
+[src:consistent-hashing-structure/distributed-hash-table] Maymounkov has now undertaken a comprehensive implementation effort of this new system.
+[src:consistent-hashing-structure/distributed-hash-table] However, research into effective defences against Sybil attacks is generally considered an open question, and wide variety of potential defences are proposed every year in top security research conferences.
+[src:consistent-hashing-structure/hash-function] A **hash function** is any function that can be used to map data of arbitrary size to fixed-size values, though there are some hash functions that support variable-length output.
+[src:consistent-hashing-structure/hash-function] The values returned by a hash function are called *hash values*, *hash codes*, (*hash/message*) *digests*, or simply *hashes*.
+[src:consistent-hashing-structure/hash-function] The values are usually used to index a fixed-size table called a *hash table*.
+[src:consistent-hashing-structure/hash-function] Use of a hash function to index a hash table is called *hashing* or *scatter-storage addressing*.
+[src:consistent-hashing-structure/hash-function] Hash functions and their associated hash tables are used in data storage and retrieval applications to access data in a small and nearly constant time per retrieval.
+[src:consistent-hashing-structure/hash-function] They require an amount of storage space only fractionally greater than the total space required for the data or records themselves.
+[src:consistent-hashing-structure/hash-function] Hashing is a way to access data quickly and efficiently.
+[src:consistent-hashing-structure/hash-function] Unlike lists or trees, it provides near-constant access time.
+[src:consistent-hashing-structure/hash-function] It also uses much less storage than trying to store all possible keys directly, especially when keys are large or variable in length.
+[src:consistent-hashing-structure/hash-function] Use of hash functions relies on statistical properties of key and function interaction: worst-case behavior is intolerably bad but rare, and average-case behavior can be nearly optimal (minimal collision).
+[src:consistent-hashing-structure/hash-function] Hash functions are related to (and often confused with) checksums, check digits, fingerprints, lossy compression, randomization functions, error-correcting codes, and ciphers.
+[src:consistent-hashing-structure/hash-function] Although the concepts overlap to some extent, each one has its own uses and requirements and is designed and optimized differently.
+[src:consistent-hashing-structure/hash-function] The hash function differs from these concepts mainly in terms of data integrity.
+[src:consistent-hashing-structure/hash-function] Hash tables may use non-cryptographic hash functions, while cryptographic hash functions are used in cybersecurity to secure sensitive data such as passwords.
+[src:consistent-hashing-structure/hash-function] In a hash table, a hash function takes a key as an input, which is associated with a datum or record and used to identify it to the data storage and retrieval application.
+[src:consistent-hashing-structure/hash-function] The keys may be fixed-length, like an integer, or variable-length, like a name.
+[src:consistent-hashing-structure/hash-function] In some cases, the key is the datum itself.
+[src:consistent-hashing-structure/hash-function] The output is a hash code used to index a hash table holding the data or records, or pointers to them.
+[src:consistent-hashing-structure/hash-function] A good hash function satisfies two basic properties: it should be very fast to compute, and it should minimize duplication of output values (collisions).
+[src:consistent-hashing-structure/hash-function] Hash functions rely on generating favorable probability distributions for their effectiveness, reducing access time to nearly constant.
+[src:consistent-hashing-structure/hash-function] High table loading factors, pathological key sets, and poorly designed hash functions can result in access times approaching linear in the number of items in the table.
+[src:consistent-hashing-structure/hash-function] Hash functions can be designed to give the best worst-case performance, good performance under high table loading factors, and in special cases, perfect (collisionless) mapping of keys into hash codes.
+[src:consistent-hashing-structure/hash-function] Implementation is based on parity-preserving bit operations (XOR and ADD), multiply, or divide.
+[src:consistent-hashing-structure/hash-function] A necessary adjunct to the hash function is a collision-resolution method that employs an auxiliary data structure like linked lists, or systematic probing of the table to find an empty slot.
+[src:consistent-hashing-structure/hash-function] Hash functions are used in conjunction with hash tables to store and retrieve data items or data records.
+[src:consistent-hashing-structure/hash-function] The hash function translates the key associated with each datum or record into a hash code, which is used to index the hash table.
+[src:consistent-hashing-structure/hash-function] When an item is to be added to the table, the hash code may index an empty slot (also called a bucket), in which case the item is added to the table there.
+[src:consistent-hashing-structure/hash-function] If the hash code indexes a full slot, then some kind of collision resolution is required: the new item may be omitted (not added to the table), or replace the old item, or be added to the table in some other location by a specified procedure.
+[src:consistent-hashing-structure/hash-function] That procedure depends on the structure of the hash table.
+[src:consistent-hashing-structure/hash-function] In *chained hashing*, each slot is the head of a linked list or chain, and items that collide at the slot are added to the chain.
+[src:consistent-hashing-structure/hash-function] Chains may be kept in random order and searched linearly, or in serial order, or as a self-ordering list by frequency to speed up access.
+[src:consistent-hashing-structure/hash-function] In *open address hashing*, the table is probed starting from the occupied slot in a specified manner, usually by linear probing, quadratic probing, or double hashing until an open slot is located or the entire table is probed (overflow).
+[src:consistent-hashing-structure/hash-function] Searching for the item follows the same procedure until the item is located, an open slot is found, or the entire table has been searched (item not in table).
+[src:consistent-hashing-structure/hash-function] Hash functions are also used to build caches for large data sets stored in slow media.
+[src:consistent-hashing-structure/hash-function] A cache is generally simpler than a hashed search table, since any collision can be resolved by discarding or writing back the older of the two colliding items.
+[src:consistent-hashing-structure/hash-function] Hash functions are an essential ingredient of the Bloom filter, a space-efficient probabilistic data structure that is used to test whether an element is a member of a set.
+[src:consistent-hashing-structure/hash-function] A special case of hashing is known as geometric hashing or the *grid method*.
+[src:consistent-hashing-structure/hash-function] In these applications, the set of all inputs is some sort of metric space, and the hashing function can be interpreted as a partition of that space into a grid of *cells*.
+[src:consistent-hashing-structure/hash-function] The table is often an array with two or more indices (called a *grid file*, *grid index*, *bucket grid*, and similar names), and the hash function returns an index tuple.
+[src:consistent-hashing-structure/hash-function] Hash tables are also used to implement associative arrays and dynamic sets.
+[src:consistent-hashing-structure/hash-function] A good hash function should map the expected inputs as evenly as possible over its output range.
+[src:consistent-hashing-structure/hash-function] That is, every hash value in the output range should be generated with roughly the same probability.
+[src:consistent-hashing-structure/hash-function] The reason for this requirement is that the cost of hashing-based methods goes up sharply as the number of *collisions* — pairs of inputs that are mapped to the same hash value — increases.
+[src:consistent-hashing-structure/hash-function] If some hash values are more likely to occur than others, then a larger fraction of the lookup operations will have to search through a larger set of colliding table entries.
+[src:consistent-hashing-structure/hash-function] This criterion only requires the value to be *uniformly distributed*, not *random* in any sense.
+[src:consistent-hashing-structure/hash-function] A good randomizing function is (barring computational efficiency concerns) generally a good choice as a hash function, but the converse need not be true.
+[src:consistent-hashing-structure/hash-function] Hash tables often contain only a small subset of the valid inputs.
+[src:consistent-hashing-structure/hash-function] For instance, a club membership list may contain only a hundred or so member names, out of the very large set of all possible names.
+[src:consistent-hashing-structure/hash-function] In these cases, the uniformity criterion should hold for almost all typical subsets of entries that may be found in the table, not just for the global set of all possible entries.
+[src:consistent-hashing-structure/hash-function] In other words, if a typical set of *m* records is hashed to *n* table slots, then the probability of a bucket receiving many more than *m*/*n* records should be vanishingly small.
+[src:consistent-hashing-structure/hash-function] In particular, if *m* < *n*, then very few buckets should have more than one or two records.
+[src:consistent-hashing-structure/hash-function] A small number of collisions is virtually inevitable, even if *n* is much larger than *m*—see the birthday problem.
+[src:consistent-hashing-structure/hash-function] In special cases when the keys are known in advance and the key set is static, a hash function can be found that achieves absolute (or collisionless) uniformity.
+[src:consistent-hashing-structure/hash-function] Such a hash function is said to be *perfect*.
+[src:consistent-hashing-structure/hash-function] There is no algorithmic way of constructing such a function—searching for one is a factorial function of the number of keys to be mapped versus the number of table slots that they are mapped into.
+[src:consistent-hashing-structure/hash-function] When testing a hash function, the uniformity of the distribution of hash values can be evaluated by the chi-squared test.
+[src:consistent-hashing-structure/hash-function] This test is a goodness-of-fit measure: it is the actual distribution of items in buckets versus the expected (or uniform) distribution of items.
+[src:consistent-hashing-structure/hash-function] where n is the number of keys, m is the number of buckets, and *b**j* is the number of items in bucket j.
+[src:consistent-hashing-structure/hash-function] A ratio within one confidence interval (such as 0.95 to 1.05) is indicative that the hash function evaluated has an expected uniform distribution.
+[src:consistent-hashing-structure/hash-function] Hash functions can have some technical properties that make it more likely that they will have a uniform distribution when applied.
+[src:consistent-hashing-structure/hash-function] One is the strict avalanche criterion: whenever a single input bit is complemented, each of the output bits changes with a 50% probability.
+[src:consistent-hashing-structure/hash-function] The reason for this property is that selected subsets of the keyspace may have low variability.
+[src:consistent-hashing-structure/hash-function] For the output to be uniformly distributed, a low amount of variability, even one bit, should translate into a high amount of variability (i.e. distribution over the tablespace) in the output.
+[src:consistent-hashing-structure/hash-function] Each bit should change with a probability of 50% because, if some bits are reluctant to change, then the keys become clustered around those values.
+[src:consistent-hashing-structure/hash-function] If the bits want to change too readily, then the mapping is approaching a fixed XOR function of a single bit.
+[src:consistent-hashing-structure/hash-function] Standard tests for this property have been described in the literature.
+[src:consistent-hashing-structure/hash-function] The relevance of the criterion to a multiplicative hash function is assessed here.
+[src:consistent-hashing-structure/hash-function] In data storage and retrieval applications, the use of a hash function is a trade-off between search time and data storage space.
+[src:consistent-hashing-structure/hash-function] If search time were unbounded, then a very compact unordered linear list would be the best medium; if storage space were unbounded, then a randomly accessible structure indexable by the key-value would be very large and very sparse, but very fast.
+[src:consistent-hashing-structure/hash-function] A hash function takes a finite amount of time to map a potentially large keyspace to a feasible amount of storage space searchable in a bounded amount of time regardless of the number of keys.
+[src:consistent-hashing-structure/hash-function] In most applications, the hash function should be computable with minimum latency and secondarily in a minimum number of instructions.
+[src:consistent-hashing-structure/hash-function] Computational complexity varies with the number of instructions required and latency of individual instructions, with the simplest being the bitwise methods (folding), followed by the multiplicative methods, and the most complex (slowest) are the division-based methods.
+[src:consistent-hashing-structure/hash-function] Because collisions should be infrequent, and cause a marginal delay but are otherwise harmless, it is usually preferable to choose a faster hash function over one that needs more computation but saves a few collisions.
+[src:consistent-hashing-structure/hash-function] Division-based implementations can be of particular concern because a division requires multiple cycles on nearly all processor microarchitectures.
+[src:consistent-hashing-structure/hash-function] Division (modulo) by a constant can be inverted to become a multiplication by the word-size multiplicative-inverse of that constant.
+[src:consistent-hashing-structure/hash-function] This can be done by the programmer, or by the compiler.
+[src:consistent-hashing-structure/hash-function] Division can also be reduced directly into a series of shift-subtracts and shift-adds, though minimizing the number of such operations required is a daunting problem; the number of machine-language instructions resulting may be more than a dozen and swamp the pipeline.
+[src:consistent-hashing-structure/hash-function] If the microarchitecture has hardware multiply functional units, then the multiply-by-inverse is likely a better approach.
+[src:consistent-hashing-structure/hash-function] We can allow the table size *n* to not be a power of 2 and still not have to perform any remainder or division operation, as these computations are sometimes costly.
+[src:consistent-hashing-structure/hash-function] For example, let *n* be significantly less than 2*b*.
+[src:consistent-hashing-structure/hash-function] Consider a pseudorandom number generator function *P*(key) that is uniform on the interval [0, 2*b* − 1].
+[src:consistent-hashing-structure/hash-function] A hash function uniform on the interval [0, *n* − 1] is *n* *P*(key) / 2*b*.
+[src:consistent-hashing-structure/hash-function] We can replace the division by a (possibly faster) right bit shift: *n P*(key) >> *b*.
+[src:consistent-hashing-structure/hash-function] If keys are being hashed repeatedly, and the hash function is costly, then computing time can be saved by precomputing the hash codes and storing them with the keys.
+[src:consistent-hashing-structure/hash-function] Matching hash codes almost certainly means that the keys are identical.
+[src:consistent-hashing-structure/hash-function] This technique is used for the transposition table in game-playing programs, which stores a 64-bit hashed representation of the board position.
+[src:consistent-hashing-structure/hash-function] A *universal hashing* scheme is a randomized algorithm that selects a hash function *h* among a family of such functions, in such a way that the probability of a collision of any two distinct keys is 1/*m*, where *m* is the number of distinct hash values desired—independently of the two keys.
+[src:consistent-hashing-structure/hash-function] Universal hashing ensures (in a probabilistic sense) that the hash function application will behave as well as if it were using a random function, for any distribution of the input data.
+[src:consistent-hashing-structure/hash-function] It will, however, have more collisions than perfect hashing and may require more operations than a special-purpose hash function.
+[src:consistent-hashing-structure/hash-function] A hash function that allows only certain table sizes or strings only up to a certain length, or cannot accept a seed (i.e. allow double hashing) is less useful than one that does.
+[src:consistent-hashing-structure/hash-function] A hash function is applicable in a variety of situations.
+[src:consistent-hashing-structure/hash-function] A hash procedure must be deterministic—for a given input value, it must always generate the same hash value.
+[src:consistent-hashing-structure/hash-function] In other words, it must be a function of the data to be hashed, in the mathematical sense of the term.
+[src:consistent-hashing-structure/hash-function] This requirement excludes hash functions that depend on external variable parameters, such as pseudo-random number generators or the time of day.
+[src:consistent-hashing-structure/hash-function] It also excludes functions that depend on the memory address of the object being hashed, because the address may change during execution (as may happen on systems that use certain methods of garbage collection), although sometimes rehashing of the item is possible.
+[src:consistent-hashing-structure/hash-function] The determinism is in the context of the reuse of the function.
+[src:consistent-hashing-structure/hash-function] For example, Python adds the feature that hash functions make use of a randomized seed that is generated once when the Python process starts in addition to the input to be hashed.
+[src:consistent-hashing-structure/hash-function] The Python hash (SipHash) is still a valid hash function when used within a single run, but if the values are persisted (for example, written to disk), they can no longer be treated as valid hash values, since in the next run the random value might differ.
+[src:consistent-hashing-structure/hash-function] It is often desirable that the output of a hash function have fixed size (but see below).
+[src:consistent-hashing-structure/hash-function] If, for example, the output is constrained to 32-bit integer values, then the hash values can be used to index into an array.
+[src:consistent-hashing-structure/hash-function] Such hashing is commonly used to accelerate data searches.
+[src:consistent-hashing-structure/hash-function] Producing fixed-length output from variable-length input can be accomplished by breaking the input data into chunks of specific size.
+[src:consistent-hashing-structure/hash-function] Hash functions used for data searches use some arithmetic expression that iteratively processes chunks of the input (such as the characters in a string) to produce the hash value.
+[src:consistent-hashing-structure/hash-function] In many applications, the range of hash values may be different for each run of the program or may change along the same run (for instance, when a hash table needs to be expanded).
+[src:consistent-hashing-structure/hash-function] In those situations, one needs a hash function which takes two parameters—the input data *z*, and the number *n* of allowed hash values.
+[src:consistent-hashing-structure/hash-function] A common solution is to compute a fixed hash function with a very large range (say, 0 to 232 − 1), divide the result by *n*, and use the division's remainder.
+[src:consistent-hashing-structure/hash-function] If *n* is itself a power of 2, this can be done by bit masking and bit shifting.
+[src:consistent-hashing-structure/hash-function] When this approach is used, the hash function must be chosen so that the result has fairly uniform distribution between 0 and *n* − 1, for any value of *n* that may occur in the application.
+[src:consistent-hashing-structure/hash-function] Depending on the function, the remainder may be uniform only for certain values of *n*, e.g. odd or prime numbers.
+[src:consistent-hashing-structure/hash-function] When the hash function is used to store values in a hash table that outlives the run of the program, and the hash table needs to be expanded or shrunk, the hash table is referred to as a dynamic hash table.
+[src:consistent-hashing-structure/hash-function] A hash function that will relocate the minimum number of records when the table is resized is desirable.
+[src:consistent-hashing-structure/hash-function] What is needed is a hash function *H*(*z*,*n*) (where *z* is the key being hashed and *n* is the number of allowed hash values) such that *H*(*z*,*n* + 1) = *H*(*z*,*n*) with probability close to *n*/(*n* + 1).
+[src:consistent-hashing-structure/hash-function] Linear hashing and spiral hashing are examples of dynamic hash functions that execute in constant time but relax the property of uniformity to achieve the minimal movement property.
+[src:consistent-hashing-structure/hash-function] Extendible hashing uses a dynamic hash function that requires space proportional to *n* to compute the hash function, and it becomes a function of the previous keys that have been inserted.
+[src:consistent-hashing-structure/hash-function] Several algorithms that preserve the uniformity property but require time proportional to *n* to compute the value of *H*(*z*,*n*) have been invented.
+[src:consistent-hashing-structure/hash-function] A hash function with minimal movement is especially useful in distributed hash tables.
+[src:consistent-hashing-structure/hash-function] In some applications, the input data may contain features that are irrelevant for comparison purposes.
+[src:consistent-hashing-structure/hash-function] For example, when looking up a personal name, it may be desirable to ignore the distinction between upper and lower case letters.
+[src:consistent-hashing-structure/hash-function] For such data, one must use a hash function that is compatible with the data equivalence criterion being used: that is, any two inputs that are considered equivalent must yield the same hash value.
+[src:consistent-hashing-structure/hash-function] This can be accomplished by normalizing the input before hashing it, as by upper-casing all letters.
+[src:consistent-hashing-structure/hash-function] There are several common algorithms for hashing integers.
+[src:consistent-hashing-structure/hash-function] The method giving the best distribution is data-dependent.
+[src:consistent-hashing-structure/hash-function] One of the simplest and most common methods in practice is the modulo division method.
+[src:consistent-hashing-structure/hash-function] If the data to be hashed is small enough, then one can use the data itself (reinterpreted as an integer) as the hashed value.
+[src:consistent-hashing-structure/hash-function] The cost of computing this *identity* hash function is effectively zero.
+[src:consistent-hashing-structure/hash-function] This hash function is perfect, as it maps each input to a distinct hash value.
+[src:consistent-hashing-structure/hash-function] The meaning of "small enough" depends on the size of the type that is used as the hashed value.
+[src:consistent-hashing-structure/hash-function] For example, in Java, the hash code is a 32-bit integer.
+[src:consistent-hashing-structure/hash-function] Thus the 32-bit integer `Integer` and 32-bit floating-point `Float` objects can simply use the value directly, whereas the 64-bit integer `Long` and 64-bit floating-point `Double` cannot.
+[src:consistent-hashing-structure/hash-function] Other types of data can also use this hashing scheme.
+[src:consistent-hashing-structure/hash-function] For example, when mapping character strings between upper and lower case, one can use the binary encoding of each character, interpreted as an integer, to index a table that gives the alternative form of that character ("A" for "a", "8" for "8", etc.).
+[src:consistent-hashing-structure/hash-function] If each character is stored in 8 bits (as in extended ASCII or ISO Latin 1), the table has only 28 = 256 entries; in the case of Unicode characters, the table would have 17 × 216 = 1114112 entries.
+[src:consistent-hashing-structure/hash-function] The same technique can be used to map two-letter country codes like "us" or "za" to country names (262 = 676 table entries), 5-digit ZIP codes like 13083 to city names (100000 entries), etc.
+[src:consistent-hashing-structure/hash-function] Invalid data values (such as the country code "xx" or the ZIP code 00000) may be left undefined in the table or mapped to some appropriate "null" value.
+[src:consistent-hashing-structure/hash-function] If the keys are uniformly or sufficiently uniformly distributed over the key space, so that the key values are essentially random, then they may be considered to be already "hashed".
+[src:consistent-hashing-structure/hash-function] In this case, any number of any bits in the key may be extracted and collated as an index into the hash table.
+[src:consistent-hashing-structure/hash-function] For example, a simple hash function might mask off the m least significant bits and use the result as an index into a hash table of size 2*m*.
+[src:consistent-hashing-structure/hash-function] A mid-squares hash code is produced by squaring the input and extracting an appropriate number of middle digits or bits.
+[src:consistent-hashing-structure/hash-function] For example, if the input is 123456789 and the hash table size 10000, then squaring the key produces 15241578750190521, so the hash code is taken as the middle 4 digits of the 17-digit number (ignoring the high digit) 8750.
+[src:consistent-hashing-structure/hash-function] The mid-squares method produces a reasonable hash code if there is not a lot of leading or trailing zeros in the key.
+[src:consistent-hashing-structure/hash-function] This is a variant of multiplicative hashing, but not as good because an arbitrary key is not a good multiplier.
+[src:consistent-hashing-structure/hash-function] A standard technique is to use a modulo function on the key, by selecting a divisor M which is a prime number close to the table size, so *h*(*K*) ≡ *K* (mod *M*).
+[src:consistent-hashing-structure/hash-function] This gives a distribution from {0, *M* − 1}.
+[src:consistent-hashing-structure/hash-function] This gives good results over a large number of key sets.
+[src:consistent-hashing-structure/hash-function] A significant drawback of division hashing is that division requires multiple cycles on most modern architectures (including x86) and can be 10 times slower than multiplication.
+[src:consistent-hashing-structure/hash-function] A second drawback is that it will not break up clustered keys.
+[src:consistent-hashing-structure/hash-function] This technique works well in practice because many key sets are sufficiently random already, and the probability that a key set will be cyclical by a large prime number is small.
+[src:consistent-hashing-structure/hash-function] Algebraic coding is a variant of the division method of hashing which uses division by a polynomial modulo 2 instead of an integer to map n bits to m bits.
+[src:consistent-hashing-structure/hash-function] If *Z*(*x*) is constructed to have t or fewer non-zero coefficients, then keys which share fewer than t bits are guaranteed to not collide.
+[src:consistent-hashing-structure/hash-function] Z is a function of k, t, and n (the last of which is a divisor of 2*k* − 1) and is constructed from the finite field GF(2*k*).
+[src:consistent-hashing-structure/hash-function] Define $P(x)=\prod _{j\in S}(x-\alpha ^{j})$ where α ∈*n* GF(2*k*) and where the coefficients of *P*(*x*) are computed in this field.
+[src:consistent-hashing-structure/hash-function] Since α2*j* is a root of *P*(*x*) whenever α*j* is a root, it follows that the coefficients *pi* of *P*(*x*) satisfy *p*2 *i* = *p*i, so they are all 0 or 1.
+[src:consistent-hashing-structure/hash-function] If *R*(*x*) = *r**n*−1*x**n*−1 + ⋯ + *r*1*x* + *r*0 is any nonzero polynomial modulo 2 with at most t nonzero coefficients, then *R*(*x*) is not a multiple of *P*(*x*) modulo 2.
+[src:consistent-hashing-structure/hash-function] If follows that the corresponding hash function will map keys with fewer than t bits in common to unique indices.
+[src:consistent-hashing-structure/hash-function] The usual outcome is that either n will get large, or t will get large, or both, for the scheme to be computationally feasible.
+[src:consistent-hashing-structure/hash-function] Therefore, it is more suited to hardware or microcode implementation.
+[src:consistent-hashing-structure/hash-function] Unique permutation hashing has a guaranteed best worst-case insertion time.
+[src:consistent-hashing-structure/hash-function] Standard multiplicative hashing uses the formula *h**a*(*K*) = ⌊(*aK* mod *W*) / (*W*/*M*)⌋, which produces a hash value in {0, …, *M* − 1}.
+[src:consistent-hashing-structure/hash-function] The value a is an appropriately chosen value that should be relatively prime to W; it should be large, and its binary representation a random mix of 1s and 0s.
+[src:consistent-hashing-structure/hash-function] An important practical special case occurs when *W* = 2*w* and *M* = 2*m* are powers of 2 and w is the machine word size.
+[src:consistent-hashing-structure/hash-function] and for fixed m and w this translates into a single integer multiplication and right-shift, making it one of the fastest hash functions to compute.
+[src:consistent-hashing-structure/hash-function] Multiplicative hashing is susceptible to a "common mistake" that leads to poor diffusion—higher-value input bits do not affect lower-value output bits.
+[src:consistent-hashing-structure/hash-function] A transmutation on the input which shifts the span of retained top bits down and XORs or ADDs them to the key before the multiplication step corrects for this.
+[src:consistent-hashing-structure/hash-function] Fibonacci hashing is a form of multiplicative hashing in which the multiplier is 2*w* / ϕ, where w is the machine word length and ϕ (phi) is the golden ratio (approximately 1.618).
+[src:consistent-hashing-structure/hash-function] A property of this multiplier is that it uniformly distributes over the table space, blocks of consecutive keys with respect to any block of bits in the key.
+[src:consistent-hashing-structure/hash-function] Consecutive keys within the high bits or low bits of the key (or some other field) are relatively common.
+[src:consistent-hashing-structure/hash-function] The multiplier should be odd, so the least significant bit of the output is invertible modulo 2*w*.
+[src:consistent-hashing-structure/hash-function] The last two values given above are rounded (up and down, respectively) by more than 1/2 of a least-significant bit to achieve this.
+[src:consistent-hashing-structure/hash-function] Zobrist hashing was originally introduced as a means of compactly representing chess positions in computer game-playing programs.
+[src:consistent-hashing-structure/hash-function] A unique random number was assigned to represent each type of piece (six each for black and white) on each space of the board.
+[src:consistent-hashing-structure/hash-function] Thus a table of 64×12 such numbers is initialized at the start of the program.
+[src:consistent-hashing-structure/hash-function] The random numbers could be any length, but 64 bits was natural due to the 64 squares on the board.
+[src:consistent-hashing-structure/hash-function] A position was transcribed by cycling through the pieces in a position, indexing the corresponding random numbers (vacant spaces were not included in the calculation) and XORing them together (the starting value could be 0 (the identity value for XOR) or a random seed).
+[src:consistent-hashing-structure/hash-function] The resulting value was reduced by modulo, folding, or some other operation to produce a hash table index.
+[src:consistent-hashing-structure/hash-function] The original Zobrist hash was stored in the table as the representation of the position.
+[src:consistent-hashing-structure/hash-function] Later, the method was extended to hashing integers by representing each byte in each of 4 possible positions in the word by a unique 32-bit random number.
+[src:consistent-hashing-structure/hash-function] Thus, a table of 28×4 random numbers is constructed.
+[src:consistent-hashing-structure/hash-function] A 32-bit hashed integer is transcribed by successively indexing the table with the value of each byte of the plain text integer and XORing the loaded values together (again, the starting value can be the identity value or a random seed).
+[src:consistent-hashing-structure/hash-function] The natural extension to 64-bit integers is by use of a table of 28×8 64-bit random numbers.
+[src:consistent-hashing-structure/hash-function] This kind of function has some nice theoretical properties, one of which is called *3-tuple independence*, meaning that every 3-tuple of keys is equally likely to be mapped to any 3-tuple of hash values.
+[src:consistent-hashing-structure/hash-function] A hash function can be designed to exploit existing entropy in the keys.
+[src:consistent-hashing-structure/hash-function] If the keys have leading or trailing zeros, or particular fields that are unused, always zero or some other constant, or generally vary little, then masking out only the volatile bits and hashing on those will provide a better and possibly faster hash function.
+[src:consistent-hashing-structure/hash-function] Selected divisors or multipliers in the division and multiplicative schemes may make more uniform hash functions if the keys are cyclic or have other redundancies.
+[src:consistent-hashing-structure/hash-function] When the data values are long (or variable-length) character strings—such as personal names, web page addresses, or mail messages—their distribution is usually very uneven, with complicated dependencies.
+[src:consistent-hashing-structure/hash-function] For example, text in any natural language has highly non-uniform distributions of characters, and character pairs, characteristic of the language.
+[src:consistent-hashing-structure/hash-function] For such data, it is prudent to use a hash function that depends on all characters of the string—and depends on each character in a different way.
+[src:consistent-hashing-structure/hash-function] Simplistic hash functions may add the first and last *n* characters of a string along with the length, or form a word-size hash from the middle 4 characters of a string.
+[src:consistent-hashing-structure/hash-function] This saves iterating over the (potentially long) string, but hash functions that do not hash on all characters of a string can readily become linear due to redundancies, clustering, or other pathologies in the key set.
+[src:consistent-hashing-structure/hash-function] Such strategies may be effective as a custom hash function if the structure of the keys is such that either the middle, ends, or other fields are zero or some other invariant constant that does not differentiate the keys; then the invariant parts of the keys can be ignored.
+[src:consistent-hashing-structure/hash-function] The paradigmatic example of folding by characters is to add up the integer values of all the characters in the string.
+[src:consistent-hashing-structure/hash-function] A better idea is to multiply the hash total by a constant, typically a sizable prime number, before adding in the next character, ignoring overflow.
+[src:consistent-hashing-structure/hash-function] Using exclusive-or instead of addition is also a plausible alternative.
+[src:consistent-hashing-structure/hash-function] The final operation would be a modulo, mask, or other function to reduce the word value to an index the size of the table.
+[src:consistent-hashing-structure/hash-function] The weakness of this procedure is that information may cluster in the upper or lower bits of the bytes; this clustering will remain in the hashed result and cause more collisions than a proper randomizing hash.
+[src:consistent-hashing-structure/hash-function] ASCII byte codes, for example, have an upper bit of 0, and printable strings do not use the last byte code or most of the first 32 byte codes, so the information, which uses the remaining byte codes, is clustered in the remaining bits in an unobvious manner.
+[src:consistent-hashing-structure/hash-function] The classic approach, dubbed the PJW hash based on the work of Peter J.
+[src:consistent-hashing-structure/hash-function] Weinberger at Bell Labs in the 1970s, was originally designed for hashing identifiers into compiler symbol tables as given in the "Dragon Book".
+[src:consistent-hashing-structure/hash-function] This hash function offsets the bytes 4 bits before adding them together.
+[src:consistent-hashing-structure/hash-function] When the quantity wraps, the high 4 bits are shifted out and if non-zero, xored back into the low byte of the cumulative quantity.
+[src:consistent-hashing-structure/hash-function] The result is a word-size hash code to which a modulo or other reducing operation can be applied to produce the final hash index.
+[src:consistent-hashing-structure/hash-function] Today, especially with the advent of 64-bit word sizes, much more efficient variable-length string hashing by word chunks is available.
+[src:consistent-hashing-structure/hash-function] The final word, which may have unoccupied byte positions, is filled with zeros or a specified randomizing value before being folded into the hash.
+[src:consistent-hashing-structure/hash-function] The accumulated hash code is reduced by a final modulo or other operation to yield an index into the table.
+[src:consistent-hashing-structure/hash-function] Analogous to the way an ASCII or EBCDIC character string representing a decimal number is converted to a numeric quantity for computing, a variable-length string can be converted as *x**k*−1a*k*−1 + *x**k*−2a*k*−2 + ⋯ + *x*1*a* + *x*0.
+[src:consistent-hashing-structure/hash-function] This is simply a polynomial in a radix *a* > 1 that takes the components (*x*0,*x*1,...,*x**k*−1) as the characters of the input string of length *k*.
+[src:consistent-hashing-structure/hash-function] It can be used directly as the hash code, or a hash function applied to it to map the potentially large value to the hash table size.
+[src:consistent-hashing-structure/hash-function] The value of *a* is usually a prime number large enough to hold the number of different characters in the character set of potential keys.
+[src:consistent-hashing-structure/hash-function] Radix conversion hashing of strings minimizes the number of collisions.
+[src:consistent-hashing-structure/hash-function] Available data sizes may restrict the maximum length of string that can be hashed with this method.
+[src:consistent-hashing-structure/hash-function] For example, a 128-bit word will hash only a 26-character alphabetic string (ignoring case) with a radix of 29; a printable ASCII string is limited to 9 characters using radix 97 and a 64-bit word.
+[src:consistent-hashing-structure/hash-function] However, alphabetic keys are usually of modest length, because keys must be stored in the hash table.
+[src:consistent-hashing-structure/hash-function] Numeric character strings are usually not a problem; 64 bits can count up to 1019, or 19 decimal digits with radix 10.
+[src:consistent-hashing-structure/hash-function] In some applications, such as substring search, one can compute a hash function *h* for every *k*-character substring of a given *n*-character string by advancing a window of width *k* characters along the string, where *k* is a fixed integer, and *n* > *k*.
+[src:consistent-hashing-structure/hash-function] The straightforward solution, which is to extract such a substring at every character position in the text and compute *h* separately, requires a number of operations proportional to *k*·*n*.
+[src:consistent-hashing-structure/hash-function] However, with the proper choice of *h*, one can use the technique of rolling hash to compute all those hashes with an effort proportional to *mk* + *n* where *m* is the number of occurrences of the substring.
+[src:consistent-hashing-structure/hash-function] The hash function used for the algorithm is usually the Rabin fingerprint, designed to avoid collisions in 8-bit character strings, but other suitable hash functions are also used.
+[src:consistent-hashing-structure/hash-function] Fuzzy hashing, also known as similarity hashing, is a technique for detecting data that is similar, but not exactly the same, as other data.
+[src:consistent-hashing-structure/hash-function] This is in contrast to cryptographic hash functions, which are designed to have significantly different hashes for even minor differences.
+[src:consistent-hashing-structure/hash-function] Fuzzy hashing has been used to identify malware and has potential for other applications, like data loss prevention and detecting multiple versions of code.
+[src:consistent-hashing-structure/hash-function] Perceptual hashing is the use of a fingerprinting algorithm that produces a snippet, hash, or fingerprint of various forms of multimedia.
+[src:consistent-hashing-structure/hash-function] A perceptual hash is a type of locality-sensitive hash, which is analogous if features of the multimedia are similar.
+[src:consistent-hashing-structure/hash-function] This is in contrast to cryptographic hashing, which relies on the avalanche effect of a small change in input value creating a drastic change in output value.
+[src:consistent-hashing-structure/hash-function] Perceptual hash functions are widely used in finding cases of online copyright infringement as well as in digital forensics because of the ability to have a correlation between hashes so similar data can be found (for instance with a differing watermark).
+[src:consistent-hashing-structure/hash-function] Worst case results for a hash function can be assessed two ways: theoretical and practical.
+[src:consistent-hashing-structure/hash-function] The theoretical worst case is the probability that all keys map to a single slot.
+[src:consistent-hashing-structure/hash-function] The practical worst case is the expected longest probe sequence (hash function + collision resolution method).
+[src:consistent-hashing-structure/hash-function] This analysis considers uniform hashing, that is, any key will map to any particular slot with probability 1/*m*, a characteristic of universal hash functions.
+[src:consistent-hashing-structure/hash-function] While Knuth worries about adversarial attack on real time systems, Gonnet has shown that the probability of such a case is "ridiculously small".
+[src:consistent-hashing-structure/hash-function] His representation was that the probability of *k* of *n* keys mapping to a single slot is α*k* / (*e*α *k*!), where *α* is the load factor, *n*/*m*.
+[src:consistent-hashing-structure/hash-function] The term *hash* offers a natural analogy with its non-technical meaning (to chop up or make a mess out of something), given how hash functions scramble their input data to derive their output.
+[src:consistent-hashing-structure/kademlia] In order to look up the value associated with a given key, the algorithm explores the network in several steps.
+[src:consistent-hashing-structure/kademlia] Each step will find nodes that are closer to the key until the contacted node returns the value or no more closer nodes are found.
+[src:consistent-hashing-structure/kademlia] This is very efficient: like many other DHTs, Kademlia contacts only $O(\log n)$ nodes during the search out of a total of n nodes in the system.
+[src:consistent-hashing-structure/kademlia] Further advantages are found particularly in the decentralized structure, which increases the resistance against a denial-of-service attack.
+[src:consistent-hashing-structure/kademlia] Even if a whole set of nodes is flooded, this will have limited effect on network availability, since the network will recover itself by knitting the network around these "holes".
+[src:consistent-hashing-structure/kademlia] I2P's implementation of Kademlia is modified to mitigate Kademlia's vulnerabilities, such as Sybil attacks.
+[src:consistent-hashing-structure/kademlia] Peer-to-peer networks are made of nodes, by design.
+[src:consistent-hashing-structure/kademlia] The protocols that these nodes use to communicate, and locate information, have become more efficient over time.
+[src:consistent-hashing-structure/kademlia] The first generation peer-to-peer file sharing networks, such as Napster, relied on a central database to co-ordinate lookups on the network.
+[src:consistent-hashing-structure/kademlia] Second generation peer-to-peer networks, such as Gnutella, used flooding to locate files, searching every node on the network.
+[src:consistent-hashing-structure/kademlia] Third generation peer-to-peer networks, such as Bittorrent, use distributed hash tables to look up files in the network.
+[src:consistent-hashing-structure/kademlia] *Distributed hash tables* store resource **locations** throughout the network.
+[src:consistent-hashing-structure/kademlia] Kademlia uses a "distance" calculation between two nodes.
+[src:consistent-hashing-structure/kademlia] This distance is computed as the *exclusive or (XOR)* of the two node IDs, taking the result as an unsigned integer number.
+[src:consistent-hashing-structure/kademlia] Keys and node IDs have the same format and length, so distance can be calculated among them in exactly the same way.
+[src:consistent-hashing-structure/kademlia] The node ID is typically a large random number that is chosen with the goal of being unique for a particular node (see UUID).
+[src:consistent-hashing-structure/kademlia] It can and does happen that geographically far nodes – from Germany and Australia, for instance – can be "neighbors" if they have chosen similar random node IDs.
+[src:consistent-hashing-structure/kademlia] These three conditions are enough to ensure that *XOR* captures all of the essential, important features of a "real" distance function, while being cheap and simple to calculate.
+[src:consistent-hashing-structure/kademlia] Each Kademlia search iteration comes one bit closer to the target.
+[src:consistent-hashing-structure/kademlia] A **basic** Kademlia search algorithm has complexity of *O(log2 (n))*, that means for network with ${\textstyle 2^{n}}$ nodes it will take **at most** n steps to find that node.
+[src:consistent-hashing-structure/kademlia] Fixed-size routing tables were presented in the pre-proceedings version of the original paper and are used in the later version only for some mathematical proofs.
+[src:consistent-hashing-structure/kademlia] An actual Kademlia implementation does not have a fixed-size routing table, but a dynamically sized one.
+[src:consistent-hashing-structure/kademlia] Kademlia routing tables consist of a *list* for each bit of the node ID (e.g. if a node ID consists of 128 bits, a node will keep 128 such *lists*.) Every entry in a *list* holds the necessary data to locate another node.
+[src:consistent-hashing-structure/kademlia] The data in each *list* entry is typically the *IP address*, *port*, and *node ID* of another node.
+[src:consistent-hashing-structure/kademlia] Every *list* corresponds to a specific distance from the node.
+[src:consistent-hashing-structure/kademlia] Nodes that can go in the nth *list* must have a differing nth bit from the node's ID; the first n-1 bits of the candidate ID must match those of the node's ID.
+[src:consistent-hashing-structure/kademlia] This means that it is very easy to populate the first *list* as 1/2 of the nodes in the network are far away candidates.
+[src:consistent-hashing-structure/kademlia] The next *list* can use only 1/4 of the nodes in the network (one bit closer than the first), etc.
+[src:consistent-hashing-structure/kademlia] With an ID of 128 bits, every node in the network will classify other nodes in one of 128 different distances, one specific distance per bit.
+[src:consistent-hashing-structure/kademlia] As nodes are encountered on the network, they are added to the *lists*.
+[src:consistent-hashing-structure/kademlia] This includes store and retrieval operations and even helping other nodes to find a key.
+[src:consistent-hashing-structure/kademlia] Every node encountered will be considered for inclusion in the *lists*.
+[src:consistent-hashing-structure/kademlia] Therefore, the knowledge that a node has of the network is very dynamic.
+[src:consistent-hashing-structure/kademlia] This keeps the network constantly updated and adds resilience to failures or attacks.
+[src:consistent-hashing-structure/kademlia] In the Kademlia literature, the *lists* are referred to as *k-buckets*.
+[src:consistent-hashing-structure/kademlia] Every *k*-bucket is a *list* having up to *k* entries inside; i.e. for a network with k=20, each node will have *lists* containing up to 20 nodes for a particular bit (a particular distance from itself).
+[src:consistent-hashing-structure/kademlia] Since the possible nodes for each *k-bucket* decreases quickly (because there will be very few nodes which are that close), the lower bit *k-buckets* will fully map all nodes in that section of the network.
+[src:consistent-hashing-structure/kademlia] Since the quantity of possible IDs is much larger than any node population can ever be, some of the *k*-buckets corresponding to very short distances will remain empty.
+[src:consistent-hashing-structure/kademlia] Consider the simple network to the right.
+[src:consistent-hashing-structure/kademlia] The network size is 2^3 or eight maximum keys and nodes.
+[src:consistent-hashing-structure/kademlia] There are seven nodes participating; the small circles at the bottom.
+[src:consistent-hashing-structure/kademlia] The node under consideration is node six (binary 110) in black.
+[src:consistent-hashing-structure/kademlia] There are three *k-buckets* for each node in this network.
+[src:consistent-hashing-structure/kademlia] Nodes zero, one and two (binary 000, 001, and 010) are candidates for the furthest *k-bucket*.
+[src:consistent-hashing-structure/kademlia] Node three (binary 011, not shown) is not participating in the network.
+[src:consistent-hashing-structure/kademlia] In the middle *k-bucket*, nodes four and five (binary 100 and 101) are placed.
+[src:consistent-hashing-structure/kademlia] Finally, the third *k-bucket* can only contain node seven (binary 111).
+[src:consistent-hashing-structure/kademlia] Each of the three *k-buckets* are enclosed in a gray circle.
+[src:consistent-hashing-structure/kademlia] If the size of the *k-bucket* was two, then the furthest *2-bucket* can only contain two of the three nodes.
+[src:consistent-hashing-structure/kademlia] For example, if node six has node one and two in the furthest 2-bucket, it would have to request a node ID lookup to these nodes to find the location (ip address) of node zero.
+[src:consistent-hashing-structure/kademlia] Each node *knows* its neighbourhood well and has contact with a few nodes far away which can help locate other nodes far away.
+[src:consistent-hashing-structure/kademlia] It is known that nodes which have been connected for a long time in a network will probably remain connected for a long time in the future.
+[src:consistent-hashing-structure/kademlia] Due to this statistical distribution, Kademlia selects long connected nodes to remain stored in the k-buckets.
+[src:consistent-hashing-structure/kademlia] This increases the number of known valid nodes at some time in the future and provides for a more stable network.
+[src:consistent-hashing-structure/kademlia] When a *k-bucket* is full and a new node is discovered for that *k-bucket*, the least recently seen node in the *k-bucket* is PINGed.
+[src:consistent-hashing-structure/kademlia] If the node is found to be still alive, the new node is placed in a secondary list, a replacement cache.
+[src:consistent-hashing-structure/kademlia] The replacement cache is used only if a node in the *k-bucket* stops responding.
+[src:consistent-hashing-structure/kademlia] In other words: new nodes are used only when older nodes disappear.
+[src:consistent-hashing-structure/kademlia] Each RPC message includes a random value from the initiator.
+[src:consistent-hashing-structure/kademlia] This ensures that when the response is received it corresponds to the request previously sent (see magic cookie).
+[src:consistent-hashing-structure/kademlia] Node lookups can proceed asynchronously.
+[src:consistent-hashing-structure/kademlia] The quantity of simultaneous lookups is denoted by α and is typically three.
+[src:consistent-hashing-structure/kademlia] A node initiates a FIND_NODE request by querying to the α nodes in its own *k-buckets* that are the closest ones to the desired key.
+[src:consistent-hashing-structure/kademlia] When these recipient nodes receive the request, they will look in their *k-buckets* and return the *k* closest nodes to the desired key that they know.
+[src:consistent-hashing-structure/kademlia] The requester will update a results list with the results (node IDs) it receives, keeping the *k* best ones (the *k* nodes which are closer to the searched key) that respond to queries.
+[src:consistent-hashing-structure/kademlia] Then the requester will select these *k* best results and issue the request to them, and iterate this process again and again.
+[src:consistent-hashing-structure/kademlia] Since every node has a better knowledge of its own surroundings than any other node has, the received results will be other nodes that are every time closer and closer to the searched key.
+[src:consistent-hashing-structure/kademlia] The iterations continue until no nodes are returned that are closer than the best previous results.
+[src:consistent-hashing-structure/kademlia] When the iterations stop, the best k nodes in the results list are the ones in the whole network that are the closest to the desired key.
+[src:consistent-hashing-structure/kademlia] The node information can be augmented with round trip times, or RTT.
+[src:consistent-hashing-structure/kademlia] This information will be used to choose a time-out specific for every consulted node.
+[src:consistent-hashing-structure/kademlia] When a query times out, another query can be initiated, never surpassing α queries at the same time.
+[src:consistent-hashing-structure/kademlia] Information is located by mapping it to a key.
+[src:consistent-hashing-structure/kademlia] The storer nodes will have information due to a previous STORE message.
+[src:consistent-hashing-structure/kademlia] Locating a value follows the same procedure as locating the closest nodes to a key, except the search terminates when a node has the requested value in its store and returns this value.
+[src:consistent-hashing-structure/kademlia] The values are stored at several nodes (k of them) to allow for nodes to come and go and still have the value available in some node.
+[src:consistent-hashing-structure/kademlia] Periodically, a node that stores a value will explore the network to find the k nodes which are near the key value and replicate the value onto them.
+[src:consistent-hashing-structure/kademlia] Also, for popular values that might have many requests, the load in the storer nodes is diminished by having a retriever store this value in some node near, but outside of, the k closest ones.
+[src:consistent-hashing-structure/kademlia] In this way the value is stored further and further away from the key, depending on the quantity of requests.
+[src:consistent-hashing-structure/kademlia] This allows popular searches to find a storer more quickly.
+[src:consistent-hashing-structure/kademlia] Since the value is returned from nodes further away from the key, this alleviates possible "hot spots".
+[src:consistent-hashing-structure/kademlia] Caching nodes will drop the value after a certain time depending on their distance from the key.
+[src:consistent-hashing-structure/kademlia] Kad) have neither replication nor caching.
+[src:consistent-hashing-structure/kademlia] The purpose of this is to remove old information quickly from the system.
+[src:consistent-hashing-structure/kademlia] The node that is providing the file will periodically refresh the information onto the network (perform FIND_NODE and STORE messages).
+[src:consistent-hashing-structure/kademlia] When all of the nodes having the file go offline, nobody will be refreshing its values (sources and keywords) and the information will eventually disappear from the network.
+[src:consistent-hashing-structure/kademlia] A node that would like to join the net must first go through a bootstrap process.
+[src:consistent-hashing-structure/kademlia] In this phase, the joining node needs to know the IP address and port of another node—a bootstrap node (obtained from the user, or from a stored list)—that is already participating in the Kademlia network.
+[src:consistent-hashing-structure/kademlia] If the joining node has not yet participated in the network it computes a random ID number, which by virtue of being a very large random number is extremely likely not to be already assigned to any other node.
+[src:consistent-hashing-structure/kademlia] It uses this ID until leaving the network.
+[src:consistent-hashing-structure/kademlia] The joining node inserts the bootstrap node into one of its *k-buckets*.
+[src:consistent-hashing-structure/kademlia] The joining node then performs a node lookup of its own ID against the bootstrap node (the only other node it knows).
+[src:consistent-hashing-structure/kademlia] The "self-lookup" will populate other nodes' *k-buckets* with the new node ID, and will populate the joining node's *k-buckets* with the nodes in the path between it and the bootstrap node.
+[src:consistent-hashing-structure/kademlia] After this, the joining node refreshes all *k-buckets* further away than the *k-bucket* the bootstrap node falls in.
+[src:consistent-hashing-structure/kademlia] This refresh is just a lookup of a random key that is within that *k-bucket* range.
+[src:consistent-hashing-structure/kademlia] When the *k-bucket* becomes full, it can be split.
+[src:consistent-hashing-structure/kademlia] The split occurs if the range of nodes in the *k-bucket* spans the node's own id (values to the left and right in a binary tree).
+[src:consistent-hashing-structure/kademlia] Kademlia relaxes even this rule for the one "closest nodes" *k-bucket*, because typically one single bucket will correspond to the distance where all the nodes that are the closest to this node are, they may be more than *k*, and we want it to know them all.
+[src:consistent-hashing-structure/kademlia] It may turn out that a highly unbalanced binary sub-tree exists near the node.
+[src:consistent-hashing-structure/kademlia] If *k* is 20, and there are 21+ nodes with a prefix "xxx0011....." and the new node is "xxx0000*11001*", the new node can contain multiple *k-buckets* for the other 21+ nodes.
+[src:consistent-hashing-structure/kademlia] This is to guarantee that the network knows about all nodes in the closest region.
+[src:consistent-hashing-structure/kademlia] Kademlia uses an *XOR metric* to define distance.
+[src:consistent-hashing-structure/kademlia] Two node IDs or a node ID and a key are XORed and the result is the distance between them.
+[src:consistent-hashing-structure/kademlia] For each bit, the XOR function returns zero if the two bits are equal and one if the two bits are different.
+[src:consistent-hashing-structure/kademlia] Distances in the XOR metric satisfy the triangle inequality: given A, B and C are vertices (points) of a triangle, then the distance from A to B is shorter than (or equal to) the sum of the distances from A to C and from C to B.
+[src:consistent-hashing-structure/kademlia] The *XOR metric* allows Kademlia to extend routing tables beyond single bits.
+[src:consistent-hashing-structure/kademlia] Groups of bits can be placed in *k-buckets*.
+[src:consistent-hashing-structure/kademlia] For an *m-bit* prefix, there will be 2m-1 *k-buckets*.
+[src:consistent-hashing-structure/kademlia] The missing *k-bucket* is a further extension of the routing tree that contains the node ID.
+[src:consistent-hashing-structure/kademlia] An *m-bit* prefix reduces the maximum number of lookups from *log2 n* to *log2m n*.
+[src:consistent-hashing-structure/kademlia] These are **maximum** values and the average value will be far less, increasing the chance of finding a node in a *k-bucket* that shares more bits than just the prefix with the target key.
+[src:consistent-hashing-structure/kademlia] Nodes can use mixtures of prefixes in their routing table, such as the Kad Network used by eMule.
+[src:consistent-hashing-structure/kademlia] The Kademlia network could even be heterogeneous in routing table implementations, at the expense of complicating the analysis of lookups.
+[src:consistent-hashing-structure/kademlia] While the XOR metric is not needed to understand Kademlia, it is critical in the analysis of the protocol.
+[src:consistent-hashing-structure/kademlia] The XOR arithmetic forms an abelian group allowing closed analysis.
+[src:consistent-hashing-structure/kademlia] Other DHT protocols and algorithms require simulation or complicated formal analysis in order to predict network behavior and correctness.
+[src:consistent-hashing-structure/kademlia] Using groups of bits as routing information also simplifies the algorithms.
+[src:consistent-hashing-structure/kademlia] To analyze the algorithm, consider a Kademlia network of n nodes with IDs $x_{1},\ldots ,x_{n}$ , each of which is a string of length d that consists of only ones and zeros.
+[src:consistent-hashing-structure/kademlia] It can be modeled as a trie, in which each leaf represents a node, and the labeled path from the root to a leaf represents its ID.
+[src:consistent-hashing-structure/kademlia] For a node $x\in \{x_{1},\ldots ,x_{n}\}$ , let ${\mathcal {D}}_{i}(x)$ be the set of nodes (IDs) that share a prefix with x of length $d-i$ .
+[src:consistent-hashing-structure/kademlia] Then filling the i -th bucket of x can be modeled as adding pointers from the leaf x to k leaves (IDs) chosen uniformly at random from ${\mathcal {D}}_{i}(x)$ .
+[src:consistent-hashing-structure/kademlia] Thus routing can be seen as jumping among the leaves along these pointers such that each step goes towards the target ID as much as possible, i.e., in a greedy way.
+[src:consistent-hashing-structure/kademlia] Let $T_{xy}$ be number of jumps needed to go from the leaf x to a target ID y .
+[src:consistent-hashing-structure/kademlia] where $H_{k}$ is the k -th harmonic number.
+[src:consistent-hashing-structure/kademlia] Since $H_{k}/\log k\to 1$ as $k\to \infty$ , when k is large $\mathbb {E} T_{xy}$ is bounded from above by about $\log _{k}n$ , however the IDs and the target are chosen.
+[src:consistent-hashing-structure/kademlia] This justifies the intuition that in Kademlia only $O(\log n)$ nodes are contacted in searching for a target node.
+[src:consistent-hashing-structure/kademlia] To make the model closer to real Kademlia networks, $x_{1},\ldots ,x_{n}$ can also be assumed to be chosen uniformly at random without replacement from $\{0,1\}^{d}$ .
+[src:consistent-hashing-structure/kademlia] where $c_{k}$ is a constant depending only on k with $c_{k}/H_{k}\to 1$ as $k\to \infty$ .
+[src:consistent-hashing-structure/kademlia] Thus for k large, $\mathbb {E} T_{xy}/\log _{k}n$ converges to a constant close 1 .
+[src:consistent-hashing-structure/kademlia] This implies that the number of nodes need to be contact in searching for a target node is actually $\Theta (\log n)$ on average.
+[src:consistent-hashing-structure/kademlia] Kademlia is used in file sharing networks.
+[src:consistent-hashing-structure/kademlia] By making Kademlia keyword searches, one can find information in the file-sharing network so it can be downloaded.
+[src:consistent-hashing-structure/kademlia] Since there is no central instance to store an index of existing files, this task is divided evenly among all clients: If a node wants to share a file, it processes the contents of the file, calculating from it a number (hash) that will identify this file within the file-sharing network.
+[src:consistent-hashing-structure/kademlia] Since file hashes and node IDs have the same length, the client can use the XOR distance function to search for several nodes whose ID is close to the hash, and instruct those nodes to store the publisher's IP address in an implementation-defined manner.
+[src:consistent-hashing-structure/kademlia] Nodes with IDs closest to the file hash will therefore have a list of IP addresses of peers/publishers of this file, from which a client may in an implementation-defined manner download the file.
+[src:consistent-hashing-structure/kademlia] Clients that wish to download the file from this publisher do not have to know the publisher's IP address (there can be many publishers), but only the hash of the file.
+[src:consistent-hashing-structure/kademlia] A searching client will use Kademlia to search the network for the node whose ID has the smallest distance to the file hash, then will retrieve the sources list that is stored in that node.
+[src:consistent-hashing-structure/kademlia] Since a key can correspond to many values, e.g. many sources of the same file, every storing node may have different information.
+[src:consistent-hashing-structure/kademlia] Then, the sources are requested from all k nodes close to the key, k being the size of the bucket.
+[src:consistent-hashing-structure/kademlia] The file hash is usually obtained from a specially formed Internet magnet link found elsewhere, or included within an indexing file obtained from other sources.
+[src:consistent-hashing-structure/kademlia] Filename searches are implemented using keywords.
+[src:consistent-hashing-structure/kademlia] The filename is divided into its constituent words.
+[src:consistent-hashing-structure/kademlia] Each of these keywords is hashed and stored in the network, together with the corresponding filename and file hash.
+[src:consistent-hashing-structure/kademlia] A search involves choosing one of the keywords, contacting the node with an ID closest to that keyword hash, and retrieving the list of filenames that contain the keyword.
+[src:consistent-hashing-structure/kademlia] Since every filename in the list has its hash attached, the chosen file can then be obtained in the normal way.
+[src:consistent-hashing-structure/rendezvous-hashing] Consistent hashing addresses the special case $k=1$ using a different method.
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing is both much simpler and more general than consistent hashing (see below).
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing was invented by David Thaler and Chinya Ravishankar at the University of Michigan in 1996.
+[src:consistent-hashing-structure/rendezvous-hashing] Consistent hashing appeared a year later in the literature.
+[src:consistent-hashing-structure/rendezvous-hashing] Given its simplicity and generality, rendezvous hashing is now being preferred to consistent hashing in real-world applications.
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing was used very early on in many applications including mobile caching, router design, secure key establishment, and sharding and distributed databases.
+[src:consistent-hashing-structure/rendezvous-hashing] One of the first applications of rendezvous hashing was to enable multicast clients on the Internet (in contexts such as the MBONE) to identify multicast rendezvous points in a distributed fashion.
+[src:consistent-hashing-structure/rendezvous-hashing] It was used in 1998 by Microsoft's Cache Array Routing Protocol (CARP) for distributed cache coordination and routing.
+[src:consistent-hashing-structure/rendezvous-hashing] Some Protocol Independent Multicast routing protocols use rendezvous hashing to pick a rendezvous point.
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing solves a general version of the distributed hash table problem: We are given a set of n sites (servers or proxies, say).
+[src:consistent-hashing-structure/rendezvous-hashing] How can any set of clients, given an object O , agree on a *k-*subset of sites to assign to O ?
+[src:consistent-hashing-structure/rendezvous-hashing] The standard version of the problem uses *k = 1.* Each client is to make its selection independently, but all clients must end up picking the same subset of sites.
+[src:consistent-hashing-structure/rendezvous-hashing] This is non-trivial if we add a *minimal disruption* constraint, and require that when a site fails or is removed, only objects mapping to that site need be reassigned to other sites.
+[src:consistent-hashing-structure/rendezvous-hashing] The basic idea is to give each site $S_{j}$ a score (a *weight*) for each object $O_{i}$ , and assign the object to the highest scoring site.
+[src:consistent-hashing-structure/rendezvous-hashing] All clients first agree on a hash function $h(\cdot )$ .
+[src:consistent-hashing-structure/rendezvous-hashing] Each client independently computes these weights $w_{i,1},w_{i,2}\dots w_{i,n}$ and picks the *k* sites that yield the *k* largest hash values.
+[src:consistent-hashing-structure/rendezvous-hashing] The clients have thereby achieved distributed k -agreement.
+[src:consistent-hashing-structure/rendezvous-hashing] If a site S is added or removed, only the objects mapping to S are remapped to different sites, satisfying the minimal disruption constraint above.
+[src:consistent-hashing-structure/rendezvous-hashing] The HRW assignment can be computed independently by any client, since it depends only on the identifiers for the set of sites $S_{1},S_{2}\dots S_{n}$ and the object being assigned.
+[src:consistent-hashing-structure/rendezvous-hashing] HRW easily accommodates different capacities among sites.
+[src:consistent-hashing-structure/rendezvous-hashing] If site $S_{k}$ has twice the capacity of the other sites, we simply represent $S_{k}$ twice in the list, say, as $S_{k,1},S_{k,2}$ .
+[src:consistent-hashing-structure/rendezvous-hashing] Clearly, twice as many objects will now map to $S_{k}$ as to the other sites.
+[src:consistent-hashing-structure/rendezvous-hashing] Consider the simple version of the problem, with *k = 1,* where all clients are to agree on a single site for an object *O.* Approaching the problem naively, it might appear sufficient to treat the *n* sites as buckets in a hash table and hash the object name *O* into this table.
+[src:consistent-hashing-structure/rendezvous-hashing] Unfortunately, if any of the sites fails or is unreachable, the hash table size changes, forcing all objects to be remapped.
+[src:consistent-hashing-structure/rendezvous-hashing] This massive disruption makes such direct hashing unworkable.
+[src:consistent-hashing-structure/rendezvous-hashing] Under rendezvous hashing, however, clients handle site failures by picking the site that yields the next largest weight.
+[src:consistent-hashing-structure/rendezvous-hashing] Remapping is required only for objects currently mapped to the failed site, and disruption is minimal.
+[src:consistent-hashing-structure/rendezvous-hashing] **Load balancing:** Since the hash function is randomizing, each of the *n*sites is equally likely to receive the object *O*.
+[src:consistent-hashing-structure/rendezvous-hashing] **High hit rate:** Since all clients agree on placing an object *O* into the same site *SO*, each fetch or placement of *O* into *SO* yields the maximum utility in terms of hit rate.
+[src:consistent-hashing-structure/rendezvous-hashing] The object *O* will always be found unless it is evicted by some replacement algorithm at *SO*.
+[src:consistent-hashing-structure/rendezvous-hashing] **Minimal disruption:** When a site fails, only the objects mapped to that site need to be remapped.
+[src:consistent-hashing-structure/rendezvous-hashing] Disruption is at the minimal possible level.
+[src:consistent-hashing-structure/rendezvous-hashing] **Distributed *k*-agreement:** Clients can reach distributed agreement on *k* sites simply by selecting the top *k* sites in the ordering.
+[src:consistent-hashing-structure/rendezvous-hashing] The standard version of Rendezvous Hashing described above works quite well for moderate *n,* but when n is extremely large, the hierarchical use of Rendezvous Hashing achieves $O(\log n)$ running time.
+[src:consistent-hashing-structure/rendezvous-hashing] This approach creates a virtual hierarchical structure (called a "skeleton"), and achieves $O(\log n)$ running time by applying HRW at each level while descending the hierarchy.
+[src:consistent-hashing-structure/rendezvous-hashing] In the accompanying diagram, the cluster size is $m=4$ , and the skeleton fanout is $f=3$ .
+[src:consistent-hashing-structure/rendezvous-hashing] Assuming 108 sites (real nodes) for convenience, we get a three-tier virtual hierarchy.
+[src:consistent-hashing-structure/rendezvous-hashing] Since $f=3$ , each virtual node has a natural numbering in octal.
+[src:consistent-hashing-structure/rendezvous-hashing] Thus, the 27 virtual nodes at the lowest tier would be numbered $000,001,002,...,221,222$ in octal (we can, of course, vary the fanout at each level - in that case, each node will be identified with the corresponding mixed-radix number).
+[src:consistent-hashing-structure/rendezvous-hashing] The easiest way to understand the virtual hierarchy is by starting at the top, and descending the virtual hierarchy.
+[src:consistent-hashing-structure/rendezvous-hashing] We successively apply Rendezvous Hashing to the set of virtual nodes at each level of the hierarchy, and descend the branch defined by the winning virtual node.
+[src:consistent-hashing-structure/rendezvous-hashing] We can in fact start at any level in the virtual hierarchy.
+[src:consistent-hashing-structure/rendezvous-hashing] Starting lower in the hierarchy requires more hashes, but may improve load distribution in the case of failures.
+[src:consistent-hashing-structure/rendezvous-hashing] For example, instead of applying HRW to all 108 real nodes in the diagram, we can first apply HRW to the 27 lowest-tier virtual nodes, selecting one.
+[src:consistent-hashing-structure/rendezvous-hashing] We then apply HRW to the four real nodes in its cluster, and choose the winning site.
+[src:consistent-hashing-structure/rendezvous-hashing] If we apply this method starting one level higher in the hierarchy, we would need $9+3+4=16$ hashes to get to the winning site.
+[src:consistent-hashing-structure/rendezvous-hashing] The figure shows how, if we proceed starting from the root of the skeleton, we may successively choose the virtual nodes $(2)_{3}$ , $(20)_{3}$ , and $(200)_{3}$ , and finally end up with site 74.
+[src:consistent-hashing-structure/rendezvous-hashing] The virtual hierarchy need not be stored, but can be created on demand, since the virtual nodes names are simply prefixes of base- f (or mixed-radix) representations.
+[src:consistent-hashing-structure/rendezvous-hashing] We can easily create appropriately sorted strings from the digits, as required.
+[src:consistent-hashing-structure/rendezvous-hashing] Clearly, T has height $h=O(\log c)=O(\log n)$ , since m and f are both constants.
+[src:consistent-hashing-structure/rendezvous-hashing] The work done at each level is $O(1)$ , since f is a constant.
+[src:consistent-hashing-structure/rendezvous-hashing] The value of m can be chosen based on factors like the anticipated failure rate and the degree of desired load balancing.
+[src:consistent-hashing-structure/rendezvous-hashing] A higher value of m leads to less load skew in the event of failure at the cost of higher search overhead.
+[src:consistent-hashing-structure/rendezvous-hashing] The choice $m=n$ is equivalent to non-hierarchical rendezvous hashing.
+[src:consistent-hashing-structure/rendezvous-hashing] In practice, the hash function $h(\cdot )$ is very cheap, so $m=n$ can work quite well unless n is very high.
+[src:consistent-hashing-structure/rendezvous-hashing] For any given object, it is clear that each leaf-level cluster, and hence each of the n sites, is chosen with equal probability.
+[src:consistent-hashing-structure/rendezvous-hashing] One can enhance resiliency to failures by replicating each object *O* across the highest ranking *r < m* sites for *O,* choosing *r* based on the level of resiliency desired.
+[src:consistent-hashing-structure/rendezvous-hashing] The simplest strategy is to replicate only within the leaf-level cluster.
+[src:consistent-hashing-structure/rendezvous-hashing] If the leaf-level site selected for *O* is unavailable, we select the next-ranked site for *O* within the same leaf-level cluster.
+[src:consistent-hashing-structure/rendezvous-hashing] If *O* has been replicated within the leaf-level cluster, we are sure to find *O* in the next available site in the ranked order of *r* sites.
+[src:consistent-hashing-structure/rendezvous-hashing] All objects that were held by the failed server appear in some other site in its cluster.
+[src:consistent-hashing-structure/rendezvous-hashing] (Another option is to go up one or more tiers in the skeleton and select an alternate from among the sibling virtual nodes at that tier.
+[src:consistent-hashing-structure/rendezvous-hashing] When a site is added to the system, it may become the winning site for some objects already assigned to other sites.
+[src:consistent-hashing-structure/rendezvous-hashing] Objects mapped to other clusters will never map to this new site, so we need to only consider objects held by other sites in its cluster.
+[src:consistent-hashing-structure/rendezvous-hashing] If the sites are caches, attempting to access an object mapped to the new site will result in a cache miss, the corresponding object will be fetched and cached, and operation returns to normal.
+[src:consistent-hashing-structure/rendezvous-hashing] If sites are servers, some objects must be remapped to this newly added site.
+[src:consistent-hashing-structure/rendezvous-hashing] As before, objects mapped to other clusters will never map to this new site, so we need to only consider objects held by sites in its cluster.
+[src:consistent-hashing-structure/rendezvous-hashing] That is, we need only remap objects currently present in the *m* sites in this local cluster, rather than the entire set of objects in the system.
+[src:consistent-hashing-structure/rendezvous-hashing] New objects mapping to this site will of course be automatically assigned to it.
+[src:consistent-hashing-structure/rendezvous-hashing] Because of its simplicity, lower overhead, and generality (it works for any *k < n*), rendezvous hashing is increasingly being preferred over consistent hashing.
+[src:consistent-hashing-structure/rendezvous-hashing] Recent examples of its use include the GitHub load balancer, the Apache Ignite distributed database, and by the Twitter EventBus pub/sub platform.
+[src:consistent-hashing-structure/rendezvous-hashing] Consistent hashing operates by mapping each site uniformly and randomly to multiple points on a unit circle called tokens.
+[src:consistent-hashing-structure/rendezvous-hashing] Objects are also mapped to the unit circle and placed in the site owning the token that is first encountered traveling clockwise from the object's location.
+[src:consistent-hashing-structure/rendezvous-hashing] When a site is removed, each of its objects is transferred to the site owning the next token encountered moving clockwise.
+[src:consistent-hashing-structure/rendezvous-hashing] Provided each site is mapped to a large number of tokens (100–200, say), this will reassign objects in a relatively uniform fashion among the remaining sites.
+[src:consistent-hashing-structure/rendezvous-hashing] If a site's tokens are placed on the unit circle by hashing 200 variants of the site ID, say, then the assignment of any object requires storing or recalculating 200 hash values for each site.
+[src:consistent-hashing-structure/rendezvous-hashing] However, the tokens associated with a given site can be precomputed and stored in a sorted list, requiring only a single application of the hash function to the object, and a binary search to compute the assignment.
+[src:consistent-hashing-structure/rendezvous-hashing] Even with many tokens per site, however, the basic version of consistent hashing may not balance objects uniformly over sites, since when a site is removed each object assigned to it is distributed only over as many other sites as the site has tokens (say 100–200).
+[src:consistent-hashing-structure/rendezvous-hashing] Variants of consistent hashing (such as Amazon's Dynamo) that use more complex logic to distribute tokens on the unit circle offer better load balancing than basic consistent hashing, reduce the overhead of adding new sites, and reduce metadata overhead and offer other benefits.
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing (HRW) is much simpler conceptually and in practice.
+[src:consistent-hashing-structure/rendezvous-hashing] It also distributes objects uniformly over all sites, given a uniform hash function.
+[src:consistent-hashing-structure/rendezvous-hashing] Unlike consistent hashing, HRW requires no precomputing or storage of tokens.
+[src:consistent-hashing-structure/rendezvous-hashing] Consider *k =1.* An object $O_{i}$ is placed into one of n sites $S_{1},S_{2}\dots S_{n}$ by computing the n hash values $h(O_{i},S_{j})$ and picking the site $S_{k}$ that yields the highest hash value.
+[src:consistent-hashing-structure/rendezvous-hashing] If a new site $S_{n+1}$ is added, new object placements or requests will compute $n+1$ hash values, and pick the largest of these.
+[src:consistent-hashing-structure/rendezvous-hashing] If an object already in the system at $S_{k}$ maps to this new site $S_{n+1}$ , it will be fetched afresh and cached at $S_{n+1}$ .
+[src:consistent-hashing-structure/rendezvous-hashing] All clients will henceforth obtain it from this site, and the old cached copy at $S_{k}$ will ultimately be replaced by the local cache management algorithm.
+[src:consistent-hashing-structure/rendezvous-hashing] If $S_{k}$ is taken offline, its objects will be remapped uniformly to the remaining $n-1$ sites.
+[src:consistent-hashing-structure/rendezvous-hashing] Variants of the HRW algorithm, such as the use of a skeleton (see below), can reduce the $O(n)$ time for object location to $O(\log n)$ , at the cost of less global uniformity of placement.
+[src:consistent-hashing-structure/rendezvous-hashing] When n is not too large, however, the $O(n)$ placement cost of basic HRW is not likely to be a problem.
+[src:consistent-hashing-structure/rendezvous-hashing] HRW completely avoids all the overhead and complexity associated with correctly handling multiple tokens for each site and associated metadata.
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing also has the great advantage that it provides simple solutions to other important problems, such as distributed k -agreement.
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing is both simpler and more general than consistent hashing.
+[src:consistent-hashing-structure/rendezvous-hashing] Consistent hashing can be shown to be a special case of HRW by an appropriate choice of a two-place hash function.
+[src:consistent-hashing-structure/rendezvous-hashing] From the site identifier S the simplest version of consistent hashing computes a list of token positions, e.g., $t_{s}=h_{c}(S)$ where $h_{c}$ hashes values to locations on the unit circle.
+[src:consistent-hashing-structure/rendezvous-hashing] This will duplicate exactly the assignment produced by consistent hashing.
+[src:consistent-hashing-structure/rendezvous-hashing] It is not possible, however, to reduce HRW to consistent hashing (assuming the number of tokens per site is bounded), since HRW potentially reassigns the objects from a removed site to an unbounded number of other sites.
+[src:consistent-hashing-structure/rendezvous-hashing] In the standard implementation of rendezvous hashing, every node receives a statically equal proportion of the keys.
+[src:consistent-hashing-structure/rendezvous-hashing] This behavior, however, is undesirable when the nodes have different capacities for processing or holding their assigned keys.
+[src:consistent-hashing-structure/rendezvous-hashing] For example, if one of the nodes had twice the storage capacity as the others, it would be beneficial if the algorithm could take this into account such that this more powerful node would receive twice the number of keys as each of the others.
+[src:consistent-hashing-structure/rendezvous-hashing] A straightforward mechanism to handle this case is to assign two virtual locations to this node, so that if either of that larger node's virtual locations has the highest hash, that node receives the key.
+[src:consistent-hashing-structure/rendezvous-hashing] But this strategy does not work when the relative weights are not integer multiples.
+[src:consistent-hashing-structure/rendezvous-hashing] For example, if one node had 42% more storage capacity, it would require adding many virtual nodes in different proportions, leading to greatly reduced performance.
+[src:consistent-hashing-structure/rendezvous-hashing] Several modifications to rendezvous hashing have been proposed to overcome this limitation.
+[src:consistent-hashing-structure/rendezvous-hashing] The Cache Array Routing Protocol (CARP) is a 1998 IETF draft that describes a method for computing *load factors* which can be multiplied by each node's hash score to yield an arbitrary level of precision for weighting nodes differently.
+[src:consistent-hashing-structure/rendezvous-hashing] However, one disadvantage of this approach is that when any node's weight is changed, or when any node is added or removed, all the load factors must be re-computed and relatively scaled.
+[src:consistent-hashing-structure/rendezvous-hashing] When the load factors change relative to one another, it triggers movement of keys between nodes whose weight was not changed, but whose load factor did change relative to other nodes in the system.
+[src:consistent-hashing-structure/rendezvous-hashing] This results in excess movement of keys.
+[src:consistent-hashing-structure/rendezvous-hashing] Controlled replication under scalable hashing or CRUSH is an extension to RUSH that improves upon rendezvous hashing by constructing a tree where a pseudo-random function (hash) is used to navigate down the tree to find which node is ultimately responsible for a given key.
+[src:consistent-hashing-structure/rendezvous-hashing] It permits perfect stability for adding nodes; however, it is not perfectly stable when removing or re-weighting nodes, with the excess movement of keys being proportional to the height of the tree.
+[src:consistent-hashing-structure/rendezvous-hashing] The CRUSH algorithm is used by the ceph data storage system to map data objects to the nodes responsible for storing them.
+[src:consistent-hashing-structure/rendezvous-hashing] In 2005, Christian Schindelhauer and Gunnar Schomaker described a logarithmic method for re-weighting hash scores in a way that does not require relative scaling of load factors when a node's weight changes or when nodes are added or removed.
+[src:consistent-hashing-structure/rendezvous-hashing] This enabled the dual benefits of perfect precision when weighting nodes, along with perfect stability, as only a minimum number of keys needed to be remapped to new nodes.
+[src:consistent-hashing-structure/rendezvous-hashing] A similar logarithm-based hashing strategy is used to assign data to storage nodes in Cleversafe's data storage system, now IBM Cloud Object Storage.
+[src:consistent-hashing-structure/rendezvous-hashing] Rendezvous hashing is being used widely in real-world systems.
+[src:consistent-hashing-structure/rendezvous-hashing] Implementation is straightforward once a hash function $h(\cdot )$ is chosen (the original work on the HRW method makes a hash function recommendation).
+[src:consistent-hashing-structure/rendezvous-hashing] Each client only needs to compute a hash value for each of the n sites, and then pick the largest.
+[src:consistent-hashing-structure/rendezvous-hashing] If the hash function is efficient, the $O(n)$ running time is not a problem unless n is very large.
+[src:consistent-hashing-structure/rendezvous-hashing] A logarithmic transformation of the uniform score (unit interval) is applied, when multiplied by the node weights the probability of a node winning is proportional to its weight relative to the total weight of all nodes.
+[src:consistent-hashing-structure/rendezvous-hashing] Note the magnitude of the scores vary greatly but the probabilities remain constant.

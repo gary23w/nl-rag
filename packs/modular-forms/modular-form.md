@@ -1,0 +1,254 @@
+---
+title: "Modular form"
+source: https://en.wikipedia.org/wiki/Modular_form
+domain: modular-forms
+license: CC-BY-SA-4.0
+tags: modular form, modular group, eisenstein series, hecke operator
+fetched: 2026-07-02
+---
+
+# Modular form
+
+In number theory and complex analysis, a **modular form** is a type of function of a complex number variable that possesses a high degree of symmetry, of a certain kind. Similarly to a periodic function of a real variable, a modular form repeats or transforms in a certain way when its argument is subjected to a particular transformation. Unlike an ordinary periodic function, its symmetries include transformations such as replacing a complex number *z* by −1/*z*, and the transformation law is not an exact symmetry of the function, but more like the transformation law of a quasiperiodic function: the function picks up an additional factor, depending on the transformation. Modular forms serve as an important bridge between complex analysis, number theory, and geometry. Modular forms also appear in other areas, such as algebraic topology, sphere packing, and string theory.
+
+More precisely, a modular form is a holomorphic function on the complex upper half-plane that roughly satisfies a functional equation with respect to the group action of the modular group and a growth condition. A modular form is a special case of an automorphic form, which are functions defined on Lie groups that transform nicely with respect to the action of certain discrete subgroups, generalizing the example of the modular group $\mathrm {SL} _{2}(\mathbb {Z} )\subset \mathrm {SL} _{2}(\mathbb {R} )$ .
+
+The term *modular form*, as a systematic description, is usually attributed to Erich Hecke. The importance of modular forms across multiple fields of mathematics has been humorously represented in a possibly apocryphal quote attributed to Martin Eichler describing modular forms as being the fifth fundamental operation in mathematics, after addition, subtraction, multiplication and division.
+
+## Definition
+
+In general, given a subgroup $\Gamma <{\text{SL}}_{2}(\mathbb {Z} )$ of finite index (called an arithmetic group), a **modular form** of level $\Gamma$ and weight k is a holomorphic function $f:{\mathcal {H}}\to \mathbb {C}$ from the upper half-plane ${\mathcal {H}}=\{z\in \mathbb {C} |\Im z>0\}$ satisfying the following two conditions:
+
+- *Automorphy condition*: for any $\gamma \in \Gamma$ , we have $f(\gamma (z))=(cz+d)^{k}f(z)$ , and
+
+- *Growth condition*: for any $\gamma \in {\text{SL}}_{2}(\mathbb {Z} )$ , the function $(cz+d)^{-k}f(\gamma (z))$ is bounded for ${\text{im}}(z)\to \infty$ .
+
+In addition, a modular form is called a **cusp form** if it satisfies the following growth condition:
+
+- *Cuspidal condition*: For any $\gamma \in {\text{SL}}_{2}(\mathbb {Z} )$ , we have $(cz+d)^{-k}f(\gamma (z))\to 0$ as ${\text{im}}(z)\to \infty$ .
+
+Note that $\gamma$ is a matrix
+
+${\textstyle \gamma ={\begin{pmatrix}a&b\\c&d\end{pmatrix}}\in {\text{SL}}_{2}(\mathbb {Z} ),}$
+
+identified with the function ${\textstyle \gamma (z)=(az+b)/(cz+d)}$ . The identification of functions with matrices makes function composition equivalent to matrix multiplication.
+
+### Modular forms for SL(2, Z)
+
+A modular form of weight k for the modular group
+
+${\text{SL}}(2,\mathbb {Z} )=\left\{\left.{\begin{pmatrix}a&b\\c&d\end{pmatrix}}\right|a,b,c,d\in \mathbb {Z} ,\ ad-bc=1\right\}$
+
+is a function f on the upper half-plane ${\mathcal {H}}=\{z\in \mathbb {C} \mid \operatorname {Im} (z)>0\}$ satisfying the following three conditions:
+
+1. f is holomorphic on ${\mathcal {H}}$ .
+2. For any $z\in {\mathcal {H}}$ and any matrix in ${\text{SL}}(2,\mathbb {Z} )$ , we have $f\left({\frac {az+b}{cz+d}}\right)=(cz+d)^{k}f(z)$ .
+3. f is bounded as $\operatorname {Im} (z)\to \infty$ .
+
+Remarks:
+
+- The weight k is typically a positive integer.
+- For odd k , only the zero function can satisfy the second condition.
+- The third condition is also phrased by saying that f is "holomorphic at the cusp", a terminology that is explained below. Explicitly, the condition means that there exist some $M,D>0$ such that $\operatorname {Im} (z)>M\implies |f(z)|<D$ , meaning f is bounded above some horizontal line.
+- The second condition for
+
+$S={\begin{pmatrix}0&-1\\1&0\end{pmatrix}},\qquad T={\begin{pmatrix}1&1\\0&1\end{pmatrix}}$
+
+reads
+
+$f\left(-{\frac {1}{z}}\right)=z^{k}f(z),\qquad f(z+1)=f(z)$
+
+respectively. Since
+
+S
+
+and
+
+T
+
+generate
+
+the group
+
+${\text{SL}}(2,\mathbb {Z} )$
+
+, the second condition above is equivalent to these two equations.
+
+- Since $f(z+1)=f(z)$ , modular forms are periodic functions with period 1, and thus have a Fourier series.
+
+### Lattice and elliptic-curve interpretation
+
+A modular form can equivalently be defined as a function *F* from the set of lattices in **C** to the set of complex numbers which satisfies certain conditions:
+
+1. If we consider the lattice Λ = **Z***α* + **Z***z* generated by a constant α and a variable z, then *F*(Λ) is an analytic function of z.
+2. If α is a non-zero complex number and *α*Λ is the lattice obtained by multiplying each element of Λ by α, then *F*(*α*Λ) = *α*−*k**F*(Λ) where k is a constant (typically a positive integer) called the **weight** of the form.
+3. The absolute value of *F*(Λ) remains bounded above as long as the absolute value of the smallest non-zero element in Λ is bounded away from 0.
+
+The key idea in proving the equivalence of the two definitions is that such a function F is determined, because of the second condition, by its values on lattices of the form **Z** + **Z***τ*, where *τ* ∈ **H**.
+
+### Examples
+
+**I. Eisenstein series**
+
+The simplest examples from this point of view are the Eisenstein series. For each even integer *k* > 2, we define *Gk*(Λ) to be the sum of *λ*−*k* over all non-zero vectors λ of Λ:
+
+$G_{k}(\Lambda )=\sum _{0\neq \lambda \in \Lambda }\lambda ^{-k}.$
+
+Then Gk is a modular form of weight k. For Λ = **Z** + **Z***τ* we have
+
+$G_{k}(\Lambda )=G_{k}(\tau )=\sum _{(0,0)\neq (m,n)\in \mathbf {Z} ^{2}}{\frac {1}{(m+n\tau )^{k}}},$
+
+and
+
+${\begin{aligned}G_{k}\left(-{\frac {1}{\tau }}\right)&=\tau ^{k}G_{k}(\tau ),\\G_{k}(\tau +1)&=G_{k}(\tau ).\end{aligned}}$
+
+The condition *k* > 2 is needed for convergence; for odd k there is cancellation between *λ*−*k* and (−*λ*)−*k*, so that such series are identically zero.
+
+**II. Theta functions of even unimodular lattices**
+
+An even unimodular lattice L in **R***n* is a lattice generated by n vectors forming the columns of a matrix of determinant 1 and satisfying the condition that the square of the length of each vector in L is an even integer. The so-called theta function
+
+$\vartheta _{L}(z)=\sum _{\lambda \in L}e^{\pi i\Vert \lambda \Vert ^{2}z}$
+
+converges when Im(z) > 0, and as a consequence of the Poisson summation formula can be shown to be a modular form of weight *n*/2. It is not so easy to construct even unimodular lattices, but here is one way: Let n be an integer divisible by 8 and consider all vectors v in **R***n* such that 2*v* has integer coordinates, either all even or all odd, and such that the sum of the coordinates of v is an even integer. We call this lattice Ln. When *n* = 8, this is the lattice generated by the roots in the root system called E8. Because there is only one modular form of weight 8 up to scalar multiplication,
+
+$\vartheta _{L_{8}\times L_{8}}(z)=\vartheta _{L_{16}}(z),$
+
+even though the lattices *L*8 × *L*8 and *L*16 are not similar. John Milnor observed that the 16-dimensional tori obtained by dividing **R**16 by these two lattices are consequently examples of compact Riemannian manifolds which are isospectral but not isometric (see Hearing the shape of a drum.)
+
+**III. The modular discriminant**
+
+The Dedekind eta function is defined as
+
+$\eta (z)=q^{1/24}\prod _{n=1}^{\infty }(1-q^{n}),\qquad q=e^{2\pi iz}.$
+
+where *q* is the square of the nome. Then the normalized modular discriminant
+
+$\Delta (z)=\eta (z)^{24}=q\prod _{n=1}^{\infty }(1-q^{n})^{24}$
+
+is a cusp form of weight 12. The presence of 24 is related to the fact that the Leech lattice has 24 dimensions. A celebrated conjecture of Ramanujan asserted that when Δ(*z*) is expanded as a power series in q, the coefficient of qp for any prime p has absolute value ≤ 2*p*11/2. This was confirmed by the work of Eichler, Shimura, Kuga, Ihara, and Pierre Deligne as a result of Deligne's proof of the Weil conjectures, which were shown to imply Ramanujan's conjecture.
+
+The second and third examples give some hint of the connection between modular forms and classical questions in number theory, such as representation of integers by quadratic forms and the partition function. The crucial conceptual link between modular forms and number theory is furnished by the theory of Hecke operators, which also gives the link between the theory of modular forms and representation theory.
+
+## Modular functions
+
+A modular function is a function that is invariant with respect to the modular group, but without the condition that it be holomorphic in the upper half-plane (among other requirements). Instead, a modular function for a finite-index subgroup $\Gamma$ of the modular group is a meromorphic function on the upper half-plane that is invariant under the action of $\Gamma$ and is meromorphic at the cusps. Equivalently, it is a meromorphic function on the compactified modular curve associated with $\Gamma$ .
+
+For the full modular group, a modular function is invariant under the transformations of the modular group and has a meromorphic expansion at the cusp $i\infty$ . In terms of $q=\exp(2\pi iz)$ , this means that its *q*-expansion has only finitely many negative-power terms.
+
+When the weight *k* is zero, it can be shown using Liouville's theorem that the only modular forms are constant functions. However, relaxing the requirement that *f*  be holomorphic leads to the notion of *modular functions*. A function *f* : **H** → **C** is called modular if it satisfies the following properties:
+
+- *f* is meromorphic in the open upper half-plane *H*
+- For every integer matrix ${\begin{pmatrix}a&b\\c&d\end{pmatrix}}$ in the modular group Γ, $f\left({\frac {az+b}{cz+d}}\right)=f(z)$ .
+- The second condition implies that *f* is periodic, and therefore has a Fourier series. The third condition is that this series is of the form
+
+$f(z)=\sum _{n=-m}^{\infty }a_{n}e^{2i\pi nz}.$
+
+It is often written in terms of $q=\exp(2\pi iz)$ (the square of the nome), as:
+
+$f(z)=\sum _{n=-m}^{\infty }a_{n}q^{n}.$
+
+This is also referred to as the *q*-expansion of *f*. The coefficients $a_{n}$ are known as the Fourier coefficients of *f*, and the number *m* is called the order of the pole of *f*‍ at *i*∞. This condition is called "meromorphic at the cusp", meaning that only finitely many negative-*n* coefficients are non-zero, so the *q*-expansion is bounded below, guaranteeing that it is meromorphic at *q* = 0.
+
+For subgroups of finite index, the same idea is expressed by requiring meromorphicity at each cusp of the subgroup. This condition allows the function to be regarded as meromorphic on the corresponding compactified modular curve.
+
+Another way to phrase the definition of modular functions is to use elliptic curves: every lattice Λ determines an elliptic curve **C**/Λ over **C**; two lattices determine isomorphic elliptic curves if and only if one is obtained from the other by multiplying by some non-zero complex number α. Thus, a modular function can also be regarded as a meromorphic function on the set of isomorphism classes of elliptic curves. For example, the j-invariant *j*(*z*) of an elliptic curve, regarded as a function on the set of all elliptic curves, is a modular function. More concep­tually, modular functions can be thought of as functions on the moduli space of isomorphism classes of complex elliptic curves.
+
+For the full modular group, a modular form *f*‍ that vanishes at *q* = 0 (equivalently, *a*0 = 0, also paraphrased as *z* = *i*∞) is called a *cusp form* (*Spitzenform* in German). For a finite-index subgroup of the modular group, a cusp form is a modular form that vanishes at every cusp of the subgroup.
+
+A *modular unit* is a modular function whose poles and zeroes are confined to the cusps.
+
+## Modular forms for more general groups
+
+The functional equation, i.e., the behavior of *f* with respect to $z\mapsto {\frac {az+b}{cz+d}}$ can be relaxed by requiring it only for matrices in smaller groups.
+
+A modular form for G of weight *k* is a function on **H** satisfying the above functional equation for all matrices in G, that is holomorphic on **H** and at all cusps of G. Again, modular forms that vanish at all cusps are called cusp forms for G. The **C**-vector spaces of modular and cusp forms of weight *k* are denoted *Mk*(*G*) and *Sk*(*G*), respectively. Similarly, a meromorphic function on *G*\**H**∗ is called a modular function for G. In case *G* = Γ0(*N*), they are also referred to as modular/cusp forms and functions of *level* *N*. For *G* = Γ(1) = SL(2, **Z**), this gives back the afore-mentioned definitions.
+
+## Geometric interpretation
+
+### Riemann surfaces
+
+Let G be a subgroup of SL(2, **Z**) that is of finite index. Such a group G acts on **H** in the same way as SL(2, **Z**). The quotient topological space *G*\**H** can be shown to be a Hausdorff space. Typically it is not compact, but can be compactified by adding a finite number of points called *cusps*. These are points at the boundary of **H**, i.e. in **Q**∪{∞}, such that there is a parabolic element of G (a matrix with trace ±2) fixing the point. This yields a compact topological space *G*\**H**∗. What is more, it can be endowed with the structure of a Riemann surface, which allows one to speak of holo- and meromorphic functions.
+
+Important examples are, for any positive integer *N*, either one of the congruence subgroups
+
+${\begin{aligned}\Gamma _{0}(N)&=\left\{{\begin{pmatrix}a&b\\c&d\end{pmatrix}}\in {\text{SL}}(2,\mathbf {Z} ):c\equiv 0{\pmod {N}}\right\}\\\Gamma (N)&=\left\{{\begin{pmatrix}a&b\\c&d\end{pmatrix}}\in {\text{SL}}(2,\mathbf {Z} ):c\equiv b\equiv 0,a\equiv d\equiv 1{\pmod {N}}\right\}.\end{aligned}}$
+
+For *G* = Γ0(*N*) or Γ(*N*), the spaces *G*\**H** and *G*\**H**∗ are denoted *Y*0(*N*) and *X*0(*N*) and *Y*(*N*), *X*(*N*), respectively.
+
+The geometry of *G*\**H**∗ can be understood by studying fundamental domains for *G*, i.e. subsets *D* ⊂ **H** such that *D* intersects each orbit of the G-action on **H** exactly once and such that the closure of *D* meets all orbits. For example, the genus of *G*\**H**∗ can be computed.
+
+The theory of Riemann surfaces can be applied to *G*\**H**∗ to obtain further information about modular forms and functions. For example, the spaces *Mk*(*G*) and *Sk*(*G*) are finite-dimensional, and their dimensions can be computed thanks to the Riemann–Roch theorem in terms of the geometry of the G-action on **H**. For example,
+
+$\dim _{\mathbf {C} }M_{k}\left({\text{SL}}(2,\mathbf {Z} )\right)={\begin{cases}\left\lfloor k/12\right\rfloor &k\equiv 2{\pmod {12}}\\\left\lfloor k/12\right\rfloor +1&{\text{otherwise}}\end{cases}}$
+
+where $\lfloor \cdot \rfloor$ denotes the floor function and k is even.
+
+The modular functions constitute the field of functions of the Riemann surface, and hence form a field of transcendence degree one (over **C**). If a modular function *f* is not identically 0, then it can be shown that the number of zeroes of *f* is equal to the number of poles of *f* in the closure of the fundamental region *R*Γ. For the congruence subgroup Γ0(*N*), the field of modular functions on X0(*N*) is generated by the functions *j*(*z*) and *j*(*Nz*).
+
+### Line bundles
+
+Modular forms can also be interpreted geometrically as sections of line bundles on modular curves or on the moduli stack of elliptic curves. In this interpretation, the relevant line bundle is the Hodge bundle, often denoted ω, and modular forms of weight *k* are sections of ω⊗*k* with the appropriate holomorphy condition at the cusps.
+
+By the Kodaira–Spencer isomorphism, the square of the Hodge bundle is identified with the logarithmic canonical bundle of the modular curve, i.e., the canonical bundle twisted with the cuspidal divisor. Symbolically, on a compactified modular curve *X* with cuspidal divisor *D*, this relation is written
+
+$\omega ^{\otimes 2}\cong K_{X}(D).$
+
+The intuition is that, for a modular form *f* of weight two, the one-form f(z)dz is invariant under the action of the modular group. At the cusps this gives a logarithmic differential, while cusp forms give holomorphic differentials.
+
+The dimensions of spaces of modular forms can be computed using the Riemann–Roch theorem.
+
+This interpretation is analogous to the role of homogeneous polynomials on projective space. Such polynomials are not ordinary functions on projective space, because they change by a scalar factor when the underlying vector is rescaled. Geometrically, they are interpreted as sections of line bundles. Modular forms behave similarly: except in weight zero, their transformation law prevents them from being ordinary functions on a modular curve, but allows them to be interpreted as sections of powers of the Hodge bundle.
+
+## Rings of modular forms
+
+For a subgroup Γ of the SL(2, **Z**), the ring of modular forms is the graded ring generated by the modular forms of Γ. In other words, if Mk(Γ) is the vector space of modular forms of weight k, then the ring of modular forms of Γ is the graded ring $M(\Gamma )=\bigoplus _{k>0}M_{k}(\Gamma )$ .
+
+Rings of modular forms of congruence subgroups of SL(2, **Z**) are finitely generated due to a result of Pierre Deligne and Michael Rapoport. Such rings of modular forms are generated in weight at most 6 and the relations are generated in weight at most 12 when the congruence subgroup has nonzero odd weight modular forms, and the corresponding bounds are 5 and 10 when there are no nonzero odd weight modular forms.
+
+More generally, there are formulas for bounds on the weights of generators of the ring of modular forms and its relations for arbitrary Fuchsian groups.
+
+## Types
+
+### New forms
+
+New forms are a subspace of modular forms of a fixed level N which cannot be constructed from modular forms of lower levels M dividing N . The other forms are called **old forms**. These old forms can be constructed using the following observations: if $M\mid N$ then $\Gamma _{1}(N)\subseteq \Gamma _{1}(M)$ giving a reverse inclusion of modular forms $M_{k}(\Gamma _{1}(M))\subseteq M_{k}(\Gamma _{1}(N))$ .
+
+### Cusp forms
+
+A cusp form is a modular form that vanishes at all cusps. For the full modular group, which has one cusp, this is equivalent to saying that the constant coefficient in its Fourier series is zero.
+
+## Generalizations
+
+There are a number of other usages of the term "modular function", apart from this classical one; for example, in the theory of Haar measures, it is a function Δ(*g*) determined by the conjugation action.
+
+Maass forms are real-analytic eigenfunctions of the Laplacian but need not be holomorphic. The holomorphic parts of certain weak Maass wave forms turn out to be essentially Ramanujan's mock theta functions. Groups which are not subgroups of SL(2, **Z**) can be considered.
+
+Hilbert modular forms are functions in *n* variables, each a complex number in the upper half-plane, satisfying a modular relation for 2×2 matrices with entries in a totally real number field.
+
+Siegel modular forms are associated to larger symplectic groups in the same way in which classical modular forms are associated to SL(2, **R**); in other words, they are related to abelian varieties in the same sense that classical modular forms (which are sometimes called *elliptic modular forms* to emphasize the point) are related to elliptic curves.
+
+Jacobi forms are a mixture of modular forms and elliptic functions. Examples of such functions are very classical - the Jacobi theta functions and the Fourier coefficients of Siegel modular forms of genus two - but it is a relatively recent observation that the Jacobi forms have an arithmetic theory very analogous to the usual theory of modular forms.
+
+Automorphic forms extend the notion of modular forms to general Lie groups.
+
+Modular integrals of weight k are meromorphic functions on the upper half plane of moderate growth at infinity which *fail to be modular of weight k* by a rational function.
+
+Automorphic factors are functions of the form $\varepsilon (a,b,c,d)(cz+d)^{k}$ which are used to generalise the modularity relation defining modular forms, so that
+
+$f\left({\frac {az+b}{cz+d}}\right)=\varepsilon (a,b,c,d)(cz+d)^{k}f(z).$
+
+The function $\varepsilon (a,b,c,d)$ is called the nebentypus of the modular form. Functions such as the Dedekind eta function, a modular form of weight 1/2, may be encompassed by the theory by allowing automorphic factors.
+
+## History
+
+The theory of modular forms was developed in four periods:
+
+- In connection with the theory of elliptic functions, in the early nineteenth century
+- By Felix Klein and others towards the end of the nineteenth century as the automorphic form concept became understood (for one variable)
+- By Erich Hecke from about 1925
+- In the 1960s, as the needs of number theory and the formulation of the modularity theorem in particular made it clear that modular forms are deeply implicated.
+
+Yutaka Taniyama and Goro Shimura identified a 1-to-1 matching between certain modular forms and elliptic curves. Robert Langlands built on this idea in the construction of his expansive Langlands program, which has become one of the most far-reaching and consequential research programs in math.
+
+In 1994 Andrew Wiles used modular forms to prove Fermat’s Last Theorem. In 2001 all elliptic curves were proven to be modular over the rational numbers. In 2013 elliptic curves were proven to be modular over real quadratic fields. In 2023 elliptic curves were proven to be modular over about half of imaginary quadratic fields, including fields formed by combining the rational numbers with the square root of integers down to −5.

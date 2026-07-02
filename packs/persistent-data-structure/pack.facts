@@ -1,0 +1,390 @@
+# nl-rag distilled facts — domain: persistent-data-structure
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:persistent-data-structure/fat-node] In computing, a **persistent data structure** or **not ephemeral data structure** is a data structure that always preserves the previous version of itself when it is modified.
+[src:persistent-data-structure/fat-node] Such data structures are effectively immutable, as their operations do not (visibly) update the structure in-place, but instead always yield a new updated structure.
+[src:persistent-data-structure/fat-node] The term was introduced in Driscoll, Sarnak, Sleator, and Tarjan's 1986 article.
+[src:persistent-data-structure/fat-node] A data structure is **partially persistent** if all versions can be accessed but only the newest version can be modified.
+[src:persistent-data-structure/fat-node] The data structure is **fully persistent** if every version can be both accessed and modified.
+[src:persistent-data-structure/fat-node] If there is also a meld or merge operation that can create a new version from two previous versions, the data structure is called **confluently persistent**.
+[src:persistent-data-structure/fat-node] Structures that are not persistent are called *ephemeral*.
+[src:persistent-data-structure/fat-node] These types of data structures are particularly common in logical and functional programming, as languages in those paradigms discourage (or fully forbid) the use of mutable data.
+[src:persistent-data-structure/fat-node] In the partial persistence model, a programmer may query any previous version of a data structure, but may only update the latest version.
+[src:persistent-data-structure/fat-node] This implies a linear ordering among each version of the data structure.
+[src:persistent-data-structure/fat-node] In the fully persistent model, both updates and queries are allowed on any version of the data structure.
+[src:persistent-data-structure/fat-node] In some cases the performance characteristics of querying or updating older versions of a data structure may be allowed to degrade, as is true with the rope data structure.
+[src:persistent-data-structure/fat-node] In addition, a data structure can be referred to as confluently persistent if, in addition to being fully persistent, two versions of the same data structure can be combined to form a new version which is still fully persistent.
+[src:persistent-data-structure/fat-node] One method for creating a persistent data structure is to use a platform provided ephemeral data structure such as an array to store the data in the data structure and copy the entirety of that data structure.
+[src:persistent-data-structure/fat-node] This is an inefficient technique because the entire backing data structure must be copied for each write, leading to worst case $O(n\cdot m)$ performance characteristics for *m* modifications of an array of size *n*.
+[src:persistent-data-structure/fat-node] Copy-on-write memory management can reduce the price for an update from $\Theta (n)$ to $O(Bu)$ , where *B* is the memory block size and *u* the number of pages updated in an operation.
+[src:persistent-data-structure/fat-node] The fat node method is to record all changes made to node fields in the nodes themselves, without erasing old values of the fields.
+[src:persistent-data-structure/fat-node] This requires that nodes be allowed to become arbitrarily “fat”.
+[src:persistent-data-structure/fat-node] In other words, each fat node contains the same information and pointer fields as an ephemeral node, along with space for an arbitrary number of extra field values.
+[src:persistent-data-structure/fat-node] Each extra field value has an associated field name and a version stamp which indicates the version in which the named field was changed to have the specified value.
+[src:persistent-data-structure/fat-node] Besides, each fat node has its own version stamp, indicating the version in which the node was created.
+[src:persistent-data-structure/fat-node] The only purpose of nodes having version stamps is to make sure that each node only contains one value per field name per version.
+[src:persistent-data-structure/fat-node] In order to navigate through the structure, each original field value in a node has a version stamp of zero.
+[src:persistent-data-structure/fat-node] With using fat node method, it requires O(1) space for every modification: just store the new data.
+[src:persistent-data-structure/fat-node] Each modification takes O(1) additional time to store the modification at the end of the modification history.
+[src:persistent-data-structure/fat-node] This is an amortized time bound, assuming modification history is stored in a growable array.
+[src:persistent-data-structure/fat-node] At access time, the right version at each node must be found as the structure is traversed.
+[src:persistent-data-structure/fat-node] If *m* modifications were to be made, then each access operation would have $O(\log m)$ slowdown resulting from the cost of finding the nearest modification in the array.
+[src:persistent-data-structure/fat-node] Alternatively, one can employ the van Emde Boas tree at each node (possibly the space-efficient version using hashing) to reduce the time for an access to $O(\log \log m)$ at the cost of increasing update time to $O(\log \log m)$ .
+[src:persistent-data-structure/fat-node] If only partial persistence is required, the time for an update can be kept at its original order of magnitude, modulo randomization and amortization (since the time for a single update to the fat node can be amortized expected $O(1)$ ).
+[src:persistent-data-structure/fat-node] This method assumes that the data structure is a linked graph of nodes.
+[src:persistent-data-structure/fat-node] On update, a copy is made of all nodes on the path to any node which is about to be modified.
+[src:persistent-data-structure/fat-node] These changes must then be cascaded back through the data structure: all nodes that pointed to the old node must be modified to point to the new node instead.
+[src:persistent-data-structure/fat-node] These modifications cause more cascading changes, and so on, until the root node is reached.
+[src:persistent-data-structure/fat-node] With m modifications, this costs O(log m) additive lookup time.
+[src:persistent-data-structure/fat-node] Modification time and space are bounded by the maximal number of ancestors for any node in the data structure times the cost of the update in the ephemeral data structure.
+[src:persistent-data-structure/fat-node] In a Balanced Binary Search Tree without parent pointers the worst case modification time complexity is O(log n + update cost).
+[src:persistent-data-structure/fat-node] However, in a linked list the worst case modification time complexity is O(n + update cost).
+[src:persistent-data-structure/fat-node] Driscoll, Sarnak, Sleator, Tarjan came up with a way to combine the techniques of fat nodes and path copying, achieving O(1) access slowdown and O(1) amortized overhead in space and time per modification.
+[src:persistent-data-structure/fat-node] Their method assumes a linked data structure with at most *d* incoming pointers to each node, where *d* is a known constant.
+[src:persistent-data-structure/fat-node] In each node, one modification box is stored.
+[src:persistent-data-structure/fat-node] This box can hold one modification to the node—either a modification to one of the pointers, or to the node's key, or to some other piece of node-specific data—and a timestamp for when that modification was applied.
+[src:persistent-data-structure/fat-node] Initially, every node's modification box is empty.
+[src:persistent-data-structure/fat-node] Whenever a node is accessed, the modification box is checked, and its timestamp is compared against the access time.
+[src:persistent-data-structure/fat-node] (The access time specifies the version of the data structure being considered.) If the modification box is empty, or the access time is before the modification time, then the modification box is ignored and only the normal part of the node is considered.
+[src:persistent-data-structure/fat-node] On the other hand, if the access time is after the modification time, then the value in the modification box is used, overriding that value in the node.
+[src:persistent-data-structure/fat-node] (It is assumed that each modification touches one pointer or similar field.) If the node's modification box is empty, then it is filled with the modification.
+[src:persistent-data-structure/fat-node] Otherwise, the modification box is full.
+[src:persistent-data-structure/fat-node] A copy of the node is made, but using only the latest values.
+[src:persistent-data-structure/fat-node] The modification is performed directly on the new node, without using the modification box.
+[src:persistent-data-structure/fat-node] (One of the new node's fields is overwritten and its modification box stays empty.) Finally, this change is cascaded to the node's parent, just like path copying.
+[src:persistent-data-structure/fat-node] (This may involve filling the parent's modification box, or making a copy of the parent recursively.
+[src:persistent-data-structure/fat-node] With this algorithm, given any time t, at most one modification box exists in the data structure with time t.
+[src:persistent-data-structure/fat-node] Thus, a modification at time t splits the tree into three parts: one part contains the data from before time t, one part contains the data from after time t, and one part was unaffected by the modification.
+[src:persistent-data-structure/fat-node] Time and space for modifications require amortized analysis.
+[src:persistent-data-structure/fat-node] A modification takes O(1) amortized space, and O(1) amortized time.
+[src:persistent-data-structure/fat-node] To see why, use a potential function *ϕ*, where *ϕ*(T) is the number of full live nodes in T .
+[src:persistent-data-structure/fat-node] The live nodes of T are just the nodes that are reachable from the current root at the current time (that is, after the last modification).
+[src:persistent-data-structure/fat-node] The full live nodes are the live nodes whose modification boxes are full.
+[src:persistent-data-structure/fat-node] Each modification involves some number of copies, say *k*, followed by 1 change to a modification box.
+[src:persistent-data-structure/fat-node] Each costs O(1) space and time, but decreases the potential function by one.
+[src:persistent-data-structure/fat-node] (First, the node to be copied must be full and live, so it contributes to the potential function.
+[src:persistent-data-structure/fat-node] The potential function will only drop, however, if the old node isn't reachable in the new tree.
+[src:persistent-data-structure/fat-node] But it is known that it isn't reachable in the new tree—the next step in the algorithm will be to modify the node's parent to point at the copy.
+[src:persistent-data-structure/fat-node] Finally, it is known that the copy's modification box is empty.
+[src:persistent-data-structure/fat-node] Thus, replaced a full live node has been replaced with an empty live node, and *ϕ* goes down by one.) The final step fills a modification box, which costs O(1) time and increases *ϕ* by one.
+[src:persistent-data-structure/fat-node] Putting it all together, the change in *ϕ* is Δ*ϕ* =1 − *k*.
+[src:persistent-data-structure/fat-node] Path copying is one of the simple methods to achieve persistency in a certain data structure such as binary search trees.
+[src:persistent-data-structure/fat-node] It is nice to have a general strategy for implementing persistence that works with any given data structure.
+[src:persistent-data-structure/fat-node] In order to achieve that, we consider a directed graph G.
+[src:persistent-data-structure/fat-node] We assume that each vertex v in G has a constant number c of outgoing edges that are represented by pointers.
+[src:persistent-data-structure/fat-node] Each vertex has a label representing the data.
+[src:persistent-data-structure/fat-node] We consider that a vertex has a bounded number d of edges leading into it which we define as inedges(v).
+[src:persistent-data-structure/fat-node] We allow the following different operations on G.
+[src:persistent-data-structure/fat-node] Any of the above operations is performed at a specific time and the purpose of the persistent graph representation is to be able to access any version of G at any given time.
+[src:persistent-data-structure/fat-node] For this purpose we define a table for each vertex v in G.
+[src:persistent-data-structure/fat-node] The table contains c columns and $d+1$ rows.
+[src:persistent-data-structure/fat-node] Each row contains in addition to the pointers for the outgoing edges, a label which represents the data at the vertex and a time t at which the operation was performed.
+[src:persistent-data-structure/fat-node] In addition to that there is an array inedges(v) that keeps track of all the incoming edges to v.
+[src:persistent-data-structure/fat-node] When a table is full, a new table with $d+1$ rows can be created.
+[src:persistent-data-structure/fat-node] The old table becomes inactive and the new table becomes the active table.
+[src:persistent-data-structure/fat-node] If we assume that CHANGE-EDGE(v, i, u) is called, then there are two cases to consider.
+[src:persistent-data-structure/fat-node] It works exactly the same as CHANGE-EDGE except that instead of changing the ith edge of the vertex, we change the ith label.
+[src:persistent-data-structure/fat-node] In order to find the efficiency of the scheme proposed above, we use an argument defined as a credit scheme.
+[src:persistent-data-structure/fat-node] For example, the credit can be used to pay for a table.
+[src:persistent-data-structure/fat-node] The credit scheme should always satisfy the following invariant: Each row of each active table stores one credit and the table has the same number of credits as the number of rows.
+[src:persistent-data-structure/fat-node] Let us confirm that the invariant applies to all the three operations CREATE-NODE, CHANGE-EDGE and CHANGE-LABEL.
+[src:persistent-data-structure/fat-node] As a summary, we conclude that having $n_{1}$ calls to CREATE_NODE and $n_{2}$ calls to CHANGE_EDGE will result in the creation of $2\cdot n_{1}+n_{2}$ tables.
+[src:persistent-data-structure/fat-node] Since each table has size $O(d)$ without taking into account the recursive calls, then filling in a table requires $O(dc)$ .
+[src:persistent-data-structure/fat-node] Therefore, the amount of work required to complete a sequence of operations is bounded by the number of tables created multiplied by $O(dc)$ .
+[src:persistent-data-structure/fat-node] Each access operation can be done in $O(\log(d))$ and there are m edge and label operations, thus it requires $m\cdot O(\log(d))$ .
+[src:persistent-data-structure/fat-node] We conclude that There exists a data structure that can complete any n sequence of CREATE-NODE, CHANGE-EDGE and CHANGE-LABEL and *m* access operations in $O(n\cdot dc)+m\cdot O(\log(d))$ .
+[src:persistent-data-structure/fat-node] One of the useful applications that can be solved efficiently using persistence is the Next Element Search.
+[src:persistent-data-structure/fat-node] Assume that there are n non intersecting line segments that don't cross each other that are parallel to the x-axis.
+[src:persistent-data-structure/fat-node] We want to build a data structure that can query a point p and return the segment above p (if any).
+[src:persistent-data-structure/fat-node] We will start by solving the Next Element Search using the naïve method then we will show how to solve it using the persistent data structure method.
+[src:persistent-data-structure/fat-node] We start with a vertical line segment that starts off at infinity and we sweep the line segments from the left to the right.
+[src:persistent-data-structure/fat-node] We take a pause every time we encounter an end point of these segments.
+[src:persistent-data-structure/fat-node] The vertical lines split the plane into vertical strips.
+[src:persistent-data-structure/fat-node] If there are n line segments then we can get $2\cdot n+1$ vertical strips since each segment has 2 end points.
+[src:persistent-data-structure/fat-node] No segment begins and ends in the strip.
+[src:persistent-data-structure/fat-node] Every segment either it doesn't touch the strip or it completely crosses it.
+[src:persistent-data-structure/fat-node] We can think of the segments as some objects that are in some sorted order from top to bottom.
+[src:persistent-data-structure/fat-node] What we care about is where the point that we are looking at fits in this order.
+[src:persistent-data-structure/fat-node] We sort the endpoints of the segments by their x coordinate.
+[src:persistent-data-structure/fat-node] For each strip $s_{i}$ , we store the subset segments that cross $s_{i}$ in a dictionary.
+[src:persistent-data-structure/fat-node] When the vertical line sweeps the line segments, whenever it passes over the left endpoint of a segment then we add it to the dictionary.
+[src:persistent-data-structure/fat-node] When it passes through the right endpoint of the segment, we remove it from the dictionary.
+[src:persistent-data-structure/fat-node] At every endpoint, we save a copy of the dictionary and we store all the copies sorted by the x coordinates.
+[src:persistent-data-structure/fat-node] Thus we have a data structure that can answer any query.
+[src:persistent-data-structure/fat-node] In order to find the segment above a point p, we can look at the x coordinate of p to know which copy or strip it belongs to.
+[src:persistent-data-structure/fat-node] Then we can look at the y coordinate to find the segment above it.
+[src:persistent-data-structure/fat-node] Thus we need two binary searches, one for the x coordinate to find the strip or the copy, and another for the y coordinate to find the segment above it.
+[src:persistent-data-structure/fat-node] Thus the query time takes $O(\log(n))$ .
+[src:persistent-data-structure/fat-node] In this data structure, the space is the issue since if we assume that we have the segments structured in a way such that every segment starts before the end of any other segment, then the space required for the structure to be built using the naïve method would be $O(n^{2})$ .
+[src:persistent-data-structure/fat-node] Let us see how we can build another persistent data structure with the same query time but with a better space.
+[src:persistent-data-structure/fat-node] We can notice that what really takes time in the data structure used in the naïve method is that whenever we move from a strip to the next, we need to take a snap shot of whatever data structure we are using to keep things in sorted order.
+[src:persistent-data-structure/fat-node] We can notice that once we get the segments that intersect $s_{i}$ , when we move to $s_{i+1}$ either one thing leaves or one thing enters.
+[src:persistent-data-structure/fat-node] If the difference between what is in $s_{i}$ and what is in $s_{i+1}$ is only one insertion or deletion then it is not a good idea to copy everything from $s_{i}$ to $s_{i+1}$ .
+[src:persistent-data-structure/fat-node] The trick is that since each copy differs from the previous one by only one insertion or deletion, then we need to copy only the parts that change.
+[src:persistent-data-structure/fat-node] Let us assume that we have a tree rooted at T.
+[src:persistent-data-structure/fat-node] When we insert a key k into the tree, we create a new leaf containing k.
+[src:persistent-data-structure/fat-node] Performing rotations to rebalance the tree will only modify the nodes of the path from k to T.
+[src:persistent-data-structure/fat-node] Before inserting the key k into the tree, we copy all the nodes on the path from k to T.
+[src:persistent-data-structure/fat-node] Now we have 2 versions of the tree, the original one which doesn't contain k and the new tree that contains k and whose root is a copy of the root of T.
+[src:persistent-data-structure/fat-node] Since copying the path from k to T doesn't increase the insertion time by more than a constant factor then the insertion in the persistent data structure takes $O(\log(n))$ time.
+[src:persistent-data-structure/fat-node] For the deletion, we need to find which nodes will be affected by the deletion.
+[src:persistent-data-structure/fat-node] For each node v affected by the deletion, we copy the path from the root to v.
+[src:persistent-data-structure/fat-node] This will provide a new tree whose root is a copy of the root of the original tree.
+[src:persistent-data-structure/fat-node] Then we perform the deletion on the new tree.
+[src:persistent-data-structure/fat-node] We will end up with 2 versions of the tree.
+[src:persistent-data-structure/fat-node] The original one which contains k and the new one which doesn't contain k.
+[src:persistent-data-structure/fat-node] Since any deletion only modifies the path from the root to v and any appropriate deletion algorithm runs in $O(\log(n))$ , thus the deletion in the persistent data structure takes $O(\log(n))$ .
+[src:persistent-data-structure/fat-node] Every sequence of insertion and deletion will cause the creation of a sequence of dictionaries or versions or trees $S_{1},S_{2},\dots S_{i}$ where each $S_{i}$ is the result of operations $S_{1},S_{2},\dots S_{i}$ .
+[src:persistent-data-structure/fat-node] If each $S_{i}$ contains m elements, then the search in each $S_{i}$ takes $O(\log(m))$ .
+[src:persistent-data-structure/fat-node] Using this persistent data structure we can solve the next element search problem in $O(\log(n))$ query time and $O(n\cdot \log(n))$ space instead of $O(n^{2})$ .
+[src:persistent-data-structure/fat-node] Please find below the source code for an example related to the next search problem.
+[src:persistent-data-structure/fat-node] Purely functional data structures are automatically persistent.
+[src:persistent-data-structure/fat-node] Perhaps the simplest persistent data structure is the singly linked list or *cons*-based list, a simple list of objects formed by each carrying a reference to the next in the list.
+[src:persistent-data-structure/fat-node] This is persistent because the *tail* of the list can be taken, meaning the last *k* items for some *k*, and new nodes can be added in front of it.
+[src:persistent-data-structure/fat-node] The tail will not be duplicated, instead becoming shared between the old list and the new list.
+[src:persistent-data-structure/fat-node] So long as the contents of the tail are immutable, this sharing will be invisible to the program.
+[src:persistent-data-structure/fat-node] Many common reference-based data structures, such as red–black trees, stacks, and treaps, can easily be adapted to create a persistent version.
+[src:persistent-data-structure/fat-node] Persistent data strctures which are based on immutable ("pure functional") structures should be constrasted with structures that used destructive updates (mutation) and are made persistent using the fat node or path copying techniques, described above.
+[src:persistent-data-structure/fat-node] Singly linked lists are the bread-and-butter data structure in functional languages.
+[src:persistent-data-structure/fat-node] Some ML-derived languages, like Haskell, are purely functional because once a node in the list has been allocated, it cannot be modified, only copied, referenced or destroyed by the garbage collector when nothing refers to it.
+[src:persistent-data-structure/fat-node] where a circle indicates a node in the list (the arrow out representing the second element of the node which is a pointer to another node).
+[src:persistent-data-structure/fat-node] Notice that the nodes in list `xs` have been copied, but the nodes in `ys` are shared.
+[src:persistent-data-structure/fat-node] As a result, the original lists (`xs` and `ys`) persist and have not been modified.
+[src:persistent-data-structure/fat-node] The reason for the copy is that the last node in `xs` (the node containing the original value `2`) cannot be modified to point to the start of `ys`, because that would change the value of `xs`.
+[src:persistent-data-structure/fat-node] Notice two points: first, the original tree (`xs`) persists.
+[src:persistent-data-structure/fat-node] Second, many common nodes are shared between the old tree and the new tree.
+[src:persistent-data-structure/fat-node] Such persistence and sharing is difficult to manage without some form of garbage collection (GC) to automatically free up nodes which have no live references, and this is why GC is a feature commonly found in functional programming languages.
+[src:persistent-data-structure/fat-node] A persistent hash array mapped trie is a specialized variant of a hash array mapped trie that will preserve previous versions of itself on any updates.
+[src:persistent-data-structure/fat-node] It is often used to implement a general purpose persistent map data structure.
+[src:persistent-data-structure/fat-node] Hash array mapped tries were originally described in a 2001 paper by Phil Bagwell entitled "Ideal Hash Trees".
+[src:persistent-data-structure/fat-node] This paper presented a mutable Hash table where "Insert, search and delete times are small and constant, independent of key set size, operations are O(1).
+[src:persistent-data-structure/fat-node] Small worst-case times for insert, search and removal operations can be guaranteed and misses cost less than successful searches".
+[src:persistent-data-structure/fat-node] This data structure was then modified by Rich Hickey to be fully persistent for use in the Clojure programming language.
+[src:persistent-data-structure/fat-node] Conceptually, hash array mapped tries work similar to any generic tree in that they store nodes hierarchically and retrieve them by following a path down to a particular element.
+[src:persistent-data-structure/fat-node] The key difference is that Hash Array Mapped Tries first use a hash function to transform their lookup key into a (usually 32 or 64 bit) integer.
+[src:persistent-data-structure/fat-node] The path down the tree is then determined by using slices of the binary representation of that integer to index into a sparse array at each level of the tree.
+[src:persistent-data-structure/fat-node] The leaf nodes of the tree behave similar to the buckets used to construct hash tables and may or may not contain multiple candidates depending on hash collisions.
+[src:persistent-data-structure/fat-node] Most implementations of persistent hash array mapped tries use a branching factor of 32 in their implementation.
+[src:persistent-data-structure/fat-node] Haskell is a pure functional language and therefore does not allow for mutation.
+[src:persistent-data-structure/fat-node] Therefore, all data structures in the language are persistent, as it is impossible to not preserve the previous state of a data structure with functional semantics.
+[src:persistent-data-structure/fat-node] This is because any change to a data structure that would render previous versions of a data structure invalid would violate referential transparency.
+[src:persistent-data-structure/fat-node] In its standard library Haskell has efficient persistent implementations for linked lists, Maps (implemented as size balanced trees), and Sets among others.
+[src:persistent-data-structure/fat-node] Like many programming languages in the Lisp family, Clojure contains an implementation of a linked list, but unlike other dialects its implementation of a linked list has enforced persistence instead of being persistent by convention.
+[src:persistent-data-structure/fat-node] Clojure also has efficient implementations of persistent vectors, maps, and sets based on persistent hash array mapped tries.
+[src:persistent-data-structure/fat-node] These data structures implement the mandatory read-only parts of the Java collections framework.
+[src:persistent-data-structure/fat-node] The designers of the Clojure language advocate the use of persistent data structures over mutable data structures because they have value semantics which gives the benefit of making them freely shareable between threads with cheap aliases, easy to fabricate, and language independent.
+[src:persistent-data-structure/fat-node] These data structures form the basis of Clojure's support for parallel computing since they allow for easy retries of operations to sidestep data races and atomic compare and swap semantics.
+[src:persistent-data-structure/fat-node] The Elm programming language is purely functional like Haskell, which makes all of its data structures persistent by necessity.
+[src:persistent-data-structure/fat-node] It contains persistent implementations of linked lists as well as persistent arrays, dictionaries, and sets.
+[src:persistent-data-structure/fat-node] Elm uses a custom virtual DOM implementation that takes advantage of the persistent nature of Elm data.
+[src:persistent-data-structure/fat-node] As of 2016 it was reported by the developers of Elm that this virtual DOM allows the Elm language to render HTML faster than the popular JavaScript frameworks React, Ember, and Angular.
+[src:persistent-data-structure/fat-node] The Java programming language is not particularly functional.
+[src:persistent-data-structure/fat-node] Despite this, the core JDK package java.util.concurrent includes CopyOnWriteArrayList and CopyOnWriteArraySet which are persistent structures, implemented using copy-on-write techniques.
+[src:persistent-data-structure/fat-node] The usual concurrent map implementation in Java, ConcurrentHashMap, is not persistent, however.
+[src:persistent-data-structure/fat-node] Fully persistent collections are available in third-party libraries, or other JVM languages.
+[src:persistent-data-structure/fat-node] The popular JavaScript frontend framework React is frequently used along with a state management system that implements the Flux architecture, a popular implementation of which is the JavaScript library Redux.
+[src:persistent-data-structure/fat-node] The Redux library is inspired by the state management pattern used in the Elm programming language, meaning that it mandates that users treat all data as persistent.
+[src:persistent-data-structure/fat-node] As a result, the Redux project recommends that in certain cases users make use of libraries for enforced and efficient persistent data structures.
+[src:persistent-data-structure/fat-node] This reportedly allows for greater performance than when comparing or making copies of regular JavaScript objects.
+[src:persistent-data-structure/fat-node] One such library of persistent data structures Immutable.js is based on the data structures made available and popularized by Clojure and Scala.
+[src:persistent-data-structure/fat-node] It is mentioned by the documentation of Redux as being one of the possible libraries that can provide enforced immutability.
+[src:persistent-data-structure/fat-node] Mori.js brings data structures similar to those in Clojure to JavaScript.
+[src:persistent-data-structure/fat-node] Immer.js brings an interesting approach where one "creates the next immutable state by mutating the current one".
+[src:persistent-data-structure/fat-node] Immer.js uses native JavaScript objects and not efficient persistent data structures and it might cause performance issues when data size is big.
+[src:persistent-data-structure/fat-node] Prolog terms are naturally immutable and therefore data structures are typically persistent data structures.
+[src:persistent-data-structure/fat-node] Their performance depends on sharing and garbage collection offered by the Prolog system.
+[src:persistent-data-structure/fat-node] Extensions to non-ground Prolog terms are not always feasible because of search space explosion.
+[src:persistent-data-structure/fat-node] Delayed goals might mitigate the problem.
+[src:persistent-data-structure/fat-node] Some Prolog systems nevertheless do provide destructive operations like setarg/3, which might come in different flavors, with/without copying and with/without backtracking of the state change.
+[src:persistent-data-structure/fat-node] There are cases where setarg/3 is used to the good of providing a new declarative layer, like a constraint solver.
+[src:persistent-data-structure/fat-node] The Scala programming language promotes the use of persistent data structures for implementing programs using "Object-Functional Style".
+[src:persistent-data-structure/fat-node] Scala contains implementations of many persistent data structures including linked lists, red–black trees, as well as persistent hash array mapped tries as introduced in Clojure.
+[src:persistent-data-structure/fat-node] Because persistent data structures are often implemented in such a way that successive versions of a data structure share underlying memory ergonomic use of such data structures generally requires some form of automatic garbage collection system such as reference counting or mark and sweep.
+[src:persistent-data-structure/fat-node] In some platforms where persistent data structures are used it is an option to not use garbage collection which, while doing so can lead to memory leaks, can in some cases have a positive impact on the overall performance of an application.
+[src:persistent-data-structure/finger-tree] In computer science, a **finger tree** is a purely functional data structure that can be used to efficiently implement other functional data structures.
+[src:persistent-data-structure/finger-tree] A finger tree gives amortized constant time access to the "fingers" (leaves) of the tree, which is where data is stored, and concatenation and splitting logarithmic time in the size of the smaller piece.
+[src:persistent-data-structure/finger-tree] It also stores in each internal node the result of applying some associative operation to its descendants.
+[src:persistent-data-structure/finger-tree] This "summary" data stored in the internal nodes can be used to provide the functionality of data structures other than trees.
+[src:persistent-data-structure/finger-tree] Ralf Hinze and Ross Paterson state a finger tree is a functional representation of persistent sequences that can access the ends in amortized constant time.
+[src:persistent-data-structure/finger-tree] Concatenation and splitting can be done in logarithmic time in the size of the smaller piece.
+[src:persistent-data-structure/finger-tree] The structure can also be made into a general purpose data structure by defining the split operation in a general form, allowing it to act as a sequence, priority queue, search tree, or priority search queue, among other varieties of abstract data types.
+[src:persistent-data-structure/finger-tree] A *finger* is a point where one can access *part* of a data structure; in imperative languages, this is called a pointer.
+[src:persistent-data-structure/finger-tree] In a finger tree, the fingers are structures that point to the ends of a sequence, or the leaf nodes.
+[src:persistent-data-structure/finger-tree] The fingers are added on to the original tree to allow for constant time access to fingers.
+[src:persistent-data-structure/finger-tree] In the images shown below, the fingers are the lines reaching out of the spine to the nodes.
+[src:persistent-data-structure/finger-tree] A finger tree is composed of different *layers* which can be identified by the nodes along its *spine*.
+[src:persistent-data-structure/finger-tree] The spine of a tree can be thought of as the trunk in the same way trees have leaves and a root.
+[src:persistent-data-structure/finger-tree] Though finger trees are often shown with the spine and branches coming off the sides, there are actually two nodes on the spine at each level that have been paired to make this central spine.
+[src:persistent-data-structure/finger-tree] The *prefix* is on the left of the spine, while the *suffix* is on the right.
+[src:persistent-data-structure/finger-tree] Each of those nodes has a link to the next level of the spine until they reach the root.
+[src:persistent-data-structure/finger-tree] The first level of the tree contains only values, the leaf nodes of the tree, and is of depth 0.
+[src:persistent-data-structure/finger-tree] The closer to the root, the deeper the subtrees of the original tree (the tree before it was a finger tree) the nodes points to.
+[src:persistent-data-structure/finger-tree] In this way, working down the tree is going from the leaves to the root of the tree, which is the opposite of the typical tree data structure.
+[src:persistent-data-structure/finger-tree] To get this nice and unusual structure, we have to make sure the original tree has a uniform depth.
+[src:persistent-data-structure/finger-tree] To ensure that the depth is uniform, when declaring the node object, it must be parameterized by the type of the child.
+[src:persistent-data-structure/finger-tree] The nodes on the spine of depth 1 and above point to trees, and with this parameterization they can be represented by the nested nodes.
+[src:persistent-data-structure/finger-tree] We will start this process with a balanced 2–3 tree.
+[src:persistent-data-structure/finger-tree] For the finger tree to work, all the leaf nodes need to also be level.
+[src:persistent-data-structure/finger-tree] A finger is "a structure providing efficient access to nodes of a tree near a distinguished location." To make a finger tree we need to put fingers to the right and left ends of the tree and transform it like a zipper.
+[src:persistent-data-structure/finger-tree] This gives us that constant amortized time access to the ends of a sequence.
+[src:persistent-data-structure/finger-tree] To transform, start with the balanced 2–3 tree.
+[src:persistent-data-structure/finger-tree] Take the leftmost and rightmost internal nodes of the tree and pull them up so the rest of the tree dangles between them as shown in the image to the right.
+[src:persistent-data-structure/finger-tree] Combines the spines to make a standard 2–3 finger tree.
+[src:persistent-data-structure/finger-tree] The digits in the examples shown are the nodes with letters.
+[src:persistent-data-structure/finger-tree] Each list is divided by the prefix or suffix of each node on the spine.
+[src:persistent-data-structure/finger-tree] In a transformed 2–3 tree it seems that the digit lists at the top level can have a length of two or three with the lower levels only having length of one or two.
+[src:persistent-data-structure/finger-tree] In order for some application of finger trees to run so efficiently, finger trees allow between one and four subtrees on each level.
+[src:persistent-data-structure/finger-tree] And so on the image, the top level has elements of type *a*, the next has elements of type *Node a* because the node in between the spine and leaves, and this would go on meaning in general that the *n*th level of the tree has elements of type $Node^{n}$ *a*, or 2–3 trees of depth n.
+[src:persistent-data-structure/finger-tree] This means a sequence of *n* elements is represented by a tree of depth Θ(log *n*).
+[src:persistent-data-structure/finger-tree] Even better, an element *d* places from the nearest end is stored at a depth of Θ(log d) in the tree.
+[src:persistent-data-structure/finger-tree] This process can also be done with other trees, like the 2–3–4 tree at right.
+[src:persistent-data-structure/finger-tree] This helps to see that the Digits are actually the annotations which were inside the tree, and each digit is conceptually associated with a subtree that may be empty.
+[src:persistent-data-structure/finger-tree] Finger trees also make efficient deques.
+[src:persistent-data-structure/finger-tree] Whether the structure is persistent or not, all operations take Θ(1) amortized time.
+[src:persistent-data-structure/finger-tree] The analysis can be compared to Okasaki's implicit deques, the only difference being that the FingerTree type stores Nodes instead of pairs.
+[src:persistent-data-structure/finger-tree] Finger trees can be used to build other trees.
+[src:persistent-data-structure/finger-tree] For example, a priority queue can be implemented by labeling the internal nodes by the minimum priority of its children in the tree, or an indexed list/array can be implemented with a labeling of nodes by the count of the leaves in their children.
+[src:persistent-data-structure/finger-tree] Other applications are random-access sequences, described below, ordered sequences, and interval trees.
+[src:persistent-data-structure/finger-tree] Finger trees can provide amortized O(1) pushing, reversing, popping, O(log n) append and split; and can be adapted to be indexed or ordered sequences.
+[src:persistent-data-structure/finger-tree] And like all functional data structures, it is inherently persistent; that is, older versions of the tree are always preserved.
+[src:persistent-data-structure/finger-tree] Finger trees can efficiently implement random-access sequences.
+[src:persistent-data-structure/finger-tree] This should support fast positional operations including accessing the *n*th element and splitting a sequence at a certain position.
+[src:persistent-data-structure/finger-tree] To do this, we annotate the finger tree with sizes.
+[src:persistent-data-structure/finger-tree] The new type is needed because the type is the carrier of different monoids.
+[src:persistent-data-structure/finger-tree] Another new type is still needed for the elements in the sequence, shown below.
+[src:persistent-data-structure/finger-tree] These lines of code show that instance works a base case for measuring the sizes and the elements are of size one.
+[src:persistent-data-structure/finger-tree] The use of **newtype**s doesn't cause a run-time penalty in Haskell because in a library, the *Size* and *Elem* types would be hidden from the user with wrapper functions.
+[src:persistent-data-structure/finger-tree] With these changes, the length of a sequence can now be computed in constant time.
+[src:persistent-data-structure/finger-tree] Finger trees were first published in 1977 by Leonidas J.
+[src:persistent-data-structure/finger-tree] Finger trees have since been used in the Haskell core libraries (in the implementation of *Data.Sequence*), and an implementation in OCaml exists which was derived from a proven-correct Rocq implementation.
+[src:persistent-data-structure/finger-tree] There is also a verified implementation in Isabelle (proof assistant) from which programs in Haskell and other (functional) languages can be generated.
+[src:persistent-data-structure/finger-tree] Finger trees can be implemented with or without lazy evaluation, but laziness allows for simpler implementations.
+[src:persistent-data-structure/merkle-tree] A hash tree allows efficient and secure verification of the contents of a large data structure.
+[src:persistent-data-structure/merkle-tree] A hash tree is a generalization of a hash list and a hash chain.
+[src:persistent-data-structure/merkle-tree] Demonstrating that a leaf node is a part of a given binary hash tree requires computing a number of hashes proportional to the logarithm of the number of leaf nodes in the tree.
+[src:persistent-data-structure/merkle-tree] Conversely, in a hash list, the number is proportional to the number of leaf nodes itself.
+[src:persistent-data-structure/merkle-tree] A Merkle tree is therefore an efficient example of a cryptographic commitment scheme, in which the root of the tree is seen as a commitment and leaf nodes may be revealed and proven to be part of the original commitment.
+[src:persistent-data-structure/merkle-tree] The concept of a hash tree is named after Ralph Merkle, who patented it in 1979.
+[src:persistent-data-structure/merkle-tree] Hash trees can be used to verify any kind of data stored, handled and transferred in and between computers.
+[src:persistent-data-structure/merkle-tree] They can help ensure that data blocks received from other peers in a peer-to-peer network are received undamaged and unaltered, and even to check that the other peers do not lie and send fake blocks.
+[src:persistent-data-structure/merkle-tree] Suggestions have been made to use hash trees in trusted computing systems.
+[src:persistent-data-structure/merkle-tree] A hash tree is a tree of hashes in which the leaves (i.e., leaf nodes, sometimes also called "leafs") are hashes of data blocks in, for instance, a file or set of files.
+[src:persistent-data-structure/merkle-tree] Nodes farther up in the tree are the hashes of their respective children.
+[src:persistent-data-structure/merkle-tree] For example, in the above picture *hash 0* is the result of hashing the concatenation of *hash 0-0* and *hash 0-1*.
+[src:persistent-data-structure/merkle-tree] That is, *hash 0* = *hash*( *hash 0-0* + *hash 0-1* ) where "+" denotes concatenation.
+[src:persistent-data-structure/merkle-tree] Most hash tree implementations are binary (two child nodes under each node) but they can just as well use many more child nodes under each node.
+[src:persistent-data-structure/merkle-tree] Usually, a cryptographic hash function such as SHA-2 is used for the hashing.
+[src:persistent-data-structure/merkle-tree] If the hash tree only needs to protect against unintentional damage, non-cryptographic checksums such as CRCs can be used.
+[src:persistent-data-structure/merkle-tree] In the top of a hash tree there is a *top hash* (or *root hash* or *master hash*).
+[src:persistent-data-structure/merkle-tree] Before downloading a file on a P2P network, in most cases the top hash is acquired from a trusted source, for instance a friend or a web site that is known to have good recommendations of files to download.
+[src:persistent-data-structure/merkle-tree] When the top hash is available, the hash tree can be received from any non-trusted source, like any peer in the P2P network.
+[src:persistent-data-structure/merkle-tree] Then, the received hash tree is checked against the trusted top hash, and if the hash tree is damaged or fake, another hash tree from another source will be tried until the program finds one that matches the top hash.
+[src:persistent-data-structure/merkle-tree] The main difference from a hash list is that one branch of the hash tree can be downloaded at a time and the integrity of each branch can be checked immediately, even though the whole tree is not available yet.
+[src:persistent-data-structure/merkle-tree] For example, in the picture, the integrity of *data block L2* can be verified immediately if the tree already contains *hash 0-0* and *hash 1* by hashing the data block and iteratively combining the result with *hash 0-0* and then *hash 1* and finally comparing the result with the *top hash*.
+[src:persistent-data-structure/merkle-tree] Similarly, the integrity of *data block L3* can be verified if the tree already has *hash 1-1* and *hash 0*.
+[src:persistent-data-structure/merkle-tree] This can be an advantage since it is efficient to split files up in very small data blocks so that only small blocks have to be re-downloaded if they get damaged.
+[src:persistent-data-structure/merkle-tree] If the hashed file is big, such a hash list or hash chain becomes fairly big.
+[src:persistent-data-structure/merkle-tree] But if it is a tree, one small branch can be downloaded quickly, the integrity of the branch can be checked, and then the downloading of data blocks can start.
+[src:persistent-data-structure/merkle-tree] The Merkle hash root does not indicate the tree depth, enabling a second-preimage attack in which an attacker creates a document other than the original that has the same Merkle hash root.
+[src:persistent-data-structure/merkle-tree] For the example above, an attacker can create a new document containing two data blocks, where the first is *hash 0-0* + *hash 0-1*, and the second is *hash 1-0* + *hash 1-1*.
+[src:persistent-data-structure/merkle-tree] One simple fix is defined in Certificate Transparency: when computing leaf node hashes, a 0x00 byte is prepended to the hash data, while 0x01 is prepended when computing internal node hashes.
+[src:persistent-data-structure/merkle-tree] Limiting the hash tree size is a prerequisite of some formal security proofs, and helps in making some proofs tighter.
+[src:persistent-data-structure/merkle-tree] Some implementations limit the tree depth using hash tree depth prefixes before hashes, so any extracted hash chain is defined to be valid only if the prefix decreases at each step and is still positive when the leaf is reached.
+[src:persistent-data-structure/merkle-tree] The Tiger tree hash is a widely used form of hash tree.
+[src:persistent-data-structure/merkle-tree] It uses a binary hash tree (two child nodes under each node), usually has a data block size of 1024 bytes and uses the Tiger hash.
+[src:persistent-data-structure/merkle-tree] Tiger tree hashes are used in Gnutella, Gnutella2, and Direct Connect P2P file sharing protocols and in file sharing applications such as Phex, BearShare, LimeWire, Shareaza, DC++ and gtk-gnutella.
+[src:persistent-data-structure/persistent-array] In computer science, and more precisely regarding data structures, a **persistent array** is a persistent data structure with properties similar to a (non-persistent) array.
+[src:persistent-data-structure/persistent-array] That is, after a value's update in a persistent array, there exist two persistent arrays: one persistent array in which the update is taken into account, and one which is equal to the array before the update.
+[src:persistent-data-structure/persistent-array] It is expected that, given the array *ar* and an index $0\leq i<n$ , the value $e_{i}$ can be retrieved quickly.
+[src:persistent-data-structure/persistent-array] Furthermore, given the array *ar*, an index $0\leq i<n$ and a new value *v*, a new array *ar2* with content $[e_{0},\dots ,e_{i-1},v,e_{i+1},\dots ,e_{n-1}]$ can be created quickly.
+[src:persistent-data-structure/persistent-array] The main difference between persistent and non-persistent arrays being that, in non-persistent arrays, the array *ar* is destroyed during the creation of *ar2*.
+[src:persistent-data-structure/persistent-array] For example, consider the following pseudocode.
+[src:persistent-data-structure/persistent-array] At the end of execution, the value of *array* is still [0, 0, 0], the value of *updated_array* is [8, 0, 0], the value of *other_array* is [0, 3, 0], and the value of *last_array* is [8, 0, 5].
+[src:persistent-data-structure/persistent-array] There exist two kinds of persistent arrays.
+[src:persistent-data-structure/persistent-array] A persistent array may be either **partially** or **fully** persistent.
+[src:persistent-data-structure/persistent-array] A fully persistent array may be updated an arbitrary number of times while a partially persistent array may be updated at most once.
+[src:persistent-data-structure/persistent-array] In our previous example, if *array* were only partially persistent, the creation of *other_array* would be forbidden; however, the creation of *last_array* would still be valid.
+[src:persistent-data-structure/persistent-array] Indeed, *updated_array* is an array distinct from *array* and has never been updated before the creation of *last_array*.
+[src:persistent-data-structure/persistent-array] Given that non-persistent arrays support both updates and lookups in constant time, it is natural to ask whether the same is possible with persistent arrays.
+[src:persistent-data-structure/persistent-array] The following theorem shows that under mild assumptions about the space complexity of the array, lookups must take $\Omega (\log \log n)$ time in the worst case, regardless of update time, in the cell-probe model.
+[src:persistent-data-structure/persistent-array] In this section, n is the number of elements of the array, and m is the number of updates.
+[src:persistent-data-structure/persistent-array] The most straightforward implementation of a fully persistent array uses an arbitrary persistent map, whose keys are the numbers from *0* to *n* − 1.
+[src:persistent-data-structure/persistent-array] A persistent map may be implemented using a persistent balanced tree, in which case both updates and lookups would take $O(\log n)$ time.
+[src:persistent-data-structure/persistent-array] This implementation is optimal for the pointer machine model.
+[src:persistent-data-structure/persistent-array] A fully persistent array may be implemented using an array and the so-called Baker's trick.
+[src:persistent-data-structure/persistent-array] This implementation is used in the OCaml module parray.ml by Jean-Christophe Filliâtre.
+[src:persistent-data-structure/persistent-array] In order to define this implementation, a few other definitions must be given.
+[src:persistent-data-structure/persistent-array] An **initial array** is an array that is not generated by an update on another array.
+[src:persistent-data-structure/persistent-array] A **child** of an array *ar* is an array of the form *ar.update(i,v)*, and *ar* is the **parent** of *ar.update(i,v)*.
+[src:persistent-data-structure/persistent-array] A **descendant** of an array *ar* is either *ar* or the descendant of a child of *ar*.
+[src:persistent-data-structure/persistent-array] The **initial array** of an array *ar* is either *ar* if *ar* is initial, or it is the initial array of the parent of *ar*.
+[src:persistent-data-structure/persistent-array] That is, the initial array of *ar* is the unique array *init* such that $\mathrm {ar} =init.update(i_{0},v_{0}).\dots .update(i_{m},v_{m})$ , with *init* initial and $i_{0},\dots ,i_{m}$ an arbitrary sequence of indexes and $v_{0},\dots ,v_{m}$ an arbitrary sequence of value.
+[src:persistent-data-structure/persistent-array] A *family* of arrays is thus a set of arrays containing an initial array and all of its descendants.
+[src:persistent-data-structure/persistent-array] Finally, the tree of a family of arrays is the tree whose nodes are the arrays, and with an edge *e* from *ar* to each of its children *ar.update(i,v)*.
+[src:persistent-data-structure/persistent-array] A persistent array using Baker's trick consists of a pair with an actual array called *array* and the tree of arrays.
+[src:persistent-data-structure/persistent-array] This tree admits an arbitrary root - not necessarily the initial array.
+[src:persistent-data-structure/persistent-array] The root may be moved to an arbitrary node of the tree.
+[src:persistent-data-structure/persistent-array] Changing the root from *root* to an arbitrary node *ar* takes time proportional to the depth of *ar*.
+[src:persistent-data-structure/persistent-array] That is, in the distance between *root* and *ar*.
+[src:persistent-data-structure/persistent-array] Similarly, looking up a value takes time proportional to the distance between the array and the root of its family.
+[src:persistent-data-structure/persistent-array] Thus, if the same array *ar* may be lookup multiple times, it is more efficient to move the root to *ar* before doing the lookup.
+[src:persistent-data-structure/persistent-array] Finally updating an array only takes constant time.
+[src:persistent-data-structure/persistent-array] Technically, given two adjacent arrays *ar1* and *ar2*, with *ar1* closer to the root than *ar2*, the edge from *ar1* to *ar2* is labelled by *(i,ar2[i])*, where *i* the only position whose value differ between *ar1* and *ar2*.
+[src:persistent-data-structure/persistent-array] Accessing an element *i* of an array *ar* is done as follows.
+[src:persistent-data-structure/persistent-array] If *ar* is the root, then *ar[i]* equals *root[i]*.
+[src:persistent-data-structure/persistent-array] Otherwise, let *e* the edge leaving *ar* toward the root.
+[src:persistent-data-structure/persistent-array] If the label of *e* is *(i,v)* then *ar[i]* equals *v*.
+[src:persistent-data-structure/persistent-array] Otherwise, let *ar2* be the other node of the edge *e*.
+[src:persistent-data-structure/persistent-array] The computation of *ar2[i]* is done recursively using the same definition.
+[src:persistent-data-structure/persistent-array] The creation of *ar.update(i,v)* consists in adding a new node *ar2* to the tree, and an edge *e* from *ar* to *ar2* labelled by *(i,v)*.
+[src:persistent-data-structure/persistent-array] Finally, moving the root to a node *ar* is done as follows.
+[src:persistent-data-structure/persistent-array] If *ar* is already the root, there is nothing to do.
+[src:persistent-data-structure/persistent-array] Otherwise, let *e* the edge leaving *ar* toward the current root, *(i,v)* its label and *ar2* the other end of *e*.
+[src:persistent-data-structure/persistent-array] Moving the root to *ar* is done by first moving the root to *ar2*, changing the label of *e* to *(i, ar2[i])*, and changing *array[i]* to *v*.
+[src:persistent-data-structure/persistent-array] Lookups take $O(1)$ time if the root is the array being looked up, but $\Theta (m)$ time in the worst case.
+[src:persistent-data-structure/persistent-array] In 1989, Dietz gave an implementation of fully persistent arrays using $O(m+n)$ space such that lookups can be done in $O(\log \log m)$ worst-case time, and updates can be done in $O(\log \log m)$ expected amortized time.
+[src:persistent-data-structure/persistent-array] By the lower bound from the previous section, this time complexity for lookup is optimal when $m=n^{\gamma }$ for $\gamma \in (1,2]$ .
+[src:persistent-data-structure/persistent-array] This implementation is related to the order-maintenance problem and involves vEB trees, one for the entire array and one for each index.
+[src:persistent-data-structure/persistent-array] Straka showed that the times for both operations can be (slightly) improved to $O(\log \log \min(m,n))$ .
+[src:persistent-data-structure/persistent-array] Straka showed how to achieve $O((\log \log m)^{2}/\log \log \log m)$ worst-case time and linear ( $O(m+n)$ ) space, or $O(\log \log m)$ worst-case time and super-linear space.
+[src:persistent-data-structure/persistent-array] It remains open whether it is possible to achieve worst-case time $O(\log \log m)$ subject to linear space.
+[src:persistent-data-structure/retroactive-data-structure] In computer science a **retroactive data structure** is a data structure which supports efficient modifications to a sequence of operations that have been performed on the structure.
+[src:persistent-data-structure/retroactive-data-structure] These modifications can take the form of retroactive insertion, deletion or updating an operation that was performed at some time in the past.
+[src:persistent-data-structure/retroactive-data-structure] In the real world there are many cases where one would like to modify a past operation from a sequence of operations.
+[src:persistent-data-structure/retroactive-data-structure] It is not possible to consider time as an additional spatial dimension.
+[src:persistent-data-structure/retroactive-data-structure] To illustrate this suppose we map the dimension of time onto an axis of space.
+[src:persistent-data-structure/retroactive-data-structure] The data structure we will use to add the spatial time dimension is a min-heap.
+[src:persistent-data-structure/retroactive-data-structure] Let the y axis represent the key values of the items within the heap and the x axis is the spatial time dimension.
+[src:persistent-data-structure/retroactive-data-structure] After several insertions and delete-min operations (all done non-retroactively) our min-heap would appear like in figure 1.
+[src:persistent-data-structure/retroactive-data-structure] Now suppose we retroactively insert zero to the beginning of the operation list.
+[src:persistent-data-structure/retroactive-data-structure] Our min-heap would appear like in figure 2.
+[src:persistent-data-structure/retroactive-data-structure] Notice how the single operation produces a cascading effect which affects the entire data structure.
+[src:persistent-data-structure/retroactive-data-structure] Thus we can see that while time can be drawn as a spatial dimension, operations with time involved produces dependence which have a ripple when modifications are made with respect to time.
+[src:persistent-data-structure/retroactive-data-structure] At first glance the notion of a retroactive data structures seems very similar to persistent data structures since they both take into account the dimension of time.
+[src:persistent-data-structure/retroactive-data-structure] The key difference between persistent data structures and retroactive data structures is *how* they handle the element of time.
+[src:persistent-data-structure/retroactive-data-structure] A persistent data structure maintains several versions of a data structure and operations can be performed on one version to produce another version of the data structure.
+[src:persistent-data-structure/retroactive-data-structure] Since each operation produces a new version, each version thus becomes an archive that cannot be changed (only new versions can be spawned from it).
+[src:persistent-data-structure/retroactive-data-structure] Since each version does not change, the dependence between each version also does not change.
+[src:persistent-data-structure/retroactive-data-structure] In retroactive data structures we allow changes to be made directly to previous versions.
+[src:persistent-data-structure/retroactive-data-structure] Since each version is now interdependent, a single change can cause a ripple of changes of all later versions.
+[src:persistent-data-structure/retroactive-data-structure] Figures 1 and 2 show an example of this rippling effect.
+[src:persistent-data-structure/retroactive-data-structure] Any data structure can be reformulated in a retroactive setting.
+[src:persistent-data-structure/retroactive-data-structure] In general the data structure involves a series of updates and queries made over some period of time.
+[src:persistent-data-structure/retroactive-data-structure] Let U = [ut1, ut2, ut3, ..., utm] be the sequence of update operations from t1 to tm such that t1 < t2 < ... < tm.
+[src:persistent-data-structure/retroactive-data-structure] The assumption here is that at most one operation can be performed for a given time t.
+[src:persistent-data-structure/retroactive-data-structure] We define the data structure to be partially retroactive if it can perform update and query operations at the current time *and* support insertion and deletion operations in the past.
+[src:persistent-data-structure/retroactive-data-structure] Given the above retroactive operations, a standard insertion operation would now the form of Insert(t, "insert(x)").
+[src:persistent-data-structure/retroactive-data-structure] All retroactive changes on the operational history of the data structure can potentially affect all the operations at the time of the operation to the present.
+[src:persistent-data-structure/retroactive-data-structure] For example, if we have ti-1 < t < ti+1, then Insert(t, insert(x)) would place a new operation, *op*, between the operations *opi-1* and *opi+1*.
+[src:persistent-data-structure/retroactive-data-structure] The current state of the data structure (i.e.: the data structure at the present time) would then be in a state such the operations *opi-1*, *op* and *opi+1* all happened in a sequence, as if the operation *op* was always there.
+[src:persistent-data-structure/retroactive-data-structure] See figure 1 and 2 for a visual example.
+[src:persistent-data-structure/retroactive-data-structure] We define the data structure to be fully retroactive if in addition to the partially retroactive operations we also allow for one to perform queries about the past.
+[src:persistent-data-structure/retroactive-data-structure] Similar to how the standard operation insert(x) becomes Insert(t, "insert(x)") in the partially retroactive model, the operation query(x) in the fully retroactive model now has the form Query(t, "query(x)").
+[src:persistent-data-structure/retroactive-data-structure] The running time of retroactive data structures are based on the number of operations, *m*, performed on the structure, the number of operations *r* that were performed before the retroactive operation is performed, and the maximum number of elements *n* in the structure at any single time.
+[src:persistent-data-structure/retroactive-data-structure] The main question regarding automatic retro-activity with respect to data structures is whether or not there is a general technique which can convert any data structure into an efficient retroactive counterpart.
+[src:persistent-data-structure/retroactive-data-structure] A simple approach is to perform a roll-back on all the changes made to the structure prior to the retroactive operation that is to be applied.
+[src:persistent-data-structure/retroactive-data-structure] Once we have rolled back the data structure to the appropriate state we can then apply the retroactive operation to make the change we wanted.
+[src:persistent-data-structure/retroactive-data-structure] Once the change is made we must then reapply all the changes we rolled back before to put the data structure into its new state.
+[src:persistent-data-structure/retroactive-data-structure] While this can work for any data structure, it is often inefficient and wasteful especially once the number of changes we need to roll-back is large.
+[src:persistent-data-structure/retroactive-data-structure] To create an *efficient* retroactive data structure we must take a look at the properties of the structure itself to determine where speed ups can be realized.
+[src:persistent-data-structure/retroactive-data-structure] Thus there is no general way to convert any data structure into an efficient retroactive counterpart.
+[src:persistent-data-structure/retroactive-data-structure] Demaine, John Iacono and Stefan Langerman prove this.

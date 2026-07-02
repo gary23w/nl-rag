@@ -1,0 +1,1202 @@
+# nl-rag distilled facts — domain: jinja2-templating
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:jinja2-templating/api-p01] This document describes the API to Jinja and not the template language (for that, see Template Designer Documentation).
+[src:jinja2-templating/api-p01] It will be most useful as reference to those implementing the template interface to the application and not those who are creating Jinja templates.
+[src:jinja2-templating/api-p01] Jinja uses a central object called the template `Environment`.
+[src:jinja2-templating/api-p01] Instances of this class are used to store the configuration and global objects, and are used to load templates from the file system or other locations.
+[src:jinja2-templating/api-p01] Even if you are creating templates from strings by using the constructor of `Template` class, an environment is created automatically for you, albeit a shared one.
+[src:jinja2-templating/api-p01] Most applications will create one `Environment` object on application initialization and use that to load templates.
+[src:jinja2-templating/api-p01] In some cases however, it’s useful to have multiple environments side by side, if different configurations are in use.
+[src:jinja2-templating/api-p01] The simplest way to configure Jinja to load templates for your application is to use `PackageLoader`.
+[src:jinja2-templating/api-p01] This will create a template environment with a loader that looks up templates in the `templates` folder inside the `yourapp` Python package (or next to the `yourapp.py` Python module).
+[src:jinja2-templating/api-p01] It also enables autoescaping for HTML files.
+[src:jinja2-templating/api-p01] This loader only requires that `yourapp` is importable, it figures out the absolute path to the folder for you.
+[src:jinja2-templating/api-p01] Different loaders are available to load templates in other ways or from other locations.
+[src:jinja2-templating/api-p01] They’re listed in the Loaders section below.
+[src:jinja2-templating/api-p01] You can also write your own if you want to load templates from a source that’s more specialized to your project.
+[src:jinja2-templating/api-p01] To load a template from this environment, call the `get_template()` method, which returns the loaded `Template`.
+[src:jinja2-templating/api-p01] To render it with some variables, call the `render()` method.
+[src:jinja2-templating/api-p01] Using a template loader rather than passing strings to `Template` or `Environment.from_string()` has multiple advantages.
+[src:jinja2-templating/api-p01] Besides being a lot easier to use it also enables template inheritance.
+[src:jinja2-templating/api-p01] In future versions of Jinja we might enable autoescaping by default for security reasons.
+[src:jinja2-templating/api-p01] As such you are encouraged to explicitly configure autoescaping now instead of relying on the default.
+[src:jinja2-templating/api-p01] The high-level API is the API you will use in the application to load and render Jinja templates.
+[src:jinja2-templating/api-p01] The Low Level API on the other side is only useful if you want to dig deeper into Jinja or develop extensions.
+[src:jinja2-templating/api-p01] The core component of Jinja is the `Environment`.
+[src:jinja2-templating/api-p01] It contains important shared variables like configuration, filters, tests, globals and others.
+[src:jinja2-templating/api-p01] Instances of this class may be modified if they are not shared and if no template was loaded so far.
+[src:jinja2-templating/api-p01] Modifications on environments after the first template was loaded will lead to surprising effects and undefined behavior.
+[src:jinja2-templating/api-p01] If a template was created by using the `Template` constructor an environment is created automatically.
+[src:jinja2-templating/api-p01] These environments are created as shared environments which means that multiple templates may have the same anonymous environment.
+[src:jinja2-templating/api-p01] For all shared environments this attribute is `True`, else `False`.
+[src:jinja2-templating/api-p01] If the environment is sandboxed this attribute is `True`.
+[src:jinja2-templating/api-p01] For the sandbox mode have a look at the documentation for the `SandboxedEnvironment`.
+[src:jinja2-templating/api-p01] As long as no template was loaded it’s safe to add new filters or remove old.
+[src:jinja2-templating/api-p01] For valid filter names have a look at Notes on Identifiers.
+[src:jinja2-templating/api-p01] A dict of test functions for this environment.
+[src:jinja2-templating/api-p01] As long as no template was loaded it’s safe to modify this dict.
+[src:jinja2-templating/api-p01] For valid test names have a look at Notes on Identifiers.
+[src:jinja2-templating/api-p01] A dict of variables that are available in every template loaded by the environment.
+[src:jinja2-templating/api-p01] As long as no template was loaded it’s safe to modify this.
+[src:jinja2-templating/api-p01] For more details see The Global Namespace.
+[src:jinja2-templating/api-p01] For valid object names see Notes on Identifiers.
+[src:jinja2-templating/api-p01] These can be reconfigured to change the runtime behavior or certain template features.
+[src:jinja2-templating/api-p01] This should not be changed in most cases, unless you need to modify the Python code a template compiles to.
+[src:jinja2-templating/api-p01] This should not be changed in most cases, unless you need to modify internals of how template variables are handled.
+[src:jinja2-templating/api-p01] Create a new overlay environment that shares all the data with the current environment except for cache and the overridden attributes.
+[src:jinja2-templating/api-p01] Extensions cannot be removed for an overlayed environment.
+[src:jinja2-templating/api-p01] An overlayed environment automatically gets all the extensions of the environment it is linked to plus optional extra extensions.
+[src:jinja2-templating/api-p01] Creating overlays should happen after the initial environment was set up completely.
+[src:jinja2-templating/api-p01] Not all attributes are truly linked, some are just copied over so modifications on the original environment may not shine through.
+[src:jinja2-templating/api-p01] Changed in version 3.1.5: `enable_async` is applied correctly.
+[src:jinja2-templating/api-p01] Changed in version 3.1.2: Added the `newline_sequence`, `keep_trailing_newline`, and `enable_async` parameters to match `__init__`.
+[src:jinja2-templating/api-p01] Creates a new `Undefined` object for `name`.
+[src:jinja2-templating/api-p01] This is useful for filters or functions that may return undefined objects for some operations.
+[src:jinja2-templating/api-p01] All parameters except of `hint` should be provided as keyword parameters for better readability.
+[src:jinja2-templating/api-p01] The `hint` is used as error message for the exception if provided, otherwise the error message will be generated from `obj` and `name` automatically.
+[src:jinja2-templating/api-p01] The exception provided as `exc` is raised if something with the generated undefined object is done that the undefined object does not allow.
+[src:jinja2-templating/api-p01] The default exception is `UndefinedError`.
+[src:jinja2-templating/api-p01] If a `hint` is provided the `name` may be omitted.
+[src:jinja2-templating/api-p01] This means that the name `some_name` is not defined.
+[src:jinja2-templating/api-p01] For a more complex example you can provide a hint.
+[src:jinja2-templating/api-p01] If it the `name` or `obj` is known (for example because an attribute was accessed) it should be passed to the undefined object, even if a custom `hint` is provided.
+[src:jinja2-templating/api-p01] This gives undefined objects the possibility to enhance the error message.
+[src:jinja2-templating/api-p01] Adds an extension after the environment was created.
+[src:jinja2-templating/api-p01] Add the items to the instance of the environment if they do not exist yet.
+[src:jinja2-templating/api-p01] This is used by extensions to register callbacks and configuration values without breaking inheritance.
+[src:jinja2-templating/api-p01] A handy helper method that returns a callable that accepts keyword arguments that appear as variables in the expression.
+[src:jinja2-templating/api-p01] If called it returns the result of the expression.
+[src:jinja2-templating/api-p01] This is useful if applications want to use the same rules as Jinja in template “configuration files” or similar situations.
+[src:jinja2-templating/api-p01] Per default the return value is converted to `None` if the expression returns an undefined value.
+[src:jinja2-templating/api-p01] This can be changed by setting `undefined_to_none` to `False`.
+[src:jinja2-templating/api-p01] Finds all the templates the loader can find, compiles them and stores them in `target`.
+[src:jinja2-templating/api-p01] If `zip` is `None`, instead of in a zipfile, the templates will be stored in a directory.
+[src:jinja2-templating/api-p01] By default a deflate zip algorithm is used.
+[src:jinja2-templating/api-p01] To switch to the stored algorithm, `zip` can be set to `'stored'`.
+[src:jinja2-templating/api-p01] `extensions` and `filter_func` are passed to `list_templates()`.
+[src:jinja2-templating/api-p01] Each template returned will be compiled to the target folder or zipfile.
+[src:jinja2-templating/api-p01] By default template compilation errors are ignored.
+[src:jinja2-templating/api-p01] In case a log function is provided, errors are logged.
+[src:jinja2-templating/api-p01] If you want template syntax errors to abort the compilation you can set `ignore_errors` to `False` and you will get an exception on syntax errors.
+[src:jinja2-templating/api-p01] Returns a list of templates for this environment.
+[src:jinja2-templating/api-p01] This requires that the loader supports the loader’s `list_templates()` method.
+[src:jinja2-templating/api-p01] If there are other files in the template folder besides the actual templates, the returned list can be filtered.
+[src:jinja2-templating/api-p01] There are two ways: either `extensions` is set to a list of file extensions for templates, or a `filter_func` can be provided which is a callable that is passed a template name and should return `True` if it should end up in the result list.
+[src:jinja2-templating/api-p01] If the loader does not support that, a `TypeError` is raised.
+[src:jinja2-templating/api-p01] By default all the lookups are relative to the loader root so this method returns the `template` parameter unchanged, but if the paths should be relative to the parent template, this function can be used to calculate the real template name.
+[src:jinja2-templating/api-p01] Subclasses may override this method and implement template path joining here.
+[src:jinja2-templating/api-p01] Load a template by name with `loader` and return a `Template`.
+[src:jinja2-templating/api-p01] If the template does not exist a `TemplateNotFound` exception is raised.
+[src:jinja2-templating/api-p01] Changed in version 3.0: If a template is loaded from cache, `globals` will update the template’s globals instead of ignoring the new values.
+[src:jinja2-templating/api-p01] Changed in version 2.4: If `name` is a `Template` object it is returned unchanged.
+[src:jinja2-templating/api-p01] Like `get_template()`, but tries loading multiple names.
+[src:jinja2-templating/api-p01] If none of the names can be loaded a `TemplatesNotFound` exception is raised.
+[src:jinja2-templating/api-p01] Changed in version 2.11: If `names` is `Undefined`, an `UndefinedError` is raised instead.
+[src:jinja2-templating/api-p01] If no templates were found and `names` contains `Undefined`, the message is more helpful.
+[src:jinja2-templating/api-p01] Changed in version 2.4: If `names` contains a `Template` object it is returned unchanged.
+[src:jinja2-templating/api-p01] Use `select_template()` if an iterable of template names is given, or `get_template()` if one name is given.
+[src:jinja2-templating/api-p01] Load a template from a source string without using `loader`.
+[src:jinja2-templating/api-p01] A compiled template that can be rendered.
+[src:jinja2-templating/api-p01] Use the methods on `Environment` to create or load templates.
+[src:jinja2-templating/api-p01] The environment is used to configure how templates are compiled and behave.
+[src:jinja2-templating/api-p01] It is also possible to create a template object directly.
+[src:jinja2-templating/api-p01] The constructor takes most of the same arguments as `Environment`.
+[src:jinja2-templating/api-p01] All templates created with the same environment arguments share the same ephemeral `Environment` instance behind the scenes.
+[src:jinja2-templating/api-p01] A template object should be considered immutable.
+[src:jinja2-templating/api-p01] Modifications on the object are not supported.
+[src:jinja2-templating/api-p01] A dict of variables that are available every time the template is rendered, without needing to pass them during render.
+[src:jinja2-templating/api-p01] This should not be modified, as depending on how the template was loaded it may be shared with the environment and other templates.
+[src:jinja2-templating/api-p01] Defaults to `Environment.globals` unless extra values are passed to `Environment.get_template()`.
+[src:jinja2-templating/api-p01] Globals are only intended for data that is common to every render of the template.
+[src:jinja2-templating/api-p01] Specific data should be passed to `render()`.
+[src:jinja2-templating/api-p01] If the template was loaded from a string this is `None`.
+[src:jinja2-templating/api-p01] The filename of the template on the file system if it was loaded from there.
+[src:jinja2-templating/api-p01] This method accepts the same arguments as the `dict` constructor: A dict, a dict subclass or some keyword arguments.
+[src:jinja2-templating/api-p01] If no arguments are given the context will be empty.
+[src:jinja2-templating/api-p01] This will return the rendered template as a string.
+[src:jinja2-templating/api-p01] For very large templates it can be useful to not render the whole template at once but evaluate each statement after another and yield piece for piece.
+[src:jinja2-templating/api-p01] This method basically does exactly that and returns a generator that yields one item after another as strings.
+[src:jinja2-templating/api-p01] It accepts the same arguments as `render()`.
+[src:jinja2-templating/api-p01] Works exactly like `generate()` but returns a `TemplateStream`.
+[src:jinja2-templating/api-p01] This works similar to `render()` but returns a coroutine that when awaited returns the entire rendered template string.
+[src:jinja2-templating/api-p01] This requires the async feature to be enabled.
+[src:jinja2-templating/api-p01] Works very similarly but returns an async iterator instead.
+[src:jinja2-templating/api-p01] This method works like the `module` attribute when called without arguments but it will evaluate the template on every call rather than caching it.
+[src:jinja2-templating/api-p01] It’s also possible to provide a dict which is then used as context.
+[src:jinja2-templating/api-p01] The arguments are the same as for the `new_context()` method.
+[src:jinja2-templating/api-p01] This attribute is not available if async mode is enabled.
+[src:jinja2-templating/api-p01] A template stream works pretty much like an ordinary python generator but it can buffer multiple items to reduce the number of total iterations.
+[src:jinja2-templating/api-p01] Per default the output is unbuffered which means that for every unbuffered instruction in the template one string is yielded.
+[src:jinja2-templating/api-p01] If buffering is enabled with a buffer size of 5, five items are combined into a new string.
+[src:jinja2-templating/api-p01] This is mainly useful if you are streaming big templates to a client via WSGI which flushes after each iteration.
+[src:jinja2-templating/api-p01] Dump the complete stream into a file or file-like object.
+[src:jinja2-templating/api-p01] Per default strings are written, if you want to encode before writing specify an `encoding`.
+[src:jinja2-templating/api-p01] Buffer `size` items before yielding them.
+[src:jinja2-templating/api-p01] Jinja now comes with autoescaping support.
+[src:jinja2-templating/api-p01] As of Jinja 2.9 the autoescape extension is removed and built-in.
+[src:jinja2-templating/api-p01] However autoescaping is not yet enabled by default though this will most likely change in the future.
+[src:jinja2-templating/api-p01] It’s recommended to configure a sensible default for autoescaping.
+[src:jinja2-templating/api-p01] This makes it possible to enable and disable autoescaping on a per-template basis (HTML versus text for instance).
+[src:jinja2-templating/api-p01] Intelligently sets the initial value of autoescaping based on the filename of the template.
+[src:jinja2-templating/api-p01] This is the recommended way to configure autoescaping if you do not want to write a custom function yourself.
+[src:jinja2-templating/api-p01] The `enabled_extensions` is an iterable of all the extensions that autoescaping should be enabled for.
+[src:jinja2-templating/api-p01] Likewise `disabled_extensions` is a list of all templates it should be disabled for.
+[src:jinja2-templating/api-p01] If a template is loaded from a string then the default from `default_for_string` is used.
+[src:jinja2-templating/api-p01] If nothing matches then the initial value of autoescaping is set to the value of `default`.
+[src:jinja2-templating/api-p01] For security reasons this function operates case insensitive.
+[src:jinja2-templating/api-p01] Here a recommended setup that enables autoescaping for templates ending in `'.html'`, `'.htm'` and `'.xml'` and disabling it by default for all other extensions.
+[src:jinja2-templating/api-p01] When implementing a guessing autoescape function, make sure you also accept `None` as valid template name.
+[src:jinja2-templating/api-p01] This will be passed when generating templates from strings.
+[src:jinja2-templating/api-p01] You should always configure autoescaping as defaults in the future might change.
+[src:jinja2-templating/api-p01] Inside the templates the behaviour can be temporarily changed by using the `autoescape` block (see Autoescape Overrides).
+[src:jinja2-templating/api-p01] Valid identifiers can be any combination of characters accepted by Python.
+[src:jinja2-templating/api-p01] Filters and tests are looked up in separate namespaces and have slightly modified identifier syntax.
+[src:jinja2-templating/api-p01] Filters and tests may contain dots to group filters and tests by topic.
+[src:jinja2-templating/api-p01] For example it’s perfectly valid to add a function into the filter dict and call it `to.str`.
+[src:jinja2-templating/api-p01] These classes can be used as undefined types.
+[src:jinja2-templating/api-p01] The `Environment` constructor takes an `undefined` parameter that can be one of those classes or a custom subclass of `Undefined`.
+[src:jinja2-templating/api-p01] Whenever the template engine is unable to look up a name or access an attribute one of those objects is created and returned.
+[src:jinja2-templating/api-p01] Some operations on undefined values are then allowed, others fail.
+[src:jinja2-templating/api-p01] The closest to regular Python behavior is the `StrictUndefined` which disallows all operations beside testing if it’s an undefined object.
+[src:jinja2-templating/api-p01] This can be printed, iterated, and treated as a boolean.
+[src:jinja2-templating/api-p01] Any other operation will raise an `UndefinedError`.
+[src:jinja2-templating/api-p01] Either `None` or a string with the error message for the undefined object.
+[src:jinja2-templating/api-p01] Either `None` or the owner object that caused the undefined object to be created (for example because an attribute does not exist).
+[src:jinja2-templating/api-p01] The name for the undefined variable / attribute or just `None` if no such information exists.
+[src:jinja2-templating/api-p01] The exception that the undefined object wants to raise.
+[src:jinja2-templating/api-p01] This is usually one of `UndefinedError` or `SecurityError`.
+[src:jinja2-templating/api-p01] When called with any arguments this method raises `_undefined_exception` with an error message generated from the undefined hints stored on the undefined object.
+[src:jinja2-templating/api-p01] An undefined that is chainable, where both `__getattr__` and `__getitem__` return itself rather than raising an `UndefinedError`.
+[src:jinja2-templating/api-p01] An undefined that returns the debug info when printed.
+[src:jinja2-templating/api-p01] An undefined that barks on print and iteration as well as boolean tests and all kinds of comparisons.
+[src:jinja2-templating/api-p01] In other words: you can do nothing with it except checking if it’s defined using the `defined` test.
+[src:jinja2-templating/api-p01] Given a logger object this returns a new undefined class that will log certain failures.
+[src:jinja2-templating/api-p01] If no logger is given a default logger is created.
+[src:jinja2-templating/api-p01] Undefined objects are created by calling `undefined`.
+[src:jinja2-templating/api-p01] `Undefined` is implemented by overriding the special `__underscore__` methods.
+[src:jinja2-templating/api-p01] For example the default `Undefined` class implements `__str__` to returns an empty string, while `__int__` and others fail with an exception.
+[src:jinja2-templating/api-p01] To allow conversion to int by returning `0` you can implement your own subclass.
+[src:jinja2-templating/api-p01] To disallow a method, override it and raise `_undefined_exception`.
+[src:jinja2-templating/api-p01] Because this is very common there is the helper method `_fail_with_undefined_error()` that raises the error with the correct information.
+[src:jinja2-templating/api-p01] The template context holds the variables of a template.
+[src:jinja2-templating/api-p01] It stores the values passed to the template and also the names the template exports.
+[src:jinja2-templating/api-p01] Creating instances is neither supported nor useful as it’s created automatically at various stages of the template evaluation and should not be created by hand.
+[src:jinja2-templating/api-p01] Modifications on `parent` **must not** happen and modifications on `vars` are allowed from generated template code only.
+[src:jinja2-templating/api-p01] Template filters and global functions marked as `pass_context()` get the active context passed as first argument and are allowed to access the context read-only.
+[src:jinja2-templating/api-p01] The template context supports read only dict operations (`get`, `keys`, `values`, `items`, `iterkeys`, `itervalues`, `iteritems`, `__getitem__`, `__contains__`).
+[src:jinja2-templating/api-p01] Additionally there is a `resolve()` method that doesn’t fail with a `KeyError` but returns an `Undefined` object for missing variables.
+[src:jinja2-templating/api-p01] A dict of read only, global variables the template looks up.
+[src:jinja2-templating/api-p01] These can either come from another `Context`, from the `Environment.globals` or `Template.globals` or points to a dict created by combining the globals with the variables passed to the render function.
+[src:jinja2-templating/api-p01] This list contains environment and context functions from the `parent` scope as well as local modifications and exported variables from the template.
+[src:jinja2-templating/api-p01] The template will modify this dict during template evaluation but filters and context functions are not allowed to modify it.
+[src:jinja2-templating/api-p01] The environment that loaded the template.
+[src:jinja2-templating/api-p01] This set contains all the names the template exports.
+[src:jinja2-templating/api-p01] The values for the names are in the `vars` dict.
+[src:jinja2-templating/api-p01] In order to get a copy of the exported variables as dict, `get_exported()` can be used.
+[src:jinja2-templating/api-p01] The load name of the template owning this context.
+[src:jinja2-templating/api-p01] A dict with the current mapping of blocks in the template.
+[src:jinja2-templating/api-p01] The keys in this dict are the names of the blocks, and the values a list of blocks registered.
+[src:jinja2-templating/api-p01] The last item in each list is the current active block (latest in the inheritance chain).
+[src:jinja2-templating/api-p01] Call the callable with the arguments and keyword arguments provided but inject the active context or environment as first argument if the callable has `pass_context()` or `pass_environment()`.
+[src:jinja2-templating/api-p01] Look up a variable by name, or return a default if the key is not found.
+[src:jinja2-templating/api-p01] Look up a variable by name, or return an `Undefined` object if the key is not found.
+[src:jinja2-templating/api-p01] If you need to add custom behavior, override `resolve_or_missing()`, not this method.
+[src:jinja2-templating/api-p01] The various lookup functions use that method, not this one.
+[src:jinja2-templating/api-p01] Look up a variable by name, or return a `missing` sentinel if the key is not found.
+[src:jinja2-templating/api-p01] Override this method to add custom lookup behavior.
+[src:jinja2-templating/api-p01] Get a new dict with the exported variables.
+[src:jinja2-templating/api-p01] Return the complete context as dict including the exported variables.
+[src:jinja2-templating/api-p01] For optimizations reasons this might not return an actual copy so be careful with using it.
+[src:jinja2-templating/api-p01] The context is immutable, it prevents modifications, and if it is modified somehow despite that those changes may not show up.
+[src:jinja2-templating/api-p01] For performance, Jinja does not use the context as data storage for, only as a primary data source.
+[src:jinja2-templating/api-p01] Variables that the template does not define are looked up in the context, but variables the template does define are stored locally.
+[src:jinja2-templating/api-p01] Instead of modifying the context directly, a function should return a value that can be assigned to a variable within the template itself.
+[src:jinja2-templating/api-p01] Loaders are responsible for loading templates from a resource such as the file system.
+[src:jinja2-templating/api-p01] The environment will keep the compiled modules in memory like Python’s `sys.modules`.
+[src:jinja2-templating/api-p01] Unlike `sys.modules` however this cache is limited in size by default and templates are automatically reloaded.
+[src:jinja2-templating/api-p01] All loaders are subclasses of `BaseLoader`.
+[src:jinja2-templating/api-p01] If you want to create your own loader, subclass `BaseLoader` and override `get_source`.
+[src:jinja2-templating/api-p01] Subclass this and override `get_source` to implement a custom loading mechanism.
+[src:jinja2-templating/api-p01] The environment provides a `get_template` method that calls the loader’s `load` method to get the `Template` object.
+[src:jinja2-templating/api-p01] Get the template source, filename and reload helper for a template.
+[src:jinja2-templating/api-p01] It’s passed the environment and template name and has to return a tuple in the form `(source, filename, uptodate)` or raise a `TemplateNotFound` error if it can’t locate the template.
+[src:jinja2-templating/api-p01] The source part of the returned tuple must be the source of the template as a string.
+[src:jinja2-templating/api-p01] The filename should be the name of the file on the filesystem if it was loaded from there, otherwise `None`.
+[src:jinja2-templating/api-p01] The filename is used by Python for the tracebacks if no loader extension is used.
+[src:jinja2-templating/api-p01] The last item in the tuple is the `uptodate` function.
+[src:jinja2-templating/api-p01] If auto reloading is enabled it’s always called to check if the template changed.
+[src:jinja2-templating/api-p01] No arguments are passed so the function must store the old state somewhere (for example in a closure).
+[src:jinja2-templating/api-p01] If it returns `False` the template will be reloaded.
+[src:jinja2-templating/api-p01] This method looks up the template in the cache or loads one by calling `get_source()`.
+[src:jinja2-templating/api-p01] Subclasses should not override this method as loaders working on collections of other loaders (such as `PrefixLoader` or `ChoiceLoader`) will not call this method but `get_source` directly.
+[src:jinja2-templating/api-p01] Load templates from a directory in the file system.
+[src:jinja2-templating/api-p01] Relative paths are relative to the current working directory.
+[src:jinja2-templating/api-p01] The directories will be searched in order, stopping at the first matching template.
+[src:jinja2-templating/api-p01] Changed in version 2.8: Added the `followlinks` parameter.
+[src:jinja2-templating/api-p01] Load templates from a directory in a Python package.
+[src:jinja2-templating/api-p01] The following example looks up templates in the `pages` directory within the `project.ui` package.
+[src:jinja2-templating/api-p01] Only packages installed as directories (standard pip behavior) or zip/egg files (less common) are supported.
+[src:jinja2-templating/api-p01] The Python API for introspecting data in packages is too limited to support other installation methods the way this loader requires.
+[src:jinja2-templating/api-p01] There is limited support for **PEP 420** namespace packages.
+[src:jinja2-templating/api-p01] The template directory is assumed to only be in one namespace contributor.
+[src:jinja2-templating/api-p01] Zip files contributing to a namespace are not supported.
+[src:jinja2-templating/api-p01] Changed in version 3.0: No longer uses `setuptools` as a dependency.
+[src:jinja2-templating/api-p01] Changed in version 3.0: Limited PEP 420 namespace package support.
+[src:jinja2-templating/api-p01] Loads a template from a Python dict mapping template names to template source.
+[src:jinja2-templating/api-p01] Because auto reloading is rarely useful this is disabled by default.
+[src:jinja2-templating/api-p01] A loader that is passed a function which does the loading.
+[src:jinja2-templating/api-p01] The function receives the name of the template and has to return either a string with the template source, a tuple in the form `(source, filename, uptodatefunc)` or `None` if the template does not exist.
+[src:jinja2-templating/api-p01] The `uptodatefunc` is a function that is called if autoreload is enabled and has to return `True` if the template is still up to date.
+[src:jinja2-templating/api-p01] For more details have a look at `BaseLoader.get_source()` which has the same return value.
+[src:jinja2-templating/api-p01] A loader that is passed a dict of loaders where each loader is bound to a prefix.
+[src:jinja2-templating/api-p01] By loading `'app1/index.html'` the file from the app1 package is loaded, by loading `'app2/index.html'` the file from the second.
+[src:jinja2-templating/api-p01] This loader works like the `PrefixLoader` just that no prefix is specified.
+[src:jinja2-templating/api-p01] If a template could not be found by one loader the next one is tried.
+[src:jinja2-templating/api-p01] This is useful if you want to allow users to override builtin templates from a different location.
+[src:jinja2-templating/api-p01] This loader loads templates from precompiled templates.
+[src:jinja2-templating/api-p01] Templates can be precompiled with `Environment.compile_templates()`.
+[src:jinja2-templating/api-p02] Jinja 2.1 and higher support external bytecode caching.
+[src:jinja2-templating/api-p02] Bytecode caches make it possible to store the generated bytecode on the file system or a different location to avoid parsing the templates on first use.
+[src:jinja2-templating/api-p02] This is especially useful if you have a web application that is initialized on the first request and Jinja compiles many templates at once which slows down the application.
+[src:jinja2-templating/api-p02] To use a bytecode cache, instantiate it and pass it to the `Environment`.
+[src:jinja2-templating/api-p02] To implement your own bytecode cache you have to subclass this class and override `load_bytecode()` and `dump_bytecode()`.
+[src:jinja2-templating/api-p02] Both of these methods are passed a `Bucket`.
+[src:jinja2-templating/api-p02] A more advanced version of a filesystem based bytecode cache is part of Jinja.
+[src:jinja2-templating/api-p02] Subclasses have to override this method to load bytecode into a bucket.
+[src:jinja2-templating/api-p02] If they are not able to find code in the cache for the bucket, it must not do anything.
+[src:jinja2-templating/api-p02] Subclasses have to override this method to write the bytecode from a bucket back to the cache.
+[src:jinja2-templating/api-p02] If it unable to do so it must not fail silently but raise an exception.
+[src:jinja2-templating/api-p02] This method is not used by Jinja but should be implemented to allow applications to clear the bytecode cache used by a particular environment.
+[src:jinja2-templating/api-p02] Buckets are used to store the bytecode for one template.
+[src:jinja2-templating/api-p02] It’s created and initialized by the bytecode cache and passed to the loading functions.
+[src:jinja2-templating/api-p02] The buckets get an internal checksum from the cache assigned and use this to automatically reject outdated cache material.
+[src:jinja2-templating/api-p02] Individual bytecode cache subclasses don’t have to care about cache invalidation.
+[src:jinja2-templating/api-p02] The `Environment` that created the bucket.
+[src:jinja2-templating/api-p02] The bytecode if it’s loaded, otherwise `None`.
+[src:jinja2-templating/api-p02] Resets the bucket (unloads the bytecode).
+[src:jinja2-templating/api-p02] Loads bytecode from a file or file like object.
+[src:jinja2-templating/api-p02] Dump the bytecode into the file or file like object passed.
+[src:jinja2-templating/api-p02] A bytecode cache that stores bytecode on the filesystem.
+[src:jinja2-templating/api-p02] It accepts two arguments: The directory where the cache items are stored and a pattern string that is used to build the filename.
+[src:jinja2-templating/api-p02] If no directory is specified a default cache directory is selected.
+[src:jinja2-templating/api-p02] On Windows the user’s temp directory is used, on UNIX systems a directory is created for the user in the system temp directory.
+[src:jinja2-templating/api-p02] The pattern can be used to have multiple separate caches operate on the same directory.
+[src:jinja2-templating/api-p02] The default pattern is `'__jinja2_%s.cache'`.
+[src:jinja2-templating/api-p02] This bytecode cache supports clearing of the cache using the clear method.
+[src:jinja2-templating/api-p02] This class implements a bytecode cache that uses a memcache cache for storing the information.
+[src:jinja2-templating/api-p02] It does not enforce a specific memcache library (tummy’s memcache or cmemcache) but will accept any class that provides the minimal interface required.
+[src:jinja2-templating/api-p02] (Unfortunately the django cache interface is not compatible because it does not support storing binary data, only text.
+[src:jinja2-templating/api-p02] `value` is a string and `timeout` the timeout of the key.
+[src:jinja2-templating/api-p02] If timeout is not provided a default timeout or no timeout should be assumed, if it’s provided it’s an integer with the number of seconds the cache item should exist.
+[src:jinja2-templating/api-p02] If the item does not exist in the cache the return value must be `None`.
+[src:jinja2-templating/api-p02] The other arguments to the constructor are the prefix for all keys that is added before the actual cache key and the timeout for the bytecode in the cache system.
+[src:jinja2-templating/api-p02] This bytecode cache does not support clearing of used items in the cache.
+[src:jinja2-templating/api-p02] The clear method is a no-operation function.
+[src:jinja2-templating/api-p02] Added in version 2.7: Added support for ignoring memcache errors through the `ignore_memcache_errors` parameter.
+[src:jinja2-templating/api-p02] Jinja supports the Python `async` and `await` syntax.
+[src:jinja2-templating/api-p02] For the template designer, this support (when enabled) is entirely transparent, templates continue to look exactly the same.
+[src:jinja2-templating/api-p02] However, developers should be aware of the implementation as it affects what types of APIs you can use.
+[src:jinja2-templating/api-p02] Enabling it will cause the environment to compile different code behind the scenes in order to handle async and sync code in an asyncio event loop.
+[src:jinja2-templating/api-p02] Awaitable objects can be returned from functions in templates and any function call in a template will automatically await the result.
+[src:jinja2-templating/api-p02] The `await` you would normally add in Python is implied.
+[src:jinja2-templating/api-p02] For example, you can provide a method that asynchronously loads data from a database, and from the template designer’s point of view it can be called like any other function.
+[src:jinja2-templating/api-p02] Starting with Jinja 2.9 policies can be configured on the environment which can slightly influence how filters and other template constructs behave.
+[src:jinja2-templating/api-p02] They can be configured with the `policies` attribute.
+[src:jinja2-templating/api-p02] Configures the leeway default for the `truncate` filter.
+[src:jinja2-templating/api-p02] Leeway as introduced in 2.9 but to restore compatibility with older templates it can be configured to `0` to get the old behavior back.
+[src:jinja2-templating/api-p02] A string that defines the items for the `rel` attribute of generated links with the `urlize` filter.
+[src:jinja2-templating/api-p02] The default target that is issued for links from the `urlize` filter if no other target is defined by the call explicitly.
+[src:jinja2-templating/api-p02] Recognize URLs that start with these schemes in addition to the default `http://`, `https://`, and `mailto:`.
+[src:jinja2-templating/api-p02] If this is set to a value other than `None` then the `tojson` filter will dump with this function instead of the default one.
+[src:jinja2-templating/api-p02] Note that this function should accept arbitrary extra arguments which might be passed in the future from the filter.
+[src:jinja2-templating/api-p02] Currently the only argument that might be passed is `indent`.
+[src:jinja2-templating/api-p02] The default dump function is `json.dumps`.
+[src:jinja2-templating/api-p02] Keyword arguments to be passed to the dump function.
+[src:jinja2-templating/api-p02] If this is set to `True`, `{% trans %}` blocks of the i18n Extension will always unify linebreaks and surrounding whitespace as if the `trimmed` modifier was used.
+[src:jinja2-templating/api-p02] These helper functions and classes are useful if you add custom filters or functions to a Jinja environment.
+[src:jinja2-templating/api-p02] Pass the `Context` as the first argument to the decorated function when called while rendering a template.
+[src:jinja2-templating/api-p02] Can be used on functions, filters, and tests.
+[src:jinja2-templating/api-p02] If only `Context.eval_context` is needed, use `pass_eval_context()`.
+[src:jinja2-templating/api-p02] If only `Context.environment` is needed, use `pass_environment()`.
+[src:jinja2-templating/api-p02] Added in version 3.0.0: Replaces `contextfunction` and `contextfilter`.
+[src:jinja2-templating/api-p02] Pass the `EvalContext` as the first argument to the decorated function when called while rendering a template.
+[src:jinja2-templating/api-p02] If only `EvalContext.environment` is needed, use `pass_environment()`.
+[src:jinja2-templating/api-p02] Added in version 3.0.0: Replaces `evalcontextfunction` and `evalcontextfilter`.
+[src:jinja2-templating/api-p02] Pass the `Environment` as the first argument to the decorated function when called while rendering a template.
+[src:jinja2-templating/api-p02] Added in version 3.0.0: Replaces `environmentfunction` and `environmentfilter`.
+[src:jinja2-templating/api-p02] Jinja keeps internal caches for environments and lexers.
+[src:jinja2-templating/api-p02] These are used so that Jinja doesn’t have to recreate environments and lexers all the time.
+[src:jinja2-templating/api-p02] Normally you don’t have to care about that but if you are measuring memory consumption you may want to clean the caches.
+[src:jinja2-templating/api-p02] Check if the object passed is undefined.
+[src:jinja2-templating/api-p02] This does nothing more than performing an instance check against `Undefined` but looks nicer.
+[src:jinja2-templating/api-p02] This can be used for custom filters or tests that want to react to undefined variables.
+[src:jinja2-templating/api-p02] Raised if a template tries to operate on `Undefined`.
+[src:jinja2-templating/api-p02] Changed in version 2.11: If the given name is `Undefined` and no message was provided, an `UndefinedError` is raised.
+[src:jinja2-templating/api-p02] Like `TemplateNotFound` but raised if multiple templates are selected.
+[src:jinja2-templating/api-p02] This is a subclass of `TemplateNotFound` exception, so just catching the base exception will catch both.
+[src:jinja2-templating/api-p02] Changed in version 2.11: If a name in the list of names is `Undefined`, a message about it being undefined is shown rather than the empty string.
+[src:jinja2-templating/api-p02] Raised to tell the user that there is a problem with the template.
+[src:jinja2-templating/api-p02] The line number where the error occurred.
+[src:jinja2-templating/api-p02] The filename that loaded the template in the encoding of the file system (most likely utf-8, or mbcs on Windows systems).
+[src:jinja2-templating/api-p02] A generic runtime error in the template engine.
+[src:jinja2-templating/api-p02] Under some situations Jinja may raise this exception.
+[src:jinja2-templating/api-p02] Like a template syntax error, but covers cases where something in the template caused an error at compile time that wasn’t necessarily caused by a syntax error.
+[src:jinja2-templating/api-p02] However it’s a direct subclass of `TemplateSyntaxError` and has the same attributes.
+[src:jinja2-templating/api-p02] Filters are Python functions that take the value to the left of the filter as the first argument and produce a new value.
+[src:jinja2-templating/api-p02] Arguments passed to the filter are passed after the value.
+[src:jinja2-templating/api-p02] For example, the filter `{{ 42|myfilter(23) }}` is called behind the scenes as `myfilter(42, 23)`.
+[src:jinja2-templating/api-p02] To use a custom filter, write a function that takes at least a `value` argument, then register it in `Environment.filters`.
+[src:jinja2-templating/api-p02] Some decorators are available to tell Jinja to pass extra information to the filter.
+[src:jinja2-templating/api-p02] The object is passed as the first argument, making the value being filtered the second argument.
+[src:jinja2-templating/api-p02] Here’s a filter that converts line breaks into HTML `<br>` and `<p>` tags.
+[src:jinja2-templating/api-p02] It uses the eval context to check if autoescape is currently enabled before escaping the input and marking the output safe.
+[src:jinja2-templating/api-p02] Test are Python functions that take the value to the left of the test as the first argument, and return `True` or `False`.
+[src:jinja2-templating/api-p02] Arguments passed to the test are passed after the value.
+[src:jinja2-templating/api-p02] For example, the test `{{ 42 is even }}` is called behind the scenes as `is_even(42)`.
+[src:jinja2-templating/api-p02] To use a custom tests, write a function that takes at least a `value` argument, then register it in `Environment.tests`.
+[src:jinja2-templating/api-p02] Some decorators are available to tell Jinja to pass extra information to the test.
+[src:jinja2-templating/api-p02] The object is passed as the first argument, making the value being tested the second argument.
+[src:jinja2-templating/api-p02] The evaluation context (short eval context or eval ctx) makes it possible to activate and deactivate compiled features at runtime.
+[src:jinja2-templating/api-p02] Currently it is only used to enable and disable automatic escaping, but it can be used by extensions as well.
+[src:jinja2-templating/api-p02] The `autoescape` setting should be checked on the evaluation context, not the environment.
+[src:jinja2-templating/api-p02] The evaluation context will have the computed value for the current template.
+[src:jinja2-templating/api-p02] The evaluation context must not be modified at runtime.
+[src:jinja2-templating/api-p02] Modifications must only happen with a `nodes.EvalContextModifier` and `nodes.ScopedEvalContextModifier` from an extension, not on the eval context object itself.
+[src:jinja2-templating/api-p02] Custom attributes can be attached to it in extensions.
+[src:jinja2-templating/api-p02] `True` or `False` depending on if autoescaping is active or not.
+[src:jinja2-templating/api-p02] `True` if the compiler cannot evaluate some expressions at compile time.
+[src:jinja2-templating/api-p02] At runtime this should always be `False`.
+[src:jinja2-templating/api-p02] The global namespace stores variables and functions that should be available without needing to pass them to `Template.render()`.
+[src:jinja2-templating/api-p02] They are also available to templates that are imported or included without context.
+[src:jinja2-templating/api-p02] Most applications should only use `Environment.globals`.
+[src:jinja2-templating/api-p02] `Environment.globals` are intended for data that is common to all templates loaded by that environment.
+[src:jinja2-templating/api-p02] `Template.globals` are intended for data that is common to all renders of that template, and default to `Environment.globals` unless they’re given in `Environment.get_template()`, etc.
+[src:jinja2-templating/api-p02] Data that is specific to a render should be passed as context to `Template.render()`.
+[src:jinja2-templating/api-p02] Only one set of globals is used during any specific rendering.
+[src:jinja2-templating/api-p02] If templates A and B both have template globals, and B extends A, then only B’s globals are used for both when using `b.render()`.
+[src:jinja2-templating/api-p02] Environment globals should not be changed after loading any templates, and template globals should not be changed at any time after loading the template.
+[src:jinja2-templating/api-p02] Changing globals after loading a template will result in unexpected behavior as they may be shared between the environment and other templates.
+[src:jinja2-templating/api-p02] The low level API exposes functionality that can be useful to understand some implementation details, debugging purposes or advanced extension techniques.
+[src:jinja2-templating/api-p02] Unless you know exactly what you are doing we don’t recommend using any of those.
+[src:jinja2-templating/api-p02] Lex the given sourcecode and return a generator that yields tokens as tuples in the form `(lineno, token_type, value)`.
+[src:jinja2-templating/api-p02] This can be useful for extension development and debugging templates.
+[src:jinja2-templating/api-p02] If you want the preprocessing of the extensions to be applied you have to filter source through the `preprocess()` method.
+[src:jinja2-templating/api-p02] Parse the sourcecode and return the abstract syntax tree.
+[src:jinja2-templating/api-p02] This tree of nodes is used by the compiler to convert the template into executable source- or bytecode.
+[src:jinja2-templating/api-p02] This is useful for debugging or to extract information from templates.
+[src:jinja2-templating/api-p02] If you are developing Jinja extensions this gives you a good overview of the node tree generated.
+[src:jinja2-templating/api-p02] Preprocesses the source with all extensions.
+[src:jinja2-templating/api-p02] This is automatically called for all parsing and compiling methods but *not* for `lex()` because there you usually only want the actual source tokenized.
+[src:jinja2-templating/api-p02] Create a new `Context` for this template.
+[src:jinja2-templating/api-p02] The vars provided will be passed to the template.
+[src:jinja2-templating/api-p02] Per default the globals are added to the context.
+[src:jinja2-templating/api-p02] If shared is set to `True` the data is passed as is to the context without adding the globals.
+[src:jinja2-templating/api-p02] `locals` can be a dict of local variables for internal usage.
+[src:jinja2-templating/api-p02] It’s passed a `Context` that has to be created by `new_context()` of the same template or a compatible template.
+[src:jinja2-templating/api-p02] This render function is generated by the compiler from the template code and returns a generator that yields strings.
+[src:jinja2-templating/api-p02] If an exception in the template code happens the template engine will not rewrite the exception but pass through the original one.
+[src:jinja2-templating/api-p02] As a matter of fact this function should only be called from within a `render()` / `generate()` / `stream()` call.
+[src:jinja2-templating/api-p02] Each of these functions works exactly like the `root_render_func()` with the same limitations.
+[src:jinja2-templating/api-p02] This attribute is `False` if there is a newer version of the template available, otherwise `True`.
+[src:jinja2-templating/api-p02] Future Jinja versions will try not to change it in a backwards incompatible way but modifications in the Jinja core may shine through.
+[src:jinja2-templating/api-p02] For example if Jinja introduces a new AST node in later versions that may be returned by `parse()`.
+[src:jinja2-templating/api-p02] The meta API returns some information about abstract syntax trees that could help applications to implement more advanced template concepts.
+[src:jinja2-templating/api-p02] All the functions of the meta API operate on an abstract syntax tree as returned by the `Environment.parse()` method.
+[src:jinja2-templating/api-p02] Returns a set of all variables in the AST that will be looked up from the context at runtime.
+[src:jinja2-templating/api-p02] Because at compile time it’s not known which variables will be used depending on the path the execution takes at runtime, all variables are returned.
+[src:jinja2-templating/api-p02] Internally the code generator is used for finding undeclared variables.
+[src:jinja2-templating/api-p02] This is good to know because the code generator might raise a `TemplateAssertionError` during compilation and as a matter of fact this function can currently raise that exception as well.
+[src:jinja2-templating/api-p02] Finds all the referenced templates from the AST.
+[src:jinja2-templating/api-p02] This will return an iterator over all the hardcoded template extensions, inclusions and imports.
+[src:jinja2-templating/api-p02] If dynamic inheritance or inclusion is used, `None` will be yielded.
+[src:jinja2-templating/api-p02] This function is useful for dependency tracking.
+[src:jinja2-templating/api-p02] For example if you want to rebuild parts of the website after a layout template has changed.
+[src:jinja2-templating/cross-site-scripting] OWASP considers the term cross-site scripting to be a misnomer.
+[src:jinja2-templating/cross-site-scripting] It initially was an attack that was used for breaching data across sites, but gradually started to include other forms of data injection attacks.
+[src:jinja2-templating/cross-site-scripting] Security on the web depends on a variety of mechanisms, including an underlying concept of trust known as the same-origin policy.
+[src:jinja2-templating/cross-site-scripting] Content from URLs where any of these three attributes are different will have to be granted permissions separately.
+[src:jinja2-templating/cross-site-scripting] Cross-site scripting attacks use known vulnerabilities in web-based applications, their servers, or the plug-in systems on which they rely.
+[src:jinja2-templating/cross-site-scripting] Exploiting one of these, attackers fold malicious content into the content being delivered from the compromised site.
+[src:jinja2-templating/cross-site-scripting] When the resulting combined content arrives at the client-side web browser, it has all been delivered from the trusted source, and thus operates under the permissions granted to that system.
+[src:jinja2-templating/cross-site-scripting] By finding ways of injecting malicious scripts into web pages, an attacker can gain elevated access-privileges to sensitive page content, to session cookies, and to a variety of other information maintained by the browser on behalf of the user.
+[src:jinja2-templating/cross-site-scripting] Cross-site scripting attacks are a case of code injection.
+[src:jinja2-templating/cross-site-scripting] Microsoft security-engineers introduced the term "cross-site scripting" in January 2000.
+[src:jinja2-templating/cross-site-scripting] The definition gradually expanded to encompass other modes of code injection, including persistent and non-JavaScript vectors (including ActiveX, Java, VBScript, Flash, or even HTML scripts), causing some confusion to newcomers to the field of information security.
+[src:jinja2-templating/cross-site-scripting] XSS vulnerabilities have been reported and exploited since the 1990s.
+[src:jinja2-templating/cross-site-scripting] Prominent sites affected in the past include the social-networking sites Twitter and Facebook.
+[src:jinja2-templating/cross-site-scripting] Cross-site scripting flaws have since surpassed buffer overflows to become the most common publicly reported security vulnerability, with some researchers in 2007 estimating as many as 68% of websites are likely open to XSS attacks.
+[src:jinja2-templating/cross-site-scripting] There is no single, standardized classification of cross-site scripting flaws, but most experts distinguish between at least two primary flavors of XSS flaws: *non-persistent* and *persistent*.
+[src:jinja2-templating/cross-site-scripting] Some sources further divide these two groups into *traditional* (caused by server-side code flaws) and *DOM-based* (in client-side code).
+[src:jinja2-templating/cross-site-scripting] The *non-persistent* (or *reflected*) cross-site scripting vulnerability is by far the most basic type of web vulnerability.
+[src:jinja2-templating/cross-site-scripting] These holes show up when the data provided by a web client, most commonly in HTTP query parameters (e.g.
+[src:jinja2-templating/cross-site-scripting] HTML form submission), is used immediately by server-side scripts to parse and display a page of results for that user, without properly sanitizing the content.
+[src:jinja2-templating/cross-site-scripting] Because HTML documents have a flat, serial structure that mixes control statements, formatting, and the actual content, any non-validated user-supplied data included in the resulting page without proper HTML encoding, may lead to markup injection.
+[src:jinja2-templating/cross-site-scripting] A classic example of a potential vector is a site search engine: if one searches for a string, the search string will typically be redisplayed verbatim on the result page to indicate what was searched for.
+[src:jinja2-templating/cross-site-scripting] If this response does not properly escape or reject HTML control characters, a cross-site scripting flaw will ensue.
+[src:jinja2-templating/cross-site-scripting] A reflected attack is typically delivered via email or a neutral web site.
+[src:jinja2-templating/cross-site-scripting] The bait is an innocent-looking URL, pointing to a trusted site but containing the XSS vector.
+[src:jinja2-templating/cross-site-scripting] If the trusted site is vulnerable to the vector, clicking the link can cause the victim's browser to execute the injected script.
+[src:jinja2-templating/cross-site-scripting] A classic example of this is with online message boards where users are allowed to post HTML formatted messages for other users to read.
+[src:jinja2-templating/cross-site-scripting] For example, suppose there is a dating website where members scan the profiles of other members to see if they look interesting.
+[src:jinja2-templating/cross-site-scripting] For privacy reasons, this site hides everybody's real name and email.
+[src:jinja2-templating/cross-site-scripting] The only time a member's real name and email are in the browser is when the member is signed in, and they can't see anyone else's.
+[src:jinja2-templating/cross-site-scripting] Suppose that Mallory, an attacker, joins the site and wants to figure out the real names of the people she sees on the site.
+[src:jinja2-templating/cross-site-scripting] To do so, she writes a script designed to run from other users' browsers when *they* visit *her* profile.
+[src:jinja2-templating/cross-site-scripting] The script then sends a quick message to her own server, which collects this information.
+[src:jinja2-templating/cross-site-scripting] To do this, for the question "Describe your Ideal First Date", Mallory gives a short answer (to appear normal), but the text at the end of her answer is her script to steal names and emails.
+[src:jinja2-templating/cross-site-scripting] If the script is enclosed inside a `<script>` element, it won't be shown on the screen.
+[src:jinja2-templating/cross-site-scripting] Then suppose that Bob, a member of the dating site, reaches Mallory's profile, which has her answer to the First Date question.
+[src:jinja2-templating/cross-site-scripting] Her script is run automatically by the browser and steals a copy of Bob's real name and email directly from his own machine.
+[src:jinja2-templating/cross-site-scripting] Persistent XSS vulnerabilities can be more significant than other types because an attacker's malicious script is rendered automatically, without the need to individually target victims or lure them to a third-party website.
+[src:jinja2-templating/cross-site-scripting] Particularly in the case of social networking sites, the code would be further designed to self-propagate across accounts, creating a type of client-side worm.
+[src:jinja2-templating/cross-site-scripting] The methods of injection can vary a great deal; in some cases, the attacker may not even need to directly interact with the web functionality itself to exploit such a hole.
+[src:jinja2-templating/cross-site-scripting] Any data received by the web application (via email, system logs, IM etc.) that can be controlled by an attacker could become an injection vector.
+[src:jinja2-templating/cross-site-scripting] XSS vulnerabilities were originally found in applications that performed all data processing on the server side.
+[src:jinja2-templating/cross-site-scripting] User input (including an XSS vector) would be sent to the server, and then sent back to the user as a web page.
+[src:jinja2-templating/cross-site-scripting] The need for an improved user experience resulted in popularity of applications that had a majority of the presentation logic (maybe written in JavaScript) working on the client-side that pulled data, on-demand, from the server using AJAX.
+[src:jinja2-templating/cross-site-scripting] As the JavaScript code was also processing user input and rendering it in the web page content, a new sub-class of reflected XSS attacks started to appear that was called *DOM-based cross-site scripting*.
+[src:jinja2-templating/cross-site-scripting] In a DOM-based XSS attack, the malicious data does not touch the web server.
+[src:jinja2-templating/cross-site-scripting] Rather, it is being reflected by the JavaScript code, fully on the client side.
+[src:jinja2-templating/cross-site-scripting] An example of a DOM-based XSS vulnerability is the bug found in 2011 in a number of jQuery plugins.
+[src:jinja2-templating/cross-site-scripting] Prevention strategies for DOM-based XSS attacks include very similar measures to traditional XSS prevention strategies but implemented in JavaScript code and contained in web pages (i.e. input validation and escaping).
+[src:jinja2-templating/cross-site-scripting] Some JavaScript frameworks have built-in countermeasures against this and other types of attack — for example AngularJS.
+[src:jinja2-templating/cross-site-scripting] Self-XSS is a form of XSS vulnerability that relies on social engineering in order to trick the victim into executing malicious JavaScript code in their browser.
+[src:jinja2-templating/cross-site-scripting] Although it is technically not a true XSS vulnerability due to the fact it relies on socially engineering a user into executing code rather than a flaw in the affected website allowing an attacker to do so, it still poses the same risks as a regular XSS vulnerability if properly executed.
+[src:jinja2-templating/cross-site-scripting] Mutated XSS happens when the attacker injects something that is seemingly safe but is rewritten and modified by the browser while parsing the markup.
+[src:jinja2-templating/cross-site-scripting] This makes it extremely hard to detect or sanitize within the website's application logic.
+[src:jinja2-templating/cross-site-scripting] An example is rebalancing unclosed quotation marks or even adding quotation marks to unquoted values in CSS font-family properties.
+[src:jinja2-templating/cross-site-scripting] There are several escaping schemes that can be used depending on where the untrusted string needs to be placed within an HTML document including HTML entity encoding, JavaScript escaping, CSS escaping, and URL (or percent) encoding.
+[src:jinja2-templating/cross-site-scripting] Most web applications that do not need to accept rich data can use escaping to largely eliminate the risk of XSS attacks in a fairly straightforward manner.
+[src:jinja2-templating/cross-site-scripting] Performing HTML entity encoding only on the five XML significant characters is not always sufficient to prevent many forms of XSS attacks, security encoding libraries are usually easier to use.
+[src:jinja2-templating/cross-site-scripting] Some web template systems understand the structure of the HTML they produce and automatically pick an appropriate encoder.
+[src:jinja2-templating/cross-site-scripting] Many operators of particular web applications (e.g. forums and webmail) allow users to utilize HTML markup.
+[src:jinja2-templating/cross-site-scripting] When accepting HTML input from users (say, `<b>very</b> large`), output encoding (such as `&lt;b&gt;very&lt;/b&gt; large`) will not suffice since the user input needs to be rendered as HTML by the browser (so it shows as `**very** large`, instead of `<b>very</b> large`).
+[src:jinja2-templating/cross-site-scripting] Stopping an XSS attack when accepting HTML input from users is much more complex in this situation.
+[src:jinja2-templating/cross-site-scripting] Often, untrusted HTML input must be run through an HTML sanitization engine to ensure that it does not contain potentially malicious JavaScript code.
+[src:jinja2-templating/cross-site-scripting] Many validations rely on parsing out (blacklisting) specific "at risk" HTML tags such as the `<iframe>`, `<link>`, and `<script>` tag, or by only allowing certain tags and removing or escaping others.
+[src:jinja2-templating/cross-site-scripting] Another popular method is to strip user input of " and ' however this can also be bypassed as the payload can be concealed with obfuscation.
+[src:jinja2-templating/cross-site-scripting] Besides content filtering, other imperfect methods for cross-site scripting mitigation are also commonly used.
+[src:jinja2-templating/cross-site-scripting] One example is the use of additional security controls when handling cookie-based user authentication.
+[src:jinja2-templating/cross-site-scripting] Many web applications rely on session cookies for authentication between individual HTTP requests, and because client-side scripts generally have access to these cookies, simple XSS exploits can steal these cookies.
+[src:jinja2-templating/cross-site-scripting] To mitigate this particular threat (though not the XSS problem in general), many web applications tie session cookies to the IP address of the user who originally logged in, then only permit that IP to use that cookie.
+[src:jinja2-templating/cross-site-scripting] This is effective in most situations (if an attacker is only after the cookie), but obviously breaks down in situations where an attacker is behind the same NATed IP address or web proxy as the victim, or the victim is changing his or her mobile IP.
+[src:jinja2-templating/cross-site-scripting] Another mitigation present in Internet Explorer (since version 6), Firefox (since version 2.0.0.5), Safari (since version 4), Opera (since version 9.5) and Google Chrome, is an *HttpOnly* flag which allows a web server to set a cookie that is unavailable to client-side scripts.
+[src:jinja2-templating/cross-site-scripting] While beneficial, the feature can neither fully prevent cookie theft nor prevent attacks within the browser.
+[src:jinja2-templating/cross-site-scripting] While Web 2.0 and Ajax developers require the use of JavaScript, some web applications are written to allow operation without the need for any client-side scripts.
+[src:jinja2-templating/cross-site-scripting] This allows users, if they choose, to disable scripting in their browsers before using the application.
+[src:jinja2-templating/cross-site-scripting] In this way, even potentially malicious client-side scripts could be inserted unescaped on a page, and users would not be susceptible to XSS attacks.
+[src:jinja2-templating/cross-site-scripting] Some browsers or browser plugins can be configured to disable client-side scripts on a per-domain basis.
+[src:jinja2-templating/cross-site-scripting] This approach is of limited value if scripting is allowed by default, since it blocks bad sites only *after* the user knows that they are bad, which is too late.
+[src:jinja2-templating/cross-site-scripting] Functionality that blocks all scripting and external inclusions by default and then allows the user to enable it on a per-domain basis is more effective.
+[src:jinja2-templating/cross-site-scripting] This has been possible for a long time in Internet Explorer (since version 4) by setting up its so called "Security Zones", and in Opera (since version 9) using its "Site Specific Preferences".
+[src:jinja2-templating/cross-site-scripting] A solution for Firefox and other Gecko-based browsers is the open source NoScript add-on which, in addition to the ability to enable scripts on a per-domain basis, provides some XSS protection even when scripts are enabled.
+[src:jinja2-templating/cross-site-scripting] Another problem with script blocking is that many users do not understand it, and do not know how to properly secure their browsers.
+[src:jinja2-templating/cross-site-scripting] Yet another drawback is that many sites do not work without client-side scripting, forcing users to disable protection for that site and opening their systems to vulnerabilities.
+[src:jinja2-templating/cross-site-scripting] The Firefox NoScript extension enables users to allow scripts selectively from a given page while disallowing others on the same page.
+[src:jinja2-templating/cross-site-scripting] For example, scripts from example.com could be allowed, while scripts from advertisingagency.com that are attempting to run on the same page could be disallowed.
+[src:jinja2-templating/cross-site-scripting] Trusted types changes Web APIs to check that values have been trademarked as trusted.
+[src:jinja2-templating/cross-site-scripting] As long as programs only trademark trustworthy values, an attacker who controls a JavaScript string value cannot cause XSS.
+[src:jinja2-templating/cross-site-scripting] Trusted types are designed to be auditable by blue teams.
+[src:jinja2-templating/cross-site-scripting] Another defense approach is to use automated tools that will remove XSS malicious code in web pages, these tools use static analysis and/or pattern matching methods to identify malicious codes potentially and secure them using methods like escaping.
+[src:jinja2-templating/cross-site-scripting] When a cookie is set with the `SameSite=Strict` parameter, it is stripped from all cross-origin requests.
+[src:jinja2-templating/cross-site-scripting] When set with `SameSite=Lax`, it is stripped from all non-"safe" cross-origin requests (that is, requests other than GET, OPTIONS, and TRACE which have read-only semantics).
+[src:jinja2-templating/cross-site-scripting] The feature is implemented in Google Chrome since version 63 and Firefox since version 60.
+[src:jinja2-templating/html] Web browsers receive HTML documents from a web server or from local storage and render the documents into multimedia web pages.
+[src:jinja2-templating/html] HTML describes the structure of a web page semantically and originally included cues for its appearance.
+[src:jinja2-templating/html] HTML elements are the building blocks of HTML pages.
+[src:jinja2-templating/html] With HTML constructs, images and other objects such as interactive forms may be embedded into the rendered page.
+[src:jinja2-templating/html] HTML provides a means to create structured documents by denoting structural semantics for text such as headings, paragraphs, lists, links, quotes, and other items.
+[src:jinja2-templating/html] HTML elements are delineated by *tags*, written using angle brackets.
+[src:jinja2-templating/html] Tags such as `<img>` and `<input>` directly introduce content into the page.
+[src:jinja2-templating/html] Other tags such as `<p>` and its corresponding closing tag `</p>` surround and provide information about document text and may include sub-element tags.
+[src:jinja2-templating/html] Browsers do not display the HTML tags, but use them to interpret the content of the page.
+[src:jinja2-templating/html] HTML can embed programs written in a scripting language such as JavaScript, which affects the behavior and content of web pages.
+[src:jinja2-templating/html] The inclusion of CSS defines the look and layout of content.
+[src:jinja2-templating/html] The World Wide Web Consortium (W3C), former maintainer of the HTML and current maintainer of the CSS standards, has encouraged the use of CSS over explicit presentational HTML since 1997.
+[src:jinja2-templating/html] A form of HTML, known as HTML5, is used to display video and audio, primarily using the `<canvas>` element, together with JavaScript.
+[src:jinja2-templating/html] In 1980, the physicist Tim Berners-Lee, a contractor at CERN, proposed and prototyped ENQUIRE, a system for CERN researchers to use and share documents.
+[src:jinja2-templating/html] In 1989, Berners-Lee wrote a memo proposing an Internet-based hypertext system.
+[src:jinja2-templating/html] Berners-Lee specified HTML and wrote the browser and server software in late 1990.
+[src:jinja2-templating/html] That year, Berners-Lee and CERN data systems engineer Robert Cailliau collaborated on a joint request for funding, but the project was not formally adopted by CERN.
+[src:jinja2-templating/html] In his personal notes of 1990, Berners-Lee listed "some of the many areas in which hypertext is used"; an encyclopedia is the first entry.
+[src:jinja2-templating/html] The first publicly available description of HTML was a document called "HTML Tags", first mentioned on the Internet by Tim Berners-Lee in late 1991.
+[src:jinja2-templating/html] It describes 18 elements comprising the initial, relatively simple design of HTML.
+[src:jinja2-templating/html] Except for the hyperlink tag, these were strongly influenced by CERN SGML, an in-house Standard Generalized Markup Language (SGML)-based documentation format at CERN.
+[src:jinja2-templating/html] Eleven of these elements still exist in HTML 4.
+[src:jinja2-templating/html] HTML is a markup language that web browsers use to interpret and compose text, images, and other material into visible or audible web pages.
+[src:jinja2-templating/html] Default characteristics for every item of HTML markup are defined in the browser, and these characteristics can be altered or enhanced by the web page designer's additional use of CSS.
+[src:jinja2-templating/html] These formatting commands were derived from the commands used by typesetters to manually format documents.
+[src:jinja2-templating/html] However, the SGML concept of generalized markup is based on elements (nested annotated ranges with attributes) rather than merely print effects, with separate structure and markup.
+[src:jinja2-templating/html] HTML has been progressively moved in this direction with CSS.
+[src:jinja2-templating/html] Berners-Lee considered HTML to be an application of SGML.
+[src:jinja2-templating/html] The draft expired after six months, but was notable for its acknowledgment of the NCSA Mosaic browser's custom tag for embedding in-line images, reflecting the IETF's philosophy of basing standards on successful prototypes.
+[src:jinja2-templating/html] Similarly, Dave Raggett's competing Internet Draft, "HTML+ (Hypertext Markup Format)", from late 1993, suggested standardizing already-implemented features like tables and fill-out forms.
+[src:jinja2-templating/html] After the HTML and HTML+ drafts expired in early 1994, the IETF created an HTML Working Group.
+[src:jinja2-templating/html] In 1995, this working group completed "HTML 2.0", the first HTML specification intended to be treated as a standard against which future implementations should be based.
+[src:jinja2-templating/html] Further development under the auspices of the IETF was stalled by competing interests.
+[src:jinja2-templating/html] Since 1996, the HTML specifications have been maintained, with input from commercial software vendors, by the World Wide Web Consortium (W3C).
+[src:jinja2-templating/html] In 2000, HTML became an international standard (ISO/IEC 15445:2000).
+[src:jinja2-templating/html] HTML 4.01 was published in late 1999, with further errata published through 2001.
+[src:jinja2-templating/html] In 2004, development began on HTML5 in the Web Hypertext Application Technology Working Group (WHATWG), which became a joint deliverable with the W3C in 2008, and was completed and standardized on 28 October 2014.
+[src:jinja2-templating/html] It was the first version developed and standardized exclusively by the W3C, as the IETF had closed its HTML Working Group on 12 September 1996.
+[src:jinja2-templating/html] were omitted due to a mutual agreement between the two companies.
+[src:jinja2-templating/html] HTML 4 is an SGML application conforming to ISO 8879 – SGML.
+[src:jinja2-templating/html] was reissued with minor edits without incrementing the version number.
+[src:jinja2-templating/html] HTML", based on HTML 4.01 Strict) was published as an ISO/IEC international standard.
+[src:jinja2-templating/html] (ISO/IEC Joint Technical Committee 1, Subcommittee 34 – Document description and processing languages).
+[src:jinja2-templating/html] After HTML 4.01, there were no new versions of HTML for many years, as the development of the parallel, XML-based language XHTML occupied the W3C's HTML Working Group.
+[src:jinja2-templating/html] an informal CERN document listing 18 HTML tags, was first mentioned in public.
+[src:jinja2-templating/html] IIIR Working Group as an Internet Draft (a rough proposal for a standard).
+[src:jinja2-templating/html] HTML+ was published by the IETF as an Internet Draft and was a competing proposal to the Hypertext Markup Language draft.
+[src:jinja2-templating/html] It included many of the capabilities that were in Raggett's HTML+ proposal, such as support for tables, text flow around figures, and the display of complex mathematical formulas.
+[src:jinja2-templating/html] but HTML 3.0 did not succeed for several reasons.
+[src:jinja2-templating/html] The draft was considered very large at 150 pages and the pace of browser development, as well as the number of interested parties, had outstripped the resources of the IETF.
+[src:jinja2-templating/html] Browser vendors, including Microsoft and Netscape at the time, chose to implement different subsets of HTML 3's draft features as well as to introduce their own extensions to it.
+[src:jinja2-templating/html] has abandoned any attempt to be an SGML application and has explicitly defined its own "html" serialization, in addition to an alternative XML-based XHTML5 serialization.
+[src:jinja2-templating/html] On 14 February 2011, the W3C extended the charter of its HTML Working Group with clear milestones for HTML5.
+[src:jinja2-templating/html] In May 2011, the working group advanced HTML5 to "Last Call", an invitation to communities inside and outside W3C to confirm the technical soundness of the specification.
+[src:jinja2-templating/html] The W3C developed a comprehensive test suite to achieve broad interoperability for the full specification by 2014, which was the target date for recommendation.
+[src:jinja2-templating/html] In January 2011, the WHATWG renamed its "HTML5" living standard to "HTML".
+[src:jinja2-templating/html] The W3C nevertheless continued its project to release HTML5.
+[src:jinja2-templating/html] W3C will continue the HTML5 specification work, focusing on a single definitive standard, which is considered a "snapshot" by WHATWG.
+[src:jinja2-templating/html] The WHATWG organization will continue its work with HTML5 as a "Living Standard".
+[src:jinja2-templating/html] The concept of a living standard is that it is never complete and is always being updated and improved.
+[src:jinja2-templating/html] New features can be added but functionality will not be removed.
+[src:jinja2-templating/html] In December 2012, W3C designated HTML5 as a Candidate Recommendation.
+[src:jinja2-templating/html] is "two 100% complete and fully interoperable implementations".
+[src:jinja2-templating/html] In September 2014, W3C moved HTML5 to Proposed Recommendation.
+[src:jinja2-templating/html] meaning the specification process is complete.
+[src:jinja2-templating/html] XHTML is a separate language that began as a reformulation of HTML 4.01 using XML 1.0.
+[src:jinja2-templating/html] It is now referred to as *the XML syntax for HTML* and is no longer being developed as a separate standard.
+[src:jinja2-templating/html] On 28 May 2019, the W3C announced that WHATWG would be the sole publisher of the HTML and DOM standards.
+[src:jinja2-templating/html] The W3C and WHATWG had been publishing competing standards since 2012.
+[src:jinja2-templating/html] While the W3C standard was identical to the WHATWG in 2007 the standards have since progressively diverged due to different design decisions.
+[src:jinja2-templating/html] The WHATWG "Living Standard" had been the *de facto* web standard for some time.
+[src:jinja2-templating/html] The W3C periodically reviews and publishes snapshots of the WHATWG HTML specification as W3C Recommendations.
+[src:jinja2-templating/html] HTML markup consists of several key components, including those called *tags* (and their *attributes*), character-based *data types*, *character references* and *entity references*.
+[src:jinja2-templating/html] HTML tags most commonly come in pairs like `<h1>` and `</h1>`, although some represent *empty elements* and so are unpaired, for example `<img>`.
+[src:jinja2-templating/html] The first tag in such a pair is the *start tag*, and the second is the *end tag* (they are also called *opening tags* and *closing tags*).
+[src:jinja2-templating/html] Another important component is the HTML *document type declaration*, which triggers standards mode rendering.
+[src:jinja2-templating/html] The text between `<html>` and `</html>` describes the web page, and the text between `<body>` and `</body>` is the visible page content.
+[src:jinja2-templating/html] The markup text `<title>This is a title</title>` defines the browser page title shown on browser tabs and window titles and the tag `<div>` defines a division of the page used for easy styling.
+[src:jinja2-templating/html] Between `<head>` and `</head>`, a `<meta>` element can be used to define webpage metadata.
+[src:jinja2-templating/html] The Document Type Declaration `<!DOCTYPE html>` is for HTML5.
+[src:jinja2-templating/html] If a declaration is not included, various browsers will revert to "quirks mode" for rendering.
+[src:jinja2-templating/html] HTML documents imply a structure of nested HTML elements.
+[src:jinja2-templating/html] These are indicated in the document by HTML *tags*, enclosed in angle brackets.
+[src:jinja2-templating/html] In the simple, general case, the extent of an element is indicated by a pair of tags: a "start tag" `<p>` and "end tag" `</p>`.
+[src:jinja2-templating/html] The text content of the element, if any, is placed between these tags.
+[src:jinja2-templating/html] Tags may also enclose further tag markup between the start and end, including a mixture of tags and text.
+[src:jinja2-templating/html] This indicates further (nested) elements, as children of the parent element.
+[src:jinja2-templating/html] The start tag may also include the element's *attributes* within the tag.
+[src:jinja2-templating/html] Some elements, such as the line break `<br>` do not permit *any* embedded content, either text or further tags.
+[src:jinja2-templating/html] These require only a single empty tag (akin to a start tag) and do not use an end tag.
+[src:jinja2-templating/html] Many tags, particularly the closing end tag for the very commonly used paragraph element `<p>`, are optional.
+[src:jinja2-templating/html] An HTML browser or other agent can infer the closure for the end of an element from the context and the structural rules defined by the HTML standard.
+[src:jinja2-templating/html] These rules are complex and not widely understood by most HTML authors.
+[src:jinja2-templating/html] The general form of an HTML element is therefore: `<tag attribute1="value1" attribute2="value2">''content''</tag>`.
+[src:jinja2-templating/html] Some HTML elements are defined as *empty elements* and take the form `<tag attribute1="value1" attribute2="value2">`.
+[src:jinja2-templating/html] Empty elements may enclose no content, for instance, the `<br>` tag or the inline `<img>` tag.
+[src:jinja2-templating/html] The name of an HTML element is the name used in the tags.
+[src:jinja2-templating/html] The end tag's name is preceded by a slash character `/`.
+[src:jinja2-templating/html] If a tag has no content, an end tag is not allowed.
+[src:jinja2-templating/html] If attributes are not mentioned, default values are used in each case.
+[src:jinja2-templating/html] Header of the HTML document: `<head>...</head>`.
+[src:jinja2-templating/html] CSS can substantially change the rendering.
+[src:jinja2-templating/html] The difference between `<br>` and `<p>` is that `<br>` breaks a line without altering the semantic structure of the page, whereas `<p>` sections the page into paragraphs.
+[src:jinja2-templating/html] The element `<br>` is an *empty element* in that, although it may have attributes, it can take no content and it must not have an end tag.
+[src:jinja2-templating/html] The `href` attribute holds the URL address of the link.
+[src:jinja2-templating/html] Comments can help in the understanding of the markup and do not display in the webpage.
+[src:jinja2-templating/html] Most of the attributes of an element are name–value pairs, separated by `=` and written within the start tag of an element after the element's name.
+[src:jinja2-templating/html] The value may be enclosed in single or double quotes, although values consisting of certain characters can be left unquoted in HTML (but not XHTML).
+[src:jinja2-templating/html] Leaving attribute values unquoted is considered unsafe.
+[src:jinja2-templating/html] In contrast with name-value pair attributes, there are some attributes that affect the element simply by their presence in the start tag of the element, like the `ismap` attribute for the `img` element.
+[src:jinja2-templating/html] Most elements take the language-related attribute `dir` to specify text direction, such as with "rtl" for right-to-left text in, for example, Arabic, Persian or Hebrew.
+[src:jinja2-templating/html] As of version 4.0, HTML defines a set of 252 character entity references and a set of 1,114,050 numeric character references, both of which allow individual characters to be written via simple markup, rather than literally.
+[src:jinja2-templating/html] A literal character and its markup counterpart are considered equivalent and are rendered identically.
+[src:jinja2-templating/html] The ability to "escape" characters in this way allows for the characters `<` and `&` (when written as `&lt;` and `&amp;`, respectively) to be interpreted as character data, rather than markup.
+[src:jinja2-templating/html] For example, a literal `<` normally indicates the start of a tag, and `&` normally indicates the start of a character entity reference or numeric character reference; writing it as `&amp;` or `&#x26;` or `&#38;` allows `&` to be included in the content of an element or in the value of an attribute.
+[src:jinja2-templating/html] The double-quote character (`"`), when not used to quote an attribute value, must also be escaped as `&quot;` or `&#x22;` or `&#34;` when it appears within the attribute value itself.
+[src:jinja2-templating/html] Equivalently, the single-quote character (`'`), when not used to quote an attribute value, must also be escaped as `&#x27;` or `&#39;` (or as `&apos;` in HTML5 or XHTML documents) when it appears within the attribute value itself.
+[src:jinja2-templating/html] If document authors overlook the need to escape such characters, some browsers can be very forgiving and try to use context to guess their intent.
+[src:jinja2-templating/html] The result is still invalid markup, which makes the document less accessible to other browsers and to other user agents that may try to parse the document for search and indexing purposes for example.
+[src:jinja2-templating/html] Escaping also allows for characters that are not easily typed, or that are not available in the document's character encoding, to be represented within the element and attribute content.
+[src:jinja2-templating/html] Unicode character encodings such as UTF-8 are compatible with all modern browsers and allow direct access to almost all the characters of the world's writing systems.
+[src:jinja2-templating/html] HTML defines several data types for element content, such as script data and stylesheet data, and a plethora of types for attribute values, including IDs, names, URIs, numbers, units of length, languages, media descriptors, colors, character encodings, dates and times, and so on.
+[src:jinja2-templating/html] All of these data types are specializations of character data.
+[src:jinja2-templating/html] HTML documents are required to start with a document type declaration (informally, a "doctype").
+[src:jinja2-templating/html] In browsers, the doctype helps to define the rendering mode—particularly whether to use quirks mode.
+[src:jinja2-templating/html] The original purpose of the doctype was to enable the parsing and validation of HTML documents by SGML tools based on the document type definition (DTD).
+[src:jinja2-templating/html] The DTD to which the DOCTYPE refers contains a machine-readable grammar specifying the permitted and prohibited content for a document conforming to such a DTD.
+[src:jinja2-templating/html] Browsers, on the other hand, do not implement HTML as an application of SGML and as consequence do not read the DTD.
+[src:jinja2-templating/html] This declaration references the DTD for the "strict" version of HTML 4.01.
+[src:jinja2-templating/html] SGML-based validators read the DTD in order to properly parse the document and to perform validation.
+[src:jinja2-templating/html] In modern browsers, a valid doctype activates standards mode as opposed to quirks mode.
+[src:jinja2-templating/html] In addition, HTML 4.01 provides Transitional and Frameset DTDs, as explained below.
+[src:jinja2-templating/html] The transitional type is the most inclusive, incorporating current tags as well as older or "deprecated" tags, with the Strict DTD excluding deprecated tags.
+[src:jinja2-templating/html] The frameset has all tags necessary to make frames on a page along with the tags included in transitional type.
+[src:jinja2-templating/html] Semantic HTML is a way of writing HTML that emphasizes the meaning of the encoded information over its presentation (look).
+[src:jinja2-templating/html] HTML has included semantic markup from its inception, but has also included presentational markup, such as `<font>`, `<i>`, and `<center>` tags.
+[src:jinja2-templating/html] There are also the semantically neutral div and span tags.
+[src:jinja2-templating/html] Since the late 1990s, when Cascading Style Sheets were beginning to work in most browsers, web authors have been encouraged to avoid the use of presentational HTML markup with a view to the separation of content and presentation.
+[src:jinja2-templating/html] In a 2001 discussion of the Semantic Web, Tim Berners-Lee and others gave examples of ways in which intelligent software "agents" may one day automatically crawl the web and find, filter, and correlate previously unrelated, published facts for the benefit of human users.
+[src:jinja2-templating/html] Such agents are not commonplace even now, but some of the ideas of Web 2.0, mashups and price comparison websites may be coming close.
+[src:jinja2-templating/html] An important type of web agent that does crawl and read web pages automatically, without prior knowledge of what it might find, is the web crawler or search-engine spider.
+[src:jinja2-templating/html] These software agents are dependent on the semantic clarity of web pages they find as they use various techniques and algorithms to read and index millions of web pages a day and provide web users with search facilities without which the World Wide Web's usefulness would be greatly reduced.
+[src:jinja2-templating/html] Presentational markup tags are deprecated in current HTML and XHTML recommendations.
+[src:jinja2-templating/html] The majority of presentational features from previous versions of HTML are no longer allowed as they lead to poorer accessibility, higher cost of site maintenance, and larger document sizes.
+[src:jinja2-templating/html] Good semantic HTML also improves the accessibility of web documents (see also Web Content Accessibility Guidelines).
+[src:jinja2-templating/html] For example, when a screen reader or audio browser can correctly ascertain the structure of a document, it will not waste the visually impaired user's time by reading out repeated or irrelevant information when it has been marked up correctly.
+[src:jinja2-templating/html] HTML documents can be delivered by the same means as any other computer file.
+[src:jinja2-templating/html] However, they are most often delivered either by HTTP from a web server or by email.
+[src:jinja2-templating/html] The World Wide Web is composed primarily of HTML documents transmitted from web servers to web browsers using the Hypertext Transfer Protocol (HTTP).
+[src:jinja2-templating/html] However, HTTP is used to serve images, sound, and other content, in addition to HTML.
+[src:jinja2-templating/html] To allow the web browser to know how to handle each document it receives, other information is transmitted along with the document.
+[src:jinja2-templating/html] This meta data usually includes the MIME type (e.g., text/html or application/xhtml+xml) and the character encoding (see Character encodings in HTML).
+[src:jinja2-templating/html] In modern browsers, the MIME type that is sent with the HTML document may affect how the document is initially interpreted.
+[src:jinja2-templating/html] A document sent with the XHTML MIME type is expected to be well-formed XML; syntax errors may cause the browser to fail to render it.
+[src:jinja2-templating/html] The same document sent with the HTML MIME type might be displayed successfully since some browsers are more lenient with HTML.
+[src:jinja2-templating/html] The W3C recommendations state that XHTML 1.0 documents that follow guidelines set forth in the recommendation's Appendix C may be labeled with either MIME Type.
+[src:jinja2-templating/html] XHTML 1.1 also states that XHTML 1.1 documents should be labeled with either MIME type.
+[src:jinja2-templating/html] Most graphical email clients allow the use of a subset of HTML (often ill-defined) to provide formatting and semantic markup not available with plain text.
+[src:jinja2-templating/html] This may include typographic information like colored headings, emphasized and quoted text, inline images and diagrams.
+[src:jinja2-templating/html] Many such clients include both a GUI editor for composing HTML e-mail messages and a rendering engine for displaying them.
+[src:jinja2-templating/html] Use of HTML in e-mail is criticized by some because of compatibility issues, because it can help disguise phishing attacks, because of accessibility issues for blind or visually impaired people, because it can confuse spam filters and because the message size is larger than plain text.
+[src:jinja2-templating/html] The most common filename extension for files containing HTML is .html.
+[src:jinja2-templating/html] A common abbreviation of this is .htm, which originated because some operating systems limit file extensions to three letters.
+[src:jinja2-templating/html] An HTML Application (HTA; file extension .hta) is a Microsoft Windows application that uses HTML and Dynamic HTML in a browser to provide the application's graphical interface.
+[src:jinja2-templating/html] A regular HTML file is confined to the security model of the web browser's security, communicating only to web servers and manipulating only web page objects and site cookies.
+[src:jinja2-templating/html] An HTA runs as a fully trusted application and therefore has more privileges, like creation/editing/removal of files and Windows Registry entries.
+[src:jinja2-templating/html] Because they operate outside the browser's security model, HTAs cannot be executed via HTTP, but must be downloaded (just like an EXE file) and executed from local file system.
+[src:jinja2-templating/html] Since its inception, HTML and its associated protocols gained acceptance relatively quickly.
+[src:jinja2-templating/html] However, no clear standards existed in the early years of the language.
+[src:jinja2-templating/html] Though its creators originally conceived of HTML as a semantic language devoid of presentation details, practical uses pushed many presentational elements and attributes into the language, driven largely by the various browser vendors.
+[src:jinja2-templating/html] The latest standards surrounding HTML reflect efforts to overcome the sometimes chaotic development of the language and to create a rational foundation for building both meaningful and well-presented documents.
+[src:jinja2-templating/html] To return HTML to its role as a semantic language, the W3C has developed style languages such as CSS and XSL to shoulder the burden of presentation.
+[src:jinja2-templating/html] In conjunction, the HTML specification has slowly reined in the presentational elements.
+[src:jinja2-templating/html] There are two axes differentiating various variations of HTML as currently specified: SGML-based HTML versus XML-based HTML (referred to as XHTML) on one axis, and strict versus transitional (loose) versus frameset on the other axis.
+[src:jinja2-templating/html] One difference in the latest HTML specifications lies in the distinction between the SGML-based specification and the XML-based specification.
+[src:jinja2-templating/html] The XML-based specification is usually called XHTML to distinguish it clearly from the more traditional definition.
+[src:jinja2-templating/html] However, the root element name continues to be "html" even in the XHTML-specified HTML.
+[src:jinja2-templating/html] The W3C intended XHTML 1.0 to be identical to HTML 4.01 except where limitations of XML over the more complex SGML require workarounds.
+[src:jinja2-templating/html] Because XHTML and HTML are closely related, they are sometimes documented in parallel.
+[src:jinja2-templating/html] In such circumstances, some authors conflate the two names as (X)HTML or X(HTML).
+[src:jinja2-templating/html] Like HTML 4.01, XHTML 1.0 has three sub-specifications: strict, transitional, and frameset.
+[src:jinja2-templating/html] Aside from the different opening declarations for a document, the differences between an HTML 4.01 and XHTML 1.0 document—in each of the corresponding DTDs—are largely syntactic.
+[src:jinja2-templating/html] The underlying syntax of HTML allows many shortcuts that XHTML does not, such as elements with optional opening or closing tags, and even empty elements which must not have an end tag.
+[src:jinja2-templating/html] By contrast, XHTML requires all elements to have an opening tag and a closing tag.
+[src:jinja2-templating/html] XHTML, however, also introduces a new shortcut: an XHTML tag may be opened and closed within the same tag, by including a slash before the end of the tag like this: `<br/>`.
+[src:jinja2-templating/html] The introduction of this shorthand, which is not used in the SGML declaration for HTML 4.01, may confuse earlier software unfamiliar with this new convention.
+[src:jinja2-templating/html] A fix for this is remove the slash preceding the closing angle bracket, as such: `<br>`.
+[src:jinja2-templating/html] To understand the subtle differences between HTML and XHTML, consider the transformation of a valid and well-formed XHTML 1.0 document that adheres to Appendix C (see below) into a valid HTML 4.01 document.
+[src:jinja2-templating/html] Change the document type declaration from XHTML 1.0 to HTML 4.01.
+[src:jinja2-templating/html] Ensure that the document's MIME type is set to `text/html`.
+[src:jinja2-templating/html] For both HTML and XHTML, this comes from the HTTP `Content-Type` header sent by the server.
+[src:jinja2-templating/html] Change the XML empty-element syntax to an HTML style empty element (`<br/>` to `<br>`).
+[src:jinja2-templating/html] Those are the main changes necessary to translate a document from XHTML 1.0 to HTML 4.01.
+[src:jinja2-templating/html] To translate from HTML to XHTML would also require the addition of any omitted opening or closing tags.
+[src:jinja2-templating/html] Whether coding in HTML or XHTML it may just be best to always include the optional tags within an HTML document rather than remembering which tags can be omitted.
+[src:jinja2-templating/html] A well-formed XHTML document adheres to all the syntax requirements of XML.
+[src:jinja2-templating/html] A valid document adheres to the content specification for XHTML, which describes the document structure.
+[src:jinja2-templating/html] The W3C recommends several conventions to ensure an easy migration between HTML and XHTML.
+[src:jinja2-templating/html] By carefully following the W3C's compatibility guidelines, a user agent should be able to interpret the document equally as HTML or XHTML.
+[src:jinja2-templating/html] For documents that are XHTML 1.0 and have been made compatible in this way, the W3C permits them to be served either as HTML (with a `text/html` MIME type), or as XHTML (with an `application/xhtml+xml` or `application/xml` MIME type).
+[src:jinja2-templating/html] When delivered as XHTML, browsers should use an XML parser, which adheres strictly to the XML specifications for parsing the document's contents.
+[src:jinja2-templating/html] HTML 4 defined three different versions of the language: Strict, Transitional (once called Loose), and Frameset.
+[src:jinja2-templating/html] The Strict version is intended for new documents and is considered best practice, while the Transitional and Frameset versions were developed to make it easier to transition documents that conformed to older HTML specifications or did not conform to any specification to a version of HTML 4.
+[src:jinja2-templating/html] The Transitional and Frameset versions allow for presentational markup, which is omitted in the Strict version.
+[src:jinja2-templating/html] Instead, cascading style sheets are encouraged to improve the presentation of HTML documents.
+[src:jinja2-templating/html] Because XHTML 1 only defines an XML syntax for the language defined by HTML 4, the same differences apply to XHTML 1 as well.
+[src:jinja2-templating/html] The Frameset version includes everything in the Transitional version, as well as the `frameset` element (used instead of `body`) and the `frame` element.
+[src:jinja2-templating/html] In addition to the above transitional differences, the frameset specifications (whether XHTML 1.0 or HTML 4.01) specify a different content model, with `frameset` replacing `body`, that contains either `frame` elements, or optionally `noframes` with a `body`.
+[src:jinja2-templating/html] As this list demonstrates, the loose versions of the specification are maintained for legacy support.
+[src:jinja2-templating/html] However, contrary to popular misconceptions, the move to XHTML does not imply a removal of this legacy support.
+[src:jinja2-templating/html] Rather the X in XML stands for extensible and the W3C is modularizing the entire specification and opens it up to independent extensions.
+[src:jinja2-templating/html] The primary achievement in the move from XHTML 1.0 to XHTML 1.1 is the modularization of the entire specification.
+[src:jinja2-templating/html] The strict version of HTML is deployed in XHTML 1.1 through a set of modular extensions to the base XHTML 1.1 specification.
+[src:jinja2-templating/html] Likewise, someone looking for the loose (transitional) or frameset specifications will find similar extended XHTML 1.1 support (much of it is contained in the legacy or frame modules).
+[src:jinja2-templating/html] Modularization also allows for separate features to develop on their own timetable.
+[src:jinja2-templating/html] So for example, XHTML 1.1 will allow quicker migration to emerging XML standards such as MathML (a presentational and semantic math language based on XML) and XForms—a new highly advanced web-form technology to replace the existing HTML forms.
+[src:jinja2-templating/html] In summary, the HTML 4 specification primarily reined in all the various HTML implementations into a single clearly written specification based on SGML.
+[src:jinja2-templating/html] XHTML 1.0, ported this specification, as is, to the new XML-defined specification.
+[src:jinja2-templating/html] Next, XHTML 1.1 takes advantage of the extensible nature of XML and modularizes the whole specification.
+[src:jinja2-templating/html] XHTML 2.0 was intended to be the first step in adding new features to the specification in a standards-body-based approach.
+[src:jinja2-templating/html] The HTML Living Standard, which is developed by WHATWG, is the official version, while W3C HTML5 is no longer separate from WHATWG.
+[src:jinja2-templating/html] WYSIWYG editors (*what you see is what you get*), are HTML editors in which the user lays out everything as it is to appear in the HTML document using a graphical user interface (GUI), such as Microsoft FrontPage, often similar to word processors.
+[src:jinja2-templating/html] The editor renders the document rather than showing the code, so authors do not require extensive knowledge of HTML.
+[src:jinja2-templating/html] The WYSIWYG editing model has been criticized, primarily because of the low quality of the generated code; there are various developers advocating a change to the WYSIWYM model (*what you see is what you mean*).
+[src:jinja2-templating/jinja-template-engine] The Jinja template engine allows customization of tags, filters (for formatting or transforming values), tests (for evaluating conditions), and globals.
+[src:jinja2-templating/jinja-template-engine] Also, unlike the Django template engine, Jinja allows the template designer to call functions with arguments on objects.
+[src:jinja2-templating/jinja-template-engine] Jinja is the default template engine for Flask, as well as Home Assistant's Automations.
+[src:jinja2-templating/jinja-template-engine] It is also used by Ansible, Trac, and Salt.
+[src:jinja2-templating/jinja-template-engine] It is also used to make SQL macros, for example for use with dbt.
+[src:jinja2-templating/jinja-template-engine] Jinja, like Smarty, also ships with an easy-to-use filter system similar to the Unix pipeline.
+[src:jinja2-templating/jinja-template-engine] The syntax for printing output in Jinja is using the double curly braces, for example `{{ Hello, World! }}`.
+[src:jinja2-templating/jinja-template-engine] Statements which set variables in jinja or those which do not have an output can be wrapped within `{%` and `%}`, using the `set` keyword.
+[src:jinja2-templating/jinja-template-engine] For example `{% set foo = 42 %}` sets a variable called `foo` with a value of 42.
+[src:jinja2-templating/jinja-template-engine] Similar to above, comments in jinja can be written using a number sign (`#`) instead of a percentage (`%`), for example, `{# helpful comment #}`.
+[src:jinja2-templating/jinja-template-engine] The syntax for creating a filter in Jinja is a vertical bar (`|`), for example `{{ variable|filter }}`.
+[src:jinja2-templating/jinja-template-engine] A variable can have multiple filters, for example `{{ variable|filter|filter }}`).
+[src:jinja2-templating/jinja-template-engine] The syntax for creating a test in Jinja is the keyword `is` as well as the conditions for evaluating the validity of a test, such as for example `{% if variable is divisibleby 10 %}do something{% endif %}`).
+[src:jinja2-templating/jinja-template-engine] For loops can be used to iterate over sequences, while retaining their object properties.
+[src:jinja2-templating/jinja-template-engine] The following example demonstrates iterating over a list of users with `username` and `password` fields.
+[src:jinja2-templating/jinja-template-engine] Although `break` and `continue` are not allowed inside loops, sequences can be filtered.
+[src:jinja2-templating/jinja-template-engine] Note the minus sign (`-`) after the tag `{%`: If you add a minus sign (`-`) to the start or end of a block (e.g. a For tag), a comment, or a variable expression, the whitespaces before or after that block will be removed.
+[src:jinja2-templating/template-processor] A **template processor** (also known as a **template engine** or **template parser**) is software designed to combine *template*s with data (defined by a data model) to produce resulting documents or programs.
+[src:jinja2-templating/template-processor] The language that the templates are written in is known as a **template language** or **templating language**.
+[src:jinja2-templating/template-processor] For purposes of this article, a result document is any kind of formatted output, including documents, web pages, or source code (in source code generation), either in whole or in fragments.
+[src:jinja2-templating/template-processor] A template engine is ordinarily included as a part of a web template system or application framework, and may be used also as a preprocessor or filter.
+[src:jinja2-templating/template-processor] Template engines typically include features common to most high-level programming languages, with an emphasis on features for processing plain text.
+[src:jinja2-templating/template-processor] The templating languages are generally simple substitution-only languages, in contrast to the more sophisticated facilities in full-blown template processors, but may contain some logic.
+[src:jinja2-templating/template-processor] Simple examples include ‘printf’ print format strings, found in many programming languages, and snippets, found in a number of text editors and source code editors.
+[src:jinja2-templating/template-processor] In word processors, templates are a common feature, while automatic filling in of the templates is often referred to as mail merge.
+[src:jinja2-templating/template-processor] An illustrative example of the complementary nature of parsing and templating is the `s` (substitute) command in the sed text processor, originating from search-and-replace in the ed text editor.
+[src:jinja2-templating/template-processor] For example, `s/(cat|dog)s?/\1s/g` replaces all occurrences of "cat" or "dog" with "cats" or "dogs", without duplicating an existing "s": `(cat|dog)` is the 1st (and only) sub-expression in the regexp, and `\1` in the format string substitutes this into the output.
+[src:jinja2-templating/template-processor] This may be a relational database, a source file such as XML, an alternate format of flat file database, a spreadsheet or any of other various sources of preformatted data.
+[src:jinja2-templating/template-processor] Some template processing systems are limited in the types of data that can be used.
+[src:jinja2-templating/template-processor] Others are designed for maximum flexibility and allow many different types of data.
+[src:jinja2-templating/template-processor] Additionally some template engines allow additional configuration options.
+[src:jinja2-templating/template-processor] These may consist of an entire document or a document fragment.
+[src:jinja2-templating/template-processor] Template processing is used in various contexts for different purposes.
+[src:jinja2-templating/template-processor] The specific purpose is ordinarily contingent upon the software application or template engine in use.
+[src:jinja2-templating/template-processor] However, the flexibility of template processing systems often enables unconventional uses for purposes not originally intended by the original designers.
+[src:jinja2-templating/template-processor] A **template engine** is a specific kind of template processing module that exhibits all of the major features of a modern programming language.
+[src:jinja2-templating/template-processor] The term *template engine* evolved as a generalized description of programming languages whose primary or exclusive purpose was to process templates and data to output text.
+[src:jinja2-templating/template-processor] The use of this term is most notably applied to web development using a web template system, and it is also applied to other contexts as well.
+[src:jinja2-templating/template-processor] Document generation frameworks typically use template processing as the central model for generating documents.
+[src:jinja2-templating/template-processor] A web template engine processes web templates and source data (typically from a relational database) to produce one or more output web pages or page fragments.
+[src:jinja2-templating/template-processor] It is ordinarily included as a part of a web template system or application framework.
+[src:jinja2-templating/template-processor] Currently, template processing software is most frequently used in the context of development for the web.
+[src:jinja2-templating/template-processor] XSLT is a template processing model designed by W3C.
+[src:jinja2-templating/template-processor] It is designed primarily for transformations on XML data (into web documents or other output).
+[src:jinja2-templating/template-processor] Programming languages such as Perl, Python, PHP, Ruby, C#, Java, and Go support template processing either natively, or through add-on libraries and modules.
+[src:jinja2-templating/template-processor] JavaServer Pages, Active Server Pages, Genshi (for Python), and eRuby are examples of template engines designed specifically for web application development.
+[src:jinja2-templating/template-processor] Moreover, template processing is sometimes included as a sub-feature of software packages like text editors, IDEs and relational database management systems.
+[src:jinja2-templating/template-word-processing] Once the template is completed, the user can edit, save and manage the result as an ordinary word processing document.
+[src:jinja2-templating/template-word-processing] Word processing templates enable the ability to bypass the initial setup and configuration time necessary to create standardized documents such as a resume.
+[src:jinja2-templating/template-word-processing] They also enable the automatic configuration of the user interface of the word processing software, with features such as autocompletion, toolbars, thesaurus, and spelling options.
+[src:jinja2-templating/template-word-processing] Word processing templates are ordinarily included as a regular feature in most word processing software.
+[src:jinja2-templating/template-word-processing] In addition, users of such software often have the option to create and save their own templates, to acquire them from the original vendor of the software, or from third parties.
+[src:jinja2-templating/template-word-processing] Word processing templates have the standard "fill-in-the-blank" features similar to other kinds of templates in computer software.
+[src:jinja2-templating/template-word-processing] They also have features that specifically leverage the functionality of the word processor user interface.
+[src:jinja2-templating/template-word-processing] Additionally, support may exist for other native features unique to the word processing application.
+[src:jinja2-templating/template-word-processing] Word processing document creation may ordinarily (although not necessarily) begin with selecting a template with a menu command such as: `File > New > Templates` (and select the template you wish to use), where the user is given the option of selecting a pre-existing template.
+[src:jinja2-templating/template-word-processing] Similar commands are provided for creating and editing templates.
+[src:jinja2-templating/template-word-processing] Template files may restrict users from saving changes with the original file name, such as with the case of Microsoft Office (.dot) filename extensions.
+[src:jinja2-templating/template-word-processing] In those cases, users are prompted to save the file with a new name as if it were a new file.
+[src:jinja2-templating/templates-p01] This document describes the syntax and semantics of the template engine and will be most useful as reference to those creating Jinja templates.
+[src:jinja2-templating/templates-p01] As the template engine is very flexible, the configuration from the application can be slightly different from the code presented here in terms of delimiters and behavior of undefined values.
+[src:jinja2-templating/templates-p01] Jinja can generate any text-based format (HTML, XML, CSV, LaTeX, etc.).
+[src:jinja2-templating/templates-p01] A Jinja template doesn’t need to have a specific extension: `.html`, `.xml`, or any other extension is just fine.
+[src:jinja2-templating/templates-p01] A template contains **variables** and/or **expressions**, which get replaced with values when a template is *rendered*; and **tags**, which control the logic of the template.
+[src:jinja2-templating/templates-p01] The template syntax is heavily inspired by Django and Python.
+[src:jinja2-templating/templates-p01] Below is a minimal template that illustrates a few basics using the default Jinja configuration.
+[src:jinja2-templating/templates-p01] The following example shows the default configuration settings.
+[src:jinja2-templating/templates-p01] An application developer can change the syntax configuration from `{% foo %}` to `<% foo %>`, or something similar.
+[src:jinja2-templating/templates-p01] Line Statements and Comments are also possible, though they don’t have default prefix characters.
+[src:jinja2-templating/templates-p01] To use them, set `line_statement_prefix` and `line_comment_prefix` when creating the `Environment`.
+[src:jinja2-templating/templates-p01] As stated above, any file can be loaded as a template, regardless of file extension.
+[src:jinja2-templating/templates-p01] Adding a `.jinja` extension, like `user.html.jinja` may make it easier for some IDEs or editor plugins, but is not required.
+[src:jinja2-templating/templates-p01] Autoescaping, introduced later, can be applied based on file extension, so you’ll need to take the extra suffix into account in that case.
+[src:jinja2-templating/templates-p01] Another good heuristic for identifying templates is that they are in a `templates` folder, regardless of extension.
+[src:jinja2-templating/templates-p01] Template variables are defined by the context dictionary passed to the template.
+[src:jinja2-templating/templates-p01] You can mess around with the variables in templates provided they are passed in by the application.
+[src:jinja2-templating/templates-p01] Variables may have attributes or elements on them you can access too.
+[src:jinja2-templating/templates-p01] What attributes a variable has depends heavily on the application providing that variable.
+[src:jinja2-templating/templates-p01] You can use a dot (`.`) to access attributes of a variable in addition to the standard Python `__getitem__` “subscript” syntax (`[]`).
+[src:jinja2-templating/templates-p01] It’s important to know that the outer double-curly braces are *not* part of the variable, but the print statement.
+[src:jinja2-templating/templates-p01] If you access variables inside tags don’t put the braces around them.
+[src:jinja2-templating/templates-p01] If a variable or attribute does not exist, you will get back an undefined value.
+[src:jinja2-templating/templates-p01] What you can do with that kind of value depends on the application configuration: the default behavior is to evaluate to an empty string if printed or iterated over, and to fail for every other operation.
+[src:jinja2-templating/templates-p01] This is important if an object has an item and attribute with the same name.
+[src:jinja2-templating/templates-p01] Additionally, the `attr()` filter only looks up attributes.
+[src:jinja2-templating/templates-p01] Variables can be modified by **filters**.
+[src:jinja2-templating/templates-p01] Filters are separated from the variable by a pipe symbol (`|`) and may have optional arguments in parentheses.
+[src:jinja2-templating/templates-p01] The output of one filter is applied to the next.
+[src:jinja2-templating/templates-p01] For example, `{{ name|striptags|title }}` will remove all HTML Tags from variable `name` and title-case the output (`title(striptags(name))`).
+[src:jinja2-templating/templates-p01] Filters that accept arguments have parentheses around the arguments, just like a function call.
+[src:jinja2-templating/templates-p01] For example: `{{ listx|join(', ') }}` will join a list with commas (`str.join(', ', listx)`).
+[src:jinja2-templating/templates-p01] The List of Builtin Filters below describes all the builtin filters.
+[src:jinja2-templating/templates-p01] Beside filters, there are also so-called “tests” available.
+[src:jinja2-templating/templates-p01] Tests can be used to test a variable against a common expression.
+[src:jinja2-templating/templates-p01] To test a variable or expression, you add `is` plus the name of the test after the variable.
+[src:jinja2-templating/templates-p01] For example, to find out if a variable is defined, you can do `name is defined`, which will then return true or false depending on whether `name` is defined in the current template context.
+[src:jinja2-templating/templates-p01] If the test only takes one argument, you can leave out the parentheses.
+[src:jinja2-templating/templates-p01] The List of Builtin Tests below describes all the builtin tests.
+[src:jinja2-templating/templates-p01] If an application configures Jinja to `trim_blocks`, the first newline after a template tag is removed automatically (like in PHP).
+[src:jinja2-templating/templates-p01] The `lstrip_blocks` option can also be set to strip tabs and spaces from the beginning of a line to the start of a block.
+[src:jinja2-templating/templates-p01] With both `trim_blocks` and `lstrip_blocks` disabled (the default), block tags on their own lines will be removed, but a blank line will remain and the spaces in the content will be preserved.
+[src:jinja2-templating/templates-p01] You can also strip whitespace in templates by hand.
+[src:jinja2-templating/templates-p01] This will yield all elements without whitespace between them.
+[src:jinja2-templating/templates-p01] If `seq` was a list of numbers from `1` to `9`, the output would be `123456789`.
+[src:jinja2-templating/templates-p01] If Line Statements are enabled, they strip leading whitespace automatically up to the beginning of the line.
+[src:jinja2-templating/templates-p01] By default, Jinja also removes trailing newlines.
+[src:jinja2-templating/templates-p01] To keep single trailing newlines, configure Jinja to `keep_trailing_newline`.
+[src:jinja2-templating/templates-p01] You must not add whitespace between the tag and the minus sign.
+[src:jinja2-templating/templates-p01] It is sometimes desirable – even necessary – to have Jinja ignore parts it would otherwise handle as variables or blocks.
+[src:jinja2-templating/templates-p01] For example, if, with the default syntax, you want to use `{{` as a raw string in a template and not start a variable, you have to use a trick.
+[src:jinja2-templating/templates-p01] For bigger sections, it makes sense to mark a block `raw`.
+[src:jinja2-templating/templates-p01] Minus sign at the end of `{% raw -%}` tag cleans all the spaces and newlines preceding the first character of your raw data.
+[src:jinja2-templating/templates-p01] If line statements are enabled by the application, it’s possible to mark a line as a statement.
+[src:jinja2-templating/templates-p01] The line statement prefix can appear anywhere on the line as long as no text precedes it.
+[src:jinja2-templating/templates-p01] Since Jinja 2.2, line-based comments are available as well.
+[src:jinja2-templating/templates-p01] The most powerful part of Jinja is template inheritance.
+[src:jinja2-templating/templates-p01] Template inheritance allows you to build a base “skeleton” template that contains all the common elements of your site and defines **blocks** that child templates can override.
+[src:jinja2-templating/templates-p01] It’s easiest to understand it by starting with an example.
+[src:jinja2-templating/templates-p01] This template, which we’ll call `base.html`, defines a simple HTML skeleton document that you might use for a simple two-column page.
+[src:jinja2-templating/templates-p01] In this example, the `{% block %}` tags define four blocks that child templates can fill in.
+[src:jinja2-templating/templates-p01] All the `block` tag does is tell the template engine that a child template may override those placeholders in the template.
+[src:jinja2-templating/templates-p01] `block` tags can be inside other blocks such as `if`, but they will always be executed regardless of if the `if` block is actually rendered.
+[src:jinja2-templating/templates-p01] The `{% extends %}` tag is the key here.
+[src:jinja2-templating/templates-p01] It tells the template engine that this template “extends” another template.
+[src:jinja2-templating/templates-p01] When the template system evaluates this template, it first locates the parent.
+[src:jinja2-templating/templates-p01] The extends tag should be the first tag in the template.
+[src:jinja2-templating/templates-p01] Everything before it is printed out normally and may cause confusion.
+[src:jinja2-templating/templates-p01] For details about this behavior and how to take advantage of it, see Null-Default Fallback.
+[src:jinja2-templating/templates-p01] Also a block will always be filled in regardless of whether the surrounding condition is evaluated to be true or false.
+[src:jinja2-templating/templates-p01] The filename of the template depends on the template loader.
+[src:jinja2-templating/templates-p01] For example, the `FileSystemLoader` allows you to access other templates by giving the filename.
+[src:jinja2-templating/templates-p01] But this behavior can depend on the application embedding Jinja.
+[src:jinja2-templating/templates-p01] Note that since the child template doesn’t define the `footer` block, the value from the parent template is used instead.
+[src:jinja2-templating/templates-p01] You can’t define multiple `{% block %}` tags with the same name in the same template.
+[src:jinja2-templating/templates-p01] This limitation exists because a block tag works in “both” directions.
+[src:jinja2-templating/templates-p01] That is, a block tag doesn’t just provide a placeholder to fill - it also defines the content that fills the placeholder in the *parent*.
+[src:jinja2-templating/templates-p01] If there were two similarly-named `{% block %}` tags in a template, that template’s parent wouldn’t know which one of the blocks’ content to use.
+[src:jinja2-templating/templates-p01] It’s possible to render the contents of the parent block by calling `super()`.
+[src:jinja2-templating/templates-p01] In the case of multiple levels of `{% extends %}`, `super` references may be chained (as in `super.super()`) to skip levels in the inheritance tree.
+[src:jinja2-templating/templates-p01] Rendering `child.tmpl` will give `body: Hi from child.
+[src:jinja2-templating/templates-p01] Rendering `grandchild2.tmpl` will give `body: Hi from grandchild2.
+[src:jinja2-templating/templates-p01] However, the name after the `endblock` word must match the block name.
+[src:jinja2-templating/templates-p01] Blocks can be nested for more complex layouts.
+[src:jinja2-templating/templates-p01] This example would output empty `<li>` items because `item` is unavailable inside the block.
+[src:jinja2-templating/templates-p01] The reason for this is that if the block is replaced by a child template, a variable would appear that was not defined in the block or passed to the context.
+[src:jinja2-templating/templates-p01] When overriding a block, the `scoped` modifier does not have to be provided.
+[src:jinja2-templating/templates-p01] They must be overridden at some point, but not necessarily by the direct child template.
+[src:jinja2-templating/templates-p01] Required blocks may only contain space and comments, and they cannot be rendered directly.
+[src:jinja2-templating/templates-p01] Rendering `page.txt` or `issue.txt` will raise `TemplateRuntimeError` because they don’t override the `body` block.
+[src:jinja2-templating/templates-p01] Rendering `bug_report.txt` will succeed because it does override the block.
+[src:jinja2-templating/templates-p01] When combined with `scoped`, the `required` modifier must be placed *after* the scoped modifier.
+[src:jinja2-templating/templates-p01] `extends`, `include`, and `import` can take a template object instead of the name of a template to load.
+[src:jinja2-templating/templates-p01] This could be useful in some advanced situations, since you can use Python code to load a template first and pass it in to `render`.
+[src:jinja2-templating/templates-p01] Note how `extends` is passed the variable with the template object that was passed to `render`, instead of a string.
+[src:jinja2-templating/templates-p01] When generating HTML from templates, there’s always a risk that a variable will include characters that affect the resulting HTML.
+[src:jinja2-templating/templates-p01] 2. automatically escaping everything by default.
+[src:jinja2-templating/templates-p01] What is used depends on the application configuration.
+[src:jinja2-templating/templates-p01] If manual escaping is enabled, it’s **your** responsibility to escape variables if needed.
+[src:jinja2-templating/templates-p01] If you have a variable that *may* include any of the following chars (`>`, `<`, `&`, or `"`) you **SHOULD** escape it unless the variable contains well-formed and trusted HTML.
+[src:jinja2-templating/templates-p01] When automatic escaping is enabled, everything is escaped by default except for values explicitly marked as safe.
+[src:jinja2-templating/templates-p01] If a string that you marked safe is passed through other Python code that doesn’t understand that mark, it may get lost.
+[src:jinja2-templating/templates-p01] Be aware of when your data is marked safe and how it is processed before arriving at the template.
+[src:jinja2-templating/templates-p01] If a value has been escaped but is not marked safe, auto-escaping will still take place and result in double-escaped characters.
+[src:jinja2-templating/templates-p01] If you know you have data that is already safe but not marked, be sure to wrap it in `Markup` or use the `|safe` filter.
+[src:jinja2-templating/templates-p01] Jinja functions (macros, `super`, `self.BLOCKNAME`) always return template data that is marked as safe.
+[src:jinja2-templating/templates-p01] String literals in templates with automatic escaping are considered unsafe because native Python strings are not safe.
+[src:jinja2-templating/templates-p01] A control structure refers to all those things that control the flow of a program - conditionals (i.e. if/elif/else), for-loops, as well as things like macros and blocks.
+[src:jinja2-templating/templates-p01] With the default syntax, control structures appear inside `{% ... %}` blocks.
+[src:jinja2-templating/templates-p01] Python dicts may not be in the order you want to display them in.
+[src:jinja2-templating/templates-p01] If order matters, use the `|dictsort` filter.
+[src:jinja2-templating/templates-p01] Since Jinja 2.1, an extra `cycle` helper exists that allows loop-unbound cycling.
+[src:jinja2-templating/templates-p01] For more information, have a look at the List of Global Functions.
+[src:jinja2-templating/templates-p01] Unlike in Python, it’s not possible to `break` or `continue` in a loop.
+[src:jinja2-templating/templates-p01] You can, however, filter the sequence during iteration, which allows you to skip items.
+[src:jinja2-templating/templates-p01] The advantage is that the special `loop` variable will count correctly; thus not counting the users not iterated over.
+[src:jinja2-templating/templates-p01] Note that, in Python, `else` blocks are executed whenever the corresponding loop **did not** `break`.
+[src:jinja2-templating/templates-p01] Since Jinja loops cannot `break` anyway, a slightly different behavior of the `else` keyword was chosen.
+[src:jinja2-templating/templates-p01] It is also possible to use loops recursively.
+[src:jinja2-templating/templates-p01] This is useful if you are dealing with recursive data such as sitemaps or RDFa.
+[src:jinja2-templating/templates-p01] To use loops recursively, you basically have to add the `recursive` modifier to the loop definition and call the `loop` variable with the new iterable where you want to recurse.
+[src:jinja2-templating/templates-p01] The `loop` variable always refers to the closest (innermost) loop.
+[src:jinja2-templating/templates-p01] If we have more than one level of loops, we can rebind the variable `loop` by writing `{% set outer_loop = loop %}` after the loop that we want to use recursively.
+[src:jinja2-templating/templates-p01] Please note that assignments in loops will be cleared at the end of the iteration and cannot outlive the loop scope.
+[src:jinja2-templating/templates-p01] Older versions of Jinja had a bug where in some circumstances it appeared that assignments would work.
+[src:jinja2-templating/templates-p01] See Assignments for more information about how to deal with this.
+[src:jinja2-templating/templates-p01] The `if` statement in Jinja is comparable with the Python if statement.
+[src:jinja2-templating/templates-p01] For multiple branches, `elif` and `else` can be used like in Python.
+[src:jinja2-templating/templates-p01] If can also be used as an inline expression and for loop filtering.
+[src:jinja2-templating/templates-p01] Macros are comparable with functions in regular programming languages.
+[src:jinja2-templating/templates-p01] They are useful to put often used idioms into reusable functions to not repeat yourself (“DRY”).
+[src:jinja2-templating/templates-p01] If the macro was defined in a different template, you have to import it first.
+[src:jinja2-templating/templates-p01] If more positional arguments are passed to the macro than accepted by the macro, they end up in the special `varargs` variable as a list of values.
+[src:jinja2-templating/templates-p01] Like `varargs` but for keyword arguments.
+[src:jinja2-templating/templates-p01] All unconsumed keyword arguments are stored in this special variable.
+[src:jinja2-templating/templates-p01] If the macro was called from a call tag, the caller is stored in this variable as a callable macro.
+[src:jinja2-templating/templates-p01] Macros also expose some of their internal details.
+[src:jinja2-templating/templates-p01] A tuple of the names of arguments the macro accepts.
+[src:jinja2-templating/templates-p01] This is `true` if the macro accepts extra keyword arguments (i.e.: accesses the special `kwargs` variable).
+[src:jinja2-templating/templates-p01] This is `true` if the macro accepts extra positional arguments (i.e.: accesses the special `varargs` variable).
+[src:jinja2-templating/templates-p01] This is `true` if the macro accesses the special `caller` variable and may be called from a call tag.
+[src:jinja2-templating/templates-p01] If a macro name starts with an underscore, it’s not exported and can’t be imported.
+[src:jinja2-templating/templates-p01] Due to how scopes work in Jinja, a macro in a child template does not override a macro in a parent template.
+[src:jinja2-templating/templates-p01] The following will output “LAYOUT”, not “CHILD”.
+[src:jinja2-templating/templates-p01] In some cases it can be useful to pass a macro to another macro.
+[src:jinja2-templating/templates-p01] For this purpose, you can use the special `call` block.
+[src:jinja2-templating/templates-p01] It’s also possible to pass arguments back to the call block.
+[src:jinja2-templating/templates-p01] This makes it useful as a replacement for loops.
+[src:jinja2-templating/templates-p01] Generally speaking, a call block works exactly like a macro without a name.
+[src:jinja2-templating/templates-p01] Filter sections allow you to apply regular Jinja filters on a block of template data.
+[src:jinja2-templating/templates-p01] Inside code blocks, you can also assign values to variables.
+[src:jinja2-templating/templates-p01] Assignments at top level (outside of blocks, macros or loops) are exported from the template like top level macros and can be imported by other templates.
+[src:jinja2-templating/templates-p01] Please keep in mind that it is not possible to set variables inside a block and have them show up outside of it.
+[src:jinja2-templating/templates-p01] The only exception to that rule are if statements which do not introduce a scope.
+[src:jinja2-templating/templates-p01] It is not possible with Jinja syntax to do this.
+[src:jinja2-templating/templates-p01] Note that the `obj.attr` notation in the `set` tag is only allowed for namespace objects; attempting to assign an attribute on any other object will raise an exception.
+[src:jinja2-templating/templates-p01] It’s possible to use `set` as a block to assign the content of the block to a variable.
+[src:jinja2-templating/templates-p01] This can be used to create multi-line strings, since Jinja doesn’t support Python’s triple quotes (`"""`, `'''`).
+[src:jinja2-templating/templates-p01] Instead of using an equals sign and a value, you only write the variable name, and everything until `{% endset %}` is captured.
+[src:jinja2-templating/templates-p01] Filters applied to the variable name will be applied to the block’s content.
+[src:jinja2-templating/templates-p01] Changed in version 2.10: Block assignment supports filters.
+[src:jinja2-templating/templates-p01] The `extends` tag can be used to extend one template from another.
+[src:jinja2-templating/templates-p01] You can have multiple `extends` tags in a file, but only one of them may be executed at a time.
+[src:jinja2-templating/templates-p01] See the section about Template Inheritance above.
+[src:jinja2-templating/templates-p01] Blocks are used for inheritance and act as both placeholders and replacements at the same time.
+[src:jinja2-templating/templates-p01] They are documented in detail in the Template Inheritance section.
+[src:jinja2-templating/templates-p01] The `include` tag renders another template and outputs the result into the current template.
+[src:jinja2-templating/templates-p01] The included template has access to context of the current template by default.
+[src:jinja2-templating/templates-p01] Use `without context` to use a separate context instead.
+[src:jinja2-templating/templates-p01] `with context` is also valid, but is the default behavior.
+[src:jinja2-templating/templates-p01] The included template can `extend` another template and override blocks in that template.
+[src:jinja2-templating/templates-p01] However, the current template cannot override any blocks that the included template outputs.
+[src:jinja2-templating/templates-p01] Use `ignore missing` to ignore the statement if the template does not exist.
+[src:jinja2-templating/templates-p01] It must be placed *before* a context visibility statement.
+[src:jinja2-templating/templates-p01] If a list of templates is given, each will be tried in order until one is not missing.
+[src:jinja2-templating/templates-p01] This can be used with `ignore missing` to ignore if none of the templates exist.
+[src:jinja2-templating/templates-p01] A variable, with either a template name or template object, can also be passed to the statement.
+[src:jinja2-templating/templates-p01] Jinja supports putting often used code into macros.
+[src:jinja2-templating/templates-p01] These macros can go into different templates and get imported from there.
+[src:jinja2-templating/templates-p01] This works similarly to the import statements in Python.
+[src:jinja2-templating/templates-p01] It’s important to know that imports are cached and imported templates don’t have access to the current template variables, just the globals by default.
+[src:jinja2-templating/templates-p01] For more details about context behavior of imports and includes, see Import Context Behavior.
+[src:jinja2-templating/templates-p01] You can import a complete template into a variable or request specific macros / exported variables from it.
+[src:jinja2-templating/templates-p01] The easiest and most flexible way to access a template’s variables and macros is to import the whole template module into a variable.
+[src:jinja2-templating/templates-p01] Macros and variables starting with one or more underscores are private and cannot be imported.
+[src:jinja2-templating/templates-p01] Changed in version 2.4: If a template object was passed to the template context, you can import from that object.
+[src:jinja2-templating/templates-p01] By default, included templates are passed the current context and imported templates are not.
+[src:jinja2-templating/templates-p01] The reason for this is that imports, unlike includes, are cached; as imports are often used just as a module that holds macros.
+[src:jinja2-templating/templates-p01] This behavior can be changed explicitly: by adding `with context` or `without context` to the import/include directive, the current context can be passed to the template and caching is disabled automatically.
+[src:jinja2-templating/templates-p01] In Jinja 2.0, the context that was passed to the included template did not include variables defined in the template.
+[src:jinja2-templating/templates-p01] The included template `render_box.html` is *not* able to access `box` in Jinja 2.0.
+[src:jinja2-templating/templates-p01] As of Jinja 2.1, `render_box.html` *is* able to do so.
+[src:jinja2-templating/templates-p01] Jinja allows basic expressions everywhere.
+[src:jinja2-templating/templates-p01] These work very similarly to regular Python; even if you’re not working with Python you should feel comfortable with it.
+[src:jinja2-templating/templates-p01] The simplest form of expressions are literals.
+[src:jinja2-templating/templates-p01] Literals are representations for Python objects such as strings and numbers.
+[src:jinja2-templating/templates-p01] Everything between two double or single quotes is a string.
+[src:jinja2-templating/templates-p01] They are useful whenever you need a string in the template (e.g. as arguments to function calls and filters, or just to extend or include a template).
+[src:jinja2-templating/templates-p01] Integers are whole numbers without a decimal part.
+[src:jinja2-templating/templates-p01] The ‘_’ character can be used to separate groups for legibility.
+[src:jinja2-templating/templates-p01] Floating point numbers can be written using a ‘.’ as a decimal mark.
+[src:jinja2-templating/templates-p01] They can also be written in scientific notation with an upper or lower case ‘e’ to indicate the exponent part.
+[src:jinja2-templating/templates-p01] The ‘_’ character can be used to separate groups for legibility, but cannot be used in the exponent part.
+[src:jinja2-templating/templates-p01] Everything between two brackets is a list.
+[src:jinja2-templating/templates-p01] Lists are useful for storing sequential data to be iterated over.
+[src:jinja2-templating/templates-p01] Tuples are like lists that cannot be modified (“immutable”).
+[src:jinja2-templating/templates-p01] If a tuple only has one item, it must be followed by a comma (`('1-tuple',)`).
+[src:jinja2-templating/templates-p01] Tuples are usually used to represent items of two or more elements.
+[src:jinja2-templating/templates-p01] See the list example above for more details.
+[src:jinja2-templating/templates-p01] A dict in Python is a structure that combines keys and values.
+[src:jinja2-templating/templates-p01] Keys must be unique and always have exactly one value.
+[src:jinja2-templating/templates-p01] Dicts are rarely used in templates; they are useful in some rare cases such as the `xmlattr()` filter.
+[src:jinja2-templating/templates-p01] `true` is always true and `false` is always false.
+[src:jinja2-templating/templates-p01] The special constants `true`, `false`, and `none` are indeed lowercase.
+[src:jinja2-templating/templates-p01] Because that caused confusion in the past, (`True` used to expand to an undefined variable that was considered false), all three can now also be written in title case (`True`, `False`, and `None`).
+[src:jinja2-templating/templates-p01] However, for consistency, (all Jinja identifiers are lowercase) you should use the lowercase versions.
+[src:jinja2-templating/templates-p01] Jinja allows you to calculate with values.
+[src:jinja2-templating/templates-p01] This is rarely useful in templates but exists for completeness’ sake.
+[src:jinja2-templating/templates-p01] Usually the objects are numbers, but if both are strings or lists, you can concatenate them this way.
+[src:jinja2-templating/templates-p01] This, however, is not the preferred way to concatenate strings!
+[src:jinja2-templating/templates-p01] For string concatenation, have a look-see at the `~` operator.
+[src:jinja2-templating/templates-p01] Subtract the second number from the first one.
+[src:jinja2-templating/templates-p01] The return value will be a floating point number.
+[src:jinja2-templating/templates-p01] Divide two numbers and return the truncated integer result.
+[src:jinja2-templating/templates-p01] Calculate the remainder of an integer division.
+[src:jinja2-templating/templates-p01] Multiply the left operand with the right one.
+[src:jinja2-templating/templates-p01] This can also be used to repeat a string multiple times.
+[src:jinja2-templating/templates-p01] Raise the left operand to the power of the right operand.
+[src:jinja2-templating/templates-p01] Unlike Python, chained pow is evaluated left to right.
+[src:jinja2-templating/templates-p01] Use parentheses in Jinja to be explicit about what order you want.
+[src:jinja2-templating/templates-p01] It is usually preferable to do extended math in Python and pass the results to `render` rather than doing it in the template.
+[src:jinja2-templating/templates-p01] This behavior may be changed in the future to match Python, if it’s possible to introduce an upgrade path.
+[src:jinja2-templating/templates-p01] `true` if the left hand side is greater than the right hand side.
+[src:jinja2-templating/templates-p01] `true` if the left hand side is greater or equal to the right hand side.
+[src:jinja2-templating/templates-p01] `true` if the left hand side is lower than the right hand side.
+[src:jinja2-templating/templates-p01] `true` if the left hand side is lower or equal to the right hand side.
+[src:jinja2-templating/templates-p01] For `if` statements, `for` filtering, and `if` expressions, it can be useful to combine multiple expressions.
+[src:jinja2-templating/templates-p01] For `x and y`, if `x` is false, then the value is `x`, else `y`.
+[src:jinja2-templating/templates-p01] In a boolean context, this will be treated as `True` if both operands are truthy.
+[src:jinja2-templating/templates-p01] For `x or y`, if `x` is true, then the value is `x`, else `y`.
+[src:jinja2-templating/templates-p01] In a boolean context, this will be treated as `True` if at least one operand is truthy.
+[src:jinja2-templating/templates-p01] For `not x`, if `x` is false, then the value is `True`, else `False`.
+[src:jinja2-templating/templates-p01] Prefer negating `is` and `in` using their infix notation: `foo is not bar` instead of `not foo is bar`; `foo not in bar` instead of `not foo in bar`.
+[src:jinja2-templating/templates-p01] This is used to change evaluation order, or to make a long expression easier to read or less ambiguous.
+[src:jinja2-templating/templates-p01] Perform a sequence / mapping containment test.
+[src:jinja2-templating/templates-p01] Returns true if the left operand is contained in the right.
+[src:jinja2-templating/templates-p01] Converts all operands into strings and concatenates them.
+[src:jinja2-templating/templates-p01] `{{ "Hello " ~ name ~ "!" }}` would return (assuming `name` is set to `'John'`) `Hello John!`.
+[src:jinja2-templating/templates-p01] It is also possible to use inline `if` expressions.
+[src:jinja2-templating/templates-p01] The general syntax is `<do something> if <something is true> else <do something else>`.
+[src:jinja2-templating/templates-p01] You can also use any of the methods defined on a variable’s type.
+[src:jinja2-templating/templates-p01] The value returned from the method invocation is used as the value of the expression.
+[src:jinja2-templating/templates-p01] This works for methods on user-defined types.
+[src:jinja2-templating/templates-p02] Return the absolute value of the argument.
+[src:jinja2-templating/templates-p02] `foo|attr("bar")` works like `foo.bar`, but returns undefined instead of falling back to `foo["bar"]` if the attribute doesn’t exist.
+[src:jinja2-templating/templates-p02] See Notes on subscriptions for more details.
+[src:jinja2-templating/templates-p02] It works pretty much like `slice` just the other way round.
+[src:jinja2-templating/templates-p02] It returns a list of lists with the given number of items.
+[src:jinja2-templating/templates-p02] If you provide a second parameter this is used to fill up missing items.
+[src:jinja2-templating/templates-p02] The first character will be uppercase, all others lowercase.
+[src:jinja2-templating/templates-p02] Centers the value in a field of a given width.
+[src:jinja2-templating/templates-p02] This will output the value of `my_variable` if the variable was defined, otherwise `'my_variable is not defined'`.
+[src:jinja2-templating/templates-p02] Changed in version 2.11: It’s now possible to configure the `Environment` with `ChainableUndefined` to make the `default` filter work on nested elements and attributes that may contain undefined values in the chain without getting an `UndefinedError`.
+[src:jinja2-templating/templates-p02] Sort a dict and yield (key, value) pairs.
+[src:jinja2-templating/templates-p02] Python dicts may not be in the order you want to display them in, so sort them first.
+[src:jinja2-templating/templates-p02] Replace the characters `&`, `<`, `>`, `'`, and `"` in the string with HTML-safe sequences.
+[src:jinja2-templating/templates-p02] Use this if you need to display text that might contain such characters in HTML.
+[src:jinja2-templating/templates-p02] If the object has an `__html__` method, it is called and the return value is assumed to already be safe for HTML.
+[src:jinja2-templating/templates-p02] A `Markup` string with the escaped text.
+[src:jinja2-templating/templates-p02] Format the value like a ‘human-readable’ file size (i.e.
+[src:jinja2-templating/templates-p02] Per default decimal prefixes are used (Mega, Giga, etc.), if the second parameter is set to `True` the binary prefixes are used (Mebi, Gibi).
+[src:jinja2-templating/templates-p02] Convert the value into a floating point number.
+[src:jinja2-templating/templates-p02] If the conversion doesn’t work it will return `0.0`.
+[src:jinja2-templating/templates-p02] You can override this default using the first parameter.
+[src:jinja2-templating/templates-p02] This will probably double escape variables.
+[src:jinja2-templating/templates-p02] Apply the given values to a printf-style format string, like `string % values`.
+[src:jinja2-templating/templates-p02] In most cases it should be more convenient and efficient to use the `%` operator or `str.format()`.
+[src:jinja2-templating/templates-p02] Group a sequence of objects by an attribute using Python’s `itertools.groupby()`.
+[src:jinja2-templating/templates-p02] The attribute can use dot notation for nested access, like `"address.city"`.
+[src:jinja2-templating/templates-p02] Unlike Python’s `groupby`, the values are sorted first so only one group is returned for each unique value.
+[src:jinja2-templating/templates-p02] For example, a list of `User` objects with a `city` attribute can be rendered in groups.
+[src:jinja2-templating/templates-p02] In this example, `grouper` refers to the `city` value of the group.
+[src:jinja2-templating/templates-p02] `groupby` yields namedtuples of `(grouper, list)`, which can be used instead of the tuple unpacking above.
+[src:jinja2-templating/templates-p02] `grouper` is the value of the attribute, and `list` is the items with that value.
+[src:jinja2-templating/templates-p02] You can specify a `default` value to use if an object in the list does not have the given attribute.
+[src:jinja2-templating/templates-p02] Like the `sort()` filter, sorting and grouping is case-insensitive by default.
+[src:jinja2-templating/templates-p02] The `key` for each group will have the case of the first item in that group of values.
+[src:jinja2-templating/templates-p02] For example, if a list of users has cities `["CA", "NY", "ca"]`, the “CA” group will have two values.
+[src:jinja2-templating/templates-p02] This can be disabled by passing `case_sensitive=True`.
+[src:jinja2-templating/templates-p02] Changed in version 3.1: Added the `case_sensitive` parameter.
+[src:jinja2-templating/templates-p02] Sorting and grouping is case-insensitive by default, matching other filters that do comparisons.
+[src:jinja2-templating/templates-p02] Changed in version 3.0: Added the `default` parameter.
+[src:jinja2-templating/templates-p02] Changed in version 2.6: The attribute supports dot notation for nested access.
+[src:jinja2-templating/templates-p02] Return a copy of the string with each line indented by 4 spaces.
+[src:jinja2-templating/templates-p02] The first line and blank lines are not indented by default.
+[src:jinja2-templating/templates-p02] Changed in version 3.0: `width` can be a string.
+[src:jinja2-templating/templates-p02] Changed in version 2.10: Blank lines are not indented by default.
+[src:jinja2-templating/templates-p02] Rename the `indentfirst` argument to `first`.
+[src:jinja2-templating/templates-p02] If the conversion doesn’t work it will return `0`.
+[src:jinja2-templating/templates-p02] You can also override the default base (10) in the second parameter, which handles input with prefixes such as 0b, 0o and 0x for bases 2, 8 and 16 respectively.
+[src:jinja2-templating/templates-p02] The base is ignored for decimal numbers and non-string values.
+[src:jinja2-templating/templates-p02] Return an iterator over the `(key, value)` items of a mapping.
+[src:jinja2-templating/templates-p02] `x|items` is the same as `x.items()`, except if `x` is undefined an empty iterator is returned.
+[src:jinja2-templating/templates-p02] This filter is useful if you expect the template to be rendered with an implementation of Jinja in another programming language that does not have a `.items()` method on its mapping type.
+[src:jinja2-templating/templates-p02] Return a string which is the concatenation of the strings in the sequence.
+[src:jinja2-templating/templates-p02] Added in version 2.6: The `attribute` parameter was added.
+[src:jinja2-templating/templates-p02] Return the number of items in a container.
+[src:jinja2-templating/templates-p02] If it was a string the returned list will be a list of characters.
+[src:jinja2-templating/templates-p02] Applies a filter on a sequence of objects or looks up an attribute.
+[src:jinja2-templating/templates-p02] This is useful when dealing with lists of objects but you are really only interested in a certain value of it.
+[src:jinja2-templating/templates-p02] The basic usage is mapping on an attribute.
+[src:jinja2-templating/templates-p02] Alternatively you can let it invoke a filter by passing the name of the filter and the arguments afterwards.
+[src:jinja2-templating/templates-p02] Changed in version 2.11.0: Added the `default` parameter.
+[src:jinja2-templating/templates-p02] Return the largest item from the sequence.
+[src:jinja2-templating/templates-p02] Return the smallest item from the sequence.
+[src:jinja2-templating/templates-p02] Filters a sequence of objects by applying a test to each object, and rejecting the objects with the test succeeding.
+[src:jinja2-templating/templates-p02] If no test is specified, each object will be evaluated as a boolean.
+[src:jinja2-templating/templates-p02] Filters a sequence of objects by applying a test to the specified attribute of each object, and rejecting the objects with the test succeeding.
+[src:jinja2-templating/templates-p02] If no test is specified, the attribute’s value will be evaluated as a boolean.
+[src:jinja2-templating/templates-p02] Return a copy of the value with all occurrences of a substring replaced with a new one.
+[src:jinja2-templating/templates-p02] The first argument is the substring that should be replaced, the second is the replacement string.
+[src:jinja2-templating/templates-p02] Reverse the object or return an iterator that iterates over it the other way round.
+[src:jinja2-templating/templates-p02] If you don’t specify a method `'common'` is used.
+[src:jinja2-templating/templates-p02] Note that even if rounded to 0 precision, a float is returned.
+[src:jinja2-templating/templates-p02] Mark the value as safe which means that in an environment with automatic escaping enabled this variable will not be escaped.
+[src:jinja2-templating/templates-p02] Filters a sequence of objects by applying a test to each object, and only selecting the objects with the test succeeding.
+[src:jinja2-templating/templates-p02] Filters a sequence of objects by applying a test to the specified attribute of each object, and only selecting the objects with the test succeeding.
+[src:jinja2-templating/templates-p02] Slice an iterator and return a list of lists containing those items.
+[src:jinja2-templating/templates-p02] If you pass it a second argument it’s used to fill missing values on the last iteration.
+[src:jinja2-templating/templates-p02] Sort an iterable using Python’s `sorted()`.
+[src:jinja2-templating/templates-p02] The sort is stable, it does not change the relative order of elements that compare equal.
+[src:jinja2-templating/templates-p02] This makes it is possible to chain sorts on different attributes and ordering.
+[src:jinja2-templating/templates-p02] As a shortcut to chaining when the direction is the same for all attributes, pass a comma separate list of attributes.
+[src:jinja2-templating/templates-p02] Changed in version 2.11.0: The `attribute` parameter can be a comma separated list of attributes, e.g.
+[src:jinja2-templating/templates-p02] Changed in version 2.6: The `attribute` parameter was added.
+[src:jinja2-templating/templates-p02] Convert an object to a string if it isn’t already.
+[src:jinja2-templating/templates-p02] This preserves a `Markup` string rather than converting it back to a basic string, so it will still be marked as safe and won’t be escaped again.
+[src:jinja2-templating/templates-p02] Strip SGML/XML tags and replace adjacent whitespace by one space.
+[src:jinja2-templating/templates-p02] Returns the sum of a sequence of numbers plus the value of parameter ‘start’ (which defaults to 0).
+[src:jinja2-templating/templates-p02] When the sequence is empty it returns start.
+[src:jinja2-templating/templates-p02] Changed in version 2.6: The `attribute` parameter was added to allow summing up over attributes.
+[src:jinja2-templating/templates-p02] Also the `start` parameter was moved on to the right.
+[src:jinja2-templating/templates-p02] Return a titlecased version of the value.
+[src:jinja2-templating/templates-p02] I.e. words will start with uppercase letters, all remaining characters are lowercase.
+[src:jinja2-templating/templates-p02] Serialize an object to a string of JSON, and mark it safe to render in HTML.
+[src:jinja2-templating/templates-p02] This filter is only for use in HTML documents.
+[src:jinja2-templating/templates-p02] The returned string is safe to render in HTML documents and `<script>` tags.
+[src:jinja2-templating/templates-p02] The exception is in HTML attributes that are double quoted; either use single quotes or the `|forceescape` filter.
+[src:jinja2-templating/templates-p02] Strip leading and trailing characters, by default whitespace.
+[src:jinja2-templating/templates-p02] The length is specified with the first parameter which defaults to `255`.
+[src:jinja2-templating/templates-p02] If the second parameter is `true` the filter will cut the text at length.
+[src:jinja2-templating/templates-p02] Otherwise it will discard the last word.
+[src:jinja2-templating/templates-p02] If the text was in fact truncated it will append an ellipsis sign (`"..."`).
+[src:jinja2-templating/templates-p02] If you want a different ellipsis sign than `"..."` you can specify it using the third parameter.
+[src:jinja2-templating/templates-p02] Strings that only exceed the length by the tolerance margin given in the fourth parameter will not be truncated.
+[src:jinja2-templating/templates-p02] The default leeway on newer Jinja versions is 5 and was 0 before but can be reconfigured globally.
+[src:jinja2-templating/templates-p02] Returns a list of unique items from the given iterable.
+[src:jinja2-templating/templates-p02] The unique items are yielded in the same order as their first occurrence in the iterable passed to the filter.
+[src:jinja2-templating/templates-p02] Quote data for use in a URL path or query using UTF-8.
+[src:jinja2-templating/templates-p02] Basic wrapper around `urllib.parse.quote()` when given a string, or `urllib.parse.urlencode()` for a dict or iterable.
+[src:jinja2-templating/templates-p02] HTTP servers treat “/” and “%2F” equivalently in paths.
+[src:jinja2-templating/templates-p02] If you need quoted slashes, use the `|replace("/", "%2F")` filter.
+[src:jinja2-templating/templates-p02] Convert URLs in text into clickable links.
+[src:jinja2-templating/templates-p02] This may not recognize links in some situations.
+[src:jinja2-templating/templates-p02] Usually, a more comprehensive formatter, such as a Markdown library, is a better choice.
+[src:jinja2-templating/templates-p02] Links with trailing punctuation (periods, commas, closing parentheses) and leading punctuation (opening parentheses) are recognized excluding the punctuation.
+[src:jinja2-templating/templates-p02] Email addresses that include header fields are not recognized (for example, `mailto:address@example.com?cc=copy@example.com`).
+[src:jinja2-templating/templates-p02] Changed in version 3.0: The `extra_schemes` parameter was added.
+[src:jinja2-templating/templates-p02] Changed in version 3.0: Generate `https://` links for URLs without a scheme.
+[src:jinja2-templating/templates-p02] Changed in version 3.0: The parsing rules were updated.
+[src:jinja2-templating/templates-p02] Recognize email addresses with or without the `mailto:` scheme.
+[src:jinja2-templating/templates-p02] Ignore parentheses and brackets in more cases.
+[src:jinja2-templating/templates-p02] Changed in version 2.8: The `target` parameter was added.
+[src:jinja2-templating/templates-p02] Existing newlines are treated as paragraphs to be wrapped separately.
+[src:jinja2-templating/templates-p02] Changed in version 2.11: Existing newlines are treated as paragraphs wrapped separately.
+[src:jinja2-templating/templates-p02] Changed in version 2.11: Added the `break_on_hyphens` parameter.
+[src:jinja2-templating/templates-p02] Changed in version 2.7: Added the `wrapstring` parameter.
+[src:jinja2-templating/templates-p02] Create an SGML/XML attribute string based on the items in a dict.
+[src:jinja2-templating/templates-p02] User input should not be used as **keys** to this filter.
+[src:jinja2-templating/templates-p02] If any key contains a space, `/` solidus, `>` greater-than sign, or `=` equals sign, this fails with a `ValueError`.
+[src:jinja2-templating/templates-p02] Regardless of this, user input should never be used as keys to this filter, or must be separately validated first.
+[src:jinja2-templating/templates-p02] As you can see it automatically prepends a space in front of the item if the filter returned something unless the second parameter is false.
+[src:jinja2-templating/templates-p02] Changed in version 3.1.4: Keys with `/` solidus, `>` greater-than sign, or `=` equals sign are not allowed.
+[src:jinja2-templating/templates-p02] Changed in version 3.1.3: Keys with spaces are not allowed.
+[src:jinja2-templating/templates-p02] Return true if the object is a boolean value.
+[src:jinja2-templating/templates-p02] Return whether the object is callable (i.e., some kind of function).
+[src:jinja2-templating/templates-p02] Note that classes are callable, as are instances of classes with a __call__() method.
+[src:jinja2-templating/templates-p02] See the `default()` filter for a simple way to set undefined variables.
+[src:jinja2-templating/templates-p02] Check if a variable is divisible by a number.
+[src:jinja2-templating/templates-p02] Useful if a filter may be optionally available.
+[src:jinja2-templating/templates-p02] Return true if the object is an integer.
+[src:jinja2-templating/templates-p02] Check if it’s possible to iterate over an object.
+[src:jinja2-templating/templates-p02] Return true if the variable is lowercased.
+[src:jinja2-templating/templates-p02] Return true if the object is a mapping (dict etc.).
+[src:jinja2-templating/templates-p02] Return true if the variable is a number.
+[src:jinja2-templating/templates-p02] Return true if the variable is a sequence.
+[src:jinja2-templating/templates-p02] Sequences are variables that are iterable.
+[src:jinja2-templating/templates-p02] Useful if a test may be optionally available.
+[src:jinja2-templating/templates-p02] Like `defined()` but the other way round.
+[src:jinja2-templating/templates-p02] Return true if the variable is uppercased.
+[src:jinja2-templating/templates-p02] Return a list containing an arithmetic progression of integers.
+[src:jinja2-templating/templates-p02] When step is given, it specifies the increment (or decrement).
+[src:jinja2-templating/templates-p02] These are exactly the valid indices for a list of 4 elements.
+[src:jinja2-templating/templates-p02] This is useful to repeat a template block multiple times, e.g. to fill a list.
+[src:jinja2-templating/templates-p02] Generates some lorem ipsum for the template.
+[src:jinja2-templating/templates-p02] By default, five paragraphs of HTML are generated with each paragraph between 20 and 100 words.
+[src:jinja2-templating/templates-p02] If html is False, regular text is returned.
+[src:jinja2-templating/templates-p02] This is useful to generate simple contents for layout testing.
+[src:jinja2-templating/templates-p02] A convenient alternative to dict literals.
+[src:jinja2-templating/templates-p02] Cycle through values by yielding them one at a time, then restarting once the end is reached.
+[src:jinja2-templating/templates-p02] Similar to `loop.cycle`, but can be used outside loops or across multiple loops.
+[src:jinja2-templating/templates-p02] For example, render a list of folders and files in a list, alternating giving them “odd” and “even” classes.
+[src:jinja2-templating/templates-p02] Equivalent to the item that will be returned next time `next()` is called.
+[src:jinja2-templating/templates-p02] Return the current item, then advance `current` to the next item.
+[src:jinja2-templating/templates-p02] Resets the current item to the first item.
+[src:jinja2-templating/templates-p02] A tiny helper that can be used to “join” multiple sections.

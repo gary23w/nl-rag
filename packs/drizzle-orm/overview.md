@@ -3,7 +3,7 @@ title: "Drizzle ORM"
 source: https://orm.drizzle.team/docs/overview
 domain: drizzle-orm
 license: CC-BY-SA-4.0
-tags: drizzle orm, typescript query builder, sql-like orm, type-safe queries
+tags: drizzle orm, typescript sql orm, type-safe query builder, sql-like schema
 fetched: 2026-07-02
 ---
 

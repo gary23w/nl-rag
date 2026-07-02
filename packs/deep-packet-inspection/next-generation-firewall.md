@@ -1,0 +1,32 @@
+---
+title: "Next-generation firewall"
+source: https://en.wikipedia.org/wiki/Next-generation_firewall
+domain: deep-packet-inspection
+license: CC-BY-SA-4.0
+tags: deep packet inspection, packet analysis, content inspection, traffic classification
+fetched: 2026-07-02
+---
+
+# Next-generation firewall
+
+A **next-generation firewall** (**NGFW**) is a part of the third generation of firewall technology, combining a conventional firewall with other network device filtering functions, such as an application firewall using in-line deep packet inspection (DPI) and an intrusion prevention system (IPS). Other techniques might also be employed, such as TLS-encrypted traffic inspection, website filtering, QoS/bandwidth management, antivirus inspection, third-party identity management integration (e.g. LDAP, RADIUS, Active Directory), and SSL decryption. **Unified Threat Management** refers to a similar appliance as an NGFW.
+
+## History
+
+One of the first mentions of the NGFW term was in a 2004 document by Gartner. Kenneth Tam speculated that the term Unified Threat Management (UTM) was coined by IDC because they did not want to adopt the name of their competitor.
+
+## Next-generation firewall versus traditional firewall
+
+NGFWs include the typical functions of traditional firewalls such as packet filtering, network- and port-address translation (NAT), stateful inspection, and virtual private network (VPN) support. The goal of next-generation firewalls is to include more layers of the OSI model, improving filtering of network traffic that is dependent on the packet contents. The most significant differences are that NGFWs include intrusion prevention systems (IPS) and application control.
+
+Next-generation firewalls perform deeper inspection compared to stateful inspection performed by the first- and second-generation firewalls. NGFWs use a more thorough inspection style, checking packet payloads and matching signatures for harmful activities such as exploitable attacks and malware.
+
+## Evolution of next-generation firewalls
+
+Modern threats like web-based malware attacks, targeted attacks, application-layer attacks, and more have had a significantly negative effect on the threat landscape. In fact, one in four attacks exploit vulnerabilities in public-facing applications, as opposed to weaknesses in networking components and services.
+
+Stateful firewalls with simple packet filtering capabilities were efficient blocking unwanted applications as most applications met the port-protocol expectations. Administrators could promptly prevent an unsafe application from being accessed by users by blocking the associated ports and protocols. But blocking a web application that uses port 80 by closing the port would also mean complications with the entire HTTP protocol.
+
+Protection based on ports, protocols, IP addresses is no more reliable and viable. This has led to the development of identity-based security approach, which takes organizations a step ahead of conventional security appliances which bind security to IP-addresses.
+
+NGFWs offer administrators a deeper awareness of and control over individual applications, along with deeper inspection capabilities by the firewall. Administrators can create very granular "allow/deny" rules for controlling use of websites and applications in the network.

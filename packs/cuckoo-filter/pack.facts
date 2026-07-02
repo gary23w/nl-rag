@@ -1,0 +1,529 @@
+# nl-rag distilled facts — domain: cuckoo-filter
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:cuckoo-filter/bloom-filter] In computing, a **Bloom filter** is a space-efficient probabilistic data structure, conceived by Burton Howard Bloom in 1970, that is used to test whether an element is a member of a set.
+[src:cuckoo-filter/bloom-filter] False positive matches are possible, but false negatives are not – in other words, a query returns either "possibly in set" or "definitely not in set".
+[src:cuckoo-filter/bloom-filter] Elements can be added to the set, but not removed (though this can be addressed with the counting Bloom filter variant); the more items added, the larger the probability of false positives.
+[src:cuckoo-filter/bloom-filter] Bloom proposed the technique for applications where the amount of source data would require an impractically large amount of memory if "conventional" error-free hashing techniques were applied.
+[src:cuckoo-filter/bloom-filter] He gave the example of a hyphenation algorithm for a dictionary of 500,000 words, out of which 90% follow simple hyphenation rules, but the remaining 10% require expensive disk accesses to retrieve specific hyphenation patterns.
+[src:cuckoo-filter/bloom-filter] With sufficient core memory, an error-free hash could be used to eliminate all unnecessary disk accesses; on the other hand, with limited core memory, Bloom's technique uses a smaller hash area but still eliminates most unnecessary accesses.
+[src:cuckoo-filter/bloom-filter] For example, a hash area only 18% of the size needed by an ideal error-free hash still eliminates 87% of the disk accesses.
+[src:cuckoo-filter/bloom-filter] More generally, fewer than 10 bits per element are required for a 1% false positive probability, independent of the size or number of elements in the set.
+[src:cuckoo-filter/bloom-filter] An *empty Bloom filter* is a bit array of m bits, all set to 0.
+[src:cuckoo-filter/bloom-filter] It is equipped with k different hash functions, which map set elements to one of the m possible array positions.
+[src:cuckoo-filter/bloom-filter] To be optimal, the hash functions should be uniformly distributed and independent.
+[src:cuckoo-filter/bloom-filter] Typically, k is a small constant which depends on the desired false error rate ε, while m is proportional to k and the number of elements to be added.
+[src:cuckoo-filter/bloom-filter] To *add* an element, feed it to each of the k hash functions to get k array positions.
+[src:cuckoo-filter/bloom-filter] Set the bits at all these positions to 1.
+[src:cuckoo-filter/bloom-filter] To *test* whether an element is in the set, feed it to each of the k hash functions to get k array positions.
+[src:cuckoo-filter/bloom-filter] If *any* of the bits at these positions is 0, the element is definitely not in the set; if it were, then all the bits would have been set to 1 when it was inserted.
+[src:cuckoo-filter/bloom-filter] If all are 1, then either the element is in the set, *or* the bits have by chance been set to 1 during the insertion of other elements, resulting in a false positive.
+[src:cuckoo-filter/bloom-filter] In a simple Bloom filter, there is no way to distinguish between the two cases, but more advanced techniques can address this problem.
+[src:cuckoo-filter/bloom-filter] The requirement of designing k different independent hash functions can be prohibitive for large k.
+[src:cuckoo-filter/bloom-filter] For a good hash function with a wide output, there should be little if any correlation between different bit-fields of such a hash, so this type of hash can be used to generate multiple "different" hash functions by slicing its output into multiple bit fields.
+[src:cuckoo-filter/bloom-filter] Alternatively, one can pass k different initial values (such as 0, 1, ..., k − 1) to a hash function that takes an initial value; or add (or append) these values to the key.
+[src:cuckoo-filter/bloom-filter] For larger m and/or k, independence among the hash functions can be relaxed with negligible increase in false positive rate.
+[src:cuckoo-filter/bloom-filter] Removing an element from this simple Bloom filter is impossible because there is no way to tell which of the k bits it maps to should be cleared.
+[src:cuckoo-filter/bloom-filter] Although setting any one of those k bits to zero suffices to remove the element, it would also remove any other elements that happen to map onto that bit.
+[src:cuckoo-filter/bloom-filter] Since the simple algorithm provides no way to determine whether any other elements have been added that affect the bits for the element to be removed, clearing any of the bits would introduce the possibility of false negatives.
+[src:cuckoo-filter/bloom-filter] One-time removal of an element from a Bloom filter can be simulated by having a second Bloom filter that contains items that have been removed.
+[src:cuckoo-filter/bloom-filter] However, false positives in the second filter become false negatives in the composite filter, which may be undesirable.
+[src:cuckoo-filter/bloom-filter] In this approach re-adding a previously removed item is not possible, as one would have to remove it from the "removed" filter.
+[src:cuckoo-filter/bloom-filter] It is often the case that all the keys are available but are expensive to enumerate (for example, requiring many disk reads).
+[src:cuckoo-filter/bloom-filter] When the false positive rate gets too high, the filter can be regenerated; this should be a relatively rare event.
+[src:cuckoo-filter/bloom-filter] While risking false positives, Bloom filters have a substantial space advantage over other data structures for representing sets, such as self-balancing binary search trees, tries, hash tables, or simple arrays or linked lists of the entries.
+[src:cuckoo-filter/bloom-filter] Most of these require storing at least the data items themselves, which can require anywhere from a small number of bits, for small integers, to an arbitrary number of bits, such as for strings (tries are an exception since they can share storage between elements with equal prefixes).
+[src:cuckoo-filter/bloom-filter] However, Bloom filters do not store the data items at all, and a separate solution must be provided for the actual storage.
+[src:cuckoo-filter/bloom-filter] Linked structures incur an additional linear space overhead for pointers.
+[src:cuckoo-filter/bloom-filter] A Bloom filter with a 1% error and an optimal value of k, in contrast, requires only about 9.6 bits per element, regardless of the size of the elements.
+[src:cuckoo-filter/bloom-filter] This advantage comes partly from its compactness, inherited from arrays, and partly from its probabilistic nature.
+[src:cuckoo-filter/bloom-filter] The 1% false-positive rate can be reduced by a factor of ten by adding only about 4.8 bits per element.
+[src:cuckoo-filter/bloom-filter] However, if the number of potential values is small and many of them can be in the set, the Bloom filter is easily surpassed by the deterministic bit array, which requires only one bit for each potential element.
+[src:cuckoo-filter/bloom-filter] Hash tables gain a space and time advantage if they begin ignoring collisions and store only whether each bucket contains an entry; in this case, they have effectively become Bloom filters with *k* = 1.
+[src:cuckoo-filter/bloom-filter] Bloom filters also have the unusual property that the time needed either to add items or to check whether an item is in the set is a fixed constant, O(*k*), completely independent of the number of items already in the set.
+[src:cuckoo-filter/bloom-filter] No other constant-space set data structure has this property, but the average access time of sparse hash tables can make them faster in practice than some Bloom filters.
+[src:cuckoo-filter/bloom-filter] In a hardware implementation, however, the Bloom filter shines because its k lookups are independent and can be parallelized.
+[src:cuckoo-filter/bloom-filter] To understand its space efficiency, it is instructive to compare the general Bloom filter with its special case when *k* = 1.
+[src:cuckoo-filter/bloom-filter] If *k* = 1, then in order to keep the false positive rate sufficiently low, a small fraction of bits should be set, which means the array must be very large and contain long runs of zeros.
+[src:cuckoo-filter/bloom-filter] The information content of the array relative to its size is low.
+[src:cuckoo-filter/bloom-filter] Assume that a hash function selects each array position with equal probability.
+[src:cuckoo-filter/bloom-filter] Now test membership of an element that is not in the set.
+[src:cuckoo-filter/bloom-filter] Each of the *k* array positions computed by the hash functions is 1 with a probability as above.
+[src:cuckoo-filter/bloom-filter] This is not strictly correct as it assumes independence for the probabilities of each bit being set.
+[src:cuckoo-filter/bloom-filter] However, assuming it is a close approximation we have that the probability of false positives decreases as *m* (the number of bits in the array) increases, and increases as *n* (the number of inserted elements) increases.
+[src:cuckoo-filter/bloom-filter] where the {braces} denote Stirling numbers of the second kind.
+[src:cuckoo-filter/bloom-filter] An alternative analysis arriving at the same approximation without the assumption of independence is given by Mitzenmacher and Upfal.
+[src:cuckoo-filter/bloom-filter] After all *n* items have been added to the Bloom filter, let *q* be the fraction of the *m* bits that are set to 0.
+[src:cuckoo-filter/bloom-filter] (That is, the number of bits still set to 0 is *qm*.) Then, when testing membership of an element not in the set, for the array position given by any of the *k* hash functions, the probability that the bit is found set to 1 is $1-q$ .
+[src:cuckoo-filter/bloom-filter] So the probability that all *k* hash functions find their bit set to 1 is $(1-q)^{k}$ .
+[src:cuckoo-filter/bloom-filter] It is possible to prove, without the independence assumption, that *q* is very strongly concentrated around its expected value.
+[src:cuckoo-filter/bloom-filter] The number of hash functions, *k*, must be a positive integer.
+[src:cuckoo-filter/bloom-filter] This means that for a given false positive probability *ε*, the length of a Bloom filter *m* is proportionate to the number of elements being filtered *n* and the required number of hash functions only depends on the target false positive probability *ε*.
+[src:cuckoo-filter/bloom-filter] The formula $m=-{\frac {n\ln \varepsilon }{(\ln 2)^{2}}}$ is approximate for three reasons.
+[src:cuckoo-filter/bloom-filter] First, and of least concern, it approximates $1-{\frac {1}{m}}$ as $e^{-{\frac {1}{m}}}$ , which is a good asymptotic approximation (i.e., which holds as *m* →∞).
+[src:cuckoo-filter/bloom-filter] Second, of more concern, it assumes that during the membership test the event that one tested bit is set to 1 is independent of the event that any other tested bit is set to 1.
+[src:cuckoo-filter/bloom-filter] Third, of most concern, it assumes that $k={\frac {m}{n}}\ln 2$ is fortuitously integral.
+[src:cuckoo-filter/bloom-filter] Goel and Gupta, however, give a rigorous upper bound that makes no approximations and requires no assumptions.
+[src:cuckoo-filter/bloom-filter] This bound can be interpreted as saying that the approximate formula $\left(1-e^{-{\frac {kn}{m}}}\right)^{k}$ can be applied at a penalty of at most half an extra element and at most one less bit.
+[src:cuckoo-filter/bloom-filter] where *$n^{*}$* is an estimate of the number of items in the filter, *m* is the length (size) of the filter, *k* is the number of hash functions, and *X* is the number of bits set to one.
+[src:cuckoo-filter/bloom-filter] Bloom filters are a way of compactly representing a set of items.
+[src:cuckoo-filter/bloom-filter] It is common to try to compute the size of the intersection or union between two sets.
+[src:cuckoo-filter/bloom-filter] Bloom filters can be used to approximate the size of the intersection and union of two sets.
+[src:cuckoo-filter/bloom-filter] where $n(A\cup B)$ is the number of bits set to one in either of the two Bloom filters.
+[src:cuckoo-filter/bloom-filter] Classic Bloom filters use $1.44\log _{2}(1/\varepsilon )$ bits of space per inserted key, where $\varepsilon$ is the false positive rate of the Bloom filter.
+[src:cuckoo-filter/bloom-filter] However, the space that is strictly necessary for any data structure playing the same role as a Bloom filter is only $\log _{2}(1/\varepsilon )$ per key.
+[src:cuckoo-filter/bloom-filter] Hence Bloom filters use 44% more space than an equivalent optimal data structure.
+[src:cuckoo-filter/bloom-filter] Pagh et al. provide a data structure that uses ${\textstyle (1+o(1))n\log _{2}(1/\epsilon )+O(n)}$ bits while supporting constant amortized expected-time operations.
+[src:cuckoo-filter/bloom-filter] Their data structure is primarily theoretical, but it is closely related to the widely-used quotient filter, which can be parameterized to use $(1+\delta )n\log \epsilon ^{-1}+3n$ bits of space, for an arbitrary parameter $\delta >0$ , while supporting $O(\delta ^{-2})$ -time operations.
+[src:cuckoo-filter/bloom-filter] Advantages of the quotient filter, when compared to the Bloom filter, include its locality of reference and the ability to support deletions.
+[src:cuckoo-filter/bloom-filter] Another alternative to classic Bloom filter is the cuckoo filter, based on space-efficient variants of cuckoo hashing.
+[src:cuckoo-filter/bloom-filter] In this case, a hash table is constructed, holding neither keys nor values, but short fingerprints (small hashes) of the keys.
+[src:cuckoo-filter/bloom-filter] If looking up the key finds a matching fingerprint, then key is probably in the set.
+[src:cuckoo-filter/bloom-filter] Cuckoo filters support deletions and have better locality of reference than Bloom filters.
+[src:cuckoo-filter/bloom-filter] Additionally, in some parameter regimes, cuckoo filters can be parameterized to offer nearly optimal space guarantees.
+[src:cuckoo-filter/bloom-filter] Many alternatives to Bloom filters, including quotient filters and cuckoo filters, are based on the idea of hashing keys to random $(\log n+\log \epsilon ^{-1})$ -bit fingerprints, and then storing those fingerprints in a compact hash table.
+[src:cuckoo-filter/bloom-filter] This technique, which was first introduced by Carter et al. in 1978, relies on the fact that compact hash tables can be implemented to use roughly $n\log n$ bits less space than their non-compact counterparts.
+[src:cuckoo-filter/bloom-filter] Using succinct hash tables, the space usage can be reduced to as little as $n\log _{2}(e/\epsilon )+o(n)$ bits while supporting constant-time operations in a wide variety of parameter regimes.
+[src:cuckoo-filter/bloom-filter] Putze, Sanders & Singler (2007) have studied some variants of Bloom filters that are either faster or use less space than classic Bloom filters.
+[src:cuckoo-filter/bloom-filter] The basic idea of the fast variant is to locate the k hash values associated with each key into one or two blocks having the same size as processor's memory cache blocks (usually 64 bytes).
+[src:cuckoo-filter/bloom-filter] This will presumably improve performance by reducing the number of potential memory cache misses.
+[src:cuckoo-filter/bloom-filter] The proposed variants have however the drawback of using about 32% more space than classic Bloom filters.
+[src:cuckoo-filter/bloom-filter] The space efficient variant relies on using a single hash function that generates for each key a value in the range $\left[0,n/\varepsilon \right]$ where $\varepsilon$ is the requested false positive rate.
+[src:cuckoo-filter/bloom-filter] The sequence of values is then sorted and compressed using Golomb coding (or some other compression technique) to occupy a space close to $n\log _{2}(1/\varepsilon )$ bits.
+[src:cuckoo-filter/bloom-filter] To query the Bloom filter for a given key, it will suffice to check if its corresponding value is stored in the Bloom filter.
+[src:cuckoo-filter/bloom-filter] Decompressing the whole Bloom filter for each query would make this variant totally unusable.
+[src:cuckoo-filter/bloom-filter] To overcome this problem the sequence of values is divided into small blocks of equal size that are compressed separately.
+[src:cuckoo-filter/bloom-filter] At query time only half a block will need to be decompressed on average.
+[src:cuckoo-filter/bloom-filter] Because of decompression overhead, this variant may be slower than classic Bloom filters but this may be compensated by the fact that a single hash function needs to be computed.
+[src:cuckoo-filter/bloom-filter] Graf & Lemire (2020) describes an approach called an *xor filter*, where they store fingerprints in a particular type of perfect hash table, producing a filter which is more memory efficient ( $1.23\log _{2}(1/\varepsilon )$ bits per key) and faster than Bloom or cuckoo filters.
+[src:cuckoo-filter/bloom-filter] (The time saving comes from the fact that a lookup requires exactly three memory accesses, which can all execute in parallel.) However, filter creation is more complex than Bloom and cuckoo filters, and it is not possible to modify the set after creation.
+[src:cuckoo-filter/bloom-filter] There are over 60 variants of Bloom filters, many surveys of the field, and a continuing churn of applications (see e.g., Luo, *et al* ).
+[src:cuckoo-filter/bloom-filter] Some of the variants differ sufficiently from the original proposal to be breaches from or forks of the original data structure and its philosophy.
+[src:cuckoo-filter/bloom-filter] A treatment which unifies Bloom filters with other work on random projections, compressive sensing, and locality sensitive hashing remains to be done (though see Dasgupta, *et al* for one attempt inspired by neuroscience).
+[src:cuckoo-filter/bloom-filter] Content delivery networks deploy web caches around the world to cache and serve web content to users with greater performance and reliability.
+[src:cuckoo-filter/bloom-filter] A key application of Bloom filters is their use in efficiently determining which web objects to store in these web caches.
+[src:cuckoo-filter/bloom-filter] Nearly three-quarters of the URLs accessed from a typical web cache are "one-hit-wonders" that are accessed by users only once and never again.
+[src:cuckoo-filter/bloom-filter] It is clearly wasteful of disk resources to store one-hit-wonders in a web cache, since they will never be accessed again.
+[src:cuckoo-filter/bloom-filter] To prevent caching one-hit-wonders, a Bloom filter is used to keep track of all URLs that are accessed by users.
+[src:cuckoo-filter/bloom-filter] A web object is cached only when it has been accessed at least once before, i.e., the object is cached on its second request.
+[src:cuckoo-filter/bloom-filter] The use of a Bloom filter in this fashion significantly reduces the disk write workload, since most one-hit-wonders are not written to the disk cache.
+[src:cuckoo-filter/bloom-filter] Further, filtering out the one-hit-wonders also saves cache space on disk, increasing the cache hit rates.
+[src:cuckoo-filter/bloom-filter] Kiss *et al* described a new construction for the Bloom filter that avoids false positives in addition to the typical non-existence of false negatives.
+[src:cuckoo-filter/bloom-filter] The construction applies to a finite universe from which set elements are taken.
+[src:cuckoo-filter/bloom-filter] It relies on existing non-adaptive combinatorial group testing scheme by Eppstein, Goodrich and Hirschberg.
+[src:cuckoo-filter/bloom-filter] Unlike the typical Bloom filter, elements are hashed to a bit array through deterministic, fast and simple-to-calculate functions.
+[src:cuckoo-filter/bloom-filter] The maximal set size for which false positives are completely avoided is a function of the universe size and is controlled by the amount of allocated memory.
+[src:cuckoo-filter/bloom-filter] As the universe is finite and the set of false positives strictly shrinks with each step, this procedure results in a finite *cascade* of Bloom filters that (on this closed, finite domain) will produce only true positives and true negatives.
+[src:cuckoo-filter/bloom-filter] To check for membership in the filter cascade, the initial filter is queried, and, if the result is positive, the second filter is then consulted, and so on.
+[src:cuckoo-filter/bloom-filter] This construction is used in CRLite, a proposed certificate revocation status distribution mechanism for the Web PKI, and Certificate Transparency is exploited to close the set of extant certificates.
+[src:cuckoo-filter/bloom-filter] Counting filters provide a way to implement a *delete* operation on a Bloom filter without recreating the filter afresh.
+[src:cuckoo-filter/bloom-filter] In a counting filter, the array positions (buckets) are extended from being a single bit to being a multibit counter.
+[src:cuckoo-filter/bloom-filter] In fact, regular Bloom filters can be considered as counting filters with a bucket size of one bit.
+[src:cuckoo-filter/bloom-filter] Counting filters were introduced by Fan et al.
+[src:cuckoo-filter/bloom-filter] The insert operation is extended to *increment* the value of the buckets, and the lookup operation checks that each of the required buckets is non-zero.
+[src:cuckoo-filter/bloom-filter] The delete operation then consists of decrementing the value of each of the respective buckets.
+[src:cuckoo-filter/bloom-filter] Arithmetic overflow of the buckets is a problem and the buckets should be sufficiently large to make this case rare.
+[src:cuckoo-filter/bloom-filter] If it does occur then the increment and decrement operations must leave the bucket set to the maximum possible value in order to retain the properties of a Bloom filter.
+[src:cuckoo-filter/bloom-filter] The size of counters is usually 3 or 4 bits.
+[src:cuckoo-filter/bloom-filter] Hence counting Bloom filters use 3 to 4 times more space than static Bloom filters.
+[src:cuckoo-filter/bloom-filter] In contrast, the data structures of Pagh, Pagh & Rao (2005) and Fan et al.
+[src:cuckoo-filter/bloom-filter] (2014) also allow deletions but use less space than a static Bloom filter.
+[src:cuckoo-filter/bloom-filter] Another issue with counting filters is limited scalability.
+[src:cuckoo-filter/bloom-filter] Because the counting Bloom filter table cannot be expanded, the maximal number of keys to be stored simultaneously in the filter must be known in advance.
+[src:cuckoo-filter/bloom-filter] Once the designed capacity of the table is exceeded, the false positive rate will grow rapidly as more keys are inserted.
+[src:cuckoo-filter/bloom-filter] (2006) introduced a data structure based on d-left hashing that is functionally equivalent but uses approximately half as much space as counting Bloom filters.
+[src:cuckoo-filter/bloom-filter] The scalability issue does not occur in this data structure.
+[src:cuckoo-filter/bloom-filter] Once the designed capacity is exceeded, the keys could be reinserted in a new hash table of double size.
+[src:cuckoo-filter/bloom-filter] The space efficient variant by Putze, Sanders & Singler (2007) could also be used to implement counting filters by supporting insertions and deletions.
+[src:cuckoo-filter/bloom-filter] Rottenstreich, Kanizo & Keslassy (2012) introduced a new general method based on variable increments that significantly improves the false positive probability of counting Bloom filters and their variants, while still supporting deletions.
+[src:cuckoo-filter/bloom-filter] Unlike counting Bloom filters, at each element insertion, the hashed counters are incremented by a hashed variable increment instead of a unit increment.
+[src:cuckoo-filter/bloom-filter] To query an element, the exact values of the counters are considered and not just their positiveness.
+[src:cuckoo-filter/bloom-filter] If a sum represented by a counter value cannot be composed of the corresponding variable increment for the queried element, a negative answer can be returned to the query.
+[src:cuckoo-filter/bloom-filter] (2019) shows that false positive of Counting Bloom filter decreases from k=1 to a point defined $k_{opt}$ , and increases from $k_{opt}$ to positive infinity, and finds $k_{opt}$ as a function of count threshold.
+[src:cuckoo-filter/bloom-filter] Bloom filters can be organized in distributed data structures to perform fully decentralized computations of aggregate functions.
+[src:cuckoo-filter/bloom-filter] Decentralized aggregation makes collective measurements locally available in every node of a distributed network without involving a centralized computational entity for this purpose.
+[src:cuckoo-filter/bloom-filter] Parallel Bloom filters can be implemented to take advantage of the multiple processing elements (PEs) present in parallel shared-nothing machines.
+[src:cuckoo-filter/bloom-filter] One of the main obstacles for a parallel Bloom filter is the organization and communication of the unordered data which is, in general, distributed evenly over all PEs at the initiation or at batch insertions.
+[src:cuckoo-filter/bloom-filter] To order the data two approaches can be used, either resulting in a Bloom filter over all data being stored on each PE, called replicating bloom filter, or the Bloom filter over all data being split into equal parts, each PE storing one part of it.
+[src:cuckoo-filter/bloom-filter] For both approaches a "Single Shot" Bloom filter is used which only calculates one hash, resulting in one flipped bit per element, to reduce the communication volume.
+[src:cuckoo-filter/bloom-filter] During the communication of the hashes the PEs search for bits that are set in more than one of the receiving packets, as this would mean that two elements had the same hash and therefore could be duplicates.
+[src:cuckoo-filter/bloom-filter] If this occurs a message containing the index of the bit, which is also the hash of the element that could be a duplicate, is sent to the PEs which sent a packet with the set bit.
+[src:cuckoo-filter/bloom-filter] If multiple indices are sent to the same PE by one sender it can be advantageous to encode the indices as well.
+[src:cuckoo-filter/bloom-filter] All elements that didn't have their hash sent back are now guaranteed to not be a duplicate and won't be evaluated further, for the remaining elements a Repartitioning algorithm can be used.
+[src:cuckoo-filter/bloom-filter] First all the elements that had their hash value sent back are sent to the PE that their hash is responsible for.
+[src:cuckoo-filter/bloom-filter] Any element and its duplicate is now guaranteed to be on the same PE.
+[src:cuckoo-filter/bloom-filter] In the second step each PE uses a sequential algorithm for duplicate detection on the receiving elements, which are only a fraction of the amount of starting elements.
+[src:cuckoo-filter/bloom-filter] By allowing a false positive rate for the duplicates, the communication volume can be reduced further as the PEs don't have to send elements with duplicated hashes at all and instead any element with a duplicated hash can simply be marked as a duplicate.
+[src:cuckoo-filter/bloom-filter] As a result, the false positive rate for duplicate detection is the same as the false positive rate of the used bloom filter.
+[src:cuckoo-filter/bloom-filter] The process of filtering out the most 'unique' elements can also be repeated multiple times by changing the hash function in each filtering step.
+[src:cuckoo-filter/bloom-filter] While using more than two repetitions can reduce the communication volume further if the number of duplicates in a set is small, the payoff for the additional complications is low.
+[src:cuckoo-filter/bloom-filter] Bloom filters can be used for approximate data synchronization as in Byers et al.
+[src:cuckoo-filter/bloom-filter] Counting Bloom filters can be used to approximate the number of differences between two sets and this approach is described in Agarwal & Trachtenberg (2006).
+[src:cuckoo-filter/bloom-filter] Bloom filters can be adapted to the context of streaming data.
+[src:cuckoo-filter/bloom-filter] Another solution is the Aging Bloom filter, that consists of two Bloom filter each occupying half the total available memory: when one filter is full, the second filter is erased and newer elements are then added to this newly empty filter.
+[src:cuckoo-filter/bloom-filter] This result shows that for L big enough and n going to infinity, then the lower bound converges to $FP+FN=1$ , which is the characteristic relation of a random filter.
+[src:cuckoo-filter/bloom-filter] Hence, after enough insertions, and if the alphabet is too big to be stored in memory (which is assumed in the context of probabilistic filters), it is impossible for a filter to perform better than randomness.
+[src:cuckoo-filter/bloom-filter] This result can be leveraged by only expecting a filter to operate on a sliding window rather than the whole stream.
+[src:cuckoo-filter/bloom-filter] In this case, the exponent n in the formula above is replaced by w, which gives a formula that might deviate from 1, if w is not too small.
+[src:cuckoo-filter/bloom-filter] (2004) designed a generalization of Bloom filters that could associate a value with each element that had been inserted, implementing an associative array.
+[src:cuckoo-filter/bloom-filter] Like Bloom filters, these structures achieve a small space overhead by accepting a small probability of false positives.
+[src:cuckoo-filter/bloom-filter] In the case of "Bloomier filters", a *false positive* is defined as returning a result when the key is not in the map.
+[src:cuckoo-filter/bloom-filter] The map will never return the wrong value for a key that *is* in the map.
+[src:cuckoo-filter/bloom-filter] Boldi & Vigna (2005) proposed a lattice-based generalization of Bloom filters.
+[src:cuckoo-filter/bloom-filter] A **compact approximator** associates to each key an element of a lattice (the standard Bloom filters being the case of the Boolean two-element lattice).
+[src:cuckoo-filter/bloom-filter] Instead of a bit array, they have an array of lattice elements.
+[src:cuckoo-filter/bloom-filter] When adding a new association between a key and an element of the lattice, they compute the maximum of the current contents of the *k* array locations associated to the key with the lattice element.
+[src:cuckoo-filter/bloom-filter] When reading the value associated to a key, they compute the minimum of the values found in the *k* locations associated to the key.
+[src:cuckoo-filter/bloom-filter] The resulting value approximates from above the original value.
+[src:cuckoo-filter/bloom-filter] This implementation used a separate array for each hash function.
+[src:cuckoo-filter/bloom-filter] This method allows for parallel hash calculations for both insertions and inquiries.
+[src:cuckoo-filter/bloom-filter] (2007) proposed a variant of Bloom filters that can adapt dynamically to the number of elements stored, while assuring a minimum false positive probability.
+[src:cuckoo-filter/bloom-filter] The technique is based on sequences of standard Bloom filters with increasing capacity and tighter false positive probabilities, so as to ensure that a maximum false positive probability can be set beforehand, regardless of the number of elements to be inserted.
+[src:cuckoo-filter/bloom-filter] Spatial Bloom filters (SBF) were originally proposed by Palmieri, Calderoni & Maio (2014) as a data structure designed to store location information, especially in the context of cryptographic protocols for location privacy.
+[src:cuckoo-filter/bloom-filter] However, the main characteristic of SBFs is their ability to store **multiple sets** in a single data structure, which makes them suitable for a number of different application scenarios.
+[src:cuckoo-filter/bloom-filter] Membership of an element to a specific set can be queried, and the false positive probability depends on the set: the first sets to be entered into the filter during construction have higher false positive probabilities than sets entered at the end.
+[src:cuckoo-filter/bloom-filter] This property allows a prioritization of the sets, where sets containing more "important" elements can be preserved.
+[src:cuckoo-filter/bloom-filter] A layered Bloom filter consists of multiple Bloom filter layers.
+[src:cuckoo-filter/bloom-filter] Layered Bloom filters allow keeping track of how many times an item was added to the Bloom filter by checking how many layers contain the item.
+[src:cuckoo-filter/bloom-filter] With a layered Bloom filter a check operation will normally return the deepest layer number the item was found in.
+[src:cuckoo-filter/bloom-filter] An attenuated Bloom filter of depth D can be viewed as an array of D normal Bloom filters.
+[src:cuckoo-filter/bloom-filter] In the context of service discovery in a network, each node stores regular and attenuated Bloom filters locally.
+[src:cuckoo-filter/bloom-filter] The regular or local Bloom filter indicates which services are offered by the node itself.
+[src:cuckoo-filter/bloom-filter] The attenuated filter of level i indicates which services can be found on nodes that are i-hops away from the current node.
+[src:cuckoo-filter/bloom-filter] The i-th value is constructed by taking a union of local Bloom filters for nodes i-hops away from the node.
+[src:cuckoo-filter/bloom-filter] For example, consider a small network, shown on the graph below.
+[src:cuckoo-filter/bloom-filter] Say we are searching for a service A whose id hashes to bits 0,1, and 3 (pattern 11010).
+[src:cuckoo-filter/bloom-filter] First, we check whether service A is offered by n1 by checking its local filter.
+[src:cuckoo-filter/bloom-filter] Since the patterns don't match, we check the attenuated Bloom filter in order to determine which node should be the next hop.
+[src:cuckoo-filter/bloom-filter] We see that n2 doesn't offer service A but lies on the path to nodes that do.
+[src:cuckoo-filter/bloom-filter] Hence, we move to n2 and repeat the same procedure.
+[src:cuckoo-filter/bloom-filter] We quickly find that n3 offers the service, and hence the destination is located.
+[src:cuckoo-filter/bloom-filter] By using attenuated Bloom filters consisting of multiple layers, services at more than one hop distance can be discovered while avoiding saturation of the Bloom filter by attenuating (shifting out) bits set by sources further away.
+[src:cuckoo-filter/bloom-filter] Bloom filters are often used to search large chemical structure databases (see chemical similarity).
+[src:cuckoo-filter/bloom-filter] In the simplest case, the elements added to the filter (called a *fingerprint* in this field) are just the atomic numbers present in the molecule, or a hash based on the atomic number of each atom and the number and type of its bonds.
+[src:cuckoo-filter/bloom-filter] More advanced filters also encode atom counts, larger substructure features like carboxyl groups, and graph properties like the number of rings.
+[src:cuckoo-filter/bloom-filter] In hash-based fingerprints, a hash function based on atom and bond properties is used to turn a subgraph into a PRNG seed, and the first output values used to set bits in the Bloom filter.
+[src:cuckoo-filter/bloom-filter] Molecular fingerprints started in the late 1940s as way to search for chemical structures searched on punched cards.
+[src:cuckoo-filter/bloom-filter] However, it wasn't until around 1990 that Daylight Chemical Information Systems, Inc. introduced a hash-based method to generate the bits, rather than use a precomputed table.
+[src:cuckoo-filter/bloom-filter] Unlike the dictionary approach, the hash method can assign bits for substructures which hadn't previously been seen.
+[src:cuckoo-filter/bloom-filter] In the early 1990s, the term "fingerprint" was considered different from "structural keys", but the term has since grown to encompass most molecular characteristics which can be used for a similarity comparison, including structural keys, sparse count fingerprints, and 3D fingerprints.
+[src:cuckoo-filter/bloom-filter] Unlike Bloom filters, the Daylight hash method allows the number of bits assigned per feature to be a function of the feature size, but most implementations of Daylight-like fingerprints use a fixed number of bits per feature, which makes them a Bloom filter.
+[src:cuckoo-filter/bloom-filter] The original Daylight fingerprints could be used for both similarity and screening purposes.
+[src:cuckoo-filter/bloom-filter] Many other fingerprint types, like the popular ECFP2, can be used for similarity but not for screening because they include local environmental characteristics that introduce false negatives when used as a screen.
+[src:cuckoo-filter/bloom-filter] Even if these are constructed with the same mechanism, these are not Bloom filters because they cannot be used to filter.
+[src:cuckoo-filter/counting-bloom-filter] A **counting Bloom filter** (**CBF**) or **spectral Bloom filter** is a probabilistic data structure that is used to test whether the number of occurrences of a given element in a sequence exceeds a given threshold.
+[src:cuckoo-filter/counting-bloom-filter] As a generalized form of the Bloom filter, false positive matches are possible, but false negatives are not – in other words, a query returns either "possibly bigger or equal than the threshold" or "definitely smaller than the threshold".
+[src:cuckoo-filter/counting-bloom-filter] Most of the parameters are defined same with Bloom filter, such as *m, k. m* is the number of counters in counting Bloom filter, which is expansion of *m* bits in Bloom filter.
+[src:cuckoo-filter/counting-bloom-filter] An *empty counting Bloom filter* is a *m* counters, all set to 0.
+[src:cuckoo-filter/counting-bloom-filter] Similar to Bloom filter, there must also be *k* different hash functions defined, each of which maps or hashes some set element to one of the *m* counter array positions, generating a uniform random distribution.
+[src:cuckoo-filter/counting-bloom-filter] It is also similar that *k* is a constant, much smaller than *m*, which is proportional to the number of elements to be added.
+[src:cuckoo-filter/counting-bloom-filter] The main generalization of Bloom filter is adding an element.
+[src:cuckoo-filter/counting-bloom-filter] To *add* an element, feed it to each of the *k* hash functions to get *k* array positions and *increment* the counters 1 at all these positions.
+[src:cuckoo-filter/counting-bloom-filter] To *query* for an element with a threshold *θ* (test whether the count number of an element is smaller than *θ*), feed it to each of the *k* hash functions to get *k* counter positions.
+[src:cuckoo-filter/counting-bloom-filter] If any of the counters at these positions is less than *θ*, the count number of element is definitely less than *θ* – if it were more and equal, then all the corresponding counters would have been greater or equal to *θ*.
+[src:cuckoo-filter/counting-bloom-filter] If all are greater or equal to *θ*, then either the count is really greater or equal to *θ*, or the counters have by chance been greater or equal to *θ*.
+[src:cuckoo-filter/counting-bloom-filter] If all are greater or equal to θ even though the count is smaller than *θ*, this circumstance is defined as false positive.
+[src:cuckoo-filter/counting-bloom-filter] This also should be minimized like Bloom filter.
+[src:cuckoo-filter/counting-bloom-filter] About hashing problem and advantages, see Bloom filter.
+[src:cuckoo-filter/counting-bloom-filter] A counting Bloom filter is essentially the same data structure as count–min sketches, but are used differently.
+[src:cuckoo-filter/counting-bloom-filter] Several implementations of counting bloom filters allow for deletion, by decrementing each of the *k* counters for a given input.
+[src:cuckoo-filter/counting-bloom-filter] This will introduce the probability of false negatives during a query if the deleted input has not previously been inserted into the filter.
+[src:cuckoo-filter/counting-bloom-filter] Guo *et al.* present the problem in great detail, and provide heuristics for the parameters *m*, *k*, and *n* which minimize the probability of false negatives.
+[src:cuckoo-filter/counting-bloom-filter] The same assumptions in Bloom filter, which hash functions make insertions uniform random, is also assumed here.
+[src:cuckoo-filter/counting-bloom-filter] In the *m* pots, *kn* balls are inserted randomly.
+[src:cuckoo-filter/counting-bloom-filter] This is different from formal definition of false positive in counting Bloom filter.
+[src:cuckoo-filter/counting-bloom-filter] However, following the assumption in Bloom filter, above probability is defined as false positive of counting Bloom filter.
+[src:cuckoo-filter/counting-bloom-filter] If *θ*=1, the equation becomes false positive of Bloom filter.
+[src:cuckoo-filter/counting-bloom-filter] For large but fixed *n* and *m*, the false positive decreases from *k*=1 to a point defined $k_{opt}$ , and increases from $k_{opt}$ to positive infinity.
+[src:cuckoo-filter/counting-bloom-filter] (2019) shows numerical values of $k_{opt}$ within $1\leq \theta \leq 30$ .
+[src:cuckoo-filter/counting-bloom-filter] An invertible Bloom filter (IBF) is a variant of the counting Bloom filter that allows for listing of the remaining element, given there are not too may of them.
+[src:cuckoo-filter/counting-bloom-filter] There is, however, a small chance that multiple hash collisions can render a element unrecoverable.
+[src:cuckoo-filter/counting-bloom-filter] Like a CBF, an IBF consists of a hash table *B* which uses *k* hash functions *h*1...*h**k* and stores a counter in each of its *m* cells.
+[src:cuckoo-filter/counting-bloom-filter] Alongside each counter, it also stores a sum of elements and a sum of element hashes using a new hash function *g*.
+[src:cuckoo-filter/counting-bloom-filter] There is also a second hash table *C* to recover elements that could not be recovered using *B*, which also has *m* cells but only uses two hash functions *f*1 and *f*2.
+[src:cuckoo-filter/counting-bloom-filter] The total number of elements (*n*) is also stored.
+[src:cuckoo-filter/counting-bloom-filter] Repeated insertions and removals can be simplified.
+[src:cuckoo-filter/counting-bloom-filter] A cell is considered "pure" if it contains only one distinct element *x*, which can be checked using `*g*(*B*[*i*].idSum/*B*[*i*].count) = *B*[*i*].hashSum/*B*[*i*].count`.
+[src:cuckoo-filter/counting-bloom-filter] If a cell is pure, then *x* can be recovered by dividing the idSum by the count.
+[src:cuckoo-filter/counting-bloom-filter] An invertible Bloom lookup table (IBLT) is a variant of the invertible Bloom filter that also stores associated values with each key.
+[src:cuckoo-filter/counting-bloom-filter] The difference is that an IBLT also stores a `valueSum` in each cell, which can be used to obtain the value for a given key.
+[src:cuckoo-filter/counting-bloom-filter] If there are no extraneous deletions (where a key is deleted without being inserted first) or duplicates (where a key is inserted multiple times), then the `hashkeySum` can be omitted.
+[src:cuckoo-filter/counting-bloom-filter] In this case, pure cells can be detected by checking whether `count = 1`.
+[src:cuckoo-filter/counting-bloom-filter] A `hashvalueSum` may also be stored in each cell to verify that only one value has been inserted for the corresponding key.
+[src:cuckoo-filter/counting-bloom-filter] IBLTs are suitable for use in databases, networking and compression.
+[src:cuckoo-filter/cuckoo-filter] A **cuckoo filter** is a space-efficient probabilistic data structure that is used to test whether an element is a member of a set, like a Bloom filter does.
+[src:cuckoo-filter/cuckoo-filter] A cuckoo filter can also delete existing items, which is not supported by Bloom filters.
+[src:cuckoo-filter/cuckoo-filter] In addition, for applications that store many items and target moderately low false positive rates, cuckoo filters can achieve lower space overhead than space-optimized Bloom filters.
+[src:cuckoo-filter/cuckoo-filter] Cuckoo filters were first described in 2014.
+[src:cuckoo-filter/cuckoo-filter] A cuckoo filter uses a hash table based on cuckoo hashing to store the fingerprints of items.
+[src:cuckoo-filter/cuckoo-filter] The data structure is broken into buckets of some size b .
+[src:cuckoo-filter/cuckoo-filter] To insert the fingerprint of an item x , one first computes two potential buckets $h_{1}(x)$ and $h_{2}(x)$ where x could go.
+[src:cuckoo-filter/cuckoo-filter] Note that, due to the symmetry of the XOR operation, one can compute $h_{2}(x)$ from $h_{1}(x)$ , and $h_{1}(x)$ from $h_{2}(x)$ .
+[src:cuckoo-filter/cuckoo-filter] These properties are what make it possible to store the fingerprints with cuckoo hashing.
+[src:cuckoo-filter/cuckoo-filter] The fingerprint of x is placed into one of buckets $h_{1}(x)$ and $h_{2}(x)$ .
+[src:cuckoo-filter/cuckoo-filter] If the buckets are full, then one of the fingerprints in the bucket is evicted using cuckoo hashing, and placed into the other bucket where it can go.
+[src:cuckoo-filter/cuckoo-filter] If that bucket, in turn, is also full, then that may trigger another eviction, etc.
+[src:cuckoo-filter/cuckoo-filter] The hash table can achieve both high utilization (thanks to cuckoo hashing), and compactness because only fingerprints are stored.
+[src:cuckoo-filter/cuckoo-filter] Lookup and delete operations of a cuckoo filter are straightforward.
+[src:cuckoo-filter/cuckoo-filter] There are a maximum of two buckets to check by $h_{1}(x)$ and $h_{2}(x)$ .
+[src:cuckoo-filter/cuckoo-filter] If found, the appropriate lookup or delete operation can be performed in $O(b)$ time.
+[src:cuckoo-filter/cuckoo-filter] In order for the hash table to offer theoretical guarantees, the fingerprint size f must be at least $\Omega ((\log n)/b)$ bits.
+[src:cuckoo-filter/cuckoo-filter] Subject to this constraint, cuckoo filters guarantee a false-positive rate of at most $\epsilon \leq b/2^{f-1}$ .
+[src:cuckoo-filter/cuckoo-hashing] Cuckoo hashing was first described by Rasmus Pagh and Flemming Friche Rodler in a 2001 conference paper.
+[src:cuckoo-filter/cuckoo-hashing] The paper was awarded the European Symposium on Algorithms Test-of-Time award in 2020.
+[src:cuckoo-filter/cuckoo-hashing] Cuckoo hashing is a form of open addressing in which each non-empty cell of a hash table contains a key or key–value pair.
+[src:cuckoo-filter/cuckoo-hashing] A hash function is used to determine the location for each key, and its presence in the table (or the value associated with it) can be found by examining that cell of the table.
+[src:cuckoo-filter/cuckoo-hashing] However, open addressing suffers from collisions, which happens when more than one key is mapped to the same cell.
+[src:cuckoo-filter/cuckoo-hashing] The basic idea of cuckoo hashing is to resolve collisions by using two hash functions instead of only one.
+[src:cuckoo-filter/cuckoo-hashing] This provides two possible locations in the hash table for each key.
+[src:cuckoo-filter/cuckoo-hashing] In one of the commonly used variants of the algorithm, the hash table is split into two smaller tables of equal size, and each hash function provides an index into one of these two tables.
+[src:cuckoo-filter/cuckoo-hashing] It is also possible for both hash functions to provide indexes into a single table.
+[src:cuckoo-filter/cuckoo-hashing] Cuckoo hashing uses two hash tables, $T_{1}$ and $T_{2}$ .
+[src:cuckoo-filter/cuckoo-hashing] Assuming r is the length of each table, the hash functions for the two tables is defined as, ${\displaystyle h_{1},\ h_{2}\$ and $\forall x\in S$ where x is the key and S is the set whose keys are stored in $h_{1}(x)$ of $T_{1}$ or $h_{2}(x)$ of $T_{2}$ .
+[src:cuckoo-filter/cuckoo-hashing] The logical or ( $\vee$ ) denotes that, the value of the key x is found in either $T_{1}$ or $T_{2}$ , which is $O(1)$ in worst case.
+[src:cuckoo-filter/cuckoo-hashing] Deletion is performed in $O(1)$ time since probing is not involved.
+[src:cuckoo-filter/cuckoo-hashing] This ignores the cost of the shrinking operation if the table is too sparse.
+[src:cuckoo-filter/cuckoo-hashing] When inserting a new item with key x , the first step involves examining if slot $h_{1}(x)$ of table $T_{1}$ is occupied.
+[src:cuckoo-filter/cuckoo-hashing] If it is not, the item is inserted in that slot.
+[src:cuckoo-filter/cuckoo-hashing] However, if the slot is occupied, the existing item $x'$ is removed and x is inserted at $T_{1}[h_{1}(x)]$ .
+[src:cuckoo-filter/cuckoo-hashing] Then, $x'$ is inserted into table $T_{2}$ by following the same procedure.
+[src:cuckoo-filter/cuckoo-hashing] The process continues until an empty position is found to insert the key.
+[src:cuckoo-filter/cuckoo-hashing] To avoid an infinite loop, a threshold ${\text{Max-Loop}}$ is specified.
+[src:cuckoo-filter/cuckoo-hashing] If the number of iterations exceeds this fixed threshold, both $T_{1}$ and $T_{2}$ are rehashed with new hash functions and the insertion procedure repeats.
+[src:cuckoo-filter/cuckoo-hashing] On lines 10 and 15, the "cuckoo approach" of kicking other keys which occupy $T_{1,2}[h_{1,2}(x)]$ repeats until every key has its own "nest", i.e. item x is inserted into an empty slot in either of the two tables.
+[src:cuckoo-filter/cuckoo-hashing] The notation $x\leftrightarrow y$ expresses swapping x and y .
+[src:cuckoo-filter/cuckoo-hashing] Insertions succeed in expected constant time, even considering the possibility of having to rebuild the table, as long as the number of keys is kept below half of the capacity of the hash table, i.e., the load factor is below 50%.
+[src:cuckoo-filter/cuckoo-hashing] One method of proving this uses the theory of random graphs: one may form an undirected graph called the "cuckoo graph" that has a vertex for each hash table location, and an edge for each hashed value, with the endpoints of the edge being the two possible locations of the value.
+[src:cuckoo-filter/cuckoo-hashing] Then, the greedy insertion algorithm for adding a set of values to a cuckoo hash table succeeds if and only if the cuckoo graph for this set of values is a pseudoforest, a graph with at most one cycle in each of its connected components.
+[src:cuckoo-filter/cuckoo-hashing] Any vertex-induced subgraph with more edges than vertices corresponds to a set of keys for which there are an insufficient number of slots in the hash table.
+[src:cuckoo-filter/cuckoo-hashing] When the hash function is chosen randomly, the cuckoo graph is a random graph in the Erdős–Rényi model.
+[src:cuckoo-filter/cuckoo-hashing] With high probability, for load factor less than 1/2 (corresponding to a random graph in which the ratio of the number of edges to the number of vertices is bounded below 1/2), the graph is a pseudoforest and the cuckoo hashing algorithm succeeds in placing all keys.
+[src:cuckoo-filter/cuckoo-hashing] The same theory also proves that the expected size of a connected component of the cuckoo graph is small, ensuring that each insertion takes constant expected time.
+[src:cuckoo-filter/cuckoo-hashing] However, also with high probability, a load factor greater than 1/2 will lead to a giant component with two or more cycles, causing the data structure to fail and need to be resized.
+[src:cuckoo-filter/cuckoo-hashing] Since a theoretical random hash function requires too much space for practical usage, an important theoretical question is which practical hash functions suffice for Cuckoo hashing.
+[src:cuckoo-filter/cuckoo-hashing] One approach is to use k-independent hashing.
+[src:cuckoo-filter/cuckoo-hashing] In 2009 it was shown that $O(\log n)$ -independence suffices, and at least 6-independence is needed.
+[src:cuckoo-filter/cuckoo-hashing] Another approach is to use tabulation hashing, which is not 6-independent, but was shown in 2012 to have other properties sufficient for Cuckoo hashing.
+[src:cuckoo-filter/cuckoo-hashing] A third approach from 2014 is to slightly modify the cuckoo hashtable with a so-called stash, which makes it possible to use nothing more than 2-independent hash functions.
+[src:cuckoo-filter/cuckoo-hashing] In practice, cuckoo hashing is about 20–30% slower than linear probing, which is the fastest of the common approaches.
+[src:cuckoo-filter/cuckoo-hashing] The reason is that cuckoo hashing often causes two cache misses per search, to check the two locations where a key might be stored, while linear probing usually causes only one cache miss per search.
+[src:cuckoo-filter/cuckoo-hashing] However, because of its worst case guarantees on search time, cuckoo hashing can still be valuable when real-time response rates are required.
+[src:cuckoo-filter/cuckoo-hashing] The following two tables show the insertion of some example elements.
+[src:cuckoo-filter/cuckoo-hashing] Each column corresponds to the state of the two hash tables over time.
+[src:cuckoo-filter/cuckoo-hashing] The possible insertion locations for each new value are highlighted.
+[src:cuckoo-filter/cuckoo-hashing] The last column illustrates a failed insertion due to a cycle, details below.
+[src:cuckoo-filter/cuckoo-hashing] If you attempt to insert the element 45, then you get into a cycle, and fail.
+[src:cuckoo-filter/cuckoo-hashing] In the last row of the table we find the same initial situation as at the beginning again.
+[src:cuckoo-filter/cuckoo-hashing] Several variations of cuckoo hashing have been studied, primarily with the aim of improving its space usage by increasing the load factor that it can tolerate to a number greater than the 50% threshold of the basic algorithm.
+[src:cuckoo-filter/cuckoo-hashing] Some of these methods can also be used to reduce the failure rate of cuckoo hashing, causing rebuilds of the data structure to be much less frequent.
+[src:cuckoo-filter/cuckoo-hashing] Generalizations of cuckoo hashing that use more than two alternative hash functions can be expected to utilize a larger part of the capacity of the hash table efficiently while sacrificing some lookup and insertion speed.
+[src:cuckoo-filter/cuckoo-hashing] Using just three hash functions increases the load to 91%.
+[src:cuckoo-filter/cuckoo-hashing] Another generalization of cuckoo hashing called *blocked cuckoo hashing* uses more than one key per bucket and a balanced allocation scheme.
+[src:cuckoo-filter/cuckoo-hashing] Using just 2 keys per bucket permits a load factor above 80%.
+[src:cuckoo-filter/cuckoo-hashing] Another variation of cuckoo hashing that has been studied is *cuckoo hashing with a stash*.
+[src:cuckoo-filter/cuckoo-hashing] The stash, in this data structure, is an array of a constant number of keys, used to store keys that cannot successfully be inserted into the main hash table of the structure.
+[src:cuckoo-filter/cuckoo-hashing] This modification reduces the failure rate of cuckoo hashing to an inverse-polynomial function with an exponent that can be made arbitrarily large by increasing the stash size.
+[src:cuckoo-filter/cuckoo-hashing] However, larger stashes also mean slower searches for keys that are not present or are in the stash.
+[src:cuckoo-filter/cuckoo-hashing] A stash can be used in combination with more than two hash functions or with blocked cuckoo hashing to achieve both high load factors and small failure rates.
+[src:cuckoo-filter/cuckoo-hashing] The analysis of cuckoo hashing with a stash extends to practical hash functions, not just to the random hash function model commonly used in theoretical analysis of hashing.
+[src:cuckoo-filter/cuckoo-hashing] Some people recommend a simplified generalization of cuckoo hashing called skewed-associative cache in some CPU caches.
+[src:cuckoo-filter/cuckoo-hashing] Another variation of a cuckoo hash table, called a cuckoo filter, replaces the stored keys of a cuckoo hash table with much shorter fingerprints, computed by applying another hash function to the keys.
+[src:cuckoo-filter/cuckoo-hashing] In order to allow these fingerprints to be moved around within the cuckoo filter, without knowing the keys that they came from, the two locations of each fingerprint may be computed from each other by a bitwise exclusive or operation with the fingerprint, or with a hash of the fingerprint.
+[src:cuckoo-filter/cuckoo-hashing] However, it improves on a Bloom filter in multiple respects: its memory usage is smaller by a constant factor, it has better locality of reference, and (unlike Bloom filters) it allows for fast deletion of set elements with no additional storage penalty.
+[src:cuckoo-filter/cuckoo-hashing] A study by Zukowski et al. has shown that cuckoo hashing is much faster than chained hashing for small, cache-resident hash tables on modern processors.
+[src:cuckoo-filter/cuckoo-hashing] Kenneth Ross has shown bucketized versions of cuckoo hashing (variants that use buckets that contain more than one key) to be faster than conventional methods also for large hash tables, when space utilization is high.
+[src:cuckoo-filter/cuckoo-hashing] The performance of the bucketized cuckoo hash table was investigated further by Askitis, with its performance compared against alternative hashing schemes.
+[src:cuckoo-filter/cuckoo-hashing] A survey by Mitzenmacher presents open problems related to cuckoo hashing as of 2009.
+[src:cuckoo-filter/cuckoo-hashing] Cuckoo hashing is used in TikTok's recommendation system to solve the problem of "embedding table collisions", which can result in reduced model quality.
+[src:cuckoo-filter/cuckoo-hashing] The TikTok recommendation system "Monolith" takes advantage of cuckoo hashing's collision resolution to prevent different concepts from being mapped to the same vectors.
+[src:cuckoo-filter/quotient-filter] A **quotient filter** is a space-efficient probabilistic data structure used to test whether an element is a member of a set (an approximate membership query filter, AMQ).
+[src:cuckoo-filter/quotient-filter] A query will elicit a reply specifying either that the element is definitely not in the set or that the element is probably in the set.
+[src:cuckoo-filter/quotient-filter] The former result is definitive; *i.e.*, the test does not generate false negatives.
+[src:cuckoo-filter/quotient-filter] But with the latter result there is some probability, ε, of the test returning "element is in the set" when in fact the element is not present in the set (*i.e.*, a false positive).
+[src:cuckoo-filter/quotient-filter] There is a tradeoff between ε, the false positive rate, and storage size; increasing the filter's storage size reduces ε.
+[src:cuckoo-filter/quotient-filter] Other AMQ operations include "insert" and "optionally delete".
+[src:cuckoo-filter/quotient-filter] The more elements are added to the set, the larger the probability of false positives.
+[src:cuckoo-filter/quotient-filter] A typical application for quotient filters, and other AMQ filters, is to serve as a proxy for the keys in a database on disk.
+[src:cuckoo-filter/quotient-filter] As keys are added to or removed from the database, the filter is updated to reflect this.
+[src:cuckoo-filter/quotient-filter] Any lookup will first consult the fast quotient filter, then look in the (presumably much slower) database only if the quotient filter reported the presence of the key.
+[src:cuckoo-filter/quotient-filter] If the filter returns absence, the key is known not to be in the database without any disk accesses having been performed.
+[src:cuckoo-filter/quotient-filter] A quotient filter has the usual AMQ operations of insert and query.
+[src:cuckoo-filter/quotient-filter] In addition it can also be merged and re-sized without having to re-hash the original keys (thereby avoiding the need to access those keys from secondary storage).
+[src:cuckoo-filter/quotient-filter] This property benefits certain kinds of log-structured merge-trees.
+[src:cuckoo-filter/quotient-filter] The compact hash table underlying a quotient filter was described by Cleary in 1984.
+[src:cuckoo-filter/quotient-filter] The first known reference to using the structure as an AMQ filter is by Pagh *et al.* in 2005.
+[src:cuckoo-filter/quotient-filter] In 2009, Dillinger and Manolios optimized the structure's metadata, added in-place accommodation of more elements, and applied the structure to explicit-state model checking.
+[src:cuckoo-filter/quotient-filter] In 2017, Pandey *et al.* described a version that uses hardware bit-manipulation instructions to improve performance, supports concurrent updates, and adds support for associating a variable-sized counter to each element.
+[src:cuckoo-filter/quotient-filter] The quotient filter is based on a kind of hash table in which entries contain only a portion of the key plus some additional meta-data bits.
+[src:cuckoo-filter/quotient-filter] These bits are used to deal with the case when distinct keys happen to hash to the same table entry.
+[src:cuckoo-filter/quotient-filter] By way of contrast, other types of hash tables that deal with such collisions by linking to overflow areas are not compact because the overhead due to linkage can exceed the storage used to store the key.
+[src:cuckoo-filter/quotient-filter] In a quotient filter a hash function generates a *p*-bit fingerprint.
+[src:cuckoo-filter/quotient-filter] The *r* least significant bits is called the remainder while the *q* = *p* - *r* most significant bits is called the quotient, hence the name *quotienting* (coined by Knuth.) The hash table has 2q slots.
+[src:cuckoo-filter/quotient-filter] For some key *d* which hashes to the fingerprint *dH*, let its quotient be *dQ* and the remainder be *dR*.
+[src:cuckoo-filter/quotient-filter] QF will try to store the remainder in slot dQ, which is known as the *canonical slot*.
+[src:cuckoo-filter/quotient-filter] However the canonical slot might already be occupied because multiple keys can hash to the same fingerprint—a *hard collision*—or because even when the keys' fingerprints are distinct they can have the same quotient—a *soft collision*.
+[src:cuckoo-filter/quotient-filter] If the canonical slot is occupied then the remainder is stored in some slot to the right.
+[src:cuckoo-filter/quotient-filter] As described below, the insertion algorithm ensures that all fingerprints having the same quotient are stored in contiguous slots.
+[src:cuckoo-filter/quotient-filter] Such a set of fingerprints is defined as a *run*.
+[src:cuckoo-filter/quotient-filter] Note that a run's first fingerprint might not occupy its canonical slot if the run has been forced right by some run to the left.
+[src:cuckoo-filter/quotient-filter] However a run whose first fingerprint occupies its canonical slot indicates the start of a *cluster*.
+[src:cuckoo-filter/quotient-filter] The initial run and all subsequent runs comprise the cluster, which terminates at an unoccupied slot or the start of another cluster.
+[src:cuckoo-filter/quotient-filter] The three additional bits are used to reconstruct a slot's fingerprint.
+[src:cuckoo-filter/quotient-filter] is set when a slot is the canonical slot for some key stored (somewhere) in the filter (but not necessarily in this slot).
+[src:cuckoo-filter/quotient-filter] is set when a slot is occupied but not by the first remainder in a run.
+[src:cuckoo-filter/quotient-filter] is set when the remainder in a slot is not in its canonical slot.
+[src:cuckoo-filter/quotient-filter] We can test if a quotient filter contains some key, d, as follows.
+[src:cuckoo-filter/quotient-filter] We hash the key to produce its fingerprint, dH, which we then partition into its high-order q bits, dQ, which comprise its quotient, and its low-order r bits, dR, which comprise its remainder.
+[src:cuckoo-filter/quotient-filter] That slot is empty if its three meta-data bits are false.
+[src:cuckoo-filter/quotient-filter] In that case the filter does not contain the key.
+[src:cuckoo-filter/quotient-filter] If the canonical slot is occupied then we must locate the quotient's run.
+[src:cuckoo-filter/quotient-filter] The set of slots that hold remainders belonging to the same quotient are stored contiguously and these comprise the quotient's run.
+[src:cuckoo-filter/quotient-filter] The first slot in the run might be the canonical slot but it is also possible that the entire run has been shifted to the right by the encroachment from the left of another run.
+[src:cuckoo-filter/quotient-filter] To locate the quotient's run we must first locate the start of the cluster.
+[src:cuckoo-filter/quotient-filter] The cluster consists of a contiguous set of runs.
+[src:cuckoo-filter/quotient-filter] Starting with the quotient's canonical slot we can scan left to locate the start of the cluster, then scan right to locate the quotient's run.
+[src:cuckoo-filter/quotient-filter] We scan left looking for a slot with *is_shifted* is false.
+[src:cuckoo-filter/quotient-filter] This indicates the start of the cluster.
+[src:cuckoo-filter/quotient-filter] Then we scan right keeping a running count of the number of runs we must skip over.
+[src:cuckoo-filter/quotient-filter] Each slot to the left of the canonical slot having *is_occupied* **set** indicates another run to be skipped, so we increment the running count.
+[src:cuckoo-filter/quotient-filter] Each slot having *is_continuation* **clear** indicates the start of another run, thus the end of the previous run, so we decrement the running count.
+[src:cuckoo-filter/quotient-filter] When the running count reaches zero, we are scanning the quotient's run.
+[src:cuckoo-filter/quotient-filter] We can compare the remainder in each slot in the run with dR.
+[src:cuckoo-filter/quotient-filter] If found, we report that the key is (probably) in the filter otherwise we report that the key is definitely not in the filter.
+[src:cuckoo-filter/quotient-filter] Take, for example, looking up element *e*.
+[src:cuckoo-filter/quotient-filter] We would compute *hash(e)*, partition it into its remainder, eR and its quotient eQ, which is 4.
+[src:cuckoo-filter/quotient-filter] Scanning left from slot 4 we encounter three *is_occupied* slots, at indexes 4, 2 and 1, indicating eQ's run is the 3rd run in the cluster.
+[src:cuckoo-filter/quotient-filter] The scan stops at slot 1, which we detect as the cluster's start because it is not empty and not shifted.
+[src:cuckoo-filter/quotient-filter] The start of a run is indicated by *is_continuation* being false.
+[src:cuckoo-filter/quotient-filter] The 1st run is found at index 1, the 2nd at 4 and the 3rd at 5.
+[src:cuckoo-filter/quotient-filter] We compare the remainder held in each slot in the run that starts at index 5.
+[src:cuckoo-filter/quotient-filter] There is only one slot in that run but, in our example, its remainder equals eR, indicating that *e* is indeed a member of the filter, with probability 1 - ε.
+[src:cuckoo-filter/quotient-filter] Insertion follows a path similar to lookup until we ascertain that the key is definitely not in the filter.
+[src:cuckoo-filter/quotient-filter] At that point we insert the remainder in a slot in the current run, a slot chosen to keep the run in sorted order.
+[src:cuckoo-filter/quotient-filter] We shift forward the remainders in any slots in the cluster at or after the chosen slot and update the slot bits.
+[src:cuckoo-filter/quotient-filter] The figure shows a quotient filter proceeding through a series of states as elements are added.
+[src:cuckoo-filter/quotient-filter] In state 1 three elements have been added.
+[src:cuckoo-filter/quotient-filter] The slot each one occupies forms a one-slot run which is also a distinct cluster.
+[src:cuckoo-filter/quotient-filter] In state 2 elements *c* and *d* have been added.
+[src:cuckoo-filter/quotient-filter] Element *c* has a quotient of 1, the same as *b*.
+[src:cuckoo-filter/quotient-filter] We assume bR < cR so cR is shifted into slot 2, and is marked as both a *continuation* and *shifted*.
+[src:cuckoo-filter/quotient-filter] Since its canonical slot is in use, it is shifted into slot 3, and is marked as *shifted*.
+[src:cuckoo-filter/quotient-filter] In addition its canonical slot is marked as *occupied*.
+[src:cuckoo-filter/quotient-filter] The runs for quotients 1 and 2 now comprise a cluster.
+[src:cuckoo-filter/quotient-filter] We assume aR < bR so the remainders in slots 1 through 4 must be shifted.
+[src:cuckoo-filter/quotient-filter] Slot 2 receives bR and is marked as a *continuation* and *shifted*.
+[src:cuckoo-filter/quotient-filter] Slot 5 receives eR and is marked as *shifted*.
+[src:cuckoo-filter/quotient-filter] The runs for quotients 1, 2 and 4 now comprise a cluster, and the presence of those three runs in the cluster is indicated by having slots 1, 2 and 4 being marked as *occupied*.
+[src:cuckoo-filter/quotient-filter] This is important because lookups and inserts require locating the start and length of an entire cluster.
+[src:cuckoo-filter/quotient-filter] If the hash function generates uniformly distributed fingerprints then the length of most runs is *O*(1) and it is highly likely that *all* runs have length *O*(log *m*) where *m* is the number of slots in the table.
+[src:cuckoo-filter/quotient-filter] Bender calculates the probability of a false positive (i.e. when the hash of two keys results in the same fingerprint) in terms of the hash table's remainder size and load factor.
+[src:cuckoo-filter/quotient-filter] Recall that a *p* bit fingerprint is partitioned into a *q* bit quotient, which determines the table size of *m* = 2q slots, and a *r* bit remainder.
+[src:cuckoo-filter/quotient-filter] The load factor $\alpha$ is the proportion of occupied slots *n* to total slots *m*: $\alpha =n/m$ .
+[src:cuckoo-filter/quotient-filter] Then, for a good hash function, $1-e^{-\alpha /2^{r}}\leq 2^{-r}$ is approximately the probability of a hard collision.
+[src:cuckoo-filter/quotient-filter] Pandey's version of the quotient filter requires less space than a comparable Bloom filter when the target false-positive rate is less than 1/64.
+[src:cuckoo-filter/quotient-filter] Quotient filters are AMQs and, as such, provide many of the same benefits as Bloom filters.
+[src:cuckoo-filter/quotient-filter] A large database, such as Webtable may be composed of smaller sub-tables each of which has an associated filter.
+[src:cuckoo-filter/quotient-filter] Each query is distributed concurrently to all sub-tables.
+[src:cuckoo-filter/quotient-filter] If a sub-table does not contain the requested element, its filter can quickly complete the request without incurring any I/O.
+[src:cuckoo-filter/quotient-filter] Quotient filters offer two benefits in some applications.
+[src:cuckoo-filter/quotient-filter] A few duplicates can be tolerated efficiently and can be deleted.
+[src:cuckoo-filter/quotient-filter] The space used by quotient filters is comparable to that of Bloom filters.
+[src:cuckoo-filter/quotient-filter] However quotient filters can be efficiently merged within memory without having to re-insert the original keys.
+[src:cuckoo-filter/quotient-filter] This is particularly important in some log structured storage systems that use the log-structured merge-tree or LSM-tree.
+[src:cuckoo-filter/quotient-filter] The LSM-tree is actually a collection of trees but which is treated as a single key-value store.
+[src:cuckoo-filter/quotient-filter] One variation of the LSM-Tree is the Sorted Array Merge Tree or SAMT.
+[src:cuckoo-filter/quotient-filter] In this variation, a SAMT's component trees are called Wanna-B-trees.
+[src:cuckoo-filter/quotient-filter] Each Wanna-*B*-tree has an associated quotient filter.
+[src:cuckoo-filter/quotient-filter] A query on the SAMT is directed at only select Wanna-*B*-trees as evidenced by their quotient filters.
+[src:cuckoo-filter/quotient-filter] The storage system in its normal operation compacts the SAMT's Wanna-*B*-trees, merging smaller Wanna-*B*-trees into larger ones and merging their quotient filters.
+[src:cuckoo-filter/quotient-filter] An essential property of quotient filters is that they can be efficiently merged without having to re-insert the original keys.
+[src:cuckoo-filter/quotient-filter] Given that for large data sets the Wanna-*B*-trees may not be in memory, accessing them to retrieve the original keys would incur many I/Os.
+[src:cuckoo-filter/quotient-filter] By construction the values in a quotient filter are stored in sorted order.
+[src:cuckoo-filter/quotient-filter] Each run is associated with a specific quotient value, which provides the most significant portion of the fingerprint, the runs are stored in order and each slot in the run provides the least significant portion of the fingerprint.
+[src:cuckoo-filter/quotient-filter] So, by working from left to right, one can reconstruct all the fingerprints and the resulting list of integers will be in sorted order.
+[src:cuckoo-filter/quotient-filter] Merging two quotient filters is then a simple matter of converting each quotient filter into such a list, merging the two lists and using it to populate a new larger quotient filter.
+[src:cuckoo-filter/quotient-filter] Similarly, we can halve or double the size of a quotient filter without rehashing the keys since the fingerprints can be recomputed using just the quotients and remainders.
+[src:cuckoo-filter/streaming-algorithm] In computer science, **streaming algorithms** process input data streams as a sequence of items, typically making just one pass (or a few passes) through the data.
+[src:cuckoo-filter/streaming-algorithm] These algorithms are designed to operate with limited memory, generally logarithmic in the size of the stream and/or in the maximum value in the stream, and may also have limited processing time per item.
+[src:cuckoo-filter/streaming-algorithm] As a result of these constraints, streaming algorithms often produce approximate answers based on a summary or "sketch" of the data stream.
+[src:cuckoo-filter/streaming-algorithm] Though streaming algorithms had already been studied by Munro and Paterson as early as 1978, as well as Philippe Flajolet and G.
+[src:cuckoo-filter/streaming-algorithm] Nigel Martin in 1982/83, the field of streaming algorithms was first formalized and popularized in a 1996 paper by Noga Alon, Yossi Matias, and Mario Szegedy.
+[src:cuckoo-filter/streaming-algorithm] Semi-streaming algorithms were introduced in 2005 as a relaxation of streaming algorithms for graphs, in which the space allowed is linear in the number of vertices *n*, but only logarithmic in the number of edges *m*.
+[src:cuckoo-filter/streaming-algorithm] This relaxation is still meaningful for dense graphs, and can solve interesting problems (such as connectivity) that are insoluble in $o(n)$ space.
+[src:cuckoo-filter/streaming-algorithm] In the data stream model, some or all of the input is represented as a finite sequence of integers (from some finite domain) which is generally not available for random access, but instead arrives one at a time in a "stream".
+[src:cuckoo-filter/streaming-algorithm] If the stream has length *n* and the domain has size *m*, algorithms are generally constrained to use space that is logarithmic in *m* and *n*.
+[src:cuckoo-filter/streaming-algorithm] They can generally make only some small constant number of passes over the stream, sometimes just one.
+[src:cuckoo-filter/streaming-algorithm] Much of the streaming literature is concerned with computing statistics on frequency distributions that are too large to be stored.
+[src:cuckoo-filter/streaming-algorithm] For this class of problems, there is a vector $\mathbf {a} =(a_{1},\dots ,a_{n})$ (initialized to the zero vector $\mathbf {0}$ ) that has updates presented to it in a stream.
+[src:cuckoo-filter/streaming-algorithm] The goal of these algorithms is to compute functions of $\mathbf {a}$ using considerably less space than it would take to represent $\mathbf {a}$ precisely.
+[src:cuckoo-filter/streaming-algorithm] There are two common models for updating such streams, called the "cash register" and "turnstile" models.
+[src:cuckoo-filter/streaming-algorithm] In the cash register model, each update is of the form $\langle i,c\rangle$ , so that $a_{i}$ is incremented by some positive integer c .
+[src:cuckoo-filter/streaming-algorithm] A notable special case is when $c=1$ (only unit insertions are permitted).
+[src:cuckoo-filter/streaming-algorithm] In the turnstile model, each update is of the form $\langle i,c\rangle$ , so that $a_{i}$ is incremented by some (possibly negative) integer c .
+[src:cuckoo-filter/streaming-algorithm] In the "strict turnstile" model, no $a_{i}$ at any time may be less than zero.
+[src:cuckoo-filter/streaming-algorithm] Several papers also consider the "sliding window" model.
+[src:cuckoo-filter/streaming-algorithm] In this model, the function of interest is computing over a fixed-size window in the stream.
+[src:cuckoo-filter/streaming-algorithm] As the stream progresses, items from the end of the window are removed from consideration while new items from the stream take their place.
+[src:cuckoo-filter/streaming-algorithm] Besides the above frequency-based problems, some other types of problems have also been studied.
+[src:cuckoo-filter/streaming-algorithm] Many graph problems are solved in the setting where the adjacency matrix or the adjacency list of the graph is streamed in some unknown order.
+[src:cuckoo-filter/streaming-algorithm] There are also some problems that are very dependent on the order of the stream (i.e., asymmetric functions), such as counting the number of inversions in a stream and finding the longest increasing subsequence.
+[src:cuckoo-filter/streaming-algorithm] These algorithms have many similarities with online algorithms since they both require decisions to be made before all data are available, but they are not identical.
+[src:cuckoo-filter/streaming-algorithm] Data stream algorithms only have limited memory available but they may be able to defer action until a group of points arrive, while online algorithms are required to take action as soon as each point arrives.
+[src:cuckoo-filter/streaming-algorithm] If the algorithm is an approximation algorithm then the accuracy of the answer is another key factor.
+[src:cuckoo-filter/streaming-algorithm] The accuracy is often stated as an $(\epsilon ,\delta )$ approximation meaning that the algorithm achieves an error of less than $\epsilon$ with probability $1-\delta$ .
+[src:cuckoo-filter/streaming-algorithm] Streaming algorithms have several applications in networking such as monitoring network links for elephant flows, counting the number of distinct flows, estimating the distribution of flow sizes, and so on.
+[src:cuckoo-filter/streaming-algorithm] They also have applications in databases, such as estimating the size of a join .
+[src:cuckoo-filter/streaming-algorithm] The kth frequency moment of a set of frequencies $\mathbf {a}$ is defined as $F_{k}(\mathbf {a} )=\sum _{i=1}^{n}a_{i}^{k}$ .
+[src:cuckoo-filter/streaming-algorithm] The first moment $F_{1}$ is simply the sum of the frequencies (i.e., the total count).
+[src:cuckoo-filter/streaming-algorithm] The second moment $F_{2}$ is useful for computing statistical properties of the data, such as the Gini coefficient of variation. $F_{\infty }$ is defined as the frequency of the most frequent items.
+[src:cuckoo-filter/streaming-algorithm] The seminal paper of Alon, Matias, and Szegedy dealt with the problem of estimating the frequency moments.
+[src:cuckoo-filter/streaming-algorithm] A direct approach to find the frequency moments requires to maintain a register mi for all distinct elements *a**i* ∈ (1,2,3,4,...,*N*) which requires at least memory of order $\Omega (N)$ .
+[src:cuckoo-filter/streaming-algorithm] But we have space limitations and require an algorithm that computes in much lower memory.
+[src:cuckoo-filter/streaming-algorithm] This can be achieved by using approximations instead of exact values.
+[src:cuckoo-filter/streaming-algorithm] An algorithm that computes an (*ε,δ*)approximation of Fk, where F'k is the (*ε,δ*)- approximated value of Fk.
+[src:cuckoo-filter/streaming-algorithm] Where *ε* is the approximation parameter and *δ* is the confidence parameter.
+[src:cuckoo-filter/streaming-algorithm] Flajolet et al. in introduced a probabilistic method of counting which was inspired from a paper by Robert Morris.
+[src:cuckoo-filter/streaming-algorithm] Morris in his paper says that if the requirement of accuracy is dropped, a counter *n* can be replaced by a counter log *n* which can be stored in log log *n* bits.
+[src:cuckoo-filter/streaming-algorithm] Flajolet et al. in improved this method by using a hash function h which is assumed to uniformly distribute the element in the hash space (a binary string of length L).
+[src:cuckoo-filter/streaming-algorithm] Let $\rho (y)$ represents the position of least significant 1-bit in the binary representation of yi with a suitable convention for $\rho (0)$ .
+[src:cuckoo-filter/streaming-algorithm] Let *A* be the sequence of data stream of length *M* whose cardinality need to be determined.
+[src:cuckoo-filter/streaming-algorithm] hash space where the ρ(*hashedvalues*) are recorded.
+[src:cuckoo-filter/streaming-algorithm] The below algorithm then determines approximate cardinality of *A*.
+[src:cuckoo-filter/streaming-algorithm] If there are *N* distinct elements in a data stream.
+[src:cuckoo-filter/streaming-algorithm] The previous algorithm describes the first attempt to approximate *F*0 in the data stream by Flajolet and Martin.
+[src:cuckoo-filter/streaming-algorithm] Their algorithm picks a random hash function which they assume to uniformly distribute the hash values in hash space.
+[src:cuckoo-filter/streaming-algorithm] Bar-Yossef et al. in introduced k-minimum value algorithm for determining number of distinct elements in data stream.
+[src:cuckoo-filter/streaming-algorithm] They used a similar hash function *h* which can be normalized to [0,1] as $h:[m]\rightarrow [0,1]$ .
+[src:cuckoo-filter/streaming-algorithm] But they fixed a limit *t* to number of values in hash space.
+[src:cuckoo-filter/streaming-algorithm] The value of *t* is assumed of the order $O\left({\dfrac {1}{\varepsilon _{2}}}\right)$ (i.e. less approximation-value *ε* requires more *t*).
+[src:cuckoo-filter/streaming-algorithm] KMV algorithm keeps only *t*-smallest hash values in the hash space.
+[src:cuckoo-filter/streaming-algorithm] After all the *m* values of stream have arrived, $\upsilon =\mathrm {Max} (h(a_{i}))$ is used to calculate $F'_{0}={\dfrac {t}{\upsilon }}$ .
+[src:cuckoo-filter/streaming-algorithm] That is, in a close-to uniform hash space, they expect at-least *t* elements to be less than $O\left({\dfrac {t}{F_{0}}}\right)$ .
+[src:cuckoo-filter/streaming-algorithm] KMV algorithm can be implemented in $O\left(\left({\dfrac {1}{\varepsilon _{2}}}\right)\cdot \log(m)\right)$ memory bits space.
+[src:cuckoo-filter/streaming-algorithm] Each hash value requires space of order $O(\log(m))$ memory bits.
+[src:cuckoo-filter/streaming-algorithm] There are hash values of the order $O\left({\dfrac {1}{\varepsilon _{2}}}\right)$ .
+[src:cuckoo-filter/streaming-algorithm] The access time can be reduced if we store the *t* hash values in a binary tree.
+[src:cuckoo-filter/streaming-algorithm] Thus the time complexity will be reduced to $O\left(\log \left({\dfrac {1}{\varepsilon }}\right)\cdot \log(m)\right)$ .
+[src:cuckoo-filter/streaming-algorithm] Alon et al. estimates Fk by defining random variables that can be computed within given space and time.
+[src:cuckoo-filter/streaming-algorithm] The expected value of random variables gives the approximate value of Fk.
+[src:cuckoo-filter/streaming-algorithm] Assume length of sequence *m* is known in advance.
+[src:cuckoo-filter/streaming-algorithm] Algorithm takes *S*2 random variable $Y_{1},Y_{2},...,Y_{S2}$ and outputs the median Y .
+[src:cuckoo-filter/streaming-algorithm] Where Yi is the average of Xij where 1 ≤ *j* ≤ *S*1.
+[src:cuckoo-filter/streaming-algorithm] Now calculate expectation of random variable *E*(*X*).
+[src:cuckoo-filter/streaming-algorithm] From the algorithm to calculate Fk discussed above, we can see that each random variable X stores value of ap and r.
+[src:cuckoo-filter/streaming-algorithm] So, to compute X we need to maintain only log(*n*) bits for storing ap and log(*n*) bits for storing r.
+[src:cuckoo-filter/streaming-algorithm] Total number of random variable X will be the ⁠ $S_{1}*S_{2}$ ⁠.
+[src:cuckoo-filter/streaming-algorithm] The previous algorithm calculates $F_{2}$ in order of $O({\sqrt {n}}(\log m+\log n))$ memory bits.
+[src:cuckoo-filter/streaming-algorithm] Alon et al. in simplified this algorithm using four-wise independent random variable with values mapped to $\{-1,1\}$ .
+[src:cuckoo-filter/streaming-algorithm] In the data stream model, the **frequent elements problem** is to output a set of elements that constitute more than some fixed fraction of the stream.
+[src:cuckoo-filter/streaming-algorithm] A special case is the **majority problem**, which is to determine whether or not any value constitutes a majority of the stream.
+[src:cuckoo-filter/streaming-algorithm] More formally, fix some positive constant *c* > 1, let the length of the stream be *m*, and let *f**i* denote the frequency of value *i* in the stream.
+[src:cuckoo-filter/streaming-algorithm] The frequent elements problem is to output the set { *i* | *f**i* > m/c }.
+[src:cuckoo-filter/streaming-algorithm] Detecting events in data streams is often done using a heavy hitters algorithm as listed above: the most frequent items and their frequency are determined using one of these algorithms, then the largest increase over the previous time point is reported as trend.
+[src:cuckoo-filter/streaming-algorithm] This approach can be refined by using exponentially weighted moving averages and variance for normalization.
+[src:cuckoo-filter/streaming-algorithm] Counting the number of distinct elements in a stream (sometimes called the *F*0 moment) is another problem that has been well studied.
+[src:cuckoo-filter/streaming-algorithm] The first algorithm for it was proposed by Flajolet and Martin.
+[src:cuckoo-filter/streaming-algorithm] In 2010, Daniel Kane, Jelani Nelson and David Woodruff found an asymptotically optimal algorithm for this problem.
+[src:cuckoo-filter/streaming-algorithm] It uses *O*(*ε*2 + log *d*) space, with *O*(1) worst-case update and reporting times, as well as universal hash functions and a r-wise independent hash family where *r* = Ω(log(1/*ε*) / log log(1/*ε*)).
+[src:cuckoo-filter/streaming-algorithm] Learn a model (e.g. a classifier) by a single pass over a training set.
+[src:cuckoo-filter/streaming-algorithm] Lower bounds have been computed for many of the data streaming problems that have been studied.
+[src:cuckoo-filter/streaming-algorithm] By far, the most common technique for computing these lower bounds has been using communication complexity.

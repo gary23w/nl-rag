@@ -3,7 +3,7 @@ title: "Cypress (software)"
 source: https://en.wikipedia.org/wiki/Cypress_(software)
 domain: cypress-e2e
 license: CC-BY-SA-4.0
-tags: cypress testing, end-to-end testing, web testing, browser tests
+tags: cypress e2e, end-to-end browser testing, cypress test runner, in-browser assertion
 fetched: 2026-07-02
 ---
 

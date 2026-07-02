@@ -1,0 +1,78 @@
+---
+title: "High performance Node.js image processing"
+source: https://sharp.pixelplumbing.com/
+domain: sharp-imaging
+license: CC-BY-SA-4.0
+tags: sharp imaging, high performance image processing, image resize pipeline, libvips binding
+fetched: 2026-07-02
+---
+
+# High performance Node.js image processing
+
+The typical use case for this high speed Node-API module is to convert large images in common formats to smaller, web-friendly JPEG, PNG, WebP, GIF and AVIF images of varying dimensions.
+
+It can be used with all JavaScript runtimes that provide support for Node-API v9, including Node.js >= 20.9.0, Deno and Bun.
+
+Resizing an image is typically 4x-5x faster than using the quickest ImageMagick and GraphicsMagick settings due to its use of libvips.
+
+Colour spaces, embedded ICC profiles and alpha transparency channels are all handled correctly. Lanczos resampling ensures quality is not sacrificed for speed.
+
+As well as image resizing, operations such as rotation, extraction, compositing and gamma correction are available.
+
+Most modern macOS, Windows and Linux systems do not require any additional install or runtime dependencies.
+
+```
+npm install sharp
+```
+
+## Formats
+
+Section titled “Formats”
+
+This module supports reading JPEG, PNG, WebP, GIF, AVIF, TIFF and SVG images.
+
+Output images can be in JPEG, PNG, WebP, GIF, AVIF and TIFF formats as well as uncompressed raw pixel data.
+
+Streams, Buffer objects and the filesystem can be used for input and output.
+
+A single input Stream can be split into multiple processing pipelines and output Streams.
+
+Deep Zoom image pyramids can be generated, suitable for use with “slippy map” tile viewers like OpenSeadragon.
+
+## Fast
+
+Section titled “Fast”
+
+This module is powered by the blazingly fast libvips image processing library, originally created in 1989 at Birkbeck College and currently maintained by a small team led by John Cupitt.
+
+Only small regions of uncompressed image data are held in memory and processed at a time, taking full advantage of multiple CPU cores and L1/L2/L3 cache.
+
+Everything remains non-blocking thanks to *libuv*, no child processes are spawned and Promises/async/await are supported.
+
+## Optimal
+
+Section titled “Optimal”
+
+The features of `mozjpeg` and `pngquant` can be used to optimise the file size of JPEG and PNG images respectively, without having to invoke separate `imagemin` processes.
+
+Huffman tables are optimised when generating JPEG output images without having to use separate command line tools like jpegoptim and jpegtran.
+
+PNG filtering is disabled by default, which for diagrams and line art often produces the same result as pngcrush.
+
+The file size of animated GIF output is optimised without having to use separate command line tools such as gifsicle.
+
+## Contributing
+
+Section titled “Contributing”
+
+A guide for contributors covers reporting bugs, requesting features and submitting code changes.
+
+## Licensing
+
+Section titled “Licensing”
+
+Copyright 2013 Lovell Fuller and others.
+
+Licensed under the Apache License, Version 2.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

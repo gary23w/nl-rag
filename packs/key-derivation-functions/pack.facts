@@ -1,0 +1,336 @@
+# nl-rag distilled facts — domain: key-derivation-functions
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:key-derivation-functions/hkdf] HKDF-Extract (*XTR*) takes "input key material" or "source key material" (*IKM* or *SKM*) such as a shared secret generated using Diffie-Hellman; an optional, non-secret, random or pseudorandom salt (*r*); and generates a cryptographic key called the PRK ("pseudorandom key").
+[src:key-derivation-functions/hkdf] HKDF-Extract acts as a "randomness extractor", specifically a "computational extractor", taking a potentially non-uniform value of sufficient min-entropy and generating a value indistinguishable from a uniform random value (pseudorandom).
+[src:key-derivation-functions/hkdf] Computational extractors assume attackers are computationally bounded and source entropy may only exist in a computational sense.
+[src:key-derivation-functions/hkdf] Such extractors can be built using cryptographic functions under suitable assumptions, modeled as universal hash function (in the generic case) or a random oracle (in constrained scenarios like sources with weak entropy).
+[src:key-derivation-functions/hkdf] Salt (*r*) acts as a "source-independent extractor", strengthening HKDF's security guarantees.
+[src:key-derivation-functions/hkdf] Using a fixed public *r* is safe for multiple invocations of HKDF (on "independent" but secret *IKM*s which may or may not be derived from the same source), provided *r* isn't chosen or manipulated by an attacker.
+[src:key-derivation-functions/hkdf] Ideally, *r* is a random string of hash function's output length.
+[src:key-derivation-functions/hkdf] Even low quality *r* (weak entropy or shorter length) is recommended as they contribute "significantly" to the security of the *OKM*.
+[src:key-derivation-functions/hkdf] Without or with a low-entropy, non-secret *r*, if an attacker can influence the *IKM*s source in a way that specifically exploits HKDF-Extract's underlying hash function (finding a collision or a specific bias), *XTR* provides no protection.
+[src:key-derivation-functions/hkdf] A random *r*, even if fixed by the application (for example, random number generators using *r* as seed), would strengthen protections for that specific extractor session.
+[src:key-derivation-functions/hkdf] In such a setting, sufficiently long *IKM*s also provide better entropy extraction.
+[src:key-derivation-functions/hkdf] However, allowing the attacker to influence enough of the *IKM* after seeing *r* may result in a completely insecure KDF.
+[src:key-derivation-functions/hkdf] HKDF-Extract is the result of HMAC with *r* as the key (all zeros up to length of the underlying extractor hash function, if not provided) and the *IKM* as the message.
+[src:key-derivation-functions/hkdf] The underlying hash function used for HKDF-Extract step may be different to the one used by HKDF-Expand.
+[src:key-derivation-functions/hkdf] It is recommended that HKDF-Extract uses strongest hash function available to the application, as it "concentrates" the entropy already present in *IKM* but may not necessarily "add" to it.
+[src:key-derivation-functions/hkdf] Truncated output from a stronger underlying hash function for *XTR* (for example, SHA512/256) offers stronger extraction properties.
+[src:key-derivation-functions/hkdf] The attacker is assumed to have partial knowledge about *IKM* (publicly known values in the case of Diffie-Hellman) or partial control over it (entropy pools).
+[src:key-derivation-functions/hkdf] HKDF-Extract may be skipped if the *IKM* is itself a cryptographically strong key (and hence can assume the role of *PRK*), though it is recommended that HKDF-Extract be applied for the sake of compatibility with the general case, especially if *r* is available to the application.
+[src:key-derivation-functions/hkdf] HKDF-Expand (*PRF**) takes the *PRK* (or any random key-derivation key if HKDF-Extract step is skipped), optional info (*CTXinfo*), and a length (*L*), to generate output key material (*OKM*) of length *L*.
+[src:key-derivation-functions/hkdf] Multiple OKMs can be generated from a single PRK by using different values for *CTXinfo*, which must be "independent" of the *IKM* passed in HKDF-Extract.
+[src:key-derivation-functions/hkdf] HKDF-Expand, acting as a variable-output-length pseudorandom function (*PRF**) keyed on *PRK*, calls HMAC on *CTXinfo* as the message (empty string, if unspecified) appended to a 8-bit counter *i* initialized to 1.
+[src:key-derivation-functions/hkdf] Subsequent calls to HMAC are chained in "feedback mode" by prepending the previous HMAC output to *CTXinfo* and incrementing *i*.
+[src:key-derivation-functions/hkdf] *OKM* is a function of the output size (*k* bits) of HMAC's underlying hash function; i.e., SHA-256 outputs *OKM* in segments of *k*=256 bits for up to a maximum of length *i* × *k* bits (255 × 256 bits = 8160 bytes) truncated to desired length *L*.
+[src:key-derivation-functions/hkdf] HKDF-Expand may be skipped if *PRK* is at least desired length *L*, though it is recommended that HKDF-Expand be applied for additional "smoothing" of the *OKM*.
+[src:key-derivation-functions/hkdf] HKDF was proposed as a building block in various protocols and applications, as well as to discourage the proliferation of multiple KDF mechanisms by its authors.
+[src:key-derivation-functions/hkdf] It is formally described in RFC 5869 with detailed analysis in a paper published in 2010.
+[src:key-derivation-functions/hkdf] NIST SP800-56Cr2 specifies a parameterizable extract-then-expand scheme, noting that RFC 5869 HKDF is a version of it and citing its paper for the rationale for the recommendations' extract-and-expand mechanisms.
+[src:key-derivation-functions/hkdf] HKDF is used in the Signal Protocol for end-to-end encrypted messaging where it generates the message keys, in conjunction with the triple Elliptic-curve Diffie-Hellman handshake (X3DH) key agreement protocol.
+[src:key-derivation-functions/hkdf] Signal's "Secure Value Recovery" and "Sealed Sender" are based on HKDF.
+[src:key-derivation-functions/hkdf] HKDF is a main component in the Noise Protocol Framework, Message Layer Security, and is used in widely deployed protocols like IPsec Internet Key Exchange and TLS 1.3.
+[src:key-derivation-functions/hkdf] The "multi-purpose" nature of HKDF is meant to serve applications that require key extraction, key expansion, and key hierarchies in key wrapping, key exchange, PRNG, and password-based key derivation schemes.
+[src:key-derivation-functions/hkdf] There are implementations of HKDF for C#, Go, Java, JavaScript, Perl, PHP, Python, Ruby, Rust, and other programming languages.
+[src:key-derivation-functions/hkdf] RFC6234 lays out a reference C implementation of HKDF based on the Secure Hash Standard.
+[src:key-derivation-functions/key-derivation-function] In cryptography, a **key derivation function** (**KDF**) is a cryptographic algorithm that derives one or more secret keys from a secret value such as a master key, a password, or a passphrase using a pseudorandom function (which typically uses a cryptographic hash function or block cipher).
+[src:key-derivation-functions/key-derivation-function] KDFs can be used to stretch keys into longer keys or to obtain keys of a required format, such as converting a group element that is the result of a Diffie–Hellman key exchange into a symmetric key for use with AES.
+[src:key-derivation-functions/key-derivation-function] Keyed cryptographic hash functions are popular examples of pseudorandom functions used for key derivation.
+[src:key-derivation-functions/key-derivation-function] The first deliberately slow (key stretching) password-based key derivation function was called "crypt" (or "crypt(3)" after its man page), and was invented by Robert Morris in 1978.
+[src:key-derivation-functions/key-derivation-function] It would encrypt a constant (zero), using the first 8 characters of the user's password as the key, by performing 25 iterations of a modified DES encryption algorithm (in which a 12-bit number read from the real-time computer clock is used to perturb the calculations).
+[src:key-derivation-functions/key-derivation-function] The resulting 64-bit number is encoded as 11 printable characters and then stored in the Unix password file.
+[src:key-derivation-functions/key-derivation-function] While it was a great advance at the time, increases in processor speeds since the PDP-11 era have made brute-force attacks against crypt feasible, and advances in storage have rendered the 12-bit salt inadequate.
+[src:key-derivation-functions/key-derivation-function] The crypt function's design also limits the user password to 8 characters, which limits the keyspace and makes strong passphrases impossible.
+[src:key-derivation-functions/key-derivation-function] Although high throughput is a desirable property in general-purpose hash functions, the opposite is true in password security applications in which defending against brute-force cracking is a primary concern.
+[src:key-derivation-functions/key-derivation-function] Various algorithms have been designed specifically for this purpose, including bcrypt, scrypt and, more recently, Lyra2 and Argon2 (the latter being the winner of the Password Hashing Competition).
+[src:key-derivation-functions/key-derivation-function] The large-scale Ashley Madison data breach in which roughly 36 million passwords hashes were stolen by attackers illustrated the importance of algorithm selection in securing passwords.
+[src:key-derivation-functions/key-derivation-function] National Institute of Standards and Technology (NIST) issued a new revision of their digital authentication guidelines, NIST SP 800-63B-3, stating that: "Verifiers SHALL store memorized secrets [i.e. passwords] in a form that is resistant to offline attacks.
+[src:key-derivation-functions/key-derivation-function] Memorized secrets SHALL be salted and hashed using a suitable one-way key derivation function.
+[src:key-derivation-functions/key-derivation-function] Key derivation functions take a password, a salt, and a cost factor as inputs then generate a password hash.
+[src:key-derivation-functions/key-derivation-function] Modern password-based key derivation functions, such as PBKDF2, are based on a recognized cryptographic hash, such as SHA-2, use more salt (at least 64 bits and chosen randomly) and a high iteration count.
+[src:key-derivation-functions/key-derivation-function] NIST recommends a minimum iteration count of 10,000.
+[src:key-derivation-functions/key-derivation-function] The original use for a KDF is key derivation, the generation of keys from secret passwords or passphrases.
+[src:key-derivation-functions/key-derivation-function] Key derivation functions are also used in applications to derive keys from secret passwords or passphrases, which typically do not have the desired properties to be used directly as cryptographic keys.
+[src:key-derivation-functions/key-derivation-function] In such applications, it is generally recommended that the key derivation function be made deliberately slow so as to frustrate brute-force attack or dictionary attack on the password or passphrase input value.
+[src:key-derivation-functions/key-derivation-function] Such use may be expressed as DK = KDF(key, salt, iterations), where DK is the derived key, KDF is the key derivation function, key is the original key or password, salt is a random number which acts as cryptographic salt, and iterations refers to the number of iterations of a sub-function.
+[src:key-derivation-functions/key-derivation-function] The derived key is used instead of the original key or password as the key to the system.
+[src:key-derivation-functions/key-derivation-function] The values of the salt and the number of iterations (if it is not fixed) are stored with the hashed password or sent as cleartext (unencrypted) with an encrypted message.
+[src:key-derivation-functions/key-derivation-function] The difficulty of a brute force attack is increased with the number of iterations.
+[src:key-derivation-functions/key-derivation-function] A practical limit on the iteration count is the unwillingness of users to tolerate a perceptible delay in logging into a computer or seeing a decrypted message.
+[src:key-derivation-functions/key-derivation-function] The use of salt prevents the attackers from precomputing a dictionary of derived keys.
+[src:key-derivation-functions/key-derivation-function] An alternative approach, called **key strengthening**, extends the key with a random salt, but then (unlike in key stretching) securely deletes the salt.
+[src:key-derivation-functions/key-derivation-function] This forces both the attacker and legitimate users to perform a brute-force search for the salt value.
+[src:key-derivation-functions/key-derivation-function] Although the paper that introduced key stretching referred to this earlier technique and intentionally chose a different name, the term "key strengthening" is now often (arguably incorrectly) used to refer to key stretching.
+[src:key-derivation-functions/key-derivation-function] Despite their original use for key derivation, KDFs are possibly better known for their use in **password hashing** (password verification by hash comparison), as used by the passwd file or shadow password file.
+[src:key-derivation-functions/key-derivation-function] Password hash functions should be relatively expensive to calculate in case of brute-force attacks, and KDFs are designed with this characteristic built in.
+[src:key-derivation-functions/key-derivation-function] The non-secret parameters are called "salt" in this context.
+[src:key-derivation-functions/key-derivation-function] In 2013 a Password Hashing Competition was announced to choose a new, standard algorithm for password hashing.
+[src:key-derivation-functions/key-derivation-function] On 20 July 2015 the competition ended and Argon2 was announced as the final winner.
+[src:key-derivation-functions/key-derivation-function] Four other algorithms received special recognition: Catena, Lyra2, Makwa and yescrypt.
+[src:key-derivation-functions/key-management-cheat-sheet] This Key Management Cheat Sheet provides developers with guidance for implementation of cryptographic key management within an application in a secure manner.
+[src:key-derivation-functions/key-management-cheat-sheet] Formulate a plan for the overall organization's cryptographic strategy to guide developers working on different applications and ensure that each application's cryptographic capability meets minimum requirements and best practices.
+[src:key-derivation-functions/key-management-cheat-sheet] Identify the cryptographic and key management requirements for your application and map all components that process or store cryptographic key material.
+[src:key-derivation-functions/key-management-cheat-sheet] Selection of the cryptographic and key management algorithms to use within a given application should begin with an understanding of the objectives of the application.
+[src:key-derivation-functions/key-management-cheat-sheet] For example, if the application is required to store data securely, then the developer should select an algorithm suite that supports the objective of data at rest protection security.
+[src:key-derivation-functions/key-management-cheat-sheet] Applications that are required to transmit and receive data would select an algorithm suite that supports the objective of data in transit protection.
+[src:key-derivation-functions/key-management-cheat-sheet] We have provided recommendations on the selection of crypto suites within an application based on application and security objectives.
+[src:key-derivation-functions/key-management-cheat-sheet] Application developers oftentimes begin the development of crypto and key management capabilities by examining what is available in a library.
+[src:key-derivation-functions/key-management-cheat-sheet] However, an analysis of the real needs of the application should be conducted to determine the optimal key management approach.
+[src:key-derivation-functions/key-management-cheat-sheet] Begin by understanding the security objectives of the application which will then drive the selection of cryptographic protocols that are best suited.
+[src:key-derivation-functions/key-management-cheat-sheet] Keys to create the data encryption keys.
+[src:key-derivation-functions/key-management-cheat-sheet] Once the understanding of the security needs of the application is achieved, developers can determine what protocols and algorithms are required.
+[src:key-derivation-functions/key-management-cheat-sheet] Once the protocols and algorithms are understood, you can begin to define the different types of keys that will support the application's objectives.
+[src:key-derivation-functions/key-management-cheat-sheet] **Authentication of End Devices:** Pre-shared symmetric keys, Trusted certificates, Trust Anchors.
+[src:key-derivation-functions/key-management-cheat-sheet] **Integrity Protection:** Message Authentication Codes (MACs).
+[src:key-derivation-functions/key-management-cheat-sheet] According to `NIST SP 800-57 Part 1`, many algorithms and schemes that provide a security service use a hash function as a component of the algorithm.
+[src:key-derivation-functions/key-management-cheat-sheet] Hash functions can be found in digital signature algorithms (`FIPS186`), Keyed-Hash Message Authentication Codes (HMAC) (`FIPS198`), key-derivation functions/methods (`NIST Special Publications (SP) 800-56A, 800-56B, 800-56C and 800-108`), and random number generators (`NIST SP 800-90A`).
+[src:key-derivation-functions/key-management-cheat-sheet] Approved hash functions are defined in `FIPS180`.
+[src:key-derivation-functions/key-management-cheat-sheet] `NIST SP 800-57 Part 1` recognizes three basic classes of approved cryptographic algorithms: hash functions, symmetric- key algorithms and asymmetric-key algorithms.
+[src:key-derivation-functions/key-management-cheat-sheet] The classes are defined by the number of cryptographic keys that are used in conjunction with the algorithm.
+[src:key-derivation-functions/key-management-cheat-sheet] The NSA released a report, Commercial National Security Algorithm Suite 2.0 which lists the cryptographic algorithms that are expected to be remain strong even with advances in quantum computing.
+[src:key-derivation-functions/key-management-cheat-sheet] Cryptographic hash functions do not require keys.
+[src:key-derivation-functions/key-management-cheat-sheet] Hash functions generate a relatively small digest (hash value) from a (possibly) large input in a way that is fundamentally difficult to reverse (i.e., it is hard to find an input that will produce a given output).
+[src:key-derivation-functions/key-management-cheat-sheet] To compress messages for digital signature generation and verification (Section 4.2.4).
+[src:key-derivation-functions/key-management-cheat-sheet] To derive keys in key-establishment algorithms (Section 4.2.5).
+[src:key-derivation-functions/key-management-cheat-sheet] To generate deterministic random numbers (Section 4.2.7).
+[src:key-derivation-functions/key-management-cheat-sheet] Symmetric-key algorithms (sometimes known as secret-key algorithms) transform data in a way that is fundamentally difficult to undo without knowledge of a secret key.
+[src:key-derivation-functions/key-management-cheat-sheet] The key is "symmetric" because the same key is used for a cryptographic operation and its inverse (e.g., encryption and decryption).
+[src:key-derivation-functions/key-management-cheat-sheet] Symmetric keys are often known by more than one entity; however, the key shall not be disclosed to entities that are not authorized access to the data protected by that algorithm and key.
+[src:key-derivation-functions/key-management-cheat-sheet] To provide authentication and integrity services (Section 4.2.3) in the form of Message Authentication Codes (MACs); the same key is used to generate the MAC and to validate it.
+[src:key-derivation-functions/key-management-cheat-sheet] MACs normally employ either a symmetric key-encryption algorithm or a cryptographic hash function as their cryptographic primitive.
+[src:key-derivation-functions/key-management-cheat-sheet] As part of the key-establishment process (Section 4.2.5).
+[src:key-derivation-functions/key-management-cheat-sheet] Asymmetric-key algorithms, commonly known as public-key algorithms, use two related keys (i.e., a key pair) to perform their functions: a public key and a private key.
+[src:key-derivation-functions/key-management-cheat-sheet] The public key may be known by anyone; the private key should be under the sole control of the entity that "owns" the key pair.
+[src:key-derivation-functions/key-management-cheat-sheet] Even though the public and private keys of a key pair are related, knowledge of the public key does not reveal the private key.
+[src:key-derivation-functions/key-management-cheat-sheet] To establish cryptographic keying material (Section 4.2.5).
+[src:key-derivation-functions/key-management-cheat-sheet] To generate random numbers (Section 4.2.7).
+[src:key-derivation-functions/key-management-cheat-sheet] Message Authentication Codes (MACs) provide data authentication and integrity.
+[src:key-derivation-functions/key-management-cheat-sheet] A MAC is a cryptographic checksum on the data that is used in order to provide assurance that the data has not changed and that the MAC was computed by the expected entity.
+[src:key-derivation-functions/key-management-cheat-sheet] Although message integrity is often provided using non-cryptographic techniques known as error detection codes, these codes can be altered by an adversary to effect an action to the adversary's benefit.
+[src:key-derivation-functions/key-management-cheat-sheet] The use of an approved cryptographic mechanism, such as a MAC, can alleviate this problem.
+[src:key-derivation-functions/key-management-cheat-sheet] In addition, the MAC can provide a recipient with assurance that the originator of the data is a key holder (i.e., an entity authorized to have the key).
+[src:key-derivation-functions/key-management-cheat-sheet] MACs are often used to authenticate the originator to the recipient when only those two parties share the MAC key.
+[src:key-derivation-functions/key-management-cheat-sheet] Digital signatures are used to provide authentication, integrity and non-repudiation.
+[src:key-derivation-functions/key-management-cheat-sheet] Digital signatures are used in conjunction with hash functions and are computed on data of any length (up to a limit that is determined by the hash function).
+[src:key-derivation-functions/key-management-cheat-sheet] `FIPS186` specifies algorithms that are approved for the computation of digital signatures.
+[src:key-derivation-functions/key-management-cheat-sheet] Symmetric key-wrapping keys are used to encrypt other keys using symmetric-key algorithms.
+[src:key-derivation-functions/key-management-cheat-sheet] Key-wrapping keys are also known as key encrypting keys.
+[src:key-derivation-functions/key-management-cheat-sheet] Review `NIST SP 800-57` (Recommendation for Key Management) for recommended guidelines on key strength for specific algorithm implementations.
+[src:key-derivation-functions/key-management-cheat-sheet] When encrypting keys for storage or distribution, always encrypt a cryptographic key with another key of equal or greater cryptographic strength.
+[src:key-derivation-functions/key-management-cheat-sheet] When moving to Elliptic Curve-based algorithms, choose a key length that meets or exceeds the comparative strength of other algorithms in use within your system.
+[src:key-derivation-functions/key-management-cheat-sheet] Formulate a strategy for the overall organization's cryptographic strategy to guide developers working on different applications and ensure that each application's cryptographic capability meets minimum requirements and best practices.
+[src:key-derivation-functions/key-management-cheat-sheet] Keys stored in memory for a long time can become "burned in".
+[src:key-derivation-functions/key-management-cheat-sheet] This can be mitigated by splitting the key into components that are frequently updated.
+[src:key-derivation-functions/key-management-cheat-sheet] Loss or corruption of the memory media on which keys and/or certificates are stored, and recovery planning, according to `NIST SP 800-57`.
+[src:key-derivation-functions/key-management-cheat-sheet] Plan for the recovery from possible corruption of the memory media necessary for key or certificate generation, registration, and/or distribution systems, subsystems, or components as recommended in `NIST SP 800-57`.
+[src:key-derivation-functions/key-management-cheat-sheet] Ephemeral keys can provide perfect forward secrecy protection, which means a compromise of the server's long term signing key does not compromise the confidentiality of past sessions.
+[src:key-derivation-functions/key-management-cheat-sheet] According to NIST, in general, a single key should be used for only one purpose (e.g., encryption, authentication, key wrapping, random number generation, or digital signatures).
+[src:key-derivation-functions/key-management-cheat-sheet] Limiting the use of a key limits the damage that could be done if the key is compromised.
+[src:key-derivation-functions/key-management-cheat-sheet] Some uses of keys interfere with each other.
+[src:key-derivation-functions/key-management-cheat-sheet] For example, the length of time the key may be required for each use and purpose.
+[src:key-derivation-functions/key-management-cheat-sheet] Retention requirements of the data may differ for different data types.
+[src:key-derivation-functions/key-management-cheat-sheet] According to `NIST SP 800-133`, cryptographic modules are the set of hardware, software, and/or firmware that implements security functions (including cryptographic algorithms and key generation) and is contained within a cryptographic module boundary to provide protection of the keys.
+[src:key-derivation-functions/key-management-cheat-sheet] Cryptographic keys shall be generated within cryptographic module with at least a `FIPS 140-2 or 140-3` compliance.
+[src:key-derivation-functions/key-management-cheat-sheet] For explanatory purposes, consider the cryptographic module in which a key is generated to be the key-generating module.
+[src:key-derivation-functions/key-management-cheat-sheet] Any random value required by the key-generating module shall be generated within that module; that is, the Random Bit Generator that generates the random value shall be implemented within cryptographic module with at least a `FIPS 140-2 or 140-3` compliance that generates the key.
+[src:key-derivation-functions/key-management-cheat-sheet] Hardware cryptographic modules are preferred over software cryptographic modules for protection.
+[src:key-derivation-functions/key-management-cheat-sheet] The generated keys shall be transported (when necessary) using secure channels and shall be used by their associated cryptographic algorithm within at least a `FIPS 140-2 or 140-3` compliant cryptographic modules.
+[src:key-derivation-functions/key-management-cheat-sheet] For additional detail for the recommendations in this section refer to `NIST Special Paper 800-133`.
+[src:key-derivation-functions/key-management-cheat-sheet] Keys must be protected on both volatile and persistent memory, ideally processed within secure cryptographic modules.
+[src:key-derivation-functions/key-management-cheat-sheet] Keys should never be stored in plaintext format.
+[src:key-derivation-functions/key-management-cheat-sheet] Ensure all keys are stored in a cryptographic vault, such as a hardware security module (HSM) or isolated cryptographic service.
+[src:key-derivation-functions/key-management-cheat-sheet] If you are planning on storing keys in offline devices/databases, then encrypt the keys using Key Encryption Keys (KEKs) prior to the export of the key material.
+[src:key-derivation-functions/key-management-cheat-sheet] KEK length (and algorithm) should be equivalent to or greater in strength than the keys being protected.
+[src:key-derivation-functions/key-management-cheat-sheet] Ensure that keys have integrity protections applied while in storage (consider dual purpose algorithms that support encryption and Message Code Authentication (MAC)).
+[src:key-derivation-functions/key-management-cheat-sheet] Ensure that standard application level code never reads or uses cryptographic keys in any way and use key management libraries.
+[src:key-derivation-functions/key-management-cheat-sheet] Ensure that keys and cryptographic operation is done inside the sealed vault.
+[src:key-derivation-functions/key-management-cheat-sheet] All work should be done in the vault (such as key access, encryption, decryption, signing, etc).
+[src:key-derivation-functions/key-management-cheat-sheet] For a more complete guide to storing sensitive information such as keys, see the Secrets Management Cheat Sheet.
+[src:key-derivation-functions/key-management-cheat-sheet] Data that has been encrypted with lost cryptographic keys will never be recovered.
+[src:key-derivation-functions/key-management-cheat-sheet] Therefore, it is essential that the application incorporate a secure key backup capability, especially for applications that support data at rest encryption for long-term data stores.
+[src:key-derivation-functions/key-management-cheat-sheet] When backing up keys, ensure that the database that is used to store the keys is encrypted using at least a `FIPS 140-2 or 140-3` validated module.
+[src:key-derivation-functions/key-management-cheat-sheet] It is sometimes useful to escrow key material for use in investigations and for re-provisioning of key material to users in the event that the key is lost or corrupted.
+[src:key-derivation-functions/key-management-cheat-sheet] Never escrow keys used for performing digital signatures, but consider the need to escrow keys that support encryption.
+[src:key-derivation-functions/key-management-cheat-sheet] Oftentimes, escrow can be performed by the Certificate Authority (CA) or key management system that provisions certificates and keys, however in some instances separate APIs must be implemented to allow the system to perform the escrow for the application.
+[src:key-derivation-functions/key-management-cheat-sheet] Accountability involves the identification of those that have access to, or control of, cryptographic keys throughout their lifecycles.
+[src:key-derivation-functions/key-management-cheat-sheet] Accountability can be an effective tool to help prevent key compromises and to reduce the impact of compromises once they are detected.
+[src:key-derivation-functions/key-management-cheat-sheet] Although it is preferred that no humans are able to view keys, as a minimum, the key management system should account for all individuals who are able to view plaintext cryptographic keys.
+[src:key-derivation-functions/key-management-cheat-sheet] In addition, more sophisticated key-management systems may account for all individuals authorized to access or control any cryptographic keys, whether in plaintext or ciphertext form.
+[src:key-derivation-functions/key-management-cheat-sheet] It tends to protect against compromise, because individuals with access to the key know that their access to the key is known.
+[src:key-derivation-functions/key-management-cheat-sheet] It is very useful in recovering from a detected key compromise to know where the key was used and what data or other keys were protected by the compromised key.
+[src:key-derivation-functions/key-management-cheat-sheet] Certain principles have been found to be useful in enforcing the accountability of cryptographic keys.
+[src:key-derivation-functions/key-management-cheat-sheet] These principles might not apply to all systems or all types of keys.
+[src:key-derivation-functions/key-management-cheat-sheet] Identifying the dates and times of key use, along with the data that is protected.
+[src:key-derivation-functions/key-management-cheat-sheet] Identifying other keys that are protected by a symmetric or private key.
+[src:key-derivation-functions/key-management-cheat-sheet] The protective mechanisms employed should be periodically reassessed with respect to the level of security that they provide and are expected to provide in the future, and that the mechanisms correctly and effectively support the appropriate policies.
+[src:key-derivation-functions/key-management-cheat-sheet] New technology developments and attacks should be taken into consideration.
+[src:key-derivation-functions/key-management-cheat-sheet] On a more frequent basis, the actions of the humans that use, operate and maintain the system should be reviewed to verify that the humans continue to follow established security procedures.
+[src:key-derivation-functions/key-management-cheat-sheet] Strong cryptographic systems can be compromised by lax and inappropriate human actions.
+[src:key-derivation-functions/key-management-cheat-sheet] Highly unusual events should be noted and reviewed as possible indicators of attempted attacks on the system.
+[src:key-derivation-functions/key-management-cheat-sheet] A compromise of the integrity of a key means that the key is incorrect - either that the key has been modified (either deliberately or accidentally), or that another key has been substituted; this includes a deletion (non-availability) of the key.
+[src:key-derivation-functions/key-management-cheat-sheet] The substitution or modification of a key used to provide integrity calls into question the integrity of all information protected by the key.
+[src:key-derivation-functions/key-management-cheat-sheet] This information could have been provided by, or changed by, an unauthorized entity that knows the key.
+[src:key-derivation-functions/key-management-cheat-sheet] The substitution of a public or secret key that will be used (at a later time) to encrypt data could allow an unauthorized entity (who knows the decryption key) to decrypt data that was encrypted using the encryption key.
+[src:key-derivation-functions/key-management-cheat-sheet] A compromise of a key's usage or application association means that the key could be used for the wrong purpose (e.g., for key establishment instead of digital signatures) or for the wrong application, and could result in the compromise of information protected by the key.
+[src:key-derivation-functions/key-management-cheat-sheet] A compromise of a key's association with the owner or other entity means that the identity of the other entity cannot be assured (i.e., one does not know who the other entity really is) or that information cannot be processed correctly (e.g., decrypted with the correct key).
+[src:key-derivation-functions/key-management-cheat-sheet] A compromise of a key's association with other information means that there is no association at all, or the association is with the wrong "information".
+[src:key-derivation-functions/key-management-cheat-sheet] This could cause the cryptographic services to fail, information to be lost, or the security of the information to be compromised.
+[src:key-derivation-functions/key-management-cheat-sheet] Certain protective measures may be taken in order to minimize the likelihood or consequences of a key compromise.
+[src:key-derivation-functions/key-management-cheat-sheet] Similar affect as ransomware, except that you can't pay the ransom and get the key back.
+[src:key-derivation-functions/key-management-cheat-sheet] Preventing humans from viewing plaintext symmetric and private keys.
+[src:key-derivation-functions/key-management-cheat-sheet] Restricting plaintext symmetric and private keys to physically protected containers.
+[src:key-derivation-functions/key-management-cheat-sheet] This includes key generators, key-transport devices, key loaders, cryptographic modules, and key-storage devices.
+[src:key-derivation-functions/key-management-cheat-sheet] Using integrity checks to ensure that the integrity of a key or its association with other data has not been compromised.
+[src:key-derivation-functions/key-management-cheat-sheet] For example, keys may be wrapped (i.e., encrypted) in such a manner that unauthorized modifications to the wrapping or to the associations will be detected.
+[src:key-derivation-functions/key-management-cheat-sheet] Employing key confirmation (see NIST SP 800-57 Part 1 Section 4.2.5.5) to help ensure that the proper key was, in fact, established.
+[src:key-derivation-functions/key-management-cheat-sheet] Establishing an accountability system that keeps track of each access to symmetric and private keys in plaintext form.
+[src:key-derivation-functions/key-management-cheat-sheet] Providing a cryptographic integrity check on the key (e.g., using a MAC or a digital signature).
+[src:key-derivation-functions/key-management-cheat-sheet] The use of trusted timestamps for signed data. i.
+[src:key-derivation-functions/key-management-cheat-sheet] Destroying keys as soon as they are no longer needed.
+[src:key-derivation-functions/key-management-cheat-sheet] Creating a compromise-recovery plan, especially in the case of a CA compromise.
+[src:key-derivation-functions/key-management-cheat-sheet] A compromise-recovery plan is essential for restoring cryptographic security services in the event of a key compromise.
+[src:key-derivation-functions/key-management-cheat-sheet] A compromise-recovery plan shall be documented and easily accessible.
+[src:key-derivation-functions/key-management-cheat-sheet] The identification and contact info of the personnel to perform the recovery actions.
+[src:key-derivation-functions/key-management-cheat-sheet] An inventory of all cryptographic keys and their use (e.g., the location of all certificates in a system).
+[src:key-derivation-functions/key-management-cheat-sheet] The education of all appropriate personnel on the recovery procedures.
+[src:key-derivation-functions/key-management-cheat-sheet] An identification and contact info of all personnel needed to support the recovery procedures.
+[src:key-derivation-functions/key-management-cheat-sheet] Policies that key-revocation checking be enforced (to minimize the effect of a compromise).
+[src:key-derivation-functions/key-management-cheat-sheet] The monitoring of the re-keying operations (to ensure that all required operations are performed for all affected keys).
+[src:key-derivation-functions/key-management-cheat-sheet] Identification of all information that may be compromised as a result of the incident.
+[src:key-derivation-functions/key-management-cheat-sheet] Identification of all signatures that may be invalid, due to the compromise of a signing key.
+[src:key-derivation-functions/key-management-cheat-sheet] Distribution of new keying material, if required.
+[src:key-derivation-functions/key-management-cheat-sheet] Implement integrity controls on objects stored in the trust store.
+[src:key-derivation-functions/key-management-cheat-sheet] Do not allow for export of keys held within the trust store without authentication and authorization.
+[src:key-derivation-functions/key-management-cheat-sheet] Setup strict policies and procedures for exporting key material from applications to network applications and other components.
+[src:key-derivation-functions/key-management-cheat-sheet] Implement a secure process for updating the trust store.
+[src:key-derivation-functions/key-management-cheat-sheet] Use only reputable crypto libraries that are well maintained and updated, as well as tested and validated by third-party organizations (e.g., `NIST`/`FIPS`).
+[src:key-derivation-functions/key-stretching] In cryptography, **key stretching** techniques are used to make a possibly weak key, typically a password or passphrase, more secure against a brute-force attack by increasing the resources (time and possibly space) it takes to test each possible key.
+[src:key-derivation-functions/key-stretching] Passwords or passphrases created by humans are often short or predictable enough to allow password cracking, and key stretching is intended to make such attacks more difficult by complicating a basic step of trying a single password candidate.
+[src:key-derivation-functions/key-stretching] Key stretching also improves security in some real-world applications where the key length has been constrained, by mimicking a longer key length from the perspective of a brute-force attacker.
+[src:key-derivation-functions/key-stretching] There are several ways to perform key stretching.
+[src:key-derivation-functions/key-stretching] One way is to apply a cryptographic hash function or a block cipher repeatedly in a loop.
+[src:key-derivation-functions/key-stretching] For example, in applications where the key is used for a cipher, the key schedule in the cipher may be modified so that it takes a specific length of time to perform.
+[src:key-derivation-functions/key-stretching] Another way is to use cryptographic hash functions that have large memory requirements – these can be effective in frustrating attacks by memory-bound adversaries.
+[src:key-derivation-functions/key-stretching] Key stretching algorithms depend on an algorithm which receives an input key and then expends considerable effort to generate a stretched cipher (called an **enhanced key**) mimicking randomness and longer key length.
+[src:key-derivation-functions/key-stretching] The algorithm must have no known shortcut, so the most efficient way to relate the input and cipher is to repeat the key stretching algorithm itself.
+[src:key-derivation-functions/key-stretching] This compels brute-force attackers to expend the same effort for each attempt.
+[src:key-derivation-functions/key-stretching] If this added effort compares to a brute-force key search of all keys with a certain key length, then the input key may be described as *stretched* by that same length.
+[src:key-derivation-functions/key-stretching] If the attacker uses the same class of hardware as the user, each guess will take the similar amount of time to process as it took the user (for example, one second).
+[src:key-derivation-functions/key-stretching] Even if the attacker has much greater computing resources than the user, the key stretching will still slow the attacker down while not seriously affecting the usability of the system for any legitimate user.
+[src:key-derivation-functions/key-stretching] This is because the user's computer only has to compute the stretching function once upon the user entering their password, whereas the attacker must compute it for every guess in the attack.
+[src:key-derivation-functions/key-stretching] This process does not alter the original key-space entropy.
+[src:key-derivation-functions/key-stretching] The key stretching algorithm is deterministic, allowing a weak input to always generate the same enhanced key, but therefore limiting the enhanced key to no more possible combinations than the input key space.
+[src:key-derivation-functions/key-stretching] Consequently, this attack remains vulnerable if unprotected against certain time-memory tradeoffs such as developing rainbow tables to target multiple instances of the enhanced key space in parallel (effectively a *shortcut* to repeating the algorithm).
+[src:key-derivation-functions/key-stretching] For this reason, key stretching is often combined with salting.
+[src:key-derivation-functions/key-stretching] Many libraries provide functions which perform key stretching as part of their function; see crypt(3) for an example.
+[src:key-derivation-functions/key-stretching] PBKDF2 is for generating an encryption key from a password, and not necessarily for password authentication.
+[src:key-derivation-functions/key-stretching] PBKDF2 can be used for both if the number of output bits is less than or equal to the internal hashing algorithm used in PBKDF2, which is usually SHA-2 (up to 512 bits), or used as an encryption key to encrypt static data.
+[src:key-derivation-functions/key-stretching] These examples assume that a consumer CPU can do about 65,000 SHA-1 hashes in one second.
+[src:key-derivation-functions/key-stretching] Thus, a program that uses key stretching can use 65,000 rounds of hashes and delay the user for at most one second.
+[src:key-derivation-functions/key-stretching] Testing a trial password or passphrase typically requires one hash operation.
+[src:key-derivation-functions/key-stretching] But if key stretching was used, the attacker must compute a strengthened key for each key they test, meaning there are 65,000 hashes to compute per test.
+[src:key-derivation-functions/key-stretching] This increases the attacker's workload by a factor of 65,000, approximately 216, which means the enhanced key is worth about 16 additional bits in key strength.
+[src:key-derivation-functions/key-stretching] Moore's law asserts that computer speed doubles roughly every 2 years.
+[src:key-derivation-functions/key-stretching] Under this assumption, every 2 years one more bit of key strength is plausibly brute-forcible.
+[src:key-derivation-functions/key-stretching] In such a case, the designer should take into consideration how long they wish for the key derivation system to go unaltered and should choose an appropriate number of hashes for the lifespan of the system).
+[src:key-derivation-functions/key-stretching] CPU-bound hash functions are still vulnerable to hardware implementations.
+[src:key-derivation-functions/key-stretching] Such implementations of SHA-1 exist using as few as 5,000 gates, and 400 clock cycles.
+[src:key-derivation-functions/key-stretching] With multi-million gate FPGAs costing less than $100, an attacker can build a fully unrolled hardware cracker for about $5,000.
+[src:key-derivation-functions/key-stretching] Such a design, clocked at 100 MHz can test about 300,000 keys/second.
+[src:key-derivation-functions/key-stretching] The attacker is free to choose a good price/speed compromise, for example a 150,000 keys/second design for $2,500.
+[src:key-derivation-functions/key-stretching] The key stretching still slows down the attacker in such a situation; a $5,000 design attacking a straight SHA-1 hash would be able to try 300,000÷216 ≈ 4.578 keys/second.
+[src:key-derivation-functions/key-stretching] Similarly, modern consumer GPUs can speed up hashing considerably.
+[src:key-derivation-functions/key-stretching] For example, in a benchmark, a Nvidia RTX 2080 SUPER FE computes over 10 billion SHA1 hashes per second.
+[src:key-derivation-functions/key-stretching] To defend against the hardware approach, memory-bound cryptographic functions have been developed.
+[src:key-derivation-functions/key-stretching] These functions access a lot of memory in a way that makes caching ineffective.
+[src:key-derivation-functions/key-stretching] Since large amounts of low latency memory are expensive, potential attackers are discouraged from pursuing such attacks.
+[src:key-derivation-functions/key-stretching] The first deliberately slow password-based key derivation function "CRYPT" was described in 1978 by Robert Morris for encrypting Unix passwords.
+[src:key-derivation-functions/key-stretching] It used an iteration count of 25, a 12-bit salt and a variant of DES as the sub-function.
+[src:key-derivation-functions/key-stretching] (DES proper was avoided in an attempt to frustrate attacks using standard DES hardware.) Passwords were limited to a maximum of eight ASCII characters.
+[src:key-derivation-functions/key-stretching] While it was a great advancement for its time, CRYPT(3) is now considered inadequate.
+[src:key-derivation-functions/key-stretching] The iteration count, designed for the PDP-11 era, is too low, 12 bits of salt is an inconvenience but does not stop precomputed dictionary attacks, and the eight-character limit prevents the use of stronger passphrases.
+[src:key-derivation-functions/key-stretching] Modern password-based key derivation functions, such as PBKDF2, use a cryptographic hash, such as SHA-2, a longer salt (e.g.
+[src:key-derivation-functions/key-stretching] National Institute of Standards and Technology (NIST) recommends a minimum iteration count of 10,000.
+[src:key-derivation-functions/key-stretching] In 2009, a memory-intensive key strengthening algorithm, scrypt, was introduced with the intention of limiting the use of custom, highly parallel hardware to speed up key testing.
+[src:key-derivation-functions/key-stretching] In 2013, a Password Hashing Competition was held to select an improved key stretching standard that would resist attacks from graphics processors and special purpose hardware.
+[src:key-derivation-functions/key-stretching] The winner, Argon2, was selected on July 1, 2015.
+[src:key-derivation-functions/pbkdf2] In cryptography, **PBKDF1** and **PBKDF2** (**Password-Based Key Derivation Function 1** and **2**) are key derivation functions with a sliding computational cost, used to reduce vulnerability to brute-force attacks.
+[src:key-derivation-functions/pbkdf2] PBKDF2 is part of RSA Laboratories' Public-Key Cryptography Standards (PKCS) series, specifically PKCS #5 v2.0, also published as Internet Engineering Task Force's RFC 2898.
+[src:key-derivation-functions/pbkdf2] It supersedes PBKDF1, which could only produce derived keys up to 160 bits long.
+[src:key-derivation-functions/pbkdf2] RFC 8018 (PKCS #5 v2.1), published in 2017, recommends PBKDF2 for password hashing.
+[src:key-derivation-functions/pbkdf2] PBKDF2 applies a pseudorandom function, such as hash-based message authentication code (HMAC), to the input password or passphrase along with a salt value and repeats the process many times to produce a *derived key*, which can then be used as a cryptographic key in subsequent operations.
+[src:key-derivation-functions/pbkdf2] The added computational work makes password cracking much more difficult, and is known as key stretching.
+[src:key-derivation-functions/pbkdf2] While the recommended minimum number of iterations was 1,000 when the standard was written in the year 2000, the parameter is intended to be increased over time as CPU speeds increase.
+[src:key-derivation-functions/pbkdf2] A Kerberos standard in 2005 recommended 4,096 iterations; Apple reportedly used 2,000 for iOS 3, and 10,000 for iOS 4; while LastPass in 2011 used 5,000 iterations for JavaScript clients and 100,000 iterations for server-side hashing.
+[src:key-derivation-functions/pbkdf2] Having a salt added to the password reduces the ability to use precomputed hashes (rainbow tables) for attacks, and means that multiple passwords have to be tested individually, not all at once.
+[src:key-derivation-functions/pbkdf2] The public key cryptography standard recommends a salt length of at least 64 bits.
+[src:key-derivation-functions/pbkdf2] The US National Institute of Standards and Technology recommends a salt length of at least 128 bits.
+[src:key-derivation-functions/pbkdf2] The function F is the xor (^) of *c* iterations of chained PRFs.
+[src:key-derivation-functions/pbkdf2] The first iteration of PRF uses *Password* as the PRF key and *Salt* concatenated with *i* encoded as a big-endian 32-bit integer as the input.
+[src:key-derivation-functions/pbkdf2] PBKDF1 had a simpler process: the initial *U* (called *T* in this version) is created by PRF(*Password* + *Salt*), and the following ones are simply PRF(*U*previous).
+[src:key-derivation-functions/pbkdf2] The key is extracted as the first *dkLen* bits of the final hash, which is why there is a size limit.
+[src:key-derivation-functions/pbkdf2] PBKDF2 has an interesting property when using HMAC as its pseudo-random function.
+[src:key-derivation-functions/pbkdf2] It is possible to trivially construct any number of different password pairs with collisions within each pair.
+[src:key-derivation-functions/pbkdf2] If a supplied password is longer than the block size of the underlying HMAC hash function, the password is first pre-hashed into a digest, and that digest is instead used as the password.
+[src:key-derivation-functions/pbkdf2] These derived key collisions do not represent a security vulnerability – as one still must know the original password in order to generate the *hash* of the password.
+[src:key-derivation-functions/pbkdf2] In 2013, the Password Hashing Competition (PHC) was held to develop a more resistant approach.
+[src:key-derivation-functions/pbkdf2] On 20 July 2015 Argon2 was selected as the final PHC winner, with special recognition given to four other password hashing schemes: Catena, Lyra2, yescrypt and Makwa.
+[src:key-derivation-functions/pbkdf2] Another alternative is Balloon hashing, which is recommended in NIST password guidelines.
+[src:key-derivation-functions/pbkdf2] To limit a brute-force attack, it is possible to make each password attempt require an online interaction, without harming the confidentiality of the password.
+[src:key-derivation-functions/pbkdf2] This can be done using an oblivious pseudorandom function to perform password hardening.
+[src:key-derivation-functions/pbkdf2] This can be done as alternative to, or as an additional step in, a PBKDF.
+[src:key-derivation-functions/salt-cryptography] In cryptography, a **salt** is random data fed as an additional input to a one-way function that hashes data, a password or passphrase.
+[src:key-derivation-functions/salt-cryptography] Salting helps defend against attacks that use precomputed tables (e.g. rainbow tables), by vastly growing the size of table needed for a successful attack.
+[src:key-derivation-functions/salt-cryptography] It also helps protect passwords that occur multiple times in a database, as a new salt is used for each password instance.
+[src:key-derivation-functions/salt-cryptography] Additionally, salting does not place any burden on users.
+[src:key-derivation-functions/salt-cryptography] Typically, a unique salt is randomly generated for each password.
+[src:key-derivation-functions/salt-cryptography] The salt and the password (or its version after key stretching) are concatenated and fed to a cryptographic hash function, and the output hash value is then stored with the salt in a database.
+[src:key-derivation-functions/salt-cryptography] The salt does not need to be encrypted, because knowing the salt would not help the attacker.
+[src:key-derivation-functions/salt-cryptography] Salting is broadly used in cybersecurity, from Unix system credentials to Internet security.
+[src:key-derivation-functions/salt-cryptography] Salts are related to cryptographic nonces.
+[src:key-derivation-functions/salt-cryptography] Without a salt, identical passwords will map to identical hash values, which could make it easier for a hacker to guess the passwords from their hash value.
+[src:key-derivation-functions/salt-cryptography] Instead, a salt is generated and appended to each password, which causes the resultant hash to output different values for the same original password.
+[src:key-derivation-functions/salt-cryptography] The salt and hash are then stored in the database.
+[src:key-derivation-functions/salt-cryptography] To later test if a password a user enters is correct, the same process can be performed on it (appending that user's salt to the password and calculating the resultant hash): if the result does not match the stored hash, it could not have been the correct password that was entered.
+[src:key-derivation-functions/salt-cryptography] In practice, a salt is usually generated using a cryptographically secure pseudorandom number generator (CSPRNG).
+[src:key-derivation-functions/salt-cryptography] CSPRNGs are designed to produce unpredictable random numbers which can be alphanumeric.
+[src:key-derivation-functions/salt-cryptography] While generally discouraged due to lower security, some systems use timestamps or simple counters as a source of salt.
+[src:key-derivation-functions/salt-cryptography] Sometimes, a salt may be generated by combining a random value with additional information, such as a timestamp or user-specific data, to ensure uniqueness across different systems or time periods.
+[src:key-derivation-functions/salt-cryptography] Using the same salt for all passwords is dangerous because a precomputed table which simply accounts for the salt will render the salt useless.
+[src:key-derivation-functions/salt-cryptography] Generation of precomputed tables for databases with unique salts for every password is not viable because of the computational cost of doing so.
+[src:key-derivation-functions/salt-cryptography] But, if a common salt is used for all the entries, creating such a table (that accounts for the salt) then becomes a viable and possibly successful attack.
+[src:key-derivation-functions/salt-cryptography] Because salt re-use can cause users with the same password to have the same hash, cracking a single hash can result in other passwords being compromised too.
+[src:key-derivation-functions/salt-cryptography] If a salt is too short, an attacker may precompute a table of every possible salt appended to every likely password.
+[src:key-derivation-functions/salt-cryptography] Using a long salt ensures such a table would be prohibitively large.
+[src:key-derivation-functions/salt-cryptography] 16 bytes (128 bits) or more is generally sufficient to provide a large enough space of possible values, minimizing the risk of collisions (i.e., two different passwords ending up with the same salt).
+[src:key-derivation-functions/salt-cryptography] To understand the difference between cracking a single password and a set of them, consider a file with users and their hashed passwords.
+[src:key-derivation-functions/salt-cryptography] Then an attacker could pick a string, call it `attempt[0]`, and then compute `hash(attempt[0])`.
+[src:key-derivation-functions/salt-cryptography] A user whose hash stored in the file is `hash(attempt[0])` may or may not have password `attempt[0]`.
+[src:key-derivation-functions/salt-cryptography] However, even if `attempt[0]` is *not* the user's actual password, it will be accepted as if it were, because the system can only check passwords by computing the hash of the password entered and comparing it to the hash stored in the file.
+[src:key-derivation-functions/salt-cryptography] Thus, each match cracks a user password, and the chance of a match rises with the number of passwords in the file.
+[src:key-derivation-functions/salt-cryptography] In contrast, if salts are used, the attacker would have to compute `hash(attempt[0] || salt[a])`, compare against entry A, then `hash(attempt[0] || salt[b])`, compare against entry B, and so on.
+[src:key-derivation-functions/salt-cryptography] This prevents any one attempt from cracking multiple passwords, given that salt re-use is avoided.
+[src:key-derivation-functions/salt-cryptography] Salts also combat the use of precomputed tables for cracking passwords.
+[src:key-derivation-functions/salt-cryptography] Such a table might simply map common passwords to their hashes, or it might do something more complex, like store the start and end points of a set of precomputed hash chains.
+[src:key-derivation-functions/salt-cryptography] In either case, salting can defend against the use of precomputed tables by lengthening hashes and having them draw from larger character sets, making it less likely that the table covers the resulting hashes.
+[src:key-derivation-functions/salt-cryptography] In particular, a precomputed table would need to cover the string `[salt + hash]` rather than simply `[hash]`.
+[src:key-derivation-functions/salt-cryptography] The modern shadow password system, in which password hashes and other security data are stored in a non-public file, somewhat mitigates these concerns.
+[src:key-derivation-functions/salt-cryptography] However, they remain relevant in multi-server installations which use centralized password management systems to push passwords or password hashes to multiple systems.
+[src:key-derivation-functions/salt-cryptography] Another (lesser) benefit of a salt is as follows: two users might choose the same string as their password.
+[src:key-derivation-functions/salt-cryptography] Without a salt, this password would be stored as the same hash string in the password file.
+[src:key-derivation-functions/salt-cryptography] This would disclose the fact that the two accounts have the same password, allowing anyone who knows one of the account's passwords to access the other account.
+[src:key-derivation-functions/salt-cryptography] By salting the passwords with two random characters, even if two accounts use the same password, no one can discover this just by reading hashes.
+[src:key-derivation-functions/salt-cryptography] Salting also makes it extremely difficult to determine if a person has used the same password for multiple systems.
+[src:key-derivation-functions/salt-cryptography] Earlier versions of Unix used a password file `/etc/passwd` to store the hashes of salted passwords (passwords prefixed with two-character random salts).
+[src:key-derivation-functions/salt-cryptography] In these older versions of Unix, the salt was also stored in the passwd file (as cleartext) together with the hash of the salted password.
+[src:key-derivation-functions/salt-cryptography] The password file was publicly readable for all users of the system.
+[src:key-derivation-functions/salt-cryptography] This was necessary so that user-privileged software tools could find user names and other information.
+[src:key-derivation-functions/salt-cryptography] The security of passwords is therefore protected only by the one-way functions (enciphering or hashing) used for the purpose.
+[src:key-derivation-functions/salt-cryptography] Early Unix implementations limited passwords to eight characters and used a 12-bit salt, which allowed for 4,096 possible salt values.
+[src:key-derivation-functions/salt-cryptography] This was an appropriate balance for 1970s computational and storage costs.
+[src:key-derivation-functions/salt-cryptography] The shadow password system is used to limit access to hashes and salt.
+[src:key-derivation-functions/salt-cryptography] The salt is eight characters, the hash is 86 characters, and the password length is effectively unlimited, barring stack overflow errors.
+[src:key-derivation-functions/salt-cryptography] It is common for a web application to store in a database the hash value of a user's password.
+[src:key-derivation-functions/salt-cryptography] Without a salt, a successful SQL injection attack may yield easily crackable passwords.
+[src:key-derivation-functions/salt-cryptography] Because many users re-use passwords for multiple sites, the use of a salt is an important component of overall web application security.
+[src:key-derivation-functions/salt-cryptography] Some additional references for using a salt to secure password hashes in specific languages or libraries (PHP, the .NET libraries, etc.) can be found in the external links section below.

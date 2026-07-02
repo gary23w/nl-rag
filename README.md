@@ -7,8 +7,8 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
 
 ## What's here
 
-- `packs/<domain>/` — one directory per knowledge domain (**1,364 domains, ~10,700 pack
-  files, ~300 MB**): every programming language and dialect (systems, JVM, .NET, functional,
+- `packs/<domain>/` — one directory per knowledge domain (**2,030 domains, ~15,800 pack
+  files, ~450 MB**): every programming language and dialect (systems, JVM, .NET, functional,
   lisp family, scripting, assembly, the legacy canon), every paradigm and problem-solving
   method, the full embedded/IoT stack + hardware design & EDA (SystemVerilog, synthesis,
   SPICE, PCB, RF, microarchitecture), mathematics from arithmetic to category theory, quantum
@@ -26,8 +26,14 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
   media (DirectX/Metal/WebGPU, codecs, FFmpeg, audio, 3D), game development (engines, netcode,
   game AI, physics), serialization & protocol standards, config DSLs & compiler infrastructure
   (HCL/CUE/Rego, LSP/DAP, LLVM/MLIR, WASM), applied verticals (fintech, FHIR/HL7/DICOM, GIS,
-  e-commerce, CMS, telecom, automotive), developer tooling, the canonical books of the craft,
-  and Rosetta Code polyglot tasks. Every file is:
+  e-commerce, CMS, telecom, automotive), the named-algorithm and named-data-structure catalogs
+  (hundreds of specific algorithms and structures), the per-language library ecosystems
+  (Python/JS/Rust/Go/Java/C++/.NET popular libraries), and the deep science tail — advanced
+  mathematics (algebraic topology, representation theory, algebraic geometry, ergodic theory),
+  physics (classical → quantum → relativity → condensed matter), electrical & RF engineering
+  (transmission lines, antennas, amplifiers, power converters, motor control), chemistry &
+  materials, and biology/bioinformatics/medical informatics — plus developer tooling, the
+  canonical books of the craft, and Rosetta Code polyglot tasks. Every file is:
   - **clean markdown** — no HTML, no nav/chrome/cookie banners, fenced code with language
     tags, GFM tables, citation markers stripped
   - **frontmattered** — `title`, `source` (upstream URL), `domain`, `license`, `tags`,

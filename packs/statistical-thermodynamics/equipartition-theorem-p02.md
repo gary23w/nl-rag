@@ -1,0 +1,37 @@
+---
+title: "Equipartition theorem (part 2/2)"
+source: https://en.wikipedia.org/wiki/Equipartition_theorem
+domain: statistical-thermodynamics
+license: CC-BY-SA-4.0
+tags: statistical thermodynamics, partition function, boltzmann distribution, equipartition theorem
+fetched: 2026-07-02
+part: 2/2
+---
+
+## Limitations
+
+### Requirement of ergodicity
+
+The law of equipartition holds only for ergodic systems in thermal equilibrium, which implies that all states with the same energy must be equally likely to be populated. Consequently, it must be possible to exchange energy among all its various forms within the system, or with an external heat bath in the canonical ensemble. The number of physical systems that have been rigorously proven to be ergodic is small; a famous example is the hard-sphere system of Yakov Sinai. The requirements for isolated systems to ensure ergodicity—and, thus equipartition—have been studied, and provided motivation for the modern chaos theory of dynamical systems. A chaotic Hamiltonian system need not be ergodic, although that is usually a good assumption.
+
+A commonly cited counter-example where energy is *not* shared among its various forms and where equipartition does *not* hold in the microcanonical ensemble is a system of coupled harmonic oscillators. If the system is isolated from the rest of the world, the energy in each normal mode is constant; energy is not transferred from one mode to another. Hence, equipartition does not hold for such a system; the amount of energy in each normal mode is fixed at its initial value. If sufficiently strong nonlinear terms are present in the energy function, energy may be transferred between the normal modes, leading to ergodicity and rendering the law of equipartition valid. However, the Kolmogorov–Arnold–Moser theorem states that energy will not be exchanged unless the nonlinear perturbations are strong enough; if they are too small, the energy will remain trapped in at least some of the modes.
+
+Another simple example is an ideal gas of a finite number of colliding particles in a round vessel. Due to the vessel's symmetry, the angular momentum of such a gas is conserved. Therefore, not all states with the same energy are populated. This results in the mean particle energy being dependent on the mass of this particle, and also on the masses of all the other particles.
+
+Another way ergodicity can be broken is by the existence of nonlinear soliton symmetries. In 1953, Fermi, Pasta, Ulam and Tsingou conducted computer simulations of a vibrating string that included a non-linear term (quadratic in one test, cubic in another, and a piecewise linear approximation to a cubic in a third). They found that the behavior of the system was quite different from what intuition based on equipartition would have led them to expect. Instead of the energies in the modes becoming equally shared, the system exhibited a very complicated quasi-periodic behavior. This puzzling result was eventually explained by Kruskal and Zabusky in 1965 in a paper which, by connecting the simulated system to the Korteweg–de Vries equation led to the development of soliton mathematics.
+
+### Failure due to quantum effects
+
+The law of equipartition breaks down when the thermal energy *k*B*T* is significantly smaller than the spacing between energy levels. Equipartition no longer holds because it is a poor approximation to assume that the energy levels form a smooth continuum, which is required in the derivations of the equipartition theorem above. Historically, the failures of the classical equipartition theorem to explain specific heats and black-body radiation were critical in showing the need for a new theory of matter and radiation, namely, quantum mechanics and quantum field theory.
+
+To illustrate the breakdown of equipartition, consider the average energy in a single (quantum) harmonic oscillator, which was discussed above for the classical case. Neglecting the irrelevant zero-point energy term since it can be factored out of the exponential functions involved in the probability distribution, the quantum harmonic oscillator energy levels are given by *En* = *nhν*, where *h* is the Planck constant, ν is the fundamental frequency of the oscillator, and n is an integer. The probability of a given energy level being populated in the canonical ensemble is given by its Boltzmann factor $P(E_{n})={\frac {e^{-n\beta h\nu }}{Z}},$ where *β* = 1/*k*B*T* and the denominator *Z* is the partition function, here a geometric series $Z=\sum _{n=0}^{\infty }e^{-n\beta h\nu }={\frac {1}{1-e^{-\beta h\nu }}}.$
+
+Its average energy is given by $\langle H\rangle =\sum _{n=0}^{\infty }E_{n}P(E_{n})={\frac {1}{Z}}\sum _{n=0}^{\infty }nh\nu \ e^{-n\beta h\nu }=-{\frac {1}{Z}}{\frac {\partial Z}{\partial \beta }}=-{\frac {\partial \log Z}{\partial \beta }}.$
+
+Substituting the formula for *Z* gives the final result $\langle H\rangle =h\nu {\frac {e^{-\beta h\nu }}{1-e^{-\beta h\nu }}}.$
+
+At high temperatures, when the thermal energy *k*B*T* is much greater than the spacing *hν* between energy levels, the exponential argument *βhν* is much less than one and the average energy becomes *k*B*T*, in agreement with the equipartition theorem (Figure 10). However, at low temperatures, when *hν* ≫ *k*B*T*, the average energy goes to zero—the higher-frequency energy levels are "frozen out" (Figure 10). As another example, the internal excited electronic states of a hydrogen atom do not contribute to its specific heat as a gas at room temperature, since the thermal energy *k*B*T* (roughly 0.025 eV) is much smaller than the spacing between the lowest and next higher electronic energy levels (roughly 10 eV).
+
+Similar considerations apply whenever the energy level spacing is much larger than the thermal energy. This reasoning was used by Max Planck and Albert Einstein, among others, to resolve the ultraviolet catastrophe of black-body radiation. The paradox arises because there are an infinite number of independent modes of the electromagnetic field in a closed container, each of which may be treated as a harmonic oscillator. If each electromagnetic mode were to have an average energy *k*B*T*, there would be an infinite amount of energy in the container. However, by the reasoning above, the average energy in the higher-frequency modes goes to zero as *ν* goes to infinity; moreover, Planck's law of black-body radiation, which describes the experimental distribution of energy in the modes, follows from the same reasoning.
+
+Other, more subtle quantum effects can lead to corrections to equipartition, such as identical particles and continuous symmetries. The effects of identical particles can be dominant at very high densities and low temperatures. For example, the valence electrons in a metal can have a mean kinetic energy of a few electronvolts, which would normally correspond to a temperature of tens of thousands of kelvins. Such a state, in which the density is high enough that the Pauli exclusion principle invalidates the classical approach, is called a degenerate fermion gas. Such gases are important for the structure of white dwarf and neutron stars. At low temperatures, a fermionic analogue of the Bose–Einstein condensate (in which a large number of identical particles occupy the lowest-energy state) can form; such superfluid electrons are responsible for superconductivity.

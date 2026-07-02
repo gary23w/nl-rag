@@ -1,0 +1,45 @@
+---
+title: "Knot group"
+source: https://en.wikipedia.org/wiki/Knot_group
+domain: knot-theory
+license: CC-BY-SA-4.0
+tags: knot theory, knot invariant, jones polynomial, braid group
+fetched: 2026-07-02
+---
+
+# Knot group
+
+In mathematics, a knot is an embedding of a circle into 3-dimensional Euclidean space. The **knot group** of a knot *K* is defined as the fundamental group of the knot complement of *K* in **R**3,
+
+$\pi _{1}\left(\mathbb {R} ^{3}\setminus K\right).$
+
+Other conventions consider knots to be embedded in the 3-sphere, in which case the knot group is the fundamental group of its complement in $S^{3}$ .
+
+## Properties
+
+Two equivalent knots have isomorphic knot groups, so the knot group is a knot invariant and can be used to distinguish between certain pairs of inequivalent knots. This is because an equivalence between two knots is a self-homeomorphism of $\mathbb {R} ^{3}$ that is isotopic to the identity and sends the first knot onto the second. Such a homeomorphism restricts onto a homeomorphism of the complements of the knots, and this restricted homeomorphism induces an isomorphism of fundamental groups. However, it is possible for two inequivalent knots to have isomorphic knot groups (see below for an example).
+
+The abelianization of a knot group is always isomorphic to the infinite cyclic group **Z**; this follows because the abelianization agrees with the first homology group, which can be easily computed.
+
+The knot group (or fundamental group of an oriented link in general) can be computed in the Wirtinger presentation by a relatively simple algorithm.
+
+## Examples
+
+- The unknot has knot group isomorphic to **Z**.
+- The trefoil knot has knot group isomorphic to the braid group *B*3. This group has the presentation
+
+$\langle x,y\mid x^{2}=y^{3}\rangle$
+
+or
+
+$\langle a,b\mid aba=bab\rangle .$
+
+- A (*p*,*q*)-torus knot has knot group with presentation
+
+$\langle x,y\mid x^{p}=y^{q}\rangle .$
+
+- The figure eight knot has knot group with presentation
+
+$\langle x,y\mid yxy^{-1}xy=xyx^{-1}yx\rangle$
+
+- The square knot and the granny knot have isomorphic knot groups, yet these two knots are not equivalent.

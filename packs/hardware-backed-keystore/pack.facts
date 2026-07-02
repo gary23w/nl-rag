@@ -1,0 +1,811 @@
+# nl-rag distilled facts — domain: hardware-backed-keystore
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] This article provides a simple model to follow when implementing solutions to protect data at rest.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Passwords should not be stored using reversible encryption - secure password hashing algorithms should be used instead.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The Password Storage Cheat Sheet contains further guidance on storing passwords.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The first step in designing any application is to consider the overall architecture of the system, as this will have a huge impact on the technical implementation.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] This process should begin with considering the threat model of the application (i.e, who you are trying to protect that data against).
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Note that many cloud environments provide these services, so these should be taken advantage of where possible.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The Secrets Management Cheat Sheet contains further guidance on this topic.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Which layer(s) are most appropriate will depend on the threat model.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] For example, hardware level encryption is effective at protecting against the physical theft of the server, but will provide no protection if an attacker is able to compromise the server remotely.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The best way to protect sensitive information is to not store it in the first place.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Although this applies to all kinds of information, it is most often applicable to credit card details, as they are highly desirable for attackers, and PCI DSS has such stringent requirements for how they must be stored.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Wherever possible, the storage of sensitive information should be avoided.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] For symmetric encryption **AES** with a key that's at least **128 bits** (ideally **256 bits**) and a secure mode should be used as the preferred algorithm.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] For asymmetric encryption, use elliptical curve cryptography (ECC) with a secure curve such as **Curve25519** as a preferred algorithm.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] If ECC is not available and **RSA** must be used, then ensure that the key is at least **2048 bits**.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Many other symmetric and asymmetric algorithms are available which have their own pros and cons, and they may be better or worse than AES or Curve25519 in specific use cases.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] In some cases there may be regulatory requirements that limit the algorithms that can be used, such as FIPS 140-2 or PCI DSS.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] There are various modes that can be used to allow block ciphers (such as AES) to encrypt arbitrary amounts of data, in the same way that a stream cipher would.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] These modes have different security and performance characteristics, and a full discussion of them is outside the scope of this cheat sheet.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Some of the modes have requirements to generate secure initialisation vectors (IVs) and other attributes, but these should be handled automatically by the library.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Where available, authenticated modes should always be used.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] These provide guarantees of the integrity and authenticity of the data, as well as confidentiality.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The most commonly used authenticated modes are **GCM** and **CCM**, which should be used as a first preference.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] If GCM or CCM are not available, then CTR mode or CBC mode should be used.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] As these do not provide any guarantees about the authenticity of the data, separate authentication should be implemented, such as using the Encrypt-then-MAC technique.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] ECB should not be used outside of very specific circumstances.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] For RSA, it is essential to enable Random Padding.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Random Padding is also known as OAEP or Optimal Asymmetric Encryption Padding.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] This class of defense protects against Known Plain Text Attacks by adding randomness at the beginning of the payload.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The Padding Schema of PKCS#1 is typically used in this case.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Random numbers (or strings) are needed for various security critical functionality, such as generating encryption keys, IVs, session IDs, CSRF tokens or password reset tokens.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] As such, it is important that these are generated securely, and that it is not possible for an attacker to guess and predict them.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] It is generally not possible for computers to generate truly random numbers (without special hardware), so most systems and languages provide two different types of randomness.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Pseudo-Random Number Generators (PRNG) provide low-quality randomness that are much faster, and can be used for non-security related functionality (such as ordering results on a page, or randomising UI elements).
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] However, they **must not** be used for anything security critical, as it is often possible for attackers to guess or predict the output.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Cryptographically Secure Pseudo-Random Number Generators (CSPRNG) are designed to produce a much higher quality of randomness (more strictly, a greater amount of entropy), making them safe to use for security-sensitive functionality.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] However, they are slower and more CPU intensive, can end up blocking in some circumstances when large amounts of random data are requested.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] As such, if large amounts of non-security related randomness are needed, they may not be appropriate.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The table below shows the recommended algorithms for each language, as well as insecure functions that should not be used.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Universally unique identifiers (UUIDs or GUIDs) are sometimes used as a quick way to generate random strings.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Although they can provide a reasonable source of randomness, this will depend on the type or version of the UUID that is created.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Specifically, version 1 UUIDs are comprised of a high precision timestamp and the MAC address of the system that generated them, so are **not random** (although they may be hard to guess, given the timestamp is to the nearest 100ns).
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Type 4 UUIDs are randomly generated, although whether this is done using a CSPRNG will depend on the implementation.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Unless this is known to be secure in the specific language or framework, the randomness of UUIDs should not be relied upon.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Applications should be designed to still be secure even if cryptographic controls fail.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Any information that is stored in an encrypted form should also be protected by additional layers of security.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Application should also not rely on the security of encrypted URL parameters, and should enforce strong access control to prevent unauthorised access to information.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Keys should be randomly generated using a cryptographically secure function, such as those discussed in the Secure Random Number Generation section.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Keys **should not** be based on common words or phrases, or on "random" characters generated by mashing the keyboard.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Where multiple keys are used (such as data separate data-encrypting and key-encrypting keys), they should be fully independent from each other.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Once one of these criteria have been met, a new key should be generated and used for encrypting any new data.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Marking each item with the ID of the key that was used to encrypt it, and storing multiple keys to allow the old data to be decrypted.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The first option should generally be preferred, as it greatly simplifies both the application code and key management processes; however, it may not always be feasible.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Note that old keys should generally be stored for a certain period after they have been retired, in case old backups of copies of the data need to be decrypted.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] It is important that the code and processes required to rotate a key are in place **before** they are required, so that keys can be quickly rotated in the event of a compromise.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Additionally, processes should also be implemented to allow the encryption algorithm or library to be changed, in case a new vulnerability is found in the algorithm or implementation.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Securely storing cryptographic keys is one of the hardest problems to solve, as the application always needs to have some level of access to the keys in order to decrypt the data.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] While it may not be possible to fully protect the keys from an attacker who has fully compromised the application, a number of steps can be taken to make it harder for them to obtain the keys.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Where available, the secure storage mechanisms provided by the operating system, framework or cloud service provider should be used.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] There are many advantages to using these types of secure storage over simply putting keys in configuration files.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] In some cases none of these will be available, such as in a shared hosting environment, meaning that it is not possible to obtain a high degree of protection for any encryption keys.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The Secrets Management Cheat Sheet provides more details on securely storing secrets.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Where possible, encryption keys should be stored in a separate location from encrypted data.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] For example, if the data is stored in a database, the keys should be stored in the filesystem.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] This means that if an attacker only has access to one of these (for example through directory traversal or SQL injection), they cannot access both the keys and the data.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Depending on the architecture of the environment, it may be possible to store the keys and data on separate systems, which would provide a greater degree of isolation.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] Where possible, encryption keys should themselves be stored in an encrypted form.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] For this to be effective, the KEK must be stored separately from the DEK.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The encrypted DEK can be stored with the data, but will only be usable if an attacker is able to also obtain the KEK, which is stored on another system.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The KEK should also be at least as strong as the DEK.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] The envelope encryption guidance from Google contains further details on how to manage DEKs and KEKs.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] In simpler application architectures (such as shared hosting environments) where the KEK and DEK cannot be stored separately, there is limited value to this approach, as an attacker is likely to be able to obtain both of the keys at the same time.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] However, it can provide an additional barrier to unskilled attackers.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] A key derivation function (KDF) could be used to generate a KEK from user-supplied input (such a passphrase), which would then be used to encrypt a randomly generated DEK.
+[src:hardware-backed-keystore/cryptographic-storage-cheat-sheet] This allows the KEK to be easily changed (when the user changes their passphrase), without needing to re-encrypt the data (as the DEK remains the same).
+[src:hardware-backed-keystore/key-management] Key management concerns keys at the user level, either between users or systems.
+[src:hardware-backed-keystore/key-management] This is in contrast to key scheduling, which typically refers to the internal handling of keys within the operation of a cipher.
+[src:hardware-backed-keystore/key-management] Successful key management is critical to the security of a cryptosystem.
+[src:hardware-backed-keystore/key-management] Cryptographic systems may use different types of keys, with some systems using more than one.
+[src:hardware-backed-keystore/key-management] These may include symmetric keys or asymmetric keys.
+[src:hardware-backed-keystore/key-management] In a symmetric key algorithm the keys involved are identical for both encrypting and decrypting a message.
+[src:hardware-backed-keystore/key-management] Keys must be chosen carefully, and distributed and stored securely.
+[src:hardware-backed-keystore/key-management] Asymmetric keys, also known as public keys, in contrast are two distinct keys that are mathematically linked.
+[src:hardware-backed-keystore/key-management] They are typically used together to communicate.
+[src:hardware-backed-keystore/key-management] Public key infrastructure (PKI), the implementation of public key cryptography, requires an organization to establish an infrastructure to create and manage public and private key pairs along with digital certificates.
+[src:hardware-backed-keystore/key-management] The starting point in any certificate and private key management strategy is to create a comprehensive inventory of all certificates, their locations and responsible parties.
+[src:hardware-backed-keystore/key-management] This is not a trivial matter because certificates from a variety of sources are deployed in a variety of locations by different individuals and teams - it's simply not possible to rely on a list from a single certificate authority.
+[src:hardware-backed-keystore/key-management] Certificates that are not renewed and replaced before they expire can cause serious downtime and outages.
+[src:hardware-backed-keystore/key-management] Once keys are inventoried, key management typically consists of three steps: exchange, storage and use.
+[src:hardware-backed-keystore/key-management] Prior to any secured communication, users must set up the details of the cryptography.
+[src:hardware-backed-keystore/key-management] In some instances this may require exchanging identical keys (in the case of a symmetric key system).
+[src:hardware-backed-keystore/key-management] In others it may require possessing the other party's public key.
+[src:hardware-backed-keystore/key-management] While public keys can be openly exchanged (their corresponding private key is kept secret), symmetric keys must be exchanged over a secure communication channel.
+[src:hardware-backed-keystore/key-management] Formerly, exchange of such a key was extremely troublesome, and was greatly eased by access to secure channels such as a diplomatic bag.
+[src:hardware-backed-keystore/key-management] Clear text exchange of symmetric keys would enable any interceptor to immediately learn the key, and any encrypted data.
+[src:hardware-backed-keystore/key-management] The advance of public key cryptography in the 1970s has made the exchange of keys less troublesome.
+[src:hardware-backed-keystore/key-management] Since the Diffie-Hellman key exchange protocol was published in 1975, it has become possible to exchange a key over an insecure communications channel, which has substantially reduced the risk of key disclosure during distribution.
+[src:hardware-backed-keystore/key-management] It is possible, using something akin to a book code, to include key indicators as clear text attached to an encrypted message.
+[src:hardware-backed-keystore/key-management] The encryption technique used by Richard Sorge's code clerk was of this type, referring to a page in a statistical manual, though it was in fact a code.
+[src:hardware-backed-keystore/key-management] The German Army Enigma symmetric encryption key was a mixed type early in its use; the key was a combination of secretly distributed key schedules and a user chosen session key component for each message.
+[src:hardware-backed-keystore/key-management] In more modern systems, such as OpenPGP compatible systems, a session key for a symmetric key algorithm is distributed encrypted by an asymmetric key algorithm.
+[src:hardware-backed-keystore/key-management] This approach avoids even the necessity for using a key exchange protocol like Diffie-Hellman key exchange.
+[src:hardware-backed-keystore/key-management] Another method of key exchange involves encapsulating one key within another.
+[src:hardware-backed-keystore/key-management] Typically a master key is generated and exchanged using some secure method.
+[src:hardware-backed-keystore/key-management] This method is usually cumbersome or expensive (breaking a master key into multiple parts and sending each with a trusted courier for example) and not suitable for use on a larger scale.
+[src:hardware-backed-keystore/key-management] Once the master key has been securely exchanged, it can then be used to securely exchange subsequent keys with ease.
+[src:hardware-backed-keystore/key-management] This technique is usually termed key wrap.
+[src:hardware-backed-keystore/key-management] A common technique uses block ciphers and cryptographic hash functions.
+[src:hardware-backed-keystore/key-management] A related method is to exchange a master key (sometimes termed a root key) and derive subsidiary keys as needed from that key and some other data (often referred to as diversification data).
+[src:hardware-backed-keystore/key-management] The most common use for this method is probably in smartcard-based cryptosystems, such as those found in banking cards.
+[src:hardware-backed-keystore/key-management] The bank or credit network embeds their secret key into the card's secure key storage during card production at a secured production facility.
+[src:hardware-backed-keystore/key-management] Then at the point of sale the card and card reader are both able to derive a common set of session keys based on the shared secret key and card-specific data (such as the card serial number).
+[src:hardware-backed-keystore/key-management] This method can also be used when keys must be related to each other (i.e., departmental keys are tied to divisional keys, and individual keys tied to departmental keys).
+[src:hardware-backed-keystore/key-management] However, tying keys to each other in this way increases the damage which may result from a security breach as attackers will learn something about more than one key.
+[src:hardware-backed-keystore/key-management] This reduces entropy, with regard to an attacker, for each key involved.
+[src:hardware-backed-keystore/key-management] A recent method uses an oblivious pseudorandom function to issue keys without the key management system ever being in a position to see the keys.
+[src:hardware-backed-keystore/key-management] However distributed, keys must be stored securely to maintain communications security.
+[src:hardware-backed-keystore/key-management] Security is a big concern and hence there are various techniques in use to do so.
+[src:hardware-backed-keystore/key-management] Likely the most common is that an encryption application manages keys for the user and depends on an access password to control use of the key.
+[src:hardware-backed-keystore/key-management] Likewise, in the case of smartphone keyless access platforms, they keep all identifying door information off mobile phones and servers and encrypt all data, where just like low-tech keys, users give codes only to those they trust.
+[src:hardware-backed-keystore/key-management] In terms of regulation, there are few that address key storage in depth.
+[src:hardware-backed-keystore/key-management] "Some contain minimal guidance like 'don’t store keys with encrypted data' or suggest that 'keys should be kept securely.'" The notable exceptions to that are PCI DSS 3.2.1, NIST 800-53 and NIST 800–57.
+[src:hardware-backed-keystore/key-management] For optimal security, keys may be stored in a Hardware Security Module (HSM) or protected using technologies such as Trusted Execution Environment (TEE, e.g.
+[src:hardware-backed-keystore/key-management] Intel SGX) or Multi-Party Computation (MPC).
+[src:hardware-backed-keystore/key-management] Additional alternatives include utilizing Trusted Platform Modules (TPM), virtual HSMs, aka "Poor Man's Hardware Security Modules" (pmHSM), or non-volatile Field-Programmable-Gate-Arrays (FPGA) with supporting System-on-Chip configurations.
+[src:hardware-backed-keystore/key-management] In order to verify the integrity of a key stored without compromising its actual value a KCV algorithm can be used.
+[src:hardware-backed-keystore/key-management] The major issue is length of time a key is to be used, and therefore frequency of replacement.
+[src:hardware-backed-keystore/key-management] Because it increases any attacker's required effort, keys should be frequently changed.
+[src:hardware-backed-keystore/key-management] This also limits loss of information, as the number of stored encrypted messages which will become readable when a key is found will decrease as the frequency of key change increases.
+[src:hardware-backed-keystore/key-management] Historically, symmetric keys have been used for long periods in situations in which key exchange was very difficult or only possible intermittently.
+[src:hardware-backed-keystore/key-management] Ideally, the symmetric key should change with each message or interaction, so that only that message will become readable if the key is learned (*e.g.*, stolen, cryptanalyzed, or social engineered).
+[src:hardware-backed-keystore/key-management] Security: Vulnerability of keys from outside hackers, malicious insiders.
+[src:hardware-backed-keystore/key-management] Availability: Ensuring data accessibility for authorized users.
+[src:hardware-backed-keystore/key-management] Heterogeneity: Supporting multiple databases, applications and standards.
+[src:hardware-backed-keystore/key-management] Governance: Defining policy-driven access control and protection for data.
+[src:hardware-backed-keystore/key-management] Governance includes compliance with data protection requirements.
+[src:hardware-backed-keystore/key-management] Key management compliance refers to the oversight, assurance, and capability of being able to demonstrate that keys are securely managed.
+[src:hardware-backed-keystore/key-management] Compliance can be achieved with respect to national and international data protection standards and regulations, such as Payment Card Industry Data Security Standard, Health Insurance Portability and Accountability Act, Sarbanes–Oxley Act, or General Data Protection Regulation.
+[src:hardware-backed-keystore/key-management] A *key management system* (KMS), also known as a *cryptographic key management system* (CKMS) or *enterprise key management system* (EKMS), is an integrated approach for generating, distributing and managing cryptographic keys for devices and applications.
+[src:hardware-backed-keystore/key-management] They may cover all aspects of security - from the secure generation of keys over the secure exchange of keys up to secure key handling and storage on the client.
+[src:hardware-backed-keystore/key-management] Thus, a KMS includes the backend functionality for key generation, distribution, and replacement as well as the client functionality for injecting keys, storing and managing keys on devices.
+[src:hardware-backed-keystore/key-management] Many specific applications have developed their own key management systems with home grown protocols.
+[src:hardware-backed-keystore/key-management] However, as systems become more interconnected keys need to be shared between those different systems.
+[src:hardware-backed-keystore/key-management] To facilitate this, key management standards have evolved to define the protocols used to manage and exchange cryptographic keys and related information.
+[src:hardware-backed-keystore/key-management] KMIP is an extensible key management protocol that has been developed by many organizations working within the OASIS standards body.
+[src:hardware-backed-keystore/key-management] The first version was released in 2010, and it has been further developed by an active technical committee.
+[src:hardware-backed-keystore/key-management] The protocol allows for the creation of keys and their distribution among disparate software systems that need to utilize them.
+[src:hardware-backed-keystore/key-management] It covers the full key life cycle of both symmetric and asymmetric keys in a variety of formats, the wrapping of keys, provisioning schemes, and cryptographic operations as well as meta data associated with the keys.
+[src:hardware-backed-keystore/key-management] The protocol is backed by an extensive series of test cases, and interoperability testing is performed between compliant systems each year.
+[src:hardware-backed-keystore/key-management] A list of some 80 products that conform to the KMIP standard can be found on the OASIS website.
+[src:hardware-backed-keystore/key-management] The security policy of a key management system provides the rules that are to be used to protect keys and metadata that the key management system supports.
+[src:hardware-backed-keystore/key-management] This protection covers the complete key life-cycle from the time the key becomes operational to its elimination.
+[src:hardware-backed-keystore/key-management] A public-key infrastructure is a type of key management system that uses hierarchical digital certificates to provide authentication, and public keys to provide encryption.
+[src:hardware-backed-keystore/key-management] PKIs are used in World Wide Web traffic, commonly in the form of SSL and TLS.
+[src:hardware-backed-keystore/key-management] Group key management means managing the keys in a group communication.
+[src:hardware-backed-keystore/key-management] Most of the group communications use multicast communication so that if the message is sent once by the sender, it will be received by all the users.
+[src:hardware-backed-keystore/key-management] The main problem in multicast group communication is its security.
+[src:hardware-backed-keystore/key-management] In order to improve the security, various keys are given to the users.
+[src:hardware-backed-keystore/key-management] Using the keys, the users can encrypt their messages and send them secretly.
+[src:hardware-backed-keystore/key-management] IETF.org released RFC 4046, entitled Multicast Security (MSEC) Group Key Management Architecture, which discusses the challenges of group key management.
+[src:hardware-backed-keystore/public-key-cryptography] Public key algorithms are fundamental security primitives in modern cryptosystems, including applications and protocols that offer assurance of the confidentiality and authenticity of electronic communications and data storage.
+[src:hardware-backed-keystore/public-key-cryptography] They underpin numerous Internet standards, such as Transport Layer Security (TLS), SSH, S/MIME, and PGP.
+[src:hardware-backed-keystore/public-key-cryptography] Compared to symmetric cryptography, public-key cryptography can be too slow for many purposes, so these protocols often combine symmetric cryptography with public-key cryptography in hybrid cryptosystems.
+[src:hardware-backed-keystore/public-key-cryptography] Before the mid-1970s, all cipher systems used symmetric key algorithms, in which the same cryptographic key is used with the underlying algorithm by both the sender and the recipient, who must both keep the key secret.
+[src:hardware-backed-keystore/public-key-cryptography] Of necessity, the key in every such system had to be exchanged between the communicating parties in some secure way prior to any use of the system – for instance, via a secure channel.
+[src:hardware-backed-keystore/public-key-cryptography] This requirement is never trivial and very rapidly becomes unmanageable as the number of participants increases, when secure channels are not available, or when (as is sensible cryptographic practice) keys are frequently changed.
+[src:hardware-backed-keystore/public-key-cryptography] In particular, if messages are meant to be secure from other users, a separate key is required for each possible pair of users.
+[src:hardware-backed-keystore/public-key-cryptography] By contrast, in a public-key cryptosystem, the public keys can be disseminated widely and openly, and only the corresponding private keys need be kept secret.
+[src:hardware-backed-keystore/public-key-cryptography] For example, a software publisher can create a signature key pair and include the public key in software installed on computers.
+[src:hardware-backed-keystore/public-key-cryptography] Later, the publisher can distribute an update to the software signed using the private key, and any computer receiving an update can confirm it is genuine by verifying the signature using the public key.
+[src:hardware-backed-keystore/public-key-cryptography] As long as the software publisher keeps the private key secret, even if a forger can distribute malicious updates to computers, they cannot convince the computers that any malicious updates are genuine.
+[src:hardware-backed-keystore/public-key-cryptography] For example, a journalist can publish the public key of an encryption key pair on a website so that sources can send secret messages to the news organization in ciphertext.
+[src:hardware-backed-keystore/public-key-cryptography] Only the journalist who knows the corresponding private key can decrypt the ciphertexts to obtain the sources' messages—an eavesdropper reading email on its way to the journalist cannot decrypt the ciphertexts.
+[src:hardware-backed-keystore/public-key-cryptography] However, public-key encryption does not conceal metadata like what computer a source used to send a message, when they sent it, or how long it is.
+[src:hardware-backed-keystore/public-key-cryptography] Public-key encryption on its own also does not tell the recipient anything about who sent a message—it just conceals the content of the message.
+[src:hardware-backed-keystore/public-key-cryptography] Applications built on public-key cryptography include authenticating web servers with TLS, digital cash, password-authenticated key agreement, authenticating and concealing email content with OpenPGP or S/MIME, and time-stamping services and non-repudiation protocols.
+[src:hardware-backed-keystore/public-key-cryptography] One important issue is confidence or proof that a particular public key is authentic, i.e., that it is correct and belongs to the person or entity claimed, and has not been tampered with or replaced by some (perhaps malicious) third party.
+[src:hardware-backed-keystore/public-key-cryptography] A public key infrastructure (PKI), in which one or more third parties, known as certificate authorities, certify ownership of key pairs.
+[src:hardware-backed-keystore/public-key-cryptography] This implies that the PKI system (software, hardware, and management) can be trusted by all involved.
+[src:hardware-backed-keystore/public-key-cryptography] A web of trust decentralizes authentication by using individual endorsements of links between a user and their public key.
+[src:hardware-backed-keystore/public-key-cryptography] PGP uses this approach, in addition to lookup in the domain name system (DNS).
+[src:hardware-backed-keystore/public-key-cryptography] The DKIM system for digitally signing emails also uses this approach.
+[src:hardware-backed-keystore/public-key-cryptography] PGP, SSH, and the SSL/TLS family of schemes use this procedure; they are thus called hybrid cryptosystems.
+[src:hardware-backed-keystore/public-key-cryptography] As with all security-related systems, there are various potential weaknesses in public-key cryptography.
+[src:hardware-backed-keystore/public-key-cryptography] Aside from poor choice of an asymmetric key algorithm (there are few that are widely regarded as satisfactory) or too short a key length, the chief security risk is that the private key of a pair becomes known.
+[src:hardware-backed-keystore/public-key-cryptography] All security of messages, authentication, etc., encrypted with this private key will then be lost.
+[src:hardware-backed-keystore/public-key-cryptography] This is commonly mitigated (such as in recent TLS schemes) by using Forward secrecy capable schemes that generate an ephemeral set of keys during the communication which must also be known for the communication to be compromised.
+[src:hardware-backed-keystore/public-key-cryptography] Additionally, with the advent of quantum computing, many asymmetric key algorithms are considered vulnerable to attacks, and new quantum-resistant schemes are being developed to overcome the problem.
+[src:hardware-backed-keystore/public-key-cryptography] Beyond algorithmic or key-length weaknesses, some studies have noted risks when private key control is delegated to third parties.
+[src:hardware-backed-keystore/public-key-cryptography] Research on Uruguay’s implementation of Public Key Infrastructure under Law 18.600 found that centralized key custody by Trust Service Providers (TSPs) may weaken the principle of private-key secrecy, increasing exposure to man-in-the-middle attacks and raising concerns about legal non-repudiation.
+[src:hardware-backed-keystore/public-key-cryptography] All public key schemes are in theory susceptible to a "brute-force key search attack".
+[src:hardware-backed-keystore/public-key-cryptography] However, such an attack is impractical if the amount of computation needed to succeed – termed the "work factor" by Claude Shannon – is out of reach of all potential attackers.
+[src:hardware-backed-keystore/public-key-cryptography] In many cases, the work factor can be increased by simply choosing a longer key.
+[src:hardware-backed-keystore/public-key-cryptography] But other algorithms may inherently have much lower work factors, making resistance to a brute-force attack (e.g., from longer keys) irrelevant.
+[src:hardware-backed-keystore/public-key-cryptography] Some special and specific algorithms have been developed to aid in attacking some public key encryption algorithms; both RSA and ElGamal encryption have known attacks that are much faster than the brute-force approach.
+[src:hardware-backed-keystore/public-key-cryptography] None of these are sufficiently improved to be actually practical, however.
+[src:hardware-backed-keystore/public-key-cryptography] Major weaknesses have been found for several formerly promising asymmetric key algorithms.
+[src:hardware-backed-keystore/public-key-cryptography] The "knapsack packing" algorithm was found to be insecure after the development of a new attack.
+[src:hardware-backed-keystore/public-key-cryptography] As with all cryptographic functions, public-key implementations may be vulnerable to side-channel attacks that exploit information leakage to simplify the search for a secret key.
+[src:hardware-backed-keystore/public-key-cryptography] These are often independent of the algorithm being used.
+[src:hardware-backed-keystore/public-key-cryptography] Research is underway to both discover, and to protect against, new attacks.
+[src:hardware-backed-keystore/public-key-cryptography] Another potential security vulnerability in using asymmetric keys is the possibility of a "man-in-the-middle" attack, in which the communication of public keys is intercepted by a third party (the "man in the middle") and then modified to provide different public keys instead.
+[src:hardware-backed-keystore/public-key-cryptography] Encrypted messages and responses must, in all instances, be intercepted, decrypted, and re-encrypted by the attacker using the correct public keys for the different communication segments so as to avoid suspicion.
+[src:hardware-backed-keystore/public-key-cryptography] A communication is said to be insecure where data is transmitted in a manner that allows for interception (also called "sniffing").
+[src:hardware-backed-keystore/public-key-cryptography] These terms refer to reading the sender's private data in its entirety.
+[src:hardware-backed-keystore/public-key-cryptography] A communication is particularly unsafe when interceptions can not be prevented or monitored by the sender.
+[src:hardware-backed-keystore/public-key-cryptography] A man-in-the-middle attack can be difficult to implement due to the complexities of modern security protocols.
+[src:hardware-backed-keystore/public-key-cryptography] However, the task becomes simpler when a sender is using insecure media such as public networks, the Internet, or wireless communication.
+[src:hardware-backed-keystore/public-key-cryptography] In these cases an attacker can compromise the communications infrastructure rather than the data itself.
+[src:hardware-backed-keystore/public-key-cryptography] A hypothetical malicious staff member at an Internet service provider (ISP) might find a man-in-the-middle attack relatively straightforward.
+[src:hardware-backed-keystore/public-key-cryptography] Capturing the public key would only require searching for the key as it gets sent through the ISP's communications hardware; in properly implemented asymmetric key schemes, this is not a significant risk.
+[src:hardware-backed-keystore/public-key-cryptography] In some advanced man-in-the-middle attacks, one side of the communication will see the original data while the other will receive a malicious variant.
+[src:hardware-backed-keystore/public-key-cryptography] Asymmetric man-in-the-middle attacks can prevent users from realizing their connection is compromised.
+[src:hardware-backed-keystore/public-key-cryptography] This remains so even when one user's data is known to be compromised because the data appears fine to the other user.
+[src:hardware-backed-keystore/public-key-cryptography] This can lead to confusing disagreements between users such as "it must be on your end!" when neither user is at fault.
+[src:hardware-backed-keystore/public-key-cryptography] Hence, man-in-the-middle attacks are only fully preventable when the communications infrastructure is physically controlled by one or both parties; such as via a wired route inside the sender's own building.
+[src:hardware-backed-keystore/public-key-cryptography] In summation, public keys are easier to alter when the communications hardware used by a sender is controlled by an attacker.
+[src:hardware-backed-keystore/public-key-cryptography] One approach to prevent such attacks involves the use of a public key infrastructure (PKI); a set of roles, policies, and procedures needed to create, manage, distribute, use, store and revoke digital certificates and manage public-key encryption.
+[src:hardware-backed-keystore/public-key-cryptography] Web browsers, for instance, are supplied with a long list of "self-signed identity certificates" from PKI providers – these are used to check the *bona fides* of the certificate authority and then, in a second step, the certificates of potential communicators.
+[src:hardware-backed-keystore/public-key-cryptography] An attacker who could subvert one of those certificate authorities into issuing a certificate for a bogus public key could then mount a "man-in-the-middle" attack as easily as if the certificate scheme were not used at all.
+[src:hardware-backed-keystore/public-key-cryptography] An attacker who penetrates an authority's servers and obtains its store of certificates and keys (public and private) would be able to spoof, masquerade, decrypt, and forge transactions without limit, assuming that they were able to place themselves in the communication stream.
+[src:hardware-backed-keystore/public-key-cryptography] Despite its theoretical and potential problems, Public key infrastructure is widely used.
+[src:hardware-backed-keystore/public-key-cryptography] Examples include TLS and its predecessor SSL, which are commonly used to provide security for web browser transactions (for example, most websites utilize TLS for HTTPS).
+[src:hardware-backed-keystore/public-key-cryptography] Aside from the resistance to attack of a particular key pair, the security of the certification hierarchy must be considered when deploying public key systems.
+[src:hardware-backed-keystore/public-key-cryptography] Some certificate authority – usually a purpose-built program running on a server computer – vouches for the identities assigned to specific private keys by producing a digital certificate.
+[src:hardware-backed-keystore/public-key-cryptography] Public key digital certificates are typically valid for several years at a time, so the associated private keys must be held securely over that time.
+[src:hardware-backed-keystore/public-key-cryptography] When a private key used for certificate creation higher in the PKI server hierarchy is compromised, or accidentally disclosed, then a "man-in-the-middle attack" is possible, making any subordinate certificate wholly insecure.
+[src:hardware-backed-keystore/public-key-cryptography] Most of the available public-key encryption software does not conceal metadata in the message header, which might include the identities of the sender and recipient, the sending date, subject field, and the software they use etc.
+[src:hardware-backed-keystore/public-key-cryptography] Rather, only the body of the message is concealed and can only be decrypted with the private key of the intended recipient.
+[src:hardware-backed-keystore/public-key-cryptography] This means that a third party could construct quite a detailed model of participants in a communication network, along with the subjects being discussed, even if the message body itself is hidden.
+[src:hardware-backed-keystore/public-key-cryptography] However, there has been a recent demonstration of messaging with encrypted headers, which obscures the identities of the sender and recipient, and significantly reduces the available metadata to a third party.
+[src:hardware-backed-keystore/public-key-cryptography] The concept is based around an open repository containing separately encrypted metadata blocks and encrypted messages.
+[src:hardware-backed-keystore/public-key-cryptography] Only the intended recipient is able to decrypt the metadata block, and having done so they can identify and download their messages and decrypt them.
+[src:hardware-backed-keystore/public-key-cryptography] Such a messaging system is at present in an experimental phase and not yet deployed.
+[src:hardware-backed-keystore/public-key-cryptography] Scaling this method would reveal to the third party only the inbox server being used by the recipient and the timestamp of sending and receiving.
+[src:hardware-backed-keystore/public-key-cryptography] The server could be shared by thousands of users, making social network modelling much more challenging.
+[src:hardware-backed-keystore/public-key-cryptography] During the early history of cryptography, two parties would rely upon a key that they would exchange by means of a secure, but non-cryptographic, method such as a face-to-face meeting, or a trusted courier.
+[src:hardware-backed-keystore/public-key-cryptography] This key, which both parties must then keep absolutely secret, could then be used to exchange encrypted messages.
+[src:hardware-backed-keystore/public-key-cryptography] A number of significant practical difficulties arise with this approach to distributing keys.
+[src:hardware-backed-keystore/public-key-cryptography] Here he described the relationship of one-way functions to cryptography, and went on to discuss specifically the factorization problem used to create a trapdoor function.
+[src:hardware-backed-keystore/public-key-cryptography] Ellis, a British cryptographer at the UK Government Communications Headquarters (GCHQ), conceived of the possibility of "non-secret encryption", (now called public key cryptography), but could see no way to implement it.
+[src:hardware-backed-keystore/public-key-cryptography] In 1973, his colleague Clifford Cocks implemented what has become known as the RSA encryption algorithm, giving a practical method of "non-secret encryption", and in 1974 another GCHQ mathematician and cryptographer, Malcolm J.
+[src:hardware-backed-keystore/public-key-cryptography] Williamson, developed what is now known as Diffie–Hellman key exchange.
+[src:hardware-backed-keystore/public-key-cryptography] The scheme was also passed to the US's National Security Agency.
+[src:hardware-backed-keystore/public-key-cryptography] Both organisations had a military focus and only limited computing power was available in any case; the potential of public key cryptography remained unrealised by either organization.
+[src:hardware-backed-keystore/public-key-cryptography] These discoveries were not publicly acknowledged until the research was declassified by the British government in 1997.
+[src:hardware-backed-keystore/public-key-cryptography] In 1976, an asymmetric key cryptosystem was published by Whitfield Diffie and Martin Hellman who, influenced by Ralph Merkle's work on public key distribution, disclosed a method of public key agreement.
+[src:hardware-backed-keystore/public-key-cryptography] This method of key exchange, which uses exponentiation in a finite field, came to be known as Diffie–Hellman key exchange.
+[src:hardware-backed-keystore/public-key-cryptography] This was the first published practical method for establishing a shared secret-key over an authenticated (but not confidential) communications channel without using a prior shared secret.
+[src:hardware-backed-keystore/public-key-cryptography] Merkle's "public key-agreement technique" became known as Merkle's Puzzles, and was invented in 1974 and only published in 1978.
+[src:hardware-backed-keystore/public-key-cryptography] This makes asymmetric encryption a rather new field in cryptography although cryptography itself dates back more than 2,000 years.
+[src:hardware-backed-keystore/public-key-cryptography] In 1977, a generalization of Cocks's scheme was independently invented by Ron Rivest, Adi Shamir and Leonard Adleman, all then at MIT.
+[src:hardware-backed-keystore/public-key-cryptography] The latter authors published their work in 1978 in Martin Gardner's Scientific American column, and the algorithm came to be known as RSA, from their initials.
+[src:hardware-backed-keystore/public-key-cryptography] RSA uses exponentiation modulo a product of two very large primes, to encrypt and decrypt, performing both public key encryption and public key digital signatures.
+[src:hardware-backed-keystore/public-key-cryptography] Its security is connected to the extreme difficulty of factoring large integers, a problem for which there is no known efficient general technique.
+[src:hardware-backed-keystore/public-key-cryptography] A description of the algorithm was published in the Mathematical Games column in the August 1977 issue of Scientific American.
+[src:hardware-backed-keystore/public-key-cryptography] Since the 1970s, a large number and variety of encryption, digital signature, key agreement, and other techniques have been developed, including the Rabin signature, ElGamal encryption, DSA and ECC.
+[src:hardware-backed-keystore/public-key-cryptography] In addition to the algorithms developed within the open academic and standards communities, several countries have developed national public-key cryptography standards for use within their jurisdictions.
+[src:hardware-backed-keystore/public-key-cryptography] These include SM2 and SM9 (China), GOST R 34.10-2012 (Russia), EC-KCDSA (South Korea), and DSTU 4145 (Ukraine).
+[src:hardware-backed-keystore/secure-cryptoprocessor] A **secure cryptoprocessor** is a dedicated computer-on-a-chip or microprocessor for carrying out cryptographic operations, embedded in a packaging with multiple physical security measures, which give it a degree of tamper resistance.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Unlike cryptographic processors that output decrypted data onto a bus in a secure environment, a secure cryptoprocessor does not output decrypted data or decrypted program instructions in an environment where security cannot always be maintained.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The purpose of a secure cryptoprocessor is to act as the keystone of a security subsystem, eliminating the need to protect the rest of the subsystem with physical security measures.
+[src:hardware-backed-keystore/secure-cryptoprocessor] A hardware security module (HSM) contains one or more secure cryptoprocessor chips.
+[src:hardware-backed-keystore/secure-cryptoprocessor] These devices are high grade secure cryptoprocessors used with enterprise servers.
+[src:hardware-backed-keystore/secure-cryptoprocessor] A hardware security module can have multiple levels of physical security with a single-chip cryptoprocessor as its most secure component.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The cryptoprocessor does not reveal keys or executable instructions on a bus, except in encrypted form, and zeros keys by attempts at probing or scanning.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The crypto chip(s) may also be potted in the hardware security module with other processors and memory chips that store and process encrypted data.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Any attempt to remove the potting will cause the keys in the crypto chip to be zeroed.
+[src:hardware-backed-keystore/secure-cryptoprocessor] A hardware security module may also be part of a computer (for example an ATM) that operates inside a locked safe to deter theft, substitution, and tampering.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Some secure cryptoprocessors can even run general-purpose operating systems such as Linux inside their security boundary.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Cryptoprocessors input program instructions in encrypted form and decrypt the instructions to plain instructions, which are then executed within the same cryptoprocessor chip where the decrypted instructions are inaccessibly stored.
+[src:hardware-backed-keystore/secure-cryptoprocessor] By never revealing the decrypted program instructions, the cryptoprocessor prevents tampering of programs by technicians who may have legitimate access to the sub-system data bus.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Data processed by a cryptoprocessor is also frequently encrypted.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The Trusted Platform Module (TPM) is an implementation of a secure cryptoprocessor that brings the notion of trusted computing to ordinary PCs by enabling a secure environment.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Present TPM implementations focus on providing a tamper-proof boot environment, and persistent and volatile storage encryption.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Security chips for embedded systems are also available that provide the same level of physical protection for keys and other secret material as a smartcard processor or TPM but in a smaller, less complex and less expensive package.
+[src:hardware-backed-keystore/secure-cryptoprocessor] They are often referred to as cryptographic authentication devices and are used to authenticate peripherals, accessories and/or consumables.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Like TPMs, they are usually turnkey integrated circuits intended to be embedded in a system, usually soldered to a PC board.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Secure cryptoprocessors, while useful, are not invulnerable to attack, particularly for well-equipped and determined opponents (e.g. a government intelligence agency) who are willing to expend enough resources on the project.
+[src:hardware-backed-keystore/secure-cryptoprocessor] One attack on a secure cryptoprocessor targeted the IBM 4758.
+[src:hardware-backed-keystore/secure-cryptoprocessor] A team at the University of Cambridge reported the successful extraction of secret information from an IBM 4758, using a combination of mathematics, and special-purpose codebreaking hardware.
+[src:hardware-backed-keystore/secure-cryptoprocessor] However, this attack was not practical in real-world systems because it required the attacker to have full access to all API functions of the device.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Normal and recommended practices use the integral access control system to split authority so that no one person could mount the attack.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Smartcards are significantly more vulnerable, as they are more open to physical attack.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Additionally, hardware backdoors can undermine security in smartcards and other cryptoprocessors unless investment is made in anti-backdoor design methods.
+[src:hardware-backed-keystore/secure-cryptoprocessor] This would require both physical possession of the device as well as skills and equipment beyond that of most technical personnel.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Other attack methods involve carefully analyzing the timing of various operations that might vary depending on the secret value or mapping the current consumption versus time to identify differences in the way that '0' bits are handled internally vs.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Or the attacker may apply temperature extremes, excessively high or low clock frequencies or supply voltage that exceeds the specifications in order to induce a fault.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The internal design of the cryptoprocessor can be tailored to prevent these attacks.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The first single-chip cryptoprocessor design was for copy protection of personal computer software (see US Patent 4,168,396, Sept 18, 1979) and was inspired by Bill Gates's Open Letter to Hobbyists.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The hardware security module (HSM), a type of secure cryptoprocessor, was invented by Egyptian-American engineer Mohamed M.
+[src:hardware-backed-keystore/secure-cryptoprocessor] He invented a high security module dubbed the "Atalla Box" which encrypted PIN and ATM messages, and protected offline devices with an un-guessable PIN-generating key.
+[src:hardware-backed-keystore/secure-cryptoprocessor] In 1972, he filed a patent for the device.
+[src:hardware-backed-keystore/secure-cryptoprocessor] He founded Atalla Corporation (now Utimaco Atalla) that year, and commercialized the "Atalla Box" the following year, officially as the Identikey system.
+[src:hardware-backed-keystore/secure-cryptoprocessor] It was a card reader and customer identification system, consisting of a card reader console, two customer PIN pads, intelligent controller and built-in electronic interface package.
+[src:hardware-backed-keystore/secure-cryptoprocessor] It allowed the customer to type in a secret code, which is transformed by the device, using a microprocessor, into another code for the teller.
+[src:hardware-backed-keystore/secure-cryptoprocessor] During a transaction, the customer's account number was read by the card reader.
+[src:hardware-backed-keystore/secure-cryptoprocessor] It was a success, and led to the wide use of high security modules.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Fearful that Atalla would dominate the market, banks and credit card companies began working on an international standard in the 1970s.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The IBM 3624, launched in the late 1970s, adopted a similar PIN verification process to the earlier Atalla system.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Atalla was an early competitor to IBM in the banking security market.
+[src:hardware-backed-keystore/secure-cryptoprocessor] At the National Association of Mutual Savings Banks (NAMSB) conference in January 1976, Atalla unveiled an upgrade to its Identikey system, called the Interchange Identikey.
+[src:hardware-backed-keystore/secure-cryptoprocessor] It added the capabilities of processing online transactions and dealing with network security.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Designed with the focus of taking bank transactions online, the Identikey system was extended to shared-facility operations.
+[src:hardware-backed-keystore/secure-cryptoprocessor] It was consistent and compatible with various switching networks, and was capable of resetting itself electronically to any one of 64,000 irreversible nonlinear algorithms as directed by card data information.
+[src:hardware-backed-keystore/secure-cryptoprocessor] The Interchange Identikey device was released in March 1976.
+[src:hardware-backed-keystore/secure-cryptoprocessor] Later in 1979, Atalla introduced the first network security processor (NSP).
+[src:hardware-backed-keystore/secure-cryptoprocessor] Atalla's HSM products protect 250 million card transactions every day as of 2013, and secure the majority of the world's ATM transactions as of 2014.
+[src:hardware-backed-keystore/smart-card-p01] A **smart card** (**SC**), **chip card**, or **integrated circuit card** (**ICC** or **IC card**), is a card used to control access to a resource.
+[src:hardware-backed-keystore/smart-card-p01] It is typically a plastic credit card-sized card with an embedded integrated circuit (IC) chip.
+[src:hardware-backed-keystore/smart-card-p01] Many smart cards include a pattern of metal contacts to electrically connect to the internal chip.
+[src:hardware-backed-keystore/smart-card-p01] Others are contactless, and some are both.
+[src:hardware-backed-keystore/smart-card-p01] Smart cards can provide personal identification, authentication, data storage, and application processing.
+[src:hardware-backed-keystore/smart-card-p01] Applications include identification, financial, public transit, computer security, schools, and healthcare.
+[src:hardware-backed-keystore/smart-card-p01] Smart cards may provide strong security authentication for single sign-on (SSO) within organizations.
+[src:hardware-backed-keystore/smart-card-p01] Numerous nations have deployed smart cards throughout their populations.
+[src:hardware-backed-keystore/smart-card-p01] The universal integrated circuit card (UICC) for mobile phones, installed as pluggable SIM card or embedded eSIM, is also a type of smart card.
+[src:hardware-backed-keystore/smart-card-p01] As of 2015, 10.5 billion smart card IC chips are manufactured annually, including 5.44 billion SIM card IC chips.
+[src:hardware-backed-keystore/smart-card-p01] The basis for the smart card is the silicon integrated circuit (IC) chip.
+[src:hardware-backed-keystore/smart-card-p01] It was invented by Robert Noyce at Fairchild Semiconductor in 1959.
+[src:hardware-backed-keystore/smart-card-p01] The invention of the silicon integrated circuit led to the idea of incorporating it onto a plastic card in the late 1960s.
+[src:hardware-backed-keystore/smart-card-p01] The idea of incorporating an integrated circuit chip onto a plastic card was first introduced by the German engineer Helmut Gröttrup.
+[src:hardware-backed-keystore/smart-card-p01] In February 1967, Gröttrup filed the patents DE1574074 and DE1574075 in West Germany for a tamper-proof identification switch based on a semiconductor device and described contactless communication via inductive coupling.
+[src:hardware-backed-keystore/smart-card-p01] Its primary use was intended to provide individual copy-protected keys for releasing the tapping process at unmanned gas stations.
+[src:hardware-backed-keystore/smart-card-p01] In September 1968, Gröttrup, together with Jürgen Dethloff as an investor, filed further patents for this identification switch, first in Austria and in 1969 as subsequent applications in the United States, Great Britain, West Germany and other countries.
+[src:hardware-backed-keystore/smart-card-p01] Independently, Kunitaka Arimura of the Arimura Technology Institute in Japan developed a similar idea of incorporating an integrated circuit onto a plastic card, and filed a smart card patent in March 1970.
+[src:hardware-backed-keystore/smart-card-p01] The following year, Paul Castrucci of IBM filed an American patent titled "Information Card" in May 1971.
+[src:hardware-backed-keystore/smart-card-p01] In 1974 Roland Moreno patented a secured memory card later dubbed the "smart card".
+[src:hardware-backed-keystore/smart-card-p01] In 1976, Jürgen Dethloff introduced the known element (called "the secret") to identify gate user as of USP 4105156.
+[src:hardware-backed-keystore/smart-card-p01] In 1977, Michel Ugon from Honeywell Bull invented the first microprocessor smart card with two chips: one microprocessor and one memory, and in 1978, he patented the self-programmable one-chip microcomputer (SPOM) that defines the necessary architecture to program the chip.
+[src:hardware-backed-keystore/smart-card-p01] Three years later, Motorola used this patent in its "CP8".
+[src:hardware-backed-keystore/smart-card-p01] At that time, Bull had 1,200 patents related to smart cards.
+[src:hardware-backed-keystore/smart-card-p01] In 2001, Bull sold its CP8 division together with its patents to Schlumberger, who subsequently combined its own internal smart card department and CP8 to create Axalto.
+[src:hardware-backed-keystore/smart-card-p01] In 2006, Axalto and Gemplus, at the time the world's top two smart-card manufacturers, merged and became Gemalto.
+[src:hardware-backed-keystore/smart-card-p01] In 2008, Dexa Systems spun off from Schlumberger and acquired Enterprise Security Services business, which included the smart-card solutions division responsible for deploying the first large-scale smart-card management systems based on public key infrastructure (PKI).
+[src:hardware-backed-keystore/smart-card-p01] The first mass use of the cards was as a telephone card for payment in French payphones, starting in 1983.
+[src:hardware-backed-keystore/smart-card-p01] After the Télécarte, microchips were integrated into all French *Carte Bleue* debit cards in 1992.
+[src:hardware-backed-keystore/smart-card-p01] Customers inserted the card into the merchant's point-of-sale (POS) terminal, then typed the personal identification number (PIN), before the transaction was accepted.
+[src:hardware-backed-keystore/smart-card-p01] Only very limited transactions (such as paying small highway tolls) are processed without a PIN.
+[src:hardware-backed-keystore/smart-card-p01] Smart-card-based "electronic purse" systems store funds on the card, so that readers do not need network connectivity.
+[src:hardware-backed-keystore/smart-card-p01] They entered European service in the mid-1990s.
+[src:hardware-backed-keystore/smart-card-p01] Private electronic purse systems have also been deployed such as the Marines corps (USMC) at Parris Island allowing small amount payments at the cafeteria.
+[src:hardware-backed-keystore/smart-card-p01] Since the 1990s, smart cards have been the subscriber identity modules (SIMs) used in GSM mobile-phone equipment.
+[src:hardware-backed-keystore/smart-card-p01] Mobile phones are widely used across the world, so smart cards have become very common.
+[src:hardware-backed-keystore/smart-card-p01] Europay MasterCard Visa (EMV)-compliant cards and equipment are widespread with the deployment led by European countries.
+[src:hardware-backed-keystore/smart-card-p01] The United States started later deploying the EMV technology in 2014, with the deployment still in progress in 2019.
+[src:hardware-backed-keystore/smart-card-p01] Typically, a country's national payment association, in coordination with MasterCard International, Visa International, American Express and Japan Credit Bureau (JCB), jointly plan and implement EMV systems.
+[src:hardware-backed-keystore/smart-card-p01] Historically, in 1993 several international payment companies agreed to develop smart-card specifications for debit and credit cards.
+[src:hardware-backed-keystore/smart-card-p01] The original brands were MasterCard, Visa, and Europay.
+[src:hardware-backed-keystore/smart-card-p01] The first version of the EMV system was released in 1994.
+[src:hardware-backed-keystore/smart-card-p01] In 1998 the specifications became stable.
+[src:hardware-backed-keystore/smart-card-p01] EMVco's purpose is to assure the various financial institutions and retailers that the specifications retain backward compatibility with the 1998 version.
+[src:hardware-backed-keystore/smart-card-p01] EMVco upgraded the specifications in 2000 and 2004.
+[src:hardware-backed-keystore/smart-card-p01] EMV compliant cards were first accepted into Malaysia in 2005 and later into United States in 2014.
+[src:hardware-backed-keystore/smart-card-p01] MasterCard was the first company that was allowed to use the technology in the United States.
+[src:hardware-backed-keystore/smart-card-p01] The United States has felt pushed to use the technology because of the increase in identity theft.
+[src:hardware-backed-keystore/smart-card-p01] The credit card information stolen from Target in late 2013 was one of the largest indicators that American credit card information is not safe.
+[src:hardware-backed-keystore/smart-card-p01] Target made the decision on 30 April 2014 that it would try to implement the smart chip technology to protect itself from future credit card identity theft.
+[src:hardware-backed-keystore/smart-card-p01] Before 2014, the consensus in America was that there were enough security measures to avoid credit card theft and that the smart chip was not necessary.
+[src:hardware-backed-keystore/smart-card-p01] The cost of the smart chip technology was significant, which was why most of the corporations did not want to pay for it in the United States.
+[src:hardware-backed-keystore/smart-card-p01] The debate finally ended when Target sent out a notice stating unauthorized access to magnetic strips costing Target over 300 million dollars along with the increasing cost of online credit theft was enough for the United States to invest in the technology.
+[src:hardware-backed-keystore/smart-card-p01] The adaptation of EMV's increased significantly in 2015 when the liability shifts occurred in October by the credit card companies.
+[src:hardware-backed-keystore/smart-card-p01] Use of "Contactless" smart cards in transport has also grown through the use of low cost chips NXP Mifare Ultralight and paper/card/PET rather than PVC.
+[src:hardware-backed-keystore/smart-card-p01] This has reduced media cost so it can be used for low cost tickets and short term transport passes (up to 1 year typically).
+[src:hardware-backed-keystore/smart-card-p01] The cost is typically 10% that of a PVC smart card with larger memory.
+[src:hardware-backed-keystore/smart-card-p01] They are distributed through vending machines, ticket offices and agents.
+[src:hardware-backed-keystore/smart-card-p01] Use of paper/PET is less harmful to the environment than traditional PVC cards.
+[src:hardware-backed-keystore/smart-card-p01] Smart cards are also being introduced for identification and entitlement by regional, national, and international organizations.
+[src:hardware-backed-keystore/smart-card-p01] These uses include citizen cards, drivers’ licenses, and patient cards.
+[src:hardware-backed-keystore/smart-card-p01] In Malaysia, the compulsory national ID MyKad enables eight applications and has 18 million users.
+[src:hardware-backed-keystore/smart-card-p01] Contactless smart cards are part of ICAO biometric passports to enhance security for international travel.
+[src:hardware-backed-keystore/smart-card-p01] Complex Cards are smart cards that conform to the ISO/IEC 7810 standard and include components in addition to those found in traditional single chip smart cards.
+[src:hardware-backed-keystore/smart-card-p01] Complex Cards were invented by Cyril Lalo and Philippe Guillaud in 1999 when they designed a chip smart card with additional components, building upon the initial concept consisting of using audio frequencies to transmit data patented by Alain Bernard.
+[src:hardware-backed-keystore/smart-card-p01] The first Complex Card prototype was developed collaboratively by Cyril Lalo and Philippe Guillaud, who were working at AudioSmartCard at the time, and Henri Boccia and Philippe Patrice, who were working at Gemplus.
+[src:hardware-backed-keystore/smart-card-p01] It was ISO 7810-compliant and included a battery, a piezoelectric buzzer, a button, and delivered audio functions, all within a 0.84mm thickness card.
+[src:hardware-backed-keystore/smart-card-p01] The Complex Card pilot, developed by AudioSmartCard, was launched in 2002 by Crédit Lyonnais, a French financial institution.
+[src:hardware-backed-keystore/smart-card-p01] This pilot featured acoustic tones as a means of authentication.
+[src:hardware-backed-keystore/smart-card-p01] Although Complex Cards were developed since the inception of the smart card industry, they only reached maturity after 2010.
+[src:hardware-backed-keystore/smart-card-p01] While first generation Complex Cards were battery powered, the second generation is battery-free and receives power through the usual card connector and/or induction .
+[src:hardware-backed-keystore/smart-card-p01] Sound, generated by a buzzer, was the preferred means of communication for the first projects involving Complex Cards.
+[src:hardware-backed-keystore/smart-card-p01] Later, with the progress of displays, visual communication is now present in almost all Complex Cards.
+[src:hardware-backed-keystore/smart-card-p01] Complex Cards support all communication protocols present on regular smart cards: contact, thanks to a contact pad as defined ISO/IEC 7816 standard, contactless following the ISO/IEC 14443 standard, and magstripe.
+[src:hardware-backed-keystore/smart-card-p01] A Complex Card can be used to compute a cryptographic value, such as a One-time password.
+[src:hardware-backed-keystore/smart-card-p01] The One-Time Password is generated by a cryptoprocessor encapsulated in the card.
+[src:hardware-backed-keystore/smart-card-p01] To implement this function, the crypto processor must be initialized with a seed value, which enables the identification of the OTPs respective of each card.
+[src:hardware-backed-keystore/smart-card-p01] The hash of seed value has to be stored securely within the card to prevent unauthorized prediction of the generated OTPs.
+[src:hardware-backed-keystore/smart-card-p01] One-Time Passwords generation is based either on incremental values (event based) or on a real time clock (time based).
+[src:hardware-backed-keystore/smart-card-p01] Using clock-based One-Time Password generation requires the Complex Card to be equipped with a Real-time clock.
+[src:hardware-backed-keystore/smart-card-p01] A Complex Card with buttons can display the balance of one or multiple account(s) linked to the card.
+[src:hardware-backed-keystore/smart-card-p01] Typically, either one button is used to display the balance in the case of a single account card or, in the case of a card linked to multiple accounts, a combination of buttons is used to select a specific account's balance.
+[src:hardware-backed-keystore/smart-card-p01] For additional security, features such as requiring the user to enter an identification or a security value such as a PIN can be added to a Complex Card.
+[src:hardware-backed-keystore/smart-card-p01] The latest generation of battery free, button free, Complex Cards can display a balance or other kind of information without requiring any input from the card holder.
+[src:hardware-backed-keystore/smart-card-p01] The information is updated during the use of the card.
+[src:hardware-backed-keystore/smart-card-p01] For instance, in a transit card, key information such as the monetary value balance, the number of remaining trips or the expiry date of a transit pass can be displayed.
+[src:hardware-backed-keystore/smart-card-p01] A Complex Card being deployed as a payment card can be equipped with capability to provide transaction security.
+[src:hardware-backed-keystore/smart-card-p01] Typically, online payments are made secure thanks to the Card Security Code (CSC), also known as card verification code (CVC2), or card verification value (CVV2).
+[src:hardware-backed-keystore/smart-card-p01] The card security code (CSC) is a 3 or 4 digits number printed on a credit or debit card, used as a security feature for card-not-present (CNP) payment card transactions to reduce the incidence of fraud.
+[src:hardware-backed-keystore/smart-card-p01] The Card Security Code (CSC) is to be given to the merchant by the cardholder to complete a card-not-present transaction.
+[src:hardware-backed-keystore/smart-card-p01] The CSC is transmitted along with other transaction data and verified by the card issuer.
+[src:hardware-backed-keystore/smart-card-p01] The Payment Card Industry Data Security Standard (PCI DSS) prohibits the storage of the CSC by the merchant or any stakeholder in the payment chain.
+[src:hardware-backed-keystore/smart-card-p01] Although designed to be a security feature, the static CSC is susceptible to fraud as it can easily be memorized by a shop attendant, who could then use it for fraudulent online transactions or sale on the dark web.
+[src:hardware-backed-keystore/smart-card-p01] This vulnerability has led the industry to develop a Dynamic Card Security Code (DCSC) that can be changed at certain time intervals, or after each contact or contactless EMV transaction.
+[src:hardware-backed-keystore/smart-card-p01] This Dynamic CSC brings significantly better security than a static CSC.
+[src:hardware-backed-keystore/smart-card-p01] The first generation of Dynamic CSC cards, developed by NagraID Security required a battery, a quartz and Real Time Clock (RTC) embedded within the card to power the computation of a new Dynamic CSC, after expiration of the programmed period.
+[src:hardware-backed-keystore/smart-card-p01] The second generation of Dynamic CSC cards, developed by Ellipse World, Inc., does not require any battery, quartz, or RTC to compute and display the new dynamic code.
+[src:hardware-backed-keystore/smart-card-p01] Instead, the card obtains its power either through the usual card connector or by induction during every EMV transaction from the Point of Sales (POS) terminal or Automated Teller Machine (ATM) to compute a new DCSC.
+[src:hardware-backed-keystore/smart-card-p01] The advantage of the Dynamic Card Security Code (DCSC) is that new information is transmitted with the payment transactions, thus making it useless for a potential fraudster to memorize or store it.
+[src:hardware-backed-keystore/smart-card-p01] A transaction with a Dynamic Card Security Code is carried out exactly the same way, with the same processes and use of parameters as a transaction with a static code in a card-not-present transaction.
+[src:hardware-backed-keystore/smart-card-p01] Upgrading to a DCSC allows cardholders and merchants to continue their payment habits and processes undisturbed.
+[src:hardware-backed-keystore/smart-card-p01] Complex Cards can be equipped with biometric sensors allowing for stronger user authentication.
+[src:hardware-backed-keystore/smart-card-p01] In the typical use case, fingerprint sensors are integrated into a payment card to bring a higher level of user authentication than a PIN.
+[src:hardware-backed-keystore/smart-card-p01] To implement user authentication using a fingerprint enabled smart card, the user has to authenticate himself/herself to the card by means of the fingerprint before starting a payment transaction.
+[src:hardware-backed-keystore/smart-card-p01] Complex Cards can incorporate a wide variety of components.
+[src:hardware-backed-keystore/smart-card-p01] The choice of components drives functionality, influences cost, power supply needs, and manufacturing complexity.
+[src:hardware-backed-keystore/smart-card-p01] Depending on Complex Card types, buttons have been added to allow an easy interaction between the user and the card.
+[src:hardware-backed-keystore/smart-card-p01] While separate keys have been used on prototypes in the early days, capacitive keyboards are the most popular solution now, thanks to technology developments by AudioSmartCard International SA.
+[src:hardware-backed-keystore/smart-card-p01] The interaction with a capacitive keyboard requires constant power, therefore a battery and a mechanical button are required to activate the card.
+[src:hardware-backed-keystore/smart-card-p01] The first Complex Cards were equipped with a buzzer that made it possible to broadcast sound.
+[src:hardware-backed-keystore/smart-card-p01] This feature was generally used over the phone to send identification data such as an identifier and one-time passwords (OTPs).
+[src:hardware-backed-keystore/smart-card-p01] Technologies used for sound transmission include DTMF (dual-tone multi-frequency signaling) or FSK (frequency-shift keying).
+[src:hardware-backed-keystore/smart-card-p01] Displaying data is an essential part of Complex Card functionalities.
+[src:hardware-backed-keystore/smart-card-p01] Depending on the information that needs to be shown, displays can be digital or alphanumeric and of varying lengths.
+[src:hardware-backed-keystore/smart-card-p01] Displays can be located either on the front or back of the card.
+[src:hardware-backed-keystore/smart-card-p01] A front display is the most common solution for showing information such as a One-Time Password or an electronic purse balance.
+[src:hardware-backed-keystore/smart-card-p01] A rear display is more often used for showing a Dynamic Card Security Code (DCSC).
+[src:hardware-backed-keystore/smart-card-p01] If a Complex smart Card is dedicated to making cryptographic computations (such as generating a one-time password) it may require a secure cryptoprocessor.
+[src:hardware-backed-keystore/smart-card-p01] As Complex Cards contain more components than traditional smart cards, their power consumption must be carefully monitored.
+[src:hardware-backed-keystore/smart-card-p01] First generation Complex Cards require a power supply even in standby mode.
+[src:hardware-backed-keystore/smart-card-p01] As such, product designers generally included a battery in their design.
+[src:hardware-backed-keystore/smart-card-p01] Incorporating a battery creates an additional burden in terms of complexity, cost, space and flexibility in an already dense design.
+[src:hardware-backed-keystore/smart-card-p01] Including a battery in a Complex Card increases the complexity of the manufacturing process as a battery cannot be hot laminated.
+[src:hardware-backed-keystore/smart-card-p01] Second generation Complex Cards feature a battery-free design.
+[src:hardware-backed-keystore/smart-card-p01] These cards harvest the necessary power from external sources; for example when the card interacts in a contact or contactless fashion with a payment system or an NFC-enabled smartphone.
+[src:hardware-backed-keystore/smart-card-p01] The use of a bistable display in the card design ensures that the screen remains legible even when the Complex Card is unconnected to the power source.
+[src:hardware-backed-keystore/smart-card-p01] Complex Card manufacturing methods are inherited from the smart card industry and from the electronics mounting industry.
+[src:hardware-backed-keystore/smart-card-p01] As Complex Cards incorporate several components while having to remain within 0.8 mm thickness and be flexible, and to comply with the ISO/IEC 7810, ISO/IEC 7811 and ISO/IEC 7816 standards, renders their manufacture more complex than standard smart cards.
+[src:hardware-backed-keystore/smart-card-p01] One of the most popular manufacturing processes in the smart card industry is lamination.
+[src:hardware-backed-keystore/smart-card-p01] This process involves laminating an inlay between two card faces.
+[src:hardware-backed-keystore/smart-card-p01] The inlay contains the needed electronic components with an antenna printed on an inert support.
+[src:hardware-backed-keystore/smart-card-p01] Typically battery-powered Complex Cards require a cold lamination manufacturing process.
+[src:hardware-backed-keystore/smart-card-p01] This process impacts the manufacturing lead time and the whole cost of such a Complex Card.
+[src:hardware-backed-keystore/smart-card-p01] Second generation, battery-free Complex Cards can be manufactured by existing hot lamination process.
+[src:hardware-backed-keystore/smart-card-p01] This automated process, inherited from traditional smart card manufacturing, enables the production of Complex Cards in large quantities while keeping costs under control, a necessity for the evolution from a niche to a mass market.
+[src:hardware-backed-keystore/smart-card-p01] As Complex Cards bring more functionalities than standard smart cards and, due to their complexity, their personalization can take longer or require more inputs.
+[src:hardware-backed-keystore/smart-card-p01] Having Complex Cards that can be personalized by the same machines and the same processes as regular smart cards allows them to be integrated more easily in existing manufacturing chains and applications.
+[src:hardware-backed-keystore/smart-card-p01] First generation, battery-operated Complex Cards require specific recycling processes, mandated by different regulatory bodies.
+[src:hardware-backed-keystore/smart-card-p01] Additionally, keeping battery-operated Complex Cards in inventory for extended periods of time may reduce their performance due to battery ageing.
+[src:hardware-backed-keystore/smart-card-p01] Second-generation battery-free technology ensures operation during the entire lifetime of the card and eliminates self-discharge, providing extended shelf life, and is more eco-friendly.
+[src:hardware-backed-keystore/smart-card-p01] Since the inception of smart cards, innovators have been trying to add extra features.
+[src:hardware-backed-keystore/smart-card-p01] As technologies have matured and have been industrialized, several smart card industry players have been involved in Complex Cards.
+[src:hardware-backed-keystore/smart-card-p01] The Complex Card concept began in 1999 when Cyril Lalo and Philippe Guillaud, its inventors, first designed a smart card with additional components.
+[src:hardware-backed-keystore/smart-card-p01] The first prototype was developed collaboratively by Cyril Lalo, who was the CEO of AudioSmartCard at the time, and Henri Boccia and Philippe Patrice, from Gemplus.
+[src:hardware-backed-keystore/smart-card-p01] The prototype included a button and audio functions on a 0.84mm thick ISO 7810-compliant card .
+[src:hardware-backed-keystore/smart-card-p01] Since then, Complex Cards have been mass-deployed primarily by NagraID Security.
+[src:hardware-backed-keystore/smart-card-p01] AudioSmartCard International SA was instrumental in developing the first Complex Card that included a battery, a piezoelectric buzzer, a button, and audio functions all on a 0.84mm thick, ISO 7810-compatible card.
+[src:hardware-backed-keystore/smart-card-p01] AudioSmartCard was founded in 1993 and specialized in the development and marketing of acoustic tokens incorporating security features.
+[src:hardware-backed-keystore/smart-card-p01] These acoustic tokens exchanged data in the form of sounds transmitted over a phone line.
+[src:hardware-backed-keystore/smart-card-p01] In 1999, AudioSmartCard transitioned to a new leadership under Cyril Lalo and Philippe Guillaud, who also became major shareholders.
+[src:hardware-backed-keystore/smart-card-p01] They made AudioSmartCard evolve towards the smart card world.
+[src:hardware-backed-keystore/smart-card-p01] In 2003 Prosodie, a subsidiary of Capgemini, joined the shareholders of AudioSmartCard.
+[src:hardware-backed-keystore/smart-card-p01] AudioSmartCard was renamed nCryptone, in 2004.
+[src:hardware-backed-keystore/smart-card-p01] CardLab Innovation, incorporated in 2006 in Herlev, Denmark, specializes in Complex Cards that include a switch, a biometric reader, an RFID jammer, and one or more magstripes.
+[src:hardware-backed-keystore/smart-card-p01] The company works with manufacturing partners in China and Thailand and owns a card lamination factory in Thailand.
+[src:hardware-backed-keystore/smart-card-p01] Coin was a US-based startup founded in 2012 by Kanishk Parashar.
+[src:hardware-backed-keystore/smart-card-p01] It developed a Complex Card capable of storing the data of several credit and debit cards.
+[src:hardware-backed-keystore/smart-card-p01] The card prototype was equipped with a display and a button that enabled the user to switch between different cards.
+[src:hardware-backed-keystore/smart-card-p01] In 2015, the original Coin card concept evolved into Coin 2.0 adding contactless communication to its original magstripe emulation.
+[src:hardware-backed-keystore/smart-card-p01] Coin was acquired by Fitbit in May 2016 and all Coin activities were discontinued in February 2017.
+[src:hardware-backed-keystore/smart-card-p01] Ellipse World, Inc. was founded in 2017 by Cyril Lalo and Sébastien Pochic, both recognized experts in Complex Card technology.
+[src:hardware-backed-keystore/smart-card-p01] Ellipse World, Inc. specializes in battery-free Complex Card technology.
+[src:hardware-backed-keystore/smart-card-p01] The Ellipse patented technologies enable smart card manufacturers to use their existing dual interface payment card manufacturing process and supply chain to build battery-free, second generation Complex Cards with display capabilities.
+[src:hardware-backed-keystore/smart-card-p01] Thanks to this ease of integration, smart card vendors are able to address banking, transit and prepaid cards markets.
+[src:hardware-backed-keystore/smart-card-p01] EMue Technologies, headquartered in Melbourne, Australia, designed and developed authentication solutions for the financial services industry from 2009 to 2015.
+[src:hardware-backed-keystore/smart-card-p01] The company's flagship product, developed in collaboration with Cyril Lalo and Philippe Guillaud, was the eMue Card, a Visa CodeSure credit card with an embedded keypad, a display and a microprocessor.
+[src:hardware-backed-keystore/smart-card-p01] Feitian Technologies, a China-based company created in 1998, provides cyber security products and solutions.
+[src:hardware-backed-keystore/smart-card-p01] The company offers security solutions based on smart cards as well as other authentication devices.
+[src:hardware-backed-keystore/smart-card-p01] These include Complex Cards, that incorporate a display, a keypad or a fingerprint sensor.
+[src:hardware-backed-keystore/smart-card-p01] Fingerprint Cards AB (or Fingerprints) is a Swedish company specializing in biometric solutions.
+[src:hardware-backed-keystore/smart-card-p01] The company sells biometric sensors and has recently introduced payment cards incorporating a fingerprint sensor such as the Zwipe card, a biometric dual-interface payment card using an integrated sensor from Fingerprints.
+[src:hardware-backed-keystore/smart-card-p01] Giesecke & Devrient, also known as G+D, is a German company headquartered in Munich that provides banknotes, security printing, smart cards and cash handling systems.
+[src:hardware-backed-keystore/smart-card-p01] Its smart card portfolio includes display cards, OTP cards, as well as cards displaying a Dynamic CSC.
+[src:hardware-backed-keystore/smart-card-p01] Gemalto, a division of Thales Group, is a major player in the secure transaction industry.
+[src:hardware-backed-keystore/smart-card-p01] The company's Complex Card portfolio includes cards with a display or a fingerprint sensor.
+[src:hardware-backed-keystore/smart-card-p01] These cards may display an OTP or a Dynamic CSC.
+[src:hardware-backed-keystore/smart-card-p01] IDEMIA is the product of the 2017 merger of Oberthur Technologies and Morpho.
+[src:hardware-backed-keystore/smart-card-p01] The combined company has positioned itself as a global provider of financial cards, SIM cards, biometric devices as well as public and private identity solutions.
+[src:hardware-backed-keystore/smart-card-p01] Due to Oberthur's acquisition of NagraID Security in 2014, Idemia's Complex Card offerings include the F.CODE biometric payment card that includes a fingerprint sensor, and its battery-powered Motion Code card that displays a Dynamic CSC.
+[src:hardware-backed-keystore/smart-card-p01] IDEX Biometrics ASA, incorporated in Norway, specializes in fingerprint identification technologies for personal authentication.
+[src:hardware-backed-keystore/smart-card-p01] The company offers fingerprint sensors and modules that are ready to be embedded into cards.
+[src:hardware-backed-keystore/smart-card-p01] Founded in 2002, by Alan Finkelstein, Innovative Card Technologies developed and commercialized enhancements for the smart card market.
+[src:hardware-backed-keystore/smart-card-p01] The company acquired the display card assets of nCryptone in 2006.
+[src:hardware-backed-keystore/smart-card-p01] Innovative Card Technologies has ceased its activities.
+[src:hardware-backed-keystore/smart-card-p01] Nagra ID, now known as NID, was a wholly owned subsidiary of the Kudelski Group until 2014.
+[src:hardware-backed-keystore/smart-card-p01] NID can trace its history with Complex Cards back to 2003 when it collaborated on development with nCryptone.
+[src:hardware-backed-keystore/smart-card-p01] Nagra ID was instrumental in developing the cold lamination process for Complex Cards manufacturing.
+[src:hardware-backed-keystore/smart-card-p01] Nagra ID manufactures Complex Cards that can include a battery, buttons, displays or other electronic components.
+[src:hardware-backed-keystore/smart-card-p01] Nagra ID Security began in 2008 as a spinoff of Nagra ID to focus on Complex Card development and manufacturing.
+[src:hardware-backed-keystore/smart-card-p01] The company was owned by Kudelski Group (50%), Cyril Lalo (25%) and Philippe Guillaud (25%).
+[src:hardware-backed-keystore/smart-card-p01] NagraID Security quickly became a leading player in the adoption of Complex Cards due, in large part, to its development of MotionCode cards that featured a small display to enable a Card Security Code (CVV2).
+[src:hardware-backed-keystore/smart-card-p01] NagraID Security was the first Complex Cards manufacturer to develop a mass market for payment display cards.
+[src:hardware-backed-keystore/smart-card-p01] In 2014, NagraID Security was sold to Oberthur Technologies (now IDEMIA).
+[src:hardware-backed-keystore/smart-card-p01] nCryptone emerged in 2004 from the renaming of AudioSmartCard. nCryptone was headed by Cyril Lalo and Philippe Guillaud and developed technologies around authentication servers and devices.
+[src:hardware-backed-keystore/smart-card-p01] nCryptone display card assets were acquired by Innovative Card Technologies in 2006.
+[src:hardware-backed-keystore/smart-card-p01] Oberthur Technologies, now IDEMIA, is one of the major players in the secure transactions industry.
+[src:hardware-backed-keystore/smart-card-p01] It acquired the business of NagraID Security in 2014.
+[src:hardware-backed-keystore/smart-card-p01] Oberthur then merged with Morpho and the combined entity was renamed Idemia in 2017.
+[src:hardware-backed-keystore/smart-card-p01] Set up in 2009, Plastc announced a single card that could digitally hold the data of up to 20 credit or debit cards.
+[src:hardware-backed-keystore/smart-card-p01] The company succeeded in raising US$9 million through preorders but failed to deliver any product.
+[src:hardware-backed-keystore/smart-card-p01] Plastc was then acquired in 2017 by Edge Mobile Payments, a Santa Cruz-based Fintech company.
+[src:hardware-backed-keystore/smart-card-p01] The Plastc project continues as the Edge card, a dynamic payment card that consolidates several payment cards in one device.
+[src:hardware-backed-keystore/smart-card-p01] The card is equipped with a battery and an ePaper screen and can store data from up to 50 credit, debit, loyalty and gift cards.
+[src:hardware-backed-keystore/smart-card-p01] Stratos was created in 2012 in Ann Arbor, Michigan, USA.
+[src:hardware-backed-keystore/smart-card-p01] In 2015, Stratos developed the Stratos Bluetooth Connected Card, which was designed to integrate up to three credit and debit card in a single card format and featured a smartphone app used to manage the card.
+[src:hardware-backed-keystore/smart-card-p01] Due to its Lithium ion thin film battery, the Stratos card was equipped with LEDs and communicated in contactless mode and in Bluetooth low Energy.
+[src:hardware-backed-keystore/smart-card-p01] In 2017 Stratos was acquired by CardLab Innovation, a company headquartered in Herlev, Denmark.
+[src:hardware-backed-keystore/smart-card-p01] SWYP was the brand name of a card developed by Qvivr, a company incorporated in 2014 in Fremont, California.
+[src:hardware-backed-keystore/smart-card-p01] SWYP was introduced in 2015 and dubbed the world's first smart wallet.
+[src:hardware-backed-keystore/smart-card-p01] SWYP was a metal card with the ability to combine over 25 credit, debit, gift and loyalty cards.
+[src:hardware-backed-keystore/smart-card-p01] The card worked in conjunction with a smartphone app used to manage the cards.
+[src:hardware-backed-keystore/smart-card-p01] The Swyp card included a battery, a button and a matrix display that showed which card was in use.
+[src:hardware-backed-keystore/smart-card-p01] The company registered users in its beta testing program, but the product never shipped on a commercial scale.
+[src:hardware-backed-keystore/smart-card-p01] Qvivr raised US$5 million in January 2017 and went out of business in November 2017.
+[src:hardware-backed-keystore/smart-card-p01] Complex Cards have been adopted by numerous financial institutions worldwide.
+[src:hardware-backed-keystore/smart-card-p01] They may include different functionalities such as payment cards (credit, debit, prepaid), One-time password, mass-transit, and dynamic Card Security Code (CVV2).
+[src:hardware-backed-keystore/smart-card-p01] Since April 2009, a Japanese company has manufactured reusable financial smart cards made from paper.
+[src:hardware-backed-keystore/smart-card-p01] As mentioned above, data on a smart card may be stored in a file system (FS).
+[src:hardware-backed-keystore/smart-card-p01] In smart card file systems, the root directory is called the "master file" ("MF"), subdirectories are called "dedicated files" ("DF"), and ordinary files are called "elementary files" ("EF").
+[src:hardware-backed-keystore/smart-card-p01] The file system mentioned above is stored on an EEPROM (storage or memory) within the smartcard.
+[src:hardware-backed-keystore/smart-card-p01] In addition to the EEPROM, other components may be present, depending upon the kind of smartcard.
+[src:hardware-backed-keystore/smart-card-p01] In cards with microprocessors, the microprocessor sits inline between the reader and the other components.
+[src:hardware-backed-keystore/smart-card-p01] The operating system that runs on the microprocessor mediates the reader's access to those components to prevent unauthorized access.
+[src:hardware-backed-keystore/smart-card-p01] Contact smart cards have a contact area of approximately 1 square centimetre (0.16 sq in), comprising several gold-plated contact pads.
+[src:hardware-backed-keystore/smart-card-p01] These pads provide electrical connectivity when inserted into a reader, which is used as a communications medium between the smart card and a host (e.g., a computer, a point of sale terminal) or a mobile telephone.
+[src:hardware-backed-keystore/smart-card-p01] Cards do not contain batteries; power is supplied by the card reader.
+[src:hardware-backed-keystore/smart-card-p01] Because the chips in financial cards are the same as those used in subscriber identity modules (SIMs) in mobile phones, programmed differently and embedded in a different piece of PVC, chip manufacturers are building to the more demanding GSM/3G standards.
+[src:hardware-backed-keystore/smart-card-p01] So, for example, although the EMV standard allows a chip card to draw 50 mA from its terminal, cards are normally well below the telephone industry's 6 mA limit.
+[src:hardware-backed-keystore/smart-card-p01] This allows smaller and cheaper financial card terminals.
+[src:hardware-backed-keystore/smart-card-p01] Communication protocols for contact smart cards include T=0 (character-level transmission protocol, defined in ISO/IEC 7816-3) and T=1 (block-level transmission protocol, defined in ISO/IEC 7816-3).
+[src:hardware-backed-keystore/smart-card-p01] APDU transmission by a contactless interface is defined in ISO/IEC 14443-4.
+[src:hardware-backed-keystore/smart-card-p01] Hybrid cards implement contactless and contact interfaces on a single card with unconnected chips including dedicated modules/storage and processing.
+[src:hardware-backed-keystore/smart-card-p01] Dual-interface cards implement contactless and contact interfaces on a single chip with some shared storage and processing.
+[src:hardware-backed-keystore/smart-card-p01] An example is Porto's multi-application transport card, called Andante, which uses a chip with both contact and contactless (ISO/IEC 14443 Type B) interfaces.
+[src:hardware-backed-keystore/smart-card-p01] Numerous payment cards worldwide are based on hybrid card technology allowing them to communicate in contactless as well as contact modes.
+[src:hardware-backed-keystore/smart-card-p01] The CCID (Chip Card Interface Device) is a USB protocol that allows a smart card to be interfaced to a computer using a card reader which has a standard USB interface.
+[src:hardware-backed-keystore/smart-card-p01] This allows the smart card to be used as a security token for authentication and data encryption such as Bitlocker.
+[src:hardware-backed-keystore/smart-card-p01] A typical CCID is a USB dongle and may contain a SIM.
+[src:hardware-backed-keystore/smart-card-p01] Different smart cards implement one or more reader-side protocols.
+[src:hardware-backed-keystore/smart-card-p01] Common protocols here include CT-API and PC/SC.
+[src:hardware-backed-keystore/smart-card-p01] Smartcard operating systems may provide application programming interfaces (APIs) so that developers can write programs ("applications") to run on the smartcard.
+[src:hardware-backed-keystore/smart-card-p01] Some such APIs, such as Java Card, allow programs to be uploaded to the card without replacing the card's entire operating system.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards serve as credit or ATM cards, fuel cards, mobile phone SIMs, authorization cards for pay television, household utility pre-payment cards, high-security identification and access badges, and public transport and public phone payment cards.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards may also be used as electronic wallets.
+[src:hardware-backed-keystore/smart-card-p02] The smart card chip can be "loaded" with funds to pay parking meters, vending machines or merchants.
+[src:hardware-backed-keystore/smart-card-p02] Cryptographic protocols protect the exchange of money between the smart card and the machine.
+[src:hardware-backed-keystore/smart-card-p02] The holder of the card may use it even if not the owner.
+[src:hardware-backed-keystore/smart-card-p02] Examples are Mondex (1993), Proton, Geldkarte, Chipknip and Moneo.
+[src:hardware-backed-keystore/smart-card-p02] The German Geldkarte is also used to validate customer age at vending machines for cigarettes.
+[src:hardware-backed-keystore/smart-card-p02] Contactless (non-PIN) transactions cover a payment range of ~$5–50.
+[src:hardware-backed-keystore/smart-card-p02] There is an ISO/IEC 14443 PayPass implementation.
+[src:hardware-backed-keystore/smart-card-p02] Some, but not all, PayPass implementations conform to EMV.
+[src:hardware-backed-keystore/smart-card-p02] Non-EMV cards work like magnetic stripe cards.
+[src:hardware-backed-keystore/smart-card-p02] The cards do not hold or maintain the account balance.
+[src:hardware-backed-keystore/smart-card-p02] All payment passes without a PIN, usually in off-line mode.
+[src:hardware-backed-keystore/smart-card-p02] The security of such a transaction is no greater than with a magnetic stripe card transaction.
+[src:hardware-backed-keystore/smart-card-p02] EMV cards can have either contact or contactless interfaces.
+[src:hardware-backed-keystore/smart-card-p02] They work as if they were a normal EMV card with a contact interface.
+[src:hardware-backed-keystore/smart-card-p02] Via the contactless interface they work somewhat differently, in that the card commands enabled improved features such as lower power and shorter transaction times.
+[src:hardware-backed-keystore/smart-card-p02] EMV standards include provisions for contact and contactless communications.
+[src:hardware-backed-keystore/smart-card-p02] Typically modern payment cards are based on hybrid card technology and support both contact and contactless communication modes.
+[src:hardware-backed-keystore/smart-card-p02] The subscriber identity modules used in mobile-phone systems are reduced-size smart cards, using otherwise identical technologies.
+[src:hardware-backed-keystore/smart-card-p02] Sometimes they employ a public key infrastructure (PKI).
+[src:hardware-backed-keystore/smart-card-p02] The card stores an encrypted digital certificate issued from the PKI provider along with other relevant information.
+[src:hardware-backed-keystore/smart-card-p02] Department of Defense (DoD) Common Access Card (CAC), and other cards used by other governments for their citizens.
+[src:hardware-backed-keystore/smart-card-p02] If they include biometric identification data, cards can provide superior two- or three-factor authentication.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards are not always privacy-enhancing, because the subject may carry incriminating information on the card.
+[src:hardware-backed-keystore/smart-card-p02] Contactless smart cards that can be read from within a wallet or even a garment simplify authentication; however, criminals may access data from these cards.
+[src:hardware-backed-keystore/smart-card-p02] Cryptographic smart cards are often used for single sign-on.
+[src:hardware-backed-keystore/smart-card-p02] Most advanced smart cards include specialized cryptographic hardware that uses algorithms such as RSA and Digital Signature Algorithm (DSA).
+[src:hardware-backed-keystore/smart-card-p02] Today's cryptographic smart cards generate key pairs on board, to avoid the risk from having more than one copy of the key (since by design there usually isn't a way to extract private keys from a smart card).
+[src:hardware-backed-keystore/smart-card-p02] Such smart cards are mainly used for digital signatures and secure identification.
+[src:hardware-backed-keystore/smart-card-p02] The most common way to access cryptographic smart card functions on a computer is to use a vendor-provided PKCS#11 library.
+[src:hardware-backed-keystore/smart-card-p02] On Microsoft Windows the Cryptographic Service Provider (CSP) API is also supported.
+[src:hardware-backed-keystore/smart-card-p02] The most widely used cryptographic algorithms in smart cards (excluding the GSM so-called "crypto algorithm") are Triple DES and RSA.
+[src:hardware-backed-keystore/smart-card-p02] The key set is usually loaded (DES) or generated (RSA) on the card at the personalization stage.
+[src:hardware-backed-keystore/smart-card-p02] Some of these smart cards are also made to support the National Institute of Standards and Technology (NIST) standard for Personal Identity Verification, FIPS 201.
+[src:hardware-backed-keystore/smart-card-p02] Turkey implemented the first smart card driver's license system in 1987.
+[src:hardware-backed-keystore/smart-card-p02] Turkey had a high level of road accidents and decided to develop and use digital tachograph devices on heavy vehicles, instead of the existing mechanical ones, to reduce speed violations.
+[src:hardware-backed-keystore/smart-card-p02] Since 1987, the professional driver's licenses in Turkey have been issued as smart cards.
+[src:hardware-backed-keystore/smart-card-p02] A professional driver is required to insert his driver's license into a digital tachograph before starting to drive.
+[src:hardware-backed-keystore/smart-card-p02] The tachograph unit records speed violations for each driver and gives a printed report.
+[src:hardware-backed-keystore/smart-card-p02] The driving hours for each driver are also being monitored and reported.
+[src:hardware-backed-keystore/smart-card-p02] In 1990 the European Union conducted a feasibility study through BEVAC Consulting Engineers, titled "Feasibility study with respect to a European electronic drivers license (based on a smart-card) on behalf of Directorate General VII".
+[src:hardware-backed-keystore/smart-card-p02] In this study, chapter seven describes Turkey's experience.
+[src:hardware-backed-keystore/smart-card-p02] Argentina's Mendoza province began using smart card driver's licenses in 1995.
+[src:hardware-backed-keystore/smart-card-p02] Mendoza also had a high level of road accidents, driving offenses, and a poor record of recovering fines.
+[src:hardware-backed-keystore/smart-card-p02] Smart licenses hold up-to-date records of driving offenses and unpaid fines.
+[src:hardware-backed-keystore/smart-card-p02] They also store personal information, license type and number, and a photograph.
+[src:hardware-backed-keystore/smart-card-p02] Emergency medical information such as blood type, allergies, and biometrics (fingerprints) can be stored on the chip if the card holder wishes.
+[src:hardware-backed-keystore/smart-card-p02] The Argentina government anticipates that this system will help to collect more than $10 million per year in fines.
+[src:hardware-backed-keystore/smart-card-p02] In 1999 Gujarat was the first Indian state to introduce a smart card license system.
+[src:hardware-backed-keystore/smart-card-p02] As of 2005, it has issued 5 million smart card driving licenses to its people.
+[src:hardware-backed-keystore/smart-card-p02] In 2002, the Estonian government started to issue smart cards named ID Kaart as primary identification for citizens to replace the usual passport in domestic and EU use.
+[src:hardware-backed-keystore/smart-card-p02] As of 2010 about 1 million smart cards have been issued (total population is about 1.3 million) and they are widely used in internet banking, buying public transport tickets, authorization on various websites etc.
+[src:hardware-backed-keystore/smart-card-p02] By the start of 2009, the entire population of Belgium was issued eID cards that are used for identification.
+[src:hardware-backed-keystore/smart-card-p02] These cards contain two certificates: one for authentication and one for signature.
+[src:hardware-backed-keystore/smart-card-p02] More and more services in Belgium use eID for authorization.
+[src:hardware-backed-keystore/smart-card-p02] Spain started issuing national ID cards (DNI) in the form of smart cards in 2006 and gradually replaced all the older ones with smart cards.
+[src:hardware-backed-keystore/smart-card-p02] The idea was that many or most bureaucratic acts could be done online but it was a failure because the Administration did not adapt and still mostly requires paper documents and personal presence.
+[src:hardware-backed-keystore/smart-card-p02] On 14 August 2012, the ID cards in Pakistan were replaced.
+[src:hardware-backed-keystore/smart-card-p02] The Smart Card is a third generation chip-based identity document that is produced according to international standards and requirements.
+[src:hardware-backed-keystore/smart-card-p02] The card has over 36 physical security features and has the latest encryption codes.
+[src:hardware-backed-keystore/smart-card-p02] This smart card replaced the NICOP (the ID card for overseas Pakistani).
+[src:hardware-backed-keystore/smart-card-p02] Smart cards may identify emergency responders and their skills.
+[src:hardware-backed-keystore/smart-card-p02] Cards like these allow first responders to bypass organizational paperwork and focus more time on the emergency resolution.
+[src:hardware-backed-keystore/smart-card-p02] WidePoint Corporation, a smart card provider to FEMA, produces cards that contain additional personal information, such as medical records and skill sets.
+[src:hardware-backed-keystore/smart-card-p02] In 2007, the Open Mobile Alliance (OMA) proposed a new standard defining V1.0 of the Smart Card Web Server (SCWS), an HTTP server embedded in a SIM card intended for a smartphone user.
+[src:hardware-backed-keystore/smart-card-p02] The non-profit trade association SIMalliance has been promoting the development and adoption of SCWS.
+[src:hardware-backed-keystore/smart-card-p02] SIMalliance states that SCWS offers end-users a familiar, OS-independent, browser-based interface to secure, personal SIM data.
+[src:hardware-backed-keystore/smart-card-p02] As of mid-2010, SIMalliance had not reported widespread industry acceptance of SCWS.
+[src:hardware-backed-keystore/smart-card-p02] The OMA has been maintaining the standard, approving V1.1 of the standard in May 2009, and V1.2 was expected to be approved in October 2012.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards are also used to identify user accounts on arcade machines.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards, used as transit passes, and integrated ticketing are used by many public transit operators.
+[src:hardware-backed-keystore/smart-card-p02] Card users may also make small purchases using the cards.
+[src:hardware-backed-keystore/smart-card-p02] Some operators offer points for usage, exchanged at retailers or for other benefits.
+[src:hardware-backed-keystore/smart-card-p02] However, these present a privacy risk because they allow the mass transit operator (and the government) to track an individual's movement.
+[src:hardware-backed-keystore/smart-card-p02] In Finland, for example, the Data Protection Ombudsman prohibited the transport operator Helsinki Metropolitan Area Council (YTV) from collecting such information, despite YTV's argument that the card owner has the right to a list of trips paid with the card.
+[src:hardware-backed-keystore/smart-card-p02] Earlier, such information was used in the investigation of the Myyrmanni bombing.
+[src:hardware-backed-keystore/smart-card-p02] The UK's Department for Transport mandated smart cards to administer travel entitlements for elderly and disabled residents.
+[src:hardware-backed-keystore/smart-card-p02] These schemes let residents use the cards for more than just bus passes.
+[src:hardware-backed-keystore/smart-card-p02] They can also be used for taxi and other concessionary transport.
+[src:hardware-backed-keystore/smart-card-p02] One example is the "Smartcare go" scheme provided by Ecebs.
+[src:hardware-backed-keystore/smart-card-p02] The UK systems use the ITSO Ltd specification.
+[src:hardware-backed-keystore/smart-card-p02] Other schemes in the UK include period travel passes, carnets of tickets or day passes and stored value which can be used to pay for journeys.
+[src:hardware-backed-keystore/smart-card-p02] Other concessions for school pupils, students and job seekers are also supported.
+[src:hardware-backed-keystore/smart-card-p02] These are mostly based on the ITSO Ltd specification.
+[src:hardware-backed-keystore/smart-card-p02] Many smart transport schemes include the use of low cost smart tickets for simple journeys, day passes and visitor passes.
+[src:hardware-backed-keystore/smart-card-p02] These smart tickets are made of paper or PET which is thinner than a PVC smart card e.g.
+[src:hardware-backed-keystore/smart-card-p02] The smart tickets can be supplied pre-printed and over-printed or printed on demand.
+[src:hardware-backed-keystore/smart-card-p02] In Sweden, as of 2018–19, the old SL Access smart card system has started to be phased out and replaced by smart phone apps.
+[src:hardware-backed-keystore/smart-card-p02] The phone apps have less cost, at least for the transit operators who don't need any electronic equipment (the riders provide that).
+[src:hardware-backed-keystore/smart-card-p02] The riders are able buy tickets anywhere and don't need to load money onto smart cards.
+[src:hardware-backed-keystore/smart-card-p02] New NFC smart cards are still in use for foreseeable future (as of 2024).
+[src:hardware-backed-keystore/smart-card-p02] In Japanese amusement arcades, contactless smart cards (usually referred to as "IC cards") are used by game manufacturers as a method for players to access in-game features (both online like Konami E-Amusement and Sega ALL.Net and offline) and as a memory support to save game progress.
+[src:hardware-backed-keystore/smart-card-p02] Depending on a case by case scenario, the machines can use a game-specific card or a "universal" one usable on multiple machines from the same manufacturer/publisher.
+[src:hardware-backed-keystore/smart-card-p02] Amongst the most widely used there are Banapassport by Bandai Namco, E-amusement pass by Konami, Aime by Sega and Nesica by Taito.
+[src:hardware-backed-keystore/smart-card-p02] In 2018, in an effort to make arcade game IC cards more user friendly, Konami, Bandai Namco and Sega have agreed on a unified system of cards named *Amusement IC*.
+[src:hardware-backed-keystore/smart-card-p02] Thanks to this agreement, the three companies are now using a unified card reader in their arcade cabinets, so that players are able to use their card, no matter if a Banapassport, an e-Amusement Pass or an Aime, with hardware and ID services of all three manufacturers.
+[src:hardware-backed-keystore/smart-card-p02] A common logo for *Amusement IC* cards has been created, and this is now displayed on compatible cards from all three companies.
+[src:hardware-backed-keystore/smart-card-p02] In January 2019, Taito announced that their Nesica card was also joining the *Amusement IC* agreement with the other three companies.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards can be used as a security token.
+[src:hardware-backed-keystore/smart-card-p02] Mozilla's Firefox web browser can use smart cards to store certificates for use in secure web browsing.
+[src:hardware-backed-keystore/smart-card-p02] Some disk encryption systems, such as VeraCrypt and Microsoft's BitLocker, can use smart cards to securely hold encryption keys, and also to add another layer of encryption to critical parts of the secured disk.
+[src:hardware-backed-keystore/smart-card-p02] GnuPG, the well known encryption suite, also supports storing keys in a smart card.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards are also used for single sign-on to log on to computers.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards are being provided to students at some schools and colleges.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards are widely used to encrypt digital television streams.
+[src:hardware-backed-keystore/smart-card-p02] VideoGuard is a specific example of how smart card security worked.
+[src:hardware-backed-keystore/smart-card-p02] The Malaysian government promotes MyKad as a single system for all smart-card applications.
+[src:hardware-backed-keystore/smart-card-p02] MyKad started as identity cards carried by all citizens and resident non-citizens.
+[src:hardware-backed-keystore/smart-card-p02] Available applications now include identity, travel documents, drivers license, health information, an electronic wallet, ATM bank-card, public toll-road and transit payments, and public key encryption infrastructure.
+[src:hardware-backed-keystore/smart-card-p02] The personal information inside the MYKAD card can be read using special APDU commands.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards have been advertised as suitable for personal identification tasks, because they are engineered to be tamper resistant.
+[src:hardware-backed-keystore/smart-card-p02] The chip usually implements some cryptographic algorithm.
+[src:hardware-backed-keystore/smart-card-p02] There are, however, several methods for recovering some of the algorithm's internal state.
+[src:hardware-backed-keystore/smart-card-p02] Differential power analysis involves measuring the precise time and electric current required for certain encryption or decryption operations.
+[src:hardware-backed-keystore/smart-card-p02] This can deduce the on-chip private key used by public key algorithms such as RSA.
+[src:hardware-backed-keystore/smart-card-p02] Some implementations of symmetric ciphers can be vulnerable to timing or power attacks as well.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards can be physically disassembled by using acid, abrasives, solvents, or some other technique to obtain unrestricted access to the on-board microprocessor.
+[src:hardware-backed-keystore/smart-card-p02] Although such techniques may involve a risk of permanent damage to the chip, they permit much more detailed information (e.g., photomicrographs of encryption hardware) to be extracted.
+[src:hardware-backed-keystore/smart-card-p02] The primary advantage of smart cards is their flexibility.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards have multiple functions which simultaneously can be an ID, a credit card, a stored-value cash card, and a repository of personal information such as telephone numbers or medical history.
+[src:hardware-backed-keystore/smart-card-p02] The card can be easily replaced if lost, and, the requirement for a PIN (or other form of security) provides additional security from unauthorised access to information by others.
+[src:hardware-backed-keystore/smart-card-p02] At the first attempt to use it illegally, the card would be deactivated by the card reader itself.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards can be electronic key rings, giving the bearer ability to access information and physical places without need for online connections.
+[src:hardware-backed-keystore/smart-card-p02] They are encryption devices, so that the user can encrypt and decrypt information without relying on unknown, and therefore potentially untrustworthy, appliances such as ATMs.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards are very flexible in providing authentication at different level of the bearer and the counterpart.
+[src:hardware-backed-keystore/smart-card-p02] Finally, with the information about the user that smart cards can provide to the other parties, they are useful devices for customizing products and services.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards can also have multiple credentials for different applications.
+[src:hardware-backed-keystore/smart-card-p02] This encourages better security as the user only has to manage a single card which is not only less cognitive load and more convenient.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards are easily produced and have vastly improved security allowing institutions to reduce their security spending.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards can be used in electronic commerce, over the Internet, though the business model used in current electronic commerce applications still cannot use the full feature set of the electronic medium.
+[src:hardware-backed-keystore/smart-card-p02] An advantage of smart cards for electronic commerce is their use customize services.
+[src:hardware-backed-keystore/smart-card-p02] For example, for the service supplier to deliver the customized service, the user may need to provide each supplier with their profile, a boring and time-consuming activity.
+[src:hardware-backed-keystore/smart-card-p02] A smart card can contain a non-encrypted profile of the bearer, so that the user can get customized services even without previous contacts with the supplier.
+[src:hardware-backed-keystore/smart-card-p02] The plastic or paper card in which the chip is embedded is fairly flexible.
+[src:hardware-backed-keystore/smart-card-p02] The larger the chip, the higher the probability that normal use could damage it.
+[src:hardware-backed-keystore/smart-card-p02] Cards are often carried in wallets or pockets, a harsh environment for a chip and antenna in contactless cards.
+[src:hardware-backed-keystore/smart-card-p02] PVC cards can crack or break if bent/flexed excessively.
+[src:hardware-backed-keystore/smart-card-p02] However, for large banking systems, failure-management costs can be more than offset by fraud reduction.
+[src:hardware-backed-keystore/smart-card-p02] The production, use and disposal of PVC plastic is known to be more harmful to the environment than other plastics.
+[src:hardware-backed-keystore/smart-card-p02] Alternative materials including chlorine free plastics and paper are available for some smart applications.
+[src:hardware-backed-keystore/smart-card-p02] If the account holder's computer hosts malware, the smart card security model may be broken.
+[src:hardware-backed-keystore/smart-card-p02] Malware can override the communication (both input via keyboard and output via application screen) between the user and the application.
+[src:hardware-backed-keystore/smart-card-p02] Man-in-the-browser malware (e.g., the Trojan Silentbanker) could modify a transaction, unnoticed by the user.
+[src:hardware-backed-keystore/smart-card-p02] Banks like Fortis and Belfius in Belgium and Rabobank ("random reader") in the Netherlands combine a smart card with an unconnected card reader to avoid this problem.
+[src:hardware-backed-keystore/smart-card-p02] The customer enters a challenge received from the bank's website, a PIN and the transaction amount into the reader.
+[src:hardware-backed-keystore/smart-card-p02] The reader returns an 8-digit signature.
+[src:hardware-backed-keystore/smart-card-p02] This signature is manually entered into the personal computer and verified by the bank, preventing point-of-sale-malware from changing the transaction amount.
+[src:hardware-backed-keystore/smart-card-p02] Smart cards have also been the targets of security attacks.
+[src:hardware-backed-keystore/smart-card-p02] These attacks range from physical invasion of the card's electronics, to non-invasive attacks that exploit weaknesses in the card's software or hardware.
+[src:hardware-backed-keystore/smart-card-p02] The usual goal is to expose private encryption keys and then read and manipulate secure data such as funds.
+[src:hardware-backed-keystore/smart-card-p02] Once an attacker develops a non-invasive attack for a particular smart card model, he or she is typically able to perform the attack on other cards of that model in seconds, often using equipment that can be disguised as a normal smart card reader.
+[src:hardware-backed-keystore/smart-card-p02] While manufacturers may develop new card models with additional information security, it may be costly or inconvenient for users to upgrade vulnerable systems.
+[src:hardware-backed-keystore/smart-card-p02] Tamper-evident and audit features in a smart card system help manage the risks of compromised cards.
+[src:hardware-backed-keystore/smart-card-p02] Another problem is the lack of standards for functionality and security.
+[src:hardware-backed-keystore/smart-card-p02] To address this problem, the Berlin Group launched the ERIDANE Project to propose "a new functional and security framework for smart-card based Point of Interaction (POI) equipment".
+[src:hardware-backed-keystore/trusted-platform-module] A **Trusted Platform Module** (**TPM**) is a secure cryptoprocessor that implements the **ISO/IEC 11889** standard.
+[src:hardware-backed-keystore/trusted-platform-module] Common uses are verifying that the boot process starts from a trusted combination of hardware and software and storing disk encryption keys.
+[src:hardware-backed-keystore/trusted-platform-module] A TPM 2.0 implementation is part of the Windows 11 system requirements.
+[src:hardware-backed-keystore/trusted-platform-module] The first TPM version that was deployed was 1.1b in 2003.
+[src:hardware-backed-keystore/trusted-platform-module] Trusted Platform Module (TPM) was conceived by a computer industry consortium called Trusted Computing Group (TCG).
+[src:hardware-backed-keystore/trusted-platform-module] It evolved into *TPM Main Specification Version 1.2* which was standardized by International Organization for Standardization (ISO) and International Electrotechnical Commission (IEC) in 2009 as ISO/IEC 11889:2009.
+[src:hardware-backed-keystore/trusted-platform-module] *TPM Main Specification Version 1.2* was finalized on 3 March 2011 completing its revision.
+[src:hardware-backed-keystore/trusted-platform-module] On April 9, 2014, the Trusted Computing Group announced a major upgrade to their specification entitled *TPM Library Specification 2.0*.
+[src:hardware-backed-keystore/trusted-platform-module] The group continues work on the standard incorporating errata, algorithmic additions and new commands, with its most recent edition published as 2.0 in November 2019.
+[src:hardware-backed-keystore/trusted-platform-module] When a new revision is released, it is divided into multiple parts by the Trusted Computing Group.
+[src:hardware-backed-keystore/trusted-platform-module] Each part consists of a document that makes up the whole of the new TPM specification.
+[src:hardware-backed-keystore/trusted-platform-module] While TPM 2.0 addresses many of the same use cases and has similar features, the details are different.
+[src:hardware-backed-keystore/trusted-platform-module] TPM 2.0 is not backward compatible with TPM 1.2.
+[src:hardware-backed-keystore/trusted-platform-module] The TPM 2.0 policy authorization includes the 1.2 HMAC, locality, physical presence, and PCR.
+[src:hardware-backed-keystore/trusted-platform-module] It adds authorization based on an asymmetric digital signature, indirection to another authorization secret, counters and time limits, NVRAM values, a particular command or command parameters, and physical presence.
+[src:hardware-backed-keystore/trusted-platform-module] It permits the ANDing and ORing of these authorization primitives to construct complex authorization policies.
+[src:hardware-backed-keystore/trusted-platform-module] Computer programs can use a TPM for the authentication of hardware devices, since each TPM chip has a unique and secret Endorsement Key (EK) burned in as it is produced.
+[src:hardware-backed-keystore/trusted-platform-module] Security embedded in hardware provides more protection than a software-only solution.
+[src:hardware-backed-keystore/trusted-platform-module] Its use is restricted in some countries.
+[src:hardware-backed-keystore/trusted-platform-module] The primary scope of TPM is to ensure the integrity of a platform during boot time.
+[src:hardware-backed-keystore/trusted-platform-module] In this context, "integrity" means "behaves as intended", and a "platform" is any computer device regardless of its operating system.
+[src:hardware-backed-keystore/trusted-platform-module] This is to ensure that the boot process starts from a trusted combination of hardware and software, and continues until the operating system has fully booted and applications are running.
+[src:hardware-backed-keystore/trusted-platform-module] When TPM is used, the firmware and the operating system are responsible for ensuring integrity.
+[src:hardware-backed-keystore/trusted-platform-module] For example, the Unified Extensible Firmware Interface (UEFI) can use TPM to form a root of trust: The TPM contains several Platform Configuration Registers (PCRs) that allow secure storage and reporting of security-relevant metrics.
+[src:hardware-backed-keystore/trusted-platform-module] These metrics can be used to detect changes to previous configurations and decide how to proceed.
+[src:hardware-backed-keystore/trusted-platform-module] Examples of such use can be found in Linux Unified Key Setup (LUKS), BitLocker and PrivateCore vCage memory encryption.
+[src:hardware-backed-keystore/trusted-platform-module] Another example of platform integrity via TPM is in the use of Microsoft Office 365 licensing and Outlook Exchange.
+[src:hardware-backed-keystore/trusted-platform-module] Another example of TPM use for platform integrity is the Trusted Execution Technology (TXT), which creates a chain of trust.
+[src:hardware-backed-keystore/trusted-platform-module] It could remotely attest that a computer is using the specified hardware and software.
+[src:hardware-backed-keystore/trusted-platform-module] Full disk encryption utilities, such as dm-crypt, can use this technology to protect the keys used to encrypt the computer's storage devices and provide integrity authentication for a trusted boot pathway that includes firmware and the boot sector.
+[src:hardware-backed-keystore/trusted-platform-module] In 2006, new laptops began being sold with a built-in TPM chip.
+[src:hardware-backed-keystore/trusted-platform-module] In the future, this concept could be co-located on an existing motherboard chip in computers, or any other device where the TPM facilities could be employed, such as a cellphone.
+[src:hardware-backed-keystore/trusted-platform-module] On a PC, either the Low Pin Count (LPC) bus or the Serial Peripheral Interface (SPI) bus is used to connect to the TPM chip.
+[src:hardware-backed-keystore/trusted-platform-module] The official TCG reference implementation of the TPM 2.0 Specification has been developed by Microsoft.
+[src:hardware-backed-keystore/trusted-platform-module] It is licensed under BSD License and the source code is available on GitHub.
+[src:hardware-backed-keystore/trusted-platform-module] In 2018, Intel open-sourced its Trusted Platform Module 2.0 (TPM2) software stack with support for Linux and Microsoft Windows.
+[src:hardware-backed-keystore/trusted-platform-module] The source code is hosted on GitHub and licensed under BSD License.
+[src:hardware-backed-keystore/trusted-platform-module] Infineon funded the development of an open source TPM middleware that complies with the Software Stack (TSS) Enhanced System API (ESAPI) specification of the TCG.
+[src:hardware-backed-keystore/trusted-platform-module] It was developed by Fraunhofer Institute for Secure Information Technology (SIT).
+[src:hardware-backed-keystore/trusted-platform-module] IBM's Software TPM 2.0 is an implementation of the TCG TPM 2.0 specification.
+[src:hardware-backed-keystore/trusted-platform-module] It is based on the TPM specification Parts 3 and 4 and source code donated by Microsoft.
+[src:hardware-backed-keystore/trusted-platform-module] It contains additional files to complete the implementation.
+[src:hardware-backed-keystore/trusted-platform-module] The source code is hosted on SourceForge and GitHub and licensed under BSD License.
+[src:hardware-backed-keystore/trusted-platform-module] In 2022, AMD announced that under certain circumstances their fTPM implementation causes performance problems.
+[src:hardware-backed-keystore/trusted-platform-module] A fix is available in form of a BIOS-Update.
+[src:hardware-backed-keystore/trusted-platform-module] The Trusted Computing Group (TCG) has faced resistance to the deployment of this technology in some areas, where some authors see possible uses not specifically related to Trusted Computing, which may raise privacy concerns.
+[src:hardware-backed-keystore/trusted-platform-module] The concerns include the abuse of remote validation of software to decide what software is allowed to run, and possible ways to follow actions taken by the user and record them in a database in a manner that is completely undetectable to the user.
+[src:hardware-backed-keystore/trusted-platform-module] The TrueCrypt disk encryption utility, as well as its derivative VeraCrypt, do not support TPM.
+[src:hardware-backed-keystore/trusted-platform-module] The original TrueCrypt developers were of the opinion that the exclusive purpose of the TPM is "to protect against attacks that require the attacker to have administrator privileges, or physical access to the computer".
+[src:hardware-backed-keystore/trusted-platform-module] The attacker who has physical or administrative access to a computer can circumvent TPM, e.g., by installing a hardware keystroke logger, by resetting TPM, or by capturing memory contents and retrieving TPM-issued keys.
+[src:hardware-backed-keystore/trusted-platform-module] The condemning text goes so far as to claim that TPM is entirely redundant.
+[src:hardware-backed-keystore/trusted-platform-module] The VeraCrypt publisher has reproduced the original allegation with no changes other than replacing "TrueCrypt" with "VeraCrypt".
+[src:hardware-backed-keystore/trusted-platform-module] The author is right that, after achieving either unrestricted physical access or administrative privileges, it is only a matter of time before other security measures in place are bypassed.
+[src:hardware-backed-keystore/trusted-platform-module] However, stopping an attacker in possession of administrative privileges has never been one of the goals of TPM (see § Uses for details), and TPM can stop some physical tampering.
+[src:hardware-backed-keystore/trusted-platform-module] In 2015, Richard Stallman suggested replacing the term "trusted computing" with the term "treacherous computing" due to the danger that the computer can be made to systematically disobey its owner if the cryptographical keys are kept secret from them.
+[src:hardware-backed-keystore/trusted-platform-module] In August 2023, Linus Torvalds, who was frustrated with AMD fTPM's stuttering bugs, opined, "Let's just disable the stupid fTPM `hwrnd` thing." He said the CPU-based random number generation, `rdrand`, was equally suitable, despite having its share of bugs.
+[src:hardware-backed-keystore/trusted-platform-module] In 2010, Christopher Tarnovsky presented an attack against TPMs at Black Hat Briefings, where he claimed to be able to extract secrets from a single TPM.
+[src:hardware-backed-keystore/trusted-platform-module] He was able to do this after 6 months of work by inserting a probe and spying on an internal bus for the Infineon SLE 66 CL PC.
+[src:hardware-backed-keystore/trusted-platform-module] In case of physical access, computers with TPM 1.2 are vulnerable to cold boot attacks as long as the system is on or can be booted without a passphrase from shutdown, sleep or hibernation, which is the default setup for Windows computers with BitLocker full disk encryption.
+[src:hardware-backed-keystore/trusted-platform-module] A fix was proposed, which has been adopted in the specifications for TPM 2.0.
+[src:hardware-backed-keystore/trusted-platform-module] In 2009, the concept of shared authorisation data in TPM 1.2 was found to be flawed.
+[src:hardware-backed-keystore/trusted-platform-module] An adversary given access to the data could spoof responses from the TPM.
+[src:hardware-backed-keystore/trusted-platform-module] In 2015, as part of the Snowden revelations, it was revealed that in 2010 a US CIA team claimed at an internal conference to have carried out a differential power analysis attack against TPMs that was able to extract secrets.
+[src:hardware-backed-keystore/trusted-platform-module] Main Trusted Boot (tboot) distributions before November 2017 are affected by a dynamic root of trust for measurement (DRTM) attack CVE-2017-16837, which affects computers running on Intel's Trusted eXecution Technology (TXT) for the boot-up routine.
+[src:hardware-backed-keystore/trusted-platform-module] In October 2017, it was reported that a code library developed by Infineon, which had been in widespread use in its TPMs, contained a vulnerability, known as ROCA, which generated weak RSA key pairs that allowed private keys to be inferred from public keys.
+[src:hardware-backed-keystore/trusted-platform-module] As a result, all systems depending upon the privacy of such weak keys are vulnerable to compromise, such as identity theft or spoofing.
+[src:hardware-backed-keystore/trusted-platform-module] Cryptosystems that store encryption keys directly in the TPM without blinding could be at particular risk to these types of attacks, as passwords and other factors would be meaningless if the attacks can extract encryption secrets.
+[src:hardware-backed-keystore/trusted-platform-module] Infineon has released firmware updates for its TPMs to manufacturers who have used them.
+[src:hardware-backed-keystore/trusted-platform-module] In 2018, a design flaw in the TPM 2.0 specification for the static root of trust for measurement (SRTM) was reported (CVE-2018-6622).
+[src:hardware-backed-keystore/trusted-platform-module] It allows an adversary to reset and forge platform configuration registers which are designed to securely hold measurements of software that are used for bootstrapping a computer.
+[src:hardware-backed-keystore/trusted-platform-module] Fixing it requires hardware-specific firmware patches.
+[src:hardware-backed-keystore/trusted-platform-module] An attacker abuses power interrupts and TPM state restores to trick TPM into thinking that it is running on non-tampered components.
+[src:hardware-backed-keystore/trusted-platform-module] In 2021, the Dolos Group showed an attack on a discrete TPM, where the TPM chip itself had some tamper resistance, but the other endpoints of its communication bus did not.
+[src:hardware-backed-keystore/trusted-platform-module] They read a full-disk-encryption key as it was transmitted across the motherboard, and used it to decrypt the laptop's SSD.
+[src:hardware-backed-keystore/trusted-platform-module] As of 2025, a TPM is provided by nearly all PC and notebook manufacturers in their products.
+[src:hardware-backed-keystore/trusted-platform-module] There are also hybrid types; for example, TPM can be integrated into an Ethernet controller, thus eliminating the need for a separate motherboard component.
+[src:hardware-backed-keystore/trusted-platform-module] Field upgrade is the TCG term for updating the TPM firmware.
+[src:hardware-backed-keystore/trusted-platform-module] The update can be between TPM 1.2 and TPM 2.0, or between firmware versions.
+[src:hardware-backed-keystore/trusted-platform-module] Some vendors limit the number of transitions between 1.2 and 2.0, and some restrict rollback to previous versions.
+[src:hardware-backed-keystore/trusted-platform-module] Platform OEMs such as HP supply an upgrade tool.
+[src:hardware-backed-keystore/trusted-platform-module] Since July 28, 2016, all new Microsoft device models, lines, or series (or updating the hardware configuration of an existing model, line, or series with a major update, such as CPU, graphic cards) implement, and enable by default TPM 2.0.
+[src:hardware-backed-keystore/trusted-platform-module] TPM endorsement keys (EKs) are asymmetric key pairs unique to each TPM.
+[src:hardware-backed-keystore/trusted-platform-module] The TPM manufacturer usually provisions endorsement key certificates in TPM non-volatile memory.
+[src:hardware-backed-keystore/trusted-platform-module] The certificates assert that the TPM is authentic.
+[src:hardware-backed-keystore/trusted-platform-module] Starting with TPM 2.0, the certificates are in X.509 DER format.
+[src:hardware-backed-keystore/trusted-platform-module] After the TPM was manufactured, the EKs cannot be changed.
+[src:hardware-backed-keystore/trusted-platform-module] For fTPM, the EKs are stored on CPU / chipset when it was manufactured.
+[src:hardware-backed-keystore/trusted-platform-module] These manufacturers typically provide their certificate authority root (and sometimes intermediate) certificates on their web sites.
+[src:hardware-backed-keystore/trusted-platform-module] To utilize a TPM, the user needs a software library that communicates with the TPM and provides a friendlier API than the raw TPM communication.
+[src:hardware-backed-keystore/trusted-platform-module] Currently, there are several such open-source TPM 2.0 libraries.
+[src:hardware-backed-keystore/trusted-platform-module] Some of them also support TPM 1.2, but mostly TPM 1.2 chips are now deprecated and modern development is focused on TPM 2.0.
+[src:hardware-backed-keystore/trusted-platform-module] Typically, a TPM library provides an API with one-to-one mappings to TPM commands.
+[src:hardware-backed-keystore/trusted-platform-module] The TCG specification calls this layer the System API (SAPI).
+[src:hardware-backed-keystore/trusted-platform-module] This way, the user has more control over the TPM operations, but the complexity is high.
+[src:hardware-backed-keystore/trusted-platform-module] To hide some of the complexity, most libraries also offer simpler ways to invoke complex TPM operations.
+[src:hardware-backed-keystore/trusted-platform-module] The TCG specification call these two layers Enhanced System API (ESAPI) and Feature API (FAPI).
+[src:hardware-backed-keystore/trusted-platform-module] There is currently only one stack that follows the TCG specification.
+[src:hardware-backed-keystore/trusted-platform-module] All the other available open-source TPM libraries use their own form of richer API.
+[src:hardware-backed-keystore/trusted-platform-module] There is an application note about an example project for the AURIX 32-bit SoC using the tpm2-tss library.
+[src:hardware-backed-keystore/trusted-platform-module] Requires additional libraries (dotnet) to run on Linux.
+[src:hardware-backed-keystore/trusted-platform-module] These TPM libraries are sometimes also called TPM stacks, because they provide the interface for the developer or user to interact with the TPM.
+[src:hardware-backed-keystore/trusted-platform-module] As seen from the table, the TPM stacks abstract the operating system and transport layer, so the user could migrate one application between platforms.
+[src:hardware-backed-keystore/trusted-platform-module] For example, by using TPM stack API the user would interact the same way with a TPM, regardless if the physical chip is connected over SPI, I2C or LPC interface to the Host system.

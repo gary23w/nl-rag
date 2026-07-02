@@ -1,0 +1,36 @@
+---
+title: "Hash array mapped trie"
+source: https://en.wikipedia.org/wiki/Hash_array_mapped_trie
+domain: trie-structure
+license: CC-BY-SA-4.0
+tags: prefix trie, digital tree, ternary search tree, radix tree
+fetched: 2026-07-02
+---
+
+# Hash array mapped trie
+
+A **hash array mapped trie** (**HAMT**, /ˈhæmt/) is an implementation of an associative array that combines the characteristics of a hash table and an array mapped trie. It is a refined version of the more general notion of a hash tree.
+
+## Operation
+
+A HAMT is an array mapped trie where the keys are first hashed to ensure an even distribution of keys and a constant key length.
+
+In a typical implementation of HAMT's array mapped trie, each node contains a table with some fixed number N of slots with each slot containing either a nil pointer or a pointer to another node. N is commonly 32. As allocating space for N pointers for each node would be expensive, each node instead contains a bitmap which is N bits long where each bit indicates the presence of a non-nil pointer. This is followed by an array of pointers equal in length to the number of ones in the bitmap (its Hamming weight).
+
+## Advantages of HAMTs
+
+The hash array mapped trie achieves almost hash table-like speed while using memory much more economically. Also, a hash table may have to be periodically resized, an expensive operation, whereas HAMTs grow dynamically. Generally, HAMT performance is improved by a larger root table with some multiple of N slots; some HAMT variants allow the root to grow lazily with negligible impact on performance.
+
+## Implementation details
+
+Implementation of a HAMT involves the use of the population count function, which counts the number of ones in the binary representation of a number. This operation is available in many instruction set architectures, but it is available in only some high-level languages. Although population count can be implemented in software in O(1) time using a series of shift and add instructions, doing so may perform the operation an order of magnitude slower.
+
+## Implementations
+
+The programming languages Clojure, Scala, and Frege use a persistent variant of hash array mapped tries for their native hash map type. The Haskell library "unordered-containers" uses the same to implement persistent map and set data structures. Another Haskell library "stm-containers" adapts the algorithm for use in the context of software transactional memory. A JavaScript HAMT library based on the Clojure implementation is also available. The Rubinius implementation of Ruby includes a HAMT, mostly written in Ruby but with 3 primitives. Large maps in Erlang use a persistent HAMT representation internally since release 18.0. The Pony programming language uses a HAMT for the hash map in its persistent collections package. The im and im-rc crates, which provide persistent collection types for the Rust programming language, use a HAMT for their persistent hash tables and hash sets.
+
+The concurrent lock-free version of the hash trie called Ctrie is a mutable thread-safe implementation which ensures progress. The data-structure has been proven to be correct - Ctrie operations have been shown to have the atomicity, linearizability and lock-freedom properties.
+
+## Subsequent work
+
+In 2017, Michael Steindorfer introduced CHAMP (Compressed Hash-Array Mapped Prefix-tree), an evolution of the HAMT that uses less space and improves performance for some operations, primarily iteration and equality testing (comparison of two collections). The primary difference is that where a HAMT node uses a single bitmap and storage vector for both elements and child nodes, CHAMP uses separate bitmaps for the elements and child nodes (they must have no 1 bits in common), and stores elements and child nodes in different regions of the vector.

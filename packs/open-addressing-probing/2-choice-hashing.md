@@ -1,0 +1,35 @@
+---
+title: "2-choice hashing"
+source: https://en.wikipedia.org/wiki/2-choice_hashing
+domain: open-addressing-probing
+license: CC-BY-SA-4.0
+tags: open addressing, linear probing, quadratic probing, double hashing
+fetched: 2026-07-02
+---
+
+# 2-choice hashing
+
+**2-choice hashing**, also known as **2-choice chaining**, is "a variant of a hash table in which keys are added by hashing with two hash functions. The key is put in the array position with the fewer (colliding) keys. Some collision resolution scheme is needed, unless keys are kept in buckets. The average-case cost of a successful search is $O(2+(m-1)/n)$ , where m is the number of keys and n is the size of the array. The most collisions is $\log _{2}\ln n+\theta (m/n)$ with high probability."
+
+## How it works
+
+2-choice hashing utilizes two hash functions *h*1(*x*) and *h*2(*x*). The two hash functions should be independent and have no correlation to each other. Having two hash functions allows any key *x* to have up to two potential locations to be stored based on the values of the respective outputs, *h*1(*x*) and *h*2(*x*). Although there are two hash functions, there is only one table; both hash functions map to locations on that table.
+
+## Implementation
+
+The most important functions of the hashing implementation in this case are insertion and search.
+
+- **Insertion:** When inserting the values of both hash functions are computed for the to-be-inserted object. The object is then placed in the bucket which contains fewer objects. If the buckets are equal in size, the default location is the *h*1(*x*) value.
+- **Search:** Effective searches are done by looking in both buckets (the bucket locations to which *h*1(*x*) and *h*2(*x*) mapped) for the desired value.
+
+## Performance
+
+As is true with all hash tables, the performance is based on the largest bucket. Although there are instances where bucket sizes happen to be large based on the values and the hash functions used, this is rare. Having two hash functions and, therefore, two possible locations for any one value, makes the possibility of large buckets even more unlikely to happen.
+
+The expected bucket size while using 2-choice hashing is: *θ*(log(log(*n*))). This improvement is due to the randomized concept known as The Power of Two Choices.
+
+Using two hash functions offers substantial benefits over a single hash function. There is little improvement (and no change to the expected order statistics) if more than two hash functions are used: "Additional hash functions only decrease the maximum by a constant factor."
+
+Some people recommend a type of 2-choice hashing called two-way skewed-associative cache in some CPU caches.
+
+2-left hashing—using two hash tables of equal size *n*/2, and asymmetrically resolving ties by putting the key in the left hash table—has fewer collisions and therefore better performance than 2-choice hashing with one large hash table of size *n*.

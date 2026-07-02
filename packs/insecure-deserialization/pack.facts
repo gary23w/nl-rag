@@ -1,0 +1,505 @@
+# nl-rag distilled facts — domain: insecure-deserialization
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:insecure-deserialization/deserialization-cheat-sheet] This article is focused on providing clear, actionable guidance for safely deserializing untrusted data in your applications.
+[src:insecure-deserialization/deserialization-cheat-sheet] However, many programming languages have native ways to serialize objects.
+[src:insecure-deserialization/deserialization-cheat-sheet] These native formats usually offer more features than JSON or XML, including customization of the serialization process.
+[src:insecure-deserialization/deserialization-cheat-sheet] Unfortunately, the features of these native deserialization mechanisms can sometimes be repurposed for malicious effect when operating on untrusted data.
+[src:insecure-deserialization/deserialization-cheat-sheet] Attacks against deserializers have been found to allow denial-of-service, access control, or remote code execution (RCE) attacks.
+[src:insecure-deserialization/deserialization-cheat-sheet] The following language-specific guidance attempts to enumerate safe methodologies for deserializing data that can't be trusted.
+[src:insecure-deserialization/deserialization-cheat-sheet] Check the use of `unserialize()` function and review how the external parameters are accepted.
+[src:insecure-deserialization/deserialization-cheat-sheet] Use a safe, standard data interchange format such as JSON (via `json_decode()` and `json_encode()`) if you need to pass serialized data to the user.
+[src:insecure-deserialization/deserialization-cheat-sheet] If the traffic data contains the symbol dot `.` at the end, it's very likely that the data was sent in serialization.
+[src:insecure-deserialization/deserialization-cheat-sheet] It will be only true if the data is not being encoded using Base64 or Hexadecimal schemas.
+[src:insecure-deserialization/deserialization-cheat-sheet] If the data is being encoded, then it's best to check if the serialization is likely happening or not by looking at the starting characters of the parameter value.
+[src:insecure-deserialization/deserialization-cheat-sheet] For example if data is Base64 encoded, then it will most likely start with `gASV`.
+[src:insecure-deserialization/deserialization-cheat-sheet] The following API in Python will be vulnerable to serialization attack.
+[src:insecure-deserialization/deserialization-cheat-sheet] The following techniques are all good for preventing attacks against deserialization against Java's Serializable format.
+[src:insecure-deserialization/deserialization-cheat-sheet] Be aware of the following Java API uses for potential serialization vulnerability.
+[src:insecure-deserialization/deserialization-cheat-sheet] If there are data members of an object that should never be controlled by end users during deserialization or exposed to users during serialization, they should be declared as the `transient` keyword (section *Protecting Sensitive Information*).
+[src:insecure-deserialization/deserialization-cheat-sheet] For a class that defined as Serializable, the sensitive information variable should be declared as `private transient`.
+[src:insecure-deserialization/deserialization-cheat-sheet] For example, the class `myAccount`, the variables 'profit' and 'margin' were declared as transient to prevent them from being serialized.
+[src:insecure-deserialization/deserialization-cheat-sheet] Some of your application objects may be forced to implement `Serializable` due to their hierarchy.
+[src:insecure-deserialization/deserialization-cheat-sheet] The `java.io.ObjectInputStream` class is used to deserialize objects.
+[src:insecure-deserialization/deserialization-cheat-sheet] It's possible to harden its behavior by subclassing it.
+[src:insecure-deserialization/deserialization-cheat-sheet] The general idea is to override `ObjectInputStream.html#resolveClass()` in order to restrict which classes are allowed to be deserialized.
+[src:insecure-deserialization/deserialization-cheat-sheet] Because this call happens before a `readObject()` is called, you can be sure that no deserialization activity will occur unless the type is one that you allow.
+[src:insecure-deserialization/deserialization-cheat-sheet] As mentioned above, the `java.io.ObjectInputStream` class is used to deserialize objects.
+[src:insecure-deserialization/deserialization-cheat-sheet] However, if you don't own the code or can't wait for a patch, using an agent to weave in hardening to `java.io.ObjectInputStream` is the best solution.
+[src:insecure-deserialization/deserialization-cheat-sheet] Globally changing `ObjectInputStream` is only safe for block-listing known malicious types, because it's not possible to know for all applications what the expected classes to be deserialized are.
+[src:insecure-deserialization/deserialization-cheat-sheet] Fortunately, there are very few classes needed in the denylist to be safe from all the known attack vectors, today.
+[src:insecure-deserialization/deserialization-cheat-sheet] It's inevitable that more "gadget" classes will be discovered that can be abused.
+[src:insecure-deserialization/deserialization-cheat-sheet] However, there is an incredible amount of vulnerable software exposed today, in need of a fix.
+[src:insecure-deserialization/deserialization-cheat-sheet] In some cases, "fixing" the vulnerability may involve re-architecting messaging systems and breaking backwards compatibility as developers move towards not accepting serialized objects.
+[src:insecure-deserialization/deserialization-cheat-sheet] A similar, but less scalable approach would be to manually patch and bootstrap your JVM's ObjectInputStream.
+[src:insecure-deserialization/deserialization-cheat-sheet] Guidance on this approach is available here.
+[src:insecure-deserialization/deserialization-cheat-sheet] While the advice above is focused on Java's Serializable format, there are a number of other libraries that use other formats for deserialization.
+[src:insecure-deserialization/deserialization-cheat-sheet] Many of these libraries may have similar security issues if not configured correctly.
+[src:insecure-deserialization/deserialization-cheat-sheet] Look for any serializers where the type is set by a user controlled variable.
+[src:insecure-deserialization/deserialization-cheat-sheet] Microsoft has stated that the `BinaryFormatter` type is dangerous and cannot be secured.
+[src:insecure-deserialization/deserialization-cheat-sheet] Full details are in the BinaryFormatter security guide.
+[src:insecure-deserialization/deserialization-cheat-sheet] Don't allow the datastream to define the type of object that the stream will be deserialized to.
+[src:insecure-deserialization/deserialization-cheat-sheet] You can prevent this by for example using the `DataContractSerializer` or `XmlSerializer` if at all possible.
+[src:insecure-deserialization/deserialization-cheat-sheet] Where `JSON.Net` is being used make sure the `TypeNameHandling` is only set to `None`.
+[src:insecure-deserialization/deserialization-cheat-sheet] If `JavaScriptSerializer` is to be used then do not use it with a `JavaScriptTypeResolver`.
+[src:insecure-deserialization/deserialization-cheat-sheet] If you must deserialize data streams that define their own type, then restrict the types that are allowed to be deserialized.
+[src:insecure-deserialization/deserialization-cheat-sheet] One should be aware that this is still risky as many native .Net types potentially dangerous in themselves. e.g.
+[src:insecure-deserialization/deserialization-cheat-sheet] `FileInfo` objects that reference files actually on the server can when deserialized, change the properties of those files e.g. to read-only, creating a potential denial of service attack.
+[src:insecure-deserialization/deserialization-cheat-sheet] Even if you have limited the types that can be deserialized remember that some types have properties that are risky.
+[src:insecure-deserialization/deserialization-cheat-sheet] `System.ComponentModel.DataAnnotations.ValidationException`, for example has a property `Value` of type `Object`. if this type is the type allowed for deserialization then an attacker can set the `Value` property to any object type they choose.
+[src:insecure-deserialization/deserialization-cheat-sheet] Attackers should be prevented from steering the type that will be instantiated.
+[src:insecure-deserialization/deserialization-cheat-sheet] If this is possible then even `DataContractSerializer` or `XmlSerializer` can be subverted e.g.
+[src:insecure-deserialization/deserialization-cheat-sheet] Execution can occur within certain .Net types during deserialization.
+[src:insecure-deserialization/deserialization-cheat-sheet] Creating a control such as the one shown below is ineffective.
+[src:insecure-deserialization/deserialization-cheat-sheet] For `JSON.Net` it is possible to create a safer form of allow-list control using a custom `SerializationBinder`.
+[src:insecure-deserialization/deserialization-cheat-sheet] Try to keep up-to-date on known .Net insecure deserialization gadgets and pay special attention where such types can be created by your deserialization processes.
+[src:insecure-deserialization/deserialization-cheat-sheet] **A deserializer can only instantiate types that it knows about**.
+[src:insecure-deserialization/deserialization-cheat-sheet] Try to keep any code that might create potential gadgets separate from any code that has internet connectivity.
+[src:insecure-deserialization/deserialization-cheat-sheet] As an example `System.Windows.Data.ObjectDataProvider` used in WPF applications is a known gadget that allows arbitrary method invocation.
+[src:insecure-deserialization/deserialization-cheat-sheet] It would be risky to have this a reference to this assembly in a REST service project that deserializes untrusted data.
+[src:insecure-deserialization/deserialization-cheat-sheet] A great reduction of risk is achieved by avoiding native (de)serialization formats.
+[src:insecure-deserialization/deserialization-cheat-sheet] By switching to a pure data format like JSON or XML, you lessen the chance of custom deserialization logic being repurposed towards malicious ends.
+[src:insecure-deserialization/deserialization-cheat-sheet] Many applications rely on a data-transfer object pattern that involves creating a separate domain of objects for the explicit purpose data transfer.
+[src:insecure-deserialization/deserialization-cheat-sheet] Of course, it's still possible that the application will make security mistakes after a pure data object is parsed.
+[src:insecure-deserialization/deserialization-cheat-sheet] If the application knows before deserialization which messages will need to be processed, they could sign them as part of the serialization process.
+[src:insecure-deserialization/deserialization-cheat-sheet] The application could then to choose not to deserialize any message which didn't have an authenticated signature.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Data which is untrusted cannot be trusted to be well formed.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Malformed data or unexpected data could be used to abuse application logic, deny service, or execute arbitrary code, when deserialized.
+[src:insecure-deserialization/deserialization-of-untrusted-data] It is often convenient to serialize objects for convenient communication or to save them for later use.
+[src:insecure-deserialization/deserialization-of-untrusted-data] However, deserialized data or code can often be modified without using the provided accessor functions if it does not use cryptography to protect itself.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Furthermore, any cryptography would still be client-side security - which is of course a dangerous security assumption.
+[src:insecure-deserialization/deserialization-of-untrusted-data] An attempt to serialize and then deserialize a class containing transient fields will result in NULLs where the non-transient data should be.
+[src:insecure-deserialization/deserialization-of-untrusted-data] This is an excellent way to prevent time, environment-based, or sensitive variables from being carried over and used improperly.
+[src:insecure-deserialization/deserialization-of-untrusted-data] The following is an example from Adobe’s BlazeDS AMF deserialization vulnerability (CVE-2011-2092).
+[src:insecure-deserialization/deserialization-of-untrusted-data] You can specify arbitrary classes and properties for a BlazeDS application to deserialize.
+[src:insecure-deserialization/deserialization-of-untrusted-data] This particular payload creates an instance of a JFrame object on the target server.
+[src:insecure-deserialization/deserialization-of-untrusted-data] The created JFrame object will have a “defaultCloseOperation” of value 3 – which indicates that the JVM should exit when this JFrame window is closed.
+[src:insecure-deserialization/deserialization-of-untrusted-data] The next example is one that is much more likely to be seen in custom code.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Unfortunately, the casting operation to AcmeObject occurs after the deserialization process ends.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Therefore, it’s not useful in preventing any attacks that happen during deserialization from occurring.
+[src:insecure-deserialization/deserialization-of-untrusted-data] It’s possible that behavior in custom deserialization protocols (for instance, by overriding `Serializable#readObject()` in Java) can be re-purposed towards malicious ends.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Researchers have found complex object graphs which, when deserialized, can lead to remote code execution in most Java software.
+[src:insecure-deserialization/deserialization-of-untrusted-data] The next example is a denial-of-service attack against any Java application that allows deserialization.
+[src:insecure-deserialization/deserialization-of-untrusted-data] The `HashSet` called “root” in the following code sample has members that are recursively linked to each other.
+[src:insecure-deserialization/deserialization-of-untrusted-data] When deserializing this “root” object, the JVM will begin creating a recursive object graph.
+[src:insecure-deserialization/deserialization-of-untrusted-data] It will never complete, and consume CPU indefinitely.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Many collection classes and object arrays can be manipulated in similar wasy, as they create their capacity prior to reading in elements, few sanity checks are performed.
+[src:insecure-deserialization/deserialization-of-untrusted-data] It’s not like the JVM folks aren’t aware, they’re just hamstrung by backward compatibility with deployed code.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Fortunately `ObjectInputStream` can be completely re-implemented and overridden by subclassing, in this case the entire functionality of ObjectInputStream has to also be re-implemented to read the Java serialization protocol.
+[src:insecure-deserialization/deserialization-of-untrusted-data] Since Java’s Serialization uses implicit construction, whereby the first non serializable no argument super class constructor is invoked to create a child class instance (along with some unsafe magic), it prevents classes from checking their invariant’s until after construction has completed.
+[src:insecure-deserialization/deserialization-of-untrusted-data] For this reason, the standard implicit Java Serialization API is flawed from a security perspective.
+[src:insecure-deserialization/deserialization-of-untrusted-data] In addition, administrators will need to be able to reduce the classes available for deserialization to only those required to limit the attack surface, similar to allow listing or using Permissions.
+[src:insecure-deserialization/java-programming-language] Java gained popularity shortly after its release, and has been a popular programming language since then.
+[src:insecure-deserialization/java-programming-language] Java was the third most popular programming language in 2022 according to GitHub.
+[src:insecure-deserialization/java-programming-language] Although still widely popular, there has been a gradual decline in use of Java in recent years with other languages using JVM gaining popularity.
+[src:insecure-deserialization/java-programming-language] Java was designed by James Gosling at Sun Microsystems.
+[src:insecure-deserialization/java-programming-language] It was released in May 1995 as a core component of Sun's Java platform.
+[src:insecure-deserialization/java-programming-language] The original and reference implementation Java compilers, virtual machines (VMs), and class libraries were released by Sun under proprietary licenses.
+[src:insecure-deserialization/java-programming-language] As of May 2007, in compliance with the specifications of the Java Community Process, Sun had relicensed most of its Java technologies under the GPL-2.0-only license.
+[src:insecure-deserialization/java-programming-language] Oracle, which bought Sun in 2010, offers its own HotSpot Java virtual machine.
+[src:insecure-deserialization/java-programming-language] However, the official reference implementation is the OpenJDK JVM, which is open-source software used by most developers and is the default JVM for almost all Linux distributions.
+[src:insecure-deserialization/java-programming-language] As of March 2026, Java 26 is the current version.
+[src:insecure-deserialization/java-programming-language] James Gosling, Mike Sheridan, and Patrick Naughton initiated the Java language project in June 1991.
+[src:insecure-deserialization/java-programming-language] Java was originally designed for interactive television, but it was too advanced for the digital cable television industry at the time.
+[src:insecure-deserialization/java-programming-language] The language was initially called *Oak* after an oak tree that stood outside Gosling's office.
+[src:insecure-deserialization/java-programming-language] Later the project went by the name *Green* and was finally renamed *Java*, from Java coffee, a type of coffee from Indonesia.
+[src:insecure-deserialization/java-programming-language] Gosling designed Java with a C/C++-style syntax that system and application programmers would find familiar.
+[src:insecure-deserialization/java-programming-language] Sun Microsystems released the first public implementation as Java 1.0 in 1996.
+[src:insecure-deserialization/java-programming-language] It promised write once, run anywhere (WORA) functionality, providing no-cost run-times on popular platforms.
+[src:insecure-deserialization/java-programming-language] Fairly secure and featuring configurable security, it allowed network- and file-access restrictions.
+[src:insecure-deserialization/java-programming-language] Major web browsers soon incorporated the ability to run Java applets within web pages, and Java quickly became popular.
+[src:insecure-deserialization/java-programming-language] The Java 1.0 compiler was re-written in Java by Arthur van Hoff to comply strictly with the Java 1.0 language specification.
+[src:insecure-deserialization/java-programming-language] With the advent of Java 2 (released initially as J2SE 1.2 in December 1998 – 1999), new versions had multiple configurations built for different types of platforms.
+[src:insecure-deserialization/java-programming-language] J2EE included technologies and APIs for enterprise applications typically run in server environments, while J2ME featured APIs optimized for mobile applications.
+[src:insecure-deserialization/java-programming-language] In 2006, for marketing purposes, Sun renamed new J2 versions as *Java EE*, *Java ME*, and *Java SE*, respectively.
+[src:insecure-deserialization/java-programming-language] In 1997, Sun Microsystems approached the ISO/IEC JTC 1 standards body and later the Ecma International to formalize Java, but it soon withdrew from the process.
+[src:insecure-deserialization/java-programming-language] Java remains a *de facto* standard, controlled through the Java Community Process.
+[src:insecure-deserialization/java-programming-language] At one time, Sun made most of its Java implementations available without charge, despite their proprietary software status.
+[src:insecure-deserialization/java-programming-language] Sun generated revenue from Java through the selling of licenses for specialized products such as the Java Enterprise System.
+[src:insecure-deserialization/java-programming-language] On November 13, 2006, Sun released much of its Java virtual machine (JVM) as free and open-source software (FOSS), under the terms of the GPL-2.0-only license.
+[src:insecure-deserialization/java-programming-language] On May 8, 2007, Sun finished the process, making all of its JVM's core code available under free software/open-source distribution terms, aside from a small portion of code to which Sun did not hold the copyright.
+[src:insecure-deserialization/java-programming-language] Sun's vice-president Rich Green said that Sun's ideal role with regard to Java was as an *evangelist*.
+[src:insecure-deserialization/java-programming-language] Following Oracle Corporation's acquisition of Sun Microsystems in 2009–10, Oracle has described itself as the steward of Java technology with a relentless commitment to fostering a community of participation and transparency.
+[src:insecure-deserialization/java-programming-language] This did not prevent Oracle from filing a lawsuit against Google shortly after that for using Java inside the Android SDK (see the *Android* section).
+[src:insecure-deserialization/java-programming-language] On April 2, 2010, James Gosling resigned from Oracle.
+[src:insecure-deserialization/java-programming-language] In January 2016, Oracle announced that Java run-time environments based on JDK 9 will discontinue the browser plugin.
+[src:insecure-deserialization/java-programming-language] Java software runs on most devices from laptops to data centers, game consoles to scientific supercomputers.
+[src:insecure-deserialization/java-programming-language] Oracle (and others) highly recommend uninstalling outdated and unsupported versions of Java, due to unresolved security issues in older versions.
+[src:insecure-deserialization/java-programming-language] It must be architecture-neutral and portable.
+[src:insecure-deserialization/java-programming-language] It must be interpreted, threaded, and dynamic.
+[src:insecure-deserialization/java-programming-language] As of June 2026, Java 8, 11, 17, 21, and 25 are supported as long-term support (LTS) versions.
+[src:insecure-deserialization/java-programming-language] Oracle released the last zero-cost public update for the legacy version Java 8 LTS in January 2019 for commercial use, although it will otherwise still support Java 8 with public updates for personal use indefinitely.
+[src:insecure-deserialization/java-programming-language] Other vendors such as Adoptium continue to offer free builds of OpenJDK's long-term support (LTS) versions.
+[src:insecure-deserialization/java-programming-language] These builds may include additional security patches and bug fixes.
+[src:insecure-deserialization/java-programming-language] Sun has defined and supports four editions of Java targeting different application environments and segmented many of its APIs so that they belong to one of the platforms.
+[src:insecure-deserialization/java-programming-language] The classes in the Java APIs are organized into separate groups called packages.
+[src:insecure-deserialization/java-programming-language] Each package contains a set of related interfaces, classes, subpackages and exceptions.
+[src:insecure-deserialization/java-programming-language] Sun also provided an edition called Personal Java that has been superseded by later, standards-based Java ME configuration-profile pairings.
+[src:insecure-deserialization/java-programming-language] One design goal of Java is portability, which means that programs written for the Java platform must run similarly on any combination of hardware and operating system with adequate run time support.
+[src:insecure-deserialization/java-programming-language] This is achieved by compiling the Java language code to an intermediate representation called JVM bytecode, instead of directly to architecture-specific machine code.
+[src:insecure-deserialization/java-programming-language] JVM bytecode instructions are analogous to machine code, but they are intended to be executed by a virtual machine (VM) written specifically for the host hardware.
+[src:insecure-deserialization/java-programming-language] End-users commonly use a Java Runtime Environment (JRE) installed on their device for standalone Java applications or a web browser for Java applets.
+[src:insecure-deserialization/java-programming-language] Standard libraries provide a generic way to access host-specific features such as graphics, threading, and networking.
+[src:insecure-deserialization/java-programming-language] The use of universal bytecode makes porting simple.
+[src:insecure-deserialization/java-programming-language] However, the overhead of interpreting bytecode into machine instructions made interpreted programs almost always run more slowly than native executables.
+[src:insecure-deserialization/java-programming-language] Just-in-time (JIT) compilers that compile byte-codes to machine code during runtime were introduced from an early stage.
+[src:insecure-deserialization/java-programming-language] Java's Hotspot compiler is actually two compilers in one, with GraalVM (included in e.g.
+[src:insecure-deserialization/java-programming-language] Java 11, but removed as of Java 16) allowing tiered compilation.
+[src:insecure-deserialization/java-programming-language] Java itself is platform-independent and is adapted to the particular platform it is to run on by a Java virtual machine (JVM), which translates the JVM bytecode into the platform's machine language.
+[src:insecure-deserialization/java-programming-language] Programs written in Java have a reputation for being slower and requiring more memory than those written in C++.
+[src:insecure-deserialization/java-programming-language] With Java 1.5, the performance was improved with the addition of the `java.util.concurrent` package, including lock-free implementations of the ConcurrentMaps and other multi-core collections, and it was improved further with Java 1.6.
+[src:insecure-deserialization/java-programming-language] Java uses an automatic garbage collector to manage memory in the object lifecycle.
+[src:insecure-deserialization/java-programming-language] The programmer determines when objects are created, and the Java runtime is responsible for recovering the memory once objects are no longer in use.
+[src:insecure-deserialization/java-programming-language] Once no references to an object remain, the unreachable memory becomes eligible to be freed automatically by the garbage collector.
+[src:insecure-deserialization/java-programming-language] Something similar to a memory leak may still occur if a programmer's code holds a reference to an object that is no longer needed, typically when objects that are no longer needed are stored in containers that are still in use.
+[src:insecure-deserialization/java-programming-language] If methods for a non-existent object are called, a null pointer exception is thrown.
+[src:insecure-deserialization/java-programming-language] One of the ideas behind Java's automatic memory management model is that programmers can be spared the burden of having to perform manual memory management.
+[src:insecure-deserialization/java-programming-language] In some languages, memory for the creation of objects is implicitly allocated on the stack or explicitly allocated and deallocated from the heap.
+[src:insecure-deserialization/java-programming-language] In the latter case, the responsibility of managing memory resides with the programmer.
+[src:insecure-deserialization/java-programming-language] If the program does not deallocate an object, a memory leak occurs.
+[src:insecure-deserialization/java-programming-language] If the program attempts to access or deallocate memory that has already been deallocated, the result is undefined and difficult to predict, and the program is likely to become unstable or crash.
+[src:insecure-deserialization/java-programming-language] This can be partially remedied by the use of smart pointers, but these add overhead and complexity.
+[src:insecure-deserialization/java-programming-language] Garbage collection does not prevent logical memory leaks, i.e. those where the memory is still referenced but never used.
+[src:insecure-deserialization/java-programming-language] Garbage collection may happen at any time.
+[src:insecure-deserialization/java-programming-language] Ideally, it will occur when a program is idle.
+[src:insecure-deserialization/java-programming-language] It is guaranteed to be triggered if there is insufficient free memory on the heap to allocate a new object; this can cause a program to stall momentarily.
+[src:insecure-deserialization/java-programming-language] Explicit memory management is not possible in Java, however it is possible to make the JVM do garbage collection manually.
+[src:insecure-deserialization/java-programming-language] Java does not support C/C++ style pointer arithmetic, where object addresses can be arithmetically manipulated (e.g. by adding or subtracting an offset).
+[src:insecure-deserialization/java-programming-language] This allows the garbage collector to relocate referenced objects and ensures type safety and security.
+[src:insecure-deserialization/java-programming-language] As in C++ and some other object-oriented languages, variables of Java's primitive data types are either stored directly in fields (for objects) or on the stack (for methods) rather than on the heap, as is commonly true for non-primitive data types (but see escape analysis).
+[src:insecure-deserialization/java-programming-language] This was a conscious decision by Java's designers for performance reasons.
+[src:insecure-deserialization/java-programming-language] Java contains multiple types of garbage collectors.
+[src:insecure-deserialization/java-programming-language] Since Java 9, HotSpot uses the Garbage First Garbage Collector (G1GC) as the default.
+[src:insecure-deserialization/java-programming-language] However, there are also several other garbage collectors that can be used to manage the heap, such as the Z Garbage Collector (ZGC) introduced in Java 11, and Shenandoah GC, introduced in Java 12 but unavailable in Oracle-produced OpenJDK builds.
+[src:insecure-deserialization/java-programming-language] Shenandoah is instead available in third-party builds of OpenJDK, such as Eclipse Temurin.
+[src:insecure-deserialization/java-programming-language] For most applications in Java, G1GC is sufficient.
+[src:insecure-deserialization/java-programming-language] In prior versions of Java, such as Java 8, the Parallel Garbage Collector was used as the default garbage collector.
+[src:insecure-deserialization/java-programming-language] Having solved the memory management problem does not relieve the programmer of the burden of handling properly other kinds of resources, like network or database connections, file handles, etc., especially in the presence of exceptions.
+[src:insecure-deserialization/java-programming-language] The syntax of Java is largely influenced by C++ and C.
+[src:insecure-deserialization/java-programming-language] Unlike C++, which combines the syntax for structured, generic, and object-oriented programming, Java was built almost exclusively as an object-oriented language.
+[src:insecure-deserialization/java-programming-language] All code is written inside classes, and every data item is an object, with the exception of the primitive data types, (i.e. integers, floating-point numbers, boolean values, and characters), which are not objects for performance reasons.
+[src:insecure-deserialization/java-programming-language] Unlike C++, Java does not support operator overloading or multiple inheritance for classes, though multiple inheritance is supported for interfaces.
+[src:insecure-deserialization/java-programming-language] Java uses comments similar to those of C++.
+[src:insecure-deserialization/java-programming-language] There are three different styles of comments: a single line style marked with two slashes (`//`), a multiple line style opened with `/*` and closed with `*/`, and the Javadoc commenting style opened with `/**` and closed with `*/`.
+[src:insecure-deserialization/java-programming-language] The Javadoc style of commenting allows the user to run the Javadoc executable to create documentation for the program and can be read by some integrated development environments (IDEs) such as Eclipse to allow developers to access documentation within the IDE.
+[src:insecure-deserialization/java-programming-language] Java applets were programs embedded in other applications, mainly in web pages displayed in web browsers.
+[src:insecure-deserialization/java-programming-language] The Java applet API was deprecated with the release of Java 9 in 2017.
+[src:insecure-deserialization/java-programming-language] Java servlet technology provides Web developers with a simple, consistent mechanism for extending the functionality of a Web server and for accessing existing business systems.
+[src:insecure-deserialization/java-programming-language] Servlets are server-side Java EE components that generate responses to requests from clients.
+[src:insecure-deserialization/java-programming-language] Most of the time, this means generating HTML pages in response to HTTP requests, although there are a number of other standard servlet classes available, for example for WebSocket communication.
+[src:insecure-deserialization/java-programming-language] Typical implementations of these APIs on Application Servers or Servlet Containers use a standard servlet for handling all interactions with the HTTP requests and responses that delegate to the web service methods for the actual business logic.
+[src:insecure-deserialization/java-programming-language] JavaServer Pages (JSP) are server-side Java EE components that generate responses, typically HTML pages, to HTTP requests from clients.
+[src:insecure-deserialization/java-programming-language] JSPs embed Java code in an HTML page by using the special delimiters `<%` and `%>`.
+[src:insecure-deserialization/java-programming-language] A JSP is compiled to a Java *servlet*, a Java application in its own right, the first time it is accessed.
+[src:insecure-deserialization/java-programming-language] After that, the generated servlet creates the response.
+[src:insecure-deserialization/java-programming-language] Swing is a graphical user interface library for the Java SE platform.
+[src:insecure-deserialization/java-programming-language] It is possible to specify a different look and feel through the pluggable look and feel system of Swing.
+[src:insecure-deserialization/java-programming-language] Clones of Windows, GTK+, and Motif are supplied by Sun.
+[src:insecure-deserialization/java-programming-language] Apple also provides an Aqua look and feel for macOS.
+[src:insecure-deserialization/java-programming-language] Where prior implementations of these looks and feels may have been considered lacking, Swing in Java SE 6 addresses this problem by using more native GUI widget drawing routines of the underlying platforms.
+[src:insecure-deserialization/java-programming-language] JavaFX is a software platform for creating and delivering desktop applications, as well as rich web applications that can run across a wide variety of devices.
+[src:insecure-deserialization/java-programming-language] JavaFX is intended to replace Swing as the standard graphical user interface (GUI) library for Java SE, but since JDK 11 JavaFX has not been in the core JDK and is instead available as a separate module.
+[src:insecure-deserialization/java-programming-language] JavaFX has support for desktop computers and web browsers on Microsoft Windows, Linux, and macOS.
+[src:insecure-deserialization/java-programming-language] JavaFX does not have support for native OS look and feels.
+[src:insecure-deserialization/java-programming-language] In 2004, generics were added to the Java language, as part of J2SE 5.0.
+[src:insecure-deserialization/java-programming-language] Prior to the introduction of generics, each variable declaration had to be of a specific type.
+[src:insecure-deserialization/java-programming-language] For container classes, for example, this is a problem because there is no easy way to create a container that accepts only specific types of objects.
+[src:insecure-deserialization/java-programming-language] Either the container operates on all subtypes of a class or interface, usually `Object`, or a different container class has to be created for each contained class.
+[src:insecure-deserialization/java-programming-language] Generics allow compile-time type checking without having to create many container classes, each containing almost identical code.
+[src:insecure-deserialization/java-programming-language] In addition to enabling more efficient code, certain runtime exceptions are prevented from occurring, by issuing compile-time errors.
+[src:insecure-deserialization/java-programming-language] If Java prevented all runtime type errors (`ClassCastException`s) from occurring, it would be type safe.
+[src:insecure-deserialization/java-programming-language] In 2016, the type system of Java was proven unsound in that it is possible to use generics to construct classes and methods that allow assignment of an instance of one class to a variable of another unrelated class.
+[src:insecure-deserialization/java-programming-language] Such code is accepted by the compiler, but fails at run time with a class cast exception.
+[src:insecure-deserialization/java-programming-language] Criticisms directed at Java include the implementation of generics, speed, the handling of unsigned numbers, the implementation of floating-point arithmetic, and a history of security vulnerabilities in the primary Java VM implementation HotSpot.
+[src:insecure-deserialization/java-programming-language] Developers have criticized the complexity and verbosity of the Java Persistence API (JPA), a standard part of Java EE.
+[src:insecure-deserialization/java-programming-language] This has led to increased adoption of higher-level abstractions like Spring Data JPA, which aims to simplify database operations and reduce boilerplate code.
+[src:insecure-deserialization/java-programming-language] The growing popularity of such frameworks suggests limitations in the standard JPA implementation's ease-of-use for modern Java development.
+[src:insecure-deserialization/java-programming-language] The Java Class Library is the standard library, developed to support application development in Java.
+[src:insecure-deserialization/java-programming-language] It is controlled by Oracle in cooperation with others through the Java Community Process program.
+[src:insecure-deserialization/java-programming-language] Companies or individuals participating in this process can influence the design and development of the APIs.
+[src:insecure-deserialization/java-programming-language] This process has been a subject of controversy during the 2010s.
+[src:insecure-deserialization/java-programming-language] Javadoc is a comprehensive documentation system, created by Sun Microsystems.
+[src:insecure-deserialization/java-programming-language] It provides developers with an organized system for documenting their code.
+[src:insecure-deserialization/java-programming-language] Javadoc comments have an extra asterisk at the beginning, i.e. the delimiters are `/**` and `*/`, whereas the normal multi-line comments in Java are delimited by `/*` and `*/`, and single-line comments start with `//`.
+[src:insecure-deserialization/java-programming-language] Oracle Corporation owns the official implementation of the Java SE platform, due to its acquisition of Sun Microsystems on January 27, 2010.
+[src:insecure-deserialization/java-programming-language] This implementation is based on the original implementation of Java by Sun.
+[src:insecure-deserialization/java-programming-language] The Oracle implementation is available for Windows, macOS, Linux, and Solaris.
+[src:insecure-deserialization/java-programming-language] Because Java lacks any formal standardization recognized by Ecma International, ISO/IEC, ANSI, or other third-party standards organizations, the Oracle implementation is the de facto standard.
+[src:insecure-deserialization/java-programming-language] Oracle has also released GraalVM, a high performance Java dynamic compiler and interpreter.
+[src:insecure-deserialization/java-programming-language] OpenJDK is another Java SE implementation that is licensed under the GNU GPL.
+[src:insecure-deserialization/java-programming-language] The implementation started when Sun began releasing the Java source code under the GPL.
+[src:insecure-deserialization/java-programming-language] As of Java SE 7, OpenJDK is the official Java reference implementation.
+[src:insecure-deserialization/java-programming-language] The goal of Java is to make all implementations of Java compatible.
+[src:insecure-deserialization/java-programming-language] Historically, Sun's trademark license for usage of the Java brand insists that all implementations be *compatible*.
+[src:insecure-deserialization/java-programming-language] This resulted in a legal dispute with Microsoft after Sun claimed that the Microsoft implementation did not support Java remote method invocation (RMI) or Java Native Interface (JNI) and had added platform-specific features of their own.
+[src:insecure-deserialization/java-programming-language] Sun sued in 1997, and, in 2001, won a settlement of US$20 million, as well as a court order enforcing the terms of the license from Sun.
+[src:insecure-deserialization/java-programming-language] As a result, Microsoft no longer ships Java with Windows.
+[src:insecure-deserialization/java-programming-language] Platform-independent Java is essential to Java EE, and an even more rigorous validation is required to certify an implementation.
+[src:insecure-deserialization/java-programming-language] This environment enables portable server-side applications.
+[src:insecure-deserialization/java-programming-language] The Java programming language requires the presence of a software platform in order for compiled programs to be executed.
+[src:insecure-deserialization/java-programming-language] Oracle supplies the Java platform for use with Java.
+[src:insecure-deserialization/java-programming-language] The Android SDK is an alternative software platform, used primarily for developing Android applications with its own GUI system.
+[src:insecure-deserialization/java-programming-language] The Java language is a key pillar in Android, an open source mobile operating system.
+[src:insecure-deserialization/java-programming-language] Although Android, built on the Linux kernel, is written largely in C, the Android SDK uses the Java language as the basis for Android applications but does not use any of its standard GUI, SE, ME or other established Java standards.
+[src:insecure-deserialization/java-programming-language] The bytecode language supported by the Android SDK is incompatible with JVM bytecode and runs on its own virtual machine, optimized for low-memory devices such as smartphones and tablet computers.
+[src:insecure-deserialization/java-programming-language] Depending on the Android version, the bytecode is either interpreted by the Dalvik virtual machine or compiled into native code by the Android Runtime.
+[src:insecure-deserialization/java-programming-language] Android does not provide the full Java SE standard library, although the Android SDK does include an independent implementation of a large subset of it.
+[src:insecure-deserialization/java-programming-language] It supports Java 6 and some Java 7 features, offering an implementation compatible with the standard library (Apache Harmony).
+[src:insecure-deserialization/java-programming-language] The use of Java-related technology in Android led to a legal dispute between Oracle and Google.
+[src:insecure-deserialization/java-programming-language] On May 7, 2012, a San Francisco jury found that if APIs could be copyrighted, then Google had infringed Oracle's copyrights by the use of Java in Android devices.
+[src:insecure-deserialization/java-programming-language] District Judge William Alsup ruled on May 31, 2012, that APIs cannot be copyrighted, but this was reversed by the United States Court of Appeals for the Federal Circuit in May 2014.
+[src:insecure-deserialization/java-programming-language] On May 26, 2016, the district court decided in favor of Google, ruling the copyright infringement of the Java API in Android constitutes fair use.
+[src:insecure-deserialization/java-programming-language] In March 2018, this ruling was overturned by the Appeals Court, which sent down the case of determining the damages to federal court in San Francisco.
+[src:insecure-deserialization/java-programming-language] Google filed a petition for writ of certiorari with the Supreme Court of the United States in January 2019 to challenge the two rulings that were made by the Appeals Court in Oracle's favor.
+[src:insecure-deserialization/java-programming-language] On April 5, 2021, the Court ruled 6–2 in Google's favor, that its use of Java APIs should be considered fair use.
+[src:insecure-deserialization/marshalling-computer-science] In computer science, **marshalling** or **marshaling** (US spelling) is the process of transforming the memory representation of an object into a data format suitable for storage or transmission, especially between different runtimes.
+[src:insecure-deserialization/marshalling-computer-science] It is typically used when data must be moved between different parts of a computer program or from one program to another.
+[src:insecure-deserialization/marshalling-computer-science] Marshalling simplifies complex communications, because it allows using *composite objects* instead of being restricted to *primitive objects*.
+[src:insecure-deserialization/marshalling-computer-science] Marshalling is sometimes used as synonymous with serializing, while serialization is actually one step in the process of marshalling an object.
+[src:insecure-deserialization/marshalling-computer-science] Marshalling and serialization might thus be done differently, although some form of serialization is usually used to do marshalling.
+[src:insecure-deserialization/marshalling-computer-science] The term *deserialization* is somewhat similar to *un*-marshalling a dry object "on the server side", i.e., demarshalling (or unmarshalling) to get a live object back: the serialized object is transformed into an internal data structure, i.e., a live object within the target runtime.
+[src:insecure-deserialization/marshalling-computer-science] It usually corresponds to the exact inverse process of marshalling, although sometimes both ends of the process trigger specific business logic.
+[src:insecure-deserialization/marshalling-computer-science] The accurate definition of marshalling differs across programming languages such as Python, Java, and .NET, and in some contexts, is used interchangeably with serialization.
+[src:insecure-deserialization/marshalling-computer-science] To "serialize" an object means to convert its state into a byte stream in such a way that the byte stream may be converted back into a copy of the object, which is unmarshalling in essence.
+[src:insecure-deserialization/marshalling-computer-science] Different programming languages either make or don’t make the distinction between the two concepts.
+[src:insecure-deserialization/marshalling-computer-science] In the Java-related RFC 2713, marshalling is used when serializing objects for remote invocation.
+[src:insecure-deserialization/marshalling-computer-science] An object that is marshalled records the state of the original object and it contains the codebase (*codebase* here refers to a list of URLs where the object code can be loaded from, and not source code).
+[src:insecure-deserialization/marshalling-computer-science] Hence, in order to convert the object state and codebase(s), unmarshalling must be done.
+[src:insecure-deserialization/marshalling-computer-science] The unmarshaller interface automatically converts the marshalled data containing codebase(s) into an executable Java object in JAXB.
+[src:insecure-deserialization/marshalling-computer-science] Any object that can be deserialized can be unmarshalled.
+[src:insecure-deserialization/marshalling-computer-science] Marshalling is used within implementations of different remote procedure call (RPC) mechanisms, where it is necessary to transport data between processes and/or between threads.
+[src:insecure-deserialization/marshalling-computer-science] In Microsoft's Component Object Model (COM), interface pointers must be marshalled when crossing COM apartment boundaries.
+[src:insecure-deserialization/marshalling-computer-science] In the .NET Framework, the conversion between an unmanaged type and a CLR type, as in the P/Invoke process, is also an example of an action that requires marshalling to take place.
+[src:insecure-deserialization/marshalling-computer-science] Additionally, marshalling is used extensively within scripts and applications that use the XPCOM technologies provided within the Mozilla application framework.
+[src:insecure-deserialization/marshalling-computer-science] The Mozilla Firefox browser is a popular application built with this framework, that additionally allows scripting languages to use XPCOM through XPConnect (Cross-Platform Connect).
+[src:insecure-deserialization/marshalling-computer-science] In the Microsoft Windows family of operating systems the entire set of device drivers for Direct3D are kernel-mode drivers.
+[src:insecure-deserialization/marshalling-computer-science] The user-mode portion of the API is handled by the DirectX runtime provided by Microsoft.
+[src:insecure-deserialization/marshalling-computer-science] This is an issue because calling kernel-mode operations from user-mode requires performing a system call, and this inevitably forces the CPU to switch to "kernel mode".
+[src:insecure-deserialization/marshalling-computer-science] This is a slow operation, taking on the order of microseconds to complete.
+[src:insecure-deserialization/marshalling-computer-science] During this time, the CPU is unable to perform any operations.
+[src:insecure-deserialization/marshalling-computer-science] As such, minimizing the number of times this switching operation must be performed would optimize performance to a substantive degree.
+[src:insecure-deserialization/marshalling-computer-science] Linux OpenGL drivers are split in two: a kernel-driver and a user-space driver.
+[src:insecure-deserialization/marshalling-computer-science] The user-space driver does all the translation of OpenGL commands into machine code to be submitted to the GPU.
+[src:insecure-deserialization/marshalling-computer-science] To reduce the number of system calls, the user-space driver implements marshalling.
+[src:insecure-deserialization/marshalling-computer-science] If the GPU's command buffer is full of rendering data, the API could simply store the requested rendering call in a temporary buffer and, when the command buffer is close to being empty, it can perform a switch to kernel-mode and add a number of stored commands all at once.
+[src:insecure-deserialization/marshalling-computer-science] Marshalling data requires some kind of data transfer, which leverages a specific data format to be chosen as the serialization target.
+[src:insecure-deserialization/marshalling-computer-science] XML is one such format and means of transferring data between systems.
+[src:insecure-deserialization/marshalling-computer-science] Microsoft, for example, uses it as the basis of the file formats of the various components (Word, Excel, Access, PowerPoint, etc.) of the Microsoft Office suite (see Office Open XML).
+[src:insecure-deserialization/marshalling-computer-science] While this typically results in a verbose wire format, XML's fully-bracketed "start-tag", "end-tag" syntax allows provision of more accurate diagnostics and easier recovery from transmission or disk errors.
+[src:insecure-deserialization/marshalling-computer-science] In addition, because the tags occur repeatedly, one can use standard compression methods to shrink the content—all the Office file formats are created by zipping the raw XML.
+[src:insecure-deserialization/marshalling-computer-science] Alternative formats such as JSON (JavaScript Object Notation) are more concise, but correspondingly less robust for error recovery.
+[src:insecure-deserialization/marshalling-computer-science] Once the data is transferred to a program or an application, it needs to be converted back to an object for usage.
+[src:insecure-deserialization/marshalling-computer-science] Hence, unmarshalling is generally used in the receiver end of the implementations of Remote Method Invocation (RMI) and Remote procedure call (RPC) mechanisms to unmarshal transmitted objects in an executable form.
+[src:insecure-deserialization/marshalling-computer-science] JAXB or Java Architecture for XML Binding is the most common framework used by developers to marshal and unmarshal Java objects.
+[src:insecure-deserialization/marshalling-computer-science] JAXB provides for the interconversion between fundamental data types supported by Java and standard XML schema data types.
+[src:insecure-deserialization/marshalling-computer-science] `System.Xml.Serialization.XmlSerializer` is the framework used by C# developers to marshal and unmarshal C# objects.
+[src:insecure-deserialization/marshalling-computer-science] One of the advantages of C# over Java is that C# natively supports marshalling due to the inclusion of `System.Xml.Serialization.XmlSerializer` class.
+[src:insecure-deserialization/marshalling-computer-science] Java, on the other hand requires a non-native glue code in the form of JAXB to support marshalling.
+[src:insecure-deserialization/marshalling-computer-science] An example of unmarshalling is the conversion of an XML representation of an object to the default representation of the object in any programming language.
+[src:insecure-deserialization/marshalling-computer-science] Unmarshalling is the process of converting the XML representation to the default executable Java representation, and running that very code to get a consistent, live object back.
+[src:insecure-deserialization/marshalling-computer-science] Had a different format been chosen, the unmarshalling process would have been different, but the end result in the target runtime would be the same.
+[src:insecure-deserialization/marshalling-computer-science] The process of unmarshalling XML data into an executable Java object is taken care of by the in-built `jakarta.xml.bind.Unmarshaller` (formally `javax.xml.bind.Unmarshaller`) class.
+[src:insecure-deserialization/marshalling-computer-science] The unmarshal methods defined in the `jakarta.xml.bind.Unmarshaller` class are overloaded to accept XML from different types of input such as a `java.io.File`, `java.io.FileInputStream`, or `java.net.URL`.
+[src:insecure-deserialization/marshalling-computer-science] Unmarshal methods can deserialize an entire XML document or a small part of it.
+[src:insecure-deserialization/marshalling-computer-science] When the XML root element is globally declared, these methods utilize the `jakarta.xml.bind.JAXBContext`'s mapping of XML root elements to JAXB mapped classes to initiate the unmarshalling.
+[src:insecure-deserialization/marshalling-computer-science] If the mappings are not sufficient and the root elements are declared locally, the unmarshal methods use `declaredType` methods for the unmarshalling process.
+[src:insecure-deserialization/marshalling-computer-science] These two approaches can be understood below.
+[src:insecure-deserialization/marshalling-computer-science] The unmarshal method uses `jakarta.xml.bind.JAXBContext` (formerly `javax.xml.bind.JAXBContext`) to unmarshal the XML data, when the root element is globally declared.
+[src:insecure-deserialization/marshalling-computer-science] The `jakarta.xml.bind.JAXBContext` object always maintains a mapping of the globally declared XML element and its name to a JAXB mapped class.
+[src:insecure-deserialization/marshalling-computer-science] If the XML element name or its `@xsi:type` attribute matches the JAXB mapped class, the unmarshal method transforms the XML data using the appropriate JAXB mapped class.
+[src:insecure-deserialization/marshalling-computer-science] However, if the XML element name has no match, the unmarshal process will abort and throw an `jakarta.xml.bind.UnmarshalException` (formerly `javax.xml.bind.UnmarshalException`).
+[src:insecure-deserialization/marshalling-computer-science] This can be avoided by using the unmarshal by `declaredType` methods.
+[src:insecure-deserialization/marshalling-computer-science] When the root element is not declared globally, the application assists the unmarshaller by application-provided mapping using `declaredType` parameters.
+[src:insecure-deserialization/marshalling-computer-science] By an order of precedence, even if the root name has a mapping to an appropriate JAXB class, the `declaredType` overrides the mapping.
+[src:insecure-deserialization/marshalling-computer-science] However, if the `@xsi:type` attribute of the XML data has a mapping to an appropriate JAXB class, then this takes precedence over declaredType parameter.
+[src:insecure-deserialization/marshalling-computer-science] The unmarshal methods by `declaredType` parameters always return a `jakarta.xml.bind.JAXBElement<T>` instance.
+[src:insecure-deserialization/object-computer-science] In software development, an **object** is a semantic entity that has state, behavior, and identity.
+[src:insecure-deserialization/object-computer-science] An object can model some part of reality or can be an invention of the design process whose collaborations with other such objects serve as the mechanisms that provide some higher-level behavior.
+[src:insecure-deserialization/object-computer-science] Put another way, an object represents an individual, identifiable item, unit, or entity, either real or abstract, with a well-defined role in the problem domain.
+[src:insecure-deserialization/object-computer-science] A programming language can be classified based on its support for objects.
+[src:insecure-deserialization/object-computer-science] A language that provides an encapsulation construct for state, behavior, and identity is classified as object-based.
+[src:insecure-deserialization/object-computer-science] If the language also provides polymorphism and inheritance it is classified as object-oriented.
+[src:insecure-deserialization/object-computer-science] A language that supports creating an object from a class is classified as class-based.
+[src:insecure-deserialization/object-computer-science] A language that supports object creation via a template object is classified as prototype-based.
+[src:insecure-deserialization/object-computer-science] In purely object-oriented programming languages, such as Java and C#, all classes might be part of an inheritance tree such that the root class is `Object`, meaning all objects instances of `Object` or implicitly extend `Object`.
+[src:insecure-deserialization/serialization] When the resulting series of bits is reread according to the serialization format, it can be used to create a semantically identical clone of the original object.
+[src:insecure-deserialization/serialization] For many complex objects, such as those that make extensive use of references, this process is not straightforward.
+[src:insecure-deserialization/serialization] Serialization of objects does not include any of their associated methods with which they were previously linked.
+[src:insecure-deserialization/serialization] This process of serializing an object is also called *marshalling* in some situations.
+[src:insecure-deserialization/serialization] The opposite operation, extracting a data structure from a series of bytes, is ***deserialization*** (also called ***unserialization*** or ***unmarshalling***).
+[src:insecure-deserialization/serialization] In networking equipment hardware, the part that is responsible for serialization and deserialization is commonly called SerDes.
+[src:insecure-deserialization/serialization] For some of these features to be useful, architecture independence must be maintained.
+[src:insecure-deserialization/serialization] For example, for maximal use of distribution, a computer running on a different hardware architecture should be able to reliably reconstruct a serialized data stream, regardless of endianness.
+[src:insecure-deserialization/serialization] This means that the simpler and faster procedure of directly copying the memory layout of the data structure cannot work reliably for all architectures.
+[src:insecure-deserialization/serialization] Serializing the data structure in an architecture-independent format means preventing the problems of byte ordering, memory layout, or simply different ways of representing data structures in different programming languages.
+[src:insecure-deserialization/serialization] Inherent to any serialization scheme is that, because the encoding of the data is by definition serial, extracting one part of the serialized data structure requires that the entire object be read from start to end, and reconstructed.
+[src:insecure-deserialization/serialization] In many applications, this linearity is an asset, because it enables simple, common I/O interfaces to be utilized to hold and pass on the state of an object.
+[src:insecure-deserialization/serialization] In applications where higher performance is an issue, it can make sense to expend more effort to deal with a more complex, non-linear storage organization.
+[src:insecure-deserialization/serialization] Even on a single machine, primitive pointer objects are too fragile to save because the objects to which they point may be reloaded to a different location in memory.
+[src:insecure-deserialization/serialization] To deal with this, the serialization process includes a step called *unswizzling* or *pointer unswizzling*, where direct pointer references are converted to references based on name or position.
+[src:insecure-deserialization/serialization] The deserialization process includes an inverse step called *pointer swizzling*.
+[src:insecure-deserialization/serialization] It is not necessary to actually build the prior copy because differences can be detected on the fly, a technique called differential execution.
+[src:insecure-deserialization/serialization] This is useful in the programming of user interfaces whose contents are time-varying — graphical objects can be created, removed, altered, or made to handle input events without necessarily having to write separate code to do those things.
+[src:insecure-deserialization/serialization] Serialization breaks the opacity of an abstract data type by potentially exposing private implementation details.
+[src:insecure-deserialization/serialization] Trivial implementations which serialize all data members may violate encapsulation.
+[src:insecure-deserialization/serialization] To discourage competitors from making compatible products, publishers of proprietary software often keep the details of their programs' serialization formats a trade secret.
+[src:insecure-deserialization/serialization] Some deliberately obfuscate or even encrypt the serialized data.
+[src:insecure-deserialization/serialization] Yet, interoperability requires that applications be able to understand each other's serialization formats.
+[src:insecure-deserialization/serialization] Therefore, remote method call architectures such as CORBA define their serialization formats in detail.
+[src:insecure-deserialization/serialization] Many institutions, such as archives and libraries, attempt to future proof their backup archives—in particular, database dumps—by storing them in some relatively human-readable serialized format.
+[src:insecure-deserialization/serialization] The Xerox Network Systems Courier technology in the early 1980s influenced the first widely adopted standard.
+[src:insecure-deserialization/serialization] Sun Microsystems published the External Data Representation (XDR) in 1987.
+[src:insecure-deserialization/serialization] XDR is an open format, and standardized as STD 67 (RFC 4506) by IETF.
+[src:insecure-deserialization/serialization] In the late 1990s, a push to provide an alternative to the standard serialization protocols started: XML, an SGML subset, was used to produce a human-readable text-based encoding.
+[src:insecure-deserialization/serialization] Such an encoding can be useful for persistent objects that may be read and understood by humans or communicated to other systems regardless of programming language.
+[src:insecure-deserialization/serialization] It has the disadvantage of losing the more compact, byte-stream-based encoding, but by this point larger storage and transmission capacities made file size less of a concern than in the early days of computing.
+[src:insecure-deserialization/serialization] In the 2000s, XML was often used for asynchronous transfer of structured data between client and server in Ajax web applications.
+[src:insecure-deserialization/serialization] XML is an open format and standardized as a W3C recommendation.
+[src:insecure-deserialization/serialization] JSON is a lightweight plain-text alternative to XML and is also commonly used for client-server communication in web applications.
+[src:insecure-deserialization/serialization] JSON is based on JavaScript syntax but is independent of JavaScript and supported in many other programming languages.
+[src:insecure-deserialization/serialization] YAML is a strict superset of JSON and includes additional features such as a data type tags, support for cyclic data structures, indentation-sensitive syntax, and multiple forms of scalar data quoting.
+[src:insecure-deserialization/serialization] Property lists are used for serialization by NeXTSTEP, GNUstep, macOS, and iOS frameworks.
+[src:insecure-deserialization/serialization] *Property list*, or *p-list* for short, doesn't refer to a single serialization format but instead several different variants, some human-readable and one binary.
+[src:insecure-deserialization/serialization] For large volume scientific datasets, such as satellite data and output of numerical climate, weather, or ocean models, specific binary serialization standards have been developed, e.g.
+[src:insecure-deserialization/serialization] Several object-oriented programming languages directly support *object serialization* (or *object archival*), either by syntactic sugar elements or providing a standard interface for doing so.
+[src:insecure-deserialization/serialization] The languages which do so include Ruby, Smalltalk, Python, PHP, Objective-C, Delphi, Java, and the .NET family of languages.
+[src:insecure-deserialization/serialization] There are also libraries available that add serialization support to languages that lack native support for it.
+[src:insecure-deserialization/serialization] C and C++ do not provide serialization as any sort of high-level construct, but both languages support writing any of the built-in data types, as well as plain old data structs, as binary data.
+[src:insecure-deserialization/serialization] As such, it is usually trivial to write custom serialization functions.
+[src:insecure-deserialization/serialization] Moreover, compiler-based solutions, such as the ODB ORM system for C++ and the gSOAP toolkit for C and C++, are capable of automatically producing serialization code with few or no modifications to class declarations.
+[src:insecure-deserialization/serialization] Other popular serialization frameworks are Boost.Serialization from the Boost Framework, the S11n framework, and Cereal.
+[src:insecure-deserialization/serialization] MFC framework (Microsoft) also provides serialization methodology as part of its Document-View architecture.
+[src:insecure-deserialization/serialization] With the introduction of reflective programming to C++26, serialization has been greatly simplified.
+[src:insecure-deserialization/serialization] Reflection allows for compile-time serialization of, for instance, JSON into a `struct` with corresponding structure.
+[src:insecure-deserialization/serialization] CFML allows data structures to be serialized to WDDX with the `<cfwddx>` tag and to JSON with the SerializeJSON() function.
+[src:insecure-deserialization/serialization] Delphi provides a built-in mechanism for serialization of components (also called persistent objects), which is fully integrated with its IDE.
+[src:insecure-deserialization/serialization] The component's contents are saved to a DFM file and reloaded on-the-fly.
+[src:insecure-deserialization/serialization] Go natively supports unmarshalling/marshalling of JSON and XML data.
+[src:insecure-deserialization/serialization] There are also third-party modules that support YAML and Protocol Buffers.
+[src:insecure-deserialization/serialization] In Haskell, serialization is supported for types that are members of the Read and Show type classes.
+[src:insecure-deserialization/serialization] Every type that is a member of the `Read` type class defines a function that will extract the data from the string representation of the dumped data.
+[src:insecure-deserialization/serialization] The `Show` type class, in turn, contains the `show` function from which a string representation of the object can be generated.
+[src:insecure-deserialization/serialization] The programmer need not define the functions explicitly—merely declaring a type to be deriving Read or deriving Show, or both, can make the compiler generate the appropriate functions for many cases (but not all: function types, for example, cannot automatically derive Show or Read).
+[src:insecure-deserialization/serialization] The auto-generated instance for Show also produces valid source code, so the same Haskell value can be generated by running the code produced by show in, for example, a Haskell interpreter.
+[src:insecure-deserialization/serialization] For more efficient serialization, there are haskell libraries that allow high-speed serialization in binary format, e.g. binary.
+[src:insecure-deserialization/serialization] Java provides automatic serialization which requires that the object be marked by implementing the `java.io.Serializable` interface.
+[src:insecure-deserialization/serialization] Implementing the interface marks the class as "okay to serialize", and Java then handles serialization internally.
+[src:insecure-deserialization/serialization] There are no serialization methods defined on the `Serializable` interface, but a serializable class can optionally define methods with certain special names and signatures that if defined, will be called as part of the serialization/deserialization process.
+[src:insecure-deserialization/serialization] The language also allows the developer to override the serialization process more thoroughly by implementing another interface, the `Externalizable` interface, which includes two special methods that are used to save and restore the object's state.
+[src:insecure-deserialization/serialization] There are three primary reasons why objects are not serializable by default and must implement the `Serializable` interface to access Java's serialization mechanism.
+[src:insecure-deserialization/serialization] Firstly, not all objects capture useful semantics in a serialized state.
+[src:insecure-deserialization/serialization] For example, a `Thread` object is tied to the state of the current JVM.
+[src:insecure-deserialization/serialization] There is no context in which a deserialized `Thread` object would maintain useful semantics.
+[src:insecure-deserialization/serialization] Secondly, the serialized state of an object forms part of its class' compatibility contract.
+[src:insecure-deserialization/serialization] Maintaining compatibility between versions of serializable classes requires additional effort and consideration.
+[src:insecure-deserialization/serialization] Therefore, making a class serializable needs to be a deliberate design decision and not a default condition.
+[src:insecure-deserialization/serialization] Lastly, serialization allows access to non-transient private members of a class that are not otherwise accessible.
+[src:insecure-deserialization/serialization] Classes containing sensitive information (for example, a password) should not be serializable nor externalizable.
+[src:insecure-deserialization/serialization] The standard encoding method uses a recursive graph-based translation of the object's class descriptor and serializable fields into a byte stream.
+[src:insecure-deserialization/serialization] Primitives as well as non-transient, non-static referenced objects are encoded into the stream.
+[src:insecure-deserialization/serialization] Each object that is referenced by the serialized object via a field that is not marked as `transient` must also be serialized; and if any object in the complete graph of non-transient object references is not serializable, then serialization will fail.
+[src:insecure-deserialization/serialization] The developer can influence this behavior by marking objects as transient, or by redefining the serialization for an object so that some portion of the reference graph is truncated and not serialized.
+[src:insecure-deserialization/serialization] Java does not use constructor to serialize objects.
+[src:insecure-deserialization/serialization] It is possible to serialize Java objects through JDBC and store them into a database.
+[src:insecure-deserialization/serialization] While Swing components do implement the Serializable interface, they are not guaranteed to be portable between different versions of the Java Virtual Machine.
+[src:insecure-deserialization/serialization] As such, a Swing component, or any component which inherits it, may be serialized to a byte stream, but it is not guaranteed that this will be re-constitutable on another machine.
+[src:insecure-deserialization/serialization] Since ECMAScript 5.1, JavaScript has included the built-in `JSON` object and its methods `JSON.parse()` and `JSON.stringify()`.
+[src:insecure-deserialization/serialization] Although JSON is originally based on a subset of JavaScript, there are boundary cases where JSON is not valid JavaScript.
+[src:insecure-deserialization/serialization] Specifically, JSON allows the Unicode line terminators U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR to appear unescaped in quoted strings, while ECMAScript 2018 and older does not.
+[src:insecure-deserialization/serialization] Julia implements serialization through the `serialize()` / `deserialize()` modules, intended to work within the same version of Julia, and/or instance of the same system image.
+[src:insecure-deserialization/serialization] The `HDF5.jl` package offers a more stable alternative, using a documented format and common library with wrappers for different languages, while the default serialization format is suggested to have been designed rather with maximal performance for network communication in mind.
+[src:insecure-deserialization/serialization] Generally a Lisp data structure can be serialized with the functions "`read`" and "`print`".
+[src:insecure-deserialization/serialization] A variable foo containing, for example, a list of arrays would be printed by `(print foo)`.
+[src:insecure-deserialization/serialization] Similarly an object can be read from a stream named s by `(read s)`.
+[src:insecure-deserialization/serialization] These two parts of the Lisp implementation are called the Printer and the Reader.
+[src:insecure-deserialization/serialization] The output of "`print`" is human readable; it uses lists demarked by parentheses, for example: `(4 2.9 "x" y)`.
+[src:insecure-deserialization/serialization] In many types of Lisp, including Common Lisp, the printer cannot represent every type of data because it is not clear how to do so.
+[src:insecure-deserialization/serialization] In Common Lisp for example the printer cannot print CLOS objects.
+[src:insecure-deserialization/serialization] Instead the programmer may write a method on the generic function `print-object`, this will be invoked when the object is printed.
+[src:insecure-deserialization/serialization] This is somewhat similar to the method used in Ruby.
+[src:insecure-deserialization/serialization] Lisp code itself is written in the syntax of the reader, called read syntax.
+[src:insecure-deserialization/serialization] Most languages use separate and different parsers to deal with code and data, Lisp only uses one.
+[src:insecure-deserialization/serialization] A file containing lisp code may be read into memory as a data structure, transformed by another program, then possibly executed or written out, such as in a read–eval–print loop.
+[src:insecure-deserialization/serialization] Not all readers/writers support cyclic, recursive or shared structures.
+[src:insecure-deserialization/serialization] .NET has several serializers designed by Microsoft.
+[src:insecure-deserialization/serialization] There are also many serializers by third parties.
+[src:insecure-deserialization/serialization] OCaml's standard library provides marshalling through the `Marshal` module and the Pervasives functions `output_value` and `input_value`.
+[src:insecure-deserialization/serialization] While OCaml programming is statically type-checked, uses of the `Marshal` module may break type guarantees, as there is no way to check whether an unmarshalled stream represents objects of the expected type.
+[src:insecure-deserialization/serialization] In OCaml it is difficult to marshal a function or a data structure which contains a function (e.g. an object which contains a method), because executable code in functions cannot be transmitted across different programs.
+[src:insecure-deserialization/serialization] (There is a flag to marshal the code position of a function but it can only be unmarshalled in exactly the same program).
+[src:insecure-deserialization/serialization] The standard marshalling functions can preserve sharing and handle cyclic data, which can be configured by a flag.
+[src:insecure-deserialization/serialization] Several Perl modules available from CPAN provide serialization mechanisms, including `Storable` , `JSON::XS` and `FreezeThaw`.
+[src:insecure-deserialization/serialization] Storable includes functions to serialize and deserialize Perl data structures to and from files or Perl scalars.
+[src:insecure-deserialization/serialization] In addition to serializing directly to files, `Storable` includes the `freeze` function to return a serialized copy of the data packed into a scalar, and `thaw` to deserialize such a scalar.
+[src:insecure-deserialization/serialization] This is useful for sending a complex data structure over a network socket or storing it in a database.
+[src:insecure-deserialization/serialization] When serializing structures with `Storable`, there are network safe functions that always store their data in a format that is readable on any computer at a small cost of speed.
+[src:insecure-deserialization/serialization] These functions are named `nstore`, `nfreeze`, etc.
+[src:insecure-deserialization/serialization] There are no "n" functions for deserializing these structures — the regular `thaw` and `retrieve` deserialize structures serialized with the "`n`" functions and their machine-specific equivalents.
+[src:insecure-deserialization/serialization] PHP originally implemented serialization through the built-in `serialize()` and `unserialize()` functions.
+[src:insecure-deserialization/serialization] PHP can serialize any of its data types except resources (file pointers, sockets, etc.).
+[src:insecure-deserialization/serialization] The built-in `unserialize()` function is often dangerous when used on completely untrusted data.
+[src:insecure-deserialization/serialization] For objects, there are two "magic methods" that can be implemented within a class — `__sleep()` and `__wakeup()` — that are called from within `serialize()` and `unserialize()`, respectively, that can clean up and restore an object.
+[src:insecure-deserialization/serialization] For example, it may be desirable to close a database connection on serialization and restore the connection on deserialization; this functionality would be handled in these two magic methods.
+[src:insecure-deserialization/serialization] They also permit the object to pick which properties are serialized.
+[src:insecure-deserialization/serialization] Since PHP 5.1, there is an object-oriented serialization mechanism for objects, the `Serializable` interface.
+[src:insecure-deserialization/serialization] Prolog's *term* structure, which is the only data structure of the language, can be serialized out through the built-in predicate `write_term/3` and serialized-in through the built-in predicates `read/1` and `read_term/2`.
+[src:insecure-deserialization/serialization] The resulting stream is uncompressed text (in some encoding determined by configuration of the target stream), with any free variables in the term represented by placeholder variable names.
+[src:insecure-deserialization/serialization] The predicate `write_term/3` is standardized in the ISO Specification for Prolog (ISO/IEC 13211-1) on pages 59 ff.
+[src:insecure-deserialization/serialization] Therefore it is expected that terms serialized-out by one implementation can be serialized-in by another without ambiguity or surprises.
+[src:insecure-deserialization/serialization] In practice, implementation-specific extensions (e.g.
+[src:insecure-deserialization/serialization] SWI-Prolog's dictionaries) may use non-standard term structures, so interoperability may break in edge cases.
+[src:insecure-deserialization/serialization] As examples, see the corresponding manual pages for SWI-Prolog, SICStus Prolog, GNU Prolog.
+[src:insecure-deserialization/serialization] Whether and how serialized terms received over the network are checked against a specification (after deserialization from the character stream has happened) is left to the implementer.
+[src:insecure-deserialization/serialization] Prolog's built-in Definite Clause Grammars can be applied at that stage.
+[src:insecure-deserialization/serialization] The core general serialization mechanism is the `pickle` standard library module, alluding to the database systems term *pickling* to describe data serialization (*unpickling* for *deserializing*).
+[src:insecure-deserialization/serialization] Pickle uses a simple stack-based virtual machine that records the instructions used to reconstruct the object.
+[src:insecure-deserialization/serialization] It is a cross-version customizable but unsafe (not secure against erroneous or malicious data) serialization format.
+[src:insecure-deserialization/serialization] Malformed or maliciously constructed data, may cause the deserializer to import arbitrary modules and instantiate any object.
+[src:insecure-deserialization/serialization] The standard library also includes modules serializing to standard data formats: `json` (with built-in support for basic scalar and collection types and able to support arbitrary types via encoding and decoding hooks).
+[src:insecure-deserialization/serialization] `plistlib` (with support for both binary and XML property list formats).
+[src:insecure-deserialization/serialization] `xdrlib` (with support for the External Data Representation (XDR) standard as described in RFC 1014).
+[src:insecure-deserialization/serialization] Finally, it is recommended that an object's `__repr__` be evaluable in the right environment, making it a rough match for Common Lisp's `print-object`.
+[src:insecure-deserialization/serialization] Not all object types can be pickled automatically, especially ones that hold operating system resources like file handles, but users can register custom "reduction" and construction functions to support the pickling and unpickling of arbitrary types.
+[src:insecure-deserialization/serialization] Pickle was originally implemented as the pure Python `pickle` module, but, in versions of Python prior to 3.0, the `cPickle` module (also a built-in) offers improved performance (up to 1000 times faster).
+[src:insecure-deserialization/serialization] The `cPickle` was adapted from the Unladen Swallow project.
+[src:insecure-deserialization/serialization] In Python 3, users should always import the standard version, which attempts to import the accelerated version and falls back to the pure Python version.
+[src:insecure-deserialization/serialization] R has the function `dput` which writes an ASCII text representation of an R object to a file or connection.
+[src:insecure-deserialization/serialization] A representation can be read from a file using `dget`.
+[src:insecure-deserialization/serialization] More specific, the function `serialize` serializes an R object to a connection, the output being a raw vector coded in hexadecimal format.
+[src:insecure-deserialization/serialization] The `unserialize` function allows to read an object from a connection or a raw vector.
+[src:insecure-deserialization/serialization] REBOL will serialize to file (`save/all`) or to a `string!` (`mold/all`).
+[src:insecure-deserialization/serialization] Strings and files can be deserialized using the polymorphic `load` function.
+[src:insecure-deserialization/serialization] `RProtoBuf` provides cross-language data serialization in R, using Protocol Buffers.
+[src:insecure-deserialization/serialization] Ruby includes the standard module `Marshal` with 2 methods `dump` and `load`, akin to the standard Unix utilities `dump` and `restore`.
+[src:insecure-deserialization/serialization] These methods serialize to the standard class `String`, that is, they effectively become a sequence of bytes.
+[src:insecure-deserialization/serialization] Some objects cannot be serialized (doing so would raise a `TypeError` exception): bindings, procedure objects, instances of class IO, singleton objects and interfaces.
+[src:insecure-deserialization/serialization] If a class requires custom serialization (for example, it requires certain cleanup actions done on dumping / restoring), it can be done by implementing 2 methods: `_dump` and `_load`.
+[src:insecure-deserialization/serialization] The instance method `_dump` should return a `String` object containing all the information necessary to reconstitute objects of this class and all referenced objects up to a maximum depth given as an integer parameter (a value of -1 implies that depth checking should be disabled).
+[src:insecure-deserialization/serialization] The class method `_load` should take a `String` and return an object of this class.
+[src:insecure-deserialization/serialization] `Serde` is the most widely used library, or crate, for serialization in Rust which provides the `Serialize` and `Deserialize` traits.
+[src:insecure-deserialization/serialization] In general, non-recursive and non-sharing objects can be stored and retrieved in a human readable form using the `storeOn:`/`readFrom:` protocol.
+[src:insecure-deserialization/serialization] The `storeOn:` method generates the text of a Smalltalk expression which – when evaluated using `readFrom:` – recreates the original object.
+[src:insecure-deserialization/serialization] This scheme is special, in that it uses a procedural description of the object, not the data itself.
+[src:insecure-deserialization/serialization] It is therefore very flexible, allowing for classes to define more compact representations.
+[src:insecure-deserialization/serialization] However, in its original form, it does not handle cyclic data structures or preserve the identity of shared references (i.e. two references a single object will be restored as references to two equal, but not identical copies).
+[src:insecure-deserialization/serialization] For this, various portable and non-portable alternatives exist.
+[src:insecure-deserialization/serialization] Some of them are specific to a particular Smalltalk implementation or class library.
+[src:insecure-deserialization/serialization] There are several ways in Squeak Smalltalk to serialize and store objects.
+[src:insecure-deserialization/serialization] The easiest and most used are `storeOn:/readFrom:` and binary storage formats based on `SmartRefStream` serializers.
+[src:insecure-deserialization/serialization] In addition, bundled objects can be stored and retrieved using `ImageSegments`.
+[src:insecure-deserialization/serialization] Both provide a so-called "binary-object storage framework", which support serialization into and retrieval from a compact binary form.
+[src:insecure-deserialization/serialization] Both handle cyclic, recursive and shared structures, storage/retrieval of class and metaclass info and include mechanisms for "on the fly" object migration (i.e. to convert instances which were written by an older version of a class with a different object layout).
+[src:insecure-deserialization/serialization] The APIs are similar (storeBinary/readBinary), but the encoding details are different, making these two formats incompatible.
+[src:insecure-deserialization/serialization] However, the Smalltalk/X code is open source and free and can be loaded into other Smalltalks to allow for cross-dialect object interchange.
+[src:insecure-deserialization/serialization] Object serialization is not part of the ANSI Smalltalk specification.
+[src:insecure-deserialization/serialization] As a result, the code to serialize an object varies by Smalltalk implementation.
+[src:insecure-deserialization/serialization] For instance, a serialized object created in Squeak Smalltalk cannot be restored in Ambrai Smalltalk.
+[src:insecure-deserialization/serialization] Consequently, various applications that do work on multiple Smalltalk implementations that rely on object serialization cannot share data between these different implementations.
+[src:insecure-deserialization/serialization] These applications include the MinneStore object database and some RPC packages.
+[src:insecure-deserialization/serialization] A solution to this problem is SIXX, which is a package for multiple Smalltalks that uses an XML-based format for serialization.
+[src:insecure-deserialization/serialization] The Swift standard library provides two protocols, `Encodable` and `Decodable` (composed together as `Codable`), which allow instances of conforming types to be serialized to or deserialized from JSON, property lists, or other formats.
+[src:insecure-deserialization/serialization] Default implementations of these protocols can be generated by the compiler for types whose stored properties are also `Decodable` or `Encodable`.
+[src:insecure-deserialization/serialization] PowerShell implements serialization through the built-in cmdlet `Export-CliXML`.
+[src:insecure-deserialization/serialization] `Export-CliXML` serializes .NET objects and stores the resulting XML in a file.
+[src:insecure-deserialization/serialization] To reconstitute the objects, use the `Import-CliXML` cmdlet, which generates a deserialized object from the XML in the exported file.
+[src:insecure-deserialization/serialization] Deserialized objects, often known as "property bags" are not live objects; they are snapshots that have properties, but no methods.
+[src:insecure-deserialization/serialization] Two dimensional data structures can also be (de)serialized in CSV format using the built-in cmdlets `Import-CSV` and `Export-CSV`.

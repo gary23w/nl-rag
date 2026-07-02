@@ -1,0 +1,149 @@
+---
+title: "Heap (data structure)"
+source: https://en.wikipedia.org/wiki/Heap_(data_structure)
+domain: binomial-heap
+license: CC-BY-SA-4.0
+tags: binomial heap, mergeable heap, priority queue, meldable heap
+fetched: 2026-07-02
+---
+
+# Heap (data structure)
+
+In computer science, a **heap** is a tree-based data structure that satisfies the **heap property**: In a *max heap*, for any given node C, if P is the parent node of C, then the *key* (the *value*) of P is greater than or equal to the key of C. In a *min heap*, the key of P is less than or equal to the key of C. The node at the "top" of the heap (with no parents) is called the *root* node.
+
+The heap is one maximally efficient implementation of an abstract data type called a priority queue, and in fact, priority queues are often referred to as "heaps", regardless of how they may be implemented. In a heap, the highest (or lowest) priority element is always stored at the root. However, a heap is not a sorted structure; it can be regarded as being partially ordered. A heap is a useful data structure when it is necessary to repeatedly remove the object with the highest (or lowest) priority, or when insertions need to be interspersed with removals of the root node.
+
+A common implementation of a heap is the binary heap, in which the tree is a complete binary tree (see figure). The heap data structure, specifically the binary heap, was introduced by J. W. J. Williams in 1964, as a data structure for the heapsort sorting algorithm. Heaps are also crucial in several efficient graph algorithms such as Dijkstra's algorithm. When a heap is a complete binary tree, it has the smallest possible height—a heap with *N* nodes and *a* branches for each node always has log*a* *N* height.
+
+Note that, as shown in the graphic, there is no implied ordering between siblings or cousins and no implied sequence for an in-order traversal (as there would be in, e.g., a binary search tree). The heap relation mentioned above applies only between nodes and their parents, grandparents. The maximum number of children each node can have depends on the type of heap.
+
+Heaps are typically constructed in-place in the same array where the elements are stored, with their structure being implicit in the access pattern of the operations. Heaps differ in this way from other data structures with similar or in some cases better theoretic bounds such as radix trees in that they require no additional memory beyond that used for storing the keys.
+
+## Operations
+
+The common operations involving heaps are:
+
+**Basic**
+
+- *find-max* (or *find-min*): find a maximum item of a max-heap, or a minimum item of a min-heap, respectively (a.k.a. *peek*)
+- *insert*: adding a new key to the heap (a.k.a., *push*)
+- *extract-max* (or *extract-min*): returns the node of maximum value from a max heap [or minimum value from a min heap] after removing it from the heap (a.k.a., *pop*)
+- *delete-max* (or *delete-min*): removing the root node of a max heap (or min heap), respectively
+- *replace*: pop root and push a new key. This is more efficient than a pop followed by a push, since it only needs to balance once, not twice, and is appropriate for fixed-size heaps.
+
+**Creation**
+
+- *create-heap*: create an empty heap
+- *heapify*: create a heap out of given array of elements
+- *merge* (*union*): joining two heaps to form a valid new heap containing all the elements of both, preserving the original heaps.
+- *meld*: joining two heaps to form a valid new heap containing all the elements of both, destroying the original heaps.
+
+**Inspection**
+
+- *size*: return the number of items in the heap.
+- *is-empty*: return true if the heap is empty, false otherwise.
+
+**Internal**
+
+- *increase-key* or *decrease-key*: updating a key within a max- or min-heap, respectively
+- *delete*: delete an arbitrary node (followed by moving last node and sifting to maintain heap)
+- *sift-up*: move a node up in the tree, as long as needed; used to restore heap condition after insertion. Called "sift" because node moves up the tree until it reaches the correct level, as in a sieve.
+- *sift-down*: move a node down in the tree, similar to sift-up; used to restore heap condition after deletion or replacement.
+
+## Implementation using arrays
+
+Heaps are usually implemented with an array, as follows:
+
+- Each element in the array represents a node of the heap, and
+- The parent / child relationship is defined implicitly by the elements' indices in the array.
+
+For a binary heap, in the array, the first index contains the root element. The next two indices of the array contain the root's children. The next four indices contain the four children of the root's two child nodes, and so on. Therefore, given a node at index i, its children are at indices ⁠ $2i+1$ ⁠ and ⁠ $2i+2$ ⁠, and its parent is at index ⌊(*i*−1)/2⌋ in an array starting from index ⁠ 0 ⁠, or at ⁠ $2i$ ⁠, ⁠ $2i+1$ ⁠, and ⌊*i*/2⌋, respectively, in an array starting from ⁠ 1 ⁠. This simple indexing scheme makes it efficient to walk "up" or "down" the tree.
+
+Balancing a heap is done by sift-up or sift-down operations (swapping elements which are out of order). As we can build a heap from an array without requiring extra memory (for the nodes, for example), heapsort can be used to sort an array in-place.
+
+After an element is inserted into or deleted from a heap, the heap property may be violated, and the heap must be re-balanced by swapping elements within the array.
+
+Although different types of heaps implement the operations differently, the most common way is as follows:
+
+- **Insertion:** Add the new element at the end of the heap, in the first available free space. If this will violate the heap property, sift up the new element (*swim* operation) until the heap property has been reestablished.
+- **Extraction:** Remove the root and insert the last element of the heap in the root. If this will violate the heap property, sift down the new root (*sink* operation) to reestablish the heap property.
+- **Replacement:** Remove the root and put the *new* element in the root and sift down. When compared to extraction followed by insertion, this avoids a sift up step.
+
+Construction of a binary (or *d*-ary) heap out of a given array of elements may be performed in linear time using the classic Floyd algorithm, with the worst-case number of comparisons equal to 2*N* − 2*s*2(*N*) − *e*2(*N*) (for a binary heap), where *s*2(*N*) is the sum of all digits of the binary representation of *N* and *e*2(*N*) is the exponent of 2 in the prime factorization of *N*. This is faster than a sequence of consecutive insertions into an originally empty heap, which is log-linear.
+
+## Variants
+
+- 2–3 heap
+- B-heap
+- Beap
+- Binary heap
+- Binomial heap
+- Brodal queue
+- *d*-ary heap
+- Fibonacci heap
+- K-D Heap
+- Leaf heap
+- Leftist heap
+- Skew binomial heap
+- Strict Fibonacci heap
+- Min-max heap
+- Pairing heap
+- Radix heap
+- Randomized meldable heap
+- Skew heap
+- Soft heap
+- Ternary heap
+- Treap
+- Weak heap
+
+## Comparison of theoretic bounds for variants
+
+Here are time complexities of various heap data structures. The abbreviation am. indicates that the given complexity is amortized, otherwise it is a worst-case complexity. For the meaning of "*O*(*f*)" and "*Θ*(*f*)" see Big O notation. Names of operations assume a max-heap.
+
+| Operation | find-max | delete-max | increase-key | insert | meld | make-heap |
+|---|---|---|---|---|---|---|
+| Binary | *Θ*(1) | *Θ*(log *n*) | *Θ*(log *n*) | *Θ*(log *n*) | *Θ*(*n*) | *Θ*(*n*) |
+| Skew | *Θ*(1) | *O*(log *n*) am. | *O*(log *n*) am. | *O*(log *n*) am. | *O*(log *n*) am. | *Θ*(*n*) am. |
+| Leftist | *Θ*(1) | *Θ*(log *n*) | *Θ*(log *n*) | *Θ*(log *n*) | *Θ*(log *n*) | *Θ*(*n*) |
+| Binomial | *Θ*(1) | *Θ*(log *n*) | *Θ*(log *n*) | *Θ*(1) am. | *Θ*(log *n*) | *Θ*(*n*) |
+| Skew binomial | *Θ*(1) | *Θ*(log *n*) | *Θ*(log *n*) | *Θ*(1) | *Θ*(log *n*) | *Θ*(*n*) |
+| 2–3 heap | *Θ*(1) | *O*(log *n*) am. | *Θ*(1) | *Θ*(1) am. | *O*(log *n*) | *Θ*(*n*) |
+| Bottom-up skew | *Θ*(1) | *O*(log *n*) am. | *O*(log *n*) am. | *Θ*(1) am. | *Θ*(1) am. | *Θ*(*n*) am. |
+| Pairing | *Θ*(1) | *O*(log *n*) am. | *o*(log *n*) am. | *Θ*(1) | *Θ*(1) | *Θ*(*n*) |
+| Rank-pairing | *Θ*(1) | *O*(log *n*) am. | *Θ*(1) am. | *Θ*(1) | *Θ*(1) | *Θ*(*n*) |
+| Fibonacci | *Θ*(1) | *O*(log *n*) am. | *Θ*(1) am. | *Θ*(1) | *Θ*(1) | *Θ*(*n*) |
+| Strict Fibonacci | *Θ*(1) | *Θ*(log *n*) | *Θ*(1) | *Θ*(1) | *Θ*(1) | *Θ*(*n*) |
+| Brodal | *Θ*(1) | *Θ*(log *n*) | *Θ*(1) | *Θ*(1) | *Θ*(1) | *Θ*(*n*) |
+
+1. Each insertion takes O(log(*k*)) in the existing size of the heap, thus $\sum _{k=1}^{n}O(\log k)$ . Since $\log n/2=(\log n)-1$ , a constant factor (half) of these insertions are within a constant factor of the maximum, so asymptotically we can assume $k=n$ ; formally the time is $nO(\log n)-O(n)=O(n\log n)$ . This can also be readily seen from Stirling's approximation.
+2. *make-heap* is the operation of building a heap from a sequence of *n* unsorted elements. It can be done in *Θ*(*n*) time whenever *meld* runs in *O*(log *n*) time (where both complexities can be amortized). Another algorithm achieves *Θ*(*n*) for binary heaps.
+3. For persistent heaps (not supporting *increase-key*), a generic transformation reduces the cost of *meld* to that of *insert*, while the new cost of *delete-max* is the sum of the old costs of *delete-max* and *meld*. Here, it makes *meld* run in *Θ*(1) time (amortized, if the cost of *insert* is) while *delete-max* still runs in *O*(log *n*). Applied to skew binomial heaps, it yields Brodal-Okasaki queues, persistent heaps with optimal worst-case complexities.
+4. Lower bound of $\Omega (\log \log n),$ upper bound of $O(2^{2{\sqrt {\log \log n}}}).$
+5. Brodal queues and strict Fibonacci heaps achieve optimal worst-case complexities for heaps. They were first described as imperative data structures. The Brodal-Okasaki queue is a persistent data structure achieving the same optimum, except that *increase-key* is not supported.
+
+## Applications
+
+The heap data structure has many applications.
+
+- Heapsort: One of the best sorting methods being in-place and with no quadratic worst-case scenarios.
+- Selection algorithms: A heap allows access to the min or max element in constant time, and other selections (such as median or kth-element) can be done in sub-linear time on data that is in a heap.
+- Graph algorithms: By using heaps as internal traversal data structures, run time will be reduced by polynomial order. Examples of such problems are Prim's minimal-spanning-tree algorithm and Dijkstra's shortest-path algorithm.
+- Priority queue: A priority queue is an abstract concept like "a list" or "a map"; just as a list can be implemented with a linked list or an array, a priority queue can be implemented with a heap or a variety of other methods.
+- K-way merge: A heap data structure is useful to merge many already-sorted input streams into a single sorted output stream. Examples of the need for merging include external sorting and streaming results from distributed data such as a log structured merge tree. The inner loop is obtaining the min element, replacing with the next element for the corresponding input stream, then doing a sift-down heap operation. (Alternatively the replace function.) (Using extract-max and insert functions of a priority queue are much less efficient.)
+
+## Programming language implementations
+
+- The C++ Standard Library provides the make_heap, push_heap and pop_heap algorithms for heaps (usually implemented as binary heaps), which operate on arbitrary random access iterators. It treats the iterators as a reference to an array, and uses the array-to-heap conversion. It also provides the class std::priority_queue, which wraps these facilities in a container-like class. However, there is no standard support for the replace, sift-up/sift-down, or decrease/increase-key operations.
+- The Boost C++ libraries include a heaps library. Unlike the STL, it supports decrease and increase operations, and supports additional types of heap: specifically, it supports *d*-ary, binomial, Fibonacci, pairing and skew heaps.
+- There is a generic heap implementation for C and C++ with D-ary heap and B-heap support. It provides an STL-like API.
+- The standard library of the D programming language includes std.container.BinaryHeap, which is implemented in terms of D's ranges. Instances can be constructed from any random-access range. BinaryHeap exposes an input range interface that allows iteration with D's built-in foreach statements and integration with the range-based API of the std.algorithm package.
+- For Haskell there is the Data.Heap module.
+- The Java platform (since version 1.5) provides a binary heap implementation with the class `java.util.PriorityQueue` in the Java Collections Framework. This class implements by default a min-heap; to implement a max-heap, programmer should write a custom comparator. There is no support for the replace, sift-up/sift-down, or decrease/increase-key operations.
+- Python has a heapq module that implements a priority queue using a binary heap. The library exposes a heapreplace function to support k-way merging.
+- PHP has both max-heap (SplMaxHeap) and min-heap (SplMinHeap) as of version 5.3 in the Standard PHP Library.
+- Perl has implementations of binary, binomial, and Fibonacci heaps in the Heap distribution available on CPAN.
+- The Go language contains a heap package with heap algorithms that operate on an arbitrary type that satisfies a given interface. That package does not support the replace, sift-up/sift-down, or decrease/increase-key operations.
+- Apple's Core Foundation library contains a CFBinaryHeap structure.
+- Pharo has an implementation of a heap in the Collections-Sequenceable package along with a set of test cases. A heap is used in the implementation of the timer event loop.
+- The Rust programming language has a binary max-heap implementation, BinaryHeap, in the collections module of its standard library.
+- .NET has PriorityQueue class which uses quaternary (d-ary) min-heap implementation. It is available from .NET 6.

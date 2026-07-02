@@ -1,0 +1,585 @@
+# nl-rag distilled facts — domain: alembic-migrations
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:alembic-migrations/autogenerate] Alembic can view the status of the database (pointed to by `sqlalchemy.url` in your `alembic.ini` file using the *current* schema) and compare against the table metadata in the application (your ORM which defines the *proposed* schema), generating the “obvious” migrations based on a comparison.
+[src:alembic-migrations/autogenerate] This is achieved using the `--autogenerate` option to the `alembic revision` command, which places so-called *candidate* migrations into our new migrations file.
+[src:alembic-migrations/autogenerate] We review and modify these by hand as needed, then proceed normally.
+[src:alembic-migrations/autogenerate] To use autogenerate, we first need to modify our `env.py` so that it gets access to a table metadata object that contains the target.
+[src:alembic-migrations/autogenerate] Suppose our application has a declarative base in `myapp.mymodel`.
+[src:alembic-migrations/autogenerate] This base contains a `MetaData` object which contains `Table` objects defining our database.
+[src:alembic-migrations/autogenerate] We make sure this is loaded in `env.py` and then passed to `EnvironmentContext.configure()` via the `target_metadata` argument.
+[src:alembic-migrations/autogenerate] The `env.py` sample script used in the generic template already has a variable declaration near the top for our convenience, where we replace `None` with our `MetaData`.
+[src:alembic-migrations/autogenerate] The above example refers to the **generic alembic env.py template**, e.g. the one created by default when calling upon `alembic init`, and not the special-use templates such as `multidb`.
+[src:alembic-migrations/autogenerate] Please consult the source code and comments within the `env.py` script directly for specific guidance on where and how the autogenerate metadata is established.
+[src:alembic-migrations/autogenerate] We can then use the `alembic revision` command in conjunction with the `--autogenerate` option.
+[src:alembic-migrations/autogenerate] Suppose our `MetaData` contained a definition for the `account` table, and the database did not.
+[src:alembic-migrations/autogenerate] The migration hasn’t actually run yet, of course.
+[src:alembic-migrations/autogenerate] We do that via the usual `upgrade` command.
+[src:alembic-migrations/autogenerate] We should also go into our migration file and alter it as needed, including adjustments to the directives as well as the addition of other directives which these may be dependent on - specifically data changes in between creates/alters/drops.
+[src:alembic-migrations/autogenerate] The vast majority of user issues with Alembic centers on the topic of what kinds of changes autogenerate can and cannot detect reliably, as well as how it renders Python code for what it does detect.
+[src:alembic-migrations/autogenerate] It is critical to note that **autogenerate is not intended to be perfect**.
+[src:alembic-migrations/autogenerate] It is *always* necessary to manually review and correct the **candidate migrations** that autogenerate produces.
+[src:alembic-migrations/autogenerate] The feature is getting more and more comprehensive and error-free as releases continue, but one should take note of the current limitations.
+[src:alembic-migrations/autogenerate] The autogenerate process scans across all table objects within the database that is referred towards by the current database connection in use.
+[src:alembic-migrations/autogenerate] Above, when the list of schema names is first retrieved, the names will be filtered through the above `include_name` function so that only schemas named `"schema_one"` and `"schema_two"` will be considered by the autogenerate process.
+[src:alembic-migrations/autogenerate] In order to include **the default schema**, that is, the schema that is referred towards by the database connection **without** any explicit schema being specified, the name passed to the hook is `None`.
+[src:alembic-migrations/autogenerate] The `EnvironmentContext.configure.include_name` hook is also most appropriate to limit the names of tables in the target database to be considered.
+[src:alembic-migrations/autogenerate] If a target database has many tables that are not part of the `MetaData`, the autogenerate process will normally assume these are extraneous tables in the database to be dropped, and it will generate a `Operations.drop_table()` operation for each.
+[src:alembic-migrations/autogenerate] The above example is limited to table names present in the default schema only.
+[src:alembic-migrations/autogenerate] In order to search within a `MetaData` collection for schema-qualified table names as well, a table present in the non default schema will be present under a name of the form `<schemaname>.<tablename>`.
+[src:alembic-migrations/autogenerate] However more simply, the `parent_names` dictionary will also include the dot-concatenated name already constructed under the key `"schema_qualified_table_name"`, which will also be suitably formatted for tables in the default schema as well with the dot omitted.
+[src:alembic-migrations/autogenerate] The `parent_names` dictionary will also include the key `"table_name"` when the name being considered is that of a column or constraint object local to a particular table.
+[src:alembic-migrations/autogenerate] The `EnvironmentContext.configure.include_name` hook only refers to **reflected** objects, and not those located within the target `MetaData` collection.
+[src:alembic-migrations/autogenerate] For more fine-grained rules that include both `MetaData` and reflected object, the `EnvironmentContext.configure.include_object` hook discussed in the next section is more appropriate.
+[src:alembic-migrations/autogenerate] The `EnvironmentContext.configure.include_object` hook provides for object-level inclusion/exclusion rules based on the `Table` object being reflected as well as the elements within it.
+[src:alembic-migrations/autogenerate] This hook can be used to limit objects both from the local `MetaData` collection as well as from the target database.
+[src:alembic-migrations/autogenerate] The limitation is that when it reports on objects in the database, it will have fully reflected that object, which can be expensive if a large number of objects will be omitted.
+[src:alembic-migrations/autogenerate] The area of autogenerate’s behavior of comparing and rendering Python-based type objects in migration scripts presents a challenge, in that there’s a very wide variety of types to be rendered in scripts, including those part of SQLAlchemy as well as user-defined types.
+[src:alembic-migrations/autogenerate] A few options are given to help out with this task.
+[src:alembic-migrations/autogenerate] When types are rendered, they are generated with a **module prefix**, so that they are available based on a relatively small number of imports.
+[src:alembic-migrations/autogenerate] The rules for what the prefix is is based on the kind of datatype as well as configurational settings.
+[src:alembic-migrations/autogenerate] In either case, the `sa.` prefix, or whatever prefix is desired, should also be included in the imports section of `script.py.mako`; it also defaults to `import sqlalchemy as sa`.
+[src:alembic-migrations/autogenerate] The imports for the above type again must be made present within the migration, either manually, or by adding it to `script.py.mako`.
+[src:alembic-migrations/autogenerate] The above custom type has a long and cumbersome name based on the use of `__module__` directly, which also implies that lots of imports would be needed in order to accommodate lots of types.
+[src:alembic-migrations/autogenerate] For this reason, it is recommended that user-defined types used in migration scripts be made available from a single module.
+[src:alembic-migrations/autogenerate] Now, when we inevitably refactor our application to move `MyCustomType` somewhere else, we only need modify the `myapp.migration_types` module, instead of searching and replacing all instances within our migration scripts.
+[src:alembic-migrations/autogenerate] The methodology Alembic uses to generate SQLAlchemy and user-defined type constructs as Python code is plain old `__repr__()`.
+[src:alembic-migrations/autogenerate] SQLAlchemy’s built-in types for the most part have a `__repr__()` that faithfully renders a Python-compatible constructor call, but there are some exceptions, particularly in those cases when a constructor accepts arguments that aren’t compatible with `__repr__()`, such as a pickling function.
+[src:alembic-migrations/autogenerate] When building a custom type that will be rendered into a migration script, it is often necessary to explicitly give the type a `__repr__()` that will faithfully reproduce the constructor for that type.
+[src:alembic-migrations/autogenerate] This, in combination with `EnvironmentContext.configure.user_module_prefix`, is usually enough.
+[src:alembic-migrations/autogenerate] However, if additional behaviors are needed, a more comprehensive hook is the `EnvironmentContext.configure.render_item` option.
+[src:alembic-migrations/autogenerate] In the above example, we’d ensure our `MySpecialType` includes an appropriate `__repr__()` method, which is invoked when we call it against `"%r"`.
+[src:alembic-migrations/autogenerate] The callable we use for `EnvironmentContext.configure.render_item` can also add imports to our migration script.
+[src:alembic-migrations/autogenerate] The `AutogenContext` passed in contains a datamember called `AutogenContext.imports`, which is a Python `set()` for which we can add new imports.
+[src:alembic-migrations/autogenerate] The default type comparison logic will work for SQLAlchemy built in types as well as basic user defined types.
+[src:alembic-migrations/autogenerate] Changed in version 1.12.0: The default value of `EnvironmentContext.configure.compare_type` has been changed to `True`.
+[src:alembic-migrations/autogenerate] The default type comparison logic (which is end-user extensible) currently (as of Alembic version 1.4.0) works by comparing the generated SQL for a column.
+[src:alembic-migrations/autogenerate] Above, `inspected_column` is a `sqlalchemy.schema.Column` as returned by `sqlalchemy.engine.reflection.Inspector.reflect_table()`, whereas `metadata_column` is a `sqlalchemy.schema.Column` from the local model environment.
+[src:alembic-migrations/autogenerate] A return value of `None` indicates that default type comparison to proceed.
+[src:alembic-migrations/autogenerate] Revision scripts generated by the `alembic revision` command can optionally be piped through a series of post-production functions which may analyze or rewrite Python source code generated by Alembic, within the scope of running the `revision` command.
+[src:alembic-migrations/autogenerate] The primary intended use of this feature is to run code-formatting tools such as Black or autopep8, as well as custom-written formatting and linter functions, on revision files as Alembic generates them.
+[src:alembic-migrations/autogenerate] Any number of hooks can be configured and they will be run in series, given the path to the newly generated file as well as configuration options.
+[src:alembic-migrations/autogenerate] The post write hooks, when configured, run against generated revision files regardless of whether or not the autogenerate feature was used.
+[src:alembic-migrations/autogenerate] Alembic’s post write system is partially inspired by the pre-commit tool, which configures git hooks that reformat source files as they are committed to a git repository.
+[src:alembic-migrations/autogenerate] Pre-commit can serve this role for Alembic revision files as well, applying code formatters to them as they are committed.
+[src:alembic-migrations/autogenerate] Alembic’s post write hooks are useful only in that they can format the files immediately upon generation, rather than at commit time, and also can be useful for projects that prefer not to use pre-commit.
+[src:alembic-migrations/autogenerate] The template samples for `alembic.ini` as well as `pyproject.toml` for applicable templates now include commented-out configuration illustrating how to configure code-formatting tools, or other tools like linters to run against the newly generated file path.
+[src:alembic-migrations/autogenerate] Above, we configure `hooks` to be a single post write hook labeled `"black"`.
+[src:alembic-migrations/autogenerate] Hooks may also be specified as a list of names, which correspond to hook runners that will run sequentially.
+[src:alembic-migrations/autogenerate] As an example, we can also run the zimports import rewriting tool (written by Alembic’s author) subsequent to running the `black` tool.
+[src:alembic-migrations/autogenerate] When using the above configuration, a newly generated revision file will be processed first by the “black” tool, then by the “zimports” tool.
+[src:alembic-migrations/autogenerate] The previous section illustrated how to run command-line code formatters, through the use of a post write hook provided by Alembic known as `console_scripts`.
+[src:alembic-migrations/autogenerate] This hook is in fact a Python function that is registered under that name using a registration function that may be used to register other types of hooks as well.
+[src:alembic-migrations/autogenerate] To illustrate, we will use the example of a short Python function that wants to rewrite the generated code to use tabs instead of four spaces.
+[src:alembic-migrations/autogenerate] For simplicity, we will illustrate how this function can be present directly in the `env.py` file.
+[src:alembic-migrations/autogenerate] When developing code it’s useful to know if a set of code changes has made any net change to the database model, such that new revisions would need to be generated.
+[src:alembic-migrations/autogenerate] To automate this, Alembic provides the `alembic check` command.
+[src:alembic-migrations/autogenerate] This command will run through the same process as `alembic revision --autogenerate`, up until the point where revision files would be generated, however does not generate any new files.
+[src:alembic-migrations/autogenerate] Instead, it returns an error code plus a message if it is detected that new operations would be rendered into a new revision, or if not, returns a success code plus a message.
+[src:alembic-migrations/autogenerate] When `alembic check` returns a success code, this is an indication that the `alembic revision --autogenerate` command would produce only empty migrations, and does not need to be run.
+[src:alembic-migrations/autogenerate] `alembic check` can be worked into CI systems and on-commit schemes to ensure that incoming code does not warrant new revisions to be generated.
+[src:alembic-migrations/autogenerate] The `alembic check` command uses the same model comparison process as the `alembic revision --autogenerate` process.
+[src:alembic-migrations/autogenerate] This means parameters such as `EnvironmentContext.configure.compare_type` and `EnvironmentContext.configure.compare_server_default` are in play as usual, as well as that limitations in autogenerate detection are the same when running `alembic check`.
+[src:alembic-migrations/data-definition-language] In the context of SQL, **data definition** or **data description language** (**DDL**) is a syntax for creating and modifying database objects such as tables, indices, and users.
+[src:alembic-migrations/data-definition-language] DDL statements are similar to a computer programming language for defining data structures, especially database schemas.
+[src:alembic-migrations/data-definition-language] Common examples of DDL statements include `CREATE`, `ALTER`, and `DROP`.
+[src:alembic-migrations/data-definition-language] If you see a .ddl file, that means the file contains a statement to create a table.
+[src:alembic-migrations/data-definition-language] Oracle SQL Developer contains the ability to export from an ERD generated with Data Modeler to either a .sql file or a .ddl file.
+[src:alembic-migrations/data-definition-language] The concept of the data definition language and its name was first introduced in relation to the Codasyl database model, where the schema of the database was written in a language syntax describing the records, fields, and sets of the user data model.
+[src:alembic-migrations/data-definition-language] Later it was used to refer to a subset of Structured Query Language (SQL) for declaring tables, columns, data types and constraints.
+[src:alembic-migrations/data-definition-language] SQL-92 introduced a schema manipulation language and schema information tables to query schemas.
+[src:alembic-migrations/data-definition-language] These information tables were specified as SQL/Schemata in SQL:2003.
+[src:alembic-migrations/data-definition-language] The term DDL is also used in a generic sense to refer to any formal language for describing data or information structures.
+[src:alembic-migrations/data-definition-language] Many data description languages use a declarative syntax to define columns and data types.
+[src:alembic-migrations/data-definition-language] Structured Query Language (SQL), however, uses a collection of imperative verbs whose effect is to modify the schema of the database by adding, changing, or deleting definitions of tables or other elements.
+[src:alembic-migrations/data-definition-language] These statements can be freely mixed with other SQL statements, making the DDL not a separate language.
+[src:alembic-migrations/data-definition-language] The *create* command is used to establish a new database, table, index, or stored procedure.
+[src:alembic-migrations/data-definition-language] The *CREATE* statement in SQL creates a component in a relational database management system (RDBMS).
+[src:alembic-migrations/data-definition-language] In the SQL 1992 specification, the types of components that can be created are schemas, tables, views, domains, character sets, collations, translations, and assertions.
+[src:alembic-migrations/data-definition-language] Many implementations extend the syntax to allow creation of additional elements, such as indexes and user profiles.
+[src:alembic-migrations/data-definition-language] Some systems, such as PostgreSQL and SQL Server, allow *CREATE*, and other DDL commands, inside a database transaction and thus they may be rolled back.
+[src:alembic-migrations/data-definition-language] A commonly used *CREATE* command is the *CREATE TABLE* command.
+[src:alembic-migrations/data-definition-language] Some forms of *CREATE TABLE DDL* may incorporate DML (data manipulation language)-like constructs, such as the *CREATE TABLE AS SELECT* (CTaS) syntax of SQL.
+[src:alembic-migrations/data-definition-language] The *DROP* statement destroys an existing database, table, index, or view.
+[src:alembic-migrations/data-definition-language] A *DROP* statement in SQL removes a component from a relational database management system (RDBMS).
+[src:alembic-migrations/data-definition-language] The types of objects that can be dropped depends on which RDBMS is being used, but most support the dropping of tables, users, and databases.
+[src:alembic-migrations/data-definition-language] Some systems (such as PostgreSQL) allow DROP and other DDL commands to occur inside of a transaction and thus be rolled back.
+[src:alembic-migrations/data-definition-language] The *DROP* statement is distinct from the *DELETE* and *TRUNCATE* statements, in that *DELETE* and *TRUNCATE* do not remove the table itself.
+[src:alembic-migrations/data-definition-language] For example, a *DELETE* statement might delete some (or all) data from a table while leaving the table itself in the database, whereas a *DROP* statement removes the entire table from the database.
+[src:alembic-migrations/data-definition-language] The *ALTER* statement modifies an existing database object.
+[src:alembic-migrations/data-definition-language] An *ALTER* statement in SQL changes the properties of an object inside of a relational database management system (RDBMS).
+[src:alembic-migrations/data-definition-language] The types of objects that can be altered depends on which RDBMS is being used.
+[src:alembic-migrations/data-definition-language] The *TRUNCATE* statement is used to delete all data from a table.
+[src:alembic-migrations/data-definition-language] Another type of DDL sentence in SQL is used to define referential integrity relationships, usually implemented as primary key and foreign key tags in some columns of the tables.
+[src:alembic-migrations/database-schema] The **database schema** is the structure of a database described in a formal language supported typically by a relational database management system (RDBMS).
+[src:alembic-migrations/database-schema] The term "schema" refers to the organization of data as a blueprint of how the database is constructed (divided into database tables in the case of relational databases).
+[src:alembic-migrations/database-schema] The formal definition of a database schema is a set of formulas (sentences) called integrity constraints imposed on a database.
+[src:alembic-migrations/database-schema] These integrity constraints ensure compatibility between parts of the schema.
+[src:alembic-migrations/database-schema] All constraints are expressible in the same language.
+[src:alembic-migrations/database-schema] A database can be considered a structure in realization of the database language.
+[src:alembic-migrations/database-schema] The states of a created conceptual schema are transformed into an explicit mapping, the database schema.
+[src:alembic-migrations/database-schema] This describes how real-world entities are modeled in the database.
+[src:alembic-migrations/database-schema] "A database schema specifies, based on the database administrator's knowledge of possible applications, the facts that can enter the database, or those of interest to the possible end-users." The notion of a database schema plays the same role as the notion of theory in predicate calculus.
+[src:alembic-migrations/database-schema] A model of this "theory" closely corresponds to a database, which can be seen at any instant of time as a mathematical object.
+[src:alembic-migrations/database-schema] Thus a schema can contain formulas representing integrity constraints specifically for an application and the constraints specifically for a type of database, all expressed in the same database language.
+[src:alembic-migrations/database-schema] In a relational database, the schema defines the tables, fields, relationships, views, indexes, packages, procedures, functions, queues, triggers, types, sequences, materialized views, synonyms, database links, directories, XML schemas, and other elements.
+[src:alembic-migrations/database-schema] A database generally stores its schema in a data dictionary.
+[src:alembic-migrations/database-schema] Although a schema is defined in text database language, the term is often used to refer to a graphical depiction of the database structure.
+[src:alembic-migrations/database-schema] In other words, schema is the structure of the database that defines the objects in the database.
+[src:alembic-migrations/database-schema] In an Oracle Database system, the term "schema" has a slightly different connotation.
+[src:alembic-migrations/database-schema] The requirements listed below influence the detailed structure of schemas that are produced.
+[src:alembic-migrations/database-schema] Certain applications will not require that all of these conditions are met, but these four requirements are the most ideal.
+[src:alembic-migrations/database-schema] Each of the overlapping elements specified in the input mapping is also in a database schema relation.
+[src:alembic-migrations/database-schema] Source-specific elements that are associated with a source’s overlapping elements are passed through to the database schema.
+[src:alembic-migrations/database-schema] Independent entities and relationships in the source data should not be grouped together in the same relation in the database schema.
+[src:alembic-migrations/database-schema] In particular, source specific schema elements should not be grouped with overlapping schema elements, if the grouping co-locates independent entities or relationships.
+[src:alembic-migrations/database-schema] If any elements of the database schema are dropped then the database schema is not ideal.
+[src:alembic-migrations/database-schema] Suppose we want a mediated schema to integrate two travel databases, Go-travel and Ok-flight.
+[src:alembic-migrations/database-schema] In the context of Oracle Databases, a **schema object** is a logical data storage structure.
+[src:alembic-migrations/database-schema] An Oracle database associates a separate schema with each database **user**.
+[src:alembic-migrations/database-schema] A schema comprises a collection of schema objects.
+[src:alembic-migrations/database-schema] Schema objects do not have a one-to-one correspondence to physical files on disk that store their information.
+[src:alembic-migrations/database-schema] However, Oracle databases store schema objects logically within a tablespace of the database.
+[src:alembic-migrations/database-schema] The data of each object is physically contained in one or more of the tablespace's datafiles.
+[src:alembic-migrations/database-schema] For some objects (such as tables, indexes, and clusters) a database administrator can specify how much disk space the Oracle RDBMS allocates for the object within the tablespace's datafiles.
+[src:alembic-migrations/database-schema] There is no necessary relationship between schemas and tablespaces: a tablespace can contain objects from different schemas, and the objects for a single schema can reside in different tablespaces.
+[src:alembic-migrations/database-schema] Oracle database specificity does, however, enforce platform recognition of nonhomogenized sequence differentials, which is considered a crucial limiting factor in virtualized applications.
+[src:alembic-migrations/database-schema] In Microsoft SQL Server, the default schema of every database is the dbo schema.
+[src:alembic-migrations/relational-database] A **relational database** (**RDB**) is a database based on the relational model of data, as proposed by E.
+[src:alembic-migrations/relational-database] A Relational Database Management System (RDBMS) is a type of database management system that stores data in a structured format using rows and columns.
+[src:alembic-migrations/relational-database] Many relational database systems are equipped with the option of using SQL (Structured Query Language) for querying and updating the database.
+[src:alembic-migrations/relational-database] The concept of relational database was defined by E.
+[src:alembic-migrations/relational-database] Codd introduced the term *relational* in his research paper "A Relational Model of Data for Large Shared Data Banks".
+[src:alembic-migrations/relational-database] In this paper and later papers, he defined what he meant by *relation*.
+[src:alembic-migrations/relational-database] One well-known definition of what constitutes a relational database system is composed of Codd's 12 rules.
+[src:alembic-migrations/relational-database] Provide relational operators to manipulate the data in tabular form.
+[src:alembic-migrations/relational-database] In 1974, IBM began developing System R, a research project to develop a prototype RDBMS.
+[src:alembic-migrations/relational-database] The first system sold as an RDBMS was Multics Relational Data Store (June 1976).
+[src:alembic-migrations/relational-database] Oracle was released in 1979 by Relational Software, now Oracle Corporation.
+[src:alembic-migrations/relational-database] Other examples of an RDBMS include IBM Db2, SAP Sybase ASE, and Informix.
+[src:alembic-migrations/relational-database] In 1984, the first RDBMS for Macintosh began being developed, code-named Silver Surfer, and was released in 1987 as 4th Dimension and known today as 4D.
+[src:alembic-migrations/relational-database] The most common definition of an RDBMS is a product that presents a view of data as a collection of rows and columns, even if it is not based strictly upon relational theory.
+[src:alembic-migrations/relational-database] By this definition, RDBMS products typically implement some but not all of Codd's 12 rules.
+[src:alembic-migrations/relational-database] A second school of thought argues that if a database does not implement all of Codd's rules (or the current understanding on the relational model, as expressed by Christopher J.
+[src:alembic-migrations/relational-database] Date, Hugh Darwen and others), it is not relational.
+[src:alembic-migrations/relational-database] This view, shared by many theorists and other strict adherents to Codd's principles, would disqualify most DBMSs as not relational.
+[src:alembic-migrations/relational-database] For clarification, they often refer to some RDBMSs as *truly-relational database management systems* (TRDBMS), naming others *pseudo-relational database management systems* (PRDBMS).
+[src:alembic-migrations/relational-database] As of 2009, most commercial relational DBMSs employ SQL as their query language.
+[src:alembic-migrations/relational-database] Alternative query languages have been proposed and implemented, notably the pre-1996 implementation of Ingres QUEL.
+[src:alembic-migrations/relational-database] A relational model organizes data into one or more tables (or "relations") of columns and rows, with a unique key identifying each row.
+[src:alembic-migrations/relational-database] Generally, each table/relation represents one "entity type" (such as customer or product).
+[src:alembic-migrations/relational-database] The rows represent instances of that type of entity (such as "Lee" or "chair") and the columns represent values attributed to that instance (such as address or price).
+[src:alembic-migrations/relational-database] Each row in a table has its own unique key.
+[src:alembic-migrations/relational-database] Rows in a table can be linked to rows in other tables by adding a column for the unique key of the linked row (such columns are known as foreign keys).
+[src:alembic-migrations/relational-database] Codd showed that data relationships of arbitrary complexity can be represented by a simple set of concepts.
+[src:alembic-migrations/relational-database] Part of this processing involves consistently being able to select or modify one and only one row in a table.
+[src:alembic-migrations/relational-database] Therefore, most physical implementations have a unique primary key (PK) for each row in a table.
+[src:alembic-migrations/relational-database] When a new row is written to the table, a new unique value for the primary key is generated; this is the key that the system uses primarily for accessing the table.
+[src:alembic-migrations/relational-database] System performance is optimized for PKs.
+[src:alembic-migrations/relational-database] Other, more natural keys may also be identified and defined as alternate keys (AK).
+[src:alembic-migrations/relational-database] Often several columns are needed to form an AK (this is one reason why a single integer column is usually made the PK).
+[src:alembic-migrations/relational-database] Both PKs and AKs have the ability to uniquely identify a row within a table.
+[src:alembic-migrations/relational-database] Additional technology may be applied to ensure a unique ID across the world, a globally unique identifier, when there are broader system requirements.
+[src:alembic-migrations/relational-database] The primary keys within a database are used to define the relationships among the tables.
+[src:alembic-migrations/relational-database] When a PK migrates to another table, it becomes a foreign key (FK) in the other table.
+[src:alembic-migrations/relational-database] When each cell can contain only one value and the PK migrates into a regular entity table, this design pattern can represent either a one-to-one or one-to-many relationship.
+[src:alembic-migrations/relational-database] Most relational database designs resolve many-to-many relationships by creating an additional table that contains the PKs from both of the other entity tables – the relationship becomes an entity; the resolution table is then named appropriately and the two FKs are combined to form a PK.
+[src:alembic-migrations/relational-database] The migration of PKs to other tables is the second major reason why system-assigned integers are used normally as PKs; there is usually neither efficiency nor clarity in migrating a bunch of other types of columns.
+[src:alembic-migrations/relational-database] Relationships are a logical connection between different tables (entities), established on the basis of interaction among these tables.
+[src:alembic-migrations/relational-database] These relationships can be modelled as an entity-relationship model.
+[src:alembic-migrations/relational-database] In order for a database management system (DBMS) to operate efficiently and accurately, it must use ACID transactions.
+[src:alembic-migrations/relational-database] Part of the programming within an RDBMS is accomplished using stored procedures (SPs).
+[src:alembic-migrations/relational-database] Often procedures can be used to greatly reduce the amount of information transferred within and outside of a system.
+[src:alembic-migrations/relational-database] For increased security, the system design may grant access to only the stored procedures and not directly to the tables.
+[src:alembic-migrations/relational-database] Fundamental stored procedures contain the logic needed to insert new and update existing data.
+[src:alembic-migrations/relational-database] More complex procedures may be written to implement additional rules and logic related to processing or selecting the data.
+[src:alembic-migrations/relational-database] The relational database was first defined in June 1970 by Edgar Codd, of IBM's San Jose Research Laboratory.
+[src:alembic-migrations/relational-database] Codd's view of what qualifies as an RDBMS is summarized in Codd's 12 rules.
+[src:alembic-migrations/relational-database] A relational database has become the predominant type of database.
+[src:alembic-migrations/relational-database] Other models besides the *relational model* include the hierarchical database model and the network model.
+[src:alembic-migrations/relational-database] In a relational database, a *relation* is a set of tuples that have the same attributes.
+[src:alembic-migrations/relational-database] A tuple usually represents an object and information about that object.
+[src:alembic-migrations/relational-database] Objects are typically physical objects or concepts.
+[src:alembic-migrations/relational-database] A relation is usually described as a table, which is organized into rows and columns.
+[src:alembic-migrations/relational-database] All the data referenced by an attribute are in the same domain and conform to the same constraints.
+[src:alembic-migrations/relational-database] The relational model specifies that the tuples of a relation have no specific order and that the tuples, in turn, impose no order on the attributes.
+[src:alembic-migrations/relational-database] Applications access data by specifying queries, which use operations such as *select* to identify tuples, *project* to identify attributes, and *join* to combine relations.
+[src:alembic-migrations/relational-database] Relations can be modified using the *insert*, *delete*, and *update* operators.
+[src:alembic-migrations/relational-database] New tuples can supply explicit values or be derived from a query.
+[src:alembic-migrations/relational-database] Similarly, queries identify tuples for updating or deleting.
+[src:alembic-migrations/relational-database] If the tuple contains a candidate or primary key then obviously it is unique; however, a primary key need not be defined for a row or record to be a tuple.
+[src:alembic-migrations/relational-database] The definition of a tuple requires that it be unique, but does not require a primary key to be defined.
+[src:alembic-migrations/relational-database] Because a tuple is unique, its attributes by definition constitute a superkey.
+[src:alembic-migrations/relational-database] All data are stored and accessed via relations.
+[src:alembic-migrations/relational-database] Relations that store data are called "base relations", and in implementations are called "tables".
+[src:alembic-migrations/relational-database] Other relations do not store data, but are computed by applying relational operations to other relations.
+[src:alembic-migrations/relational-database] These relations are sometimes called "derived relations".
+[src:alembic-migrations/relational-database] In implementations these are called "views" or "queries".
+[src:alembic-migrations/relational-database] Derived relations are convenient in that they act as a single relation, even though they may grab information from several relations.
+[src:alembic-migrations/relational-database] Also, derived relations can be used as an abstraction layer.
+[src:alembic-migrations/relational-database] A domain describes the set of possible values for a given attribute, and can be considered a constraint on the value of the attribute.
+[src:alembic-migrations/relational-database] Mathematically, attaching a domain to an attribute means that any value for the attribute must be an element of the specified set.
+[src:alembic-migrations/relational-database] The character string *"ABC"*, for instance, is not in the integer domain, but the integer value *123* is.
+[src:alembic-migrations/relational-database] Another example of domain describes the possible values for the field "CoinFace" as ("Heads","Tails").
+[src:alembic-migrations/relational-database] So, the field "CoinFace" will not accept input values like (0,1) or (H,T).
+[src:alembic-migrations/relational-database] Constraints are often used to make it possible to further restrict the domain of an attribute.
+[src:alembic-migrations/relational-database] For instance, a constraint can restrict a given integer attribute to values between 1 and 10.
+[src:alembic-migrations/relational-database] Constraints provide one method of implementing business rules in the database and support subsequent data use within the application layer.
+[src:alembic-migrations/relational-database] SQL implements constraint functionality in the form of check constraints.
+[src:alembic-migrations/relational-database] Constraints restrict the data that can be stored in relations.
+[src:alembic-migrations/relational-database] These are usually defined using expressions that result in a Boolean value, indicating whether or not the data satisfies the constraint.
+[src:alembic-migrations/relational-database] Constraints can apply to single attributes, to a tuple (restricting combinations of attributes) or to an entire relation.
+[src:alembic-migrations/relational-database] Since every attribute has an associated domain, there are constraints (**domain constraints**).
+[src:alembic-migrations/relational-database] The two principal rules for the relational model are known as **entity integrity** and **referential integrity**.
+[src:alembic-migrations/relational-database] Every relation/table has a primary key, this being a consequence of a relation being a set.
+[src:alembic-migrations/relational-database] A primary key uniquely specifies a tuple within a table.
+[src:alembic-migrations/relational-database] While natural attributes (attributes used to describe the data being entered) are sometimes good primary keys, surrogate keys are often used instead.
+[src:alembic-migrations/relational-database] A surrogate key is an artificial attribute assigned to an object which uniquely identifies it (for instance, in a table of information about students at a school they might all be assigned a student ID in order to differentiate them).
+[src:alembic-migrations/relational-database] The surrogate key has no intrinsic (inherent) meaning, but rather is useful through its ability to uniquely identify a tuple.
+[src:alembic-migrations/relational-database] Another common occurrence, especially in regard to N:M cardinality is the composite key.
+[src:alembic-migrations/relational-database] A composite key is a key made up of two or more attributes within a table that (together) uniquely identify a record.
+[src:alembic-migrations/relational-database] Foreign key refers to a field in a relational table that matches the primary key column of another table.
+[src:alembic-migrations/relational-database] Foreign keys need not have unique values in the referencing relation.
+[src:alembic-migrations/relational-database] A foreign key can be used to cross-reference tables, and it effectively uses the values of attributes in the referenced relation to restrict the domain of one or more attributes in the referencing relation.
+[src:alembic-migrations/relational-database] A stored procedure is executable code that is associated with, and generally stored in, the database.
+[src:alembic-migrations/relational-database] Stored procedures usually collect and customize common operations, like inserting a tuple into a relation, gathering statistical information about usage patterns, or encapsulating complex business logic and calculations.
+[src:alembic-migrations/relational-database] Frequently they are used as an application programming interface (API) for security or simplicity.
+[src:alembic-migrations/relational-database] Implementations of stored procedures on SQL RDBMS's often allow developers to take advantage of procedural extensions (often vendor-specific) to the standard declarative SQL syntax.
+[src:alembic-migrations/relational-database] Stored procedures are not part of the relational database model, but all commercial implementations include them.
+[src:alembic-migrations/relational-database] An index is one way of providing quicker access to data.
+[src:alembic-migrations/relational-database] Indices can be created on any combination of attributes on a relation.
+[src:alembic-migrations/relational-database] Queries that filter using those attributes can find matching tuples directly using the index (similar to Hash table lookup), without having to check each tuple in turn.
+[src:alembic-migrations/relational-database] This is analogous to using the index of a book to go directly to the page on which the information you are looking for is found, so that you do not have to read the entire book to find what you are looking for.
+[src:alembic-migrations/relational-database] Relational databases typically supply multiple indexing techniques, each of which is optimal for some combination of data distribution, relation size, and typical access pattern.
+[src:alembic-migrations/relational-database] Indices are usually implemented via B+ trees, R-trees, and bitmaps.
+[src:alembic-migrations/relational-database] Indices are usually not considered part of the database, as they are considered an implementation detail, though indices are usually maintained by the same group that maintains the other parts of the database.
+[src:alembic-migrations/relational-database] The use of efficient indexes on both primary and foreign keys can dramatically improve query performance.
+[src:alembic-migrations/relational-database] This is because B-tree indexes result in query times proportional to log(n) where n is the number of rows in a table and hash indexes result in constant time queries (no size dependency as long as the relevant part of the index fits into memory).
+[src:alembic-migrations/relational-database] Queries made against the relational database, and the derived relvars in the database are expressed in a relational calculus or a relational algebra.
+[src:alembic-migrations/relational-database] In his original relational algebra, Codd introduced eight relational operators in two groups of four operators each.
+[src:alembic-migrations/relational-database] Other operators have been introduced or proposed since Codd's introduction of the original eight including relational comparison operators and extensions that offer support for nesting and hierarchical data, among others.
+[src:alembic-migrations/relational-database] Normalization was first proposed by Codd as an integral part of the relational model.
+[src:alembic-migrations/relational-database] It encompasses a set of procedures designed to eliminate non-simple domains (non-atomic values) and the redundancy (duplication) of data, which in turn prevents data manipulation anomalies and loss of data integrity.
+[src:alembic-migrations/relational-database] The most common forms of normalization applied to databases are called the normal forms.
+[src:alembic-migrations/relational-database] Connolly and Begg define database management system (DBMS) as a "software system that enables users to define, create, maintain and control access to the database".
+[src:alembic-migrations/relational-database] RDBMS is an extension of that initialism that is sometimes used when the underlying database is relational.
+[src:alembic-migrations/relational-database] An alternative definition for a **relational database management system** is a database management system (DBMS) based on the relational model.
+[src:alembic-migrations/relational-database] Most databases in widespread use today are based on this model.
+[src:alembic-migrations/relational-database] RDBMSs have been a common option for the storage of information in databases used for financial records, manufacturing and logistical information, personnel data, and other applications since the 1980s.
+[src:alembic-migrations/relational-database] Relational databases have often replaced legacy hierarchical databases and network databases, because RDBMS were easier to implement and administer.
+[src:alembic-migrations/relational-database] However, due to the expanse of technologies, such as horizontal scaling of computer clusters, NoSQL databases have recently become popular as an alternative to RDBMS databases.
+[src:alembic-migrations/relational-database] Distributed Relational Database Architecture (DRDA) was designed by a workgroup within IBM in the period 1988 to 1994.
+[src:alembic-migrations/relational-database] DRDA enables network connected relational databases to cooperate to fulfill SQL requests.
+[src:alembic-migrations/relational-database] The messages, protocols, and structural components of DRDA are defined by the Distributed Data Management Architecture.
+[src:alembic-migrations/relational-database] According to research company Gartner, in 2011, the five leading proprietary software relational database vendors by revenue were Oracle (48.8%), IBM (20.2%), Microsoft (17.0%), SAP including Sybase (4.6%), and Teradata (3.7%).
+[src:alembic-migrations/schema-migration] In software engineering, a **schema migration** (also **database migration**, **database change management**) refers to the management of version-controlled, incremental and sometimes reversible changes to relational database schemas.
+[src:alembic-migrations/schema-migration] A schema migration is performed on a database whenever it is necessary to update or revert that database's schema to some newer or older version.
+[src:alembic-migrations/schema-migration] Migrations are performed programmatically by using a *schema migration tool*.
+[src:alembic-migrations/schema-migration] When invoked with a specified desired schema version, the tool automates the successive application or reversal of an appropriate sequence of schema changes until it is brought to the desired state.
+[src:alembic-migrations/schema-migration] Most schema migration tools aim to minimize the impact of schema changes on any existing data in the database.
+[src:alembic-migrations/schema-migration] Despite this, preservation of data in general is not guaranteed because schema changes such as the deletion of a database column can destroy data (i.e. all values stored under that column for all rows in that table are deleted).
+[src:alembic-migrations/schema-migration] Instead, the tools help to preserve the meaning of the data or to reorganize existing data to meet new requirements.
+[src:alembic-migrations/schema-migration] Since meaning of the data often cannot be encoded, the configuration of the tools usually needs manual intervention.
+[src:alembic-migrations/schema-migration] Schema migration allows for fixing mistakes and adapting the data as requirements change.
+[src:alembic-migrations/schema-migration] They are an essential part of software evolution, especially in agile environments (see below).
+[src:alembic-migrations/schema-migration] Applying a schema migration to a production database is always a risk.
+[src:alembic-migrations/schema-migration] Development and test databases tend to be smaller and cleaner.
+[src:alembic-migrations/schema-migration] The data in them is better understood, and if everything else fails, the amount of data is small enough for a human to process.
+[src:alembic-migrations/schema-migration] Production databases are usually huge, old and full of surprises.
+[src:alembic-migrations/schema-migration] For these reasons, the migration process needs a high level of discipline, thorough testing and a sound backup strategy.
+[src:alembic-migrations/schema-migration] In the steady state, one version of an application only understands one version of a schema.
+[src:alembic-migrations/schema-migration] So the most basic strategy is to shut down the application, execute the schema migration, and then start the newer version of the application.
+[src:alembic-migrations/schema-migration] While simple, this strategy causes a downtime.
+[src:alembic-migrations/schema-migration] Depending on the criticality of the system and its usage patterns, downtimes of various duration may be tolerated, but in some cases none may be tolerated at all.
+[src:alembic-migrations/schema-migration] In those cases, one of the following zero-downtime strategies may be used.
+[src:alembic-migrations/schema-migration] Deploy a new version of the application which writes data in both the old and new formats (hence the name dual writing).
+[src:alembic-migrations/schema-migration] It's important to ensure consistency of these writes.
+[src:alembic-migrations/schema-migration] After this point, all newly written data will exist in both old and new formats.
+[src:alembic-migrations/schema-migration] Execute a backfill in the database: copy data from the old format to the new format that existed previously, and hasn't been updated recently, so it's not dual written yet.
+[src:alembic-migrations/schema-migration] After this point, the database has a complete replica of the data in both the old and new formats.
+[src:alembic-migrations/schema-migration] Deploy a new version of the application which switches to reading data in the new format, and stops dual writing.
+[src:alembic-migrations/schema-migration] In distributed systems, it's important to switch the reading path before stopping dual writing, so this step may be divided into two.
+[src:alembic-migrations/schema-migration] Remove the old format data from the schema.
+[src:alembic-migrations/schema-migration] Deploy a new version of the application which tries to read both the old and new formats (hence the name dual reading), and works with whichever format is currently present.
+[src:alembic-migrations/schema-migration] Deploy another version of the application which stops writing the old format and starts writing the new format instead.
+[src:alembic-migrations/schema-migration] Everything should continue working normally as the dual reading will recognize that it has to read the new format for newly written rows.
+[src:alembic-migrations/schema-migration] Execute a backfill in the database: for all data that was written in the old format, move it over to the new format.
+[src:alembic-migrations/schema-migration] Deploy an application change once more that stops reading the old data.
+[src:alembic-migrations/schema-migration] In this combined approach, the application is changed to both dual read and dual write.
+[src:alembic-migrations/schema-migration] Since both individual strategies ensure that the database can remain online without interruption, the combined approach achieves the same as well.
+[src:alembic-migrations/schema-migration] This strategy allows for more fine grained control over the backfill, which can be divided into smaller batches, and feature flags may be used to toggle both the reading and writing paths more freely and separately from each other.
+[src:alembic-migrations/schema-migration] This can also be useful when regular dual writing alone can't be guaranteed to happen in consistent transactions.
+[src:alembic-migrations/schema-migration] When developing software applications backed by a database, developers typically develop the application source code in tandem with an evolving database schema.
+[src:alembic-migrations/schema-migration] The code typically has rigid expectations of what columns, tables and constraints are present in the database schema whenever it needs to interact with one, so only the version of database schema against which the code was developed is considered fully compatible with that version of source code.
+[src:alembic-migrations/schema-migration] In advanced applications, the migration itself can be subject to migration testing.
+[src:alembic-migrations/schema-migration] With schema migration technology, data models no longer need to be fully designed up-front, and are more capable of being adapted with changing project requirements throughout the software development lifecycle.
+[src:alembic-migrations/schema-migration] Teams of software developers usually use version control systems to manage and collaborate on changes made to versions of source code.
+[src:alembic-migrations/schema-migration] Different developers can develop on divergent, relatively older or newer branches of the same source code to make changes and additions during development.
+[src:alembic-migrations/schema-migration] Supposing that the software under development interacts with a database, every version of the source code can be associated with at least one database schema with which it is compatible.
+[src:alembic-migrations/schema-migration] Under good software testing practice, schema migrations can be performed on test databases to ensure that their schema is compatible to the source code.
+[src:alembic-migrations/schema-migration] To streamline this process, a schema migration tool is usually invoked as a part of an automated software build as a prerequisite of the automated testing phase.
+[src:alembic-migrations/schema-migration] Schema migration tools can be said to solve versioning problems for database schemas just as version control systems solve versioning problems for source code.
+[src:alembic-migrations/schema-migration] In practice, many schema migration tools actually rely on a textual representation of schema changes (such as files containing SQL statements) such that the version history of schema changes can effectively be stored alongside program source code within VCS.
+[src:alembic-migrations/schema-migration] This approach ensures that the information necessary to recover a compatible database schema for a particular code branch is recoverable from the source tree itself.
+[src:alembic-migrations/schema-migration] Another benefit of this approach is the handling of concurrent conflicting schema changes; developers may simply use their usual text-based conflict resolution tools to reconcile differences.
+[src:alembic-migrations/schema-migration] Schema migration tooling could be seen as a facility to track the history of an evolving schema (i.e. schema evolution).
+[src:alembic-migrations/schema-migration] Developers no longer need to remove the entire test database in order to create a new test database from scratch (e.g. using schema creation scripts from DDL generation tools).
+[src:alembic-migrations/schema-migration] Further, if generation of test data costs a lot of time, developers can avoid regenerating test data for small, non-destructive changes to the schema.
+[src:alembic-migrations/tutorial] Alembic provides for the creation, management, and invocation of *change management* scripts for a relational database, using SQLAlchemy as the underlying engine.
+[src:alembic-migrations/tutorial] This tutorial will provide a full introduction to the theory and usage of this tool.
+[src:alembic-migrations/tutorial] To begin, make sure Alembic is installed; a common way to install within a local virtual environment is described at Installation.
+[src:alembic-migrations/tutorial] This is not strictly necessary, however is usually preferred.
+[src:alembic-migrations/tutorial] The tutorial below assumes the `alembic` command line utility is present in the local path and when invoked, will have access to the same Python module environment as that of the target project.
+[src:alembic-migrations/tutorial] Usage of Alembic starts with creation of the *Migration Environment*.
+[src:alembic-migrations/tutorial] This is a directory of scripts that is specific to a particular application.
+[src:alembic-migrations/tutorial] The migration environment is created just once, and is then maintained along with the application’s source code itself.
+[src:alembic-migrations/tutorial] The environment is created using the `init` command of Alembic, and is then customizable to suit the specific needs of the application.
+[src:alembic-migrations/tutorial] With a basic understanding of what the environment is, we can create one using `alembic init`.
+[src:alembic-migrations/tutorial] The above layout is produced using a layout template called `generic`.
+[src:alembic-migrations/tutorial] Alembic also includes other environment templates.
+[src:alembic-migrations/tutorial] Changed in version 1.16.0: A new `pyproject` template has been added.
+[src:alembic-migrations/tutorial] See the section Using pyproject.toml for configuration for background.
+[src:alembic-migrations/tutorial] Alembic placed a file `alembic.ini` into the current directory.
+[src:alembic-migrations/tutorial] Alembic looks in the current directory for this file when any other commands are run; to indicate an alternative location, the `--config` option may be used, or the `ALEMBIC_CONFIG` environment variable may be set.
+[src:alembic-migrations/tutorial] The file generated with the `generic` configuration template contains all directives for both source code configuration as well as database configuration.
+[src:alembic-migrations/tutorial] When using the `pyproject` template, the source code configuration elements will instead be in a separate `pyproject.toml` file, described in the section Using pyproject.toml for configuration.
+[src:alembic-migrations/tutorial] The `alembic.ini` file is consumed by Alembic using Python’s configparser.ConfigParser library.
+[src:alembic-migrations/tutorial] The `%(here)s` variable is provided as a substitution which is populated with the absolute path to the `alembic.ini` file itself.
+[src:alembic-migrations/tutorial] This can be used to produce correct pathnames to directories and files relative to where the config file is located.
+[src:alembic-migrations/tutorial] Percent signs in `alembic.ini` configuration variables that are not part of an interpolation token like `%(here)s`, including percent signs that are part of the SQLAlchemy database URL for its own URL-escaping requirements, must themselves be escaped.
+[src:alembic-migrations/tutorial] See the section Escaping Characters in ini files for more information.
+[src:alembic-migrations/tutorial] As mentioned previously, Alembic’s .ini file format uses Python ConfigParser to parse the file.
+[src:alembic-migrations/tutorial] `ConfigParser` ‘s interpolation feature is enabled in this operation to support the use of the `%(here)s` token, as well as any other tokens that are user-configurable via the `Config.config_args` parameter when creating a custom `Config` object.
+[src:alembic-migrations/tutorial] This means that any literal string that includes a percent sign that is not part of an interpolated variable must be escaped by doubling it.
+[src:alembic-migrations/tutorial] Where above, the actual `file_template` that is sent to Alembic’s file generation system would be `%(year)d_%(month).2d_%(day).2d_%(hour).2d%(minute).2d-%(rev)s_%(slug)s`.
+[src:alembic-migrations/tutorial] Alembic also employs percent-sign interpolation of values when retrieving values from a `pyproject.toml` file, as documented at Using pyproject.toml for configuration.
+[src:alembic-migrations/tutorial] So the same percent-doubling steps must be applied in Alembic-parsed values, for fields such as `file_template`.
+[src:alembic-migrations/tutorial] For the SQLAlchemy URL, percent signs are used to escape syntactically- significant characters such as the `@` sign as well as the percent sign itself.
+[src:alembic-migrations/tutorial] As the `alembic.ini` file includes a subset of options that are specific to the organization and production of Python code within the local environment, these specific options may alternatively be placed in the application’s `pyproject.toml` file, to allow for **PEP 621** compliant configuration.
+[src:alembic-migrations/tutorial] Use of `pyproject.toml` does not preclude having an `alembic.ini` file as well, as `alembic.ini` is still the default location for **deployment** details such as database URLs, connectivity options, and logging to be present.
+[src:alembic-migrations/tutorial] Alembic will still run successfully if only a `pyproject.toml` file is present and no `alembic.ini` is found.
+[src:alembic-migrations/tutorial] Alembic’s template runner will generate a new `pyproject.toml` file if one does not exist, or it will append directives to an existing `pyproject.toml` file that does not already include alembic directives.
+[src:alembic-migrations/tutorial] Within the `pyproject.toml` file, the default section generated looks mostly like the `alembic.ini` file, with the welcome exception that lists of values are supported directly; this means the values `prepend_sys_path` and `version_locations` are specified as lists.
+[src:alembic-migrations/tutorial] As Alembic adds support for interpolation tokens like `%(here)s` to its handling of `pyproject.toml` values, the same percent-sign escaping steps that apply to `alembic.ini` configuration variables also apply to `pyproject.toml`, even though database URLs are not configured in this file.
+[src:alembic-migrations/tutorial] This escaping can be seen in the sample `file_template` value above.
+[src:alembic-migrations/tutorial] See the section Escaping Characters in ini files for background.
+[src:alembic-migrations/tutorial] When `env.py` is configured to obtain database connectivity and logging configuration from places other than `alembic.ini`, the file can be omitted altogether.
+[src:alembic-migrations/tutorial] A new file `1975ea83b712_create_account_table.py` is generated.
+[src:alembic-migrations/tutorial] The file contains some header information, identifiers for the current revision and a “downgrade” revision, an import of basic Alembic directives, and empty `upgrade()` and `downgrade()` functions.
+[src:alembic-migrations/tutorial] Our job here is to populate the `upgrade()` and `downgrade()` functions with directives that will apply a set of changes to our database.
+[src:alembic-migrations/tutorial] Typically, `upgrade()` is required while `downgrade()` is only needed if down-revision capability is desired, though it’s probably a good idea.
+[src:alembic-migrations/tutorial] Another thing to notice is the `down_revision` variable.
+[src:alembic-migrations/tutorial] This is how Alembic knows the correct order in which to apply migrations.
+[src:alembic-migrations/tutorial] Every time Alembic runs an operation against the `versions/` directory, it reads all the files in, and composes a list based on how the `down_revision` identifiers link together, with the `down_revision` of `None` representing the first file.
+[src:alembic-migrations/tutorial] `create_table()` and `drop_table()` are Alembic directives.
+[src:alembic-migrations/tutorial] Alembic provides all the basic database migration operations via these directives, which are designed to be as simple and minimalistic as possible; there’s no reliance upon existing table metadata for most of these directives.
+[src:alembic-migrations/tutorial] They draw upon a global “context” that indicates how to get at a database connection (if any; migrations can dump SQL/DDL directives to files as well) in order to invoke the command.
+[src:alembic-migrations/tutorial] This global context is set up, like everything else, in the `env.py` script.
+[src:alembic-migrations/tutorial] An overview of all Alembic directives is at Operation Reference.
+[src:alembic-migrations/tutorial] Assuming our database is totally clean, it’s as yet unversioned.
+[src:alembic-migrations/tutorial] The `alembic upgrade` command will run upgrade operations, proceeding from the current database revision, in this example `None`, to the given target revision.
+[src:alembic-migrations/tutorial] Note that the information we see on the screen is the result of the logging configuration set up in `alembic.ini` - logging the `alembic` stream to the console (standard error, specifically).
+[src:alembic-migrations/tutorial] The process which occurred here included that Alembic first checked if the database had a table called `alembic_version`, and if not, created it.
+[src:alembic-migrations/tutorial] It looks in this table for the current version, if any, and then calculates the path from this version to the version requested, in this case `head`, which is known to be `1975ea83b712`.
+[src:alembic-migrations/tutorial] It then invokes the `upgrade()` method in each file to get to the target revision.
+[src:alembic-migrations/tutorial] Let’s do another one so we have some things to play with.
+[src:alembic-migrations/tutorial] We’ve now added the `last_transaction_date` column to the database.
+[src:alembic-migrations/tutorial] Any time we need to refer to a revision number explicitly, we have the option to use a partial number.
+[src:alembic-migrations/tutorial] Above, we use `ae1` to refer to revision `ae1027a6acf`.
+[src:alembic-migrations/tutorial] Alembic will stop and let you know if more than one version starts with that prefix.
+[src:alembic-migrations/tutorial] Relative upgrades/downgrades are also supported.
+[src:alembic-migrations/tutorial] Relative identifiers may also be in terms of a specific revision.
+[src:alembic-migrations/tutorial] With a few revisions present we can get some information about the state of things.
+[src:alembic-migrations/tutorial] `head` is displayed only if the revision identifier for this database matches the head revision.
+[src:alembic-migrations/tutorial] Using the `-r` option to `alembic history`, we can also view various slices of history.
+[src:alembic-migrations/tutorial] Using quotes or escape symbols will not work if there’s a space after the argument name.
+[src:alembic-migrations/tutorial] The vast majority of Alembic environments make heavy use of the “autogenerate” feature.
+[src:alembic-migrations/tutorial] Continue onto the next section, Auto Generating Migrations.
+[src:alembic-migrations/version-control] Version control is a component of software configuration management.
+[src:alembic-migrations/version-control] A **version control system** is a software tool that automates version control.
+[src:alembic-migrations/version-control] Alternatively, version control is embedded as a feature of some systems such as word processors, spreadsheets, collaborative web docs, and content management systems, such as Wikipedia's page history.
+[src:alembic-migrations/version-control] Version control includes options to view old versions and to revert a file to a previous version.
+[src:alembic-migrations/version-control] As teams develop software, it is common to deploy multiple versions of the same software, and for different developers to work on one or more different versions simultaneously.
+[src:alembic-migrations/version-control] Bugs or features of the software are often only present in certain versions (because of the fixing of some problems and the introduction of others as the program develops).
+[src:alembic-migrations/version-control] Therefore, for the purposes of locating and fixing bugs, it is vitally important to be able to retrieve and run different versions of the software to determine in which version(s) the problem occurs.
+[src:alembic-migrations/version-control] It may also be necessary to develop two versions of the software concurrently: for instance, where one version has bugs fixed, but no new features (branch), while the other version is where new features are worked on (trunk).
+[src:alembic-migrations/version-control] At the simplest level, developers could simply retain multiple copies of the different versions of the program, and label them appropriately.
+[src:alembic-migrations/version-control] This simple approach has been used in many large software projects.
+[src:alembic-migrations/version-control] While this method can work, it is inefficient as many near-identical copies of the program have to be maintained.
+[src:alembic-migrations/version-control] This requires a lot of self-discipline on the part of developers and often leads to mistakes.
+[src:alembic-migrations/version-control] Since the code base is the same, it also requires granting read-write-execute permission to a set of developers, and this adds the pressure of someone managing permissions so that the code base is not compromised, which adds more complexity.
+[src:alembic-migrations/version-control] Consequently, systems to automate some or all of the revision control process have been developed.
+[src:alembic-migrations/version-control] This abstracts most operational steps (hides them from ordinary users).
+[src:alembic-migrations/version-control] Moreover, in software development, legal and business practice, and other environments, it has become increasingly common for a single document or snippet of code to be edited by a team, the members of which may be geographically dispersed and may pursue different and even contrary interests.
+[src:alembic-migrations/version-control] Sophisticated revision control that tracks and accounts for ownership of changes to documents and code may be extremely helpful or even indispensable in such situations.
+[src:alembic-migrations/version-control] Revision control may also track changes to configuration files, such as those typically stored in `/etc` or `/usr/local/etc` on Unix systems.
+[src:alembic-migrations/version-control] This gives system administrators another way to easily track changes made and a way to roll back to earlier versions should the need arise.
+[src:alembic-migrations/version-control] Many version control systems identify the version of a file as a number or letter, called the *version number*, *version*, *revision number*, *revision*, or *revision level*.
+[src:alembic-migrations/version-control] For example, the first version of a file might be version *1*.
+[src:alembic-migrations/version-control] When the file is changed the next version is *2*.
+[src:alembic-migrations/version-control] Each version is associated with a timestamp and the person making the change.
+[src:alembic-migrations/version-control] Revisions can be compared, restored, and, with some types of files, merged.
+[src:alembic-migrations/version-control] IBM's OS/360 IEBUPDTE software update tool dates back to 1962, arguably a precursor to version control system tools.
+[src:alembic-migrations/version-control] Two source management and version control packages that were heavily used by IBM 360/370 installations were The Librarian and Panvalet.
+[src:alembic-migrations/version-control] A full system designed for source code control was started in 1972: the Source Code Control System (SCCS), again for the OS/360.
+[src:alembic-migrations/version-control] SCCS's user manual, especially the introduction, which was published on December 4, 1975, implied that it was the first deliberate revision control system.
+[src:alembic-migrations/version-control] The Revision Control System (RCS) followed in 1982 and, later, Concurrent Versions System (CVS) added network and concurrent development features to RCS.
+[src:alembic-migrations/version-control] After CVS, a dominant successor was Subversion, followed by the rise of distributed version control tools such as Git.
+[src:alembic-migrations/version-control] Revision control manages changes to a set of data over time.
+[src:alembic-migrations/version-control] These changes can be structured in various ways.
+[src:alembic-migrations/version-control] Often the data is thought of as a collection of many individual items, such as files or documents, and changes to individual files are tracked.
+[src:alembic-migrations/version-control] This is in line with the notion of keeping files separate but causes problems when identity changes, which happens when files are renamed, split or merged.
+[src:alembic-migrations/version-control] Accordingly, some systems such as Git, consider changes to the data as a whole instead, which is less intuitive for simple changes but simplifies more complex changes.
+[src:alembic-migrations/version-control] As a simple example, when editing a computer file, the data stored in memory by the editing program is the working copy, which is committed by saving the file.
+[src:alembic-migrations/version-control] Concretely, one may print out a document, edit it by hand, and only later manually input the changes into a computer and save it.
+[src:alembic-migrations/version-control] For source code control, the working copy is instead a copy of all files in a particular revision, generally stored locally on the developer's computer; in this case saving the file only changes the working copy, and checking into the repository is a separate step.
+[src:alembic-migrations/version-control] If multiple people are working on a single data set or document, they are implicitly creating branches of the data (in their working copies), and thus issues of merging arise, as discussed below.
+[src:alembic-migrations/version-control] For simple collaborative document editing, this can be prevented by using file locking or simply avoiding working on the same document that someone else is working on.
+[src:alembic-migrations/version-control] Revision control systems are often centralized, with a single authoritative data store, the *repository,* and check-outs and check-ins done with reference to this central repository.
+[src:alembic-migrations/version-control] Alternatively, in distributed revision control, no single repository is authoritative, and data can be checked out and checked into any repository.
+[src:alembic-migrations/version-control] When checking into a different repository, this is interpreted as a merge or patch.
+[src:alembic-migrations/version-control] In terms of graph theory, revisions are generally thought of as a line of development (the *trunk*) with branches off of this, forming a directed tree, visualized as one or more parallel lines of development (the "mainlines" of the branches) branching off a trunk.
+[src:alembic-migrations/version-control] In reality the structure is more complicated, forming a directed acyclic graph, but for many purposes "tree with merges" is an adequate approximation.
+[src:alembic-migrations/version-control] Revisions occur in sequence over time, and thus can be arranged in order, either by revision number or timestamp.
+[src:alembic-migrations/version-control] Revisions are based on past revisions, though it is possible to largely or completely replace an earlier revision, such as "delete all existing text, insert new text".
+[src:alembic-migrations/version-control] In the simplest case, with no branching or undoing, each revision is based on its immediate predecessor alone, and they form a simple line, with a single latest version, the "HEAD" revision or *tip*.
+[src:alembic-migrations/version-control] In graph theory terms, drawing each revision as a point and each "derived revision" relationship as an arrow (conventionally pointing from older to newer, in the same direction as time), this is a linear graph.
+[src:alembic-migrations/version-control] In principle the resulting tree need not have a preferred tip ("main" latest revision) – just various different revisions – but in practice one tip is generally identified as HEAD.
+[src:alembic-migrations/version-control] When a new revision is based on HEAD, it is either identified as the new HEAD, or considered a new branch.
+[src:alembic-migrations/version-control] This most often occurs when changes occur in multiple branches (most often two, but more are possible), which are then merged into a single branch incorporating both changes.
+[src:alembic-migrations/version-control] If these changes overlap, it may be difficult or impossible to merge, and require manual intervention or rewriting.
+[src:alembic-migrations/version-control] In the presence of merges, the resulting graph is no longer a tree, as nodes can have multiple parents, but is instead a rooted directed acyclic graph (DAG).
+[src:alembic-migrations/version-control] The graph is acyclic since parents are always backwards in time, and rooted because there is an oldest version.
+[src:alembic-migrations/version-control] Assuming there is a trunk, merges from branches can be considered as "external" to the tree – the changes in the branch are packaged up as a *patch,* which is applied to HEAD (of the trunk), creating a new revision without any explicit reference to the branch, and preserving the tree structure.
+[src:alembic-migrations/version-control] Thus, while the actual relations between versions form a DAG, this can be considered a tree plus merges, and the trunk itself is a line.
+[src:alembic-migrations/version-control] In distributed revision control, in the presence of multiple repositories these may be based on a single original version (a root of the tree), but there need not be an original root - instead there can be a separate root (oldest revision) for each repository.
+[src:alembic-migrations/version-control] This can happen, for example, if two people start working on a project separately.
+[src:alembic-migrations/version-control] Similarly, in the presence of multiple data sets (multiple projects) that exchange data or merge, there is no single root, though for simplicity one may think of one project as primary and the other as secondary, merged into the first with or without its own revision history.
+[src:alembic-migrations/version-control] Engineering revision control developed from formalized processes based on tracking revisions of early blueprints or bluelines*"MIL-STD-100G: Department of Defense Standard Practice for Engineering Drawings" (PDF).
+[src:alembic-migrations/version-control] This system of control implicitly allowed returning to an earlier state of the design, for cases in which an engineering dead-end was reached in the development of the design.
+[src:alembic-migrations/version-control] A revision table was used to keep track of the changes made.
+[src:alembic-migrations/version-control] Additionally, the modified areas of the drawing were highlighted using revision clouds.
+[src:alembic-migrations/version-control] Version control is widespread in business and law.
+[src:alembic-migrations/version-control] Indeed, "contract redline" and "legal blackline" are some of the earliest forms of revision control, and are still employed in business and law with varying degrees of sophistication.
+[src:alembic-migrations/version-control] The most sophisticated techniques are beginning to be used for the electronic tracking of changes to CAD files (see product data management), supplanting the "manual" electronic implementation of traditional revision control.
+[src:alembic-migrations/version-control] Game development often involves large binary files and teams working together across different disciplines.
+[src:alembic-migrations/version-control] As a result, game studios use version control systems with good support for large binary files, file locking, and fast synchronization.
+[src:alembic-migrations/version-control] Common tools include Perforce and several newer cloud-based systems.
+[src:alembic-migrations/version-control] Traditional revision control systems use a centralized model where all the revision control functions take place on a shared server.
+[src:alembic-migrations/version-control] If two developers try to change the same file at the same time, without some method of managing access the developers may end up overwriting each other's work.
+[src:alembic-migrations/version-control] Centralized revision control systems solve this problem in one of two different "source management models": file locking and version merging.
+[src:alembic-migrations/version-control] An operation is *atomic* if the system is left in a consistent state even if the operation is interrupted.
+[src:alembic-migrations/version-control] The *commit* operation is usually the most critical in this sense.
+[src:alembic-migrations/version-control] Commits tell the revision control system to make a group of changes final, and available to all users.
+[src:alembic-migrations/version-control] Not all revision control systems have atomic commits; Concurrent Versions System lacks this feature.
+[src:alembic-migrations/version-control] The simplest method of preventing "concurrent access" problems involves locking files so that only one developer at a time has write access to the central "repository" copies of those files.
+[src:alembic-migrations/version-control] Once one developer "checks out" a file, others can read that file, but no one else may change that file until that developer "checks in" the updated version (or cancels the checkout).
+[src:alembic-migrations/version-control] File locking has both merits and drawbacks.
+[src:alembic-migrations/version-control] It can provide some protection against difficult merge conflicts when a user is making radical changes to many sections of a large file (or group of files).
+[src:alembic-migrations/version-control] If the files are left exclusively locked for too long, other developers may be tempted to bypass the revision control software and change the files locally, forcing a difficult manual merge when the other changes are finally checked in.
+[src:alembic-migrations/version-control] In a large organization, files can be left "checked out" and locked and forgotten about as developers move between projects - these tools may or may not make it easy to see who has a file checked out.
+[src:alembic-migrations/version-control] Most version control systems allow multiple developers to edit the same file at the same time.
+[src:alembic-migrations/version-control] The first developer to "check in" changes to the central repository always succeeds.
+[src:alembic-migrations/version-control] The system may provide facilities to merge further changes into the central repository, and preserve the changes from the first developer when other developers check in.
+[src:alembic-migrations/version-control] Merging two files can be a very delicate operation, and usually possible only if the data structure is simple, as in text files.
+[src:alembic-migrations/version-control] The result of a merge of two image files might not result in an image file at all.
+[src:alembic-migrations/version-control] The second developer checking in files will need to take care with the merge, to make sure that the changes are compatible and that the merge operation does not introduce its own logic errors within the files.
+[src:alembic-migrations/version-control] These problems limit the availability of automatic or semi-automatic merge operations mainly to simple text-based documents, unless a specific merge plugin is available for the file types.
+[src:alembic-migrations/version-control] The concept of a *reserved edit* can provide an optional means to explicitly lock a file for exclusive write access, even when a merging capability exists.
+[src:alembic-migrations/version-control] Most revision control tools will use only one of these similar terms (baseline, label, tag) to refer to the action of identifying a snapshot ("label the project") or the record of the snapshot ("try it with baseline *X*").
+[src:alembic-migrations/version-control] Typically only one of the terms *baseline*, *label*, or *tag* is used in documentation or discussion ; they can be considered synonyms.
+[src:alembic-migrations/version-control] In most projects, some snapshots are more significant than others, such as those used to indicate published releases, branches, or milestones.
+[src:alembic-migrations/version-control] When both the term *baseline* and either of *label* or *tag* are used together in the same context, *label* and *tag* usually refer to the mechanism within the tool of identifying or making the record of the snapshot, and *baseline* indicates the increased significance of any given label or tag.
+[src:alembic-migrations/version-control] Most formal discussion of configuration management uses the term *baseline*.
+[src:alembic-migrations/version-control] Distributed revision control systems (DRCS) take a peer-to-peer approach, as opposed to the client–server approach of centralized systems.
+[src:alembic-migrations/version-control] Rather than a single, central repository on which clients synchronize, each peer's working copy of the codebase is a bona-fide repository.
+[src:alembic-migrations/version-control] Distributed revision control conducts synchronization by exchanging patches (change-sets) from peer to peer.
+[src:alembic-migrations/version-control] Rather, communication is only necessary when pushing or pulling changes to or from other peers.
+[src:alembic-migrations/version-control] Following best practices is necessary to obtain the full benefits of version control.
+[src:alembic-migrations/version-control] Best practice may vary by version control tool and the field to which version control is applied.
+[src:alembic-migrations/version-control] Other software development best practices such as code review and automated regression testing may assist in the following of version control best practices.
+[src:alembic-migrations/version-control] Costs and benefits will vary dependent upon the version control tool chosen and the field in which it is applied.
+[src:alembic-migrations/version-control] This section speaks to the field of software development, where version control is widely applied.
+[src:alembic-migrations/version-control] In addition to the costs of licensing the version control software, using version control requires time and effort.
+[src:alembic-migrations/version-control] The concepts underlying version control must be understood and the technical particulars required to operate the version control software chosen must be learned.
+[src:alembic-migrations/version-control] Version control best practices must be learned and integrated into the organization's existing software development practices.
+[src:alembic-migrations/version-control] Management effort may be required to maintain the discipline needed to follow best practices in order to obtain useful benefit.
+[src:alembic-migrations/version-control] A core benefit is the ability to keep history and revert changes, allowing the developer to easily undo changes.
+[src:alembic-migrations/version-control] This gives the developer more opportunity to experiment, eliminating the fear of breaking existing code.
+[src:alembic-migrations/version-control] Branching assists with deployment and release management.
+[src:alembic-migrations/version-control] There can be damage mitigation, accountability, process and design improvement, and other benefits associated with the record keeping provided by version control, the tracking of who did what, when, why, and how.
+[src:alembic-migrations/version-control] When bugs arise, knowing what was done when helps with damage mitigation and recovery by assisting in the identification of what problems exist, how long they have existed, and determining problem scope and solutions.
+[src:alembic-migrations/version-control] Previous versions can be installed and tested to verify conclusions reached by examination of code and commit messages.
+[src:alembic-migrations/version-control] Version control can greatly simplify debugging.
+[src:alembic-migrations/version-control] The application of a test case to multiple versions can quickly identify the change which introduced a bug.
+[src:alembic-migrations/version-control] The developer need not be familiar with the entire code base and can focus instead on the code that introduced the problem.
+[src:alembic-migrations/version-control] Version control enhances collaboration in multiple ways.
+[src:alembic-migrations/version-control] Since version control can identify conflicting changes, i.e. incompatible changes made to the same lines of code, there is less need for coordination among developers.
+[src:alembic-migrations/version-control] The packaging of commits, branches, and all the associated commit messages and version labels, improves communication between developers, both in the moment and over time.
+[src:alembic-migrations/version-control] Better communication, whether instant or deferred, can improve the code review process, the testing process, and other critical aspects of the software development process.
+[src:alembic-migrations/version-control] Some of the more advanced revision-control tools offer many other facilities, allowing deeper integration with other tools and software-engineering processes.
+[src:alembic-migrations/version-control] Plugins are often available for IDEs such as Oracle JDeveloper, IntelliJ IDEA, Eclipse, Visual Studio, Delphi, NetBeans IDE, Xcode, and GNU Emacs (via vc.el).
+[src:alembic-migrations/version-control] Advanced research prototypes generate appropriate commit messages.
+[src:alembic-migrations/version-control] An approved revision of a document or source file to which subsequent changes can be made.
+[src:alembic-migrations/version-control] A search for the author and revision that last modified a particular line.
+[src:alembic-migrations/version-control] A set of files under version control may be *branched* or *forked* at a point in time so that, from that time forward, two copies of those files may develop at different speeds or in different ways independently of each other.
+[src:alembic-migrations/version-control] A *change* (or *diff*, or *delta*) represents a specific modification to a document under version control.
+[src:alembic-migrations/version-control] The granularity of the modification considered a change varies between version control systems.
+[src:alembic-migrations/version-control] On many version control systems with atomic multi-change commits, a *change list* (or *CL*), *change set*, *update*, or *patch* identifies the set of *changes* made in a single commit.
+[src:alembic-migrations/version-control] This can also represent a sequential view of the source code, allowing the examination of source as of any particular changelist ID.
+[src:alembic-migrations/version-control] To *check out* (or *co*) is to create a local working copy from the repository.
+[src:alembic-migrations/version-control] A user may specify a specific revision or obtain the latest.
+[src:alembic-migrations/version-control] The term 'checkout' can also be used as a noun to describe the working copy.
+[src:alembic-migrations/version-control] When a file has been checked out from a shared file server, it cannot be edited by other users.
+[src:alembic-migrations/version-control] Think of it like a hotel, when you check out, you no longer have access to its amenities.
+[src:alembic-migrations/version-control] In version control software, a changeset (also known as commit and revision) is a set of alterations packaged together, along with meta-information about the alterations.
+[src:alembic-migrations/version-control] A changeset describes the exact differences between two successive versions in the version control system's repository of changes.
+[src:alembic-migrations/version-control] Changesets are typically treated as an atomic unit, an indivisible set, by version control systems.
+[src:alembic-migrations/version-control] To *commit* (*check in*, *ci* or, more rarely, *install*, *submit* or *record*) is to write or merge the changes made in the working copy back to the repository.
+[src:alembic-migrations/version-control] A commit contains metadata, typically the author information and a commit message that describes the change.
+[src:alembic-migrations/version-control] A short note, written by the developer, stored with the commit, which describes the commit.
+[src:alembic-migrations/version-control] Ideally, it records why the modification was made, a description of the modification's effect or purpose, and non-obvious aspects of how the change works.
+[src:alembic-migrations/version-control] A conflict occurs when different parties make changes to the same document, and the system is unable to reconcile the changes.
+[src:alembic-migrations/version-control] A user must *resolve* the conflict by combining the changes, or by selecting one change in favour of the other.
+[src:alembic-migrations/version-control] Most revision control software uses delta compression, which retains only the differences between successive versions of files.
+[src:alembic-migrations/version-control] This allows for more efficient storage of many different versions of files.
+[src:alembic-migrations/version-control] A stream in which some or all file versions are mirrors of the parent stream's versions.
+[src:alembic-migrations/version-control] The process of merging changes made in the main *trunk* into a development (feature or team) branch.
+[src:alembic-migrations/version-control] Also sometimes called *tip*, this refers to the most recent commit, either to the trunk or to a branch.
+[src:alembic-migrations/version-control] The trunk and each branch have their own head, though HEAD is sometimes loosely used to refer to the trunk.
+[src:alembic-migrations/version-control] Some revision control software uses Interleaved deltas, a method that allows storing the history of text based files in a more efficient way than by using Delta compression.
+[src:alembic-migrations/version-control] When a developer *locks* a file, no one else can update that file until it is unlocked.
+[src:alembic-migrations/version-control] Locking can be supported by the version control system, or via informal communications between developers (aka *social locking*).
+[src:alembic-migrations/version-control] Similar to *trunk*, but there can be a mainline for each branch.
+[src:alembic-migrations/version-control] A *merge* or *integration* is an operation in which two sets of changes are applied to a file or set of files.
+[src:alembic-migrations/version-control] The act of copying file content from a less controlled location into a more controlled location.
+[src:alembic-migrations/version-control] For example, from a user's workspace into a repository, or from a stream to its parent.
+[src:alembic-migrations/version-control] Copy revisions from one repository into another.
+[src:alembic-migrations/version-control] *Pull* is initiated by the receiving repository, while *push* is initiated by the source.
+[src:alembic-migrations/version-control] *Fetch* is sometimes used as a synonym for *pull*, or to mean a *pull* followed by an *update*.
+[src:alembic-migrations/version-control] Contributions to a source code repository that uses a distributed version control system are commonly made by means of a pull request, also known as a merge request.
+[src:alembic-migrations/version-control] The contributor requests that the project maintainer *pull* the source code change, hence the name "pull request".
+[src:alembic-migrations/version-control] The maintainer has to *merge* the pull request if the contribution should become part of the source base.
+[src:alembic-migrations/version-control] The developer creates a pull request to notify maintainers of a new change; a comment thread is associated with each pull request.
+[src:alembic-migrations/version-control] This allows for focused discussion of code changes.
+[src:alembic-migrations/version-control] Submitted pull requests are visible to anyone with repository access.
+[src:alembic-migrations/version-control] A pull request can be accepted or rejected by maintainers.
+[src:alembic-migrations/version-control] Once the pull request is reviewed and approved, it is merged into the repository.
+[src:alembic-migrations/version-control] Depending on the established workflow, the code may need to be tested before being included into official release.
+[src:alembic-migrations/version-control] Therefore, some projects contain a special branch for merging untested pull requests.
+[src:alembic-migrations/version-control] Other projects run an automated test suite on every pull request, using a continuous integration tool, and the reviewer checks that any new code has appropriate test coverage.
+[src:alembic-migrations/version-control] In version control systems, a repository is a data structure that stores metadata for a set of files or directory structure.
+[src:alembic-migrations/version-control] Depending on whether the version control system in use is distributed, like Git or Mercurial, or centralized, like Subversion, CVS, or Perforce, the whole set of information in the repository may be duplicated on every user's system or may be maintained on a single server.
+[src:alembic-migrations/version-control] Some of the metadata that a repository contains includes, among other things, a historical record of changes in the repository, a set of commit objects, and a set of references to commit objects, called *heads*.
+[src:alembic-migrations/version-control] The act of user intervention to address a conflict between different changes to the same document.
+[src:alembic-migrations/version-control] The process of merging different team branches into the main trunk of the versioning system.
+[src:alembic-migrations/version-control] In SVK, a Revision is the state at a point in time of the entire tree in the repository.
+[src:alembic-migrations/version-control] The act of making one file or folder available in multiple branches at the same time.
+[src:alembic-migrations/version-control] When a shared file is changed in one branch, it is changed in other branches.
+[src:alembic-migrations/version-control] A container for branched files that has a known relationship to other such containers.
+[src:alembic-migrations/version-control] Streams form a hierarchy; each stream can inherit various properties (like versions, namespace, workflow rules, subscribers, etc.) from its parent stream.
+[src:alembic-migrations/version-control] A *tag* or *label* refers to an important snapshot in time, consistent across many files.
+[src:alembic-migrations/version-control] These files at that point may all be tagged with a user-friendly, meaningful name or revision number.
+[src:alembic-migrations/version-control] An *update* (or *sync*, but *sync* can also mean a combined *push* and *pull*) merges changes made in the repository (by other people, for example) into the local *working copy*.
+[src:alembic-migrations/version-control] *Update* is also the term used by some CM tools (CM+, PLS, SMS) for the change package concept (see *changelist*).
+[src:alembic-migrations/version-control] The *working copy* is the local copy of files from a repository, at a specific time or revision.
+[src:alembic-migrations/version-control] All work done to the files in a repository is initially done on a working copy, hence the name.

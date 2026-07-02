@@ -1,0 +1,1396 @@
+---
+title: "GitHub (part 1/2)"
+source: https://github.com/sindresorhus/ky
+domain: ky-fetch
+license: CC-BY-SA-4.0
+tags: ky fetch, fetch wrapper, javascript http client, request retry
+fetched: 2026-07-02
+part: 1/2
+---
+
+# GitHub
+
+sindresorhus
+
+/
+
+ky
+
+Public
+
+- Uh oh! There was an error while loading. Please reload this page.
+- Notifications You must be signed in to change notification settings
+- Fork 476
+- Star
+
+Branches
+
+Tags
+
+Open more actions menu
+
+
+## Folders and files
+
+| Name | Name | Last commit message | Last commit date |
+|---|---|---|---|
+| Latest commit History484 Commits484 Commits |   |   |   |
+| .github | .github |   |   |
+| media | media |   |   |
+| source | source |   |   |
+| test | test |   |   |
+| .editorconfig | .editorconfig |   |   |
+| .gitattributes | .gitattributes |   |   |
+| .gitignore | .gitignore |   |   |
+| .npmrc | .npmrc |   |   |
+| license | license |   |   |
+| package.json | package.json |   |   |
+| readme.md | readme.md |   |   |
+| tsconfig.dist.json | tsconfig.dist.json |   |   |
+| tsconfig.json | tsconfig.json |   |   |
+|   |   |   |   |
+
+
+## Repository files navigation
+
+Sindre's open source work is supported by the community. Special thanks to:
+
+Get the most out of every conversation.
+
+AI-powered meeting notes, automations, and search. Give AI agents the context they need to get things done.
+
+> Ky is a tiny and elegant HTTP client based on the Fetch API
+
+(Coverage Status)
+
+Ky targets modern browsers, Node.js, Bun, and Deno.
+
+It's just a tiny package with no dependencies.
+
+
+## Benefits over plain `fetch`
+
+- Simpler API
+- Method shortcuts (`ky.post()`)
+- Treats non-2xx status codes as errors (after redirects)
+- Retries failed requests
+- JSON option
+- Timeout support
+- Upload and download progress
+- Base URL option
+- Instances with custom defaults
+- Hooks
+- Response validation with Standard Schema (Zod, Valibot, etc.)
+- TypeScript niceties (e.g., `.json()` supports generics and defaults to `unknown`, not `any`)
+
+
+## Install
+
+```highlight
+npm install ky
+```
+
+Note
+
+This readme is for the next version of Ky. For the current version, click here.
+
+###### CDN
+
+- jsdelivr
+- unpkg
+- esm.sh
+
+
+## Usage
+
+```highlight
+import ky from 'ky';
+
+const json = await ky.post('https://example.com', {json: {foo: true}}).json();
+
+console.log(json);
+//=> {data: '🦄'}
+```
+
+With plain `fetch`, it would be:
+
+```highlight
+class HTTPError extends Error {}
+
+const response = await fetch('https://example.com', {
+	method: 'POST',
+	body: JSON.stringify({foo: true}),
+	headers: {
+		'content-type': 'application/json'
+	}
+});
+
+if (!response.ok) {
+	throw new HTTPError(`Fetch error: ${response.statusText}`);
+}
+
+const json = await response.json();
+
+console.log(json);
+//=> {data: '🦄'}
+```
+
+If you are using Deno, import Ky from a URL. For example, using a CDN:
+
+```highlight
+import ky from 'https://esm.sh/ky';
+```
+
+
+## API
+
+### ky(input, options?)
+
+The `input` and `options` are the same as `fetch`, with additional `options` available (see below).
+
+Returns a `Response` object with `Body` methods added for convenience. So you can, for example, call `ky.get(input).json()` directly without having to await the `Response` first. When called like that, an appropriate `Accept` header will be set depending on the body method used. Unlike the `Body` methods of `window.fetch`, these will throw an `HTTPError` if the response status is not in the range of `200...299`. Also, `.json()` throws if the body is empty or the response status is `204`.
+
+Available body shortcuts: `.json()`, `.text()`, `.formData()`, `.arrayBuffer()`, `.blob()`, and `.bytes()`. The `.bytes()` shortcut is only present when the runtime supports `Response.prototype.bytes()`.
+
+```highlight
+import ky from 'ky';
+
+const user = await ky('/api/user').json();
+
+console.log(user);
+```
+
+⌨️ **TypeScript:** Accepts an optional type parameter, which defaults to `unknown`, and is passed through to the return type of `.json()`.
+
+```highlight
+import ky from 'ky';
+
+// user1 is unknown
+const user1 = await ky('/api/users/1').json();
+// user2 is a User
+const user2 = await ky<User>('/api/users/2').json();
+// user3 is a User
+const user3 = await ky('/api/users/3').json<User>();
+
+console.log([user1, user2, user3]);
+```
+
+You can also get the response body as JSON and validate it with a Standard Schema compatible validator (for example, Zod 3.24+). This throws a `SchemaValidationError` when validation fails.
+
+```highlight
+import ky, {SchemaValidationError} from 'ky';
+import {z} from 'zod';
+
+const userSchema = z.object({name: z.string()});
+
+try {
+	const user = await ky('/api/user').json(userSchema);
+	console.log(user.name);
+} catch (error) {
+	if (error instanceof SchemaValidationError) {
+		console.error(error.issues);
+	}
+}
+```
+
+```highlight
+// Get raw bytes (when supported by the runtime)
+const bytes = await ky('/api/file').bytes();
+console.log(bytes instanceof Uint8Array);
+```
+
+### ky.get(input, options?)
+
+### ky.post(input, options?)
+
+### ky.put(input, options?)
+
+### ky.patch(input, options?)
+
+### ky.head(input, options?)
+
+### ky.delete(input, options?)
+
+Sets `options.method` to the method name and makes a request.
+
+⌨️ **TypeScript:** Accepts an optional type parameter for use with JSON responses (see `ky()`).
+
+#### input
+
+Type: `string` | `URL` | `Request`
+
+Same as `fetch` input.
+
+When using a `Request` instance as `input`, any URL altering options (such as `baseUrl`) will be ignored.
+
+#### options
+
+Type: `object`
+
+Same as `fetch` options, plus the following additional options:
+
+##### method
+
+Type: `string` Default: `'get'`
+
+HTTP method used to make the request.
+
+Internally, the standard methods (`GET`, `POST`, `PUT`, `PATCH`, `HEAD` and `DELETE`) are uppercased in order to avoid server errors due to case sensitivity.
+
+##### json
+
+Type: `object` and any other value accepted by `JSON.stringify()`
+
+Shortcut for sending JSON. Use this instead of the `body` option. Accepts any plain object or value, which will be stringified using `JSON.stringify()` and sent in the body with the correct header set.
+
+##### searchParams
+
+Type: `string | object<string, string | number | boolean | undefined> | Array<Array<string | number | boolean>> | URLSearchParams` Default: `''`
+
+Search parameters to include in the request URL. Setting this will merge with any existing search parameters in the input URL.
+
+Accepts any value supported by `URLSearchParams()`.
+
+When passing an object, setting a value to `undefined` deletes the parameter, while `null` values are preserved and converted to the string `'null'`.
+
+##### baseUrl
+
+Type: `string | URL`
+
+A base URL to resolve the `input` against. When the `input` (after applying the `prefix` option) is only a relative URL, such as `'users'`, `'/users'`, or `'//my-site.com'`, it will be resolved against the `baseUrl` to determine the destination of the request. Otherwise, the `input` is absolute, such as `'https://my-site.com'`, and it will bypass the `baseUrl`.
+
+Useful when used with `ky.extend()` to create niche-specific Ky instances.
+
+If the `baseUrl` itself is relative, it will be resolved against the environment's base URL, such as `document.baseURI` in browsers or `location.href` in Deno (see the `--location` flag).
+
+**Tip:** When setting a `baseUrl` that has a path, we recommend that it include a trailing slash `/`, as in `'/api/'` rather than `/api`. This ensures more intuitive behavior for page-relative `input` URLs, such as `'users'` or `'./users'`, where they will *extend* from the full path of the `baseUrl` rather than *replacing* its last path segment.
+
+```highlight
+import ky from 'ky';
+
+// On https://example.com
+
+const response = await ky('users', {baseUrl: '/api/'});
+//=> 'https://example.com/api/users'
+
+const response = await ky('/users', {baseUrl: '/api/'});
+//=> 'https://example.com/users'
+```
+
+See FAQ: `baseUrl` vs `prefix`
+
+##### prefix
+
+Type: `string | URL`
+
+A prefix to prepend to the `input` before making the request (and before it is resolved against the `baseUrl`). It can be any valid path or URL, either relative or absolute. A trailing slash `/` is optional and will be added automatically, if needed, when it is joined with `input`. Only takes effect when `input` is a string.
+
+Useful when used with `ky.extend()` to create niche-specific Ky instances.
+
+*In most cases, you should use the `baseUrl` option instead, as it is more consistent with web standards. However, `prefix` is useful if you want origin-relative `input` URLs, such as `/users`, to be treated as if they were page-relative. In other words, the leading slash of the `input` will essentially be ignored, because the `prefix` will become part of the `input` before URL resolution happens.*
+
+See FAQ: `baseUrl` vs `prefix`
+
+```highlight
+import ky from 'ky';
+
+// On https://example.com
+
+const response = await ky('users', {prefix: '/api/'});
+//=> 'https://example.com/api/users'
+
+const response = await ky('/users', {prefix: '/api/'});
+//=> 'https://example.com/api/users'
+```
+
+Notes:
+
+- The `prefix` and `input` are joined with a slash `/`, and slashes are normalized at the join boundary by trimming trailing slashes from `prefix` and leading slashes from `input`.
+- After `prefix` and `input` are joined, the result is resolved against the `baseUrl` option, if present.
+
+##### retry
+
+Type: `object | number` Default:
+
+- `limit`: `2`
+- `methods`: `get` `put` `head` `delete` `options` `trace`
+- `statusCodes`: `408` `413` `429` `500` `502` `503` `504`
+- `afterStatusCodes`: `413`, `429`, `503`
+- `maxRetryAfter`: `Infinity`
+- `backoffLimit`: `Infinity`
+- `delay`: `attemptCount => 0.3 * (2 ** (attemptCount - 1)) * 1000`
+- `jitter`: `undefined`
+- `retryOnTimeout`: `false`
+- `shouldRetry`: `undefined`
+
+Controls retry behavior. Each field is documented individually below.
+
+If `retry` is a number, it will be used as `limit` and other defaults will remain in place.
+
+Network errors (e.g., DNS failures, connection refused, offline) are automatically retried for retriable methods. Only errors recognized as network errors are retried; other errors (e.g., programming bugs) are thrown immediately. Use `shouldRetry` to customize this behavior.
+
+If the response provides an HTTP status contained in `afterStatusCodes`, Ky will wait until the date, delay, or timestamp given in the `Retry-After` header has passed to retry the request. If `Retry-After` is missing, the non-standard `RateLimit-Reset` header is used in its place as a fallback. If the provided status code is not in the list, the `Retry-After` header will be ignored.
+
+If `Retry-After` header is greater than `maxRetryAfter`, it will use `maxRetryAfter`.
+
+The `backoffLimit` option is the upper limit of the delay per retry in milliseconds. To clamp the delay, set `backoffLimit` to 1000, for example. By default, the delay is calculated with `0.3 * (2 ** (attemptCount - 1)) * 1000`. The delay increases exponentially.
+
+The `delay` option can be used to change how the delay between retries is calculated. The function receives one parameter, the attempt count, starting at `1`, and must return the delay in milliseconds.
+
+The `jitter` option adds random jitter to retry delays to prevent thundering herd problems. When many clients retry simultaneously (e.g., after hitting a rate limit), they can overwhelm the server again. Jitter adds randomness to break this synchronization. Set to `true` to use full jitter, which randomizes the delay between 0 and the computed delay. Alternatively, pass a function to implement custom jitter strategies.
+
+**Note:** Jitter is not applied when the server provides a `Retry-After` header, as the server's explicit timing should be respected.
+
+The `retryOnTimeout` option determines whether to retry when a request times out. By default, retries are not triggered following a timeout.
+
+The `shouldRetry` option provides custom retry logic that **takes precedence over the default retry checks** (`retryOnTimeout`, status code checks, etc.) for retriable methods. It is only called after the retry limit and method checks pass.
+
+**Note:** This is different from the `beforeRetry` hook:
+
+- `shouldRetry`: Controls WHETHER to retry (called before the retry decision is made)
+- `beforeRetry`: Called AFTER retry is confirmed, allowing you to modify the request
+
+The function receives a state object with the error and retry count (starts at 1 for the first retry), and should return:
+
+- `true` to force a retry (bypasses `retryOnTimeout`, status code checks, and other default validations)
+- `false` to prevent a retry (no retry will occur)
+- `undefined` to use the default retry logic (`retryOnTimeout`, status codes, network errors). Unrecognized error types are not retried.
+
+**General example**
+
+```highlight
+import ky from 'ky';
+
+const json = await ky('https://example.com', {
+	retry: {
+		limit: 10,
+		methods: ['get'],
+		statusCodes: [413],
+		backoffLimit: 3000
+	}
+}).json();
+```
+
+**Retrying on timeout:**
+
+```highlight
+import ky from 'ky';
+
+const json = await ky('https://example.com', {
+	timeout: 5000,
+	retry: {
+		limit: 3,
+		retryOnTimeout: true
+	}
+}).json();
+```
+
+**Using jitter to prevent thundering herd:**
+
+```highlight
+import ky from 'ky';
+
+const json = await ky('https://example.com', {
+	retry: {
+		limit: 5,
+
+		// Full jitter (randomizes delay between 0 and computed value)
+		jitter: true
+
+		// Percentage jitter (80-120% of delay)
+		// jitter: delay => delay * (0.8 + Math.random() * 0.4)
+
+		// Absolute jitter (±100ms)
+		// jitter: delay => delay + (Math.random() * 200 - 100)
+	}
+}).json();
+```
+
+**Custom retry logic:**
+
+```highlight
+import ky, {HTTPError} from 'ky';
+
+const json = await ky('https://example.com', {
+	retry: {
+		limit: 3,
+		shouldRetry: ({error, retryCount}) => {
+			// Retry on specific business logic errors from API
+			if (error instanceof HTTPError) {
+				const status = error.response.status;
+
+				// Retry on 429 (rate limit) but only for first 2 attempts
+				if (status === 429 && retryCount <= 2) {
+					return true;
+				}
+
+				// Don't retry on 4xx errors except rate limits
+				if (status >= 400 && status < 500) {
+					return false;
+				}
+			}
+
+			// Use default retry logic for other errors
+			return undefined;
+		}
+	}
+}).json();
+```
+
+Note
+
+When retries are enabled, Ky clones the request body before each attempt using `tee()`, which buffers the entire `ReadableStream` in memory. Set `retry: {limit: 0}` if you're uploading large streaming bodies and don't need retries.
+
+Note
+
+Chromium-based browsers automatically retry `408 Request Timeout` responses at the network layer for keep-alive connections. This means requests may be retried by both the browser and ky. If you want to avoid duplicate retries, you can either set `keepalive: false` in your request options (though this may impact performance for multiple requests) or remove `408` from the retry status codes.
+
+##### timeout
+
+Type: `number | false` Default: `10000`
+
+Per-attempt timeout in milliseconds for getting a response, applied independently to each retry. Cannot be greater than 2147483647. See also `totalTimeout`.
+
+If set to `false`, there will be no per-attempt timeout.
+
+##### totalTimeout
+
+Type: `number | false` Default: `false`
+
+Overall timeout in milliseconds for the entire operation, including retries and delays. Throws a `TimeoutError` if exceeded. Cannot be greater than 2147483647.
+
+If set to `false` or not specified, there is no overall timeout.
+
+```highlight
+import ky from 'ky';
+
+// Each attempt gets 5s, but the whole operation must complete within 30s
+const json = await ky('https://example.com', {
+	timeout: 5000,
+	totalTimeout: 30_000,
+	retry: {
+		limit: 3,
+		retryOnTimeout: true,
+	}
+}).json();
+```
+
+##### hooks
+
+Type: `object<string, Function[]>` Default: `{init: [], beforeRequest: [], beforeRetry: [], beforeError: [], afterResponse: []}`
+
+Hooks allow modifications during the request lifecycle. Hook functions may be async and are run serially, unless otherwise noted.
+
+###### hooks.init
+
+Type: `Function[]` Default: `[]`
+
+This hook enables you to modify the options before they are used to construct the request. The hook function receives the mutable options object and can modify it in place. You could, for example, modify `searchParams`, `headers`, or `json` here.
+
+Unlike other hooks, `init` hooks are synchronous. Any error thrown will propagate synchronously and will not be caught by `beforeError` hooks.
+
+A common use case is to add a search parameter to every request:
+
+```highlight
+import ky from 'ky';
+
+const api = ky.extend({
+	hooks: {
+		init: [
+			options => {
+				options.searchParams = {apiKey: getApiKey()};
+			},
+		],
+	},
+});
+
+const response = await api.get('https://example.com/api/users');
+// URL: https://example.com/api/users?apiKey=123
+```
+
+###### hooks.beforeRequest
+
+Type: `Function[]` Default: `[]`
+
+This hook enables you to modify the request right before it is sent. Ky will make no further changes to the request after this. The hook function receives a state object with the normalized request, options, and retry count. You could, for example, modify `request.headers` here.
+
+The `retryCount` is always `0`, since `beforeRequest` hooks run once before retry handling begins.
+
+The hook can return a `Request` to replace the outgoing request (remaining hooks will still run with the updated request). It can also return a `Response` to completely avoid making an HTTP request, in which case remaining `beforeRequest` hooks are skipped. This can be used to mock a request, check an internal cache, etc.
+
+Any error thrown by `beforeRequest` hooks is treated as fatal and will not trigger Ky's retry logic.
+
+```highlight
+import ky from 'ky';
+
+const api = ky.extend({
+	hooks: {
+		beforeRequest: [
+			({request}) => {
+				request.headers.set('Authorization', 'token initial-token');
+			}
+		]
+	}
+});
+
+const response = await api.get('https://example.com/api/users');
+```
+
+**Modifying the request URL:**
+
+```highlight
+import ky from 'ky';
+
+const api = ky.extend({
+	hooks: {
+		beforeRequest: [
+			({request}) => {
+				const url = new URL(request.url);
+				url.searchParams.set('token', 'secret-token');
+				return new Request(url, request);
+			}
+		]
+	}
+});
+
+const response = await api.get('https://example.com/api/users');
+```
+
+###### hooks.beforeRetry
+
+Type: `Function[]` Default: `[]`
+
+This hook enables you to modify the request right before retry. Ky will make no further changes to the request after this. The hook function receives a state object with the normalized request, options, an error instance, and retry count. You could, for example, modify `request.headers` here.
+
+The hook can return a `Request` to replace the outgoing retry request, or return a `Response` to skip the retry and use that response instead. **Note:** Returning a request or response skips remaining `beforeRetry` hooks.
+
+Warning
+
+Returned `Request` objects are used as-is. If you point one at another origin, remove any credentials you do not want forwarded.
+
+The `retryCount` is always `>= 1`, since this hook is only called during retries, not on the initial request.
+
+If the request received a response, the error will be of type `HTTPError`. The `Response` object will be available at `error.response`, and the pre-parsed response body will be available at `error.data`. Be aware that some types of errors, such as network errors, inherently mean that a response was not received. In that case, the error will be an instance of `NetworkError` instead of `HTTPError`.
+
+You can prevent Ky from retrying the request by throwing an error. Ky will not handle it in any way and the error will be propagated to the request initiator. The rest of the `beforeRetry` hooks will not be called in this case. Alternatively, you can return the `ky.stop` symbol to do the same thing but without propagating an error (this has some limitations, see `ky.stop` docs for details).
+
+**Modifying headers:**
+
+```highlight
+import ky from 'ky';
+
+const response = await ky('https://example.com', {
+	hooks: {
+		beforeRetry: [
+			async ({request, options, error, retryCount}) => {
+				const token = await ky('https://example.com/refresh-token');
+				request.headers.set('Authorization', `token ${token}`);
+			}
+		]
+	}
+});
+```
+
+**Modifying the request URL:**
+
+```highlight
+import ky, {isHTTPError} from 'ky';
+
+const response = await ky('https://example.com/api', {
+	hooks: {
+		beforeRetry: [
+			({request, error}) => {
+				// Add query parameters based on error response
+				if (
+					isHTTPError(error)
+					&& typeof error.data === 'object'
+					&& error.data !== null
+					&& 'processId' in error.data
+				) {
+					const url = new URL(request.url);
+					url.searchParams.set('processId', String(error.data.processId));
+					return new Request(url, request);
+				}
+			}
+		]
+	}
+});
+```
+
+**Returning a cached response:**
+
+```highlight
+import ky from 'ky';
+
+const response = await ky('https://example.com/api', {
+	hooks: {
+		beforeRetry: [
+			({error, retryCount}) => {
+				// Use cached response instead of retrying
+				if (retryCount > 1 && cachedResponse) {
+					return cachedResponse;
+				}
+			}
+		]
+	}
+});
+```
+
+###### hooks.beforeError
+
+Type: `Function[]` Default: `[]`
+
+This hook enables you to modify any error right before it is thrown. The hook function receives a state object with the current request, the normalized Ky options, the error, and retry count, and should return an `Error` instance.
+
+This hook is called for all error types, including `HTTPError`, `NetworkError`, `TimeoutError`, and `ForceRetryError` (when retry limit is exceeded via `ky.retry()`). Use type guards like `isHTTPError()`, `isNetworkError()`, or `isTimeoutError()` to handle specific error types.
+
+The `retryCount` is `0` for the initial request and increments with each retry. This allows you to distinguish between the initial request and retries, which is useful when you need different error handling based on retry attempts (e.g., showing different error messages on the final attempt).
+
+If a `beforeRequest` or `beforeRetry` hook returns a new `Request`, inspect `request` for the final request state. `options` remains Ky's normalized options and may not mirror every property of a replacement `Request`.
+
+```highlight
+import ky, {isHTTPError} from 'ky';
+
+await ky('https://example.com', {
+	hooks: {
+		beforeError: [
+			({request, options, error}) => {
+				if (isHTTPError(error)) {
+					if (
+						typeof error.data === 'object'
+						&& error.data !== null
+						&& 'message' in error.data
+					) {
+						error.name = 'GitHubError';
+						error.message = `${String(error.data.message)} (${error.response.status})`;
+					}
+				}
+
+				// `request` and `options` are always available
+				console.log(`Request to ${request.url} failed`, options.context);
+
+				return error;
+			}
+		]
+	}
+});
+```
+
+###### hooks.afterResponse
+
+Type: `Function[]` Default: `[]`
+
+This hook enables you to read and optionally modify the response. The hook function receives a state object with the normalized request, options, a clone of the response, and retry count. The return value of the hook function will be used by Ky as the response object if it's an instance of `Response`.
+
+You can also force a retry by returning `ky.retry(options)`. This is useful when you need to retry based on the response body content, even if the response has a successful status code. The retry will respect the `retry.limit` option and be observable in `beforeRetry` hooks.
+
+Warning
+
+`ky.retry({request})` uses the replacement request as-is. If it targets another origin, remove any credentials you do not want forwarded.
+
+Any non-`ky.retry()` error thrown by `afterResponse` hooks is treated as fatal and will not trigger Ky's retry logic.
+
+The `retryCount` is `0` for the initial request and increments with each retry. This allows you to distinguish between the initial request and retries, which is useful when you need different behavior for retries (e.g., showing a notification only on the final retry).
+
+```highlight
+import ky from 'ky';
+
+const response = await ky('https://example.com', {
+	hooks: {
+		afterResponse: [
+			({response}) => {
+				// You could do something with the response, for example, logging.
+				log(response);
+
+				// Or return a `Response` instance to overwrite the response.
+				return new Response('A different response', {status: 200});
+			},
+
+			// Or retry with a fresh token on a 401 error
+			async ({request, response, retryCount}) => {
+				if (response.status === 401 && retryCount === 0) {
+					// Only refresh on first 401, not on subsequent retries
+					const {token} = await ky.post('https://example.com/auth/refresh').json();
+
+					const headers = new Headers(request.headers);
+					headers.set('Authorization', `Bearer ${token}`);
+
+					return ky.retry({
+						request: new Request(request, {headers}),
+						code: 'TOKEN_REFRESHED'
+					});
+				}
+			},
+
+			// Or force retry based on response body content
+			async ({response}) => {
+				if (response.status === 200) {
+					const data = await response.json();
+					if (data.error?.code === 'RATE_LIMIT') {
+						// Retry with custom delay from API response
+						return ky.retry({
+							delay: data.error.retryAfter * 1000,
+							code: 'RATE_LIMIT'
+						});
+					}
+				}
+			},
+
+			// Or show a notification only on the last retry for 5xx errors
+			({options, response, retryCount}) => {
+				if (response.status >= 500 && response.status <= 599) {
+					if (retryCount === options.retry.limit) {
+						showNotification('Request failed after all retries');
+					}
+				}
+			}
+		]
+	}
+});
+```
+
+##### throwHttpErrors
+
+Type: `boolean | (status: number) => boolean` Default: `true`
+
+Throw an `HTTPError` when, after following redirects, the response has a non-2xx status code. To also throw for redirects instead of following them, set the `redirect` option to `'manual'`.
+
+Setting this to `false` may be useful if you are checking for resource availability and are expecting error responses.
+
+You can also pass a function that accepts the HTTP status code and returns a boolean for selective error handling. Note that this can violate the principle of least surprise, so it's recommended to use the boolean form unless you have a specific use case like treating 404 responses differently.
+
+Note: If `false`, error responses are considered successful and the request will not be retried.
+
+Note: Opaque responses from `no-cors` requests are returned as-is (without throwing `HTTPError`), since the actual status is hidden by the browser.
+
+##### onDownloadProgress
+
+Type: `Function`
+
+Download progress event handler.
+
+The function receives these arguments:
+
+- `progress` is an object with these properties:
+  - `percent` is a number between 0 and 1 representing the progress percentage.
+  - `transferredBytes` is the number of bytes transferred so far.
+  - `totalBytes` is the total number of bytes to be transferred. This is an estimate and may be 0 if the total size cannot be determined.
+- `chunk` is an instance of `Uint8Array` containing the data that was received. Note: It's empty for the first call.
+
+```highlight
+import ky from 'ky';
+
+const response = await ky('https://example.com', {
+	onDownloadProgress: (progress, chunk) => {
+		// Example output:
+		// `0% - 0 of 1271 bytes`
+		// `100% - 1271 of 1271 bytes`
+		console.log(`${progress.percent * 100}% - ${progress.transferredBytes} of ${progress.totalBytes} bytes`);
+	}
+});
+```
+
+##### onUploadProgress
+
+Type: `Function`
+
+Upload progress event handler.
+
+Note
+
+Requires request stream support and HTTP/2 for HTTPS connections (in Chromium-based browsers). In unsupported environments, this handler is silently ignored.
+
+The function receives these arguments:
+
+- `progress` is an object with these properties:
+  - `percent` is a number between 0 and 1 representing the progress percentage.
+  - `transferredBytes` is the number of bytes transferred so far.
+  - `totalBytes` is the total number of bytes to be transferred. This is an estimate and may be 0 if the total size cannot be determined.
+- `chunk` is an instance of `Uint8Array` containing the data that was sent. Note: It's empty for the last call.
+
+```highlight
+import ky from 'ky';
+
+const response = await ky.post('https://example.com/upload', {
+	body: largeFile,
+	onUploadProgress: (progress, chunk) => {
+		// Example output:
+		// `0% - 0 of 1271 bytes`
+		// `100% - 1271 of 1271 bytes`
+		console.log(`${progress.percent * 100}% - ${progress.transferredBytes} of ${progress.totalBytes} bytes`);
+	}
+});
+```
+
+##### parseJson
+
+Type: `Function` Default: `JSON.parse()`
+
+User-defined JSON-parsing function.
+
+The function receives the response text as the first argument and a context object as the second argument containing the `request` (`Request`) and `response` (`Response`).
+
+Use-cases:
+
+1. Parse JSON via the `bourne` package to protect from prototype pollution.
+2. Parse JSON with `reviver` option of `JSON.parse()`.
+3. Log or handle JSON parse errors with request context.
+
+```highlight
+import ky from 'ky';
+import bourne from '@hapijs/bourne';
+
+const json = await ky('https://example.com', {
+	parseJson: text => bourne(text)
+}).json();
+```
+
+```highlight
+import ky from 'ky';
+
+const json = await ky('https://example.com', {
+	parseJson: (text, {request, response}) => {
+		console.log(`Parsing JSON from ${request.url} (status: ${response.status})`);
+		return JSON.parse(text);
+	}
+}).json();
+```
+
+##### stringifyJson
+
+Type: `Function` Default: `JSON.stringify()`
+
+User-defined JSON-stringifying function.
+
+Use-cases:
+
+1. Stringify JSON with a custom `replacer` function.
+
+```highlight
+import ky from 'ky';
+import {DateTime} from 'luxon';
+
+const json = await ky('https://example.com', {
+	stringifyJson: data => JSON.stringify(data, (key, value) => {
+		if (key.endsWith('_at')) {
+			return DateTime.fromISO(value).toSeconds();
+		}
+
+		return value;
+	})
+}).json();
+```
+
+##### fetch
+
+Type: `Function` Default: `fetch`
+
+User-defined `fetch` function. Has to be fully compatible with the Fetch API standard.
+
+Use-cases:
+
+1. Use the `fetch` wrapper function provided by some frameworks that use server-side rendering (SSR).
+2. Add custom instrumentation or logging to all requests.
+
+```highlight
+import ky from 'ky';
+
+const api = ky.create({
+	fetch: async (request, init) => {
+		const start = performance.now();
+		const response = await fetch(request, init);
+		const duration = performance.now() - start;
+		console.log(`${request.method} ${request.url} - ${response.status} (${Math.round(duration)}ms)`);
+		return response;
+	}
+});
+
+const json = await api('https://example.com').json();
+```
+
+##### context
+
+Type: `object<string, unknown>` Default: `{}`
+
+User-defined data passed to hooks.
+
+This option allows you to pass arbitrary contextual data to hooks without polluting the request itself. The context is available in all hooks and is **guaranteed to always be an object** (never `undefined`), so you can safely access properties without optional chaining.
+
+Use cases:
+
+- Pass authentication tokens or API keys to hooks
+- Attach request metadata for logging or debugging
+- Implement conditional logic in hooks based on the request context
+- Pass serverless environment bindings (e.g., Cloudflare Workers)
+
+**Note:** Context is shallow merged. Top-level properties are merged, but nested objects are replaced. Only enumerable properties are copied.
+
+```highlight
+import ky from 'ky';
+
+// Pass data to hooks
+const api = ky.create({
+	hooks: {
+		beforeRequest: [
+			({request, options}) => {
+				const {token} = options.context;
+				if (token) {
+					request.headers.set('Authorization', `Bearer ${token}`);
+				}
+			}
+		]
+	}
+});
+
+await api('https://example.com', {
+	context: {
+		token: 'secret123'
+	}
+}).json();
+
+// Shallow merge: only top-level properties are merged
+const instance = ky.create({
+	context: {
+		a: 1,
+		b: {
+			nested: true
+		}
+	}
+});
+
+const extended = instance.extend({
+	context: {
+		b: {
+			updated: true
+		},
+		c: 3
+	}
+});
+// Result: {a: 1, b: {updated: true}, c: 3}
+// Note: The original `b.nested` is gone (shallow merge)
+```
+
+### ky.extend(defaultOptions)
+
+Create a new `ky` instance with some defaults overridden with your own.
+
+In contrast to `ky.create()`, `ky.extend()` inherits defaults from its parent.
+
+You can pass headers as a `Headers` instance or a plain object.
+
+You can remove a header with `.extend()` by passing the header with an `undefined` value. Passing `undefined` as a string removes the header only if it comes from a `Headers` instance.
+
+Similarly, you can remove existing `hooks` entries by extending the hook with an explicit `undefined`.
+
+```highlight
+import ky from 'ky';
+
+const url = 'https://sindresorhus.com';
+
+const original = ky.create({
+	headers: {
+		rainbow: 'rainbow',
+		unicorn: 'unicorn'
+	},
+	hooks: {
+		beforeRequest: [ () => console.log('before 1') ],
+		afterResponse: [ () => console.log('after 1') ],
+	},
+});
+
+const extended = original.extend({
+	headers: {
+		rainbow: undefined
+	},
+	hooks: {
+		beforeRequest: undefined,
+		afterResponse: [ () => console.log('after 2') ],
+	}
+});
+
+const response = await extended(url).json();
+//=> after 1
+//=> after 2
+
+console.log('rainbow' in response);
+//=> false
+
+console.log('unicorn' in response);
+//=> true
+```
+
+You can also refer to parent defaults by providing a function to `.extend()`.
+
+```highlight
+import ky from 'ky';
+
+const api = ky.create({prefix: 'https://example.com/api'});
+
+const usersApi = api.extend((options) => ({prefix: `${options.prefix}/users`}));
+
+const response = await usersApi.get('123');
+//=> 'https://example.com/api/users/123'
+
+const response = await api.get('version');
+//=> 'https://example.com/api/version'
+```
+
+By default, `.extend()` deep-merges options: hooks are appended, headers are merged, and search parameters are accumulated. Use `replaceOption` when you want to fully replace a merged property instead.
+
+```highlight
+import ky, {replaceOption} from 'ky';
+
+const api = ky.create({
+	hooks: {
+		beforeRequest: [addAuth, addTracking],
+	},
+});
+
+// Appends as expected
+const extended = api.extend({hooks: {beforeRequest: [logRequest]}});
+// extended hooks.beforeRequest is [addAuth, addTracking, logRequest]
+
+// Replaces instead of appending
+const replaced = api.extend({hooks: replaceOption({beforeRequest: [onlyThis]})});
+// replaced hooks.beforeRequest is [onlyThis]
+```
+
+### ky.create(defaultOptions)
+
+Create a new Ky instance with complete new defaults, without inheriting from any parent instance.
+
+```highlight
+import ky from 'ky';
+
+// On https://my-site.com
+
+const api = ky.create({baseUrl: 'https://example.com/api/'});
+
+const response = await api.get('users/123');
+//=> 'https://example.com/api/users/123'
+
+const response = await api.get('status', {baseUrl: ''});
+//=> 'https://my-site.com/status'
+```
+
+#### defaultOptions
+
+Type: `object`
+
+### ky.stop
+
+A `Symbol` that can be returned by a `beforeRetry` hook to stop the retry. This will also short circuit the remaining `beforeRetry` hooks.
+
+Note: Returning this symbol makes Ky abort and return with an `undefined` response. Be sure to check for a response before accessing any properties on it or use optional chaining. It is also incompatible with body methods, such as `.json()` or `.text()`, because there is no response to parse. In general, we recommend throwing an error instead of returning this symbol, as that will cause Ky to abort and then throw, which avoids these limitations.
+
+A valid use-case for `ky.stop` is to prevent retries when making requests for side effects, where the returned data is not important. For example, logging client activity to the server.
+
+```highlight
+import ky from 'ky';
+
+const options = {
+	hooks: {
+		beforeRetry: [
+			async ({request, options, error, retryCount}) => {
+				const shouldStopRetry = await ky('https://example.com/api');
+				if (shouldStopRetry) {
+					return ky.stop;
+				}
+			}
+		]
+	}
+};
+
+// Note that `response` will be `undefined` in case `ky.stop` is returned.
+const response = await ky.post('https://example.com', options);
+
+// Using `.text()` or other body methods is not supported.
+const text = await ky('https://example.com', options).text();
+```
+
+### ky.retry(options?)
+
+Force a retry from an `afterResponse` hook.
+
+This allows you to retry a request based on the response content, even if the response has a successful status code. The retry will respect the `retry.limit` option and skip the `shouldRetry` check. The forced retry is observable in `beforeRetry` hooks, where the error will be a `ForceRetryError`.
+
+#### options
+
+Type: `object`
+
+##### delay
+
+Type: `number`
+
+Custom delay in milliseconds before retrying. If not provided, uses the default retry delay calculation based on `retry.delay` configuration.
+
+**Note:** Custom delays bypass jitter and `backoffLimit`. This is intentional, as custom delays often come from server responses (e.g., `Retry-After` headers) and should be respected exactly as specified.
+
+##### code
+
+Type: `string`
+
+Error code for the retry.
+
+This machine-readable identifier will be included in the error message passed to `beforeRetry` hooks, allowing you to distinguish between different types of forced retries.
+
+```highlight
+return ky.retry({code: 'RATE_LIMIT'});
+// Resulting error message: 'Forced retry: RATE_LIMIT'
+```
+
+##### cause
+
+Type: `Error`
+
+Original error that caused the retry. This allows you to preserve the error chain when forcing a retry based on caught exceptions. The error will be set as the `cause` of the `ForceRetryError`, enabling proper error chain traversal.
+
+```highlight
+try {
+	const data = await response.json();
+	validateBusinessLogic(data);
+} catch (error) {
+	return ky.retry({
+		code: 'VALIDATION_FAILED',
+		cause: error  // Preserves original error in chain
+	});
+}
+```
+
+##### request
+
+Type: `Request`
+
+Custom request to use for the retry.
+
+This allows you to modify or completely replace the request during a forced retry. The custom request becomes the starting point for the retry - `beforeRetry` hooks can still further modify it if needed.
+
+**Note:** The custom request's `signal` will be replaced with Ky's managed signal to handle timeouts and user-provided abort signals correctly. If the original request body has been consumed, you must provide a new body or clone the request before consuming.
+
+Warning
+
+Custom retry requests are not sanitized. If you reuse headers across origins, remove any credentials you do not want forwarded.
+
+#### Example
+
+```highlight
+import ky, {isForceRetryError} from 'ky';
+
+const api = ky.extend({
+	hooks: {
+		afterResponse: [
+			async ({request, response}) => {
+				// Retry based on response body content
+				if (response.status === 200) {
+					const data = await response.json();
+
+					// Simple retry with default delay
+					if (data.error?.code === 'TEMPORARY_ERROR') {
+						return ky.retry();
+					}
+
+					// Retry with custom delay from API response
+					if (data.error?.code === 'RATE_LIMIT') {
+						return ky.retry({
+							delay: data.error.retryAfter * 1000,
+							code: 'RATE_LIMIT'
+						});
+					}
+
+					// Retry with a modified request (e.g., fallback endpoint)
+					if (data.error?.code === 'FALLBACK_TO_BACKUP') {
+						return ky.retry({
+							request: new Request('https://backup-api.com/endpoint', {
+								method: request.method,
+								headers: request.headers,
+							}),
+							code: 'BACKUP_ENDPOINT'
+						});
+					}
+
+					// Retry with refreshed authentication
+					if (data.error?.code === 'TOKEN_REFRESH' && data.newToken) {
+						return ky.retry({
+							request: new Request(request, {
+								headers: {
+									...Object.fromEntries(request.headers),
+									'Authorization': `Bearer ${data.newToken}`
+								}
+							}),
+							code: 'TOKEN_REFRESHED'
+						});
+					}
+
+					// Retry with cause to preserve error chain
+					try {
+						validateResponse(data);
+					} catch (error) {
+						return ky.retry({
+							code: 'VALIDATION_FAILED',
+							cause: error
+						});
+					}
+				}
+			}
+		],
+		beforeRetry: [
+			({error, retryCount}) => {
+				// Observable in beforeRetry hooks
+				if (isForceRetryError(error)) {
+					console.log(`Forced retry #${retryCount}: ${error.message}`);
+					// Example output: "Forced retry #1: Forced retry: RATE_LIMIT"
+				}
+			}
+		]
+	}
+});
+
+const response = await api.get('https://example.com/api');
+```
+
+### KyError
+
+Base class for all Ky-specific errors. `HTTPError`, `NetworkError`, `TimeoutError`, and `ForceRetryError` extend this class.
+
+You can use `instanceof KyError` to check if an error originated from Ky, or use the `isKyError()` type guard for cross-realm compatibility and TypeScript type narrowing.
+
+Note
+
+`SchemaValidationError` is intentionally not considered a Ky error. `KyError` covers failures in Ky's HTTP lifecycle (bad status, timeout, retry), while schema validation errors originate from the user-provided schema, not from Ky itself.
+
+```highlight
+import ky, {isKyError} from 'ky';
+
+try {
+	await ky('https://example.com').json();
+} catch (error) {
+	if (isKyError(error)) {
+		console.log('Ky error:', error.message);
+	}
+}
+```
+
+### HTTPError
+
+Exposed for `instanceof` checks. The error has a `response` property with the `Response` object, `request` property with the `Request` object, and `options` property with normalized options (either passed to `ky` when creating an instance with `ky.create()` or directly when performing the request).
+
+It also has a `data` property with the pre-parsed response body. For JSON responses (based on `Content-Type`), the body is parsed using the `parseJson` option if set, or `JSON.parse` by default. For other content types, it is set as plain text. If the body is empty or parsing fails, `data` will be `undefined`. To avoid hanging or excessive buffering, `error.data` population is bounded by the request timeout and a 10 MiB response body size limit. The `data` property is populated before `beforeError` hooks run, so hooks can access it.
+
+Be aware that some types of errors, such as network errors, inherently mean that a response was not received. In that case, the error will be an instance of `NetworkError` instead of `HTTPError` and will not contain a `response` property.
+
+Note
+
+The response body is automatically consumed when populating `error.data`, so `error.response.json()` and other body methods will not work. Use `error.data` instead. The `error.response` object is still available for headers, status, etc.
+
+```highlight
+import ky, {isHTTPError} from 'ky';
+
+try {
+	await ky('https://example.com').json();
+} catch (error) {
+	if (isHTTPError(error)) {
+		console.log(error.data);
+	}
+}
+```
+
+You can also use the `beforeError` hook:
+
+```highlight
+import ky, {isHTTPError} from 'ky';
+
+await ky('https://example.com', {
+	hooks: {
+		beforeError: [
+			({error}) => {
+				if (isHTTPError(error) && error.data !== undefined) {
+					error.message = `${error.message}: ${JSON.stringify(error.data)}`;
+				}
+
+				return error;
+			}
+		]
+	}
+});
+```
+
+⌨️ **TypeScript:** Accepts an optional type parameter, which defaults to `unknown`, and is passed through to the type of `error.data`.
+
+### SchemaValidationError
+
+The error thrown when Standard Schema validation fails in `.json(schema)`. It has an `issues` property with the validation issues from the schema.
+
+This error intentionally does not extend `KyError` because it does not represent a failure in Ky's HTTP lifecycle. The request succeeded; the user's schema rejected the data. As such, it is not matched by `isKyError()`.
+
+```highlight
+import ky, {SchemaValidationError} from 'ky';
+import {z} from 'zod';
+
+const userSchema = z.object({name: z.string()});
+
+try {
+	const user = await ky('/api/user').json(userSchema);
+	console.log(user.name);
+} catch (error) {
+	if (error instanceof SchemaValidationError) {
+		console.error(error.issues);
+	}
+}
+```
+
+### TimeoutError
+
+The error thrown when the request times out. It has a `request` property with the `Request` object.
+
+```highlight
+import ky, {isTimeoutError} from 'ky';
+
+try {
+	await ky('https://example.com').json();
+} catch (error) {
+	if (isTimeoutError(error)) {
+		console.log('Request timed out');
+	}
+}
+```
+
+### NetworkError
+
+The error thrown when a network error occurs during the request (e.g., DNS failure, connection refused, offline). It has a `request` property with the `Request` object. The original error is available via the standard `cause` property.
+
+Network errors are automatically retried (for retriable methods).
+
+Note
+
+Network errors are detected using runtime-specific heuristics. Unrecognized runtimes may produce errors that are not wrapped in `NetworkError`. Use the `shouldRetry` option to handle such cases.
+
+```highlight
+import ky, {isNetworkError} from 'ky';
+
+try {
+	await ky('https://example.com').json();
+} catch (error) {
+	if (isNetworkError(error)) {
+		console.log('Network error:', error.message);
+		console.log('Original error:', error.cause);
+	}
+}
+```
+
+### replaceOption
+
+Wraps a value so that `ky.extend()` will replace the parent value instead of merging with it. Works with hooks, headers, search parameters, context, and any other deep-merged option.
+
+```highlight
+import ky, {replaceOption} from 'ky';
+
+const api = ky.create({
+	headers: {authorization: 'Bearer token', 'x-custom': 'value'},
+});
+
+// Replace all headers instead of merging
+const publicApi = api.extend({
+	headers: replaceOption({accept: 'application/json'}),
+});
+// Headers are now just {accept: 'application/json'}
+```

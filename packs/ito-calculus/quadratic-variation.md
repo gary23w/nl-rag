@@ -1,0 +1,86 @@
+---
+title: "Quadratic variation"
+source: https://en.wikipedia.org/wiki/Quadratic_variation
+domain: ito-calculus
+license: CC-BY-SA-4.0
+tags: ito calculus, ito lemma, quadratic variation, stochastic integral
+fetched: 2026-07-02
+---
+
+# Quadratic variation
+
+In mathematics, **quadratic variation** is used in the analysis of stochastic processes such as Brownian motion and other martingales. Quadratic variation is just one kind of variation of a process.
+
+## Definition
+
+Suppose that $X_{t}$ is a real-valued stochastic process defined on a probability space $(\Omega ,{\mathcal {F}},\mathbb {P} )$ and with time index t ranging over the non-negative real numbers. Its quadratic variation is the process, written as $[X]_{t}$ , defined as
+
+$[X]_{t}=\lim _{\Vert P\Vert \rightarrow 0}\sum _{k=1}^{n}(X_{t_{k}}-X_{t_{k-1}})^{2}$
+
+where P ranges over partitions of the interval $[0,t]$ and the norm of the partition P is the mesh. This limit, if it exists, is defined using convergence in probability. Note that a process may be of finite quadratic variation in the sense of the definition given here and its paths be nonetheless almost surely of infinite 1-variation for every $t>0$ in the classical sense of taking the supremum of the sum over all partitions; this is in particular the case for Brownian motion.
+
+More generally, the **covariation** (or **cross-variance**) of two processes X and Y is
+
+$[X,Y]_{t}=\lim _{\Vert P\Vert \to 0}\sum _{k=1}^{n}\left(X_{t_{k}}-X_{t_{k-1}}\right)\left(Y_{t_{k}}-Y_{t_{k-1}}\right).$
+
+The covariation may be written in terms of the quadratic variation by the polarization identity:
+
+$[X,Y]_{t}={\tfrac {1}{2}}([X+Y]_{t}-[X]_{t}-[Y]_{t}).$
+
+Notation: the quadratic variation is also notated as $\langle X\rangle _{t}$ or $\langle X,X\rangle _{t}$ .
+
+## Finite variation processes
+
+A process X is said to have *finite variation* if it has bounded variation over every finite time interval (with probability 1). Such processes are very common including, in particular, all continuously differentiable functions. The quadratic variation exists for all continuous finite variation processes, and is zero.
+
+This statement can be generalized to non-continuous processes. Any càdlàg finite variation process X has quadratic variation equal to the sum of the squares of the jumps of X . To state this more precisely, the left limit of $X_{t}$ with respect to t is denoted by $X_{t-}$ , and the jump of X at time t can be written as $\Delta X_{t}=X_{t}-X_{t-}$ . Then, the quadratic variation is given by
+
+$[X]_{t}=\sum _{0<s\leq t}(\Delta X_{s})^{2}.$
+
+The proof that continuous finite variation processes have zero quadratic variation follows from the following inequality. Here, P is a partition of the interval $[0,t]$ , and $V_{t}(X)$ is the variation of X over $[0,t]$ .
+
+${\begin{aligned}\sum _{k=1}^{n}(X_{t_{k}}-X_{t_{k-1}})^{2}&\leq \max _{k\leq n}|X_{t_{k}}-X_{t_{k-1}}|\sum _{k=1}^{n}|X_{t_{k}}-X_{t_{k-1}}|\\&\leq \max _{|u-v|\leq \Vert P\Vert }|X_{u}-X_{v}|V_{t}(X).\end{aligned}}$
+
+By the continuity of X , this vanishes in the limit as $\Vert P\Vert$ goes to zero.
+
+## Itô processes
+
+The quadratic variation of a standard Brownian motion B exists, and is given by $[B]_{t}=t$ , however the limit in the definition is meant in the almost surely sense and the $L^{2}$ sense, but not pathwise. This generalizes to Itô processes that, by definition, can be expressed in terms of Itô integrals
+
+${\begin{aligned}X_{t}&=X_{0}+\int _{0}^{t}\sigma _{s}\,dB_{s}+\int _{0}^{t}\mu _{s}\,d[B]_{s}\\&=X_{0}+\int _{0}^{t}\sigma _{s}\,dB_{s}+\int _{0}^{t}\mu _{s}\,ds,\end{aligned}}$
+
+where B is a Brownian motion. Any such process has quadratic variation given by
+
+$[X]_{t}=\int _{0}^{t}\sigma _{s}^{2}\,ds.$
+
+## Semimartingales
+
+Quadratic variations and covariations of all semimartingales can be shown to exist. They form an important part of the theory of stochastic calculus, appearing in Itô's lemma, which is the generalization of the chain rule to the Itô integral. The quadratic covariation also appears in the integration by parts formula
+
+$X_{t}Y_{t}=X_{0}Y_{0}+\int _{0}^{t}X_{s-}\,dY_{s}+\int _{0}^{t}Y_{s-}\,dX_{s}+[X,Y]_{t},$
+
+which can be used to compute $[X,Y]$ .
+
+Alternatively this can be written as a stochastic differential equation:
+
+$\,d(X_{t}Y_{t})=X_{t-}\,dY_{t}+Y_{t-}\,dX_{t}+\,dX_{t}\,dY_{t},$
+
+where $\,dX_{t}\,dY_{t}=\,d[X,Y]_{t}.$
+
+## Martingales
+
+All càdlàg martingales, and local martingales have well defined quadratic variation, which follows from the fact that such processes are examples of semimartingales. It can be shown that the quadratic variation $[M]$ of a general locally square integrable martingale M is the unique right-continuous and increasing process starting at zero, with jumps $\Delta [M]=\Delta M^{2}$ and such that $M^{2}-[M]$ is a local martingale. A proof of existence of M (without using stochastic calculus) is given in Karandikar–Rao (2014).
+
+A useful result for square integrable martingales is the Itô isometry, which can be used to calculate the variance of Itô integrals,
+
+$\operatorname {E} \left(\left(\int _{0}^{t}H\,dM\right)^{2}\right)=\operatorname {E} \left(\int _{0}^{t}H^{2}\,d[M]\right).$
+
+This result holds whenever M is a càdlàg square integrable martingale and H is a bounded predictable process, and is often used in the construction of the Itô integral.
+
+Another important result is the **Burkholder–Davis–Gundy inequality**, named for Donald Burkholder, Burgess Davis, and Richard Floyd Gundy. This gives bounds for the maximum of a martingale in terms of the quadratic variation. For a local martingale M starting at zero, with maximum denoted by $M_{t}^{*}=\operatorname {sup} _{s\in [0,t]}|M_{s}|$ , and any real number $p\geq 1$ , the inequality is
+
+$c_{p}\operatorname {E} ([M]_{t}^{p/2})\leq \operatorname {E} ((M_{t}^{*})^{p})\leq C_{p}\operatorname {E} ([M]_{t}^{p/2}).$
+
+Here, $c_{p}<C_{p}$ are constants depending on the choice of p , but not depending on the martingale M or time t used. If M is a continuous local martingale, then the Burkholder–Davis–Gundy inequality holds for any $p>0$ .
+
+An alternative process, the **predictable quadratic variation** is sometimes used for locally square integrable martingales. This is written as $\langle M_{t}\rangle$ , and is defined to be the unique right-continuous and increasing predictable process starting at zero such that $M^{2}-\langle M\rangle$ is a local martingale. Its existence follows from the Doob–Meyer decomposition theorem and, for continuous local martingales, it is the same as the quadratic variation.

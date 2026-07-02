@@ -1,0 +1,440 @@
+# nl-rag distilled facts — domain: locality-sensitive-hashing
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:locality-sensitive-hashing/feature-hashing] In machine learning, **feature hashing**, also known as the **hashing trick** (by analogy to the kernel trick), is a fast and space-efficient way of vectorizing features, i.e. turning arbitrary features into indices in a vector or matrix.
+[src:locality-sensitive-hashing/feature-hashing] It works by applying a hash function to the features and using their hash values as indices directly (after a modulo operation), rather than looking the indices up in an associative array.
+[src:locality-sensitive-hashing/feature-hashing] In addition to its use for encoding non-numeric values, feature hashing can also be used for dimensionality reduction.
+[src:locality-sensitive-hashing/feature-hashing] This trick is often attributed to Weinberger et al.
+[src:locality-sensitive-hashing/feature-hashing] (2009), but there exists a much earlier description of this method published by John Moody in 1989.
+[src:locality-sensitive-hashing/feature-hashing] In a typical document classification task, the input to the machine learning algorithm (both during learning and classification) is free text.
+[src:locality-sensitive-hashing/feature-hashing] From this, a bag of words (BOW) representation is constructed: the individual tokens are extracted and counted, and each distinct token in the training set defines a feature (independent variable) of each of the documents in both the training and test sets.
+[src:locality-sensitive-hashing/feature-hashing] Machine learning algorithms, however, are typically defined in terms of numerical vectors.
+[src:locality-sensitive-hashing/feature-hashing] Therefore, the bags of words for a set of documents is regarded as a term-document matrix where each row is a single document, and each column is a single feature/word; the entry *i*, *j* in such a matrix captures the frequency (or weight) of the j'th term of the *vocabulary* in document i.
+[src:locality-sensitive-hashing/feature-hashing] (An alternative convention swaps the rows and columns of the matrix, but this difference is immaterial.) Typically, these vectors are extremely sparse—according to Zipf's law.
+[src:locality-sensitive-hashing/feature-hashing] The common approach is to construct, at learning time or prior to that, a *dictionary* representation of the vocabulary of the training set, and use that to map words to indices.
+[src:locality-sensitive-hashing/feature-hashing] Hash tables and tries are common candidates for dictionary implementation.
+[src:locality-sensitive-hashing/feature-hashing] The problem with this process is that such dictionaries take up a large amount of storage space and grow in size as the training set grows.
+[src:locality-sensitive-hashing/feature-hashing] On the contrary, if the vocabulary is kept fixed and not increased with a growing training set, an adversary may try to invent new words or misspellings that are not in the stored vocabulary so as to circumvent a machine learned filter.
+[src:locality-sensitive-hashing/feature-hashing] Research attempted to use feature hashing for their spam filters.
+[src:locality-sensitive-hashing/feature-hashing] Note that the hashing trick isn't limited to text classification and similar tasks at the document level, but can be applied to any problem that involves large (perhaps unbounded) numbers of features.
+[src:locality-sensitive-hashing/feature-hashing] Mathematically, a token is an element t in a finite (or countably infinite) set T .
+[src:locality-sensitive-hashing/feature-hashing] Suppose we only need to process a finite corpus, then we can put all tokens appearing in the corpus into T , meaning that T is finite.
+[src:locality-sensitive-hashing/feature-hashing] However, suppose we want to process all possible words made of the English letters, then T is countably infinite.
+[src:locality-sensitive-hashing/feature-hashing] Most neural networks can only operate on real vector inputs, so we must construct a "dictionary" function $\phi :T\to \mathbb {R} ^{n}$ .
+[src:locality-sensitive-hashing/feature-hashing] When T is finite, of size $|T|=m\leq n$ , then we can use one-hot encoding to map it into $\mathbb {R} ^{n}$ .
+[src:locality-sensitive-hashing/feature-hashing] In other words, we assign a unique index i to each token, then map the token with index i to the unit basis vector $e_{i}$ .
+[src:locality-sensitive-hashing/feature-hashing] One-hot encoding is easy to interpret, but it requires one to maintain the arbitrary enumeration of T .
+[src:locality-sensitive-hashing/feature-hashing] Given a token $t\in T$ , to compute $\phi (t)$ , we must find out the index i of the token t .
+[src:locality-sensitive-hashing/feature-hashing] Thus, to implement $\phi$ efficiently, we need a fast-to-compute bijection $h:T\to \{1,...,m\}$ , then we have $\phi (t)=e_{h(t)}$ .
+[src:locality-sensitive-hashing/feature-hashing] In fact, we can relax the requirement slightly: It suffices to have a fast-to-compute *injection* $h:T\to \{1,...,n\}$ , then use $\phi (t)=e_{h(t)}$ .
+[src:locality-sensitive-hashing/feature-hashing] In practice, there is no simple way to construct an efficient injection $h:T\to \{1,...,n\}$ .
+[src:locality-sensitive-hashing/feature-hashing] However, we do not need a strict injection, but only an *approximate* injection.
+[src:locality-sensitive-hashing/feature-hashing] That is, when $t\neq t'$ , we should *probably* have $h(t)\neq h(t')$ , so that *probably* $\phi (t)\neq \phi (t')$ .
+[src:locality-sensitive-hashing/feature-hashing] At this point, we have just specified that h should be a hashing function.
+[src:locality-sensitive-hashing/feature-hashing] Thus we reach the idea of feature hashing.
+[src:locality-sensitive-hashing/feature-hashing] The basic feature hashing algorithm presented in (Weinberger et al.
+[src:locality-sensitive-hashing/feature-hashing] We want to say something about the geometric property of $\phi$ , but T , by itself, is just a set of tokens, we cannot impose a geometric structure on it except the discrete topology, which is generated by the discrete metric.
+[src:locality-sensitive-hashing/feature-hashing] There are essentially only two ways to handle infinities.
+[src:locality-sensitive-hashing/feature-hashing] One may impose a metric, then take its completion, to allow well-behaved infinite sums, or one may demand that nothing is actually infinite, only potentially so.
+[src:locality-sensitive-hashing/feature-hashing] Here, we go for the potential-infinity way, by restricting $\mathbb {R} ^{T}$ to contain only vectors with finite support: $\forall (x_{t})_{t\in T}\in \mathbb {R} ^{T}$ , only finitely many entries of $(x_{t})_{t\in T}$ are nonzero.
+[src:locality-sensitive-hashing/feature-hashing] Taking its completion would get us to a Hilbert space, which allows well-behaved infinite sums.
+[src:locality-sensitive-hashing/feature-hashing] Now we have an inner product space, with enough structure to describe the geometry of the feature hashing function $\phi :\mathbb {R} ^{T}\to \mathbb {R} ^{n}$ .
+[src:locality-sensitive-hashing/feature-hashing] The above statement and proof interprets the binary hash function $\zeta$ not as a deterministic function of type $T\to \{-1,+1\}$ , but as a random binary vector $\{-1,+1\}^{T}$ with unbiased entries, meaning that $Pr(\zeta (t)=+1)=Pr(\zeta (t)=-1)={\frac {1}{2}}$ for any $t\in T$ .
+[src:locality-sensitive-hashing/feature-hashing] This is a good intuitive picture, though not rigorous.
+[src:locality-sensitive-hashing/feature-hashing] Instead of maintaining a dictionary, a feature vectorizer that uses the hashing trick can build a vector of a pre-defined length by applying a hash function h to the features (e.g., words), then using the hash values directly as feature indices and updating the resulting vector at those indices.
+[src:locality-sensitive-hashing/feature-hashing] Here, we assume that feature actually means feature vector.
+[src:locality-sensitive-hashing/feature-hashing] Thus, if our feature vector is ["cat","dog","cat"] and hash function is $h(x_{f})=1$ if $x_{f}$ is "cat" and 2 if $x_{f}$ is "dog".
+[src:locality-sensitive-hashing/feature-hashing] Let us take the output feature vector dimension (N) to be 4.
+[src:locality-sensitive-hashing/feature-hashing] It has been suggested that a second, single-bit output hash function ξ be used to determine the sign of the update value, to counter the effect of hash collisions.
+[src:locality-sensitive-hashing/feature-hashing] The above pseudocode actually converts each sample into a vector.
+[src:locality-sensitive-hashing/feature-hashing] An optimized version would instead only generate a stream of $(h,\zeta )$ pairs and let the learning and prediction algorithms consume such streams; a linear model can then be implemented as a single hash table representing the coefficient vector.
+[src:locality-sensitive-hashing/feature-hashing] Feature hashing generally suffers from hash collision, which means that there exist pairs of different tokens with the same hash: $t\neq t',\phi (t)=\phi (t')=v$ .
+[src:locality-sensitive-hashing/feature-hashing] A machine learning model trained on feature-hashed words would then have difficulty distinguishing t and $t'$ , essentially because v is polysemic.
+[src:locality-sensitive-hashing/feature-hashing] If $t'$ is rare, then performance degradation is small, as the model could always just ignore the rare case, and pretend all v means t .
+[src:locality-sensitive-hashing/feature-hashing] However, if both are common, then the degradation can be serious.
+[src:locality-sensitive-hashing/feature-hashing] To handle this, one can train supervised hashing functions that avoids mapping common tokens to the same feature vectors.
+[src:locality-sensitive-hashing/feature-hashing] Ganchev and Dredze showed that in text classification applications with random hash functions and several tens of thousands of columns in the output vectors, feature hashing need not have an adverse effect on classification performance, even without the signed hash function.
+[src:locality-sensitive-hashing/feature-hashing] (2015) combined the idea of feature hashing and sparse matrix to construct "virtual matrices": large matrices with small storage requirements.
+[src:locality-sensitive-hashing/feature-hashing] The idea is to treat a matrix $M\in \mathbb {R} ^{n\times n}$ as a dictionary, with keys in $n\times n$ , and values in $\mathbb {R}$ .
+[src:locality-sensitive-hashing/feature-hashing] Then, as usual in hashed dictionaries, one can use a hash function $h:\mathbb {N} \times \mathbb {N} \to m$ , and thus represent a matrix as a vector in $\mathbb {R} ^{m}$ , no matter how big n is.
+[src:locality-sensitive-hashing/feature-hashing] With virtual matrices, they constructed *HashedNets*, which are large neural networks taking only small amounts of storage.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] In computer science, **locality-sensitive hashing** (**LSH**) is a fuzzy hashing technique that hashes similar input items into the same "buckets" with high probability.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The number of buckets is much smaller than the universe of possible input items.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Since similar items end up in the same buckets, this technique can be used for data clustering and nearest neighbor search.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] It differs from conventional hashing techniques in that hash collisions are maximized, not minimized.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Alternatively, the technique can be seen as a way to reduce the dimensionality of high-dimensional data; high-dimensional input items can be reduced to low-dimensional versions while preserving relative distances between items.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Hashing-based approximate nearest-neighbor search algorithms generally use one of two main categories of hashing methods: either data-independent methods, such as locality-sensitive hashing (LSH); or data-dependent methods, such as locality-preserving hashing (LPH).
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Locality-preserving hashing was initially devised as a way to facilitate data pipelining in implementations of massively parallel algorithms that use randomized routing and universal hashing to reduce memory contention and network congestion.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] if it satisfies the following condition.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Alternatively it is possible to define an LSH family on a universe of items U endowed with a similarity function $\phi \colon U\times U\to [0,1]$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] In this setting, a LSH scheme is a family of hash functions H coupled with a probability distribution D over H such that a function $h\in H$ chosen according to D satisfies $Pr[h(a)=h(b)]=\phi (a,b)$ for each $a,b\in U$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Given a $(d_{1},d_{2},p_{1},p_{2})$ -sensitive family ${\mathcal {F}}$ , we can construct new families ${\mathcal {G}}$ by either the AND-construction or OR-construction of ${\mathcal {F}}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] To create an AND-construction, we define a new family ${\mathcal {G}}$ of hash functions g, where each function g is constructed from k random functions $h_{1},\ldots ,h_{k}$ from ${\mathcal {F}}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] To create an OR-construction, we define a new family ${\mathcal {G}}$ of hash functions g, where each function g is constructed from k random functions $h_{1},\ldots ,h_{k}$ from ${\mathcal {F}}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] We then say that for a hash function $g\in {\mathcal {G}}$ , $g(x)=g(y)$ if and only if $h_{i}(x)=h_{i}(y)$ for one or more values of i.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] One of the easiest ways to construct an LSH family is by bit sampling.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] This approach works for the Hamming distance over d-dimensional vectors $\{0,1\}^{d}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Here, the family ${\mathcal {F}}$ of hash functions is simply the family of all the projections of points on one of the d coordinates, i.e., ${\mathcal {F}}=\{h\colon \{0,1\}^{d}\to \{0,1\}\mid h(x)=x_{i}{\text{ for some }}i\in \{1,\ldots ,d\}\}$ , where $x_{i}$ is the i th coordinate of x .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] A random function h from ${\mathcal {F}}$ simply selects a random bit from the input point.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] That is, any two vectors $x,y$ with Hamming distance at most R collide under a random h with probability at least $P_{1}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Any $x,y$ with Hamming distance at least $cR$ collide with probability at most $P_{2}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Suppose U is composed of subsets of some ground set of enumerable items S and the similarity function of interest is the Jaccard index J.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] If π is a permutation on the indices of S, for $A\subseteq S$ let $h(A)=\min _{a\in A}\{\pi (a)\}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Each possible choice of π defines a single hash function h mapping input sets to elements of S.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Define the function family H to be the set of all such functions and let D be the uniform distribution.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Given two sets $A,B\subseteq S$ the event that $h(A)=h(B)$ corresponds exactly to the event that the minimizer of π over $A\cup B$ lies inside $A\cap B$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] As h was chosen uniformly at random, $Pr[h(A)=h(B)]=J(A,B)\,$ and $(H,D)\,$ define an LSH scheme for the Jaccard index.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Because the symmetric group on n elements has size n!, choosing a truly random permutation from the full symmetric group is infeasible for even moderately sized n.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Because of this fact, there has been significant work on finding a family of permutations that is "min-wise independent" — a permutation family for which each element of the domain has equal probability of being the minimum under a randomly chosen π.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] It has been established that a min-wise independent family of permutations is at least of size $\operatorname {lcm} \{\,1,2,\ldots ,n\,\}\geq e^{n-o(n)}$ , and that this bound is tight.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Because min-wise independent families are too big for practical applications, two variant notions of min-wise independence are introduced: restricted min-wise independent permutations families, and approximate min-wise independent families.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Restricted min-wise independence is the min-wise independence property restricted to certain sets of cardinality at most k.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Approximate min-wise independence differs from the property by at most a fixed ε.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The encoding must be robust against intentional attacks.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The encoding should support an extremely low risk of false positives.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Testing performed in the paper on a range of file types identified the Nilsimsa hash as having a significantly higher false positive rate when compared to other similarity digest schemes such as TLSH, Ssdeep and Sdhash.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] An implementation of TLSH is available as open-source software.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The random projection method of LSH due to Moses Charikar called SimHash (also sometimes called arccos) uses an approximation of the cosine distance between vectors.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The technique was used to approximate the NP-complete max-cut problem.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The basic idea of this technique is to choose a random hyperplane (defined by a normal unit vector r) at the outset and use the hyperplane to hash input vectors.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Given an input vector v and a hyperplane defined by r, we let $h(v)=\operatorname {sgn}(v\cdot r)$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] That is, $h(v)=\pm 1$ depending on which side of the hyperplane v lies.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] This way, each possible choice of a random hyperplane r can be interpreted as a hash function $h(v)$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Since the ratio between ${\frac {\theta (u,v)}{\pi }}$ and $1-\cos(\theta (u,v))$ is at least 0.439 when $\theta (u,v)\in [0,\pi ]$ , the probability of two vectors being on different sides of the random hyperplane is approximately proportional to the cosine distance between them.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The hash function $h_{\mathbf {a} ,b}({\boldsymbol {\upsilon }}):{\mathcal {R}}^{d}\to {\mathcal {N}}$ maps a d-dimensional vector ${\boldsymbol {\upsilon }}$ onto the set of integers.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Each hash function in the family is indexed by a choice of random $\mathbf {a}$ and b where $\mathbf {a}$ is a d-dimensional vector with entries chosen independently from a stable distribution and b is a real number chosen uniformly from the range [0,r].
+[src:locality-sensitive-hashing/locality-sensitive-hashing] For a fixed $\mathbf {a} ,b$ the hash function $h_{\mathbf {a} ,b}$ is given by $h_{\mathbf {a} ,b}({\boldsymbol {\upsilon }})=\left\lfloor {\frac {\mathbf {a} \cdot {\boldsymbol {\upsilon }}+b}{r}}\right\rfloor$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Other construction methods for hash functions have been proposed to better fit the data.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] In particular k-means hash functions are better in practice than projection-based hash functions, but without any theoretical guarantee.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Semantic hashing is a technique that attempts to map input items to addresses such that closer inputs have higher semantic similarity.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The hashcodes are found via training of an artificial neural network or graphical model.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] One of the main applications of LSH is to provide a method for efficient approximate nearest neighbor search algorithms.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Consider an LSH family ${\mathcal {F}}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The algorithm has two main parameters: the width parameter k and the number of hash tables L.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] In the first step, we define a new family ${\mathcal {G}}$ of hash functions g, where each function g is obtained by concatenating k functions $h_{1},\ldots ,h_{k}$ from ${\mathcal {F}}$ , i.e., $g(p)=[h_{1}(p),\ldots ,h_{k}(p)]$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] In other words, a random hash function g is obtained by concatenating k randomly chosen hash functions from ${\mathcal {F}}$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The algorithm then constructs L hash tables, each corresponding to a different randomly chosen hash function g.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] In the preprocessing step we hash all n d-dimensional points from the data set S into each of the L hash tables.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Given that the resulting hash tables have only n non-zero entries, one can reduce the amount of memory used per each hash table to $O(n)$ using standard hash functions.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] Given a query point q, the algorithm iterates over the L hash functions g.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] For each g considered, it retrieves the data points that are hashed into the same bucket as q.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] The process is stopped as soon as a point within distance cR from q is found.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] To generalize the above algorithm without radius R being fixed, we can take the algorithm and do a sort of binary search over R.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] When t is large, it is possible to reduce the hashing time from $O(n^{\rho })$ .
+[src:locality-sensitive-hashing/locality-sensitive-hashing] It is also sometimes the case that the factor $1/P_{1}$ can be very large.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] This happens for example with Jaccard similarity data, where even the most similar neighbor often has a quite low Jaccard similarity with the query.
+[src:locality-sensitive-hashing/locality-sensitive-hashing] In it was shown how to reduce the query time to $O(n^{\rho }/P_{1}^{1-\rho })$ (not including hashing costs) and similarly the space usage.
+[src:locality-sensitive-hashing/minhash] In computer science and data mining, **MinHash** (or the **min-wise independent permutations** locality sensitive hashing scheme) is a technique for quickly estimating how similar two sets are.
+[src:locality-sensitive-hashing/minhash] The scheme was published by Andrei Broder in a 1997 conference, and initially used in the AltaVista search engine to detect duplicate web pages and eliminate them from search results.
+[src:locality-sensitive-hashing/minhash] It has also been applied in large-scale clustering problems, such as clustering documents by the similarity of their sets of words.
+[src:locality-sensitive-hashing/minhash] The Jaccard similarity coefficient is a commonly used indicator of the similarity between two sets.
+[src:locality-sensitive-hashing/minhash] This value is 0 when the two sets are disjoint, 1 when they are equal, and strictly between 0 and 1 otherwise.
+[src:locality-sensitive-hashing/minhash] Two sets are more similar (i.e. have relatively more members in common) when their Jaccard index is closer to 1.
+[src:locality-sensitive-hashing/minhash] The goal of MinHash is to estimate *J*(*A*,*B*) quickly, without explicitly computing the intersection and union.
+[src:locality-sensitive-hashing/minhash] Now, applying *h*min to both *A* and *B*, and assuming no hash collisions, we see that the values are equal (*h*min(*A*) = *h*min(*B*)) if and only if among all elements of $A\cup B$ , the element with the minimum hash value lies in the intersection $A\cap B$ .
+[src:locality-sensitive-hashing/minhash] That is, the probability that *h*min(*A*) = *h*min(*B*) is true is equal to the similarity *J*(*A*,*B*), assuming drawing *perm* from a uniform distribution.
+[src:locality-sensitive-hashing/minhash] In other words, if *r* is the random variable that is one when *h*min(*A*) = *h*min(*B*) and zero otherwise, then *r* is an unbiased estimator of *J*(*A*,*B*).
+[src:locality-sensitive-hashing/minhash] *r* has too high a variance to be a useful estimator for the Jaccard similarity on its own, because r is always zero or one.
+[src:locality-sensitive-hashing/minhash] The idea of the MinHash scheme is to reduce this variance by averaging together several variables constructed in the same way.
+[src:locality-sensitive-hashing/minhash] The simplest version of the minhash scheme uses *k* different hash functions, where *k* is a fixed integer parameter, and represents each set *S* by the *k* values of *h*min(*S*) for these *k* functions.
+[src:locality-sensitive-hashing/minhash] To estimate *J*(*A*,*B*) using this version of the scheme, let *y* be the number of hash functions for which *h*min(*A*) = *h*min(*B*), and use *y*/*k* as the estimate.
+[src:locality-sensitive-hashing/minhash] This estimate is the average of *k* different 0-1 random variables, each of which is one when *h*min(*A*) = *h*min(*B*) and zero otherwise, and each of which is an unbiased estimator of *J*(*A*,*B*).
+[src:locality-sensitive-hashing/minhash] Therefore, their average is also an unbiased estimator, and by standard deviation for sums of 0-1 random variables, its expected error is O(1/√*k*).
+[src:locality-sensitive-hashing/minhash] Therefore, for any constant ε > 0 there is a constant *k* = O(1/ε2) such that the expected error of the estimate is at most ε.
+[src:locality-sensitive-hashing/minhash] For example, 400 hashes would be required to estimate *J*(*A*,*B*) with an expected error less than or equal to .05.
+[src:locality-sensitive-hashing/minhash] It may be computationally expensive to compute multiple hash functions, but a related version of MinHash scheme avoids this penalty by using only a single hash function and uses it to select multiple values from each set rather than selecting only a single minimum value per hash function.
+[src:locality-sensitive-hashing/minhash] Let *h* be a hash function, and let *k* be a fixed integer.
+[src:locality-sensitive-hashing/minhash] If *S* is any set of *k* or more values in the domain of *h*, define *h*(*k*)(*S*) to be the subset of the *k* members of *S* that have the smallest values of *h*.
+[src:locality-sensitive-hashing/minhash] This subset *h*(*k*)(*S*) is used as a *signature* for the set *S*, and the similarity of any two sets is estimated by comparing their signatures.
+[src:locality-sensitive-hashing/minhash] Specifically, let *A* and *B* be any two sets.
+[src:locality-sensitive-hashing/minhash] Then *X* = *h*(*k*)(*h*(*k*)(*A*) ∪ *h*(*k*)(*B*)) = *h*(*k*)(*A* ∪ *B*) is a set of *k* elements of *A* ∪ *B*, and if *h* is a random function then any subset of *k* elements is equally likely to be chosen; that is, *X* is a simple random sample of *A* ∪ *B*.
+[src:locality-sensitive-hashing/minhash] However, when *k* is small relative to the sizes of the sets, this difference is negligible.
+[src:locality-sensitive-hashing/minhash] By standard Chernoff bounds for sampling without replacement, this estimator has expected error O(1/√*k*), matching the performance of the multiple-hash-function scheme.
+[src:locality-sensitive-hashing/minhash] The estimator |*Y*|/*k* can be computed in time O(*k*) from the two signatures of the given sets, in either variant of the scheme.
+[src:locality-sensitive-hashing/minhash] Therefore, when ε and *k* are constants, the time to compute the estimated similarity from the signatures is also constant.
+[src:locality-sensitive-hashing/minhash] The signature of each set can be computed in linear time on the size of the set, so when many pairwise similarities need to be estimated this method can lead to a substantial savings in running time compared to doing a full comparison of the members of each set.
+[src:locality-sensitive-hashing/minhash] Specifically, for set size *n* the many hash variant takes O(*n* *k*) time.
+[src:locality-sensitive-hashing/minhash] The single hash variant is generally faster, requiring O(*n*) time to maintain the queue of minimum hash values assuming *n* >> *k*.
+[src:locality-sensitive-hashing/minhash] A variety of techniques to introduce weights into the computation of MinHashes have been developed.
+[src:locality-sensitive-hashing/minhash] The simplest extends it to integer weights.
+[src:locality-sensitive-hashing/minhash] Extend our hash function h to accept both a set member and an integer, then generate multiple hashes for each item, according to its weight.
+[src:locality-sensitive-hashing/minhash] If item i occurs n times, generate hashes $h(i,1),h(i,2),\ldots ,h(i,n)$ .
+[src:locality-sensitive-hashing/minhash] Run the original algorithm on this expanded set of hashes.
+[src:locality-sensitive-hashing/minhash] Doing so yields the weighted Jaccard Index as the collision probability.
+[src:locality-sensitive-hashing/minhash] Further extensions that achieve this collision probability on real weights with better runtime have been developed, one for dense data, and another for sparse data.
+[src:locality-sensitive-hashing/minhash] Another family of extensions use exponentially distributed hashes.
+[src:locality-sensitive-hashing/minhash] A uniformly random hash between 0 and 1 can be converted to follow an exponential distribution by CDF inversion.
+[src:locality-sensitive-hashing/minhash] This method exploits the many beautiful properties of the minimum of a set of exponential variables.
+[src:locality-sensitive-hashing/minhash] In order to implement the MinHash scheme as described above, one needs the hash function *h* to define a random permutation on *n* elements, where *n* is the total number of distinct elements in the union of all of the sets to be compared.
+[src:locality-sensitive-hashing/minhash] But because there are *n*! different permutations, it would require Ω(*n* log *n*) bits just to specify a truly random permutation, an infeasibly large number for even moderate values of *n*.
+[src:locality-sensitive-hashing/minhash] Because of this fact, by analogy to the theory of universal hashing, there has been significant work on finding a family of permutations that is "min-wise independent", meaning that for any subset of the domain, any element is equally likely to be the minimum.
+[src:locality-sensitive-hashing/minhash] different permutations, and therefore that it needs Ω(*n*) bits to specify a single permutation, still infeasibly large.
+[src:locality-sensitive-hashing/minhash] Because of the above impracticality, two variant notions of min-wise independence have been introduced: restricted min-wise independent permutations families, and approximate min-wise independent families.
+[src:locality-sensitive-hashing/minhash] Restricted min-wise independence is the min-wise independence property restricted to certain sets of cardinality at most *k*.
+[src:locality-sensitive-hashing/minhash] Approximate min-wise independence has at most a fixed probability ε of varying from full independence.
+[src:locality-sensitive-hashing/minhash] In 1999 Piotr Indyk proved that any k-wise independent family of hash functions is also approximately min-wise independent for k large enough.
+[src:locality-sensitive-hashing/minhash] for all sets $|X|\leq \epsilon nc'$ and $x\not \in X$ .
+[src:locality-sensitive-hashing/minhash] This guarantee is, among other things, sufficient to give the Jaccard bound required by the MinHash algorithm.
+[src:locality-sensitive-hashing/minhash] Since k-wise independent hash functions can be specified using just $k\log n$ bits, this approach is much more practical than using completely min-wise independent permutations.
+[src:locality-sensitive-hashing/minhash] Another practical family of hash functions that give approximate min-wise independence is Tabulation hashing.
+[src:locality-sensitive-hashing/minhash] The original applications for MinHash involved clustering and eliminating near-duplicates among web documents, represented as sets of the words occurring in those documents.
+[src:locality-sensitive-hashing/minhash] Similar techniques have also been used for clustering and near-duplicate elimination for other types of data, such as images: in the case of image data, an image can be represented as a set of smaller subimages cropped from it, or as sets of more complex image feature descriptions.
+[src:locality-sensitive-hashing/minhash] (2001) use MinHash as a tool for association rule learning.
+[src:locality-sensitive-hashing/minhash] The MinHash algorithm has been adapted for bioinformatics, where the problem of comparing genome sequences has a similar theoretical underpinning to that of comparing documents on the web.
+[src:locality-sensitive-hashing/minhash] MinHash-based tools allow rapid comparison of whole genome sequencing data with reference genomes (around 3 minutes to compare one genome with the 90000 reference genomes in RefSeq), and are suitable for speciation and maybe a limited degree of microbial sub-typing.
+[src:locality-sensitive-hashing/minhash] There are also applications for metagenomics and the use of MinHash derived algorithms for genome alignment and genome assembly.
+[src:locality-sensitive-hashing/minhash] Accurate average nucleotide identity (ANI) values can be generated very efficiently with MinHash-based algorithms.
+[src:locality-sensitive-hashing/minhash] In this instance, the signature of a set may be seen as its hash value.
+[src:locality-sensitive-hashing/minhash] Other locality sensitive hashing techniques exist for Hamming distance between sets and cosine distance between vectors; locality sensitive hashing has important applications in nearest neighbor search algorithms.
+[src:locality-sensitive-hashing/minhash] For large distributed systems, and in particular MapReduce, there exist modified versions of MinHash to help compute similarities with no dependence on the point dimension.
+[src:locality-sensitive-hashing/minhash] A large scale evaluation was conducted by Google in 2006 to compare the performance of Minhash and SimHash algorithms.
+[src:locality-sensitive-hashing/minhash] In 2007 Google reported using Simhash for duplicate detection for web crawling and using Minhash and LSH for Google News personalization.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Formally, the nearest neighbor (NN) search problem is defined as follows: given a set S of points in a space M and a query point $q\in M$ , find the closest point in S to q.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Donald Knuth in volume 3 of *The Art of Computer Programming* (1973) called it the **post-office problem**, referring to an application of assigning to a residence the nearest post office.
+[src:locality-sensitive-hashing/nearest-neighbor-search] A direct generalization of this problem is a k-NN search, where we need to find the k closest points.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Most commonly M is a metric space and dissimilarity is expressed as a distance metric, which is symmetric and satisfies the triangle inequality.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Even more common, M is taken to be the d-dimensional vector space where dissimilarity is measured using the Euclidean distance, Manhattan distance or other distance metric.
+[src:locality-sensitive-hashing/nearest-neighbor-search] However, the dissimilarity function can be arbitrary.
+[src:locality-sensitive-hashing/nearest-neighbor-search] One example is asymmetric Bregman divergence, for which the triangle inequality does not hold.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Various solutions to the NNS problem have been proposed.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The quality and usefulness of the algorithms are determined by the time complexity of queries as well as the space complexity of any search data structures that must be maintained.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The informal observation usually referred to as the curse of dimensionality states that there is no general-purpose exact solution for NNS in high-dimensional Euclidean space using polynomial preprocessing and polylogarithmic search time.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The simplest solution to the NNS problem is to compute the distance from the query point to every other point in the database, keeping track of the "best so far".
+[src:locality-sensitive-hashing/nearest-neighbor-search] This algorithm, sometimes referred to as the naive approach, has a running time of *O*(*dN*), where *N* is the cardinality of *S* and *d* is the dimensionality of *S*.
+[src:locality-sensitive-hashing/nearest-neighbor-search] There are no search data structures to maintain, so the linear search has no space complexity beyond the storage of the database.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Naive search can, on average, outperform space partitioning approaches on higher dimensional spaces.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The absolute distance is not required for distance comparison, only the relative distance.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In geometric coordinate systems the distance calculation can be sped up considerably by omitting the square root calculation from the distance calculation between two coordinates.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The distance comparison will still yield identical results.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Since the 1970s, the branch and bound methodology has been applied to the problem.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In the case of Euclidean space, this approach encompasses spatial index or spatial access methods.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Several space-partitioning methods have been developed for solving the NNS problem.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Perhaps the simplest is the k-d tree, which iteratively bisects the search space into two regions containing half of the points of the parent region.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Queries are performed via traversal of the tree from the root to a leaf by evaluating the query point at each split.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Depending on the distance specified in the query, neighboring branches that might contain hits may also need to be evaluated.
+[src:locality-sensitive-hashing/nearest-neighbor-search] R-trees can yield nearest neighbors not only for Euclidean distance, but can also be used with other distances.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In the case of general metric space, the branch-and-bound approach is known as the metric tree approach.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Particular examples include vp-tree and BK-tree methods.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Using a set of points taken from a 3-dimensional space and put into a BSP tree, and given a query point taken from the same space, a possible solution to the problem of finding the nearest point-cloud point to the query point is given in the following description of an algorithm.
+[src:locality-sensitive-hashing/nearest-neighbor-search] (Strictly speaking, no such point may exist, because it may not be unique.
+[src:locality-sensitive-hashing/nearest-neighbor-search] This may not be the case, but it is a good heuristic.
+[src:locality-sensitive-hashing/nearest-neighbor-search] After having recursively gone through all the trouble of solving the problem for the guessed half-space, now compare the distance returned by this result with the shortest distance from the query point to the partitioning plane.
+[src:locality-sensitive-hashing/nearest-neighbor-search] This latter distance is that between the query point and the closest possible point that could exist in the half-space not searched.
+[src:locality-sensitive-hashing/nearest-neighbor-search] If this distance is greater than that returned in the earlier result, then clearly there is no need to search the other half-space.
+[src:locality-sensitive-hashing/nearest-neighbor-search] If there is such a need, then you must go through the trouble of solving the problem for the other half space, and then compare its result to the former result, and then return the proper result.
+[src:locality-sensitive-hashing/nearest-neighbor-search] An approximate nearest neighbor search algorithm is allowed to return points whose distance from the query is at most c times the distance from the query to its nearest points.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The appeal of this approach is that, in many cases, an approximate nearest neighbor is almost as good as the exact one.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In particular, if the distance measure accurately captures the notion of user quality, then small differences in the distance should not matter.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Proximity graph methods (such as navigable small world graphs and HNSW) are considered the current state-of-the-art for the approximate nearest neighbors search.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The methods are based on greedy traversing in proximity neighborhood graphs $G(V,E)$ in which every point $x_{i}\in S$ is uniquely associated with vertex $v_{i}\in V$ .
+[src:locality-sensitive-hashing/nearest-neighbor-search] The search for the nearest neighbors to a query *q* in the set *S* takes the form of searching for the vertex in the graph $G(V,E)$ .
+[src:locality-sensitive-hashing/nearest-neighbor-search] The basic algorithm – greedy search – works as follows: search starts from an enter-point vertex $v_{i}\in V$ by computing the distances from the query q to each vertex of its neighborhood $\{v_{j}:(v_{i},v_{j})\in E\}$ , and then finds a vertex with the minimal distance value.
+[src:locality-sensitive-hashing/nearest-neighbor-search] If the distance value between the query and the selected vertex is smaller than the one between the query and the current element, then the algorithm moves to the selected vertex, and it becomes new enter-point.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The algorithm stops when it reaches a local minimum: a vertex whose neighborhood does not contain a vertex that is closer to the query than the vertex itself.
+[src:locality-sensitive-hashing/nearest-neighbor-search] These works were preceded by a pioneering paper by Toussaint, in which he introduced the concept of a *relative neighborhood* graph.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Locality sensitive hashing (LSH) is a technique for grouping points in space into 'buckets' based on some distance metric operating on the points.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Points that are close to each other under the chosen metric are mapped to the same bucket with high probability.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The cover tree has a theoretical bound that is based on the dataset's doubling constant.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The bound on search time is *O*(*c*12 log *n*) where *c* is the expansion constant of the dataset.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In the special case where the data is a dense 3D map of geometric points, the projection geometry of the sensing technique can be used to dramatically simplify the search problem.
+[src:locality-sensitive-hashing/nearest-neighbor-search] This approach requires that the 3D data is organized by a projection to a two-dimensional grid and assumes that the data is spatially smooth across neighboring grid cells with the exception of object boundaries.
+[src:locality-sensitive-hashing/nearest-neighbor-search] These assumptions are valid when dealing with 3D sensor data in applications such as surveying, robotics and stereo vision but may not hold for unorganized data in general.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In practice this technique has an average search time of *O*(*1*) or *O*(*K*) for the *k*-nearest neighbor problem when applied to real world stereo vision data.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In high-dimensional spaces, tree indexing structures become useless because an increasing percentage of the nodes need to be examined anyway.
+[src:locality-sensitive-hashing/nearest-neighbor-search] To speed up linear search, a compressed version of the feature vectors stored in RAM is used to prefilter the datasets in a first run.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The final candidates are determined in a second stage using the uncompressed data from the disk for distance calculation.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The VA-file approach is a special case of a compression based search, where each feature component is compressed uniformly and independently.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The optimal compression technique in multidimensional spaces is Vector Quantization (VQ), implemented through clustering.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The database is clustered and the most "promising" clusters are retrieved.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Huge gains over VA-File, tree-based indexes and sequential scan have been observed.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Also note the parallels between clustering and LSH.
+[src:locality-sensitive-hashing/nearest-neighbor-search] There are numerous variants of the NNS problem and the two most well-known are the *k*-nearest neighbor search and the ε-approximate nearest neighbor search.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In some applications it may be acceptable to retrieve a "good guess" of the nearest neighbor.
+[src:locality-sensitive-hashing/nearest-neighbor-search] In those cases, we can use an algorithm which doesn't guarantee to return the actual nearest neighbor in every case, in return for improved speed or memory savings.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Often such an algorithm will find the nearest neighbor in a majority of cases, but this depends strongly on the dataset being queried.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Algorithms that support the approximate nearest neighbor search include locality-sensitive hashing, best bin first and balanced box-decomposition tree based search.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Nearest neighbor distance ratio does not apply the threshold on the direct distance from the original point to the challenger neighbor but on a ratio of it depending on the distance to the previous neighbor.
+[src:locality-sensitive-hashing/nearest-neighbor-search] It is used in CBIR to retrieve pictures through a "query by example" using the similarity between local features.
+[src:locality-sensitive-hashing/nearest-neighbor-search] More generally it is involved in several matching problems.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Fixed-radius near neighbors is the problem where one wants to efficiently find all points given in Euclidean space within a given fixed distance from a specified point.
+[src:locality-sensitive-hashing/nearest-neighbor-search] The distance is assumed to be fixed, but the query point is arbitrary.
+[src:locality-sensitive-hashing/nearest-neighbor-search] For some applications (e.g. entropy estimation), we may have *N* data-points and wish to know which is the nearest neighbor *for every one of those N points*.
+[src:locality-sensitive-hashing/nearest-neighbor-search] This could, of course, be achieved by running a nearest-neighbor search once for every point, but an improved strategy would be an algorithm that exploits the information redundancy between these *N* queries to produce a more efficient search.
+[src:locality-sensitive-hashing/nearest-neighbor-search] As a simple example: when we find the distance from point *X* to point *Y*, that also tells us the distance from point *Y* to point *X*, so the same calculation can be reused in two different queries.
+[src:locality-sensitive-hashing/nearest-neighbor-search] Given a fixed dimension, a semi-definite positive norm (thereby including every Lp norm), and *n* points in this space, the nearest neighbour of every point can be found in *O*(*n* log *n*) time and the *m* nearest neighbours of every point can be found in *O*(*mn* log *n*) time.
+[src:locality-sensitive-hashing/tabulation-hashing] In computer science, **tabulation hashing** is a method for constructing universal families of hash functions by combining table lookup with exclusive or operations.
+[src:locality-sensitive-hashing/tabulation-hashing] It was first studied in the form of Zobrist hashing for computer games; later work by Carter and Wegman extended this method to arbitrary fixed-length keys.
+[src:locality-sensitive-hashing/tabulation-hashing] Generalizations of tabulation hashing have also been developed that can handle variable-length keys such as text strings.
+[src:locality-sensitive-hashing/tabulation-hashing] Despite its simplicity, tabulation hashing has strong theoretical properties that distinguish it from some other hash functions.
+[src:locality-sensitive-hashing/tabulation-hashing] In particular, it is 3-independent: every 3-tuple of keys is equally likely to be mapped to any 3-tuple of hash values.
+[src:locality-sensitive-hashing/tabulation-hashing] More sophisticated but slower variants of tabulation hashing extend the method to higher degrees of independence.
+[src:locality-sensitive-hashing/tabulation-hashing] Because of its high degree of independence, tabulation hashing is usable with hashing methods that require a high-quality hash function, including hopscotch hashing, cuckoo hashing, and the MinHash technique for estimating the size of set intersections.
+[src:locality-sensitive-hashing/tabulation-hashing] First, divide the key to be hashed into smaller "blocks" of a chosen length.
+[src:locality-sensitive-hashing/tabulation-hashing] Then, create a set of lookup tables, one for each block, and fill them with random values.
+[src:locality-sensitive-hashing/tabulation-hashing] Finally, use the tables to compute a hash value for each block, and combine all of these hashes into a final hash value using the bitwise exclusive or operation.
+[src:locality-sensitive-hashing/tabulation-hashing] Let *p* be the number of bits in a key to be hashed, and *q* be the number of bits desired in an output hash function.
+[src:locality-sensitive-hashing/tabulation-hashing] Choose a block size *r* ≤ *p*; the choice of block size controls the tradeoff between time and memory usage, so it should be made so that the tables are not too large, e.g., so that the tables fit into the computer's cache memory.
+[src:locality-sensitive-hashing/tabulation-hashing] Smaller blocks use less memory but slow down the hash function.
+[src:locality-sensitive-hashing/tabulation-hashing] Compute *t* = ceil(*p*/*r*), the number of *r*-bit blocks needed to represent a key.
+[src:locality-sensitive-hashing/tabulation-hashing] Create a two-dimensional 2*r* × *t* array, *T*, and fill it with random *q*-bit numbers.
+[src:locality-sensitive-hashing/tabulation-hashing] Now *T* can be used to compute the hash value *h*(*x*) of any given key *x*.
+[src:locality-sensitive-hashing/tabulation-hashing] To do so, partition *x* into *r*-bit values, where *x*0 consists of the lowest *r* bits of *x*, *x*1 consists of the next *r* bits, etc.
+[src:locality-sensitive-hashing/tabulation-hashing] For example, if *r* = 8, then *x**i* is just the *i*th byte of *x*.
+[src:locality-sensitive-hashing/tabulation-hashing] Note that it is not valid to use the same table (e.g.
+[src:locality-sensitive-hashing/tabulation-hashing] *T[0]*) for each *x*i, since then the hash function would not be able to distinguish between strings with the same *x*is, but permuted differently.
+[src:locality-sensitive-hashing/tabulation-hashing] Code for a typical example with *r* = *t* = 8 and *q* = *p* = 64 is given below.
+[src:locality-sensitive-hashing/tabulation-hashing] The first instance of tabulation hashing is Zobrist hashing, a method for hashing positions in abstract board games such as chess named after Albert Lindsey Zobrist, who published it in 1970.
+[src:locality-sensitive-hashing/tabulation-hashing] In this method, a random bitstring is generated for each game feature such as a combination of a chess piece and a square of the chessboard.
+[src:locality-sensitive-hashing/tabulation-hashing] Then, to hash any game position, the bitstrings for the features of that position are combined by a bitwise exclusive or.
+[src:locality-sensitive-hashing/tabulation-hashing] The resulting hash value can then be used as an index into a transposition table.
+[src:locality-sensitive-hashing/tabulation-hashing] Because each move typically changes only a small number of game features, the Zobrist value of the position after a move can be updated quickly from the value of the position before the move, without needing to loop over all of the features of the position.
+[src:locality-sensitive-hashing/tabulation-hashing] Tabulation hashing in greater generality, for arbitrary binary values, was later rediscovered by Carter & Wegman (1979) and studied in more detail by Pătraşcu & Thorup (2012).
+[src:locality-sensitive-hashing/tabulation-hashing] Carter & Wegman (1979) define a randomized scheme for generating hash functions to be universal if, for any two keys, the probability that they collide (that is, they are mapped to the same value as each other) is 1/*m*, where *m* is the number of values that the keys can take on.
+[src:locality-sensitive-hashing/tabulation-hashing] They defined a stronger property in the subsequent paper Wegman & Carter (1981): a randomized scheme for generating hash functions is *k*-independent if, for every *k*-tuple of keys, and each possible *k*-tuple of values, the probability that those keys are mapped to those values is 1/*m**k*.
+[src:locality-sensitive-hashing/tabulation-hashing] 2-independent hashing schemes are automatically universal, and any universal hashing scheme can be converted into a 2-independent scheme by storing a random number *x* as part of the initialization phase of the algorithm and adding *x* to each hash value.
+[src:locality-sensitive-hashing/tabulation-hashing] Thus, universality is essentially the same as 2-independence.
+[src:locality-sensitive-hashing/tabulation-hashing] However, *k*-independence for larger values of *k* is a stronger property, held by fewer hashing algorithms.
+[src:locality-sensitive-hashing/tabulation-hashing] As Pătraşcu & Thorup (2012) observe, tabulation hashing is 3-independent but not 4-independent.
+[src:locality-sensitive-hashing/tabulation-hashing] For any single key *x*, *T*[*x*0,0] is equally likely to take on any hash value, and the exclusive or of *T*[*x*0,0] with the remaining table values does not change this property.
+[src:locality-sensitive-hashing/tabulation-hashing] Similarly, for any three keys *x*, *y*, and *z*, at least one of the three keys has a position *i* where its value *z**i* differs from the other two, so that even after the values of *h*(*x*) and *h*(*y*) are determined, *h*(*z*) is equally likely to be any valid hash value.
+[src:locality-sensitive-hashing/tabulation-hashing] However, this reasoning breaks down for four keys because there are sets of keys *w*, *x*, *y*, and *z* where none of the four has a byte value that it does not share with at least one of the other keys.
+[src:locality-sensitive-hashing/tabulation-hashing] For instance, if the keys have two bytes each, and *w*, *x*, *y*, and *z* are the four keys that have either zero or one as their byte values, then each byte value in each position is shared by exactly two of the four keys.
+[src:locality-sensitive-hashing/tabulation-hashing] For these four keys, the hash values computed by tabulation hashing will always satisfy the equation *h*(*w*) ⊕ *h*(*x*) ⊕ *h*(*y*) ⊕ *h*(*z*) = 0, whereas for a 4-independent hashing scheme the same equation would only be satisfied with probability 1/*m*.
+[src:locality-sensitive-hashing/tabulation-hashing] Therefore, tabulation hashing is not 4-independent.
+[src:locality-sensitive-hashing/tabulation-hashing] Because tabulation hashing is a universal hashing scheme, it can be used in any hashing-based algorithm in which universality is sufficient.
+[src:locality-sensitive-hashing/tabulation-hashing] For instance, in hash chaining, the expected time per operation is proportional to the sum of collision probabilities, which is the same for any universal scheme as it would be for truly random hash functions, and is constant whenever the load factor of the hash table is constant.
+[src:locality-sensitive-hashing/tabulation-hashing] Therefore, tabulation hashing can be used to compute hash functions for hash chaining with a theoretical guarantee of constant expected time per operation.
+[src:locality-sensitive-hashing/tabulation-hashing] However, universal hashing is not strong enough to guarantee the performance of some other hashing algorithms.
+[src:locality-sensitive-hashing/tabulation-hashing] For instance, for linear probing, 5-independent hash functions are strong enough to guarantee constant time operation, but there are 4-independent hash functions that fail.
+[src:locality-sensitive-hashing/tabulation-hashing] Nevertheless, despite only being 3-independent, tabulation hashing provides the same constant-time guarantee for linear probing.
+[src:locality-sensitive-hashing/tabulation-hashing] Cuckoo hashing, another technique for implementing hash tables, guarantees constant time per lookup (regardless of the hash function).
+[src:locality-sensitive-hashing/tabulation-hashing] Insertions into a cuckoo hash table may fail, causing the entire table to be rebuilt, but such failures are sufficiently unlikely that the expected time per insertion (using either a truly random hash function or a hash function with logarithmic independence) is constant.
+[src:locality-sensitive-hashing/tabulation-hashing] With tabulation hashing, on the other hand, the best bound known on the failure probability is higher, high enough that insertions cannot be guaranteed to take constant expected time.
+[src:locality-sensitive-hashing/tabulation-hashing] Nevertheless, tabulation hashing is adequate to ensure the linear-expected-time construction of a cuckoo hash table for a static set of keys that does not change as the table is used.
+[src:locality-sensitive-hashing/tabulation-hashing] Although tabulation hashing as described above ("simple tabulation hashing") is only 3-independent, variations of this method can be used to obtain hash functions with much higher degrees of independence.
+[src:locality-sensitive-hashing/tabulation-hashing] However, the number of table lookups needed to compute each hash value using Siegel's variation of tabulation hashing, while constant, is still too large to be practical, and the use of expanders in Siegel's technique also makes it not fully constructive.
+[src:locality-sensitive-hashing/tabulation-hashing] Thorup (2013) provides a scheme based on tabulation hashing that reaches high degrees of independence more quickly, in a more constructive way.
+[src:locality-sensitive-hashing/tabulation-hashing] Simple tabulation is limited to keys of a fixed length, because a different table of random values needs to be initialized for each position of a block in the keys.
+[src:locality-sensitive-hashing/tabulation-hashing] Lemire (2012) studies variations of tabulation hashing suitable for variable-length keys such as character strings.
+[src:locality-sensitive-hashing/tabulation-hashing] The general type of hashing scheme studied by Lemire uses a single table *T* indexed by the value of a block, regardless of its position within the key.
+[src:locality-sensitive-hashing/tabulation-hashing] However, the values from this table may be combined by a more complicated function than bitwise exclusive or.
+[src:locality-sensitive-hashing/tabulation-hashing] Lemire shows that no scheme of this type can be 3-independent.
+[src:locality-sensitive-hashing/tabulation-hashing] Nevertheless, he shows that it is still possible to achieve 2-independence.
+[src:locality-sensitive-hashing/tabulation-hashing] Mixed Tabulation hashing (and the less general Twisted Tabulation) were introduced by Dahlgaard and Thorup as a way to strengthen the properties of Tabulation hashing while keeping nearly the same performance.
+[src:locality-sensitive-hashing/tabulation-hashing] Mixed tabulation can be seen as a xor'ing a "Double Tabulation" Thorup (2013) hash function with a simple tabulation hash function.
+[src:locality-sensitive-hashing/tabulation-hashing] The idea is to pick a number d and hash to $2^{rd+q}$ bits rather than just $2^{q}$ .
+[src:locality-sensitive-hashing/tabulation-hashing] This gives d new "derived characters" which are hashed by a second hash function and the two values are xor'ed together.
+[src:locality-sensitive-hashing/tabulation-hashing] Mixed Tabulation was shown in 2016 to have strong concentration with regards to *k*-partitions, which are useful in algorithms for counting distinct elements, such as the classical method by Flajolet and Martin.
+[src:locality-sensitive-hashing/universal-hashing] In mathematics and computing, **universal hashing** (in a randomized algorithm or data structure) refers to selecting a hash function at random from a family of hash functions with a certain mathematical property (see definition below).
+[src:locality-sensitive-hashing/universal-hashing] This guarantees a low number of collisions in expectation, even if the data is chosen by an adversary.
+[src:locality-sensitive-hashing/universal-hashing] Many universal families are known (for hashing integers, vectors, strings), and their evaluation is often very efficient.
+[src:locality-sensitive-hashing/universal-hashing] Universal hashing has numerous uses in computer science, for example in implementations of hash tables, randomized algorithms, and cryptography.
+[src:locality-sensitive-hashing/universal-hashing] Assume we want to map keys from some universe U into m bins (labelled $[m]=\{0,\dots ,m-1\}$ ).
+[src:locality-sensitive-hashing/universal-hashing] The algorithm will have to handle some data set $S\subseteq U$ of $|S|=n$ keys, which is not known in advance.
+[src:locality-sensitive-hashing/universal-hashing] Usually, the goal of hashing is to obtain a low number of collisions (keys from S that land in the same bin).
+[src:locality-sensitive-hashing/universal-hashing] A deterministic hash function cannot offer any guarantee in an adversarial setting if $|U|>m\cdot n$ , since the adversary may choose S to be precisely the preimage of a bin.
+[src:locality-sensitive-hashing/universal-hashing] This means that all data keys land in the same bin, making hashing useless.
+[src:locality-sensitive-hashing/universal-hashing] Furthermore, a deterministic hash function does not allow for *rehashing*: sometimes the input data turns out to be bad for the hash function (e.g. there are too many collisions), so one would like to change the hash function.
+[src:locality-sensitive-hashing/universal-hashing] The solution to these problems is to pick a function randomly from a family of hash functions.
+[src:locality-sensitive-hashing/universal-hashing] In other words, any two different keys of the universe collide with probability at most $1/m$ when the hash function h is drawn uniformly at random from H .
+[src:locality-sensitive-hashing/universal-hashing] This is exactly the probability of collision we would expect if the hash function assigned truly random hash codes to every key.
+[src:locality-sensitive-hashing/universal-hashing] Sometimes, the definition is relaxed by a constant factor, only requiring collision probability $O(1/m)$ rather than $\leq 1/m$ .
+[src:locality-sensitive-hashing/universal-hashing] This concept was introduced by Carter and Wegman in 1977, and has found numerous applications in computer science (see, for example).
+[src:locality-sensitive-hashing/universal-hashing] If we have an upper bound of $\epsilon <1$ on the collision probability, we say that we have $\epsilon$ -almost universality.
+[src:locality-sensitive-hashing/universal-hashing] So for example, a universal family has $1/m$ -almost universality.
+[src:locality-sensitive-hashing/universal-hashing] Note that the definition of universality is only concerned with whether $h(x)-h(y)=0$ , which counts collisions.
+[src:locality-sensitive-hashing/universal-hashing] The uniform difference property is stronger.
+[src:locality-sensitive-hashing/universal-hashing] (Similarly, a universal family can be XOR universal if $\forall x,y\in U,~x\neq y$ , the value $h(x)\oplus h(y)~{\bmod {~}}m$ is uniformly distributed in $[m]$ where $\oplus$ is the bitwise exclusive or operation.
+[src:locality-sensitive-hashing/universal-hashing] An even stronger condition is pairwise independence: we have this property when $\forall x,y\in U,~x\neq y$ we have the probability that $x,y$ will hash to any pair of hash values $z_{1},z_{2}$ is as if they were perfectly random: $P(h(x)=z_{1}\land h(y)=z_{2})=1/m^{2}$ .
+[src:locality-sensitive-hashing/universal-hashing] Pairwise independence is sometimes called **strong universality**.
+[src:locality-sensitive-hashing/universal-hashing] We say that a family is uniform if all hash values are equally likely: $P(h(x)=z)=1/m$ for any hash value z .
+[src:locality-sensitive-hashing/universal-hashing] However, strong universality does imply uniformity.
+[src:locality-sensitive-hashing/universal-hashing] Given a family with the uniform distance property, one can produce a pairwise independent or strongly universal hash family by adding a uniformly distributed random constant with values in $[m]$ to the hash functions.
+[src:locality-sensitive-hashing/universal-hashing] For some applications (such as hash tables), it is important for the least significant bits of the hash values to be also universal.
+[src:locality-sensitive-hashing/universal-hashing] When a family is strongly universal, this is guaranteed: if H is a strongly universal family with $m=2^{L}$ , then the family made of the functions $h{\bmod {2^{L'}}}$ for all $h\in H$ is also strongly universal for $L'\leq L$ .
+[src:locality-sensitive-hashing/universal-hashing] Unfortunately, the same is not true of (merely) universal families.
+[src:locality-sensitive-hashing/universal-hashing] For example, the family made of the identity function $h(x)=x$ is clearly universal, but the family made of the function $h(x)=x{\bmod {2^{L'}}}$ fails to be universal.
+[src:locality-sensitive-hashing/universal-hashing] UMAC and Poly1305-AES and several other message authentication code algorithms are based on universal hashing.
+[src:locality-sensitive-hashing/universal-hashing] In such applications, the software chooses a new hash function for every message, based on a unique nonce for that message.
+[src:locality-sensitive-hashing/universal-hashing] Several hash table implementations are based on universal hashing.
+[src:locality-sensitive-hashing/universal-hashing] In such applications, typically the software chooses a new hash function only after it notices that "too many" keys have collided; until then, the same hash function continues to be used over and over.
+[src:locality-sensitive-hashing/universal-hashing] (Some collision resolution schemes, such as dynamic perfect hashing, pick a new hash function every time there is a collision.
+[src:locality-sensitive-hashing/universal-hashing] Other collision resolution schemes, such as cuckoo hashing and 2-choice hashing, allow a number of collisions before picking a new hash function).
+[src:locality-sensitive-hashing/universal-hashing] A survey of fastest known universal and strongly universal hash functions for integers, vectors, and strings is found in.
+[src:locality-sensitive-hashing/universal-hashing] For any fixed set S of n keys, using a universal family guarantees the following properties.
+[src:locality-sensitive-hashing/universal-hashing] The expected number of pairs of keys $x,y$ in S with $x\neq y$ that collide ( $h(x)=h(y)$ ) is bounded above by ${\binom {n}{2}}\cdot 1/m=n(n-1)/2m$ , which is of order $O(n^{2}/m)$ .
+[src:locality-sensitive-hashing/universal-hashing] When the number of bins, m is chosen linear in n (i.e., is determined by a function in $\Omega (n)$ ), the expected number of collisions is $O(n)$ .
+[src:locality-sensitive-hashing/universal-hashing] When hashing into $n^{2}$ bins, there are no collisions at all with probability at least a half.
+[src:locality-sensitive-hashing/universal-hashing] The expected number of keys in bins with at least t keys in them is bounded above by $2n/(t-2(n/m)+1)$ .
+[src:locality-sensitive-hashing/universal-hashing] Thus, if the capacity of each bin is capped to three times the average size ( $t=3n/m$ ), the total number of keys in overflowing bins is at most $O(m)$ .
+[src:locality-sensitive-hashing/universal-hashing] This only holds with a hash family whose collision probability is bounded above by $1/m$ .
+[src:locality-sensitive-hashing/universal-hashing] If a weaker definition is used, bounding it by $O(1/m)$ , this result is no longer true.
+[src:locality-sensitive-hashing/universal-hashing] As the above guarantees hold for any fixed set S , they hold if the data set is chosen by an adversary.
+[src:locality-sensitive-hashing/universal-hashing] However, the adversary has to make this choice before (or independent of) the algorithm's random choice of a hash function.
+[src:locality-sensitive-hashing/universal-hashing] If the adversary can observe the random choice of the algorithm, randomness serves no purpose, and the situation is the same as deterministic hashing.
+[src:locality-sensitive-hashing/universal-hashing] The second and third guarantee are typically used in conjunction with rehashing.
+[src:locality-sensitive-hashing/universal-hashing] For instance, a randomized algorithm may be prepared to handle some $O(n)$ number of collisions.
+[src:locality-sensitive-hashing/universal-hashing] If it observes too many collisions, it chooses another random h from the family and repeats.
+[src:locality-sensitive-hashing/universal-hashing] Universality guarantees that the number of repetitions is a geometric random variable.
+[src:locality-sensitive-hashing/universal-hashing] Since any computer data can be represented as one or more machine words, one generally needs hash functions for three types of domains: machine words ("integers"); fixed-length vectors of machine words; and variable-length vectors ("strings").
+[src:locality-sensitive-hashing/universal-hashing] This section refers to the case of hashing integers that fit in machines words; thus, operations like multiplication, addition, division, etc. are cheap machine-level instructions.
+[src:locality-sensitive-hashing/universal-hashing] Let the universe to be hashed be $\{0,\dots ,|U|-1\}$ , and let the range of the hash functions be ${0,\ldots ,n-1}$ .
+[src:locality-sensitive-hashing/universal-hashing] where $a,b$ are randomly chosen integers modulo p with $a\neq 0$ .
+[src:locality-sensitive-hashing/universal-hashing] for some integer i between 0 and $(p-1)/m$ .
+[src:locality-sensitive-hashing/universal-hashing] Since $p\geq |U|$ , if $x\neq y$ their difference $x-y$ is nonzero and has an inverse modulo p .
+[src:locality-sensitive-hashing/universal-hashing] There are $p-1$ possible choices for a (since $a=0$ is excluded) and, varying i in the allowed range, $\lfloor (p-1)/m\rfloor$ possible non-zero values for the right hand side.
+[src:locality-sensitive-hashing/universal-hashing] Another way to see H is a universal family is via the notion of statistical distance.
+[src:locality-sensitive-hashing/universal-hashing] Since $x-y$ is nonzero and a is uniformly distributed in $\{1,\dots ,p-1\}$ , it follows that $a(x-y)$ modulo p is also uniformly distributed in $\{1,\dots ,p-1\}$ .
+[src:locality-sensitive-hashing/universal-hashing] The distribution of $(h(x)-h(y))~{\bmod {~}}m$ is thus almost uniform, up to a difference in probability of $\pm 1/p$ between the samples.
+[src:locality-sensitive-hashing/universal-hashing] As a result, the statistical distance to a uniform family is $O(m/p)$ , which becomes negligible when $p\gg m$ .
+[src:locality-sensitive-hashing/universal-hashing] The state of the art for hashing integers is the **multiply-shift** scheme described by Dietzfelbinger et al. in 1997.
+[src:locality-sensitive-hashing/universal-hashing] By avoiding modular arithmetic, this method is much easier to implement and also runs significantly faster in practice (usually by at least a factor of four).
+[src:locality-sensitive-hashing/universal-hashing] The scheme assumes the number of bins is a power of two, $m=2^{M}$ .
+[src:locality-sensitive-hashing/universal-hashing] Let w be the number of bits in a machine word.
+[src:locality-sensitive-hashing/universal-hashing] Then the hash functions are parametrised over odd positive integers $a<2^{w}$ (that fit in a word of w bits).
+[src:locality-sensitive-hashing/universal-hashing] To evaluate $h_{a}(x)$ , multiply x by a modulo $2^{w}$ and then keep the high order M bits as the hash code.
+[src:locality-sensitive-hashing/universal-hashing] This scheme does *not* satisfy the uniform difference property and is only *$2/m$ -almost-universal*; for any $x\neq y$ , $\Pr\{h_{a}(x)=h_{a}(y)\}\leq 2/m$ .
+[src:locality-sensitive-hashing/universal-hashing] Assume that the least significant set bit of $x-y$ appears on position $w-c$ .
+[src:locality-sensitive-hashing/universal-hashing] Since a is a random odd integer and odd integers have inverses in the ring $Z_{2^{w}}$ , it follows that $a(x-y){\bmod {2}}^{w}$ will be uniformly distributed among w -bit integers with the least significant set bit on position $w-c$ .
+[src:locality-sensitive-hashing/universal-hashing] The probability that these bits are all 0's or all 1's is therefore at most $2/2^{M}=2/m$ .
+[src:locality-sensitive-hashing/universal-hashing] On the other hand, if $c<M$ , then higher-order M bits of $a(x-y){\bmod {2}}^{w}$ contain both 0's and 1's, so it is certain that $h(x)\neq h(y)$ .
+[src:locality-sensitive-hashing/universal-hashing] This analysis is tight, as can be shown with the example $x=2^{w-M-2}$ and $y=3x$ .
+[src:locality-sensitive-hashing/universal-hashing] where a is a random positive integer with $a<2^{2w}$ and b is a random non-negative integer with $b<2^{2w}$ .
+[src:locality-sensitive-hashing/universal-hashing] This requires doing arithmetic on $2w$ -bit unsigned integers.
+[src:locality-sensitive-hashing/universal-hashing] This version of multiply-shift is due to Dietzfelbinger, and was later analyzed more precisely by Woelfel.
+[src:locality-sensitive-hashing/universal-hashing] This section is concerned with hashing a fixed-length vector of machine words.
+[src:locality-sensitive-hashing/universal-hashing] Interpret the input as a vector ${\bar {x}}=(x_{0},\dots ,x_{k-1})$ of k machine words (integers of w bits each).
+[src:locality-sensitive-hashing/universal-hashing] If m is a power of two, one may replace summation by exclusive or.
+[src:locality-sensitive-hashing/universal-hashing] In practice, if double-precision arithmetic is available, this is instantiated with the multiply-shift hash family of hash functions.
+[src:locality-sensitive-hashing/universal-hashing] Initialize the hash function with a vector ${\bar {a}}=(a_{0},\dots ,a_{k-1})$ of random **odd** integers on $2w$ bits each.
+[src:locality-sensitive-hashing/universal-hashing] It is possible to halve the number of multiplications, which roughly translates to a two-fold speed-up in practice.
+[src:locality-sensitive-hashing/universal-hashing] If double-precision operations are not available, one can interpret the input as a vector of half-words ( $w/2$ -bit integers).
+[src:locality-sensitive-hashing/universal-hashing] The algorithm will then use $\lceil k/2\rceil$ multiplications, where k was the number of half-words in the vector.
+[src:locality-sensitive-hashing/universal-hashing] Thus, the algorithm runs at a "rate" of one multiplication per word of input.
+[src:locality-sensitive-hashing/universal-hashing] The same scheme can also be used for hashing integers, by interpreting their bits as vectors of bytes.
+[src:locality-sensitive-hashing/universal-hashing] In this variant, the vector technique is known as tabulation hashing and it provides a practical alternative to multiplication-based universal hashing schemes.
+[src:locality-sensitive-hashing/universal-hashing] Strong universality at high speed is also possible.
+[src:locality-sensitive-hashing/universal-hashing] Initialize the hash function with a vector ${\bar {a}}=(a_{0},\dots ,a_{k})$ of random integers on $2w$ bits.
+[src:locality-sensitive-hashing/universal-hashing] The result is strongly universal on w bits.
+[src:locality-sensitive-hashing/universal-hashing] Experimentally, it was found to run at 0.2 CPU cycle per byte on recent Intel processors for $w=32$ .
+[src:locality-sensitive-hashing/universal-hashing] This refers to hashing a *variable-sized* vector of machine words.
+[src:locality-sensitive-hashing/universal-hashing] If the length of the string can be bounded by a small number, it is best to use the vector solution from above (conceptually padding the vector with zeros up to the upper bound).
+[src:locality-sensitive-hashing/universal-hashing] The space required is the maximal length of the string, but the time to evaluate $h(s)$ is just the length of s .
+[src:locality-sensitive-hashing/universal-hashing] As long as zeroes are forbidden in the string, the zero-padding can be ignored when evaluating the hash function without affecting universality.
+[src:locality-sensitive-hashing/universal-hashing] Note that if zeroes are allowed in the string, then it might be best to append a fictitious non-zero (e.g., 1) character to all strings prior to padding: this will ensure that universality is not affected.
+[src:locality-sensitive-hashing/universal-hashing] Now assume we want to hash ${\bar {x}}=(x_{0},\dots ,x_{\ell })$ , where a good bound on $\ell$ is not known a priori.
+[src:locality-sensitive-hashing/universal-hashing] A universal family proposed by treats the string x as the coefficients of a polynomial modulo a large prime.
+[src:locality-sensitive-hashing/universal-hashing] This Rabin-Karp rolling hash is based on a linear congruential generator.
+[src:locality-sensitive-hashing/universal-hashing] Above algorithm is also known as *Multiplicative hash function*.
+[src:locality-sensitive-hashing/universal-hashing] In practice, the *mod* operator and the parameter *p* can be avoided altogether by allowing integer to overflow because it is equivalent to *mod* (*Max-Int-Value* + 1) in many programming languages.
+[src:locality-sensitive-hashing/universal-hashing] However, using the non-prime $2^{n}$ modulus is prone to collisions with certain inputs, regardless of the value of *a*.
+[src:locality-sensitive-hashing/universal-hashing] Below table shows values chosen to initialize *h* and a for some of the popular implementations.
+[src:locality-sensitive-hashing/universal-hashing] Consider two strings ${\bar {x}},{\bar {y}}$ and let $\ell$ be length of the longer one; for the analysis, the shorter string is conceptually padded with zeros up to length $\ell$ .
+[src:locality-sensitive-hashing/universal-hashing] A collision before applying $h_{\mathrm {int} }$ implies that a is a root of the polynomial with coefficients ${\bar {x}}-{\bar {y}}$ .
+[src:locality-sensitive-hashing/universal-hashing] This polynomial has at most $\ell$ roots modulo p , so the collision probability is at most $\ell /p$ .
+[src:locality-sensitive-hashing/universal-hashing] The probability of collision through the random $h_{\mathrm {int} }$ brings the total collision probability to ${\frac {1}{m}}+{\frac {\ell }{p}}$ .
+[src:locality-sensitive-hashing/universal-hashing] Thus, if the prime p is sufficiently large compared to the length of strings hashed, the family is very close to universal (in statistical distance).
+[src:locality-sensitive-hashing/universal-hashing] Other universal families of hash functions used to hash unknown-length strings to fixed-length hash values include the Rabin fingerprint and the Buzhash.
+[src:locality-sensitive-hashing/universal-hashing] For instance, one applies vector hashing to each 16-word block of the string, and applies string hashing to the $\lceil k/16\rceil$ results.
+[src:locality-sensitive-hashing/universal-hashing] Since the slower string hashing is applied on a substantially smaller vector, this will essentially be as fast as vector hashing.
+[src:locality-sensitive-hashing/universal-hashing] One chooses a power-of-two as the divisor, allowing arithmetic modulo $2^{w}$ to be implemented without division (using faster operations of bit masking).
+[src:locality-sensitive-hashing/universal-hashing] The NH hash-function family takes this approach.

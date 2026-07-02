@@ -1,0 +1,66 @@
+---
+title: "File transfer configuration"
+source: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3.html
+domain: boto3-aws
+license: CC-BY-SA-4.0
+tags: python boto3, boto3 aws sdk, aws python client
+fetched: 2026-07-02
+---
+
+# File transfer configuration
+
+When uploading, downloading, or copying a file or S3 object, the AWS SDK for Python automatically manages retries and multipart and non-multipart transfers.
+
+The management operations are performed by using reasonable default settings that are well-suited for most scenarios. To handle a special case, the default settings can be configured to meet requirements.
+
+Configuration settings are stored in a `boto3.s3.transfer.TransferConfig` object. The object is passed to a transfer method (`upload_file`, `download_file`, etc.) in the `Config=` parameter.
+
+The remaining sections demonstrate how to configure various transfer operations with the `TransferConfig` object.
+
+## Multipart transfers
+
+Multipart transfers occur when the file size exceeds the value of the `multipart_threshold` attribute.
+
+The following example configures an `upload_file` transfer to be multipart if the file size is larger than the threshold specified in the `TransferConfig` object.
+
+```python
+import boto3
+from boto3.s3.transfer import TransferConfig
+
+# Set the desired multipart threshold value (5GB)
+GB = 1024 ** 3
+config = TransferConfig(multipart_threshold=5*GB)
+
+# Perform the transfer
+s3 = boto3.client('s3')
+s3.upload_file('FILE_NAME', 'amzn-s3-demo-bucket', 'OBJECT_NAME', Config=config)
+```
+
+## Concurrent transfer operations
+
+The maximum number of concurrent S3 API transfer operations can be tuned to adjust for the connection speed. Set the `max_concurrency` attribute to increase or decrease bandwidth usage.
+
+The attribute’s default setting is 10. To reduce bandwidth usage, reduce the value; to increase usage, increase it.
+
+```python
+# To consume less downstream bandwidth, decrease the maximum concurrency
+config = TransferConfig(max_concurrency=5)
+
+# Download an S3 object
+s3 = boto3.client('s3')
+s3.download_file('amzn-s3-demo-bucket', 'OBJECT_NAME', 'FILE_NAME', Config=config)
+```
+
+## Threads
+
+Transfer operations use threads to implement concurrency. Thread use can be disabled by setting the `use_threads` attribute to `False.`
+
+If thread use is disabled, transfer concurrency does not occur. Accordingly, the value of the `max_concurrency` attribute is ignored.
+
+```python
+# Disable thread use/transfer concurrency
+config = TransferConfig(use_threads=False)
+
+s3 = boto3.client('s3')
+s3.download_file('amzn-s3-demo-bucket', 'OBJECT_NAME', 'FILE_NAME', Config=config)
+```

@@ -1,0 +1,111 @@
+---
+title: "Maximal torus"
+source: https://en.wikipedia.org/wiki/Maximal_torus
+domain: lie-groups
+license: CC-BY-SA-4.0
+tags: lie group, lie theory, compact group, maximal torus
+fetched: 2026-07-02
+---
+
+# Maximal torus
+
+In the mathematical theory of compact Lie groups a special role is played by torus subgroups, in particular by the **maximal torus** subgroups.
+
+A **torus** in a compact Lie group *G* is a compact, connected, abelian Lie subgroup of *G* (and therefore isomorphic to the standard torus **T***n*). A **maximal torus** is one which is maximal among such subgroups. That is, *T* is a maximal torus if for any torus *T*′ containing *T* we have *T* = *T*′. Every torus is contained in a maximal torus simply by dimensional considerations. A noncompact Lie group need not have any nontrivial tori (e.g. **R***n*).
+
+The dimension of a maximal torus in *G* is called the **rank** of *G*. The rank is well-defined since all maximal tori turn out to be conjugate. For semisimple groups the rank is equal to the number of nodes in the associated Dynkin diagram.
+
+## Examples
+
+The unitary group U(*n*) has as a maximal torus the subgroup of all diagonal matrices. That is,
+
+$T=\left\{\operatorname {diag} \left(e^{i\theta _{1}},e^{i\theta _{2}},\dots ,e^{i\theta _{n}}\right):\forall j,\theta _{j}\in \mathbb {R} \right\}.$
+
+*T* is clearly isomorphic to the product of *n* circles, so the unitary group U(*n*) has rank *n*. A maximal torus in the special unitary group SU(*n*) ⊂ U(*n*) is just the intersection of *T* and SU(*n*) which is a torus of dimension *n* − 1.
+
+A maximal torus in the special orthogonal group SO(2*n*) is given by the set of all simultaneous rotations in any fixed choice of *n* pairwise orthogonal planes (i.e., two dimensional vector spaces). Concretely, one maximal torus consists of all block-diagonal matrices with $2\times 2$ diagonal blocks, where each diagonal block is a rotation matrix. This is also a maximal torus in the group SO(2*n*+1) where the action fixes the remaining direction. Thus both SO(2*n*) and SO(2*n*+1) have rank *n*. For example, in the rotation group SO(3) the maximal tori are given by rotations about a fixed axis.
+
+The symplectic group Sp(*n*) has rank *n*. A maximal torus is given by the set of all diagonal matrices whose entries all lie in a fixed complex subalgebra of **H**.
+
+## Properties
+
+Let *G* be a compact, connected Lie group and let ${\mathfrak {g}}$ be the Lie algebra of *G*. The first main result is the torus theorem, which may be formulated as follows:
+
+Torus theorem
+
+: If
+
+T
+
+is one fixed maximal torus in
+
+G
+
+, then every element of
+
+G
+
+is conjugate to an element of
+
+T
+
+.
+
+This theorem has the following consequences:
+
+- All maximal tori in *G* are conjugate.
+- All maximal tori have the same dimension, known as the *rank* of *G*.
+- A maximal torus in *G* is a maximal abelian subgroup, but the converse need not hold.
+- The maximal tori in *G* are exactly the Lie subgroups corresponding to the maximal abelian subalgebras of ${\mathfrak {g}}$ (cf. Cartan subalgebra)
+- Every element of *G* lies in some maximal torus; thus, the exponential map for *G* is surjective.
+- If *G* has dimension *n* and rank *r* then *n* − *r* is even.
+
+## Root system
+
+If *T* is a maximal torus in a compact Lie group *G*, one can define a root system as follows. The roots are the weights for the adjoint action of *T* on the complexified Lie algebra of *G*. To be more explicit, let ${\mathfrak {t}}$ denote the Lie algebra of *T*, let ${\mathfrak {g}}$ denote the Lie algebra of G , and let ${\mathfrak {g}}_{\mathbb {C} }:={\mathfrak {g}}\oplus i{\mathfrak {g}}$ denote the complexification of ${\mathfrak {g}}$ . Then we say that an element $\alpha \in {\mathfrak {t}}$ is a **root** for *G* relative to *T* if $\alpha \neq 0$ and there exists a nonzero $X\in {\mathfrak {g}}_{\mathbb {C} }$ such that
+
+$\mathrm {Ad} _{e^{H}}(X)=e^{i\langle \alpha ,H\rangle }X$
+
+for all $H\in {\mathfrak {t}}$ . Here $\langle \cdot ,\cdot \rangle$ is a fixed inner product on ${\mathfrak {g}}$ that is invariant under the adjoint action of connected compact Lie groups.
+
+The root system, as a subset of the Lie algebra ${\mathfrak {t}}$ of *T*, has all the usual properties of a root system, except that the roots may not span ${\mathfrak {t}}$ . The root system is a key tool in understanding the classification and representation theory of *G*.
+
+## Weyl group
+
+Given a torus *T* (not necessarily maximal), the Weyl group of *G* with respect to *T* can be defined as the normalizer of *T* modulo the centralizer of *T*. That is,
+
+$W(T,G):=N_{G}(T)/C_{G}(T).$
+
+Fix a maximal torus $T=T_{0}$ in *G;* then the corresponding Weyl group is called the Weyl group of *G* (it depends up to isomorphism on the choice of *T*).
+
+The first two major results about the Weyl group are as follows.
+
+- The centralizer of *T* in *G* is equal to *T*, so the Weyl group is equal to *N*(*T*)/*T*.
+- The Weyl group is generated by reflections about the roots of the associated Lie algebra. Thus, the Weyl group of *T* is isomorphic to the Weyl group of the root system of the Lie algebra of *G*.
+
+We now list some consequences of these main results.
+
+- Two elements in *T* are conjugate if and only if they are conjugate by an element of *W*. That is, each conjugacy class of *G* intersects *T* in exactly one Weyl orbit. In fact, the space of conjugacy classes in *G* is homeomorphic to the orbit space *T*/*W*.
+- The Weyl group acts by (outer) automorphisms on *T* (and its Lie algebra).
+- The identity component of the normalizer of *T* is also equal to *T*. The Weyl group is therefore equal to the component group of *N*(*T*).
+- The Weyl group is finite.
+
+The representation theory of *G* is essentially determined by *T* and *W*.
+
+As an example, consider the case $G=SU(n)$ with T being the diagonal subgroup of G . Then $x\in G$ belongs to $N(T)$ if and only if x maps each standard basis element $e_{i}$ to a multiple of some other standard basis element $e_{j}$ , that is, if and only if x permutes the standard basis elements, up to multiplication by some constants. The Weyl group in this case is then the permutation group on n elements.
+
+## Weyl integral formula
+
+Suppose *f* is a continuous function on *G*. Then the integral over *G* of *f* with respect to the normalized Haar measure *dg* may be computed as follows:
+
+$\displaystyle {\int _{G}f(g)\,dg=|W|^{-1}\int _{T}|\Delta (t)|^{2}\int _{G/T}f\left(yty^{-1}\right)\,d[y]\,dt,}$
+
+where $d[y]$ is the normalized volume measure on the quotient manifold $G/T$ and $dt$ is the normalized Haar measure on *T*. Here Δ is given by the Weyl denominator formula and $|W|$ is the order of the Weyl group. An important special case of this result occurs when *f* is a class function, that is, a function invariant under conjugation. In that case, we have
+
+$\displaystyle {\int _{G}f(g)\,dg=|W|^{-1}\int _{T}f(t)|\Delta (t)|^{2}\,dt.}$
+
+Consider as an example the case $G=SU(2)$ , with T being the diagonal subgroup. Then the Weyl integral formula for class functions takes the following explicit form:
+
+$\displaystyle {\int _{SU(2)}f(g)\,dg={\frac {1}{2}}\int _{0}^{2\pi }f\left(\mathrm {diag} \left(e^{i\theta },e^{-i\theta }\right)\right)\,4\,\mathrm {sin} ^{2}(\theta )\,{\frac {d\theta }{2\pi }}.}$
+
+Here $|W|=2$ , the normalized Haar measure on T is ${\frac {d\theta }{2\pi }}$ , and $\mathrm {diag} \left(e^{i\theta },e^{-i\theta }\right)$ denotes the diagonal matrix with diagonal entries $e^{i\theta }$ and $e^{-i\theta }$ .

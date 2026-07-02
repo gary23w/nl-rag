@@ -1,0 +1,676 @@
+# nl-rag distilled facts — domain: joblib-parallel
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:joblib-parallel/memory] The `Memory` class defines a context for lazy evaluation of a function, by putting the results in a store, by default using a disk, and not re-running the function twice for the same arguments.
+[src:joblib-parallel/memory] It works by explicitly saving the output to a file and it is designed to work with non-hashable and potentially large input and output data types such as numpy arrays.
+[src:joblib-parallel/memory] `Memory` use pickle to load saved results from the file system.
+[src:joblib-parallel/memory] This means that pickle security considerations apply, see pickle documentation for more details.
+[src:joblib-parallel/memory] In particular, if an adversary gains write access to the cache directory, it could lead to arbitrary code execution by the Python process(es) attempting to load compromised cached entries from that folder.
+[src:joblib-parallel/memory] The *memoize* decorator (https://code.activestate.com/recipes/52201/) caches in memory all the inputs and outputs of a function call.
+[src:joblib-parallel/memory] It can thus avoid running twice the same function, with a very small overhead.
+[src:joblib-parallel/memory] However, it compares input objects with those in cache on each call.
+[src:joblib-parallel/memory] As a result, for big objects there is a huge overhead.
+[src:joblib-parallel/memory] Moreover this approach does not work with numpy arrays, or other objects subject to non-significant fluctuations.
+[src:joblib-parallel/memory] Finally, using *memoize* with large objects will consume all the memory, where with *Memory*, objects are persisted to disk, using a persister optimized for speed and memory usage (`joblib.dump()`).
+[src:joblib-parallel/memory] In short, *memoize* is best suited for functions with “small” input and output objects, whereas *Memory* is best suited for functions with complex input and output objects, and aggressive persistence to disk.
+[src:joblib-parallel/memory] The original motivation behind the *Memory* context was to have a memoize-like pattern on numpy arrays.
+[src:joblib-parallel/memory] *Memory* uses fast cryptographic hashing of the input arguments to check if they have been computed.
+[src:joblib-parallel/memory] Notice the debug mode used in the above example.
+[src:joblib-parallel/memory] It is useful for tracing of what is being reexecuted, and where the time is spent.
+[src:joblib-parallel/memory] If the memory mapping mode used was ‘r’, as in the above example, the array will be read only, and will be impossible to modified in place.
+[src:joblib-parallel/memory] On the other hand, using ‘r+’ or ‘w+’ will enable modification of the array, but will propagate these modification to the disk, which will corrupt the cache.
+[src:joblib-parallel/memory] If you want modification of the array in memory, we suggest you use the ‘c’ mode: copy on write.
+[src:joblib-parallel/memory] In some cases, it can be useful to get a reference to the cached result, instead of having the result itself.
+[src:joblib-parallel/memory] Once computed, the output of *g* is stored on disk, and deleted from memory.
+[src:joblib-parallel/memory] The cache for this particular value can be cleared using the *clear* method.
+[src:joblib-parallel/memory] Its invocation causes the stored value to be erased from disk.
+[src:joblib-parallel/memory] A *MemorizedResult* instance contains all that is necessary to read the cached value.
+[src:joblib-parallel/memory] It can be pickled for transmission or storage, and the printed representation can even be copy-pasted to a different python interpreter.
+[src:joblib-parallel/memory] The cached method will have `self` as one of its arguments.
+[src:joblib-parallel/memory] That means that the result will be recomputed if anything with `self` changes.
+[src:joblib-parallel/memory] For example if `self.attr` has changed calling `self.method` will recompute the result even if `self.method` does not use `self.attr` in its body.
+[src:joblib-parallel/memory] Another example is changing `self` inside the body of `self.method`.
+[src:joblib-parallel/memory] The consequence is that `self.method` will create cache that will not be reused in subsequent calls.
+[src:joblib-parallel/memory] To alleviate these problems and if you *know* that the result of `self.method` does not depend on `self` you can use `self.method = memory.cache(self.method, ignore=['self'])`.
+[src:joblib-parallel/memory] It may be useful not to recalculate a function when certain arguments change, for instance a debug flag.
+[src:joblib-parallel/memory] In some cases, external factors can invalidate the cached results and one wants to have more control on whether to reuse a result or not.
+[src:joblib-parallel/memory] This is for instance the case if the results depends on database records that change over time: a small delay in the updates might be tolerable but after a while, the results might be invalid.
+[src:joblib-parallel/memory] One can have a finer control on the cache validity specifying a function via `cache_validation_callback` in `cache()`.
+[src:joblib-parallel/memory] For instance, one can only cache results that take more than 1s to be computed.
+[src:joblib-parallel/memory] A context object for caching a function’s return value each time it is called with the same input arguments.
+[src:joblib-parallel/memory] All values are cached on the filesystem, in a deep directory structure.
+[src:joblib-parallel/memory] The path of the base directory to use as a data store or None.
+[src:joblib-parallel/memory] If None is given, no caching is done and the Memory object is completely transparent.
+[src:joblib-parallel/memory] This option replaces cachedir since version 0.12.
+[src:joblib-parallel/memory] Type of store backend for reading/writing cache files.
+[src:joblib-parallel/memory] The ‘local’ backend is using regular filesystem operations to manipulate data (open, mv, etc) in the backend.
+[src:joblib-parallel/memory] The memmapping mode used when loading from cache numpy arrays.
+[src:joblib-parallel/memory] See numpy.load for the meaning of the arguments.
+[src:joblib-parallel/memory] If an integer is given, it should be between 1 and 9, and sets the amount of compression.
+[src:joblib-parallel/memory] Note that compressed arrays cannot be read by memmapping.
+[src:joblib-parallel/memory] Verbosity flag, controls the debug messages that are issued as functions are evaluated.
+[src:joblib-parallel/memory] Contains a dictionary of named parameters used to configure the store backend.
+[src:joblib-parallel/memory] Decorates the given function func to only compute its return value for input arguments not cached on disk.
+[src:joblib-parallel/memory] By default that of the memory object is used.
+[src:joblib-parallel/memory] Callable to validate whether or not the cache is valid.
+[src:joblib-parallel/memory] When the cached function is called with arguments for which a cache exists, this callable is called with the metadata of the cached result as its sole argument.
+[src:joblib-parallel/memory] If it returns True, then the cached result is returned, else the cache for these arguments is cleared and recomputed.
+[src:joblib-parallel/memory] The returned object is a MemorizedFunc object, that is callable (behaves like a function), but offers extra methods for cache lookup and management.
+[src:joblib-parallel/memory] See the documentation for `joblib.memory.MemorizedFunc`.
+[src:joblib-parallel/memory] Eval function func with arguments **args* and ***kwargs*, in the context of the memory.
+[src:joblib-parallel/memory] This method works similarly to the builtin *apply*, except that the function is called only if the cache is not up to date.
+[src:joblib-parallel/memory] Return the formatted representation of the object.
+[src:joblib-parallel/memory] Remove cache elements to make the cache fit its limits.
+[src:joblib-parallel/memory] The limitation can impose that the cache size fits in `bytes_limit`, that the number of cache items is no more than `items_limit`, and that all files in cache are not older than `age_limit`.
+[src:joblib-parallel/memory] Limit in bytes of the size of the cache.
+[src:joblib-parallel/memory] By default, the size of the cache is unlimited.
+[src:joblib-parallel/memory] When reducing the size of the cache, `joblib` keeps the most recently accessed items first.
+[src:joblib-parallel/memory] If a str is passed, it is converted to a number of bytes using units { K | M | G} for kilo, mega, giga.
+[src:joblib-parallel/memory] By default, the number of items in the cache is unlimited.
+[src:joblib-parallel/memory] Maximum age of items to limit the cache to.
+[src:joblib-parallel/memory] When reducing the size of the cache, any items last accessed more than the given length of time ago are deleted.
+[src:joblib-parallel/memory] Example: to remove files older than 5 days, use datetime.timedelta(days=5).
+[src:joblib-parallel/memory] Functions decorated by `Memory.cache` are `MemorizedFunc` objects that, in addition of behaving like normal functions, expose methods useful for cache exploration and management.
+[src:joblib-parallel/memory] Callable object decorating a function for caching its return value each time it is called.
+[src:joblib-parallel/memory] Methods are provided to inspect the cache or clean it.
+[src:joblib-parallel/memory] Default is ‘local’, in which case the location is the path to a disk storage.
+[src:joblib-parallel/memory] List of variable names to ignore when choosing whether to recompute.
+[src:joblib-parallel/memory] See numpy.load for the meaning of the different values.
+[src:joblib-parallel/memory] The verbosity flag, controls messages that are issued as the function is evaluated.
+[src:joblib-parallel/memory] Callable to check if a result in cache is valid or is to be recomputed.
+[src:joblib-parallel/memory] When the function is called with arguments for which a cache exists, the callback is called with the cache entry’s metadata as its sole argument.
+[src:joblib-parallel/memory] If it returns True, the cached result is returned, else the cache for these arguments is cleared and the result is recomputed.
+[src:joblib-parallel/memory] Force the execution of the function with the given arguments.
+[src:joblib-parallel/memory] The output values will be persisted, i.e., the cache will be updated with any new values.
+[src:joblib-parallel/memory] Check if the function call is cached and valid for given arguments.
+[src:joblib-parallel/memory] Does not call the function or do any work besides function inspection and argument hashing.
+[src:joblib-parallel/memory] Whether or not the function call is in cache and can be used.
+[src:joblib-parallel/memory] Helper cache_validation_callback to force recompute after a duration.
+[src:joblib-parallel/multiprocessing] A **multiprocessor** is a computer system having two or more CPUs (processors: multiple processors) each sharing main memory and peripherals, to simultaneously process programs.
+[src:joblib-parallel/multiprocessing] A 2009 textbook defined multiprocessor system similarly, but noted that the processors may share "some or all of the system’s memory and I/O facilities"; it also gave **tightly coupled system** as a synonymous term.
+[src:joblib-parallel/multiprocessing] At the operating system level, *multiprocessing* is sometimes used to refer to the execution of multiple concurrent processes in a system, with each process running on a separate CPU or core, in contrast to one process at any one instant.
+[src:joblib-parallel/multiprocessing] When used with this definition, multiprocessing is sometimes contrasted with multitasking, which may use only one processor but switch it in time slices between tasks (i.e., a time-sharing system).
+[src:joblib-parallel/multiprocessing] In contrast, multiprocessing means true parallel execution of multiple processes using more than one processor.
+[src:joblib-parallel/multiprocessing] Multiprocessing doesn't necessarily mean that one process or task uses more than one processor simultaneously; the term parallel processing is generally used to denote that practice.
+[src:joblib-parallel/multiprocessing] Other authors prefer to refer to the operating system techniques as multiprogramming and reserve the term *multiprocessing* for the hardware aspect of having more than one processor.
+[src:joblib-parallel/multiprocessing] The remainder of this article discusses multiprocessing only in this hardware sense.
+[src:joblib-parallel/multiprocessing] In Flynn's taxonomy, multiprocessors as defined above are Multiple instruction, multiple data (MIMD) machines.
+[src:joblib-parallel/multiprocessing] As the term "multiprocessor" normally refers to tightly coupled systems in which all processors share memory, multiprocessors are not the entire class of MIMD machines, which also contains message passing multicomputer systems.
+[src:joblib-parallel/multiprocessing] In a **multiprocessing** system, all CPUs may be equal, or some may be reserved for special purposes.
+[src:joblib-parallel/multiprocessing] A combination of hardware and operating system software design considerations determine the symmetry (or lack thereof) in a given system.
+[src:joblib-parallel/multiprocessing] Multiprocessing systems are often easier to design if such restrictions are imposed, but they tend to be less efficient than systems in which all CPUs are used.
+[src:joblib-parallel/multiprocessing] Systems that treat all CPUs equally are called symmetric multiprocessing (SMP) systems.
+[src:joblib-parallel/multiprocessing] In systems where all CPUs are not equal, system resources may be divided in a number of ways, including asymmetric multiprocessing (ASMP), non-uniform memory access (NUMA) multiprocessing, and clustered multiprocessing.
+[src:joblib-parallel/multiprocessing] In a master/slave multiprocessor system, the master CPU is in control of the computer and the slave CPU(s) performs assigned tasks.
+[src:joblib-parallel/multiprocessing] The CPUs can be very different in speed and architecture.
+[src:joblib-parallel/multiprocessing] Some (or all) of the CPUs can share a common bus, each can also have a private bus (for private resources), or they may be isolated except for a common communications pathway.
+[src:joblib-parallel/multiprocessing] Likewise, the CPUs can share common RAM and/or have private RAM that the other processor(s) cannot access.
+[src:joblib-parallel/multiprocessing] The roles of master and slave can change from one CPU to another.
+[src:joblib-parallel/multiprocessing] Two early examples of a mainframe computer master/slave multiprocessor are the Bull Gamma 60 and the Burroughs B5000.
+[src:joblib-parallel/multiprocessing] An early example of a master/slave multiprocessor system of microprocessors is the Tandy/Radio Shack TRS-80 Model 16 desktop computer, released in February 1982.
+[src:joblib-parallel/multiprocessing] It ran the multi-user/multi-tasking Xenix operating system, Microsoft's version of Unix (named TRS-XENIX).
+[src:joblib-parallel/multiprocessing] The Model 16 has two microprocessors: an 8-bit Zilog Z80 CPU running at 4 MHz, and a 16-bit Motorola 68000 CPU running at 6 MHz.
+[src:joblib-parallel/multiprocessing] The earlier TRS-80 Model II, released in 1979, is also a multiprocessor system as it has both a Z-80 CPU and an Intel 8021 microcontroller in the keyboard.
+[src:joblib-parallel/multiprocessing] The 8021 made the Model II the first desktop computer system with a separate detachable lightweight keyboard connected with by one thin flexible wire, and likely the first keyboard to use a dedicated microcontroller, both attributes copied years later by Apple and IBM.
+[src:joblib-parallel/multiprocessing] Tightly coupled multiprocessor systems contain multiple CPUs that are connected at the bus level.
+[src:joblib-parallel/multiprocessing] These CPUs may have access to a central shared memory (SMP or uniform memory access (UMA)), or may participate in a memory hierarchy with both local and shared memory (SM) (NUMA).
+[src:joblib-parallel/multiprocessing] The IBM p690 Regatta is an example of a high end SMP system.
+[src:joblib-parallel/multiprocessing] Intel Xeon processors dominated the multiprocessor market for business PCs and were the only major x86 option until the release of AMD's Opteron range of processors in 2004.
+[src:joblib-parallel/multiprocessing] Both ranges of processors had their own onboard cache but provided access to shared memory; the Xeon processors via a common pipe and the Opteron processors via independent pathways to the system random-access memory (RAM).
+[src:joblib-parallel/multiprocessing] Chip multiprocessors, also known as multi-core computing, involves more than one processor placed on one chip and can be viewed as the most extreme form of tightly coupled multiprocessing.
+[src:joblib-parallel/multiprocessing] Mainframe systems with multiple processors are often tightly coupled.
+[src:joblib-parallel/multiprocessing] Loosely coupled multiprocessor systems (often referred to as clusters) are based on multiple standalone relatively low processor count commodity computers interconnected via a high speed communication system (Gigabit Ethernet is common).
+[src:joblib-parallel/multiprocessing] A Linux Beowulf cluster is an example of a loosely coupled system.
+[src:joblib-parallel/multiprocessing] Power consumption is also a consideration.
+[src:joblib-parallel/multiprocessing] Tightly coupled systems tend to be much more energy-efficient than clusters.
+[src:joblib-parallel/multiprocessing] This is because a considerable reduction in power consumption can be realized by designing components to work together from the beginning in tightly coupled systems, whereas loosely coupled systems use components that were not necessarily intended specifically for use in such systems.
+[src:joblib-parallel/multiprocessing] Loosely coupled systems have the ability to run different operating systems or OS versions on different systems.
+[src:joblib-parallel/multiprocessing] Merging data from multiple threads or processes may incur significant overhead due to conflict resolution, data consistency, versioning, and synchronization.
+[src:joblib-parallel/parallel-computing] In computer science, **parallelism** and concurrency are two different things: a parallel program uses multiple CPU cores, each core performing a task independently.
+[src:joblib-parallel/parallel-computing] On the other hand, concurrency enables a program to deal with multiple tasks even on a single CPU core; the core switches between tasks (i.e. threads) without necessarily completing each one.
+[src:joblib-parallel/parallel-computing] A program can have both, neither or a combination of parallelism and concurrency characteristics.
+[src:joblib-parallel/parallel-computing] Parallel computers can be roughly classified according to the level at which the hardware supports parallelism, with multi-core and multi-processor computers having multiple processing elements within a single machine, while clusters, MPPs, and grids use multiple computers to work on the same task.
+[src:joblib-parallel/parallel-computing] Specialized parallel computer architectures are sometimes used alongside traditional processors, for accelerating specific tasks.
+[src:joblib-parallel/parallel-computing] Communication and synchronization between the different subtasks are typically some of the greatest obstacles to getting optimal parallel program performance.
+[src:joblib-parallel/parallel-computing] A theoretical upper bound on the speed-up of a single program as a result of parallelization is given by Amdahl's law, which states that it is limited by the fraction of time for which the parallelization can be utilised.
+[src:joblib-parallel/parallel-computing] Traditionally, computer software has been written for serial computation.
+[src:joblib-parallel/parallel-computing] To solve a problem, an algorithm is constructed and implemented as a serial stream of instructions.
+[src:joblib-parallel/parallel-computing] These instructions are executed on a central processing unit on one computer.
+[src:joblib-parallel/parallel-computing] Only one instruction may execute at a time—after that instruction is finished, the next one is executed.
+[src:joblib-parallel/parallel-computing] Parallel computing, on the other hand, uses multiple processing elements simultaneously to solve a problem.
+[src:joblib-parallel/parallel-computing] This is accomplished by breaking the problem into independent parts so that each processing element can execute its part of the algorithm simultaneously with the others.
+[src:joblib-parallel/parallel-computing] The processing elements can be diverse and include resources such as a single computer with multiple processors, several networked computers, specialized hardware, or any combination of the above.
+[src:joblib-parallel/parallel-computing] Historically parallel computing was used for scientific computing and the simulation of scientific problems, particularly in the natural and engineering sciences, such as meteorology.
+[src:joblib-parallel/parallel-computing] This led to the design of parallel hardware and software, and high performance computing.
+[src:joblib-parallel/parallel-computing] Frequency scaling was the dominant reason for improvements in computer performance from the mid-1980s until 2004.
+[src:joblib-parallel/parallel-computing] The runtime of a program is equal to the number of instructions multiplied by the average time per instruction.
+[src:joblib-parallel/parallel-computing] Maintaining everything else constant, increasing the clock frequency decreases the average time it takes to execute an instruction.
+[src:joblib-parallel/parallel-computing] An increase in frequency thus decreases runtime for all compute-bound programs.
+[src:joblib-parallel/parallel-computing] However, power consumption *P* by a chip is given by the equation *P* = *C* × *V* 2 × *F*, where *C* is the capacitance being switched per clock cycle (proportional to the number of transistors whose inputs change), *V* is voltage, and *F* is the processor frequency (cycles per second).
+[src:joblib-parallel/parallel-computing] Increases in frequency increase the amount of power used in a processor.
+[src:joblib-parallel/parallel-computing] Increasing processor power consumption led ultimately to Intel's May 8, 2004 cancellation of its Tejas and Jayhawk processors, which is generally cited as the end of frequency scaling as the dominant computer architecture paradigm.
+[src:joblib-parallel/parallel-computing] To deal with the problem of power consumption and overheating the major central processing unit (CPU or processor) manufacturers started to produce power efficient processors with multiple cores.
+[src:joblib-parallel/parallel-computing] The core is the computing unit of the processor and in multi-core processors each core is independent and can access the same memory concurrently.
+[src:joblib-parallel/parallel-computing] Multi-core processors have brought parallel computing to desktop computers.
+[src:joblib-parallel/parallel-computing] Thus parallelization of serial programs has become a mainstream programming task.
+[src:joblib-parallel/parallel-computing] In 2012 quad-core processors became standard for desktop computers, while servers had 10+ core processors.
+[src:joblib-parallel/parallel-computing] Moore's law predicted that the number of cores per processor would double every 18–24 months.
+[src:joblib-parallel/parallel-computing] By 2023 some processors had over one hundred cores.
+[src:joblib-parallel/parallel-computing] Some designs having a mix of performance and efficiency cores (such as ARM's big.LITTLE design) due to thermal and design constraints.
+[src:joblib-parallel/parallel-computing] An operating system can ensure that different tasks and user programs are run in parallel on the available cores.
+[src:joblib-parallel/parallel-computing] However, for a serial software program to take full advantage of the multi-core architecture the programmer needs to restructure and parallelize the code.
+[src:joblib-parallel/parallel-computing] A speed-up of application software runtime will no longer be achieved through frequency scaling, instead programmers will need to parallelize their software code to take advantage of the increasing computing power of multicore architectures.
+[src:joblib-parallel/parallel-computing] Optimally, the speedup from parallelization would be linear—doubling the number of processing elements should halve the runtime, and doubling it a second time should again halve the runtime.
+[src:joblib-parallel/parallel-computing] However, very few parallel algorithms achieve optimal speedup.
+[src:joblib-parallel/parallel-computing] Most of them have a near-linear speedup for small numbers of processing elements, which flattens out into a constant value for large numbers of processing elements.
+[src:joblib-parallel/parallel-computing] The maximum potential speedup of an overall system can be calculated by Amdahl's law.
+[src:joblib-parallel/parallel-computing] Amdahl's Law indicates that optimal performance improvement is achieved by balancing enhancements to both parallelizable and non-parallelizable components of a task.
+[src:joblib-parallel/parallel-computing] Furthermore, it reveals that increasing the number of processors yields diminishing returns, with negligible speedup gains beyond a certain point.
+[src:joblib-parallel/parallel-computing] Amdahl's Law has limitations, including assumptions of fixed workload, neglecting inter-process communication and synchronization overheads, primarily focusing on computational aspect and ignoring extrinsic factors such as data persistence, I/O operations, and memory access overheads.
+[src:joblib-parallel/parallel-computing] Gustafson's law and Universal Scalability Law give a more realistic assessment of the parallel performance.
+[src:joblib-parallel/parallel-computing] Understanding data dependencies is fundamental in implementing parallel algorithms.
+[src:joblib-parallel/parallel-computing] No program can run more quickly than the longest chain of dependent calculations (known as the critical path), since calculations that depend upon prior calculations in the chain must be executed in order.
+[src:joblib-parallel/parallel-computing] However, most algorithms do not consist of just a long chain of dependent calculations; there are usually opportunities to execute independent calculations in parallel.
+[src:joblib-parallel/parallel-computing] Let *P**i* and *P**j* be two program segments.
+[src:joblib-parallel/parallel-computing] Bernstein's conditions describe when the two are independent and can be executed in parallel.
+[src:joblib-parallel/parallel-computing] For *P**i*, let *I**i* be all of the input variables and *O**i* the output variables, and likewise for *P**j*.
+[src:joblib-parallel/parallel-computing] Violation of the first condition introduces a flow dependency, corresponding to the first segment producing a result used by the second segment.
+[src:joblib-parallel/parallel-computing] The second condition represents an anti-dependency, when the second segment produces a variable needed by the first segment.
+[src:joblib-parallel/parallel-computing] The third and final condition represents an output dependency: when two segments write to the same location, the result comes from the logically last executed segment.
+[src:joblib-parallel/parallel-computing] In this example, instruction 3 cannot be executed before (or even in parallel with) instruction 2, because instruction 3 uses a result from instruction 2.
+[src:joblib-parallel/parallel-computing] It violates condition 1, and thus introduces a flow dependency.
+[src:joblib-parallel/parallel-computing] In this example, there are no dependencies between the instructions, so they can all be run in parallel.
+[src:joblib-parallel/parallel-computing] Bernstein's conditions do not allow memory to be shared between different processes.
+[src:joblib-parallel/parallel-computing] For that, some means of enforcing an ordering between accesses is necessary, such as semaphores, barriers or some other synchronization method.
+[src:joblib-parallel/parallel-computing] Subtasks in a parallel program are often called threads.
+[src:joblib-parallel/parallel-computing] Some parallel computer architectures use smaller, lightweight versions of threads known as fibers, while others use bigger versions known as processes.
+[src:joblib-parallel/parallel-computing] However, "threads" is generally accepted as a generic term for subtasks.
+[src:joblib-parallel/parallel-computing] Threads will often need synchronized access to an object or other resource, for example when they must update a variable that is shared between them.
+[src:joblib-parallel/parallel-computing] Without synchronization, the instructions between the two threads may be interleaved in any order.
+[src:joblib-parallel/parallel-computing] If instruction 1B is executed between 1A and 3A, or if instruction 1A is executed between 1B and 3B, the program will produce incorrect data.
+[src:joblib-parallel/parallel-computing] The programmer must use a lock to provide mutual exclusion.
+[src:joblib-parallel/parallel-computing] A lock is a programming language construct that allows one thread to take control of a variable and prevent other threads from reading or writing it, until that variable is unlocked.
+[src:joblib-parallel/parallel-computing] The thread holding the lock is free to execute its critical section (the section of a program that requires exclusive access to some variable), and to unlock the data when it is finished.
+[src:joblib-parallel/parallel-computing] One thread will successfully lock variable V, while the other thread will be locked out—unable to proceed until V is unlocked again.
+[src:joblib-parallel/parallel-computing] This guarantees correct execution of the program.
+[src:joblib-parallel/parallel-computing] Locks may be necessary to ensure correct program execution when threads must serialize access to resources, but their use can greatly slow a program and may affect its reliability.
+[src:joblib-parallel/parallel-computing] Locking multiple variables using non-atomic locks introduces the possibility of program deadlock.
+[src:joblib-parallel/parallel-computing] An atomic lock locks multiple variables all at once.
+[src:joblib-parallel/parallel-computing] If it cannot lock all of them, it does not lock any of them.
+[src:joblib-parallel/parallel-computing] If two threads each need to lock the same two variables using non-atomic locks, it is possible that one thread will lock one of them and the second thread will lock the second variable.
+[src:joblib-parallel/parallel-computing] In such a case, neither thread can complete, and deadlock results.
+[src:joblib-parallel/parallel-computing] Many parallel programs require that their subtasks act in synchrony.
+[src:joblib-parallel/parallel-computing] Barriers are typically implemented using a lock or a semaphore.
+[src:joblib-parallel/parallel-computing] One class of algorithms, known as lock-free and wait-free algorithms, altogether avoids the use of locks and barriers.
+[src:joblib-parallel/parallel-computing] However, this approach is generally difficult to implement and requires correctly designed data structures.
+[src:joblib-parallel/parallel-computing] Not all parallelization results in speed-up.
+[src:joblib-parallel/parallel-computing] Generally, as a task is split up into more and more threads, those threads spend an ever-increasing portion of their time communicating with each other or waiting on each other for access to resources.
+[src:joblib-parallel/parallel-computing] Once the overhead from resource contention or communication dominates the time spent on other computation, further parallelization (that is, splitting the workload over even more threads) increases rather than decreases the amount of time required to finish.
+[src:joblib-parallel/parallel-computing] This problem, known as parallel slowdown, can be improved in some cases by software analysis and redesign.
+[src:joblib-parallel/parallel-computing] Applications are often classified according to how often their subtasks need to synchronize or communicate with each other.
+[src:joblib-parallel/parallel-computing] An application exhibits fine-grained parallelism if its subtasks must communicate many times per second; it exhibits coarse-grained parallelism if they do not communicate many times per second, and it exhibits embarrassing parallelism if they rarely or never have to communicate.
+[src:joblib-parallel/parallel-computing] Embarrassingly parallel applications are considered the easiest to parallelize.
+[src:joblib-parallel/parallel-computing] Flynn created one of the earliest classification systems for parallel (and sequential) computers and programs, now known as Flynn's taxonomy.
+[src:joblib-parallel/parallel-computing] Flynn classified programs and computers by whether they were operating using a single set or multiple sets of instructions, and whether or not those instructions were using a single set or multiple sets of data.
+[src:joblib-parallel/parallel-computing] The single-instruction-single-data (SISD) classification is equivalent to an entirely sequential program.
+[src:joblib-parallel/parallel-computing] The single-instruction-multiple-data (SIMD) classification is analogous to doing the same operation repeatedly over a large data set.
+[src:joblib-parallel/parallel-computing] This is commonly done in signal processing applications.
+[src:joblib-parallel/parallel-computing] Multiple-instruction-single-data (MISD) is a rarely used classification.
+[src:joblib-parallel/parallel-computing] While computer architectures to deal with this were devised (such as systolic arrays), few applications that fit this class materialized.
+[src:joblib-parallel/parallel-computing] Multiple-instruction-multiple-data (MIMD) programs are by far the most common type of parallel programs.
+[src:joblib-parallel/parallel-computing] Hennessy, "Some machines are hybrids of these categories, of course, but this classic model has survived because it is simple, easy to understand, and gives a good first approximation.
+[src:joblib-parallel/parallel-computing] Parallel computing can incur significant overhead in practice, primarily due to the costs associated with merging data from multiple processes.
+[src:joblib-parallel/parallel-computing] Specifically, inter-process communication and synchronization can lead to overheads that are substantially higher—often by two or more orders of magnitude—compared to processing the same data on a single thread.
+[src:joblib-parallel/parallel-computing] Therefore, the overall improvement should be carefully evaluated.
+[src:joblib-parallel/parallel-computing] From the advent of very-large-scale integration (VLSI) computer-chip fabrication technology in the 1970s until about 1986, speed-up in computer architecture was driven by doubling computer word size—the amount of information the processor can manipulate per cycle.
+[src:joblib-parallel/parallel-computing] Increasing the word size reduces the number of instructions the processor must execute to perform an operation on variables whose sizes are greater than the length of the word.
+[src:joblib-parallel/parallel-computing] Historically, 4-bit microprocessors were replaced with 8-bit, then 16-bit, then 32-bit microprocessors.
+[src:joblib-parallel/parallel-computing] This trend generally came to an end with the introduction of 32-bit processors, which has been a standard in general-purpose computing for two decades.
+[src:joblib-parallel/parallel-computing] Not until the early 2000s, with the advent of x86-64 architectures, did 64-bit processors become commonplace.
+[src:joblib-parallel/parallel-computing] A computer program is, in essence, a stream of instructions executed by a processor.
+[src:joblib-parallel/parallel-computing] Without instruction-level parallelism, a processor can only issue less than one instruction per clock cycle (IPC < 1).
+[src:joblib-parallel/parallel-computing] These processors are known as *subscalar* processors.
+[src:joblib-parallel/parallel-computing] These instructions can be re-ordered and combined into groups which are then executed in parallel without changing the result of the program.
+[src:joblib-parallel/parallel-computing] This is known as instruction-level parallelism.
+[src:joblib-parallel/parallel-computing] Advances in instruction-level parallelism dominated computer architecture from the mid-1980s until the mid-1990s.
+[src:joblib-parallel/parallel-computing] All modern processors have multi-stage instruction pipelines.
+[src:joblib-parallel/parallel-computing] Each stage in the pipeline corresponds to a different action the processor performs on that instruction in that stage; a processor with an *N*-stage pipeline can have up to *N* different instructions at different stages of completion and thus can issue one instruction per clock cycle (IPC = 1).
+[src:joblib-parallel/parallel-computing] These processors are known as *scalar* processors.
+[src:joblib-parallel/parallel-computing] The canonical example of a pipelined processor is a RISC processor, with five stages: instruction fetch (IF), instruction decode (ID), execute (EX), memory access (MEM), and register write back (WB).
+[src:joblib-parallel/parallel-computing] The Pentium 4 processor had a 35-stage pipeline.
+[src:joblib-parallel/parallel-computing] Most modern processors also have multiple execution units.
+[src:joblib-parallel/parallel-computing] They usually combine this feature with pipelining and thus can issue more than one instruction per clock cycle (IPC > 1).
+[src:joblib-parallel/parallel-computing] These processors are known as *superscalar* processors.
+[src:joblib-parallel/parallel-computing] Superscalar processors differ from multi-core processors in that the several execution units are not entire processors (i.e. processing units).
+[src:joblib-parallel/parallel-computing] Instructions can be grouped together only if there is no data dependency between them.
+[src:joblib-parallel/parallel-computing] Scoreboarding and the Tomasulo algorithm (which is similar to scoreboarding but makes use of register renaming) are two of the most common techniques for implementing out-of-order execution and instruction-level parallelism.
+[src:joblib-parallel/parallel-computing] Task parallelisms is the characteristic of a parallel program that "entirely different calculations can be performed on either the same or different sets of data".
+[src:joblib-parallel/parallel-computing] This contrasts with data parallelism, where the same calculation is performed on the same or different sets of data.
+[src:joblib-parallel/parallel-computing] Task parallelism involves the decomposition of a task into sub-tasks and then allocating each sub-task to a processor for execution.
+[src:joblib-parallel/parallel-computing] The processors would then execute these sub-tasks concurrently and often cooperatively.
+[src:joblib-parallel/parallel-computing] Task parallelism does not usually scale with the size of a problem.
+[src:joblib-parallel/parallel-computing] Superword level parallelism is a vectorization technique based on loop unrolling and basic block vectorization.
+[src:joblib-parallel/parallel-computing] It is distinct from loop vectorization algorithms in that it can exploit parallelism of inline code, such as manipulating coordinates, color channels or in loops unrolled by hand.
+[src:joblib-parallel/parallel-computing] Main memory in a parallel computer is either shared memory (shared between all processing elements in a single address space), or distributed memory (in which each processing element has its own local address space).
+[src:joblib-parallel/parallel-computing] Distributed memory refers to the fact that the memory is logically distributed, but often implies that it is physically distributed as well.
+[src:joblib-parallel/parallel-computing] Distributed shared memory and memory virtualization combine the two approaches, where the processing element has its own local memory and access to the memory on non-local processors.
+[src:joblib-parallel/parallel-computing] Accesses to local memory are typically faster than accesses to non-local memory.
+[src:joblib-parallel/parallel-computing] On the supercomputers, distributed shared memory space can be implemented using the programming model such as PGAS.
+[src:joblib-parallel/parallel-computing] This model allows processes on one compute node to transparently access the remote memory of another compute node.
+[src:joblib-parallel/parallel-computing] All compute nodes are also connected to an external shared memory system via high-speed interconnect, such as Infiniband, this external shared memory system is known as burst buffer, which is typically built from arrays of non-volatile memory physically distributed across multiple I/O nodes.
+[src:joblib-parallel/parallel-computing] Computer architectures in which each element of main memory can be accessed with equal latency and bandwidth are known as uniform memory access (UMA) systems.
+[src:joblib-parallel/parallel-computing] Typically, that can be achieved only by a shared memory system, in which the memory is not physically distributed.
+[src:joblib-parallel/parallel-computing] A system that does not have this property is known as a non-uniform memory access (NUMA) architecture.
+[src:joblib-parallel/parallel-computing] Distributed memory systems have non-uniform memory access.
+[src:joblib-parallel/parallel-computing] Computer systems (with the exception of Groq's LPUs) make use of caches—small and fast memories located close to the processor which store temporary copies of memory values (nearby in both the physical and logical sense).
+[src:joblib-parallel/parallel-computing] Parallel computer systems have difficulties with caches that may store the same value in more than one location, with the possibility of incorrect program execution.
+[src:joblib-parallel/parallel-computing] These computers require a cache coherency system, which keeps track of cached values and strategically purges them, thus ensuring correct program execution.
+[src:joblib-parallel/parallel-computing] Bus snooping is one of the most common methods for keeping track of which values are being accessed (and thus should be purged).
+[src:joblib-parallel/parallel-computing] Designing large, high-performance cache coherence systems is a very difficult problem in computer architecture.
+[src:joblib-parallel/parallel-computing] As a result, shared memory computer architectures do not scale and distributed memory systems do.
+[src:joblib-parallel/parallel-computing] Parallel computers based on interconnected networks need to have some kind of routing to enable the passing of messages between nodes that are not directly connected.
+[src:joblib-parallel/parallel-computing] The medium used for communication between the processors is likely to be hierarchical in large multiprocessor machines.
+[src:joblib-parallel/parallel-computing] Parallel computers can be roughly classified according to the level at which the hardware supports parallelism.
+[src:joblib-parallel/parallel-computing] This classification is broadly analogous to the distance between basic computing nodes.
+[src:joblib-parallel/parallel-computing] These are not mutually exclusive; for example, clusters of symmetric multiprocessors are relatively common.
+[src:joblib-parallel/parallel-computing] A multi-core processor is a processor that includes multiple processing units (called "cores") on the same chip.
+[src:joblib-parallel/parallel-computing] IBM's Cell microprocessor, designed for use in the Sony PlayStation 3, is a prominent multi-core processor.
+[src:joblib-parallel/parallel-computing] Each core in a multi-core processor can potentially be superscalar as well—that is, on every clock cycle, each core can issue multiple instructions from one thread.
+[src:joblib-parallel/parallel-computing] Simultaneous multithreading (of which Intel's Hyper-Threading is the best known) was an early form of pseudo-multi-coreism.
+[src:joblib-parallel/parallel-computing] A processor capable of concurrent multithreading includes multiple execution units in the same processing unit—that is it has a superscalar architecture—and can issue multiple instructions per clock cycle from *multiple* threads.
+[src:joblib-parallel/parallel-computing] Temporal multithreading on the other hand includes a single execution unit in the same processing unit and can issue one instruction at a time from *multiple* threads.
+[src:joblib-parallel/parallel-computing] A symmetric multiprocessor (SMP) is a computer system with multiple identical processors that share memory and connect via a bus.
+[src:joblib-parallel/parallel-computing] Bus contention prevents bus architectures from scaling.
+[src:joblib-parallel/parallel-computing] As a result, SMPs generally do not comprise more than 32 processors.
+[src:joblib-parallel/parallel-computing] Because of the small size of the processors and the significant reduction in the requirements for bus bandwidth achieved by large caches, such symmetric multiprocessors are extremely cost-effective, provided that a sufficient amount of memory bandwidth exists.
+[src:joblib-parallel/parallel-computing] A distributed computer (also known as a distributed memory multiprocessor) is a distributed memory computer system in which the processing elements are connected by a network.
+[src:joblib-parallel/parallel-computing] Distributed computers are highly scalable.
+[src:joblib-parallel/parallel-computing] The terms "concurrent computing", "parallel computing", and "distributed computing" have a lot of overlap, and no clear distinction exists between them.
+[src:joblib-parallel/parallel-computing] The same system may be characterized both as "parallel" and "distributed"; the processors in a typical distributed system run concurrently in parallel.
+[src:joblib-parallel/parallel-computing] A cluster is a group of loosely coupled computers that work together closely, so that in some respects they can be regarded as a single computer.
+[src:joblib-parallel/parallel-computing] Clusters are composed of multiple standalone machines connected by a network.
+[src:joblib-parallel/parallel-computing] While machines in a cluster do not have to be symmetric, load balancing is more difficult if they are not.
+[src:joblib-parallel/parallel-computing] The most common type of cluster is the Beowulf cluster, which is a cluster implemented on multiple identical commercial off-the-shelf computers connected with a TCP/IP Ethernet local area network.
+[src:joblib-parallel/parallel-computing] Beowulf technology was originally developed by Thomas Sterling and Donald Becker.
+[src:joblib-parallel/parallel-computing] 87% of all Top500 supercomputers are clusters.
+[src:joblib-parallel/parallel-computing] The remaining are Massively Parallel Processors, explained below.
+[src:joblib-parallel/parallel-computing] Because grid computing systems (described below) can easily handle embarrassingly parallel problems, modern clusters are typically designed to handle more difficult problems—problems that require nodes to share intermediate results with each other more often.
+[src:joblib-parallel/parallel-computing] This requires a high bandwidth and, more importantly, a low-latency interconnection network.
+[src:joblib-parallel/parallel-computing] Many historic and current supercomputers use customized high-performance network hardware specifically designed for cluster computing, such as the Cray Gemini network.
+[src:joblib-parallel/parallel-computing] As of 2014, most current supercomputers use some off-the-shelf standard network hardware, often Myrinet, InfiniBand, or Gigabit Ethernet.
+[src:joblib-parallel/parallel-computing] A massively parallel processor (MPP) is a single computer with many networked processors.
+[src:joblib-parallel/parallel-computing] MPPs have many of the same characteristics as clusters, but MPPs have specialized interconnect networks (whereas clusters use commodity hardware for networking).
+[src:joblib-parallel/parallel-computing] MPPs also tend to be larger than clusters, typically having "far more" than 100 processors.
+[src:joblib-parallel/parallel-computing] In an MPP, "each CPU contains its own memory and copy of the operating system and application.
+[src:joblib-parallel/parallel-computing] IBM's Blue Gene/L, the fifth fastest supercomputer in the world according to the June 2009 TOP500 ranking, is an MPP.
+[src:joblib-parallel/parallel-computing] Grid computing is the most distributed form of parallel computing.
+[src:joblib-parallel/parallel-computing] It makes use of computers communicating over the Internet to work on a given problem.
+[src:joblib-parallel/parallel-computing] Because of the low bandwidth and extremely high latency available on the Internet, distributed computing typically deals only with embarrassingly parallel problems.
+[src:joblib-parallel/parallel-computing] Most grid computing applications use middleware (software that sits between the operating system and the application to manage network resources and standardize the software interface).
+[src:joblib-parallel/parallel-computing] The most common grid computing middleware is the Berkeley Open Infrastructure for Network Computing (BOINC).
+[src:joblib-parallel/parallel-computing] Often volunteer computing software makes use of "spare cycles", performing computations at times when a computer is idling.
+[src:joblib-parallel/parallel-computing] The ubiquity of the Internet and high-bandwidth networks enabled cloud computing, a model where massively parallel resources are provided as a service.
+[src:joblib-parallel/parallel-computing] This paradigm abstracts the underlying hardware, allowing users to access virtualized clusters for scalable workloads without managing physical infrastructure.
+[src:joblib-parallel/parallel-computing] Modern distributed ledger protocols apply parallel computing principles to overcome the sequential bottlenecks of traditional blockchains.
+[src:joblib-parallel/parallel-computing] By sharding the state space, newer consensus architectures allow for "massively parallel transaction processing".
+[src:joblib-parallel/parallel-computing] In this model, utilized by protocols such as Cerberus, independent transactions are treated as parallel tasks that can be executed simultaneously on different nodes, rather than being processed serially in a single global block.
+[src:joblib-parallel/parallel-computing] Within parallel computing, there are specialized parallel devices that remain niche areas of interest.
+[src:joblib-parallel/parallel-computing] While not domain-specific, they tend to be applicable to only a few classes of parallel problems.
+[src:joblib-parallel/parallel-computing] Reconfigurable computing is the use of a field-programmable gate array (FPGA) as a co-processor to a general-purpose computer.
+[src:joblib-parallel/parallel-computing] An FPGA is, in essence, a computer chip that can rewire itself for a given task.
+[src:joblib-parallel/parallel-computing] FPGAs can be programmed with hardware description languages such as VHDL or Verilog.
+[src:joblib-parallel/parallel-computing] Several vendors have created C to HDL languages that attempt to emulate the syntax and semantics of the C programming language, with which most programmers are familiar.
+[src:joblib-parallel/parallel-computing] The best known C to HDL languages are Mitrion-C, Impulse C, and Handel-C.
+[src:joblib-parallel/parallel-computing] Specific subsets of SystemC based on C++ can also be used for this purpose.
+[src:joblib-parallel/parallel-computing] AMD's decision to open its HyperTransport technology to third-party vendors has become the enabling technology for high-performance reconfigurable computing.
+[src:joblib-parallel/parallel-computing] General-purpose computing on graphics processing units (GPGPU) is a fairly recent trend in computer engineering research.
+[src:joblib-parallel/parallel-computing] GPUs are co-processors that have been heavily optimized for computer graphics processing.
+[src:joblib-parallel/parallel-computing] Computer graphics processing is a field dominated by data parallel operations—particularly linear algebra matrix operations.
+[src:joblib-parallel/parallel-computing] In the early days, GPGPU programs used the normal graphics APIs for executing programs.
+[src:joblib-parallel/parallel-computing] However, several new programming languages and platforms have been built to do general purpose computation on GPUs with both Nvidia and AMD releasing programming environments with CUDA and Stream SDK respectively.
+[src:joblib-parallel/parallel-computing] Other GPU programming languages include BrookGPU, PeakStream, and RapidMind.
+[src:joblib-parallel/parallel-computing] Nvidia has also released specific products for computation in their Tesla series.
+[src:joblib-parallel/parallel-computing] The technology consortium Khronos Group has released the OpenCL specification, which is a framework for writing programs that execute across platforms consisting of CPUs and GPUs.
+[src:joblib-parallel/parallel-computing] AMD, Apple, Intel, Nvidia and others are supporting OpenCL.
+[src:joblib-parallel/parallel-computing] Several application-specific integrated circuit (ASIC) approaches have been devised for dealing with parallel applications.
+[src:joblib-parallel/parallel-computing] Because an ASIC is (by definition) specific to a given application, it can be fully optimized for that application.
+[src:joblib-parallel/parallel-computing] As a result, for a given application, an ASIC tends to outperform a general-purpose computer.
+[src:joblib-parallel/parallel-computing] However, ASICs are created by UV photolithography.
+[src:joblib-parallel/parallel-computing] This process requires a mask set, which can be extremely expensive.
+[src:joblib-parallel/parallel-computing] A mask set can cost over a million US dollars.
+[src:joblib-parallel/parallel-computing] (The smaller the transistors required for the chip, the more expensive the mask will be.) Meanwhile, performance increases in general-purpose computing over time (as described by Moore's law) tend to wipe out these gains in only one or two chip generations.
+[src:joblib-parallel/parallel-computing] High initial cost, and the tendency to be overtaken by Moore's-law-driven general-purpose computing, has rendered ASICs unfeasible for most parallel computing applications.
+[src:joblib-parallel/parallel-computing] One example is the PFLOPS RIKEN MDGRAPE-3 machine which uses custom ASICs for molecular dynamics simulation.
+[src:joblib-parallel/parallel-computing] A vector processor is a CPU or computer system that can execute the same instruction on large sets of data.
+[src:joblib-parallel/parallel-computing] Vector processors have high-level operations that work on linear arrays of numbers or vectors.
+[src:joblib-parallel/parallel-computing] An example vector operation is *A* = *B* × *C*, where *A*, *B*, and *C* are each 64-element vectors of 64-bit floating-point numbers.
+[src:joblib-parallel/parallel-computing] They are closely related to Flynn's SIMD classification.
+[src:joblib-parallel/parallel-computing] Cray computers became famous for their vector-processing computers in the 1970s and 1980s.
+[src:joblib-parallel/parallel-computing] However, vector processors—both as CPUs and as full computer systems—have generally disappeared.
+[src:joblib-parallel/parallel-computing] Modern processor instruction sets do include some vector processing instructions, such as with Freescale Semiconductor's AltiVec and Intel's Streaming SIMD Extensions (SSE).
+[src:joblib-parallel/parallel-computing] Concurrent programming languages, libraries, APIs, and parallel programming models (such as algorithmic skeletons) have been created for programming parallel computers.
+[src:joblib-parallel/parallel-computing] These can generally be divided into classes based on the assumptions they make about the underlying memory architecture—shared memory, distributed memory, or shared distributed memory.
+[src:joblib-parallel/parallel-computing] Shared memory programming languages communicate by manipulating shared memory variables.
+[src:joblib-parallel/parallel-computing] Distributed memory uses message passing.
+[src:joblib-parallel/parallel-computing] POSIX Threads and OpenMP are two of the most widely used shared memory APIs, whereas Message Passing Interface (MPI) is the most widely used message-passing system API.
+[src:joblib-parallel/parallel-computing] One concept used in programming parallel programs is the future concept, where one part of a program promises to deliver a required datum to another part of a program at some future time.
+[src:joblib-parallel/parallel-computing] Efforts to standardize parallel programming include an open standard called OpenHMPP for hybrid multi-core parallel programming.
+[src:joblib-parallel/parallel-computing] The OpenHMPP directive-based programming model offers a syntax to efficiently offload computations on hardware accelerators and to optimize data movement to/from the hardware memory using remote procedure calls.
+[src:joblib-parallel/parallel-computing] The rise of consumer GPUs has led to support for compute kernels, either in graphics APIs (referred to as compute shaders), in dedicated APIs (such as OpenCL), or in other language extensions.
+[src:joblib-parallel/parallel-computing] Automatic parallelization of a sequential program by a compiler is the "holy grail" of parallel computing, especially with the aforementioned limit of processor frequency.
+[src:joblib-parallel/parallel-computing] Despite decades of work by compiler researchers, automatic parallelization has had only limited success.
+[src:joblib-parallel/parallel-computing] Mainstream parallel programming languages remain either explicitly parallel or (at best) partially implicit, in which a programmer gives the compiler directives for parallelization.
+[src:joblib-parallel/parallel-computing] A few fully implicit parallel programming languages exist—SISAL, Parallel Haskell, SequenceL, SystemC (for FPGAs), Mitrion-C, VHDL, and Verilog.
+[src:joblib-parallel/parallel-computing] As a computer system grows in complexity, the mean time between failures usually decreases.
+[src:joblib-parallel/parallel-computing] Application checkpointing is a technique whereby the computer system takes a "snapshot" of the application—a record of all current resource allocations and variable states, akin to a core dump—; this information can be used to restore the program if the computer should fail.
+[src:joblib-parallel/parallel-computing] Application checkpointing means that the program has to restart from only its last checkpoint rather than the beginning.
+[src:joblib-parallel/parallel-computing] While checkpointing provides benefits in a variety of situations, it is especially useful in highly parallel systems with a large number of processors used in high performance computing.
+[src:joblib-parallel/parallel-computing] As parallel computers become larger and faster, we are now able to solve problems that had previously taken too long to run.
+[src:joblib-parallel/parallel-computing] Fields as varied as bioinformatics (for protein folding and sequence analysis) and economics have taken advantage of parallel computing.
+[src:joblib-parallel/parallel-computing] Parallel computing can also be applied to the design of fault-tolerant computer systems, particularly via lockstep systems performing the same operation in parallel.
+[src:joblib-parallel/parallel-computing] This provides redundancy in case one component fails, and also allows automatic error detection and error correction if the results differ.
+[src:joblib-parallel/parallel-computing] These methods can be used to help prevent single-event upsets caused by transient errors.
+[src:joblib-parallel/parallel-computing] Although additional measures may be required in embedded or specialized systems, this method can provide a cost-effective approach to achieve n-modular redundancy in commercial off-the-shelf systems.
+[src:joblib-parallel/parallel-computing] The origins of true (MIMD) parallelism go back to Luigi Federico Menabrea and his *Sketch of the Analytic Engine Invented by Charles Babbage*.
+[src:joblib-parallel/parallel-computing] In 1957, Compagnie des Machines Bull announced the first computer architecture specifically designed for parallelism, the Gamma 60.
+[src:joblib-parallel/parallel-computing] It utilized a fork-join model and a "Program Distributor" to dispatch and collect data to and from independent processing units connected to a central memory.
+[src:joblib-parallel/parallel-computing] In April 1958, Stanley Gill (Ferranti) discussed parallel programming and the need for branching and waiting.
+[src:joblib-parallel/parallel-computing] Also in 1958, IBM researchers John Cocke and Daniel Slotnick discussed the use of parallelism in numerical calculations for the first time.
+[src:joblib-parallel/parallel-computing] Burroughs Corporation introduced the D825 in 1962, a four-processor computer that accessed up to 16 memory modules through a crossbar switch.
+[src:joblib-parallel/parallel-computing] In 1967, Amdahl and Slotnick published a debate about the feasibility of parallel processing at American Federation of Information Processing Societies Conference.
+[src:joblib-parallel/parallel-computing] It was during this debate that Amdahl's law was coined to define the limit of speed-up due to parallelism.
+[src:joblib-parallel/parallel-computing] In 1969, Honeywell introduced its first Multics system, a symmetric multiprocessor system capable of running up to eight processors in parallel.
+[src:joblib-parallel/parallel-computing] C.mmp, a multi-processor project at Carnegie Mellon University in the 1970s, was among the first multiprocessors with more than a few processors.
+[src:joblib-parallel/parallel-computing] The first bus-connected multiprocessor with snooping caches was the Synapse N+1 in 1984.
+[src:joblib-parallel/parallel-computing] SIMD parallel computers can be traced back to the 1970s.
+[src:joblib-parallel/parallel-computing] The motivation behind early SIMD computers was to amortize the gate delay of the processor's control unit over multiple instructions.
+[src:joblib-parallel/parallel-computing] In 1964, Slotnick had proposed building a massively parallel computer for the Lawrence Livermore National Laboratory.
+[src:joblib-parallel/parallel-computing] His design was funded by the US Air Force, which was the earliest SIMD parallel-computing effort, ILLIAC IV.
+[src:joblib-parallel/parallel-computing] The key to its design was a fairly high parallelism, with up to 256 processors, which allowed the machine to work on large datasets in what would later be known as vector processing.
+[src:joblib-parallel/parallel-computing] However, ILLIAC IV was called "the most infamous of supercomputers", because the project was only one-fourth completed, but took 11 years and cost almost four times the original estimate.
+[src:joblib-parallel/parallel-computing] When it was finally ready to run its first real application in 1976, it was outperformed by existing commercial supercomputers such as the Cray-1.
+[src:joblib-parallel/parallel-computing] In the early 1970s, at the MIT Computer Science and Artificial Intelligence Laboratory, Marvin Minsky and Seymour Papert started developing the *Society of Mind* theory, which views the biological brain as massively parallel computer.
+[src:joblib-parallel/parallel-computing] In 1986, Minsky published *The Society of Mind*, which claims that "mind is formed from many little agents, each mindless by itself".
+[src:joblib-parallel/parallel-computing] The theory attempts to explain how what we call intelligence could be a product of the interaction of non-intelligent parts.
+[src:joblib-parallel/parallel-computing] Minsky says that the biggest source of ideas about the theory came from his work in trying to create a machine that uses a robotic arm, a video camera, and a computer to build with children's blocks.
+[src:joblib-parallel/parallel] Joblib provides a simple helper class to write parallel for loops using multiprocessing.
+[src:joblib-parallel/parallel] The output can be a generator that yields the results as soon as they’re available, even if the subsequent tasks aren’t completed yet.
+[src:joblib-parallel/parallel] This generator enables reducing the memory footprint of `joblib.Parallel` calls in case the results can benefit from on-the-fly aggregation, as illustrated in Returning a generator in joblib.Parallel.
+[src:joblib-parallel/parallel] It is also possible to return a generator that yields the results in the order of completion rather than the order of submission, by using `return_as="generator_unordered"` instead of `return_as="generator"`.
+[src:joblib-parallel/parallel] In this case the order of the outputs depends on the concurrency of workers and is not deterministic, meaning the results can be yielded with a different order every time the code is executed.
+[src:joblib-parallel/parallel] By default `joblib.Parallel` uses the `'loky'` backend module to start separate Python worker processes to execute tasks concurrently on separate CPUs.
+[src:joblib-parallel/parallel] But `joblib` also supports other backends to execute tasks concurrently, with different trade-offs (see Setting up joblib’s backend with parallel_config).
+[src:joblib-parallel/parallel] While `'loky'` is a reasonable default for generic Python programs , it can induce a significant overhead as the input and output data need to be serialized in a queue for communication with the worker processes (see Serialization & Processes).
+[src:joblib-parallel/parallel] When you know that the function you are calling is based on a compiled extension that releases the Python Global Interpreter Lock (GIL) during most of its computation then it is more efficient to use threads instead of Python processes as concurrent workers.
+[src:joblib-parallel/parallel] For instance this is the case if you write the CPU intensive part of your code inside a with nogil block of a Cython function.
+[src:joblib-parallel/parallel] To hint that your code can efficiently use threads, just pass `prefer="threads"` as parameter of the `joblib.Parallel` constructor.
+[src:joblib-parallel/parallel] Note that the `prefer="threads"` option was introduced in joblib 0.12.
+[src:joblib-parallel/parallel] This context manager is especially useful when calling a library that uses `joblib.Parallel` internally without exposing backend selection as part of its public API.
+[src:joblib-parallel/parallel] It is also possible to provide a custom backend implementation, as described in Parallel backend customization API.
+[src:joblib-parallel/parallel] To share function definition across multiple python processes, it is necessary to rely on a serialization protocol.
+[src:joblib-parallel/parallel] The standard protocol in python is `pickle` but its default implementation in the standard library has several limitations.
+[src:joblib-parallel/parallel] For instance, it cannot serialize functions which are defined interactively or in the `__main__` module.
+[src:joblib-parallel/parallel] To avoid this limitation, the `loky` backend now relies on `cloudpickle` to serialize python objects.
+[src:joblib-parallel/parallel] `cloudpickle` is an alternative implementation of the pickle protocol which allows the serialization of a greater number of objects, in particular interactively defined functions.
+[src:joblib-parallel/parallel] So for most usages, the loky `backend` should work seamlessly.
+[src:joblib-parallel/parallel] The main drawback of `cloudpickle` is that it can be slower than the `pickle` module in the standard library.
+[src:joblib-parallel/parallel] In particular, it is critical for large python dictionaries or lists, where the serialization time can be up to 100 times slower.
+[src:joblib-parallel/parallel] The default backend of joblib will run each function call in isolated Python processes, therefore they cannot mutate a common Python object defined in the main program.
+[src:joblib-parallel/parallel] Keep in mind that relying a on the shared-memory semantics is probably suboptimal from a performance point of view as concurrent access to a shared Python object will suffer from lock contention.
+[src:joblib-parallel/parallel] Some algorithms require to make several consecutive calls to a parallel function interleaved with processing of the intermediate results.
+[src:joblib-parallel/parallel] Calling `joblib.Parallel` several times in a loop is sub-optimal because it will create and destroy a pool of workers (threads or processes) several times which can cause a significant overhead.
+[src:joblib-parallel/parallel] Note that the `'loky'` backend now used by default for process-based parallelism automatically tries to maintain and reuse a pool of workers by it-self even for calls without the context manager.
+[src:joblib-parallel/parallel] By default the workers of the pool are real Python processes forked using the `multiprocessing` module of the Python standard library when `n_jobs != 1`.
+[src:joblib-parallel/parallel] The arguments passed as input to the `Parallel` call are serialized and reallocated in the memory of each worker process.
+[src:joblib-parallel/parallel] This can be problematic for large arguments as they will be reallocated `n_jobs` times by the workers.
+[src:joblib-parallel/parallel] This makes it possible to share a segment of data between all the worker processes.
+[src:joblib-parallel/parallel] The following only applies with the `"loky"` and `'multiprocessing'` process-backends.
+[src:joblib-parallel/parallel] If your code can release the GIL, then using a thread-based backend by passing `prefer='threads'` is even more efficient because it makes it possible to avoid the communication overhead of process-based parallelism.
+[src:joblib-parallel/parallel] Scientific Python libraries such as numpy, scipy, pandas and scikit-learn often release the GIL in performance critical code paths.
+[src:joblib-parallel/parallel] It is therefore advised to always measure the speed of thread-based parallelism and use it when the scalability is not limited by the GIL.
+[src:joblib-parallel/parallel] By default the data is dumped to the `/dev/shm` shared-memory partition if it exists and is writable (typically the case under Linux).
+[src:joblib-parallel/parallel] Otherwise the operating system’s temporary folder is used.
+[src:joblib-parallel/parallel] The location of the temporary data files can be customized by passing a `temp_folder` argument to the `Parallel` constructor.
+[src:joblib-parallel/parallel] Passing `max_nbytes=None` makes it possible to disable the automated array to memmap conversion.
+[src:joblib-parallel/parallel] For even finer tuning of the memory usage it is also possible to dump the array as a memmap directly from the parent process to free the memory before forking the worker processes.
+[src:joblib-parallel/parallel] Note that here `max_nbytes=None` is used to disable the auto-dumping feature of `Parallel`.
+[src:joblib-parallel/parallel] `small_array` is still in shared memory in the worker processes because it was already backed by shared memory in the parent process.
+[src:joblib-parallel/parallel] The pickling machinery of `Parallel` multiprocessing queues are able to detect this situation and optimize it on the fly to limit the number of memory copies.
+[src:joblib-parallel/parallel] If data are opened using the `w+` or `r+` mode in the main program, the worker will get `r+` mode access.
+[src:joblib-parallel/parallel] Thus the worker will be able to write its results directly to the original data, alleviating the need of the serialization to send back the results to the parent process.
+[src:joblib-parallel/parallel] Here is an example script on parallel processing with preallocated `numpy.memmap` datastructures NumPy memmap in joblib.Parallel.
+[src:joblib-parallel/parallel] Having concurrent workers write on overlapping shared memory data segments, for instance by using inplace operators and assignments on a *numpy.memmap* instance, can lead to data corruption as numpy does not offer atomic operations.
+[src:joblib-parallel/parallel] The previous example does not risk that issue as each task is updating an exclusive segment of the shared result array.
+[src:joblib-parallel/parallel] Some C/C++ compilers offer lock-free atomic primitives such as add-and-fetch or compare-and-swap that could be exposed to Python via CFFI for instance.
+[src:joblib-parallel/parallel] However providing numpy-aware atomic constructs is outside of the scope of the joblib project.
+[src:joblib-parallel/parallel] The computation parallelism relies on the usage of multiple CPUs to perform the operation simultaneously.
+[src:joblib-parallel/parallel] When using more processes than the number of CPU on a machine, the performance of each process is degraded as there is less computational power available for each process.
+[src:joblib-parallel/parallel] Moreover, when many processes are running, the time taken by the OS scheduler to switch between them can further hinder the performance of the computation.
+[src:joblib-parallel/parallel] It is generally better to avoid using significantly more processes or threads than the number of CPUs on a machine.
+[src:joblib-parallel/parallel] Some third-party libraries – *e.g.* the BLAS runtime used by `numpy` – internally manage a thread-pool to perform their computations.
+[src:joblib-parallel/parallel] The default behavior is generally to use a number of threads equals to the number of CPUs available.
+[src:joblib-parallel/parallel] When these libraries are used with `joblib.Parallel`, each worker will spawn its own thread-pools, resulting in a massive over-subscription of resources that can slow down the computation compared to a sequential one.
+[src:joblib-parallel/parallel] This behavior can be overridden by setting the proper environment variables to the desired number of threads.
+[src:joblib-parallel/parallel] In this example, 4 Python worker processes will be allowed to use 2 threads each, meaning that this program will be able to use up to 8 CPUs concurrently.
+[src:joblib-parallel/parallel] Prior to version 0.12, joblib used the `'multiprocessing'` backend as default backend instead of `'loky'`.
+[src:joblib-parallel/parallel] This backend creates an instance of *multiprocessing.Pool* that forks the Python interpreter in multiple processes to execute each of the items of the list.
+[src:joblib-parallel/parallel] The *delayed* function is a simple trick to be able to create a tuple *(function, args, kwargs)* with a function-call syntax.
+[src:joblib-parallel/parallel] Under Windows, the use of `multiprocessing.Pool` requires to protect the main loop of code to avoid recursive spawning of subprocesses when using `joblib.Parallel`.
+[src:joblib-parallel/parallel] The `'loky'` backend used by default in joblib 0.12 and later does not impose this anymore.
+[src:joblib-parallel/parallel] Using the `'multiprocessing'` backend can cause a crash when using third party libraries that manage their own native thread-pool if the library is first used in the main process and subsequently called again in a worker process (inside the `joblib.Parallel` call).
+[src:joblib-parallel/parallel] Joblib version 0.12 and later are no longer subject to this problem thanks to the use of loky as the new default backend for process-based parallelism.
+[src:joblib-parallel/parallel] Prior to Python 3.4 the `'multiprocessing'` backend of joblib can only use the `fork` strategy to create worker processes under non-Windows systems.
+[src:joblib-parallel/parallel] This can cause some third-party libraries to crash or freeze.
+[src:joblib-parallel/parallel] The best way to avoid this problem is to use the `'loky'` backend instead of the `multiprocessing` backend.
+[src:joblib-parallel/parallel] Prior to joblib 0.12, it is also possible to get `joblib.Parallel` configured to use the `'forkserver'` start method on Python 3.4 and later.
+[src:joblib-parallel/parallel] The start method has to be configured by setting the `JOBLIB_START_METHOD` environment variable to `'forkserver'` instead of the default `'fork'` start method.
+[src:joblib-parallel/parallel] However the user should be aware that using the `'forkserver'` method prevents `joblib.Parallel` to call function interactively defined in a shell session.
+[src:joblib-parallel/parallel] You can read more on this topic in the multiprocessing documentation.
+[src:joblib-parallel/parallel] Under Windows the `fork` system call does not exist at all so this problem does not exist (but multiprocessing has more overhead).
+[src:joblib-parallel/parallel] Helper class for readable parallel mapping.
+[src:joblib-parallel/parallel] The maximum number of concurrently running jobs, such as the number of Python worker processes when `backend="loky"` or the size of the thread-pool when `backend="threading"`.
+[src:joblib-parallel/parallel] This argument is converted to an integer, rounded below for float.
+[src:joblib-parallel/parallel] If -1 is given, *joblib* tries to use all CPUs.
+[src:joblib-parallel/parallel] The number of CPUs `n_cpus` is obtained with `cpu_count()`.
+[src:joblib-parallel/parallel] For n_jobs below -1, (n_cpus + 1 + n_jobs) are used.
+[src:joblib-parallel/parallel] For instance, using `n_jobs=-2` will result in all CPUs but one being used.
+[src:joblib-parallel/parallel] This argument can also go above `n_cpus`, which will cause oversubscription.
+[src:joblib-parallel/parallel] In some cases, slight oversubscription can be beneficial, e.g., for tasks with large I/O operations.
+[src:joblib-parallel/parallel] If 1 is given, no parallel computing code is used at all, and the behavior amounts to a simple python *for* loop.
+[src:joblib-parallel/parallel] This mode is not compatible with `timeout`.
+[src:joblib-parallel/parallel] None is a marker for ‘unset’ that will be interpreted as n_jobs=1 unless the call is performed under a `parallel_config()` context manager that sets another value for `n_jobs`.
+[src:joblib-parallel/parallel] If n_jobs = 0 then a ValueError is raised.
+[src:joblib-parallel/parallel] Specify the parallelization backend implementation.
+[src:joblib-parallel/parallel] It is not recommended to hard-code the backend name in a call to `Parallel` in a library.
+[src:joblib-parallel/parallel] Instead it is recommended to set soft hints (prefer) or hard constraints (require) so as to make it possible for library users to change the backend from the outside using the `parallel_config()` context manager.
+[src:joblib-parallel/parallel] If ‘list’, calls to this instance will return a list, only when all results have been processed and retrieved.
+[src:joblib-parallel/parallel] If ‘generator’, it will return a generator that yields the results as soon as they are available, in the order the tasks have been submitted with.
+[src:joblib-parallel/parallel] If ‘generator_unordered’, the generator will immediately yield available results independently of the submission order.
+[src:joblib-parallel/parallel] The output order is not deterministic in this case because it depends on the concurrency of the workers.
+[src:joblib-parallel/parallel] Soft hint to choose the default backend if no specific backend was selected with the `parallel_config()` context manager.
+[src:joblib-parallel/parallel] The default process-based backend is ‘loky’ and the default thread-based backend is ‘threading’.
+[src:joblib-parallel/parallel] Ignored if the `backend` parameter is specified.
+[src:joblib-parallel/parallel] If set to ‘sharedmem’, the selected backend will be single-host and thread-based even if the user asked for a non-thread based backend with `parallel_config()`.
+[src:joblib-parallel/parallel] The verbosity level: if non zero, progress messages are printed.
+[src:joblib-parallel/parallel] The frequency of the messages increases with the verbosity level.
+[src:joblib-parallel/parallel] If it more than 10, all iterations are reported.
+[src:joblib-parallel/parallel] Timeout limit for each task to complete.
+[src:joblib-parallel/parallel] If any task takes longer a TimeOutError will be raised.
+[src:joblib-parallel/parallel] The number of batches (of tasks) to be pre-dispatched.
+[src:joblib-parallel/parallel] When batch_size=”auto” this is reasonable default and the workers should never starve.
+[src:joblib-parallel/parallel] Note that only basic arithmetic are allowed here and no modules can be used in this expression.
+[src:joblib-parallel/parallel] The number of atomic tasks to dispatch at once to each worker.
+[src:joblib-parallel/parallel] When individual evaluations are very fast, dispatching calls to workers can be slower than sequential computation because of the overhead.
+[src:joblib-parallel/parallel] Batching fast computations together can mitigate this.
+[src:joblib-parallel/parallel] The `'auto'` strategy keeps track of the time it takes for a batch to complete, and dynamically adjusts the batch size to keep the time on the order of half a second, using a heuristic.
+[src:joblib-parallel/parallel] `batch_size="auto"` with `backend="threading"` will dispatch batches of a single task at a time as the threading backend has very little overhead and using larger batch size has not proved to bring any gain in that case.
+[src:joblib-parallel/parallel] Folder to be used by the pool for memmapping large arrays for sharing memory with worker processes.
+[src:joblib-parallel/parallel] Only active when `backend="loky"` or `"multiprocessing"`.
+[src:joblib-parallel/parallel] Threshold on the size of arrays passed to the workers that triggers automated memory mapping in temp_folder.
+[src:joblib-parallel/parallel] Can be an int in Bytes, or a human-readable string, e.g., ‘1M’ for 1 megabyte.
+[src:joblib-parallel/parallel] Use None to disable memmapping of large arrays.
+[src:joblib-parallel/parallel] Memmapping mode for numpy arrays passed to workers.
+[src:joblib-parallel/parallel] None will disable memmapping, other modes defined in the numpy.memmap doc: https://numpy.org/doc/stable/reference/generated/numpy.memmap.html Also, see ‘max_nbytes’ parameter documentation for more details.
+[src:joblib-parallel/parallel] Additional parameters to pass to the backend *configure* method.
+[src:joblib-parallel/parallel] This object uses workers to compute in parallel the application of a function to many different arguments.
+[src:joblib-parallel/parallel] Note that the intended usage is to run one call at a time.
+[src:joblib-parallel/parallel] Using pre_dispatch in a producer/consumer situation, where the data is generated on the fly.
+[src:joblib-parallel/parallel] This method is meant to be called concurrently by the multiprocessing callback.
+[src:joblib-parallel/parallel] We rely on the thread-safety of dispatch_one_batch to protect against concurrent consumption of the unprotected iterator.
+[src:joblib-parallel/parallel] Prefetch the tasks for the next batch and dispatch them.
+[src:joblib-parallel/parallel] The effective size of the batch is computed here.
+[src:joblib-parallel/parallel] If there are no more jobs to dispatch, return False, else return True.
+[src:joblib-parallel/parallel] The iterator consumption and dispatching is protected by the same lock so calling this function should be thread safe.
+[src:joblib-parallel/parallel] Display the process of the parallel execution only a fraction of time, controlled by self.verbose.
+[src:joblib-parallel/parallel] Decorator used to capture the arguments of a function.
+[src:joblib-parallel/parallel] Set the default backend or configuration for `Parallel`.
+[src:joblib-parallel/parallel] This is an alternative to directly passing keyword arguments to the `Parallel` class constructor.
+[src:joblib-parallel/parallel] It is particularly useful when calling into library code that uses joblib internally but does not expose the various parallel configuration arguments in its own API.
+[src:joblib-parallel/parallel] If `backend` is a string it must match a previously registered implementation using the `register_parallel_backend()` function.
+[src:joblib-parallel/parallel] ‘loky’ is recommended to run functions that manipulate Python objects. ‘threading’ is a low-overhead alternative that is most efficient for functions that release the Global Interpreter Lock: e.g.
+[src:joblib-parallel/parallel] I/O-bound code or CPU-bound code in a few calls to native code that explicitly releases the GIL.
+[src:joblib-parallel/parallel] Note that on some rare systems (such as pyodide), multiprocessing and loky may not be available, in which case joblib defaults to threading.
+[src:joblib-parallel/parallel] In addition, if the `dask` and `distributed` Python packages are installed, it is possible to use the ‘dask’ backend for better scheduling of nested parallel calls without over-subscription and potentially distribute parallel calls over a networked cluster of several hosts.
+[src:joblib-parallel/parallel] It is also possible to use the distributed ‘ray’ backend for distributing the workload to a cluster of nodes.
+[src:joblib-parallel/parallel] See more details in the Examples section below.
+[src:joblib-parallel/parallel] Alternatively the backend can be passed directly as an instance.
+[src:joblib-parallel/parallel] This mode is not compatible with *timeout*.
+[src:joblib-parallel/parallel] Soft hint to choose the default backend.
+[src:joblib-parallel/parallel] If set to ‘sharedmem’, the selected backend will be single-host and thread-based.
+[src:joblib-parallel/parallel] If not None, overwrites the limit set on the number of threads usable in some third-party library threadpools like OpenBLAS, MKL or OpenMP.
+[src:joblib-parallel/parallel] This is only used with the `loky` backend.
+[src:joblib-parallel/parallel] Additional parameters to pass to the backend constructor when backend is a string.
+[src:joblib-parallel/parallel] Joblib tries to limit the oversubscription by limiting the number of threads usable in some third-party library threadpools like OpenBLAS, MKL or OpenMP.
+[src:joblib-parallel/parallel] The default limit in each worker is set to `max(cpu_count() // effective_n_jobs, 1)` but this limit can be overwritten with the `inner_max_num_threads` argument which will be used to set this limit in the child processes.
+[src:joblib-parallel/parallel] Wrapper for non-picklable object to use cloudpickle to serialize them.
+[src:joblib-parallel/parallel] Note that this wrapper tends to slow down the serialization process as it is done with cloudpickle which is typically slower compared to pickle.
+[src:joblib-parallel/parallel] The proper way to solve serialization issues is to avoid defining functions and objects in the main scripts and to implement __reduce__ functions for complex classes.
+[src:joblib-parallel/parallel] Register a new Parallel backend factory.
+[src:joblib-parallel/parallel] The new backend can then be selected by passing its name as the backend argument to the `Parallel` class.
+[src:joblib-parallel/parallel] Moreover, the default backend can be overwritten globally by setting make_default=True.
+[src:joblib-parallel/parallel] The factory can be any callable that takes no argument and return an instance of `ParallelBackendBase`.
+[src:joblib-parallel/parallel] Warning: this function is experimental and subject to change in a future version of joblib.
+[src:joblib-parallel/parallel] A helper class for automagically batching jobs.
+[src:joblib-parallel/thread-computing] In computer science, a **thread** of execution is the smallest sequence of programmed instructions that can be managed independently by a scheduler, which is typically a part of the operating system.
+[src:joblib-parallel/thread-computing] In many cases, a thread is a component of a process.
+[src:joblib-parallel/thread-computing] The multiple threads of a given process may be executed concurrently (via multithreading capabilities), sharing resources such as memory, while different processes do not share these resources.
+[src:joblib-parallel/thread-computing] In particular, the threads of a process share its executable code and the values of its dynamically allocated variables and non-thread-local global variables at any given time.
+[src:joblib-parallel/thread-computing] The implementation of threads and processes differs between operating systems.
+[src:joblib-parallel/thread-computing] Threads made an early appearance under the name of "tasks" in IBM's batch processing operating system, OS/360, in 1967.
+[src:joblib-parallel/thread-computing] It provided users with three available configurations of the OS/360 control system, of which multiprogramming with a variable number of tasks (MVT) was one.
+[src:joblib-parallel/thread-computing] The Mach implementation of threads was described in the summer of 1986.
+[src:joblib-parallel/thread-computing] OS/2 1.0, released in 1987, supported threads.
+[src:joblib-parallel/thread-computing] Digital Research's MP/M operating system provided multiprogramming, multi-tasking, and preemptive multi-tasking for the Intel 8080 processor in 1979, and on the 8086 processor in 1981.
+[src:joblib-parallel/thread-computing] The first version of Windows to have threads was Windows NT, which was released in 1993.
+[src:joblib-parallel/thread-computing] In 1995, the IEEE defined the pthreads API, which standardized an interface for portable multithreaded programming across a variety of Unix-like operating systems.
+[src:joblib-parallel/thread-computing] Since then, pthreads has also been implemented on Windows with third-party packages such as *pthreads-w32*, which implements the standard on top of the existing Windows API.
+[src:joblib-parallel/thread-computing] The use of threads in software applications became more common in the early 2000s as CPUs began to utilize multiple cores.
+[src:joblib-parallel/thread-computing] Applications wishing to take advantage of multiple cores for performance advantages were required to employ concurrency to utilize the multiple cores.
+[src:joblib-parallel/thread-computing] Scheduling can be done at the kernel level or user level, and multitasking can be done preemptively or cooperatively.
+[src:joblib-parallel/thread-computing] This yields a variety of related concepts.
+[src:joblib-parallel/thread-computing] At the kernel level, a *process* contains one or more *kernel threads*, which share the process's resources, such as memory and file handles – a process is a unit of resources, while a thread is a unit of scheduling and execution.
+[src:joblib-parallel/thread-computing] Kernel scheduling is typically uniformly done preemptively or, less commonly, cooperatively.
+[src:joblib-parallel/thread-computing] At the user level a process such as a runtime system can itself schedule multiple threads of execution.
+[src:joblib-parallel/thread-computing] If these do not share data, as in Erlang, they are usually analogously called processes, while if they share data they are usually called *(user) threads*, particularly if preemptively scheduled.
+[src:joblib-parallel/thread-computing] Cooperatively scheduled user threads are known as *fibers*; different processes may schedule user threads differently.
+[src:joblib-parallel/thread-computing] User threads may be executed by kernel threads in various ways (one-to-one, many-to-one, many-to-many).
+[src:joblib-parallel/thread-computing] The term *light-weight process* variously refers to user threads or to kernel mechanisms for scheduling user threads onto kernel threads.
+[src:joblib-parallel/thread-computing] A process is a heavyweight unit of kernel scheduling, as creating, destroying, and switching processes is relatively expensive.
+[src:joblib-parallel/thread-computing] Processes own resources allocated by the operating system.
+[src:joblib-parallel/thread-computing] Resources include memory (for both code and data), file handles, sockets, device handles, windows, and a process control block.
+[src:joblib-parallel/thread-computing] Processes are *isolated* by process isolation, and do not share address spaces or file resources except through explicit methods such as inheriting file handles or shared memory segments, or mapping the same file in a shared way – see Interprocess communication.
+[src:joblib-parallel/thread-computing] Creating or destroying a process is relatively expensive, as resources must be acquired or released.
+[src:joblib-parallel/thread-computing] A *kernel thread* is a lightweight unit of kernel scheduling.
+[src:joblib-parallel/thread-computing] At least one kernel thread exists within each process.
+[src:joblib-parallel/thread-computing] If multiple kernel threads exist within a process, then they share the same memory and file resources.
+[src:joblib-parallel/thread-computing] Kernel threads are preemptively multitasked if the operating system's process scheduler is preemptive.
+[src:joblib-parallel/thread-computing] Kernel threads do not own resources except for a stack, a copy of the registers including the program counter, and thread-local storage (if any), and are thus relatively cheap to create and destroy.
+[src:joblib-parallel/thread-computing] Thread switching is also relatively cheap: it requires a context switch (saving and restoring registers and stack pointer), but does not change virtual memory and is thus cache-friendly (leaving TLB valid).
+[src:joblib-parallel/thread-computing] The kernel can assign one or more software threads to each core in a CPU (it being able to assign itself multiple software threads depending on its support for multithreading), and can swap out threads that get blocked.
+[src:joblib-parallel/thread-computing] However, kernel threads take much longer than user threads to be swapped.
+[src:joblib-parallel/thread-computing] Threads are sometimes implemented in userspace libraries, thus called *user threads*.
+[src:joblib-parallel/thread-computing] The kernel is unaware of them, so they are managed and scheduled in userspace.
+[src:joblib-parallel/thread-computing] Some implementations base their user threads on top of several kernel threads, to benefit from multi-processor machines (M:N model).
+[src:joblib-parallel/thread-computing] User threads as implemented by virtual machines are also called green threads.
+[src:joblib-parallel/thread-computing] Since scheduling occurs in userspace, the scheduling policy can be more easily tailored to the requirements of the program's workload.
+[src:joblib-parallel/thread-computing] However, the use of blocking system calls in user threads (as opposed to kernel threads) can be problematic.
+[src:joblib-parallel/thread-computing] If a user thread or a fiber performs a system call that blocks, the other user threads and fibers in the process are unable to run until the system call returns.
+[src:joblib-parallel/thread-computing] A typical example of this problem is when performing I/O: most programs are written to perform I/O synchronously.
+[src:joblib-parallel/thread-computing] When an I/O operation is initiated, a system call is made, and does not return until the I/O operation has been completed.
+[src:joblib-parallel/thread-computing] In the intervening period, the entire process is "blocked" by the kernel and cannot run, which starves other user threads and fibers in the same process from executing.
+[src:joblib-parallel/thread-computing] Similar solutions can be provided for other blocking system calls.
+[src:joblib-parallel/thread-computing] Alternatively, the program can be written to avoid the use of synchronous I/O or other blocking system calls (in particular, using non-blocking I/O, including lambda continuations and/or async/await primitives).
+[src:joblib-parallel/thread-computing] Fibers are an even lighter unit of scheduling which are cooperatively scheduled: a running fiber must explicitly *yield* to allow another fiber to run, which makes their implementation much easier than kernel or user threads.
+[src:joblib-parallel/thread-computing] A fiber can be scheduled to run in any thread in the same process.
+[src:joblib-parallel/thread-computing] This permits applications to gain performance improvements by managing scheduling themselves, instead of relying on the kernel scheduler (which may not be tuned for the application).
+[src:joblib-parallel/thread-computing] Some research implementations of the OpenMP parallel programming model implement their tasks through fibers.
+[src:joblib-parallel/thread-computing] Closely related to fibers are coroutines, with the distinction being that coroutines are a language-level construct, while fibers are a system-level construct.
+[src:joblib-parallel/thread-computing] Operating systems schedule threads either preemptively or cooperatively.
+[src:joblib-parallel/thread-computing] Multi-user operating systems generally favor preemptive multithreading for its finer-grained control over execution time via context switching.
+[src:joblib-parallel/thread-computing] However, preemptive scheduling may context-switch threads at moments unanticipated by programmers, thus causing lock convoy, priority inversion, or other side-effects.
+[src:joblib-parallel/thread-computing] In contrast, cooperative multithreading relies on threads to relinquish control of execution, thus ensuring that threads run to completion.
+[src:joblib-parallel/thread-computing] This can cause problems if a cooperatively-multitasked thread blocks by waiting on a resource or if it starves other threads by not yielding control of execution during intensive computation.
+[src:joblib-parallel/thread-computing] Until the early 2000s, most desktop computers had only one single-core CPU, with no support for hardware threads, although threads were still used on such computers because switching between threads was generally still quicker than full-process context switches.
+[src:joblib-parallel/thread-computing] In 2002, Intel added support for simultaneous multithreading to the Pentium 4 processor, under the name *hyper-threading*; in 2005, they introduced the dual-core Pentium D processor and AMD introduced the dual-core Athlon 64 X2 processor.
+[src:joblib-parallel/thread-computing] Systems with a single processor generally implement multithreading by time slicing: the central processing unit (CPU) switches between different *software threads*.
+[src:joblib-parallel/thread-computing] This context switching usually occurs frequently enough that users perceive the threads or tasks as running in parallel (for popular server/desktop operating systems, maximum time slice of a thread, when other threads are waiting, is often limited to 100–200ms).
+[src:joblib-parallel/thread-computing] On a multiprocessor or multi-core system, multiple threads can execute in parallel, with every processor or core executing a separate thread simultaneously; on a processor or core with *hardware threads*, separate software threads can also be executed concurrently by separate hardware threads.
+[src:joblib-parallel/thread-computing] Threads created by the user in a 1:1 correspondence with schedulable entities in the kernel are the simplest possible threading implementation.
+[src:joblib-parallel/thread-computing] OS/2 and Win32 used this approach from the start, while on Linux the GNU C Library implements this approach (via the NPTL or older LinuxThreads).
+[src:joblib-parallel/thread-computing] This approach is also used by Solaris, NetBSD, FreeBSD, macOS, and iOS.
+[src:joblib-parallel/thread-computing] An *M*:1 model implies that all application-level threads map to one kernel-level scheduled entity; the kernel has no knowledge of the application threads.
+[src:joblib-parallel/thread-computing] With this approach, context switching can be done very quickly and, in addition, it can be implemented even on simple kernels which do not support threading.
+[src:joblib-parallel/thread-computing] One of the major drawbacks, however, is that it cannot benefit from the hardware acceleration on multithreaded processors or multi-processor computers: there is never more than one thread being scheduled at the same time.
+[src:joblib-parallel/thread-computing] For example: If one of the threads needs to execute an I/O request, the whole process is blocked and the threading advantage cannot be used.
+[src:joblib-parallel/thread-computing] The GNU Portable Threads uses User-level threading, as does State Threads.
+[src:joblib-parallel/thread-computing] SunOS 4.x implemented *light-weight processes* or LWPs.
+[src:joblib-parallel/thread-computing] NetBSD 2.x+, and DragonFly BSD implement LWPs as kernel threads (1:1 model).
+[src:joblib-parallel/thread-computing] SunOS 5.2 through SunOS 5.8 as well as NetBSD 2 to NetBSD 4 implemented a two level model, multiplexing one or more user level threads on each kernel thread (M:N model).
+[src:joblib-parallel/thread-computing] SunOS 5.9 and later, as well as NetBSD 5 eliminated user threads support, returning to a 1:1 model.
+[src:joblib-parallel/thread-computing] FreeBSD 6 supported both 1:1 and M:N, users could choose which one should be used with a given program using /etc/libmap.conf.
+[src:joblib-parallel/thread-computing] Starting with FreeBSD 7, the 1:1 became the default.
+[src:joblib-parallel/thread-computing] FreeBSD 8 no longer supports the M:N model.
+[src:joblib-parallel/thread-computing] In computer programming, *single-threading* is the processing of one instruction at a time.
+[src:joblib-parallel/thread-computing] In the formal analysis of the variables' semantics and process state, the term *single threading* can be used differently to mean "backtracking within a single thread", which is common in the functional programming community.
+[src:joblib-parallel/thread-computing] Multithreading is mainly found in multitasking operating systems.
+[src:joblib-parallel/thread-computing] Multithreading is a widespread programming and execution model that allows multiple threads to exist within the context of one process.
+[src:joblib-parallel/thread-computing] These threads share the process's resources, but are able to execute independently.
+[src:joblib-parallel/thread-computing] The threaded programming model provides developers with a useful abstraction of concurrent execution.
+[src:joblib-parallel/thread-computing] Multithreading can also be applied to one process to enable parallel execution on a multiprocessing system.
+[src:joblib-parallel/thread-computing] Multithreading libraries tend to provide a function call to create a new thread, which takes a function as a parameter.
+[src:joblib-parallel/thread-computing] A concurrent thread is then created which starts running the passed function and ends when the function returns.
+[src:joblib-parallel/thread-computing] The thread libraries also offer data synchronization functions.
+[src:joblib-parallel/thread-computing] Threads in the same process share the same address space.
+[src:joblib-parallel/thread-computing] This allows concurrently running code to couple tightly and conveniently exchange data without the overhead or complexity of an IPC.
+[src:joblib-parallel/thread-computing] When shared between threads, however, even simple data structures become prone to race conditions if they require more than one CPU instruction to update: two threads may end up attempting to update the data structure at the same time and find it unexpectedly changing underfoot.
+[src:joblib-parallel/thread-computing] Bugs caused by race conditions can be very difficult to reproduce and isolate.
+[src:joblib-parallel/thread-computing] To prevent this, threading application programming interfaces (APIs) offer synchronization primitives such as mutexes to lock data structures against concurrent access.
+[src:joblib-parallel/thread-computing] On uniprocessor systems, a thread running into a locked mutex must sleep and hence trigger a context switch.
+[src:joblib-parallel/thread-computing] On multi-processor systems, the thread may instead poll the mutex in a spinlock.
+[src:joblib-parallel/thread-computing] Both of these may sap performance and force processors in symmetric multiprocessing (SMP) systems to contend for the memory bus, especially if the granularity of the locking is too fine.
+[src:joblib-parallel/thread-computing] Other synchronization APIs include condition variables, critical sections, semaphores, and monitors.
+[src:joblib-parallel/thread-computing] A popular programming pattern involving threads is that of thread pools where a set number of threads are created at startup that then wait for a task to be assigned.
+[src:joblib-parallel/thread-computing] When a new task arrives, it wakes up, completes the task and goes back to waiting.
+[src:joblib-parallel/thread-computing] This avoids the relatively expensive thread creation and destruction functions for every task performed and takes thread management out of the application developer's hand and leaves it to a library or the operating system that is better suited to optimize thread management.
+[src:joblib-parallel/thread-computing] If all threads are busy, additional work items are placed in a queue until a thread becomes available to execute them.
+[src:joblib-parallel/thread-computing] Many programming languages support threading in some capacity.
+[src:joblib-parallel/thread-pool] In computer programming, a **thread pool** is a software design pattern for achieving concurrency of execution in a computer program.
+[src:joblib-parallel/thread-pool] Often also called a **replicated workers** or **worker-crew model**, a thread pool maintains multiple threads waiting for tasks to be allocated for concurrent execution by the supervising program.
+[src:joblib-parallel/thread-pool] By maintaining a pool of threads, the model increases performance and avoids latency in execution due to frequent creation and destruction of threads for short-lived tasks.
+[src:joblib-parallel/thread-pool] Another good property - the ability to limit system load, when we use fewer threads than available.
+[src:joblib-parallel/thread-pool] The number of available threads is tuned to the computing resources available to the program, such as a parallel task queue after completion of execution.
+[src:joblib-parallel/thread-pool] The size of a thread pool is the number of threads kept in reserve for executing tasks.
+[src:joblib-parallel/thread-pool] It is usually a tuneable parameter of the application, adjusted to optimize program performance.
+[src:joblib-parallel/thread-pool] Deciding the optimal thread pool size is crucial to optimize performance.
+[src:joblib-parallel/thread-pool] One benefit of a thread pool over creating a new thread for each task is that thread creation and destruction overhead is restricted to the initial creation of the pool, which may result in better performance and better system stability.
+[src:joblib-parallel/thread-pool] Creating and destroying a thread and its associated resources can be an expensive process in terms of time.
+[src:joblib-parallel/thread-pool] An excessive number of threads in reserve, however, wastes memory, and context-switching between the runnable threads invokes performance penalties.
+[src:joblib-parallel/thread-pool] A socket connection to another network host, which might take many CPU cycles to drop and re-establish, can be maintained more efficiently by associating it with a thread that lives over the course of more than one network transaction.
+[src:joblib-parallel/thread-pool] Using a thread pool may be useful even putting aside thread startup time.
+[src:joblib-parallel/thread-pool] There are implementations of thread pools that make it trivial to queue up work, control concurrency and sync threads at a higher level than can be done easily when manually managing threads.
+[src:joblib-parallel/thread-pool] In these cases the performance benefits of use may be secondary.
+[src:joblib-parallel/thread-pool] Typically, a thread pool executes on a single computer.
+[src:joblib-parallel/thread-pool] However, thread pools are conceptually related to server farms in which a master process, which might be a thread pool itself, distributes tasks to worker processes on different computers, in order to increase the overall throughput.
+[src:joblib-parallel/thread-pool] Embarrassingly parallel problems are highly amenable to this approach.
+[src:joblib-parallel/thread-pool] The number of threads may be dynamically adjusted during the lifetime of an application based on the number of waiting tasks.
+[src:joblib-parallel/thread-pool] For example, a web server can add threads if numerous web page requests come in and can remove threads when those requests taper down.
+[src:joblib-parallel/thread-pool] The cost of having a larger thread pool is increased resource usage.

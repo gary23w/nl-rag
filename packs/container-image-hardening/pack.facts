@@ -1,0 +1,237 @@
+# nl-rag distilled facts — domain: container-image-hardening
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:container-image-hardening/cgroups] Engineers at Google started the work on this feature in 2006 under the name "process containers".
+[src:container-image-hardening/cgroups] In late 2007, the nomenclature changed to "control groups" to avoid confusion caused by multiple meanings of the term "container" in the Linux kernel context, and the control groups functionality was merged into the Linux kernel mainline in kernel version 2.6.24, which was released in January 2008.
+[src:container-image-hardening/cgroups] Since then, developers have added controllers for the kernel's own memory allocation, netfilter firewalling, the OOM killer, and many other parts.
+[src:container-image-hardening/cgroups] A major change in the history of cgroups is **cgroup v2**, which removes the ability to use multiple process hierarchies and to discriminate between threads as found in the original cgroup (now called "v1").
+[src:container-image-hardening/cgroups] Work on the single, unified hierarchy started with the repurposing of v1's dummy hierarchy as a place for holding all controllers not yet used by others in 2014. cgroup v2 was merged in Linux kernel 4.5 (2016).
+[src:container-image-hardening/cgroups] One of the design goals of cgroups is to provide a unified interface to many different use cases, from controlling single processes (by using nice, for example) to full operating system-level virtualization (as provided by OpenVZ, Linux-VServer or LXC, for example).
+[src:container-image-hardening/cgroups] A control group (abbreviated as cgroup) is a collection of processes that are bound by the same criteria and associated with a set of parameters or limits.
+[src:container-image-hardening/cgroups] These groups can be hierarchical, meaning that each group inherits limits from its parent group.
+[src:container-image-hardening/cgroups] The kernel provides access to multiple controllers (also called subsystems) through the cgroup interface; for example, the "memory" controller limits memory use, "cpuacct" accounts CPU usage, etc.
+[src:container-image-hardening/cgroups] The Linux kernel documentation contains some technical details of the setup and use of control groups version 1 and version 2.
+[src:container-image-hardening/cgroups] Both versions of cgroup act through a pseudo-filesystem (`cgroup` for v1 and `cgroup2` for v2).
+[src:container-image-hardening/cgroups] Like all filesystems they can be mounted on any path, but the general convention is to mount one of the versions (generally v2) on `/sys/fs/cgroup` under the sysfs default location of `/sys`.
+[src:container-image-hardening/cgroups] As mentioned before the two cgroup versions can be active at the same time; this too applies to the filesystems so long as they are mounted to a different path.
+[src:container-image-hardening/cgroups] For the description below we assume a setup where the v2 hierarchy lies in `/sys/fs/cgroup`.
+[src:container-image-hardening/cgroups] The v1 hierarchy, if ever required, will be mounted at a different location.
+[src:container-image-hardening/cgroups] At initialization cgroup2 should have no defined control groups except the top-level one.
+[src:container-image-hardening/cgroups] In other words, `/sys/fs/cgroup` should have no directories, only a number of files that control the system as a whole.
+[src:container-image-hardening/cgroups] These files are named according to the controllers that handle them.
+[src:container-image-hardening/cgroups] For example, `cgroup.*` deal with the cgroup system itself and `memory.*` deal with the memory subsystem.
+[src:container-image-hardening/cgroups] Example: to request the kernel to 1 gigabyte of memory from anywhere in the system, one can run `echo "1G swappiness=50" > /sys/fs/cgroup/memory.reclaim`.
+[src:container-image-hardening/cgroups] To create a subgroup, one simply creates a new directory under an existing group (including the top-level one).
+[src:container-image-hardening/cgroups] The files corresponding to available controls for this group are automatically created.
+[src:container-image-hardening/cgroups] For example, running `mkdir /sys/fs/cgroup/example; ls /sys/fs/cgroup/example` would produce a list of files largely similar to the one above, but with noticeable changes.
+[src:container-image-hardening/cgroups] These changes are not unexpected because some controls and statistics only make sense on a subset of processes (e.g. nice level being the CPU priority of processes relative to the rest of the system).
+[src:container-image-hardening/cgroups] Processes are assigned to subgroups by writing to `/proc/<PID>/cgroup`.
+[src:container-image-hardening/cgroups] The cgroup a process is in can be found by reading the same file.
+[src:container-image-hardening/cgroups] On systems based on systemd, a hierarchy of subgroups is predefined to encapsulate every process directly and indirectly launched by systemd under a subgroup: the very basis of how systemd manages processes.
+[src:container-image-hardening/cgroups] An explanation of the nomenclature of these groups can be found in the Red Hat Enterprise Linux 7 manual.
+[src:container-image-hardening/cgroups] Red Hat also provides a guide on creating a systemd service file that causes a process to run in a separate cgroup.
+[src:container-image-hardening/cgroups] `systemd-cgtop` command can be used to show top control groups by their resource usage.
+[src:container-image-hardening/cgroups] On a system with v2, v1 can still be mounted and given access to controllers *not* in use by v2.
+[src:container-image-hardening/cgroups] However, a modern system typically already places all controllers in use in v2, so there is no controller available for v1 at all even if a hierarchy is created.
+[src:container-image-hardening/cgroups] It is possible to clear all uses of a controller from v2 and hand it to v1, but moving controllers between hierarchies after the system is up and running is cumbersome and not recommended.
+[src:container-image-hardening/cgroups] Redesign of cgroups started in 2013, with additional changes brought by versions 3.15 and 3.16 of the Linux kernel.
+[src:container-image-hardening/cgroups] The following changes concern the kernel before 4.5/4.6, i.e. when cgroups-v2 were added.
+[src:container-image-hardening/cgroups] In other words they describe how cgroups-v1 had been changed, though most of them have also been inherited into v2 (after all, v1 and v2 share the same codebase).
+[src:container-image-hardening/cgroups] While not technically part of the cgroups work, a related feature of the Linux kernel is *namespace isolation*, where groups of processes are separated such that they cannot "see" resources in other groups.
+[src:container-image-hardening/cgroups] For example, a PID namespace provides a separate enumeration of process identifiers within each namespace.
+[src:container-image-hardening/cgroups] Also available are mount, user, UTS (Unix Time Sharing), network and SysV IPC namespaces.
+[src:container-image-hardening/cgroups] Namespaces are created with the "unshare" command or syscall, or as "new" flags in a "clone" syscall.
+[src:container-image-hardening/cgroups] The "ns" subsystem was added early in cgroups development to integrate namespaces and control groups.
+[src:container-image-hardening/cgroups] If the "ns" cgroup was mounted, each namespace would also create a new group in the cgroup hierarchy.
+[src:container-image-hardening/cgroups] This was an experiment that was later judged to be a poor fit for the cgroups API, and removed from the kernel.
+[src:container-image-hardening/cgroups] Linux namespaces were inspired by the more general namespace functionality used heavily throughout Plan 9 from Bell Labs.
+[src:container-image-hardening/cgroups] Kernfs was introduced into the Linux kernel with version 3.14 in March 2014, the main author being Tejun Heo.
+[src:container-image-hardening/cgroups] One of the main motivators for a separate kernfs is the cgroups file system.
+[src:container-image-hardening/cgroups] Kernfs is basically created by splitting off some of the sysfs logic into an independent entity, thus easing for other kernel subsystems the implementation of their own virtual file system with handling for device connect and disconnect, dynamic creation and removal, and other attributes.
+[src:container-image-hardening/cgroups] This does not affect how cgroups is used, but makes maintaining the code easier.
+[src:container-image-hardening/cgroups] Support for per-group netfilter setup was added in 2014.
+[src:container-image-hardening/cgroups] The unified hierarchy was added in 2014.
+[src:container-image-hardening/cgroups] It repurposes of v1's dummy hierarchy to hold all controllers not yet used by others.
+[src:container-image-hardening/cgroups] This changed dummy hierarchy would become the only available hierarchy in v2.
+[src:container-image-hardening/cgroups] Unlike v1, cgroup v2 has only a single process hierarchy and discriminates between processes, not threads.
+[src:container-image-hardening/cgroups] Linux Kernel 4.19 (October 2018) introduced cgroup awareness of OOM killer implementation which adds an ability to kill a cgroup as a single unit and so guarantee the integrity of the workload.
+[src:container-image-hardening/cgroups] Various projects use cgroups as their basis, including CoreOS, Docker (in 2013), Hadoop, Jelastic, Kubernetes, lmctfy (Let Me Contain That For You), LXC (Linux Containers), systemd, Mesos and Mesosphere, HTCondor, and Flatpak.
+[src:container-image-hardening/cgroups] Major Linux distributions also adopted it such as Red Hat Enterprise Linux (RHEL) 6.0 in November 2010, three years before adoption by the mainline Linux kernel.
+[src:container-image-hardening/cgroups] On 29 October 2019, the Fedora Project modified Fedora 31 to use CgroupsV2 by default.
+[src:container-image-hardening/docker-security-cheat-sheet] Docker is the most popular containerization technology.
+[src:container-image-hardening/docker-security-cheat-sheet] When used correctly, it can enhance security compared to running applications directly on the host system.
+[src:container-image-hardening/docker-security-cheat-sheet] However, certain misconfigurations can reduce security levels or introduce new vulnerabilities.
+[src:container-image-hardening/docker-security-cheat-sheet] The aim of this cheat sheet is to provide a straightforward list of common security errors and best practices to assist in securing your Docker containers.
+[src:container-image-hardening/docker-security-cheat-sheet] To protect against known container escape vulnerabilities like Leaky Vessels, which typically result in the attacker gaining root access to the host, it's vital to keep both the host and Docker up to date.
+[src:container-image-hardening/docker-security-cheat-sheet] This includes regularly updating the host kernel as well as the Docker Engine.
+[src:container-image-hardening/docker-security-cheat-sheet] This is due to the fact that containers share the host's kernel.
+[src:container-image-hardening/docker-security-cheat-sheet] If the host's kernel is vulnerable, the containers are also vulnerable.
+[src:container-image-hardening/docker-security-cheat-sheet] For example, the kernel privilege escalation exploit, Dirty COW, executed inside a well-insulated container would still result in root access on a vulnerable host.
+[src:container-image-hardening/docker-security-cheat-sheet] Docker socket */var/run/docker.sock* is the UNIX socket that Docker is listening to.
+[src:container-image-hardening/docker-security-cheat-sheet] This is the primary entry point for the Docker API.
+[src:container-image-hardening/docker-security-cheat-sheet] Giving someone access to it is equivalent to giving unrestricted root access to your host.
+[src:container-image-hardening/docker-security-cheat-sheet] Configuring the container to use an unprivileged user is the best way to prevent privilege escalation attacks.
+[src:container-image-hardening/docker-security-cheat-sheet] More information about this topic can be found at Docker official documentation.
+[src:container-image-hardening/docker-security-cheat-sheet] For additional security, you can also run in rootless mode, which is discussed in Rule #11.
+[src:container-image-hardening/docker-security-cheat-sheet] As a Kubernetes cluster administrator, you can configure a hardened default using the `Restricted` level with built-in Pod Security admission controller, if greater customization is desired consider using Admission Webhooks or a third party alternative.
+[src:container-image-hardening/docker-security-cheat-sheet] Linux kernel capabilities are a set of privileges that can be used by privileged.
+[src:container-image-hardening/docker-security-cheat-sheet] Docker, by default, runs with only a subset of capabilities.
+[src:container-image-hardening/docker-security-cheat-sheet] You can change it and drop some capabilities (using `--cap-drop`) to harden your docker containers, or add some capabilities (using `--cap-add`) if needed.
+[src:container-image-hardening/docker-security-cheat-sheet] Remember not to run containers with the `--privileged` flag - this will add ALL Linux kernel capabilities to the container.
+[src:container-image-hardening/docker-security-cheat-sheet] The most secure setup is to drop all capabilities `--cap-drop all` and then add only required ones.
+[src:container-image-hardening/docker-security-cheat-sheet] Always run your docker images with `--security-opt=no-new-privileges` in order to prevent privilege escalation.
+[src:container-image-hardening/docker-security-cheat-sheet] This will prevent the container from gaining new privileges via `setuid` or `setgid` binaries.
+[src:container-image-hardening/docker-security-cheat-sheet] Inter-Container Connectivity (icc) is enabled by default, allowing all containers to communicate with each other through the `docker0` bridged network.
+[src:container-image-hardening/docker-security-cheat-sheet] Instead of using the `--icc=false` flag with the Docker daemon, which completely disables inter-container communication, consider defining specific network configurations.
+[src:container-image-hardening/docker-security-cheat-sheet] This can be achieved by creating custom Docker networks and specifying which containers should be attached to them.
+[src:container-image-hardening/docker-security-cheat-sheet] This method provides more granular control over container communication.
+[src:container-image-hardening/docker-security-cheat-sheet] For detailed guidance on configuring Docker networks for container communication, refer to the Docker Documentation.
+[src:container-image-hardening/docker-security-cheat-sheet] In Kubernetes environments, Network Policies can be used to define rules that regulate pod interactions within the cluster.
+[src:container-image-hardening/docker-security-cheat-sheet] These policies provide a robust framework to control how pods communicate with each other and with other network endpoints.
+[src:container-image-hardening/docker-security-cheat-sheet] Additionally, Network Policy Editor simplifies the creation and management of network policies, making it more accessible to define complex networking rules through a user-friendly interface.
+[src:container-image-hardening/docker-security-cheat-sheet] UFW (Uncomplicated Firewall) is a popular host-based firewall for Linux.
+[src:container-image-hardening/docker-security-cheat-sheet] A common misconception is that firewall rules protect all inbound traffic — including traffic destined for Docker containers.
+[src:container-image-hardening/docker-security-cheat-sheet] However, **Docker manages its own `iptables` and `nftables` rules directly and bypasses UFW entirely**.
+[src:container-image-hardening/docker-security-cheat-sheet] Note that other tools that use `iptables` or `nftables` can also have conflicts similar to UFW.
+[src:container-image-hardening/docker-security-cheat-sheet] If you are using other firewall tools, you should check if they are working correctly.
+[src:container-image-hardening/docker-security-cheat-sheet] When you publish a port with `-p 8000:8000`, Docker inserts `iptables` rules that open that port to **all interfaces and all source addresses**, and these rules are typically accepted before explicit firewall `DENY` rules are applied.
+[src:container-image-hardening/docker-security-cheat-sheet] As a result, traffic may be allowed through regardless of any `DENY` rules you have set, which can unintentionally expose container services to the public internet.
+[src:container-image-hardening/docker-security-cheat-sheet] Refer to the Docker and iptables documentation for a deeper explanation of how Docker interacts with the host firewall.
+[src:container-image-hardening/docker-security-cheat-sheet] The best way to avoid DoS attacks is by limiting resources.
+[src:container-image-hardening/docker-security-cheat-sheet] You can limit memory, CPU, maximum number of restarts (`--restart=on-failure:<number_of_restarts>`), maximum number of file descriptors (`--ulimit nofile=<number>`) and maximum number of processes (`--ulimit nproc=<number>`).
+[src:container-image-hardening/docker-security-cheat-sheet] CI/CD pipelines are a crucial part of the software development lifecycle and should include various security checks such as lint checks, static code analysis, and container scanning.
+[src:container-image-hardening/docker-security-cheat-sheet] Many issues can be prevented by following some best practices when writing the Dockerfile.
+[src:container-image-hardening/docker-security-cheat-sheet] However, adding a security linter as a step in the build pipeline can go a long way in avoiding further headaches.
+[src:container-image-hardening/docker-security-cheat-sheet] Container scanning tools are especially important as part of a successful security strategy.
+[src:container-image-hardening/docker-security-cheat-sheet] They can detect known vulnerabilities, secrets and misconfigurations in container images and provide a report of the findings with recommendations on how to fix them.
+[src:container-image-hardening/docker-security-cheat-sheet] By default, the Docker daemon is configured to have a base logging level of `info`.
+[src:container-image-hardening/docker-security-cheat-sheet] This can be verified by checking the daemon configuration file `/etc/docker/daemon.json` for the`log-level` key.
+[src:container-image-hardening/docker-security-cheat-sheet] If the key is not present, the default logging level is `info`.
+[src:container-image-hardening/docker-security-cheat-sheet] Additionally, if the docker daemon is started with the `--log-level` option, the value of the `log-level` key in the configuration file will be overridden.
+[src:container-image-hardening/docker-security-cheat-sheet] Setting an appropriate log level, configures the Docker daemon to log events that you would want to review later.
+[src:container-image-hardening/docker-security-cheat-sheet] A base log level of 'info' and above would capture all logs except the debug logs.
+[src:container-image-hardening/docker-security-cheat-sheet] Until and unless required, you should not run docker daemon at the 'debug' log level.
+[src:container-image-hardening/docker-security-cheat-sheet] Rootless mode ensures that the Docker daemon and containers are running as an unprivileged user, which means that even if an attacker breaks out of the container, they will not have root privileges on the host, which in turn substantially limits the attack surface.
+[src:container-image-hardening/docker-security-cheat-sheet] This is different to userns-remap mode, where the daemon still operates with root privileges.
+[src:container-image-hardening/docker-security-cheat-sheet] Evaluate the specific requirements and security posture of your environment to determine if rootless mode is the best choice for you.
+[src:container-image-hardening/docker-security-cheat-sheet] For environments where security is a paramount concern and the limitations of rootless mode do not interfere with operational requirements, it is a strongly recommended configuration.
+[src:container-image-hardening/docker-security-cheat-sheet] Alternatively consider using Podman as an alternative to Docker.
+[src:container-image-hardening/docker-security-cheat-sheet] Read more about rootless mode and its limitations, installation and usage instructions on Docker documentation page.
+[src:container-image-hardening/docker-security-cheat-sheet] Docker Secrets provide a secure way to store and manage sensitive data such as passwords, tokens, and SSH keys.
+[src:container-image-hardening/docker-security-cheat-sheet] Using Docker Secrets helps in avoiding the exposure of sensitive data in container images or in runtime commands.
+[src:container-image-hardening/docker-security-cheat-sheet] While Docker Secrets generally provide a secure way to manage sensitive data in Docker environments, this approach is not recommended for Kubernetes, where secrets are stored in plaintext by default.
+[src:container-image-hardening/docker-security-cheat-sheet] In Kubernetes, consider using additional security measures such as etcd encryption, or third-party tools.
+[src:container-image-hardening/docker-security-cheat-sheet] Refer to the Secrets Management Cheat Sheet for more information.
+[src:container-image-hardening/docker-security-cheat-sheet] Building on the principles in Rule #9, enhancing supply chain security involves implementing additional measures to secure the entire lifecycle of container images from creation to deployment.
+[src:container-image-hardening/docker-security-cheat-sheet] Podman is an OCI-compliant, open-source container management tool developed by Red Hat that provides a Docker-compatible command-line interface and a desktop application for managing containers.
+[src:container-image-hardening/docker-security-cheat-sheet] It is designed to be a more secure and lightweight alternative to Docker, especially for environments where secure defaults are preferred.
+[src:container-image-hardening/docker-security-cheat-sheet] Rootless Containers: The fork-exec model facilitates Podman's ability to run containers without requiring root privileges.
+[src:container-image-hardening/docker-security-cheat-sheet] When a non-root user initiates a container start, Podman forks and execs under the user's permissions.
+[src:container-image-hardening/docker-security-cheat-sheet] SELinux Integration: Podman is built to work with SELinux, which provides an additional layer of security by enforcing mandatory access controls on containers and their interactions with the host system.
+[src:container-image-hardening/docker-software] The core software that runs and manages these containers is called **Docker Engine**.
+[src:container-image-hardening/docker-software] Docker was first released in 2013 and continues to be developed by Docker, Inc.
+[src:container-image-hardening/docker-software] The platform includes both free and paid tiers.
+[src:container-image-hardening/docker-software] Solomon Hykes started the Docker project in France as an internal project within dotCloud, a platform-as-a-service company.
+[src:container-image-hardening/docker-software] dotCloud Inc. was founded by Kamel Founadi, Hykes, and Sebastien Pahl during the Y Combinator Summer 2010 startup incubator group and launched in 2011, and renamed to Docker Inc in 2013.
+[src:container-image-hardening/docker-software] Docker debuted to the public in Santa Clara at PyCon in 2013.
+[src:container-image-hardening/docker-software] It was released as open-source in March 2013.
+[src:container-image-hardening/docker-software] At the time, it used LXC as its default execution environment.
+[src:container-image-hardening/docker-software] One year later, with the release of version 0.9, Docker replaced LXC with its own component, *libcontainer*, which was written in the Go programming language.
+[src:container-image-hardening/docker-software] In 2017, Docker created the Moby project for open research and development.
+[src:container-image-hardening/docker-software] In March 2026, the Communications of the ACM featured Docker as the cover article in a retrospective article of the past decade.
+[src:container-image-hardening/docker-software] Containers are isolated from one another and bundle their own software, libraries and configuration files; they can communicate with each other through well-defined channels.
+[src:container-image-hardening/docker-software] Because all of the containers share the services of a single operating system kernel, they use fewer resources than virtual machines.
+[src:container-image-hardening/docker-software] Docker can package an application and its dependencies in a virtual container that can, in principle, run on any Linux, Windows, or macOS computer.
+[src:container-image-hardening/docker-software] This enables the application to run in a variety of locations, such as on-premises, in public *(see decentralized computing, distributed computing, and cloud computing)* or private cloud.
+[src:container-image-hardening/docker-software] Docker on macOS uses a Linux virtual machine to run the containers.
+[src:container-image-hardening/docker-software] Because Docker containers are lightweight, a single server or virtual machine can run several containers simultaneously.
+[src:container-image-hardening/docker-software] A 2018 analysis found that a typical Docker use case involves running eight containers per host, and that a quarter of analyzed organizations run 18 or more per host.
+[src:container-image-hardening/docker-software] It can also be installed on a single board computer like the Raspberry Pi.
+[src:container-image-hardening/docker-software] The Linux kernel's support for namespaces mostly isolates an application's view of the operating environment, including process trees, network, user IDs and mounted file systems, while the kernel's cgroups provide resource limiting for memory and CPU.
+[src:container-image-hardening/docker-software] Since version 0.9, Docker includes its own component (called libcontainer) to use virtualization facilities provided directly by the Linux kernel, in addition to using abstracted virtualization interfaces via libvirt, LXC and systemd-nspawn.
+[src:container-image-hardening/docker-software] Docker implements a high-level API to provide lightweight containers that run processes in isolation.
+[src:container-image-hardening/docker-software] , is a persistent process that manages Docker containers and handles container objects.
+[src:container-image-hardening/docker-software] The daemon listens for requests that are sent via the Docker Engine API.
+[src:container-image-hardening/docker-software] (CLI) that allows users to interact with Docker daemons.
+[src:container-image-hardening/docker-software] Docker objects are various entities used to assemble an application in Docker.
+[src:container-image-hardening/docker-software] The main classes of Docker objects are images, containers, and services.
+[src:container-image-hardening/docker-software] A Docker registry is a repository for Docker images.
+[src:container-image-hardening/docker-software] Docker clients connect to registries to download ("pull") images for use or upload ("push") images that they have built.
+[src:container-image-hardening/docker-software] Docker Hub is the default registry where Docker looks for images.
+[src:container-image-hardening/docker-software] Docker registries also allow the creation of notifications based on events.
+[src:container-image-hardening/docker-software] A Dockerfile is a text file that commonly specifies several aspects of a Docker container: the Linux distribution, installation commands for the programming language runtime environment and application source code.
+[src:container-image-hardening/open-container-initiative] The **Open Container Initiative** (**OCI**) is a Linux Foundation project, started in June 2015 by Docker, CoreOS, and the maintainers of appc (short for "App Container") to design open standards for operating system-level virtualization (containers).
+[src:container-image-hardening/open-container-initiative] At launch, OCI was focused on Linux containers and subsequent work has extended it to other operating systems.
+[src:container-image-hardening/open-container-initiative] There are currently three OCI specifications in development and use: the *Runtime Specification* (runtime-spec), the *Image Specification* (image-spec), and the *Distribution Specification* (distribution-spec).
+[src:container-image-hardening/open-container-initiative] The OCI Image Format Project was split out from the Runtime Project into its own specification on March 23, 2016.
+[src:container-image-hardening/open-container-initiative] The image-spec is a software shipping container image format spec (OCI Image Format) that reached version 1.0.0 on July 19, 2017.
+[src:container-image-hardening/open-container-initiative] The OCI Distribution Spec Project defines the distribution-spec, an API protocol to facilitate and standardize the distribution of content.
+[src:container-image-hardening/open-container-initiative] The distribution-spec was created on March 8, 2018, from a Proposal for a JSON Registry API V2.1.
+[src:container-image-hardening/open-container-initiative] The distribution-spec reached version 1.0.0 on April 26, 2021.
+[src:container-image-hardening/os-level-virtualization] On Unix-like operating systems, this feature can be seen as an advanced implementation of the standard chroot mechanism, which changes the apparent root folder for the current running process and its children.
+[src:container-image-hardening/os-level-virtualization] In addition to isolation mechanisms, the kernel often provides resource-management features to limit the impact of one container's activities on other containers.
+[src:container-image-hardening/os-level-virtualization] Linux containers are all based on the virtualization, isolation, and resource management mechanisms provided by the Linux kernel, notably Linux namespaces and cgroups.
+[src:container-image-hardening/os-level-virtualization] Although the word *container* most commonly refers to OS-level virtualization, it is sometimes used to refer to fuller virtual machines operating in varying degrees of concert with the host OS, such as Microsoft's Hyper-V containers.
+[src:container-image-hardening/os-level-virtualization] For an overview of virtualization since 1960, see Timeline of virtualization technologies.
+[src:container-image-hardening/os-level-virtualization] On ordinary operating systems for personal computers, a computer program can see (even though it might not be able to access) all the system's resources.
+[src:container-image-hardening/os-level-virtualization] The operating system may allow or deny access to such resources based on which program requests them and the user account in the context in which it runs.
+[src:container-image-hardening/os-level-virtualization] The operating system may also hide those resources, so that when the computer program enumerates them, they do not appear in the enumeration results.
+[src:container-image-hardening/os-level-virtualization] Nevertheless, from a programming point of view, the computer program has interacted with those resources and the operating system has managed an act of interaction.
+[src:container-image-hardening/os-level-virtualization] With operating-system-virtualization, or containerization, it is possible to run programs within containers, to which only parts of these resources are allocated.
+[src:container-image-hardening/os-level-virtualization] A program expecting to see the whole computer, once run inside a container, can only see the allocated resources and believes them to be all that is available.
+[src:container-image-hardening/os-level-virtualization] Several containers can be created on each operating system, to each of which a subset of the computer's resources is allocated.
+[src:container-image-hardening/os-level-virtualization] Each container may contain any number of computer programs.
+[src:container-image-hardening/os-level-virtualization] These programs may run concurrently or separately, and may even interact with one another.
+[src:container-image-hardening/os-level-virtualization] Containerization has similarities to application virtualization: In the latter, only one computer program is placed in an isolated container and the isolation applies to file system only.
+[src:container-image-hardening/os-level-virtualization] Operating-system level virtualization is commonly used in virtual hosting environments, where it is useful for securely allocating finite hardware resources among a large number of mutually-distrusting users.
+[src:container-image-hardening/os-level-virtualization] System administrators may also use it for consolidating server hardware by moving services on separate hosts into containers on the one server.
+[src:container-image-hardening/os-level-virtualization] Operating-system level virtualization can also be used to run software created for a certain Linux distribution on another distribution, an example is Distrobox.
+[src:container-image-hardening/os-level-virtualization] Other typical scenarios include separating several programs to separate containers for improved security, hardware independence, and added resource management features.
+[src:container-image-hardening/os-level-virtualization] The improved security provided by the use of a chroot mechanism, however, is not perfect.
+[src:container-image-hardening/os-level-virtualization] Operating-system-level virtualization implementations capable of live migration can also be used for dynamic load balancing of containers between nodes in a cluster.
+[src:container-image-hardening/os-level-virtualization] This form of virtualization also does not require hardware support for efficient performance.
+[src:container-image-hardening/os-level-virtualization] Operating-system level virtualization is not as flexible as other virtualization approaches since it cannot host a guest operating system different from the host one, or a different guest kernel.
+[src:container-image-hardening/os-level-virtualization] For example, with Linux, different distributions are fine, but other operating systems such as Windows cannot be hosted.
+[src:container-image-hardening/os-level-virtualization] Operating systems using variable input systematics are subject to limitations within the virtualized architecture.
+[src:container-image-hardening/os-level-virtualization] Adaptation methods including cloud-server relay analytics maintain the OS-level virtual environment within these applications.
+[src:container-image-hardening/os-level-virtualization] Solaris partially overcomes the limitation described above with its branded zones feature, which provides the ability to run an environment within a container that emulates an older Solaris 8 or 9 version in a Solaris 10 host.
+[src:container-image-hardening/os-level-virtualization] However, in 2010 Linux branded zones were removed from Solaris; in 2014 they were reintroduced in Illumos, which is the open source Solaris fork, supporting 32-bit Linux kernels.
+[src:container-image-hardening/os-level-virtualization] Some implementations provide file-level copy-on-write (CoW) mechanisms.
+[src:container-image-hardening/os-level-virtualization] (Most commonly, a standard file system is shared between partitions, and those partitions that change the files automatically create their own copies.) This is easier to back up, more space-efficient and simpler to cache than the block-level copy-on-write schemes common on whole-system virtualizers.
+[src:container-image-hardening/os-level-virtualization] Whole-system virtualizers, however, can work with non-native file systems and create and roll back snapshots of the entire system state.
+[src:container-image-hardening/principle-of-least-privilege] The principle means giving any user accounts or processes only those privileges which are essentially vital to perform its intended functions.
+[src:container-image-hardening/principle-of-least-privilege] For example, a user account for the sole purpose of creating backups does not need to install software: hence, it has rights only to run backup and backup-related applications.
+[src:container-image-hardening/principle-of-least-privilege] Any other privileges, such as installing new software, are blocked.
+[src:container-image-hardening/principle-of-least-privilege] The principle applies also to a personal computer user who usually does work in a normal user account, and opens a privileged, password protected account only when the situation absolutely demands it.
+[src:container-image-hardening/principle-of-least-privilege] When applied to users, the terms *least user access* or *least-privileged user account* (LUA) are also used, referring to the concept that all user accounts should run with as few privileges as possible, and also launch applications with as few privileges as possible.
+[src:container-image-hardening/principle-of-least-privilege] The principle (of least privilege) is widely recognized as an important design consideration towards enhancing and giving a much needed 'Boost' to the protection of data and functionality from faults (fault tolerance) and malicious behavior.
+[src:container-image-hardening/principle-of-least-privilege] In practice, there exist multiple competing definitions of true (least privilege).
+[src:container-image-hardening/principle-of-least-privilege] As program complexity increases rapidly, so do the number of potential issues, rendering a predictive approach impractical.
+[src:container-image-hardening/principle-of-least-privilege] Examples include the values of variables it may process, addresses it will need, or the precise time such things will be required.
+[src:container-image-hardening/principle-of-least-privilege] Object capability systems allow, for instance, deferring granting a single-use privilege until the time when it will be used.
+[src:container-image-hardening/principle-of-least-privilege] Currently, the closest practical approach is to eliminate privileges that can be manually evaluated as unnecessary.
+[src:container-image-hardening/principle-of-least-privilege] The resulting set of privileges typically exceeds the true minimum required privileges for the process.
+[src:container-image-hardening/principle-of-least-privilege] Another limitation is the granularity of control that the operating environment has over privileges for an individual process.
+[src:container-image-hardening/principle-of-least-privilege] In practice, it is rarely possible to control a process's access to memory, processing time, I/O device addresses or modes with the precision needed to facilitate only the precise set of privileges a process will require.
+[src:container-image-hardening/principle-of-least-privilege] Denning, in his paper "Fault Tolerant Operating Systems", set it in a broader perspective among "The four fundamental principles of fault tolerance".
+[src:container-image-hardening/principle-of-least-privilege] "Dynamic assignments of privileges" was earlier discussed by Roger Needham in 1972.
+[src:container-image-hardening/principle-of-least-privilege] Historically, the oldest instance of (least privilege) is probably the source code of *login.c*, which begins execution with super-user permissions and—the instant they are no longer necessary—dismisses them via *setuid()* with a non-zero argument as demonstrated in the Version 6 Unix source code.
+[src:container-image-hardening/principle-of-least-privilege] The kernel always runs with maximum privileges since it is the operating system core and has hardware access.
+[src:container-image-hardening/principle-of-least-privilege] One of the principal responsibilities of an operating system, particularly a multi-user operating system, is management of the hardware's availability and requests to access it from running processes.
+[src:container-image-hardening/principle-of-least-privilege] When the kernel crashes, the mechanisms by which it maintains state also fail.
+[src:container-image-hardening/principle-of-least-privilege] Therefore, even if there is a way for the CPU to recover without a hard reset, security continues to be enforced, but the operating system cannot properly respond to the failure because it was not possible to detect the failure.
+[src:container-image-hardening/principle-of-least-privilege] This is because kernel execution either halted or the program counter resumed execution from somewhere in an endless, and—usually—non-functional loop.
+[src:container-image-hardening/principle-of-least-privilege] This would be akin to either experiencing amnesia (kernel execution failure) or being trapped in a closed maze that always returns to the starting point (closed loops).
+[src:container-image-hardening/principle-of-least-privilege] If execution picks up after the crash by loading and running trojan code, the author of the trojan code can usurp control of all processes.
+[src:container-image-hardening/principle-of-least-privilege] The principle of least privilege forces code to run with the lowest privilege/permission level possible.
+[src:container-image-hardening/principle-of-least-privilege] This means that the code that resumes the code execution-whether trojan or simply code execution picking up from an unexpected location—would not have the ability to perform malicious or undesirable processes.
+[src:container-image-hardening/principle-of-least-privilege] One method used to accomplish this can be implemented in the microprocessor hardware.
+[src:container-image-hardening/principle-of-least-privilege] For example, in the Intel x86 architecture the manufacturer designed four (ring 0 through ring 3) running "modes" with graduated degrees of access-much like security clearance systems in defence and intelligence agencies.
+[src:container-image-hardening/principle-of-least-privilege] As implemented in some operating systems, processes execute with a *potential privilege set* and an *active privilege set*.
+[src:container-image-hardening/principle-of-least-privilege] Such privilege sets are inherited from the parent as determined by the semantics of *fork()*.
+[src:container-image-hardening/principle-of-least-privilege] An executable file that performs a privileged function—thereby technically constituting a component of the TCB, and concomitantly termed a trusted program or trusted process—may also be marked with a set of privileges.
+[src:container-image-hardening/principle-of-least-privilege] This is a logical extension of the notions of set user ID and set group ID.
+[src:container-image-hardening/principle-of-least-privilege] The inheritance of file privileges by a process are determined by the semantics of the *exec()* family of system calls.
+[src:container-image-hardening/principle-of-least-privilege] The precise manner in which potential process privileges, actual process privileges, and file privileges interact can become complex.
+[src:container-image-hardening/principle-of-least-privilege] In practice, least privilege is practiced by forcing a process to run with only those privileges required by the task.
+[src:container-image-hardening/principle-of-least-privilege] Adherence to this model is quite complex as well as error-prone.
+[src:container-image-hardening/principle-of-least-privilege] Least privilege has also been interpreted in the context of distribution of discretionary access control (DAC) permissions, for example asserting that giving user U read/write access to file F violates least privilege if U can complete their authorized tasks with only read permission.

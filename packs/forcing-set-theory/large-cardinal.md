@@ -1,0 +1,48 @@
+---
+title: "Large cardinal"
+source: https://en.wikipedia.org/wiki/Large_cardinal
+domain: forcing-set-theory
+license: CC-BY-SA-4.0
+tags: forcing method, continuum hypothesis, constructible universe, large cardinal
+fetched: 2026-07-02
+---
+
+# Large cardinal
+
+In the mathematical field of set theory, a **large cardinal property** is a certain kind of property of transfinite cardinal numbers. Cardinals with such properties are, as the name suggests, generally very "large" (for example, bigger than the least α such that *α* = *ω**α*). The proposition that such cardinals exist cannot be proved in the most common axiomatization of set theory, namely ZFC, and such propositions can be viewed as ways of measuring how "much", beyond ZFC, one needs to assume to be able to prove certain desired results. In other words, they can be seen, in Dana Scott's phrase, as quantifying the fact "that if you want more you have to assume more".
+
+There is a rough convention that results provable from ZFC alone may be stated without hypotheses, but that if the proof requires other assumptions (such as the existence of large cardinals), these should be stated. Whether this is simply a linguistic convention, or something more, is a controversial point among distinct philosophical schools (see Motivations and epistemic status below).
+
+A **large cardinal axiom** is an axiom stating that there exists a cardinal (or perhaps many of them) with some specified large cardinal property.
+
+Most working set theorists believe that the large cardinal axioms that are currently being considered are consistent with ZFC. These axioms are strong enough to imply the consistency of ZFC. This has the consequence (via Gödel's second incompleteness theorem) that their consistency with ZFC cannot be proven in ZFC (assuming ZFC is consistent).
+
+There is no generally agreed-upon precise definition of what a large cardinal property is, though essentially everyone agrees that those in the list of large cardinal properties are large cardinal properties.
+
+## Partial definition
+
+A necessary condition for a property of cardinal numbers to be a *large cardinal property* is that the existence of such a cardinal is not known to be inconsistent with ZF and that such a cardinal *Κ* would be an uncountable initial ordinal for which *L**Κ* is a model of ZFC. If ZFC is consistent, then ZFC does *not* imply that any such large cardinals exist.
+
+## Hierarchy of consistency strength
+
+A remarkable observation about large cardinal axioms is that they appear to occur in strict linear order by consistency strength. That is, no exception is known to the following: Given two large cardinal axioms *A*1 and *A*2, exactly one of three things happens:
+
+1. ZFC + *A*1 is consistent if and only if ZFC + *A*2 is consistent;
+2. ZFC + *A*1 proves that ZFC + *A*2 is consistent; or
+3. ZFC + *A*2 proves that ZFC + *A*1 is consistent.
+
+These are mutually exclusive, unless one of the theories in question is actually inconsistent.
+
+In case 1, we say that *A*1 and *A*2 are equiconsistent. In case 2, we say that *A*1 is consistency-wise stronger than *A*2 (vice versa for case 3). If *A*2 is stronger than *A*1, then ZFC + *A*1 cannot prove ZFC + *A*2 is consistent, even with the additional hypothesis that ZFC + *A*1 is itself consistent (provided of course that it really is). This follows from Gödel's second incompleteness theorem.
+
+The observation that large cardinal axioms are linearly ordered by consistency strength is just that: an observation, not a theorem. (Without an accepted definition of large cardinal property, it is not subject to proof in the ordinary sense.) It is also not known in every instance which of the three logical relationships holds. Saharon Shelah has asked, "[i]s there some theorem explaining this, or is our vision just more uniform than we realize?" Woodin, however, deduces this from the Ω-conjecture, the main unsolved problem of his Ω-logic. It is also noteworthy that many combinatorial statements are exactly equiconsistent with some large cardinal rather than, say, being intermediate between them.
+
+The ordering of large cardinal axioms by consistency strength is not necessarily the same as their ordering by the size of their smallest witnesses. For example, the existence of a huge cardinal is much stronger, in terms of consistency strength, than the existence of a supercompact cardinal, but, assuming both exist, the first huge cardinal is smaller than the first supercompact one.
+
+## Motivations and epistemic status
+
+Large cardinals are understood in the context of the von Neumann universe V, which is built up by transfinitely iterating the powerset operation, which collects together all subsets of a given set. Typically, models in which large cardinal axioms *fail* can be seen in some natural way as submodels of those in which the axioms hold. For example, if there is an inaccessible cardinal, then "cutting the universe off" at the height of the first such cardinal yields a universe in which there is no inaccessible cardinal. Or if there is a measurable cardinal, then iterating the *definable* powerset operation rather than the full one yields Gödel's constructible universe, L, which does not satisfy the statement "there is a measurable cardinal" (even though it contains the measurable cardinal as an ordinal).
+
+Thus, from a certain point of view held by many set theorists (especially those inspired by the tradition of the Cabal), large cardinal axioms "say" that we are considering all the sets we're "supposed" to be considering, whereas their negations are "restrictive" and say that we're considering only some of those sets. Moreover the consequences of large cardinal axioms seem to fall into natural patterns (see Maddy, "Believing the Axioms, II"). For these reasons, such set theorists tend to consider large cardinal axioms to have a preferred status among extensions of ZFC, one not shared by axioms of less clear motivation (such as Martin's axiom) or others that they consider intuitively unlikely (such as V = L). The hardcore realists in this group would state, more simply, that large cardinal axioms are *true*.
+
+This point of view is by no means universal among set theorists. Some formalists would assert that standard set theory is by definition the study of the consequences of ZFC, and while they might not be opposed in principle to studying the consequences of other systems, they see no reason to single out large cardinals as preferred. There are also realists who deny that ontological maximalism is a proper motivation, and even believe that large cardinal axioms are false. And finally, there are some who deny that the negations of large cardinal axioms *are* restrictive, pointing out that (for example) there can be a transitive set model in L that believes there exists a measurable cardinal, even though L itself does not satisfy that proposition.
