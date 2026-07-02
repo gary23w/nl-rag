@@ -1,0 +1,53 @@
+# python — nl-rag pack
+
+Pre-normalized AI markdown. tags: python, pytest, cpython, pip. license: PSF-2.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [Coroutines and tasks](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/asyncio-task.md) — upstream: https://docs.python.org/3/library/asyncio-task.html
+- [9. Classes](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/classes.md) — upstream: https://docs.python.org/3/tutorial/classes.html
+- [collections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/collections.md) — upstream: https://docs.python.org/3/library/collections.html
+- [4. More Control Flow Tools](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/controlflow.md) — upstream: https://docs.python.org/3/tutorial/controlflow.html
+- [dataclasses](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/dataclasses.md) — upstream: https://docs.python.org/3/library/dataclasses.html
+- [5. Data Structures](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/datastructures.md) — upstream: https://docs.python.org/3/tutorial/datastructures.html
+- [datetime (part 1/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/datetime-p01.md) — upstream: https://docs.python.org/3/library/datetime.html
+- [datetime (part 2/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/datetime-p02.md) — upstream: https://docs.python.org/3/library/datetime.html
+- [datetime (part 3/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/datetime-p03.md) — upstream: https://docs.python.org/3/library/datetime.html
+- [How to use fixtures (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/fixtures-p01.md) — upstream: https://docs.pytest.org/en/stable/how-to/fixtures.html
+- [How to use fixtures (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/fixtures-p02.md) — upstream: https://docs.pytest.org/en/stable/how-to/fixtures.html
+- [Built-in Functions (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/functions-p01.md) — upstream: https://docs.python.org/3/library/functions.html
+- [Built-in Functions (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/functions-p02.md) — upstream: https://docs.python.org/3/library/functions.html
+- [functools](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/functools.md) — upstream: https://docs.python.org/3/library/functools.html
+- [Get Started](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/getting-started.md) — upstream: https://docs.pytest.org/en/stable/getting-started.html
+- [How to write and report assertions in tests](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/how-to-assert.md) — upstream: https://docs.pytest.org/en/stable/how-to/assert.html
+- [http.server](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/http-server.md) — upstream: https://docs.python.org/3/library/http.server.html
+- [3. An Informal Introduction to Python](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/introduction.md) — upstream: https://docs.python.org/3/tutorial/introduction.html
+- [itertools](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/itertools.md) — upstream: https://docs.python.org/3/library/itertools.html
+- [json](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-json.md) — upstream: https://docs.python.org/3/library/json.html
+- [re — Regular expression operations — Python 3.14.6 documentation](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-re.md) — upstream: https://docs.python.org/3/library/re.html
+- [typing](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-typing.md) — upstream: https://docs.python.org/3/library/typing.html
+- [venv](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-venv.md) — upstream: https://docs.python.org/3/library/venv.html
+- [logging (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/logging-p01.md) — upstream: https://docs.python.org/3/library/logging.html
+- [logging (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/logging-p02.md) — upstream: https://docs.python.org/3/library/logging.html
+- [6. Modules](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/modules.md) — upstream: https://docs.python.org/3/tutorial/modules.html
+- [os.path](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/os-path.md) — upstream: https://docs.python.org/3/library/os.path.html
+- [How to parametrize fixtures and test functions](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/parametrize.md) — upstream: https://docs.pytest.org/en/stable/how-to/parametrize.html
+- [pathlib (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/pathlib-p01.md) — upstream: https://docs.python.org/3/library/pathlib.html
+- [pathlib (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/pathlib-p02.md) — upstream: https://docs.python.org/3/library/pathlib.html
+- [sqlite3 (part 1/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/sqlite3-p01.md) — upstream: https://docs.python.org/3/library/sqlite3.html
+- [sqlite3 (part 2/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/sqlite3-p02.md) — upstream: https://docs.python.org/3/library/sqlite3.html
+- [sqlite3 (part 3/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/sqlite3-p03.md) — upstream: https://docs.python.org/3/library/sqlite3.html
+- [Built-in Types (part 1/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/stdtypes-p01.md) — upstream: https://docs.python.org/3/library/stdtypes.html
+- [Built-in Types (part 2/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/stdtypes-p02.md) — upstream: https://docs.python.org/3/library/stdtypes.html
+- [Built-in Types (part 3/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/stdtypes-p03.md) — upstream: https://docs.python.org/3/library/stdtypes.html
+- [Built-in Types (part 4/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/stdtypes-p04.md) — upstream: https://docs.python.org/3/library/stdtypes.html
+- [Built-in Types (part 5/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/stdtypes-p05.md) — upstream: https://docs.python.org/3/library/stdtypes.html
+- [subprocess (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/subprocess-p01.md) — upstream: https://docs.python.org/3/library/subprocess.html
+- [subprocess (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/subprocess-p02.md) — upstream: https://docs.python.org/3/library/subprocess.html
+- [threading](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/threading.md) — upstream: https://docs.python.org/3/library/threading.html
+- [8. Errors and Exceptions](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/tutorial-errors.md) — upstream: https://docs.python.org/3/tutorial/errors.html
+- [unittest (part 1/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/unittest-p01.md) — upstream: https://docs.python.org/3/library/unittest.html
+- [unittest (part 2/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/unittest-p02.md) — upstream: https://docs.python.org/3/library/unittest.html
+- [unittest (part 3/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/unittest-p03.md) — upstream: https://docs.python.org/3/library/unittest.html
+- [urllib.request (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/urllib-request-p01.md) — upstream: https://docs.python.org/3/library/urllib.request.html
+- [urllib.request (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/urllib-request-p02.md) — upstream: https://docs.python.org/3/library/urllib.request.html
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/pack.facts) — distilled one-line facts (neuron CLI import)

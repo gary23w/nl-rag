@@ -1,0 +1,653 @@
+# nl-rag distilled facts — domain: web-frameworks
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:web-frameworks/blueprints] Flask uses a concept of *blueprints* for making application components and supporting common patterns within an application or across applications.
+[src:web-frameworks/blueprints] Blueprints can greatly simplify how large applications work and provide a central means for Flask extensions to register operations on applications.
+[src:web-frameworks/blueprints] A `Blueprint` object works similarly to a `Flask` application object, but it is not actually an application.
+[src:web-frameworks/blueprints] Rather it is a *blueprint* of how to construct or extend an application.
+[src:web-frameworks/blueprints] A blueprint in Flask is not a pluggable app because it is not actually an application – it’s a set of operations which can be registered on an application, even multiple times.
+[src:web-frameworks/blueprints] Why not have multiple application objects?
+[src:web-frameworks/blueprints] You can do that (see Application Dispatching), but your applications will have separate configs and will be managed at the WSGI layer.
+[src:web-frameworks/blueprints] Blueprints instead provide separation at the Flask level, share application config, and can change an application object as necessary with being registered.
+[src:web-frameworks/blueprints] The downside is that you cannot unregister a blueprint once an application was created without having to destroy the whole application object.
+[src:web-frameworks/blueprints] The basic concept of blueprints is that they record operations to execute when registered on an application.
+[src:web-frameworks/blueprints] Flask associates view functions with blueprints when dispatching requests and generating URLs from one endpoint to another.
+[src:web-frameworks/blueprints] This is what a very basic blueprint looks like.
+[src:web-frameworks/blueprints] When you bind a function with the help of the `@simple_page.route` decorator, the blueprint will record the intention of registering the function `show` on the application when it’s later registered.
+[src:web-frameworks/blueprints] Additionally it will prefix the endpoint of the function with the name of the blueprint which was given to the `Blueprint` constructor (in this case also `simple_page`).
+[src:web-frameworks/blueprints] The blueprint’s name does not modify the URL, only the endpoint.
+[src:web-frameworks/blueprints] The first one is obviously from the application itself for the static files.
+[src:web-frameworks/blueprints] The other two are for the `show` function of the `simple_page` blueprint.
+[src:web-frameworks/blueprints] As you can see, they are also prefixed with the name of the blueprint and separated by a dot (`.`).
+[src:web-frameworks/blueprints] On top of that you can register blueprints multiple times though not every blueprint might respond properly to that.
+[src:web-frameworks/blueprints] In fact it depends on how the blueprint is implemented if it can be mounted more than once.
+[src:web-frameworks/blueprints] It is possible to register a blueprint on another blueprint.
+[src:web-frameworks/blueprints] The child blueprint will gain the parent’s name as a prefix to its name, and child URLs will be prefixed with the parent’s URL prefix.
+[src:web-frameworks/blueprints] In addition a child blueprint’s will gain their parent’s subdomain, with their subdomain as prefix if present i.e.
+[src:web-frameworks/blueprints] Blueprint-specific before request functions, etc. registered with the parent will trigger for the child.
+[src:web-frameworks/blueprints] If a child does not have an error handler that can handle a given exception, the parent’s will be tried.
+[src:web-frameworks/blueprints] Blueprints can provide resources as well.
+[src:web-frameworks/blueprints] Sometimes you might want to introduce a blueprint only for the resources it provides.
+[src:web-frameworks/blueprints] Like for regular applications, blueprints are considered to be contained in a folder.
+[src:web-frameworks/blueprints] While multiple blueprints can originate from the same folder, it does not have to be the case and it’s usually not recommended.
+[src:web-frameworks/blueprints] The folder is inferred from the second argument to `Blueprint` which is usually `__name__`.
+[src:web-frameworks/blueprints] This argument specifies what logical Python module or package corresponds to the blueprint.
+[src:web-frameworks/blueprints] If it points to an actual Python package that package (which is a folder on the filesystem) is the resource folder.
+[src:web-frameworks/blueprints] If it’s a module, the package the module is contained in will be the resource folder.
+[src:web-frameworks/blueprints] A blueprint can expose a folder with static files by providing the path to the folder on the filesystem with the `static_folder` argument.
+[src:web-frameworks/blueprints] By default the rightmost part of the path is where it is exposed on the web.
+[src:web-frameworks/blueprints] This can be changed with the `static_url_path` argument.
+[src:web-frameworks/blueprints] Because the folder is called `static` here it will be available at the `url_prefix` of the blueprint + `/static`.
+[src:web-frameworks/blueprints] If the blueprint has the prefix `/admin`, the static URL will be `/admin/static`.
+[src:web-frameworks/blueprints] The endpoint is named `blueprint_name.static`.
+[src:web-frameworks/blueprints] However, if the blueprint does not have a `url_prefix`, it is not possible to access the blueprint’s static folder.
+[src:web-frameworks/blueprints] This is because the URL would be `/static` in this case, and the application’s `/static` route takes precedence.
+[src:web-frameworks/blueprints] Unlike template folders, blueprint static folders are not searched if the file does not exist in the application static folder.
+[src:web-frameworks/blueprints] For static files, the path can be absolute or relative to the blueprint resource folder.
+[src:web-frameworks/blueprints] The template folder is added to the search path of templates but with a lower priority than the actual application’s template folder.
+[src:web-frameworks/blueprints] That way you can easily override templates that a blueprint provides in the actual application.
+[src:web-frameworks/blueprints] This also means that if you don’t want a blueprint template to be accidentally overridden, make sure that no other blueprint or actual application template has the same relative path.
+[src:web-frameworks/blueprints] When multiple blueprints provide the same relative template path the first blueprint registered takes precedence over the others.
+[src:web-frameworks/blueprints] So if you have a blueprint in the folder `yourapplication/admin` and you want to render the template `'admin/index.html'` and you have provided `templates` as a `template_folder` you will have to create a file like this: `yourapplication/admin/templates/admin/index.html`.
+[src:web-frameworks/blueprints] The reason for the extra `admin` folder is to avoid getting our template overridden by a template named `index.html` in the actual application template folder.
+[src:web-frameworks/blueprints] And then when you want to render the template, use `admin/index.html` as the name to look up the template by.
+[src:web-frameworks/blueprints] If you encounter problems loading the correct templates enable the `EXPLAIN_TEMPLATE_LOADING` config variable which will instruct Flask to print out the steps it goes through to locate templates on every `render_template` call.
+[src:web-frameworks/blueprints] This will link to `admin.index` for instance in case the current request was dispatched to any other admin blueprint endpoint.
+[src:web-frameworks/blueprints] Blueprints support the `errorhandler` decorator just like the `Flask` application object, so it is easy to make Blueprint-specific custom error pages.
+[src:web-frameworks/blueprints] Most errorhandlers will simply work as expected; however, there is a caveat concerning handlers for 404 and 405 exceptions.
+[src:web-frameworks/blueprints] These errorhandlers are only invoked from an appropriate `raise` statement or a call to `abort` in another of the blueprint’s view functions; they are not invoked by, e.g., an invalid URL access.
+[src:web-frameworks/blueprints] This is because the blueprint does not “own” a certain URL space, so the application instance has no way of knowing which blueprint error handler it should run if given an invalid URL.
+[src:web-frameworks/db-models-p01] A model is the single, definitive source of information about your data.
+[src:web-frameworks/db-models-p01] It contains the essential fields and behaviors of the data you’re storing.
+[src:web-frameworks/db-models-p01] Generally, each model maps to a single database table.
+[src:web-frameworks/db-models-p01] `first_name` and `last_name` are fields of the model.
+[src:web-frameworks/db-models-p01] Each field is specified as a class attribute, and each attribute maps to a database column.
+[src:web-frameworks/db-models-p01] Once you have defined your models, you need to tell Django you’re going to *use* those models.
+[src:web-frameworks/db-models-p01] Do this by editing your settings file and changing the `INSTALLED_APPS` setting to add the name of the module that contains your `models.py`.
+[src:web-frameworks/db-models-p01] When you add new apps to `INSTALLED_APPS`, be sure to run `manage.py migrate`, optionally making migrations for them first with `manage.py makemigrations`.
+[src:web-frameworks/db-models-p01] The most important part of a model – and the only required part of a model – is the list of database fields it defines.
+[src:web-frameworks/db-models-p01] Fields are specified by class attributes.
+[src:web-frameworks/db-models-p01] Be careful not to choose field names that conflict with the models API like `clean`, `save`, or `delete`.
+[src:web-frameworks/db-models-p01] Each field in your model should be an instance of the appropriate `Field` class.
+[src:web-frameworks/db-models-p01] Django ships with dozens of built-in field types; you can find the complete list in the model field reference.
+[src:web-frameworks/db-models-p01] You can easily write your own fields if Django’s built-in ones don’t do the trick; see How to create custom model fields.
+[src:web-frameworks/db-models-p01] Each field takes a certain set of field-specific arguments (documented in the model field reference).
+[src:web-frameworks/db-models-p01] For example, `CharField` (and its subclasses) require a `max_length` argument which specifies the size of the `VARCHAR` database field used to store the data.
+[src:web-frameworks/db-models-p01] There’s also a set of common arguments available to all field types.
+[src:web-frameworks/db-models-p01] If `True`, Django will store empty values as `NULL` in the database.
+[src:web-frameworks/db-models-p01] If `True`, the field is allowed to be blank.
+[src:web-frameworks/db-models-p01] Note that this is different than `null`.
+[src:web-frameworks/db-models-p01] `null` is purely database-related, whereas `blank` is validation-related.
+[src:web-frameworks/db-models-p01] If a field has `blank=True`, form validation will allow entry of an empty value.
+[src:web-frameworks/db-models-p01] If a field has `blank=False`, the field will be required.
+[src:web-frameworks/db-models-p01] A sequence of 2-value tuples, a mapping, an enumeration type, or a callable (that expects no arguments and returns any of the previous formats), to use as choices for this field.
+[src:web-frameworks/db-models-p01] If this is given, the default form widget will be a select box instead of the standard text field and will limit choices to the choices given.
+[src:web-frameworks/db-models-p01] A new migration is created each time the order of `choices` changes.
+[src:web-frameworks/db-models-p01] The first element in each tuple is the value that will be stored in the database.
+[src:web-frameworks/db-models-p01] The second element is displayed by the field’s form widget.
+[src:web-frameworks/db-models-p01] Given a model instance, the display value for a field with `choices` can be accessed using the `get_FOO_display()` method.
+[src:web-frameworks/db-models-p01] Further examples are available in the model field reference.
+[src:web-frameworks/db-models-p01] This can be a value or a callable object.
+[src:web-frameworks/db-models-p01] If callable it will be called every time a new object is created.
+[src:web-frameworks/db-models-p01] The database-computed default value for the field.
+[src:web-frameworks/db-models-p01] This can be a literal value or a database function.
+[src:web-frameworks/db-models-p01] If both `db_default` and `Field.default` are set, `default` will take precedence when creating instances in Python code.
+[src:web-frameworks/db-models-p01] `db_default` will still be set at the database level and will be used when inserting rows outside of the ORM or when adding a new field in a migration.
+[src:web-frameworks/db-models-p01] Extra “help” text to be displayed with the form widget.
+[src:web-frameworks/db-models-p01] It’s useful for documentation even if your field isn’t used on a form.
+[src:web-frameworks/db-models-p01] If `True`, this field is the primary key for the model.
+[src:web-frameworks/db-models-p01] If you don’t specify `primary_key=True` for any fields in your model, Django will automatically add a field to hold the primary key, so you don’t need to set `primary_key=True` on any of your fields unless you want to override the default primary-key behavior.
+[src:web-frameworks/db-models-p01] For more, see Automatic primary key fields.
+[src:web-frameworks/db-models-p01] If you change the value of the primary key on an existing object and then save it, a new object will be created alongside the old one.
+[src:web-frameworks/db-models-p01] If `True`, this field must be unique throughout the table.
+[src:web-frameworks/db-models-p01] Again, these are just short descriptions of the most common field options.
+[src:web-frameworks/db-models-p01] Full details can be found in the common model field option reference.
+[src:web-frameworks/db-models-p01] By default, Django gives each model an auto-incrementing primary key with the type specified per app in `AppConfig.default_auto_field` or globally in the `DEFAULT_AUTO_FIELD` setting.
+[src:web-frameworks/db-models-p01] If you’d like to specify a custom primary key, specify `primary_key=True` on one of your fields.
+[src:web-frameworks/db-models-p01] If Django sees you’ve explicitly set `Field.primary_key`, it won’t add the automatic `id` column.
+[src:web-frameworks/db-models-p01] Each model requires exactly one field to have `primary_key=True` (either explicitly declared or automatically added).
+[src:web-frameworks/db-models-p01] Each field type, except for `ForeignKey`, `ManyToManyField` and `OneToOneField`, takes an optional first positional argument – a verbose name.
+[src:web-frameworks/db-models-p01] If the verbose name isn’t given, Django will automatically create it using the field’s attribute name, converting underscores to spaces.
+[src:web-frameworks/db-models-p01] The convention is not to capitalize the first letter of the `verbose_name`.
+[src:web-frameworks/db-models-p01] Django will automatically capitalize the first letter where it needs to.
+[src:web-frameworks/db-models-p01] Clearly, the power of relational databases lies in relating tables to each other.
+[src:web-frameworks/db-models-p01] Django offers ways to define the three most common types of database relationships: many-to-one, many-to-many and one-to-one.
+[src:web-frameworks/db-models-p01] To define a many-to-one relationship, use `django.db.models.ForeignKey`.
+[src:web-frameworks/db-models-p01] You use it just like any other `Field` type: by including it as a class attribute of your model.
+[src:web-frameworks/db-models-p01] `ForeignKey` requires a positional argument: the class to which the model is related.
+[src:web-frameworks/db-models-p01] You can also create recursive relationships (an object with a many-to-one relationship to itself) and relationships to models not yet defined; see the model field reference for details.
+[src:web-frameworks/db-models-p01] It’s suggested, but not required, that the name of a `ForeignKey` field (`manufacturer` in the example above) be the name of the model, lowercase.
+[src:web-frameworks/db-models-p01] You can call the field whatever you want.
+[src:web-frameworks/db-models-p01] `ForeignKey` fields accept a number of extra arguments which are explained in the model field reference.
+[src:web-frameworks/db-models-p01] These options help define how the relationship should work; all are optional.
+[src:web-frameworks/db-models-p01] For details on accessing backwards-related objects, see the Following relationships backward example.
+[src:web-frameworks/db-models-p01] For sample code, see the Many-to-one relationship model example.
+[src:web-frameworks/db-models-p01] To define a many-to-many relationship, use `ManyToManyField`.
+[src:web-frameworks/db-models-p01] `ManyToManyField` requires a positional argument: the class to which the model is related.
+[src:web-frameworks/db-models-p01] As with `ForeignKey`, you can also create recursive relationships (an object with a many-to-many relationship to itself) and relationships to models not yet defined.
+[src:web-frameworks/db-models-p01] It’s suggested, but not required, that the name of a `ManyToManyField` (`toppings` in the example above) be a plural describing the set of related model objects.
+[src:web-frameworks/db-models-p01] It doesn’t matter which model has the `ManyToManyField`, but you should only put it in one of the models – not both.
+[src:web-frameworks/db-models-p01] Generally, `ManyToManyField` instances should go in the object that’s going to be edited on a form.
+[src:web-frameworks/db-models-p01] In the above example, `toppings` is in `Pizza` (rather than `Topping` having a `pizzas` `ManyToManyField` ) because it’s more natural to think about a pizza having toppings than a topping being on multiple pizzas.
+[src:web-frameworks/db-models-p01] The way it’s set up above, the `Pizza` form would let users select the toppings.
+[src:web-frameworks/db-models-p01] See the Many-to-many relationship model example for a full example.
+[src:web-frameworks/db-models-p01] `ManyToManyField` fields also accept a number of extra arguments which are explained in the model field reference.
+[src:web-frameworks/db-models-p01] When you’re only dealing with many-to-many relationships such as mixing and matching pizzas and toppings, a standard `ManyToManyField` is all you need.
+[src:web-frameworks/db-models-p01] However, sometimes you may need to associate data with the relationship between two models.
+[src:web-frameworks/db-models-p01] For example, consider the case of an application tracking the musical groups which musicians belong to.
+[src:web-frameworks/db-models-p01] There is a many-to-many relationship between a person and the groups of which they are a member, so you could use a `ManyToManyField` to represent this relationship.
+[src:web-frameworks/db-models-p01] However, there is a lot of detail about the membership that you might want to collect, such as the date at which the person joined the group.
+[src:web-frameworks/db-models-p01] For these situations, Django allows you to specify the model that will be used to govern the many-to-many relationship.
+[src:web-frameworks/db-models-p01] You can then put extra fields on the intermediate model.
+[src:web-frameworks/db-models-p01] The intermediate model is associated with the `ManyToManyField` using the `through` argument to point to the model that will act as an intermediary.
+[src:web-frameworks/db-models-p01] When you set up the intermediary model, you explicitly specify foreign keys to the models that are involved in the many-to-many relationship.
+[src:web-frameworks/db-models-p01] This explicit declaration defines how the two models are related.
+[src:web-frameworks/db-models-p01] If you don’t want multiple associations between the same instances, add a `UniqueConstraint` including the `from` and `to` fields.
+[src:web-frameworks/db-models-p01] Django’s automatically generated many-to-many tables include such a constraint.
+[src:web-frameworks/db-models-p01] Now that you have set up your `ManyToManyField` to use your intermediary model (`Membership`, in this case), you’re ready to start creating some many-to-many relationships.
+[src:web-frameworks/db-models-p01] You may prefer to create instances of the intermediate model directly.
+[src:web-frameworks/db-models-p01] Once you have established the many-to-many relationships, you can issue queries.
+[src:web-frameworks/db-models-p01] To define a one-to-one relationship, use `OneToOneField`.
+[src:web-frameworks/db-models-p01] This is most useful on the primary key of an object when that object “extends” another object in some way.
+[src:web-frameworks/db-models-p01] `OneToOneField` requires a positional argument: the class to which the model is related.
+[src:web-frameworks/db-models-p01] For example, if you were building a database of “places”, you would build pretty standard stuff such as address, phone number, etc. in the database.
+[src:web-frameworks/db-models-p01] As with `ForeignKey`, a recursive relationship can be defined and references to as-yet undefined models can be made.
+[src:web-frameworks/db-models-p01] See the One-to-one relationship model example for a full example.
+[src:web-frameworks/db-models-p01] `OneToOneField` fields also accept an optional `parent_link` argument.
+[src:web-frameworks/db-models-p01] `OneToOneField` classes used to automatically become the primary key on a model.
+[src:web-frameworks/db-models-p01] This is no longer true (although you can manually pass in the `primary_key` argument if you like).
+[src:web-frameworks/db-models-p01] Thus, it’s now possible to have multiple fields of type `OneToOneField` on a single model.
+[src:web-frameworks/db-models-p01] It’s perfectly OK to relate a model to one from another app.
+[src:web-frameworks/db-models-p01] To do this, import the related model at the top of the file where your model is defined.
+[src:web-frameworks/db-models-p01] Then, refer to the other model class wherever needed.
+[src:web-frameworks/db-models-p01] Alternatively, you can use a lazy reference to the related model, specified as a string in the format `"app_label.ModelName"`.
+[src:web-frameworks/db-models-p01] This does not require the related model to be imported.
+[src:web-frameworks/db-models-p01] See lazy relationships for more details.
+[src:web-frameworks/db-models-p01] A field name cannot contain more than one underscore in a row, due to the way Django’s query lookup syntax works.
+[src:web-frameworks/db-models-p01] For example: class Example(models.Model): foo__bar = models.IntegerField() # 'foo__bar' has two underscores!
+[src:web-frameworks/db-models-p01] A field name cannot end with an underscore, for similar reasons.
+[src:web-frameworks/db-models-p01] A field name cannot be `check`, as this would override the check framework’s `Model.check()` method.
+[src:web-frameworks/db-models-p01] These limitations can be worked around, though, because your field name doesn’t necessarily have to match your database column name.
+[src:web-frameworks/db-models-p01] SQL reserved words, such as `join`, `where` or `select`, *are* allowed as model field names, because Django escapes all database table names and column names in every underlying SQL query.
+[src:web-frameworks/db-models-p01] It uses the quoting syntax of your particular database engine.
+[src:web-frameworks/db-models-p01] If one of the existing model fields cannot be used to fit your purposes, or if you wish to take advantage of some less common database column types, you can create your own field class.
+[src:web-frameworks/db-models-p01] Full coverage of creating your own fields is provided in How to create custom model fields.
+[src:web-frameworks/db-models-p01] Model metadata is “anything that’s not a field”, such as ordering options (`ordering`), database table name (`db_table`), or human-readable singular and plural names (`verbose_name` and `verbose_name_plural`).
+[src:web-frameworks/db-models-p01] None are required, and adding `class Meta` to a model is completely optional.
+[src:web-frameworks/db-models-p01] A complete list of all possible `Meta` options can be found in the model option reference.
+[src:web-frameworks/db-models-p01] The most important attribute of a model is the `Manager`.
+[src:web-frameworks/db-models-p01] It’s the interface through which database query operations are provided to Django models and is used to retrieve the instances from the database.
+[src:web-frameworks/db-models-p01] If no custom `Manager` is defined, the default name is `objects`.
+[src:web-frameworks/db-models-p01] Managers are only accessible via model classes, not the model instances.
+[src:web-frameworks/db-models-p01] Define custom methods on a model to add custom “row-level” functionality to your objects.
+[src:web-frameworks/db-models-p01] Whereas `Manager` methods are intended to do “table-wide” things, model methods should act on a particular model instance.
+[src:web-frameworks/db-models-p01] This is a valuable technique for keeping business logic in one place – the model.
+[src:web-frameworks/db-models-p01] The last method in this example is a property.
+[src:web-frameworks/db-models-p01] The model instance reference has a complete list of methods automatically given to each model.
+[src:web-frameworks/db-models-p01] A Python “magic method” that returns a string representation of any object.
+[src:web-frameworks/db-models-p01] This is what Python and Django will use whenever a model instance needs to be coerced and displayed as a plain string.
+[src:web-frameworks/db-models-p01] Most notably, this happens when you display an object in an interactive console or in the admin.
+[src:web-frameworks/db-models-p01] You’ll always want to define this method; the default isn’t very helpful at all.
+[src:web-frameworks/db-models-p01] This tells Django how to calculate the URL for an object.
+[src:web-frameworks/db-models-p01] Django uses this in its admin interface, and any time it needs to figure out a URL for an object.
+[src:web-frameworks/db-models-p01] Any object that has a URL that uniquely identifies it should define this method.
+[src:web-frameworks/db-models-p01] There’s another set of model methods that encapsulate a bunch of database behavior that you’ll want to customize.
+[src:web-frameworks/db-models-p01] In particular you’ll often want to change the way `save()` and `delete()` work.
+[src:web-frameworks/db-models-p01] You’re free to override these methods (and any other model method) to alter behavior.
+[src:web-frameworks/db-models-p01] A classic use-case for overriding the built-in methods is if you want something to happen whenever you save an object.
+[src:web-frameworks/db-models-p01] It’s important to remember to call the superclass method – that’s that `super().save(**kwargs)` business – to ensure that the object still gets saved into the database.
+[src:web-frameworks/db-models-p01] If you forget to call the superclass method, the default behavior won’t happen and the database won’t get touched.
+[src:web-frameworks/db-models-p01] It’s also important that you pass through the arguments that can be passed to the model method – that’s what the `**kwargs` bit does.
+[src:web-frameworks/db-models-p01] Django will, from time to time, extend the capabilities of built-in model methods, adding new keyword arguments.
+[src:web-frameworks/db-models-p01] If you use `**kwargs` in your method definitions, you are guaranteed that your code will automatically support those arguments when they are added.
+[src:web-frameworks/db-models-p01] If you wish to update a field value in the `save()` method, you may also want to have this field added to the `update_fields` keyword argument.
+[src:web-frameworks/db-models-p01] This will ensure the field is saved when `update_fields` is specified.
+[src:web-frameworks/db-models-p01] See Specifying which fields to save for more details.
+[src:web-frameworks/db-models-p01] Note that the `delete()` method for an object is not necessarily called when deleting objects in bulk using a QuerySet or as a result of a `cascading delete`.
+[src:web-frameworks/db-models-p01] To ensure customized delete logic gets executed, you can use `pre_delete` and/or `post_delete` signals.
+[src:web-frameworks/db-models-p01] Unfortunately, there isn’t a workaround when `creating` or `updating` objects in bulk, since none of `save()`, `pre_save`, and `post_save` are called.
+[src:web-frameworks/db-models-p01] Another common pattern is writing custom SQL statements in model methods and module-level methods.
+[src:web-frameworks/db-models-p01] For more details on using raw SQL, see the documentation on using raw SQL.
+[src:web-frameworks/db-models-p02] Model inheritance in Django works almost identically to the way normal class inheritance works in Python, but the basics at the beginning of the page should still be followed.
+[src:web-frameworks/db-models-p02] That means the base class should subclass `django.db.models.Model`.
+[src:web-frameworks/db-models-p02] The only decision you have to make is whether you want the parent models to be models in their own right (with their own database tables), or if the parents are just holders of common information that will only be visible through the child models.
+[src:web-frameworks/db-models-p02] There are three styles of inheritance that are possible in Django.
+[src:web-frameworks/db-models-p02] If you’re subclassing an existing model (perhaps something from another application entirely) and want each model to have its own database table, Multi-table inheritance is the way to go.
+[src:web-frameworks/db-models-p02] Finally, if you only want to modify the Python-level behavior of a model, without changing the models fields in any way, you can use Proxy models.
+[src:web-frameworks/db-models-p02] Abstract base classes are useful when you want to put some common information into a number of other models.
+[src:web-frameworks/db-models-p02] You write your base class and put `abstract=True` in the Meta class.
+[src:web-frameworks/db-models-p02] This model will then not be used to create any database table.
+[src:web-frameworks/db-models-p02] Instead, when it is used as a base class for other models, its fields will be added to those of the child class.
+[src:web-frameworks/db-models-p02] The `Student` model will have three fields: `name`, `age` and `home_group`.
+[src:web-frameworks/db-models-p02] The `CommonInfo` model cannot be used as a normal Django model, since it is an abstract base class.
+[src:web-frameworks/db-models-p02] It does not generate a database table or have a manager, and cannot be instantiated or saved directly.
+[src:web-frameworks/db-models-p02] Fields inherited from abstract base classes can be overridden with another field or value, or be removed with `None`.
+[src:web-frameworks/db-models-p02] For many uses, this type of model inheritance will be exactly what you want.
+[src:web-frameworks/db-models-p02] It provides a way to factor out common information at the Python level, while still only creating one database table per child model at the database level.
+[src:web-frameworks/db-models-p02] When an abstract base class is created, Django makes any Meta inner class you declared in the base class available as an attribute.
+[src:web-frameworks/db-models-p02] If a child class does not declare its own Meta class, it will inherit the parent’s Meta.
+[src:web-frameworks/db-models-p02] If the child wants to extend the parent’s Meta class, it can subclass it.
+[src:web-frameworks/db-models-p02] Django does make one adjustment to the Meta class of an abstract base class: before installing the Meta attribute, it sets `abstract=False`.
+[src:web-frameworks/db-models-p02] This means that children of abstract base classes don’t automatically become abstract classes themselves.
+[src:web-frameworks/db-models-p02] To make an abstract base class that inherits from another abstract base class, you need to explicitly set `abstract=True` on the child.
+[src:web-frameworks/db-models-p02] Some attributes won’t make sense to include in the Meta class of an abstract base class.
+[src:web-frameworks/db-models-p02] For example, including `db_table` would mean that all the child classes (the ones that don’t specify their own Meta) would use the same database table, which is almost certainly not what you want.
+[src:web-frameworks/db-models-p02] Due to the way Python inheritance works, if a child class inherits from multiple abstract base classes, only the Meta options from the first listed class will be inherited by default.
+[src:web-frameworks/db-models-p02] To inherit Meta options from multiple abstract base classes, you must explicitly declare the Meta inheritance.
+[src:web-frameworks/db-models-p02] The second type of model inheritance supported by Django is when each model in the hierarchy is a model all by itself.
+[src:web-frameworks/db-models-p02] Each model corresponds to its own database table and can be queried and created individually.
+[src:web-frameworks/db-models-p02] The inheritance relationship introduces links between the child model and each of its parents (via an automatically-created `OneToOneField`).
+[src:web-frameworks/db-models-p02] All of the fields of `Place` will also be available in `Restaurant`, although the data will reside in a different database table.
+[src:web-frameworks/db-models-p02] However, if `p` in the above example was *not* a `Restaurant` (it had been created directly as a `Place` object or was the parent of some other class), referring to `p.restaurant` would raise a `Restaurant.DoesNotExist` exception.
+[src:web-frameworks/db-models-p02] You can override that field by declaring your own `OneToOneField` with `parent_link=True` on `Restaurant`.
+[src:web-frameworks/db-models-p02] In the multi-table inheritance situation, it doesn’t make sense for a child class to inherit from its parent’s Meta class.
+[src:web-frameworks/db-models-p02] All the Meta options have already been applied to the parent class and applying them again would normally only lead to contradictory behavior (this is in contrast with the abstract base class case, where the base class doesn’t exist in its own right).
+[src:web-frameworks/db-models-p02] So a child model does not have access to its parent’s Meta class.
+[src:web-frameworks/db-models-p02] However, there are a few limited cases where the child inherits behavior from the parent: if the child does not specify an `ordering` attribute or a `get_latest_by` attribute, it will inherit these from its parent.
+[src:web-frameworks/db-models-p02] Because multi-table inheritance uses an implicit `OneToOneField` to link the child and the parent, it’s possible to move from the parent down to the child, as in the above example.
+[src:web-frameworks/db-models-p02] However, this uses up the name that is the default `related_name` value for `ForeignKey` and `ManyToManyField` relations.
+[src:web-frameworks/db-models-p02] If you are putting those types of relations on a subclass of the parent model, you **must** specify the `related_name` attribute on each such field.
+[src:web-frameworks/db-models-p02] If you forget, Django will raise a validation error.
+[src:web-frameworks/db-models-p02] Adding `related_name` to the `customers` field as follows would resolve the error: `models.ManyToManyField(Place, related_name='provider')`.
+[src:web-frameworks/db-models-p02] As mentioned, Django will automatically create a `OneToOneField` linking your child class back to any non-abstract parent models.
+[src:web-frameworks/db-models-p02] If you want to control the name of the attribute linking back to the parent, you can create your own `OneToOneField` and set `parent_link=True` to indicate that your field is the link back to the parent class.
+[src:web-frameworks/db-models-p02] When using multi-table inheritance, a new database table is created for each subclass of a model.
+[src:web-frameworks/db-models-p02] This is usually the desired behavior, since the subclass needs a place to store any additional data fields that are not present on the base class.
+[src:web-frameworks/db-models-p02] Sometimes, however, you only want to change the Python behavior of a model – perhaps to change the default manager, or add a new method.
+[src:web-frameworks/db-models-p02] This is what proxy model inheritance is for: creating a *proxy* for the original model.
+[src:web-frameworks/db-models-p02] You can create, delete and update instances of the proxy model and all the data will be saved as if you were using the original (non-proxied) model.
+[src:web-frameworks/db-models-p02] The difference is that you can change things like the default model ordering or the default manager in the proxy, without having to alter the original.
+[src:web-frameworks/db-models-p02] Proxy models are declared like normal models.
+[src:web-frameworks/db-models-p02] You tell Django that it’s a proxy model by setting the `proxy` attribute of the `Meta` class to `True`.
+[src:web-frameworks/db-models-p02] For example, suppose you want to add a method to the `Person` model.
+[src:web-frameworks/db-models-p02] The `MyPerson` class operates on the same database table as its parent `Person` class.
+[src:web-frameworks/db-models-p02] You could also use a proxy model to define a different default ordering on a model.
+[src:web-frameworks/db-models-p02] Now normal `Person` queries will be unordered and `OrderedPerson` queries will be ordered by `last_name`.
+[src:web-frameworks/db-models-p02] Proxy models inherit `Meta` attributes in the same way as regular models.
+[src:web-frameworks/db-models-p02] There is no way to have Django return, say, a `MyPerson` object whenever you query for `Person` objects.
+[src:web-frameworks/db-models-p02] A queryset for `Person` objects will return those types of objects.
+[src:web-frameworks/db-models-p02] The whole point of proxy objects is that code relying on the original `Person` will use those and your own code can use the extensions you included (that no other code is relying on anyway).
+[src:web-frameworks/db-models-p02] It is not a way to replace the `Person` (or any other) model everywhere with something of your own creation.
+[src:web-frameworks/db-models-p02] A proxy model must inherit from exactly one non-abstract model class.
+[src:web-frameworks/db-models-p02] You can’t inherit from multiple non-abstract models as the proxy model doesn’t provide any connection between the rows in the different database tables.
+[src:web-frameworks/db-models-p02] A proxy model can inherit from any number of abstract model classes, providing they do *not* define any model fields.
+[src:web-frameworks/db-models-p02] A proxy model may also inherit from any number of proxy models that share a common non-abstract parent class.
+[src:web-frameworks/db-models-p02] If you don’t specify any model managers on a proxy model, it inherits the managers from its model parents.
+[src:web-frameworks/db-models-p02] If you define a manager on the proxy model, it will become the default, although any managers defined on the parent classes will still be available.
+[src:web-frameworks/db-models-p02] You probably won’t need to do this very often, but, when you do, it’s possible.
+[src:web-frameworks/db-models-p02] Proxy model inheritance might look fairly similar to creating an unmanaged model, using the `managed` attribute on a model’s `Meta` class.
+[src:web-frameworks/db-models-p02] With careful setting of `Meta.db_table` you could create an unmanaged model that shadows an existing model and adds Python methods to it.
+[src:web-frameworks/db-models-p02] However, that would be very repetitive and fragile as you need to keep both copies synchronized if you make any changes.
+[src:web-frameworks/db-models-p02] On the other hand, proxy models are intended to behave exactly like the model they are proxying for.
+[src:web-frameworks/db-models-p02] They are always in sync with the parent model since they directly inherit its fields and managers.
+[src:web-frameworks/db-models-p02] If you are wanting to change the Python-only behavior of a model, but keep all the same fields as in the original, use `Meta.proxy=True`.
+[src:web-frameworks/db-models-p02] This sets things up so that the proxy model is an exact copy of the storage structure of the original model when data is saved.
+[src:web-frameworks/db-models-p02] Just as with Python’s subclassing, it’s possible for a Django model to inherit from multiple parent models.
+[src:web-frameworks/db-models-p02] Keep in mind that normal Python name resolution rules apply.
+[src:web-frameworks/db-models-p02] The first base class that a particular name (e.g.
+[src:web-frameworks/db-models-p02] Meta) appears in will be the one that is used; for example, this means that if multiple parents contain a Meta class, only the first one is going to be used, and all others will be ignored.
+[src:web-frameworks/db-models-p02] Generally, you won’t need to inherit from multiple parents.
+[src:web-frameworks/db-models-p02] The main use-case where this is useful is for “mix-in” classes: adding a particular extra field or method to every class that inherits the mix-in.
+[src:web-frameworks/db-models-p02] Try to keep your inheritance hierarchies as simple and straightforward as possible so that you won’t have to struggle to work out where a particular piece of information is coming from.
+[src:web-frameworks/db-models-p02] Note that inheriting from multiple models that have a common `id` primary key field will raise an error.
+[src:web-frameworks/db-models-p02] Or use a common ancestor to hold the `AutoField`.
+[src:web-frameworks/db-models-p02] In normal Python class inheritance, it is permissible for a child class to override any attribute from the parent class.
+[src:web-frameworks/db-models-p02] In Django, this isn’t usually permitted for model fields.
+[src:web-frameworks/db-models-p02] If a non-abstract model base class has a field called `author`, you can’t create another model field or define an attribute called `author` in any class that inherits from that base class.
+[src:web-frameworks/db-models-p02] This restriction doesn’t apply to model fields inherited from an abstract model.
+[src:web-frameworks/db-models-p02] Such fields may be overridden with another field or value, or be removed by setting `field_name = None`.
+[src:web-frameworks/db-models-p02] Model managers are inherited from abstract base classes.
+[src:web-frameworks/db-models-p02] Overriding an inherited field which is referenced by an inherited `Manager` may cause subtle bugs.
+[src:web-frameworks/db-models-p02] See custom managers and model inheritance.
+[src:web-frameworks/db-models-p02] Some fields define extra attributes on the model, e.g. a `ForeignKey` defines an extra attribute with `_id` appended to the field name, as well as `related_name` and `related_query_name` on the foreign model.
+[src:web-frameworks/db-models-p02] These extra attributes cannot be overridden unless the field that defines it is changed or removed so that it no longer defines the extra attribute.
+[src:web-frameworks/db-models-p02] Overriding fields in a parent model leads to difficulties in areas such as initializing new instances (specifying which field is being initialized in `Model.__init__`) and serialization.
+[src:web-frameworks/db-models-p02] These are features which normal Python class inheritance doesn’t have to deal with in quite the same way, so the difference between Django model inheritance and Python class inheritance isn’t arbitrary.
+[src:web-frameworks/db-models-p02] This restriction only applies to attributes which are `Field` instances.
+[src:web-frameworks/db-models-p02] Normal Python attributes can be overridden if you wish.
+[src:web-frameworks/db-models-p02] It also only applies to the name of the attribute as Python sees it: if you are manually specifying the database column name, you can have the same column name appearing in both a child and an ancestor model for multi-table inheritance (they are columns in two different database tables).
+[src:web-frameworks/db-models-p02] Django will raise a `FieldError` if you override any model field in any ancestor model.
+[src:web-frameworks/db-models-p02] Note that because of the way fields are resolved during class definition, model fields inherited from multiple abstract parent models are resolved in a strict depth-first order.
+[src:web-frameworks/db-models-p02] This contrasts with standard Python MRO, which is resolved breadth-first in cases of diamond shaped inheritance.
+[src:web-frameworks/db-models-p02] This difference only affects complex model hierarchies, which (as per the advice above) you should try to avoid.
+[src:web-frameworks/db-models-p02] The `manage.py startapp` command creates an application structure that includes a `models.py` file.
+[src:web-frameworks/db-models-p02] If you have many models, organizing them in separate files may be useful.
+[src:web-frameworks/db-models-p02] Remove `models.py` and create a `myapp/models/` directory with an `__init__.py` file and the files to store your models.
+[src:web-frameworks/db-models-p02] You must import the models in the `__init__.py` file.
+[src:web-frameworks/db-models-p02] Explicitly importing each model rather than using `from .models import *` has the advantages of not cluttering the namespace, making code more readable, and keeping code analysis tools useful.
+[src:web-frameworks/db-models-p02] Covers all the model related APIs including model fields, related objects, and `QuerySet`.
+[src:web-frameworks/hello-world] Embedded below is essentially the simplest Express app you can create.
+[src:web-frameworks/hello-world] It is a single file app — *not* what you’d get if you use the Express generator, which creates the scaffolding for a full app with numerous JavaScript files, Jade templates, and sub-directories for various purposes.
+[src:web-frameworks/hello-world] This app starts a server and listens on port 3000 for connections.
+[src:web-frameworks/hello-world] The app responds with “Hello World!” for requests to the root URL (`/`) or *route*.
+[src:web-frameworks/hello-world] For every other path, it will respond with a **404 Not Found**.
+[src:web-frameworks/hello-world] First create a directory named `myapp`, change to it and run `npm init`.
+[src:web-frameworks/hello-world] Then, install `express` as a dependency, as per the installation guide.
+[src:web-frameworks/hello-world] In the `myapp` directory, create a file named `app.js` and copy the code from the example above.
+[src:web-frameworks/hello-world] The `req` (request) and `res` (response) are the exact same objects that Node provides, so you can invoke `req.pipe()`, `req.on('data', callback)`, and anything else you would do without Express involved.
+[src:web-frameworks/hello-world] Then, load `http://localhost:3000/` in a browser to see the output.
+[src:web-frameworks/intro-tutorial01] Throughout this tutorial, we’ll walk you through the creation of a basic poll application.
+[src:web-frameworks/intro-tutorial01] We’ll assume you have Django installed already.
+[src:web-frameworks/intro-tutorial01] If Django is installed, you should see the version of your installation.
+[src:web-frameworks/intro-tutorial01] If it isn’t, you’ll get an error telling “No module named django”.
+[src:web-frameworks/intro-tutorial01] This tutorial is written for Django 6.0, which supports Python 3.12 and later.
+[src:web-frameworks/intro-tutorial01] If the Django version doesn’t match, you can refer to the tutorial for your version of Django by using the version switcher at the bottom right corner of this page, or update Django to the newest version.
+[src:web-frameworks/intro-tutorial01] If you’re using an older version of Python, check What Python version can I use with Django? to find a compatible version of Django.
+[src:web-frameworks/intro-tutorial01] If you’re having trouble going through this tutorial, please head over to the Getting Help section of the FAQ.
+[src:web-frameworks/intro-tutorial01] If this is your first time using Django, you’ll have to take care of some initial setup.
+[src:web-frameworks/intro-tutorial01] Namely, you’ll need to auto-generate some code that establishes a Django project – a collection of settings for an instance of Django, including database configuration, Django-specific options and application-specific settings.
+[src:web-frameworks/intro-tutorial01] This will create a directory `djangotutorial` with a project called `mysite` inside.
+[src:web-frameworks/intro-tutorial01] The directory name doesn’t matter to Django; you can rename it to anything you like.
+[src:web-frameworks/intro-tutorial01] If it didn’t work, see Problems running django-admin.
+[src:web-frameworks/intro-tutorial01] You’ll need to avoid naming projects after built-in Python or Django components.
+[src:web-frameworks/intro-tutorial01] In particular, this means you should avoid using names like `django` (which will conflict with Django itself) or `test` (which conflicts with a built-in Python package).
+[src:web-frameworks/intro-tutorial01] Ignore the warning about unapplied database migrations for now; we’ll deal with the database shortly.
+[src:web-frameworks/intro-tutorial01] Now that the server’s running, visit http://127.0.0.1:8000/ with your web browser.
+[src:web-frameworks/intro-tutorial01] You’ll see a “Congratulations!” page, with a rocket taking off.
+[src:web-frameworks/intro-tutorial01] You’ve started the Django development server, a lightweight web server written purely in Python.
+[src:web-frameworks/intro-tutorial01] We’ve included this with Django so you can develop things rapidly, without having to deal with configuring a production server – such as Apache – until you’re ready for production.
+[src:web-frameworks/intro-tutorial01] Now’s a good time to note: **don’t** use this server in anything resembling a production environment.
+[src:web-frameworks/intro-tutorial01] It’s intended only for use while developing.
+[src:web-frameworks/intro-tutorial01] The development server automatically reloads Python code for each request as needed.
+[src:web-frameworks/intro-tutorial01] You don’t need to restart the server for code changes to take effect.
+[src:web-frameworks/intro-tutorial01] However, some actions like adding files don’t trigger a restart, so you’ll have to restart the server in these cases.
+[src:web-frameworks/intro-tutorial01] Now that your environment – a “project” – is set up, you’re set to start doing work.
+[src:web-frameworks/intro-tutorial01] Each application you write in Django consists of a Python package that follows a certain convention.
+[src:web-frameworks/intro-tutorial01] Django comes with a utility that automatically generates the basic directory structure of an app, so you can focus on writing code rather than creating directories.
+[src:web-frameworks/intro-tutorial01] What’s the difference between a project and an app?
+[src:web-frameworks/intro-tutorial01] An app is a web application that does something – e.g., a blog system, a database of public records or a small poll app.
+[src:web-frameworks/intro-tutorial01] A project is a collection of configuration and apps for a particular website.
+[src:web-frameworks/intro-tutorial01] Your apps can live anywhere in your Python path.
+[src:web-frameworks/intro-tutorial01] In this tutorial, we’ll create our poll app inside the `djangotutorial` folder.
+[src:web-frameworks/intro-tutorial01] This directory structure will house the poll application.
+[src:web-frameworks/intro-tutorial01] This is the most basic view possible in Django.
+[src:web-frameworks/intro-tutorial01] To access it in a browser, we need to map it to a URL - and for this we need to define a URL configuration, or “URLconf” for short.
+[src:web-frameworks/intro-tutorial01] These URL configurations are defined inside each Django app, and they are Python files named `urls.py`.
+[src:web-frameworks/intro-tutorial01] The next step is to configure the root URLconf in the `mysite` project to include the URLconf defined in `polls.urls`.
+[src:web-frameworks/intro-tutorial01] The `path()` function expects at least two arguments: `route` and `view`.
+[src:web-frameworks/intro-tutorial01] The `include()` function allows referencing other URLconfs.
+[src:web-frameworks/intro-tutorial01] Whenever Django encounters `include()`, it chops off whatever part of the URL matched up to that point and sends the remaining string to the included URLconf for further processing.
+[src:web-frameworks/intro-tutorial01] The idea behind `include()` is to make it easy to plug-and-play URLs.
+[src:web-frameworks/intro-tutorial01] Since polls are in their own URLconf (`polls/urls.py`), they can be placed under “/polls/”, or under “/fun_polls/”, or under “/content/polls/”, or any other path root, and the app will still work.
+[src:web-frameworks/intro-tutorial01] You should always use `include()` when you include other URL patterns.
+[src:web-frameworks/intro-tutorial01] The only exception is `admin.site.urls`, which is a pre-built URLconf provided by Django for the default admin site.
+[src:web-frameworks/intro-tutorial01] You have now wired an `index` view into the URLconf.
+[src:web-frameworks/intro-tutorial01] Go to http://localhost:8000/polls/ in your browser, and you should see the text “*Hello, world.
+[src:web-frameworks/intro-tutorial01] You’re at the polls index.*”, which you defined in the `index` view.
+[src:web-frameworks/intro-tutorial01] If you get an error page here, check that you’re going to http://localhost:8000/polls/ and not http://localhost:8000/.
+[src:web-frameworks/intro-tutorial01] When you’re comfortable with the basic request and response flow, read part 2 of this tutorial to start working with the database.
+[src:web-frameworks/quickstart] This page gives a good introduction to Flask.
+[src:web-frameworks/quickstart] Follow Installation to set up a project and install Flask first.
+[src:web-frameworks/quickstart] Next we create an instance of this class.
+[src:web-frameworks/quickstart] The first argument is the name of the application’s module or package.
+[src:web-frameworks/quickstart] `__name__` is a convenient shortcut for this that is appropriate for most cases.
+[src:web-frameworks/quickstart] This is needed so that Flask knows where to look for resources such as templates and static files.
+[src:web-frameworks/quickstart] We then use the `route()` decorator to tell Flask what URL should trigger our function.
+[src:web-frameworks/quickstart] The function returns the message we want to display in the user’s browser.
+[src:web-frameworks/quickstart] The default content type is HTML, so HTML in the string will be rendered by the browser.
+[src:web-frameworks/quickstart] Save it as `hello.py` or something similar.
+[src:web-frameworks/quickstart] Make sure to not call your application `flask.py` because this would conflict with Flask itself.
+[src:web-frameworks/quickstart] To run the application, use the `flask` command or `python -m flask`.
+[src:web-frameworks/quickstart] You need to tell the Flask where your application is with the `--app` option.
+[src:web-frameworks/quickstart] As a shortcut, if the file is named `app.py` or `wsgi.py`, you don’t have to use `--app`.
+[src:web-frameworks/quickstart] See Command Line Interface for more details.
+[src:web-frameworks/quickstart] This launches a very simple builtin server, which is good enough for testing but probably not what you want to use in production.
+[src:web-frameworks/quickstart] For deployment options see Deploying to Production.
+[src:web-frameworks/quickstart] Now head over to http://127.0.0.1:5000/, and you should see your hello world greeting.
+[src:web-frameworks/quickstart] If another program is already using port 5000, you’ll see `OSError: [Errno 98]` or `OSError: [WinError 10013]` when the server tries to start.
+[src:web-frameworks/quickstart] See Address already in use for how to handle that.
+[src:web-frameworks/quickstart] If you run the server you will notice that the server is only accessible from your own computer, not from any other in the network.
+[src:web-frameworks/quickstart] This is the default because in debugging mode a user of the application can execute arbitrary Python code on your computer.
+[src:web-frameworks/quickstart] This tells your operating system to listen on all public IPs.
+[src:web-frameworks/quickstart] The `flask run` command can do more than just start the development server.
+[src:web-frameworks/quickstart] By enabling debug mode, the server will automatically reload if code changes, and will show an interactive debugger in the browser if an error occurs during a request.
+[src:web-frameworks/quickstart] The debugger allows executing arbitrary Python code from the browser.
+[src:web-frameworks/quickstart] It is protected by a pin, but still represents a major security risk.
+[src:web-frameworks/quickstart] Do not run the development server or debugger in a production environment.
+[src:web-frameworks/quickstart] To enable debug mode, use the `--debug` option.
+[src:web-frameworks/quickstart] When returning HTML (the default response type in Flask), any user-provided values rendered in the output must be escaped to protect from injection attacks.
+[src:web-frameworks/quickstart] HTML templates rendered with Jinja, introduced later, will do this automatically.
+[src:web-frameworks/quickstart] `escape()`, shown here, can be used manually.
+[src:web-frameworks/quickstart] It is omitted in most examples for brevity, but you should always be aware of how you’re using untrusted data.
+[src:web-frameworks/quickstart] If a user submits `/hello?name=<script>alert("bad")</script>`, escaping causes it to be rendered as text, rather than running the script in the user’s browser.
+[src:web-frameworks/quickstart] Modern web applications use meaningful URLs to help users.
+[src:web-frameworks/quickstart] Users are more likely to like a page and come back if the page uses a meaningful URL they can remember and use to directly visit a page.
+[src:web-frameworks/quickstart] Use the `route()` decorator to bind a function to a URL.
+[src:web-frameworks/quickstart] You can make parts of the URL dynamic and attach multiple rules to a function.
+[src:web-frameworks/quickstart] You can add variable sections to a URL by marking sections with `<variable_name>`.
+[src:web-frameworks/quickstart] Your function then receives the `<variable_name>` as a keyword argument.
+[src:web-frameworks/quickstart] Optionally, you can use a converter to specify the type of the argument like `<converter:variable_name>`.
+[src:web-frameworks/quickstart] The following two rules differ in their use of a trailing slash.
+[src:web-frameworks/quickstart] The canonical URL for the `projects` endpoint has a trailing slash.
+[src:web-frameworks/quickstart] It’s similar to a folder in a file system.
+[src:web-frameworks/quickstart] If you access the URL without a trailing slash (`/projects`), Flask redirects you to the canonical URL with the trailing slash (`/projects/`).
+[src:web-frameworks/quickstart] The canonical URL for the `about` endpoint does not have a trailing slash.
+[src:web-frameworks/quickstart] Accessing the URL with a trailing slash (`/about/`) produces a 404 “Not Found” error.
+[src:web-frameworks/quickstart] This helps keep URLs unique for these resources, which helps search engines avoid indexing the same page twice.
+[src:web-frameworks/quickstart] To build a URL to a specific function, use the `url_for()` function.
+[src:web-frameworks/quickstart] It accepts the name of the function as its first argument and any number of keyword arguments, each corresponding to a variable part of the URL rule.
+[src:web-frameworks/quickstart] Unknown variable parts are appended to the URL as query parameters.
+[src:web-frameworks/quickstart] Why would you want to build URLs using the URL reversing function `url_for()` instead of hard-coding them into your templates?
+[src:web-frameworks/quickstart] You can change your URLs in one go instead of needing to remember to manually change hard-coded URLs.
+[src:web-frameworks/quickstart] URL building handles escaping of special characters transparently.
+[src:web-frameworks/quickstart] The generated paths are always absolute, avoiding unexpected behavior of relative paths in browsers.
+[src:web-frameworks/quickstart] If your application is placed outside the URL root, for example, in `/myapplication` instead of `/`, `url_for()` properly handles that for you.
+[src:web-frameworks/quickstart] For example, here we use the `test_request_context()` method to try out `url_for()`.
+[src:web-frameworks/quickstart] `test_request_context()` tells Flask to behave as though it’s handling a request even while we use a Python shell.
+[src:web-frameworks/quickstart] Web applications use different HTTP methods when accessing URLs.
+[src:web-frameworks/quickstart] You should familiarize yourself with the HTTP methods as you work with Flask.
+[src:web-frameworks/quickstart] By default, a route only answers to `GET` requests.
+[src:web-frameworks/quickstart] You can use the `methods` argument of the `route()` decorator to handle different HTTP methods.
+[src:web-frameworks/quickstart] The example above keeps all methods for the route within one function, which can be useful if each part uses some common data.
+[src:web-frameworks/quickstart] You can also separate views for different methods into different functions.
+[src:web-frameworks/quickstart] Flask provides a shortcut for decorating such routes with `get()`, `post()`, etc. for each common HTTP method.
+[src:web-frameworks/quickstart] If `GET` is present, Flask automatically adds support for the `HEAD` method and handles `HEAD` requests according to the HTTP RFC.
+[src:web-frameworks/quickstart] Likewise, `OPTIONS` is automatically implemented for you.
+[src:web-frameworks/quickstart] Dynamic web applications also need static files.
+[src:web-frameworks/quickstart] That’s usually where the CSS and JavaScript files are coming from.
+[src:web-frameworks/quickstart] Ideally your web server is configured to serve them for you, but during development Flask can do that as well.
+[src:web-frameworks/quickstart] Just create a folder called `static` in your package or next to your module and it will be available at `/static` on the application.
+[src:web-frameworks/quickstart] The file has to be stored on the filesystem as `static/style.css`.
+[src:web-frameworks/quickstart] Generating HTML from within Python is not fun, and actually pretty cumbersome because you have to do the HTML escaping on your own to keep the application secure.
+[src:web-frameworks/quickstart] Because of that Flask configures the Jinja template engine for you automatically.
+[src:web-frameworks/quickstart] Templates can be used to generate any type of text file.
+[src:web-frameworks/quickstart] For web applications, you’ll primarily be generating HTML pages, but you can also generate markdown, plain text for emails, and anything else.
+[src:web-frameworks/quickstart] For a reference to HTML, CSS, and other web APIs, use the MDN Web Docs.
+[src:web-frameworks/quickstart] To render a template you can use the `render_template()` method.
+[src:web-frameworks/quickstart] All you have to do is provide the name of the template and the variables you want to pass to the template engine as keyword arguments.
+[src:web-frameworks/quickstart] Flask will look for templates in the `templates` folder.
+[src:web-frameworks/quickstart] For templates you can use the full power of Jinja templates.
+[src:web-frameworks/quickstart] Head over to the official Jinja Template Documentation for more information.
+[src:web-frameworks/quickstart] Inside templates you also have access to the `config`, `request`, `session` and `g` [1] objects as well as the `url_for()` and `get_flashed_messages()` functions.
+[src:web-frameworks/quickstart] Templates are especially useful if inheritance is used.
+[src:web-frameworks/quickstart] If you want to know how that works, see Template Inheritance.
+[src:web-frameworks/quickstart] Basically template inheritance makes it possible to keep certain elements on each page (like header, navigation and footer).
+[src:web-frameworks/quickstart] Automatic escaping is enabled, so if `person` contains HTML it will be escaped automatically.
+[src:web-frameworks/quickstart] If you can trust a variable and you know that it will be safe HTML (for example because it came from a module that converts wiki markup to HTML) you can mark it as safe by using the `Markup` class or by using the `|safe` filter in the template.
+[src:web-frameworks/quickstart] Head over to the Jinja 2 documentation for more examples.
+[src:web-frameworks/quickstart] Changed in version 0.5: Autoescaping is no longer enabled for all templates.
+[src:web-frameworks/quickstart] The following extensions for templates trigger autoescaping: `.html`, `.htm`, `.xml`, `.xhtml`.
+[src:web-frameworks/quickstart] Templates loaded from a string will have autoescaping disabled.
+[src:web-frameworks/quickstart] For web applications it’s crucial to react to the data a client sends to the server.
+[src:web-frameworks/quickstart] In Flask this information is provided by the global `request` object.
+[src:web-frameworks/quickstart] If you have some experience with Python you might be wondering how that object can be global and how Flask manages to still be threadsafe.
+[src:web-frameworks/quickstart] If you want to understand how that works and how you can implement tests with context locals, read this section, otherwise just skip it.
+[src:web-frameworks/quickstart] Certain objects in Flask are global objects, but not of the usual kind.
+[src:web-frameworks/quickstart] These objects are actually proxies to objects that are local to a specific context.
+[src:web-frameworks/quickstart] But that is actually quite easy to understand.
+[src:web-frameworks/quickstart] Imagine the context being the handling thread.
+[src:web-frameworks/quickstart] A request comes in and the web server decides to spawn a new thread (or something else, the underlying object is capable of dealing with concurrency systems other than threads).
+[src:web-frameworks/quickstart] When Flask starts its internal request handling it figures out that the current thread is the active context and binds the current application and the WSGI environments to that context (thread).
+[src:web-frameworks/quickstart] It does that in an intelligent way so that one application can invoke another application without breaking.
+[src:web-frameworks/quickstart] Basically you can completely ignore that this is the case unless you are doing something like unit testing.
+[src:web-frameworks/quickstart] You will notice that code which depends on a request object will suddenly break because there is no request object.
+[src:web-frameworks/quickstart] The solution is creating a request object yourself and binding it to the context.
+[src:web-frameworks/quickstart] The easiest solution for unit testing is to use the `test_request_context()` context manager.
+[src:web-frameworks/quickstart] In combination with the `with` statement it will bind a test request so that you can interact with it.
+[src:web-frameworks/quickstart] The request object is documented in the API section and we will not cover it here in detail (see `Request`).
+[src:web-frameworks/quickstart] Here is a broad overview of some of the most common operations.
+[src:web-frameworks/quickstart] The current request method is available by using the `method` attribute.
+[src:web-frameworks/quickstart] To access form data (data transmitted in a `POST` or `PUT` request) you can use the `form` attribute.
+[src:web-frameworks/quickstart] What happens if the key does not exist in the `form` attribute?
+[src:web-frameworks/quickstart] In that case a special `KeyError` is raised.
+[src:web-frameworks/quickstart] You can catch it like a standard `KeyError` but if you don’t do that, a HTTP 400 Bad Request error page is shown instead.
+[src:web-frameworks/quickstart] So for many situations you don’t have to deal with that problem.
+[src:web-frameworks/quickstart] We recommend accessing URL parameters with `get` or by catching the `KeyError` because users might change the URL and presenting them a 400 bad request page in that case is not user friendly.
+[src:web-frameworks/quickstart] For a full list of methods and attributes of the request object, head over to the `Request` documentation.
+[src:web-frameworks/quickstart] You can handle uploaded files with Flask easily.
+[src:web-frameworks/quickstart] Just make sure not to forget to set the `enctype="multipart/form-data"` attribute on your HTML form, otherwise the browser will not transmit your files at all.
+[src:web-frameworks/quickstart] Uploaded files are stored in memory or at a temporary location on the filesystem.
+[src:web-frameworks/quickstart] You can access those files by looking at the `files` attribute on the request object.
+[src:web-frameworks/quickstart] Each uploaded file is stored in that dictionary.
+[src:web-frameworks/quickstart] It behaves just like a standard Python `file` object, but it also has a `save()` method that allows you to store that file on the filesystem of the server.
+[src:web-frameworks/quickstart] If you want to know how the file was named on the client before it was uploaded to your application, you can access the `filename` attribute.
+[src:web-frameworks/quickstart] However please keep in mind that this value can be forged so never ever trust that value.
+[src:web-frameworks/quickstart] For some better examples, see Uploading Files.
+[src:web-frameworks/quickstart] To access cookies you can use the `cookies` attribute.
+[src:web-frameworks/quickstart] To set cookies you can use the `set_cookie` method of response objects.
+[src:web-frameworks/quickstart] The `cookies` attribute of request objects is a dictionary with all the cookies the client transmits.
+[src:web-frameworks/quickstart] If you want to use sessions, do not use the cookies directly but instead use the Sessions in Flask that add some security on top of cookies for you.
+[src:web-frameworks/quickstart] Note that cookies are set on response objects.
+[src:web-frameworks/quickstart] Since you normally just return strings from the view functions Flask will convert them into response objects for you.
+[src:web-frameworks/quickstart] If you explicitly want to do that you can use the `make_response()` function and then modify it.
+[src:web-frameworks/quickstart] Sometimes you might want to set a cookie at a point where the response object does not exist yet.
+[src:web-frameworks/quickstart] This is possible by utilizing the Deferred Request Callbacks pattern.
+[src:web-frameworks/quickstart] This is a rather pointless example because a user will be redirected from the index to a page they cannot access (401 means access denied) but it shows how that works.
+[src:web-frameworks/quickstart] By default a black and white error page is shown for each error code.
+[src:web-frameworks/quickstart] Note the `404` after the `render_template()` call.
+[src:web-frameworks/quickstart] This tells Flask that the status code of that page should be 404 which means not found.
+[src:web-frameworks/quickstart] By default 200 is assumed which translates to: all went well.
+[src:web-frameworks/quickstart] See Handling Application Errors for more details.
+[src:web-frameworks/quickstart] The return value from a view function is automatically converted into a response object for you.
+[src:web-frameworks/quickstart] If the return value is a string it’s converted into a response object with the string as response body, a `200 OK` status code and a *text/html* mimetype.
+[src:web-frameworks/quickstart] If the return value is a dict or list, `jsonify()` is called to produce a response.
+[src:web-frameworks/quickstart] If it’s a string, a response object is created with that data and the default parameters.
+[src:web-frameworks/quickstart] If it’s an iterator or generator returning strings or bytes, it is treated as a streaming response.
+[src:web-frameworks/quickstart] If it’s a dict or list, a response object is created using `jsonify()`.
+[src:web-frameworks/quickstart] If a tuple is returned the items in the tuple can provide extra information.
+[src:web-frameworks/quickstart] Such tuples have to be in the form `(response, status)`, `(response, headers)`, or `(response, status, headers)`.
+[src:web-frameworks/quickstart] The `status` value will override the status code and `headers` can be a list or dictionary of additional header values.
+[src:web-frameworks/quickstart] If none of that works, Flask will assume the return value is a valid WSGI application and convert that into a response object.
+[src:web-frameworks/quickstart] If you want to get hold of the resulting response object inside the view you can use the `make_response()` function.
+[src:web-frameworks/quickstart] A common response format when writing an API is JSON.
+[src:web-frameworks/quickstart] It’s easy to get started writing such an API with Flask.
+[src:web-frameworks/quickstart] If you return a `dict` or `list` from a view, it will be converted to a JSON response.
+[src:web-frameworks/quickstart] This is a shortcut to passing the data to the `jsonify()` function, which will serialize any supported JSON data type.
+[src:web-frameworks/quickstart] That means that all the data in the dict or list must be JSON serializable.
+[src:web-frameworks/quickstart] For complex types such as database models, you’ll want to use a serialization library to convert the data to valid JSON types first.
+[src:web-frameworks/quickstart] There are many serialization libraries and Flask API extensions maintained by the community that support more complex applications.
+[src:web-frameworks/quickstart] In addition to the request object there is also a second object called `session` which allows you to store information specific to a user from one request to the next.
+[src:web-frameworks/quickstart] This is implemented on top of cookies for you and signs the cookies cryptographically.
+[src:web-frameworks/quickstart] What this means is that the user could look at the contents of your cookie but not modify it, unless they know the secret key used for signing.
+[src:web-frameworks/quickstart] In order to use sessions you have to set a secret key.
+[src:web-frameworks/quickstart] A secret key should be as random as possible.
+[src:web-frameworks/quickstart] Your operating system has ways to generate pretty random data based on a cryptographic random generator.
+[src:web-frameworks/quickstart] A note on cookie-based sessions: Flask will take the values you put into the session object and serialize them into a cookie.
+[src:web-frameworks/quickstart] If you are finding some values do not persist across requests, cookies are indeed enabled, and you are not getting a clear error message, check the size of the cookie in your page responses compared to the size supported by web browsers.
+[src:web-frameworks/quickstart] Besides the default client-side based sessions, if you want to handle sessions on the server-side instead, there are several Flask extensions that support this.
+[src:web-frameworks/quickstart] Good applications and user interfaces are all about feedback.
+[src:web-frameworks/quickstart] If the user does not get enough feedback they will probably end up hating the application.
+[src:web-frameworks/quickstart] Flask provides a really simple way to give feedback to a user with the flashing system.
+[src:web-frameworks/quickstart] The flashing system basically makes it possible to record a message at the end of a request and access it on the next (and only the next) request.
+[src:web-frameworks/quickstart] This is usually combined with a layout template to expose the message.
+[src:web-frameworks/quickstart] To flash a message use the `flash()` method, to get hold of the messages you can use `get_flashed_messages()` which is also available in the templates.
+[src:web-frameworks/quickstart] See Message Flashing for a full example.
+[src:web-frameworks/quickstart] Sometimes you might be in a situation where you deal with data that should be correct, but actually is not.
+[src:web-frameworks/quickstart] For example you may have some client-side code that sends an HTTP request to the server but it’s obviously malformed.
+[src:web-frameworks/quickstart] This might be caused by a user tampering with the data, or the client code failing.
+[src:web-frameworks/quickstart] Most of the time it’s okay to reply with `400 Bad Request` in that situation, but sometimes that won’t do and the code has to continue working.
+[src:web-frameworks/quickstart] You may still want to log that something fishy happened.
+[src:web-frameworks/quickstart] As of Flask 0.3 a logger is preconfigured for you to use.
+[src:web-frameworks/quickstart] The attached `logger` is a standard logging `Logger`, so head over to the official `logging` docs for more information.
+[src:web-frameworks/quickstart] To add WSGI middleware to your Flask application, wrap the application’s `wsgi_app` attribute.
+[src:web-frameworks/quickstart] Wrapping `app.wsgi_app` instead of `app` means that `app` still points at your Flask application, not at the middleware, so you can continue to use and configure `app` directly.
+[src:web-frameworks/quickstart] Extensions are packages that help you accomplish common tasks.
+[src:web-frameworks/quickstart] For example, Flask-SQLAlchemy provides SQLAlchemy support that makes it simple and easy to use with Flask.
+[src:web-frameworks/quickstart] For more on Flask extensions, see Extensions.
+[src:web-frameworks/routing] You define routing using methods of the Express `app` object that correspond to HTTP methods; for example, `app.get()` to handle GET requests and `app.post` to handle POST requests.
+[src:web-frameworks/routing] You can also use app.all() to handle all HTTP methods and app.use() to specify middleware as the callback function (See Using middleware for details).
+[src:web-frameworks/routing] These routing methods specify a callback function (sometimes called a “handler function”) that Express automatically runs when the application receives a request matching the specified route (endpoint) and HTTP method.
+[src:web-frameworks/routing] In other words, the application “listens” for requests that match the specified route(s) and method(s), and when it detects a match, it calls the specified callback function.
+[src:web-frameworks/routing] In fact, the routing methods can have more than one callback function as arguments.
+[src:web-frameworks/routing] With multiple callback functions, it is important to provide `next` as an argument to the callback function and then call `next()` within the body of the function to hand off control to the next callback.
+[src:web-frameworks/routing] The following code is an example of a very basic route.
+[src:web-frameworks/routing] A route method is derived from one of the HTTP methods, and is attached to an instance of the `express` class.
+[src:web-frameworks/routing] The following code is an example of routes that are defined for the `GET` and the `POST` methods to the root of the app.
+[src:web-frameworks/routing] Express supports methods that correspond to all HTTP request methods: `get`, `post`, and so on.
+[src:web-frameworks/routing] There is a special routing method, `app.all()`, used to load middleware functions at a path for *all* HTTP request methods.
+[src:web-frameworks/routing] For example, the following handler is executed for requests to the route `"/secret"` whether using `GET`, `QUERY`, `POST`, `PUT`, `DELETE`, or any other HTTP request method supported in the http module.
+[src:web-frameworks/routing] Route paths, in combination with a request method, define the endpoints at which requests can be made.
+[src:web-frameworks/routing] Route paths can be strings or regular expressions.
+[src:web-frameworks/routing] Express uses path-to-regexp v8 for matching the route paths; see the path-to-regexp documentation for all the possibilities in defining route paths.
+[src:web-frameworks/routing] Express Playground Router is a handy tool for testing basic Express routes, although it does not support pattern matching.
+[src:web-frameworks/routing] The dot (`.`) and hyphen (`-`) are interpreted literally.
+[src:web-frameworks/routing] Query strings are not part of the route path.
+[src:web-frameworks/routing] Wildcards match any path after a prefix.
+[src:web-frameworks/routing] They must have a name, just like route parameters, and are captured as arrays of path segments.
+[src:web-frameworks/routing] Use braces to define optional segments in a route path.
+[src:web-frameworks/routing] When the segment is not present, the parameter is omitted from `req.params`.
+[src:web-frameworks/routing] The characters `?`, `+`, `*`, `[]`, and `()` are reserved and cannot be used as literal characters in route paths.
+[src:web-frameworks/routing] You can also use regular expressions as route paths.
+[src:web-frameworks/routing] This is useful when you need more complex matching logic.
+[src:web-frameworks/routing] Route parameters are named URL segments that are used to capture the values specified at their position in the URL.
+[src:web-frameworks/routing] The captured values are populated in the `req.params` object, with the name of the route parameter specified in the path as their respective keys.
+[src:web-frameworks/routing] To define routes with route parameters, simply specify the route parameters in the path of the route as shown below.
+[src:web-frameworks/routing] The name of route parameters must be made up of “word characters” ([A-Za-z0-9_]).
+[src:web-frameworks/routing] Since the hyphen (`-`) and the dot (`.`) are interpreted literally, they can be used along with route parameters for useful purposes.
+[src:web-frameworks/routing] Regexp characters are not supported in route paths.
+[src:web-frameworks/routing] Use an array of paths or regular expressions instead.
+[src:web-frameworks/routing] See the path route matching syntax for more information.
+[src:web-frameworks/routing] You can provide multiple callback functions that behave like middleware to handle a request.
+[src:web-frameworks/routing] The only exception is that these callbacks might invoke `next('route')` to bypass the remaining route callbacks.
+[src:web-frameworks/routing] You can use this mechanism to impose pre-conditions on a route, then pass control to subsequent routes if there’s no reason to proceed with the current route.
+[src:web-frameworks/routing] Route handlers can be in the form of a function, an array of functions, or combinations of both, as shown in the following examples.
+[src:web-frameworks/routing] A single callback function can handle a route.
+[src:web-frameworks/routing] More than one callback function can handle a route (make sure you specify the `next` object).
+[src:web-frameworks/routing] An array of callback functions can handle a route.
+[src:web-frameworks/routing] A combination of independent functions and arrays of functions can handle a route.
+[src:web-frameworks/routing] The methods on the response object (`res`) in the following table can send a response to the client, and terminate the request-response cycle.
+[src:web-frameworks/routing] If none of these methods are called from a route handler, the client request will be left hanging.
+[src:web-frameworks/routing] You can create chainable route handlers for a route path by using `app.route()`.
+[src:web-frameworks/routing] Because the path is specified at a single location, creating modular routes is helpful, as is reducing redundancy and typos.
+[src:web-frameworks/routing] For more information about routes, see: Router() documentation.
+[src:web-frameworks/routing] Here is an example of chained route handlers that are defined by using `app.route()`.
+[src:web-frameworks/routing] Use the `express.Router` class to create modular, mountable route handlers.
+[src:web-frameworks/routing] A `Router` instance is a complete middleware and routing system; for this reason, it is often referred to as a “mini-app”.
+[src:web-frameworks/routing] The following example creates a router as a module, loads a middleware function in it, defines some routes, and mounts the router module on a path in the main app.
+[src:web-frameworks/routing] The app will now be able to handle requests to `/birds` and `/birds/about`, as well as call the `timeLog` middleware function that is specific to the route.
+[src:web-frameworks/routing] But if the parent route `/birds` has path parameters, it will not be accessible by default from the sub-routes.
+[src:web-frameworks/routing] To make it accessible, you will need to pass the `mergeParams` option to the Router constructor reference.
+[src:web-frameworks/using-middleware] Express is a routing and middleware web framework that has minimal functionality of its own: An Express application is essentially a series of middleware function calls.
+[src:web-frameworks/using-middleware] If the current middleware function does not end the request-response cycle, it must call `next()` to pass control to the next middleware function.
+[src:web-frameworks/using-middleware] Otherwise, the request will be left hanging.
+[src:web-frameworks/using-middleware] You can load application-level and router-level middleware with an optional mount path.
+[src:web-frameworks/using-middleware] You can also load a series of middleware functions together, which creates a sub-stack of the middleware system at a mount point.
+[src:web-frameworks/using-middleware] Bind application-level middleware to an instance of the app object by using the `app.use()` and `app.METHOD()` functions, where `METHOD` is the HTTP method of the request that the middleware function handles (such as GET, PUT, or POST) in lowercase.
+[src:web-frameworks/using-middleware] This example shows a middleware function with no mount path.
+[src:web-frameworks/using-middleware] The function is executed every time the app receives a request.
+[src:web-frameworks/using-middleware] This example shows a middleware function mounted on the `/user/:id` path.
+[src:web-frameworks/using-middleware] The function is executed for any type of HTTP request on the `/user/:id` path.
+[src:web-frameworks/using-middleware] This example shows a route and its handler function (middleware system).
+[src:web-frameworks/using-middleware] The function handles GET requests to the `/user/:id` path.
+[src:web-frameworks/using-middleware] Here is an example of loading a series of middleware functions at a mount point, with a mount path.
+[src:web-frameworks/using-middleware] It illustrates a middleware sub-stack that prints request info for any type of HTTP request to the `/user/:id` path.
+[src:web-frameworks/using-middleware] Route handlers enable you to define multiple routes for a path.
+[src:web-frameworks/using-middleware] The example below defines two routes for GET requests to the `/user/:id` path.
+[src:web-frameworks/using-middleware] The second route will not cause any problems, but it will never get called because the first route ends the request-response cycle.
+[src:web-frameworks/using-middleware] This example shows a middleware sub-stack that handles GET requests to the `/user/:id` path.
+[src:web-frameworks/using-middleware] To skip the rest of the middleware functions from a router middleware stack, call `next('route')` to pass control to the next route.
+[src:web-frameworks/using-middleware] `next('route')` will work only in middleware functions that were loaded by using the `app.METHOD()` or `router.METHOD()` functions.
+[src:web-frameworks/using-middleware] Middleware can also be declared in an array for reusability.
+[src:web-frameworks/using-middleware] Router-level middleware works in the same way as application-level middleware, except it is bound to an instance of `express.Router()`.
+[src:web-frameworks/using-middleware] Load router-level middleware by using the `router.use()` and `router.METHOD()` functions.
+[src:web-frameworks/using-middleware] To skip the rest of the router’s middleware functions, call `next('router')` to pass control back out of the router instance.
+[src:web-frameworks/using-middleware] Error-handling middleware always takes *four* arguments.
+[src:web-frameworks/using-middleware] You must provide four arguments to identify it as an error-handling middleware function.
+[src:web-frameworks/using-middleware] Even if you don’t need to use the `next` object, you must specify it to maintain the signature.
+[src:web-frameworks/using-middleware] Otherwise, the `next` object will be interpreted as regular middleware and will fail to handle errors.
+[src:web-frameworks/using-middleware] For details about error-handling middleware, see: Error handling.
+[src:web-frameworks/using-middleware] Starting with version 4.x, Express no longer depends on Connect.
+[src:web-frameworks/using-middleware] The middleware functions that were previously included with Express are now in separate modules; see the list of middleware functions.
+[src:web-frameworks/using-middleware] Use third-party middleware to add functionality to Express apps.
+[src:web-frameworks/using-middleware] Install the Node.js module for the required functionality, then load it in your app at the application level or at the router level.
+[src:web-frameworks/using-middleware] The following example illustrates installing and loading the cookie-parsing middleware function `cookie-parser`.
+[src:web-frameworks/using-middleware] For a partial list of third-party middleware functions that are commonly used with Express, see: Third-party middleware.

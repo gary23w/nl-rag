@@ -1,0 +1,1202 @@
+# nl-rag distilled facts — domain: sql-sqlite
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:sql-sqlite/datatype3] Most SQL database engines (every SQL database engine other than SQLite, as far as we know) uses static, rigid typing.
+[src:sql-sqlite/datatype3] With static typing, the datatype of a value is determined by its container - the particular column in which the value is stored.
+[src:sql-sqlite/datatype3] SQLite uses a more general dynamic type system.
+[src:sql-sqlite/datatype3] In SQLite, the datatype of a value is associated with the value itself, not with its container.
+[src:sql-sqlite/datatype3] The dynamic type system of SQLite is backwards compatible with the more common static type systems of other database engines in the sense that SQL statements that work on statically typed databases work the same way in SQLite.
+[src:sql-sqlite/datatype3] However, the dynamic typing in SQLite allows it to do things which are not possible in traditional rigidly typed databases.
+[src:sql-sqlite/datatype3] Flexible typing is a feature of SQLite, not a bug.
+[src:sql-sqlite/datatype3] Update: As of version 3.37.0 (2021-11-27), SQLite provides STRICT tables that do rigid type enforcement, for developers who prefer that kind of thing.
+[src:sql-sqlite/datatype3] A storage class is more general than a datatype.
+[src:sql-sqlite/datatype3] The INTEGER storage class, for example, includes 7 different integer datatypes of different lengths.
+[src:sql-sqlite/datatype3] But as soon as INTEGER values are read off of disk and into memory for processing, they are converted to the most general datatype (8-byte signed integer).
+[src:sql-sqlite/datatype3] And so for the most part, "storage class" is indistinguishable from "datatype" and the two terms can be used interchangeably.
+[src:sql-sqlite/datatype3] Any column in an SQLite version 3 database, except an INTEGER PRIMARY KEY column, may be used to store a value of any storage class.
+[src:sql-sqlite/datatype3] All values in SQL statements, whether they are literals embedded in SQL statement text or parameters bound to precompiled SQL statements have an implicit storage class.
+[src:sql-sqlite/datatype3] Under circumstances described below, the database engine may convert values between numeric storage classes (INTEGER and REAL) and TEXT during query execution.
+[src:sql-sqlite/datatype3] SQLite does not have a separate Boolean storage class.
+[src:sql-sqlite/datatype3] Instead, Boolean values are stored as integers 0 (false) and 1 (true).
+[src:sql-sqlite/datatype3] SQLite recognizes the keywords "TRUE" and "FALSE", as of version 3.23.0 (2018-04-02) but those keywords are really just alternative spellings for the integer literals 1 and 0 respectively.
+[src:sql-sqlite/datatype3] SQLite does not have a storage class set aside for storing dates and/or times.
+[src:sql-sqlite/datatype3] Applications can choose to store dates and times in any of these formats and freely convert between formats using the built-in date and time functions.
+[src:sql-sqlite/datatype3] SQL database engines that use rigid typing will usually try to automatically convert values to the appropriate datatype.
+[src:sql-sqlite/datatype3] Rigidly-typed database will convert the string '123' into an integer 123 and the integer 456 into a string '456' prior to doing the insert.
+[src:sql-sqlite/datatype3] In order to maximize compatibility between SQLite and other database engines, and so that the example above will work on SQLite as it does on other SQL database engines, SQLite supports the concept of "type affinity" on columns.
+[src:sql-sqlite/datatype3] The type affinity of a column is the recommended type for data stored in that column.
+[src:sql-sqlite/datatype3] The important idea here is that the type is recommended, not required.
+[src:sql-sqlite/datatype3] Any column can still store any type of data.
+[src:sql-sqlite/datatype3] It is just that some columns, given the choice, will prefer to use one storage class over another.
+[src:sql-sqlite/datatype3] The preferred storage class for a column is called its "affinity".
+[src:sql-sqlite/datatype3] (Historical note: The "BLOB" type affinity used to be called "NONE".
+[src:sql-sqlite/datatype3] A column with TEXT affinity stores all data using storage classes NULL, TEXT or BLOB.
+[src:sql-sqlite/datatype3] If numerical data is inserted into a column with TEXT affinity it is converted into text form before being stored.
+[src:sql-sqlite/datatype3] A column with NUMERIC affinity may contain values using all five storage classes.
+[src:sql-sqlite/datatype3] When text data is inserted into a NUMERIC column, the storage class of the text is converted to INTEGER or REAL (in order of preference) if the text is a well-formed integer or real literal, respectively.
+[src:sql-sqlite/datatype3] If the TEXT value is a well-formed integer literal that is too large to fit in a 64-bit signed integer, it is converted to REAL.
+[src:sql-sqlite/datatype3] For conversions between TEXT and REAL storage classes, about 15.95 significant decimal digits of the number are preserved.
+[src:sql-sqlite/datatype3] (The conversion accuracy is limited by the use of IEEE 754 binary64 or "double" encoding for floating-point values.) If the TEXT value is not a well-formed integer or real literal, then the value is stored as TEXT.
+[src:sql-sqlite/datatype3] For the purposes of this paragraph, hexadecimal integer literals are not considered well-formed and are stored as TEXT.
+[src:sql-sqlite/datatype3] No attempt is made to convert NULL or BLOB values.
+[src:sql-sqlite/datatype3] A string might look like a floating-point literal with a decimal point and/or exponent notation but as long as the value can be expressed as an integer, the NUMERIC affinity will convert it into an integer.
+[src:sql-sqlite/datatype3] Hence, the string '3.0e+5' is stored in a column with NUMERIC affinity as the integer 300000, not as the floating point value 300000.0.
+[src:sql-sqlite/datatype3] A column that uses INTEGER affinity behaves the same as a column with NUMERIC affinity.
+[src:sql-sqlite/datatype3] The difference between INTEGER and NUMERIC affinity is only evident in a CAST expression: The expression "CAST(4.0 AS INT)" returns an integer 4, whereas "CAST(4.0 AS NUMERIC)" leaves the value as a floating-point 4.0.
+[src:sql-sqlite/datatype3] A column with REAL affinity behaves like a column with NUMERIC affinity except that it forces integer values into floating point representation.
+[src:sql-sqlite/datatype3] (As an internal optimization, small floating point values with no fractional component and stored in columns with REAL affinity are written to disk as integers in order to take up less space and are automatically converted back into floating point as the value is read out.
+[src:sql-sqlite/datatype3] A column with affinity BLOB does not prefer one storage class over another and no attempt is made to coerce data from one storage class into another.
+[src:sql-sqlite/datatype3] If the declared type of the column contains any of the strings "CHAR", "CLOB", or "TEXT" then that column has TEXT affinity.
+[src:sql-sqlite/datatype3] Notice that the type VARCHAR contains the string "CHAR" and is thus assigned TEXT affinity.
+[src:sql-sqlite/datatype3] If the declared type for a column contains the string "BLOB" or if no type is specified then the column has affinity BLOB.
+[src:sql-sqlite/datatype3] If the declared type for a column contains any of the strings "REAL", "FLOA", or "DOUB" then the column has REAL affinity.
+[src:sql-sqlite/datatype3] Note that the order of the rules for determining column affinity is important.
+[src:sql-sqlite/datatype3] A column whose declared type is "CHARINT" will match both rules 1 and 2 but the first rule takes precedence and so the column affinity will be INTEGER.
+[src:sql-sqlite/datatype3] The following table shows how many common datatype names from more traditional SQL implementations are converted into affinities by the five rules of the previous section.
+[src:sql-sqlite/datatype3] This table shows only a small subset of the datatype names that SQLite will accept.
+[src:sql-sqlite/datatype3] Note that numeric arguments in parentheses that following the type name (ex: "VARCHAR(255)") are ignored by SQLite - SQLite does not impose any length restrictions (other than the large global SQLITE_MAX_LENGTH limit) on the length of strings, BLOBs or numeric values.
+[src:sql-sqlite/datatype3] Note that a declared type of "FLOATING POINT" would give INTEGER affinity, not REAL affinity, due to the "INT" at the end of "POINT".
+[src:sql-sqlite/datatype3] And the declared type of "STRING" has an affinity of NUMERIC, not TEXT.
+[src:sql-sqlite/datatype3] Every table column has a type affinity (one of BLOB, TEXT, INTEGER, REAL, or NUMERIC) but expressions do not necessarily have an affinity.
+[src:sql-sqlite/datatype3] The "columns" of a VIEW or FROM-clause subquery are really the expressions in the result set of the SELECT statement that implements the VIEW or subquery.
+[src:sql-sqlite/datatype3] Thus, the affinity for columns of a VIEW or subquery are determined by the expression affinity rules above.
+[src:sql-sqlite/datatype3] The affinity of the v1.x column will be the same as the affinity of t1.b (TEXT), since v1.x maps directly into t1.b.
+[src:sql-sqlite/datatype3] But columns v1.y and v1.z both have no affinity, since those columns map into expression a+c and 42, and expressions always have no affinity.
+[src:sql-sqlite/datatype3] When the SELECT statement that implements a VIEW or FROM-clause subquery is a compound SELECT then the affinity of each column of the VIEW or subquery will be the affinity of the corresponding result column for one of the individual SELECT statements that make up the compound.
+[src:sql-sqlite/datatype3] However, it is indeterminate which of the SELECT statements will be used to determine affinity.
+[src:sql-sqlite/datatype3] Different constituent SELECT statements might be used to determine affinity at different times during query evaluation.
+[src:sql-sqlite/datatype3] The choice might vary across different versions of SQLite.
+[src:sql-sqlite/datatype3] The choice might change between one query and the next in the same version of SQLite.
+[src:sql-sqlite/datatype3] The choice might be different at different times within the same query.
+[src:sql-sqlite/datatype3] Hence, you can never be sure what affinity will be used for columns of a compound SELECT that have different affinities in the constituent subqueries.
+[src:sql-sqlite/datatype3] Best practice is to avoid mixing affinities in a compound SELECT if you care about the datatype of the result.
+[src:sql-sqlite/datatype3] Mixing affinities in a compound SELECT can lead to surprising and unintuitive results.
+[src:sql-sqlite/datatype3] See, for example, forum post 02d7be94d7.
+[src:sql-sqlite/datatype3] The following SQL demonstrates how SQLite uses column affinity to do type conversions when values are inserted into a table.
+[src:sql-sqlite/datatype3] SQLite may attempt to convert values between the storage classes INTEGER, REAL, and/or TEXT before performing a comparison.
+[src:sql-sqlite/datatype3] Whether or not any conversions are attempted before the comparison takes place depends on the type affinity of the operands.
+[src:sql-sqlite/datatype3] To "apply affinity" means to convert an operand to a particular storage class if and only if the conversion does not lose essential information.
+[src:sql-sqlite/datatype3] Numeric values can always be converted into TEXT.
+[src:sql-sqlite/datatype3] TEXT values can be converted into numeric values if the text content is a well-formed integer or real literal, but not a hexadecimal integer literal.
+[src:sql-sqlite/datatype3] BLOB values are converted into TEXT values by simply interpreting the binary BLOB content as a text string in the current database encoding.
+[src:sql-sqlite/datatype3] The expression "a BETWEEN b AND c" is treated as two separate binary comparisons "a >= b AND a <= c", even if that means different affinities are applied to 'a' in each of the comparisons.
+[src:sql-sqlite/datatype3] Datatype conversions in comparisons of the form "x IN (SELECT y ...)" are handled as if the comparison were really "x=y".
+[src:sql-sqlite/datatype3] The expression "a IN (x, y, z, ...)" is equivalent to "a = +x OR a = +y OR a = +z OR ...".
+[src:sql-sqlite/datatype3] In other words, the values to the right of the IN operator (the "x", "y", and "z" values in this example) are considered to have no affinity, even if they happen to be column values or CAST expressions.
+[src:sql-sqlite/datatype3] All of the results in the example are the same if the comparisons are commuted - if expressions of the form "a<40" are rewritten as "40>a".
+[src:sql-sqlite/datatype3] Mathematical operators (+, -, *, /, %, <<, >>, &, and |) interpret both operands as if they were numbers.
+[src:sql-sqlite/datatype3] STRING or BLOB operands automatically convert into REAL or INTEGER values.
+[src:sql-sqlite/datatype3] If the STRING or BLOB looks like a real number (if it has a decimal point or an exponent) or if the value is outside the range that can be represented as a 64-bit signed integer, then it converts to REAL.
+[src:sql-sqlite/datatype3] Otherwise the operand converts to INTEGER.
+[src:sql-sqlite/datatype3] The implied type conversion of mathematical operands is slightly different from CAST to NUMERIC in that string and BLOB values that look like real numbers but have no fractional part are kept as REAL instead of being converted into INTEGER as they would be for CAST to NUMERIC.
+[src:sql-sqlite/datatype3] The conversion from STRING or BLOB into REAL or INTEGER is performed even if it is lossy and irreversible.
+[src:sql-sqlite/datatype3] Some mathematical operators (%, <<, >>, &, and |) expect INTEGER operands.
+[src:sql-sqlite/datatype3] For those operators, REAL operands are converted into INTEGER in the same way as a CAST to INTEGER.
+[src:sql-sqlite/datatype3] The <<, >>, &, and | operators always return an INTEGER (or NULL) result, but the % operator returns either INTEGER or REAL (or NULL) depending on the type of its operands.
+[src:sql-sqlite/datatype3] A NULL operand on a mathematical operator yields a NULL result.
+[src:sql-sqlite/datatype3] An operand on a mathematical operator that does not look in any way numeric and is not NULL is converted to 0 or 0.0.
+[src:sql-sqlite/datatype3] Division by zero gives a result of NULL.
+[src:sql-sqlite/datatype3] When query results are sorted by an ORDER BY clause, values with storage class NULL come first, followed by INTEGER and REAL values interspersed in numeric order, followed by TEXT values in collating sequence order, and finally BLOB values in memcmp() order.
+[src:sql-sqlite/datatype3] No storage class conversions occur before the sort.
+[src:sql-sqlite/datatype3] When grouping values with the GROUP BY clause values with different storage classes are considered distinct, except for INTEGER and REAL values which are considered equal if they are numerically equal.
+[src:sql-sqlite/datatype3] No affinities are applied to any values as the result of a GROUP by clause.
+[src:sql-sqlite/datatype3] The compound SELECT operators UNION, INTERSECT and EXCEPT perform implicit comparisons between values.
+[src:sql-sqlite/datatype3] No affinity is applied to comparison operands for the implicit comparisons associated with UNION, INTERSECT, or EXCEPT - the values are compared as is.
+[src:sql-sqlite/datatype3] When SQLite compares two strings, it uses a collating sequence or collating function (two terms for the same thing) to determine which string is greater or if the two strings are equal.
+[src:sql-sqlite/datatype3] SQLite has three built-in collating functions: BINARY, NOCASE, and RTRIM.
+[src:sql-sqlite/datatype3] An application can register additional collating functions using the sqlite3_create_collation() interface.
+[src:sql-sqlite/datatype3] Collating functions only matter when comparing string values.
+[src:sql-sqlite/datatype3] Numeric values are always compared numerically, and BLOBs are always compared byte-by-byte using memcmp().
+[src:sql-sqlite/datatype3] Every column of every table has an associated collating function.
+[src:sql-sqlite/datatype3] If no collating function is explicitly defined, then the collating function defaults to BINARY.
+[src:sql-sqlite/datatype3] The COLLATE clause of the column definition is used to define alternative collating functions for a column.
+[src:sql-sqlite/datatype3] If either operand is a column, then the collating function of that column is used with precedence to the left operand.
+[src:sql-sqlite/datatype3] For the purposes of the previous sentence, a column name preceded by one or more unary "+" operators and/or CAST operators is still considered a column name.
+[src:sql-sqlite/datatype3] Otherwise, the BINARY collating function is used for comparison.
+[src:sql-sqlite/datatype3] An operand of a comparison is considered to have an explicit collating function assignment (rule 1 above) if any subexpression of the operand uses the postfix COLLATE operator.
+[src:sql-sqlite/datatype3] Thus, if a COLLATE operator is used anywhere in a comparison expression, the collating function defined by that operator is used for string comparison regardless of what table columns might be a part of that expression.
+[src:sql-sqlite/datatype3] If two or more COLLATE operator subexpressions appear anywhere in a comparison, the left most explicit collating function is used regardless of how deeply the COLLATE operators are nested in the expression and regardless of how the expression is parenthesized.
+[src:sql-sqlite/datatype3] The expression "x BETWEEN y and z" is logically equivalent to two comparisons "x >= y AND x <= z" and works with respect to collating functions as if it were two separate comparisons.
+[src:sql-sqlite/datatype3] The expression "x IN (SELECT y ...)" is handled in the same way as the expression "x = y" for the purposes of determining the collating sequence.
+[src:sql-sqlite/datatype3] The collating sequence used for expressions of the form "x IN (y, z, ...)" is the collating sequence of x.
+[src:sql-sqlite/datatype3] If an explicit collating sequence is required on an IN operator it should be applied to the left operand, like this: "x COLLATE nocase IN (y,z, ...)".
+[src:sql-sqlite/datatype3] Terms of the ORDER BY clause that is part of a SELECT statement may be assigned a collating sequence using the COLLATE operator, in which case the specified collating function is used for sorting.
+[src:sql-sqlite/datatype3] Otherwise, if the expression sorted by an ORDER BY clause is a column, then the collating sequence of the column is used to determine sort order.
+[src:sql-sqlite/datatype3] If the expression is not a column and has no COLLATE clause, then the BINARY collating sequence is used.
+[src:sql-sqlite/datatype3] The examples below identify the collating sequences that would be used to determine the results of text comparisons that may be performed by various SQL statements.
+[src:sql-sqlite/datatype3] Note that a text comparison may not be required, and no collating sequence used, in the case of numeric, blob or NULL values.
+[src:sql-sqlite/foreignkeys] This document describes the support for SQL foreign key constraints introduced in SQLite version 3.6.19 (2009-10-14).
+[src:sql-sqlite/foreignkeys] The first section introduces the concept of an SQL foreign key by example and defines the terminology used for the remainder of the document.
+[src:sql-sqlite/foreignkeys] Section 2 describes the steps an application must take in order to enable foreign key constraints in SQLite (it is disabled by default).
+[src:sql-sqlite/foreignkeys] The next section, section 3, describes the indexes that the user must create in order to use foreign key constraints, and those that should be created in order for foreign key constraints to function efficiently.
+[src:sql-sqlite/foreignkeys] Section 4 describes the advanced foreign key related features supported by SQLite and section 5 describes the way the ALTER and DROP TABLE commands are enhanced to support foreign key constraints.
+[src:sql-sqlite/foreignkeys] Finally, section 6 enumerates the missing features and limits of the current implementation.
+[src:sql-sqlite/foreignkeys] This document does not contain a full description of the syntax used to create foreign key constraints in SQLite.
+[src:sql-sqlite/foreignkeys] This may be found as part of the documentation for the CREATE TABLE statement.
+[src:sql-sqlite/foreignkeys] SQL foreign key constraints are used to enforce "exists" relationships between tables.
+[src:sql-sqlite/foreignkeys] The applications using this database are entitled to assume that for each row in the *track* table there exists a corresponding row in the *artist* table.
+[src:sql-sqlite/foreignkeys] After all, the comment in the declaration says so.
+[src:sql-sqlite/foreignkeys] Unfortunately, if a user edits the database using an external tool or if there is a bug in an application, rows might be inserted into the *track* table that do not correspond to any row in the *artist* table.
+[src:sql-sqlite/foreignkeys] Or rows might be deleted from the *artist* table, leaving orphaned rows in the *track* table that do not correspond to any of the remaining rows in *artist*.
+[src:sql-sqlite/foreignkeys] This might cause the application or applications to malfunction later on, or at least make coding the application more difficult.
+[src:sql-sqlite/foreignkeys] One solution is to add an SQL foreign key constraint to the database schema to enforce the relationship between the *artist* and *track* table.
+[src:sql-sqlite/foreignkeys] This way, the constraint is enforced by SQLite.
+[src:sql-sqlite/foreignkeys] Attempting to insert a row into the *track* table that does not correspond to any row in the *artist* table will fail, as will attempting to delete a row from the *artist* table when there exist dependent rows in the *track* table.
+[src:sql-sqlite/foreignkeys] There is one exception: if the foreign key column for an entry in the *track* table is NULL, then no corresponding entry in the *artist* table is required.
+[src:sql-sqlite/foreignkeys] Tip: If the application requires a stricter relationship between *artist* and *track*, where NULL values are not permitted in the *trackartist* column, simply add the appropriate "NOT NULL" constraint to the schema.
+[src:sql-sqlite/foreignkeys] There are several other ways to add an equivalent foreign key declaration to a CREATE TABLE statement.
+[src:sql-sqlite/foreignkeys] Refer to the CREATE TABLE documentation for details.
+[src:sql-sqlite/foreignkeys] The foreign key constraint is satisfied if for each row in the child table either one or more of the child key columns are NULL, or there exists a row in the parent table for which each parent key column contains a value equal to the value in its associated child key column.
+[src:sql-sqlite/foreignkeys] In the above paragraph, the term "equal" means equal when values are compared using the rules specified here.
+[src:sql-sqlite/foreignkeys] In order to use foreign key constraints in SQLite, the library must be compiled with neither SQLITE_OMIT_FOREIGN_KEY nor SQLITE_OMIT_TRIGGER defined.
+[src:sql-sqlite/foreignkeys] If SQLITE_OMIT_TRIGGER is defined but SQLITE_OMIT_FOREIGN_KEY is not, then SQLite behaves as it did prior to version 3.6.19 (2009-10-14) - foreign key definitions are parsed and may be queried using PRAGMA foreign_key_list, but foreign key constraints are not enforced.
+[src:sql-sqlite/foreignkeys] The PRAGMA foreign_keys command is a no-op in this configuration.
+[src:sql-sqlite/foreignkeys] If OMIT_FOREIGN_KEY is defined, then foreign key definitions cannot even be parsed (attempting to specify a foreign key definition is a syntax error).
+[src:sql-sqlite/foreignkeys] Assuming the library is compiled with foreign key constraints enabled, it must still be enabled by the application at runtime, using the PRAGMA foreign_keys command.
+[src:sql-sqlite/foreignkeys] Foreign key constraints are disabled by default (for backwards compatibility), so must be enabled separately for each database connection.
+[src:sql-sqlite/foreignkeys] (Note, however, that future releases of SQLite might change so that foreign key constraints enabled by default.
+[src:sql-sqlite/foreignkeys] Careful developers will not make any assumptions about whether or not foreign keys are enabled by default but will instead enable or disable them as necessary.) The application can also use a PRAGMA foreign_keys statement to determine if foreign keys are currently enabled.
+[src:sql-sqlite/foreignkeys] It is not possible to enable or disable foreign key constraints in the middle of a multi-statement transaction (when SQLite is not in autocommit mode).
+[src:sql-sqlite/foreignkeys] Attempting to do so does not return an error; it simply has no effect.
+[src:sql-sqlite/foreignkeys] Usually, the parent key of a foreign key constraint is the primary key of the parent table.
+[src:sql-sqlite/foreignkeys] If they are not the primary key, then the parent key columns must be collectively subject to a UNIQUE constraint or have a UNIQUE index.
+[src:sql-sqlite/foreignkeys] If the parent key columns have a UNIQUE index, then that index must use the collation sequences that are specified in the CREATE TABLE statement for the parent table.
+[src:sql-sqlite/foreignkeys] The foreign key constraints created as part of tables *child1*, *child2* and *child3* are all fine.
+[src:sql-sqlite/foreignkeys] The foreign key declared as part of table *child4* is an error because even though the parent key column is indexed, the index is not UNIQUE.
+[src:sql-sqlite/foreignkeys] The foreign key for table *child5* is an error because even though the parent key column has a unique index, the index uses a different collating sequence.
+[src:sql-sqlite/foreignkeys] Tables *child6* and *child7* are incorrect because while both have UNIQUE indices on their parent keys, the keys are not an exact match to the columns of a single UNIQUE index.
+[src:sql-sqlite/foreignkeys] If the database schema contains foreign key errors that require looking at more than one table definition to identify, then those errors are not detected when the tables are created.
+[src:sql-sqlite/foreignkeys] Instead, such errors prevent the application from preparing SQL statements that modify the content of the child or parent tables in ways that use the foreign keys.
+[src:sql-sqlite/foreignkeys] Errors reported when content is changed are "DML errors" and errors reported when the schema is changed are "DDL errors".
+[src:sql-sqlite/foreignkeys] So, in other words, misconfigured foreign key constraints that require looking at both the child and parent are DML errors.
+[src:sql-sqlite/foreignkeys] The English language error message for foreign key DML errors is usually "foreign key mismatch" but can also be "no such table" if the parent table does not exist.
+[src:sql-sqlite/foreignkeys] By contrast, if foreign key errors can be recognized simply by looking at the definition of the child table and without having to consult the parent table definition, then the CREATE TABLE statement for the child table fails.
+[src:sql-sqlite/foreignkeys] Because the error occurs during a schema change, this is a DDL error.
+[src:sql-sqlite/foreignkeys] Foreign key DDL errors are reported regardless of whether or not foreign key constraints are enabled when the table is created.
+[src:sql-sqlite/foreignkeys] Indices are not required for child key columns but they are almost always beneficial.
+[src:sql-sqlite/foreignkeys] Returning to the example in section 1, each time an application deletes a row from the *artist* table (the parent table), it performs the equivalent of the following SELECT statement to search for referencing rows in the *track* table (the child table).
+[src:sql-sqlite/foreignkeys] where ? in the above is replaced with the value of the *artistid* column of the record being deleted from the *artist* table (recall that the *trackartist* column is the child key and the *artistid* column is the parent key).
+[src:sql-sqlite/foreignkeys] If this SELECT returns any rows at all, then SQLite concludes that deleting the row from the parent table would violate the foreign key constraint and returns an error.
+[src:sql-sqlite/foreignkeys] Similar queries may be run if the content of the parent key is modified or a new row is inserted into the parent table.
+[src:sql-sqlite/foreignkeys] If these queries cannot use an index, they are forced to do a linear scan of the entire child table.
+[src:sql-sqlite/foreignkeys] In a non-trivial database, this may be prohibitively expensive.
+[src:sql-sqlite/foreignkeys] So, in most real systems, an index should be created on the child key columns of each foreign key constraint.
+[src:sql-sqlite/foreignkeys] The child key index does not have to be (and usually will not be) a UNIQUE index.
+[src:sql-sqlite/foreignkeys] The block above uses a shorthand form to create the foreign key constraint.
+[src:sql-sqlite/foreignkeys] Attaching a "REFERENCES *<parent-table>*" clause to a column definition creates a foreign key constraint that maps the column to the primary key of *<parent-table>*.
+[src:sql-sqlite/foreignkeys] Refer to the CREATE TABLE documentation for further details.
+[src:sql-sqlite/foreignkeys] A composite foreign key constraint is one where the child and parent keys are both composite keys.
+[src:sql-sqlite/foreignkeys] In this system, each entry in the song table is required to map to an entry in the album table with the same combination of artist and album.
+[src:sql-sqlite/foreignkeys] Parent and child keys must have the same cardinality.
+[src:sql-sqlite/foreignkeys] In SQLite, if any of the child key columns (in this case songartist and songalbum) are NULL, then there is no requirement for a corresponding row in the parent table.
+[src:sql-sqlite/foreignkeys] Each foreign key constraint in SQLite is classified as either immediate or deferred.
+[src:sql-sqlite/foreignkeys] Foreign key constraints are immediate by default.
+[src:sql-sqlite/foreignkeys] All the foreign key examples presented so far have been of immediate foreign key constraints.
+[src:sql-sqlite/foreignkeys] If a statement modifies the contents of the database so that an immediate foreign key constraint is in violation at the conclusion the statement, an exception is thrown and the effects of the statement are reverted.
+[src:sql-sqlite/foreignkeys] By contrast, if a statement modifies the contents of the database such that a deferred foreign key constraint is violated, the violation is not reported immediately.
+[src:sql-sqlite/foreignkeys] Deferred foreign key constraints are not checked until the transaction tries to COMMIT.
+[src:sql-sqlite/foreignkeys] For as long as the user has an open transaction, the database is allowed to exist in a state that violates any number of deferred foreign key constraints.
+[src:sql-sqlite/foreignkeys] However, COMMIT will fail as long as foreign key constraints remain in violation.
+[src:sql-sqlite/foreignkeys] If the current statement is not inside an explicit transaction (a BEGIN/COMMIT/ROLLBACK block), then an implicit transaction is committed as soon as the statement has finished executing.
+[src:sql-sqlite/foreignkeys] In this case deferred constraints behave the same as immediate constraints.
+[src:sql-sqlite/foreignkeys] The full syntax for specifying foreign key constraints is available as part of the CREATE TABLE documentation.
+[src:sql-sqlite/foreignkeys] Replacing the phrase above with any of the following creates an immediate foreign key constraint.
+[src:sql-sqlite/foreignkeys] The defer_foreign_keys pragma can be used to temporarily change all foreign key constraints to deferred regardless of how they are declared.
+[src:sql-sqlite/foreignkeys] The following example illustrates the effect of using a deferred foreign key constraint.
+[src:sql-sqlite/foreignkeys] A nested savepoint transaction may be RELEASEd while the database is in a state that does not satisfy a deferred foreign key constraint.
+[src:sql-sqlite/foreignkeys] A transaction savepoint (a non-nested savepoint that was opened while there was not currently an open transaction), on the other hand, is subject to the same restrictions as a COMMIT - attempting to RELEASE it while the database is in such a state will fail.
+[src:sql-sqlite/foreignkeys] If a COMMIT statement (or the RELEASE of a transaction SAVEPOINT) fails because the database is currently in a state that violates a deferred foreign key constraint and there are currently nested savepoints, the nested savepoints remain open.
+[src:sql-sqlite/foreignkeys] Foreign key ON DELETE and ON UPDATE clauses are used to configure actions that take place when deleting rows from the parent table (ON DELETE), or modifying the parent key values of existing rows (ON UPDATE).
+[src:sql-sqlite/foreignkeys] A single foreign key constraint may have different actions configured for ON DELETE and ON UPDATE.
+[src:sql-sqlite/foreignkeys] Foreign key actions are similar to triggers in many ways.
+[src:sql-sqlite/foreignkeys] The ON DELETE and ON UPDATE action associated with each foreign key in an SQLite database is one of "NO ACTION", "RESTRICT", "SET NULL", "SET DEFAULT" or "CASCADE".
+[src:sql-sqlite/foreignkeys] If an action is not explicitly specified, it defaults to "NO ACTION".
+[src:sql-sqlite/foreignkeys] Configuring an ON UPDATE or ON DELETE action does not mean that the foreign key constraint does not need to be satisfied.
+[src:sql-sqlite/foreignkeys] For example, if an "ON DELETE SET DEFAULT" action is configured, but there is no row in the parent table that corresponds to the default values of the child key columns, deleting a parent key while dependent child keys exist still causes a foreign key violation.
+[src:sql-sqlite/foreignkeys] Execute applicable AFTER trigger programs.
+[src:sql-sqlite/foreignkeys] There is one important difference between ON UPDATE foreign key actions and SQL triggers.
+[src:sql-sqlite/foreignkeys] An ON UPDATE action is only taken if the values of the parent key are modified so that the new parent key values are not equal to the old.
+[src:sql-sqlite/foreignkeys] This section describes the way the CREATE TABLE, ALTER TABLE, and DROP TABLE commands interact with SQLite's foreign keys.
+[src:sql-sqlite/foreignkeys] A CREATE TABLE command operates the same whether or not foreign key constraints are enabled.
+[src:sql-sqlite/foreignkeys] The parent key definitions of foreign key constraints are not checked when a table is created.
+[src:sql-sqlite/foreignkeys] There is nothing stopping the user from creating a foreign key definition that refers to a parent table that does not exist, or to parent key columns that do not exist or are not collectively bound by a PRIMARY KEY or UNIQUE constraint.
+[src:sql-sqlite/foreignkeys] If foreign key constraints are enabled when it is prepared, the DROP TABLE command performs an implicit DELETE to remove all rows from the table before dropping it.
+[src:sql-sqlite/foreignkeys] The implicit DELETE does not cause any SQL triggers to fire, but may invoke foreign key actions or constraint violations.
+[src:sql-sqlite/foreignkeys] If an immediate foreign key constraint is violated, the DROP TABLE statement fails and the table is not dropped.
+[src:sql-sqlite/foreignkeys] If a deferred foreign key constraint is violated, then an error is reported when the user attempts to commit the transaction if the foreign key constraint violations still exist at that point.
+[src:sql-sqlite/foreignkeys] Any "foreign key mismatch" errors encountered as part of an implicit DELETE are ignored.
+[src:sql-sqlite/foreignkeys] The intent of these enhancements to the ALTER TABLE and DROP TABLE commands is to ensure that they cannot be used to create a database that contains foreign key violations, at least while foreign key constraints are enabled.
+[src:sql-sqlite/foreignkeys] There is one exception to this rule though.
+[src:sql-sqlite/foreignkeys] If the UNIQUE index is dropped from the database schema, then the parent table itself is dropped, no error will be reported.
+[src:sql-sqlite/foreignkeys] However the database may be left in a state where the child table of the foreign key constraint contains rows that do not refer to any parent table row.
+[src:sql-sqlite/foreignkeys] This case can be avoided if all parent keys in the database schema are constrained by PRIMARY KEY or UNIQUE constraints added as part of the parent table definition, not by external UNIQUE indexes.
+[src:sql-sqlite/foreignkeys] The properties of the DROP TABLE and ALTER TABLE commands described above only apply if foreign keys are enabled.
+[src:sql-sqlite/foreignkeys] If the user considers them undesirable, then the workaround is to use PRAGMA foreign_keys to disable foreign key constraints before executing the DROP or ALTER TABLE command.
+[src:sql-sqlite/foreignkeys] Of course, while foreign key constraints are disabled, there is nothing to stop the user from violating foreign key constraints and thus creating an internally inconsistent database.
+[src:sql-sqlite/foreignkeys] This section lists a few limitations and omitted features that are not mentioned elsewhere.
+[src:sql-sqlite/foreignkeys] **No support for switching constraints between deferred and immediate mode.** Many systems allow the user to toggle individual foreign key constraints between deferred and immediate mode at runtime (for example using the Oracle "SET CONSTRAINT" command).
+[src:sql-sqlite/foreignkeys] In SQLite, a foreign key constraint is permanently marked as deferred or immediate when it is created.
+[src:sql-sqlite/foreignkeys] **Recursion limit on foreign key actions.** The SQLITE_MAX_TRIGGER_DEPTH and SQLITE_LIMIT_TRIGGER_DEPTH settings determine the maximum allowable depth of trigger program recursion.
+[src:sql-sqlite/foreignkeys] For the purposes of these limits, foreign key actions are considered trigger programs.
+[src:sql-sqlite/foreignkeys] The PRAGMA recursive_triggers setting does not affect the operation of foreign key actions.
+[src:sql-sqlite/foreignkeys] It is not possible to disable recursive foreign key actions.
+[src:sql-sqlite/foreignkeys] **Foreign keys may not cross schema boundaries.** That is, in `REFERENCES (X.Y)` table `X` will only be resolved within the schema which contains the `REFERENCES` clause.
+[src:sql-sqlite/lang-aggfunc] The aggregate functions shown below are available by default.
+[src:sql-sqlite/lang-aggfunc] There are two more aggregates grouped with the JSON SQL functions.
+[src:sql-sqlite/lang-aggfunc] Applications can define custom aggregate functions using the sqlite3_create_function() interface.
+[src:sql-sqlite/lang-aggfunc] In any aggregate function that takes a single argument, that argument can be preceded by the keyword DISTINCT.
+[src:sql-sqlite/lang-aggfunc] In such cases, duplicate elements are filtered before being passed into the aggregate function.
+[src:sql-sqlite/lang-aggfunc] For example, the function "count(distinct X)" will return the number of distinct values of column X instead of the total number of non-null values in column X.
+[src:sql-sqlite/lang-aggfunc] If a FILTER clause is provided, then only rows for which the *expr* is true are included in the aggregate.
+[src:sql-sqlite/lang-aggfunc] If an ORDER BY clause is provided, that clause determines the order in which the inputs to the aggregate are processed.
+[src:sql-sqlite/lang-aggfunc] For aggregate functions like max() and count(), the input order does not matter.
+[src:sql-sqlite/lang-aggfunc] But for things like string_agg() and json_group_object(), the ORDER BY clause will make a difference in the result.
+[src:sql-sqlite/lang-aggfunc] If no ORDER BY clause is specified, the inputs to the aggregate occur in an arbitrary order that might change from one invocation to the next.
+[src:sql-sqlite/lang-aggfunc] See also: scalar functions and window functions.
+[src:sql-sqlite/lang-aggfunc] The avg() function returns the average value of all non-NULL *X* within a group.
+[src:sql-sqlite/lang-aggfunc] String and BLOB values that do not look like numbers are interpreted as 0.
+[src:sql-sqlite/lang-aggfunc] The result of avg() is always a floating point value whenever there is at least one non-NULL input even if all inputs are integers.
+[src:sql-sqlite/lang-aggfunc] The result of avg() is NULL if there are no non-NULL inputs.
+[src:sql-sqlite/lang-aggfunc] The result of avg() is computed as total()/count() so all of the constraints that apply to total() also apply to avg().
+[src:sql-sqlite/lang-aggfunc] The count(X) function returns a count of the number of times that *X* is not NULL in a group.
+[src:sql-sqlite/lang-aggfunc] The count(*) function (with no arguments) returns the total number of rows in the group.
+[src:sql-sqlite/lang-aggfunc] The group_concat() function returns a string which is the concatenation of all non-NULL values of *X*.
+[src:sql-sqlite/lang-aggfunc] If parameter *Y* is present then it is used as the separator between instances of *X*.
+[src:sql-sqlite/lang-aggfunc] A comma (",") is used as the separator if *Y* is omitted.
+[src:sql-sqlite/lang-aggfunc] The string_agg(X,Y) function is an alias for group_concat(X,Y).
+[src:sql-sqlite/lang-aggfunc] String_agg() is compatible with PostgreSQL and SQL-Server and group_concat() is compatible with MySQL.
+[src:sql-sqlite/lang-aggfunc] The order of the concatenated elements is arbitrary unless an ORDER BY argument is included immediately after the last parameter.
+[src:sql-sqlite/lang-aggfunc] The max() aggregate function returns the maximum value of all values in the group.
+[src:sql-sqlite/lang-aggfunc] The maximum value is the value that would be returned last in an ORDER BY on the same column.
+[src:sql-sqlite/lang-aggfunc] Aggregate max() returns NULL if and only if there are no non-NULL values in the group.
+[src:sql-sqlite/lang-aggfunc] The median() function returns the median value of all non-NULL *X* within a group.
+[src:sql-sqlite/lang-aggfunc] The median(X) function is equivalent to percentile_cont(X,0.5).
+[src:sql-sqlite/lang-aggfunc] See separate documentation on the percentile extension for additional information.
+[src:sql-sqlite/lang-aggfunc] The median() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
+[src:sql-sqlite/lang-aggfunc] The min() aggregate function returns the minimum non-NULL value of all values in the group.
+[src:sql-sqlite/lang-aggfunc] The minimum value is the first non-NULL value that would appear in an ORDER BY of the column.
+[src:sql-sqlite/lang-aggfunc] Aggregate min() returns NULL if and only if there are no non-NULL values in the group.
+[src:sql-sqlite/lang-aggfunc] The percentile(Y,P) aggregate function computes an answer X which is a value that is greater than or equal to P percent of the non-NULL inputs and which is less than or equal to 100-P percent of the inputs.
+[src:sql-sqlite/lang-aggfunc] The parameter P must be a number between 0.0 and 100.0.
+[src:sql-sqlite/lang-aggfunc] The value of P must be the same for all terms of the aggregate and may not be NULL.
+[src:sql-sqlite/lang-aggfunc] Y inputs must be either NULL or numeric.
+[src:sql-sqlite/lang-aggfunc] Any non-NULL Y input that is not numeric causes an error to be raised.
+[src:sql-sqlite/lang-aggfunc] The percentile(Y,P) function is equivalent to percentile_cont(Y,p/100.0).
+[src:sql-sqlite/lang-aggfunc] The percentile() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
+[src:sql-sqlite/lang-aggfunc] The percentile(Y,P) aggregate function computes an answer X which is a value that is greater than or equal to fraction P of the non-NULL inputs and which is less than or equal to fraction 1.0-P of the inputs.
+[src:sql-sqlite/lang-aggfunc] The parameter P must be a number between 0.0 and 1.0.
+[src:sql-sqlite/lang-aggfunc] The percentile_cont(Y,P) function works like percentile(Y,P) except that the P value spans the range of 0.0 to 1.0 instead of 0.0 to 100.0.
+[src:sql-sqlite/lang-aggfunc] Thus the result of percentile_cont(Y,P) is the same as percentile(Y,P*100).
+[src:sql-sqlite/lang-aggfunc] The percentile_cont() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
+[src:sql-sqlite/lang-aggfunc] The percentile_disc(Y,P) function works like percentile_cont(Y,P) except that instead of doing a weighted average of the closest available inputs, it always returns a value that is one of the input values - the smaller of the two possible choices.
+[src:sql-sqlite/lang-aggfunc] The sum() and total() aggregate functions return the sum of all non-NULL values in the group.
+[src:sql-sqlite/lang-aggfunc] If there are no non-NULL input rows then sum() returns NULL but total() returns 0.0.
+[src:sql-sqlite/lang-aggfunc] NULL is not normally a helpful result for the sum of no rows but the SQL standard requires it and most other SQL database engines implement sum() that way so SQLite does it in the same way in order to be compatible.
+[src:sql-sqlite/lang-aggfunc] The non-standard total() function is provided as a convenient way to work around this design problem in the SQL language.
+[src:sql-sqlite/lang-aggfunc] The result of total() is always a floating point value.
+[src:sql-sqlite/lang-aggfunc] The result of sum() is an integer value if all non-NULL inputs are integers.
+[src:sql-sqlite/lang-aggfunc] If any input to sum() is neither an integer nor a NULL, then sum() returns a floating point value which is an approximation of the mathematical sum.
+[src:sql-sqlite/lang-aggfunc] Sum() will throw an "integer overflow" exception if all inputs are integers or NULL and an integer overflow occurs at any point during the computation.
+[src:sql-sqlite/lang-aggfunc] No overflow error is ever raised if any prior input was a floating point value.
+[src:sql-sqlite/lang-aggfunc] Total() never throws an integer overflow.
+[src:sql-sqlite/lang-aggfunc] When summing floating-point values, if the magnitudes of the values differ wildly then the resulting sum might be imprecise due to the fact that IEEE 754 floating point values are approximations.
+[src:sql-sqlite/lang-aggfunc] Use the decimal_sum(X) aggregate in the decimal extension to obtain an exact summation of floating point numbers.
+[src:sql-sqlite/lang-aggfunc] The end result is an imprecise result for the sum().
+[src:sql-sqlite/lang-aggfunc] The decimal_sum() aggregate generates an exact answer, at the cost of additional CPU and memory usage.
+[src:sql-sqlite/lang-aggfunc] Note also that decimal_sum() is not built into the SQLite core; it is a loadable extension.
+[src:sql-sqlite/lang-aggfunc] If sum of inputs is too large to represent as a IEEE 754 floating point value, then a +Infinity or -Infinity result may be returned.
+[src:sql-sqlite/lang-aggfunc] If very large values with differing signs are used such that the SUM() or TOTAL() function is unable to determine if the correct result is +Infinity or -Infinity or some other value in between, then the result is NULL.
+[src:sql-sqlite/lang-corefunc] The core functions shown below are available by default.
+[src:sql-sqlite/lang-corefunc] Date & Time functions, aggregate functions, window functions, math functions, and JSON functions are documented separately.
+[src:sql-sqlite/lang-corefunc] An application may define additional functions written in C and added to the database engine using the sqlite3_create_function() API.
+[src:sql-sqlite/lang-corefunc] See the functions within expressions documentation for more information about how SQL function invocations fit into the context of an SQL expression.
+[src:sql-sqlite/lang-corefunc] Descriptions of built-in scalar SQL functions **abs(*X*)** The abs(X) function returns the absolute value of the numeric argument X.
+[src:sql-sqlite/lang-corefunc] Abs(X) returns 0.0 if X is a string or blob that cannot be converted to a numeric value.
+[src:sql-sqlite/lang-corefunc] If X is the integer -9223372036854775808 then abs(X) throws an integer overflow error since there is no equivalent positive 64-bit two's complement value.
+[src:sql-sqlite/lang-corefunc] **changes()** The changes() function returns the number of database rows that were changed or inserted or deleted by the most recently completed INSERT, DELETE, or UPDATE statement, exclusive of statements in lower-level triggers.
+[src:sql-sqlite/lang-corefunc] The changes() SQL function is a wrapper around the sqlite3_changes64() C/C++ function and hence follows the same rules for counting changes.
+[src:sql-sqlite/lang-corefunc] **char(*X1*,*X2*,...,*XN*)** The char(X1,X2,...,XN) function returns a string composed of characters having the unicode code point values of integers X1 through XN, respectively.
+[src:sql-sqlite/lang-corefunc] **coalesce(*X*,*Y*,...)** The coalesce() function returns a copy of its first non-NULL argument, or NULL if all arguments are NULL.
+[src:sql-sqlite/lang-corefunc] Coalesce() must have at least 2 arguments.
+[src:sql-sqlite/lang-corefunc] **concat(*X*,...)** The concat(...) function returns a string which is the concatenation of the string representation of all of its non-NULL arguments.
+[src:sql-sqlite/lang-corefunc] If all arguments are NULL, then concat() returns an empty string.
+[src:sql-sqlite/lang-corefunc] **concat_ws(*SEP*,*X*,...)** The concat_ws(SEP,...) function returns a string that is the concatenation of all non-null arguments beyond the first argument, using the text value of the first argument as a separator.
+[src:sql-sqlite/lang-corefunc] If the first argument is NULL, then concat_ws() returns NULL.
+[src:sql-sqlite/lang-corefunc] If all arguments other than the first are NULL, then concat_ws() returns an empty string.
+[src:sql-sqlite/lang-corefunc] **format(*FORMAT*,...)** The format(FORMAT,...) SQL function works like the sqlite3_mprintf() C-language function and the printf() function from the standard C library.
+[src:sql-sqlite/lang-corefunc] The first argument is a format string that specifies how to construct the output string using values taken from subsequent arguments.
+[src:sql-sqlite/lang-corefunc] If the FORMAT argument is missing or NULL then the result is NULL.
+[src:sql-sqlite/lang-corefunc] The %n format is silently ignored and does not consume an argument.
+[src:sql-sqlite/lang-corefunc] The %z format is interchangeable with %s.
+[src:sql-sqlite/lang-corefunc] If there are too few arguments in the argument list, missing arguments are assumed to have a NULL value, which is translated into 0 or 0.0 for numeric formats or an empty string for %s.
+[src:sql-sqlite/lang-corefunc] See the built-in printf() documentation for additional information.
+[src:sql-sqlite/lang-corefunc] **glob(*X*,*Y*)** The glob(X,Y) function is equivalent to the expression "**Y GLOB X**".
+[src:sql-sqlite/lang-corefunc] Note that the X and Y arguments are reversed in the glob() function relative to the infix GLOB operator.
+[src:sql-sqlite/lang-corefunc] So, for example, the following expressions are equivalent: name GLOB '*helium*' glob('*helium*',name) If the sqlite3_create_function() interface is used to override the glob(X,Y) function with an alternative implementation then the GLOB operator will invoke the alternative implementation.
+[src:sql-sqlite/lang-corefunc] **hex(*X*)** The hex() function interprets its argument as a BLOB and returns a string which is the upper-case hexadecimal rendering of the content of that blob.
+[src:sql-sqlite/lang-corefunc] If the argument *X* in "hex(*X*)" is an integer or floating point number, then "interprets its argument as a BLOB" means that the binary number is first converted into a UTF8 text representation, then that text is interpreted as a BLOB.
+[src:sql-sqlite/lang-corefunc] See also: unhex() **ifnull(*X*,*Y*)** The ifnull() function returns a copy of its first non-NULL argument, or NULL if both arguments are NULL.
+[src:sql-sqlite/lang-corefunc] The ifnull() function is equivalent to coalesce() with two arguments.
+[src:sql-sqlite/lang-corefunc] The first argument of each pair is a Boolean and the second argument is a value to return if the Boolean is true.
+[src:sql-sqlite/lang-corefunc] The iif() function returns the value associated with the first true Boolean.
+[src:sql-sqlite/lang-corefunc] If the number of arguments to iif() is odd, then the last argument is a value that returned if all prior Boolean arguments are false.
+[src:sql-sqlite/lang-corefunc] If the number of arguments is even and all Boolean arguments are false, then NULL is returned.
+[src:sql-sqlite/lang-corefunc] The iif() function requires at least two arguments.
+[src:sql-sqlite/lang-corefunc] The iif() function is really a short-hand notation for a CASE expression.
+[src:sql-sqlite/lang-corefunc] For example, the iif(X,Y,Z) function is logically equivalent to and generates the same bytecode as the CASE expression "CASE WHEN X THEN Y ELSE Z END".
+[src:sql-sqlite/lang-corefunc] The if() function is just an alternative spelling for iif().
+[src:sql-sqlite/lang-corefunc] The iif() function uses short-circuit evaluation.
+[src:sql-sqlite/lang-corefunc] Arguments are only evaluated if necessary to compute the final result.
+[src:sql-sqlite/lang-corefunc] So, for example, if one of the value arguments involves an expensive computation (such as an elaborate subquery) but the corresponding Boolean is false, the expensive computation never occurs.
+[src:sql-sqlite/lang-corefunc] Similarly, Boolean arguments past the first one that is true are never evaluated.
+[src:sql-sqlite/lang-corefunc] The iif() function originally required exactly three arguments.
+[src:sql-sqlite/lang-corefunc] The two-argument version of iif() and the ability to spell the function as "if()" were features added in SQLite version 3.48.0 (2025-01-14) The ability to accept more than 3 arguments was added in SQLite version 3.49.0 (2025-02-06).
+[src:sql-sqlite/lang-corefunc] **instr(*X*,*Y*)** The instr(X,Y) function finds the first occurrence of string Y within string X and returns the number of prior characters plus 1, or 0 if Y is nowhere found within X.
+[src:sql-sqlite/lang-corefunc] Or, if X and Y are both BLOBs, then instr(X,Y) returns one more than the number of bytes prior to the first occurrence of Y, or 0 if Y does not occur anywhere within X.
+[src:sql-sqlite/lang-corefunc] If both arguments X and Y to instr(X,Y) are non-NULL and are not BLOBs then both are interpreted as strings.
+[src:sql-sqlite/lang-corefunc] If either X or Y are NULL in instr(X,Y) then the result is NULL.
+[src:sql-sqlite/lang-corefunc] **last_insert_rowid()** The last_insert_rowid() function returns the ROWID of the last row insert from the database connection which invoked the function.
+[src:sql-sqlite/lang-corefunc] The last_insert_rowid() SQL function is a wrapper around the sqlite3_last_insert_rowid() C/C++ interface function.
+[src:sql-sqlite/lang-corefunc] **length(*X*)** For a string value X, the length(X) function returns the number of Unicode code points (not bytes) in input string X prior to the first U+0000 character.
+[src:sql-sqlite/lang-corefunc] Since SQLite strings do not normally contain NUL characters, the length(X) function will usually return the total number of characters in the string X.
+[src:sql-sqlite/lang-corefunc] For a blob value X, length(X) returns the number of bytes in the blob.
+[src:sql-sqlite/lang-corefunc] If X is numeric then length(X) returns the length of a string representation of X.
+[src:sql-sqlite/lang-corefunc] Note that for strings, the length(X) function returns the *character* or *code-point* length of the string, not the byte length.
+[src:sql-sqlite/lang-corefunc] The character length is the number of characters in the string.
+[src:sql-sqlite/lang-corefunc] The character length is always different from the byte length for UTF-16 strings, and can be different from the byte length for UTF-8 strings if the string contains multi-byte characters.
+[src:sql-sqlite/lang-corefunc] Use the octet_length() function to find the byte length of a string.
+[src:sql-sqlite/lang-corefunc] For BLOB values, length(X) always returns the byte-length of the BLOB.
+[src:sql-sqlite/lang-corefunc] For string values, length(X) must read the entire string into memory in order to compute the character length.
+[src:sql-sqlite/lang-corefunc] But for BLOB values, reading the whole string into memory is not necessary as SQLite already knows how many bytes are in the BLOB.
+[src:sql-sqlite/lang-corefunc] Hence, for multi-megabyte values, the length(X) function is usually much faster for BLOBs than for strings, since it does not need to load the value into memory.
+[src:sql-sqlite/lang-corefunc] **like(*X*,*Y*) like(*X*,*Y*,*Z*)** The like() function is used to implement the "**Y LIKE X [ESCAPE Z]**" expression.
+[src:sql-sqlite/lang-corefunc] If the optional ESCAPE clause is present, then the like() function is invoked with three arguments.
+[src:sql-sqlite/lang-corefunc] Otherwise, it is invoked with two arguments only.
+[src:sql-sqlite/lang-corefunc] Note that the X and Y parameters are reversed in the like() function relative to the infix LIKE operator.
+[src:sql-sqlite/lang-corefunc] X is the pattern and Y is the string to match against that pattern.
+[src:sql-sqlite/lang-corefunc] Hence, the following expressions are equivalent: name LIKE '%neon%' like('%neon%',name) The sqlite3_create_function() interface can be used to override the like() function and thereby change the operation of the LIKE operator.
+[src:sql-sqlite/lang-corefunc] When overriding the like() function, it may be important to override both the two and three argument versions of the like() function.
+[src:sql-sqlite/lang-corefunc] Otherwise, different code may be called to implement the LIKE operator depending on whether or not an ESCAPE clause was specified.
+[src:sql-sqlite/lang-corefunc] **likelihood(*X*,*Y*)** The likelihood(X,Y) function returns argument X unchanged.
+[src:sql-sqlite/lang-corefunc] The value Y in likelihood(X,Y) must be a floating point constant between 0.0 and 1.0, inclusive.
+[src:sql-sqlite/lang-corefunc] The likelihood(X) function is a no-op that the code generator optimizes away so that it consumes no CPU cycles during run-time (that is, during calls to sqlite3_step()).
+[src:sql-sqlite/lang-corefunc] The purpose of the likelihood(X,Y) function is to provide a hint to the query planner that the argument X is a boolean that is true with a probability of approximately Y.
+[src:sql-sqlite/lang-corefunc] The unlikely(X) function is short-hand for likelihood(X,0.0625).
+[src:sql-sqlite/lang-corefunc] The likely(X) function is short-hand for likelihood(X,0.9375).
+[src:sql-sqlite/lang-corefunc] **likely(*X*)** The likely(X) function returns the argument X unchanged.
+[src:sql-sqlite/lang-corefunc] The likely(X) function is a no-op that the code generator optimizes away so that it consumes no CPU cycles at run-time (that is, during calls to sqlite3_step()).
+[src:sql-sqlite/lang-corefunc] The purpose of the likely(X) function is to provide a hint to the query planner that the argument X is a boolean value that is usually true.
+[src:sql-sqlite/lang-corefunc] The likely(X) function is equivalent to likelihood(X,0.9375).
+[src:sql-sqlite/lang-corefunc] **load_extension(*X*) load_extension(*X*,*Y*)** The load_extension(X,Y) function loads SQLite extensions out of the shared library file named X using the entry point Y.
+[src:sql-sqlite/lang-corefunc] The result of load_extension() is always a NULL.
+[src:sql-sqlite/lang-corefunc] If Y is omitted then the default entry point name is used.
+[src:sql-sqlite/lang-corefunc] The load_extension() function raises an exception if the extension fails to load or initialize correctly.
+[src:sql-sqlite/lang-corefunc] The load_extension() function will fail if the extension attempts to modify or delete an SQL function or collating sequence.
+[src:sql-sqlite/lang-corefunc] The extension can add new functions or collating sequences, but cannot modify or delete existing functions or collating sequences because those functions and/or collating sequences might be used elsewhere in the currently running SQL statement.
+[src:sql-sqlite/lang-corefunc] To load an extension that changes or deletes functions or collating sequences, use the sqlite3_load_extension() C-language API.
+[src:sql-sqlite/lang-corefunc] For security reasons, extension loading is disabled by default and must be enabled by a prior call to sqlite3_enable_load_extension().
+[src:sql-sqlite/lang-corefunc] **lower(*X*)** The lower(X) function returns a copy of string X with all ASCII characters converted to lower case.
+[src:sql-sqlite/lang-corefunc] The default built-in lower() function works for ASCII characters only.
+[src:sql-sqlite/lang-corefunc] To do case conversions on non-ASCII characters, load the ICU extension.
+[src:sql-sqlite/lang-corefunc] **ltrim(*X*) ltrim(*X*,*Y*)** The ltrim(X,Y) function returns a string formed by removing any and all characters that appear in Y from the left side of X.
+[src:sql-sqlite/lang-corefunc] If the Y argument is omitted, ltrim(X) removes spaces from the left side of X.
+[src:sql-sqlite/lang-corefunc] **max(*X*,*Y*,...)** The multi-argument max() function returns the argument with the maximum value, or return NULL if any argument is NULL.
+[src:sql-sqlite/lang-corefunc] The multi-argument max() function searches its arguments from left to right for an argument that defines a collating function and uses that collating function for all string comparisons.
+[src:sql-sqlite/lang-corefunc] If none of the arguments to max() define a collating function, then the BINARY collating function is used.
+[src:sql-sqlite/lang-corefunc] Note that **max()** is a simple function when it has 2 or more arguments but operates as an aggregate function if given only a single argument.
+[src:sql-sqlite/lang-corefunc] **min(*X*,*Y*,...)** The multi-argument min() function returns the argument with the minimum value.
+[src:sql-sqlite/lang-corefunc] The multi-argument min() function searches its arguments from left to right for an argument that defines a collating function and uses that collating function for all string comparisons.
+[src:sql-sqlite/lang-corefunc] If none of the arguments to min() define a collating function, then the BINARY collating function is used.
+[src:sql-sqlite/lang-corefunc] Note that **min()** is a simple function when it has 2 or more arguments but operates as an aggregate function if given only a single argument.
+[src:sql-sqlite/lang-corefunc] **nullif(*X*,*Y*)** The nullif(X,Y) function returns its first argument if the arguments are different and NULL if the arguments are the same.
+[src:sql-sqlite/lang-corefunc] The nullif(X,Y) function searches its arguments from left to right for an argument that defines a collating function and uses that collating function for all string comparisons.
+[src:sql-sqlite/lang-corefunc] If neither argument to nullif() defines a collating function then the BINARY collating function is used.
+[src:sql-sqlite/lang-corefunc] **octet_length(*X*)** The octet_length(X) function returns the number of bytes in the encoding of text string X.
+[src:sql-sqlite/lang-corefunc] If X is NULL then octet_length(X) returns NULL.
+[src:sql-sqlite/lang-corefunc] If X is a BLOB value, then octet_length(X) is the same as length(X).
+[src:sql-sqlite/lang-corefunc] If X is a numeric value, then octet_length(X) returns the number of bytes in a text rendering of that number.
+[src:sql-sqlite/lang-corefunc] Because octet_length(X) returns the number of bytes in X, not the number of characters or code-points, the value returned depends on the database encoding.
+[src:sql-sqlite/lang-corefunc] The octet_length() function can return different answers for the same input string if the database encoding is UTF16 instead of UTF8.
+[src:sql-sqlite/lang-corefunc] If argument X is a table column and the value is of type text or blob, then octet_length(X) avoids reading the content of X from disk, as the byte length can be computed from metadata.
+[src:sql-sqlite/lang-corefunc] Thus, octet_length(X) is efficient even if X is a column containing a multi-megabyte text or blob value.
+[src:sql-sqlite/lang-corefunc] **printf(*FORMAT*,...)** The printf() SQL function is an alias for the format() SQL function.
+[src:sql-sqlite/lang-corefunc] The format() SQL function was originally named printf().
+[src:sql-sqlite/lang-corefunc] But the name was later changed to format() for compatibility with other database engines.
+[src:sql-sqlite/lang-corefunc] The printf() name is retained as an alias so as not to break legacy code.
+[src:sql-sqlite/lang-corefunc] **quote(*X*)** The quote(X) function returns the text of an SQL literal which is the value of its argument suitable for inclusion into an SQL statement.
+[src:sql-sqlite/lang-corefunc] Strings are surrounded by single-quotes with escapes on interior quotes as needed.
+[src:sql-sqlite/lang-corefunc] BLOBs are encoded as hexadecimal literals.
+[src:sql-sqlite/lang-corefunc] Strings with embedded NUL characters cannot be represented as string literals in SQL and hence the returned string literal is truncated prior to the first NUL.
+[src:sql-sqlite/lang-corefunc] The unistr_quote(X) function works like quote(X) except that it also escapes control characters.
+[src:sql-sqlite/lang-corefunc] The random() function deliberately avoids generating -9223372036854775808 so that its value can always be passed to abs().
+[src:sql-sqlite/lang-corefunc] The random() function has behaved this way since version 3.3.5 (circa 2006) but this documentation incorrectly stated that -9223372036854775808 was a possible result until 2025-07-25.
+[src:sql-sqlite/lang-corefunc] **randomblob(*N*)** The randomblob(N) function return an N-byte blob containing pseudo-random bytes.
+[src:sql-sqlite/lang-corefunc] If N is less than 1 then a 1-byte random blob is returned.
+[src:sql-sqlite/lang-corefunc] The BINARY collating sequence is used for comparisons.
+[src:sql-sqlite/lang-corefunc] If Y is an empty string then return X unchanged.
+[src:sql-sqlite/lang-corefunc] If Z is not initially a string, it is cast to a UTF-8 string prior to processing.
+[src:sql-sqlite/lang-corefunc] **round(*X*) round(*X*,*Y*)** The round(X,Y) function returns a floating-point value X rounded to Y digits to the right of the decimal point.
+[src:sql-sqlite/lang-corefunc] If the Y argument is omitted or negative, it is taken to be 0.
+[src:sql-sqlite/lang-corefunc] **rtrim(*X*) rtrim(*X*,*Y*)** The rtrim(X,Y) function returns a string formed by removing any and all characters that appear in Y from the right side of X.
+[src:sql-sqlite/lang-corefunc] If the Y argument is omitted, rtrim(X) removes spaces from the right side of X.
+[src:sql-sqlite/lang-corefunc] **sign(*X*)** The sign(X) function returns -1, 0, or +1 if the argument X is a numeric value that is negative, zero, or positive, respectively.
+[src:sql-sqlite/lang-corefunc] If the argument to sign(X) is NULL or a BLOB or a string that cannot be losslessly converted into a number, then sign(X) returns NULL.
+[src:sql-sqlite/lang-corefunc] **soundex(*X*)** The soundex(X) function returns a string that is the soundex encoding of the string X.
+[src:sql-sqlite/lang-corefunc] The string "?000" is returned if the argument is NULL or contains no ASCII alphabetic characters.
+[src:sql-sqlite/lang-corefunc] This function is omitted from SQLite by default.
+[src:sql-sqlite/lang-corefunc] It is only available if the SQLITE_SOUNDEX compile-time option is used when SQLite is built.
+[src:sql-sqlite/lang-corefunc] **sqlite_compileoption_get(*N*)** The sqlite_compileoption_get() SQL function is a wrapper around the sqlite3_compileoption_get() C/C++ function.
+[src:sql-sqlite/lang-corefunc] This routine returns the N-th compile-time option used to build SQLite or NULL if N is out of range.
+[src:sql-sqlite/lang-corefunc] **sqlite_compileoption_used(*X*)** The sqlite_compileoption_used() SQL function is a wrapper around the sqlite3_compileoption_used() C/C++ function.
+[src:sql-sqlite/lang-corefunc] When the argument X to sqlite_compileoption_used(X) is a string which is the name of a compile-time option, this routine returns true (1) or false (0) depending on whether or not that option was used during the build.
+[src:sql-sqlite/lang-corefunc] **sqlite_offset(*X*)** The sqlite_offset(X) function returns the byte offset in the database file for the beginning of the record from which value would be read.
+[src:sql-sqlite/lang-corefunc] If X is not a column in an ordinary table, then sqlite_offset(X) returns NULL.
+[src:sql-sqlite/lang-corefunc] The value returned by sqlite_offset(X) might reference either the original table or an index, depending on the query.
+[src:sql-sqlite/lang-corefunc] If the value X would normally be extracted from an index, the sqlite_offset(X) returns the offset to the corresponding index record.
+[src:sql-sqlite/lang-corefunc] If the value X would be extracted from the original table, then sqlite_offset(X) returns the offset to the table record.
+[src:sql-sqlite/lang-corefunc] The sqlite_offset(X) SQL function is only available if SQLite is built using the -DSQLITE_ENABLE_OFFSET_SQL_FUNC compile-time option.
+[src:sql-sqlite/lang-corefunc] **sqlite_source_id()** The sqlite_source_id() function returns a string that identifies the specific version of the source code that was used to build the SQLite library.
+[src:sql-sqlite/lang-corefunc] The string returned by sqlite_source_id() is the date and time that the source code was checked in followed by the SHA3-256 hash for that check-in.
+[src:sql-sqlite/lang-corefunc] This function is an SQL wrapper around the sqlite3_sourceid() C interface.
+[src:sql-sqlite/lang-corefunc] **sqlite_version()** The sqlite_version() function returns the version string for the SQLite library that is running.
+[src:sql-sqlite/lang-corefunc] This function is an SQL wrapper around the sqlite3_libversion() C-interface.
+[src:sql-sqlite/lang-corefunc] **substr(*X*,*Y*,*Z*) substr(*X*,*Y*) substring(*X*,*Y*,*Z*) substring(*X*,*Y*)** The substr(X,Y,Z) function returns a substring of input string X that begins with the Y-th character and which is Z characters long.
+[src:sql-sqlite/lang-corefunc] If Z is omitted then substr(X,Y) returns all characters through the end of the string X beginning with the Y-th.
+[src:sql-sqlite/lang-corefunc] The left-most character of X is number 1.
+[src:sql-sqlite/lang-corefunc] If Y is negative then the first character of the substring is found by counting from the right rather than the left.
+[src:sql-sqlite/lang-corefunc] If Z is negative then the abs(Z) characters preceding the Y-th character are returned.
+[src:sql-sqlite/lang-corefunc] If X is a string then indices count UTF code points.
+[src:sql-sqlite/lang-corefunc] If X is a BLOB then the indices count bytes.
+[src:sql-sqlite/lang-corefunc] "substring()" is an alias for "substr()" beginning with SQLite version 3.34.
+[src:sql-sqlite/lang-corefunc] **total_changes()** The total_changes() function returns the number of row changes caused by INSERT, UPDATE or DELETE statements since the current database connection was opened.
+[src:sql-sqlite/lang-corefunc] This function is a wrapper around the sqlite3_total_changes64() C/C++ interface.
+[src:sql-sqlite/lang-corefunc] **trim(*X*) trim(*X*,*Y*)** The trim(X,Y) function returns a string formed by removing any and all characters that appear in Y from both ends of X.
+[src:sql-sqlite/lang-corefunc] If the Y argument is omitted, trim(X) removes spaces from both ends of X.
+[src:sql-sqlite/lang-corefunc] **typeof(*X*)** The typeof(X) function returns a string that indicates the datatype of the expression X: "null", "integer", "real", "text", or "blob".
+[src:sql-sqlite/lang-corefunc] **unhex(*X*) unhex(*X*,*Y*)** The unhex(X,Y) function returns a BLOB value which is the decoding of the hexadecimal string X.
+[src:sql-sqlite/lang-corefunc] If X contains any characters that are not hexadecimal digits and which are not in Y, then unhex(X,Y) returns NULL.
+[src:sql-sqlite/lang-corefunc] If Y is omitted, it is understood to be an empty string and hence X must be a pure hexadecimal string.
+[src:sql-sqlite/lang-corefunc] All hexadecimal digits in X must occur in pairs, with both digits of each pair beginning immediately adjacent to one another, or else unhex(X,Y) returns NULL.
+[src:sql-sqlite/lang-corefunc] If either parameter X or Y is NULL, then unhex(X,Y) returns NULL.
+[src:sql-sqlite/lang-corefunc] The X input may contain an arbitrary mix of upper and lower case hexadecimal digits.
+[src:sql-sqlite/lang-corefunc] Hexadecimal digits in Y have no affect on the translation of X.
+[src:sql-sqlite/lang-corefunc] Only characters in Y that are not hexadecimal digits are ignored in X.
+[src:sql-sqlite/lang-corefunc] See also: hex() **unicode(*X*)** The unicode(X) function returns the numeric unicode code point corresponding to the first character of the string X.
+[src:sql-sqlite/lang-corefunc] If the argument to unicode(X) is not a string then the result is unspecified.
+[src:sql-sqlite/lang-corefunc] **unistr(*X*)** The unistr(X) function interprets backslash escapes in input string X and returns a new string with those escapes converted into the actual Unicode codepoints that they represent.
+[src:sql-sqlite/lang-corefunc] This function, added in SQLite version 3.50.0 (2025-05-29), is intended to work the same as in PostgreSQL, SQL Server, and Oracle.
+[src:sql-sqlite/lang-corefunc] The PostgreSQL documentation says: "Unicode characters can be specified as \XXXX (4 hexadecimal digits), \+XXXXXX (6 hexadecimal digits), \uXXXX (4 hexadecimal digits), or \UXXXXXXXX (8 hexadecimal digits).
+[src:sql-sqlite/lang-corefunc] To specify a backslash, write two backslashes.
+[src:sql-sqlite/lang-corefunc] All other characters are taken literally." **unistr_quote(*X*)** The unistr_quote(X) function returns the text of an SQL literal or constant expression that encodes the value of its argument X and is suitable for inclusion into an SQL statement.
+[src:sql-sqlite/lang-corefunc] In most cases, the output of unistr_quote(X) is identical to quote(X).
+[src:sql-sqlite/lang-corefunc] However, if X is text that contains control characters in the range U+0001 through U+001f, then those characters and any "\" characters in X are escaped using JSON-style backslash escapes and the entire output is enclosed within "unistr(..)".
+[src:sql-sqlite/lang-corefunc] This makes the resulting text safe for display on devices that interpret ANSI escape codes.
+[src:sql-sqlite/lang-corefunc] **unlikely(*X*)** The unlikely(X) function returns the argument X unchanged.
+[src:sql-sqlite/lang-corefunc] The unlikely(X) function is a no-op that the code generator optimizes away so that it consumes no CPU cycles at run-time (that is, during calls to sqlite3_step()).
+[src:sql-sqlite/lang-corefunc] The purpose of the unlikely(X) function is to provide a hint to the query planner that the argument X is a boolean value that is usually not true.
+[src:sql-sqlite/lang-corefunc] The unlikely(X) function is equivalent to likelihood(X, 0.0625).
+[src:sql-sqlite/lang-corefunc] **upper(*X*)** The upper(X) function returns a copy of input string X in which all lower-case ASCII characters are converted to their upper-case equivalent.
+[src:sql-sqlite/lang-corefunc] **zeroblob(*N*)** The zeroblob(N) function returns a BLOB consisting of N bytes of 0x00.
+[src:sql-sqlite/lang-corefunc] SQLite manages these zeroblobs very efficiently.
+[src:sql-sqlite/lang-corefunc] Zeroblobs can be used to reserve space for a BLOB that is later written using incremental BLOB I/O.
+[src:sql-sqlite/lang-corefunc] This SQL function is implemented using the sqlite3_result_zeroblob() routine from the C/C++ interface.
+[src:sql-sqlite/lang-createtable] The "CREATE TABLE" command is used to create a new table in an SQLite database.
+[src:sql-sqlite/lang-createtable] Every CREATE TABLE statement must specify a name for the new table.
+[src:sql-sqlite/lang-createtable] Table names that begin with "sqlite_" are reserved for internal use.
+[src:sql-sqlite/lang-createtable] It is an error to attempt to create a table with a name that starts with "sqlite_".
+[src:sql-sqlite/lang-createtable] If a schema-name is specified, it must be either "main", "temp", or the name of an attached database.
+[src:sql-sqlite/lang-createtable] In this case the new table is created in the named database.
+[src:sql-sqlite/lang-createtable] If the "TEMP" or "TEMPORARY" keyword occurs between the "CREATE" and "TABLE" then the new table is created in the temp database.
+[src:sql-sqlite/lang-createtable] It is an error to specify both a schema-name and the TEMP or TEMPORARY keyword, unless the schema-name is "temp".
+[src:sql-sqlite/lang-createtable] If no schema name is specified and the TEMP keyword is not present then the table is created in the main database.
+[src:sql-sqlite/lang-createtable] It is usually an error to attempt to create a new table in a database that already contains a table, index or view of the same name.
+[src:sql-sqlite/lang-createtable] However, if the "IF NOT EXISTS" clause is specified as part of the CREATE TABLE statement and a table or view of the same name already exists, the CREATE TABLE command simply has no effect (and no error message is returned).
+[src:sql-sqlite/lang-createtable] An error is still returned if the table cannot be created because of an existing index, even if the "IF NOT EXISTS" clause is specified.
+[src:sql-sqlite/lang-createtable] It is not an error to create a table that has the same name as an existing trigger.
+[src:sql-sqlite/lang-createtable] Tables are removed using the DROP TABLE statement.
+[src:sql-sqlite/lang-createtable] AS SELECT" statement creates and populates a database table based on the results of a SELECT statement.
+[src:sql-sqlite/lang-createtable] The table has the same number of columns as the SELECT statement returns.
+[src:sql-sqlite/lang-createtable] The name of each column is the same as the name of the corresponding column in the result set of the SELECT statement.
+[src:sql-sqlite/lang-createtable] A table created using CREATE TABLE AS has no PRIMARY KEY and no constraints of any kind.
+[src:sql-sqlite/lang-createtable] The default value of each column is NULL.
+[src:sql-sqlite/lang-createtable] The default collation sequence for each column of the new table is BINARY.
+[src:sql-sqlite/lang-createtable] Tables created using CREATE TABLE AS are initially populated with the rows of data returned by the SELECT statement.
+[src:sql-sqlite/lang-createtable] Rows are assigned contiguously ascending rowid values, starting with 1, in the order that they are returned by the SELECT statement.
+[src:sql-sqlite/lang-createtable] AS SELECT statement, a CREATE TABLE includes one or more column definitions, optionally followed by a list of table constraints.
+[src:sql-sqlite/lang-createtable] Each column definition consists of the name of the column, optionally followed by the declared type of the column, then one or more optional column constraints.
+[src:sql-sqlite/lang-createtable] Included in the definition of "column constraints" for the purposes of the previous statement are the COLLATE and DEFAULT clauses, even though these are not really constraints in the sense that they do not restrict the data that the table may contain.
+[src:sql-sqlite/lang-createtable] The other constraints - NOT NULL, CHECK, UNIQUE, PRIMARY KEY and FOREIGN KEY constraints - impose restrictions on the table data.
+[src:sql-sqlite/lang-createtable] The number of columns in a table is limited by the SQLITE_MAX_COLUMN compile-time parameter.
+[src:sql-sqlite/lang-createtable] A single row of a table cannot store more than SQLITE_MAX_LENGTH bytes of data.
+[src:sql-sqlite/lang-createtable] Both of these limits can be lowered at runtime using the sqlite3_limit() C/C++ interface.
+[src:sql-sqlite/lang-createtable] Unlike most SQL databases, SQLite does not restrict the type of data that may be inserted into a column based on the columns declared type.
+[src:sql-sqlite/lang-createtable] The declared type of a column is used to determine the affinity of the column only.
+[src:sql-sqlite/lang-createtable] The DEFAULT clause specifies a default value to use for the column if no value is explicitly provided by the user when doing an INSERT.
+[src:sql-sqlite/lang-createtable] If there is no explicit DEFAULT clause attached to a column definition, then the default value of the column is NULL.
+[src:sql-sqlite/lang-createtable] An explicit DEFAULT clause may specify that the default value is NULL, a string constant, a blob constant, a signed-number, or any constant expression enclosed in parentheses.
+[src:sql-sqlite/lang-createtable] A default value may also be one of the special case-independent keywords CURRENT_TIME, CURRENT_DATE or CURRENT_TIMESTAMP.
+[src:sql-sqlite/lang-createtable] For the purposes of the DEFAULT clause, an expression is considered constant if it contains no sub-queries, column or table references, bound parameters, or string literals enclosed in double-quotes instead of single-quotes.
+[src:sql-sqlite/lang-createtable] The COLLATE clause specifies the name of a collating sequence to use as the default collation sequence for the column.
+[src:sql-sqlite/lang-createtable] If no COLLATE clause is specified, the default collation sequence is BINARY.
+[src:sql-sqlite/lang-createtable] A column that includes a GENERATED ALWAYS AS clause is a generated column.
+[src:sql-sqlite/lang-createtable] Generated columns are supported beginning with SQLite version 3.31.0 (2020-01-22).
+[src:sql-sqlite/lang-createtable] See the separate documentation for details on the capabilities and limitations of generated columns.
+[src:sql-sqlite/lang-createtable] Each table in SQLite may have at most one PRIMARY KEY.
+[src:sql-sqlite/lang-createtable] If the keywords PRIMARY KEY are added to a column definition, then the primary key for the table consists of that single column.
+[src:sql-sqlite/lang-createtable] Or, if a PRIMARY KEY clause is specified as a table-constraint, then the primary key of the table consists of the list of columns specified as part of the PRIMARY KEY clause.
+[src:sql-sqlite/lang-createtable] The PRIMARY KEY clause must contain only column names — the use of expressions in an indexed-column of a PRIMARY KEY is not supported.
+[src:sql-sqlite/lang-createtable] An error is raised if more than one PRIMARY KEY clause appears in a CREATE TABLE statement.
+[src:sql-sqlite/lang-createtable] The PRIMARY KEY is optional for ordinary tables but is required for WITHOUT ROWID tables.
+[src:sql-sqlite/lang-createtable] If a table has a single column primary key and the declared type of that column is "INTEGER" and the table is not a WITHOUT ROWID table, then the column is known as an INTEGER PRIMARY KEY.
+[src:sql-sqlite/lang-createtable] See below for a description of the special properties and behaviors associated with an INTEGER PRIMARY KEY.
+[src:sql-sqlite/lang-createtable] Each row in a table with a primary key must have a unique combination of values in its primary key columns.
+[src:sql-sqlite/lang-createtable] For the purposes of determining the uniqueness of primary key values, NULL values are considered distinct from all other values, including other NULLs.
+[src:sql-sqlite/lang-createtable] If an INSERT or UPDATE statement attempts to modify the table content so that two or more rows have identical primary key values, that is a constraint violation.
+[src:sql-sqlite/lang-createtable] According to the SQL standard, PRIMARY KEY should always imply NOT NULL.
+[src:sql-sqlite/lang-createtable] Unfortunately, due to a bug in some early versions, this is not the case in SQLite.
+[src:sql-sqlite/lang-createtable] Unless the column is an INTEGER PRIMARY KEY or the table is a WITHOUT ROWID table or a STRICT table or the column is declared NOT NULL, SQLite allows NULL values in a PRIMARY KEY column.
+[src:sql-sqlite/lang-createtable] SQLite could be fixed to conform to the standard, but doing so might break legacy applications.
+[src:sql-sqlite/lang-createtable] Hence, it has been decided to merely document the fact that SQLite allows NULLs in most PRIMARY KEY columns.
+[src:sql-sqlite/lang-createtable] A UNIQUE constraint is similar to a PRIMARY KEY constraint, except that a single table may have any number of UNIQUE constraints.
+[src:sql-sqlite/lang-createtable] For each UNIQUE constraint on the table, each row must contain a unique combination of values in the columns identified by the UNIQUE constraint.
+[src:sql-sqlite/lang-createtable] For the purposes of UNIQUE constraints, NULL values are considered distinct from all other values, including other NULLs.
+[src:sql-sqlite/lang-createtable] As with PRIMARY KEYs, a UNIQUE table-constraint clause must contain only column names — the use of expressions in an indexed-column of a UNIQUE table-constraint is not supported.
+[src:sql-sqlite/lang-createtable] In most cases, UNIQUE and PRIMARY KEY constraints are implemented by creating a unique index in the database.
+[src:sql-sqlite/lang-createtable] A CHECK constraint may be attached to a column definition or specified as a table constraint.
+[src:sql-sqlite/lang-createtable] Each time a new row is inserted into the table or an existing row is updated, the expression associated with each CHECK constraint is evaluated and cast to a NUMERIC value in the same way as a CAST expression.
+[src:sql-sqlite/lang-createtable] If the result is zero (integer value 0 or real value 0.0), then a constraint violation has occurred.
+[src:sql-sqlite/lang-createtable] If the CHECK expression evaluates to NULL, or any other non-zero value, it is not a constraint violation.
+[src:sql-sqlite/lang-createtable] The expression of a CHECK constraint may not contain a subquery.
+[src:sql-sqlite/lang-createtable] CHECK constraints are only verified when the table is written, not when it is read.
+[src:sql-sqlite/lang-createtable] Furthermore, verification of CHECK constraints can be temporarily disabled using the "PRAGMA ignore_check_constraints=ON;" statement.
+[src:sql-sqlite/lang-createtable] Hence, it is possible that a query might produce results that violate the CHECK constraints.
+[src:sql-sqlite/lang-createtable] A NOT NULL constraint may only be attached to a column definition, not specified as a table constraint.
+[src:sql-sqlite/lang-createtable] Not surprisingly, a NOT NULL constraint dictates that the associated column may not contain a NULL value.
+[src:sql-sqlite/lang-createtable] Attempting to set the column value to NULL when inserting a new row or updating an existing one causes a constraint violation.
+[src:sql-sqlite/lang-createtable] NOT NULL constraints are not verified during queries, so a query of a column might produce a NULL value even though the column is marked as NOT NULL, if the database file is corrupt.
+[src:sql-sqlite/lang-createtable] Constraints are checked during INSERT and UPDATE and by PRAGMA integrity_check and PRAGMA quick_check and sometimes by ALTER TABLE.
+[src:sql-sqlite/lang-createtable] Queries and DELETE statements do not normally verify constraints.
+[src:sql-sqlite/lang-createtable] Hence, if a database file has been corrupted (perhaps by an external program making direct changes to the database file without going through the SQLite library) a query might return data that violates a constraint.
+[src:sql-sqlite/lang-createtable] Enforcement of CHECK constraints can be temporarily disabled using the PRAGMA ignore_check_constraints=ON; statement.
+[src:sql-sqlite/lang-createtable] The response to a constraint violation is determined by the constraint conflict resolution algorithm.
+[src:sql-sqlite/lang-createtable] Each PRIMARY KEY, UNIQUE, NOT NULL and CHECK constraint has a default conflict resolution algorithm.
+[src:sql-sqlite/lang-createtable] PRIMARY KEY, UNIQUE and NOT NULL constraints may be explicitly assigned another default conflict resolution algorithm by including a conflict-clause in their definitions.
+[src:sql-sqlite/lang-createtable] Or, if a constraint definition does not include a conflict-clause, the default conflict resolution algorithm is ABORT.
+[src:sql-sqlite/lang-createtable] The conflict resolution algorithm for CHECK constraints is always ABORT.
+[src:sql-sqlite/lang-createtable] (For historical compatibility only, table CHECK constraints are allowed to have a conflict resolution clause, but that has no effect.) Different constraints within the same table may have different default conflict resolution algorithms.
+[src:sql-sqlite/lang-createtable] See the section titled ON CONFLICT for additional information.
+[src:sql-sqlite/lang-createtable] Except for WITHOUT ROWID tables, all rows within SQLite tables have a 64-bit signed integer key that uniquely identifies the row within its table.
+[src:sql-sqlite/lang-createtable] This integer is usually called the "rowid".
+[src:sql-sqlite/lang-createtable] The rowid value can be accessed using one of the special case-independent names "rowid", "oid", or "_rowid_" in place of a column name.
+[src:sql-sqlite/lang-createtable] If a table contains a user defined column named "rowid", "oid" or "_rowid_", then that name always refers the explicitly declared column and cannot be used to retrieve the integer rowid value.
+[src:sql-sqlite/lang-createtable] The rowid (and "oid" and "_rowid_") is omitted in WITHOUT ROWID tables.
+[src:sql-sqlite/lang-createtable] WITHOUT ROWID tables are only available in SQLite version 3.8.2 (2013-12-06) and later.
+[src:sql-sqlite/lang-createtable] A table that lacks the WITHOUT ROWID clause is called a "rowid table".
+[src:sql-sqlite/lang-createtable] The data for rowid tables is stored as a B-Tree structure containing one entry for each table row, using the rowid value as the key.
+[src:sql-sqlite/lang-createtable] This means that retrieving or sorting records by rowid is fast.
+[src:sql-sqlite/lang-createtable] Searching for a record with a specific rowid, or for all records with rowids within a specified range is around twice as fast as a similar search made by specifying any other PRIMARY KEY or indexed value.
+[src:sql-sqlite/lang-createtable] With one exception noted below, if a rowid table has a primary key that consists of a single column and the declared type of that column is "INTEGER" in any mixture of upper and lower case, then the column becomes an alias for the rowid.
+[src:sql-sqlite/lang-createtable] Such a column is usually referred to as an "integer primary key".
+[src:sql-sqlite/lang-createtable] A PRIMARY KEY column only becomes an integer primary key if the declared type name is exactly "INTEGER".
+[src:sql-sqlite/lang-createtable] Other integer type names like "INT" or "BIGINT" or "SHORT INTEGER" or "UNSIGNED INTEGER" causes the primary key column to behave as an ordinary table column with integer affinity and a unique index, not as an alias for the rowid.
+[src:sql-sqlite/lang-createtable] The exception mentioned above is that if the declaration of a column with declared type "INTEGER" includes an "PRIMARY KEY DESC" clause, it does not become an alias for the rowid and is not classified as an integer primary key.
+[src:sql-sqlite/lang-createtable] It is due to a bug in early versions of SQLite.
+[src:sql-sqlite/lang-createtable] But fixing the bug could result in backwards incompatibilities.
+[src:sql-sqlite/lang-createtable] Hence, the original behavior has been retained (and documented) because odd behavior in a corner case is far better than a compatibility break.
+[src:sql-sqlite/lang-createtable] Rowid values may be modified using an UPDATE statement in the same way as any other column value can, either using one of the built-in aliases ("rowid", "oid" or "_rowid_") or by using an alias created by an integer primary key.
+[src:sql-sqlite/lang-createtable] Similarly, an INSERT statement may provide a value to use as the rowid for each row inserted.
+[src:sql-sqlite/lang-createtable] Unlike normal SQLite columns, an integer primary key or rowid column must contain integer values.
+[src:sql-sqlite/lang-createtable] Integer primary key or rowid columns are not able to hold floating point values, strings, BLOBs, or NULLs.
+[src:sql-sqlite/lang-createtable] If an UPDATE statement attempts to set an integer primary key or rowid column to a NULL or blob value, or to a string or real value that cannot be losslessly converted to an integer, a "datatype mismatch" error occurs and the statement is aborted.
+[src:sql-sqlite/lang-createtable] If an INSERT statement attempts to insert a blob value, or a string or real value that cannot be losslessly converted to an integer into an integer primary key or rowid column, a "datatype mismatch" error occurs and the statement is aborted.
+[src:sql-sqlite/lang-createtable] If an INSERT statement attempts to insert a NULL value into a rowid or integer primary key column, the system chooses an integer value to use as the rowid automatically.
+[src:sql-sqlite/lang-createtable] A detailed description of how this is done is provided separately.
+[src:sql-sqlite/lang-createtable] The parent key of a foreign key constraint is not allowed to use the rowid.
+[src:sql-sqlite/lang-createtable] The parent key must use named columns only.
+[src:sql-sqlite/lang-delete] The DELETE command removes records from the table identified by the qualified-table-name.
+[src:sql-sqlite/lang-delete] If the WHERE clause is not present, all records in the table are deleted.
+[src:sql-sqlite/lang-delete] If a WHERE clause is supplied, then only those rows for which the WHERE clause boolean expression is true are deleted.
+[src:sql-sqlite/lang-delete] Rows for which the expression is false or NULL are retained.
+[src:sql-sqlite/lang-delete] If a DELETE statement has a LIMIT clause, the maximum number of rows that will be deleted is found by evaluating the accompanying expression and casting it to an integer value.
+[src:sql-sqlite/lang-delete] If the result of evaluating the LIMIT clause cannot be losslessly converted to an integer value, it is an error.
+[src:sql-sqlite/lang-delete] A negative LIMIT value is interpreted as "no limit".
+[src:sql-sqlite/lang-delete] If the DELETE statement also has an OFFSET clause, then it is similarly evaluated and cast to an integer value.
+[src:sql-sqlite/lang-delete] Again, it is an error if the value cannot be losslessly converted to an integer.
+[src:sql-sqlite/lang-delete] If there is no OFFSET clause, or the calculated integer value is negative, the effective OFFSET value is zero.
+[src:sql-sqlite/lang-delete] If the DELETE statement has an ORDER BY clause, then all rows that would be deleted in the absence of the LIMIT clause are sorted according to the ORDER BY.
+[src:sql-sqlite/lang-delete] The first *M* rows, where *M* is the value found by evaluating the OFFSET clause expression, are skipped, and the following *N*, where *N* is the value of the LIMIT expression, are deleted.
+[src:sql-sqlite/lang-delete] If there are less than *N* rows remaining after taking the OFFSET clause into account, or if the LIMIT clause evaluated to a negative value, then all remaining rows are deleted.
+[src:sql-sqlite/lang-delete] If the DELETE statement has no ORDER BY clause, then all rows that would be deleted in the absence of the LIMIT clause are assembled in an arbitrary order before applying the LIMIT and OFFSET clauses to determine the subset that are actually deleted.
+[src:sql-sqlite/lang-delete] The ORDER BY clause on a DELETE statement is used only to determine which rows fall within the LIMIT.
+[src:sql-sqlite/lang-delete] The order in which rows are deleted is arbitrary and is not influenced by the ORDER BY clause.
+[src:sql-sqlite/lang-delete] This means that if there is a RETURNING clause, the rows returned by the statement probably will not be in the order specified by the ORDER BY clause.
+[src:sql-sqlite/lang-delete] When the WHERE clause and RETURNING clause are both omitted from a DELETE statement and the table being deleted has no triggers, SQLite uses an optimization to erase the entire table content without having to visit each row of the table individually.
+[src:sql-sqlite/lang-delete] This "truncate" optimization makes the delete run much faster.
+[src:sql-sqlite/lang-delete] Prior to SQLite version 3.6.5 (2008-11-12), the truncate optimization also meant that the sqlite3_changes() and sqlite3_total_changes() interfaces and the count_changes pragma will not actually return the number of deleted rows.
+[src:sql-sqlite/lang-delete] The truncate optimization can be permanently disabled for all queries by recompiling SQLite with the SQLITE_OMIT_TRUNCATE_OPTIMIZATION compile-time switch.
+[src:sql-sqlite/lang-delete] The truncate optimization can also be disabled at runtime using the sqlite3_set_authorizer() interface.
+[src:sql-sqlite/lang-delete] If an authorizer callback returns SQLITE_IGNORE for an SQLITE_DELETE action code, then the DELETE operation will proceed but the truncate optimization will be bypassed and rows will be deleted one by one.
+[src:sql-sqlite/lang-expr] "[expr]" denotes operand locations for non-binary operators.
+[src:sql-sqlite/lang-expr] Operators with no "[expr]" adjunct are binary and left-associative.
+[src:sql-sqlite/lang-expr] The COLLATE clause (with its collation-name) acts as a single postfix operator.
+[src:sql-sqlite/lang-expr] The ESCAPE clause (with its escape character) acts as a single postfix operator.
+[src:sql-sqlite/lang-expr] It can only bind to a preceding [expr] LIKE [expr] expression.
+[src:sql-sqlite/lang-expr] Each keyword in (BETWEEN IN GLOB LIKE MATCH REGEXP) may be prefixed by NOT, retaining the bare operator's precedence and associativity.
+[src:sql-sqlite/lang-expr] The COLLATE operator is a unary postfix operator that assigns a collating sequence to an expression.
+[src:sql-sqlite/lang-expr] The collating sequence set by the COLLATE operator overrides the collating sequence determined by the COLLATE clause in a table column definition.
+[src:sql-sqlite/lang-expr] See the detailed discussion on collating sequences in the Datatype In SQLite3 document for additional information.
+[src:sql-sqlite/lang-expr] It can be applied to strings, numbers, blobs or NULL and it always returns a result with the same value as the operand.
+[src:sql-sqlite/lang-expr] Note that there are two variations of the equals and not equals operators.
+[src:sql-sqlite/lang-expr] The not-equal operator can be either != or <>.
+[src:sql-sqlite/lang-expr] The || operator is "concatenate" - it joins together the two strings of its operands.
+[src:sql-sqlite/lang-expr] The -> and ->> operators are "extract"; they extract the RHS component from the LHS.
+[src:sql-sqlite/lang-expr] For an example, see JSON subcomponent extraction.
+[src:sql-sqlite/lang-expr] The % operator casts both of its operands to type INTEGER and then computes the remainder after dividing the left integer by the right integer.
+[src:sql-sqlite/lang-expr] The other arithmetic operators perform integer arithmetic if both operands are integers and no overflow would result, or floating point arithmetic, per IEEE Standard 754, if either operand is a real value or integer arithmetic would produce an overflow.
+[src:sql-sqlite/lang-expr] Integer divide yields an integer result, truncated toward zero.
+[src:sql-sqlite/lang-expr] The result of any binary operator is either a numeric value or NULL, except for the || concatenation operator, and the -> and ->> extract operators which can return values of any type.
+[src:sql-sqlite/lang-expr] All operators generally evaluate to NULL when any operand is NULL, with specific exceptions as stated below.
+[src:sql-sqlite/lang-expr] This is in accordance with the SQL92 standard.
+[src:sql-sqlite/lang-expr] When paired with NULL: AND evaluates to 0 (false) when the other operand is false; and OR evaluates to 1 (true) when the other operand is true.
+[src:sql-sqlite/lang-expr] The IS and IS NOT operators work like = and != except when one or both of the operands are NULL.
+[src:sql-sqlite/lang-expr] In this case, if both operands are NULL, then the IS operator evaluates to 1 (true) and the IS NOT operator evaluates to 0 (false).
+[src:sql-sqlite/lang-expr] If one operand is NULL and the other is not, then the IS operator evaluates to 0 (false) and the IS NOT operator is 1 (true).
+[src:sql-sqlite/lang-expr] It is not possible for an IS or IS NOT expression to evaluate to NULL.
+[src:sql-sqlite/lang-expr] The IS NOT DISTINCT FROM operator is an alternative spelling for the IS operator.
+[src:sql-sqlite/lang-expr] Likewise, the IS DISTINCT FROM operator means the same thing as IS NOT.
+[src:sql-sqlite/lang-expr] Standard SQL does not support the compact IS and IS NOT notation.
+[src:sql-sqlite/lang-expr] Those compact forms are an SQLite extension.
+[src:sql-sqlite/lang-expr] You must use the less readable IS NOT DISTINCT FROM and IS DISTINCT FROM operators in most other SQL database engines.
+[src:sql-sqlite/lang-expr] Literal Values (Constants) A literal value represents a constant.
+[src:sql-sqlite/lang-expr] Literal values may be integers, floating point numbers, strings, BLOBs, or NULLs.
+[src:sql-sqlite/lang-expr] The "E" character that begins the exponentiation clause of a floating point literal can be either upper or lower case.
+[src:sql-sqlite/lang-expr] The "." character is always used as the decimal point even if the locale setting specifies "," for this role - the use of "," for the decimal point would result in syntactic ambiguity.
+[src:sql-sqlite/lang-expr] Beginning in SQLite version 3.46.0 (2024-05-23), a single extra underscore ("_") character can be added between any two digits.
+[src:sql-sqlite/lang-expr] The underscores are purely for human readability and are ignored by SQLite.
+[src:sql-sqlite/lang-expr] Hexadecimal integer literals follow the C-language notation of "0x" or "0X" followed by hexadecimal digits.
+[src:sql-sqlite/lang-expr] Hexadecimal integer literals are interpreted as 64-bit two's-complement integers and are thus limited to sixteen significant digits of precision.
+[src:sql-sqlite/lang-expr] Support for hexadecimal integers was added to SQLite version 3.8.6 (2014-08-15).
+[src:sql-sqlite/lang-expr] For backwards compatibility, the "0x" hexadecimal integer notation is only understood by the SQL language parser, not by the type conversions routines.
+[src:sql-sqlite/lang-expr] When coercing a string value in the format of a hexadecimal integer into an integer value, the conversion process stops when the 'x' character is seen so the resulting integer value is always zero.
+[src:sql-sqlite/lang-expr] SQLite only understands the hexadecimal integer notation when it appears in the SQL statement text, not when it appears as part of the content of the database.
+[src:sql-sqlite/lang-expr] A string constant is formed by enclosing the string in single quotes (').
+[src:sql-sqlite/lang-expr] A single quote within the string can be encoded by putting two single quotes in a row - as in Pascal.
+[src:sql-sqlite/lang-expr] C-style escapes using the backslash character are not supported because they are not standard SQL.
+[src:sql-sqlite/lang-expr] BLOB literals are string literals containing hexadecimal data and preceded by a single "x" or "X" character.
+[src:sql-sqlite/lang-expr] Example: X'53514C697465' A literal value can also be the token "NULL".
+[src:sql-sqlite/lang-expr] Parameters A "variable" or "parameter" token specifies a placeholder in the expression for a value that is filled in at runtime using the sqlite3_bind() family of C/C++ interfaces.
+[src:sql-sqlite/lang-expr] Parameters can take several forms: **?***NNN* A question mark followed by a number *NNN* holds a spot for the NNN-th parameter.
+[src:sql-sqlite/lang-expr] NNN must be between 1 and SQLITE_MAX_VARIABLE_NUMBER.
+[src:sql-sqlite/lang-expr] **?** A question mark that is not followed by a number creates a parameter with a number one greater than the largest parameter number already assigned.
+[src:sql-sqlite/lang-expr] If this means the parameter number is greater than SQLITE_MAX_VARIABLE_NUMBER, it is an error.
+[src:sql-sqlite/lang-expr] This parameter format is provided for compatibility with other database engines.
+[src:sql-sqlite/lang-expr] But because it is easy to miscount the question marks, the use of this parameter format is discouraged.
+[src:sql-sqlite/lang-expr] Programmers are encouraged to use one of the symbolic formats below or the ?NNN format above instead.
+[src:sql-sqlite/lang-expr] **:***AAAA* A colon followed by an identifier name holds a spot for a named parameter with the name :AAAA.
+[src:sql-sqlite/lang-expr] The number assigned is one greater than the largest parameter number already assigned.
+[src:sql-sqlite/lang-expr] If this means the parameter would be assigned a number greater than SQLITE_MAX_VARIABLE_NUMBER, it is an error.
+[src:sql-sqlite/lang-expr] To avoid confusion, it is best to avoid mixing named and numbered parameters.
+[src:sql-sqlite/lang-expr] **@***AAAA* An "at" sign works exactly like a colon, except that the name of the parameter created is @AAAA.
+[src:sql-sqlite/lang-expr] **$***AAAA* A dollar-sign followed by an identifier name also holds a spot for a named parameter with the name $AAAA.
+[src:sql-sqlite/lang-expr] The identifier name in this case can include one or more occurrences of "::" and a suffix enclosed in "(...)" containing any text without whitespace.
+[src:sql-sqlite/lang-expr] This syntax is the form of a variable name in the Tcl programming language.
+[src:sql-sqlite/lang-expr] The presence of this syntax results from the fact that SQLite is really a Tcl extension that has escaped into the wild.
+[src:sql-sqlite/lang-expr] Parameters that are not assigned values using sqlite3_bind() are treated as NULL.
+[src:sql-sqlite/lang-expr] The sqlite3_bind_parameter_index() interface can be used to translate a symbolic parameter name into its equivalent numeric index.
+[src:sql-sqlite/lang-expr] The maximum parameter number is set at compile-time by the SQLITE_MAX_VARIABLE_NUMBER macro.
+[src:sql-sqlite/lang-expr] An individual database connection D can reduce its maximum parameter number below the compile-time maximum using the sqlite3_limit(D, SQLITE_LIMIT_VARIABLE_NUMBER,...) interface.
+[src:sql-sqlite/lang-expr] The LIKE, GLOB, REGEXP, MATCH, and extract operators The LIKE operator does a pattern matching comparison.
+[src:sql-sqlite/lang-expr] The operand to the right of the LIKE operator contains the pattern and the left hand operand contains the string to match against the pattern.
+[src:sql-sqlite/lang-expr] A percent symbol ("%") in the LIKE pattern matches any sequence of zero or more characters in the string.
+[src:sql-sqlite/lang-expr] An underscore ("_") in the LIKE pattern matches any single character in the string.
+[src:sql-sqlite/lang-expr] Any other character matches itself or its lower/upper case equivalent (i.e. case-insensitive matching).
+[src:sql-sqlite/lang-expr] Important Note: SQLite only understands upper/lower case for ASCII characters by default.
+[src:sql-sqlite/lang-expr] The LIKE operator is case sensitive by default for unicode characters that are beyond the ASCII range.
+[src:sql-sqlite/lang-expr] For example, the expression **'a' LIKE 'A'** is TRUE but **'æ' LIKE 'Æ'** is FALSE.
+[src:sql-sqlite/lang-expr] The ICU extension to SQLite includes an enhanced version of the LIKE operator that does case folding across all unicode characters.
+[src:sql-sqlite/lang-expr] If the optional ESCAPE clause is present, then the expression following the ESCAPE keyword must evaluate to a string consisting of a single character.
+[src:sql-sqlite/lang-expr] This character may be used in the LIKE pattern to include literal percent or underscore characters.
+[src:sql-sqlite/lang-expr] The escape character followed by a percent symbol (%), underscore (_), or a second instance of the escape character itself matches a literal percent symbol, underscore, or a single escape character, respectively.
+[src:sql-sqlite/lang-expr] The infix LIKE operator is implemented by calling the application-defined SQL functions like(*Y*,*X*) or like(*Y*,*X*,*Z*).
+[src:sql-sqlite/lang-expr] The LIKE operator can be made case sensitive using the case_sensitive_like pragma.
+[src:sql-sqlite/lang-expr] The GLOB operator is similar to LIKE but uses the Unix file globbing syntax for its wildcards.
+[src:sql-sqlite/lang-expr] Also, GLOB is case sensitive, unlike LIKE.
+[src:sql-sqlite/lang-expr] Both GLOB and LIKE may be preceded by the NOT keyword to invert the sense of the test.
+[src:sql-sqlite/lang-expr] The infix GLOB operator is implemented by calling the function glob(*Y*,*X*) and can be modified by overriding that function.
+[src:sql-sqlite/lang-expr] The REGEXP operator is a special syntax for the regexp() user function.
+[src:sql-sqlite/lang-expr] No regexp() user function is defined by default and so use of the REGEXP operator will normally result in an error message.
+[src:sql-sqlite/lang-expr] If an application-defined SQL function named "regexp" is added at run-time, then the "*X* REGEXP *Y*" operator will be implemented as a call to "regexp(*Y*,*X*)".
+[src:sql-sqlite/lang-expr] The MATCH operator is a special syntax for the match() application-defined function.
+[src:sql-sqlite/lang-expr] The default match() function implementation raises an exception and is not really useful for anything.
+[src:sql-sqlite/lang-expr] But extensions can override the match() function with more helpful logic.
+[src:sql-sqlite/lang-expr] The extract operators act as a special syntax for functions "->"() and "->>"().
+[src:sql-sqlite/lang-expr] Default implementations for these functions perform JSON subcomponent extraction, but extensions can override them for other purposes.
+[src:sql-sqlite/lang-expr] The BETWEEN operator The BETWEEN operator is logically equivalent to a pair of comparisons.
+[src:sql-sqlite/lang-expr] The CASE expression A CASE expression serves a role similar to IF-THEN-ELSE in other programming languages.
+[src:sql-sqlite/lang-expr] The optional expression that occurs in between the CASE keyword and the first WHEN keyword is called the "base" expression.
+[src:sql-sqlite/lang-expr] There are two fundamental forms of the CASE expression: those with a base expression and those without.
+[src:sql-sqlite/lang-expr] In a CASE without a base expression, each WHEN expression is evaluated and the result treated as a boolean, starting with the leftmost and continuing to the right.
+[src:sql-sqlite/lang-expr] The result of the CASE expression is the evaluation of the THEN expression that corresponds to the first WHEN expression that evaluates to true.
+[src:sql-sqlite/lang-expr] Or, if none of the WHEN expressions evaluate to true, the result of evaluating the ELSE expression, if any.
+[src:sql-sqlite/lang-expr] If there is no ELSE expression and none of the WHEN expressions are true, then the overall result is NULL.
+[src:sql-sqlite/lang-expr] A NULL result is considered untrue when evaluating WHEN terms.
+[src:sql-sqlite/lang-expr] In a CASE with a base expression, the base expression is evaluated just once and the result is compared against the evaluation of each WHEN expression from left to right.
+[src:sql-sqlite/lang-expr] The result of the CASE expression is the evaluation of the THEN expression that corresponds to the first WHEN expression for which the comparison is true.
+[src:sql-sqlite/lang-expr] Or, if none of the WHEN expressions evaluate to a value equal to the base expression, the result of evaluating the ELSE expression, if any.
+[src:sql-sqlite/lang-expr] If there is no ELSE expression and none of the WHEN expressions produce a result equal to the base expression, the overall result is NULL.
+[src:sql-sqlite/lang-expr] When comparing a base expression against a WHEN expression, the same collating sequence, affinity, and NULL-handling rules apply as if the base expression and WHEN expression are respectively the left- and right-hand operands of an **=** operator.
+[src:sql-sqlite/lang-expr] If the base expression is NULL then the result of the CASE is always the result of evaluating the ELSE expression if it exists, or NULL if it does not.
+[src:sql-sqlite/lang-expr] Both forms of the CASE expression use lazy, or short-circuit, evaluation.
+[src:sql-sqlite/lang-expr] The iif() function is found in SQL Server and is included in SQLite for compatibility.
+[src:sql-sqlite/lang-expr] Some developers prefer the iif() function because it is more concise.
+[src:sql-sqlite/lang-expr] The IN and NOT IN operators The IN and NOT IN operators take an expression on the left and a list of values or a subquery on the right.
+[src:sql-sqlite/lang-expr] When the right operand of an IN or NOT IN operator is a subquery, the subquery must have the same number of columns as there are columns in the row value of the left operand.
+[src:sql-sqlite/lang-expr] The subquery on the right of an IN or NOT IN operator must be a scalar subquery if the left expression is not a row value expression.
+[src:sql-sqlite/lang-expr] If the right operand of an IN or NOT IN operator is a list of values, each of those values must be scalars and the left expression must also be a scalar.
+[src:sql-sqlite/lang-expr] The right-hand side of an IN or NOT IN operator can be a table *name* or table-valued function *name* in which case the right-hand side is understood to be a subquery of the form "(SELECT * FROM *name*)".
+[src:sql-sqlite/lang-expr] When the right operand is an empty set, the result of IN is false and the result of NOT IN is true, regardless of the left operand and even if the left operand is NULL.
+[src:sql-sqlite/lang-expr] Table Column Names A column name can be any of the names defined in the CREATE TABLE statement or one of the following special identifiers: "**ROWID**", "**OID**", or "**_ROWID_**".
+[src:sql-sqlite/lang-expr] The three special identifiers describe the unique integer key (the rowid) associated with every row of every table and so are not available on WITHOUT ROWID tables.
+[src:sql-sqlite/lang-expr] The special identifiers only refer to the row key if the CREATE TABLE statement does not define a real column with the same name.
+[src:sql-sqlite/lang-expr] The rowid can be used anywhere a regular column can be used.
+[src:sql-sqlite/lang-expr] The EXISTS operator The EXISTS operator always evaluates to one of the integer values 0 and 1.
+[src:sql-sqlite/lang-expr] If executing the SELECT statement specified as the right-hand operand of the EXISTS operator would return one or more rows, then the EXISTS operator evaluates to 1.
+[src:sql-sqlite/lang-expr] If executing the SELECT would return no rows at all, then the EXISTS operator evaluates to 0.
+[src:sql-sqlite/lang-expr] The number of columns in each row returned by the SELECT statement (if any) and the specific values returned have no effect on the results of the EXISTS operator.
+[src:sql-sqlite/lang-expr] In particular, rows containing NULL values are not handled any differently from rows without NULL values.
+[src:sql-sqlite/lang-expr] Subquery Expressions A SELECT statement enclosed in parentheses is a subquery.
+[src:sql-sqlite/lang-expr] All types of SELECT statement, including aggregate and compound SELECT queries (queries with keywords like UNION or EXCEPT) are allowed as scalar subqueries.
+[src:sql-sqlite/lang-expr] The value of a subquery expression is the first row of the result from the enclosed SELECT statement.
+[src:sql-sqlite/lang-expr] The value of a subquery expression is NULL if the enclosed SELECT statement returns no rows.
+[src:sql-sqlite/lang-expr] A subquery that returns a single column is a scalar subquery and can be used most anywhere.
+[src:sql-sqlite/lang-expr] A subquery that returns two or more columns is a row value subquery and can only be used as an operand of a comparison operator or as the value in an UPDATE SET clause whose column name list has the same size.
+[src:sql-sqlite/lang-expr] Correlated Subqueries A SELECT statement used as either a scalar subquery or as the right-hand operand of an IN, NOT IN or EXISTS expression may contain references to columns in the outer query.
+[src:sql-sqlite/lang-expr] Such a subquery is known as a correlated subquery.
+[src:sql-sqlite/lang-expr] A correlated subquery is reevaluated each time its result is required.
+[src:sql-sqlite/lang-expr] An uncorrelated subquery is evaluated only once and the result reused as necessary.
+[src:sql-sqlite/lang-expr] CAST expressions A CAST expression of the form "CAST(*expr* AS *type-name*)" is used to convert the value of *expr* to a different storage class specified by type-name.
+[src:sql-sqlite/lang-expr] If the value of *expr* is NULL, then the result of the CAST expression is also NULL.
+[src:sql-sqlite/lang-expr] Otherwise, the storage class of the result is determined by applying the rules for determining column affinity to the type-name.
+[src:sql-sqlite/lang-expr] Affinity of type-name Conversion Processing NONE Casting a value to a type-name with no affinity causes the value to be converted into a BLOB.
+[src:sql-sqlite/lang-expr] Casting to a BLOB consists of first casting the value to TEXT in the encoding of the database connection, then interpreting the resulting byte sequence as a BLOB instead of as TEXT.
+[src:sql-sqlite/lang-expr] TEXT To cast a BLOB value to TEXT, the sequence of bytes that make up the BLOB is interpreted as text encoded using the database encoding.
+[src:sql-sqlite/lang-expr] Casting an INTEGER or REAL value into TEXT renders the value as if via sqlite3_snprintf() except that the resulting TEXT uses the encoding of the database connection.
+[src:sql-sqlite/lang-expr] REAL When casting a BLOB value to a REAL, the value is first converted to TEXT.
+[src:sql-sqlite/lang-expr] When casting a TEXT value to REAL, the longest possible prefix of the value that can be interpreted as a real number is extracted from the TEXT value and the remainder ignored.
+[src:sql-sqlite/lang-expr] Any leading spaces in the TEXT value are ignored when converting from TEXT to REAL.
+[src:sql-sqlite/lang-expr] If there is no prefix that can be interpreted as a real number, the result of the conversion is 0.0.
+[src:sql-sqlite/lang-expr] INTEGER When casting a BLOB value to INTEGER, the value is first converted to TEXT.
+[src:sql-sqlite/lang-expr] When casting a TEXT value to INTEGER, the longest possible prefix of the value that can be interpreted as an integer number is extracted from the TEXT value and the remainder ignored.
+[src:sql-sqlite/lang-expr] Any leading spaces in the TEXT value when converting from TEXT to INTEGER are ignored.
+[src:sql-sqlite/lang-expr] If there is no prefix that can be interpreted as an integer number, the result of the conversion is 0.
+[src:sql-sqlite/lang-expr] When casting to INTEGER, if the text looks like a floating point value with an exponent, the exponent will be ignored because it is no part of the integer prefix.
+[src:sql-sqlite/lang-expr] The CAST operator understands decimal integers only — conversion of hexadecimal integers stops at the "x" in the "0x" prefix of the hexadecimal integer string and thus result of the CAST is always zero.
+[src:sql-sqlite/lang-expr] A cast of a REAL value into an INTEGER results in the integer between the REAL value and zero that is closest to the REAL value.
+[src:sql-sqlite/lang-expr] If a REAL is greater than the greatest possible signed integer (+9223372036854775807) then the result is the greatest possible signed integer and if the REAL is less than the least possible signed integer (-9223372036854775808) then the result is the least possible signed integer.
+[src:sql-sqlite/lang-expr] This behavior was meant to emulate the behavior of x86/x64 hardware when doing the equivalent cast.
+[src:sql-sqlite/lang-expr] NUMERIC Casting a TEXT or BLOB value into NUMERIC yields either an INTEGER or a REAL result.
+[src:sql-sqlite/lang-expr] If the input text looks like an integer (there is no decimal point nor exponent) and the value is small enough to fit in a 64-bit signed integer, then the result will be INTEGER.
+[src:sql-sqlite/lang-expr] Input text that looks like floating point (there is a decimal point and/or an exponent) and the text describes a value that can be losslessly converted back and forth between IEEE 754 64-bit float and a 51-bit signed integer, then the result is INTEGER.
+[src:sql-sqlite/lang-expr] Casting a REAL or INTEGER value to NUMERIC is a no-op, even if a real value could be losslessly converted to an integer.
+[src:sql-sqlite/lang-expr] Note that the result from casting any non-BLOB value into a BLOB and the result from casting any BLOB value into a non-BLOB value may be different depending on whether the database encoding is UTF-8, UTF-16be, or UTF-16le.
+[src:sql-sqlite/lang-expr] Boolean Expressions The SQL language features several contexts where an expression is evaluated and the result converted to a boolean (true or false) value.
+[src:sql-sqlite/lang-expr] These contexts are: the WHERE clause of a SELECT, UPDATE or DELETE statement, the ON or USING clause of a join in a SELECT statement, the HAVING clause of a SELECT statement, the WHEN clause of an SQL trigger, and the WHEN clause or clauses of some CASE expressions.
+[src:sql-sqlite/lang-expr] To convert the results of an SQL expression to a boolean value, SQLite first casts the result to a NUMERIC value in the same way as a CAST expression.
+[src:sql-sqlite/lang-expr] A numeric zero value (integer value 0 or real value 0.0) is considered to be false.
+[src:sql-sqlite/lang-expr] For example, the values NULL, 0.0, 0, 'english' and '0' are all considered to be false.
+[src:sql-sqlite/lang-expr] Values 1, 1.0, 0.1, -0.1 and '1english' are considered to be true.
+[src:sql-sqlite/lang-expr] Beginning with SQLite 3.23.0 (2018-04-02), SQLite recognizes the identifiers "TRUE" and "FALSE" as boolean literals, if and only if those identifiers are not already used for some other meaning.
+[src:sql-sqlite/lang-expr] If there already exists columns or tables or other objects named TRUE or FALSE, then for the sake of backwards compatibility, the TRUE and FALSE identifiers refer to those other objects, not to the boolean values.
+[src:sql-sqlite/lang-expr] The boolean identifiers TRUE and FALSE are usually just aliases for the integer values 1 and 0, respectively.
+[src:sql-sqlite/lang-expr] However, if TRUE or FALSE occur on the right-hand side of an IS operator, then the IS operator evaluates the left-hand operand as a boolean value and returns an appropriate answer.
+[src:sql-sqlite/lang-expr] Functions SQLite supports many simple, aggregate, and window SQL functions.
+[src:sql-sqlite/lang-expr] For presentation purposes, simple functions are further subdivided into core functions, date-time functions, math functions, and JSON functions.
+[src:sql-sqlite/lang-expr] Applications can add new functions, written in C/C++, using the sqlite3_create_function() interface.
+[src:sql-sqlite/lang-expr] The main expression bubble diagram above shows a single syntax for all function invocations.
+[src:sql-sqlite/lang-expr] But this is merely to simplify the expression bubble diagram.
+[src:sql-sqlite/lang-expr] In reality, each type of function has a slightly different syntax, shown below.
+[src:sql-sqlite/lang-expr] The function invocation syntax shown in the main expression bubble diagram is the union of the three syntaxes shown here: **simple-function-invocation:** **aggregate-function-invocation:** **window-function-invocation:** The OVER clause is required for window functions and is prohibited otherwise.
+[src:sql-sqlite/lang-expr] The DISTINCT keyword and the ORDER BY clause is only allowed in aggregate functions.
+[src:sql-sqlite/lang-expr] The FILTER clause may not appear on a simple function.
+[src:sql-sqlite/lang-expr] It is possible to have an aggregate function with the same name as a simple function, as long as the number of arguments for the two forms of the function are different.
+[src:sql-sqlite/lang-expr] For example, the max() function with a single argument is an aggregate and the max() function with two or more arguments is a simple function.
+[src:sql-sqlite/lang-expr] Aggregate functions can usually also be used as window functions.
+[src:sql-sqlite/lang-insert] The INSERT statement comes in three basic forms.
+[src:sql-sqlite/lang-insert] **INSERT INTO***table***SELECT ...;** The second form of the INSERT statement contains a SELECT statement instead of a VALUES clause.
+[src:sql-sqlite/lang-insert] A new entry is inserted into the table for each row of data returned by executing the SELECT statement.
+[src:sql-sqlite/lang-insert] If a column-list is specified, the number of columns in the result of the SELECT must be the same as the number of items in the column-list.
+[src:sql-sqlite/lang-insert] Otherwise, if no column-list is specified, the number of columns in the result of the SELECT must be the same as the number of columns in the table.
+[src:sql-sqlite/lang-insert] Any SELECT statement, including compound SELECTs and SELECT statements with ORDER BY and/or LIMIT clauses, may be used in an INSERT statement of this form.
+[src:sql-sqlite/lang-insert] To avoid a parsing ambiguity, the SELECT statement should always contain a WHERE clause, even if that clause is simply "WHERE true", if the upsert-clause is present.
+[src:sql-sqlite/lang-insert] Without the WHERE clause, the parser does not know if the token "ON" is part of a join constraint on the SELECT, or the beginning of the upsert-clause.
+[src:sql-sqlite/lang-insert] **INSERT INTO***table***DEFAULT VALUES;** The third form of an INSERT statement is with DEFAULT VALUES.
+[src:sql-sqlite/lang-insert] DEFAULT VALUES statement inserts a single new row into the named table.
+[src:sql-sqlite/lang-insert] Each column of the new row is populated with its default value, or with a NULL if no default value is specified as part of the column definition in the CREATE TABLE statement.
+[src:sql-sqlite/lang-insert] The upsert-clause is not supported after DEFAULT VALUES.
+[src:sql-sqlite/lang-insert] The initial "INSERT" keyword can be replaced by "REPLACE" or "INSERT OR *action*" to specify an alternative constraint conflict resolution algorithm to use during that one INSERT command.
+[src:sql-sqlite/lang-insert] For compatibility with MySQL, the parser allows the use of the single keyword REPLACE as an alias for "INSERT OR REPLACE".
+[src:sql-sqlite/lang-insert] The optional "*schema-name***.**" prefix on the table-name is supported for top-level INSERT statements only.
+[src:sql-sqlite/lang-insert] The table name must be unqualified for INSERT statements that occur within CREATE TRIGGER statements.
+[src:sql-sqlite/lang-insert] Similarly, the "DEFAULT VALUES" form of the INSERT statement is supported for top-level INSERT statements only and not for INSERT statements within triggers.
+[src:sql-sqlite/lang-insert] The optional "AS alias" phrase provides an alternative name for the table into which content is being inserted.
+[src:sql-sqlite/lang-insert] The alias name can be used within WHERE and SET clauses of the UPSERT.
+[src:sql-sqlite/lang-insert] If there is no upsert-clause, then the alias is pointless, but also harmless.
+[src:sql-sqlite/lang-insert] See the separate UPSERT documentation for the additional trailing syntax that can cause an INSERT to behave as an UPDATE if the INSERT would otherwise violate a uniqueness constraint.
+[src:sql-sqlite/lang-insert] The upsert clause is not allowed on an "INSERT ...
+[src:sql-sqlite/lang-select] The SELECT statement is used to query the database.
+[src:sql-sqlite/lang-select] The result of a SELECT is zero or more rows of data where each row has a fixed number of columns.
+[src:sql-sqlite/lang-select] A SELECT statement does not make any changes to the database.
+[src:sql-sqlite/lang-select] The "select-stmt" syntax diagram above attempts to show as much of the SELECT statement syntax as possible in a single diagram, because some readers find that helpful.
+[src:sql-sqlite/lang-select] The following "factored-select-stmt" is an alternative syntax diagrams that expresses the same syntax but tries to break the syntax down into smaller chunks.
+[src:sql-sqlite/lang-select] Note that there are paths through the syntax diagrams that are not allowed in practice.
+[src:sql-sqlite/lang-select] These and other similar syntax restrictions are described in the text.
+[src:sql-sqlite/lang-select] The SELECT statement is the most complicated command in the SQL language.
+[src:sql-sqlite/lang-select] To make the description easier to follow, some of the passages below describe the way the data returned by a SELECT statement is determined as a series of steps.
+[src:sql-sqlite/lang-select] It is important to keep in mind that this is purely illustrative - in practice neither SQLite nor any other SQL engine is required to follow this or any other specific process.
+[src:sql-sqlite/lang-select] The core of a SELECT statement is a "simple SELECT" shown by the select-core and simple-select-stmt syntax diagrams below.
+[src:sql-sqlite/lang-select] In practice, most SELECT statements are simple SELECT statements.
+[src:sql-sqlite/lang-select] WHERE clause processing: The input data is filtered using the WHERE clause expression.
+[src:sql-sqlite/lang-select] GROUP BY, HAVING and result-column expression processing: The set of result rows is computed by aggregating the data according to any GROUP BY clause and calculating the result-set expressions for the rows of the filtered input dataset.
+[src:sql-sqlite/lang-select] DISTINCT/ALL keyword processing: If the query is a "SELECT DISTINCT" query, duplicate rows are removed from the set of result rows.
+[src:sql-sqlite/lang-select] There are two types of simple SELECT statement - aggregate and non-aggregate queries.
+[src:sql-sqlite/lang-select] A simple SELECT statement is an aggregate query if it contains either a GROUP BY clause or one or more aggregate functions in the result-set.
+[src:sql-sqlite/lang-select] Otherwise, if a simple SELECT contains no aggregate functions or a GROUP BY clause, it is a non-aggregate query.
+[src:sql-sqlite/lang-select] The input data used by a simple SELECT query is a set of *N* rows each *M* columns wide.
+[src:sql-sqlite/lang-select] If the FROM clause is omitted from a simple SELECT statement, then the input data is implicitly a single row zero columns wide (i.e.
+[src:sql-sqlite/lang-select] If a FROM clause is specified, the data on which a simple SELECT query operates comes from the one or more tables or subqueries (SELECT statements in parentheses) specified following the FROM keyword.
+[src:sql-sqlite/lang-select] A subquery specified in the table-or-subquery following the FROM clause in a simple SELECT statement is handled as if it was a table containing the data returned by executing the subquery statement.
+[src:sql-sqlite/lang-select] Each column of the subquery has the collation sequence and affinity of the corresponding expression in the subquery statement.
+[src:sql-sqlite/lang-select] If there is only a single table or subquery in the FROM clause, then the input data used by the SELECT statement is the contents of the named table.
+[src:sql-sqlite/lang-select] If there is more than one table or subquery in the FROM clause then the contents of all tables and/or subqueries are joined into a single dataset for the simple SELECT statement to operate on.
+[src:sql-sqlite/lang-select] Exactly how the data is combined depends on the specific join-operator and join-constraint used to connect the tables or subqueries together.
+[src:sql-sqlite/lang-select] All joins in SQLite are based on the cartesian product of the left and right-hand datasets.
+[src:sql-sqlite/lang-select] The columns of the cartesian product dataset are, in order, all the columns of the left-hand dataset followed by all the columns of the right-hand dataset.
+[src:sql-sqlite/lang-select] There is a row in the cartesian product dataset formed by combining each unique combination of a row from the left-hand and right-hand datasets.
+[src:sql-sqlite/lang-select] In other words, if the left-hand dataset consists of *Nleft* rows of *Mleft* columns, and the right-hand dataset of *Nright* rows of *Mright* columns, then the cartesian product is a dataset of *Nleft×Nright* rows, each containing *Mleft+Mright* columns.
+[src:sql-sqlite/lang-select] If the join-operator is "CROSS JOIN", "INNER JOIN", "JOIN" or a comma (",") and there is no ON or USING clause, then the result of the join is simply the cartesian product of the left and right-hand datasets.
+[src:sql-sqlite/lang-select] When more than two tables are joined together as part of a FROM clause, the join operations are processed in order from left to right.
+[src:sql-sqlite/lang-select] In other words, the FROM clause (A join-op-1 B join-op-2 C) is computed as ((A join-op-1 B) join-op-2 C).
+[src:sql-sqlite/lang-select] There is no difference between the "INNER JOIN", "JOIN" and "," join operators.
+[src:sql-sqlite/lang-select] They are completely interchangeable in SQLite.
+[src:sql-sqlite/lang-select] The "CROSS JOIN" join operator produces the same result as the "INNER JOIN", "JOIN" and "," operators, but is handled differently by the query optimizer in that it prevents the query optimizer from reordering the tables in the join.
+[src:sql-sqlite/lang-select] An application programmer can use the CROSS JOIN operator to directly influence the algorithm that is chosen to implement the SELECT statement.
+[src:sql-sqlite/lang-select] Avoid using CROSS JOIN except in specific situations where manual control of the query optimizer is desired.
+[src:sql-sqlite/lang-select] Avoid using CROSS JOIN early in the development of an application as doing so is a premature optimization.
+[src:sql-sqlite/lang-select] The special handling of CROSS JOIN is an SQLite-specific feature and is not a part of standard SQL.
+[src:sql-sqlite/lang-select] If a WHERE clause is specified, the WHERE expression is evaluated for each row in the input data as a boolean expression.
+[src:sql-sqlite/lang-select] Only rows for which the WHERE clause expression evaluates to true are included from the dataset before continuing.
+[src:sql-sqlite/lang-select] Rows are excluded from the result if the WHERE clause evaluates to either false or NULL.
+[src:sql-sqlite/lang-select] For a JOIN or INNER JOIN or CROSS JOIN, there is no difference between a constraint expression in the WHERE clause and one in the ON clause.
+[src:sql-sqlite/lang-select] However, for a LEFT or RIGHT or FULL OUTER JOIN, the difference is very important.
+[src:sql-sqlite/lang-select] In an outer join, the extra NULL rows for non-matched rows on the other operand are added after ON clause processing but before WHERE clause processing.
+[src:sql-sqlite/lang-select] A constraint of the form "left.x=right.y" in an ON clause will therefore allow through for the added all-NULL rows.
+[src:sql-sqlite/lang-select] But if that same constraint is in the WHERE clause, a NULL in one of "right.y" or "left.x" will prevent the expression "left.x=right.y" from being true, and thus exclude that row from the output.
+[src:sql-sqlite/lang-select] Once the input data from the FROM clause has been filtered by the WHERE clause expression (if any), the set of result rows for the simple SELECT are calculated.
+[src:sql-sqlite/lang-select] Exactly how this is done depends on whether the simple SELECT is an aggregate or non-aggregate query, and whether or not a GROUP BY clause was specified.
+[src:sql-sqlite/lang-select] The list of expressions between the SELECT and FROM keywords is known as the result expression list.
+[src:sql-sqlite/lang-select] If a result expression is the special expression "*" then all columns in the input data are substituted for that one expression.
+[src:sql-sqlite/lang-select] If the expression is the alias of a table or subquery in the FROM clause followed by ".*" then all columns from the named table or subquery are substituted for the single expression.
+[src:sql-sqlite/lang-select] It is an error to use a "*" or "alias.*" expression in any context other than a result expression list.
+[src:sql-sqlite/lang-select] It is also an error to use a "*" or "alias.*" expression in a simple SELECT query that does not have a FROM clause.
+[src:sql-sqlite/lang-select] The number of columns in the rows returned by a simple SELECT statement is equal to the number of expressions in the result expression list after substitution of * and alias.* expressions.
+[src:sql-sqlite/lang-select] Each result row is calculated by evaluating the expressions in the result expression list with respect to a single row of input data or, for aggregate queries, with respect to a group of rows.
+[src:sql-sqlite/lang-select] The usual case is that all column names in an aggregate query are either arguments to aggregate functions or else appear in the GROUP BY clause.
+[src:sql-sqlite/lang-select] A result column which contains a column name that is not within an aggregate function and that does not appear in the GROUP BY clause (if one exists) is called a "bare" column.
+[src:sql-sqlite/lang-select] In the query above, the "a" column is part of the GROUP BY clause and so each row of the output contains one of the distinct values for "a".
+[src:sql-sqlite/lang-select] The "c" column is contained within the sum() aggregate function and so that output column is the sum of all "c" values in rows that have the same value for "a".
+[src:sql-sqlite/lang-select] But what is the result of the bare column "b"?
+[src:sql-sqlite/lang-select] The answer is that the "b" result will be the value for "b" in one of the input rows that form the aggregate.¹ The problem is that you usually do not know which input row is used to compute "b", and so in many cases the value for "b" is undefined.
+[src:sql-sqlite/lang-select] Special processing occurs when the aggregate function is either min() or max().
+[src:sql-sqlite/lang-select] If there is exactly one min() or max() aggregate in the query, then all bare columns in the result set take values from an input row which also contains the minimum or maximum.
+[src:sql-sqlite/lang-select] So in the query above, the value of the "b" column in the output will be the value of the "b" column in the input row that has the largest "c" value.
+[src:sql-sqlite/lang-select] If there are two or more min() or max() aggregates in the query, then bare column values will be taken from one of the rows on which one of the aggregates has their minimum or maximum value.
+[src:sql-sqlite/lang-select] The choice of which min() or max() aggregate determines the selection of bare column values is arbitrary.
+[src:sql-sqlite/lang-select] The choice might be different for different bare columns within the same query.
+[src:sql-sqlite/lang-select] This special processing for min() or max() aggregates only works for the built-in implementation of those aggregates.
+[src:sql-sqlite/lang-select] If an application overrides the built-in min() or max() aggregates with application-defined alternatives, then the values selected for bare columns will be taken from an arbitrary row.
+[src:sql-sqlite/lang-select] Most other SQL database engines disallow bare columns.
+[src:sql-sqlite/lang-select] If you include a bare column in a query, other database engines will usually raise an error.
+[src:sql-sqlite/lang-select] The ability to include bare columns in a query is an SQLite-specific extension.
+[src:sql-sqlite/lang-select] This is considered a feature, not a bug.
+[src:sql-sqlite/lang-select] See the discussion on SQLite Forum thread 7481d2a6df8980ff for additional information.
+[src:sql-sqlite/lang-select] One of the ALL or DISTINCT keywords may follow the SELECT keyword in a simple SELECT statement.
+[src:sql-sqlite/lang-select] If the simple SELECT is a SELECT ALL, then the entire set of result rows are returned by the SELECT.
+[src:sql-sqlite/lang-select] If neither ALL or DISTINCT are present, then the behavior is as if ALL were specified.
+[src:sql-sqlite/lang-select] If the simple SELECT is a SELECT DISTINCT, then duplicate rows are removed from the set of result rows before it is returned.
+[src:sql-sqlite/lang-select] For the purposes of detecting duplicate rows, values are compared using the IS DISTINCT FROM operator.
+[src:sql-sqlite/lang-select] Thus two NULL values are considered to be equal.
+[src:sql-sqlite/lang-select] An integer is equal to a floating point number if they represent the same quantity.
+[src:sql-sqlite/lang-select] Text values are compared using an appropriate collation sequence.
+[src:sql-sqlite/lang-select] The usual rules apply for selecting a collation sequence to compare text values.
+[src:sql-sqlite/lang-select] BLOB affinity is used for DISTINCT comparisons, hence no type coercions occur.
+[src:sql-sqlite/lang-select] In a compound SELECT, all the constituent SELECTs must return the same number of result columns.
+[src:sql-sqlite/lang-select] As the components of a compound SELECT must be simple SELECT statements, they may not contain ORDER BY or LIMIT clauses.
+[src:sql-sqlite/lang-select] ORDER BY and LIMIT clauses may only occur at the end of the entire compound SELECT, and then only if the final element of the compound is not a VALUES clause.
+[src:sql-sqlite/lang-select] A compound SELECT created using the UNION ALL operator returns all the rows from the SELECT to the left of the UNION ALL operator, and all the rows from the SELECT to the right of it.
+[src:sql-sqlite/lang-select] The UNION operator works the same way as UNION ALL, except that duplicate rows are removed from the final result set.
+[src:sql-sqlite/lang-select] The INTERSECT operator returns the intersection of the results of the left and right SELECTs.
+[src:sql-sqlite/lang-select] The EXCEPT operator returns the subset of rows returned by the left SELECT that are not also returned by the right-hand SELECT.
+[src:sql-sqlite/lang-select] Duplicate rows are removed from the results of INTERSECT and EXCEPT operators before the result set is returned.
+[src:sql-sqlite/lang-select] For the purposes of determining duplicate rows for the results of compound SELECT operators, NULL values are considered equal to other NULL values and distinct from all non-NULL values.
+[src:sql-sqlite/lang-select] No affinity transformations are applied to any values when comparing rows as part of a compound SELECT.
+[src:sql-sqlite/lang-select] When three or more simple SELECTs are connected into a compound SELECT, they group from left to right.
+[src:sql-sqlite/lang-select] In other words, if "A", "B" and "C" are all simple SELECT statements, (A op B op C) is processed as ((A op B) op C).
+[src:sql-sqlite/lang-select] If a SELECT statement that returns more than one row does not have an ORDER BY clause, the order in which the rows are returned is undefined.
+[src:sql-sqlite/lang-select] Or, if a SELECT statement does have an ORDER BY clause, then the list of expressions attached to the ORDER BY determine the order in which rows are returned to the user.
+[src:sql-sqlite/lang-select] In a compound SELECT statement, only the last or right-most simple SELECT may have an ORDER BY clause.
+[src:sql-sqlite/lang-select] That ORDER BY clause will apply across all elements of the compound.
+[src:sql-sqlite/lang-select] If the right-most element of a compound SELECT is a VALUES clause, then no ORDER BY clause is allowed on that statement.
+[src:sql-sqlite/lang-select] Rows are first sorted based on the results of evaluating the left-most expression in the ORDER BY list, then ties are broken by evaluating the second left-most expression and so on.
+[src:sql-sqlite/lang-select] The order in which two rows for which all ORDER BY expressions evaluate to equal values are returned is undefined.
+[src:sql-sqlite/lang-select] Each ORDER BY expression may be optionally followed by one of the keywords ASC (smaller values are returned first) or DESC (larger values are returned first).
+[src:sql-sqlite/lang-select] If neither ASC or DESC are specified, rows are sorted in ascending (smaller values first) order by default.
+[src:sql-sqlite/lang-select] SQLite considers NULL values to be smaller than any other values for sorting purposes.
+[src:sql-sqlite/lang-select] Hence, NULLs naturally appear at the beginning of an ASC order-by and at the end of a DESC order-by.
+[src:sql-sqlite/lang-select] This can be changed using the "ASC NULLS LAST" or "DESC NULLS FIRST" syntax.
+[src:sql-sqlite/lang-select] If the ORDER BY expression is an identifier that corresponds to the alias of one of the output columns, then the expression is considered an alias for that column.
+[src:sql-sqlite/lang-select] Otherwise, if the ORDER BY expression is any other expression, it is evaluated and the returned value used to order the output rows.
+[src:sql-sqlite/lang-select] If the SELECT statement is a simple SELECT, then an ORDER BY may contain any arbitrary expressions.
+[src:sql-sqlite/lang-select] However, if the SELECT is a compound SELECT, then ORDER BY expressions that are not aliases to output columns must be exactly the same as an expression used as an output column.
+[src:sql-sqlite/lang-select] For the purposes of sorting rows, values are compared in the same way as for comparison expressions.
+[src:sql-sqlite/lang-select] Otherwise, if the ORDER BY expression is an alias to an expression that has been assigned a collation sequence using the postfix COLLATE operator, then the collation sequence assigned to the aliased expression is used.
+[src:sql-sqlite/lang-select] Otherwise, if the ORDER BY expression is a column or an alias of an expression that is a column, then the default collation sequence for the column is used.
+[src:sql-sqlite/lang-select] Otherwise, the BINARY collation sequence is used.
+[src:sql-sqlite/lang-select] In a compound SELECT statement, all ORDER BY expressions are handled as aliases for one of the result columns of the compound.
+[src:sql-sqlite/lang-select] If an ORDER BY expression is not an integer alias, then SQLite searches the left-most SELECT in the compound for a result column that matches either the second or third rules above.
+[src:sql-sqlite/lang-select] If a match is found, the search stops and the expression is handled as an alias for the result column that it has been matched against.
+[src:sql-sqlite/lang-select] Otherwise, the next SELECT to the right is tried, and so on.
+[src:sql-sqlite/lang-select] If no matching expression can be found in the result columns of any constituent SELECT, it is an error.
+[src:sql-sqlite/lang-select] Each term of the ORDER BY clause is processed separately and may be matched against result columns from different SELECT statements in the compound.
+[src:sql-sqlite/lang-select] The LIMIT clause is used to place an upper bound on the number of rows returned by the entire SELECT statement.
+[src:sql-sqlite/lang-select] In a compound SELECT, only the last or right-most simple SELECT may contain a LIMIT clause.
+[src:sql-sqlite/lang-select] In a compound SELECT, the LIMIT clause applies to the entire compound, not just the final SELECT.
+[src:sql-sqlite/lang-select] If the right-most simple SELECT is a VALUES clause then no LIMIT clause is allowed.
+[src:sql-sqlite/lang-select] Any scalar expression may be used in the LIMIT clause, so long as it evaluates to an integer or a value that can be losslessly converted to an integer.
+[src:sql-sqlite/lang-select] If the expression evaluates to a NULL value or any other value that cannot be losslessly converted to an integer, an error is returned.
+[src:sql-sqlite/lang-select] If the LIMIT expression evaluates to a negative value, then there is no upper bound on the number of rows returned.
+[src:sql-sqlite/lang-select] Otherwise, the SELECT returns the first N rows of its result set only, where N is the value that the LIMIT expression evaluates to.
+[src:sql-sqlite/lang-select] Or, if the SELECT statement would return less than N rows without a LIMIT clause, then the entire result set is returned.
+[src:sql-sqlite/lang-select] The expression attached to the optional OFFSET clause that may follow a LIMIT clause must also evaluate to an integer, or a value that can be losslessly converted to an integer.
+[src:sql-sqlite/lang-select] If an expression has an OFFSET clause, then the first M rows are omitted from the result set returned by the SELECT statement and the next N rows are returned, where M and N are the values that the OFFSET and LIMIT clauses evaluate to, respectively.
+[src:sql-sqlite/lang-select] Or, if the SELECT would return less than M+N rows if it did not have a LIMIT clause, then the first M rows are skipped and the remaining rows (if any) are returned.
+[src:sql-sqlite/lang-select] If the OFFSET clause evaluates to a negative value, the results are the same as if it had evaluated to zero.
+[src:sql-sqlite/lang-select] Instead of a separate OFFSET clause, the LIMIT clause may specify two scalar expressions separated by a comma.
+[src:sql-sqlite/lang-select] In this case, the first expression is used as the OFFSET expression and the second as the LIMIT expression.
+[src:sql-sqlite/lang-select] This is counter-intuitive, as when using the OFFSET clause the second of the two expressions is the OFFSET and the first the LIMIT.
+[src:sql-sqlite/lang-select] This reversal of the offset and limit is intentional - it maximizes compatibility with other SQL database systems.
+[src:sql-sqlite/lang-select] However, to avoid confusion, programmers are strongly encouraged to use the form of the LIMIT clause that uses the "OFFSET" keyword and avoid using a LIMIT clause with a comma-separated offset.
+[src:sql-sqlite/lang-select] The phrase "VALUES(*expr-list*)" means the same thing as "SELECT *expr-list*".
+[src:sql-sqlite/lang-select] The phrase "VALUES(*expr-list-1*),...,(*expr-list-N*)" means the same thing as "SELECT *expr-list-1* UNION ALL ...
+[src:sql-sqlite/lang-select] Both forms are the same, except that the number of SELECT statements in a compound is limited by SQLITE_LIMIT_COMPOUND_SELECT whereas the number of rows in a VALUES clause has no arbitrary limit.
+[src:sql-sqlite/lang-select] SELECT statements may be optionally preceded by a single WITH clause that defines one or more common table expressions for use within the SELECT statement.
+[src:sql-sqlite/lang-select] A virtual table that contains hidden columns can be used like a table-valued function in the FROM clause.
+[src:sql-sqlite/lang-select] The arguments to the table-valued function become constraints on the HIDDEN columns of the virtual table.
+[src:sql-sqlite/lang-select] Additional information can be found in the virtual table documentation.
+[src:sql-sqlite/lang-select] The SELECT syntax of SQLite differs slightly from standard SQL.
+[src:sql-sqlite/lang-select] Whatever the origin of the input quirks, we generally avoid trying to "fix" them, as any new restrictions on the input syntax would likely cause at least some of the millions of applications that use SQLite to break.
+[src:sql-sqlite/lang-select] The goal of the SQLite development team is to preserve backwards compability to the fullest extent possible.
+[src:sql-sqlite/lang-select] Hence, if a syntax quirk is harmless, we leave it alone and document it here, rather than try to fix it.
+[src:sql-sqlite/lang-select] SQLite is actually very flexible in how you specify a join operator.
+[src:sql-sqlite/lang-select] Where there are between 1 and 3 instances of "*blah*", each of which can be any of "CROSS", "FULL", "INNER", "LEFT", "NATURAL", "OUTER", or "RIGHT".
+[src:sql-sqlite/lang-select] The SQLite parser treats each of these keywords as an attribute of the join, which can be combined in any order.
+[src:sql-sqlite/lang-select] This creates the possibility of many new and creative join types beyond what is specified by the syntax diagram.
+[src:sql-sqlite/lang-select] Some of these non-standard join types are specifically disallowed.
+[src:sql-sqlite/lang-select] For example, you cannot say "INNER OUTER JOIN", because that would be contradictory.
+[src:sql-sqlite/lang-select] But you can say things like "OUTER LEFT NATURAL JOIN" which means the same as "NATURAL LEFT OUTER JOIN".
+[src:sql-sqlite/lang-select] Or you can say "LEFT RIGHT JOIN" which is the same as "FULL JOIN".
+[src:sql-sqlite/lang-select] Remember: you *can* use these non-standard join types but you *ought not*.
+[src:sql-sqlite/lang-select] Stick to using standard JOIN syntax for portability with other SQL database engines.
+[src:sql-sqlite/lang-select] Standard SQL has tighter restrictions on join syntax than does SQLite.
+[src:sql-sqlite/lang-select] In standard SQL, all joins other than comma-joins, CROSS JOINs, and NATURAL joins must have either an ON clause or a USING clause and comma-joins, CROSS JOINs, and NATURAL joins must not have either an ON or USING clause.
+[src:sql-sqlite/lang-select] SQLite is not nearly so fussy about join syntax.
+[src:sql-sqlite/lang-select] SQLite will accept and process an ON or USING clause on a comma-join or CROSS JOIN, and will let you omit the ON or USING clause from any join at all.
+[src:sql-sqlite/lang-select] SQLite even allows you to omit the ON or USING clause from an outer join, though doing so means that the outer join is unconstrained (as if the ON clause where "ON true") which make the outer join behave like an inner join.
+[src:sql-sqlite/lang-select] In standard SQL, joins that use the JOIN keyword take higher precedence than comma-joins.
+[src:sql-sqlite/lang-select] That is to say, JOIN operators happen before comma operators.
+[src:sql-sqlite/lang-select] This is not the case in SQLite, where all joins have the same precedence.
+[src:sql-sqlite/lang-select] In standard SQL, the FULL JOIN between t2 and t3 would occur first, and then the result of the left join would be cross-joined against t1.
+[src:sql-sqlite/lang-select] But SQLite always handles all joins from left to right.
+[src:sql-sqlite/lang-select] Thus, SQLite will do a cross join on t1 and t2 first, then the result of that cross join will feed into the FULL JOIN with t3.
+[src:sql-sqlite/lang-select] Inner joins are inherently associative, so the difference is only evident if your FROM clause contains one or more outer joins.
+[src:sql-sqlite/lang-select] Any one of these suggestions is sufficient to avoid problems, and most programmers instinctively follow all of these suggestions without having to be told, and so the lack of precedence difference between comma-joins and the JOIN keyword in SQLite rarely comes up in practice.
+[src:sql-sqlite/lang-select] But you should be aware of the problem, in case it ever does appear.
+[src:sql-sqlite/lang-transaction] No reads or writes occur except within a transaction.
+[src:sql-sqlite/lang-transaction] Any command that accesses the database (basically, any SQL command, except a few PRAGMA statements) will automatically start a transaction if one is not already in effect.
+[src:sql-sqlite/lang-transaction] Automatically started transactions are committed when the last SQL statement finishes.
+[src:sql-sqlite/lang-transaction] Transactions can be started manually using the BEGIN command.
+[src:sql-sqlite/lang-transaction] Such transactions usually persist until the next COMMIT or ROLLBACK command.
+[src:sql-sqlite/lang-transaction] But a transaction will also ROLLBACK if the database is closed or if an error occurs and the ROLLBACK conflict resolution algorithm is specified.
+[src:sql-sqlite/lang-transaction] See the documentation on the ON CONFLICT clause for additional information about the ROLLBACK conflict resolution algorithm.
+[src:sql-sqlite/lang-transaction] Transactions created using BEGIN...COMMIT do not nest.
+[src:sql-sqlite/lang-transaction] For nested transactions, use the SAVEPOINT and RELEASE commands.
+[src:sql-sqlite/lang-transaction] The "TO SAVEPOINT name" clause of the ROLLBACK command shown in the syntax diagram above is only applicable to SAVEPOINT transactions.
+[src:sql-sqlite/lang-transaction] An attempt to invoke the BEGIN command within a transaction will fail with an error, regardless of whether the transaction was started by SAVEPOINT or a prior BEGIN.
+[src:sql-sqlite/lang-transaction] The COMMIT command and the ROLLBACK command without the TO clause work the same on SAVEPOINT transactions as they do with transactions started by BEGIN.
+[src:sql-sqlite/lang-transaction] SQLite supports multiple simultaneous read transactions coming from separate database connections, possibly in separate threads or processes, but only one simultaneous write transaction.
+[src:sql-sqlite/lang-transaction] A read transaction is used for reading only.
+[src:sql-sqlite/lang-transaction] A write transaction allows both reading and writing.
+[src:sql-sqlite/lang-transaction] A read transaction is started by a SELECT statement, and a write transaction is started by statements like CREATE, DELETE, DROP, INSERT, or UPDATE (collectively "write statements").
+[src:sql-sqlite/lang-transaction] If a write statement occurs while a read transaction is active, then the read transaction is upgraded to a write transaction if possible.
+[src:sql-sqlite/lang-transaction] If some other database connection has already modified the database or is already in the process of modifying the database, then upgrading to a write transaction is not possible and the write statement will fail with SQLITE_BUSY.
+[src:sql-sqlite/lang-transaction] While a read transaction is active, any changes to the database that are implemented by separate database connections will not be seen by the database connection that started the read transaction.
+[src:sql-sqlite/lang-transaction] If database connection X is holding a read transaction, it is possible that some other database connection Y might change the content of the database while X's transaction is still open, however X will not be able to see those changes until after the transaction ends.
+[src:sql-sqlite/lang-transaction] While its read transaction is active, X will continue to see an historic snapshot of the database prior to the changes implemented by Y.
+[src:sql-sqlite/lang-transaction] Transactions can be DEFERRED, IMMEDIATE, or EXCLUSIVE.
+[src:sql-sqlite/lang-transaction] The default transaction behavior is DEFERRED.
+[src:sql-sqlite/lang-transaction] DEFERRED means that the transaction does not actually start until the database is first accessed.
+[src:sql-sqlite/lang-transaction] Internally, the BEGIN DEFERRED statement merely sets a flag on the database connection that turns off the automatic commit that would normally occur when the last statement finishes.
+[src:sql-sqlite/lang-transaction] This causes the transaction that is automatically started to persist until an explicit COMMIT or ROLLBACK or until a rollback is provoked by an error or an ON CONFLICT ROLLBACK clause.
+[src:sql-sqlite/lang-transaction] If the first statement after BEGIN DEFERRED is a SELECT, then a read transaction is started.
+[src:sql-sqlite/lang-transaction] Subsequent write statements will upgrade the transaction to a write transaction if possible, or return SQLITE_BUSY.
+[src:sql-sqlite/lang-transaction] If the first statement after BEGIN DEFERRED is a write statement, then a write transaction is started.
+[src:sql-sqlite/lang-transaction] IMMEDIATE causes the database connection to start a new write immediately, without waiting for a write statement.
+[src:sql-sqlite/lang-transaction] The BEGIN IMMEDIATE might fail with SQLITE_BUSY if another write transaction is already active on another database connection.
+[src:sql-sqlite/lang-transaction] EXCLUSIVE is similar to IMMEDIATE in that a write transaction is started immediately.
+[src:sql-sqlite/lang-transaction] EXCLUSIVE and IMMEDIATE are the same in WAL mode, but in other journaling modes, EXCLUSIVE prevents other database connections from reading the database while the transaction is underway.
+[src:sql-sqlite/lang-transaction] An implicit transaction (a transaction that is started automatically, not a transaction started by BEGIN) is committed automatically when the last active statement finishes.
+[src:sql-sqlite/lang-transaction] A statement finishes when its last cursor closes, which is guaranteed to happen when the prepared statement is reset or finalized.
+[src:sql-sqlite/lang-transaction] Some statements might "finish" for the purpose of transaction control prior to being reset or finalized, but there is no guarantee of this.
+[src:sql-sqlite/lang-transaction] The only way to ensure that a statement has "finished" is to invoke sqlite3_reset() or sqlite3_finalize() on that statement.
+[src:sql-sqlite/lang-transaction] An open sqlite3_blob used for incremental BLOB I/O also counts as an unfinished statement.
+[src:sql-sqlite/lang-transaction] The sqlite3_blob finishes when it is closed.
+[src:sql-sqlite/lang-transaction] The explicit COMMIT command runs immediately, even if there are pending SELECT statements.
+[src:sql-sqlite/lang-transaction] However, if there are pending write operations, the COMMIT command will fail with an error code SQLITE_BUSY.
+[src:sql-sqlite/lang-transaction] An attempt to execute COMMIT might also result in an SQLITE_BUSY return code if another thread or process has an open read connection.
+[src:sql-sqlite/lang-transaction] When COMMIT fails in this way, the transaction remains active and the COMMIT can be retried later after the reader has had a chance to clear.
+[src:sql-sqlite/lang-transaction] In very old versions of SQLite (before version 3.7.11 - 2012-03-20) the ROLLBACK will fail with an error code SQLITE_BUSY if there are any pending queries.
+[src:sql-sqlite/lang-transaction] In more recent versions of SQLite, the ROLLBACK will proceed and pending statements will often be aborted, causing them to return an SQLITE_ABORT or SQLITE_ABORT_ROLLBACK error.
+[src:sql-sqlite/lang-transaction] In SQLite version 3.8.8 (2015-01-16) and later, a pending read will continue functioning after the ROLLBACK as long as the ROLLBACK does not modify the database schema.
+[src:sql-sqlite/lang-transaction] If PRAGMA journal_mode is set to OFF (thus disabling the rollback journal file) then the behavior of the ROLLBACK command is undefined.
+[src:sql-sqlite/lang-transaction] If certain kinds of errors occur within a transaction, the transaction may or may not be rolled back automatically.
+[src:sql-sqlite/lang-transaction] For all of these errors, SQLite attempts to undo just the one statement it was working on and leave changes from prior statements within the same transaction intact and continue with the transaction.
+[src:sql-sqlite/lang-transaction] However, depending on the statement being evaluated and the point at which the error occurs, it might be necessary for SQLite to rollback and cancel the entire transaction.
+[src:sql-sqlite/lang-transaction] An application can tell which course of action SQLite took by using the sqlite3_get_autocommit() or sqlite3_txn_state() C-language interfaces.
+[src:sql-sqlite/lang-transaction] An application might want to respond to the errors listed above by explicitly issuing a ROLLBACK command.
+[src:sql-sqlite/lang-transaction] In that way, the transaction state will always be the same after one of the errors above.
+[src:sql-sqlite/lang-transaction] If the transaction has already been rolled back automatically by the error response, then the ROLLBACK command will fail with an error, but no harm is caused by this.
+[src:sql-sqlite/lang-transaction] Future versions of SQLite may extend the list of errors which might cause automatic transaction rollback.
+[src:sql-sqlite/lang-transaction] Future versions of SQLite might change the error response.
+[src:sql-sqlite/lang-transaction] In particular, we may choose to simplify the interface in future versions of SQLite by causing the errors above to force an unconditional rollback.
+[src:sql-sqlite/lang-update] An UPDATE statement is used to modify a subset of the values stored in zero or more rows of the database table identified by the qualified-table-name specified as part of the UPDATE statement.
+[src:sql-sqlite/lang-update] If the UPDATE statement does not have a WHERE clause, all rows in the table are modified by the UPDATE.
+[src:sql-sqlite/lang-update] Otherwise, the UPDATE affects only those rows for which the WHERE clause boolean expression is true.
+[src:sql-sqlite/lang-update] It is not an error if the WHERE clause does not evaluate to true for any row in the table - this just means that the UPDATE statement affects zero rows.
+[src:sql-sqlite/lang-update] The modifications made to each row affected by an UPDATE statement are determined by the list of assignments following the SET keyword.
+[src:sql-sqlite/lang-update] Each assignment specifies a column-name to the left of the equals sign and a scalar expression to the right.
+[src:sql-sqlite/lang-update] For each affected row, the named columns are set to the values found by evaluating the corresponding scalar expressions.
+[src:sql-sqlite/lang-update] If a single column-name appears more than once in the list of assignment expressions, all but the rightmost occurrence is ignored.
+[src:sql-sqlite/lang-update] Columns that do not appear in the list of assignments are left unmodified.
+[src:sql-sqlite/lang-update] The scalar expressions may refer to columns of the row being updated.
+[src:sql-sqlite/lang-update] In this case all scalar expressions are evaluated before any assignments are made.
+[src:sql-sqlite/lang-update] Beginning in SQLite version 3.15.0 (2016-10-14), an assignment in the SET clause can be a parenthesized list of column names on the left and a row value of the same size on the right.
+[src:sql-sqlite/lang-update] The optional "OR *action*" conflict clause that follows the UPDATE keyword allows the user to nominate a specific constraint conflict resolution algorithm to use during this one UPDATE command.
+[src:sql-sqlite/lang-update] Refer to the section entitled ON CONFLICT for additional information.
+[src:sql-sqlite/lang-update] The following additional syntax restrictions apply to UPDATE statements that occur within the body of a CREATE TRIGGER statement.
+[src:sql-sqlite/lang-update] The UPDATE-FROM idea is an extension to SQL that allows an UPDATE statement to be driven by other tables in the database.
+[src:sql-sqlite/lang-update] The "target" table is the specific table that is being updated.
+[src:sql-sqlite/lang-update] With UPDATE-FROM you can join the target table against other tables in the database in order to help compute which rows need updating and what the new values should be on those rows.
+[src:sql-sqlite/lang-update] UPDATE-FROM is supported beginning in SQLite version 3.33.0 (2020-08-14).
+[src:sql-sqlite/lang-update] Other relation database engines also implement UPDATE-FROM, but because the construct is not part of the SQL standards, each product implements UPDATE-FROM differently.
+[src:sql-sqlite/lang-update] The SQLite implementation strives to be compatible with PostgreSQL.
+[src:sql-sqlite/lang-update] The SQL Server and MySQL implementations of the same idea work a little differently.
+[src:sql-sqlite/lang-update] As an example of how UPDATE-FROM can be useful, suppose you have a point-of-sale application that accumulates purchases in the SALES table.
+[src:sql-sqlite/lang-update] At the end of the day, you want to adjust the INVENTORY table according to the daily sales.
+[src:sql-sqlite/lang-update] To do this, you can run an UPDATE against the INVENTORY table that adjusts the quantity by the aggregated sales for the day.
+[src:sql-sqlite/lang-update] The subquery in the FROM clause computes the amount by which the inventory should be reduced for each itemId.
+[src:sql-sqlite/lang-update] That subquery is joined against the inventory table and the quantity of each affected inventory row is reduced by the appropriate amount.
+[src:sql-sqlite/lang-update] The target table is not included in the FROM clause, unless the intent is to do a self-join against the target table.
+[src:sql-sqlite/lang-update] In the event of a self-join, the table in the FROM clause must be aliased to a different name than the target table.
+[src:sql-sqlite/lang-update] If the join between the target table and the FROM clause results in multiple output rows for the same target table row, then only one of those output rows is used for updating the target table.
+[src:sql-sqlite/lang-update] The output row selected is arbitrary and might change from one release of SQLite to the next, or from one run to the next.
+[src:sql-sqlite/lang-update] SQL Server also supports UPDATE FROM, but in SQL Server the target table must be included in the FROM clause.
+[src:sql-sqlite/lang-update] In other words, the target table is named twice in the statement.
+[src:sql-sqlite/lang-update] MySQL supports the UPDATE FROM idea, but it does so without using a FROM clause.
+[src:sql-sqlite/lang-update] Instead, the complete join specification is given in between the UPDATE and SET keywords.
+[src:sql-sqlite/lang-update] The MySQL UPDATE statement does not have just one target table like other systems.
+[src:sql-sqlite/lang-update] Any of the tables that participate in the join can be modified in the SET clause.
+[src:sql-sqlite/lang-update] The MySQL UPDATE syntax allows you to update multiple tables at once!
+[src:sql-sqlite/lang-update] If an UPDATE statement has a LIMIT clause, the maximum number of rows that will be updated is found by evaluating the accompanying expression and casting it to an integer value.
+[src:sql-sqlite/lang-update] A negative value is interpreted as "no limit".
+[src:sql-sqlite/lang-update] If the LIMIT expression evaluates to non-negative value *N* and the UPDATE statement has an ORDER BY clause, then all rows that would be updated in the absence of the LIMIT clause are sorted according to the ORDER BY and the first *N* updated.
+[src:sql-sqlite/lang-update] If the UPDATE statement also has an OFFSET clause, then it is similarly evaluated and cast to an integer value.
+[src:sql-sqlite/lang-update] If the OFFSET expression evaluates to a non-negative value *M*, then the first *M* rows are skipped and the following *N* rows updated instead.
+[src:sql-sqlite/lang-update] If the UPDATE statement has no ORDER BY clause, then all rows that would be updated in the absence of the LIMIT clause are assembled in an arbitrary order before applying the LIMIT and OFFSET clauses to determine which are actually updated.
+[src:sql-sqlite/lang-update] The ORDER BY clause on an UPDATE statement is used only to determine which rows fall within the LIMIT.
+[src:sql-sqlite/lang-update] The order in which rows are modified is arbitrary and is not influenced by the ORDER BY clause.
+[src:sql-sqlite/queryplanner] The best feature of SQL (in all its implementations, not just SQLite) is that it is a *declarative* language, not a *procedural* language.
+[src:sql-sqlite/queryplanner] When programming in SQL you tell the system *what* you want to compute, not *how* to compute it.
+[src:sql-sqlite/queryplanner] The task of figuring out the *how* is delegated to the *query planner* subsystem within the SQL database engine.
+[src:sql-sqlite/queryplanner] For any given SQL statement, there might be hundreds or thousands or even millions of different algorithms of performing the operation.
+[src:sql-sqlite/queryplanner] All of these algorithms will get the correct answer, though some will run faster than others.
+[src:sql-sqlite/queryplanner] The query planner is an AI that tries to pick the fastest and most efficient algorithm for each SQL statement.
+[src:sql-sqlite/queryplanner] Most of the time, the query planner in SQLite does a good job.
+[src:sql-sqlite/queryplanner] However, the query planner needs indices to work with.
+[src:sql-sqlite/queryplanner] These indices must normally be added by programmers.
+[src:sql-sqlite/queryplanner] Rarely, the query planner AI will make a suboptimal algorithm choice.
+[src:sql-sqlite/queryplanner] In those cases, programmers may want to provide additional hints to help the query planner do a better job.
+[src:sql-sqlite/queryplanner] This document provides background information about how the SQLite query planner and query engine work.
+[src:sql-sqlite/queryplanner] Programmers can use this information to help create better indexes, and provide hints to help the query planner when needed.
+[src:sql-sqlite/queryplanner] Additional information is provided in the SQLite query planner and next generation query planner documents.
+[src:sql-sqlite/queryplanner] Most tables in SQLite consist of zero or more rows with a unique integer key (the rowid or INTEGER PRIMARY KEY) followed by content.
+[src:sql-sqlite/queryplanner] (The exception is WITHOUT ROWID tables.) The rows are logically stored in order of increasing rowid.
+[src:sql-sqlite/queryplanner] As an example, this article uses a table named "FruitsForSale" which relates various fruits to the state where they are grown and their unit price at market.
+[src:sql-sqlite/queryplanner] In this example, the rowids are not consecutive but they are ordered.
+[src:sql-sqlite/queryplanner] SQLite usually creates rowids beginning with one and increasing by one with each added row.
+[src:sql-sqlite/queryplanner] But if rows are deleted, gaps can appear in the sequence.
+[src:sql-sqlite/queryplanner] And the application can control the rowid assigned if desired, so that rows are not necessarily inserted at the bottom.
+[src:sql-sqlite/queryplanner] But regardless of what happens, the rowids are always unique and in strictly ascending order.
+[src:sql-sqlite/queryplanner] Suppose you want to look up the price of peaches.
+[src:sql-sqlite/queryplanner] To satisfy this query, SQLite reads every row out of the table, checks to see if the "fruit" column has the value of "Peach" and if so, outputs the "price" column from that row.
+[src:sql-sqlite/queryplanner] The process is illustrated by figure 2 below.
+[src:sql-sqlite/queryplanner] This algorithm is called a *full table scan* since the entire content of the table must be read and examined in order to find the one row of interest.
+[src:sql-sqlite/queryplanner] With a table of only 7 rows, a full table scan is acceptable, but if the table contained 7 million rows, a full table scan might read megabytes of content in order to find a single 8-byte number.
+[src:sql-sqlite/queryplanner] For that reason, one normally tries to avoid full table scans.
+[src:sql-sqlite/queryplanner] One technique for avoiding a full table scan is to do lookups by rowid (or by the equivalent INTEGER PRIMARY KEY).
+[src:sql-sqlite/queryplanner] Since the information is stored in the table in rowid order, SQLite can find the correct row using a binary search.
+[src:sql-sqlite/queryplanner] If the table contains N elements, the time required to look up the desired row is proportional to logN rather than being proportional to N as in a full table scan.
+[src:sql-sqlite/queryplanner] If the table contains 10 million elements, that means the query will be on the order of N/logN or about 1 million times faster.
+[src:sql-sqlite/queryplanner] The problem with looking up information by rowid is that you probably do not care what the price of "item 4" is - you want to know the price of peaches.
+[src:sql-sqlite/queryplanner] An index is another table similar to the original "fruitsforsale" table but with the content (the fruit column in this case) stored in front of the rowid and with all rows in content order.
+[src:sql-sqlite/queryplanner] Figure 4 gives a logical view of the Idx1 index.
+[src:sql-sqlite/queryplanner] The "fruit" column is the primary key used to order the elements of the table and the "rowid" is the secondary key used to break the tie when two or more rows have the same "fruit".
+[src:sql-sqlite/queryplanner] In the example, the rowid has to be used as a tie-breaker for the "Orange" rows.
+[src:sql-sqlite/queryplanner] Notice that since the rowid is always unique over all elements of the original table, the composite key of "fruit" followed by "rowid" will be unique over all elements of the index.
+[src:sql-sqlite/queryplanner] This new index can be used to implement a faster algorithm for the original "Price of Peaches" query.
+[src:sql-sqlite/queryplanner] The query starts by doing a binary search on the Idx1 index for entries that have fruit='Peach'.
+[src:sql-sqlite/queryplanner] SQLite can do this binary search on the Idx1 index but not on the original FruitsForSale table because the rows in Idx1 are sorted by the "fruit" column.
+[src:sql-sqlite/queryplanner] Having found a row in the Idx1 index that has fruit='Peach', the database engine can extract the rowid for that row.
+[src:sql-sqlite/queryplanner] Then the database engines does a second binary search on the original FruitsForSale table to find the original row that contains fruit='Peach'.
+[src:sql-sqlite/queryplanner] From the row in the FruitsForSale table, SQLite can then extract the value of the price column.
+[src:sql-sqlite/queryplanner] This procedure is illustrated by figure 5.
+[src:sql-sqlite/queryplanner] SQLite has to do two binary searches to find the price of peaches using the method show above.
+[src:sql-sqlite/queryplanner] But for a table with a large number of rows, this is still much faster than doing a full table scan.
+[src:sql-sqlite/queryplanner] In the previous query the fruit='Peach' constraint narrowed the result down to a single row.
+[src:sql-sqlite/queryplanner] But the same technique works even if multiple rows are obtained.
+[src:sql-sqlite/queryplanner] In this case, SQLite still does a single binary search to find the first entry of the index where fruit='Orange'.
+[src:sql-sqlite/queryplanner] Then it extracts the rowid from the index and uses that rowid to lookup the original table entry via binary search and output the price from the original table.
+[src:sql-sqlite/queryplanner] But instead of quitting, the database engine then advances to the next row of index to repeat the process for next fruit='Orange' entry.
+[src:sql-sqlite/queryplanner] Advancing to the next row of an index (or table) is much less costly than doing a binary search since the next row is often located on the same database page as the current row.
+[src:sql-sqlite/queryplanner] In fact, the cost of advancing to the next row is so cheap in comparison to a binary search that we usually ignore it.
+[src:sql-sqlite/queryplanner] So our estimate for the total cost of this query is 3 binary searches.
+[src:sql-sqlite/queryplanner] If the number of rows of output is K and the number of rows in the table is N, then in general the cost of doing the query is proportional to (K+1)*logN.
+[src:sql-sqlite/queryplanner] Next, suppose that you want to look up the price of not just any orange, but specifically California-grown oranges.
+[src:sql-sqlite/queryplanner] One approach to this query is to use the fruit='Orange' term of the WHERE clause to find all rows dealing with oranges, then filter those rows by rejecting any that are from states other than California.
+[src:sql-sqlite/queryplanner] This process is shown by figure 7 above.
+[src:sql-sqlite/queryplanner] This is a perfectly reasonable approach in most cases.
+[src:sql-sqlite/queryplanner] Yes, the database engine did have to do an extra binary search for the Florida orange row that was later rejected, so it was not as efficient as we might hope, though for many applications it is efficient enough.
+[src:sql-sqlite/queryplanner] Suppose that in addition to the index on "fruit" there was also an index on "state".
+[src:sql-sqlite/queryplanner] The "state" index works just like the "fruit" index in that it is a new table with an extra column in front of the rowid and sorted by that extra column as the primary key.
+[src:sql-sqlite/queryplanner] The only difference is that in Idx2, the first column is "state" instead of "fruit" as it is with Idx1.
+[src:sql-sqlite/queryplanner] In our example data set, there is more redundancy in the "state" column and so there are more duplicate entries.
+[src:sql-sqlite/queryplanner] The ties are still resolved using the rowid.
+[src:sql-sqlite/queryplanner] Using the new Idx2 index on "state", SQLite has another option for lookup up the price of California oranges: it can look up every row that contains fruit from California and filter out those rows that are not oranges.
+[src:sql-sqlite/queryplanner] Using Idx2 instead of Idx1 causes SQLite to examine a different set of rows, but it gets the same answer in the end (which is very important - remember that indices should never change the answer, only help SQLite to get to the answer more quickly) and it does the same amount of work.
+[src:sql-sqlite/queryplanner] So the Idx2 index did not help performance in this case.
+[src:sql-sqlite/queryplanner] The last two queries take the same amount of time, in our example.
+[src:sql-sqlite/queryplanner] So which index, Idx1 or Idx2, will SQLite choose?
+[src:sql-sqlite/queryplanner] So, if all else is equal, SQLite will choose Idx1 with the hope of narrowing the search to as small a number of rows as possible.
+[src:sql-sqlite/queryplanner] This choice is only possible because of the statistics provided by ANALYZE.
+[src:sql-sqlite/queryplanner] If ANALYZE has not been run then the choice of which index to use is arbitrary.
+[src:sql-sqlite/queryplanner] To get the maximum performance out of a query with multiple AND-connected terms in the WHERE clause, you really want a multi-column index with columns for each of the AND terms.
+[src:sql-sqlite/queryplanner] A multi-column index follows the same pattern as a single-column index; the indexed columns are added in front of the rowid.
+[src:sql-sqlite/queryplanner] The only difference is that now multiple columns are added.
+[src:sql-sqlite/queryplanner] The left-most column is the primary key used for ordering the rows in the index.

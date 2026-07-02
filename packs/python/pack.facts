@@ -1,0 +1,1202 @@
+# nl-rag distilled facts — domain: python
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:python/asyncio-task] This section outlines high-level asyncio APIs to work with coroutines and Tasks.
+[src:python/asyncio-task] Coroutines declared with the async/await syntax is the preferred way of writing asyncio applications.
+[src:python/asyncio-task] We say that an object is an **awaitable** object if it can be used in an `await` expression.
+[src:python/asyncio-task] Many asyncio APIs are designed to accept awaitables.
+[src:python/asyncio-task] There are three main types of *awaitable* objects: **coroutines**, **Tasks**, and **Futures**.
+[src:python/asyncio-task] A `Future` is a special **low-level** awaitable object that represents an **eventual result** of an asynchronous operation.
+[src:python/asyncio-task] When a Future object is *awaited* it means that the coroutine will wait until the Future is resolved in some other place.
+[src:python/asyncio-task] Future objects in asyncio are needed to allow callback-based code to be used with async/await.
+[src:python/asyncio-task] Normally **there is no need** to create Future objects at the application level code.
+[src:python/asyncio-task] A good example of a low-level function that returns a Future object is `loop.run_in_executor()`.
+[src:python/asyncio-task] Wrap the *coro* coroutine into a `Task` and schedule its execution.
+[src:python/asyncio-task] The full function signature is largely the same as that of the `Task` constructor (or factory) - all of the keyword arguments to this function are passed through to that interface.
+[src:python/asyncio-task] An optional keyword-only *context* argument allows specifying a custom `contextvars.Context` for the *coro* to run in.
+[src:python/asyncio-task] The current context copy is created when no *context* is provided.
+[src:python/asyncio-task] An optional keyword-only *eager_start* argument allows specifying if the task should execute eagerly during the call to create_task, or be scheduled later.
+[src:python/asyncio-task] If *eager_start* is not passed the mode set by `loop.set_task_factory()` will be used.
+[src:python/asyncio-task] The task is executed in the loop returned by `get_running_loop()`, `RuntimeError` is raised if there is no running loop in current thread.
+[src:python/asyncio-task] `asyncio.TaskGroup.create_task()` is a new alternative leveraging structural concurrency; it allows for waiting for a group of related tasks with strong safety guarantees.
+[src:python/asyncio-task] Save a reference to the result of this function, to avoid a task disappearing mid-execution.
+[src:python/asyncio-task] The event loop only keeps weak references to tasks.
+[src:python/asyncio-task] A task that isn’t referenced elsewhere may get garbage collected at any time, even before it’s done.
+[src:python/asyncio-task] Changed in version 3.8: Added the *name* parameter.
+[src:python/asyncio-task] Changed in version 3.11: Added the *context* parameter.
+[src:python/asyncio-task] Changed in version 3.14: Added the *eager_start* parameter by passing on all *kwargs*.
+[src:python/asyncio-task] Tasks can easily and safely be cancelled.
+[src:python/asyncio-task] When a task is cancelled, `asyncio.CancelledError` will be raised in the task at the next opportunity.
+[src:python/asyncio-task] It is recommended that coroutines use `try/finally` blocks to robustly perform clean-up logic.
+[src:python/asyncio-task] In case `asyncio.CancelledError` is explicitly caught, it should generally be propagated when clean-up is complete.
+[src:python/asyncio-task] `asyncio.CancelledError` directly subclasses `BaseException` so most code will not need to be aware of it.
+[src:python/asyncio-task] The asyncio components that enable structured concurrency, like `asyncio.TaskGroup` and `asyncio.timeout()`, are implemented using cancellation internally and might misbehave if a coroutine swallows `asyncio.CancelledError`.
+[src:python/asyncio-task] Similarly, user code should not generally call `uncancel`.
+[src:python/asyncio-task] However, in cases when suppressing `asyncio.CancelledError` is truly desired, it is necessary to also call `uncancel()` to completely remove the cancellation state.
+[src:python/asyncio-task] Task groups combine a task creation API with a convenient and reliable way to wait for all tasks in the group to finish.
+[src:python/asyncio-task] An asynchronous context manager holding a group of tasks.
+[src:python/asyncio-task] Tasks can be added to the group using `create_task()`.
+[src:python/asyncio-task] All tasks are awaited when the context manager exits.
+[src:python/asyncio-task] The signature matches that of `asyncio.create_task()`.
+[src:python/asyncio-task] If the task group is inactive (e.g. not yet entered, already finished, or in the process of shutting down), we will close the given `coro`.
+[src:python/asyncio-task] Changed in version 3.13: Close the given coroutine if the task group is not active.
+[src:python/asyncio-task] The `async with` statement will wait for all tasks in the group to finish.
+[src:python/asyncio-task] While waiting, new tasks may still be added to the group (for example, by passing `tg` into one of the coroutines and calling `tg.create_task()` in that coroutine).
+[src:python/asyncio-task] Once the last task has finished and the `async with` block is exited, no new tasks may be added to the group.
+[src:python/asyncio-task] The first time any of the tasks belonging to the group fails with an exception other than `asyncio.CancelledError`, the remaining tasks in the group are cancelled.
+[src:python/asyncio-task] No further tasks can then be added to the group.
+[src:python/asyncio-task] At this point, if the body of the `async with` statement is still active (i.e., `__aexit__()` hasn’t been called yet), the task directly containing the `async with` statement is also cancelled.
+[src:python/asyncio-task] The resulting `asyncio.CancelledError` will interrupt an `await`, but it will not bubble out of the containing `async with` statement.
+[src:python/asyncio-task] Once all tasks have finished, if any tasks have failed with an exception other than `asyncio.CancelledError`, those exceptions are combined in an `ExceptionGroup` or `BaseExceptionGroup` (as appropriate; see their documentation) which is then raised.
+[src:python/asyncio-task] Two base exceptions are treated specially: If any task fails with `KeyboardInterrupt` or `SystemExit`, the task group still cancels the remaining tasks and waits for them, but then the initial `KeyboardInterrupt` or `SystemExit` is re-raised instead of `ExceptionGroup` or `BaseExceptionGroup`.
+[src:python/asyncio-task] The exception passed into `__aexit__()`, unless it is `asyncio.CancelledError`, is also included in the exception group.
+[src:python/asyncio-task] The same special case is made for `KeyboardInterrupt` and `SystemExit` as in the previous paragraph.
+[src:python/asyncio-task] Task groups are careful not to mix up the internal cancellation used to “wake up” their `__aexit__()` with cancellation requests for the task in which they are running made by other parties.
+[src:python/asyncio-task] In particular, when one task group is syntactically nested in another, and both experience an exception in one of their child tasks simultaneously, the inner task group will process its exceptions, and then the outer task group will receive another cancellation and process its own exceptions.
+[src:python/asyncio-task] In the case where a task group is cancelled externally and also must raise an `ExceptionGroup`, it will call the parent task’s `cancel()` method.
+[src:python/asyncio-task] This ensures that a `asyncio.CancelledError` will be raised at the next `await`, so the cancellation is not lost.
+[src:python/asyncio-task] Task groups preserve the cancellation count reported by `asyncio.Task.cancelling()`.
+[src:python/asyncio-task] Changed in version 3.13: Improved handling of simultaneous internal and external cancellations and correct preservation of cancellation counts.
+[src:python/asyncio-task] If *result* is provided, it is returned to the caller when the coroutine completes.
+[src:python/asyncio-task] `sleep()` always suspends the current task, allowing other tasks to run.
+[src:python/asyncio-task] Setting the delay to 0 provides an optimized path to allow other tasks to run.
+[src:python/asyncio-task] This can be used by long-running functions to avoid blocking the event loop for the full duration of the function call.
+[src:python/asyncio-task] Changed in version 3.10: Removed the *loop* parameter.
+[src:python/asyncio-task] Changed in version 3.13: Raises `ValueError` if *delay* is `nan`.
+[src:python/asyncio-task] Run awaitable objects in the *aws* sequence *concurrently*.
+[src:python/asyncio-task] If any awaitable in *aws* is a coroutine, it is automatically scheduled as a Task.
+[src:python/asyncio-task] If all awaitables are completed successfully, the result is an aggregate list of returned values.
+[src:python/asyncio-task] The order of result values corresponds to the order of awaitables in *aws*.
+[src:python/asyncio-task] If *return_exceptions* is `False` (default), the first raised exception is immediately propagated to the task that awaits on `gather()`.
+[src:python/asyncio-task] Other awaitables in the *aws* sequence **won’t be cancelled** and will continue to run.
+[src:python/asyncio-task] If *return_exceptions* is `True`, exceptions are treated the same as successful results, and aggregated in the result list.
+[src:python/asyncio-task] If `gather()` is *cancelled*, all submitted awaitables (that have not completed yet) are also *cancelled*.
+[src:python/asyncio-task] If any Task or Future from the *aws* sequence is *cancelled*, it is treated as if it raised `CancelledError` – the `gather()` call is **not** cancelled in this case.
+[src:python/asyncio-task] This is to prevent the cancellation of one submitted Task/Future to cause other Tasks/Futures to be cancelled.
+[src:python/asyncio-task] A new alternative to create and run tasks concurrently and wait for their completion is `asyncio.TaskGroup`.
+[src:python/asyncio-task] *TaskGroup* provides stronger safety guarantees than *gather* for scheduling a nesting of subtasks: if a task (or a subtask, a task scheduled by a task) raises an exception, *TaskGroup* will, while *gather* will not, cancel the remaining scheduled tasks.
+[src:python/asyncio-task] If *return_exceptions* is false, cancelling gather() after it has been marked done won’t cancel any submitted awaitables.
+[src:python/asyncio-task] For instance, gather can be marked done after propagating an exception to the caller, therefore, calling `gather.cancel()` after catching an exception (raised by one of the awaitables) from gather won’t cancel any other awaitables.
+[src:python/asyncio-task] Changed in version 3.7: If the *gather* itself is cancelled, the cancellation is propagated regardless of *return_exceptions*.
+[src:python/asyncio-task] Deprecated since version 3.10: Deprecation warning is emitted if no positional arguments are provided or not all positional arguments are Future-like objects and there is no running event loop.
+[src:python/asyncio-task] A task factory for eager task execution.
+[src:python/asyncio-task] When using this factory (via `loop.set_task_factory(asyncio.eager_task_factory)`), coroutines begin execution synchronously during `Task` construction.
+[src:python/asyncio-task] Tasks are only scheduled on the event loop if they block.
+[src:python/asyncio-task] This can be a performance improvement as the overhead of loop scheduling is avoided for coroutines that complete synchronously.
+[src:python/asyncio-task] A common example where this is beneficial is coroutines which employ caching or memoization to avoid actual I/O when possible.
+[src:python/asyncio-task] Immediate execution of the coroutine is a semantic change.
+[src:python/asyncio-task] If the coroutine returns or raises, the task is never scheduled to the event loop.
+[src:python/asyncio-task] If the coroutine execution blocks, the task is scheduled to the event loop.
+[src:python/asyncio-task] This change may introduce behavior changes to existing applications.
+[src:python/asyncio-task] For example, the application’s task execution order is likely to change.
+[src:python/asyncio-task] Create an eager task factory, similar to `eager_task_factory()`, using the provided *custom_task_constructor* when creating a new task instead of the default `Task`.
+[src:python/asyncio-task] This function returns a *callable* intended to be used as a task factory of an event loop via `loop.set_task_factory(factory)`).
+[src:python/asyncio-task] Protect an awaitable object from being `cancelled`.
+[src:python/asyncio-task] If *aw* is a coroutine it is automatically scheduled as a Task.
+[src:python/asyncio-task] If `something()` is cancelled by other means (i.e. from within itself) that would also cancel `shield()`.
+[src:python/asyncio-task] Save a reference to tasks passed to this function, to avoid a task disappearing mid-execution.
+[src:python/asyncio-task] Deprecated since version 3.10: Deprecation warning is emitted if *aw* is not Future-like object and there is no running event loop.
+[src:python/asyncio-task] Return an asynchronous context manager that can be used to limit the amount of time spent waiting on something.
+[src:python/asyncio-task] In either case, the context manager can be rescheduled after creation using `Timeout.reschedule()`.
+[src:python/asyncio-task] If `long_running_task` takes more than 10 seconds to complete, the context manager will cancel the current task and handle the resulting `asyncio.CancelledError` internally, transforming it into a `TimeoutError` which can be caught and handled.
+[src:python/asyncio-task] The `asyncio.timeout()` context manager is what transforms the `asyncio.CancelledError` into a `TimeoutError`, which means the `TimeoutError` can only be caught *outside* of the context manager.
+[src:python/asyncio-task] The context manager produced by `asyncio.timeout()` can be rescheduled to a different deadline and inspected.
+[src:python/asyncio-task] An asynchronous context manager for cancelling overdue coroutines.
+[src:python/asyncio-task] Prefer using `asyncio.timeout()` or `asyncio.timeout_at()` rather than instantiating `Timeout` directly.
+[src:python/asyncio-task] Timeout context managers can be safely nested.
+[src:python/asyncio-task] Similar to `asyncio.timeout()`, except *when* is the absolute time to stop waiting, or `None`.
+[src:python/asyncio-task] Wait for the *aw* awaitable to complete with a timeout.
+[src:python/asyncio-task] If a timeout occurs, it cancels the task and raises `TimeoutError`.
+[src:python/asyncio-task] To avoid the task `cancellation`, wrap it in `shield()`.
+[src:python/asyncio-task] The function will wait until the future is actually cancelled, so the total wait time may exceed the *timeout*.
+[src:python/asyncio-task] If an exception happens during cancellation, it is propagated.
+[src:python/asyncio-task] If the wait is cancelled, the future *aw* is also cancelled.
+[src:python/asyncio-task] Changed in version 3.7: When *aw* is cancelled due to a timeout, `wait_for` waits for *aw* to be cancelled.
+[src:python/asyncio-task] Previously, it raised `TimeoutError` immediately.
+[src:python/asyncio-task] Changed in version 3.11: Raises `TimeoutError` instead of `asyncio.TimeoutError`.
+[src:python/asyncio-task] Run `Future` and `Task` instances in the *aws* iterable concurrently and block until the condition specified by *return_when*.
+[src:python/asyncio-task] Returns two sets of Tasks/Futures: `(done, pending)`.
+[src:python/asyncio-task] Note that this function does not raise `TimeoutError`.
+[src:python/asyncio-task] Futures or Tasks that aren’t done when the timeout occurs are simply returned in the second set.
+[src:python/asyncio-task] Unlike `wait_for()`, `wait()` does not cancel the futures when a timeout occurs.
+[src:python/asyncio-task] Changed in version 3.11: Passing coroutine objects to `wait()` directly is forbidden.
+[src:python/asyncio-task] Changed in version 3.12: Added support for generators yielding tasks.
+[src:python/asyncio-task] Run awaitable objects in the *aws* iterable concurrently.
+[src:python/asyncio-task] The returned object can be iterated to obtain the results of the awaitables as they finish.
+[src:python/asyncio-task] The object returned by `as_completed()` can be iterated as an asynchronous iterator or a plain iterator.
+[src:python/asyncio-task] When asynchronous iteration is used, the originally-supplied awaitables are yielded if they are tasks or futures.
+[src:python/asyncio-task] This makes it easy to correlate previously-scheduled tasks with their results.
+[src:python/asyncio-task] During asynchronous iteration, implicitly-created tasks will be yielded for supplied awaitables that aren’t tasks or futures.
+[src:python/asyncio-task] When used as a plain iterator, each iteration yields a new coroutine that returns the result or raises the exception of the next completed awaitable.
+[src:python/asyncio-task] A `TimeoutError` is raised if the timeout occurs before all awaitables are done.
+[src:python/asyncio-task] This is raised by the `async for` loop during asynchronous iteration or by the coroutines yielded during plain iteration.
+[src:python/asyncio-task] Deprecated since version 3.10: Deprecation warning is emitted if not all awaitable objects in the *aws* iterable are Future-like objects and there is no running event loop.
+[src:python/asyncio-task] Changed in version 3.13: The result can now be used as either an asynchronous iterator or as a plain iterator (previously it was only a plain iterator).
+[src:python/asyncio-task] Asynchronously run function *func* in a separate thread.
+[src:python/asyncio-task] Any *args and **kwargs supplied for this function are directly passed to *func*.
+[src:python/asyncio-task] Also, the current `contextvars.Context` is propagated, allowing context variables from the event loop thread to be accessed in the separate thread.
+[src:python/asyncio-task] Return a coroutine that can be awaited to get the eventual result of *func*.
+[src:python/asyncio-task] This coroutine function is primarily intended to be used for executing IO-bound functions/methods that would otherwise block the event loop if they were run in the main thread.
+[src:python/asyncio-task] Directly calling `blocking_io()` in any coroutine would block the event loop for its duration, resulting in an additional 1 second of run time.
+[src:python/asyncio-task] Instead, by using `asyncio.to_thread()`, we can run it in a separate thread without blocking the event loop.
+[src:python/asyncio-task] Due to the GIL, `asyncio.to_thread()` can typically only be used to make IO-bound functions non-blocking.
+[src:python/asyncio-task] However, for extension modules that release the GIL or alternative Python implementations that don’t have one, `asyncio.to_thread()` can also be used for CPU-bound functions.
+[src:python/asyncio-task] Submit a coroutine to the given event loop.
+[src:python/asyncio-task] Return a `concurrent.futures.Future` to wait for the result from another OS thread.
+[src:python/asyncio-task] This function is meant to be called from a different OS thread than the one where the event loop is running.
+[src:python/asyncio-task] It’s also possible to run the other way around.
+[src:python/asyncio-task] If an exception is raised in the coroutine, the returned Future will be notified.
+[src:python/asyncio-task] See the concurrency and multithreading section of the documentation.
+[src:python/asyncio-task] Unlike other asyncio functions this function requires the *loop* argument to be passed explicitly.
+[src:python/asyncio-task] Return the currently running `Task` instance, or `None` if no task is running.
+[src:python/asyncio-task] If *loop* is `None` `get_running_loop()` is used to get the current loop.
+[src:python/asyncio-task] Return a set of not yet finished `Task` objects run by the loop.
+[src:python/asyncio-task] If *loop* is `None`, `get_running_loop()` is used for getting current loop.
+[src:python/asyncio-task] Return `True` if *obj* is a coroutine object.
+[src:python/asyncio-task] A `Future-like` object that runs a Python coroutine.
+[src:python/asyncio-task] Tasks are used to run coroutines in event loops.
+[src:python/asyncio-task] If a coroutine awaits on a Future, the Task suspends the execution of the coroutine and waits for the completion of the Future.
+[src:python/asyncio-task] When the Future is *done*, the execution of the wrapped coroutine resumes.
+[src:python/asyncio-task] Event loops use cooperative scheduling: an event loop runs one Task at a time.
+[src:python/asyncio-task] While a Task awaits for the completion of a Future, the event loop runs other Tasks, callbacks, or performs IO operations.
+[src:python/asyncio-task] Use the high-level `asyncio.create_task()` function to create Tasks, or the low-level `loop.create_task()` or `ensure_future()` functions.
+[src:python/asyncio-task] Manual instantiation of Tasks is discouraged.
+[src:python/asyncio-task] To cancel a running Task use the `cancel()` method.
+[src:python/asyncio-task] Calling it will cause the Task to throw a `CancelledError` exception into the wrapped coroutine.
+[src:python/asyncio-task] If a coroutine is awaiting on a Future object during cancellation, the Future object will be cancelled.
+[src:python/asyncio-task] `cancelled()` can be used to check if the Task was cancelled.
+[src:python/asyncio-task] The method returns `True` if the wrapped coroutine did not suppress the `CancelledError` exception and was actually cancelled.
+[src:python/asyncio-task] `asyncio.Task` inherits from `Future` all of its APIs except `Future.set_result()` and `Future.set_exception()`.
+[src:python/asyncio-task] If no *context* is provided, the Task copies the current context and later runs its coroutine in the copied context.
+[src:python/asyncio-task] An optional keyword-only *eager_start* argument allows eagerly starting the execution of the `asyncio.Task` at task creation time.
+[src:python/asyncio-task] If set to `True` and the event loop is running, the task will start executing the coroutine immediately, until the first time the coroutine blocks.
+[src:python/asyncio-task] If the coroutine returns or raises without blocking, the task will be finished eagerly and will skip scheduling to the event loop.
+[src:python/asyncio-task] Tasks are generic over the return type of their wrapped coroutines.
+[src:python/asyncio-task] Changed in version 3.7: Added support for the `contextvars` module.
+[src:python/asyncio-task] Deprecated since version 3.10: Deprecation warning is emitted if *loop* is not specified and there is no running event loop.
+[src:python/asyncio-task] Changed in version 3.12: Added the *eager_start* parameter.
+[src:python/asyncio-task] A Task is *done* when the wrapped coroutine either returned a value, raised an exception, or the Task was cancelled.
+[src:python/asyncio-task] If the Task has been *cancelled*, this method raises a `CancelledError` exception.
+[src:python/asyncio-task] If the Task’s result isn’t yet available, this method raises an `InvalidStateError` exception.
+[src:python/asyncio-task] If the wrapped coroutine raised an exception that exception is returned.
+[src:python/asyncio-task] If the wrapped coroutine returned normally this method returns `None`.
+[src:python/asyncio-task] If the Task isn’t *done* yet, this method raises an `InvalidStateError` exception.
+[src:python/asyncio-task] Add a callback to be run when the Task is *done*.
+[src:python/asyncio-task] This method should only be used in low-level callback-based code.
+[src:python/asyncio-task] See the documentation of `Future.add_done_callback()` for more details.
+[src:python/asyncio-task] Remove *callback* from the callbacks list.
+[src:python/asyncio-task] See the documentation of `Future.remove_done_callback()` for more details.
+[src:python/asyncio-task] Return the list of stack frames for this Task.
+[src:python/asyncio-task] If the wrapped coroutine is not done, this returns the stack where it is suspended.
+[src:python/asyncio-task] If the coroutine has completed successfully or was cancelled, this returns an empty list.
+[src:python/asyncio-task] If the coroutine was terminated by an exception, this returns the list of traceback frames.
+[src:python/asyncio-task] The frames are always ordered from oldest to newest.
+[src:python/asyncio-task] Only one stack frame is returned for a suspended coroutine.
+[src:python/asyncio-task] The optional *limit* argument sets the maximum number of frames to return; by default all available frames are returned.
+[src:python/asyncio-task] The ordering of the returned list differs depending on whether a stack or a traceback is returned: the newest frames of a stack are returned, but the oldest frames of a traceback are returned.
+[src:python/asyncio-task] Print the stack or traceback for this Task.
+[src:python/asyncio-task] This produces output similar to that of the traceback module for the frames retrieved by `get_stack()`.
+[src:python/asyncio-task] The *limit* argument is passed to `get_stack()` directly.
+[src:python/asyncio-task] The *file* argument is an I/O stream to which the output is written; by default output is written to `sys.stdout`.
+[src:python/asyncio-task] Return the coroutine object wrapped by the `Task`.
+[src:python/asyncio-task] This will return `None` for Tasks which have already completed eagerly.
+[src:python/asyncio-task] Changed in version 3.12: Newly added eager task execution means result may be `None`.
+[src:python/asyncio-task] Return the `contextvars.Context` object associated with the task.
+[src:python/asyncio-task] If no name has been explicitly assigned to the Task, the default asyncio Task implementation generates a default name during instantiation.
+[src:python/asyncio-task] The *value* argument can be any object, which is then converted to a string.
+[src:python/asyncio-task] In the default Task implementation, the name will be visible in the `repr()` output of a task object.
+[src:python/asyncio-task] If the Task is already *done* or *cancelled*, return `False`, otherwise, return `True`.
+[src:python/asyncio-task] The method arranges for a `CancelledError` exception to be thrown into the wrapped coroutine on the next cycle of the event loop.
+[src:python/asyncio-task] The coroutine then has a chance to clean up or even deny the request by suppressing the exception with a `try` … … `except CancelledError` … `finally` block.
+[src:python/asyncio-task] Therefore, unlike `Future.cancel()`, `Task.cancel()` does not guarantee that the Task will be cancelled, although suppressing cancellation completely is not common and is actively discouraged.
+[src:python/asyncio-task] Should the coroutine nevertheless decide to suppress the cancellation, it needs to call `Task.uncancel()` in addition to catching the exception.
+[src:python/asyncio-task] Changed in version 3.9: Added the *msg* parameter.
+[src:python/asyncio-task] Changed in version 3.11: The `msg` parameter is propagated from cancelled task to its awaiter.
+[src:python/asyncio-task] Return `True` if the Task is *cancelled*.
+[src:python/asyncio-task] The Task is *cancelled* when the cancellation was requested with `cancel()` and the wrapped coroutine propagated the `CancelledError` exception thrown into it.
+[src:python/asyncio-task] Decrement the count of cancellation requests to this Task.
+[src:python/asyncio-task] Returns the remaining number of cancellation requests.
+[src:python/asyncio-task] Note that once execution of a cancelled task completed, further calls to `uncancel()` are ineffective.
+[src:python/asyncio-task] This method is used by asyncio’s internals and isn’t expected to be used by end-user code.
+[src:python/asyncio-task] In particular, if a Task gets successfully uncancelled, this allows for elements of structured concurrency like Task groups and `asyncio.timeout()` to continue running, isolating cancellation to the respective structured block.
+[src:python/asyncio-task] While the block with `make_request()` and `make_another_request()` might get cancelled due to the timeout, `unrelated_code()` should continue running even in case of the timeout.
+[src:python/asyncio-task] `TaskGroup` context managers use `uncancel()` in a similar fashion.
+[src:python/asyncio-task] If end-user code is, for some reason, suppressing cancellation by catching `CancelledError`, it needs to call this method to remove the cancellation state.
+[src:python/asyncio-task] When this method decrements the cancellation count to zero, the method checks if a previous `cancel()` call had arranged for `CancelledError` to be thrown into the task.
+[src:python/asyncio-task] If it hasn’t been thrown yet, that arrangement will be rescinded (by resetting the internal `_must_cancel` flag).
+[src:python/asyncio-task] Changed in version 3.13: Changed to rescind pending cancellation requests upon reaching zero.
+[src:python/asyncio-task] Return the number of pending cancellation requests to this Task, i.e., the number of calls to `cancel()` less the number of `uncancel()` calls.
+[src:python/asyncio-task] Note that if this number is greater than zero but the Task is still executing, `cancelled()` will still return `False`.
+[src:python/asyncio-task] This is because this number can be lowered by calling `uncancel()`, which can lead to the task not being cancelled after all if the cancellation requests go down to zero.
+[src:python/classes] Classes provide a means of bundling data and functionality together.
+[src:python/classes] Creating a new class creates a new *type* of object, allowing new *instances* of that type to be made.
+[src:python/classes] Each class instance can have attributes attached to it for maintaining its state.
+[src:python/classes] Class instances can also have methods (defined by its class) for modifying its state.
+[src:python/classes] Compared with other programming languages, Python’s class mechanism adds classes with a minimum of new syntax and semantics.
+[src:python/classes] It is a mixture of the class mechanisms found in C++ and Modula-3.
+[src:python/classes] Python classes provide all the standard features of Object Oriented Programming: the class inheritance mechanism allows multiple base classes, a derived class can override any methods of its base class or classes, and a method can call the method of a base class with the same name.
+[src:python/classes] Objects can contain arbitrary amounts and kinds of data.
+[src:python/classes] As is true for modules, classes partake of the dynamic nature of Python: they are created at runtime, and can be modified further after creation.
+[src:python/classes] In C++ terminology, normally class members (including the data members) are *public* (except see below Private Variables), and all member functions are *virtual*.
+[src:python/classes] As in Modula-3, there are no shorthands for referencing the object’s members from its methods: the method function is declared with an explicit first argument representing the object, which is provided implicitly by the call.
+[src:python/classes] As in Smalltalk, classes themselves are objects.
+[src:python/classes] This provides semantics for importing and renaming.
+[src:python/classes] Unlike C++ and Modula-3, built-in types can be used as base classes for extension by the user.
+[src:python/classes] Also, like in C++, most built-in operators with special syntax (arithmetic operators, subscripting etc.) can be redefined for class instances.
+[src:python/classes] (Lacking universally accepted terminology to talk about classes, I will make occasional use of Smalltalk and C++ terms.
+[src:python/classes] Objects have individuality, and multiple names (in multiple scopes) can be bound to the same object.
+[src:python/classes] This is known as aliasing in other languages.
+[src:python/classes] This is usually not appreciated on a first glance at Python, and can be safely ignored when dealing with immutable basic types (numbers, strings, tuples).
+[src:python/classes] However, aliasing has a possibly surprising effect on the semantics of Python code involving mutable objects such as lists, dictionaries, and most other types.
+[src:python/classes] This is usually used to the benefit of the program, since aliases behave like pointers in some respects.
+[src:python/classes] For example, passing an object is cheap since only a pointer is passed by the implementation; and if a function modifies an object passed as an argument, the caller will see the change — this eliminates the need for two different argument passing mechanisms as in Pascal.
+[src:python/classes] Before introducing classes, I first have to tell you something about Python’s scope rules.
+[src:python/classes] Class definitions play some neat tricks with namespaces, and you need to know how scopes and namespaces work to fully understand what’s going on.
+[src:python/classes] Incidentally, knowledge about this subject is useful for any advanced Python programmer.
+[src:python/classes] A *namespace* is a mapping from names to objects.
+[src:python/classes] Most namespaces are currently implemented as Python dictionaries, but that’s normally not noticeable in any way (except for performance), and it may change in the future.
+[src:python/classes] Examples of namespaces are: the set of built-in names (containing functions such as `abs()`, and built-in exception names); the global names in a module; and the local names in a function invocation.
+[src:python/classes] In a sense the set of attributes of an object also form a namespace.
+[src:python/classes] The important thing to know about namespaces is that there is absolutely no relation between names in different namespaces; for instance, two different modules may both define a function `maximize` without confusion — users of the modules must prefix it with the module name.
+[src:python/classes] By the way, I use the word *attribute* for any name following a dot — for example, in the expression `z.real`, `real` is an attribute of the object `z`.
+[src:python/classes] Strictly speaking, references to names in modules are attribute references: in the expression `modname.funcname`, `modname` is a module object and `funcname` is an attribute of it.
+[src:python/classes] Attributes may be read-only or writable.
+[src:python/classes] In the latter case, assignment to attributes is possible.
+[src:python/classes] Module attributes are writable: you can write `modname.the_answer = 42`.
+[src:python/classes] Writable attributes may also be deleted with the `del` statement.
+[src:python/classes] For example, `del modname.the_answer` will remove the attribute `the_answer` from the object named by `modname`.
+[src:python/classes] Namespaces are created at different moments and have different lifetimes.
+[src:python/classes] The namespace containing the built-in names is created when the Python interpreter starts up, and is never deleted.
+[src:python/classes] The global namespace for a module is created when the module definition is read in; normally, module namespaces also last until the interpreter quits.
+[src:python/classes] The statements executed by the top-level invocation of the interpreter, either read from a script file or interactively, are considered part of a module called `__main__`, so they have their own global namespace.
+[src:python/classes] The local namespace for a function is created when the function is called, and deleted when the function returns or raises an exception that is not handled within the function.
+[src:python/classes] (Actually, forgetting would be a better way to describe what actually happens.) Of course, recursive invocations each have their own local namespace.
+[src:python/classes] A *scope* is a textual region of a Python program where a namespace is directly accessible. “Directly accessible” here means that an unqualified reference to a name attempts to find the name in the namespace.
+[src:python/classes] Although scopes are determined statically, they are used dynamically.
+[src:python/classes] If a name is declared global, then all references and assignments go directly to the next-to-last scope containing the module’s global names.
+[src:python/classes] Usually, the local scope references the local names of the (textually) current function.
+[src:python/classes] Outside functions, the local scope references the same namespace as the global scope: the module’s namespace.
+[src:python/classes] Class definitions place yet another namespace in the local scope.
+[src:python/classes] It is important to realize that scopes are determined textually: the global scope of a function defined in a module is that module’s namespace, no matter from where or by what alias the function is called.
+[src:python/classes] On the other hand, the actual search for names is done dynamically, at run time — however, the language definition is evolving towards static name resolution, at “compile” time, so don’t rely on dynamic name resolution!
+[src:python/classes] A special quirk of Python is that – if no `global` or `nonlocal` statement is in effect – assignments to names always go into the innermost scope.
+[src:python/classes] Assignments do not copy data — they just bind names to objects.
+[src:python/classes] The same is true for deletions: the statement `del x` removes the binding of `x` from the namespace referenced by the local scope.
+[src:python/classes] In fact, all operations that introduce new names use the local scope: in particular, `import` statements and function definitions bind the module or function name in the local scope.
+[src:python/classes] The `global` statement can be used to indicate that particular variables live in the global scope and should be rebound there; the `nonlocal` statement indicates that particular variables live in an enclosing scope and should be rebound there.
+[src:python/classes] Note how the *local* assignment (which is default) didn’t change *scope_test*'s binding of *spam*.
+[src:python/classes] The `nonlocal` assignment changed *scope_test*'s binding of *spam*, and the `global` assignment changed the module-level binding.
+[src:python/classes] You can also see that there was no previous binding for *spam* before the `global` assignment.
+[src:python/classes] Classes introduce a little bit of new syntax, three new object types, and some new semantics.
+[src:python/classes] Class definitions, like function definitions (`def` statements) must be executed before they have any effect.
+[src:python/classes] In practice, the statements inside a class definition will usually be function definitions, but other statements are allowed, and sometimes useful — we’ll come back to this later.
+[src:python/classes] The function definitions inside a class normally have a peculiar form of argument list, dictated by the calling conventions for methods — again, this is explained later.
+[src:python/classes] When a class definition is entered, a new namespace is created, and used as the local scope — thus, all assignments to local variables go into this new namespace.
+[src:python/classes] In particular, function definitions bind the name of the new function here.
+[src:python/classes] When a class definition is left normally (via the end), a *class object* is created.
+[src:python/classes] This is basically a wrapper around the contents of the namespace created by the class definition; we’ll learn more about class objects in the next section.
+[src:python/classes] The original local scope (the one in effect just before the class definition was entered) is reinstated, and the class object is bound here to the class name given in the class definition header (`ClassName` in the example).
+[src:python/classes] Class objects support two kinds of operations: attribute references and instantiation.
+[src:python/classes] then `MyClass.i` and `MyClass.f` are valid attribute references, returning an integer and a function object, respectively.
+[src:python/classes] Class attributes can also be assigned to, so you can change the value of `MyClass.i` by assignment.
+[src:python/classes] `__doc__` is also a valid attribute, returning the docstring belonging to the class: `"A simple example class"`.
+[src:python/classes] Class *instantiation* uses function notation.
+[src:python/classes] Just pretend that the class object is a parameterless function that returns a new instance of the class.
+[src:python/classes] creates a new *instance* of the class and assigns this object to the local variable `x`.
+[src:python/classes] The instantiation operation (“calling” a class object) creates an empty object.
+[src:python/classes] Many classes like to create objects with instances customized to a specific initial state.
+[src:python/classes] When a class defines an `__init__()` method, class instantiation automatically invokes `__init__()` for the newly created class instance.
+[src:python/classes] Of course, the `__init__()` method may have arguments for greater flexibility.
+[src:python/classes] In that case, arguments given to the class instantiation operator are passed on to `__init__()`.
+[src:python/classes] Now what can we do with instance objects?
+[src:python/classes] The only operations understood by instance objects are attribute references.
+[src:python/classes] There are two kinds of valid attribute names: data attributes and methods.
+[src:python/classes] The other kind of instance attribute reference is a *method*.
+[src:python/classes] A method is a function that “belongs to” an object.
+[src:python/classes] Valid method names of an instance object depend on its class.
+[src:python/classes] By definition, all attributes of a class that are function objects define corresponding methods of its instances.
+[src:python/classes] So in our example, `x.f` is a valid method reference, since `MyClass.f` is a function, but `x.i` is not, since `MyClass.i` is not.
+[src:python/classes] But `x.f` is not the same thing as `MyClass.f` — it is a *method object*, not a function object.
+[src:python/classes] If `x = MyClass()`, as above, this will return the string `'hello world'`.
+[src:python/classes] However, it is not necessary to call a method right away: `x.f` is a method object, and can be stored away and called at a later time.
+[src:python/classes] will continue to print `hello world` until the end of time.
+[src:python/classes] What exactly happens when a method is called?
+[src:python/classes] You may have noticed that `x.f()` was called without an argument above, even though the function definition for `f()` specified an argument.
+[src:python/classes] Actually, you may have guessed the answer: the special thing about methods is that the instance object is passed as the first argument of the function.
+[src:python/classes] In our example, the call `x.f()` is exactly equivalent to `MyClass.f(x)`.
+[src:python/classes] In general, calling a method with a list of *n* arguments is equivalent to calling the corresponding function with an argument list that is created by inserting the method’s instance object before the first argument.
+[src:python/classes] When a non-data attribute of an instance is referenced, the instance’s class is searched.
+[src:python/classes] If the name denotes a valid class attribute that is a function object, references to both the instance object and the function object are packed into a method object.
+[src:python/classes] When the method object is called with an argument list, a new argument list is constructed from the instance object and the argument list, and the function object is called with this new argument list.
+[src:python/classes] As discussed in A Word About Names and Objects, shared data can have possibly surprising effects involving mutable objects such as lists and dictionaries.
+[src:python/classes] Data attributes may be referenced by methods as well as by ordinary users (“clients”) of an object.
+[src:python/classes] In other words, classes are not usable to implement pure abstract data types.
+[src:python/classes] In fact, nothing in Python makes it possible to enforce data hiding — it is all based upon convention.
+[src:python/classes] Clients should use data attributes with care — clients may mess up invariants maintained by the methods by stamping on their data attributes.
+[src:python/classes] Note that clients may add data attributes of their own to an instance object without affecting the validity of the methods, as long as name conflicts are avoided — again, a naming convention can save a lot of headaches here.
+[src:python/classes] There is no shorthand for referencing data attributes (or other methods!) from within methods.
+[src:python/classes] I find that this actually increases the readability of methods: there is no chance of confusing local variables and instance variables when glancing through a method.
+[src:python/classes] Often, the first argument of a method is called `self`.
+[src:python/classes] This is nothing more than a convention: the name `self` has absolutely no special meaning to Python.
+[src:python/classes] Note, however, that by not following the convention your code may be less readable to other Python programmers, and it is also conceivable that a *class browser* program might be written that relies upon such a convention.
+[src:python/classes] Any function object that is a class attribute defines a method for instances of that class.
+[src:python/classes] It is not necessary that the function definition is textually enclosed in the class definition: assigning a function object to a local variable in the class is also ok.
+[src:python/classes] Now `f`, `g` and `h` are all attributes of class `C` that refer to function objects, and consequently they are all methods of instances of `C` — `h` being exactly equivalent to `g`.
+[src:python/classes] Note that this practice usually only serves to confuse the reader of a program.
+[src:python/classes] Methods may reference global names in the same way as ordinary functions.
+[src:python/classes] The global scope associated with a method is the module containing its definition.
+[src:python/classes] Usually, the class containing the method is itself defined in this global scope, and in the next section we’ll find some good reasons why a method would want to reference its own class.
+[src:python/classes] Each value is an object, and therefore has a *class* (also called its *type*).
+[src:python/classes] Of course, a language feature would not be worthy of the name “class” without supporting inheritance.
+[src:python/classes] The name `BaseClassName` must be defined in a namespace accessible from the scope containing the derived class definition.
+[src:python/classes] In place of a base class name, other arbitrary expressions are also allowed.
+[src:python/classes] Execution of a derived class definition proceeds the same as for a base class.
+[src:python/classes] When the class object is constructed, the base class is remembered.
+[src:python/classes] This is used for resolving attribute references: if a requested attribute is not found in the class, the search proceeds to look in the base class.
+[src:python/classes] This rule is applied recursively if the base class itself is derived from some other class.
+[src:python/classes] There’s nothing special about instantiation of derived classes: `DerivedClassName()` creates a new instance of the class.
+[src:python/classes] Method references are resolved as follows: the corresponding class attribute is searched, descending down the chain of base classes if necessary, and the method reference is valid if this yields a function object.
+[src:python/classes] Derived classes may override methods of their base classes.
+[src:python/classes] Because methods have no special privileges when calling other methods of the same object, a method of a base class that calls another method defined in the same base class may end up calling a method of a derived class that overrides it.
+[src:python/classes] An overriding method in a derived class may in fact want to extend rather than simply replace the base class method of the same name.
+[src:python/classes] There is a simple way to call the base class method directly: just call `BaseClassName.methodname(self, arguments)`.
+[src:python/classes] This is occasionally useful to clients as well.
+[src:python/classes] Python supports a form of multiple inheritance as well.
+[src:python/classes] For most purposes, in the simplest cases, you can think of the search for attributes inherited from a parent class as depth-first, left-to-right, not searching twice in the same class where there is an overlap in the hierarchy.
+[src:python/classes] Thus, if an attribute is not found in `DerivedClassName`, it is searched for in `Base1`, then (recursively) in the base classes of `Base1`, and if it was not found there, it was searched for in `Base2`, and so on.
+[src:python/classes] In fact, it is slightly more complex than that; the method resolution order changes dynamically to support cooperative calls to `super()`.
+[src:python/classes] This approach is known in some other multiple-inheritance languages as call-next-method and is more powerful than the super call found in single-inheritance languages.
+[src:python/classes] Dynamic ordering is necessary because all cases of multiple inheritance exhibit one or more diamond relationships (where at least one of the parent classes can be accessed through multiple paths from the bottommost class).
+[src:python/classes] For example, all classes inherit from `object`, so any case of multiple inheritance provides more than one path to reach `object`.
+[src:python/classes] Taken together, these properties make it possible to design reliable and extensible classes with multiple inheritance.
+[src:python/classes] For more detail, see The Python 2.3 Method Resolution Order.
+[src:python/classes] “Private” instance variables that cannot be accessed except from inside an object don’t exist in Python.
+[src:python/classes] However, there is a convention that is followed by most Python code: a name prefixed with an underscore (e.g.
+[src:python/classes] `_spam`) should be treated as a non-public part of the API (whether it is a function, a method or a data member).
+[src:python/classes] It should be considered an implementation detail and subject to change without notice.
+[src:python/classes] Since there is a valid use-case for class-private members (namely to avoid name clashes of names with names defined by subclasses), there is limited support for such a mechanism, called *name mangling*.
+[src:python/classes] Any identifier of the form `__spam` (at least two leading underscores, at most one trailing underscore) is textually replaced with `_classname__spam`, where `classname` is the current class name with leading underscore(s) stripped.
+[src:python/classes] This mangling is done without regard to the syntactic position of the identifier, as long as it occurs within the definition of a class.
+[src:python/classes] The private name mangling specifications for details and special cases.
+[src:python/classes] Name mangling is helpful for letting subclasses override methods without breaking intraclass method calls.
+[src:python/classes] The above example would work even if `MappingSubclass` were to introduce a `__update` identifier since it is replaced with `_Mapping__update` in the `Mapping` class and `_MappingSubclass__update` in the `MappingSubclass` class respectively.
+[src:python/classes] Note that the mangling rules are designed mostly to avoid accidents; it still is possible to access or modify a variable that is considered private.
+[src:python/classes] This can even be useful in special circumstances, such as in the debugger.
+[src:python/classes] Notice that code passed to `exec()` or `eval()` does not consider the classname of the invoking class to be the current class; this is similar to the effect of the `global` statement, the effect of which is likewise restricted to code that is byte-compiled together.
+[src:python/classes] The same restriction applies to `getattr()`, `setattr()` and `delattr()`, as well as when referencing `__dict__` directly.
+[src:python/classes] Sometimes it is useful to have a data type similar to the Pascal “record” or C “struct”, bundling together a few named data items.
+[src:python/classes] A piece of Python code that expects a particular abstract data type can often be passed a class that emulates the methods of that data type instead.
+[src:python/classes] For instance, if you have a function that formats some data from a file object, you can define a class with methods `read()` and `readline()` that get the data from a string buffer instead, and pass it as an argument.
+[src:python/classes] Instance method objects have attributes, too: `m.__self__` is the instance object with the method `m()`, and `m.__func__` is the function object corresponding to the method.
+[src:python/classes] This style of access is clear, concise, and convenient.
+[src:python/classes] The use of iterators pervades and unifies Python.
+[src:python/classes] Behind the scenes, the `for` statement calls `iter()` on the container object.
+[src:python/classes] The function returns an iterator object that defines the method `__next__()` which accesses elements in the container one at a time.
+[src:python/classes] When there are no more elements, `__next__()` raises a `StopIteration` exception which tells the `for` loop to terminate.
+[src:python/classes] Having seen the mechanics behind the iterator protocol, it is easy to add iterator behavior to your classes.
+[src:python/classes] Define an `__iter__()` method which returns an object with a `__next__()` method.
+[src:python/classes] Generators are a simple and powerful tool for creating iterators.
+[src:python/classes] They are written like regular functions but use the `yield` statement whenever they want to return data.
+[src:python/classes] Each time `next()` is called on it, the generator resumes where it left off (it remembers all the data values and which statement was last executed).
+[src:python/classes] Anything that can be done with generators can also be done with class-based iterators as described in the previous section.
+[src:python/classes] What makes generators so compact is that the `__iter__()` and `__next__()` methods are created automatically.
+[src:python/classes] Another key feature is that the local variables and execution state are automatically saved between calls.
+[src:python/classes] This made the function easier to write and much more clear than an approach using instance variables like `self.index` and `self.data`.
+[src:python/classes] In addition to automatic method creation and saving program state, when generators terminate, they automatically raise `StopIteration`.
+[src:python/classes] In combination, these features make it easy to create iterators with no more effort than writing a regular function.
+[src:python/classes] Some simple generators can be coded succinctly as expressions using a syntax similar to list comprehensions but with parentheses instead of square brackets.
+[src:python/classes] These expressions are designed for situations where the generator is used right away by an enclosing function.
+[src:python/classes] Generator expressions are more compact but less versatile than full generator definitions and tend to be more memory friendly than equivalent list comprehensions.
+[src:python/collections] This module implements specialized container datatypes providing alternatives to Python’s general purpose built-in containers, `dict`, `list`, `set`, and `tuple`.
+[src:python/collections] A `ChainMap` class is provided for quickly linking a number of mappings so they can be treated as a single unit.
+[src:python/collections] It is often much faster than creating a new dictionary and running multiple `update()` calls.
+[src:python/collections] The class can be used to simulate nested scopes and is useful in templating.
+[src:python/collections] A `ChainMap` groups multiple dicts or other mappings together to create a single, updateable view.
+[src:python/collections] If no *maps* are specified, a single empty dictionary is provided so that a new chain always has at least one mapping.
+[src:python/collections] The underlying mappings are stored in a list.
+[src:python/collections] That list is public and can be accessed or updated using the *maps* attribute.
+[src:python/collections] Lookups search the underlying mappings successively until a key is found.
+[src:python/collections] In contrast, writes, updates, and deletions only operate on the first mapping.
+[src:python/collections] A `ChainMap` incorporates the underlying mappings by reference.
+[src:python/collections] So, if one of the underlying mappings gets updated, those changes will be reflected in `ChainMap`.
+[src:python/collections] All of the usual dictionary methods are supported.
+[src:python/collections] The list is ordered from first-searched to last-searched.
+[src:python/collections] It is the only stored state and can be modified to change which mappings are searched.
+[src:python/collections] The list should always contain at least one mapping.
+[src:python/collections] Returns a new `ChainMap` containing a new map followed by all of the maps in the current instance.
+[src:python/collections] If `m` is specified, it becomes the new map at the front of the list of mappings; if not specified, an empty dict is used, so that a call to `d.new_child()` is equivalent to: `ChainMap({}, *d.maps)`.
+[src:python/collections] If any keyword arguments are specified, they update passed map or new empty dict.
+[src:python/collections] This method is used for creating subcontexts that can be updated without altering values in any of the parent mappings.
+[src:python/collections] Changed in version 3.4: The optional `m` parameter was added.
+[src:python/collections] Changed in version 3.10: Keyword arguments support was added.
+[src:python/collections] Property returning a new `ChainMap` containing all of the maps in the current instance except the first one.
+[src:python/collections] This is useful for skipping the first map in the search.
+[src:python/collections] Use cases are similar to those for the `nonlocal` keyword used in nested scopes.
+[src:python/collections] The use cases also parallel those for the built-in `super()` function.
+[src:python/collections] A reference to `d.parents` is equivalent to: `ChainMap(*d.maps[1:])`.
+[src:python/collections] Changed in version 3.9: Added support for `|` and `|=` operators, specified in **PEP 584**.
+[src:python/collections] This section shows various approaches to working with chained maps.
+[src:python/collections] The `ChainMap` class only makes updates (writes and deletions) to the first mapping in the chain while lookups will search the full chain.
+[src:python/collections] A counter tool is provided to support convenient and rapid tallies.
+[src:python/collections] A `Counter` is a `dict` subclass for counting hashable objects.
+[src:python/collections] It is a collection where elements are stored as dictionary keys and their counts are stored as dictionary values.
+[src:python/collections] Counts are allowed to be any integer value including zero or negative counts.
+[src:python/collections] The `Counter` class is similar to bags or multisets in other languages.
+[src:python/collections] Setting a count to zero does not remove an element from a counter.
+[src:python/collections] Changed in version 3.7: As a `dict` subclass, `Counter` inherited the capability to remember insertion order.
+[src:python/collections] Math operations on *Counter* objects also preserve order.
+[src:python/collections] Results are ordered according to when an element is first encountered in the left operand and then by the order encountered in the right operand.
+[src:python/collections] Return an iterator over elements repeating each as many times as its count.
+[src:python/collections] Elements are returned in the order first encountered.
+[src:python/collections] If an element’s count is less than one, `elements()` will ignore it.
+[src:python/collections] Return a list of the *n* most common elements and their counts from the most common to the least.
+[src:python/collections] If *n* is omitted or `None`, `most_common()` returns *all* elements in the counter.
+[src:python/collections] Elements are subtracted from an *iterable* or from another *mapping* (or counter).
+[src:python/collections] Like `dict.update()` but subtracts counts instead of replacing them.
+[src:python/collections] Both inputs and outputs may be zero or negative.
+[src:python/collections] The usual dictionary methods are available for `Counter` objects except for two which work differently for counters.
+[src:python/collections] This class method is not implemented for `Counter` objects.
+[src:python/collections] Elements are counted from an *iterable* or added-in from another *mapping* (or counter).
+[src:python/collections] Like `dict.update()` but adds counts instead of replacing them.
+[src:python/collections] Also, the *iterable* is expected to be a sequence of elements, not a sequence of `(key, value)` pairs.
+[src:python/collections] Counters support rich comparison operators for equality, subset, and superset relationships: `==`, `!=`, `<`, `<=`, `>`, `>=`.
+[src:python/collections] All of those tests treat missing elements as having zero counts so that `Counter(a=1) == Counter(a=1, b=0)` returns true.
+[src:python/collections] Changed in version 3.10: Rich comparison operations were added.
+[src:python/collections] Changed in version 3.10: In equality tests, missing elements are treated as having zero counts.
+[src:python/collections] Formerly, `Counter(a=3)` and `Counter(a=3, b=0)` were considered distinct.
+[src:python/collections] Several mathematical operations are provided for combining `Counter` objects to produce multisets (counters that have counts greater than zero).
+[src:python/collections] Addition and subtraction combine counters by adding or subtracting the counts of corresponding elements.
+[src:python/collections] Intersection and union return the minimum and maximum of corresponding counts.
+[src:python/collections] Equality and inclusion compare corresponding counts.
+[src:python/collections] Each operation can accept inputs with signed counts, but the output will exclude results with counts of zero or less.
+[src:python/collections] Unary addition and subtraction are shortcuts for adding an empty counter or subtracting from an empty counter.
+[src:python/collections] Added in version 3.3: Added support for unary plus, unary minus, and in-place multiset operations.
+[src:python/collections] Counters were primarily designed to work with positive integers to represent running counts; however, care was taken to not unnecessarily preclude use cases needing other types or negative values.
+[src:python/collections] To help with those use cases, this section documents the minimum range and type restrictions.
+[src:python/collections] Returns a new deque object initialized left-to-right (using `append()`) with data from *iterable*.
+[src:python/collections] If *iterable* is not specified, the new deque is empty.
+[src:python/collections] Deques are a generalization of stacks and queues (the name is pronounced “deck” and is short for “double-ended queue”).
+[src:python/collections] Deques support thread-safe, memory efficient appends and pops from either side of the deque with approximately the same *O*(1) performance in either direction.
+[src:python/collections] Though `list` objects support similar operations, they are optimized for fast fixed-length operations and incur *O*(*n*) memory movement costs for `pop(0)` and `insert(0, v)` operations which change both the size and position of the underlying data representation.
+[src:python/collections] If *maxlen* is not specified or is `None`, deques may grow to an arbitrary length.
+[src:python/collections] Otherwise, the deque is bounded to the specified maximum length.
+[src:python/collections] Once a bounded length deque is full, when new items are added, a corresponding number of items are discarded from the opposite end.
+[src:python/collections] Bounded length deques provide functionality similar to the `tail` filter in Unix.
+[src:python/collections] They are also useful for tracking transactions and other pools of data where only the most recent activity is of interest.
+[src:python/collections] Deques are generic over the type of their contents.
+[src:python/collections] Add *item* to the right side of the deque.
+[src:python/collections] Add *item* to the left side of the deque.
+[src:python/collections] Remove all elements from the deque leaving it with length 0.
+[src:python/collections] Count the number of deque elements equal to *value*.
+[src:python/collections] Extend the right side of the deque by appending elements from the iterable argument.
+[src:python/collections] Extend the left side of the deque by appending elements from *iterable*.
+[src:python/collections] Note, the series of left appends results in reversing the order of elements in the iterable argument.
+[src:python/collections] Return the position of *value* in the deque (at or after index *start* and before index *stop*).
+[src:python/collections] Returns the first match or raises `ValueError` if not found.
+[src:python/collections] Insert *value* into the deque at position *index*.
+[src:python/collections] If the insertion would cause a bounded deque to grow beyond *maxlen*, an `IndexError` is raised.
+[src:python/collections] Remove and return an element from the right side of the deque.
+[src:python/collections] If no elements are present, raises an `IndexError`.
+[src:python/collections] Remove and return an element from the left side of the deque.
+[src:python/collections] Reverse the elements of the deque in-place and then return `None`.
+[src:python/collections] Rotate the deque *n* steps to the right.
+[src:python/collections] When the deque is not empty, rotating one step to the right is equivalent to `d.appendleft(d.pop())`, and rotating one step to the left is equivalent to `d.append(d.popleft())`.
+[src:python/collections] Maximum size of a deque or `None` if unbounded.
+[src:python/collections] In addition to the above, deques support iteration, pickling, `len(d)`, `reversed(d)`, `copy.copy(d)`, `copy.deepcopy(d)`, membership testing with the `in` operator, and subscript references such as `d[0]` to access the first element.
+[src:python/collections] Indexed access is *O*(1) at both ends but slows to *O*(*n*) in the middle.
+[src:python/collections] For fast random access, use lists instead.
+[src:python/collections] This section shows various approaches to working with deques.
+[src:python/collections] A round-robin scheduler can be implemented with input iterators stored in a `deque`.
+[src:python/collections] Values are yielded from the active iterator in position zero.
+[src:python/collections] The `rotate()` method provides a way to implement `deque` slicing and deletion.
+[src:python/collections] To implement `deque` slicing, use a similar approach applying `rotate()` to bring a target element to the left side of the deque.
+[src:python/collections] Remove old entries with `popleft()`, add new entries with `extend()`, and then reverse the rotation.
+[src:python/collections] With minor variations on that approach, it is easy to implement Forth style stack manipulations such as `dup`, `drop`, `swap`, `over`, `pick`, `rot`, and `roll`.
+[src:python/collections] `defaultdict` is a subclass of the built-in `dict` class.
+[src:python/collections] It overrides one method and adds one writable instance variable.
+[src:python/collections] The remaining functionality is the same as for the `dict` class and is not documented here.
+[src:python/collections] The first argument provides the initial value for the `default_factory` attribute; it defaults to `None`.
+[src:python/collections] All remaining arguments are treated the same as if they were passed to the `dict` constructor, including keyword arguments.
+[src:python/collections] `defaultdict`s are generic over two types, signifying (respectively) the types of the dictionary’s keys and values.
+[src:python/collections] If the `default_factory` attribute is `None`, this raises a `KeyError` exception with the *key* as argument.
+[src:python/collections] If `default_factory` is not `None`, it is called without arguments to provide a default value for the given *key*, this value is inserted in the dictionary for the *key*, and returned.
+[src:python/collections] If calling `default_factory` raises an exception this exception is propagated unchanged.
+[src:python/collections] This method is called by the `__getitem__()` method of the `dict` class when the requested key is not found; whatever it returns or raises is then returned or raised by `__getitem__()`.
+[src:python/collections] Note that `__missing__()` is *not* called for any operations besides `__getitem__()`.
+[src:python/collections] This means that `get()` will, like normal dictionaries, return `None` as a default rather than using `default_factory`.
+[src:python/collections] This attribute is used by the `__missing__()` method; it is initialized from the first argument to the constructor, if present, or to `None`, if absent.
+[src:python/collections] Changed in version 3.9: Added merge (`|`) and update (`|=`) operators, specified in **PEP 584**.
+[src:python/collections] When each key is encountered for the first time, it is not already in the mapping; so an entry is automatically created using the `default_factory` function which returns an empty `list`.
+[src:python/collections] The `list.append()` operation then attaches the value to the new list.
+[src:python/collections] When keys are encountered again, the look-up proceeds normally (returning the list for that key) and the `list.append()` operation adds another value to the list.
+[src:python/collections] When a letter is first encountered, it is missing from the mapping, so the `default_factory` function calls `int()` to supply a default count of zero.
+[src:python/collections] The increment operation then builds up the count for each letter.
+[src:python/collections] The function `int()` which always returns zero is just a special case of constant functions.
+[src:python/collections] Named tuples assign meaning to each position in a tuple and allow for more readable, self-documenting code.
+[src:python/collections] They can be used wherever regular tuples are used, and they add the ability to access fields by name instead of position index.
+[src:python/collections] Returns a new tuple subclass named *typename*.
+[src:python/collections] The new subclass is used to create tuple-like objects that have fields accessible by attribute lookup as well as being indexable and iterable.
+[src:python/collections] Instances of the subclass also have a helpful docstring (with *typename* and *field_names*) and a helpful `__repr__()` method which lists the tuple contents in a `name=value` format.
+[src:python/collections] The *field_names* are a sequence of strings such as `['x', 'y']`.
+[src:python/collections] Alternatively, *field_names* can be a single string with each fieldname separated by whitespace and/or commas, for example `'x y'` or `'x, y'`.
+[src:python/collections] Any valid Python identifier may be used for a fieldname except for names starting with an underscore.
+[src:python/collections] Valid identifiers consist of letters, digits, and underscores but do not start with a digit or underscore and cannot be a `keyword` such as *class*, *for*, *return*, *global*, *pass*, or *raise*.
+[src:python/collections] If *rename* is true, invalid fieldnames are automatically replaced with positional names.
+[src:python/collections] For example, `['abc', 'def', 'ghi', 'abc']` is converted to `['abc', '_1', 'ghi', '_3']`, eliminating the keyword `def` and the duplicate fieldname `abc`.
+[src:python/collections] If *module* is defined, the `__module__` attribute of the named tuple is set to that value.
+[src:python/collections] Named tuple instances do not have per-instance dictionaries, so they are lightweight and require no more memory than regular tuples.
+[src:python/collections] To support pickling, the named tuple class should be assigned to a variable that matches *typename*.
+[src:python/collections] Changed in version 3.1: Added support for *rename*.
+[src:python/collections] Changed in version 3.6: The *verbose* and *rename* parameters became keyword-only arguments.
+[src:python/collections] Changed in version 3.6: Added the *module* parameter.
+[src:python/collections] Changed in version 3.7: Removed the *verbose* parameter and the `_source` attribute.
+[src:python/collections] Changed in version 3.7: Added the *defaults* parameter and the `_field_defaults` attribute.
+[src:python/collections] In addition to the methods inherited from tuples, named tuples support three additional methods and two attributes.
+[src:python/collections] To prevent conflicts with field names, the method and attribute names start with an underscore.
+[src:python/collections] Class method that makes a new instance from an existing sequence or iterable.
+[src:python/collections] Changed in version 3.1: Returns an `OrderedDict` instead of a regular `dict`.
+[src:python/collections] Changed in version 3.8: Returns a regular `dict` instead of an `OrderedDict`.
+[src:python/collections] As of Python 3.7, regular dicts are guaranteed to be ordered.
+[src:python/collections] If the extra features of `OrderedDict` are required, the suggested remediation is to cast the result to the desired type: `OrderedDict(nt._asdict())`.
+[src:python/collections] Named tuples are also supported by generic function `copy.replace()`.
+[src:python/collections] Changed in version 3.13: Raise `TypeError` instead of `ValueError` for invalid keyword arguments.
+[src:python/collections] Tuple of strings listing the field names.
+[src:python/collections] Useful for introspection and for creating new named tuple types from existing named tuples.
+[src:python/collections] Dictionary mapping field names to default values.
+[src:python/collections] Since a named tuple is a regular Python class, it is easy to add or change functionality with a subclass.
+[src:python/collections] The subclass shown above sets `__slots__` to an empty tuple.
+[src:python/collections] This helps keep memory requirements low by preventing the creation of instance dictionaries.
+[src:python/collections] Subclassing is not useful for adding new, stored fields.
+[src:python/collections] Changed in version 3.5: Property docstrings became writeable.
+[src:python/collections] Ordered dictionaries are just like regular dictionaries but have some extra capabilities relating to ordering operations.
+[src:python/collections] They have become less important now that the built-in `dict` class gained the ability to remember insertion order (this new behavior became guaranteed in Python 3.7).
+[src:python/collections] Return an instance of a `dict` subclass that has methods specialized for rearranging dictionary order.
+[src:python/collections] The `popitem()` method for ordered dictionaries returns and removes a (key, value) pair.
+[src:python/collections] The pairs are returned in LIFO order if *last* is true or FIFO order if false.
+[src:python/collections] Move an existing *key* to either end of an ordered dictionary.
+[src:python/collections] The item is moved to the right end if *last* is true (the default) or to the beginning if *last* is false.
+[src:python/collections] In addition to the usual mapping methods, ordered dictionaries also support reverse iteration using `reversed()`.
+[src:python/collections] Equality tests between `OrderedDict` objects are order-sensitive and are roughly equivalent to `list(od1.items())==list(od2.items())`.
+[src:python/collections] Equality tests between `OrderedDict` objects and other `Mapping` objects are order-insensitive like regular dictionaries.
+[src:python/collections] This allows `OrderedDict` objects to be substituted anywhere a regular dictionary is used.
+[src:python/collections] Changed in version 3.5: The items, keys, and values views of `OrderedDict` now support reverse iteration using `reversed()`.
+[src:python/collections] Changed in version 3.6: With the acceptance of **PEP 468**, order is retained for keyword arguments passed to the `OrderedDict` constructor and its `update()` method.
+[src:python/collections] It is straightforward to create an ordered dictionary variant that remembers the order the keys were *last* inserted.
+[src:python/collections] The class, `UserDict` acts as a wrapper around dictionary objects.
+[src:python/collections] The need for this class has been partially supplanted by the ability to subclass directly from `dict`; however, this class can be easier to work with because the underlying dictionary is accessible as an attribute.
+[src:python/collections] The instance’s contents are kept in a regular dictionary, which is accessible via the `data` attribute of `UserDict` instances.
+[src:python/collections] If arguments are provided, they are used to initialize `data`, like a regular dictionary.
+[src:python/collections] A real dictionary used to store the contents of the `UserDict` class.
+[src:python/collections] This class acts as a wrapper around list objects.
+[src:python/collections] It is a useful base class for your own list-like classes which can inherit from them and override existing methods or add new ones.
+[src:python/collections] In this way, one can add new behaviors to lists.
+[src:python/collections] The need for this class has been partially supplanted by the ability to subclass directly from `list`; however, this class can be easier to work with because the underlying list is accessible as an attribute.
+[src:python/collections] The instance’s contents are kept in a regular list, which is accessible via the `data` attribute of `UserList` instances.
+[src:python/collections] The instance’s contents are initially set to a copy of *list*, defaulting to the empty list `[]`.
+[src:python/collections] *list* can be any iterable, for example a real Python list or a `UserList` object.
+[src:python/collections] A real `list` object used to store the contents of the `UserList` class.
+[src:python/collections] If a derived class does not wish to comply with this requirement, all of the special methods supported by this class will need to be overridden; please consult the sources for information about the methods which need to be provided in that case.
+[src:python/collections] The class, `UserString` acts as a wrapper around string objects.
+[src:python/collections] The need for this class has been partially supplanted by the ability to subclass directly from `str`; however, this class can be easier to work with because the underlying string is accessible as an attribute.
+[src:python/collections] The instance’s content is kept in a regular string object, which is accessible via the `data` attribute of `UserString` instances.
+[src:python/collections] The instance’s contents are initially set to a copy of *seq*.
+[src:python/collections] The *seq* argument can be any object which can be converted into a string using the built-in `str()` function.
+[src:python/collections] A real `str` object used to store the contents of the `UserString` class.
+[src:python/collections] Changed in version 3.5: New methods `__getnewargs__`, `__rmod__`, `casefold`, `format_map`, `isprintable`, and `maketrans`.
+[src:python/controlflow] As well as the `while` statement just introduced, Python uses a few more that we will encounter in this chapter.
+[src:python/controlflow] Perhaps the most well-known statement type is the `if` statement.
+[src:python/controlflow] There can be zero or more `elif` parts, and the `else` part is optional.
+[src:python/controlflow] The keyword ‘`elif`’ is short for ‘else if’, and is useful to avoid excessive indentation.
+[src:python/controlflow] An `if` … `elif` … `elif` … sequence is a substitute for the `switch` or `case` statements found in other languages.
+[src:python/controlflow] If you’re comparing the same value to several constants, or checking for specific types or attributes, you may also find the `match` statement useful.
+[src:python/controlflow] The `for` statement in Python differs a bit from what you may be used to in C or Pascal.
+[src:python/controlflow] Code that modifies a collection while iterating over that same collection can be tricky to get right.
+[src:python/controlflow] If you do need to iterate over a sequence of numbers, the built-in function `range()` comes in handy.
+[src:python/controlflow] The given end point is never part of the generated sequence; `range(10)` generates 10 values, the legal indices for items of a sequence of length 10.
+[src:python/controlflow] In most such cases, however, it is convenient to use the `enumerate()` function, see Looping Techniques.
+[src:python/controlflow] In many ways the object returned by `range()` behaves as if it is a list, but in fact it isn’t.
+[src:python/controlflow] It is an object which returns the successive items of the desired sequence when you iterate over it, but it doesn’t really make the list, thus saving space.
+[src:python/controlflow] We say such an object is iterable, that is, suitable as a target for functions and constructs that expect something from which they can obtain successive items until the supply is exhausted.
+[src:python/controlflow] Later we will see more functions that return iterables and take iterables as arguments.
+[src:python/controlflow] In chapter Data Structures, we will discuss `list()` in more detail.
+[src:python/controlflow] In a `for` or `while` loop the `break` statement may be paired with an `else` clause.
+[src:python/controlflow] If the loop finishes without executing the `break`, the `else` clause executes.
+[src:python/controlflow] In a `for` loop, the `else` clause is executed after the loop finishes its final iteration, that is, if no break occurred.
+[src:python/controlflow] In a `while` loop, it’s executed after the loop’s condition becomes false.
+[src:python/controlflow] In either kind of loop, the `else` clause is **not** executed if the loop was terminated by a `break`.
+[src:python/controlflow] Of course, other ways of ending the loop early, such as a `return` or a raised exception, will also skip execution of the `else` clause.
+[src:python/controlflow] One way to think of the else clause is to imagine it paired with the `if` inside the loop.
+[src:python/controlflow] As the loop executes, it will run a sequence like if/if/if/else.
+[src:python/controlflow] The `if` is inside the loop, encountered a number of times.
+[src:python/controlflow] If the condition is ever true, a `break` will happen.
+[src:python/controlflow] If the condition is never true, the `else` clause outside the loop will execute.
+[src:python/controlflow] When used with a loop, the `else` clause has more in common with the `else` clause of a `try` statement than it does with that of `if` statements: a `try` statement’s `else` clause runs when no exception occurs, and a loop’s `else` clause runs when no `break` occurs.
+[src:python/controlflow] For more on the `try` statement and exceptions, see Handling Exceptions.
+[src:python/controlflow] It can be used when a statement is required syntactically but the program requires no action.
+[src:python/controlflow] Another place `pass` can be used is as a place-holder for a function or conditional body when you are working on new code, allowing you to keep thinking at a more abstract level.
+[src:python/controlflow] For this last case, many people use the ellipsis literal `...` instead of `pass`.
+[src:python/controlflow] This use has no special meaning to Python, and is not part of the language definition (you could use any constant expression here), but `...` is used conventionally as a placeholder body as well.
+[src:python/controlflow] A `match` statement takes an expression and compares its value to successive patterns given as one or more case blocks.
+[src:python/controlflow] This is superficially similar to a switch statement in C, Java or JavaScript (and many other languages), but it’s more similar to pattern matching in languages like Rust or Haskell.
+[src:python/controlflow] Only the first pattern that matches gets executed and it can also extract components (sequence elements or object attributes) from the value into variables.
+[src:python/controlflow] If no case matches, none of the branches is executed.
+[src:python/controlflow] Note the last block: the “variable name” `_` acts as a *wildcard* and never fails to match.
+[src:python/controlflow] The first pattern has two literals, and can be thought of as an extension of the literal pattern shown above.
+[src:python/controlflow] But the next two patterns combine a literal and a variable, and the variable *binds* a value from the subject (`point`).
+[src:python/controlflow] The fourth pattern captures two values, which makes it conceptually similar to the unpacking assignment `(x, y) = point`.
+[src:python/controlflow] You can use positional parameters with some builtin classes that provide an ordering for their attributes (e.g. dataclasses).
+[src:python/controlflow] You can also define a specific position for attributes in patterns by setting the `__match_args__` special attribute in your classes.
+[src:python/controlflow] A recommended way to read patterns is to look at them as an extended form of what you would put on the left of an assignment, to understand which variables would be set to what.
+[src:python/controlflow] Only the standalone names (like `var` above) are assigned to by a match statement.
+[src:python/controlflow] Dotted names (like `foo.bar`), attribute names (the `x=` and `y=` above) or class names (recognized by the “(…)” next to them like `Point` above) are never assigned to.
+[src:python/controlflow] We can add an `if` clause to a pattern, known as a “guard”.
+[src:python/controlflow] If the guard is false, `match` goes on to try the next case block.
+[src:python/controlflow] For a more detailed explanation and additional examples, you can look into **PEP 636** which is written in a tutorial format.
+[src:python/controlflow] The keyword `def` introduces a function *definition*.
+[src:python/controlflow] It must be followed by the function name and the parenthesized list of formal parameters.
+[src:python/controlflow] The statements that form the body of the function start at the next line, and must be indented.
+[src:python/controlflow] The first statement of the function body can optionally be a string literal; this string literal is the function’s documentation string, or *docstring*.
+[src:python/controlflow] The *execution* of a function introduces a new symbol table used for the local variables of the function.
+[src:python/controlflow] More precisely, all variable assignments in a function store the value in the local symbol table; whereas variable references first look in the local symbol table, then in the local symbol tables of enclosing functions, then in the global symbol table, and finally in the table of built-in names.
+[src:python/controlflow] Thus, global variables and variables of enclosing functions cannot be directly assigned a value within a function (unless, for global variables, named in a `global` statement, or, for variables of enclosing functions, named in a `nonlocal` statement), although they may be referenced.
+[src:python/controlflow] A function definition associates the function name with the function object in the current symbol table.
+[src:python/controlflow] The interpreter recognizes the object pointed to by that name as a user-defined function.
+[src:python/controlflow] Coming from other languages, you might object that `fib` is not a function but a procedure since it doesn’t return a value.
+[src:python/controlflow] In fact, even functions without a `return` statement do return a value, albeit a rather boring one.
+[src:python/controlflow] This value is called `None` (it’s a built-in name).
+[src:python/controlflow] Writing the value `None` is normally suppressed by the interpreter if it would be the only value written.
+[src:python/controlflow] It is also possible to define functions with a variable number of arguments.
+[src:python/controlflow] There are three forms, which can be combined.
+[src:python/controlflow] The most useful form is to specify a default value for one or more arguments.
+[src:python/controlflow] This creates a function that can be called with fewer arguments than it is defined to allow.
+[src:python/controlflow] This example also introduces the `in` keyword.
+[src:python/controlflow] This tests whether or not a sequence contains a certain value.
+[src:python/controlflow] Functions can also be called using keyword arguments of the form `kwarg=value`.
+[src:python/controlflow] accepts one required argument (`voltage`) and three optional arguments (`state`, `action`, and `type`).
+[src:python/controlflow] In a function call, keyword arguments must follow positional arguments.
+[src:python/controlflow] All the keyword arguments passed must match one of the arguments accepted by the function (e.g.
+[src:python/controlflow] `actor` is not a valid argument for the `parrot` function), and their order is not important.
+[src:python/controlflow] This also includes non-optional arguments (e.g.
+[src:python/controlflow] No argument may receive a value more than once.
+[src:python/controlflow] When a final formal parameter of the form `**name` is present, it receives a dictionary (see Mapping Types — dict) containing all keyword arguments except for those corresponding to a formal parameter.
+[src:python/controlflow] This may be combined with a formal parameter of the form `*name` (described in the next subsection) which receives a tuple containing the positional arguments beyond the formal parameter list.
+[src:python/controlflow] Note that the order in which the keyword arguments are printed is guaranteed to match the order in which they were provided in the function call.
+[src:python/controlflow] By default, arguments may be passed to a Python function either by position or explicitly by keyword.
+[src:python/controlflow] For readability and performance, it makes sense to restrict the way arguments can be passed so that a developer need only look at the function definition to determine if items are passed by position, by position or keyword, or by keyword.
+[src:python/controlflow] If used, these symbols indicate the kind of parameter by how the arguments may be passed to the function: positional-only, positional-or-keyword, and keyword-only.
+[src:python/controlflow] Keyword parameters are also referred to as named parameters.
+[src:python/controlflow] If `/` and `*` are not present in the function definition, arguments may be passed to a function by position or by keyword.
+[src:python/controlflow] Looking at this in a bit more detail, it is possible to mark certain parameters as *positional-only*.
+[src:python/controlflow] If *positional-only*, the parameters’ order matters, and the parameters cannot be passed by keyword.
+[src:python/controlflow] Positional-only parameters are placed before a `/` (forward-slash).
+[src:python/controlflow] The `/` is used to logically separate the positional-only parameters from the rest of the parameters.
+[src:python/controlflow] If there is no `/` in the function definition, there are no positional-only parameters.
+[src:python/controlflow] Parameters following the `/` may be *positional-or-keyword* or *keyword-only*.
+[src:python/controlflow] To mark parameters as *keyword-only*, indicating the parameters must be passed by keyword argument, place an `*` in the arguments list just before the first *keyword-only* parameter.
+[src:python/controlflow] There is no possible call that will make it return `True` as the keyword `'name'` will always bind to the first parameter.
+[src:python/controlflow] In other words, the names of positional-only parameters can be used in `**kwds` without ambiguity.
+[src:python/controlflow] Finally, the least frequently used option is to specify that a function can be called with an arbitrary number of arguments.
+[src:python/controlflow] These arguments will be wrapped up in a tuple (see Tuples and Sequences).
+[src:python/controlflow] Before the variable number of arguments, zero or more normal arguments may occur.
+[src:python/controlflow] Normally, these *variadic* arguments will be last in the list of formal parameters, because they scoop up all remaining input arguments that are passed to the function.
+[src:python/controlflow] Any formal parameters which occur after the `*args` parameter are ‘keyword-only’ arguments, meaning that they can only be used as keywords rather than positional arguments.
+[src:python/controlflow] The reverse situation occurs when the arguments are already in a list or tuple but need to be unpacked for a function call requiring separate positional arguments.
+[src:python/controlflow] For instance, the built-in `range()` function expects separate *start* and *stop* arguments.
+[src:python/controlflow] Small anonymous functions can be created with the `lambda` keyword.
+[src:python/controlflow] This function returns the sum of its two arguments: `lambda a, b: a+b`.
+[src:python/controlflow] Lambda functions can be used wherever function objects are required.
+[src:python/controlflow] They are syntactically restricted to a single expression.
+[src:python/controlflow] Semantically, they are just syntactic sugar for a normal function definition.
+[src:python/controlflow] The above example uses a lambda expression to return a function.
+[src:python/controlflow] Another use is to pass a small function as an argument.
+[src:python/controlflow] Here are some conventions about the content and formatting of documentation strings.
+[src:python/controlflow] The first line should always be a short, concise summary of the object’s purpose.
+[src:python/controlflow] For brevity, it should not explicitly state the object’s name or type, since these are available by other means (except if the name happens to be a verb describing a function’s operation).
+[src:python/controlflow] This line should begin with a capital letter and end with a period.
+[src:python/controlflow] If there are more lines in the documentation string, the second line should be blank, visually separating the summary from the rest of the description.
+[src:python/controlflow] The following lines should be one or more paragraphs describing the object’s calling conventions, its side effects, etc.
+[src:python/controlflow] The Python parser strips indentation from multi-line string literals when they serve as module, class, or function docstrings.
+[src:python/controlflow] Function annotations are completely optional metadata information about the types used by user-defined functions (see **PEP 3107** and **PEP 484** for more information).
+[src:python/controlflow] Annotations are stored in the `__annotations__` attribute of the function as a dictionary and have no effect on any other part of the function.
+[src:python/controlflow] Parameter annotations are defined by a colon after the parameter name, followed by an expression evaluating to the value of the annotation.
+[src:python/controlflow] Return annotations are defined by a literal `->`, followed by an expression, between the parameter list and the colon denoting the end of the `def` statement.
+[src:python/controlflow] Now that you are about to write longer, more complex pieces of Python, it is a good time to talk about *coding style*.
+[src:python/controlflow] Most languages can be written (or more concisely, *formatted*) in different styles; some are more readable than others.
+[src:python/controlflow] Making it easy for others to read your code is always a good idea, and adopting a nice coding style helps tremendously for that.
+[src:python/controlflow] For Python, **PEP 8** has emerged as the style guide that most projects adhere to; it promotes a very readable and eye-pleasing coding style.
+[src:python/dataclasses] This module provides a decorator and functions for automatically adding generated special methods such as `__init__()` and `__repr__()` to user-defined classes.
+[src:python/dataclasses] It was originally described in **PEP 557**.
+[src:python/dataclasses] The member variables to use in these generated methods are defined using **PEP 526** type annotations.
+[src:python/dataclasses] Note that this method is automatically added to the class: it is not directly specified in the `InventoryItem` definition shown above.
+[src:python/dataclasses] When defined on the class, it will be called by the generated `__init__()`, normally as `self.__post_init__()`.
+[src:python/dataclasses] However, if any `InitVar` fields are defined, they will also be passed to `__post_init__()` in the order they were defined in the class.
+[src:python/dataclasses] If no `__init__()` method is generated, then `__post_init__()` will not automatically be called.
+[src:python/dataclasses] Among other uses, this allows for initializing field values that depend on one or more other fields.
+[src:python/dataclasses] The `__init__()` method generated by `@dataclass` does not call base class `__init__()` methods.
+[src:python/dataclasses] Note, however, that in general the dataclass-generated `__init__()` methods don’t need to be called, since the derived dataclass will take care of initializing all fields of any base class that is a dataclass itself.
+[src:python/dataclasses] See the section below on init-only variables for ways to pass parameters to `__post_init__()`.
+[src:python/dataclasses] Also see the warning about how `replace()` handles `init=False` fields.
+[src:python/dataclasses] One of the few places where `@dataclass` actually inspects the type of a field is to determine if a field is a class variable as defined in **PEP 526**.
+[src:python/dataclasses] It does this by checking if the type of the field is `typing.ClassVar`.
+[src:python/dataclasses] If a field is a `ClassVar`, it is excluded from consideration as a field and is ignored by the dataclass mechanisms.
+[src:python/dataclasses] Such `ClassVar` pseudo-fields are not returned by the module-level `fields()` function.
+[src:python/dataclasses] Another place where `@dataclass` inspects a type annotation is to determine if a field is an init-only variable.
+[src:python/dataclasses] It does this by seeing if the type of a field is of type `InitVar`.
+[src:python/dataclasses] If a field is an `InitVar`, it is considered a pseudo-field called an init-only field.
+[src:python/dataclasses] As it is not a true field, it is not returned by the module-level `fields()` function.
+[src:python/dataclasses] Init-only fields are added as parameters to the generated `__init__()` method, and are passed to the optional `__post_init__()` method.
+[src:python/dataclasses] They are not otherwise used by dataclasses.
+[src:python/dataclasses] In this case, `fields()` will return `Field` objects for `i` and `j`, but not for `database`.
+[src:python/dataclasses] It is not possible to create truly immutable Python objects.
+[src:python/dataclasses] However, by passing `frozen=True` to the `@dataclass` decorator you can emulate immutability.
+[src:python/dataclasses] In that case, dataclasses will add `__setattr__()` and `__delattr__()` methods to the class.
+[src:python/dataclasses] These methods will raise a `FrozenInstanceError` when invoked.
+[src:python/dataclasses] There is a tiny performance penalty when using `frozen=True`: `__init__()` cannot use simple assignment to initialize fields, and must use `object.__setattr__()`.
+[src:python/dataclasses] When the dataclass is being created by the `@dataclass` decorator, it looks through all of the class’s base classes in reverse MRO (that is, starting at `object`) and, for each dataclass that it finds, adds the fields from that base class to an ordered mapping of fields.
+[src:python/dataclasses] After all of the base class fields are added, it adds its own fields to the ordered mapping.
+[src:python/dataclasses] All of the generated methods will use this combined, calculated ordered mapping of fields.
+[src:python/dataclasses] Because the fields are in insertion order, derived classes override base classes.
+[src:python/dataclasses] The final list of fields is, in order, `x`, `y`, `z`.
+[src:python/dataclasses] The final type of `x` is `int`, as specified in class `C`.
+[src:python/dataclasses] After the parameters needed for `__init__()` are computed, any keyword-only parameters are moved to come after all regular (non-keyword-only) parameters.
+[src:python/dataclasses] This is a requirement of how keyword-only parameters are implemented in Python: they must come after non-keyword-only parameters.
+[src:python/dataclasses] Note that the parameters have been re-ordered from how they appear in the list of fields: parameters derived from regular fields are followed by parameters derived from keyword-only fields.
+[src:python/dataclasses] The relative ordering of keyword-only parameters is maintained in the re-ordered `__init__()` parameter list.
+[src:python/dataclasses] If a `field()` specifies a *default_factory*, it is called with zero arguments when a default value for the field is needed.
+[src:python/dataclasses] If a field is excluded from `__init__()` (using `init=False`) and the field also specifies *default_factory*, then the default factory function will always be called from the generated `__init__()` function.
+[src:python/dataclasses] This happens because there is no other way to give the field an initial value.
+[src:python/dataclasses] Python stores default member variable values in class attributes.
+[src:python/dataclasses] Note that the two instances of class `C` share the same class variable `x`, as expected.
+[src:python/dataclasses] This has the same issue as the original example using class `C`.
+[src:python/dataclasses] That is, two instances of class `D` that do not specify a value for `x` when creating a class instance will share the same copy of `x`.
+[src:python/dataclasses] Because dataclasses just use normal Python class creation they also share this behavior.
+[src:python/dataclasses] There is no general way for Data Classes to detect this condition.
+[src:python/dataclasses] Instead, the `@dataclass` decorator will raise a `ValueError` if it detects an unhashable default parameter.
+[src:python/dataclasses] The assumption is that if a value is unhashable, it is mutable.
+[src:python/dataclasses] This is a partial solution, but it does protect against many common errors.
+[src:python/dataclasses] Changed in version 3.11: Instead of looking for and disallowing objects of type `list`, `dict`, or `set`, unhashable objects are now not allowed as default values.
+[src:python/dataclasses] Unhashability is used to approximate mutability.
+[src:python/dataclasses] Note that if a field is annotated with a descriptor type, but is not assigned a descriptor object as its default value, the field will act like a normal field.
+[src:python/datastructures] This chapter describes some things you’ve learned about already in more detail, and adds some new things as well.
+[src:python/datastructures] The list data type has some more methods.
+[src:python/datastructures] Extend the list by appending all the items from the iterable.
+[src:python/datastructures] The first argument is the index of the element before which to insert, so `a.insert(0, x)` inserts at the front of the list, and `a.insert(len(a), x)` is equivalent to `a.append(x)`.
+[src:python/datastructures] Remove the first item from the list whose value is equal to *value*.
+[src:python/datastructures] It raises a `ValueError` if there is no such item.
+[src:python/datastructures] Remove the item at the given position in the list, and return it.
+[src:python/datastructures] If no index is specified, `a.pop()` removes and returns the last item in the list.
+[src:python/datastructures] It raises an `IndexError` if the list is empty or the index is outside the list range.
+[src:python/datastructures] Return zero-based index of the first occurrence of *value* in the list.
+[src:python/datastructures] Raises a `ValueError` if there is no such item.
+[src:python/datastructures] The optional arguments *start* and *end* are interpreted as in the slice notation and are used to limit the search to a particular subsequence of the list.
+[src:python/datastructures] The returned index is computed relative to the beginning of the full sequence rather than the *start* argument.
+[src:python/datastructures] Return the number of times *value* appears in the list.
+[src:python/datastructures] Sort the items of the list in place (the arguments can be used for sort customization, see `sorted()` for their explanation).
+[src:python/datastructures] Reverse the elements of the list in place.
+[src:python/datastructures] You might have noticed that methods like `insert`, `remove` or `sort` that only modify the list have no return value printed – they return the default `None`. [1] This is a design principle for all mutable data structures in Python.
+[src:python/datastructures] Another thing you might notice is that not all data can be sorted or compared.
+[src:python/datastructures] For instance, `[None, 'hello', 10]` doesn’t sort because integers can’t be compared to strings and `None` can’t be compared to other types.
+[src:python/datastructures] Also, there are some types that don’t have a defined ordering relation.
+[src:python/datastructures] For example, `3+4j < 5+7j` isn’t a valid comparison.
+[src:python/datastructures] The list methods make it very easy to use a list as a stack, where the last element added is the first element retrieved (“last-in, first-out”).
+[src:python/datastructures] To add an item to the top of the stack, use `append()`.
+[src:python/datastructures] To retrieve an item from the top of the stack, use `pop()` without an explicit index.
+[src:python/datastructures] It is also possible to use a list as a queue, where the first element added is the first element retrieved (“first-in, first-out”); however, lists are not efficient for this purpose.
+[src:python/datastructures] While appends and pops from the end of list are fast, doing inserts or pops from the beginning of a list is slow (because all of the other elements have to be shifted by one).
+[src:python/datastructures] To implement a queue, use `collections.deque` which was designed to have fast appends and pops from both ends.
+[src:python/datastructures] List comprehensions provide a concise way to create lists.
+[src:python/datastructures] Common applications are to make new lists where each element is the result of some operations applied to each member of another sequence or iterable, or to create a subsequence of those elements that satisfy a certain condition.
+[src:python/datastructures] Note that this creates (or overwrites) a variable named `x` that still exists after the loop completes.
+[src:python/datastructures] A list comprehension consists of brackets containing an expression followed by a `for` clause, then zero or more `for` or `if` clauses.
+[src:python/datastructures] The result will be a new list resulting from evaluating the expression in the context of the `for` and `if` clauses which follow it.
+[src:python/datastructures] Note how the order of the `for` and `if` statements is the same in both these snippets.
+[src:python/datastructures] If the expression is a tuple (e.g. the `(x, y)` in the previous example), it must be parenthesized.
+[src:python/datastructures] The initial expression in a list comprehension can be any arbitrary expression, including another list comprehension.
+[src:python/datastructures] In the real world, you should prefer built-in functions to complex flow statements.
+[src:python/datastructures] See Unpacking Argument Lists for details on the asterisk in this line.
+[src:python/datastructures] There is a way to remove an item from a list given its index instead of its value: the `del` statement.
+[src:python/datastructures] This differs from the `pop()` method which returns a value.
+[src:python/datastructures] The `del` statement can also be used to remove slices from a list or clear the entire list (which we did earlier by assignment of an empty list to the slice).
+[src:python/datastructures] Referencing the name `a` hereafter is an error (at least until another value is assigned to it).
+[src:python/datastructures] We saw that lists and strings have many common properties, such as indexing and slicing operations.
+[src:python/datastructures] They are two examples of *sequence* data types (see Sequence Types — list, tuple, range).
+[src:python/datastructures] Since Python is an evolving language, other sequence data types may be added.
+[src:python/datastructures] There is also another standard sequence data type: the *tuple*.
+[src:python/datastructures] As you see, on output tuples are always enclosed in parentheses, so that nested tuples are interpreted correctly; they may be input with or without surrounding parentheses, although often parentheses are necessary anyway (if the tuple is part of a larger expression).
+[src:python/datastructures] It is not possible to assign to the individual items of a tuple, however it is possible to create tuples which contain mutable objects, such as lists.
+[src:python/datastructures] Though tuples may seem similar to lists, they are often used in different situations and for different purposes.
+[src:python/datastructures] Tuples are immutable, and usually contain a heterogeneous sequence of elements that are accessed via unpacking (see later in this section) or indexing (or even by attribute in the case of `namedtuples`).
+[src:python/datastructures] Lists are mutable, and their elements are usually homogeneous and are accessed by iterating over the list.
+[src:python/datastructures] A special problem is the construction of tuples containing 0 or 1 items: the syntax has some extra quirks to accommodate these.
+[src:python/datastructures] Empty tuples are constructed by an empty pair of parentheses; a tuple with one item is constructed by following a value with a comma (it is not sufficient to enclose a single value in parentheses).
+[src:python/datastructures] The statement `t = 12345, 54321, 'hello!'` is an example of *tuple packing*: the values `12345`, `54321` and `'hello!'` are packed together in a tuple.
+[src:python/datastructures] This is called, appropriately enough, *sequence unpacking* and works for any sequence on the right-hand side.
+[src:python/datastructures] Sequence unpacking requires that there are as many variables on the left side of the equals sign as there are elements in the sequence.
+[src:python/datastructures] Note that multiple assignment is really just a combination of tuple packing and sequence unpacking.
+[src:python/datastructures] Python also includes a data type for sets.
+[src:python/datastructures] A set is an unordered collection with no duplicate elements.
+[src:python/datastructures] Basic uses include membership testing and eliminating duplicate entries.
+[src:python/datastructures] Set objects also support mathematical operations like union, intersection, difference, and symmetric difference.
+[src:python/datastructures] Curly braces or the `set()` function can be used to create sets.
+[src:python/datastructures] Note: to create an empty set you have to use `set()`, not `{}`; the latter creates an empty dictionary, a data structure that we discuss in the next section.
+[src:python/datastructures] Because sets are unordered, iterating over them or printing them can produce the elements in a different order than you expect.
+[src:python/datastructures] Another useful data type built into Python is the *dictionary* (see Mapping Types — dict).
+[src:python/datastructures] Dictionaries are sometimes found in other languages as “associative memories” or “associative arrays”.
+[src:python/datastructures] Unlike sequences, which are indexed by a range of numbers, dictionaries are indexed by *keys*, which can be any immutable type; strings and numbers can always be keys.
+[src:python/datastructures] Tuples can be used as keys if they contain only strings, numbers, or tuples; if a tuple contains any mutable object either directly or indirectly, it cannot be used as a key.
+[src:python/datastructures] You can’t use lists as keys, since lists can be modified in place using index assignments, slice assignments, or methods like `append()` and `extend()`.
+[src:python/datastructures] It is best to think of a dictionary as a set of *key: value* pairs, with the requirement that the keys are unique (within one dictionary).
+[src:python/datastructures] A pair of braces creates an empty dictionary: `{}`.
+[src:python/datastructures] Placing a comma-separated list of key:value pairs within the braces adds initial key:value pairs to the dictionary; this is also the way dictionaries are written on output.
+[src:python/datastructures] The main operations on a dictionary are storing a value with some key and extracting the value given the key.
+[src:python/datastructures] It is also possible to delete a key:value pair with `del`.
+[src:python/datastructures] If you store using a key that is already in use, the old value associated with that key is forgotten.
+[src:python/datastructures] Extracting a value for a non-existent key by subscripting (`d[key]`) raises a `KeyError`.
+[src:python/datastructures] To avoid getting this error when trying to access a possibly non-existent key, use the `get()` method instead, which returns `None` (or a specified default value) if the key is not in the dictionary.
+[src:python/datastructures] Performing `list(d)` on a dictionary returns a list of all the keys used in the dictionary, in insertion order (if you want it sorted, just use `sorted(d)` instead).
+[src:python/datastructures] To check whether a single key is in the dictionary, use the `in` keyword.
+[src:python/datastructures] When looping through dictionaries, the key and corresponding value can be retrieved at the same time using the `items()` method.
+[src:python/datastructures] When looping through a sequence, the position index and corresponding value can be retrieved at the same time using the `enumerate()` function.
+[src:python/datastructures] To loop over two or more sequences at the same time, the entries can be paired with the `zip()` function.
+[src:python/datastructures] To loop over a sequence in reverse, first specify the sequence in a forward direction and then call the `reversed()` function.
+[src:python/datastructures] To loop over a sequence in sorted order, use the `sorted()` function which returns a new sorted list while leaving the source unaltered.
+[src:python/datastructures] Using `set()` on a sequence eliminates duplicate elements.
+[src:python/datastructures] The use of `sorted()` in combination with `set()` over a sequence is an idiomatic way to loop over unique elements of the sequence in sorted order.
+[src:python/datastructures] It is sometimes tempting to change a list while you are looping over it; however, it is often simpler and safer to create a new list instead.
+[src:python/datastructures] The conditions used in `while` and `if` statements can contain any operators, not just comparisons.
+[src:python/datastructures] The comparison operators `in` and `not in` are membership tests that determine whether a value is in (or not in) a container.
+[src:python/datastructures] The operators `is` and `is not` compare whether two objects are really the same object.
+[src:python/datastructures] All comparison operators have the same priority, which is lower than that of all numerical operators.
+[src:python/datastructures] For example, `a < b == c` tests whether `a` is less than `b` and moreover `b` equals `c`.
+[src:python/datastructures] Comparisons may be combined using the Boolean operators `and` and `or`, and the outcome of a comparison (or of any other Boolean expression) may be negated with `not`.
+[src:python/datastructures] These have lower priorities than comparison operators; between them, `not` has the highest priority and `or` the lowest, so that `A and not B or C` is equivalent to `(A and (not B)) or C`.
+[src:python/datastructures] As always, parentheses can be used to express the desired composition.
+[src:python/datastructures] The Boolean operators `and` and `or` are so-called *short-circuit* operators: their arguments are evaluated from left to right, and evaluation stops as soon as the outcome is determined.
+[src:python/datastructures] For example, if `A` and `C` are true but `B` is false, `A and B and C` does not evaluate the expression `C`.
+[src:python/datastructures] When used as a general value and not as a Boolean, the return value of a short-circuit operator is the last evaluated argument.
+[src:python/datastructures] It is possible to assign the result of a comparison or other Boolean expression to a variable.
+[src:python/datastructures] Note that in Python, unlike C, assignment inside expressions must be done explicitly with the walrus operator `:=`.
+[src:python/datastructures] This avoids a common class of problems encountered in C programs: typing `=` in an expression when `==` was intended.
+[src:python/datastructures] Sequence objects typically may be compared to other objects with the same sequence type.
+[src:python/datastructures] The comparison uses *lexicographical* ordering: first the first two items are compared, and if they differ this determines the outcome of the comparison; if they are equal, the next two items are compared, and so on, until either sequence is exhausted.
+[src:python/datastructures] If two items to be compared are themselves sequences of the same type, the lexicographical comparison is carried out recursively.
+[src:python/datastructures] If all items of two sequences compare equal, the sequences are considered equal.
+[src:python/datastructures] If one sequence is an initial sub-sequence of the other, the shorter sequence is the smaller (lesser) one.
+[src:python/datastructures] Lexicographical ordering for strings uses the Unicode code point number to order individual characters.
+[src:python/datastructures] Note that comparing objects of different types with `<` or `>` is legal provided that the objects have appropriate comparison methods.
+[src:python/datastructures] For example, mixed numeric types are compared according to their numeric value, so 0 equals 0.0, etc.
+[src:python/datastructures] Otherwise, rather than providing an arbitrary ordering, the interpreter will raise a `TypeError` exception.
+[src:python/datetime-p01] The `datetime` module supplies classes for manipulating dates and times.
+[src:python/datetime-p01] While date and time arithmetic is supported, the focus of the implementation is on efficient attribute extraction for output formatting and manipulation.
+[src:python/datetime-p01] Concrete time zones representing the IANA time zone database.
+[src:python/datetime-p01] Third-party library with expanded time zone and parsing support.
+[src:python/datetime-p01] Third-party library that introduces distinct static types to for example, allow static type checkers to differentiate between naive and aware datetimes.
+[src:python/datetime-p01] Date and time objects may be categorized as “aware” or “naive” depending on whether or not they include time zone information.
+[src:python/datetime-p01] With sufficient knowledge of applicable algorithmic and political time adjustments, such as time zone and daylight saving time information, an **aware** object can locate itself relative to other aware objects.
+[src:python/datetime-p01] A **naive** object does not contain enough information to unambiguously locate itself relative to other date/time objects.
+[src:python/datetime-p01] Whether a naive object represents Coordinated Universal Time (UTC), local time, or time in some other time zone is purely up to the program, just like it is up to the program whether a particular number represents metres, miles, or mass.
+[src:python/datetime-p01] Naive objects are easy to understand and to work with, at the cost of ignoring some aspects of reality.
+[src:python/datetime-p01] For applications requiring aware objects, `datetime` and `time` objects have an optional time zone information attribute, `tzinfo`, that can be set to an instance of a subclass of the abstract `tzinfo` class.
+[src:python/datetime-p01] These `tzinfo` objects capture information about the offset from UTC time, the time zone name, and whether daylight saving time is in effect.
+[src:python/datetime-p01] Only one concrete `tzinfo` class, the `timezone` class, is supplied by the `datetime` module.
+[src:python/datetime-p01] The `timezone` class can represent simple time zones with fixed offsets from UTC, such as UTC itself or North American EST and EDT time zones.
+[src:python/datetime-p01] Supporting time zones at deeper levels of detail is up to the application.
+[src:python/datetime-p01] The rules for time adjustment across the world are more political than rational, change frequently, and there is no standard suitable for every application aside from UTC.
+[src:python/datetime-p01] The smallest year number allowed in a `date` or `datetime` object.
+[src:python/datetime-p01] The largest year number allowed in a `date` or `datetime` object.
+[src:python/datetime-p01] Alias for the UTC time zone singleton `datetime.timezone.utc`.
+[src:python/datetime-p01] An idealized naive date, assuming the current Gregorian calendar always was, and always will be, in effect.
+[src:python/datetime-p01] An idealized time, independent of any particular day, assuming that every day has exactly 24*60*60 seconds.
+[src:python/datetime-p01] (There is no notion of “leap seconds” here.) Attributes: `hour`, `minute`, `second`, `microsecond`, and `tzinfo`.
+[src:python/datetime-p01] Attributes: `year`, `month`, `day`, `hour`, `minute`, `second`, `microsecond`, and `tzinfo`.
+[src:python/datetime-p01] A duration expressing the difference between two `datetime` or `date` instances to microsecond resolution.
+[src:python/datetime-p01] An abstract base class for time zone information objects.
+[src:python/datetime-p01] These are used by the `datetime` and `time` classes to provide a customizable notion of time adjustment (for example, to account for time zone and/or daylight saving time).
+[src:python/datetime-p01] A class that implements the `tzinfo` abstract base class as a fixed offset from the UTC.
+[src:python/datetime-p01] Objects of the `date` type are always naive.
+[src:python/datetime-p01] An object of type `time` or `datetime` may be aware or naive.
+[src:python/datetime-p01] `t.tzinfo.utcoffset(None)` does not return `None`.
+[src:python/datetime-p01] The distinction between aware and naive doesn’t apply to `timedelta` objects.
+[src:python/datetime-p01] A `timedelta` object represents a duration, the difference between two `datetime` or `date` instances.
+[src:python/datetime-p01] All arguments are optional and default to 0.
+[src:python/datetime-p01] Arguments may be integers or floats, and may be positive or negative.
+[src:python/datetime-p01] Only *days*, *seconds* and *microseconds* are stored internally.
+[src:python/datetime-p01] `import datetime as dt` instead of `import datetime` or `from datetime import datetime` to avoid confusion between the module and the class.
+[src:python/datetime-p01] See How I Import Python’s datetime Module.
+[src:python/datetime-p01] If any argument is a float and there are fractional microseconds, the fractional microseconds left over from all arguments are combined and their sum is rounded to the nearest microsecond using round-half-to-even tiebreaker.
+[src:python/datetime-p01] If no argument is a float, the conversion and normalization processes are exact (no information is lost).
+[src:python/datetime-p01] If the normalized value of days lies outside the indicated range, `OverflowError` is raised.
+[src:python/datetime-p01] Note that normalization of negative values may be surprising at first.
+[src:python/datetime-p01] The smallest possible difference between non-equal `timedelta` objects, `timedelta(microseconds=1)`.
+[src:python/datetime-p01] Note that, because of normalization, `timedelta.max` is greater than `-timedelta.min`.
+[src:python/datetime-p01] `-timedelta.max` is not representable as a `timedelta` object.
+[src:python/datetime-p01] Division by zero raises `ZeroDivisionError`.
+[src:python/datetime-p01] String representations of `timedelta` objects are normalized similarly to their internal representation.
+[src:python/datetime-p01] This leads to somewhat unusual results for negative timedeltas.
+[src:python/datetime-p01] The expression `t2 - t3` will always be equal to the expression `t2 + (-t3)` except when t3 is equal to `timedelta.max`; in that case the former will produce a result while the latter will overflow.
+[src:python/datetime-p01] In addition to the operations listed above, `timedelta` objects support certain additions and subtractions with `date` and `datetime` objects (see below).
+[src:python/datetime-p01] Changed in version 3.2: Floor division and true division of a `timedelta` object by another `timedelta` object are now supported, as are remainder operations and the `divmod()` function.
+[src:python/datetime-p01] True division and multiplication of a `timedelta` object by a `float` object are now supported.
+[src:python/datetime-p01] `timedelta` objects support equality and order comparisons.
+[src:python/datetime-p01] In Boolean contexts, a `timedelta` object is considered to be true if and only if it isn’t equal to `timedelta(0)`.
+[src:python/datetime-p01] Return the total number of seconds contained in the duration.
+[src:python/datetime-p01] Equivalent to `td / timedelta(seconds=1)`.
+[src:python/datetime-p01] For interval units other than seconds, use the division form directly (for example, `td / timedelta(microseconds=1)`).
+[src:python/datetime-p01] Note that for very large time intervals (greater than 270 years on most platforms) this method will lose microsecond accuracy.
+[src:python/datetime-p01] A `date` object represents a date (year, month and day) in an idealized calendar, the current Gregorian calendar indefinitely extended in both directions.
+[src:python/datetime-p01] If an argument outside those ranges is given, `ValueError` is raised.
+[src:python/datetime-p01] This is equivalent to `date.fromtimestamp(time.time())`.
+[src:python/datetime-p01] Return the local date corresponding to the POSIX *timestamp*, such as is returned by `time.time()`.
+[src:python/datetime-p01] This may raise `OverflowError`, if the timestamp is out of the range of values supported by the platform C `localtime()` function, and `OSError` on `localtime()` failure.
+[src:python/datetime-p01] It’s common for this to be restricted to years from 1970 through 2038.
+[src:python/datetime-p01] Note that on non-POSIX systems that include leap seconds in their notion of a timestamp, leap seconds are ignored by `fromtimestamp()`.
+[src:python/datetime-p01] Changed in version 3.3: Raise `OverflowError` instead of `ValueError` if the timestamp is out of the range of values supported by the platform C `localtime()` function.
+[src:python/datetime-p01] Raise `OSError` instead of `ValueError` on `localtime()` failure.
+[src:python/datetime-p01] Return the date corresponding to the proleptic Gregorian *ordinal*, where January 1 of year 1 has ordinal 1.
+[src:python/datetime-p01] `ValueError` is raised unless `1 <= ordinal <= date.max.toordinal()`.
+[src:python/datetime-p01] For any date `d`, `date.fromordinal(d.toordinal()) == d`.
+[src:python/datetime-p01] Extended date representations are not currently supported (`±YYYYYY-MM-DD`).
+[src:python/datetime-p01] Ordinal dates are not currently supported (`YYYY-OOO`).
+[src:python/datetime-p01] Changed in version 3.11: Previously, this method only supported the format `YYYY-MM-DD`.
+[src:python/datetime-p01] Return a `date` corresponding to the ISO calendar date specified by *year*, *week* and *day*.
+[src:python/datetime-p01] This is the inverse of the function `date.isocalendar()`.
+[src:python/datetime-p01] Return a `date` corresponding to *date_string*, parsed according to *format*.
+[src:python/datetime-p01] `ValueError` is raised if the date_string and format can’t be parsed by `time.strptime()` or if it returns a value which isn’t a time tuple.
+[src:python/datetime-p01] See also strftime() and strptime() behavior and `date.fromisoformat()`.
+[src:python/datetime-p01] If *format* specifies a day of month without a year a `DeprecationWarning` is emitted.
+[src:python/datetime-p01] This is to avoid a quadrennial leap year bug in code seeking to parse only a month and day as the default year used in absence of one in the format is not a leap year.
+[src:python/datetime-p01] Such *format* values may raise an error as of Python 3.15.
+[src:python/datetime-p01] The workaround is to always include a year in your *format*.
+[src:python/datetime-p01] The earliest representable date, `date(MINYEAR, 1, 1)`.
+[src:python/datetime-p01] The latest representable date, `date(MAXYEAR, 12, 31)`.
+[src:python/datetime-p01] The smallest possible difference between non-equal date objects, `timedelta(days=1)`.
+[src:python/datetime-p01] Between `MINYEAR` and `MAXYEAR` inclusive.
+[src:python/datetime-p01] Between 1 and the number of days in the given month of the given year.
+[src:python/datetime-p01] `timedelta.seconds` and `timedelta.microseconds` are ignored.
+[src:python/datetime-p01] `timedelta.seconds` and `timedelta.microseconds` are 0, and `date2 + timedelta == date1` after.
+[src:python/datetime-p01] `date` objects are equal if they represent the same date.
+[src:python/datetime-p01] `date` objects that are not also `datetime` instances are never equal to `datetime` objects, even if they represent the same date.
+[src:python/datetime-p01] *date1* is considered less than *date2* when *date1* precedes *date2* in time.
+[src:python/datetime-p01] In other words, `date1 < date2` if and only if `date1.toordinal() < date2.toordinal()`.
+[src:python/datetime-p01] Order comparison between a `date` object that is not also a `datetime` instance and a `datetime` object raises `TypeError`.
+[src:python/datetime-p01] Changed in version 3.13: Comparison between `datetime` object and an instance of the `date` subclass that is not a `datetime` subclass no longer converts the latter to `date`, ignoring the time part and the time zone.
+[src:python/datetime-p01] The default behavior can be changed by overriding the special comparison methods in subclasses.
+[src:python/datetime-p01] In Boolean contexts, all `date` objects are considered to be true.
+[src:python/datetime-p01] Return a new `date` object with the same values, but with specified parameters updated.
+[src:python/datetime-p01] The generic function `copy.replace()` also supports `date` objects.
+[src:python/datetime-p01] Return a `time.struct_time` such as returned by `time.localtime()`.
+[src:python/datetime-p01] The hours, minutes and seconds are 0, and the DST flag is -1.
+[src:python/datetime-p01] where `yday = d.toordinal() - date(d.year, 1, 1).toordinal() + 1` is the day number within the current year starting with 1 for January 1st.
+[src:python/datetime-p01] Return the proleptic Gregorian ordinal of the date, where January 1 of year 1 has ordinal 1.
+[src:python/datetime-p01] For any `date` object `d`, `date.fromordinal(d.toordinal()) == d`.
+[src:python/datetime-p01] Return the day of the week as an integer, where Monday is 0 and Sunday is 6.
+[src:python/datetime-p01] Return the day of the week as an integer, where Monday is 1 and Sunday is 7.
+[src:python/datetime-p01] Return a named tuple object with three components: `year`, `week` and `weekday`.
+[src:python/datetime-p01] The ISO year consists of 52 or 53 full weeks, and where a week starts on a Monday and ends on a Sunday.
+[src:python/datetime-p01] The first week of an ISO year is the first (Gregorian) calendar week of a year containing a Thursday.
+[src:python/datetime-p01] This is called week number 1, and the ISO year of that Thursday is the same as its Gregorian year.
+[src:python/datetime-p01] Changed in version 3.9: Result changed from a tuple to a named tuple.
+[src:python/datetime-p01] For a date `d`, `str(d)` is equivalent to `d.isoformat()`.
+[src:python/datetime-p01] on platforms where the native C `ctime()` function (which `time.ctime()` invokes, but which `date.ctime()` does not invoke) conforms to the C standard.
+[src:python/datetime-p01] Return a string representing the date, controlled by an explicit format string.
+[src:python/datetime-p01] Format codes referring to hours, minutes or seconds will see 0 values.
+[src:python/datetime-p01] See also strftime() and strptime() behavior and `date.isoformat()`.
+[src:python/datetime-p01] This makes it possible to specify a format string for a `date` object in formatted string literals and when using `str.format()`.
+[src:python/datetime-p02] A `datetime` object is a single object containing all the information from a `date` object and a `time` object.
+[src:python/datetime-p02] Like a `date` object, `datetime` assumes the current Gregorian calendar extended in both directions; like a `time` object, `datetime` assumes there are exactly 3600*24 seconds in every day.
+[src:python/datetime-p02] The *year*, *month* and *day* arguments are required.
+[src:python/datetime-p02] *tzinfo* may be `None`, or an instance of a `tzinfo` subclass.
+[src:python/datetime-p02] Changed in version 3.6: Added the *fold* parameter.
+[src:python/datetime-p02] Return the current local date and time, with `tzinfo` `None`.
+[src:python/datetime-p02] This method is functionally equivalent to `now()`, but without a `tz` parameter.
+[src:python/datetime-p02] If optional argument *tz* is `None` or not specified, this is like `today()`, but, if possible, supplies more precision than can be gotten from going through a `time.time()` timestamp (for example, this may be possible on platforms supplying the C `gettimeofday()` function).
+[src:python/datetime-p02] If *tz* is not `None`, it must be an instance of a `tzinfo` subclass, and the current date and time are converted to *tz*’s time zone.
+[src:python/datetime-p02] This function is preferred over `today()` and `utcnow()`.
+[src:python/datetime-p02] Subsequent calls to `datetime.now()` may return the same instant depending on the precision of the underlying clock.
+[src:python/datetime-p02] Return the current UTC date and time, with `tzinfo` `None`.
+[src:python/datetime-p02] This is like `now()`, but returns the current UTC date and time, as a naive `datetime` object.
+[src:python/datetime-p02] An aware current UTC datetime can be obtained by calling `datetime.now(timezone.utc)`.
+[src:python/datetime-p02] Because naive `datetime` objects are treated by many `datetime` methods as local times, it is preferred to use aware datetimes to represent times in UTC.
+[src:python/datetime-p02] As such, the recommended way to create an object representing the current time in UTC is by calling `datetime.now(timezone.utc)`.
+[src:python/datetime-p02] Deprecated since version 3.12: Use `datetime.now()` with `UTC` instead.
+[src:python/datetime-p02] Return the local date and time corresponding to the POSIX timestamp, such as is returned by `time.time()`.
+[src:python/datetime-p02] If optional argument *tz* is `None` or not specified, the timestamp is converted to the platform’s local date and time, and the returned `datetime` object is naive.
+[src:python/datetime-p02] If *tz* is not `None`, it must be an instance of a `tzinfo` subclass, and the timestamp is converted to *tz*’s time zone.
+[src:python/datetime-p02] `fromtimestamp()` may raise `OverflowError`, if the timestamp is out of the range of values supported by the platform C `localtime()` or `gmtime()` functions, and `OSError` on `localtime()` or `gmtime()` failure.
+[src:python/datetime-p02] It’s common for this to be restricted to years in 1970 through 2038.
+[src:python/datetime-p02] Note that on non-POSIX systems that include leap seconds in their notion of a timestamp, leap seconds are ignored by `fromtimestamp()`, and then it’s possible to have two timestamps differing by a second that yield identical `datetime` objects.
+[src:python/datetime-p02] This method is preferred over `utcfromtimestamp()`.
+[src:python/datetime-p02] Changed in version 3.3: Raise `OverflowError` instead of `ValueError` if the timestamp is out of the range of values supported by the platform C `localtime()` or `gmtime()` functions.
+[src:python/datetime-p02] Raise `OSError` instead of `ValueError` on `localtime()` or `gmtime()` failure.
+[src:python/datetime-p02] Changed in version 3.6: `fromtimestamp()` may return instances with `fold` set to 1.
+[src:python/datetime-p02] Return the UTC `datetime` corresponding to the POSIX timestamp, with `tzinfo` `None`.
+[src:python/datetime-p02] This may raise `OverflowError`, if the timestamp is out of the range of values supported by the platform C `gmtime()` function, and `OSError` on `gmtime()` failure.
+[src:python/datetime-p02] except the latter formula always supports the full years range: between `MINYEAR` and `MAXYEAR` inclusive.
+[src:python/datetime-p02] As such, the recommended way to create an object representing a specific timestamp in UTC is by calling `datetime.fromtimestamp(timestamp, tz=timezone.utc)`.
+[src:python/datetime-p02] Changed in version 3.3: Raise `OverflowError` instead of `ValueError` if the timestamp is out of the range of values supported by the platform C `gmtime()` function.
+[src:python/datetime-p02] Raise `OSError` instead of `ValueError` on `gmtime()` failure.
+[src:python/datetime-p02] Changed in version 3.15: Accepts any real number as *timestamp*, not only integer or float.
+[src:python/datetime-p02] Deprecated since version 3.12: Use `datetime.fromtimestamp()` with `UTC` instead.
+[src:python/datetime-p02] Return the `datetime` corresponding to the proleptic Gregorian ordinal, where January 1 of year 1 has ordinal 1.
+[src:python/datetime-p02] `ValueError` is raised unless `1 <= ordinal <= datetime.max.toordinal()`.
+[src:python/datetime-p02] The hour, minute, second and microsecond of the result are all 0, and `tzinfo` is `None`.
+[src:python/datetime-p02] Return a new `datetime` object whose date components are equal to the given `date` object’s, and whose time components are equal to the given `time` object’s.
+[src:python/datetime-p02] If the *tzinfo* argument is provided, its value is used to set the `tzinfo` attribute of the result, otherwise the `tzinfo` attribute of the *time* argument is used.
+[src:python/datetime-p02] If the *date* argument is a `datetime` object, its time components and `tzinfo` attributes are ignored.
+[src:python/datetime-p02] For any `datetime` object `d`, `d == datetime.combine(d.date(), d.time(), d.tzinfo)`.
+[src:python/datetime-p02] Changed in version 3.6: Added the *tzinfo* argument.
+[src:python/datetime-p02] The `T` separator may be replaced by any single unicode character.
+[src:python/datetime-p02] Fractional hours and minutes are not supported.
+[src:python/datetime-p02] Reduced precision dates are not currently supported (`YYYY-MM`, `YYYY`).
+[src:python/datetime-p02] Changed in version 3.11: Previously, this method only supported formats that could be emitted by `date.isoformat()` or `datetime.isoformat()`.
+[src:python/datetime-p02] Return a `datetime` corresponding to the ISO calendar date specified by *year*, *week* and *day*.
+[src:python/datetime-p02] The non-date components of the datetime are populated with their normal default values.
+[src:python/datetime-p02] This is the inverse of the function `datetime.isocalendar()`.
+[src:python/datetime-p02] Return a `datetime` corresponding to *date_string*, parsed according to *format*.
+[src:python/datetime-p02] See also strftime() and strptime() behavior and `datetime.fromisoformat()`.
+[src:python/datetime-p02] Changed in version 3.13: If *format* specifies a day of month without a year a `DeprecationWarning` is now emitted.
+[src:python/datetime-p02] The earliest representable `datetime`, `datetime(MINYEAR, 1, 1, tzinfo=None)`.
+[src:python/datetime-p02] The smallest possible difference between non-equal `datetime` objects, `timedelta(microseconds=1)`.
+[src:python/datetime-p02] The object passed as the *tzinfo* argument to the `datetime` constructor, or `None` if none was passed.
+[src:python/datetime-p02] Used to disambiguate wall times during a repeated interval.
+[src:python/datetime-p02] (A repeated interval occurs when clocks are rolled back at the end of daylight saving time or when the UTC offset for the current zone is decreased for political reasons.) The values 0 and 1 represent, respectively, the earlier and later of the two moments with the same wall time representation.
+[src:python/datetime-p02] Computes the `datetime2` such that `datetime2 + timedelta == datetime1`.
+[src:python/datetime-p02] As for addition, the result has the same `tzinfo` attribute as the input datetime, and no time zone adjustments are done even if the input is aware.
+[src:python/datetime-p02] Subtraction of a `datetime` from a `datetime` is defined only if both operands are naive, or if both are aware.
+[src:python/datetime-p02] If one is aware and the other is naive, `TypeError` is raised.
+[src:python/datetime-p02] If both are naive, or both are aware and have the same `tzinfo` attribute, the `tzinfo` attributes are ignored, and the result is a `timedelta` object `t` such that `datetime2 + t == datetime1`.
+[src:python/datetime-p02] No time zone adjustments are done in this case.
+[src:python/datetime-p02] If both are aware and have different `tzinfo` attributes, `a-b` acts as if `a` and `b` were first converted to naive UTC datetimes.
+[src:python/datetime-p02] The result is `(a.replace(tzinfo=None) - a.utcoffset()) - (b.replace(tzinfo=None) - b.utcoffset())` except that the implementation never overflows.
+[src:python/datetime-p02] `datetime` objects are equal if they represent the same date and time, taking into account the time zone.
+[src:python/datetime-p02] Naive and aware `datetime` objects are never equal.
+[src:python/datetime-p02] If both comparands are aware, and have the same `tzinfo` attribute, the `tzinfo` and `fold` attributes are ignored and the base datetimes are compared.
+[src:python/datetime-p02] If both comparands are aware and have different `tzinfo` attributes, the comparison acts as comparands were first converted to UTC datetimes except that the implementation never overflows.
+[src:python/datetime-p02] `datetime` instances in a repeated interval are never equal to `datetime` instances in other time zone.
+[src:python/datetime-p02] *datetime1* is considered less than *datetime2* when *datetime1* precedes *datetime2* in time, taking into account the time zone.
+[src:python/datetime-p02] Order comparison between naive and aware `datetime` objects raises `TypeError`.
+[src:python/datetime-p02] Changed in version 3.3: Equality comparisons between aware and naive `datetime` instances don’t raise `TypeError`.
+[src:python/datetime-p02] Return `date` object with same year, month and day.
+[src:python/datetime-p02] Return `time` object with same hour, minute, second, microsecond and fold.
+[src:python/datetime-p02] Changed in version 3.6: The fold value is copied to the returned `time` object.
+[src:python/datetime-p02] Return `time` object with same hour, minute, second, microsecond, fold, and tzinfo attributes.
+[src:python/datetime-p02] Return a new `datetime` object with the same attributes, but with specified parameters updated.
+[src:python/datetime-p02] Note that `tzinfo=None` can be specified to create a naive datetime from an aware datetime with no conversion of date and time data.
+[src:python/datetime-p02] `datetime` objects are also supported by generic function `copy.replace()`.
+[src:python/datetime-p02] Return a `datetime` object with new `tzinfo` attribute *tz*, adjusting the date and time data so the result is the same UTC time as *self*, but in *tz*’s local time.
+[src:python/datetime-p02] If provided, *tz* must be an instance of a `tzinfo` subclass, and its `utcoffset()` and `dst()` methods must not return `None`.
+[src:python/datetime-p02] If *self* is naive, it is presumed to represent time in the system time zone.
+[src:python/datetime-p02] If called without arguments (or with `tz=None`) the system local time zone is assumed for the target time zone.
+[src:python/datetime-p02] The `.tzinfo` attribute of the converted datetime instance will be set to an instance of `timezone` with the zone name and offset obtained from the OS.
+[src:python/datetime-p02] If `self.tzinfo` is *tz*, `self.astimezone(tz)` is equal to *self*: no adjustment of date or time data is performed.
+[src:python/datetime-p02] Else the result is local time in the time zone *tz*, representing the same UTC time as *self*: after `astz = dt.astimezone(tz)`, `astz - astz.utcoffset()` will have the same date and time data as `dt - dt.utcoffset()`.
+[src:python/datetime-p02] If you merely want to attach a `timezone` object *tz* to a datetime *dt* without adjustment of date and time data, use `dt.replace(tzinfo=tz)`.
+[src:python/datetime-p02] If you merely want to remove the `timezone` object from an aware datetime *dt* without conversion of date and time data, use `dt.replace(tzinfo=None)`.
+[src:python/datetime-p02] Note that the default `tzinfo.fromutc()` method can be overridden in a `tzinfo` subclass to affect the result returned by `astimezone()`.
+[src:python/datetime-p02] Changed in version 3.3: *tz* now can be omitted.
+[src:python/datetime-p02] Changed in version 3.6: The `astimezone()` method can now be called on naive instances that are presumed to represent system local time.
+[src:python/datetime-p02] If `tzinfo` is `None`, returns `None`, else returns `self.tzinfo.utcoffset(self)`, and raises an exception if the latter doesn’t return `None` or a `timedelta` object with magnitude less than one day.
+[src:python/datetime-p02] Changed in version 3.7: The UTC offset is not restricted to a whole number of minutes.
+[src:python/datetime-p02] If `tzinfo` is `None`, returns `None`, else returns `self.tzinfo.dst(self)`, and raises an exception if the latter doesn’t return `None` or a `timedelta` object with magnitude less than one day.
+[src:python/datetime-p02] Changed in version 3.7: The DST offset is not restricted to a whole number of minutes.
+[src:python/datetime-p02] The `tm_isdst` flag of the result is set according to the `dst()` method: `tzinfo` is `None` or `dst()` returns `None`, `tm_isdst` is set to `-1`; else if `dst()` returns a non-zero value, `tm_isdst` is set to 1; else `tm_isdst` is set to 0.
+[src:python/datetime-p02] If `datetime` instance `d` is naive, this is the same as `d.timetuple()` except that `tm_isdst` is forced to 0 regardless of what `d.dst()` returns.
+[src:python/datetime-p02] If `d` is aware, `d` is normalized to UTC time, by subtracting `d.utcoffset()`, and a `time.struct_time` for the normalized time is returned.
+[src:python/datetime-p02] Note that an `OverflowError` may be raised if `d.year` was `MINYEAR` or `MAXYEAR` and UTC adjustment spills over a year boundary.
+[src:python/datetime-p02] Because naive `datetime` objects are treated by many `datetime` methods as local times, it is preferred to use aware datetimes to represent times in UTC; as a result, using `datetime.utctimetuple()` may give misleading results.
+[src:python/datetime-p02] If you have a naive `datetime` representing UTC, use `datetime.replace(tzinfo=timezone.utc)` to make it aware, at which point you can use `datetime.timetuple()`.
+[src:python/datetime-p02] Return the proleptic Gregorian ordinal of the date.
+[src:python/datetime-p02] Return POSIX timestamp corresponding to the `datetime` instance.
+[src:python/datetime-p02] The return value is a `float` similar to that returned by `time.time()`.
+[src:python/datetime-p02] Naive `datetime` instances are assumed to represent local time and this method relies on the platform C `mktime()` function to perform the conversion.
+[src:python/datetime-p02] Since `datetime` supports wider range of values than `mktime()` on many platforms, this method may raise `OverflowError` or `OSError` for times far in the past or far in the future.
+[src:python/datetime-p02] There is no method to obtain the POSIX timestamp directly from a naive `datetime` instance representing UTC time.
+[src:python/datetime-p02] Changed in version 3.6: The `timestamp()` method uses the `fold` attribute to disambiguate the times during a repeated interval.
+[src:python/datetime-p02] Return a named tuple with three components: `year`, `week` and `weekday`.
+[src:python/datetime-p02] The same as `self.date().isocalendar()`.
+[src:python/datetime-p02] The optional argument *sep* (default `'T'`) is a one-character separator, placed between the date and time portions of the result.
+[src:python/datetime-p02] The optional argument *timespec* specifies the number of additional components of the time to include (the default is `'auto'`).
+[src:python/datetime-p02] Excluded time components are truncated, not rounded.
+[src:python/datetime-p02] Changed in version 3.6: Added the *timespec* parameter.
+[src:python/datetime-p02] For a `datetime` instance `d`, `str(d)` is equivalent to `d.isoformat(' ')`.
+[src:python/datetime-p02] The output string will *not* include time zone information, regardless of whether the input is aware or naive.
+[src:python/datetime-p02] on platforms where the native C `ctime()` function (which `time.ctime()` invokes, but which `datetime.ctime()` does not invoke) conforms to the C standard.
+[src:python/datetime-p02] Return a string representing the date and time, controlled by an explicit format string.
+[src:python/datetime-p02] See also strftime() and strptime() behavior and `datetime.isoformat()`.
+[src:python/datetime-p02] This makes it possible to specify a format string for a `datetime` object in formatted string literals and when using `str.format()`.
+[src:python/datetime-p02] A `time` object represents a (local) time of day, independent of any particular day, and subject to adjustment via a `tzinfo` object.
+[src:python/datetime-p02] All default to 0 except *tzinfo*, which defaults to `None`.
+[src:python/datetime-p02] The earliest representable `time`, `time(0, 0, 0, 0)`.
+[src:python/datetime-p02] The smallest possible difference between non-equal `time` objects, `timedelta(microseconds=1)`, although note that arithmetic on `time` objects is not supported.
+[src:python/datetime-p02] The object passed as the tzinfo argument to the `time` constructor, or `None` if none was passed.
+[src:python/datetime-p02] `time` objects support equality and order comparisons, where `a` is considered less than `b` when `a` precedes `b` in time.
+[src:python/datetime-p02] Naive and aware `time` objects are never equal.
+[src:python/datetime-p02] Order comparison between naive and aware `time` objects raises `TypeError`.
+[src:python/datetime-p02] If both comparands are aware, and have the same `tzinfo` attribute, the `tzinfo` and `fold` attributes are ignored and the base times are compared.
+[src:python/datetime-p02] If both comparands are aware and have different `tzinfo` attributes, the comparands are first adjusted by subtracting their UTC offsets (obtained from `self.utcoffset()`).
+[src:python/datetime-p02] Changed in version 3.3: Equality comparisons between aware and naive `time` instances don’t raise `TypeError`.
+[src:python/datetime-p02] In Boolean contexts, a `time` object is always considered to be true.
+[src:python/datetime-p02] Changed in version 3.5: Before Python 3.5, a `time` object was considered to be false if it represented midnight in UTC.
+[src:python/datetime-p02] This behavior was considered obscure and error-prone and has been removed in Python 3.5.
+[src:python/datetime-p02] The leading `T`, normally required in cases where there may be ambiguity between a date and a time, is not required.
+[src:python/datetime-p02] Fractional seconds may have any number of digits (anything beyond 6 will be truncated).
+[src:python/datetime-p02] Changed in version 3.11: Previously, this method only supported formats that could be emitted by `time.isoformat()`.
+[src:python/datetime-p02] Return a `time` corresponding to *date_string*, parsed according to *format*.
+[src:python/datetime-p02] `ValueError` is raised if the *date_string* and *format* cannot be parsed by `time.strptime()` or if it returns a value which is not a time tuple.
+[src:python/datetime-p02] See also strftime() and strptime() behavior and `time.fromisoformat()`.
+[src:python/datetime-p02] Return a new `time` with the same values, but with specified parameters updated.
+[src:python/datetime-p02] Note that `tzinfo=None` can be specified to create a naive `time` from an aware `time`, without conversion of the time data.
+[src:python/datetime-p02] `time` objects are also supported by generic function `copy.replace()`.
+[src:python/datetime-p02] `ValueError` will be raised on an invalid *timespec* argument.
+[src:python/datetime-p02] For a time `t`, `str(t)` is equivalent to `t.isoformat()`.
+[src:python/datetime-p02] Return a string representing the time, controlled by an explicit format string.
+[src:python/datetime-p02] See also strftime() and strptime() behavior and `time.isoformat()`.
+[src:python/datetime-p02] This makes it possible to specify a format string for a `time` object in formatted string literals and when using `str.format()`.
+[src:python/datetime-p02] If `tzinfo` is `None`, returns `None`, else returns `self.tzinfo.utcoffset(None)`, and raises an exception if the latter doesn’t return `None` or a `timedelta` object with magnitude less than one day.
+[src:python/datetime-p02] If `tzinfo` is `None`, returns `None`, else returns `self.tzinfo.dst(None)`, and raises an exception if the latter doesn’t return `None`, or a `timedelta` object with magnitude less than one day.
+[src:python/datetime-p02] If `tzinfo` is `None`, returns `None`, else returns `self.tzinfo.tzname(None)`, or raises an exception if the latter doesn’t return `None` or a string object.
+[src:python/datetime-p03] This is an abstract base class, meaning that this class should not be instantiated directly.
+[src:python/datetime-p03] Define a subclass of `tzinfo` to capture information about a particular time zone.
+[src:python/datetime-p03] An instance of (a concrete subclass of) `tzinfo` can be passed to the constructors for `datetime` and `time` objects.
+[src:python/datetime-p03] The latter objects view their attributes as being in local time, and the `tzinfo` object supports methods revealing offset of local time from UTC, the name of the time zone, and DST offset, all relative to a date or time object passed to them.
+[src:python/datetime-p03] You need to derive a concrete subclass, and (at least) supply implementations of the standard `tzinfo` methods needed by the `datetime` methods you use.
+[src:python/datetime-p03] The `datetime` module provides `timezone`, a simple concrete subclass of `tzinfo` which can represent time zones with fixed offset from UTC such as UTC itself or North American EST and EDT.
+[src:python/datetime-p03] Special requirement for pickling: A `tzinfo` subclass must have an `__init__()` method that can be called with no arguments, otherwise it can be pickled but possibly not unpickled again.
+[src:python/datetime-p03] This is a technical requirement that may be relaxed in the future.
+[src:python/datetime-p03] A concrete subclass of `tzinfo` may need to implement the following methods.
+[src:python/datetime-p03] Exactly which methods are needed depends on the uses made of aware `datetime` objects.
+[src:python/datetime-p03] If in doubt, simply implement all of them.
+[src:python/datetime-p03] Return offset of local time from UTC, as a `timedelta` object that is positive east of UTC.
+[src:python/datetime-p03] If local time is west of UTC, this should be negative.
+[src:python/datetime-p03] This represents the *total* offset from UTC; for example, if a `tzinfo` object represents both time zone and DST adjustments, `utcoffset()` should return their sum.
+[src:python/datetime-p03] If the UTC offset isn’t known, return `None`.
+[src:python/datetime-p03] Else the value returned must be a `timedelta` object strictly between `-timedelta(hours=24)` and `timedelta(hours=24)` (the magnitude of the offset must be less than one day).
+[src:python/datetime-p03] If `utcoffset()` does not return `None`, `dst()` should not return `None` either.
+[src:python/datetime-p03] The default implementation of `utcoffset()` raises `NotImplementedError`.
+[src:python/datetime-p03] Return the daylight saving time (DST) adjustment, as a `timedelta` object or `None` if DST information isn’t known.
+[src:python/datetime-p03] Return `timedelta(0)` if DST is not in effect.
+[src:python/datetime-p03] If DST is in effect, return the offset as a `timedelta` object (see `utcoffset()` for details).
+[src:python/datetime-p03] Note that DST offset, if applicable, has already been added to the UTC offset returned by `utcoffset()`, so there’s no need to consult `dst()` unless you’re interested in obtaining DST info separately.
+[src:python/datetime-p03] For example, `datetime.timetuple()` calls its `tzinfo` attribute’s `dst()` method to determine how the `tm_isdst` flag should be set, and `tzinfo.fromutc()` calls `dst()` to account for DST changes when crossing time zones.
+[src:python/datetime-p03] must return the same result for every `datetime` *dt* with `dt.tzinfo == tz`.
+[src:python/datetime-p03] For sane `tzinfo` subclasses, this expression yields the time zone’s “standard offset”, which should not depend on the date or the time, but only on geographic location.
+[src:python/datetime-p03] The implementation of `datetime.astimezone()` relies on this, but cannot detect violations; it’s the programmer’s responsibility to ensure it.
+[src:python/datetime-p03] If a `tzinfo` subclass cannot guarantee this, it may be able to override the default implementation of `tzinfo.fromutc()` to work correctly with `astimezone()` regardless.
+[src:python/datetime-p03] The default implementation of `dst()` raises `NotImplementedError`.
+[src:python/datetime-p03] Return the time zone name corresponding to the `datetime` object *dt*, as a string.
+[src:python/datetime-p03] Nothing about string names is defined by the `datetime` module, and there’s no requirement that it mean anything in particular.
+[src:python/datetime-p03] Return `None` if a string name isn’t known.
+[src:python/datetime-p03] Note that this is a method rather than a fixed string primarily because some `tzinfo` subclasses will wish to return different names depending on the specific value of *dt* passed, especially if the `tzinfo` class is accounting for daylight time.
+[src:python/datetime-p03] The default implementation of `tzname()` raises `NotImplementedError`.
+[src:python/datetime-p03] These methods are called by a `datetime` or `time` object, in response to their methods of the same names.
+[src:python/datetime-p03] A `datetime` object passes itself as the argument, and a `time` object passes `None` as the argument.
+[src:python/datetime-p03] A `tzinfo` subclass’s methods should therefore be prepared to accept a *dt* argument of `None`, or of class `datetime`.
+[src:python/datetime-p03] When `None` is passed, it’s up to the class designer to decide the best response.
+[src:python/datetime-p03] For example, returning `None` is appropriate if the class wishes to say that time objects don’t participate in the `tzinfo` protocols.
+[src:python/datetime-p03] It may be more useful for `utcoffset(None)` to return the standard UTC offset, as there is no other convention for discovering the standard offset.
+[src:python/datetime-p03] When a `datetime` object is passed in response to a `datetime` method, `dt.tzinfo` is the same object as *self*.
+[src:python/datetime-p03] `tzinfo` methods can rely on this, unless user code calls `tzinfo` methods directly.
+[src:python/datetime-p03] The intent is that the `tzinfo` methods interpret *dt* as being in local time, and not need worry about objects in other time zones.
+[src:python/datetime-p03] This is called from the default `datetime.astimezone()` implementation.
+[src:python/datetime-p03] When called from that, `dt.tzinfo` is *self*, and *dt*’s date and time data are to be viewed as expressing a UTC time.
+[src:python/datetime-p03] The purpose of `fromutc()` is to adjust the date and time data, returning an equivalent datetime in *self*’s local time.
+[src:python/datetime-p03] Most `tzinfo` subclasses should be able to inherit the default `fromutc()` implementation without problems.

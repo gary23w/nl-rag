@@ -1,0 +1,762 @@
+# nl-rag distilled facts — domain: http-rest
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:http-rest/http-caching] The HTTP cache stores a response associated with a request and reuses the stored response for subsequent requests.
+[src:http-rest/http-caching] There are several advantages to reusability.
+[src:http-rest/http-caching] First, since there is no need to deliver the request to the origin server, then the closer the client and cache are, the faster the response will be.
+[src:http-rest/http-caching] The most typical example is when the browser itself stores a cache for browser requests.
+[src:http-rest/http-caching] Also, when a response is reusable, the origin server does not need to process the request — so it does not need to parse and route the request, restore the session based on the cookie, query the DB for results, or render the template engine.
+[src:http-rest/http-caching] Proper operation of the cache is critical to the health of the system.
+[src:http-rest/http-caching] In the HTTP Caching spec, there are two main types of caches: **private caches** and **shared caches**.
+[src:http-rest/http-caching] A private cache is a cache tied to a specific client — typically a browser cache.
+[src:http-rest/http-caching] Since the stored response is not shared with other clients, a private cache can store a personalized response for that user.
+[src:http-rest/http-caching] On the other hand, if personalized contents are stored in a cache other than a private cache, then other users may be able to retrieve those contents — which may cause unintentional information leakage.
+[src:http-rest/http-caching] If a response contains personalized content and you want to store the response only in the private cache, you must specify a `private` directive.
+[src:http-rest/http-caching] Personalized contents are usually controlled by cookies, but the presence of a cookie does not always indicate that it is private, and thus a cookie alone does not make the response private.
+[src:http-rest/http-caching] The shared cache is located between the client and the server and can store responses that can be shared among users.
+[src:http-rest/http-caching] And shared caches can be further sub-classified into **proxy caches** and **managed caches**.
+[src:http-rest/http-caching] In addition to the function of access control, some proxies implement caching to reduce traffic out of the network.
+[src:http-rest/http-caching] This is usually not managed by the service developer, so it must be controlled by appropriate HTTP headers and so on.
+[src:http-rest/http-caching] However, in the past, outdated proxy-cache implementations — such as implementations that do not properly understand the HTTP Caching standard — have often caused problems for developers.
+[src:http-rest/http-caching] However, in recent years, as HTTPS has become more common and client/server communication has become encrypted, proxy caches in the path can only tunnel a response and can't behave as a cache, in many cases.
+[src:http-rest/http-caching] So in that scenario, there is no need to worry about outdated proxy cache implementations that cannot even see the response.
+[src:http-rest/http-caching] However, since CT (certificate transparency) has become widespread in recent years, and some browsers only allow certificates issued with an SCT (signed certificate timestamp), this method requires the application of an enterprise policy.
+[src:http-rest/http-caching] In such a controlled environment, there is no need to worry about the proxy cache being "out of date and not updated".
+[src:http-rest/http-caching] Managed caches are explicitly deployed by service developers to offload the origin server and to deliver content efficiently.
+[src:http-rest/http-caching] Examples include reverse proxies, CDNs, and service workers in combination with the Cache API.
+[src:http-rest/http-caching] The characteristics of managed caches vary depending on the product deployed.
+[src:http-rest/http-caching] In most cases, you can control the cache's behavior through the `Cache-Control` header and your own configuration files or dashboards.
+[src:http-rest/http-caching] For example, the HTTP Caching specification essentially does not define a way to explicitly delete a cache — but with a managed cache, the stored response can be deleted at any time through dashboard operations, API calls, restarts, and so on.
+[src:http-rest/http-caching] That allows for a more proactive caching strategy.
+[src:http-rest/http-caching] It is also possible to ignore the standard HTTP Caching spec protocols in favor of explicit manipulation.
+[src:http-rest/http-caching] For example, the following can be specified to opt-out of a private cache or proxy cache, while using your own strategy to cache only in a managed cache.
+[src:http-rest/http-caching] For example, Varnish Cache uses VCL (Varnish Configuration Language, a type of DSL) logic to handle cache storage, while service workers in combination with the Cache API allow you to create that logic in JavaScript.
+[src:http-rest/http-caching] That means if a managed cache intentionally ignores a `no-store` directive, there is no need to perceive it as being "non-compliant" with the standard.
+[src:http-rest/http-caching] What you should do is, avoid using kitchen-sink headers, but carefully read the documentation of whatever managed-cache mechanism you're using, and ensure you're controlling the cache properly in the ways provided by the mechanism you've chosen to use.
+[src:http-rest/http-caching] Note that some CDNs provide their own headers that are effective only for that CDN (for example, `Surrogate-Control`).
+[src:http-rest/http-caching] Currently, work is underway to define a `CDN-Cache-Control` header to standardize those.
+[src:http-rest/http-caching] HTTP is designed to cache as much as possible, so even if no `Cache-Control` is given, responses will get stored and reused if certain conditions are met.
+[src:http-rest/http-caching] For example, take the following response.
+[src:http-rest/http-caching] This response was last updated 1 year ago.
+[src:http-rest/http-caching] It is heuristically known that content which has not been updated for a full year will not be updated for some time after that.
+[src:http-rest/http-caching] Therefore, the client stores this response (despite the lack of `max-age`) and reuses it for a while.
+[src:http-rest/http-caching] How long to reuse is up to the implementation, but the specification recommends about 10% (in this case 0.1 year) of the time after storing.
+[src:http-rest/http-caching] Heuristic caching is a workaround that came before `Cache-Control` support became widely adopted, and basically all responses should explicitly specify a `Cache-Control` header.
+[src:http-rest/http-caching] Stored HTTP responses have two states: **fresh** and **stale**.
+[src:http-rest/http-caching] The *fresh* state usually indicates that the response is still valid and can be reused, while the *stale* state means that the cached response has already expired.
+[src:http-rest/http-caching] The criterion for determining when a response is fresh and when it is stale is **age**.
+[src:http-rest/http-caching] In HTTP, age is the time elapsed since the response was generated.
+[src:http-rest/http-caching] This is similar to the TTL in other caching mechanisms.
+[src:http-rest/http-caching] The cache that stored the example response calculates the time elapsed since the response was generated and uses the result as the response's *age*.
+[src:http-rest/http-caching] As long as the stored response remains fresh, it will be used to fulfill client requests.
+[src:http-rest/http-caching] When a response is stored in a shared cache, it is possible to tell the client the age of the response.
+[src:http-rest/http-caching] Continuing with the example, if the shared cache stored the response for one day, the shared cache would send the following response to subsequent client requests.
+[src:http-rest/http-caching] The client which receives that response will find it to be fresh for the remaining 518400 seconds, the difference between the response's `max-age` and `Age`.
+[src:http-rest/http-caching] In HTTP/1.0, freshness used to be specified by the `Expires` header.
+[src:http-rest/http-caching] The `Expires` header specifies the lifetime of the cache using an explicit time rather than by specifying an elapsed time.
+[src:http-rest/http-caching] However, the time format is difficult to parse, many implementation bugs were found, and it is possible to induce problems by intentionally shifting the system clock; therefore, `max-age` — for specifying an elapsed time — was adopted for `Cache-Control` in HTTP/1.1.
+[src:http-rest/http-caching] If both `Expires` and `Cache-Control: max-age` are available, `max-age` is defined to be preferred.
+[src:http-rest/http-caching] So it is not necessary to provide `Expires` now that HTTP/1.1 is widely used.
+[src:http-rest/http-caching] But the contents of responses are not always the same, even if they have the same URL.
+[src:http-rest/http-caching] Especially when content negotiation is performed, the response from the server can depend on the values of the `Accept`, `Accept-Language`, and `Accept-Encoding` request headers.
+[src:http-rest/http-caching] For example, for English content returned with an `Accept-Language: en` header and cached, it is undesirable to then reuse that cached response for requests that have an `Accept-Language: ja` request header.
+[src:http-rest/http-caching] In this case, you can cause the responses to be cached separately — based on language — by adding `Accept-Language` to the value of the `Vary` header.
+[src:http-rest/http-caching] That causes the cache to be keyed based on a composite of the response URL and the `Accept-Language` request header — rather than being based just on the response URL.
+[src:http-rest/http-caching] Also, if you are providing content optimization (for example, for responsive design) based on the user agent, you may be tempted to include `User-Agent` in the value of the `Vary` header.
+[src:http-rest/http-caching] However, the `User-Agent` request header generally has a very large number of variations, which drastically reduces the chance that the cache will be reused.
+[src:http-rest/http-caching] So if possible, instead consider a way to vary behavior based on feature detection rather than based on the `User-Agent` request header.
+[src:http-rest/http-caching] For applications that employ cookies to prevent others from reusing cached personalized content, you should specify `Cache-Control: private` instead of specifying a cookie for `Vary`.
+[src:http-rest/http-caching] Stale responses are not immediately discarded.
+[src:http-rest/http-caching] HTTP has a mechanism to transform a stale response into a fresh one by asking the origin server.
+[src:http-rest/http-caching] This is called **validation**, or sometimes, **revalidation**.
+[src:http-rest/http-caching] Validation is done by using a **conditional request** that includes an `If-Modified-Since` or `If-None-Match` request header.
+[src:http-rest/http-caching] The following response was generated at 22:22:22 and has a `max-age` of 1 hour, so you know that it is fresh until 23:22:22.
+[src:http-rest/http-caching] At 23:22:22, the response becomes stale and the cache cannot be reused.
+[src:http-rest/http-caching] So the request below shows a client sending a request with an `If-Modified-Since` request header, to ask the server if there have been any changes made since the specified time.
+[src:http-rest/http-caching] The server will respond with `304 Not Modified` if the content has not changed since the specified time.
+[src:http-rest/http-caching] Since this response only indicates "no change", there is no response body — there's just a status code — so the transfer size is extremely small.
+[src:http-rest/http-caching] Upon receiving that response, the client reverts the stored stale response back to being fresh and can reuse it during the remaining 1 hour.
+[src:http-rest/http-caching] The server can obtain the modification time from the operating-system file system, which is relatively easy to do for the case of serving static files.
+[src:http-rest/http-caching] However, there are some problems; for example, the time format is complex and difficult to parse, and distributed servers have difficulty synchronizing file-update times.
+[src:http-rest/http-caching] To solve such problems, the `ETag` response header was standardized as an alternative.
+[src:http-rest/http-caching] The value of the `ETag` response header is an arbitrary value generated by the server.
+[src:http-rest/http-caching] There are no restrictions on how the server must generate the value, so servers are free to set the value based on whatever means they choose — such as a hash of the body contents or a version number.
+[src:http-rest/http-caching] The server will return `304 Not Modified` if the value of the `ETag` header it determines for the requested resource is the same as the `If-None-Match` value in the request.
+[src:http-rest/http-caching] But if the server determines the requested resource should now have a different `ETag` value, the server will instead respond with a `200 OK` and the latest version of the resource.
+[src:http-rest/http-caching] If you do not want a response to be reused, but instead want to always fetch the latest content from the server, you can use the `no-cache` directive to force validation.
+[src:http-rest/http-caching] By adding `Cache-Control: no-cache` to the response along with `Last-Modified` and `ETag` — as shown below — the client will receive a `200 OK` response if the requested resource has been updated, or will otherwise receive a `304 Not Modified` response if the requested resource has not been updated.
+[src:http-rest/http-caching] It is often stated that the combination of `max-age=0` and `must-revalidate` has the same meaning as `no-cache`.
+[src:http-rest/http-caching] `max-age=0` means that the response is immediately stale, and `must-revalidate` means that it must not be reused without revalidation once it is stale — so, in combination, the semantics seem to be the same as `no-cache`.
+[src:http-rest/http-caching] However, that usage of `max-age=0` is a remnant of the fact that many implementations prior to HTTP/1.1 were unable to handle the `no-cache` directive — and so to deal with that limitation, `max-age=0` was used as a workaround.
+[src:http-rest/http-caching] But now that HTTP/1.1-conformant servers are widely deployed, there's no reason to ever use that `max-age=0` and `must-revalidate` combination — you should instead just use `no-cache`.
+[src:http-rest/http-caching] The `no-cache` directive does not prevent the storing of responses but instead prevents the reuse of responses without revalidation.
+[src:http-rest/http-caching] If you don't want a response stored in any cache, use `no-store`.
+[src:http-rest/http-caching] Under that set of circumstances, `no-store` is not always the most-appropriate directive.
+[src:http-rest/http-caching] The following sections look at the circumstances in more detail.
+[src:http-rest/http-caching] It would be problematic if a response with personalized content is unexpectedly visible to other users of a cache.
+[src:http-rest/http-caching] In such a case, using the `private` directive will cause the personalized response to only be stored with the specific client and not be leaked to any other user of the cache.
+[src:http-rest/http-caching] In such a case, even if `no-store` is given, `private` must also be given.
+[src:http-rest/http-caching] The `no-store` directive prevents a response from being stored, but does not delete any already-stored response for the same URL.
+[src:http-rest/http-caching] In other words, if there is an old response already stored for a particular URL, returning `no-store` will not prevent the old response from being reused.
+[src:http-rest/http-caching] However, a `no-cache` directive will force the client to send a validation request before reusing any stored response.
+[src:http-rest/http-caching] If the server does not support conditional requests, you can force the client to access the server every time and always get the latest response with `200 OK`.
+[src:http-rest/http-caching] As a workaround for outdated implementations that ignore `no-store`, you may see kitchen-sink headers such as the following being used.
+[src:http-rest/http-caching] It is recommended to use `no-cache` as an alternative for dealing with such outdated implementations, and it is not a problem if `no-cache` is given from the beginning, since the server will always receive the request.
+[src:http-rest/http-caching] You may think adding `no-store` would be the right way to opt-out of caching.
+[src:http-rest/http-caching] However, it's not recommended to grant `no-store` liberally, because you lose many advantages that HTTP and browsers have, including the browser's back/forward cache.
+[src:http-rest/http-caching] Therefore, to get the advantages of the full feature set of the web platform, prefer the use of `no-cache` in combination with `private`.
+[src:http-rest/http-caching] Validation can be performed for requests as well as responses.
+[src:http-rest/http-caching] The **reload** and **force reload** actions are common examples of validation performed from the browser side.
+[src:http-rest/http-caching] For recovering from window corruption or updating to the latest version of the resource, browsers provide a reload function for users.
+[src:http-rest/http-caching] The `max-age=0` directive in the request specifies "reuse of responses with an age of 0 or less" — so, in effect, intermediately stored responses are not reused.
+[src:http-rest/http-caching] As a result, a request is validated by `If-None-Match` and `If-Modified-Since`.
+[src:http-rest/http-caching] Browsers use `max-age=0` during reloads for backward-compatibility reasons — because many outdated implementations prior to HTTP/1.1 did not understand `no-cache`.
+[src:http-rest/http-caching] But `no-cache` is fine now in this use case, and **force reload** is an additional way to bypass cached responses.
+[src:http-rest/http-caching] Since that's not a conditional request with `no-cache`, you can be sure you'll get a `200 OK` from the origin server.
+[src:http-rest/http-caching] Content that never changes should be given a long `max-age` by using cache busting — that is, by including a version number, hash value, etc., in the request URL.
+[src:http-rest/http-caching] However, when the user reloads, a revalidation request is sent even though the server knows that the content is immutable.
+[src:http-rest/http-caching] To prevent that, the `immutable` directive can be used to explicitly indicate that revalidation is not required because the content never changes.
+[src:http-rest/http-caching] That prevents unnecessary revalidation during reloads.
+[src:http-rest/http-caching] Note that, instead of implementing that directive, Chrome has changed its implementation so that revalidation is not performed during reloads for subresources.
+[src:http-rest/http-caching] There is no way to delete responses on an intermediate server that have been stored with a long `max-age`.
+[src:http-rest/http-caching] Imagine that the following response from `https://example.com/` was stored.
+[src:http-rest/http-caching] You may want to overwrite that response once it expired on the server, but there is nothing the server can do once the response is stored — since no more requests reach the server due to caching.
+[src:http-rest/http-caching] One of the methods mentioned in the specification is to send a request for the same URL with an unsafe method such as `POST`, but for many clients that is difficult to do.
+[src:http-rest/http-caching] The `Clear-Site-Data: cache` header and directive value can be used to clear browser caches — but has no effect on intermediate caches.
+[src:http-rest/http-caching] Otherwise responses will remain in the browser cache until `max-age` expires, unless the user manually performs a reload, force-reload, or clear-history action.
+[src:http-rest/http-caching] Caching reduces access to the server, which means that the server loses control of that URL.
+[src:http-rest/http-caching] If the server does not want to lose control of a URL — for example, in the case that a resource is frequently updated — you should add `no-cache` so that the server will always receive requests and send the intended responses.
+[src:http-rest/http-caching] The shared cache is primarily located before the origin server and is intended to reduce traffic to the origin server.
+[src:http-rest/http-caching] Thus, if multiple identical requests arrive at a shared cache at the same time, the intermediate cache will forward a single request on behalf of itself to the origin, which can then reuse the result for all clients.
+[src:http-rest/http-caching] Request collapse occurs when requests are arriving at the same time, so even if `max-age=0` or `no-cache` is given in the response, it will be reused.
+[src:http-rest/http-caching] (Request collapse shown as multiple clients sending GET requests and a cache consolidating them into one GET to the origin.
+[src:http-rest/http-caching] There are many directives in the `Cache-Control` spec, and it may be difficult to understand all of them.
+[src:http-rest/http-caching] But most websites can be covered by a combination of a handful of patterns.
+[src:http-rest/http-caching] This section describes the common patterns in designing caches.
+[src:http-rest/http-caching] As mentioned above, the default behavior for caching (that is, for a response without `Cache-Control`) is not simply "don't cache" but implicit caching according to so-called "heuristic caching".
+[src:http-rest/http-caching] To avoid that heuristic caching, it's preferable to explicitly give all responses a default `Cache-Control` header.
+[src:http-rest/http-caching] The resources that work best with caching are static immutable files whose contents never change.
+[src:http-rest/http-caching] And for resources that *do* change, it is a common best practice to change the URL each time the content changes, so that the URL unit can be cached for a longer period.
+[src:http-rest/http-caching] In modern web development, JavaScript and CSS resources are frequently updated as development progresses.
+[src:http-rest/http-caching] Also, if the versions of JavaScript and CSS resources that a client uses are out of sync, the display will break.
+[src:http-rest/http-caching] So the HTML above makes it difficult to cache `bundle.js` and `build.css` with `max-age`.
+[src:http-rest/http-caching] Therefore, you can serve the JavaScript and CSS with URLs that include a changing part based on a version number or hash value.
+[src:http-rest/http-caching] Some of the ways to do that are shown below.
+[src:http-rest/http-caching] Since the cache distinguishes resources from one another based on their URLs, the cache will not be reused again if the URL changes when a resource is updated.
+[src:http-rest/http-caching] With that design, both JavaScript and CSS resources can be cached for a long time.
+[src:http-rest/http-caching] The QPACK specification provides an answer to that question.
+[src:http-rest/http-caching] QPACK is a standard for compressing HTTP header fields, with tables of commonly-used field values defined.
+[src:http-rest/http-caching] Some commonly-used cache-header values are shown below.
+[src:http-rest/http-caching] If you select one of those numbered options, you can compress values in 1 byte when transferred via HTTP3.
+[src:http-rest/http-caching] Numbers `37`, `38`, and `41` are for periods of one week, one month, and one year.
+[src:http-rest/http-caching] Because the cache removes old entries when new entries are saved, the probability that a stored response still exists after one week is not that high — even if `max-age` is set to 1 week.
+[src:http-rest/http-caching] Therefore, in practice, it does not make much difference which one you choose.
+[src:http-rest/http-caching] Note that number `41` has the longest `max-age` (1 year), but with `public`.
+[src:http-rest/http-caching] The `public` value has the effect of making the response storable even if the `Authorization` header is present.
+[src:http-rest/http-caching] So if the response is personalized with basic authentication, the presence of `public` may cause problems.
+[src:http-rest/http-caching] If you are concerned about that, you can choose the second-longest value, `38` (1 month).
+[src:http-rest/http-caching] Don't forget to set the `Last-Modified` and `ETag` headers, so that you don't have to re-transmit a resource when reloading.
+[src:http-rest/http-caching] It's easy to generate those headers for pre-built static files.
+[src:http-rest/http-caching] The `ETag` value here may be a hash of the file.
+[src:http-rest/http-caching] In addition, `immutable` can be added to prevent validation on reload.
+[src:http-rest/http-caching] Unlike subresources, main resources cannot be cache busted because their URLs can't be decorated in the same way that subresource URLs can be.
+[src:http-rest/http-caching] If the following HTML itself is stored, the latest version cannot be displayed even if the content is updated on the server side.
+[src:http-rest/http-caching] For that case, `no-cache` would be appropriate — rather than `no-store` — since we don't want to store HTML, but instead just want it to always be up-to-date.
+[src:http-rest/http-caching] The same can be used for `favicon.ico`, `manifest.json`, `.well-known`, and API endpoints whose URLs cannot be changed using cache busting.
+[src:http-rest/http-caching] Most web content can be covered by a combination of the two patterns described above.
+[src:http-rest/http-caching] With the method described in previous sections, subresources can be cached for a long time by using cache busting, but main resources (which are usually HTML documents) can't be.
+[src:http-rest/http-caching] Caching main resources is difficult because, using just standard directives from the HTTP Caching specification, there's no way to actively delete cache contents when content is updated on the server.
+[src:http-rest/http-caching] However, it is possible by deploying a managed cache such as a CDN or service worker.
+[src:http-rest/http-caching] For example, a CDN that allows cache purging via an API or dashboard operation would allow for a more aggressive caching strategy by storing the main resource and explicitly purging the relevant cache only when an update occurs on the server.
+[src:http-rest/http-caching] A service worker could do the same if it could delete the contents in the Cache API when an update occurs on the server.
+[src:http-rest/http-caching] For more information, see the documentation for your CDN, and consult the service worker documentation.
+[src:http-rest/http-cookies] A **cookie** (also known as a web cookie or browser cookie) is a small piece of data a server sends to a user's web browser.
+[src:http-rest/http-cookies] The browser may store cookies, create new cookies, modify existing ones, and send them back to the same server with later requests.
+[src:http-rest/http-cookies] Cookies enable web applications to store limited amounts of data and remember state information; by default the HTTP protocol is stateless.
+[src:http-rest/http-cookies] In this article we will explore the main uses of cookies, explain best practices for using them, and look at their privacy and security implications.
+[src:http-rest/http-cookies] Typically, the server will use the contents of HTTP cookies to determine whether different requests come from the same browser/user and then issue a personalized or generic response as appropriate.
+[src:http-rest/http-cookies] If the credentials are correct, the server updates the UI to indicate that the user is signed in, and responds with a cookie containing a session ID that records their sign-in status on the browser.
+[src:http-rest/http-cookies] At a later time, the user moves to a different page on the same site.
+[src:http-rest/http-cookies] The browser sends the cookie containing the session ID along with the corresponding request to indicate that it still thinks the user is signed in.
+[src:http-rest/http-cookies] The server checks the session ID and, if it is still valid, sends the user a personalized version of the new page.
+[src:http-rest/http-cookies] If it is not valid, the session ID is deleted and the user is shown a generic version of the page (or perhaps shown an "access denied" message and asked to sign in again).
+[src:http-rest/http-cookies] In the early days of the web when there was no other option, cookies were used for general client-side data storage purposes.
+[src:http-rest/http-cookies] Modern storage APIs are now recommended, for example the Web Storage API (`localStorage` and `sessionStorage`) and IndexedDB.
+[src:http-rest/http-cookies] After receiving an HTTP request, a server can send one or more `Set-Cookie` headers with the response, each one of which will set a separate cookie.
+[src:http-rest/http-cookies] You can specify an expiration date or time period after which the cookie should be deleted and no longer sent.
+[src:http-rest/http-cookies] To immediately remove a cookie, set the cookie again with the same name, path, and domain (if specified), and set its `Expires` attribute to a date in the past or its `Max-Age` attribute to `0` or negative.
+[src:http-rest/http-cookies] This instructs the browser to delete the cookie right away.
+[src:http-rest/http-cookies] You can also clear all cookies associated with a registrable domain using the `Clear-Site-Data` response header.
+[src:http-rest/http-cookies] For example, the following header sent from `https://foo.example.com/` would clear all cookies sent by `example.com` and all of its subdomains, such as `all.bar.example.com`.
+[src:http-rest/http-cookies] There are some techniques designed to recreate cookies after they're deleted.
+[src:http-rest/http-cookies] These techniques violate the principles of user privacy and control, may violate data privacy regulations, and could expose a website using them to legal liability.
+[src:http-rest/http-cookies] To update a cookie via HTTP, the server can send a `Set-Cookie` header with the existing cookie's name and a new value.
+[src:http-rest/http-cookies] There are several reasons why you might want to do this, for example if a user has updated their preferences and the application wants to reflect the changes in client-side data (you could also do this with a client-side storage mechanism such as Web Storage).
+[src:http-rest/http-cookies] In the browser, you can create new cookies via JavaScript using the `Document.cookie` property, or the asynchronous Cookie Store API.
+[src:http-rest/http-cookies] Note that all examples below use `Document.cookie`, as it is the most widely supported/established option.
+[src:http-rest/http-cookies] For security purposes, you can't change cookie values by sending an updated `Cookie` header directly when initiating a request, for example, via `fetch()` or `XMLHttpRequest`.
+[src:http-rest/http-cookies] There are good reasons why you shouldn't allow JavaScript to modify cookies at all.
+[src:http-rest/http-cookies] You can prevent JavaScript from accessing a cookie by specifying the `HttpOnly` attribute during its creation.
+[src:http-rest/http-cookies] See the Security section for more details.
+[src:http-rest/http-cookies] When you store information in cookies, by default all cookie values are visible to, and can be changed by, the end user.
+[src:http-rest/http-cookies] You really don't want your cookies to be misused — for example accessed/modified by bad actors, or sent to domains where they shouldn't be sent.
+[src:http-rest/http-cookies] The potential consequences can range from annoying — apps not working or exhibiting strange behavior — to catastrophic.
+[src:http-rest/http-cookies] A criminal could for example steal a session ID and use it to set a cookie that makes it look like they are logged in as someone else, taking control of their bank or e-commerce account in the process.
+[src:http-rest/http-cookies] You can secure your cookies in a variety of ways, which are reviewed in this section.
+[src:http-rest/http-cookies] The `Domain` and `Path` attributes define the *scope* of a cookie: what URLs the cookies are sent to.
+[src:http-rest/http-cookies] The `SameSite` attribute lets servers specify whether/when cookies are sent with cross-site requests — i.e., third-party cookies.
+[src:http-rest/http-cookies] Cross-site requests are requests where the site (the registrable domain) and/or the scheme (http or https) do not match the site the user is currently visiting.
+[src:http-rest/http-cookies] This includes requests sent when links are clicked on other sites to navigate to your site, and any request sent by embedded third-party content.
+[src:http-rest/http-cookies] `SameSite` helps to prevent leakage of information, preserving user privacy and providing some protection against cross-site request forgery attacks.
+[src:http-rest/http-cookies] If no `SameSite` attribute is set, the cookie is treated as `Lax` by default.
+[src:http-rest/http-cookies] Because of the design of the cookie mechanism, a server can't confirm that a cookie was set from a secure origin or even tell *where* a cookie was originally set.
+[src:http-rest/http-cookies] An application on a subdomain can set a cookie with the `Domain` attribute, which gives access to that cookie on all other subdomains.
+[src:http-rest/http-cookies] This mechanism can be abused in a session fixation attack.
+[src:http-rest/http-cookies] As a defense-in-depth measure, you can use *cookie prefixes* to impose specific restrictions on a cookie's attributes in supporting user-agents.
+[src:http-rest/http-cookies] All cookie prefixes start with a double-underscore (`__`) and end in a dash (`-`).
+[src:http-rest/http-cookies] The browser will reject cookies with these prefixes that don't comply with their restrictions.
+[src:http-rest/http-cookies] As the application server only checks for a specific cookie name when determining if the user is authenticated or a CSRF token is correct, this effectively acts as a defense measure against session fixation.
+[src:http-rest/http-cookies] For more information about cookie prefixes and the current state of browser support, see the Prefixes section of the Set-Cookie reference article.
+[src:http-rest/http-cookies] Earlier on we talked about how the `SameSite` attribute can be used to control when third-party cookies are sent, and that this can help preserve user privacy.
+[src:http-rest/http-cookies] Privacy is a very important consideration when building websites which, when done right, can build trust with your users.
+[src:http-rest/http-cookies] If done badly, it can completely erode that trust and cause all kinds of other problems.
+[src:http-rest/http-cookies] Third-party cookies can be set by third-party content embedded in sites via `<iframe>`s.
+[src:http-rest/http-cookies] They have many legitimate uses include sharing user profile information, counting ad impressions, or collecting analytics across different related domains.
+[src:http-rest/http-cookies] However, third-party cookies can also be used to create creepy, invasive user experiences.
+[src:http-rest/http-cookies] A third-party server can create a profile of a user's browsing history and habits based on cookies sent to it by the same browser when accessing multiple sites.
+[src:http-rest/http-cookies] The classic example is when you search for product information on one site and are then chased around the web by adverts for similar products wherever you go.
+[src:http-rest/http-cookies] Browser vendors know that users don't like this behavior, and as a result have all started to block third-party cookies by default, or at least made plans to go in that direction.
+[src:http-rest/http-cookies] Third-party cookies (or just tracking cookies) may also be blocked by other browser settings or extensions.
+[src:http-rest/http-cookies] See our Third-party cookies article for detailed information on third-party cookies, the issues associated with them, and what alternatives are available.
+[src:http-rest/http-cookies] See our Privacy landing page for more information on privacy in general.
+[src:http-rest/http-cookies] They apply to any site on the *World Wide* Web that users from these jurisdictions access (the EU and California, with the caveat that California's law applies only to entities with gross revenue over 25 million USD, among things).
+[src:http-rest/http-cookies] There may be other regulations that govern the use of cookies in your locality.
+[src:http-rest/http-cookies] The burden is on you to know and comply with these regulations.
+[src:http-rest/http-cookies] There are companies that offer "cookie banner" code that helps you comply with these regulations.
+[src:http-rest/http-cors] This feature is well established and works across many devices and browser versions.
+[src:http-rest/http-cors] It’s been available across browsers since July 2015.
+[src:http-rest/http-cors] An example of a cross-origin request: the front-end JavaScript code served from `https://domain-a.com` uses `fetch()` to make a request for `https://domain-b.com/data.json`.
+[src:http-rest/http-cors] For security reasons, browsers restrict cross-origin HTTP requests initiated from scripts.
+[src:http-rest/http-cors] For example, `fetch()` and `XMLHttpRequest` follow the same-origin policy.
+[src:http-rest/http-cors] This means that a web application using those APIs can only request resources from the same origin the application was loaded from unless the response from other origins includes the right CORS headers.
+[src:http-rest/http-cors] The CORS mechanism supports secure cross-origin requests and data transfers between browsers and servers.
+[src:http-rest/http-cors] Browsers use CORS in APIs such as `fetch()` or `XMLHttpRequest` to mitigate the risks of cross-origin HTTP requests.
+[src:http-rest/http-cors] This is a general article about Cross-Origin Resource Sharing and includes a discussion of the necessary HTTP headers.
+[src:http-rest/http-cors] The Cross-Origin Resource Sharing standard works by adding new HTTP headers that let servers describe which origins are permitted to read that information from a web browser.
+[src:http-rest/http-cors] Servers can also inform clients whether "credentials" (such as Cookies and HTTP Authentication) should be sent with requests.
+[src:http-rest/http-cors] CORS failures result in errors but for security reasons, specifics about the error *are not available to JavaScript*.
+[src:http-rest/http-cors] All the code knows is that an error occurred.
+[src:http-rest/http-cors] The only way to determine what specifically went wrong is to look at the browser's console for details.
+[src:http-rest/http-cors] Subsequent sections discuss scenarios, as well as provide a breakdown of the HTTP headers used.
+[src:http-rest/http-cors] We present three scenarios that demonstrate how Cross-Origin Resource Sharing works.
+[src:http-rest/http-cors] All these examples use `fetch()`, which can make cross-origin requests in any supporting browser.
+[src:http-rest/http-cors] Some requests don't trigger a CORS preflight.
+[src:http-rest/http-cors] Those are called *simple requests* from the obsolete CORS spec, though the Fetch spec (which now defines CORS) doesn't use that term.
+[src:http-rest/http-cors] The motivation is that the `<form>` element from HTML 4.0 (which predates cross-site `fetch()` and `XMLHttpRequest`) can submit simple requests to any origin, so anyone writing a server must already be protecting against cross-site request forgery (CSRF).
+[src:http-rest/http-cors] Under this assumption, the server doesn't have to opt-in (by responding to a preflight request) to receive any request that looks like a form submission, since the threat of CSRF is no worse than that of form submission.
+[src:http-rest/http-cors] However, the server still must opt-in using `Access-Control-Allow-Origin` to *share* the response with the script.
+[src:http-rest/http-cors] No other browsers implement these extra restrictions because they're not part of the spec.
+[src:http-rest/http-cors] For example, suppose web content at `https://foo.example` wishes to fetch JSON content from domain `https://bar.other`.
+[src:http-rest/http-cors] The request header of note is `Origin`, which shows that the invocation is coming from `https://foo.example`.
+[src:http-rest/http-cors] In response, the server returns an `Access-Control-Allow-Origin` header with `Access-Control-Allow-Origin: *`, which means that the resource can be accessed by **any** origin.
+[src:http-rest/http-cors] This pattern of the `Origin` and `Access-Control-Allow-Origin` headers is the simplest use of the access control protocol.
+[src:http-rest/http-cors] Unlike *simple requests*, for "preflighted" requests the browser first sends an HTTP request using the `OPTIONS` method to the resource on the other origin, in order to determine if the actual request is safe to send.
+[src:http-rest/http-cors] Such cross-origin requests are preflighted since they may have implications for user data.
+[src:http-rest/http-cors] The example above creates an XML body to send with the `POST` request.
+[src:http-rest/http-cors] Also, a non-standard HTTP `X-PINGOTHER` request header is set.
+[src:http-rest/http-cors] Such headers are not part of HTTP/1.1, but are generally useful to web applications.
+[src:http-rest/http-cors] Since the request uses a `Content-Type` of `text/xml`, and since a custom header is set, this request is preflighted.
+[src:http-rest/http-cors] Let's look at the full exchange between client and server.
+[src:http-rest/http-cors] The first block above represents the preflight request with the `OPTIONS` method.
+[src:http-rest/http-cors] The browser determines that it needs to send this based on the request parameters that the JavaScript code snippet above was using, so that the server can respond whether it is acceptable to send the request with the actual request parameters.
+[src:http-rest/http-cors] OPTIONS is an HTTP/1.1 method that is used to determine further information from servers, and is a safe method, meaning that it can't be used to change the resource.
+[src:http-rest/http-cors] The `Access-Control-Request-Method` header notifies the server as part of a preflight request that when the actual request is sent, it will do so with a `POST` request method.
+[src:http-rest/http-cors] The `Access-Control-Request-Headers` header notifies the server that when the actual request is sent, it will do so with `X-PINGOTHER` and `Content-Type` custom headers.
+[src:http-rest/http-cors] Now the server has an opportunity to determine whether it can accept a request under these conditions.
+[src:http-rest/http-cors] The second block above is the response that the server returns, which indicate that the request method (`POST`) and request headers (`X-PINGOTHER`) are acceptable.
+[src:http-rest/http-cors] The server responds with `Access-Control-Allow-Origin: https://foo.example`, restricting access to the requesting origin domain only.
+[src:http-rest/http-cors] It also responds with `Access-Control-Allow-Methods`, which says that `POST` and `GET` are valid methods to query the resource in question (this header is similar to the `Allow` response header, but used strictly within the context of access control).
+[src:http-rest/http-cors] The server also sends `Access-Control-Allow-Headers` with a value of `X-PINGOTHER, Content-Type`, confirming that these are permitted headers to be used with the actual request.
+[src:http-rest/http-cors] Like `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers` is a comma-separated list of acceptable headers.
+[src:http-rest/http-cors] Finally, `Access-Control-Max-Age` gives the value in seconds for how long the response to the preflight request can be cached without sending another preflight request.
+[src:http-rest/http-cors] In the present case, the max age is 86400 seconds (= 24 hours).
+[src:http-rest/http-cors] Note that each browser has a maximum internal value that takes precedence when the `Access-Control-Max-Age` exceeds it.
+[src:http-rest/http-cors] Not all browsers currently support following redirects after a preflighted request.
+[src:http-rest/http-cors] The CORS protocol originally required that behavior but was subsequently changed to no longer require it.
+[src:http-rest/http-cors] However, not all browsers have implemented the change, and thus still exhibit the originally required behavior.
+[src:http-rest/http-cors] Make another request (the *real* request) using the URL you obtained from `Response.url` or `XMLHttpRequest.responseURL` in the first step.
+[src:http-rest/http-cors] However, if the request is one that triggers a preflight due to the presence of the `Authorization` header in the request, you won't be able to work around the limitation using the steps above.
+[src:http-rest/http-cors] And you won't be able to work around it at all unless you have control over the server the request is being made to.
+[src:http-rest/http-cors] The most interesting capability exposed by both `fetch()` or `XMLHttpRequest` and CORS is the ability to make "credentialed" requests that are aware of HTTP cookies and HTTP Authentication information.
+[src:http-rest/http-cors] By default, in cross-origin `fetch()` or `XMLHttpRequest` calls, browsers will *not* send credentials.
+[src:http-rest/http-cors] To ask for a `fetch()` request to include credentials, set the `credentials` option to `"include"`.
+[src:http-rest/http-cors] To ask for an `XMLHttpRequest` request to include credentials, set the `XMLHttpRequest.withCredentials` property to `true`.
+[src:http-rest/http-cors] In this example, content originally loaded from `https://foo.example` makes a GET request to a resource on `https://bar.other` which sets Cookies.
+[src:http-rest/http-cors] This code creates a `Request` object, setting the `credentials` option to `"include"` in the constructor, then passes this request into `fetch()`.
+[src:http-rest/http-cors] Since this is a simple `GET` request, it is not preflighted but the browser will **reject** any response that does not have the `Access-Control-Allow-Credentials` header set to `true`, and **not** make the response available to the invoking web content.
+[src:http-rest/http-cors] CORS-preflight requests must never include credentials.
+[src:http-rest/http-cors] The *response* to a preflight request must specify `Access-Control-Allow-Credentials: true` to indicate that the actual request can be made with credentials.
+[src:http-rest/http-cors] Firefox 87 allows this non-compliant behavior to be enabled by setting the preference: `network.cors_preflight.allow_client_cert` to `true` (Firefox bug 1511151).
+[src:http-rest/http-cors] Chromium-based browsers currently always send TLS client certificates in CORS preflight requests (Chrome bug 775438).
+[src:http-rest/http-cors] If a request includes a credential (most commonly a `Cookie` header) and the response includes an `Access-Control-Allow-Origin: *` header (that is, with the wildcard), the browser will block access to the response, and report a CORS error in the devtools console.
+[src:http-rest/http-cors] But if a request does include a credential (like the `Cookie` header) and the response includes an actual origin rather than the wildcard (like, for example, `Access-Control-Allow-Origin: https://example.com`), then the browser will allow access to the response from the specified origin.
+[src:http-rest/http-cors] Also note that any `Set-Cookie` response header in a response would not set a cookie if the `Access-Control-Allow-Origin` value in that response is the `*` wildcard rather an actual origin.
+[src:http-rest/http-cors] Note that cookies set in CORS responses are subject to normal third-party cookie policies.
+[src:http-rest/http-cors] In the example above, the page is loaded from `foo.example` but the `Set-Cookie` header in the response is sent by `bar.other`, and would thus not be saved if the user's browser is configured to reject all third-party cookies.
+[src:http-rest/http-cors] Cookies set in CORS requests and responses are subject to normal third-party cookie policies.
+[src:http-rest/http-cors] Third-party cookie policies may prevent third party cookies being sent in requests, effectively stopping a site from making credentialed requests even if permitted by the third party server (using `Access-Control-Allow-Credentials`).
+[src:http-rest/http-cors] The default policy differs between browsers, but may be set using the SameSite attribute.
+[src:http-rest/http-cors] Even if credentialed requests are allowed, a browser may be configured to reject all third-party cookies in responses.
+[src:http-rest/http-cors] This section lists the HTTP response headers that servers return for access control requests as defined by the Cross-Origin Resource Sharing specification.
+[src:http-rest/http-cors] The previous section gives an overview of these in action.
+[src:http-rest/http-cors] `Access-Control-Allow-Origin` specifies either a single origin which tells browsers to allow that origin to access the resource; or else — for requests **without** credentials — the `*` wildcard tells browsers to allow any origin to access the resource.
+[src:http-rest/http-cors] The `Access-Control-Expose-Headers` header adds the specified headers to the allowlist that JavaScript (such as `Response.headers`) in browsers is allowed to access.
+[src:http-rest/http-cors] The `Access-Control-Max-Age` header indicates how long the results of a preflight request can be cached.
+[src:http-rest/http-cors] For an example of a preflight request, see the above examples.
+[src:http-rest/http-cors] The `delta-seconds` parameter indicates the number of seconds the results can be cached.
+[src:http-rest/http-cors] The `Access-Control-Allow-Credentials` header indicates whether or not the response to the request can be exposed when the `credentials` flag is true.
+[src:http-rest/http-cors] When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials.
+[src:http-rest/http-cors] Note that simple `GET` requests are not preflighted, and so if a request is made for a resource with credentials, if this header is not returned with the resource, the response is ignored by the browser and not returned to web content.
+[src:http-rest/http-cors] Credentialed requests are discussed above.
+[src:http-rest/http-cors] The `Access-Control-Allow-Methods` header specifies the method or methods allowed when accessing the resource.
+[src:http-rest/http-cors] This is used in response to a preflight request.
+[src:http-rest/http-cors] The conditions under which a request is preflighted are discussed above.
+[src:http-rest/http-cors] An example of a preflight request is given above, including an example which sends this header to the browser.
+[src:http-rest/http-cors] The `Access-Control-Allow-Headers` header is used in response to a preflight request to indicate which HTTP headers can be used when making the actual request.
+[src:http-rest/http-cors] This header is the server side response to the browser's `Access-Control-Request-Headers` header.
+[src:http-rest/http-cors] This section lists headers that clients may use when issuing HTTP requests in order to make use of the cross-origin sharing feature.
+[src:http-rest/http-cors] Note that these headers are set for you when making invocations to servers.
+[src:http-rest/http-cors] Developers making cross-origin requests do not have to set any cross-origin sharing request headers programmatically.
+[src:http-rest/http-cors] The `Origin` header indicates the origin of the cross-origin access request or preflight request.
+[src:http-rest/http-cors] The origin is a URL indicating the server from which the request is initiated.
+[src:http-rest/http-cors] It does not include any path information, only the server name.
+[src:http-rest/http-cors] Note that in any access control request, the `Origin` header is **always** sent.
+[src:http-rest/http-cors] The `Access-Control-Request-Method` is used when issuing a preflight request to let the server know what HTTP method will be used when the actual request is made.
+[src:http-rest/http-cors] Examples of this usage can be found above.
+[src:http-rest/http-cors] The `Access-Control-Request-Headers` header is used when issuing a preflight request to let the server know what HTTP headers will be used when the actual request is made (for example, by passing them as the `headers` option).
+[src:http-rest/http-cors] This browser-side header will be answered by the complementary server-side header of `Access-Control-Allow-Headers`.
+[src:http-rest/http-headers] The IANA registry lists headers, including information about their status.
+[src:http-rest/http-headers] Contain more information about the resource to be fetched, or about the client requesting the resource.
+[src:http-rest/http-headers] Hold additional information about the response, like its location or about the server providing it.
+[src:http-rest/http-headers] Contain information about the body of the resource, like its MIME type, or encoding/compression applied.
+[src:http-rest/http-headers] Contain representation-independent information about payload data, including content length and the encoding used for transport.
+[src:http-rest/http-headers] These headers *must* be transmitted to the final recipient of the message: the server for a request, or the client for a response.
+[src:http-rest/http-headers] Intermediate proxies must retransmit these headers unmodified and caches must store them.
+[src:http-rest/http-headers] These headers are meaningful only for a single transport-level connection, and *must not* be retransmitted by proxies or cached.
+[src:http-rest/http-headers] Note that only hop-by-hop headers may be set using the `Connection` header.
+[src:http-rest/http-headers] Defines the authentication method that should be used to access a resource.
+[src:http-rest/http-headers] Contains the credentials to authenticate a user-agent with a server.
+[src:http-rest/http-headers] Defines the authentication method that should be used to access a resource behind a proxy server.
+[src:http-rest/http-headers] Contains the credentials to authenticate a user agent with a proxy server.
+[src:http-rest/http-headers] The time, in seconds, that the object has been in a proxy cache.
+[src:http-rest/http-headers] Directives for caching mechanisms in both requests and responses.
+[src:http-rest/http-headers] Clears browsing data (e.g., cookies, storage, cache) associated with the requesting website.
+[src:http-rest/http-headers] The date/time after which the response is considered stale.
+[src:http-rest/http-headers] Specifies a set of rules that define how a URL's query parameters will affect cache matching.
+[src:http-rest/http-headers] These rules dictate whether the same URL with different URL parameters should be saved as separate browser cache entries.
+[src:http-rest/http-headers] The last modification date of the resource, used to compare several versions of the same resource.
+[src:http-rest/http-headers] It is less accurate than `ETag`, but easier to calculate in some environments.
+[src:http-rest/http-headers] Conditional requests using `If-Modified-Since` and `If-Unmodified-Since` use this value to change the behavior of the request.
+[src:http-rest/http-headers] A unique string identifying the version of the resource.
+[src:http-rest/http-headers] Conditional requests using `If-Match` and `If-None-Match` use this value to change the behavior of the request.
+[src:http-rest/http-headers] Makes the request conditional, and applies the method only if the stored resource matches one of the given ETags.
+[src:http-rest/http-headers] Makes the request conditional, and applies the method only if the stored resource *doesn't* match any of the given ETags.
+[src:http-rest/http-headers] This is used to update caches (for safe requests), or to prevent uploading a new resource when one already exists.
+[src:http-rest/http-headers] Makes the request conditional, and expects the resource to be transmitted only if it has been modified after the given date.
+[src:http-rest/http-headers] This is used to transmit data only when the cache is out of date.
+[src:http-rest/http-headers] Makes the request conditional, and expects the resource to be transmitted only if it has not been modified after the given date.
+[src:http-rest/http-headers] This ensures the coherence of a new fragment of a specific range with previous ones, or to implement an optimistic concurrency control system when modifying existing documents.
+[src:http-rest/http-headers] Determines how to match request headers to decide whether a cached response can be used rather than requesting a fresh one from the origin server.
+[src:http-rest/http-headers] Controls whether the network connection stays open after the current transaction finishes.
+[src:http-rest/http-headers] Controls how long a persistent connection should stay open.
+[src:http-rest/http-headers] For more details, refer to the Content negotiation article.
+[src:http-rest/http-headers] Informs the server about the types of data that can be sent back.
+[src:http-rest/http-headers] The encoding algorithm, usually a compression algorithm, that can be used on the resource sent back.
+[src:http-rest/http-headers] Informs the server about the human language the server is expected to send back.
+[src:http-rest/http-headers] This is a hint and is not necessarily under the full control of the user: the server should always pay attention not to override an explicit user choice (like selecting a language from a dropdown).
+[src:http-rest/http-headers] A *request content negotiation* response header that advertises which media type the server is able to understand in a `PATCH` request.
+[src:http-rest/http-headers] A *request content negotiation* response header that advertises which media type the server is able to understand in a `POST` request.
+[src:http-rest/http-headers] Indicates expectations that need to be fulfilled by the server to properly handle the request.
+[src:http-rest/http-headers] When using `TRACE`, indicates the maximum number of hops the request can do before being reflected to the sender.
+[src:http-rest/http-headers] Contains stored HTTP cookies previously sent by the server with the `Set-Cookie` header.
+[src:http-rest/http-headers] Send cookies from the server to the user-agent.
+[src:http-rest/http-headers] For more information, refer to the CORS documentation.
+[src:http-rest/http-headers] Indicates whether the response to the request can be exposed when the credentials flag is true.
+[src:http-rest/http-headers] Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request.
+[src:http-rest/http-headers] Specifies the methods allowed when accessing the resource in response to a preflight request.
+[src:http-rest/http-headers] Indicates whether the response can be shared.
+[src:http-rest/http-headers] Indicates which headers can be exposed as part of the response by listing their names.
+[src:http-rest/http-headers] Indicates how long the results of a preflight request can be cached.
+[src:http-rest/http-headers] Used when issuing a preflight request to let the server know which HTTP headers will be used when the actual request is made.
+[src:http-rest/http-headers] Used when issuing a preflight request to let the server know which HTTP method will be used when the actual request is made.
+[src:http-rest/http-headers] Indicates where a fetch originates from.
+[src:http-rest/http-headers] Specifies origins that are allowed to see values of attributes retrieved via features of the Resource Timing API, which would otherwise be reported as zero due to cross-origin restrictions.
+[src:http-rest/http-headers] Indicates if the resource transmitted should be displayed inline (default behavior without the header), or if it should be handled like a download and the browser should present a "Save As" dialog.
+[src:http-rest/http-headers] Provides a digest of the stream of octets framed in an HTTP message (the message content) dependent on `Content-Encoding` and `Content-Range`.
+[src:http-rest/http-headers] Provides a digest of the selected representation of the target resource before transmission.
+[src:http-rest/http-headers] Unlike the `Content-Digest`, the digest does not consider `Content-Encoding` or `Content-Range`.
+[src:http-rest/http-headers] States the wish for a `Content-Digest` header.
+[src:http-rest/http-headers] It is the `Content-` analogue of `Want-Repr-Digest`.
+[src:http-rest/http-headers] States the wish for a `Repr-Digest` header.
+[src:http-rest/http-headers] It is the `Repr-` analogue of `Want-Content-Digest`.
+[src:http-rest/http-headers] Ensures that all resources the user agent loads (of a certain type) have Subresource Integrity guarantees.
+[src:http-rest/http-headers] Reports on resources that the user agent loads that would violate Subresource Integrity guarantees if the integrity policy were enforced (using the `Integrity-Policy` header).
+[src:http-rest/http-headers] The size of the resource, in decimal number of bytes.
+[src:http-rest/http-headers] Indicates the media type of the resource.
+[src:http-rest/http-headers] Used to specify the compression algorithm.
+[src:http-rest/http-headers] Describes the human language(s) intended for the audience, so that it allows a user to differentiate according to the users' own preferred language.
+[src:http-rest/http-headers] Indicates an alternate location for the returned data.
+[src:http-rest/http-headers] Preferences can be sent by clients in requests to indicate optional behaviors for requests and responses.
+[src:http-rest/http-headers] The server response may indicate if a preference is applied, in cases where it would otherwise be ambiguous for the client.
+[src:http-rest/http-headers] Browsers have no native handling for sending preferences via these headers; they are used in custom, implementation-specific clients.
+[src:http-rest/http-headers] Indicates preferences for specific server behaviors during request processing.
+[src:http-rest/http-headers] For example, it can request minimal response content (`return=minimal`) or asynchronous processing (`respond-async`).
+[src:http-rest/http-headers] The server processes the request normally if the header is unsupported.
+[src:http-rest/http-headers] Informs the client which preferences specified in the `Prefer` header were applied by the server.
+[src:http-rest/http-headers] It is a response-only header providing transparency about preference handling.
+[src:http-rest/http-headers] Contains information from the client-facing side of proxy servers that is altered or lost when a proxy is involved in the path of the request.
+[src:http-rest/http-headers] Added by proxies, both forward and reverse proxies, and can appear in the request headers and the response headers.
+[src:http-rest/http-headers] HTTP range requests allow the client to request a portion of a resource from the server.
+[src:http-rest/http-headers] Range requests are useful for applications like media players that support random access, data tools that know they need only part of a large file, and download managers that let the user pause and resume a download.
+[src:http-rest/http-headers] Indicates if the server supports range requests, and if so in which unit the range can be expressed.
+[src:http-rest/http-headers] Indicates the part of a document that the server should return.
+[src:http-rest/http-headers] Creates a conditional range request that is only fulfilled if the given etag or date matches the remote resource.
+[src:http-rest/http-headers] Used to prevent downloading two ranges from incompatible version of the resource.
+[src:http-rest/http-headers] Indicates where in a full body message a partial message belongs.
+[src:http-rest/http-headers] Indicates the URL to redirect a page to.
+[src:http-rest/http-headers] Directs the browser to reload the page or redirect to another.
+[src:http-rest/http-headers] Takes the same value as the `meta` element with `http-equiv="refresh"`.
+[src:http-rest/http-headers] Contains an Internet email address for a human user who controls the requesting user agent.
+[src:http-rest/http-headers] Specifies the domain name of the server (for virtual hosting), and (optionally) the TCP port number on which the server is listening.
+[src:http-rest/http-headers] The address of the previous web page from which a link to the currently requested page was followed.
+[src:http-rest/http-headers] Governs which referrer information sent in the `Referer` header should be included with requests made.
+[src:http-rest/http-headers] Contains a characteristic string that allows the network protocol peers to identify the application type, operating system, software vendor or software version of the requesting software user agent.
+[src:http-rest/http-headers] Lists the set of HTTP request methods supported by a resource.
+[src:http-rest/http-headers] Contains information about the software used by the origin server to handle the request.
+[src:http-rest/http-headers] Allows a server to declare an embedder policy for a given document.
+[src:http-rest/http-headers] Prevents other domains from opening/controlling a window.
+[src:http-rest/http-headers] Prevents other domains from reading the response of the resources to which this header is applied.
+[src:http-rest/http-headers] Controls resources the user agent is allowed to load for a given page.
+[src:http-rest/http-headers] Allows web developers to experiment with policies by monitoring, but not enforcing, their effects.
+[src:http-rest/http-headers] These violation reports consist of JSON documents sent via an HTTP `POST` request to the specified URI.
+[src:http-rest/http-headers] Lets sites opt in to reporting and enforcement of Certificate Transparency to detect use of misissued certificates for that site.
+[src:http-rest/http-headers] Provides a mechanism to allow and deny the use of browser features in a website's own frame, and in `<iframe>`s that it embeds.
+[src:http-rest/http-headers] Response header that allows website owners to specify one or more endpoints used to receive errors such as CSP violation reports, `Cross-Origin-Opener-Policy` reports, or other generic violations.
+[src:http-rest/http-headers] Force communication using HTTPS instead of HTTP.
+[src:http-rest/http-headers] Sends a signal to the server expressing the client's preference for an encrypted and authenticated response, and that it can successfully handle the `upgrade-insecure-requests` directive.
+[src:http-rest/http-headers] Disables MIME sniffing and forces browser to use the type given in `Content-Type`.
+[src:http-rest/http-headers] Indicates whether a browser should be allowed to render a page in a `<frame>`, `<iframe>`, `<embed>` or `<object>`.
+[src:http-rest/http-headers] A cross-domain policy file may grant clients, such as Adobe Acrobat or Apache Flex (among others), permission to handle data across domains that would otherwise be restricted due to the Same-Origin Policy.
+[src:http-rest/http-headers] The `X-Permitted-Cross-Domain-Policies` header overrides such policy files so that clients still block unwanted requests.
+[src:http-rest/http-headers] May be set by hosting environments or other frameworks and contains information about them while not providing any usefulness to the application or its visitors.
+[src:http-rest/http-headers] Unset this header to avoid exposing potential vulnerabilities.
+[src:http-rest/http-headers] Fetch metadata request headers provide information about the context from which the request originated.
+[src:http-rest/http-headers] A server can use them to make decisions about whether a request should be allowed, based on where the request came from and how the resource will be used.
+[src:http-rest/http-headers] Indicates the relationship between a request initiator's origin and its target's origin.
+[src:http-rest/http-headers] It is a Structured Header whose value is a token with possible values `cross-site`, `same-origin`, `same-site`, and `none`.
+[src:http-rest/http-headers] Indicates the request's mode to a server.
+[src:http-rest/http-headers] It is a Structured Header whose value is a token with possible values `cors`, `navigate`, `no-cors`, `same-origin`, and `websocket`.
+[src:http-rest/http-headers] Indicates whether or not a navigation request was triggered by user activation.
+[src:http-rest/http-headers] It is a Structured Header whose value is a boolean so possible values are `?0` for false and `?1` for true.
+[src:http-rest/http-headers] It is a Structured Header whose value is a token with possible values `audio`, `audioworklet`, `document`, `embed`, `empty`, `font`, `image`, `manifest`, `object`, `paintworklet`, `report`, `script`, `serviceworker`, `sharedworker`, `style`, `track`, `video`, `worker`, and `xslt`.
+[src:http-rest/http-headers] The following request headers are not *strictly* "fetch metadata request headers", but similarly provide information about the context of how a resource will be used.
+[src:http-rest/http-headers] Indicates the purpose of the request, when the purpose is something other than immediate use by the user-agent.
+[src:http-rest/http-headers] The header currently has one possible value, `prefetch`, which indicates that the resource is being fetched preemptively for a possible future navigation.
+[src:http-rest/http-headers] A request header sent in preemptive request to `fetch()` a resource during service worker boot.
+[src:http-rest/http-headers] The value, which is set with `NavigationPreloadManager.setHeaderValue()`, can be used to inform a server that a different resource should be returned than in a normal `fetch()` operation.
+[src:http-rest/http-headers] These headers enable an enhanced workflow for the Storage Access API.
+[src:http-rest/http-headers] Indicates the "storage access status" for the current fetch context, which will be one of `none`, `inactive`, or `active`.
+[src:http-rest/http-headers] The server may respond with `Activate-Storage-Access` to request that the browser activate an `inactive` permission and retry the request, or to load a resource with access to its third-party cookies if the status is `active`.
+[src:http-rest/http-headers] Used in response to `Sec-Fetch-Storage-Access` to indicate that the browser can activate an existing permission for secure access and retry the request with cookies, or load a resource with cookie access if it already has an activated permission.
+[src:http-rest/http-headers] Response header used to specify server endpoints where the browser should send warning and error reports when using the Reporting API.
+[src:http-rest/http-headers] Specifies the form of encoding used to safely transfer the resource to the user.
+[src:http-rest/http-headers] Specifies the transfer encodings the user agent is willing to accept.
+[src:http-rest/http-headers] Allows the sender to include additional fields at the end of chunked message.
+[src:http-rest/http-headers] Response header that indicates that the server is willing to upgrade to a WebSocket connection.
+[src:http-rest/http-headers] In requests, this header indicates the WebSocket extensions supported by the client in preferred order.
+[src:http-rest/http-headers] In responses, it indicates the extension selected by the server from the client's preferences.
+[src:http-rest/http-headers] Request header containing a key that verifies that the client explicitly intends to open a `WebSocket`.
+[src:http-rest/http-headers] In requests, this header indicates the sub-protocols supported by the client in preferred order.
+[src:http-rest/http-headers] In responses, it indicates the sub-protocol selected by the server from the client's preferences.
+[src:http-rest/http-headers] In requests, this header indicates the version of the WebSocket protocol used by the client.
+[src:http-rest/http-headers] In responses, it is sent only if the requested protocol version is not supported by the server, and lists the versions that the server supports.
+[src:http-rest/http-headers] Used to list alternate ways to reach this service.
+[src:http-rest/http-headers] Used to identify the alternative service in use.
+[src:http-rest/http-headers] Contains the date and time at which the message was originated.
+[src:http-rest/http-headers] This entity-header field provides a means for serializing one or more links in HTTP headers.
+[src:http-rest/http-headers] It is semantically equivalent to the HTML `<link>` element.
+[src:http-rest/http-headers] Indicates how long the user agent should wait before making a follow-up request.
+[src:http-rest/http-headers] Communicates one or more metrics and descriptions for the given request-response cycle.
+[src:http-rest/http-headers] Included in fetches for a service worker's script resource.
+[src:http-rest/http-headers] This header helps administrators log service worker script requests for monitoring purposes.
+[src:http-rest/http-headers] Used to remove the path restriction by including this header in the response of the Service Worker script.
+[src:http-rest/http-headers] Links to a source map so that debuggers can step through original source code instead of generated or transformed code.
+[src:http-rest/http-headers] This HTTP/1.1 (only) header can be used to upgrade an already established client/server connection to a different protocol (over the same transport protocol).
+[src:http-rest/http-headers] For example, it can be used by a client to upgrade a connection from HTTP 1.1 to HTTP 2.0, or an HTTP or HTTPS connection into a WebSocket.
+[src:http-rest/http-headers] Provides a hint from about the priority of a particular resource request on a particular connection.
+[src:http-rest/http-headers] The value can be sent in a request to indicate the client priority, or in a response if the server chooses to reprioritize the request.
+[src:http-rest/http-headers] The Attribution Reporting API enables developers to measure conversions — for example when a user clicks an ad embedded on one site and then proceeds to purchase the item over on the vendor's site — and then access reports on those conversions.
+[src:http-rest/http-headers] It does this without relying on third-party tracking cookies, instead relying on various headers to register **sources** and **triggers** that are matched to indicate a conversion.
+[src:http-rest/http-headers] Used to indicate that the response corresponding to the current request is eligible to take part in attribution reporting, by registering either an attribution source or trigger.
+[src:http-rest/http-headers] Included as part of a response to a request that included an `Attribution-Reporting-Eligible` header, this is used to register an attribution source.
+[src:http-rest/http-headers] Included as part of a response to a request that included an `Attribution-Reporting-Eligible` header, this is used to register an attribution trigger.
+[src:http-rest/http-headers] HTTP Client hints are a set of request headers that provide useful information about the client such as device type and network conditions, and allow servers to optimize what is served for those conditions.
+[src:http-rest/http-headers] Servers proactively requests the client hint headers they are interested in from the client using `Accept-CH`.
+[src:http-rest/http-headers] The client may then choose to include the requested headers in subsequent requests.
+[src:http-rest/http-headers] Servers can advertise support for Client Hints using the `Accept-CH` header field or an equivalent HTML `<meta>` element with `http-equiv` attribute.
+[src:http-rest/http-headers] Servers use `Critical-CH` along with `Accept-CH` to specify that accepted client hints are also critical client hints.
+[src:http-rest/http-headers] The different categories of client hints are listed below.
+[src:http-rest/http-headers] User agent's underlying platform architecture.
+[src:http-rest/http-headers] User agent's underlying CPU architecture bitness (for example "64" bit).
+[src:http-rest/http-headers] User agent's form-factors, describing how the user interacts with the user-agent.
+[src:http-rest/http-headers] Full version for each brand in the user agent's brand list.
+[src:http-rest/http-headers] User agent is running on a mobile device or, more generally, prefers a "mobile" user experience.
+[src:http-rest/http-headers] User agent's underlying operation system/platform.
+[src:http-rest/http-headers] User agent's underlying operation system version.
+[src:http-rest/http-headers] Whether or not the user agent binary is running in 32-bit mode on 64-bit Windows.
+[src:http-rest/http-headers] User's preference of dark or light color scheme.
+[src:http-rest/http-headers] User's preference to see fewer animations and content layout shifts.
+[src:http-rest/http-headers] Request header indicates the user agent's preference for reduced transparency.
+[src:http-rest/http-headers] Approximate amount of available client RAM memory.
+[src:http-rest/http-headers] Request header that provides the client device pixel ratio (the number of physical device pixels for each CSS pixel).
+[src:http-rest/http-headers] Request header provides the client's layout viewport height in CSS pixels.
+[src:http-rest/http-headers] Request header provides the client's layout viewport width in CSS pixels.
+[src:http-rest/http-headers] Request header provides the image's width in CSS pixels.
+[src:http-rest/http-headers] Network client hints allow a server to choose what information is sent based on the user choice and network bandwidth and latency.
+[src:http-rest/http-headers] Approximate bandwidth of the client's connection to the server, in Mbps.
+[src:http-rest/http-headers] This is part of the Network Information API.
+[src:http-rest/http-headers] The effective connection type ("network profile") that best matches the connection's latency and bandwidth.
+[src:http-rest/http-headers] Application layer round trip time (RTT) in milliseconds, which includes the server processing time.
+[src:http-rest/http-headers] A string `on` that indicates the user agent's preference for reduced data usage.
+[src:http-rest/http-headers] Compression Dictionary Transport is a way of using a shared compression dictionary to reduce the transport size of HTTP responses rather than using the standard static dictionary in Brotli compression or Zstandard compression.
+[src:http-rest/http-headers] A browser can use this request header to indicate the best dictionary it has available for the server to use for compression.
+[src:http-rest/http-headers] Used when a browser already has a dictionary available for a resource and the server provided an `id` for the dictionary in the `Use-As-Dictionary` header.
+[src:http-rest/http-headers] Requests for resources that can use the dictionary have an `Available-Dictionary` header and the server-provided dictionary `id` in the `Dictionary-ID` header.
+[src:http-rest/http-headers] Lists the matching criteria that the dictionary can be used for in future requests.
+[src:http-rest/http-headers] Request header that indicates the user's tracking preference (Do Not Track).
+[src:http-rest/http-headers] Deprecated in favor of Global Privacy Control (GPC), which is communicated to servers using the `Sec-GPC` header, and accessible to clients via `navigator.globalPrivacyControl`.
+[src:http-rest/http-headers] Response header that indicates the tracking status that applied to the corresponding request.
+[src:http-rest/http-headers] Indicates whether the user consents to a website or service selling or sharing their personal information with third parties.
+[src:http-rest/http-headers] Response header used to indicate that the associated `Document` should be placed in an *origin-keyed agent cluster*.
+[src:http-rest/http-headers] This isolation allows user agents to allocate implementation-specific resources for agent clusters, such as processes or threads, more efficiently.
+[src:http-rest/http-headers] Defines a mechanism that enables developers to declare a network error reporting policy.
+[src:http-rest/http-headers] The Topics API provides a mechanism for developers to implement use cases such as interest-based advertising (IBA).
+[src:http-rest/http-headers] See the Topics API documentation for more information.
+[src:http-rest/http-headers] Response header used to mark topics of interest inferred from a calling site's URL as observed in the response to a request generated by a feature that enables the Topics API.
+[src:http-rest/http-headers] Request header that sends the selected topics for the current user along with the associated request, which are used by an ad tech platform to choose a personalized ad to display.
+[src:http-rest/http-headers] A client can send the `Accept-Signature` header field to indicate intention to take advantage of any available signatures and to indicate what kinds of signatures it supports.
+[src:http-rest/http-headers] Indicates that the request has been conveyed in TLS early data.
+[src:http-rest/http-headers] Provides a unique key for `POST` and `PATCH` requests, allowing them to be made idempotent.
+[src:http-rest/http-headers] Response header sent by a federated identity provider (IdP) to set its login status, meaning whether any users are logged into the IdP on the current browser or not.
+[src:http-rest/http-headers] This is stored by the browser and used by the FedCM API.
+[src:http-rest/http-headers] The `Signature` header field conveys a list of signatures for an exchange, each one accompanied by information about how to determine the authority of and refresh that signature.
+[src:http-rest/http-headers] The `Signed-Headers` header field identifies an ordered list of response header fields to include in a signature.
+[src:http-rest/http-headers] Provides a list of URLs pointing to text resources containing speculation rule JSON definitions.
+[src:http-rest/http-headers] When the response is an HTML document, these rules will be added to the document's speculation rule set.
+[src:http-rest/http-headers] Contains one or more tag values from the speculation rules that resulted in the speculation so a server can identify which rule(s) caused a speculation and potentially block them.
+[src:http-rest/http-headers] Set by a navigation target to opt-in to using various higher-risk loading modes.
+[src:http-rest/http-headers] For example, cross-origin, same-site prerendering requires a `Supports-Loading-Mode` value of `credentialed-prerender`.
+[src:http-rest/http-headers] Identifies the originating IP addresses of a client connecting to a web server through an HTTP proxy or a load balancer.
+[src:http-rest/http-headers] Identifies the original host requested that a client used to connect to your proxy or load balancer.
+[src:http-rest/http-headers] Identifies the protocol (HTTP or HTTPS) that a client used to connect to your proxy or load balancer.
+[src:http-rest/http-headers] Controls DNS prefetching, a feature by which browsers proactively perform domain name resolution on both links that the user may choose to follow as well as URLs for items referenced by the document, including images, CSS, JavaScript, and so forth.
+[src:http-rest/http-headers] The `X-Robots-Tag` HTTP header is used to indicate how a web page is to be indexed within public search engine results.
+[src:http-rest/http-headers] The header is equivalent to `<meta name="robots">` elements.
+[src:http-rest/http-headers] Implementation-specific header that may have various effects anywhere along the request-response chain.
+[src:http-rest/http-headers] Used for backwards compatibility with HTTP/1.0 caches where the `Cache-Control` header is not yet present.
+[src:http-rest/http-headers] General warning information about possible problems.
+[src:http-rest/http-methods] HTTP defines a set of **request methods** to indicate the purpose of the request and what is expected if the request is successful.
+[src:http-rest/http-methods] Although they can also be nouns, these request methods are sometimes referred to as *HTTP verbs*.
+[src:http-rest/http-methods] Each request method has its own semantics, but some characteristics are shared across multiple methods, specifically request methods can be safe, idempotent, or cacheable.
+[src:http-rest/http-methods] The `GET` method requests a representation of the specified resource.
+[src:http-rest/http-methods] Requests using `GET` should only retrieve data and should not contain a request content.
+[src:http-rest/http-methods] The `HEAD` method asks for a response identical to a `GET` request, but without a response body.
+[src:http-rest/http-methods] The `POST` method submits an entity to the specified resource, often causing a change in state or side effects on the server.
+[src:http-rest/http-methods] The `PUT` method replaces all current representations of the target resource with the request content.
+[src:http-rest/http-methods] The `DELETE` method deletes the specified resource.
+[src:http-rest/http-methods] The `CONNECT` method establishes a tunnel to the server identified by the target resource.
+[src:http-rest/http-methods] The `OPTIONS` method describes the communication options for the target resource.
+[src:http-rest/http-methods] The `TRACE` method performs a message loop-back test along the path to the target resource.
+[src:http-rest/http-methods] The `PATCH` method applies partial modifications to a resource.
+[src:http-rest/http-methods] The following table lists HTTP request methods and their categorization in terms of safety, cacheability, and idempotency.
+[src:http-rest/http-overview] Clients and servers communicate by exchanging individual messages (as opposed to a stream of data).
+[src:http-rest/http-overview] The messages sent by the client are called *requests* and the messages sent by the server as an answer are called *responses*.
+[src:http-rest/http-overview] Designed in the early 1990s, HTTP is an extensible protocol which has evolved over time.
+[src:http-rest/http-overview] It is an application layer protocol that is sent over TCP, or over a TLS-encrypted TCP connection, though any reliable transport protocol could theoretically be used.
+[src:http-rest/http-overview] Due to its extensibility, it is used to not only fetch hypertext documents, but also images and videos or to post content to servers, like with HTML form results.
+[src:http-rest/http-overview] HTTP can also be used to fetch parts of documents to update Web pages on demand.
+[src:http-rest/http-overview] HTTP is a client-server protocol: requests are sent by one entity, the user-agent (or a proxy on behalf of it).
+[src:http-rest/http-overview] Most of the time the user-agent is a Web browser, but it can be anything, for example, a robot that crawls the Web to populate and maintain a search engine index.
+[src:http-rest/http-overview] Each individual request is sent to a server, which handles it and provides an answer called the *response*.
+[src:http-rest/http-overview] Between the client and the server there are numerous entities, collectively called proxies, which perform different operations and act as gateways or caches, for example.
+[src:http-rest/http-overview] In reality, there are more computers between a browser and the server handling the request: there are routers, modems, and more.
+[src:http-rest/http-overview] Thanks to the layered design of the Web, these are hidden in the network and transport layers.
+[src:http-rest/http-overview] HTTP is on top, at the application layer.
+[src:http-rest/http-overview] Although important for diagnosing network problems, the underlying layers are mostly irrelevant to the description of HTTP.
+[src:http-rest/http-overview] The *user-agent* is any tool that acts on behalf of the user.
+[src:http-rest/http-overview] This role is primarily performed by the Web browser, but it may also be performed by programs used by engineers and Web developers to debug their applications.
+[src:http-rest/http-overview] The browser is **always** the entity initiating the request.
+[src:http-rest/http-overview] It is never the server (though some mechanisms have been added over the years to simulate server-initiated messages).
+[src:http-rest/http-overview] To display a Web page, the browser sends an original request to fetch the HTML document that represents the page.
+[src:http-rest/http-overview] It then parses this file, making additional requests corresponding to execution scripts, layout information (CSS) to display, and sub-resources contained within the page (usually images and videos).
+[src:http-rest/http-overview] The Web browser then combines these resources to present the complete document, the Web page.
+[src:http-rest/http-overview] Scripts executed by the browser can fetch more resources in later phases and the browser updates the Web page accordingly.
+[src:http-rest/http-overview] This means some parts of the displayed content are links, which can be activated (usually by a click of the mouse) to fetch a new Web page, allowing the user to direct their user-agent and navigate through the Web.
+[src:http-rest/http-overview] The browser translates these directions into HTTP requests, and further interprets the HTTP responses to present the user with a clear response.
+[src:http-rest/http-overview] On the opposite side of the communication channel is the server, which *serves* the document as requested by the client.
+[src:http-rest/http-overview] A server appears as only a single machine virtually; but it may actually be a collection of servers sharing the load (load balancing), or other software (such as caches, a database server, or e-commerce servers), totally or partially generating the document on demand.
+[src:http-rest/http-overview] A server is not necessarily a single machine, but several server software instances can be hosted on the same machine.
+[src:http-rest/http-overview] With HTTP/1.1 and the `Host` header, they may even share the same IP address.
+[src:http-rest/http-overview] Between the Web browser and the server, numerous computers and machines relay the HTTP messages.
+[src:http-rest/http-overview] Due to the layered structure of the Web stack, most of these operate at the transport, network or physical levels, becoming transparent at the HTTP layer and potentially having a significant impact on performance.
+[src:http-rest/http-overview] Those operating at the application layers are generally called **proxies**.
+[src:http-rest/http-overview] These can be transparent, forwarding on the requests they receive without altering them in any way, or non-transparent, in which case they will change the request in some way before passing it along to the server.
+[src:http-rest/http-overview] HTTP is generally designed to be human-readable, even with the added complexity introduced in HTTP/2 by encapsulating HTTP messages into frames.
+[src:http-rest/http-overview] HTTP messages can be read and understood by humans, providing easier testing for developers, and reduced complexity for newcomers.
+[src:http-rest/http-overview] Introduced in HTTP/1.0, HTTP headers make this protocol easy to extend and experiment with.
+[src:http-rest/http-overview] New functionality can even be introduced by an agreement between a client and a server about a new header's semantics.
+[src:http-rest/http-overview] HTTP is stateless: there is no link between two requests being successively carried out on the same connection.
+[src:http-rest/http-overview] This immediately has the prospect of being problematic for users attempting to interact with certain pages coherently, for example, using e-commerce shopping baskets.
+[src:http-rest/http-overview] But while the core of HTTP itself is stateless, HTTP cookies allow the use of stateful sessions.
+[src:http-rest/http-overview] Using header extensibility, HTTP Cookies are added to the workflow, allowing session creation on each HTTP request to share the same context, or the same state.
+[src:http-rest/http-overview] A connection is controlled at the transport layer, and therefore fundamentally out of scope for HTTP.
+[src:http-rest/http-overview] HTTP doesn't require the underlying transport protocol to be connection-based; it only requires it to be *reliable*, or not lose messages (at minimum, presenting an error in such cases).
+[src:http-rest/http-overview] Among the two most common transport protocols on the Internet, TCP is reliable and UDP isn't.
+[src:http-rest/http-overview] HTTP therefore relies on the TCP standard, which is connection-based.
+[src:http-rest/http-overview] Before a client and server can exchange an HTTP request/response pair, they must establish a TCP connection, a process which requires several round-trips.
+[src:http-rest/http-overview] The default behavior of HTTP/1.0 is to open a separate TCP connection for each HTTP request/response pair.
+[src:http-rest/http-overview] This is less efficient than sharing a single TCP connection when multiple requests are sent in close succession.
+[src:http-rest/http-overview] In order to mitigate this flaw, HTTP/1.1 introduced *pipelining* (which proved difficult to implement) and *persistent connections*: the underlying TCP connection can be partially controlled using the `Connection` header.
+[src:http-rest/http-overview] HTTP/2 went a step further by multiplexing messages over a single connection, helping keep the connection warm and more efficient.
+[src:http-rest/http-overview] Experiments are in progress to design a better transport protocol more suited to HTTP.
+[src:http-rest/http-overview] For example, Google is experimenting with QUIC which builds on UDP to provide a more reliable and efficient transport protocol.
+[src:http-rest/http-overview] This extensible nature of HTTP has, over time, allowed for more control and functionality of the Web.
+[src:http-rest/http-overview] Cache and authentication methods were functions handled early in HTTP history.
+[src:http-rest/http-overview] The ability to relax the *origin constraint*, by contrast, was only added in the 2010s.
+[src:http-rest/http-overview] Send an HTTP message: HTTP messages (before HTTP/2) are human-readable.
+[src:http-rest/http-overview] With HTTP/2, these messages are encapsulated in frames, making them impossible to read directly, but the principle remains the same.
+[src:http-rest/http-overview] Close or reuse the connection for further requests.
+[src:http-rest/http-overview] If HTTP pipelining is activated, several requests can be sent without waiting for the first response to be fully received.
+[src:http-rest/http-overview] HTTP pipelining has proven difficult to implement in existing networks, where old pieces of software coexist with modern versions.
+[src:http-rest/http-overview] HTTP pipelining has been superseded in HTTP/2 with more robust multiplexing requests within a frame.
+[src:http-rest/http-overview] HTTP messages, as defined in HTTP/1.1 and earlier, are human-readable.
+[src:http-rest/http-overview] In HTTP/2, these messages are embedded into a binary structure, a *frame*, allowing optimizations like compression of headers and multiplexing.
+[src:http-rest/http-overview] Even if only part of the original HTTP message is sent in this version of HTTP, the semantics of each message is unchanged and the client reconstitutes (virtually) the original HTTP/1.1 request.
+[src:http-rest/http-overview] It is therefore useful to comprehend HTTP/2 messages in the HTTP/1.1 format.
+[src:http-rest/http-overview] There are two types of HTTP messages, requests and responses, each with its own format.
+[src:http-rest/http-overview] The most commonly used API based on HTTP is the Fetch API, which can be used to make HTTP requests from JavaScript.
+[src:http-rest/http-overview] The Fetch API replaces the `XMLHttpRequest` API.
+[src:http-rest/http-overview] Another API, server-sent events, is a one-way service that allows a server to send events to the client, using HTTP as a transport mechanism.
+[src:http-rest/http-overview] Using the `EventSource` interface, the client opens a connection and establishes event handlers.
+[src:http-rest/http-overview] The client browser automatically converts the messages that arrive on the HTTP stream into appropriate `Event` objects.
+[src:http-rest/http-overview] Then it delivers them to the event handlers that have been registered for the events' `type` if known, or to the `onmessage` event handler if no type-specific event handler was established.
+[src:http-rest/http-overview] HTTP is an extensible protocol that is easy to use.
+[src:http-rest/http-overview] The client-server structure, combined with the ability to add headers, allows HTTP to advance along with the extended capabilities of the Web.
+[src:http-rest/http-overview] Though HTTP/2 adds some complexity by embedding HTTP messages in frames to improve performance, the basic structure of messages has stayed the same since HTTP/1.0.
+[src:http-rest/http-overview] Session flow remains basic, allowing it to be investigated and debugged with a HTTP network monitor.
+[src:http-rest/http-status] HTTP response status codes indicate whether a specific HTTP request has been successfully completed.
+[src:http-rest/http-status] The status codes listed below are defined by RFC 9110.
+[src:http-rest/http-status] This interim response indicates that the client should continue the request or ignore the response if the request is already finished.
+[src:http-rest/http-status] This code is sent in response to an `Upgrade` request header from the client and indicates the protocol the server is switching to.
+[src:http-rest/http-status] This code was used in WebDAV contexts to indicate that a request has been received by the server, but no status was available at the time of the response.
+[src:http-rest/http-status] This status code is primarily intended to be used with the `Link` header, letting the user agent start preloading resources while the server prepares a response or preconnect to an origin from which the page will need resources.
+[src:http-rest/http-status] The request succeeded, and a new resource was created as a result.
+[src:http-rest/http-status] This is typically the response sent after `POST` requests, or some `PUT` requests.
+[src:http-rest/http-status] The request has been received but not yet acted upon.
+[src:http-rest/http-status] It is noncommittal, since there is no way in HTTP to later send an asynchronous response indicating the outcome of the request.
+[src:http-rest/http-status] It is intended for cases where another process or server handles the request, or for batch processing.
+[src:http-rest/http-status] This response code means the returned metadata is not exactly the same as is available from the origin server, but is collected from a local or a third-party copy.
+[src:http-rest/http-status] This is mostly used for mirrors or backups of another resource.
+[src:http-rest/http-status] Except for that specific case, the `200 OK` response is preferred to this status.
+[src:http-rest/http-status] There is no content to send for this request, but the headers are useful.
+[src:http-rest/http-status] The user agent may update its cached headers for this resource with the new ones.
+[src:http-rest/http-status] Tells the user agent to reset the document which sent this request.
+[src:http-rest/http-status] This response code is used in response to a range request when the client has requested a part or parts of a resource.
+[src:http-rest/http-status] Conveys information about multiple resources, for situations where multiple status codes might be appropriate.
+[src:http-rest/http-status] Used inside a `<dav:propstat>` response element to avoid repeatedly enumerating the internal members of multiple bindings to the same collection.
+[src:http-rest/http-status] The server has fulfilled a `GET` request for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance.
+[src:http-rest/http-status] In agent-driven content negotiation, the request has more than one possible response and the user agent or user should choose one of them.
+[src:http-rest/http-status] There is no standardized way for clients to automatically choose one of the responses, so this is rarely used.
+[src:http-rest/http-status] The URL of the requested resource has been changed permanently.
+[src:http-rest/http-status] This response code means that the URI of requested resource has been changed *temporarily*.
+[src:http-rest/http-status] Further changes in the URI might be made in the future, so the same URI should be used by the client in future requests.
+[src:http-rest/http-status] The server sent this response to direct the client to get the requested resource at another URI with a `GET` request.
+[src:http-rest/http-status] It tells the client that the response has not been modified, so the client can continue to use the same cached version of the response.
+[src:http-rest/http-status] Defined in a previous version of the HTTP specification to indicate that a requested response must be accessed by a proxy.
+[src:http-rest/http-status] It has been deprecated due to security concerns regarding in-band configuration of a proxy.
+[src:http-rest/http-status] This response code is no longer used; but is reserved.
+[src:http-rest/http-status] It was used in a previous version of the HTTP/1.1 specification.
+[src:http-rest/http-status] The server sends this response to direct the client to get the requested resource at another URI with the same method that was used in the prior request.
+[src:http-rest/http-status] This has the same semantics as the `302 Found` response code, with the exception that the user agent *must not* change the HTTP method used: if a `POST` was used in the first request, a `POST` must be used in the redirected request.
+[src:http-rest/http-status] This means that the resource is now permanently located at another URI, specified by the `Location` response header.
+[src:http-rest/http-status] This has the same semantics as the `301 Moved Permanently` HTTP response code, with the exception that the user agent *must not* change the HTTP method used: if a `POST` was used in the first request, a `POST` must be used in the second request.
+[src:http-rest/http-status] The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+[src:http-rest/http-status] Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated".
+[src:http-rest/http-status] That is, the client must authenticate itself to get the requested response.
+[src:http-rest/http-status] The initial purpose of this code was for digital payment systems, however this status code is rarely used and no standard convention exists.
+[src:http-rest/http-status] The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource.
+[src:http-rest/http-status] Unlike `401 Unauthorized`, the client's identity is known to the server.
+[src:http-rest/http-status] The server cannot find the requested resource.
+[src:http-rest/http-status] In the browser, this means the URL is not recognized.
+[src:http-rest/http-status] In an API, this can also mean that the endpoint is valid but the resource itself does not exist.
+[src:http-rest/http-status] Servers may also send this response instead of `403 Forbidden` to hide the existence of a resource from an unauthorized client.
+[src:http-rest/http-status] This response code is probably the most well known due to its frequent occurrence on the web.
+[src:http-rest/http-status] The request method is known by the server but is not supported by the target resource.
+[src:http-rest/http-status] For example, an API may not allow `DELETE` on a resource, or the `TRACE` method entirely.
+[src:http-rest/http-status] This response is sent when the web server, after performing server-driven content negotiation, doesn't find any content that conforms to the criteria given by the user agent.
+[src:http-rest/http-status] This is similar to `401 Unauthorized` but authentication is needed to be done by a proxy.
+[src:http-rest/http-status] This response is sent on an idle connection by some servers, even without any previous request by the client.
+[src:http-rest/http-status] It means that the server would like to shut down this unused connection.
+[src:http-rest/http-status] This response is used much more since some browsers use HTTP pre-connection mechanisms to speed up browsing.
+[src:http-rest/http-status] Some servers may shut down a connection without sending this message.
+[src:http-rest/http-status] This response is sent when a request conflicts with the current state of the server.
+[src:http-rest/http-status] In WebDAV remote web authoring, `409` responses are errors sent to the client so that a user might be able to resolve a conflict and resubmit the request.
+[src:http-rest/http-status] This response is sent when the requested content has been permanently deleted from server, with no forwarding address.
+[src:http-rest/http-status] Clients are expected to remove their caches and links to the resource.
+[src:http-rest/http-status] The HTTP specification intends this status code to be used for "limited-time, promotional services".
+[src:http-rest/http-status] APIs should not feel compelled to indicate resources that have been deleted with this status code.
+[src:http-rest/http-status] Server rejected the request because the `Content-Length` header field is not defined and the server requires it.
+[src:http-rest/http-status] In conditional requests, the client has indicated preconditions in its headers which the server does not meet.
+[src:http-rest/http-status] The request body is larger than limits defined by server.
+[src:http-rest/http-status] The server might close the connection or return a `Retry-After` header field.
+[src:http-rest/http-status] The URI requested by the client is longer than the server is willing to interpret.
+[src:http-rest/http-status] The media format of the requested data is not supported by the server, so the server is rejecting the request.
+[src:http-rest/http-status] The ranges specified by the `Range` header field in the request cannot be fulfilled.
+[src:http-rest/http-status] It's possible that the range is outside the size of the target resource's data.
+[src:http-rest/http-status] This response code means the expectation indicated by the `Expect` request header field cannot be met by the server.
+[src:http-rest/http-status] The server refuses the attempt to brew coffee with a teapot.
+[src:http-rest/http-status] The request was directed at a server that is not able to produce a response.
+[src:http-rest/http-status] This can be sent by a server that is not configured to produce responses for the combination of scheme and authority that are included in the request URI.
+[src:http-rest/http-status] The request was well-formed but was unable to be followed due to semantic errors.
+[src:http-rest/http-status] The resource that is being accessed is locked.
+[src:http-rest/http-status] The request failed due to failure of a previous request.
+[src:http-rest/http-status] Indicates that the server is unwilling to risk processing a request that might be replayed.
+[src:http-rest/http-status] The server refuses to perform the request using the current protocol but might be willing to do so after the client upgrades to a different protocol.
+[src:http-rest/http-status] The server sends an `Upgrade` header in a 426 response to indicate the required protocol(s).
+[src:http-rest/http-status] The origin server requires the request to be conditional.
+[src:http-rest/http-status] This response is intended to prevent the 'lost update' problem, where a client `GET`s a resource's state, modifies it and `PUT`s it back to the server, when meanwhile a third party has modified the state on the server, leading to a conflict.
+[src:http-rest/http-status] The user has sent too many requests in a given amount of time (rate limiting).
+[src:http-rest/http-status] The server is unwilling to process the request because its header fields are too large.
+[src:http-rest/http-status] The request may be resubmitted after reducing the size of the request header fields.
+[src:http-rest/http-status] The user agent requested a resource that cannot legally be provided, such as a web page censored by a government.
+[src:http-rest/http-status] The server has encountered a situation it does not know how to handle.
+[src:http-rest/http-status] This error is generic, indicating that the server cannot find a more appropriate `5XX` status code to respond with.
+[src:http-rest/http-status] The request method is not supported by the server and cannot be handled.
+[src:http-rest/http-status] The only methods that servers are required to support (and therefore must not return this code) are `GET` and `HEAD`.
+[src:http-rest/http-status] This error response means that the server, while working as a gateway to get a response needed to handle the request, got an invalid response.
+[src:http-rest/http-status] The server is not ready to handle the request.
+[src:http-rest/http-status] Common causes are a server that is down for maintenance or that is overloaded.
+[src:http-rest/http-status] Note that together with this response, a user-friendly page explaining the problem should be sent.
+[src:http-rest/http-status] This response should be used for temporary conditions and the `Retry-After` HTTP header should, if possible, contain the estimated time before the recovery of the service.
+[src:http-rest/http-status] The webmaster must also take care about the caching-related headers that are sent along with this response, as these temporary condition responses should usually not be cached.
+[src:http-rest/http-status] This error response is given when the server is acting as a gateway and cannot get a response in time.
+[src:http-rest/http-status] The HTTP version used in the request is not supported by the server.
+[src:http-rest/http-status] The server has an internal configuration error: during content negotiation, the chosen variant is configured to engage in content negotiation itself, which results in circular references when creating responses.
+[src:http-rest/http-status] The method could not be performed on the resource because the server is unable to store the representation needed to successfully complete the request.
+[src:http-rest/http-status] The server detected an infinite loop while processing the request.
+[src:http-rest/http-status] The client request declares an HTTP Extension (RFC 2774) that should be used to process the request, but the extension is not supported.
+[src:http-rest/http-status] Indicates that the client needs to authenticate to gain network access.
+[src:http-rest/rfc9110] This abstract definition of content reflects the data after it has been extracted from the message framing.
+[src:http-rest/rfc9110] In a response, the content's purpose is defined by the request method, response status code (Section 15), and response fields describing that content.
+[src:http-rest/rfc9110] When a complete or partial representation is transferred as message content, it is often desirable for the sender to supply, or the recipient to determine, an identifier for a resource corresponding to that specific representation.
+[src:http-rest/rfc9110] For example, a client making a GET request on a resource for "the current weather report" might want an identifier specific to the content returned (e.g., "weather report for Laguna Beach at 20210720T1711").
+[src:http-rest/rfc9110] If the response has a Content-Location header field and its field value is a reference to a URI different from the target URI, then the sender asserts that the content is a representation of the resource identified by the Content-Location field value.
