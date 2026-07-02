@@ -1,0 +1,69 @@
+---
+title: "GeoServer"
+source: https://en.wikipedia.org/wiki/Geoserver
+domain: qgis
+license: CC-BY-SA-4.0
+tags: qgis desktop, open source gis, geospatial software, grass gis
+fetched: 2026-07-02
+---
+
+# GeoServer
+
+(Redirected from
+
+Geoserver
+
+)
+
+In computing, **GeoServer** is an open-source server written in Java that allows users to share, process and edit geospatial data. Designed for interoperability, it publishes data from any major spatial data source using open standards. GeoServer has evolved to become an easy method of connecting existing information to virtual globes such as Google Earth and NASA World Wind as well as to web-based maps such as OpenLayers, Leaflet, Google Maps and Bing Maps. GeoServer functions as the reference implementation of the Open Geospatial Consortium Web Feature Service standard, and also implements the Web Map Service, Web Coverage Service and Web Processing Service specifications.
+
+## Goals
+
+GeoServer aims to operate as a node within a free and open Spatial Data Infrastructure. Just as the Apache HTTP Server has offered a free and open web server to publish HTML, GeoServer aims to do the same for geospatial data.
+
+## Features
+
+GeoServer reads a variety of data formats, including:
+
+- PostGIS
+- Oracle Spatial
+- ArcSDE
+- IBM Db2
+- MySQL
+- MongoDB
+- Apache Solr
+- Shapefiles
+- GeoTIFF
+- GTOPO30
+- ECW, MrSID
+- JPEG2000
+
+Through standard protocols it produces KML, GML, Shapefile, GeoRSS, PDF, GeoJSON, JPEG, GIF, SVG, PNG and more. In addition, one can edit data via the WFS transactional profile (WFS-T). GeoServer includes an integrated OpenLayers client for previewing data layers.
+
+GeoServer additionally supports efficient publishing of geospatial data to Google Earth through the use of network links, using KML. Advanced features for Google Earth output include templates for customized pop-ups, time and height visualizations, and "super-overlays".
+
+GeoServer relies on GeoTools, a GIS library.
+
+## Usage
+
+- MassGIS (Massachusetts state GIS)
+- MACRIS Maps (Massachusetts Historical Commission)
+- TriMet (Transit agency for Portland, Oregon)
+- Ordnance Survey (National Mapping Agency of the UK)
+- Institut Géographique National (National Mapping Agency of France)
+- GBIF (Global Biodiversity Information Facility)
+- World Bank
+- Global Earthquake Model
+- GMOS (Global Mercury Observation System)
+- FAO (Food and Agriculture Organization of the United Nations)
+- New York City Department of Information Technology and Telecommunications
+- TeamSurv
+- ITU (International Telecommunication Union)
+
+## Architecture
+
+GeoServer uses the Spring Framework, providing a request dispatch architecture for modules implementing OGC services. The web administration application uses wicket, allowing extensions to contribute additional configuration screens. The application provides a REST API implemented using the spring-mvc-framework.
+
+GeoServer is a web application, supporting any common servlet container (a standalone distribution is available with the Jetty (web server) as an embedded server). GeoWebCache, a Java-based caching component similar to TileCache, is bundled with GeoServer, but available separately. Similarly, GeoServer packages GeoTools as a Java library, but it is also available separately.
+
+GeoServer is a longstanding application and has undergone several architectural changes. GeoServer 1.0 was built around the STRUTS framework, with the migration to Spring and Wicket taking place for GeoServer 2.0. Early versions of the REST API used restlet before migration to spring-mvc-framework.

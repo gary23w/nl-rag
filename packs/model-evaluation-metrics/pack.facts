@@ -1,0 +1,533 @@
+# nl-rag distilled facts — domain: model-evaluation-metrics
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:model-evaluation-metrics/bleu] Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good quality reference translations.
+[src:model-evaluation-metrics/bleu] Those scores are then averaged over the whole corpus to reach an estimate of the translation's overall quality.
+[src:model-evaluation-metrics/bleu] Intelligibility or grammatical correctness are not taken into account.
+[src:model-evaluation-metrics/bleu] BLEU's output is always a number between 0 and 1.
+[src:model-evaluation-metrics/bleu] This value indicates how similar the candidate text is to the reference texts, with values closer to 1 representing more similar texts.
+[src:model-evaluation-metrics/bleu] Few human translations will attain a score of 1, since this would indicate that the candidate is identical to one of the reference translations.
+[src:model-evaluation-metrics/bleu] For this reason, it is not necessary to attain a score of 1.
+[src:model-evaluation-metrics/bleu] Because there are more opportunities to match, adding additional reference translations will increase the BLEU score.
+[src:model-evaluation-metrics/bleu] A basic, first attempt at defining the BLEU score would take two arguments: a candidate string ${\hat {y}}$ and a list of reference strings $(y^{(1)},...,y^{(N)})$ .
+[src:model-evaluation-metrics/bleu] As an analogy, the BLEU score is like a language teacher trying to score the quality of a student translation ${\hat {y}}$ by checking how closely it follows the reference answers $y^{(1)},...,y^{(N)}$ .
+[src:model-evaluation-metrics/bleu] Given any two strings $s,y$ , define the substring count $C(s,y)$ to be the number of appearances of s as a substring of y .
+[src:model-evaluation-metrics/bleu] Note that we count the *n-substrings*, not *n-grams*.
+[src:model-evaluation-metrics/bleu] For example, when ${\hat {y}}=aba,y=abababa,n=2$ , all the 2-substrings in ${\hat {y}}$ (ab and ba) appear in y 3 times each, so the count is 6, not 2.
+[src:model-evaluation-metrics/bleu] In the above situation, however, the candidate string is too short.
+[src:model-evaluation-metrics/bleu] Instead of 3 appearances of $ab$ it contains only one, so we add a minimum function to correct for that: ${\sum _{s\in G_{n}({\hat {y}})}\min(C(s,{\hat {y}}),C(s,y))}$ This count summation cannot be used to compare between sentences, since it is not normalized.
+[src:model-evaluation-metrics/bleu] If both the reference and the candidate sentences are long, the count could be big, even if the candidate is of very poor quality.
+[src:model-evaluation-metrics/bleu] It is zero if none of the n-substrings in candidate is in reference.
+[src:model-evaluation-metrics/bleu] It is one if every n-gram in the candidate appears in reference, for at least as many times as in candidate.
+[src:model-evaluation-metrics/bleu] In particular, if the candidate is a substring of the reference, then it is one.
+[src:model-evaluation-metrics/bleu] The modified n-gram precision unduly gives a high score for candidate strings that are "telegraphic", that is, containing all the n-grams of the reference strings, but for as few times as possible.
+[src:model-evaluation-metrics/bleu] c is the length of the candidate corpus, that is, $c:=\sum _{i=1}^{M}|{\hat {y}}^{(i)}|$ where $|y|$ is the length of y .
+[src:model-evaluation-metrics/bleu] There is not a single definition of BLEU, but a whole family of them, parametrized by the weighting vector $w:=(w_{1},w_{2},\cdots )$ .
+[src:model-evaluation-metrics/bleu] With a choice of w , the BLEU score is $BLEU_{w}({\hat {S}};S):=BP({\hat {S}};S)\cdot \exp \left(\sum _{n=1}^{\infty }w_{n}\ln p_{n}({\hat {S}};S)\right)$ In words, it is a weighted geometric mean of all the modified n-gram precisions, multiplied by the brevity penalty.
+[src:model-evaluation-metrics/bleu] We use the weighted geometric mean, rather than the weighted arithmetic mean, to strongly favor candidate corpuses that are simultaneously good according to multiple n-gram precisions.
+[src:model-evaluation-metrics/bleu] The most typical choice, the one recommended in the original paper, is $w_{1}=\cdots =w_{4}={\frac {1}{4}}$ .
+[src:model-evaluation-metrics/bleu] This is illustrated in the following example from Papineni et al.
+[src:model-evaluation-metrics/bleu] Of the seven words in the candidate translation, all of them appear in the reference translations.
+[src:model-evaluation-metrics/bleu] where $~m$ is number of words from the candidate that are found in the reference, and $~w_{t}$ is the total number of words in the candidate.
+[src:model-evaluation-metrics/bleu] This is a perfect score, despite the fact that the candidate translation above retains little of the content of either of the references.
+[src:model-evaluation-metrics/bleu] The modification that BLEU makes is fairly straightforward.
+[src:model-evaluation-metrics/bleu] For each word in the candidate translation, the algorithm takes its maximum total count, $~m_{max}$ , in any of the reference translations.
+[src:model-evaluation-metrics/bleu] In the example above, the word "the" appears twice in reference 1, and once in reference 2.
+[src:model-evaluation-metrics/bleu] For the candidate translation, the count $m_{w}$ of each word is clipped to a maximum of $m_{max}$ for that word.
+[src:model-evaluation-metrics/bleu] These clipped counts $~m_{w}$ are then summed over all distinct words in the candidate.
+[src:model-evaluation-metrics/bleu] This sum is then divided by the total number of unigrams in the candidate translation.
+[src:model-evaluation-metrics/bleu] In practice, however, using individual words as the unit of comparison is not optimal.
+[src:model-evaluation-metrics/bleu] Instead, BLEU computes the same modified precision metric using n-grams.
+[src:model-evaluation-metrics/bleu] The length which has the "highest correlation with monolingual human judgements" was found to be four.
+[src:model-evaluation-metrics/bleu] The unigram scores are found to account for the adequacy of the translation, how much information is retained.
+[src:model-evaluation-metrics/bleu] The longer n-gram scores account for the fluency of the translation, or to what extent it reads like "good English".
+[src:model-evaluation-metrics/bleu] as the word 'the' and the word 'cat' appear once each in the candidate, and the total number of words is two.
+[src:model-evaluation-metrics/bleu] The modified bigram precision would be $1/1$ as the bigram, "the cat" appears once in the candidate.
+[src:model-evaluation-metrics/bleu] It has been pointed out that precision is usually twinned with recall to overcome this problem , as the unigram recall of this example would be $3/6$ or $2/7$ .
+[src:model-evaluation-metrics/bleu] The problem being that as there are multiple reference translations, a bad translation could easily have an inflated recall, such as a translation which consisted of all the words in each of the references.
+[src:model-evaluation-metrics/bleu] To produce a score for the whole corpus, the modified precision scores for the segments are combined using the geometric mean multiplied by a brevity penalty to prevent very short candidates from receiving too high a score.
+[src:model-evaluation-metrics/bleu] Let r be the total length of the reference corpus, and c the total length of the translation corpus.
+[src:model-evaluation-metrics/bleu] If $c\leq r$ , the brevity penalty applies, defined to be $e^{(1-r/c)}$ .
+[src:model-evaluation-metrics/bleu] (In the case of multiple reference sentences, r is taken to be the sum of the lengths of the sentences whose lengths are closest to the lengths of the candidate sentences.
+[src:model-evaluation-metrics/bleu] iBLEU is an interactive version of BLEU that allows a user to visually examine the BLEU scores obtained by the candidate translations.
+[src:model-evaluation-metrics/bleu] It also allows comparing two different systems in a visual and interactive manner which is useful for system development.
+[src:model-evaluation-metrics/bleu] BLEU has frequently been reported as correlating well with human judgement, and remains a benchmark for the assessment of any new evaluation metric.
+[src:model-evaluation-metrics/bleu] There are however a number of criticisms that have been voiced.
+[src:model-evaluation-metrics/bleu] It has been noted that, although in principle capable of evaluating translations of any language, BLEU cannot, in its present form, deal with languages lacking word boundaries.
+[src:model-evaluation-metrics/bleu] Designed to be used for several reference translation, in practice it's used with only the single one.
+[src:model-evaluation-metrics/bleu] BLEU is infamously dependent on the tokenization technique, and scores achieved with different ones are incomparable (which is often overlooked); in order to improve reproducibility and comparability, SacreBLEU variant was designed.
+[src:model-evaluation-metrics/bleu] It has been argued that although BLEU has significant advantages, there is no guarantee that an increase in BLEU score is an indicator of improved translation quality.
+[src:model-evaluation-metrics/confusion-matrix] A **confusion matrix**, also known as **error matrix**, is a specific table layout that allows visualization of the performance of a person or an algorithm on a specific task.
+[src:model-evaluation-metrics/confusion-matrix] In audiology these matrices measure how a person can hear specific words or sounds.
+[src:model-evaluation-metrics/confusion-matrix] In machine learning these matrices show the success of the learning system both in supervised learning and unsupervised learning, where they are usually called **matching matrix**.
+[src:model-evaluation-metrics/confusion-matrix] Each row of the matrix represents the instances in an actual class while each column represents the instances in a predicted class, or vice versa – both variants are found in the literature.
+[src:model-evaluation-metrics/confusion-matrix] The diagonal of the matrix therefore represents all instances that are correctly predicted.
+[src:model-evaluation-metrics/confusion-matrix] The name stems from the fact that it makes it easy to identify whether the system is confusing two classes (i.e., commonly mislabeling one class as another).
+[src:model-evaluation-metrics/confusion-matrix] The confusion matrix has its origins in human perceptual studies of auditory stimuli.
+[src:model-evaluation-metrics/confusion-matrix] It was adapted for machine learning studies and used by Frank Rosenblatt, among other early researchers, to compare human and machine classifications of visual (and later auditory) stimuli.
+[src:model-evaluation-metrics/confusion-matrix] It is a special kind of contingency table, with two dimensions ("actual" and "predicted"), and identical sets of "classes" in both dimensions (each combination of dimension and class is a variable in the contingency table).
+[src:model-evaluation-metrics/confusion-matrix] Assume that we have a classifier that distinguishes between individuals with and without cancer in some way, we can take the 12 individuals and run them through the classifier.
+[src:model-evaluation-metrics/confusion-matrix] The classifier then makes 9 accurate predictions and misses 3: 2 individuals with cancer wrongly predicted as being cancer-free (sample 1 and 2), and 1 person without cancer that is wrongly predicted to have cancer (sample 9).
+[src:model-evaluation-metrics/confusion-matrix] The actual classification is positive and the predicted classification is negative (1,0).
+[src:model-evaluation-metrics/confusion-matrix] This is called a false negative result because the positive sample is incorrectly identified by the classifier as being negative.
+[src:model-evaluation-metrics/confusion-matrix] The actual classification is negative and the predicted classification is positive (0,1).
+[src:model-evaluation-metrics/confusion-matrix] This is called a false positive result because the negative sample is incorrectly identified by the classifier as being positive.
+[src:model-evaluation-metrics/confusion-matrix] The actual classification is negative and the predicted classification is negative (0,0).
+[src:model-evaluation-metrics/confusion-matrix] This is called a true negative result because the negative sample gets correctly identified by the classifier.
+[src:model-evaluation-metrics/confusion-matrix] We can then perform the comparison between actual and predicted classifications and add this information to the table, making correct results appear in green so they are more easily identifiable.
+[src:model-evaluation-metrics/confusion-matrix] The template for any binary confusion matrix uses the four kinds of results discussed above (true positives, false negatives, false positives, and true negatives) along with the positive and negative classifications.
+[src:model-evaluation-metrics/confusion-matrix] The color convention of the three data tables above were picked to match this confusion matrix, in order to easily differentiate the data.
+[src:model-evaluation-metrics/confusion-matrix] In this confusion matrix, of the 8 samples with cancer, the system judged that 2 were cancer-free, and of the 4 samples without cancer, it predicted that 1 did have cancer.
+[src:model-evaluation-metrics/confusion-matrix] All correct predictions are located in the diagonal of the table (highlighted in green), so it is easy to visually inspect the table for prediction errors, as values outside the diagonal will represent them.
+[src:model-evaluation-metrics/confusion-matrix] By summing up the 2 rows of the confusion matrix, one can also deduce the total number of positive (P) and negative (N) samples in the original dataset, i.e. $P=TP+FN$ and $N=FP+TN$ .
+[src:model-evaluation-metrics/confusion-matrix] In predictive analytics, a **table of confusion** (sometimes also called a **confusion matrix**) is a table with two rows and two columns that reports the number of *true positives*, *false negatives*, *false positives*, and *true negatives*.
+[src:model-evaluation-metrics/confusion-matrix] This allows more detailed analysis than simply observing the proportion of correct classifications (accuracy).
+[src:model-evaluation-metrics/confusion-matrix] Accuracy will yield misleading results if the data set is unbalanced; that is, when the numbers of observations in different classes vary greatly.
+[src:model-evaluation-metrics/confusion-matrix] For example, if there were 95 cancer samples and only 5 non-cancer samples in the data, a particular classifier might classify all the observations as having cancer.
+[src:model-evaluation-metrics/confusion-matrix] The overall accuracy would be 95%, but in more detail the classifier would have a 100% recognition rate (sensitivity) for the cancer class but a 0% recognition rate for the non-cancer class.
+[src:model-evaluation-metrics/confusion-matrix] F1 score is even more unreliable in such cases, and here would yield over 97.4%, whereas informedness removes such bias and yields 0 as the probability of an informed decision for any form of guessing (here always guessing cancer).
+[src:model-evaluation-metrics/confusion-matrix] According to Davide Chicco and Giuseppe Jurman, the most informative metric to evaluate a confusion matrix is the Matthews correlation coefficient (MCC).
+[src:model-evaluation-metrics/confusion-matrix] Other metrics can be included in a confusion matrix, each of them having their significance and use.
+[src:model-evaluation-metrics/confusion-matrix] Some researchers have argued that the confusion matrix, and the metrics derived from it, do not truly reflect a model's *knowledge*.
+[src:model-evaluation-metrics/confusion-matrix] In particular, the confusion matrix cannot show whether correct predictions were reached through sound reasoning or merely by chance (a problem known in philosophy as epistemic luck).
+[src:model-evaluation-metrics/confusion-matrix] It also does not capture situations where the facts used to make a prediction later change or turn out to be wrong (defeasibility).
+[src:model-evaluation-metrics/confusion-matrix] This means that while the confusion matrix is a useful tool for measuring classification performance, it may give an incomplete picture of a model’s true reliability.
+[src:model-evaluation-metrics/confusion-matrix] Confusion matrix is not limited to binary classification and can be used in multi-class classifiers as well.
+[src:model-evaluation-metrics/confusion-matrix] The confusion matrices discussed above have only two conditions: positive and negative.
+[src:model-evaluation-metrics/confusion-matrix] For example, the table below summarizes communication of a whistled language between two speakers, with zero values omitted for clarity.
+[src:model-evaluation-metrics/confusion-matrix] Confusion matrices are not limited to single-label classification (where only one class is present) or hard-label settings (where classes are either fully present, 1, or absent, 0).
+[src:model-evaluation-metrics/confusion-matrix] They can also be extended to Multi-label classification (where multiple classes can be predicted at once) and soft-label classification (where classes can be partially present).
+[src:model-evaluation-metrics/confusion-matrix] One such extension is the **Transport-based Confusion Matrix (TCM)**, which builds on the theory of optimal transport and the principle of maximum entropy.
+[src:model-evaluation-metrics/confusion-matrix] TCM applies to single-label, multi-label, and soft-label settings.
+[src:model-evaluation-metrics/confusion-matrix] It retains the familiar structure of the standard confusion matrix: a square matrix sized by the number of classes, with diagonal entries indicating correct predictions and off-diagonal entries indicating confusion.
+[src:model-evaluation-metrics/confusion-matrix] In the single-label case, TCM is identical to the standard confusion matrix.
+[src:model-evaluation-metrics/confusion-matrix] TCM follows the same reasoning as the standard confusion matrix: if class A is overestimated (its predicted value is greater than its label value) and class B is underestimated (its predicted value is less than its label value), A is considered confused with B, and the entry (B, A) is increased.
+[src:model-evaluation-metrics/confusion-matrix] If a class is both predicted and present, it is correctly identified, and the diagonal entry (A, A) increases.
+[src:model-evaluation-metrics/confusion-matrix] Optimal transport and maximum entropy are used to determine the extent to which these entries are updated.
+[src:model-evaluation-metrics/confusion-matrix] TCM enables clearer comparison between predictions and labels in complex classification tasks, while maintaining a consistent matrix format across settings.
+[src:model-evaluation-metrics/cross-validation-statistics] In a prediction problem, a model is usually given a dataset of *known data* on which training is run (*training dataset*), and a dataset of *unknown data* (or *first seen* data) against which the model is tested (called the validation dataset or *testing set*).
+[src:model-evaluation-metrics/cross-validation-statistics] One round of cross-validation involves partitioning a sample of data into complementary subsets, performing the analysis on one subset (called the *training set*), and validating the analysis on the other subset (called the *validation set* or *testing set*).
+[src:model-evaluation-metrics/cross-validation-statistics] To reduce variability, in most methods multiple rounds of cross-validation are performed using different partitions, and the validation results are combined (e.g. averaged) over the rounds to give an estimate of the model's predictive performance.
+[src:model-evaluation-metrics/cross-validation-statistics] In summary, cross-validation combines (averages) measures of fitness in prediction to derive a more accurate estimate of model prediction performance.
+[src:model-evaluation-metrics/cross-validation-statistics] Assume a model with one or more unknown parameters, and a data set to which the model can be fit (the training data set).
+[src:model-evaluation-metrics/cross-validation-statistics] The fitting process optimizes the model parameters to make the model fit the training data as well as possible.
+[src:model-evaluation-metrics/cross-validation-statistics] If an independent sample of validation data is taken from the same population as the training data, it will generally turn out that the model does not fit the validation data as well as it fits the training data.
+[src:model-evaluation-metrics/cross-validation-statistics] The size of this difference is likely to be large especially when the size of the training data set is small, or when the number of parameters in the model is large.
+[src:model-evaluation-metrics/cross-validation-statistics] Cross-validation is a way to estimate the size of this effect.
+[src:model-evaluation-metrics/cross-validation-statistics] If least squares is used to fit a function in the form of a hyperplane ***ŷ*** = *a* + ***β***T***x*** to the data (***x****i*, *y**i*) 1 ≤ *i* ≤ *n*, then the fit can be assessed using the mean squared error (MSE).
+[src:model-evaluation-metrics/cross-validation-statistics] If the model is correctly specified, it can be shown under mild assumptions that the expected value of the MSE for the training set is (*n* − *p* − 1)/(*n* + *p* + 1) < 1 times the expected value of the MSE for the validation set (the expected value is taken over the distribution of training sets).
+[src:model-evaluation-metrics/cross-validation-statistics] Thus, a fitted model and computed MSE on the training set will result in an optimistically biased assessment of how well the model will fit an independent data set.
+[src:model-evaluation-metrics/cross-validation-statistics] This biased estimate is called the *in-sample* estimate of the fit, whereas the cross-validation estimate is an *out-of-sample* estimate.
+[src:model-evaluation-metrics/cross-validation-statistics] In most other regression procedures (e.g. logistic regression), there is no simple formula to compute the expected out-of-sample fit.
+[src:model-evaluation-metrics/cross-validation-statistics] Cross-validation is, thus, a generally applicable way to predict the performance of a model on unavailable data using numerical computation in place of theoretical analysis.
+[src:model-evaluation-metrics/cross-validation-statistics] Two types of cross-validation can be distinguished: exhaustive and non-exhaustive cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] Exhaustive cross-validation methods are cross-validation methods which learn and test on all possible ways to divide the original sample into a training and a validation set.
+[src:model-evaluation-metrics/cross-validation-statistics] Leave-*p*-out cross-validation (**LpO CV**) involves using *p* observations as the validation set and the remaining observations as the training set.
+[src:model-evaluation-metrics/cross-validation-statistics] This is repeated on all ways to cut the original sample on a validation set of *p* observations and a training set.
+[src:model-evaluation-metrics/cross-validation-statistics] LpO cross-validation require training and validating the model $C_{p}^{n}$ times, where *n* is the number of observations in the original sample, and where $C_{p}^{n}$ is the binomial coefficient.
+[src:model-evaluation-metrics/cross-validation-statistics] For *p* > 1 and for even moderately large *n*, LpO CV can become computationally infeasible.
+[src:model-evaluation-metrics/cross-validation-statistics] A variant of LpO cross-validation with p=2 known as leave-pair-out cross-validation has been recommended as a nearly unbiased method for estimating the area under ROC curve of binary classifiers.
+[src:model-evaluation-metrics/cross-validation-statistics] Leave-*one*-out cross-validation (**LOOCV**) is a particular case of leave-*p*-out cross-validation with *p* = 1.
+[src:model-evaluation-metrics/cross-validation-statistics] The process looks similar to jackknife; however, with cross-validation one computes a statistic on the left-out sample(s), while with jackknifing one computes a statistic from the kept samples only.
+[src:model-evaluation-metrics/cross-validation-statistics] LOO cross-validation requires less computation time than LpO cross-validation because there are only $C_{1}^{n}=n$ passes rather than $C_{p}^{n}$ .
+[src:model-evaluation-metrics/cross-validation-statistics] However, n passes may still require quite a large computation time, in which case other approaches such as k-fold cross validation may be more appropriate.
+[src:model-evaluation-metrics/cross-validation-statistics] Non-exhaustive cross validation methods do not compute all ways of splitting the original sample.
+[src:model-evaluation-metrics/cross-validation-statistics] These methods are approximations of leave-*p*-out cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] In *k*-fold cross-validation, the original sample is randomly partitioned into *k* equal sized subsamples, often referred to as "folds".
+[src:model-evaluation-metrics/cross-validation-statistics] Of the *k* subsamples, a single subsample is retained as the validation data for testing the model, and the remaining *k* − 1 subsamples are used as training data.
+[src:model-evaluation-metrics/cross-validation-statistics] The cross-validation process is then repeated *k* times, with each of the *k* subsamples used exactly once as the validation data.
+[src:model-evaluation-metrics/cross-validation-statistics] The *k* results can then be averaged to produce a single estimation.
+[src:model-evaluation-metrics/cross-validation-statistics] The advantage of this method over repeated random sub-sampling (see below) is that all observations are used for both training and validation, and each observation is used for validation exactly once.
+[src:model-evaluation-metrics/cross-validation-statistics] 10-fold cross-validation is commonly used, but in general *k* remains an unfixed parameter.
+[src:model-evaluation-metrics/cross-validation-statistics] For example, setting *k* = *2* results in 2-fold cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] In 2-fold cross-validation, the dataset is randomly shuffled into two sets *d*0 and *d*1, so that both sets are equal size (this is usually implemented by shuffling the data array and then splitting it in two).
+[src:model-evaluation-metrics/cross-validation-statistics] We then train on *d*0 and validate on *d*1, followed by training on *d*1 and validating on *d*0.
+[src:model-evaluation-metrics/cross-validation-statistics] When *k* = *n* (the number of observations), *k*-fold cross-validation is equivalent to leave-one-out cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] In *stratified* *k*-fold cross-validation, the partitions are selected so that the mean response value is approximately equal in all the partitions.
+[src:model-evaluation-metrics/cross-validation-statistics] In the case of binary classification, this means that each partition contains roughly the same proportions of the two types of class labels.
+[src:model-evaluation-metrics/cross-validation-statistics] In *repeated* cross-validation the data is randomly split into *k* partitions several times.
+[src:model-evaluation-metrics/cross-validation-statistics] The performance of the model can thereby be averaged over several runs, but this is rarely desirable in practice.
+[src:model-evaluation-metrics/cross-validation-statistics] When many different statistical or machine learning models are being considered, *greedy* *k*-fold cross-validation can be used to quickly identify the most promising candidate models.
+[src:model-evaluation-metrics/cross-validation-statistics] In the holdout method, we randomly assign data points to two sets *d*0 and *d*1, usually called the training set and the test set, respectively.
+[src:model-evaluation-metrics/cross-validation-statistics] The size of each of the sets is arbitrary although typically the test set is smaller than the training set.
+[src:model-evaluation-metrics/cross-validation-statistics] We then train (build a model) on *d*0 and test (evaluate its performance) on *d*1.
+[src:model-evaluation-metrics/cross-validation-statistics] In typical cross-validation, results of multiple runs of model-testing are averaged together; in contrast, the holdout method, in isolation, involves a single run.
+[src:model-evaluation-metrics/cross-validation-statistics] It should be used with caution because without such averaging of multiple runs, one may achieve highly misleading results.
+[src:model-evaluation-metrics/cross-validation-statistics] One's indicator of predictive accuracy (*F**) will tend to be unstable since it will not be smoothed out by multiple iterations (see below).
+[src:model-evaluation-metrics/cross-validation-statistics] Similarly, indicators of the specific role played by various predictor variables (e.g., values of regression coefficients) will tend to be unstable.
+[src:model-evaluation-metrics/cross-validation-statistics] While the holdout method can be framed as "the simplest kind of cross-validation", many sources instead classify holdout as a type of simple validation, rather than a simple or degenerate form of cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] This method, also known as Monte Carlo cross-validation, creates multiple random splits of the dataset into training and validation data.
+[src:model-evaluation-metrics/cross-validation-statistics] For each such split, the model is fit to the training data, and predictive accuracy is assessed using the validation data.
+[src:model-evaluation-metrics/cross-validation-statistics] The results are then averaged over the splits.
+[src:model-evaluation-metrics/cross-validation-statistics] The advantage of this method (over *k*-fold cross validation) is that the proportion of the training/validation split is not dependent on the number of iterations (i.e., the number of partitions).
+[src:model-evaluation-metrics/cross-validation-statistics] The disadvantage of this method is that some observations may never be selected in the validation subsample, whereas others may be selected more than once.
+[src:model-evaluation-metrics/cross-validation-statistics] In other words, validation subsets may overlap.
+[src:model-evaluation-metrics/cross-validation-statistics] This method also exhibits Monte Carlo variation, meaning that the results will vary if the analysis is repeated with different random splits.
+[src:model-evaluation-metrics/cross-validation-statistics] As the number of random splits approaches infinity, the result of repeated random sub-sampling validation tends towards that of leave-p-out cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] In a stratified variant of this approach, the random samples are generated in such a way that the mean response value (i.e. the dependent variable in the regression) is equal in the training and testing sets.
+[src:model-evaluation-metrics/cross-validation-statistics] This is particularly useful if the responses are dichotomous with an unbalanced representation of the two response values in the data.
+[src:model-evaluation-metrics/cross-validation-statistics] A method that applies repeated random sub-sampling is RANSAC.
+[src:model-evaluation-metrics/cross-validation-statistics] When cross-validation is used simultaneously for selection of the best set of hyperparameters and for error estimation (and assessment of generalization capacity), a nested cross-validation is required.
+[src:model-evaluation-metrics/cross-validation-statistics] This is a truly nested variant which contains an outer loop of *k* sets and an inner loop of *l* sets.
+[src:model-evaluation-metrics/cross-validation-statistics] The total data set is split into *k* sets.
+[src:model-evaluation-metrics/cross-validation-statistics] One by one, a set is selected as the (outer) test set and the *k* - 1 other sets are combined into the corresponding outer training set.
+[src:model-evaluation-metrics/cross-validation-statistics] This is repeated for each of the *k* sets.
+[src:model-evaluation-metrics/cross-validation-statistics] Each outer training set is further sub-divided into *l* sets.
+[src:model-evaluation-metrics/cross-validation-statistics] One by one, a set is selected as inner test (validation) set and the *l* - 1 other sets are combined into the corresponding inner training set.
+[src:model-evaluation-metrics/cross-validation-statistics] This is repeated for each of the *l* sets.
+[src:model-evaluation-metrics/cross-validation-statistics] The inner training sets are used to fit model parameters, while the inner test set is used as a validation set to provide an unbiased evaluation of the model fit.
+[src:model-evaluation-metrics/cross-validation-statistics] Typically, this is repeated for many different hyperparameters (or even different model types) and the validation set is used to determine the best hyperparameter set (and model type) for this inner training set.
+[src:model-evaluation-metrics/cross-validation-statistics] After this, a new model is fit on the entire outer training set, using the best set of hyperparameters from the inner cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] The performance of this model is then evaluated using the outer test set.
+[src:model-evaluation-metrics/cross-validation-statistics] This is a type of k*l-fold cross-validation when *l* = *k* - 1.
+[src:model-evaluation-metrics/cross-validation-statistics] A single k-fold cross-validation is used with both a validation and test set.
+[src:model-evaluation-metrics/cross-validation-statistics] One by one, a set is selected as test set.
+[src:model-evaluation-metrics/cross-validation-statistics] Then, one by one, one of the remaining sets is used as a validation set and the other *k* - 2 sets are used as training sets until all possible combinations have been evaluated.
+[src:model-evaluation-metrics/cross-validation-statistics] Similar to the k*l-fold cross validation, the training set is used for model fitting and the validation set is used for model evaluation for each of the hyperparameter sets.
+[src:model-evaluation-metrics/cross-validation-statistics] Finally, for the selected parameter set, the test set is used to evaluate the model with the best parameter set.
+[src:model-evaluation-metrics/cross-validation-statistics] Here, two variants are possible: either evaluating the model that was trained on the training set or evaluating a new model that was fit on the combination of the training and the validation set.
+[src:model-evaluation-metrics/cross-validation-statistics] The goal of cross-validation is to estimate the expected level of fit of a model to a data set that is independent of the data that were used to train the model.
+[src:model-evaluation-metrics/cross-validation-statistics] It can be used to estimate any quantitative measure of fit that is appropriate for the data and model.
+[src:model-evaluation-metrics/cross-validation-statistics] For example, for binary classification problems, each case in the validation set is either predicted correctly or incorrectly.
+[src:model-evaluation-metrics/cross-validation-statistics] In this situation the misclassification error rate can be used to summarize the fit, although other measures derived from information (e.g., counts, frequency) contained within a contingency table or confusion matrix could also be used.
+[src:model-evaluation-metrics/cross-validation-statistics] When the value being predicted is continuously distributed, the mean squared error, root mean squared error or median absolute deviation could be used to summarize the errors.
+[src:model-evaluation-metrics/cross-validation-statistics] When users apply cross-validation to select a good configuration $\lambda$ , then they might want to balance the cross-validated choice with their own estimate of the configuration.
+[src:model-evaluation-metrics/cross-validation-statistics] In this way, they can attempt to counter the volatility of cross-validation when the sample size is small and include relevant information from previous research.
+[src:model-evaluation-metrics/cross-validation-statistics] In a forecasting combination exercise, for instance, cross-validation can be applied to estimate the weights that are assigned to each forecast.
+[src:model-evaluation-metrics/cross-validation-statistics] Since a simple equal-weighted forecast is difficult to beat, a penalty can be added for deviating from equal weights.
+[src:model-evaluation-metrics/cross-validation-statistics] Or, if cross-validation is applied to assign individual weights to observations, then one can penalize deviations from equal weights to avoid wasting potentially relevant information.
+[src:model-evaluation-metrics/cross-validation-statistics] Hoornweg (2018) shows how a tuning parameter $\gamma$ can be defined so that a user can intuitively balance between the accuracy of cross-validation and the simplicity of sticking to a reference parameter $\lambda _{R}$ that is defined by the user.
+[src:model-evaluation-metrics/cross-validation-statistics] Relative accuracy can be quantified as ${\mbox{MSE}}(\lambda _{i})/{\mbox{MSE}}(\lambda _{R})$ , so that the mean squared error of a candidate $\lambda _{i}$ is made relative to that of a user-specified $\lambda _{R}$ .
+[src:model-evaluation-metrics/cross-validation-statistics] The relative simplicity term measures the amount that $\lambda _{i}$ deviates from $\lambda _{R}$ relative to the maximum amount of deviation from $\lambda _{R}$ .
+[src:model-evaluation-metrics/cross-validation-statistics] Accordingly, relative simplicity can be specified as ${\frac {(\lambda _{i}-\lambda _{R})^{2}}{(\lambda _{\max }-\lambda _{R})^{2}}}$ , where $\lambda _{\max }$ corresponds to the $\lambda$ value with the highest permissible deviation from $\lambda _{R}$ .
+[src:model-evaluation-metrics/cross-validation-statistics] With $\gamma \in [0,1]$ , the user determines how high the influence of the reference parameter is relative to cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] Hoornweg (2018) shows that a loss function with such an accuracy-simplicity tradeoff can also be used to intuitively define shrinkage estimators like the (adaptive) lasso and Bayesian / ridge regression.
+[src:model-evaluation-metrics/cross-validation-statistics] Suppose we choose a measure of fit *F*, and use cross-validation to produce an estimate *F** of the expected fit *EF* of a model to an independent data set drawn from the same population as the training data.
+[src:model-evaluation-metrics/cross-validation-statistics] If we imagine sampling multiple independent training sets following the same distribution, the resulting values for *F** will vary.
+[src:model-evaluation-metrics/cross-validation-statistics] The statistical properties of *F** result from this variation.
+[src:model-evaluation-metrics/cross-validation-statistics] For this reason, if two statistical procedures are compared based on the results of cross-validation, the procedure with the better estimated performance may not actually be the better of the two procedures (i.e. it may not have the better value of *EF*).
+[src:model-evaluation-metrics/cross-validation-statistics] Some progress has been made on constructing confidence intervals around cross-validation estimates, but this is considered a difficult problem.
+[src:model-evaluation-metrics/cross-validation-statistics] Most forms of cross-validation are straightforward to implement as long as an implementation of the prediction method being studied is available.
+[src:model-evaluation-metrics/cross-validation-statistics] In particular, the prediction method can be a "black box" – there is no need to have access to the internals of its implementation.
+[src:model-evaluation-metrics/cross-validation-statistics] If the prediction method is expensive to train, cross-validation can be very slow since the training must be carried out repeatedly.
+[src:model-evaluation-metrics/cross-validation-statistics] In some cases such as least squares and kernel regression, cross-validation can be sped up significantly by pre-computing certain values that are needed repeatedly in the training, or by using fast "updating rules" such as the Sherman–Morrison formula.
+[src:model-evaluation-metrics/cross-validation-statistics] However one must be careful to preserve the "total blinding" of the validation set from the training procedure, otherwise bias may result.
+[src:model-evaluation-metrics/cross-validation-statistics] An extreme example of accelerating cross-validation occurs in linear regression, where the results of cross-validation have a closed-form expression known as the *prediction residual error sum of squares* (PRESS).
+[src:model-evaluation-metrics/cross-validation-statistics] Cross-validation only yields meaningful results if the validation set and training set are drawn from the same population and only if human biases are controlled.
+[src:model-evaluation-metrics/cross-validation-statistics] In many applications of predictive modeling, the structure of the system being studied evolves over time (i.e. it is "non-stationary").
+[src:model-evaluation-metrics/cross-validation-statistics] Both of these can introduce systematic differences between the training and validation sets.
+[src:model-evaluation-metrics/cross-validation-statistics] For example, if a model for prediction of trend changes in financial quotations is trained on data for a certain five-year period, it is unrealistic to treat the subsequent five-year period as a draw from the same population.
+[src:model-evaluation-metrics/cross-validation-statistics] As another example, suppose a model is developed to predict an individual's risk for being diagnosed with a particular disease within the next year.
+[src:model-evaluation-metrics/cross-validation-statistics] If the model is trained using data from a study involving only a specific population group (e.g. young people or males), but is then applied to the general population, the cross-validation results from the training set could differ greatly from the actual predictive performance.
+[src:model-evaluation-metrics/cross-validation-statistics] In many applications, models also may be incorrectly specified and vary as a function of modeler biases and/or arbitrary choices.
+[src:model-evaluation-metrics/cross-validation-statistics] When this occurs, there may be an illusion that the system changes in external samples, whereas the reason is that the model has missed a critical predictor and/or included a confounded predictor.
+[src:model-evaluation-metrics/cross-validation-statistics] New evidence is that cross-validation by itself is not very predictive of external validity, whereas a form of experimental validation known as swap sampling that does control for human bias can be much more predictive of external validity.
+[src:model-evaluation-metrics/cross-validation-statistics] As defined by this large MAQC-II study across 30,000 models, swap sampling incorporates cross-validation in the sense that predictions are tested across independent training and validation samples.
+[src:model-evaluation-metrics/cross-validation-statistics] Yet, models are also developed across these independent samples and by modelers who are blinded to one another.
+[src:model-evaluation-metrics/cross-validation-statistics] When there is a mismatch in these models developed across these swapped training and validation samples as happens quite frequently, MAQC-II shows that this will be much more predictive of poor external predictive validity than traditional cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] The reason for the success of the swapped sampling is a built-in control for human biases in model building.
+[src:model-evaluation-metrics/cross-validation-statistics] Due to correlations, cross-validation with random splits might be problematic for time-series models (if we are more interested in evaluating extrapolation, rather than interpolation).
+[src:model-evaluation-metrics/cross-validation-statistics] A more appropriate approach might be to use rolling cross-validation.
+[src:model-evaluation-metrics/cross-validation-statistics] However, if performance is described by a single summary statistic, it is possible that the approach described by Politis and Romano as a stationary bootstrap will work.
+[src:model-evaluation-metrics/cross-validation-statistics] The statistic of the bootstrap needs to accept an interval of the time series and return the summary statistic on it.
+[src:model-evaluation-metrics/cross-validation-statistics] The call to the stationary bootstrap needs to specify an appropriate mean interval length.
+[src:model-evaluation-metrics/cross-validation-statistics] Similar challenges occur with spatial and spatiotemporal data, where spatial autocorrelation can lead to overly optimistic error estimates when random splits are used.
+[src:model-evaluation-metrics/cross-validation-statistics] Spatial blocking methods partition data into geographically distinct blocks, while buffered spatial cross-validation adds separation zones between training and test sets to reduce spatial leakage.
+[src:model-evaluation-metrics/cross-validation-statistics] A related technique is to use a clustering algorithm for creating environmentally distinct clusters, to specifically test how well a spatial model can generalize from one environmental context to another.
+[src:model-evaluation-metrics/cross-validation-statistics] For spatiotemporal models, spatial blocking can be combined with rolling or forward-chaining temporal splits to account for both spatial and temporal dependence.
+[src:model-evaluation-metrics/cross-validation-statistics] A recent review summarises cross-validation strategies for spatiotemporal statistics, outlining their theoretical foundations, computational challenges, and applications across environmental and econometric contexts.
+[src:model-evaluation-metrics/cross-validation-statistics] Cross-validation can be used to compare the performances of different predictive modeling procedures.
+[src:model-evaluation-metrics/cross-validation-statistics] For example, suppose we are interested in optical character recognition, and we are considering using either a Support Vector Machine (SVM) or *k*-nearest neighbors (KNN) to predict the true character from an image of a handwritten character.
+[src:model-evaluation-metrics/cross-validation-statistics] Using cross-validation, we can obtain empirical estimates comparing these two methods in terms of their respective fractions of misclassified characters.
+[src:model-evaluation-metrics/cross-validation-statistics] In contrast, the in-sample estimate will not represent the quantity of interest (i.e. the generalization error).
+[src:model-evaluation-metrics/cross-validation-statistics] Cross-validation can also be used in *variable selection*.
+[src:model-evaluation-metrics/cross-validation-statistics] Suppose we are using the expression levels of 20 proteins to predict whether a cancer patient will respond to a drug.
+[src:model-evaluation-metrics/cross-validation-statistics] A practical goal would be to determine which subset of the 20 features should be used to produce the best predictive model.
+[src:model-evaluation-metrics/cross-validation-statistics] For most modeling procedures, if we compare feature subsets using the in-sample error rates, the best performance will occur when all 20 features are used.
+[src:model-evaluation-metrics/cross-validation-statistics] However under cross-validation, the model with the best fit will generally include only a subset of the features that are deemed truly informative.
+[src:model-evaluation-metrics/cross-validation-statistics] A recent development in medical statistics is its use in meta-analysis.
+[src:model-evaluation-metrics/cross-validation-statistics] It forms the basis of the validation statistic, Vn which is used to test the statistical validity of meta-analysis summary estimates.
+[src:model-evaluation-metrics/cross-validation-statistics] It has also been used in a more conventional sense in meta-analysis to estimate the likely prediction error of meta-analysis results.
+[src:model-evaluation-metrics/f-score] In statistical analysis of binary classification and information retrieval systems, the **F-score** or **F-measure** is a measure of predictive performance.
+[src:model-evaluation-metrics/f-score] Precision is also known as positive predictive value, and recall is also known as sensitivity in diagnostic binary classification.
+[src:model-evaluation-metrics/f-score] The **F1** score is the harmonic mean of the precision and recall.
+[src:model-evaluation-metrics/f-score] It thus symmetrically represents both precision and recall in one metric.
+[src:model-evaluation-metrics/f-score] The more generic $F_{\beta }$ score applies additional weights, valuing one of precision or recall more than the other.
+[src:model-evaluation-metrics/f-score] The highest possible value of an F-score is 1.0, indicating perfect precision and recall, and the lowest possible value is 0, if the precision or the recall is zero.
+[src:model-evaluation-metrics/f-score] The name F-measure is believed to be named after a different F function in Van Rijsbergen's book, when introduced to the Fourth Message Understanding Conference (MUC-4, 1992).
+[src:model-evaluation-metrics/f-score] With precision = TP / (TP + FP) and recall = TP / (TP + FN), it follows that the numerator of *F*1 is the sum of their numerators and the denominator of *F*1 is the sum of their denominators.
+[src:model-evaluation-metrics/f-score] Two commonly used values for $\beta$ are 2, which weighs recall higher than precision, and 1/2, which weighs recall lower than precision.
+[src:model-evaluation-metrics/f-score] The F-measure was derived so that $F_{\beta }$ "measures the effectiveness of retrieval with respect to a user who attaches $\beta$ times as much importance to recall as precision".
+[src:model-evaluation-metrics/f-score] This is related to the field of binary classification where recall is often termed "sensitivity".
+[src:model-evaluation-metrics/f-score] Precision-recall curve, and thus the $F_{\beta }$ score, explicitly depends on the ratio r of positive to negative test cases.
+[src:model-evaluation-metrics/f-score] This means that comparison of the F-score across different problems with differing class ratios is problematic.
+[src:model-evaluation-metrics/f-score] One way to address this issue (see e.g., Siblini et al., 2020) is to use a standard class ratio $r_{0}$ when making such comparisons.
+[src:model-evaluation-metrics/f-score] The F-score is often used in the field of information retrieval for measuring search, document classification, and query classification performance.
+[src:model-evaluation-metrics/f-score] It is particularly relevant in applications which are primarily concerned with the positive class and where the positive class is rare relative to the negative class.
+[src:model-evaluation-metrics/f-score] Earlier works focused primarily on the F1 score, but with the proliferation of large scale search engines, performance goals changed to place more emphasis on either precision or recall and so $F_{\beta }$ is seen in wide application.
+[src:model-evaluation-metrics/f-score] The F-score is also used in machine learning.
+[src:model-evaluation-metrics/f-score] However, the F-measures do not take true negatives into account, hence measures such as the Matthews correlation coefficient, Informedness or Cohen's kappa may be preferred to assess the performance of a binary classifier.
+[src:model-evaluation-metrics/f-score] The F-score has been widely used in the natural language processing literature, such as in the evaluation of named entity recognition and word segmentation.
+[src:model-evaluation-metrics/f-score] The F1 score is the Dice coefficient of the set of retrieved items and the set of relevant items.
+[src:model-evaluation-metrics/f-score] David Hand and others criticize the widespread use of the F1 score since it gives equal importance to precision and recall.
+[src:model-evaluation-metrics/f-score] In practice, different types of mis-classifications incur different costs.
+[src:model-evaluation-metrics/f-score] In other words, the relative importance of precision and recall is an aspect of the problem.
+[src:model-evaluation-metrics/f-score] According to Davide Chicco and Giuseppe Jurman, the F1 score is less truthful and informative than the Matthews correlation coefficient (MCC) in binary evaluation classification.
+[src:model-evaluation-metrics/f-score] Another source of critique of F1 is its lack of symmetry.
+[src:model-evaluation-metrics/f-score] It means it may change its value when dataset labeling is changed - the "positive" samples are named "negative" and vice versa.
+[src:model-evaluation-metrics/f-score] This criticism is met by the P4 metric definition, which is sometimes indicated as a symmetrical extension of F1.
+[src:model-evaluation-metrics/f-score] Finally, Ferrer and Dyrland et al. argue that the expected cost (or its counterpart, the expected utility) is the only principled metric for evaluation of classification decisions, having various advantages over the F-score and the MCC.
+[src:model-evaluation-metrics/f-score] Both works show that the F-score can result in wrong conclusions about the absolute and relative quality of systems.
+[src:model-evaluation-metrics/f-score] While the F-measure is the harmonic mean of recall and precision, the Fowlkes–Mallows index is their geometric mean.
+[src:model-evaluation-metrics/f-score] The F-score is also used for evaluating classification problems with more than two classes (Multiclass classification).
+[src:model-evaluation-metrics/f-score] A common method is to average the F-score over each class, aiming at a balanced measurement of performance.
+[src:model-evaluation-metrics/precision-and-recall] In pattern recognition, information retrieval, object detection and classification (machine learning), **precision** and **recall** are performance metrics that apply to data retrieved from a collection, corpus or sample space.
+[src:model-evaluation-metrics/precision-and-recall] Both precision and recall are therefore based on relevance.
+[src:model-evaluation-metrics/precision-and-recall] Consider a computer program for recognizing dogs (the **relevant** element) in a digital photograph.
+[src:model-evaluation-metrics/precision-and-recall] Upon processing a picture which contains ten cats and twelve dogs, the program identifies eight dogs.
+[src:model-evaluation-metrics/precision-and-recall] Of the eight elements identified as dogs, only five actually are dogs (true positives), while the other three are cats (false positives).
+[src:model-evaluation-metrics/precision-and-recall] Seven dogs were missed (false negatives), and seven cats were correctly excluded (true negatives).
+[src:model-evaluation-metrics/precision-and-recall] The program's precision is then 5/8 (true positives / selected elements) while its recall is 5/12 (true positives / relevant elements).
+[src:model-evaluation-metrics/precision-and-recall] More generally, recall is simply the complement of the type II error rate (i.e., one minus the type II error rate).
+[src:model-evaluation-metrics/precision-and-recall] Precision is related to the type I error rate, but in a slightly more complicated way, as it also depends upon the prior distribution of seeing a relevant vs. an irrelevant item.
+[src:model-evaluation-metrics/precision-and-recall] The above cat and dog example contained 8 − 5 = 3 type I errors (false positives) out of 10 total cats (true negatives), for a type I error rate of 3/10, and 12 − 5 = 7 type II errors (false negatives), for a type II error rate of 7/12.
+[src:model-evaluation-metrics/precision-and-recall] Precision can be seen as a measure of quality, and recall as a measure of quantity.
+[src:model-evaluation-metrics/precision-and-recall] Higher precision means that an algorithm returns more relevant results than irrelevant ones, and high recall means that an algorithm returns most of the relevant results (whether or not irrelevant ones are also returned).
+[src:model-evaluation-metrics/precision-and-recall] Precision and recall are not particularly useful metrics when used in isolation.
+[src:model-evaluation-metrics/precision-and-recall] For instance, it is possible to have perfect recall by simply retrieving every single item.
+[src:model-evaluation-metrics/precision-and-recall] Likewise, it is possible to achieve perfect precision by selecting only a very small number of extremely likely items.
+[src:model-evaluation-metrics/precision-and-recall] A smoke detector is generally designed to commit many Type I errors (to alert in many situations when there is no danger), because the cost of a Type II error (failing to sound an alarm during a major fire) is prohibitively high.
+[src:model-evaluation-metrics/precision-and-recall] As such, smoke detectors are designed with recall in mind (to catch all real danger), even while giving little weight to the losses in precision (and making many false alarms).
+[src:model-evaluation-metrics/precision-and-recall] In the other direction, Blackstone's ratio, "It is better that ten guilty persons escape than that one innocent suffer," emphasizes the costs of a Type I error (convicting an innocent person).
+[src:model-evaluation-metrics/precision-and-recall] As such, the criminal justice system is geared toward precision (not convicting innocents), even at the cost of losses in recall (letting more guilty people go free).
+[src:model-evaluation-metrics/precision-and-recall] A brain surgeon removing a cancerous tumor from a patient's brain illustrates the tradeoffs as well: The surgeon needs to remove all of the tumor cells since any remaining cancer cells will regenerate the tumor.
+[src:model-evaluation-metrics/precision-and-recall] Conversely, the surgeon must not remove healthy brain cells since that would leave the patient with impaired brain function.
+[src:model-evaluation-metrics/precision-and-recall] The surgeon may be more liberal in the area of the brain they remove to ensure they have extracted all the cancer cells.
+[src:model-evaluation-metrics/precision-and-recall] This decision increases recall but reduces precision.
+[src:model-evaluation-metrics/precision-and-recall] On the other hand, the surgeon may be more conservative in the brain cells they remove to ensure they extract only cancer cells.
+[src:model-evaluation-metrics/precision-and-recall] This decision increases precision but reduces recall.
+[src:model-evaluation-metrics/precision-and-recall] That is to say, greater recall increases the chances of removing healthy cells (negative outcome) and increases the chances of removing all cancer cells (positive outcome).
+[src:model-evaluation-metrics/precision-and-recall] Greater precision decreases the chances of removing healthy cells (positive outcome) but also decreases the chances of removing all cancer cells (negative outcome).
+[src:model-evaluation-metrics/precision-and-recall] Usually, precision and recall scores are not discussed in isolation.
+[src:model-evaluation-metrics/precision-and-recall] A *precision-recall curve* plots precision as a function of recall; usually precision will decrease as the recall increases.
+[src:model-evaluation-metrics/precision-and-recall] Alternatively, values for one measure can be compared for a fixed level at the other measure (e.g.
+[src:model-evaluation-metrics/precision-and-recall] *precision at a recall level of 0.75*) or both are combined into a single measure.
+[src:model-evaluation-metrics/precision-and-recall] Accuracy is a weighted arithmetic mean of Precision and Inverse Precision (weighted by Bias) as well as a weighted arithmetic mean of Recall and Inverse Recall (weighted by Prevalence).
+[src:model-evaluation-metrics/precision-and-recall] Inverse Precision and Inverse Recall are simply the Precision and Recall of the inverse problem where positive and negative labels are exchanged (for both real classes and prediction labels).
+[src:model-evaluation-metrics/precision-and-recall] True Positive Rate and False Positive Rate, or equivalently Recall and 1 - Inverse Recall, are frequently plotted against each other as ROC curves and provide a principled mechanism to explore operating point tradeoffs.
+[src:model-evaluation-metrics/precision-and-recall] Outside of Information Retrieval, the application of Recall, Precision and F-measure are argued to be flawed as they ignore the true negative cell of the contingency table, and they are easily manipulated by biasing the predictions.
+[src:model-evaluation-metrics/precision-and-recall] The first problem is 'solved' by using Accuracy and the second problem is 'solved' by discounting the chance component and renormalizing to Cohen's kappa, but this no longer affords the opportunity to explore tradeoffs graphically.
+[src:model-evaluation-metrics/precision-and-recall] However, Informedness and Markedness are Kappa-like renormalizations of Recall and Precision, and their geometric mean Matthews correlation coefficient thus acts like a debiased F-measure.
+[src:model-evaluation-metrics/precision-and-recall] For classification tasks, the terms *true positives*, *true negatives*, *false positives*, and *false negatives* compare the results of the classifier under test with trusted external judgments.
+[src:model-evaluation-metrics/precision-and-recall] The terms *positive* and *negative* refer to the classifier's prediction (sometimes known as the *expectation*), and the terms *true* and *false* refer to whether that prediction corresponds to the external judgment (sometimes known as the *observation*).
+[src:model-evaluation-metrics/precision-and-recall] Let us define an experiment from *P* positive instances and *N* negative instances for some condition.
+[src:model-evaluation-metrics/precision-and-recall] Recall in this context is also referred to as the true positive rate or sensitivity, and precision is also referred to as positive predictive value (PPV); other related measures used in classification include true negative rate and accuracy.
+[src:model-evaluation-metrics/precision-and-recall] True negative rate is also called specificity.
+[src:model-evaluation-metrics/precision-and-recall] Both precision and recall may be useful in cases where there is imbalanced data.
+[src:model-evaluation-metrics/precision-and-recall] However, it may be valuable to prioritize one metric over the other in cases where the outcome of a false positive or false negative is costly.
+[src:model-evaluation-metrics/precision-and-recall] For example, in medical diagnosis, a false positive test can lead to unnecessary treatment and expenses.
+[src:model-evaluation-metrics/precision-and-recall] In this situation, it is useful to value precision over recall.
+[src:model-evaluation-metrics/precision-and-recall] In other cases, the cost of a false negative is high, and recall may be a more valuable metric.
+[src:model-evaluation-metrics/precision-and-recall] For instance, the cost of a false negative in fraud detection is high, as failing to detect a fraudulent transaction can result in significant financial loss.
+[src:model-evaluation-metrics/precision-and-recall] Both quantities are, therefore, connected by Bayes' theorem.
+[src:model-evaluation-metrics/precision-and-recall] The probabilistic interpretation allows to easily derive how a no-skill classifier would perform.
+[src:model-evaluation-metrics/precision-and-recall] A no-skill classifier is defined by the property that the joint probability $\mathbb {P} (C=P,{\hat {C}}=P)=\mathbb {P} (C=P)\mathbb {P} ({\hat {C}}=P)$ is just the product of the unconditional probabilities since the classification and the presence of the class are independent.
+[src:model-evaluation-metrics/precision-and-recall] For example, the precision of a no-skill classifier is simply a constant $\mathbb {P} (C=P|{\hat {C}}=P)={\frac {\mathbb {P} (C=P,{\hat {C}}=P)}{\mathbb {P} ({\hat {C}}=P)}}=\mathbb {P} (C=P),$ i.e. determined by the probability/frequency with which the class P occurs.
+[src:model-evaluation-metrics/precision-and-recall] A similar argument can be made for the recall: $\mathbb {P} ({\hat {C}}=P|C=P)={\frac {\mathbb {P} (C=P,{\hat {C}}=P)}{\mathbb {P} (C=P)}}=\mathbb {P} ({\hat {C}}=P)$ which is the probability for a positive classification.
+[src:model-evaluation-metrics/precision-and-recall] Accuracy can be a misleading metric for imbalanced data sets.
+[src:model-evaluation-metrics/precision-and-recall] Consider a sample with 95 negative and 5 positive values.
+[src:model-evaluation-metrics/precision-and-recall] Classifying all values as negative in this case gives 0.95 accuracy score.
+[src:model-evaluation-metrics/precision-and-recall] There are many metrics that don't suffer from this problem.
+[src:model-evaluation-metrics/precision-and-recall] For the previous example (95 negative and 5 positive samples), classifying all as negative gives 0.5 balanced accuracy score (the maximum bACC score is one), which is equivalent to the expected value of a random guess in a balanced data set.
+[src:model-evaluation-metrics/precision-and-recall] Balanced accuracy can serve as an overall performance metric for a model, whether or not the true labels are imbalanced in the data, assuming the cost of FN is the same as FP.
+[src:model-evaluation-metrics/precision-and-recall] The TPR and FPR are a property of a given classifier operating at a specific threshold.
+[src:model-evaluation-metrics/precision-and-recall] However, the overall number of TPs, FPs *etc.* depend on the class imbalance in the data via the class ratio ${\textstyle r=P/N}$ .
+[src:model-evaluation-metrics/precision-and-recall] As the recall (or TPR) depends only on positive cases, it is not affected by ${\textstyle r}$ , but the precision is.
+[src:model-evaluation-metrics/precision-and-recall] Thus the precision has an explicit dependence on ${\textstyle r}$ .
+[src:model-evaluation-metrics/precision-and-recall] Starting with balanced classes at ${\textstyle r=1}$ and gradually decreasing ${\textstyle r}$ , the corresponding precision will decrease, because the denominator increases.
+[src:model-evaluation-metrics/precision-and-recall] Another metric is the predicted positive condition rate (PPCR), which identifies the percentage of the total population that is flagged.
+[src:model-evaluation-metrics/precision-and-recall] For example, for a search engine that returns 30 results (retrieved documents) out of 1,000,000 documents, the PPCR is 0.003%.
+[src:model-evaluation-metrics/precision-and-recall] According to Saito and Rehmsmeier, precision-recall plots are more informative than ROC plots when evaluating binary classifiers on imbalanced data.
+[src:model-evaluation-metrics/precision-and-recall] In such scenarios, ROC plots may be visually deceptive with respect to conclusions about the reliability of classification performance.
+[src:model-evaluation-metrics/precision-and-recall] Different from the above approaches, if an imbalance scaling is applied directly by weighting the confusion matrix elements, the standard metrics definitions still apply even in the case of imbalanced datasets.
+[src:model-evaluation-metrics/precision-and-recall] The weighting procedure relates the confusion matrix elements to the support set of each considered class.
+[src:model-evaluation-metrics/precision-and-recall] This measure is approximately the average of the two when they are close, and is more generally the harmonic mean, which, for the case of two numbers, coincides with the square of the geometric mean divided by the arithmetic mean.
+[src:model-evaluation-metrics/precision-and-recall] There are several reasons that the F-score can be criticized, in particular circumstances, due to its bias as an evaluation metric.
+[src:model-evaluation-metrics/precision-and-recall] This is also known as the $F_{1}$ measure, because recall and precision are evenly weighted.
+[src:model-evaluation-metrics/precision-and-recall] Two other commonly used F measures are the $F_{2}$ measure, which weights recall higher than precision, and the $F_{0.5}$ measure, which puts more emphasis on precision than recall.
+[src:model-evaluation-metrics/precision-and-recall] The F-measure was derived by van Rijsbergen (1979) so that $F_{\beta }$ "measures the effectiveness of retrieval with respect to a user who attaches $\beta$ times as much importance to recall as precision".
+[src:model-evaluation-metrics/precision-and-recall] It is based on van Rijsbergen's effectiveness measure $E_{\alpha }=1-{\frac {1}{{\frac {\alpha }{P}}+{\frac {1-\alpha }{R}}}}$ , the second term being the weighted harmonic mean of precision and recall with weights $(\alpha ,1-\alpha )$ .
+[src:model-evaluation-metrics/precision-and-recall] There are other parameters and strategies for performance metric of information retrieval system, such as the area under the ROC curve (AUC) or pseudo-R-squared.
+[src:model-evaluation-metrics/precision-and-recall] Precision and recall values can also be calculated for classification problems with more than two classes.
+[src:model-evaluation-metrics/precision-and-recall] To obtain the precision for a given class, we divide the number of true positives by the classifier bias towards this class (number of times that the classifier has predicted the class).
+[src:model-evaluation-metrics/precision-and-recall] To calculate the recall for a given class, we divide the number of true positives by the prevalence of this class (number of times that the class occurs in the data sample).
+[src:model-evaluation-metrics/precision-and-recall] The class-wise precision and recall values can then be combined into an overall multi-class evaluation score, e.g., using the macro F1 metric.
+[src:model-evaluation-metrics/precision-and-recall] The classical definitions of precision, recall, and F-score are formulated for binary classification, where each instance is either true or false.
+[src:model-evaluation-metrics/precision-and-recall] Many practical domains, however, produce inherently *continuous* signals rather than discrete labels.
+[src:model-evaluation-metrics/precision-and-recall] Generalising these metrics to continuous distributions enables their direct application to such data without the information loss introduced by thresholding.
+[src:model-evaluation-metrics/precision-and-recall] Let $x_{i}$ denote the expected (ground-truth) signal and $y_{i}$ the observed (predicted) signal at each data point i .
+[src:model-evaluation-metrics/precision-and-recall] Note, sums may be replaced with integrals for continuous distributions depending on other continuous variables (i.e. $\sum \rightarrow \int d\xi$ , $x_{i}\rightarrow x(\xi )$ , $y_{i}\rightarrow y(\xi )$ ).
+[src:model-evaluation-metrics/precision-and-recall] These definitions reduce to the classical binary versions when $x_{i},y_{i}\in \{0,1\}$ .
+[src:model-evaluation-metrics/precision-and-recall] However, continuous metrics reveal a deeper mathematical elegance.
+[src:model-evaluation-metrics/precision-and-recall] Consider a completely wrong ML model with random signal.
+[src:model-evaluation-metrics/precision-and-recall] Traditional binary metrics, blind to magnitude and sign, can still award such a model positive precision, recall and/or F-score (even 25% or higher for dense signal).
+[src:model-evaluation-metrics/precision-and-recall] The continuous formulas, by contrast, return exactly 0 for precision, recall, and F-score in this situation – because when expected and observed signals do not correlate, the numerator terms cancel to zero.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A **receiver operating characteristic curve**, or **ROC curve**, is a graphical plot that illustrates the performance of a binary classifier model (although it can be generalized to multiple classes) at varying threshold values.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC analysis is commonly applied in the assessment of diagnostic test performance in clinical epidemiology.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC curve is the plot of the true positive rate (TPR) against the false positive rate (FPR) at each threshold setting.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC can also be thought of as a plot of the statistical power as a function of the Type I Error of the decision rule (when the performance is calculated from just a sample of the population, it can be thought of as estimators of these quantities).
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC curve is thus the sensitivity as a function of false positive rate.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC analysis provides tools to select possibly optimal models and to discard suboptimal ones independently from (and prior to specifying) the cost context or the class distribution.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC analysis is related in a direct and natural way to the cost/benefit analysis of diagnostic decision making.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The true-positive rate is also known as sensitivity or *probability of detection*.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The false-positive rate is also known as the *probability of false alarm* and equals (1 − specificity).
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC is also known as a relative operating characteristic curve, because it is a comparison of two operating characteristics (TPR and FPR) as the criterion changes.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC curve was first developed by electrical engineers and radar engineers during World War II for detecting enemy objects in battlefields, starting in 1941, which led to its name ("receiver operating characteristic").
+[src:model-evaluation-metrics/receiver-operating-characteristic] It was soon introduced to psychology to account for the perceptual detection of stimuli.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC analysis has been used in medicine, radiology, biometrics, forecasting of natural hazards, meteorology, model performance assessment, and other areas for many decades and is increasingly used in machine learning and data mining research.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A classification model (classifier or diagnosis) is a mapping of instances between certain classes/groups.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Because the classifier or diagnosis result can be an arbitrary real value (continuous output), the classifier boundary between classes must be determined by a threshold value (for instance, to determine whether a person has hypertension based on a blood pressure measure).
+[src:model-evaluation-metrics/receiver-operating-characteristic] Or it can be a discrete class label, indicating one of the classes.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Consider a two-class prediction problem (binary classification), in which the outcomes are labeled either as positive (*p*) or negative (*n*).
+[src:model-evaluation-metrics/receiver-operating-characteristic] There are four possible outcomes from a binary classifier.
+[src:model-evaluation-metrics/receiver-operating-characteristic] If the outcome from a prediction is *p* and the actual value is also *p*, then it is called a *true positive* (TP); however if the actual value is *n* then it is said to be a *false positive* (FP).
+[src:model-evaluation-metrics/receiver-operating-characteristic] Conversely, a *true negative* (TN) has occurred when both the prediction outcome and the actual value are *n*, and a *false negative* (FN) is when the prediction outcome is *n* while the actual value is *p*.
+[src:model-evaluation-metrics/receiver-operating-characteristic] To get an appropriate example in a real-world problem, consider a diagnostic test that seeks to determine whether a person has a certain disease.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A false positive in this case occurs when the person tests positive, but does not actually have the disease.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A false negative, on the other hand, occurs when the person tests negative, suggesting they are healthy, when they actually do have the disease.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Consider an experiment from **P** positive instances and **N** negative instances for some condition.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The contingency table can derive several evaluation "metrics" (see infobox).
+[src:model-evaluation-metrics/receiver-operating-characteristic] To draw a ROC curve, only the true positive rate (TPR) and false positive rate (FPR) are needed (as functions of some classifier parameter).
+[src:model-evaluation-metrics/receiver-operating-characteristic] The TPR defines how many correct positive results occur among all positive samples available during the test.
+[src:model-evaluation-metrics/receiver-operating-characteristic] FPR, on the other hand, defines how many incorrect positive results occur among all negative samples available during the test.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A ROC space is defined by FPR and TPR as *x* and *y* axes, respectively, which depicts relative trade-offs between true positive (benefits) and false positive (costs).
+[src:model-evaluation-metrics/receiver-operating-characteristic] Since TPR is equivalent to sensitivity and FPR is equal to 1 − specificity, the ROC graph is sometimes called the sensitivity vs (1 − specificity) plot.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Each prediction result or instance of a confusion matrix represents one point in the ROC space.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The best possible prediction method would yield a point in the upper left corner or coordinate (0,1) of the ROC space, representing 100% sensitivity (no false negatives) and 100% specificity (no false positives).
+[src:model-evaluation-metrics/receiver-operating-characteristic] The (0,1) point is also called a *perfect classification*.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A random guess would give a point along a diagonal line (the so-called *line of no-discrimination*) from the bottom left to the top right corners (regardless of the positive and negative base rates).
+[src:model-evaluation-metrics/receiver-operating-characteristic] An intuitive example of random guessing is a decision by flipping coins.
+[src:model-evaluation-metrics/receiver-operating-characteristic] As the size of the sample increases, a random classifier's ROC point tends towards the diagonal line.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In the case of a balanced coin, it will tend to the point (0.5, 0.5).
+[src:model-evaluation-metrics/receiver-operating-characteristic] Points above the diagonal represent good classification results (better than random); points below the line represent bad results (worse than random).
+[src:model-evaluation-metrics/receiver-operating-characteristic] Note that the output of a consistently bad predictor could simply be inverted to obtain a good predictor.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Plots of the four results above in the ROC space are given in the figure.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The result of method **A** clearly shows the best predictive power among **A**, **B**, and **C**.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The result of **B** lies on the random guess line (the diagonal line), and it can be seen in the table that the accuracy of **B** is 50%.
+[src:model-evaluation-metrics/receiver-operating-characteristic] However, when **C** is mirrored across the center point (0.5,0.5), the resulting method **C′** is even better than **A**.
+[src:model-evaluation-metrics/receiver-operating-characteristic] This mirrored method simply reverses the predictions of whatever method or test produced the **C** contingency table.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Although the original **C** method has negative predictive power, simply reversing its decisions leads to a new predictive method **C′** which has positive predictive power.
+[src:model-evaluation-metrics/receiver-operating-characteristic] When the **C** method predicts **p** or **n**, the **C′** method would predict **n** or **p**, respectively.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In this manner, the **C′** test would perform the best.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The closer a result from a contingency table is to the upper left corner, the better it predicts, but the distance from the random guess line in either direction is the best indicator of how much predictive power a method has.
+[src:model-evaluation-metrics/receiver-operating-characteristic] If the result is below the line (i.e. the method is worse than a random guess), all of the method's predictions must be reversed in order to utilize its power, thereby moving the result above the random guess line.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In binary classification, the class prediction for each instance is often made based on a continuous random variable X , which is a "score" computed for the instance (e.g. the estimated probability in logistic regression).
+[src:model-evaluation-metrics/receiver-operating-characteristic] Given a threshold parameter T , the instance is classified as "positive" if $X>T$ , and "negative" otherwise.
+[src:model-evaluation-metrics/receiver-operating-characteristic] X follows a probability density $f_{1}(x)$ if the instance actually belongs to class "positive", and $f_{0}(x)$ if otherwise.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC curve plots parametrically ${\mbox{TPR}}(T)$ versus ${\mbox{FPR}}(T)$ with T as the varying parameter.
+[src:model-evaluation-metrics/receiver-operating-characteristic] For example, imagine that the blood protein levels in diseased people and healthy people are normally distributed with means of 2 g/dL and 1 g/dL respectively.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A medical test might measure the level of a certain protein in a blood sample and classify any number above a certain threshold as indicating disease.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The experimenter can adjust the threshold (green vertical line in the figure), which will in turn change the false positive rate.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Increasing the threshold would result in fewer false positives (and more false negatives), corresponding to a leftward movement on the curve.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The actual shape of the curve is determined by how much overlap the two distributions have.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Several studies criticize certain applications of the ROC curve and its area under the curve as measurements for assessing binary classifications when they do not capture the information relevant to the application.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The main criticism to the ROC curve described in these studies regards the incorporation of areas with low sensitivity and low specificity (both lower than 0.5) for the calculation of the total area under the curve (AUC)., as described in the plot on the right.
+[src:model-evaluation-metrics/receiver-operating-characteristic] According to the authors of these studies, that portion of area under the curve (with low sensitivity and low specificity) regards confusion matrices where binary predictions obtain bad results, and therefore should not be included for the assessment of the overall performance.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Moreover, that portion of AUC indicates a space with high or low confusion matrix threshold which is rarely of interest for scientists performing a binary classification in any field.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Another criticism to the ROC and its area under the curve is that they say nothing about precision and negative predictive value.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A high ROC AUC, such as 0.9 for example, might correspond to low values of precision and negative predictive value, such as 0.2 and 0.1 in the [0, 1] range.
+[src:model-evaluation-metrics/receiver-operating-characteristic] If one performed a binary classification, obtained an ROC AUC of 0.9 and decided to focus only on this metric, they might overoptimistically believe their binary test was excellent.
+[src:model-evaluation-metrics/receiver-operating-characteristic] However, if this person took a look at the values of precision and negative predictive value, they might discover their values are low.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC AUC summarizes sensitivity and specificity, but does not inform regarding precision and negative predictive value.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Sometimes, the ROC is used to generate a summary statistic.
+[src:model-evaluation-metrics/receiver-operating-characteristic] However, any attempt to summarize the ROC curve into a single number loses information about the pattern of tradeoffs of the particular discriminator algorithm.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The area under the curve (often referred to as simply the AUC) is equal to the probability that a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one (assuming 'positive' ranks higher than 'negative').
+[src:model-evaluation-metrics/receiver-operating-characteristic] In other words, when given one randomly selected positive instance and one randomly selected negative instance, AUC is the probability that the classifier will be able to tell which one is which.
+[src:model-evaluation-metrics/receiver-operating-characteristic] where $X_{1}$ is the score for a positive instance and $X_{0}$ is the score for a negative instance, and $f_{0}$ and $f_{1}$ are probability densities as defined in previous section.
+[src:model-evaluation-metrics/receiver-operating-characteristic] It can be shown that the AUC is closely related to the Mann–Whitney U, which tests whether positives are ranked higher than negatives.
+[src:model-evaluation-metrics/receiver-operating-characteristic] where ${\textstyle {\textbf {1}}[f(t_{0})<f(t_{1})]}$ denotes an *indicator function* which returns 1 if $f(t_{0})<f(t_{1})$ otherwise return 0; ${\mathcal {D}}^{0}$ is the set of negative examples, and ${\mathcal {D}}^{1}$ is the set of positive examples.
+[src:model-evaluation-metrics/receiver-operating-characteristic] $G_{1}$ is referred to as Gini index or Gini coefficient, but it should not be confused with the measure of statistical dispersion that is also called Gini coefficient. $G_{1}$ is a special case of Somers' D.
+[src:model-evaluation-metrics/receiver-operating-characteristic] It is also possible to invert concavities – just as in the figure the worse solution can be reflected to become a better solution; concavities can be reflected in any line segment, but this more extreme form of fusion is much more likely to overfit the data.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The machine learning community most often uses the ROC AUC statistic for model comparison.
+[src:model-evaluation-metrics/receiver-operating-characteristic] This practice has been questioned because AUC estimates are quite noisy and suffer from other problems.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Nonetheless, the coherence of AUC as a measure of aggregated classification performance has been vindicated, in terms of a uniform rate distribution, and AUC has been linked to a number of other performance metrics such as the Brier score.
+[src:model-evaluation-metrics/receiver-operating-characteristic] These measures are essentially equivalent to the Gini for a single prediction point with DeltaP' = Informedness = 2AUC-1, whilst DeltaP = Markedness represents the dual (viz. predicting the prediction from the real class) and their geometric mean is the Matthews correlation coefficient.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Bringing chance performance to 0 allows these alternative scales to be interpreted as Kappa statistics.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Informedness has been shown to have desirable characteristics for Machine Learning versus other common definitions of Kappa such as Cohen Kappa and Fleiss Kappa.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Sometimes it can be more useful to look at a specific region of the ROC Curve rather than at the whole curve.
+[src:model-evaluation-metrics/receiver-operating-characteristic] For example, one could focus on the region of the curve with low false positive rate, which is often of prime interest for population screening tests.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Another common approach for classification problems in which P ≪ N (common in bioinformatics applications) is to use a logarithmic scale for the *x*-axis.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC area under the curve is also called **c-statistic** or **c statistic**.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The Total Operating Characteristic (TOC) also characterizes diagnostic ability while revealing more information than the ROC.
+[src:model-evaluation-metrics/receiver-operating-characteristic] For each threshold, ROC reveals two ratios, TP/(TP + FN) and FP/(FP + TN).
+[src:model-evaluation-metrics/receiver-operating-characteristic] On the other hand, TOC shows the total information in the contingency table for each threshold.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The TOC method reveals all of the information that the ROC method provides, plus additional important information that ROC does not reveal, i.e. the size of every entry in the contingency table for each threshold.
+[src:model-evaluation-metrics/receiver-operating-characteristic] TOC also provides the popular AUC of the ROC.
+[src:model-evaluation-metrics/receiver-operating-characteristic] These figures are the TOC and ROC curves using the same data and thresholds.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Consider the point that corresponds to a threshold of 74.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The TOC curve shows the number of hits, which is 3, and hence the number of misses, which is 7.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Additionally, the TOC curve shows that the number of false alarms is 4 and the number of correct rejections is 16.
+[src:model-evaluation-metrics/receiver-operating-characteristic] At any given point in the ROC curve, it is possible to glean values for the ratios of ${\frac {\text{false alarms}}{{\text{false alarms}}+{\text{correct rejections}}}}$ and ${\frac {\text{hits}}{{\text{hits}}+{\text{misses}}}}$ .
+[src:model-evaluation-metrics/receiver-operating-characteristic] For example, at threshold 74, it is evident that the x coordinate is 0.2 and the y coordinate is 0.3.
+[src:model-evaluation-metrics/receiver-operating-characteristic] However, these two values are insufficient to construct all entries of the underlying two-by-two contingency table.
+[src:model-evaluation-metrics/receiver-operating-characteristic] An alternative to the ROC curve is the detection error tradeoff (DET) graph, which plots the false negative rate (missed detections) vs. the false positive rate (false alarms) on non-linearly transformed x- and y-axes.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The transformation function is the quantile function of the normal distribution, i.e., the inverse of the cumulative normal distribution.
+[src:model-evaluation-metrics/receiver-operating-characteristic] It is, in fact, the same transformation as zROC, below, except that the complement of the hit rate, the miss rate or false negative rate, is used.
+[src:model-evaluation-metrics/receiver-operating-characteristic] This alternative spends more graph area on the region of interest.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Most of the ROC area is of little interest; one primarily cares about the region tight against the *y*-axis and the top left corner – which, because of using miss rate instead of its complement, the hit rate, is the lower left corner in a DET plot.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Furthermore, DET graphs have the useful property of linearity and a linear threshold behavior for normal distributions.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The DET plot is used extensively in the automatic speaker recognition community, where the name DET was first used.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The analysis of the ROC performance in graphs with this warping of the axes was used by psychologists in perception studies halfway through the 20th century, where this was dubbed "double probability paper".
+[src:model-evaluation-metrics/receiver-operating-characteristic] If a standard score is applied to the ROC curve, the curve will be transformed into a straight line.
+[src:model-evaluation-metrics/receiver-operating-characteristic] This z-score is based on a normal distribution with a mean of zero and a standard deviation of one.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In memory strength theory, one must assume that the zROC is not only linear, but has a slope of 1.0.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The normal distributions of targets (studied objects that the subjects need to recall) and lures (non studied objects that the subjects attempt to recall) is the factor causing the zROC to be linear.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The linearity of the zROC curve depends on the standard deviations of the target and lure strength distributions.
+[src:model-evaluation-metrics/receiver-operating-characteristic] If the standard deviations are equal, the slope will be 1.0.
+[src:model-evaluation-metrics/receiver-operating-characteristic] If the standard deviation of the target strength distribution is larger than the standard deviation of the lure strength distribution, then the slope will be smaller than 1.0.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In most studies, it has been found that the zROC curve slopes constantly fall below 1, usually between 0.5 and 0.9.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Many experiments yielded a zROC slope of 0.8.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A slope of 0.8 implies that the variability of the target strength distribution is 25% larger than the variability of the lure strength distribution.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Another variable used is *d'* (d prime) (discussed above in "Other measures"), which can easily be expressed in terms of z-values.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Although *d*' is a commonly used parameter, it must be recognized that it is only relevant when strictly adhering to the very strong assumptions of strength theory made above.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The z-score of an ROC curve is always linear, as assumed, except in special situations.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The Yonelinas familiarity-recollection model is a two-dimensional account of recognition memory.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Instead of the subject simply answering yes or no to a specific input, the subject gives the input a feeling of familiarity, which operates like the original ROC curve.
+[src:model-evaluation-metrics/receiver-operating-characteristic] What changes, though, is a parameter for Recollection (R).
+[src:model-evaluation-metrics/receiver-operating-characteristic] Recollection is assumed to be all-or-none, and it trumps familiarity.
+[src:model-evaluation-metrics/receiver-operating-characteristic] If there were no recollection component, zROC would have a predicted slope of 1.
+[src:model-evaluation-metrics/receiver-operating-characteristic] However, when adding the recollection component, the zROC curve will be concave up, with a decreased slope.
+[src:model-evaluation-metrics/receiver-operating-characteristic] This difference in shape and slope result from an added element of variability due to some items being recollected.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Patients with anterograde amnesia are unable to recollect, so their Yonelinas zROC curve would have a slope close to 1.0.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ROC curve was first used during World War II for the analysis of radar signals before it was employed in signal detection theory.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Following the attack on Pearl Harbor in 1941, the United States military began new research to increase the prediction of correctly detected Japanese aircraft from their radar signals.
+[src:model-evaluation-metrics/receiver-operating-characteristic] For these purposes they measured the ability of a radar receiver operator to make these important distinctions, which was called the Receiver Operating Characteristic.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In the 1950s, ROC curves were employed in psychophysics to assess human (and occasionally non-human animal) detection of weak signals.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In medicine, ROC analysis has been extensively used in the evaluation of diagnostic tests.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC curves are also used extensively in epidemiology and medical research and are frequently mentioned in conjunction with evidence-based medicine.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In radiology, ROC analysis is a common technique to evaluate new radiology techniques.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In the social sciences, ROC analysis is often called the ROC Accuracy Ratio, a common technique for judging the accuracy of default probability models.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC curves are widely used in laboratory medicine to assess the diagnostic accuracy of a test, to choose the optimal cut-off of a test and to compare diagnostic accuracy of several tests.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC curves also proved useful for the evaluation of machine learning techniques.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The first application of ROC in machine learning was by Spackman who demonstrated the value of ROC curves in comparing and evaluating different classification algorithms.
+[src:model-evaluation-metrics/receiver-operating-characteristic] ROC curves are also used in verification of forecasts in meteorology.
+[src:model-evaluation-metrics/receiver-operating-characteristic] As mentioned ROC curves are critical to radar operation and theory.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The signals received at a receiver station, as reflected by a target, are often of very low energy, in comparison to the noise floor.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The ratio of signal to noise is an important metric when determining if a target will be detected.
+[src:model-evaluation-metrics/receiver-operating-characteristic] This signal to noise ratio is directly correlated to the receiver operating characteristics of the whole radar system, which is used to quantify the ability of a radar system.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Consider the development of a radar system.
+[src:model-evaluation-metrics/receiver-operating-characteristic] A specification for the abilities of the system may be provided in terms of probability of detect, $P_{D}$ , with a certain tolerance for false alarms, $P_{FA}$ .
+[src:model-evaluation-metrics/receiver-operating-characteristic] for the signal to noise ratio ${\mathcal {X}}$ .
+[src:model-evaluation-metrics/receiver-operating-characteristic] Here, ${\mathcal {X}}$ is not in decibels, as is common in many radar applications.
+[src:model-evaluation-metrics/receiver-operating-characteristic] From this figure, the common entries in the radar range equation (with noise factors) may be solved, to estimate the required effective radiated power.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The extension of ROC curves for classification problems with more than two classes is cumbersome.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Two common approaches for when there are multiple classes are (1) average over all pairwise AUC values and (2) compute the volume under surface (VUS).
+[src:model-evaluation-metrics/receiver-operating-characteristic] To average over all pairwise classes, one computes the AUC for each pair of classes, using only the examples from those two classes as if there were no other classes, and then averages these AUC values over all possible pairs.
+[src:model-evaluation-metrics/receiver-operating-characteristic] When there are *c* classes there will be *c*(*c* − 1) / 2 possible pairs of classes.
+[src:model-evaluation-metrics/receiver-operating-characteristic] The volume under surface approach has one plot a hypersurface rather than a curve and then measure the hypervolume under that hypersurface.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Every possible decision rule that one might use for a classifier for *c* classes can be described in terms of its true positive rates (TPR1, . . . , TPR*c*).
+[src:model-evaluation-metrics/receiver-operating-characteristic] It is this set of rates that defines a point, and the set of all possible decision rules yields a cloud of points that define the hypersurface.
+[src:model-evaluation-metrics/receiver-operating-characteristic] With this definition, the VUS is the probability that the classifier will be able to correctly label all *c* examples when it is given a set that has one randomly selected example from each class.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Given the success of ROC curves for the assessment of classification models, the extension of ROC curves for other supervised tasks has also been investigated.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Notable proposals for regression problems are the so-called regression error characteristic (REC) Curves and the Regression ROC (RROC) curves.
+[src:model-evaluation-metrics/receiver-operating-characteristic] In the latter, RROC curves become extremely similar to ROC curves for classification, with the notions of asymmetry, dominance and convex hull.
+[src:model-evaluation-metrics/receiver-operating-characteristic] Also, the area under RROC curves is proportional to the error variance of the regression model.

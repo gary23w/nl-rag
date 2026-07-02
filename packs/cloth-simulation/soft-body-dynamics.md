@@ -1,0 +1,119 @@
+---
+title: "Soft-body dynamics"
+source: https://en.wikipedia.org/wiki/Soft-body_dynamics
+domain: cloth-simulation
+license: CC-BY-SA-4.0
+tags: cloth simulation, cloth modeling, soft-body dynamics, mass spring cloth
+fetched: 2026-07-02
+---
+
+# Soft-body dynamics
+
+**Soft-body dynamics** is a field of computer graphics that focuses on visually realistic physical simulations of the motion and properties of deformable objects (or *soft bodies*). The applications are mostly in video games and films. Unlike in simulation of rigid bodies, the shape of soft bodies can change, meaning that the relative distance of two points on the object is not fixed. While the relative distances of points are not fixed, the body is expected to retain its shape to some degree (unlike a fluid). The scope of soft body dynamics is quite broad, including simulation of soft organic materials such as muscle, fat, hair and vegetation, as well as other deformable materials such as clothing and fabric. Generally, these methods only provide visually plausible emulations rather than accurate scientific/engineering simulations, though there is some crossover with scientific methods, particularly in the case of finite element simulations. Several physics engines currently provide software for soft-body simulation.
+
+## Deformable solids
+
+The simulation of volumetric solid soft bodies can be realised by using a variety of approaches.
+
+### Spring/mass models
+
+In this approach, the body is modeled as a set of point masses (nodes) connected by ideal weightless elastic springs obeying some variant of Hooke's law. The nodes may either derive from the edges of a two-dimensional polygonal mesh representation of the surface of the object, or from a three-dimensional network of nodes and edges modeling the internal structure of the object (or even a one-dimensional system of links, if for example a rope or hair strand is being simulated). Additional springs between nodes can be added, or the force law of the springs modified, to achieve desired effects. Applying Newton's second law to the point masses including the forces applied by the springs and any external forces (due to contact, gravity, air resistance, wind, and so on) gives a system of differential equations for the motion of the nodes, which is solved by standard numerical schemes for solving ODEs. Rendering of a three-dimensional mass-spring lattice is often done using free-form deformation, in which the rendered mesh is embedded in the lattice and distorted to conform to the shape of the lattice as it evolves. Assuming all point masses equal to zero one can obtain the Stretched grid method aimed at several engineering problems solution relative to the elastic grid behavior. These are sometimes known as mass-spring-damper models. In pressurized soft bodies spring-mass model is combined with a pressure force based on the ideal gas law.
+
+### Finite element simulation
+
+This is a more physically accurate approach, which uses the widely used finite element method to solve the partial differential equations which govern the dynamics of an elastic material. The body is modeled as a three-dimensional elastic continuum by breaking it into a large number of solid elements which fit together, and solving for the stresses and strains in each element using a model of the material. The elements are typically tetrahedral, the nodes being the vertices of the tetrahedra (relatively simple methods exist to *tetrahedralize* a three dimensional region bounded by a polygon mesh into tetrahedra, similarly to how a two-dimensional polygon may be *triangulated* into triangles). The strain (which measures the local deformation of the points of the material from their rest state) is quantified by the strain tensor ${\boldsymbol {\epsilon }}$ . The stress (which measures the local forces per-unit area in all directions acting on the material) is quantified by the Cauchy stress tensor ${\boldsymbol {\sigma }}$ . Given the current local strain, the local stress can be computed via the generalized form of Hooke's law: ${\boldsymbol {\sigma }}={\mathsf {C}}{\boldsymbol {\varepsilon }}\,$ where ${\mathsf {C}}$ is the elasticity tensor, which encodes the material properties (parametrized in linear elasticity for an isotropic material by the Poisson ratio and Young's modulus).
+
+The equation of motion of the element nodes is obtained by integrating the stress field over each element and relating this, via Newton's second law, to the node accelerations.
+
+Pixelux (developers of the Digital Molecular Matter system) use a finite-element-based approach for their soft bodies, using a tetrahedral mesh and converting the stress tensor directly into node forces. Rendering is done via a form of free-form deformation.
+
+### Energy minimization methods
+
+This approach is motivated by variational principles and the physics of surfaces, which dictate that a constrained surface will assume the shape which minimizes the total energy of deformation (analogous to a soap bubble). Expressing the energy of a surface in terms of its local deformation (the energy is due to a combination of stretching and bending), the local force on the surface is given by differentiating the energy with respect to position, yielding an equation of motion which can be solved in the standard ways.
+
+### Shape matching
+
+In this scheme, penalty forces or constraints are applied to the model to drive it towards its original shape (i.e. the material behaves as if it has shape memory). To conserve momentum the rotation of the body must be estimated properly, for example via polar decomposition. To approximate finite element simulation, shape matching can be applied to three dimensional lattices and multiple shape matching constraints blended.
+
+### Rigid-body based deformation
+
+Deformation can also be handled by a traditional rigid-body physics engine, modeling the soft-body motion using a network of multiple rigid bodies connected by constraints, and using (for example) matrix-palette skinning to generate a surface mesh for rendering. This is the approach used for deformable objects in Havok Destruction.
+
+## Cloth simulation
+
+In the context of computer graphics, *cloth simulation* refers to the simulation of soft bodies in the form of two dimensional continuum elastic membranes, that is, for this purpose, the actual structure of real cloth on the yarn level can be ignored (though modeling cloth on the yarn level has been tried). Via rendering effects, this can produce a visually plausible emulation of textiles and clothing, used in a variety of contexts in video games, animation, and film. It can also be used to simulate two dimensional sheets of materials other than textiles, such as deformable metal panels or vegetation. In video games it is often used to enhance the realism of clothed animated characters.
+
+Cloth simulators are generally based on mass-spring models, but a distinction must be made between force-based and position-based solvers.
+
+### Force-based cloth
+
+The mass-spring model (obtained from a polygonal mesh representation of the cloth) determines the internal spring forces acting on the nodes at each timestep (in combination with gravity and applied forces). Newton's second law gives equations of motion which can be solved via standard ODE solvers. To create high resolution cloth with a realistic stiffness is not possible however with simple explicit solvers (such as forward Euler integration), unless the timestep is made too small for interactive applications (since explicit integrators are numerically unstable for sufficiently stiff systems). Therefore, implicit solvers must be used, requiring solution of a large sparse matrix system (via e.g. the conjugate gradient method), which itself may also be difficult to achieve at interactive frame rates. An alternative is to use an explicit method with low stiffness, with *ad hoc* methods to avoid instability and excessive stretching (e.g. strain limiting corrections).
+
+### Position-based dynamics
+
+To avoid needing to do an expensive implicit solution of a system of ODEs, many real-time cloth simulators (notably PhysX, Havok Cloth, and Maya nCloth) use *position based dynamics* (PBD), an approach based on constraint relaxation. The mass-spring model is converted into a system of constraints, which demands that the distance between the connected nodes be equal to the initial distance. This system is solved sequentially and iteratively, by directly moving nodes to satisfy each constraint, until sufficiently stiff cloth is obtained. This is similar to a Gauss-Seidel solution of the implicit matrix system for the mass-spring model. Care must be taken though to solve the constraints in the same sequence each timestep, to avoid spurious oscillations, and to make sure that the constraints do not violate linear and angular momentum conservation. Additional position constraints can be applied, for example to keep the nodes within desired regions of space (sufficiently close to an animated model for example), or to maintain the body's overall shape via shape matching.
+
+## Collision detection for deformable objects
+
+Realistic interaction of simulated soft objects with their environment may be important for obtaining visually realistic results. Cloth self-intersection is important in some applications for acceptably realistic simulated garments. This is challenging to achieve at interactive frame rates, particularly in the case of detecting and resolving self collisions and mutual collisions between two or more deformable objects.
+
+Collision detection may be *discrete/a posteriori* (meaning objects are advanced in time through a pre-determined interval, and then any penetrations detected and resolved), or *continuous/a priori* (objects are advanced only until a collision occurs, and the collision is handled before proceeding). The former is easier to implement and faster, but leads to failure to detect collisions (or detection of spurious collisions) if objects move fast enough. Real-time systems generally have to use discrete collision detection, with other *ad hoc* ways to avoid failing to detect collisions.
+
+Detection of collisions between cloth and environmental objects with a well defined "inside" is straightforward since the system can detect unambiguously whether the cloth mesh vertices and faces are intersecting the body and resolve them accordingly. If a well defined "inside" does not exist (e.g. in the case of collision with a mesh which does not form a closed boundary), an "inside" may be constructed via extrusion. Mutual- or self-collisions of soft bodies defined by tetrahedra is straightforward, since it reduces to detection of collisions between solid tetrahedra.
+
+However, detection of collisions between two polygonal cloths (or collision of a cloth with itself) via discrete collision detection is much more difficult, since there is no unambiguous way to locally detect after a timestep whether a cloth node which has penetrated is on the "wrong" side or not. Solutions involve either using the history of the cloth motion to determine if an intersection event has occurred, or doing a global analysis of the cloth state to detect and resolve self-intersections. Pixar has presented a method which uses a global topological analysis of mesh intersections in configuration space to detect and resolve self-interpenetration of cloth. Currently, this is generally too computationally expensive for real-time cloth systems.
+
+To do collision detection efficiently, primitives which are certainly not colliding must be identified as soon as possible and discarded from consideration to avoid wasting time. To do this, some form of spatial subdivision scheme is essential, to avoid a brute force test of $O[n^{2}]$ primitive collisions. Approaches used include:
+
+- Bounding volume hierarchies (AABB trees, OBB trees, sphere trees)
+- Grids, either uniform (using hashing for memory efficiency) or hierarchical (e.g. Octree, kd-tree)
+- Coherence-exploiting schemes, such as sweep and prune with insertion sort, or tree-tree collisions with front tracking.
+- Hybrid methods involving a combination of various of these schemes, e.g. a coarse AABB tree plus sweep-and-prune with coherence between colliding leaves.
+
+## Other applications
+
+Other effects which may be simulated via the methods of soft-body dynamics are:
+
+- *Destructible* materials: fracture of brittle solids, cutting of soft bodies, and tearing of cloth. The finite element method is especially suited to modelling fracture as it includes a realistic model of the distribution of internal stresses in the material, which physically is what determines when fracture occurs, according to fracture mechanics.
+- Plasticity (permanent deformation) and melting
+- Simulated hair, fur, and feathers
+- Simulated organs for biomedical applications
+
+Simulating fluids in the context of computer graphics would not normally be considered soft-body dynamics, which is usually restricted to mean simulation of materials which have a tendency to retain their shape and form. In contrast, a fluid assumes the shape of whatever vessel contains it, as the particles are bound together by relatively weak forces.
+
+## Software supporting soft body physics
+
+### Simulation engines
+
+| Engine | Website | License | Description |
+|---|---|---|---|
+| Bullet | http://bulletphysics.org | zlib license |   |
+| Carbon | http://numerion-software.com | Proprietary |   |
+| CryEngine 3 | http://mycryengine.com | Non-free |   |
+| Digital Molecular Matter | http://pixelux.com | Proprietary |   |
+| Havok Cloth | http://havok.com | Non-free |   |
+| Houdini | https://www.sidefx.com/products/houdini/ | Proprietary | Procedural generation & VFX software - soft-body FEM, cloth simulation (Vellum) |
+| Maya nCloth | http://autodesk.com/maya | Non-free |   |
+| OpenCloth | https://github.com/mmmovania/opencloth | ? | A collection of source codes implementing cloth simulation algorithms as well as soft body dynamics in OpenGL. |
+| OpenTissue | http://opentissue.org | zlib license |   |
+| Physics Abstraction Layer | http://www.adrianboeing.com/pal/index.html | 3-clause BSD license | Uniform API, supports multiple physics engines. |
+| PhysX | http://developer.nvidia.com/physx | Non-free |   |
+| Phyz | http://phyz.ath.cx | Public domain |   |
+| Simulation Open Framework Architecture | http://www.sofa-framework.org/ | GNU Lesser General Public License v2.1+ |   |
+| Source Engine | https://developer.valvesoftware.com | Proprietary | Supports the use of simulated hair and cloth physics. |
+| Step | http://edu.kde.org/step/ | GNU General Public License v2 |   |
+| SyFlex | http://syflex.biz | Non-free |   |
+| Torque | https://torque3d.org/torque3d/ | MIT License |   |
+| Unreal Engine | https://unrealengine.com | Proprietary |   |
+| Vega FEM | https://viterbi-web.usc.edu/~jbarbic/vega/ | 3-clause BSD license |   |
+| Blender (software) | https://www.blender.org/ | GNU General Public License v2 |   |
+| Ziva VFX | http://zivadynamics.com | Proprietary | Character simulation software - FEM muscles, fat, skin and cloth |
+
+### Games
+
+| Game | Website | License | Description |
+|---|---|---|---|
+| BeamNG.drive | http://beamng.com | Non-free | Commercial sandbox-esque game based on soft-body vehicle physics. Simulates damage to Vehicles And their functions |
+| Crash Effects Inc. | https://www.crasheffects.com/ | Non-free | Vehicle construction / first person crash test simulator. Soft-body physics are implemented for superstructures, some vehicle components use simple damage modeling. |
+| Rigs of Rods | https://rigsofrods.github.io | GNU General Public License v3 | Free and open source vehicle simulator. |
+| Wreckfest | http://nextcargame.com | Non-free | Derby racing game. Soft-body physics are implemented for superstructures, but parts and components (e.g. the engine) use simple damage modeling. |

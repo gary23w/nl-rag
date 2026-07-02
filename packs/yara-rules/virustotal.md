@@ -1,0 +1,16 @@
+---
+title: "VirusTotal"
+source: https://en.wikipedia.org/wiki/VirusTotal
+domain: yara-rules
+license: CC-BY-SA-4.0
+tags: yara rules, malware signature, pattern matching detection, antivirus engine, signature based detection
+fetched: 2026-07-02
+---
+
+# VirusTotal
+
+**VirusTotal** is a website created by the Spanish security company Hispasec Sistemas. Launched in June 2004, it was acquired by Google in September 2012. The company's ownership switched in January 2018 to Google Security Operations, a subsidiary of Google.
+
+VirusTotal operates by multiscanning. It aggregates many antivirus products and online scan engines called Contributors. In November, 2018, the Cyber National Mission Force, a unit subordinate to the U.S. Cyber Command became a Contributor. The aggregated data from these Contributors allows a user to check for viruses that the user's own antivirus software may have missed, or to verify against any false positives. Files up to 650 MB can be uploaded to the website or up to 32 MB sent via email. Antivirus software vendors can receive copies of files that were flagged by other scans but passed by their own engine, to help improve their software and, by extension, VirusTotal's own capability. Users can also scan suspect URLs and search through the VirusTotal dataset. VirusTotal uses the Cuckoo sandbox for dynamic analysis of malware. VirusTotal was selected by *PC World* as one of the best 100 products of 2007.
+
+On July 2023, VirusTotal issued an apology after one of its staff unintentionally exposed the private information belonging to 5,600 VirusTotal's customers, including the email addresses of US Cyber Command, FBI, and NSA employees.

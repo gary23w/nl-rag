@@ -1,0 +1,682 @@
+# nl-rag distilled facts — domain: datalog-query
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:datalog-query/datalog] A Datalog program consists of *facts*, which are statements that are held to be true, and *rules*, which say how to deduce new facts from known facts.
+[src:datalog-query/datalog] The names are written in lowercase because strings beginning with an uppercase letter stand for variables.
+[src:datalog-query/datalog] The meaning of a program is defined to be the set of all of the facts that can be deduced using the initial facts and the rules.
+[src:datalog-query/datalog] This query asks: *Who are all the X that xerces is an ancestor of?* For this example, it would return *brooke* and *damocles*.
+[src:datalog-query/datalog] The non-recursive subset of Datalog is closely related to query languages for relational databases, such as SQL.
+[src:datalog-query/datalog] More formally, non-recursive Datalog corresponds precisely to unions of conjunctive queries, or equivalently, negation-free relational algebra.
+[src:datalog-query/datalog] A Datalog program consists of a list of *rules* (Horn clauses).
+[src:datalog-query/datalog] Atoms are also referred to as **literals**.
+[src:datalog-query/datalog] The atom to the left of the `:-` symbol is called the **head** of the rule; the atoms to the right are the **body**.
+[src:datalog-query/datalog] Every Datalog program must satisfy the condition that every variable that appears in the head of a rule also appears in the body (this condition is sometimes called the **range restriction**).
+[src:datalog-query/datalog] There are two common conventions for variable names: capitalizing variables, or prefixing them with a question mark `?`.
+[src:datalog-query/datalog] Note that under this definition, Datalog does *not* include negation nor aggregates; see § Extensions for more information about those constructs.
+[src:datalog-query/datalog] Rules with empty bodies are called **facts**.
+[src:datalog-query/datalog] The set of facts is called the **extensional database** or **EDB** of the Datalog program.
+[src:datalog-query/datalog] The set of tuples computed by evaluating the Datalog program is called the **intensional database** or **IDB**.
+[src:datalog-query/datalog] These are merely abbreviations (syntactic sugar); they have no impact on the semantics of the program.
+[src:datalog-query/datalog] There are three widely-used approaches to the semantics of Datalog programs: model-theoretic, fixed-point, and proof-theoretic.
+[src:datalog-query/datalog] These three approaches can be proven equivalent.
+[src:datalog-query/datalog] An atom is called **ground** if none of its subterms are variables.
+[src:datalog-query/datalog] Intuitively, each of the semantics define the meaning of a program to be the set of all ground atoms that can be deduced from the rules of the program, starting from the facts.
+[src:datalog-query/datalog] A rule is called ground if all of its atoms (head and body) are ground.
+[src:datalog-query/datalog] A rule *R*2 is a *ground instance* of another rule *R*1 if *R*2 is the result of a substitution of constants for all the variables in *R*1.
+[src:datalog-query/datalog] The *Herbrand base* of a Datalog program is the set of all ground atoms that can be made with the constants appearing in the program.
+[src:datalog-query/datalog] The **Herbrand model** of a Datalog program is the smallest subset of the Herbrand base such that, for each ground instance of each rule in the program, if the atoms in the body of the rule are in the set, then so is the head.
+[src:datalog-query/datalog] The model-theoretic semantics define the minimal Herbrand model to be the meaning of the program.
+[src:datalog-query/datalog] Let I be the power set of the Herbrand base of a program *P*.
+[src:datalog-query/datalog] The *immediate consequence operator* for *P* is a map T from I to I that adds all of the new ground atoms that can be derived from the rules of the program in a single step.
+[src:datalog-query/datalog] The least-fixed-point semantics define the least fixed point of T to be the meaning of the program; this coincides with the minimal Herbrand model.
+[src:datalog-query/datalog] The fixpoint semantics suggest an algorithm for computing the minimal model: Start with the set of ground facts in the program, then repeatedly add consequences of the rules until a fixpoint is reached.
+[src:datalog-query/datalog] This algorithm is called naïve evaluation.
+[src:datalog-query/datalog] The proof-theoretic semantics defines the meaning of a Datalog program to be the set of facts with corresponding *proof trees*.
+[src:datalog-query/datalog] Intuitively, a proof tree shows how to derive a fact from the facts and rules of a program.
+[src:datalog-query/datalog] One might be interested in knowing whether or not a particular ground atom appears in the minimal Herbrand model of a Datalog program, perhaps without caring much about the rest of the model.
+[src:datalog-query/datalog] A top-down reading of the proof trees described above suggests an algorithm for computing the results of such *queries*.
+[src:datalog-query/datalog] This reading informs the SLD resolution algorithm, which forms the basis for the evaluation of Prolog.
+[src:datalog-query/datalog] There are many different ways to evaluate a Datalog program, with different performance characteristics.
+[src:datalog-query/datalog] Bottom-up evaluation strategies start with the facts in the program and repeatedly apply the rules until either some goal or query is established, or until the complete minimal model of the program is produced.
+[src:datalog-query/datalog] Semi-naïve evaluation is a bottom-up evaluation strategy that can be asymptotically faster than naïve evaluation.
+[src:datalog-query/datalog] In naïve evaluation, the same facts may be discovered over and over again, while semi-naïve evaluation avoids this repeated computation by only working with the new tuples generated in the previous iteration.
+[src:datalog-query/datalog] Naïve and semi-naïve evaluation both evaluate recursive Datalog rules by repeatedly applying them to a set of known facts until a fixed point is reached.
+[src:datalog-query/datalog] In each iteration, rules are only run for "one step", i.e., non-recursively.
+[src:datalog-query/datalog] As mentioned above, each non-recursive Datalog rule corresponds precisely to a conjunctive query.
+[src:datalog-query/datalog] Many such techniques are implemented in modern bottom-up Datalog engines such as Soufflé.
+[src:datalog-query/datalog] Some Datalog engines integrate SQL databases directly.
+[src:datalog-query/datalog] Bottom-up evaluation of Datalog is also amenable to parallelization.
+[src:datalog-query/datalog] SLD resolution is sound and complete for Datalog programs.
+[src:datalog-query/datalog] Top-down evaluation strategies begin with a *query* or *goal*.
+[src:datalog-query/datalog] Bottom-up evaluation strategies can answer queries by computing the entire minimal model and matching the query against it, but this can be inefficient if the answer only depends on a small subset of the entire model.
+[src:datalog-query/datalog] The *magic sets* algorithm takes a Datalog program and a query, and produces a more efficient program that computes the same answer to the query while still using bottom-up evaluation.
+[src:datalog-query/datalog] A variant of the magic sets algorithm has been shown to produce programs that, when evaluated using semi-naïve evaluation, are as efficient as top-down evaluation.
+[src:datalog-query/datalog] The decision problem formulation of Datalog evaluation is as follows: "Given a Datalog program P split into a set of facts (EDB) E and a set of rules R, and a ground atom A.
+[src:datalog-query/datalog] With respect to data complexity, the decision problem for Datalog is P-complete (See Theorem 4.4 in ).
+[src:datalog-query/datalog] P-completeness for data complexity means that there exists a fixed Datalog query for which evaluation is P-complete.
+[src:datalog-query/datalog] The proof is based on *Datalog metainterpreter* for propositional logic programs.
+[src:datalog-query/datalog] With respect to program complexity, the decision problem is EXPTIME-complete.
+[src:datalog-query/datalog] In particular, evaluating Datalog programs always terminates; Datalog is not Turing-complete.
+[src:datalog-query/datalog] Some extensions to Datalog do not preserve these complexity bounds.
+[src:datalog-query/datalog] Extensions implemented in some Datalog engines, such as algebraic data types, can even make the resulting language Turing-complete.
+[src:datalog-query/datalog] Several extensions have been made to Datalog, e.g., to support negation, aggregate functions, inequalities, to allow object-oriented programming, or to allow disjunctions as heads of clauses.
+[src:datalog-query/datalog] These extensions have significant impacts on the language's semantics and on the implementation of a corresponding interpreter.
+[src:datalog-query/datalog] Datalog is a syntactic subset of Prolog, disjunctive Datalog, answer set programming, DatalogZ, and constraint logic programming.
+[src:datalog-query/datalog] When evaluated as an answer set program, a Datalog program yields a single answer set, which is exactly its minimal model.
+[src:datalog-query/datalog] Many implementations of Datalog extend Datalog with additional features; see § Datalog engines for more information.
+[src:datalog-query/datalog] Datalog can be extended to support aggregate functions.
+[src:datalog-query/datalog] Adding negation to Datalog complicates its semantics, leading to whole new languages and strategies for evaluation.
+[src:datalog-query/datalog] For example, the language that results from adding negation with the stable model semantics is exactly answer set programming.
+[src:datalog-query/datalog] Stratified negation can be added to Datalog while retaining its model-theoretic and fixed-point semantics.
+[src:datalog-query/datalog] Unlike in Prolog, statements of a Datalog program can be stated in any order.
+[src:datalog-query/datalog] Datalog does not have Prolog's cut operator.
+[src:datalog-query/datalog] This makes Datalog a fully declarative language.
+[src:datalog-query/datalog] This article deals primarily with Datalog without negation (see also Syntax and semantics of logic programming § Negation).
+[src:datalog-query/datalog] However, stratified negation is a common addition to Datalog; the following list contrasts Prolog with Datalog with stratified negation.
+[src:datalog-query/datalog] Datalog generalizes many other query languages.
+[src:datalog-query/datalog] For instance, conjunctive queries and union of conjunctive queries can be expressed in Datalog.
+[src:datalog-query/datalog] Datalog can also express regular path queries.
+[src:datalog-query/datalog] The **boundedness problem** for Datalog asks, given a Datalog program, whether it is **bounded**, i.e., the maximal recursion depth reached when evaluating the program on an input database can be bounded by some constant.
+[src:datalog-query/datalog] In other words, this question asks whether the Datalog program could be rewritten as a nonrecursive Datalog program, or, equivalently, as a union of conjunctive queries.
+[src:datalog-query/datalog] Solving the boundedness problem on arbitrary Datalog programs is undecidable, but it can be made decidable by restricting to some fragments of Datalog.
+[src:datalog-query/datalog] Systems that implement languages inspired by Datalog, whether compilers, interpreters, libraries, or embedded DSLs, are referred to as **Datalog engines**.
+[src:datalog-query/datalog] Datalog engines often implement extensions of Datalog, extending it with additional data types, foreign function interfaces, or support for user-defined lattices.
+[src:datalog-query/datalog] Such extensions may allow for writing non-terminating or otherwise ill-defined programs.
+[src:datalog-query/datalog] Datalog is quite limited in its expressivity.
+[src:datalog-query/datalog] It is not Turing-complete, and doesn't include basic data types such as integers or strings.
+[src:datalog-query/datalog] This parsimony is appealing from a theoretical standpoint, but it means Datalog *per se* is rarely used as a programming language or knowledge representation language.
+[src:datalog-query/datalog] Most Datalog engines implement substantial extensions of Datalog.
+[src:datalog-query/datalog] However, Datalog has a strong influence on such implementations, and many authors don't bother to distinguish them from Datalog as presented in this article.
+[src:datalog-query/datalog] Accordingly, the applications discussed in this section include applications of realistic implementations of Datalog-based languages.
+[src:datalog-query/datalog] Datalog has been applied to problems in data integration, information extraction, networking, security, cloud computing and machine learning.
+[src:datalog-query/datalog] Google has developed an extension to Datalog for big data processing.
+[src:datalog-query/datalog] Datalog has seen application in static program analysis.
+[src:datalog-query/datalog] The Soufflé dialect has been used to write pointer analyses for Java and a control-flow analysis for Scheme.
+[src:datalog-query/datalog] Datalog has been integrated with SMT solvers to make it easier to write certain static analyses.
+[src:datalog-query/datalog] The Flix dialect is also suited to writing static program analyses.
+[src:datalog-query/datalog] Some widely used database systems include ideas and algorithms developed for Datalog.
+[src:datalog-query/datalog] For example, the SQL:1999 standard includes recursive queries, and the Magic Sets algorithm (initially developed for the faster evaluation of Datalog queries) is implemented in IBM's DB2.
+[src:datalog-query/datalog] The origins of Datalog date back to the beginning of logic programming, but it became prominent as a separate area around 1977 when Hervé Gallaire and Jack Minker organized a workshop on logic and databases.
+[src:datalog-query/datalog] David Maier is credited with coining the term Datalog.
+[src:datalog-query/deductive-database] A **deductive database** is a database system that can make deductions (i.e. conclude additional facts) based on rules and facts stored in its database.
+[src:datalog-query/deductive-database] Datalog is the language typically used to specify facts, rules and queries in deductive databases.
+[src:datalog-query/deductive-database] Deductive databases have grown out of the desire to combine logic programming with relational databases to construct systems that support a powerful formalism and are still fast and able to deal with very large datasets.
+[src:datalog-query/deductive-database] Deductive databases are more expressive than relational databases but less expressive than logic programming systems such as Prolog.
+[src:datalog-query/deductive-database] In recent years, deductive databases have found new application in data integration, information extraction, networking, program analysis, security, and cloud computing.
+[src:datalog-query/graph-database] A **graph database** (**GDB**) is a database that uses graph structures for semantic queries with nodes, edges, and properties to represent and store data.
+[src:datalog-query/graph-database] A key concept of the system is the graph (or edge or relationship).
+[src:datalog-query/graph-database] The graph relates the data items in the store to a collection of nodes and edges, the edges representing the relationships between the nodes.
+[src:datalog-query/graph-database] The relationships allow data in the store to be linked together directly and, in many cases, retrieved with one operation.
+[src:datalog-query/graph-database] Graph databases hold the relationships between data as a priority.
+[src:datalog-query/graph-database] Querying relationships is fast because they are perpetually stored in the database.
+[src:datalog-query/graph-database] Relationships can be intuitively visualized using graph databases, making them useful for heavily inter-connected data.
+[src:datalog-query/graph-database] Graph databases are commonly referred to as a NoSQL database.
+[src:datalog-query/graph-database] Graph databases are similar to 1970s network model databases in that both represent general graphs, but network-model databases operate at a lower level of abstraction and lack easy traversal over a chain of edges.
+[src:datalog-query/graph-database] The underlying storage mechanism of graph databases can vary.
+[src:datalog-query/graph-database] Relationships are first-class citizens in a graph database and can be labeled, directed, and given properties.
+[src:datalog-query/graph-database] Some depend on a relational engine and store the graph data in a table (although a table is a logical element, therefore this approach imposes a level of abstraction between the graph database management system and physical storage devices).
+[src:datalog-query/graph-database] Others use a key–value store or document-oriented database for storage, making them inherently NoSQL structures.
+[src:datalog-query/graph-database] As of 2021, no graph query language has been universally adopted in the same way as SQL was for relational databases.
+[src:datalog-query/graph-database] There is a wide variety of systems used, many of which are tightly tied to one product.
+[src:datalog-query/graph-database] Early standardization efforts led to multi-vendor query languages like Gremlin, SPARQL, and Cypher.
+[src:datalog-query/graph-database] In September 2019 a proposal for a project to create a new standard graph query language (ISO/IEC 39075 Information Technology — Database Languages — GQL) was approved by members of ISO/IEC Joint Technical Committee 1(ISO/IEC JTC 1).
+[src:datalog-query/graph-database] GQL is intended to be a declarative database query language, like SQL.
+[src:datalog-query/graph-database] In addition to having query language interfaces, some graph databases are accessed through application programming interfaces (APIs).
+[src:datalog-query/graph-database] Graph databases differ from graph compute engines.
+[src:datalog-query/graph-database] Graph databases are technologies that are translations of the relational online transaction processing (OLTP) databases.
+[src:datalog-query/graph-database] On the other hand, graph compute engines are used in online analytical processing (OLAP) for bulk analysis.
+[src:datalog-query/graph-database] Graph databases attracted considerable attention in the 2000s, due to the successes of major technology corporations using proprietary graph databases, along with the introduction of open-source graph databases.
+[src:datalog-query/graph-database] One study concluded that an RDBMS was "comparable" in performance to existing graph analysis engines at executing graph queries.
+[src:datalog-query/graph-database] In the mid-1960s, navigational databases such as IBM's IMS supported tree-like structures in its hierarchical model, but the strict tree structure could be circumvented with virtual records.
+[src:datalog-query/graph-database] Graph structures could be represented in network model databases from the late 1960s.
+[src:datalog-query/graph-database] CODASYL, which had defined COBOL in 1959, defined the Network Database Language in 1969.
+[src:datalog-query/graph-database] Labeled graphs could be represented in graph databases from the mid-1980s, such as the Logical Data Model.
+[src:datalog-query/graph-database] Commercial object databases (ODBMSs) emerged in the early 1990s.
+[src:datalog-query/graph-database] In 2000, the Object Data Management Group published a standard language for defining object and relationship (graph) structures in their ODMG'93 publication.
+[src:datalog-query/graph-database] In the mid-to-late 2000s, commercial graph databases with ACID guarantees such as Neo4j and Oracle Spatial and Graph became available.
+[src:datalog-query/graph-database] In the 2010s, commercial ACID graph databases that could be scaled horizontally became available.
+[src:datalog-query/graph-database] Further, SAP HANA brought in-memory and columnar technologies to graph databases.
+[src:datalog-query/graph-database] Also in the 2010s, multi-model databases that supported graph models (and other models such as relational database or document-oriented database) became available, such as OrientDB, ArangoDB, and MarkLogic (starting with its 7.0 version).
+[src:datalog-query/graph-database] During this time, graph databases of various types have become especially popular with social network analysis with the advent of social media companies.
+[src:datalog-query/graph-database] Also during the decade, cloud-based graph databases such as Amazon Neptune and Neo4j AuraDB became available.
+[src:datalog-query/graph-database] Based on graph theory, graph databases store data in a way that reflects how it is conceptually understood, using nodes to represent entities and edges to represent the relationships between them.
+[src:datalog-query/graph-database] It consists of a set of objects, such as a node or an edge.
+[src:datalog-query/graph-database] A labeled-property graph model is represented by a set of nodes, relationships, properties, and labels.
+[src:datalog-query/graph-database] Both nodes of data and their relationships are named and can store properties represented by key–value pairs.
+[src:datalog-query/graph-database] The edges representing the relationships have two qualities: they always have a start node and an end node, and are directed; making the graph a directed graph.
+[src:datalog-query/graph-database] This is useful in providing additional metadata and semantics to relationships of the nodes.
+[src:datalog-query/graph-database] Direct storage of relationships allows a constant-time traversal.
+[src:datalog-query/graph-database] In an RDF graph model, each addition of information is represented with a separate node.
+[src:datalog-query/graph-database] For example, imagine a scenario where a user has to add a name property for a person represented as a distinct node in the graph.
+[src:datalog-query/graph-database] In a labeled-property graph model, this would be done with an addition of a name property into the node of the person.
+[src:datalog-query/graph-database] However, in an RDF, the user has to add a separate node called `hasName` connecting it to the original person node.
+[src:datalog-query/graph-database] Specifically, an RDF graph model is composed of nodes and arcs.
+[src:datalog-query/graph-database] An RDF graph notation or a statement is represented by: a node for the subject, a node for the object, and an arc for the predicate.
+[src:datalog-query/graph-database] A node may be left blank, a literal and/or be identified by a URI.
+[src:datalog-query/graph-database] A literal for a node may be of two types: plain (untyped) and typed.
+[src:datalog-query/graph-database] A plain literal has a lexical form and optionally a language tag.
+[src:datalog-query/graph-database] A typed literal is made up of a string with a URI that identifies a particular datatype.
+[src:datalog-query/graph-database] A blank node may be used to accurately illustrate the state of the data when the data does not have a URI.
+[src:datalog-query/graph-database] Graph databases are a powerful tool for graph-like queries.
+[src:datalog-query/graph-database] For example, computing the shortest path between two nodes in the graph.
+[src:datalog-query/graph-database] Other graph-like queries can be performed over a graph database in a natural way (for example graph's diameter computations or community detection).
+[src:datalog-query/graph-database] Graphs are flexible, meaning it allows the user to insert new data into the existing graph without loss of application functionality.
+[src:datalog-query/graph-database] There is no need for the designer of the database to plan out extensive details of the database's future use cases.
+[src:datalog-query/graph-database] Some depend on a relational engine and "store" the graph data in a table (although a table is a logical element, therefore this approach imposes another level of abstraction between the graph database, the graph database management system and the physical devices where the data is actually stored).
+[src:datalog-query/graph-database] A node would be represented as any other document store, but edges that link two different nodes hold special attributes inside its document; a _from and _to attributes.
+[src:datalog-query/graph-database] Data lookup performance is dependent on the access speed from one particular node to another.
+[src:datalog-query/graph-database] Because index-free adjacency enforces the nodes to have direct physical RAM addresses and physically point to other adjacent nodes, it results in a fast retrieval.
+[src:datalog-query/graph-database] A native graph system with index-free adjacency does not have to move through any other type of data structures to find links between the nodes.
+[src:datalog-query/graph-database] Directly related nodes in a graph are stored in the cache once one of the nodes are retrieved, making the data lookup even faster than the first time a user fetches a node.
+[src:datalog-query/graph-database] However, such advantage comes at a cost.
+[src:datalog-query/graph-database] Index-free adjacency sacrifices the efficiency of queries that do not use graph traversals.
+[src:datalog-query/graph-database] Native graph databases use index-free adjacency to process CRUD operations on the stored data.
+[src:datalog-query/graph-database] Multiple categories of graphs by kind of data have been recognised.
+[src:datalog-query/graph-database] Codd's 1970 paper on the relational model, relational databases have been the de facto industry standard for large-scale data storage systems.
+[src:datalog-query/graph-database] Relational models require a strict schema and data normalization which separates data into many tables and removes any duplicate data within the database.
+[src:datalog-query/graph-database] Data is normalized in order to preserve data consistency and support ACID transactions.
+[src:datalog-query/graph-database] However this imposes limitations on how relationships can be queried.
+[src:datalog-query/graph-database] One of the relational model's design motivations was to achieve a fast row-by-row access.
+[src:datalog-query/graph-database] Problems arise when there is a need to form complex relationships between the stored data.
+[src:datalog-query/graph-database] Although relationships can be analyzed with the relational model, complex queries performing many join operations on many different attributes over several tables are required.
+[src:datalog-query/graph-database] In working with relational models, foreign key constraints should also be considered when retrieving relationships, causing additional overhead.
+[src:datalog-query/graph-database] Compared with relational databases, graph databases are often faster for associative data sets and map more directly to the structure of object-oriented applications.
+[src:datalog-query/graph-database] They can scale more naturally to large datasets as they do not typically need join operations, which can often be expensive.
+[src:datalog-query/graph-database] As they depend less on a rigid schema, they are marketed as more suitable to manage ad hoc and changing data with evolving schemas.
+[src:datalog-query/graph-database] Conversely, relational database management systems are typically faster at performing the same operation on large numbers of data elements, permitting the manipulation of the data in its natural structure.
+[src:datalog-query/graph-database] Despite the graph databases' advantages and recent popularity over relational databases, it is recommended the graph model itself should not be the sole reason to replace an existing relational database.
+[src:datalog-query/graph-database] A graph database may become relevant if there is an evidence for performance improvement by orders of magnitude and lower latency.
+[src:datalog-query/graph-database] The relational model gathers data together using information in the data.
+[src:datalog-query/graph-database] For example, one might look for all the "users" whose phone number contains the area code "311".
+[src:datalog-query/graph-database] This would be done by searching selected datastores, or tables, looking in the selected phone number fields for the string "311".
+[src:datalog-query/graph-database] This can be a time-consuming process in large tables, so relational databases offer indexes, which allow data to be stored in a smaller sub-table, containing only the selected data and a unique key (or primary key) of the record.
+[src:datalog-query/graph-database] If the phone numbers are indexed, the same search would occur in the smaller index table, gathering the keys of matching records, and then looking in the main data table for the records with those keys.
+[src:datalog-query/graph-database] Usually, a table is stored in a way that allows a lookup via a key to be very fast.
+[src:datalog-query/graph-database] Relational databases do not *inherently* contain the idea of fixed relationships between records.
+[src:datalog-query/graph-database] Instead, related data is linked to each other by storing one record's unique key in another record's data.
+[src:datalog-query/graph-database] For example, a table containing email addresses for users might hold a data item called `userpk`, which contains the primary key of the user record it is associated with.
+[src:datalog-query/graph-database] This operation, termed a join, can be computationally expensive.
+[src:datalog-query/graph-database] Depending on the complexity of the query, the number of joins, and indexing various keys, the system may have to search through multiple tables and indexes and then sort it all to match it together.
+[src:datalog-query/graph-database] In contrast, graph databases directly store the relationships between records.
+[src:datalog-query/graph-database] Instead of an email address being found by looking up its user's key in the `userpk` column, the user record contains a pointer that directly refers to the email address record.
+[src:datalog-query/graph-database] That is, having selected a user, the pointer can be followed directly to the email records, there is no need to search the email table to find the matching records.
+[src:datalog-query/graph-database] This can eliminate the costly join operations.
+[src:datalog-query/graph-database] For example, if one searches for all of the email addresses for users in area code "311", the engine would first perform a conventional search to find the users in "311", but then retrieve the email addresses by following the links found in those records.
+[src:datalog-query/graph-database] A relational database would first find all the users in "311", extract a list of the primary keys, perform another search for any records in the email table with those primary keys, and link the matching records together.
+[src:datalog-query/graph-database] For these types of common operations, graph databases would theoretically be faster.
+[src:datalog-query/graph-database] The true value of the graph approach becomes evident when one performs searches that are more than one level deep.
+[src:datalog-query/graph-database] For example, consider a search for users who have "subscribers" (a table linking users to other users) in the "311" area code.
+[src:datalog-query/graph-database] In this case a relational database has to first search for all the users with an area code in "311", then search the subscribers table for any of those users, and then finally search the users table to retrieve the matching users.
+[src:datalog-query/graph-database] In contrast, a graph database would search for all the users in "311", then follow the backlinks through the subscriber relationship to find the subscriber users.
+[src:datalog-query/graph-database] This avoids several searches, look-ups, and the memory usage involved in holding all of the temporary data from multiple records needed to construct the output.
+[src:datalog-query/graph-database] In terms of big O notation, this query would be $O(\log n)+O(1)$ time – i.e., proportional to the logarithm of the size of the data.
+[src:datalog-query/graph-database] In contrast, the relational version would be multiple $O(\log n)$ lookups, plus the $O(n)$ time needed to join all of the data records.
+[src:datalog-query/graph-database] The relative advantage of graph retrieval grows with the complexity of a query.
+[src:datalog-query/graph-database] For example, one might want to know "that movie about submarines with the actor who was in that movie with that other actor that played the lead in *Gone With the Wind*".
+[src:datalog-query/graph-database] In a relational database, this would require several separate searches through the movies and actors tables, doing another search on submarine movies, finding all the actors in those movies, and then comparing the (large) collected results.
+[src:datalog-query/graph-database] In contrast, the graph database would walk from *Gone With the Wind* to Clark Gable, gather the links to the movies he has been in, gather the links out of those movies to other actors, and then follow the links out of those actors back to the list of movies.
+[src:datalog-query/graph-database] The resulting list of movies can then be searched for "submarine".
+[src:datalog-query/graph-database] Relational databases are very well suited to flat data layouts, where relationships between data are only one or two levels deep.
+[src:datalog-query/graph-database] For example, an accounting database might need to look up all the line items for all the invoices for a given customer, a three-join query.
+[src:datalog-query/graph-database] Graph databases are aimed at datasets that contain many more links.
+[src:datalog-query/graph-database] They are especially well suited to social networking systems, where the "friends" relationship is essentially unbounded.
+[src:datalog-query/graph-database] These properties make graph databases naturally suited to types of searches that are increasingly common in online systems, and in big data environments.
+[src:datalog-query/graph-database] For this reason, graph databases are becoming very popular for large online systems like Facebook, Google, Twitter, and similar systems with deep links between records.
+[src:datalog-query/graph-database] To further illustrate, imagine a relational model with two tables: a `people` table (which has a `person_id` and `person_name` column) and a `friend` table (with `friend_id` and `person_id`, which is a foreign key from the `people` table).
+[src:datalog-query/graph-database] In this case, searching for all of Jack's friends would result in the following SQL query.
+[src:datalog-query/graph-database] The above examples are a simple illustration of a basic relationship query.
+[src:datalog-query/graph-database] They condense the idea of relational models' query complexity that increases with the total amount of data.
+[src:datalog-query/graph-database] In comparison, a graph database query is easily able to sort through the relationship graph to present the results.
+[src:datalog-query/graph-database] There are also results that indicate simple, condensed, and declarative queries of the graph databases do not necessarily provide good performance in comparison to the relational databases.
+[src:datalog-query/graph-database] While graph databases offer an intuitive representation of data, relational databases offer better results when set operations are needed.
+[src:datalog-query/logic-programming-p01] `A` is called the *head* of the rule, `B1`, ..., `Bn` is called the *body*, and the `Bi` are called *literals* or conditions.
+[src:datalog-query/logic-programming-p01] In the simplest case of Horn clauses (or "definite" clauses), all of the A, B1, ..., Bn are atomic formulae of the form p(t1 ,..., tm), where p is a predicate symbol naming a relation, like "motherhood", and the ti are terms naming objects (or individuals).
+[src:datalog-query/logic-programming-p01] Terms include both constant symbols, like "charles", and variables, such as X, which start with an upper case letter.
+[src:datalog-query/logic-programming-p01] Given a query, the program produces answers.
+[src:datalog-query/logic-programming-p01] For instance the program can be queried both to generate grandparents and to generate grandchildren.
+[src:datalog-query/logic-programming-p01] Although Horn clause logic programs are Turing complete, for most practical applications, Horn clause programs need to be extended to "normal" logic programs with negative conditions.
+[src:datalog-query/logic-programming-p01] Logic programming languages that include negative conditions have the knowledge representation capabilities of a non-monotonic logic.
+[src:datalog-query/logic-programming-p01] In ASP and Datalog, logic programs have only a declarative reading, and their execution is performed by means of a proof procedure or model generator whose behaviour is not meant to be controlled by the programmer.
+[src:datalog-query/logic-programming-p01] However, in the Prolog family of languages, logic programs also have a procedural interpretation as goal-reduction procedures.
+[src:datalog-query/logic-programming-p01] Negative conditions in the bodies of clauses also have a procedural interpretation, known as *negation as failure*: A negative literal `not B` is deemed to hold if and only if the positive literal `B` fails to hold.
+[src:datalog-query/logic-programming-p01] Much of the research in the field of logic programming has been concerned with trying to develop a logical semantics for negation as failure and with developing other semantics and other implementations for negation.
+[src:datalog-query/logic-programming-p01] These developments have been important, in turn, for supporting the development of formal methods for logic-based program verification and program transformation.
+[src:datalog-query/logic-programming-p01] The use of mathematical logic to represent and execute computer programs is also a feature of the lambda calculus, developed by Alonzo Church in the 1930s.
+[src:datalog-query/logic-programming-p01] However, the first proposal to use the clausal form of logic for representing computer programs was made by Cordell Green.
+[src:datalog-query/logic-programming-p01] This used an axiomatization of a subset of LISP, together with a representation of an input-output relation, to compute the relation by simulating the execution of the program in LISP.
+[src:datalog-query/logic-programming-p01] Foster and Elcock's Absys, on the other hand, employed a combination of equations and lambda calculus in an assertional programming language that places no constraints on the order in which operations are performed.
+[src:datalog-query/logic-programming-p01] Logic programming, with its current syntax of facts and rules, can be traced back to debates in the late 1960s and early 1970s about declarative versus procedural representations of knowledge in artificial intelligence.
+[src:datalog-query/logic-programming-p01] Advocates of declarative representations were notably working at Stanford, associated with John McCarthy, Bertram Raphael, and Cordell Green, and in Edinburgh, with John Alan Robinson (an academic visitor from Syracuse University), Pat Hayes, and Robert Kowalski.
+[src:datalog-query/logic-programming-p01] Advocates of procedural representations were mainly centered at MIT, under the leadership of Marvin Minsky and Seymour Papert.
+[src:datalog-query/logic-programming-p01] Although it was based on the proof methods of logic, Planner, developed by Carl Hewitt at MIT, was the first language to emerge within this proceduralist paradigm.
+[src:datalog-query/logic-programming-p01] Planner featured pattern-directed invocation of procedural plans from goals (i.e. goal-reduction or backward chaining) and from assertions (i.e. forward chaining).
+[src:datalog-query/logic-programming-p01] The most influential implementation of Planner was the subset of Planner, called Micro-Planner, implemented by Gerry Sussman, Eugene Charniak, and Terry Winograd.
+[src:datalog-query/logic-programming-p01] Winograd used Micro-Planner to implement the landmark, natural-language understanding program SHRDLU.
+[src:datalog-query/logic-programming-p01] For the sake of efficiency, Planner used a backtracking control structure so that only one possible computation path had to be stored at a time.
+[src:datalog-query/logic-programming-p01] Planner gave rise to the programming languages QA4, Popler, Conniver, QLISP, and the concurrent language Ether.
+[src:datalog-query/logic-programming-p01] Hayes and Kowalski in Edinburgh tried to reconcile the logic-based declarative approach to knowledge representation with Planner's procedural approach.
+[src:datalog-query/logic-programming-p01] Hayes (1973) developed an equational language, Golux, in which different procedures could be obtained by altering the behavior of the theorem prover.
+[src:datalog-query/logic-programming-p01] In the meanwhile, Alain Colmerauer in Marseille was working on natural-language understanding, using logic to represent semantics and using resolution for question-answering.
+[src:datalog-query/logic-programming-p01] During the summer of 1971, Colmerauer invited Kowalski to Marseille, and together they discovered that the clausal form of logic could be used to represent formal grammars and that resolution theorem provers could be used for parsing.
+[src:datalog-query/logic-programming-p01] They observed that some theorem provers, like hyper-resolution, behave as bottom-up parsers and others, like SL resolution (1971) behave as top-down parsers.
+[src:datalog-query/logic-programming-p01] It was in the following summer of 1972, that Kowalski, again working with Colmerauer, developed the procedural interpretation of implications in clausal form.
+[src:datalog-query/logic-programming-p01] It also became clear that such clauses could be restricted to definite clauses or Horn clauses, and that SL-resolution could be restricted (and generalised) to SLD resolution.
+[src:datalog-query/logic-programming-p01] Kowalski's procedural interpretation and SLD were described in a 1973 memo, published in 1974.
+[src:datalog-query/logic-programming-p01] Colmerauer, with Philippe Roussel, used the procedural interpretation as the basis of Prolog, which was implemented in the summer and autumn of 1972.
+[src:datalog-query/logic-programming-p01] The first Prolog program, also written in 1972 and implemented in Marseille, was a French question-answering system.
+[src:datalog-query/logic-programming-p01] The use of Prolog as a practical programming language was given great momentum by the development of a compiler by David H.
+[src:datalog-query/logic-programming-p01] Experiments demonstrated that Edinburgh Prolog could compete with the processing speed of other symbolic programming languages such as Lisp.
+[src:datalog-query/logic-programming-p01] Edinburgh Prolog became the *de facto* standard and strongly influenced the definition of ISO standard Prolog.
+[src:datalog-query/logic-programming-p01] Logic programming gained international attention during the 1980s, when it was chosen by the Japanese Ministry of International Trade and Industry to develop the software for the Fifth Generation Computer Systems (FGCS) project.
+[src:datalog-query/logic-programming-p01] The FGCS project aimed to use logic programming to develop advanced Artificial Intelligence applications on massively parallel computers.
+[src:datalog-query/logic-programming-p01] Although the project initially explored the use of Prolog, it later adopted the use of concurrent logic programming, because it was closer to the FGCS computer architecture.
+[src:datalog-query/logic-programming-p01] However, the committed choice feature of concurrent logic programming interfered with the language's logical semantics and with its suitability for knowledge representation and problem solving applications.
+[src:datalog-query/logic-programming-p01] Moreover, the parallel computer systems developed in the project failed to compete with advances taking place in the development of more conventional, general-purpose computers.
+[src:datalog-query/logic-programming-p01] Together these two issues resulted in the FGCS project failing to meet its objectives.
+[src:datalog-query/logic-programming-p01] Interest in both logic programming and AI fell into world-wide decline.
+[src:datalog-query/logic-programming-p01] In the meanwhile, more declarative logic programming approaches, including those based on the use of Prolog, continued to make progress independently of the FGCS project.
+[src:datalog-query/logic-programming-p01] In particular, although Prolog was developed to combine declarative and procedural representations of knowledge, the purely declarative interpretation of logic programs became the focus for applications in the field of deductive databases.
+[src:datalog-query/logic-programming-p01] Work in this field became prominent around 1977, when Hervé Gallaire and Jack Minker organized a workshop on logic and databases in Toulouse.
+[src:datalog-query/logic-programming-p01] The field was eventually renamed as *Datalog*.
+[src:datalog-query/logic-programming-p01] This focus on the logical, declarative reading of logic programs was given further impetus by the development of constraint logic programming in the 1980s and Answer Set Programming in the 1990s.
+[src:datalog-query/logic-programming-p01] The Association for Logic Programming (ALP) was founded in 1986 to promote Logic Programming.
+[src:datalog-query/logic-programming-p01] Its official journal until 2000, was *The Journal of Logic Programming*.
+[src:datalog-query/logic-programming-p01] In 2001, the journal was renamed *The Journal of Logic and Algebraic Programming*, and the official journal of ALP became *Theory and Practice of Logic Programming*, published by Cambridge University Press.
+[src:datalog-query/logic-programming-p01] Logic programs enjoy a rich variety of semantics and problem solving methods, as well as a wide range of applications in programming, databases, knowledge representation, and problem solving.
+[src:datalog-query/logic-programming-p01] The procedural interpretation of logic programs, which uses backward reasoning to reduce goals to subgoals, is a special case of the use of a problem-solving strategy to **control** the use of a declarative, **logical** representation of knowledge to obtain the behaviour of an **algorithm**.
+[src:datalog-query/logic-programming-p01] More generally, different problem-solving strategies can be applied to the same logical representation to obtain different algorithms.
+[src:datalog-query/logic-programming-p01] Alternatively, different algorithms can be obtained with a given problem-solving strategy by using different logical representations.
+[src:datalog-query/logic-programming-p01] The two main problem-solving strategies are backward reasoning (goal reduction) and forward reasoning, also known as top-down and bottom-up reasoning, respectively.
+[src:datalog-query/logic-programming-p01] In the simple case of a propositional Horn clause program and a top-level atomic goal, backward reasoning determines an and-or tree, which constitutes the search space for solving the goal.
+[src:datalog-query/logic-programming-p01] The top-level goal is the root of the tree.
+[src:datalog-query/logic-programming-p01] Given any node in the tree and any clause whose head matches the node, there exists a set of child nodes corresponding to the sub-goals in the body of the clause.
+[src:datalog-query/logic-programming-p01] These child nodes are grouped together by an "and".
+[src:datalog-query/logic-programming-p01] The alternative sets of children corresponding to alternative ways of solving the node are grouped together by an "or".
+[src:datalog-query/logic-programming-p01] Any search strategy can be used to search this space.
+[src:datalog-query/logic-programming-p01] Prolog uses a sequential, last-in-first-out, backtracking strategy, in which only one alternative and one sub-goal are considered at a time.
+[src:datalog-query/logic-programming-p01] For example, subgoals can be solved in parallel, and clauses can also be tried in parallel.
+[src:datalog-query/logic-programming-p01] The first strategy is called **and-parallel** and the second strategy is called **or-parallel**.
+[src:datalog-query/logic-programming-p01] Other search strategies, such as intelligent backtracking, or best-first search to find an optimal solution, are also possible.
+[src:datalog-query/logic-programming-p01] In the more general, non-propositional case, where sub-goals can share variables, other strategies can be used, such as choosing the subgoal that is most highly instantiated or that is sufficiently instantiated so that only one procedure applies.
+[src:datalog-query/logic-programming-p01] Such strategies are used, for example, in concurrent logic programming.
+[src:datalog-query/logic-programming-p01] In most cases, backward reasoning from a query or goal is more efficient than forward reasoning.
+[src:datalog-query/logic-programming-p01] But sometimes with Datalog and Answer Set Programming, there may be no query that is separate from the set of clauses as a whole, and then generating all the facts that can be derived from the clauses is a sensible problem-solving strategy.
+[src:datalog-query/logic-programming-p01] Here the relation `fibonacci(N, M)` stands for the function `fibonacci(N) = M`, and the predicate `N is Expression` is Prolog notation for the predicate that instantiates the variable `N` to the value of `Expression`.
+[src:datalog-query/logic-programming-p01] Given the goal of computing the fibonacci number of `n`, backward reasoning reduces the goal to the two subgoals of computing the fibonacci numbers of n-1 and n-2.
+[src:datalog-query/logic-programming-p01] It reduces the subgoal of computing the fibonacci number of n-1 to the two subgoals of computing the fibonacci numbers of n-2 and n-3, redundantly computing the fibonacci number of n-2.
+[src:datalog-query/logic-programming-p01] This process of reducing one fibonacci subgoal to two fibonacci subgoals continues until it reaches the numbers 0 and 1.
+[src:datalog-query/logic-programming-p01] In contrast, forward reasoning generates the sequence of fibonacci numbers, starting from 0 and 1 without any recomputation, and its complexity is linear with respect to n.
+[src:datalog-query/logic-programming-p01] Prolog cannot perform forward reasoning directly.
+[src:datalog-query/logic-programming-p01] But it can achieve the effect of forward reasoning within the context of backward reasoning by means of tabling: Subgoals are maintained in a table, along with their solutions.
+[src:datalog-query/logic-programming-p01] If a subgoal is re-encountered, it is solved directly by using the solutions already in the table, instead of re-solving the subgoals redundantly.
+[src:datalog-query/logic-programming-p01] Logic programming can be viewed as a generalisation of functional programming, in which functions are a special case of relations.
+[src:datalog-query/logic-programming-p01] For example, the function, mother(X) = Y, (every X has only one mother Y) can be represented by the relation mother(X, Y).
+[src:datalog-query/logic-programming-p01] In this respect, logic programs are similar to relational databases, which also represent functions as relations.
+[src:datalog-query/logic-programming-p01] Compared with relational syntax, functional syntax is more compact for nested functions.
+[src:datalog-query/logic-programming-p01] However, nested syntax can be regarded as syntactic sugar for unnested syntax.
+[src:datalog-query/logic-programming-p01] Ciao Prolog, for example, transforms functional syntax into relational form and executes the resulting logic program using the standard Prolog execution strategy.
+[src:datalog-query/logic-programming-p01] Moreover, the same transformation can be used to execute nested relations that are not functional.
+[src:datalog-query/logic-programming-p01] The term *relational programming* has been used to cover a variety of programming languages that treat functions as a special case of relations.
+[src:datalog-query/logic-programming-p01] Some of these languages, such as miniKanren and relational linear programming are logic programming languages in the sense of this article.
+[src:datalog-query/logic-programming-p01] However, the relational language RML is an imperative programming language whose core construct is a relational expression, which is similar to an expression in first-order predicate logic.
+[src:datalog-query/logic-programming-p01] Other relational programming languages are based on the relational calculus or relational algebra.
+[src:datalog-query/logic-programming-p01] Viewed in purely logical terms, there are two approaches to the declarative semantics of Horn clause logic programs: One approach is the original *logical consequence semantics*, which understands solving a goal as showing that the goal is a theorem that is true in all models of the program.
+[src:datalog-query/logic-programming-p01] In this approach, computation is theorem-proving in first-order logic; and both backward reasoning, as in SLD resolution, and forward reasoning, as in hyper-resolution, are correct and complete theorem-proving methods.
+[src:datalog-query/logic-programming-p01] Sometimes such theorem-proving methods are also regarded as providing a separate proof-theoretic (or operational) semantics for logic programs.
+[src:datalog-query/logic-programming-p01] But from a logical point of view, they are proof methods, rather than semantics.
+[src:datalog-query/logic-programming-p01] The other approach to the declarative semantics of Horn clause programs is the *satisfiability semantics*, which understands solving a goal as showing that the goal is true (or satisfied) in some intended (or standard) model of the program.
+[src:datalog-query/logic-programming-p01] For Horn clause programs, there always exists such a standard model: It is the unique *minimal model* of the program.
+[src:datalog-query/logic-programming-p01] Informally speaking, a minimal model is a model that, when it is viewed as the set of all (variable-free) facts that are true in the model, contains no smaller set of facts that is also a model of the program.
+[src:datalog-query/logic-programming-p01] For example, the following facts represent the minimal model of the family relationships example in the introduction of this article.
+[src:datalog-query/logic-programming-p01] The satisfiability semantics also has an alternative, more mathematical characterisation as the least fixed point of the function that uses the rules in the program to derive new facts from existing facts in one step of inference.
+[src:datalog-query/logic-programming-p01] Backward reasoning, which succeeds by reducing a goal to subgoals, until all subgoals are solved by facts, ensures that the goal is true in the minimal model, without generating the model explicitly.
+[src:datalog-query/logic-programming-p01] The difference between the two declarative semantics can be seen with the definitions of addition and multiplication in successor arithmetic, which represents the natural numbers `0, 1, 2, ...` as a sequence of terms of the form `0, s(0), s(s(0)), ...`.
+[src:datalog-query/logic-programming-p01] The two declarative semantics both give the same answers for the same existentially quantified conjunctions of addition and multiplication goals.
+[src:datalog-query/logic-programming-p01] However, with the logical-consequence semantics, there are non-standard models of the program, in which, for example, `add(s(s(0)), s(s(0)), s(s(s(s(s(0)))))),` i.e.
+[src:datalog-query/logic-programming-p01] But with the satisfiability semantics, there is only one model, namely the standard model of arithmetic, in which `2 + 2 = 5` is false.
+[src:datalog-query/logic-programming-p01] In the satisfiability semantics, the failure of the goal means that the truth value of the goal is false.
+[src:datalog-query/logic-programming-p01] But in the logical consequence semantics, the failure means that the truth value of the goal is unknown.
+[src:datalog-query/logic-programming-p01] Negation as failure (NAF), as a way of concluding that a negative condition `not p` holds by showing that the positive condition `p` fails to hold, was already a feature of early Prolog systems.
+[src:datalog-query/logic-programming-p01] The resulting extension of SLD resolution is called SLDNF.
+[src:datalog-query/logic-programming-p01] A similar construct, called "thnot", also existed in Micro-Planner.
+[src:datalog-query/logic-programming-p01] The logical semantics of NAF was unresolved until Keith Clark showed that, under certain natural conditions, NAF is an efficient, correct (and sometimes complete) way of reasoning with the logical consequence semantics using the *completion* of a logic program in first-order logic.
+[src:datalog-query/logic-programming-p01] The completion also includes axioms of equality, which correspond to unification.
+[src:datalog-query/logic-programming-p01] Clark showed that proofs generated by SLDNF are structurally similar to proofs generated by a natural deduction style of reasoning with the completion of the program.
+[src:datalog-query/logic-programming-p01] This is because tom is a thief, and it cannot be shown that tom should be rehabilitated.
+[src:datalog-query/logic-programming-p01] It cannot be shown that tom should be rehabilitated, because it cannot be shown that tom is a minor.
+[src:datalog-query/logic-programming-p01] This property of withdrawing a conclusion when new information is added, is called non-monotonicity, and it makes logic programming a non-monotonic logic.
+[src:datalog-query/logic-programming-p01] The notion of completion is closely related to John McCarthy's circumscription semantics for default reasoning, and to Ray Reiter's closed world assumption.
+[src:datalog-query/logic-programming-p01] The completion semantics for negation is a logical consequence semantics, for which SLDNF provides a proof-theoretic implementation.
+[src:datalog-query/logic-programming-p01] However, in the 1980s, the satisfiability semantics became more popular for logic programs with negation.
+[src:datalog-query/logic-programming-p01] In the satisfiability semantics, negation is interpreted according to the classical definition of truth in an intended or standard model of the logic program.
+[src:datalog-query/logic-programming-p01] In the case of logic programs with negative conditions, there are two main variants of the satisfiability semantics: In the well-founded semantics, the intended model of a logic program is a unique, three-valued, minimal model, which always exists.
+[src:datalog-query/logic-programming-p01] The well-founded semantics generalises the notion of inductive definition in mathematical logic.
+[src:datalog-query/logic-programming-p01] XSB Prolog implements the well-founded semantics using SLG resolution.
+[src:datalog-query/logic-programming-p01] In the alternative stable model semantics, there may be no intended models or several intended models, all of which are minimal and two-valued.
+[src:datalog-query/logic-programming-p01] The stable model semantics underpins answer set programming (ASP).
+[src:datalog-query/logic-programming-p01] Both the well-founded and stable model semantics apply to arbitrary logic programs with negation.
+[src:datalog-query/logic-programming-p01] However, both semantics coincide for stratified logic programs.
+[src:datalog-query/logic-programming-p01] Attempts to understand negation in logic programming have also contributed to the development of abstract argumentation frameworks.
+[src:datalog-query/logic-programming-p01] In an argumentation interpretation of negation, the initial argument that tom should be punished because he is a thief, is attacked by the argument that he should be rehabilitated because he is a minor.
+[src:datalog-query/logic-programming-p01] But the fact that tom is violent undermines the argument that tom should be rehabilitated and reinstates the argument that tom should be punished.
+[src:datalog-query/logic-programming-p01] Metaprogramming, in which programs are treated as data, was already a feature of early Prolog implementations.
+[src:datalog-query/logic-programming-p01] For example, the Edinburgh DEC10 implementation of Prolog included "an interpreter and a compiler, both written in Prolog itself".
+[src:datalog-query/logic-programming-p01] where true represents an empty conjunction, and (B,C) is a composite term representing the conjunction of B and C.
+[src:datalog-query/logic-programming-p01] The predicate clause(A,B) means that there is a clause of the form A :- B.
+[src:datalog-query/logic-programming-p01] Metaprogramming is an application of the more general use of a *metalogic* or *metalanguage* to describe and reason about another language, called the *object language*.
+[src:datalog-query/logic-programming-p01] Metalogic programming allows object-level and metalevel representations to be combined, as in natural language.
+[src:datalog-query/logic-programming-p01] In his popular Introduction to Cognitive Science, Paul Thagard includes logic and rules as alternative approaches to modelling human thinking.
+[src:datalog-query/logic-programming-p01] He argues that rules, which have the form *IF condition THEN action*, are "very similar" to logical conditionals, but they are simpler and have greater psychological plausibility (page 51).
+[src:datalog-query/logic-programming-p01] Among other differences between logic and rules, he argues that logic uses deduction, but rules use search (page 45) and can be used to reason either forward or backward (page 47).
+[src:datalog-query/logic-programming-p01] Sentences in logic "have to be interpreted as *universally true*", but rules can be *defaults*, which admit exceptions (page 44).
+[src:datalog-query/logic-programming-p01] He states that "unlike logic, rule-based systems can also easily represent strategic information about what to do" (page 45).
+[src:datalog-query/logic-programming-p01] For example, "IF you want to go home for the weekend, and you have bus fare, THEN you can catch a bus".
+[src:datalog-query/logic-programming-p01] All of these characteristics of rule-based systems - search, forward and backward reasoning, default reasoning, and goal-reduction - are also defining characteristics of logic programming.
+[src:datalog-query/logic-programming-p01] Other arguments showing how logic programming can be used to model aspects of human thinking are presented by Keith Stenning and Michiel van Lambalgen in their book, Human Reasoning and Cognitive Science.
+[src:datalog-query/logic-programming-p01] They show how the non-monotonic character of logic programs can be used to explain human performance on a variety of psychological tasks.
+[src:datalog-query/logic-programming-p01] In The Proper Treatment of Events, Michiel van Lambalgen and Fritz Hamm investigate the use of constraint logic programming to code "temporal notions in natural language by looking at the way human beings construct time".
+[src:datalog-query/logic-programming-p01] The use of logic to represent procedural knowledge and strategic information was one of the main goals contributing to the early development of logic programming.
+[src:datalog-query/logic-programming-p01] Moreover, it continues to be an important feature of the Prolog family of logic programming languages today.
+[src:datalog-query/logic-programming-p01] However, many applications of logic programming, including Prolog applications, increasingly focus on the use of logic to represent purely declarative knowledge.
+[src:datalog-query/logic-programming-p01] These applications include both the representation of general commonsense knowledge and the representation of domain specific expertise.
+[src:datalog-query/logic-programming-p01] Commonsense includes knowledge about cause and effect, as formalised, for example, in the situation calculus, event calculus and action languages.
+[src:datalog-query/logic-programming-p01] Here is a simplified example, which illustrates the main features of such formalisms.
+[src:datalog-query/logic-programming-p01] The first clause states that a fact holds immediately after an event initiates (or causes) the fact.
+[src:datalog-query/logic-programming-p01] The second clause is a *frame axiom*, which states that a fact that holds at a time continues to hold at the next time unless it is terminated by an event that happens at the time.
+[src:datalog-query/logic-programming-p01] Here `holds` is a meta-predicate, similar to `solve` above.
+[src:datalog-query/logic-programming-p01] However, whereas `solve` has only one argument, which applies to general clauses, the first argument of `holds` is a fact and the second argument is a time (or state).
+[src:datalog-query/logic-programming-p01] The atomic formula `holds(Fact, Time)` expresses that the `Fact` holds at the `Time`.
+[src:datalog-query/logic-programming-p01] Such time-varying facts are also called fluents.
+[src:datalog-query/logic-programming-p01] The atomic formula `happens(Event, Time)` expresses that the Event happens at the `Time`.
+[src:datalog-query/logic-programming-p01] The following example illustrates how these clauses can be used to reason about causality in a toy blocks world.
+[src:datalog-query/logic-programming-p01] Here, in the initial state at time 0, a green block is on a table and a red block is stacked on the green block (like a traffic light).
+[src:datalog-query/logic-programming-p01] At time 0, the red block is moved to the table.
+[src:datalog-query/logic-programming-p01] At time 1, the green block is moved onto the red block.
+[src:datalog-query/logic-programming-p01] Forward reasoning and backward reasoning generate the same answers to the goal `holds(Fact, Time)`.
+[src:datalog-query/logic-programming-p01] But forward reasoning generates fluents *progressively* in temporal order, and backward reasoning generates fluents *regressively*, as in the domain-specific use of regression in the situation calculus.
+[src:datalog-query/logic-programming-p01] Logic programming has also proved to be useful for representing domain-specific expertise in expert systems.
+[src:datalog-query/logic-programming-p01] But human expertise, like general-purpose commonsense, is mostly implicit and tacit, and it is often difficult to represent such implicit knowledge in explicit rules.
+[src:datalog-query/logic-programming-p01] This difficulty does not arise, however, when logic programs are used to represent the existing, explicit rules of a business organisation or legal authority.
+[src:datalog-query/logic-programming-p01] More recently, the PROLEG system, initiated in 2009 and consisting of approximately 2500 rules and exceptions of civil code and supreme court case rules in Japan, has become possibly the largest legal rule base in the world.
+[src:datalog-query/logic-programming-p02] The SLD resolution rule of inference is neutral about the order in which subgoals in the bodies of clauses can be *selected* for solution.
+[src:datalog-query/logic-programming-p02] For the sake of efficiency, Prolog restricts this order to the order in which the subgoals are written.
+[src:datalog-query/logic-programming-p02] SLD is also neutral about the strategy for searching the space of SLD proofs.
+[src:datalog-query/logic-programming-p02] Prolog searches this space, top-down, depth-first, trying different clauses for solving the same (sub)goal in the order in which the clauses are written.
+[src:datalog-query/logic-programming-p02] This search strategy has the advantage that the current branch of the tree can be represented efficiently by a stack.
+[src:datalog-query/logic-programming-p02] When a goal clause at the top of the stack is reduced to a new goal clause, the new goal clause is pushed onto the top of the stack.
+[src:datalog-query/logic-programming-p02] Backtracking can be restricted by using a subgoal, called *cut*, written as !, which always succeeds but cannot be backtracked.
+[src:datalog-query/logic-programming-p02] Cut can be used to improve efficiency, but can also interfere with the logical meaning of clauses.
+[src:datalog-query/logic-programming-p02] In many cases, the use of cut can be replaced by negation as failure.
+[src:datalog-query/logic-programming-p02] Prolog provides other features, in addition to cut, that do not have a logical interpretation.
+[src:datalog-query/logic-programming-p02] These include the built-in predicates *assert* and *retract* for destructively updating the state of the program during program execution.
+[src:datalog-query/logic-programming-p02] Various extensions of logic programming have been developed to provide a logical framework for such destructive change of state.
+[src:datalog-query/logic-programming-p02] The broad range of Prolog applications, both in isolation and in combination with other languages is highlighted in the Year of Prolog Book, celebrating the 50 year anniversary of Prolog in 2022.
+[src:datalog-query/logic-programming-p02] Prolog has also contributed to the development of other programming languages, including ALF, Fril, Gödel, Mercury, Oz, Ciao, Visual Prolog, XSB, and λProlog.
+[src:datalog-query/logic-programming-p02] Constraint logic programming (CLP) combines Horn clause logic programming with constraint solving.
+[src:datalog-query/logic-programming-p02] It extends Horn clauses by allowing some predicates, declared as constraint predicates, to occur as literals in the body of a clause.
+[src:datalog-query/logic-programming-p02] Constraint predicates are not defined by the facts and rules in the program, but are predefined by some domain-specific model-theoretic structure or theory.
+[src:datalog-query/logic-programming-p02] Procedurally, subgoals whose predicates are defined by the program are solved by goal-reduction, as in ordinary logic programming, but constraints are simplified and checked for satisfiability by a domain-specific constraint-solver, which implements the semantics of the constraint predicates.
+[src:datalog-query/logic-programming-p02] An initial problem is solved by reducing it to a satisfiable conjunction of constraints.
+[src:datalog-query/logic-programming-p02] Interestingly, the first version of Prolog already included a constraint predicate dif(term1, term2), from Philippe Roussel's 1972 PhD thesis, which succeeds if both of its arguments are different terms, but which is delayed if either of the terms contains a variable.
+[src:datalog-query/logic-programming-p02] Here `≤` and `<` are constraint predicates, with their usual intended semantics.
+[src:datalog-query/logic-programming-p02] Constraint logic programming has been used to solve problems in such fields as civil engineering, mechanical engineering, digital circuit verification, automated timetabling, air traffic control, and finance.
+[src:datalog-query/logic-programming-p02] It is closely related to abductive logic programming.
+[src:datalog-query/logic-programming-p02] Datalog is a database definition language, which combines a relational view of data, as in relational databases, with a logical view, as in logic programming.
+[src:datalog-query/logic-programming-p02] Relational databases use a relational calculus or relational algebra, with relational operations, such as *union*, *intersection*, *set difference* and *cartesian product* to specify queries, which access a database.
+[src:datalog-query/logic-programming-p02] Datalog uses logical connectives, such as *or*, *and* and *not* in the bodies of rules to define relations as part of the database itself.
+[src:datalog-query/logic-programming-p02] It was recognized early in the development of relational databases that recursive queries cannot be expressed in either relational algebra or relational calculus, and that this deficiency can be remedied by introducing a least-fixed-point operator.
+[src:datalog-query/logic-programming-p02] In contrast, recursive relations can be defined naturally by rules in logic programs, without the need for any new logical connectives or operators.
+[src:datalog-query/logic-programming-p02] Datalog differs from more general logic programming by having only constants and variables as terms.
+[src:datalog-query/logic-programming-p02] Moreover, all facts are variable-free, and rules are restricted, so that if they are executed bottom-up, then the derived facts are also variable-free.
+[src:datalog-query/logic-programming-p02] However, top-down execution with tabling gives the same answers and terminates without looping.
+[src:datalog-query/logic-programming-p02] Like Datalog, Answer Set programming (ASP) is not Turing-complete.
+[src:datalog-query/logic-programming-p02] Moreover, instead of separating goals (or queries) from the program to be used in solving the goals, ASP treats the whole program as a goal, and solves the goal by generating a stable model that makes the goal true.
+[src:datalog-query/logic-programming-p02] For this purpose, it uses the stable model semantics, according to which a logic program can have zero, one or more intended models.
+[src:datalog-query/logic-programming-p02] To represent the standard version of the map colouring problem, we need to add a constraint that two adjacent countries cannot be coloured the same colour.
+[src:datalog-query/logic-programming-p02] The addition of constraints of the form `:- Body.` eliminates models in which `Body` is true.
+[src:datalog-query/logic-programming-p02] Confusingly, *constraints in ASP* are different from *constraints in CLP*.
+[src:datalog-query/logic-programming-p02] Constraints in CLP are predicates that qualify answers to queries (and solutions of goals).
+[src:datalog-query/logic-programming-p02] Constraints in ASP are clauses that eliminate models that would otherwise satisfy goals.
+[src:datalog-query/logic-programming-p02] Constraints in ASP are like integrity constraints in databases.
+[src:datalog-query/logic-programming-p02] This combination of ordinary logic programming clauses and constraint clauses illustrates the generate-and-test methodology of problem solving in ASP: The ordinary clauses define a search space of possible solutions, and the constraints filter out unwanted solutions.
+[src:datalog-query/logic-programming-p02] Most implementations of ASP proceed in two steps: First they instantiate the program in all possible ways, reducing it to a propositional logic program (known as *grounding*).
+[src:datalog-query/logic-programming-p02] Then they apply a propositional logic problem solver, such as the DPLL algorithm or a Boolean SAT solver.
+[src:datalog-query/logic-programming-p02] However, some implementations, such as s(CASP) use a goal-directed, top-down, SLD resolution-like procedure without grounding.
+[src:datalog-query/logic-programming-p02] Abductive logic programming (ALP), like CLP, extends normal logic programming by allowing the bodies of clauses to contain literals whose predicates are not defined by clauses.
+[src:datalog-query/logic-programming-p02] In ALP, these predicates are declared as *abducible* (or *assumable*), and are used as in abductive reasoning to explain observations, or more generally to add new facts to the program (as assumptions) to solve goals.
+[src:datalog-query/logic-programming-p02] The goal can represent an observation, in which case a solution is an explanation of the observation.
+[src:datalog-query/logic-programming-p02] Or the goal can represent a desired future state of affairs, in which case a solution is a plan for achieving the goal.
+[src:datalog-query/logic-programming-p02] ALP solves the goal by reasoning backwards and adding assumptions to the program, to solve abducible subgoals.
+[src:datalog-query/logic-programming-p02] Here `tick` is an event that marks the passage of time without initiating or terminating any fluents.
+[src:datalog-query/logic-programming-p02] There are also solutions in which the two `move` events happen at the same time.
+[src:datalog-query/logic-programming-p02] Abductive logic programming has been used for fault diagnosis, planning, natural language processing and machine learning.
+[src:datalog-query/logic-programming-p02] It has also been used to interpret negation as failure as a form of abductive reasoning.
+[src:datalog-query/logic-programming-p02] Inductive logic programming (ILP) is an approach to machine learning that induces logic programs as hypothetical generalisations of positive and negative examples.
+[src:datalog-query/logic-programming-p02] Given a logic program representing background knowledge and positive examples together with constraints representing negative examples, an ILP system induces a logic program that generalises the positive examples while excluding the negative examples.
+[src:datalog-query/logic-programming-p02] ILP is similar to ALP, in that both can be viewed as generating hypotheses to explain observations, and as employing constraints to exclude undesirable hypotheses.
+[src:datalog-query/logic-programming-p02] But in ALP the hypotheses are variable-free facts, and in ILP the hypotheses are general rules.
+[src:datalog-query/logic-programming-p02] Stuart Russell has referred to such invention of new concepts as the most important step needed for reaching human-level AI.
+[src:datalog-query/logic-programming-p02] Recent work in ILP, combining logic programming, learning and probability, has given rise to the fields of statistical relational learning and probabilistic inductive logic programming.
+[src:datalog-query/logic-programming-p02] Concurrent logic programming integrates concepts of logic programming with concurrent programming.
+[src:datalog-query/logic-programming-p02] Its development was given a big impetus in the 1980s by its choice for the systems programming language of the Japanese Fifth Generation Project (FGCS).
+[src:datalog-query/logic-programming-p02] The conjunction `G1, ... , Gn` is called the guard of the clause, and | is the commitment operator.
+[src:datalog-query/logic-programming-p02] However, procedurally, when there are several clauses whose heads `H` match a given goal, then all of the clauses are executed in parallel, checking whether their guards `G1, ... , Gn` hold.
+[src:datalog-query/logic-programming-p02] If the guards of more than one clause hold, then a committed choice is made to one of the clauses, and execution proceeds with the subgoals `B1, ..., Bn` of the chosen clause.
+[src:datalog-query/logic-programming-p02] These subgoals can also be executed in parallel.
+[src:datalog-query/logic-programming-p02] Thus concurrent logic programming implements a form of "don't care nondeterminism", rather than "don't know nondeterminism".
+[src:datalog-query/logic-programming-p02] Here, `[]` represents the empty list, and `[Head | Tail]` represents a list with first element `Head` followed by list `Tail`, as in Prolog.
+[src:datalog-query/logic-programming-p02] The program will non-deterministically generate a single solution, for example `Merge = [ace, queen, 1, king, 4, 2]`.
+[src:datalog-query/logic-programming-p02] Carl Hewitt has argued that, because of the indeterminacy of concurrent computation, concurrent logic programming cannot implement general concurrency.
+[src:datalog-query/logic-programming-p02] However, according to the logical semantics, any result of a computation of a concurrent logic program is a logical consequence of the program, even though not all logical consequences can be derived.
+[src:datalog-query/logic-programming-p02] Concurrent constraint logic programming combines concurrent logic programming and constraint logic programming, using constraints to control concurrency.
+[src:datalog-query/logic-programming-p02] A clause can contain a guard, which is a set of constraints that may block the applicability of the clause.
+[src:datalog-query/logic-programming-p02] When the guards of several clauses are satisfied, concurrent constraint logic programming makes a committed choice to use only one.
+[src:datalog-query/logic-programming-p02] Several researchers have extended logic programming with higher-order programming features derived from higher-order logic, such as predicate variables.
+[src:datalog-query/logic-programming-p02] Such languages include the Prolog extensions HiLog and λProlog.
+[src:datalog-query/logic-programming-p02] Basing logic programming within linear logic has resulted in the design of logic programming languages that are considerably more expressive than those based on classical logic.
+[src:datalog-query/logic-programming-p02] Horn clause programs can only represent state change by the change in arguments to predicates.
+[src:datalog-query/logic-programming-p02] In linear logic programming, one can use the ambient linear logic to support state change.
+[src:datalog-query/logic-programming-p02] Some early designs of logic programming languages based on linear logic include LO, Lolli, ACL, and Forum.
+[src:datalog-query/logic-programming-p02] Forum provides a goal-directed interpretation of all linear logic.
+[src:datalog-query/logic-programming-p02] F-logic extends logic programming with objects and the frame syntax.
+[src:datalog-query/logic-programming-p02] Logtalk extends the Prolog programming language with support for objects, protocols, and other OOP concepts.
+[src:datalog-query/logic-programming-p02] It supports most standard-compliant Prolog systems as backend compilers.
+[src:datalog-query/logic-programming-p02] Transaction logic is an extension of logic programming with a logical theory of state-modifying updates.
+[src:datalog-query/logic-programming-p02] It has both a model-theoretic semantics and a procedural one.
+[src:datalog-query/logic-programming-p02] An implementation of a subset of Transaction logic is available in the Flora-2 system.
+[src:datalog-query/prolog] Prolog has its roots in first-order logic, a formal logic.
+[src:datalog-query/prolog] Unlike many other programming languages, Prolog is intended primarily as a declarative programming language: the program is a set of facts and rules, which define relations.
+[src:datalog-query/prolog] A computation is initiated by running a *query* over the program.
+[src:datalog-query/prolog] Prolog was one of the first logic programming languages and remains the most popular such language today, with several free and commercial implementations available.
+[src:datalog-query/prolog] The language has been used for theorem proving, expert systems, term rewriting, type systems, automated planning, and question answering as well as its original intended field of use, natural language processing.
+[src:datalog-query/prolog] Prolog is a Turing-complete, general-purpose programming language, which is well-suited for intelligent knowledge-processing applications.
+[src:datalog-query/prolog] The name *Prolog* was chosen by Philippe Roussel, at the suggestion of his wife, as an abbreviation for ****Pro**grammation en **log**ique** (French for *Programming in logic*).
+[src:datalog-query/prolog] It was created around 1972 by Alain Colmerauer with Philippe Roussel, from the *Artificial Intelligence Group* of the Faculty of Sciences of Luminy of Aix-Marseille II University of France.
+[src:datalog-query/prolog] According to Robert Kowalski, the first Prolog system was developed in 1972 by Colmerauer and Phillipe Roussel.
+[src:datalog-query/prolog] The first implementation of Prolog was an interpreter written in Fortran by Gerard Battani and Henri Meloni.
+[src:datalog-query/prolog] Warren took this interpreter to the University of Edinburgh, and there implemented an alternative front-end, which came to define the "***Edinburgh Prolog***" syntax used by most modern implementations.
+[src:datalog-query/prolog] Warren also implemented the first compiler for Prolog, creating the influential DEC-10 Prolog in collaboration with Fernando Pereira.
+[src:datalog-query/prolog] Warren later generalised the ideas behind DEC-10 Prolog, to create the Warren Abstract Machine (**WAM**).
+[src:datalog-query/prolog] European AI researchers favored Prolog while Americans favored Lisp, reportedly causing many nationalistic debates on the merits of the languages.
+[src:datalog-query/prolog] Much of the modern development of Prolog came from the impetus of the Fifth Generation Computer Systems project (FGCS), which developed a variant of Prolog named *Kernel Language* for its first operating system.
+[src:datalog-query/prolog] Pure Prolog was soon extended, however, to include negation as failure, in which negative conditions of the form not(Bi) are shown by trying and failing to solve the corresponding positive conditions Bi.
+[src:datalog-query/prolog] Subsequent extensions of Prolog by the original team introduced constraint logic programming abilities into the implementations.
+[src:datalog-query/prolog] Although Prolog is widely used in research and education, Prolog and other logic programming languages have not had a significant impact on the computer industry in general.
+[src:datalog-query/prolog] Most applications are small by industrial standards, with few exceeding 100,000 lines of code.
+[src:datalog-query/prolog] Programming in the large is considered to be complex because not all Prolog compilers support modules, and there are compatibility problems between the module systems of the major Prolog compilers.
+[src:datalog-query/prolog] Software developed in Prolog has been criticised for having a high performance penalty compared to conventional programming languages.
+[src:datalog-query/prolog] In particular, Prolog's non-deterministic evaluation strategy can be problematic when programming deterministic computations, or when even using "don't care non-determinism" (where a single choice is made instead of backtracking over all possibilities).
+[src:datalog-query/prolog] Cuts and other language constructs may have to be used to achieve desirable performance, destroying one of Prolog's main attractions, the ability to run programs "backwards and forwards".
+[src:datalog-query/prolog] Prolog is not purely declarative: because of constructs like the cut operator, a procedural reading of a Prolog program is needed to understand it.
+[src:datalog-query/prolog] The order of clauses in a Prolog program is significant, as the execution strategy of the language depends on it.
+[src:datalog-query/prolog] Other logic programming languages, such as Datalog, are truly declarative but restrict the language.
+[src:datalog-query/prolog] As a result, many practical Prolog programs are written to conform to Prolog's depth-first search order, rather than as purely declarative logic programs.
+[src:datalog-query/prolog] Watson uses IBM's DeepQA software and the Apache UIMA (Unstructured Information Management Architecture) framework.
+[src:datalog-query/prolog] The system was written in various languages, including Java, C++, and Prolog, and runs on the SUSE Linux Enterprise Server 11 operating system using Apache Hadoop framework to provide distributed computing.
+[src:datalog-query/prolog] Prolog is used for pattern matching over natural language parse trees.
+[src:datalog-query/prolog] The developers have stated: "We required a language in which we could conveniently express pattern matching rules over the parse trees and other annotations (such as named entity recognition results), and a technology that could execute these rules very efficiently.
+[src:datalog-query/prolog] We found that Prolog was the ideal choice for the language due to its simplicity and expressiveness." Prolog is being used in the Low-Code Development Platform GeneXus, which is focused around AI.
+[src:datalog-query/prolog] Open source graph database TerminusDB is implemented in Prolog.
+[src:datalog-query/prolog] TerminusDB is designed for collaboratively building and curating knowledge graphs.
+[src:datalog-query/prolog] In Prolog, program logic is expressed in terms of relations, and a computation is initiated by running a *query* over these relations.
+[src:datalog-query/prolog] Relations and queries are constructed using Prolog's single data type, the *term*.
+[src:datalog-query/prolog] Given a query, the Prolog engine attempts to find a resolution refutation of the negated query.
+[src:datalog-query/prolog] If the negated query can be refuted, i.e., an instantiation for all free variables is found that makes the union of clauses and the singleton set consisting of the negated query false, it follows that the original query, with the found instantiation applied, is a logical consequence of the program.
+[src:datalog-query/prolog] This makes Prolog (and other logic programming languages) particularly useful for database, symbolic mathematics, and language parsing applications.
+[src:datalog-query/prolog] Because Prolog allows impure predicates, checking the truth value of certain special predicates may have some deliberate side effect, such as printing a value to the screen.
+[src:datalog-query/prolog] Because of this, the programmer is permitted to use some amount of conventional imperative programming when the logical paradigm is inconvenient.
+[src:datalog-query/prolog] It has a purely logical subset, called "pure Prolog", as well as a number of extralogical features.
+[src:datalog-query/prolog] Prolog's single data type is the *term*.
+[src:datalog-query/prolog] Terms are either *atoms*, *numbers*, *variables* or *compound terms*.
+[src:datalog-query/prolog] Prolog programs describe relations, defined by means of clauses.
+[src:datalog-query/prolog] Pure Prolog is restricted to Horn clauses.
+[src:datalog-query/prolog] Two types of Horn clauses are used to define Prolog programs: rules and facts.
+[src:datalog-query/prolog] and is read as "Head is true if Body is true".
+[src:datalog-query/prolog] A rule's body consists of calls to predicates, which are called the rule's **goals**.
+[src:datalog-query/prolog] The built-in logical operator `,/2` (meaning an arity 2 operator with name `,`) denotes conjunction of goals, and `;/2` denotes disjunction.
+[src:datalog-query/prolog] Conjunctions and disjunctions can only appear in the body, not in the head of a rule.
+[src:datalog-query/prolog] Clauses with empty bodies are called **facts**.
+[src:datalog-query/prolog] The built-in predicate `true/0` is always true.
+[src:datalog-query/prolog] Clauses with bodies are called **rules**.
+[src:datalog-query/prolog] A *predicate* (or *procedure definition*) is a collection of clauses whose heads have the same name and arity.
+[src:datalog-query/prolog] We use the notation *name/arity* to refer to predicates.
+[src:datalog-query/prolog] A *logic program* is a set of predicates.
+[src:datalog-query/prolog] Predicate `father_child/2` has three clauses, all of which are facts, and predicate `parent_child/2` has two clauses, both are rules.
+[src:datalog-query/prolog] Due to the relational nature of many built-in predicates, they can typically be used in several directions.
+[src:datalog-query/prolog] For example, `length/2` can be used to determine the length of a list (`length(List, L)`, given a list `List`), and to generate a list skeleton of a given length (`length(X, 5)`), and to generate both list skeletons and their lengths together (`length(X, L)`).
+[src:datalog-query/prolog] Similarly, `append/3` can be used both to append two lists (`append(ListA, ListB, X)` given lists `ListA` and `ListB`), and to split a given list into parts (`append(X, Y, List)`, given a list `List`).
+[src:datalog-query/prolog] For this reason, a comparatively small set of library predicates suffices for many Prolog programs.
+[src:datalog-query/prolog] As a general purpose language, Prolog also provides various built-in predicates to perform routine activities like input/output, using graphics and otherwise communicating with the operating system.
+[src:datalog-query/prolog] These predicates are not given a relational meaning and are only useful for the side-effects they exhibit on the system.
+[src:datalog-query/prolog] For example, the predicate `write/1` displays a term on the screen.
+[src:datalog-query/prolog] Iterative algorithms can be implemented by means of recursive predicates.
+[src:datalog-query/prolog] Consider the `parent_child/2` predicate defined in the family relation program above.
+[src:datalog-query/prolog] It expresses that X is an ancestor of Y if X is parent of Y or X is parent of an ancestor of Y.
+[src:datalog-query/prolog] It is recursive because it is defined in terms of itself (there is a call to predicate `ancestor/2` in the body of the second clause).
+[src:datalog-query/prolog] Execution of a Prolog program is initiated by the user's posting of a single goal, called the query.
+[src:datalog-query/prolog] Logically, the Prolog engine tries to find a resolution refutation of the negated query.
+[src:datalog-query/prolog] The resolution method used by Prolog is called SLD resolution.
+[src:datalog-query/prolog] If the negated query can be refuted, it follows that the query, with the appropriate variable bindings in place, is a logical consequence of the program.
+[src:datalog-query/prolog] In that case, all generated variable bindings are reported to the user, and the query is said to have succeeded.
+[src:datalog-query/prolog] Operationally, Prolog's execution strategy can be thought of as a generalization of function calls in other languages, one difference being that multiple clause heads can match a given call.
+[src:datalog-query/prolog] In that case, the system creates a choice-point, unifies the goal with the clause head of the first alternative, and continues with the goals of that first alternative.
+[src:datalog-query/prolog] If any goal fails in the course of executing the program, all variable bindings that were made since the most recent choice-point was created are undone, and execution continues with the next alternative of that choice-point.
+[src:datalog-query/prolog] This execution strategy is called chronological backtracking.
+[src:datalog-query/prolog] The next goal to be proved is the leftmost one of this conjunction, i.e., `parent_child(Z, sally)`.
+[src:datalog-query/prolog] The system creates a choice-point and tries the first alternative, whose body is `father_child(Z, sally)`.
+[src:datalog-query/prolog] This goal can be proved using the fact `father_child(tom, sally)`, so the binding `Z = tom` is generated, and the next goal to be proved is the second part of the above conjunction: `parent_child(tom, erica)`.
+[src:datalog-query/prolog] Again, this can be proved by the corresponding fact.
+[src:datalog-query/prolog] Since all goals could be proved, the query succeeds.
+[src:datalog-query/prolog] Since the query contained no variables, no bindings are reported to the user.
+[src:datalog-query/prolog] enumerates all valid answers on backtracking.
+[src:datalog-query/prolog] Notice that with the code as stated above, the query `?- sibling(sally, sally).` also succeeds.
+[src:datalog-query/prolog] One would insert additional goals to describe the relevant restrictions, if desired.
+[src:datalog-query/prolog] The built-in Prolog predicate `\+/1` provides negation as failure, which allows for non-monotonic reasoning.
+[src:datalog-query/prolog] is evaluated as follows: Prolog attempts to prove `illegal(X)`.
+[src:datalog-query/prolog] If a proof for that goal can be found, the original goal (i.e., `\+ illegal(X)`) fails.
+[src:datalog-query/prolog] If no proof can be found, the original goal succeeds.
+[src:datalog-query/prolog] Therefore, the `\+/1` prefix operator is called the "not provable" operator, since the query `?- \+ Goal.` succeeds if Goal is not provable.
+[src:datalog-query/prolog] This kind of negation is sound if its argument is "ground" (i.e. contains no variables).
+[src:datalog-query/prolog] Soundness is lost if the argument contains variables and the proof procedure is complete.
+[src:datalog-query/prolog] In particular, the query `?- legal(X).` now cannot be used to enumerate all things that are legal.
+[src:datalog-query/prolog] In Prolog, loading code is referred to as *consulting*.
+[src:datalog-query/prolog] Prolog can be used interactively by entering queries at the Prolog prompt `?-`.
+[src:datalog-query/prolog] If there is no solution, Prolog writes `no`.
+[src:datalog-query/prolog] If a solution exists then it is printed.
+[src:datalog-query/prolog] If there are multiple solutions to the query, then these can be requested by entering a semi-colon `;`.
+[src:datalog-query/prolog] There are guidelines on good programming practice to improve code efficiency, readability and maintainability.
+[src:datalog-query/prolog] Here follow some example programs written in Prolog.
+[src:datalog-query/prolog] This comparison shows the prompt ("?-" vs "| ?-") and resolution status ("true". vs "yes", "false". vs "no") can differ from one Prolog implementation to another.
+[src:datalog-query/prolog] Any computation can be expressed declaratively as a sequence of state transitions.
+[src:datalog-query/prolog] A design pattern is a general reusable solution to a commonly occurring problem in software design.
+[src:datalog-query/prolog] Some design patterns in Prolog are skeletons, techniques, cliches, program schemata, logic description schemata, and higher-order programming.
+[src:datalog-query/prolog] A higher-order predicate is a predicate that takes one or more other predicates as arguments.
+[src:datalog-query/prolog] Although support for higher-order programming takes Prolog outside the domain of first-order logic, which does not allow quantification over predicates, ISO Prolog now has some built-in higher-order predicates such as `call/1`, `call/2`, `call/3`, `findall/3`, `setof/3`, and `bagof/3`.
+[src:datalog-query/prolog] To convert solutions from temporal representation (answer substitutions on backtracking) to spatial representation (terms), Prolog has various all-solutions predicates that collect all answer substitutions of a given query in a list.
+[src:datalog-query/prolog] This can be used for list comprehension.
+[src:datalog-query/prolog] This can be used to enumerate perfect numbers, and to check if a number is perfect.
+[src:datalog-query/prolog] When `P` is a predicate that for all `X`, `P(X,Y)` unifies `Y` with a single unique value, `maplist(P, Xs, Ys)` is equivalent to applying the map function in functional programming as `Ys = map(Function, Xs)`.
+[src:datalog-query/prolog] Higher-order programming style in Prolog was pioneered in HiLog and λProlog.
+[src:datalog-query/prolog] For programming in the large, Prolog provides a module system, which is in the ISO Standard.
+[src:datalog-query/prolog] However, while most Prolog systems support structuring the code into modules, virtually no implementation adheres to the modules part of the ISO standard.
+[src:datalog-query/prolog] Instead, most Prolog systems have decided to support as *de-facto* module standard the Quintus/SICStus module system.
+[src:datalog-query/prolog] However, further convenience predicates concerning modules are provided by some implementations only and often have subtle differences in their semantics.
+[src:datalog-query/prolog] Some systems chose to implement module concepts as source-to-source compilation into base ISO Prolog, as is the case of Logtalk.
+[src:datalog-query/prolog] GNU Prolog initially diverted from ISO modules, opting instead for Contextual Logic Programming, in which unit (module) loading and unloading can be made dynamically.
+[src:datalog-query/prolog] Ciao designed a strict module system that, while being basically compatible with the *de-facto* standard used by other Prolog systems, is amenable to precise static analysis, supports term hiding, and facilitates programming in the large.
+[src:datalog-query/prolog] XSB takes a different approach and offers an *atom-based* module system.
+[src:datalog-query/prolog] The latter two Prolog systems allow controlling the *visibility of terms* in addition to that of predicates.
+[src:datalog-query/prolog] There is a special notation called definite clause grammars.
+[src:datalog-query/prolog] A rule defined via `-->/2` instead of `:-/2` is expanded by the preprocessor (`expand_term/2`, a facility analogous to macros in other languages) according to a few straightforward rewriting rules, resulting in ordinary Prolog clauses.
+[src:datalog-query/prolog] Most notably, the rewriting equips the predicate with two additional arguments, which can be used to implicitly thread state around, analogous to monads in other languages.
+[src:datalog-query/prolog] Definite clause grammars are often used to write parsers or list generators, as they also provide a convenient interface to difference lists.
+[src:datalog-query/prolog] Prolog is a homoiconic language and provides many facilities for reflective programming (reflection).
+[src:datalog-query/prolog] where `true` represents an empty conjunction, and `clause(Head, Body)` unifies with clauses in the database of the form `Head :- Body`.
+[src:datalog-query/prolog] Since Prolog programs are themselves sequences of Prolog terms (`:-/2` is an infix operator) that are easily read and inspected using built-in mechanisms (like `read/1`), it is possible to write customized interpreters that augment Prolog with domain-specific features.
+[src:datalog-query/prolog] and clauses represented as `clause_cf(Head, Body, Certainty)`.
+[src:datalog-query/prolog] Given those, it can be called as `solve(Goal, Certainty)` to execute `Goal` and obtain a measure of certainty about the result.
+[src:datalog-query/prolog] Pure Prolog is based on a subset of first-order predicate logic, Horn clauses, which is Turing-complete.
+[src:datalog-query/prolog] This machine performs incrementation by one of a number in unary encoding: It loops over any number of "1" cells and appends an additional "1" at the end.
+[src:datalog-query/prolog] This illustrates how any computation can be expressed declaratively as a sequence of state transitions, implemented in Prolog as a relation between successive states of interest.
+[src:datalog-query/prolog] The International Organization for Standardization (ISO) Prolog technical standard consists of two parts.
+[src:datalog-query/prolog] ISO/IEC 13211-1, published in 1995, aims to standardize the existing practices of the many implementations of the core elements of Prolog.
+[src:datalog-query/prolog] It has clarified aspects of the language that were previously ambiguous and leads to portable programs.
+[src:datalog-query/prolog] ISO/IEC 13211-2, published in 2000, adds support for modules to the standard.
+[src:datalog-query/prolog] The standard is maintained by the ISO/IEC JTC1/SC22/WG17 working group.
+[src:datalog-query/prolog] ANSI X3J17 is the US Technical Advisory Group for the standard.
+[src:datalog-query/prolog] For efficiency, Prolog code is typically compiled to abstract machine code, often influenced by the register-based Warren Abstract Machine instruction set.
+[src:datalog-query/prolog] Some implementations employ abstract interpretation to derive type and mode information of predicates at compile time, or compile to real machine code for high performance.
+[src:datalog-query/prolog] Devising efficient implementation methods for Prolog code is a field of active research in the logic programming community, and various other execution methods are employed in some implementations.
+[src:datalog-query/prolog] These include clause binarization and stack-based virtual machines.
+[src:datalog-query/prolog] Prolog systems typically implement a well-known optimization method called tail call optimization for deterministic predicates exhibiting tail recursion or, more generally, tail calls: A clause's stack frame is discarded before performing a call in a tail position.
+[src:datalog-query/prolog] Therefore, deterministic tail-recursive predicates are executed with constant stack space, like loops in other languages.
+[src:datalog-query/prolog] Finding clauses that are unifiable with a term in a query is linear in the number of clauses.
+[src:datalog-query/prolog] Term indexing uses a data structure that enables sub-linear-time lookups.
+[src:datalog-query/prolog] Indexing only affects program performance, it does not affect semantics.
+[src:datalog-query/prolog] Most Prologs only use indexing on the first term, as indexing on all terms is expensive, but techniques based on *field-encoded words* or *superimposed codewords* provide fast indexing across the full query and head.
+[src:datalog-query/prolog] Some Prolog systems, such as WIN-PROLOG and SWI-Prolog, now implement hashing to help handle large datasets more efficiently.
+[src:datalog-query/prolog] This tends to yield very large performance gains when working with large corpora such as WordNet.
+[src:datalog-query/prolog] Some Prolog systems, (B-Prolog, XSB, SWI-Prolog, YAP, and Ciao), implement a memoization method called *tabling*, which frees the user from manually storing intermediate results.
+[src:datalog-query/prolog] Tabling can be extended in various directions.
+[src:datalog-query/prolog] It can support recursive predicates through **SLG resolution** or linear tabling.
+[src:datalog-query/prolog] In a multi-threaded Prolog system tabling results could be kept private to a thread or shared among all threads.
+[src:datalog-query/prolog] And in incremental tabling, tabling might react to changes.
+[src:datalog-query/prolog] During the Fifth Generation Computer Systems project, there were attempts to implement Prolog in hardware with the aim of achieving faster execution with dedicated architectures.
+[src:datalog-query/prolog] Furthermore, Prolog has a number of properties that may allow speed-up through parallel execution.
+[src:datalog-query/prolog] A more recent approach has been to compile restricted Prolog programs to a field-programmable gate array.
+[src:datalog-query/prolog] However, rapid progress in general-purpose hardware has consistently overtaken more specialised architectures.
+[src:datalog-query/prolog] In 1982, computers operated at around 10,000 to 100,000 logical inferences per second (LIPS).
+[src:datalog-query/prolog] The FGCS planned to produce computers operating at 0.1 to 1 GLIPS.
+[src:datalog-query/prolog] The Institute for New Generation Computer Technology documents estimated that 1 LIP took about 100 operations on a conventional computer.
+[src:datalog-query/prolog] The plan was to produce at the end of the project (in 1992) a machine with 1000 processors achieving 1 GLIPS, implying at least 1 MLIPS per processor.
+[src:datalog-query/prolog] Sega implemented Prolog for use with the Sega AI Computer, released for the Japanese market in 1986.
+[src:datalog-query/prolog] Prolog was used for reading natural language inputs, in the Japanese language, via a touch pad.
+[src:datalog-query/prolog] Various implementations have been developed from Prolog to extend logic programming abilities in many directions.
+[src:datalog-query/prolog] Attempts to introduce and extend Prolog with types began in the 1980s, and continue as of 2008.
+[src:datalog-query/prolog] Type information is useful not only for type safety but also for reasoning about Prolog programs.
+[src:datalog-query/prolog] The syntax of Prolog does not specify which arguments of a predicate are inputs and which are outputs.
+[src:datalog-query/prolog] However, this information is significant and it is recommended that it be included in the comments.
+[src:datalog-query/prolog] Modes provide valuable information when reasoning about Prolog programs and can also be used to accelerate execution.
+[src:datalog-query/prolog] Constraint logic programming extends Prolog to include concepts from constraint satisfaction.
+[src:datalog-query/prolog] A constraint logic program allows constraints in the body of clauses, such as: `A(X,Y) :- X+Y>0.` It is suited to large-scale combinatorial optimisation problems and is thus useful for applications in industrial settings, such as automated time-tabling and production scheduling.
+[src:datalog-query/prolog] Most Prolog systems ship with at least one constraint solver for finite domains, and often also with solvers for other domains like rational numbers.
+[src:datalog-query/prolog] Flora-2 is an object-oriented knowledge representation and reasoning system based on F-logic and incorporates HiLog, transaction logic, and defeasible reasoning.
+[src:datalog-query/prolog] Logtalk is an object-oriented logic programming language that can use most Prolog implementations as a back-end compiler.
+[src:datalog-query/prolog] As a multi-paradigm language, it includes support for both prototypes and classes.
+[src:datalog-query/prolog] Oblog is a small, portable, object-oriented extension to Prolog by Margaret McDougall of EdCAAD, University of Edinburgh.
+[src:datalog-query/prolog] Objlog was a frame-based language combining objects and Prolog II from CNRS, Marseille, France.
+[src:datalog-query/prolog] Prolog++ was developed by Logic Programming Associates and first released in 1989 for MS-DOS PCs.
+[src:datalog-query/prolog] Support for other platforms was added, and a second version was released in 1995.
+[src:datalog-query/prolog] A book about Prolog++ by Chris Moss was published by Addison-Wesley in 1994.
+[src:datalog-query/prolog] Visual Prolog is a multi-paradigm language with interfaces, classes, implementations and object expressions.
+[src:datalog-query/prolog] Prolog systems that provide a graphics library are SWI-Prolog, Visual Prolog, WIN-PROLOG, and B-Prolog.
+[src:datalog-query/prolog] Prolog-MPI is an open-source SWI-Prolog extension for distributed computing over the Message Passing Interface.
+[src:datalog-query/prolog] Also there are various concurrent Prolog programming languages.
+[src:datalog-query/prolog] Some Prolog implementations, notably Visual Prolog, SWI-Prolog and Ciao, support server-side web programming with support for web protocols, HTML and XML.
+[src:datalog-query/prolog] There are also extensions to support semantic web formats such as Resource Description Framework and Web Ontology Language.
+[src:datalog-query/prolog] Prolog has also been suggested as a client-side language.
+[src:datalog-query/prolog] In addition, Visual Prolog supports JSON-RPC and Websockets.
+[src:datalog-query/query-language] A **query language**, also known as **data query language** or **database query language** (**DQL**), is a computer language used to make queries in databases and information systems.
+[src:datalog-query/query-language] In database systems, query languages rely on strict theory to retrieve information.
+[src:datalog-query/query-language] A well known example is the Structured Query Language (SQL).
+[src:datalog-query/query-language] Broadly, query languages can be classified according to whether they are *database* query languages or *information retrieval* query languages.
+[src:datalog-query/query-language] The difference is that a **database query language** attempts to give factual answers to factual questions, while an **information retrieval query language** attempts to find documents containing information that is relevant to an area of inquiry.

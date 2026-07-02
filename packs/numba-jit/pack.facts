@@ -1,0 +1,309 @@
+# nl-rag distilled facts — domain: numba-jit
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:numba-jit/5minguide] Numba is a just-in-time compiler for Python that works best on code that uses NumPy arrays and functions, and loops.
+[src:numba-jit/5minguide] The most common way to use Numba is through its collection of decorators that can be applied to your functions to instruct Numba to compile them.
+[src:numba-jit/5minguide] When a call is made to a Numba-decorated function it is compiled to machine code “just-in-time” for execution and all or part of your code can subsequently run at native machine code speed!
+[src:numba-jit/5minguide] For information on supported platforms, operating systems, and architectures, please refer to the version support table and the support tiers documentation.
+[src:numba-jit/5minguide] Numba can also be compiled from source, although we do not recommend it for first-time Numba users.
+[src:numba-jit/5minguide] This depends on what your code looks like, if your code is numerically orientated (does a lot of math), uses NumPy a lot and/or has a lot of loops, then Numba is often a good choice.
+[src:numba-jit/5minguide] In these examples we’ll apply the most fundamental of Numba’s JIT decorators, `@jit`, to try and speed up some functions to demonstrate what works well and what does not.
+[src:numba-jit/5minguide] Note that Pandas is not understood by Numba and as a result Numba would simply run this code via the interpreter but with the added cost of the Numba internal overheads!
+[src:numba-jit/5minguide] The Numba `@jit` decorator fundamentally operates in two compilation modes, `nopython` mode and `object` mode.
+[src:numba-jit/5minguide] In the `go_fast` example above, the `@jit` decorator defaults to operating in `nopython` mode.
+[src:numba-jit/5minguide] The behaviour of the `nopython` compilation mode is to essentially compile the decorated function so that it will run entirely without the involvement of the Python interpreter.
+[src:numba-jit/5minguide] This is the recommended and best-practice way to use the Numba `jit` decorator as it leads to the best performance.
+[src:numba-jit/5minguide] Should the compilation in `nopython` mode fail, Numba can compile using `object mode`.
+[src:numba-jit/5minguide] This achieved through using the `forceobj=True` key word argument to the `@jit` decorator (as seen in the `use_pandas` example above).
+[src:numba-jit/5minguide] In this mode Numba will compile the function with the assumption that everything is a Python object and essentially run the code in the interpreter.
+[src:numba-jit/5minguide] Specifying `looplift=True` might gain some performance over pure `object mode` as Numba will try and compile loops into functions that run in machine code, and it will run the rest of the code in the interpreter.
+[src:numba-jit/5minguide] For best performance avoid using `object mode` mode in general!
+[src:numba-jit/5minguide] First, recall that Numba has to compile your function for the argument types given before it executes the machine code version of your function.
+[src:numba-jit/5minguide] However, once the compilation has taken place Numba caches the machine code version of your function for the particular types of arguments presented.
+[src:numba-jit/5minguide] If it is called again with the same types, it can reuse the cached version instead of having to compile again.
+[src:numba-jit/5minguide] A really common mistake when measuring performance is to not account for the above behaviour and to time code once with a simple timer that includes the time taken to compile your function in the execution time.
+[src:numba-jit/5minguide] A good way to measure the impact Numba JIT has on your code is to time execution using the timeit module functions; these measure multiple iterations of execution and, as a result, can be made to accommodate for the compilation time in the first execution.
+[src:numba-jit/5minguide] As a side note, if compilation time is an issue, Numba JIT supports on-disk caching of compiled functions and also has an Ahead-Of-Time compilation mode.
+[src:numba-jit/5minguide] Assuming Numba can operate in `nopython` mode, or at least compile some loops, it will target compilation to your specific CPU.
+[src:numba-jit/5minguide] Speed up varies depending on application but can be one to two orders of magnitude.
+[src:numba-jit/5minguide] Numba has a performance guide that covers common options for gaining extra performance.
+[src:numba-jit/5minguide] Numba reads the Python bytecode for a decorated function and combines this with information about the types of the input arguments to the function.
+[src:numba-jit/5minguide] It analyzes and optimizes your code, and finally uses the LLVM compiler library to generate a machine code version of your function, tailored to your CPU capabilities.
+[src:numba-jit/5minguide] This compiled version is then used every time your function is called.
+[src:numba-jit/5minguide] You can write a kernel in pure Python and have Numba handle the computation and data movement (or do this explicitly).
+[src:numba-jit/automatic-vectorization] However, in most programming languages one typically writes loops that sequentially perform additions of many numbers.
+[src:numba-jit/automatic-vectorization] A vectorizing compiler transforms such loops into sequences of vector operations.
+[src:numba-jit/automatic-vectorization] These vector operations perform additions on blocks of elements from the arrays `a`, `b` and `c`.
+[src:numba-jit/automatic-vectorization] Automatic vectorization is a major research topic in computer science.
+[src:numba-jit/automatic-vectorization] Early computers usually had one logic unit, which executed one instruction on one pair of operands at a time.
+[src:numba-jit/automatic-vectorization] Computer languages and programs therefore were designed to execute in sequence.
+[src:numba-jit/automatic-vectorization] Modern computers, though, can do many things at once.
+[src:numba-jit/automatic-vectorization] So, many optimizing compilers perform automatic vectorization, where parts of sequential programs are transformed into parallel operations.
+[src:numba-jit/automatic-vectorization] Many constraints prevent or hinder vectorization.
+[src:numba-jit/automatic-vectorization] Sometimes vectorization can slow down execution, for example because of pipeline synchronization or data-movement timing.
+[src:numba-jit/automatic-vectorization] Loop dependence analysis identifies loops that can be vectorized, relying on the data dependence of the instructions inside loops.
+[src:numba-jit/automatic-vectorization] Automatic vectorization, like any loop optimization or other compile-time optimization, must exactly preserve program behavior.
+[src:numba-jit/automatic-vectorization] All dependencies must be respected during execution to prevent incorrect results.
+[src:numba-jit/automatic-vectorization] In general, loop invariant dependencies and lexically forward dependencies can be easily vectorized, and lexically backward dependencies can be transformed into lexically forward dependencies.
+[src:numba-jit/automatic-vectorization] However, these transformations must be done safely, in order to ensure that the dependence between **all statements** remain true to the original.
+[src:numba-jit/automatic-vectorization] Cyclic dependencies must be processed independently of the vectorized instructions.
+[src:numba-jit/automatic-vectorization] Sometimes the compiler may over-cautiously assume a dependency.
+[src:numba-jit/automatic-vectorization] Some compilers offer a directive named *ivdep* to instruct the compiler to ignore dependencies.
+[src:numba-jit/automatic-vectorization] Incorrectly applying such a directive would cause incorrect results.
+[src:numba-jit/automatic-vectorization] Integer precision (bit-size) must be kept during vector instruction execution.
+[src:numba-jit/automatic-vectorization] The correct vector instruction must be chosen based on the size and behavior of the internal integers.
+[src:numba-jit/automatic-vectorization] Also, with mixed integer types, extra care must be taken to promote/demote them correctly without losing precision.
+[src:numba-jit/automatic-vectorization] Special care must be taken with sign extension (because multiple integers are packed inside the same register) and during shift operations, or operations with carry bits that would otherwise be taken into account.
+[src:numba-jit/automatic-vectorization] By default floating-point semantics from IEEE-754 are kept, which often prevents vectorization altogether.
+[src:numba-jit/automatic-vectorization] Because floating-point operations are not associative (changing the order of summation changes the result), a compiler cannot be allowed to vectorize the loop.
+[src:numba-jit/automatic-vectorization] In this case the results will vary slightly from the original, but the asymptotic round-off error is similar.
+[src:numba-jit/automatic-vectorization] Big variations, even ignoring IEEE-754, usually signify programmer error.
+[src:numba-jit/automatic-vectorization] A common cause is that full reassociation can defeat compensated summation algorithms.
+[src:numba-jit/automatic-vectorization] More restricted commands such as the *reduction* clause from OpenMP can provide more targeted setting.
+[src:numba-jit/automatic-vectorization] To vectorize a program, the compiler's optimizer must first understand the dependencies between statements and re-align them, if necessary.
+[src:numba-jit/automatic-vectorization] Once the dependencies are mapped, the optimizer must properly arrange the implementing instructions changing appropriate candidates to vector instructions, which operate on multiple data items.
+[src:numba-jit/automatic-vectorization] The first step is to build the dependency graph, identifying which statements depend on which other statements.
+[src:numba-jit/automatic-vectorization] This involves examining each statement and identifying every data item that the statement accesses, mapping array access modifiers to functions and checking every access' dependency to all others in all statements.
+[src:numba-jit/automatic-vectorization] Alias analysis can be used to certify that the different variables access (or intersect) the same region in memory.
+[src:numba-jit/automatic-vectorization] The dependency graph contains all local dependencies with distance not greater than the vector size.
+[src:numba-jit/automatic-vectorization] So, if the vector register is 128 bits, and the array type is 32 bits, the vector size is 128/32 = 4.
+[src:numba-jit/automatic-vectorization] All other non-cyclic dependencies should not invalidate vectorization, since there won't be any concurrent access in the same vector instruction.
+[src:numba-jit/automatic-vectorization] Using the graph, the optimizer can then cluster the strongly connected components (SCC) and separate vectorizable statements from the rest.
+[src:numba-jit/automatic-vectorization] For example, consider a program fragment containing three statement groups inside a loop: (SCC1+SCC2), SCC3 and SCC4, in that order, in which only the second group (SCC3) can be vectorized.
+[src:numba-jit/automatic-vectorization] The final program will then contain three loops, one for each group, with only the middle one vectorized.
+[src:numba-jit/automatic-vectorization] The optimizer cannot join the first with the last without violating statement execution order, which would invalidate the necessary guarantees.
+[src:numba-jit/automatic-vectorization] Some non-obvious dependencies can be further optimized based on specific idioms.
+[src:numba-jit/automatic-vectorization] For instance, the following self-data-dependencies can be vectorized because the value of the right-hand values (RHS) are fetched and then stored on the left-hand value, so there is no way the data will change within the assignment.
+[src:numba-jit/automatic-vectorization] Self-dependence by scalars can be vectorized by variable elimination.
+[src:numba-jit/automatic-vectorization] Some vectorizations cannot be fully checked at compile time.
+[src:numba-jit/automatic-vectorization] For example, library functions can defeat optimization if the data they process is supplied by the caller.
+[src:numba-jit/automatic-vectorization] Even in these cases, run-time optimization can still vectorize loops on-the-fly.
+[src:numba-jit/automatic-vectorization] This run-time check is made in the **prelude** stage and directs the flow to vectorized instructions if possible, otherwise reverts to standard processing, depending on the variables that are being passed on the registers or scalar variables.
+[src:numba-jit/automatic-vectorization] The following code can easily be vectorized at compile time, as it doesn't have any dependence on external parameters.
+[src:numba-jit/automatic-vectorization] Also, the language guarantees that neither will occupy the same region in memory as any other variable, as they are local variables and live only in the execution stack.
+[src:numba-jit/automatic-vectorization] On the other hand, the code below has no information on memory positions, because the references are pointers and the memory they point to may overlap.
+[src:numba-jit/automatic-vectorization] A quick run-time check on the address of both *a* and *b*, plus the loop iteration space (128) is enough to tell if the arrays overlap or not, thus revealing any dependencies.
+[src:numba-jit/automatic-vectorization] There exist some tools to dynamically analyze existing applications to assess the inherent latent potential for SIMD parallelism, exploitable through further compiler advances and/or via manual code changes.
+[src:numba-jit/automatic-vectorization] An example would be a program to multiply two vectors of numeric data.
+[src:numba-jit/automatic-vectorization] Here, c[i:i+3] represents the four array elements from c[i] to c[i+3] and the vector processor can perform four operations for a single vector instruction.
+[src:numba-jit/automatic-vectorization] Since the four vector operations complete in roughly the same time as one scalar instruction, the vector approach can run up to four times faster than the original code.
+[src:numba-jit/automatic-vectorization] There are two distinct compiler approaches: one based on the conventional vectorization technique and the other based on loop unrolling.
+[src:numba-jit/automatic-vectorization] This technique, used for conventional vector machines, tries to find and exploit SIMD parallelism at the loop level.
+[src:numba-jit/automatic-vectorization] It consists of two major steps as follows.
+[src:numba-jit/automatic-vectorization] In the first step, the compiler looks for obstacles that can prevent vectorization.
+[src:numba-jit/automatic-vectorization] A major obstacle for vectorization is true data dependency shorter than the vector length.
+[src:numba-jit/automatic-vectorization] Other obstacles include function calls and short iteration counts.
+[src:numba-jit/automatic-vectorization] Once the loop is determined to be vectorizable, the loop is stripmined by the vector length and each scalar instruction within the loop body is replaced with the corresponding vector instruction.
+[src:numba-jit/automatic-vectorization] Below, the component transformations for this step are shown using the above example.
+[src:numba-jit/automatic-vectorization] This relatively new technique specifically targets modern SIMD architectures with short vector lengths.
+[src:numba-jit/automatic-vectorization] Although loops can be unrolled to increase the amount of SIMD parallelism in basic blocks, this technique exploits SIMD parallelism within basic blocks rather than loops.
+[src:numba-jit/automatic-vectorization] Isomorphic scalar instructions (that perform the same operation) are packed into a vector instruction if dependencies do not prevent doing so.
+[src:numba-jit/automatic-vectorization] To show step-by-step transformations for this approach, the same example is used again.
+[src:numba-jit/automatic-vectorization] Here, sA1, sB1, ... represent scalar variables and vA, vB, and vC represent vector variables.
+[src:numba-jit/automatic-vectorization] Most automatically vectorizing commercial compilers use the conventional loop-level approach except the IBM XL Compiler, which uses both.
+[src:numba-jit/automatic-vectorization] The presence of if-statements in the loop body requires the execution of instructions in all control paths to merge the multiple values of a variable.
+[src:numba-jit/automatic-vectorization] One general approach is to go through a sequence of code transformations: predication → vectorization(using one of the above methods) → remove vector predicates → remove scalar predicates.
+[src:numba-jit/automatic-vectorization] where (P) denotes a predicate guarding the statement.
+[src:numba-jit/automatic-vectorization] Having to execute the instructions in all control paths in vector code has been one of the major factors that slow down the vector code with respect to the scalar baseline.
+[src:numba-jit/automatic-vectorization] The more complex the control flow becomes and the more instructions are bypassed in the scalar code, the larger the vectorization overhead becomes.
+[src:numba-jit/automatic-vectorization] To reduce this vectorization overhead, vector branches can be inserted to bypass vector instructions similar to the way scalar branches bypass scalar instructions.
+[src:numba-jit/automatic-vectorization] Below, AltiVec predicates are used to show how this can be achieved.
+[src:numba-jit/automatic-vectorization] There are two things to note in the final code with vector branches; First, the predicate defining instruction for vPA is also included within the body of the outer vector branch by using vec_any_gt.
+[src:numba-jit/automatic-vectorization] Second, the profitability of the inner vector branch for vPB depends on the conditional probability of vPB having false values in all fields given vPA has false values in all fields.
+[src:numba-jit/automatic-vectorization] Consider an example where the outer branch in the scalar baseline is always taken, bypassing most instructions in the loop body.
+[src:numba-jit/automatic-vectorization] The intermediate case above, without vector branches, executes all vector instructions.
+[src:numba-jit/automatic-vectorization] The final code, with vector branches, executes both the comparison and the branch in vector mode, potentially gaining performance over the scalar baseline.
+[src:numba-jit/automatic-vectorization] In most C and C++ compilers, it is possible to use intrinsic functions to manually use SIMD, at the expense of programmer effort, maintainability, and portability.
+[src:numba-jit/automatic-vectorization] GNU C, C++ `std::experimental::simd`, Rust `std::simd`) include vector data types that compile to appropriate SIMD instructions, improving portability and reducing the effort required.
+[src:numba-jit/automatic-vectorization] Another approach is SPMD: write a program that looks as if it operates only one element on the time, then have a compiler widen it to match the SIMD vector width.
+[src:numba-jit/automatic-vectorization] This is the approach used by graphics shaders and more recently adopted by CPU-oriented tools such as Intel IPSC.
+[src:numba-jit/automatic-vectorization] Unlike to auto-vectorization which may fail and fall back to scalar code (e.g. when there is a call to an external function in a loop), SPMD is guaranteed to result in vector code where applicable, much like manual use of intrinsics or vector datatypes.
+[src:numba-jit/just-in-time-compilation] JIT compilation is a combination of the two traditional approaches to translation to machine code: ahead-of-time compilation (AOT), and interpretation, which combines some advantages and drawbacks of both.
+[src:numba-jit/just-in-time-compilation] Roughly, JIT compilation combines the speed of compiled code with the flexibility of interpretation, with the overhead of an interpreter and the additional overhead of compiling and linking (not just interpreting).
+[src:numba-jit/just-in-time-compilation] JIT compilation is a form of dynamic compilation, and allows adaptive optimization such as dynamic recompilation and microarchitecture-specific speedups.
+[src:numba-jit/just-in-time-compilation] Interpretation and JIT compilation are particularly suited for dynamic programming languages, as the runtime system can handle late-bound data types and enforce security guarantees.
+[src:numba-jit/just-in-time-compilation] The earliest published JIT compiler is generally attributed to work on LISP by John McCarthy in 1960.
+[src:numba-jit/just-in-time-compilation] Another early example was by Ken Thompson, who in 1968 gave one of the first applications of regular expressions, here for pattern matching in the text editor QED.
+[src:numba-jit/just-in-time-compilation] For speed, Thompson implemented regular expression matching by JITing to IBM 7094 code on the Compatible Time-Sharing System.
+[src:numba-jit/just-in-time-compilation] An influential technique for deriving compiled code from interpretation was pioneered by James G.
+[src:numba-jit/just-in-time-compilation] Mitchell in 1970, which he implemented for the experimental language *LC²*.
+[src:numba-jit/just-in-time-compilation] 1980) pioneered new aspects of JIT compilations.
+[src:numba-jit/just-in-time-compilation] For example, translation to machine code was done on demand, and the result was cached for later use.
+[src:numba-jit/just-in-time-compilation] When memory became scarce, the system would delete some of this code and regenerate it when it was needed again.
+[src:numba-jit/just-in-time-compilation] Sun's Self language improved these techniques extensively and was at one point the fastest Smalltalk system in the world, achieving up to half the speed of optimized C but with a fully object-oriented programming language.
+[src:numba-jit/just-in-time-compilation] Self was abandoned by Sun, but the research went into the Java language.
+[src:numba-jit/just-in-time-compilation] The term "Just-in-time compilation" was borrowed from the manufacturing term "Just in time" and popularized by Java, with James Gosling using the term from 1993.
+[src:numba-jit/just-in-time-compilation] Currently JITing is used by most implementations of the Java virtual machine, as HotSpot builds on, and extensively uses, this research base.
+[src:numba-jit/just-in-time-compilation] The HP project Dynamo was an experimental JIT compiler where the "bytecode" format and the machine code format were the same; the system optimized PA-8000 machine code.
+[src:numba-jit/just-in-time-compilation] In November 2020, PHP 8.0 introduced a JIT compiler.
+[src:numba-jit/just-in-time-compilation] In October 2024, CPython introduced an experimental JIT compiler.
+[src:numba-jit/just-in-time-compilation] In a bytecode-compiled system, source code is translated to an intermediate representation known as bytecode.
+[src:numba-jit/just-in-time-compilation] Bytecode is not the machine code for any particular computer, and may be portable among computer architectures.
+[src:numba-jit/just-in-time-compilation] The bytecode may then be interpreted by, or run on a virtual machine.
+[src:numba-jit/just-in-time-compilation] The JIT compiler reads the bytecodes in many sections (or in full, rarely) and compiles them dynamically into machine code so the program can run faster.
+[src:numba-jit/just-in-time-compilation] This can be done per-file, per-function or even on any arbitrary code fragment; the code can be compiled when it is about to be executed (hence the name "just-in-time"), and then cached and reused later without needing to be recompiled.
+[src:numba-jit/just-in-time-compilation] By contrast, a traditional *interpreted virtual machine* will simply interpret the bytecode, generally with much lower performance.
+[src:numba-jit/just-in-time-compilation] Some *interpreter*s even interpret source code, without the step of first compiling to bytecode, with even worse performance.
+[src:numba-jit/just-in-time-compilation] *Statically-compiled code* or *native code* is compiled prior to deployment.
+[src:numba-jit/just-in-time-compilation] A *dynamic compilation environment* is one in which the compiler can be used during execution.
+[src:numba-jit/just-in-time-compilation] The deployed bytecode is portable, unlike native code.
+[src:numba-jit/just-in-time-compilation] Since the runtime has control over the compilation, like interpreted bytecode, it can run in a secure sandbox.
+[src:numba-jit/just-in-time-compilation] Compilers from bytecode to machine code are easier to write, because the portable bytecode compiler has already done much of the work.
+[src:numba-jit/just-in-time-compilation] JIT code generally offers far better performance than interpreters.
+[src:numba-jit/just-in-time-compilation] The system is able to collect statistics about how the program is actually running in the environment it is in, and it can rearrange and recompile for optimum performance.
+[src:numba-jit/just-in-time-compilation] However, some static compilers can also take profile information as input.
+[src:numba-jit/just-in-time-compilation] The system can do global code optimizations (e.g. inlining of library functions) without losing the advantages of dynamic linking and without the overheads inherent to static compilers and linkers.
+[src:numba-jit/just-in-time-compilation] With just-in-time compilation in many cases this processing can be moved out of loops, often giving large increases of speed.
+[src:numba-jit/just-in-time-compilation] Although this is possible with statically compiled garbage collected languages, a bytecode system can more easily rearrange executed code for better cache utilization.
+[src:numba-jit/just-in-time-compilation] However, a special type of "JIT" may potentially *not* target the physical machine's CPU architecture, but rather an optimized VM bytecode where limitations on raw machine code prevail, especially where that bytecode's VM eventually leverages a JIT to native code.
+[src:numba-jit/just-in-time-compilation] JIT causes a slight to noticeable delay in the initial execution of an application, due to the time taken to load and compile the input code.
+[src:numba-jit/just-in-time-compilation] Sometimes this delay is called "startup time delay" or "warm-up time".
+[src:numba-jit/just-in-time-compilation] In general, the more optimization JIT performs, the better the code it will generate, but the initial delay will also increase.
+[src:numba-jit/just-in-time-compilation] A JIT compiler therefore has to make a trade-off between the compilation time and the quality of the code it hopes to generate.
+[src:numba-jit/just-in-time-compilation] Startup time can include increased IO-bound operations in addition to JIT compilation: for example, the *rt.jar* class data file for the Java virtual machine (JVM) is 40 MB and the JVM must seek a lot of data in this contextually huge file.
+[src:numba-jit/just-in-time-compilation] One possible optimization, used by Sun's HotSpot Java virtual machine, is to combine interpretation and JIT compilation.
+[src:numba-jit/just-in-time-compilation] The application code is initially interpreted, but the JVM monitors which sequences of bytecode are frequently executed and translates them to machine code for direct execution on the hardware.
+[src:numba-jit/just-in-time-compilation] For bytecode which is executed only a few times, this saves the compilation time and reduces the initial latency; for frequently executed bytecode, JIT compilation is used to run at high speed, after an initial phase of slow interpretation.
+[src:numba-jit/just-in-time-compilation] Further, since a program spends most time executing a minority of its code, the reduced compilation time is significant.
+[src:numba-jit/just-in-time-compilation] Finally, during the initial code interpretation, execution statistics can be collected before compilation, which helps to perform better optimization.
+[src:numba-jit/just-in-time-compilation] The correct tradeoff can vary due to circumstances.
+[src:numba-jit/just-in-time-compilation] For example, Sun's Java virtual machine has two major modes—client and server.
+[src:numba-jit/just-in-time-compilation] In client mode, minimal compilation and optimization is performed, to reduce startup time.
+[src:numba-jit/just-in-time-compilation] In server mode, extensive compilation and optimization is performed, to maximize performance once the application is running by sacrificing startup time.
+[src:numba-jit/just-in-time-compilation] Other Java just-in-time compilers have used a runtime measurement of the number of times a method has executed combined with the bytecode size of a method as a heuristic to decide when to compile.
+[src:numba-jit/just-in-time-compilation] Still another uses the number of times executed combined with the detection of loops.
+[src:numba-jit/just-in-time-compilation] In general, it is much harder to accurately predict which methods to optimize in short-running applications than in long-running ones.
+[src:numba-jit/just-in-time-compilation] Native Image Generator (Ngen) by Microsoft is another approach at reducing the initial delay.
+[src:numba-jit/just-in-time-compilation] Ngen pre-compiles (or "pre-JITs") bytecode in a Common Intermediate Language image into machine native code.
+[src:numba-jit/just-in-time-compilation] As a result, no runtime compilation is needed. .NET Framework 2.0 shipped with Visual Studio 2005 runs Ngen on all of the Microsoft dynamic-link library (DLL) files right after installing.
+[src:numba-jit/just-in-time-compilation] Pre-jitting provides a way to reduce startup time.
+[src:numba-jit/just-in-time-compilation] However, the quality of code it generates may be lower than the one that is JITed, for the same reasons why code compiled statically, without profile-guided optimization, cannot be as good as JIT compiled code in the extreme case: the lack of profiling data to drive, for instance, inline caching.
+[src:numba-jit/just-in-time-compilation] There also exist Java implementations that combine an AOT (ahead-of-time) compiler with either a JIT compiler (Excelsior JET) or interpreter (GNU Compiler for Java).
+[src:numba-jit/just-in-time-compilation] JIT compilation may not reliably achieve its goal, namely entering a steady state of improved performance after a short initial warmup period.
+[src:numba-jit/just-in-time-compilation] Across eight different virtual machines, Barrett et al.
+[src:numba-jit/just-in-time-compilation] (2017) measured six widely used microbenchmarks which are commonly used by virtual machine implementors as optimisation targets, running them repeatedly within a single process execution.
+[src:numba-jit/just-in-time-compilation] Even where an improved steady-state was reached, it sometimes took many hundreds of iterations.
+[src:numba-jit/just-in-time-compilation] (2022) instead focused on the HotSpot virtual machine but with a much wider array of benchmarks, finding that 10.9% of process executions failed to reach a steady state of performance, and 43.5% of benchmarks did not consistently attain a steady state across multiple executions.
+[src:numba-jit/just-in-time-compilation] JIT compilation fundamentally uses executable data, and thus poses security challenges and possible exploits.
+[src:numba-jit/just-in-time-compilation] Implementation of JIT compilation consists of compiling source code or byte code to machine code and executing it.
+[src:numba-jit/just-in-time-compilation] This is generally done directly in memory: the JIT compiler outputs the machine code directly into memory and immediately executes it, rather than outputting it to disk and then invoking the code as a separate program, as in usual ahead of time compilation.
+[src:numba-jit/just-in-time-compilation] In modern architectures this runs into a problem due to executable space protection: arbitrary memory cannot be executed, as otherwise there is a potential security hole.
+[src:numba-jit/just-in-time-compilation] Thus memory must be marked as executable; for security reasons this should be done *after* the code has been written to memory, and marked read-only, as writable/executable memory is a security hole (see W^X).
+[src:numba-jit/just-in-time-compilation] For instance Firefox's JIT compiler for JavaScript introduced this protection in a release version with Firefox 46.
+[src:numba-jit/just-in-time-compilation] JIT spraying is a class of computer security exploits that use JIT compilation for heap spraying: the resulting memory is then executable, which allows an exploit if execution can be moved into the heap.
+[src:numba-jit/just-in-time-compilation] JIT compilation can be applied to some programs, or can be used for certain capacities, particularly dynamic capacities such as regular expressions.
+[src:numba-jit/just-in-time-compilation] For example, a text editor may compile a regular expression provided at runtime to machine code to allow faster matching: this cannot be done ahead of time, as the pattern is only provided at runtime.
+[src:numba-jit/just-in-time-compilation] Several modern runtime environments rely on JIT compilation for high-speed code execution, including most implementations of Java, together with Microsoft's .NET.
+[src:numba-jit/just-in-time-compilation] Similarly, many regular-expression libraries feature JIT compilation of regular expressions, either to bytecode or to machine code.
+[src:numba-jit/just-in-time-compilation] JIT compilation is also used in some emulators, in order to translate machine code from one CPU architecture to another.
+[src:numba-jit/just-in-time-compilation] A common implementation of JIT compilation is to first have AOT compilation to bytecode (virtual machine code), known as *bytecode compilation*, and then have JIT compilation to machine code (dynamic compilation), rather than interpretation of the bytecode.
+[src:numba-jit/just-in-time-compilation] This improves the runtime performance compared to interpretation, at the cost of lag due to compilation.
+[src:numba-jit/just-in-time-compilation] JIT compilers translate continuously, as with interpreters, but caching of compiled code minimizes lag on future execution of the same code during a given run.
+[src:numba-jit/just-in-time-compilation] Since only part of the program is compiled, there is significantly less lag than if the entire program were compiled prior to execution.
+[src:numba-jit/llvm] LLVM is written in C++ and is designed for compile-time, link-time, and runtime optimization.
+[src:numba-jit/llvm] The LLVM project started in 2000 at the University of Illinois Urbana–Champaign, under the direction of Vikram Adve and Chris Lattner.
+[src:numba-jit/llvm] LLVM was originally developed as a research infrastructure to investigate dynamic compilation techniques for static and dynamic programming languages.
+[src:numba-jit/llvm] LLVM was released under the University of Illinois/NCSA Open Source License, a permissive free software licence.
+[src:numba-jit/llvm] In 2005, Apple Inc. hired Lattner and formed a team to work on the LLVM system for various uses within Apple's development systems.
+[src:numba-jit/llvm] LLVM has been an integral part of Apple's Xcode development tools for macOS and iOS since Xcode 4 in 2011.
+[src:numba-jit/llvm] In 2006, Lattner started working on a new project named Clang.
+[src:numba-jit/llvm] The combination of the Clang frontend and LLVM backend is named Clang/LLVM or simply Clang.
+[src:numba-jit/llvm] The name *LLVM* was originally an initialism for *Low Level Virtual Machine*.
+[src:numba-jit/llvm] However, the LLVM project evolved into an umbrella project that has little relationship to what most current developers think of as a virtual machine.
+[src:numba-jit/llvm] This made the initialism "confusing" and "inappropriate", and since 2011 LLVM is "officially no longer an acronym", but a brand that applies to the LLVM umbrella project.
+[src:numba-jit/llvm] The project encompasses the LLVM intermediate representation (IR), the LLVM debugger, the LLVM implementation of the C++ Standard Library (with full support of C++11 and C++14), etc.
+[src:numba-jit/llvm] LLVM is administered by the LLVM Foundation.
+[src:numba-jit/llvm] Compiler engineer Tanya Lattner became its president in 2014 and was still president and Executive Director as of November 2025.
+[src:numba-jit/llvm] The project was originally available under the UIUC license.
+[src:numba-jit/llvm] After v9.0.0 released in 2019, LLVM relicensed to the Apache License 2.0 with LLVM Exceptions.
+[src:numba-jit/llvm] As of November 2022 about 400 contributions had not been relicensed.
+[src:numba-jit/llvm] LLVM can provide the middle layers of a complete compiler system, taking intermediate representation (IR) code from a compiler and emitting an optimized IR.
+[src:numba-jit/llvm] This new IR can then be converted and linked into machine-dependent assembly language code for a target platform.
+[src:numba-jit/llvm] LLVM can accept the IR from the GNU Compiler Collection (GCC) toolchain, allowing it to be used with a wide array of extant compiler front-ends written for that project.
+[src:numba-jit/llvm] LLVM can also be built with gcc after version 7.5.
+[src:numba-jit/llvm] LLVM can also generate relocatable machine code at compile-time or link-time or even binary machine code at runtime.
+[src:numba-jit/llvm] LLVM supports a language-independent instruction set and type system.
+[src:numba-jit/llvm] Each instruction is in static single assignment form (SSA), meaning that each variable (called a typed register) is assigned once and then frozen.
+[src:numba-jit/llvm] This helps simplify the analysis of dependencies among variables.
+[src:numba-jit/llvm] LLVM allows code to be compiled statically, as it is under the traditional GCC system, or left for late-compiling from the IR to machine code via just-in-time compilation (JIT), similar to Java.
+[src:numba-jit/llvm] The type system consists of basic types such as integer or floating-point numbers and five derived types: pointers, arrays, vectors, structures, and functions.
+[src:numba-jit/llvm] A type construct in a concrete language can be represented by combining these basic types in LLVM.
+[src:numba-jit/llvm] For example, a class in C++ can be represented by a mix of structures, functions and arrays of function pointers.
+[src:numba-jit/llvm] The LLVM JIT compiler can optimize unneeded static branches out of a program at runtime, and thus is useful for partial evaluation in cases where a program has many options, most of which can easily be determined unneeded in a specific environment.
+[src:numba-jit/llvm] This feature is used in the OpenGL pipeline of Mac OS X Leopard (v10.5) to provide support for missing hardware features.
+[src:numba-jit/llvm] Graphics code within the OpenGL stack can be left in intermediate representation and then compiled when run on the target machine.
+[src:numba-jit/llvm] On systems with high-end graphics processing units (GPUs), the resulting code remains quite thin, passing the instructions on to the GPU with minimal changes.
+[src:numba-jit/llvm] On systems with low-end GPUs, LLVM will compile optional procedures that run on the local central processing unit (CPU) that emulate instructions that the GPU cannot run internally.
+[src:numba-jit/llvm] LLVM improved performance on low-end machines using Intel GMA chipsets.
+[src:numba-jit/llvm] A similar system was developed under the Gallium3D LLVMpipe, and incorporated into the GNOME shell to allow it to run without a proper 3D hardware driver loaded.
+[src:numba-jit/llvm] In 2011, programs compiled by GCC outperformed those from LLVM by 10%, on average.
+[src:numba-jit/llvm] In 2013, phoronix reported that LLVM had caught up with GCC, compiling binaries of approximately equal performance.
+[src:numba-jit/llvm] LLVM has become an umbrella project containing multiple components.
+[src:numba-jit/llvm] LLVM was originally written to be a replacement for the extant code generator in the GCC stack, and many of the GCC frontends were modified to work with it, resulting in the now-defunct LLVM-GCC suite.
+[src:numba-jit/llvm] The modifications generally involved a GIMPLE-to-LLVM IR step so that LLVM optimizers and codegen could be used instead of GCC's GIMPLE system.
+[src:numba-jit/llvm] Apple was a significant user of LLVM-GCC through Xcode 4.x (2013).
+[src:numba-jit/llvm] This use of the GCC frontend was considered a temporary measure; it became mostly obsolete with Apple's development of Clang, a newer compiler frontend, with a more modern, modular codebase and greater compilation speed, supporting C, C++, and Objective-C.
+[src:numba-jit/llvm] Support for LLVM-GCC was dropped in Xcode 5.
+[src:numba-jit/llvm] Primarily supported by Apple, Clang was aimed at replacing the C/Objective-C compiler in the GCC system with a system that is more easily integrated with integrated development environments (IDEs) and has wider support for multithreading.
+[src:numba-jit/llvm] Support for OpenMP directives has been included in Clang since release 3.8.
+[src:numba-jit/llvm] Widespread interest in LLVM has led to several efforts to develop new frontends for many other languages, including Ada, D, Delphi, Fortran, Haskell, Julia, Rust, Swift, and others.
+[src:numba-jit/llvm] The Utrecht Haskell compiler can generate code for LLVM.
+[src:numba-jit/llvm] While the generator was in early stages of development, in many cases it was more efficient than the C code generator.
+[src:numba-jit/llvm] The Glasgow Haskell Compiler (GHC) backend uses LLVM and achieves a 30% speed-up of compiled code relative to native code compiling via GHC or C code generation followed by compiling, missing only one of the many optimizing techniques implemented by the GHC.
+[src:numba-jit/llvm] Many other components are in various stages of development, including, but not limited to, a Java bytecode frontend, a Common Intermediate Language (CIL) frontend, the MacRuby implementation of Ruby 1.9, various frontends for Standard ML, and a new graph coloring register allocator.
+[src:numba-jit/llvm] The core of LLVM is the intermediate representation (IR), a low-level programming language similar to assembly.
+[src:numba-jit/llvm] IR is a strongly typed reduced instruction set computer (RISC) instruction set which abstracts away most details of the target.
+[src:numba-jit/llvm] For example, the calling convention is abstracted through `call` and `ret` instructions with explicit arguments.
+[src:numba-jit/llvm] Also, instead of a fixed set of registers, IR uses an infinite set of temporaries of the form %0, %1, etc.
+[src:numba-jit/llvm] LLVM supports three equivalent forms of IR: a human-readable assembly format, an in-memory format suitable for frontends, and a dense bitcode format for serializing.
+[src:numba-jit/llvm] The many different conventions used and features provided by different targets mean that LLVM cannot truly produce a target-independent IR and retarget it without breaking some established rules.
+[src:numba-jit/llvm] Examples of target dependence beyond what is explicitly mentioned in the documentation can be found in a 2011 proposal for "wordcode", a fully target-independent variant of LLVM IR intended for online distribution.
+[src:numba-jit/llvm] The LLVM project also introduces another type of intermediate representation named MLIR which helps build reusable and extensible compiler infrastructure by employing a plugin architecture named Dialect.
+[src:numba-jit/llvm] It enables the use of higher-level information on the program structure in the process of optimization including polyhedral compilation.
+[src:numba-jit/llvm] Some features are not available on some platforms.
+[src:numba-jit/llvm] Most features are present for IA-32, x86-64, z/Architecture, ARM, and PowerPC.
+[src:numba-jit/llvm] In the past, LLVM also supported other backends, fully or partially, including C backend, Cell SPU, mblaze (MicroBlaze), AMD R600, DEC/Compaq Alpha (Alpha AXP) and Nios2, but that hardware is mostly obsolete, and LLVM developers decided the support and maintenance costs were no longer justified.
+[src:numba-jit/llvm] LLVM also supports WebAssembly as a target, enabling compiled programs to execute in WebAssembly-enabled environments such as Google Chrome / Chromium, Firefox, Microsoft Edge, Apple Safari or WAVM.
+[src:numba-jit/llvm] LLVM-compliant WebAssembly compilers typically support mostly unmodified source code written in C, C++, D, Rust, Nim, Kotlin and several other languages.
+[src:numba-jit/llvm] The LLVM machine code (MC) subproject is LLVM's framework for translating machine instructions between textual forms and machine code.
+[src:numba-jit/llvm] Formerly, LLVM relied on the system assembler, or one provided by a toolchain, to translate assembly into machine code.
+[src:numba-jit/llvm] LLVM MC's integrated assembler supports most LLVM targets, including IA-32, x86-64, ARM, and ARM64.
+[src:numba-jit/llvm] For some targets, including the various MIPS instruction sets, integrated assembly support is usable but still in the beta stage.
+[src:numba-jit/llvm] The lld subproject is an attempt to develop a built-in, platform-independent linker for LLVM. lld aims to remove dependence on a third-party linker.
+[src:numba-jit/llvm] As of May 2017, lld supports ELF, PE/COFF, Mach-O, and WebAssembly in descending order of completeness. lld is faster than both flavors of GNU ld.
+[src:numba-jit/llvm] Unlike the GNU linkers, lld has built-in support for link-time optimization (LTO).
+[src:numba-jit/llvm] This allows for faster code generation as it bypasses the use of a linker plugin, but on the other hand prohibits interoperability with other flavors of LTO.
+[src:numba-jit/llvm] The LLVM project includes an implementation of the C++ Standard Library named libc++, dual-licensed under the MIT License and the UIUC license.
+[src:numba-jit/llvm] Since v9.0.0, it was relicensed to the Apache License 2.0 with LLVM Exceptions.
+[src:numba-jit/llvm] This implements a suite of cache-locality optimizations as well as auto-parallelism and vectorization using a polyhedral model.
+[src:numba-jit/llvm] llvm-libc is an incomplete, upcoming, ABI independent C standard library designed by and for the LLVM project.
+[src:numba-jit/llvm] Due to its permissive license, many vendors release their own tuned forks of LLVM.
+[src:numba-jit/llvm] This is officially recognized by LLVM's documentation, which suggests against using version numbers in feature checks for this reason.
+[src:numba-jit/numba] Numba was started by Travis Oliphant in 2012 and has since been under active development with frequent releases.
+[src:numba-jit/numba] The project is driven by developers at Anaconda, Inc., with support by DARPA, the Gordon and Betty Moore Foundation, Intel, Nvidia and AMD, and a community of contributors on GitHub.
+[src:numba-jit/numba] Numba can compile Python functions to GPU code.
+[src:numba-jit/numba] Since release 0.56.4, AMD ROCm HSA has been officially moved to unmaintained status and a separate repository stub has been created for it.
+[src:numba-jit/numba] Numba is one approach to make Python fast, by compiling specific functions that contain Python and NumPy code.
+[src:numba-jit/numba] Many alternative approaches for fast numeric computing with Python exist, such as Cython, Pythran, and PyPy.
+[src:numba-jit/vectorization-mathematics] In mathematics, especially in linear algebra and matrix theory, the **vectorization** of a matrix is a linear transformation which converts the matrix into a vector.
+[src:numba-jit/vectorization-mathematics] In other words, vec(*A*) is a vector containing the entries of *A* in column-major order.
+[src:numba-jit/vectorization-mathematics] Vectorization expresses, through coordinates, the isomorphism $\mathbf {R} ^{m\times n}\cong \mathbf {R} ^{mn}$ between these (i.e., of matrices and vectors) as vector spaces.
+[src:numba-jit/vectorization-mathematics] For example, for the 2×2 matrix $A={\begin{bmatrix}a&b\\c&d\end{bmatrix}}$ , the vectorization is $\operatorname {vec} (A)={\begin{bmatrix}a\\c\\b\\d\end{bmatrix}}$ .
+[src:numba-jit/vectorization-mathematics] The connection between the vectorization of *A* and the vectorization of its transpose is given by the commutation matrix.
+[src:numba-jit/vectorization-mathematics] The vectorization is frequently used together with the Kronecker product to express matrix multiplication as a linear transformation on matrices.
+[src:numba-jit/vectorization-mathematics] More generally, it has been shown that vectorization is a self-adjunction in the monoidal closed structure of any category of matrices.
+[src:numba-jit/vectorization-mathematics] Vectorization is a unitary transformation from the space of *n*×*n* matrices with the Frobenius (or Hilbert–Schmidt) inner product to **C***n*2: $\operatorname {tr} (A^{\dagger }B)=\operatorname {vec} (A)^{\dagger }\operatorname {vec} (B),$ where the superscript † denotes the conjugate transpose.
+[src:numba-jit/vectorization-mathematics] The matrix vectorization operation can be written in terms of a linear sum.
+[src:numba-jit/vectorization-mathematics] Let **X** be an *m* × *n* matrix that we want to vectorize, and let **e***i* be the *i*-th canonical basis vector for the *n*-dimensional space, that is ${\textstyle \mathbf {e} _{i}=\left[0,\dots ,0,1,0,\dots ,0\right]^{\mathrm {T} }}$ .
+[src:numba-jit/vectorization-mathematics] Multiplication of **X** by **e***i* extracts the *i*-th column, while multiplication by **B***i* puts it into the desired position in the final vector.
+[src:numba-jit/vectorization-mathematics] For a symmetric matrix *A*, the vector vec(*A*) contains more information than is strictly necessary, since the matrix is completely determined by the symmetry together with the lower triangular portion, that is, the *n*(*n* + 1)/2 entries on and below the main diagonal.
+[src:numba-jit/vectorization-mathematics] For such matrices, the **half-vectorization** is sometimes more useful than the vectorization.
+[src:numba-jit/vectorization-mathematics] For example, for the 2×2 matrix $A={\begin{bmatrix}a&b\\b&d\end{bmatrix}}$ , the half-vectorization is $\operatorname {vech} (A)={\begin{bmatrix}a\\b\\d\end{bmatrix}}$ .
+[src:numba-jit/vectorization-mathematics] There exist unique matrices transforming the half-vectorization of a matrix to its vectorization and vice versa called, respectively, the duplication matrix and the elimination matrix.
+[src:numba-jit/vectorization-mathematics] Programming languages that implement matrices may have easy means for vectorization.
+[src:numba-jit/vectorization-mathematics] In Matlab/GNU Octave a matrix `A` can be vectorized by `A(:)`.
+[src:numba-jit/vectorization-mathematics] GNU Octave also allows vectorization and half-vectorization with `vec(A)` and `vech(A)` respectively.
+[src:numba-jit/vectorization-mathematics] Julia has the `vec(A)` function as well.
+[src:numba-jit/vectorization-mathematics] In Python NumPy arrays implement the `flatten` method, while in R the desired effect can be achieved via the `c()` or `as.vector()` functions or, more efficiently, by removing the dimensions attribute of a matrix `A` with `dim(A) <- NULL`.
+[src:numba-jit/vectorization-mathematics] In R, function `vec()` of package 'ks' allows vectorization and function `vech()` implemented in both packages 'ks' and 'sn' allows half-vectorization.
+[src:numba-jit/vectorization-mathematics] Vectorization is used in matrix calculus and its applications in establishing e.g., moments of random vectors and matrices, asymptotics, as well as Jacobian and Hessian matrices.
+[src:numba-jit/vectorization-mathematics] It is also used in local sensitivity and statistical diagnostics.

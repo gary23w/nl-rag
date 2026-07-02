@@ -1,0 +1,1140 @@
+---
+title: "Debian release version history"
+source: https://en.wikipedia.org/wiki/Debian_version_history
+domain: debian-linux
+license: CC-BY-SA-4.0
+tags: debian linux, apt package manager, dpkg tool, debian release
+fetched: 2026-07-02
+---
+
+# Debian release version history
+
+(Redirected from
+
+Debian version history
+
+)
+
+Debian releases do not follow a fixed schedule. Recent releases have been made around every two years by the Debian Project. The most recent version of Debian is Debian version 13, codename "Trixie". The next up and coming release of Debian is Debian 14, codename "Forky".
+
+Debian always has at least three active branches at any time: "stable", "testing" and "unstable". The stable branch is considered the primary release and what most people refer to when talking about Debian. The testing branch contains packages that have been imported from unstable. Testing has significantly more up-to-date packages than stable and is frozen some time before a release to become the next version of Debian. The unstable release (also known as Sid) is the branch where active development takes place. It is the most volatile version of Debian.
+
+When the Debian stable branch is replaced with a newer release, the current stable becomes an "oldstable" release. When the Debian stable branch is replaced again, the oldstable release becomes the "oldoldstable" release. Oldoldstable is eventually moved to the archived releases repository.
+
+## Naming convention
+
+Debian distribution codenames are based on the names of characters from the *Toy Story* films. Debian's *unstable* branch is named after Sid, a character who regularly destroyed his toys.
+
+## Release cycle
+
+Debian Unstable, known as "Sid", contains all the latest packages as soon as they are available, and follows a rolling-release model.
+
+Once a package has been in Debian Unstable for 2–10 days (depending on the urgency of the upload), doesn't introduce critical bugs and doesn't break other packages (among other conditions), it is included in Debian Testing, also known as "next-stable".
+
+On average about every two years, Debian Testing enters a "freeze" cycle, where new packages are held back unless they fix critical bugs. This frozen state lasts on average 7 months (but can be as short as one month). Once Debian Testing doesn't contain any more release critical bugs, it is declared "stable" and released with a version number.
+
+## Release table
+
+Ver.
+
+Code­name
+
+Release date
+
+Final/latest release (date)
+
+No. of Archs.
+
+Package count
+
+Linux
+
+kernel
+
+End of support
+
+References
+
+Binary
+
+Source
+
+Security
+
+Long-term
+
+Paid
+
+ELTS
+
+Unsupported:
+
+0.90
+
+Unsupported:
+
+26 January 1994
+
+1
+
+?
+
+?
+
+0.99.14t
+
+—
+
+N/a
+
+None
+
+None
+
+Unsupported:
+
+0.91
+
+Unsupported:
+
+29 January 1994
+
+?
+
+?
+
+0.99.14w
+
+—
+
+N/a
+
+Unsupported:
+
+0.93R5
+
+Unsupported:
+
+March 1995
+
+?
+
+?
+
+?
+
+—
+
+N/a
+
+Unsupported:
+
+0.93R6
+
+Unsupported:
+
+9
+
+November 1995
+
+256
+
+?
+
+1.2.13
+
+—
+
+N/a
+
+1.0
+
+Never released
+
+—
+
+N/a
+
+—
+
+N/a
+
+—
+
+N/a
+
+—
+
+N/a
+
+—
+
+N/a
+
+Unsupported:
+
+1.1
+
+Unsupported:
+
+Buzz
+
+17 June 1996
+
+474
+
+?
+
+2.0
+
+—
+
+N/a
+
+Unsupported:
+
+1.2
+
+Unsupported:
+
+Rex
+
+12 December 1996
+
+848
+
+?
+
+2.0.27
+
+—
+
+N/a
+
+Unsupported:
+
+1.3
+
+Unsupported:
+
+Bo
+
+5 June 1997
+
+974
+
+?
+
+2.0.33
+
+—
+
+N/a
+
+Unsupported:
+
+2.0
+
+Unsupported:
+
+Hamm
+
+24 July 1998
+
+2
+
+≈1,500
+
+?
+
+2.0.34
+
+—
+
+N/a
+
+Unsupported:
+
+2.1
+
+Unsupported:
+
+Slink
+
+9 March 1999
+
+4
+
+≈2,250
+
+?
+
+2.0.34, 2.0.35,
+
+2.0.36, 2.0.38
+
+30 October 2000
+
+Unsupported:
+
+2.2
+
+Unsupported:
+
+Potato
+
+14–15 August 2000
+
+6
+
+≈3,900
+
+≈2,600
+
+2.0.38, 2.2.19
+
+30 June 2003
+
+Unsupported:
+
+3.0
+
+Unsupported:
+
+Woody
+
+19 July 2002
+
+11
+
+≈8,500
+
+?
+
+2.2.20, 2.4.18
+
+30 June 2006
+
+Unsupported:
+
+3.1
+
+Unsupported:
+
+Sarge
+
+6 June 2005
+
+≈15,400
+
+?
+
+2.4.27, 2.6.8
+
+31 March 2008
+
+Unsupported:
+
+4
+
+Unsupported:
+
+Etch
+
+8 April 2007
+
+4.0r9
+
+(22 May 2010)
+
+≈18,000
+
+?
+
+2.6.18, 2.6.24
+
+15 February 2010
+
+Unsupported:
+
+5
+
+Unsupported:
+
+Lenny
+
+14 February 2009
+
+5.0.10
+
+(10 March 2012)
+
+12
+
+≈23,000
+
+≈12,000
+
+2.6.26
+
+6 February 2012
+
+Unsupported:
+
+6
+
+Unsupported:
+
+Squeeze
+
+6 February 2011
+
+6.0.10
+
+(19 July 2014)
+
+11
+
+≈29,000
+
+≈15,000
+
+2.6.32
+
+31 May 2014
+
+29 February 2016
+
+Unsupported:
+
+7
+
+Unsupported:
+
+Wheezy
+
+4 May 2013
+
+7.11
+
+(4 June 2016)
+
+13
+
+≈36,000
+
+≈17,500
+
+3.2
+
+25 April 2016
+
+31 May 2018
+
+30 June 2020
+
+Unsupported:
+
+8
+
+Unsupported:
+
+Jessie
+
+25–26 April 2015
+
+8.11
+
+(23 June 2018)
+
+10
+
+≈43,000
+
+≈20,000
+
+3.16
+
+17 June 2018
+
+30 June 2020
+
+30 June 2025
+
+Unsupported:
+
+9
+
+Unsupported:
+
+Stretch
+
+17 June 2017
+
+9.13
+
+(18 July 2020)
+
+≈51,000
+
+≈25,000
+
+4.9
+
+18 July 2020
+
+30 June 2022
+
+30 June 2027
+
+Unsupported:
+
+10
+
+Unsupported:
+
+Buster
+
+6 July 2019
+
+10.13
+
+(10 September 2022)
+
+≈59,000
+
+≈29,000
+
+4.19
+
+10 September 2022
+
+30 June 2024
+
+30 June 2029
+
+Supported:
+
+11
+
+Supported:
+
+Bullseye
+
+14 August 2021
+
+11.11
+
+(31 August 2024)
+
+9
+
+59,551
+
+31,387
+
+5.10
+
+15 August 2024
+
+31 August 2026
+
+30 June 2031
+
+Supported:
+
+12
+
+Supported:
+
+Bookworm
+
+10 June 2023
+
+12.14
+
+(16 May 2026)
+
+64,419
+
+34,780
+
+6.1
+
+10 June 2026
+
+30 June 2028
+
+30 June 2033
+
+Latest version:
+
+13
+
+Latest version:
+
+Trixie
+
+9 August 2025
+
+13.5
+
+(16 May 2026)
+
+7
+
+69,830
+
+≈30,000
+
+6.12
+
+9 August 2028
+
+30 June 2030
+
+30 June 2035
+
+Future version:
+
+14
+
+Future version:
+
+Forky
+
+2027
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+—
+
+N/a
+
+Future version:
+
+15
+
+Future version:
+
+Duke
+
+2029
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+TBA
+
+—
+
+N/a
+
+Preview version:
+
+Sid (
+
+unstable
+
+)
+
+Rolling release
+
+—
+
+N/a
+
+22
+
+>67,000
+
+>32,000
+
+6.18.9
+
+—
+
+N/a
+
+—
+
+N/a
+
+—
+
+N/a
+
+Preview version:
+
+RC-Buggy (
+
+experimental
+
+)
+
+Rolling release
+
+—
+
+N/a
+
+13
+
+>9,800
+
+≈4,500
+
+6.19.1
+
+—
+
+N/a
+
+—
+
+N/a
+
+—
+
+N/a
+
+Legend:
+
+Unsupported
+
+Supported
+
+Latest version
+
+Preview version
+
+Future version
+
+1. The number of hardware architectures supported
+2. Extended long-term support (ELTS) is provided by Freexian to subscribers. There is no kernel support, and only sponsored packages are supported.
+3. Only 7 are candidates for stable releases.
+4. As of 7 May 2022.
+5. As of 28 September 2024.
+
+When a release transitions to long-term support phase (LTS-phase), security is no longer handled by the main Debian security team. Only a subset of Debian architectures are eligible for Long Term Support, and there is no support for packages in backports.
+
+## Release history
+
+**Debian 1.0** was never released, as a vendor accidentally shipped a development release with that version number. The package management system dpkg and its front-end dselect were developed and implemented on Debian in a previous release. A transition from the a.out binary format to the ELF binary format had already begun before the planned 1.0 release. The only supported architecture was Intel 80386 (i386).
+
+### Debian 1.1 (Buzz)
+
+Debian 1.1 (*Buzz*), released 17 June 1996, contained 474 packages. Debian had fully transitioned to the ELF binary format and used Linux kernel 2.0.
+
+### Debian 1.2 (Rex)
+
+Debian 1.2 (*Rex*), released 12 December 1996, contained 848 packages maintained by 120 developers.
+
+### Debian 1.3 (Bo)
+
+Debian 1.3 (*Bo*), released 5 June 1997, contained 974 packages maintained by 200 developers.
+
+Point releases:
+
+- 1.3.1 (8 July 1997 (1997-07-08))
+- 1.3.1r1 (Release date unknown)
+- 1.3.1r2 (Release date unknown)
+- 1.3.1r3 (Release date unknown)
+- 1.3.1r4 (Release date unknown)
+- 1.3.1r5 (23 December 1997 (1997-12-23))
+- 1.3.1r6 (3 February 1998 (1998-02-03))
+
+### Debian 2.0 (Hamm)
+
+Debian 2.0 (*Hamm*), released 24 July 1998, contained over 1,500 packages maintained by over 400 developers. A transition was made to libc6 and Debian was ported to the Motorola 68000 series (m68k) architectures.
+
+Point releases:
+
+- 2.0r1 (24 July 1998 (1998-07-24))
+- 2.0r2 (29 August 1998 (1998-08-29))
+- 2.0r3 (21 September 1998 (1998-09-21))
+- 2.0r4 (7 December 1998 (1998-12-07))
+- 2.0r5 (15 March 1999 (1999-03-15))
+
+### Debian 2.1 (Slink)
+
+Debian 2.1 (*Slink*), released 9 March 1999, contained about 2,250 packages. The front-end APT was introduced for the package management system and Debian was ported to Alpha and SPARC.
+
+Point releases:
+
+- 2.1r1 (Possibly never released)
+- 2.1r2 (27 June 1999 (1999-06-27))
+- 2.1r3 (4 September 1999 (1999-09-04))
+- 2.1r4 (15 December 1999 (1999-12-15))
+- 2.1r5 (16 February 2000 (2000-02-16))
+
+### Debian 2.2 (Potato)
+
+Debian 2.2 (*Potato*), released 14–15 August 2000, contained 2,600 packages maintained by more than 450 developers. New packages included the display manager GDM, the directory service OpenLDAP, the security software OpenSSH and the mail transfer agent Postfix. Debian was ported to the PowerPC and ARM architectures.
+
+Point releases:
+
+- 2.2r1 (14 November 2000 (2000-11-14))
+- 2.2r2 (5 December 2000 (2000-12-05))
+- 2.2r3 (17 April 2001 (2001-04-17))
+- 2.2r4 (5 November 2001 (2001-11-05))
+- 2.2r5 (10 January 2002 (2002-01-10))
+- 2.2r6 (3 April 2002 (2002-04-03))
+- 2.2r7 (13 July 2002 (2002-07-13))
+
+### Debian 3.0 (Woody)
+
+Debian 3.0 (*Woody*), released 19 July 2002, contained around 8,500 packages maintained by more than 900 developers. KDE was introduced and Debian was ported to the following architectures: IA-64, PA-RISC (hppa), mips and mipsel and IBM ESA/390 (s390).
+
+Point releases:
+
+- 3.0r1 (16 December 2002 (2002-12-16))
+- 3.0r2 (21 November 2003 (2003-11-21))
+- 3.0r3 (26 October 2004 (2004-10-26))
+- 3.0r4 (1 January 2005 (2005-01-01))
+- 3.0r5 (16 April 2005 (2005-04-16))
+- 3.0r6 (2 June 2005 (2005-06-02))
+
+### Debian 3.1 (Sarge)
+
+Debian 3.1 (*Sarge*), released 6 June 2005, contained around 15,400 packages. debian-installer, OpenOffice.org and GNOME 2.8 were introduced. Point releases:
+
+- 3.1r1 (20 December 2005 (2005-12-20))
+- 3.1r2 (19 April 2006 (2006-04-19))
+- 3.1r3 (1 September 2006 (2006-09-01))
+- 3.1r4 (6 November 2006 (2006-11-06))
+- 3.1r5 (18 February 2007 (2007-02-18))
+- 3.1r6 (7 April 2007 (2007-04-07))
+- 3.1r7 (28 December 2007 (2007-12-28))
+- 3.1r8 (13 April 2008 (2008-04-13)) this is the final update for codename Sarge.
+
+### Debian 4.0 (Etch)
+
+Debian 4.0 (*Etch*), released 8 April 2007, contained around 18,000 packages maintained by more than 1,030 developers. Debian was ported to x86-64 (amd64) and support for the Motorola 68000 series (m68k) architecture was dropped. This version introduced UTF-8 and udev device management by default.
+
+Point releases:
+
+- 4.0r1 (17 August 2007 (2007-08-17))
+- 4.0r2 (27 December 2007 (2007-12-27))
+- 4.0r3 (17 February 2008 (2008-02-17))
+- 4.0r4 (26 July 2008 (2008-07-26))
+- 4.0r5 (23 October 2008 (2008-10-23))
+- 4.0r6 (18 December 2008 (2008-12-18))
+- 4.0r7 (10 February 2009 (2009-02-10))
+- 4.0r8 (8 April 2009 (2009-04-08))
+- 4.0r9 (22 May 2010 (2010-05-22)) this is the final update for codename Etch
+
+### Debian 5.0 (Lenny)
+
+Debian 5.0 (*Lenny*), released 14 February 2009, contained more than 23,000 packages. Debian was ported to the ARM EABI (armel) architecture.
+
+Point releases:
+
+- 5.0.1 (11 April 2009 (2009-04-11))
+- 5.0.2 (27 June 2009 (2009-06-27))
+- 5.0.3 (5 September 2009 (2009-09-05))
+- 5.0.4 (30 January 2010 (2010-01-30))
+- 5.0.5 (26 July 2010 (2010-07-26))
+- 5.0.6 (4 September 2010 (2010-09-04))
+- 5.0.7 (27 November 2010 (2010-11-27))
+- 5.0.8 (22 January 2011 (2011-01-22))
+- 5.0.9 (22 January 2011 (2011-01-22))
+- 5.0.10 (10 March 2012 (2012-03-10)) this is the final update for codename Lenny.
+
+### Debian 6.0 (Squeeze)
+
+Debian 6.0 (*Squeeze*), released 6 February 2011, contained more than 29,000 packages. The default Linux kernel included was deblobbed beginning with this release. The web browser Chromium was introduced and Debian was ported to the kfreebsd-i386 and kfreebsd-amd64 architectures (while that port was later discontinued), and support for the Intel 486, Alpha, and PA-RISC (hppa) architectures was dropped.
+
+Squeeze was the first release of Debian in which non-free firmware components (aka "binary blobs") were excluded from the "main" repository as a matter of policy.
+
+Point releases:
+
+- 6.0.1 (19 March 2011 (2011-03-19))
+- 6.0.2 (25 June 2011 (2011-06-25))
+- 6.0.3 (8 October 2011 (2011-10-08))
+- 6.0.4 (28 January 2012 (2012-01-28))
+- 6.0.5 (12 May 2012 (2012-05-12))
+- 6.0.6 (29 September 2012 (2012-09-29))
+- 6.0.7 (23 February 2013 (2013-02-23))
+- 6.0.8 (20 October 2013 (2013-10-20))
+- 6.0.9 (15 February 2014 (2014-02-15))
+- 6.0.10 (19 June 2014 (2014-06-19)) this is the final update for codename Squeeze.
+- Squeeze long term support reached end-of-life (29 February 2016 (2016-02-29))
+
+### Debian 7 (Wheezy)
+
+Debian 7 (*Wheezy*), released 4 May 2013, contained more than 36,000 packages. Support for UEFI was added and Debian was ported to the armhf and IBM z/Architecture (s390x) architectures.
+
+Point releases:
+
+- 7.1 (15 June 2013 (2013-06-15))
+- 7.2 (12 October 2013 (2013-10-12))
+- 7.3 (14 December 2013 (2013-12-14))
+- 7.4 (8 February 2014 (2014-02-08))
+- 7.5 (26 April 2014 (2014-04-26))
+- 7.6 (12 July 2014 (2014-07-12))
+- 7.7 (18 October 2014 (2014-10-18))
+- 7.8 (10 January 2015 (2015-01-10))
+- Debian 8.0 codename Jessie releases, Wheezy becomes oldstable (25 April 2015 (2015-04-25))
+- 7.9 (5 September 2015 (2015-09-05))
+- 7.10 (2 April 2016 (2016-04-02))
+- 7.11 (4 June 2016 (2016-06-04)) this is the final update for codename Wheezy.
+- Debian 9.0 codename Stretch releases, Wheezy becomes oldoldstable (17 June 2017 (2017-06-17))
+- Wheezy long term support reached end-of-life (1 June 2018 (2018-06-01))
+- Wheezy extended long term support reached end-of-life (30 June 2020 (2020-06-30)).
+
+### Debian 8 (Jessie)
+
+Debian 8 (*Jessie*), released 25 April 2015, contained more than 43,000 packages, with systemd installed by default instead of init. (sysvinit and upstart packages are provided as alternatives.) Debian was ported to the ARM64 and ppc64le architectures, while support for the IA-64, kfreebsd-amd64 and kfreebsd-i386, IBM ESA/390 (s390) (only the 31-bit variant; the newer 64-bit s390x was retained) and SPARC architectures were dropped.
+
+Long term support ended June 2020.
+
+Point releases:
+
+- 8.1 (6 June 2015 (2015-06-06))
+- 8.2 (5 September 2015 (2015-09-05))
+- 8.3 (23 January 2016 (2016-01-23))
+- 8.4 (2 April 2016 (2016-04-02))
+- 8.5 (4 June 2016 (2016-06-04))
+- 8.6 (17 September 2016 (2016-09-17))
+- 8.7 (14 January 2017 (2017-01-14))
+- 8.8 (6 May 2017 (2017-05-06))
+- Debian 9.0 codename Stretch releases, Jessie becomes oldstable (17 June 2017 (2017-06-17))
+- 8.9 (22 July 2017 (2017-07-22))
+- 8.10 (9 December 2017 (2017-12-09))
+- Regular security support updates have been discontinued (17 June 2018 (2018-06-17))
+- 8.11 (23 June 2018 (2018-06-23)) this is the final update for codename Jessie.
+- Debian 10.0 codename Buster releases, Jessie becomes oldoldstable (6 July 2019 (2019-07-06))
+- Jessie long term support reached end-of-life (30 June 2020 (2020-06-30))
+- Jessie extended long term support reached end-of-life (30 June 2025 (2025-06-30))
+
+### Debian 9 (Stretch)
+
+Debian 9 (Stretch) was released on 17 June 2017, two years and two months after Debian 8.0, and contained more than 51,000 packages. The final minor update, called a "point release", is version 9.13, released on 18 July 2020 (2020-07-18). Major upgrades include the Linux kernel going from version 3.16 to 4.9, GNOME desktop version going from 3.14 to 3.22, KDE Plasma 4 was upgraded to Plasma 5, LibreOffice 4.3 upgraded to 5.2 and Qt upgraded from 4.8 to 5.7. LXQt has been added as well.
+
+The Intel i586 (Pentium), i586/i686 hybrid and PowerPC architectures are no longer supported as of Stretch.
+
+Point releases:
+
+- 9.1 (22 July 2017 (2017-07-22))
+- 9.2 (7 October 2017 (2017-10-07))
+- 9.3 (9 December 2017 (2017-12-09))
+- 9.4 (10 March 2018 (2018-03-10))
+- 9.5 (14 July 2018 (2018-07-14))
+- 9.6 (10 November 2018 (2018-11-10))
+- 9.7 (23 January 2019 (2019-01-23))
+- 9.8 (16 February 2019 (2019-02-16))
+- 9.9 (27 April 2019 (2019-04-27))
+- Stretch becomes oldstable, Buster becomes stable release (6 July 2019 (2019-07-06))
+- 9.10 (7 September 2019 (2019-09-07))
+- 9.11 (8 September 2019 (2019-09-08))
+- 9.12 (8 February 2020 (2020-02-08))
+- 9.13 (18 July 2020 (2020-07-18)) this is the final update for codename Stretch.
+- Stretch becomes oldoldstable, Bullseye is the current stable release (14 August 2021 (2021-08-14))
+- Stretch long term support reached end-of-life (30 June 2022 (2022-06-30))
+- Stretch extended long term support reaches end-of-life (30 June 2027 (2027-06-30))
+
+### Debian 10 (Buster)
+
+Debian 10 (Buster) was released on 6 July 2019 (2019-07-06). It was two years and a month after Debian 9 (Stretch). Debian 10 contains 57,703 packages, supports UEFI Secure Boot, has AppArmor enabled by default, uses LUKS2 as the default LUKS format, and uses Wayland for GNOME by default.
+
+Debian 10 ships with Linux kernel version 4.19. Available desktops include Cinnamon 3.8, GNOME 3.30, KDE Plasma 5.14, LXDE 0.99.2, LXQt 0.14, MATE 1.20, Xfce 4.12. Key application software includes LibreOffice 6.1 for office productivity, VLC 3.0 for media viewing, and Firefox ESR for web browsing.
+
+Point releases:
+
+- 10.1 (7 September 2019 (2019-09-07))
+- 10.2 (16 November 2019 (2019-11-16))
+- 10.3 (8 February 2020 (2020-02-08))
+- 10.4 (9 May 2020 (2020-05-09))
+- 10.5 (1 August 2020 (2020-08-01))
+- 10.6 (26 September 2020 (2020-09-26))
+- 10.7 (5 December 2020 (2020-12-05))
+- 10.8 (6 February 2021 (2021-02-06))
+- 10.9 (27 March 2021 (2021-03-27))
+- 10.10 (19 June 2021 (2021-06-19))
+- Buster becomes oldstable, Bullseye is the current stable release (14 August 2021 (2021-08-14))
+- 10.11 (9 October 2021 (2021-10-09))
+- 10.12 (26 March 2022 (2022-03-26))
+- 10.13 (10 September 2022 (2022-09-10)) this is the final update for codename Buster
+- Buster becomes oldoldstable, Bookworm is the current stable release (10 June 2023 (2023-06-10))
+- Buster long term support reached end-of-life (30 June 2024 (2024-06-30))
+- Buster extended long term support reaches end-of-life (30 June 2029 (2029-06-30))
+
+### Debian 11 (Bullseye)
+
+Debian 11 (Bullseye) was released on 14 August 2021. It is based on the Linux 5.10 LTS kernel and will be supported for five years.
+
+On 12 November 2020, it was announced that "Homeworld", by Juliette Taka, will be the default theme for Debian 11, after winning a public poll held with eighteen choices.
+
+Bullseye dropped the remaining Qt4/KDE 4 libraries and Python 2, and shipped with Qt 5.15 KDE Plasma 5.20. Available desktops include Gnome 3.38, KDE Plasma 5.20, LXDE 11, LXQt 0.16, MATE 1.24, and Xfce 4.16.
+
+Bullseye does not support the older big-endian 32-bit MIPS architectures.
+
+The first of the code freezes, readying Debian 11 for release, began on 12 January 2021.
+
+Development freeze timetable:
+
+- 12 January 2021: transition freeze
+- 12 February 2021: soft freeze
+- 12 March 2021: hard freeze
+- 17 July 2021: full freeze
+- 14 August 2021: release
+
+Point releases:
+
+- 11.1 (9 October 2021 (2021-10-09))
+- 11.2 (18 December 2021 (2021-12-18))
+- 11.3 (26 March 2022 (2022-03-26))
+- 11.4 (9 July 2022 (2022-07-09))
+- 11.5 (10 September 2022 (2022-09-10))
+- 11.6 (17 December 2022 (2022-12-17))
+- 11.7 (29 April 2023 (2023-04-29))
+- Bullseye becomes oldstable, Bookworm is the current stable release (10 June 2023 (2023-06-10))
+- 11.8 (7 October 2023 (2023-10-07))
+- 11.9 (10 February 2024 (2024-02-10))
+- 11.10 (29 June 2024 (2024-06-29))
+- 11.11 (31 August 2024 (2024-08-31)); this is the final point release for Bullseye
+
+### Debian 12 (Bookworm)
+
+Debian 12 (Bookworm) was released on 10 June 2023. It is based on Linux kernel v6.1 LTS, and uses GNOME 43 as its default desktop environment, but as usual many other desktops are available, such as KDE Plasma 5.27, LXDE 11, LXQt 1.2.0, MATE 1.26, and Xfce 4.18.
+
+Bookworm raised the compatibility level of its 32 bit x86 PC port from i586 to i686 compatibility.
+
+Debian 12 (Bookworm) is the last version of Debian with KDE Plasma 5.
+
+Starting with Debian 12, non-free firmware packages from the "non-free-firmware" section of the Debian archive was enabled by default in the official installer and live images if and when the system determines that these packages are required, such as with modern Wi-Fi cards and modern graphics cards. A change was also made to the Debian Social Contract to allow for this change to be made.
+
+On 13 October 2022, the Release Team announced the freeze development milestone timeline for this release:
+
+- 12 January 2023: transition and toolchain
+- 12 February 2023: soft freeze
+- 12 March 2023: hard freeze
+
+Point releases:
+
+- 12.1 (22 July 2023 (2023-07-22))
+- 12.2 (7 October 2023 (2023-10-07))
+- 12.3 (Cancelled, was intended to be released 9 December 2023 (2023-12-09))
+- 12.4 (10 December 2023 (2023-12-10))
+- 12.5 (10 February 2024 (2024-02-10))
+- 12.6 (29 June 2024 (2024-06-29) (delayed from 6 April 2024 (2024-04-06)))
+- 12.7 (31 August 2024 (2024-08-31))
+- 12.8 (9 November 2024 (2024-11-09))
+- 12.9 (11 January 2025 (2025-01-11))
+- 12.10 (March 15, 2025 (2025-03-15))
+- 12.11 (May 17, 2025 (2025-05-17))
+- Bookworm becomes oldstable, Trixie is the current stable release (9 August 2025 (2025-08-09))
+- 12.12 (September 6, 2025 (2025-09-06))
+- 12.13 (January 10, 2026 (2026-01-10))
+- 12.14 (May 16, 2026 (2026-05-16))
+
+### Debian 13 (Trixie)
+
+Debian 13, codenamed Trixie, was released 9 August 2025. It uses the v6.12 LTS kernel.
+
+Debian 13 adds support for 64 bit RISC-V.
+
+Debian 13 drops support for the mipsel architecture, and drops the installers for the i386 (all 32-bit x86 CPUs) and armel architectures.
+
+Debian directs users to keep i386 systems on Debian 12 or retiring the system in question, as the remaining packages are intended for running 32-bit x86 software on 64-bit systems and require the SSE2 CPU instruction set that most 32-bit x86 CPUs don't support.
+
+Debian 13 features KDE Plasma 6.
+
+Key release dates:
+
+- [2024-12-31]: Debian Installer Trixie Alpha 1 release
+- [2025-03-15]: Transition and Toolchain Freeze
+- [2025-04-15]: Soft Freeze
+- [2025-05-15]: Hard Freeze - for key packages and packages without autopkgtests
+- [2025-05-17]: Trixie RC 1 installer released
+- [2025-07-02]: Trixie RC 2 installer released
+- [2025-07-27]: Full Freeze
+- [2025-07-30]: Deadline for unblock requests
+- [2025-08-09]: Full Release
+
+Point releases:
+
+- 13.1 (September 6, 2025 (2025-09-06))
+- 13.2 (November 15, 2025 (2025-11-15))
+- 13.3 (January 10, 2026 (2026-01-10))
+- 13.4 (March 14, 2026 (2026-03-14))
+- 13.5 (May 16, 2026 (2026-05-16))
+
+### Debian 14 (Forky)
+
+Following the release of Debian 13 (Trixie) on 9 August 2025, testing is known by the codename Forky which is anticipated to be released as Debian 14 in 2027.
+
+## Release timeline
+
+| Timeline description |   |   |   |   |   |
+|---|---|---|---|---|---|
+| Release | First | From | Last | Until | References |
+| Buzz | 1.1 | 17 June 1996 | —N/a | —N/a |   |
+| Rex | 1.2 | 12 December 1996 | —N/a | —N/a |   |
+| Bo | 1.3 | 5 June 1997 | 1.3.1.r8 | 16 May 1998 |   |
+| Hamm | 2.0r0 | 24 July 1998 | 2.0r5 | 15 February 1999 |   |
+| Slink | 2.1r0 | 9 March 1999 | 2.1r5 | 30 September 2000 |   |
+| Potato | 2.2r0 | 14–15 August 2000 | 2.2r7 | 19 July 2002 |   |
+| Woody | 3.0r0 | 19 July 2002 | 3.0r6 | 30 June 2006 |   |
+| Sarge | 3.1r0 | 6 June 2005 | 3.1r8 | 12 April 2008 |   |
+| Etch | 4.0r0 | 8 April 2007 | 4.0r9 | 22 May 2010 |   |
+| Lenny | 5.0 | 14 February 2009 | 5.0.10 | 10 March 2012 |   |
+| Squeeze | 6.0 | 6 February 2011 | 6.0.10 | 19 July 2014 |   |
+| Wheezy | 7.0 | 4 May 2013 | 7.11 | 4 June 2016 |   |
+| Jessie | 8.0 | 25 April 2015 | 8.11 | 17 June 2018 |   |
+| Stretch | 9.0 | 17 June 2017 | 9.13 | 18 July 2020 |   |
+| Buster | 10.0 | 6 July 2019 | 10.13 | 10 September 2022 |   |
+| Bullseye | 11.0 | 14 August 2021 | 11.11 | 15 August 2024 |   |
+| Bookworm | 12.0 | 10 June 2023 | 12.13 | 10 June 2026 |   |
+| Trixie | 13.0 | 9 August 2025 | 13.4 | 9 August 2028 |   |
+
+## Port timeline
+
+| Timeline description |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| Port | Pointer Size | Endian | Added | Dropped | Status | References |
+| alpha | 64 bits | Little | Slink | Squeeze | ports |   |
+| amd64 | 64 bits | Little | Etch | Current | release |   |
+| arm | 32 bits | Little | Potato | Squeeze | - |   |
+| armel | 32 bits | Little | Lenny | Forky | release |   |
+| armhf | 32 bits | Little | Wheezy | Current | release |   |
+| arm64 | 64 bits | Little | Jessie | Current | release |   |
+| hppa | 32 bits | Big | Woody | Squeeze | ports |   |
+| i386 | 32 bits | Little | *first* | Trixie | release |   |
+| ia64 | 64 bits | Little | Woody | Jessie | ports |   |
+| kfreebsd-amd64 | 64 bits | Little | Squeeze | Jessie | ports |   |
+| kfreebsd-i386 | 32 bits | Little | Squeeze | Jessie | ports |   |
+| m68k | 32 bits | Big | Hamm | Etch | ports |   |
+| mips | 32 bits | Big | Woody | Bullseye | - |   |
+| mips64el | 64 bits | Little | Stretch | Trixie | release |   |
+| mipsel | 32 bits | Little | Woody | Trixie | release |   |
+| powerpc | 32 bits | Big | Potato | Stretch | ports |   |
+| ppc64le | 64 bits | Little | Jessie | Current | release |   |
+| riscv64 | 64 bits | Little | Trixie | Current | release |   |
+| s390 | 32 bits | Big | Woody | Jessie | - |   |
+| s390x | 64 bits | Big | Wheezy | Current | release |   |
+| sparc | 32 bits | Big | Slink | Jessie | - |   |
+
+Many of past architectures, plus some that have not yet achieved release status, are available from the *debian-ports* repository.

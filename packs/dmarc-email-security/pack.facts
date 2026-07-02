@@ -1,0 +1,611 @@
+# nl-rag distilled facts — domain: dmarc-email-security
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:dmarc-email-security/dmarc] Once the DMARC DNS entry is published, any receiving email server can authenticate the incoming email based on the instructions published by the domain owner within the DNS entry.
+[src:dmarc-email-security/dmarc] If the email passes the authentication, it will be delivered and can be trusted.
+[src:dmarc-email-security/dmarc] If the email fails the check, depending on the instructions held within the DMARC record the email could be delivered, quarantined or rejected.
+[src:dmarc-email-security/dmarc] DMARC extends two existing email authentication mechanisms, Sender Policy Framework (SPF) and DomainKeys Identified Mail (DKIM).
+[src:dmarc-email-security/dmarc] It allows the administrative owner of a domain to publish a policy in their DNS records to specify how to check the `From:` field presented to end users and how the receiver should deal with failures, and it provides a reporting mechanism for actions performed under those policies.
+[src:dmarc-email-security/dmarc] DMARC is defined in the Internet Engineering Task Force's published document RFC 9989, dated May 2026, as "Standards Track".
+[src:dmarc-email-security/dmarc] A DMARC policy allows a sender's domain to indicate that their email messages are protected by SPF and/or DKIM, and tells a receiver what to do if neither of those authentication methods passes – such as to reject the message or quarantine it.
+[src:dmarc-email-security/dmarc] The policy can also specify how an email receiver can report back to the sender's domain about messages that pass and/or fail.
+[src:dmarc-email-security/dmarc] These policies are published in the public Domain Name System (DNS) as text TXT records.
+[src:dmarc-email-security/dmarc] DMARC does not directly address whether or not an email is spam or otherwise fraudulent.
+[src:dmarc-email-security/dmarc] Instead, DMARC can require that a message not only pass DKIM or SPF validation, but that it also pass § Alignment.
+[src:dmarc-email-security/dmarc] Under DMARC a message can fail even if it passes SPF or DKIM but fails alignment.
+[src:dmarc-email-security/dmarc] Setting up DMARC may improve the deliverability of messages from legitimate senders.
+[src:dmarc-email-security/dmarc] DMARC operates by checking that the domain in the message's `From:` field (also called "RFC5322.From") is "aligned" with other authenticated domain names.
+[src:dmarc-email-security/dmarc] If either SPF (specified using the `aspf` field) or DKIM (specified using the `adkim` field) alignment checks pass, then the DMARC alignment test passes.
+[src:dmarc-email-security/dmarc] Alignment may be specified as strict or relaxed.
+[src:dmarc-email-security/dmarc] For strict alignment, the domain names must be identical.
+[src:dmarc-email-security/dmarc] For relaxed alignment, the top-level "Organizational Domain" must match.
+[src:dmarc-email-security/dmarc] The Organizational Domain used to be found by checking a list of public DNS suffixes.
+[src:dmarc-email-security/dmarc] The upcoming spec instead specifies a Tree Walk through the parent domains.
+[src:dmarc-email-security/dmarc] So, for example, "a.b.c.d.example.com.au" and "example.com.au" have the same Organizational Domain, because _dmarc.example.com.au is the only defined DMARC record among all the subdomains involved, including _dmarc.au.
+[src:dmarc-email-security/dmarc] As this allows domain owners to define domain roles, it is deemed to be more accurate than the Public Suffix List.
+[src:dmarc-email-security/dmarc] Like SPF and DKIM, DMARC uses the concept of a domain owner, the entity or entities authorized to make changes to a given DNS domain.
+[src:dmarc-email-security/dmarc] SPF checks that the IP address of the sending server is authorized by the owner of the domain that appears in the SMTP `MAIL FROM` command.
+[src:dmarc-email-security/dmarc] (The email address in MAIL FROM is also called the bounce address, envelope-from or RFC5321.MailFrom.) In addition to requiring that the SPF check passes, DMARC checks that RFC5321.MailFrom aligns with 5322.From.
+[src:dmarc-email-security/dmarc] DKIM allows parts of an email message to be cryptographically signed, and the signature must cover the From field.
+[src:dmarc-email-security/dmarc] Within the DKIM-Signature mail header, the `d=` (domain) and `s=` (selector) tags specify where in DNS to retrieve the public key for the signature.
+[src:dmarc-email-security/dmarc] A valid signature proves that the signer is a domain owner, and that the From field hasn't been modified since the signature was applied.
+[src:dmarc-email-security/dmarc] There may be several DKIM signatures on an email message; DMARC requires one valid signature where the domain in the `d=` tag aligns with the sender's domain stated in the `From:` header field.
+[src:dmarc-email-security/dmarc] DMARC records are published in DNS with a subdomain label `_dmarc`, for example `_dmarc.example.com`.
+[src:dmarc-email-security/dmarc] Compare this to SPF at `example.com`, and DKIM at `selector._domainkey.example.com`.
+[src:dmarc-email-security/dmarc] The content of the TXT resource record consists of `name=value` tags, separated by semicolons, similar to SPF and DKIM.
+[src:dmarc-email-security/dmarc] In this example, the entity controlling the example.com DNS domain intends to monitor SPF and/or DKIM failure rates and doesn't expect email to be sent from subdomains of example.com.
+[src:dmarc-email-security/dmarc] Note that a subdomain can publish its own DMARC record; receivers must check it out before falling back to the organizational domain record.
+[src:dmarc-email-security/dmarc] The protocol provides for various ratchets, or transitional states, to allow mail admins to gradually transition from not implementing DMARC at all, all the way through to an unyielding setup.
+[src:dmarc-email-security/dmarc] The concept of stepwise adoption assumes that the goal of DMARC is the strongest setting, which is not the case for all domains.
+[src:dmarc-email-security/dmarc] Regardless of intent, these mechanisms allow for greater flexibility.
+[src:dmarc-email-security/dmarc] The policy published can be mitigated by applying it to only a percentage of the messages that fail DMARC check.
+[src:dmarc-email-security/dmarc] Receivers are asked to select the given percentage of messages by a simple Bernoulli sampling algorithm.
+[src:dmarc-email-security/dmarc] The rest of the messages should undergo the lower policy; that is, none if `p=quarantine`, quarantine if `p=reject`.
+[src:dmarc-email-security/dmarc] If not specified, pct defaults to 100% of messages.
+[src:dmarc-email-security/dmarc] The case `p=quarantine; pct=0;` is being used to force mailing list managers to rewrite the From: field, as some don't do so when `p=none`.
+[src:dmarc-email-security/dmarc] Finally, the subdomain policy, `sp=` and the newly added no-domain policy, `np=` allow tweaking the policy for specific subdomains.
+[src:dmarc-email-security/dmarc] DMARC is capable of producing two separate types of reports.
+[src:dmarc-email-security/dmarc] Aggregate reports are sent to the address specified following the `rua`.
+[src:dmarc-email-security/dmarc] Forensic reports are emailed to the address following the `ruf` tag.
+[src:dmarc-email-security/dmarc] These mail addresses must be specified in URI mailto format (e.g. mailto:worker@example.net ).
+[src:dmarc-email-security/dmarc] Multiple reporting addresses are valid and must each be in full URI format, separated by a comma.
+[src:dmarc-email-security/dmarc] Target email addresses can belong to external domains.
+[src:dmarc-email-security/dmarc] In that case, the target domain has to set up a DMARC record to say it agrees to receive them, otherwise it would be possible to exploit reporting for spam amplification.
+[src:dmarc-email-security/dmarc] For example, say `receiver.example` receives a mail message `From: someone@sender.example` and wishes to report it.
+[src:dmarc-email-security/dmarc] Aggregate Reports are sent as XML files, typically once per day.
+[src:dmarc-email-security/dmarc] The subject mentions the "Report Domain", which indicates the DNS domain name about which the report was generated, and the "Submitter", which is the entity issuing the report.
+[src:dmarc-email-security/dmarc] The XML content consists of a header, containing the policy on which the report is based and report metadata, followed by a number of records.
+[src:dmarc-email-security/dmarc] Records can be put in a database as a relation and viewed in a tabular form.
+[src:dmarc-email-security/dmarc] The XML schema is defined in Appendix C of specifications and a raw record is exemplified in dmarc.org.
+[src:dmarc-email-security/dmarc] Here we stick with a relational example, which better conveys the nature of the data.
+[src:dmarc-email-security/dmarc] DMARC records can also be directly transformed in HTML by applying an XSL stylesheet.
+[src:dmarc-email-security/dmarc] Rows are grouped by source IP and authentication results, passing just the count of each group.
+[src:dmarc-email-security/dmarc] The leftmost result columns, labelled **SPF** and **DKIM** show DMARC-wise results, either pass or fail, taking alignment into account.
+[src:dmarc-email-security/dmarc] The rightmost ones, with similar labels, show the name of the domain which claims to participate in the sending of the message and (in parentheses) the authentication status of that claim according to the original protocol, SPF or DKIM, regardless of Identifier Alignment.
+[src:dmarc-email-security/dmarc] On the right side, SPF can appear at most twice, once for the `Return-Path:` test and once for the `HELO` test; DKIM can appear once for each signature present in the message.
+[src:dmarc-email-security/dmarc] In the example, the first row represents the main mail flow from example.org, and the second row is a DKIM glitch, such as signature breakage due to a minor alteration in transit.
+[src:dmarc-email-security/dmarc] The third and fourth rows show typical failures modes of a forwarder and a mailing list, respectively.
+[src:dmarc-email-security/dmarc] DMARC authentication failed for the last row only; it could have affected the message disposition if example.org had specified a strict policy.
+[src:dmarc-email-security/dmarc] The **disposition** reflects the policy published actually applied to the messages, *none*, *quarantine*, or *reject*.
+[src:dmarc-email-security/dmarc] Along with it, not shown in the table, DMARC provides for a policy override.
+[src:dmarc-email-security/dmarc] if none of the above applies, a comment field allows to say more.
+[src:dmarc-email-security/dmarc] Failure Reports, also known as Forensic Reports, are generated in real time and consist of possibly redacted copies of individual messages that failed SPF, DKIM or both based upon what value is specified in the `fo` tag.
+[src:dmarc-email-security/dmarc] Their format, an extension of Abuse Reporting Format, resembles that of regular bounces in that they contain either a "message/rfc822" or a "text/rfc822-headers".
+[src:dmarc-email-security/dmarc] There are several different types of email forwarding, some of which may break SPF.
+[src:dmarc-email-security/dmarc] This is one of the reasons why email forwarding can affect DMARC authentication results.
+[src:dmarc-email-security/dmarc] Mailing lists are a frequent cause of legitimate breakage of the original author's domain DKIM signature, for example by adding a prefix to the subject header.
+[src:dmarc-email-security/dmarc] A number of workarounds are possible, and mailing list software packages are working on solutions.
+[src:dmarc-email-security/dmarc] This workaround keeps the standard mailing list workflow, and is adopted by several large mailing list operators, but precludes the list adding footers and subject prefixes.
+[src:dmarc-email-security/dmarc] This requires careful configuration of mailing software to make sure signed headers are not reordered or modified.
+[src:dmarc-email-security/dmarc] A misconfigured email server may put List-id in its DKIM of messages sent to a mailing list, and then the list operator is forced to reject it or do From: rewriting.
+[src:dmarc-email-security/dmarc] One of the most popular and least intrusive workarounds consists of rewriting the `From:` header field.
+[src:dmarc-email-security/dmarc] The original author's address can then be added to the `Reply-To:` field.
+[src:dmarc-email-security/dmarc] Rewriting can range from just appending `.INVALID` to the domain name, to allocating a temporary user ID where a modified version of the user's address is used, or an opaque ID is used, which keeps the user's "real" email address private from the list.
+[src:dmarc-email-security/dmarc] In addition, the display name can be changed so as to show both the author and the list (or list operator).
+[src:dmarc-email-security/dmarc] The last line, `Reply-To:`, has to be designed in order to accommodate reply-to-author functionality, in which case reply-to-list functionality is covered by the preceding change in the `From:` header field.
+[src:dmarc-email-security/dmarc] That way, the original meaning of those fields is reversed.
+[src:dmarc-email-security/dmarc] Altering the author is not fair in general, and can break the expected relationship between meaning and appearance of that datum.
+[src:dmarc-email-security/dmarc] There are communities which use mailing lists to coordinate their work, and deploy tools which use the `From:` field to attribute authorship to attachments.
+[src:dmarc-email-security/dmarc] Wrapping the message works nicely, for those who use an email client which understands wrapped messages.
+[src:dmarc-email-security/dmarc] Not doing any change is perhaps the most obvious solution, except that they seem to be legally required in some countries, and that routinely losing SPF authentication may render overall authentication more fragile.
+[src:dmarc-email-security/dmarc] The `Sender:` header is available to indicate that an email was sent on behalf of another party, but DMARC only checks policy for the From domain and ignores the Sender domain.
+[src:dmarc-email-security/dmarc] Both ADSP and DMARC reject using the Sender field on the non-technical basis that many user agents do not display this to the recipient.
+[src:dmarc-email-security/dmarc] A draft DMARC specification has been maintained since 30 January 2012.
+[src:dmarc-email-security/dmarc] In October 2013, GNU Mailman 2.1.16 was released with options to handle posters from a domain with the DMARC policy of `p=reject`.
+[src:dmarc-email-security/dmarc] The change tried to anticipate the interoperability issues expected in case restrictive policies were applied to domains with human users (as opposed to purely transactional mail domains).
+[src:dmarc-email-security/dmarc] In April 2014, Yahoo changed its DMARC policy to `p=reject`, thereby causing misbehavior in several mailing lists.
+[src:dmarc-email-security/dmarc] A few days later, AOL also changed its DMARC policy to `p=reject`.
+[src:dmarc-email-security/dmarc] Those moves resulted in a significant amount of disruption, and those mailbox providers have been accused of forcing the costs of their own security failures onto third parties.
+[src:dmarc-email-security/dmarc] As of 2020, the FAQ in the official DMARC wiki contains several suggestions for mailing lists to handle messages from a domain with a strict DMARC policy, of which the most widely implemented is the mailing list changing the “From” header to an address in its own domain.
+[src:dmarc-email-security/dmarc] An IETF working group was formed in August 2014 in order to address DMARC issues, starting from interoperability concerns and possibly continuing with a revised standard specification and documentation.
+[src:dmarc-email-security/dmarc] Meanwhile, the existing DMARC specification had reached an editorial state agreed upon and implemented by many.
+[src:dmarc-email-security/dmarc] It was published in March 2015 on the Independent Submission stream in the "Informational" (non-standard) category as RFC 7489.
+[src:dmarc-email-security/dmarc] In March 2017, the Federal Trade Commission published a study on DMARC usage by businesses.
+[src:dmarc-email-security/dmarc] Out of 569 businesses, the study found about a third implemented any DMARC configuration, fewer than 10% used DMARC to instruct servers to reject unauthenticated messages, and a majority had implemented SPF.
+[src:dmarc-email-security/dmarc] An updated RFC 9989 was published in May 2026.
+[src:dmarc-email-security/dmarc] Popular services that perform DMARC analysis and/or record validation include Red Sift, Valimail, dmarcian, DMARC Advisor and EasyDmarc and Cloudflare.
+[src:dmarc-email-security/domain-name] In the Internet, a **domain name** is a string that identifies a realm of administrative autonomy, authority, or control.
+[src:dmarc-email-security/domain-name] Domain names are often used to identify services provided through the Internet, such as websites, email services, and more.
+[src:dmarc-email-security/domain-name] Domain names are used in various networking contexts and for application-specific naming and addressing purposes.
+[src:dmarc-email-security/domain-name] In general, a domain name identifies a network domain or an Internet Protocol (IP) resource, such as a personal computer used to access the Internet, or a server computer.
+[src:dmarc-email-security/domain-name] Domain names are formed by the rules and procedures of the Domain Name System (DNS).
+[src:dmarc-email-security/domain-name] Any name registered in the DNS is a domain name.
+[src:dmarc-email-security/domain-name] Domain names are organized in subordinate levels (*subdomains*) of the DNS root domain, which is nameless.
+[src:dmarc-email-security/domain-name] The first-level set of domain names are the *top-level domains* (TLDs), including the *generic top-level domains* (gTLDs), such as the prominent domains com, info, net, edu, and org, and the *country code top-level domains* (ccTLDs).
+[src:dmarc-email-security/domain-name] The registration of a second- or third-level domain name is usually administered by a domain name registrar who sell its services to the public.
+[src:dmarc-email-security/domain-name] A *fully qualified domain name* (FQDN) is a domain name that is completely specified with all labels in the hierarchy of the DNS, having no parts omitted.
+[src:dmarc-email-security/domain-name] Traditionally a FQDN ends in a dot (**.**) to denote the top of the DNS tree.
+[src:dmarc-email-security/domain-name] Labels in the Domain Name System are case-insensitive, and may therefore be written in any desired capitalization method, but most commonly domain names are written in lowercase in technical contexts.
+[src:dmarc-email-security/domain-name] A *hostname* is a domain name that has at least one associated IP address.
+[src:dmarc-email-security/domain-name] Domain names serve to identify Internet resources, such as computers, networks, and services, with a text-based label that is easier to memorize than the numerical addresses used in the Internet protocols.
+[src:dmarc-email-security/domain-name] A domain name may represent entire collections of such resources or individual instances.
+[src:dmarc-email-security/domain-name] Individual Internet host computers use domain names as host identifiers, also called hostnames.
+[src:dmarc-email-security/domain-name] The term *hostname* is also used for the leaf labels in the domain name system, usually without further subordinate domain name space.
+[src:dmarc-email-security/domain-name] Hostnames appear as a component in Uniform Resource Locators (URLs) for Internet resources such as websites (e.g., en.wikipedia.org).
+[src:dmarc-email-security/domain-name] Domain names are also used as simple identification labels to indicate ownership or control of a resource.
+[src:dmarc-email-security/domain-name] Such examples are the realm identifiers used in the Session Initiation Protocol (SIP), the Domain Keys used to verify DNS domains in e-mail systems, and in many other Uniform Resource Identifiers (URIs).
+[src:dmarc-email-security/domain-name] An important function of domain names is to provide easily recognizable and memorizable names to numerically addressed Internet resources.
+[src:dmarc-email-security/domain-name] This abstraction allows any resource to be moved to a different physical location in the address topology of the network, globally or locally in an intranet.
+[src:dmarc-email-security/domain-name] Such a move usually requires changing the IP address of a resource and the corresponding translation of this IP address to and from its domain name.
+[src:dmarc-email-security/domain-name] Domain names are used to establish a unique identity.
+[src:dmarc-email-security/domain-name] Organizations can choose a domain name that corresponds to their name, helping Internet users to reach them easily.
+[src:dmarc-email-security/domain-name] A generic domain is a name that defines a general category, rather than a specific or personal instance, for example, the name of an industry, rather than a company name.
+[src:dmarc-email-security/domain-name] Some examples of generic names are *books.com*, *music.com*, and *travel.info*.
+[src:dmarc-email-security/domain-name] Companies have created brands based on generic names, and such generic domain names may be valuable.
+[src:dmarc-email-security/domain-name] The use of domain names in commerce may subject them to trademark law.
+[src:dmarc-email-security/domain-name] The practice of using a simple memorable abstraction of a host's numerical address on a computer network dates back to the ARPANET era, before the advent of today's commercial Internet.
+[src:dmarc-email-security/domain-name] In the early network, each computer on the network retrieved the hosts file (*host.txt*) from a computer at SRI (now SRI International), which mapped computer hostnames to numerical addresses.
+[src:dmarc-email-security/domain-name] The rapid growth of the network made it impossible to maintain a centrally organized hostname registry and in 1983 the Domain Name System was introduced on the ARPANET and published by the Internet Engineering Task Force as RFC 882 and RFC 883.
+[src:dmarc-email-security/domain-name] Today, the Internet Corporation for Assigned Names and Numbers (ICANN) manages the top-level development and architecture of the Internet domain name space.
+[src:dmarc-email-security/domain-name] It authorizes domain name registrars, through which domain names may be registered and reassigned.
+[src:dmarc-email-security/domain-name] The domain name space consists of a tree of domain names.
+[src:dmarc-email-security/domain-name] Each node in the tree holds information associated with the domain name.
+[src:dmarc-email-security/domain-name] The tree sub-divides into *zones* beginning at the DNS root zone.
+[src:dmarc-email-security/domain-name] A domain name consists of one or more parts, technically called *labels*, that are conventionally concatenated, and delimited by dots, such as *example.com*.
+[src:dmarc-email-security/domain-name] When the Domain Name System was devised in the 1980s, the domain name space was divided into two main groups of domains.
+[src:dmarc-email-security/domain-name] The country code top-level domains (ccTLD) were primarily based on the two-character territory codes of ISO-3166 country abbreviations.
+[src:dmarc-email-security/domain-name] In addition, a group of seven generic top-level domains (gTLD) was implemented which represented a set of categories of names and multi-organizations.
+[src:dmarc-email-security/domain-name] These were the domains gov, edu, com, mil, org, net, and int.
+[src:dmarc-email-security/domain-name] These two types of top-level domains (TLDs) are the highest level of domain names of the Internet.
+[src:dmarc-email-security/domain-name] Top-level domains form the DNS root zone of the hierarchical Domain Name System.
+[src:dmarc-email-security/domain-name] Every domain name ends with a top-level domain label.
+[src:dmarc-email-security/domain-name] During the growth of the Internet, it became desirable to create additional generic top-level domains.
+[src:dmarc-email-security/domain-name] As of October 2009, 21 generic top-level domains and 250 two-letter country-code top-level domains existed.
+[src:dmarc-email-security/domain-name] In addition, the ARPA domain serves technical purposes in the infrastructure of the Domain Name System.
+[src:dmarc-email-security/domain-name] Observers believed that the new rules could result in hundreds of new top-level domains to be registered.
+[src:dmarc-email-security/domain-name] In 2012, the program commenced, and received 1930 applications.
+[src:dmarc-email-security/domain-name] By 2016, the milestone of 1000 live gTLD was reached.
+[src:dmarc-email-security/domain-name] The Internet Assigned Numbers Authority (IANA) maintains an annotated list of top-level domains in the DNS root zone database.
+[src:dmarc-email-security/domain-name] For special purposes, such as network testing, documentation, and other applications, IANA also reserves a set of special-use domain names.
+[src:dmarc-email-security/domain-name] This list contains domain names such as example, local, localhost, and test.
+[src:dmarc-email-security/domain-name] Other top-level domain names containing trade marks are registered for corporate use.
+[src:dmarc-email-security/domain-name] Cases include brands such as BMW, Google, and Canon.
+[src:dmarc-email-security/domain-name] Below the top-level domains in the domain name hierarchy are the second-level domain (SLD) names.
+[src:dmarc-email-security/domain-name] These are the names directly to the left of .com, .net, and the other top-level domains.
+[src:dmarc-email-security/domain-name] As an example, in the domain *example.co.uk*, *co* is the second-level domain.
+[src:dmarc-email-security/domain-name] Next are third-level domains, which are written immediately to the left of a second-level domain.
+[src:dmarc-email-security/domain-name] There can be fourth- and fifth-level domains, and so on, with virtually no limitation.
+[src:dmarc-email-security/domain-name] Each label is separated by a full stop (dot).
+[src:dmarc-email-security/domain-name] An example of an operational domain name with four levels of domain labels is *sos.state.oh.us*.
+[src:dmarc-email-security/domain-name] 'sos' is said to be a sub-domain of 'state.oh.us', and 'state' a sub-domain of 'oh.us', etc.
+[src:dmarc-email-security/domain-name] In general, subdomains are domains subordinate to their parent domain.
+[src:dmarc-email-security/domain-name] An example of very deep levels of subdomain ordering are the IPv6 reverse resolution DNS zones, e.g., 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa, which is the reverse DNS resolution domain name for the IP address of a loopback interface, or the localhost name.
+[src:dmarc-email-security/domain-name] Second-level (or lower-level, depending on the established parent hierarchy) domain names are often created based on the name of a company (e.g., *bbc*.co.uk), product or service (e.g.
+[src:dmarc-email-security/domain-name] Below these levels, the next domain name component has been used to designate a particular host server.
+[src:dmarc-email-security/domain-name] Therefore, *ftp.example.com* might be an FTP server, *www.example.com* would be a World Wide Web server, and *mail.example.com* could be an email server, each intended to perform only the implied function.
+[src:dmarc-email-security/domain-name] Modern technology allows multiple physical servers with either different (cf. load balancing) or even identical addresses (cf. anycast) to serve a single hostname or domain name, or multiple domain names to be served by a single computer.
+[src:dmarc-email-security/domain-name] The latter is very popular in Web hosting service centers, where service providers host the websites of many organizations on just a few servers.
+[src:dmarc-email-security/domain-name] The hierarchical DNS labels or components of domain names are separated in a fully qualified name by the full stop (dot, *.*).
+[src:dmarc-email-security/domain-name] The character set allowed in the Domain Name System is based on ASCII and does not allow the representation of names and words of many languages in their native scripts or alphabets.
+[src:dmarc-email-security/domain-name] ICANN approved the Internationalized domain name (IDNA) system, which maps Unicode strings used in application user interfaces into the valid DNS character set by an encoding called Punycode.
+[src:dmarc-email-security/domain-name] For example, københavn.eu is mapped to xn--kbenhavn-54a.eu.
+[src:dmarc-email-security/domain-name] The first commercial Internet domain name, in the TLD *com*, was registered on 15 March 1985 in the name symbolics.com by Symbolics Inc., a computer systems firm in Massachusetts.
+[src:dmarc-email-security/domain-name] By 1992, fewer than 15,000 *com* domains had been registered.
+[src:dmarc-email-security/domain-name] In the first quarter of 2015, 294 million domain names had been registered.
+[src:dmarc-email-security/domain-name] A large fraction of them are in the *com* TLD, which as of December 21, 2014, had 115.6 million domain names, including 11.9 million online business and e-commerce sites, 4.3 million entertainment sites, 3.1 million finance related sites, and 1.8 million sports sites.
+[src:dmarc-email-security/domain-name] As of July 15, 2012, the *com* TLD had more registrations than all of the ccTLDs combined.
+[src:dmarc-email-security/domain-name] As of December 31, 2023, 359.8 million domain names had been registered.
+[src:dmarc-email-security/domain-name] The right to use a domain name is delegated by domain name registrars, which are accredited by the Internet Corporation for Assigned Names and Numbers (ICANN), the organization charged with overseeing the name and number systems of the Internet.
+[src:dmarc-email-security/domain-name] In addition to ICANN, each top-level domain (TLD) is maintained and serviced technically by an administrative organization operating a registry.
+[src:dmarc-email-security/domain-name] A registry is responsible for maintaining the database of names registered within the TLD it administers.
+[src:dmarc-email-security/domain-name] The registry receives registration information from each domain name registrar authorized to assign names in the corresponding TLD and publishes the information using a special service, the WHOIS protocol and its successor Registration Data Access Protocol (RDAP).
+[src:dmarc-email-security/domain-name] Registries and registrars usually charge an annual fee for the service of delegating a domain name to a user and providing a default set of name servers.
+[src:dmarc-email-security/domain-name] Often, this transaction is termed a sale or lease of the domain name, and the registrant may sometimes be called an "owner", but no such legal relationship is actually associated with the transaction, only the exclusive right to use the domain name.
+[src:dmarc-email-security/domain-name] More correctly, authorized users are known as "registrants" or as "domain holders".
+[src:dmarc-email-security/domain-name] ICANN publishes the complete list of TLD registries and domain name registrars.
+[src:dmarc-email-security/domain-name] Registrant information associated with domain names is maintained in an online database accessible with the WHOIS protocol.
+[src:dmarc-email-security/domain-name] For most of the 250 country code top-level domains (ccTLDs), the domain registries maintain the WHOIS or RDAP (Registrant, name servers, expiration dates, etc.) information.
+[src:dmarc-email-security/domain-name] Some domain name registries, often called *network information centers* (NIC), also function as registrars to end-users.
+[src:dmarc-email-security/domain-name] The major generic top-level domain registries, such as for the *com*, *net*, *org*, *info* domains and others, use a registry-registrar model consisting of hundreds of domain name registrars (see lists at ICANN or VeriSign).
+[src:dmarc-email-security/domain-name] In this method of management, the registry only manages the domain name database and the relationship with the registrars.
+[src:dmarc-email-security/domain-name] The *registrants* (users of a domain name) are customers of the registrar, in some cases through additional layers of resellers.
+[src:dmarc-email-security/domain-name] A domain name consists of one or more labels, each of which is formed from the set of ASCII letters, digits, and hyphens (a–z, A–Z, 0–9, -), but not starting or ending with a hyphen.
+[src:dmarc-email-security/domain-name] The labels are case-insensitive; for example, 'label' is equivalent to 'Label' or 'LABEL'.
+[src:dmarc-email-security/domain-name] In the textual representation of a domain name, the labels are separated by a full stop (period).
+[src:dmarc-email-security/domain-name] A few companies have offered low-cost, below-cost, or even free domain registration with a variety of models adopted to recoup the costs to the provider.
+[src:dmarc-email-security/domain-name] These usually require that domains be hosted on their website within a framework or portal that includes advertising wrapped around the domain holder's content, revenue from which allows the provider to recoup the costs.
+[src:dmarc-email-security/domain-name] Domain registrations were free of charge when the DNS was new.
+[src:dmarc-email-security/domain-name] A domain holder may provide an infinite number of subdomains in their domain.
+[src:dmarc-email-security/domain-name] For example, the owner of example.org could provide subdomains such as foo.example.org and foo.bar.example.org to interested parties.
+[src:dmarc-email-security/domain-name] Many desirable domain names are already assigned and users must search for other acceptable names, using Web-based search features, or WHOIS, RDAP, and dig operating system tools.
+[src:dmarc-email-security/domain-name] Many registrars have implemented **domain name suggestion** tools which search domain name databases and suggest available alternative domain names related to keywords provided by the user.
+[src:dmarc-email-security/domain-name] The business of resale of registered domain names is known as the domain aftermarket.
+[src:dmarc-email-security/domain-name] Various factors influence the perceived value or market value of a domain name.
+[src:dmarc-email-security/domain-name] Most of the high-prize domain sales are carried out privately.
+[src:dmarc-email-security/domain-name] Also, it is called confidential domain acquiring or anonymous domain acquiring.
+[src:dmarc-email-security/domain-name] Intercapping is often used to emphasize the meaning of a domain name, because DNS names are not case-sensitive.
+[src:dmarc-email-security/domain-name] Some names may be misinterpreted in certain uses of capitalization.
+[src:dmarc-email-security/domain-name] For example: *Who Represents*, a database of artists and agents, chose *whorepresents.com*, which can be misread.
+[src:dmarc-email-security/domain-name] In such situations, the proper meaning may be clarified by placement of hyphens when registering a domain name.
+[src:dmarc-email-security/domain-name] For instance, Experts Exchange, a programmers' discussion site, used *expertsexchange.com*, but changed its domain name to *experts-exchange.com*.
+[src:dmarc-email-security/domain-name] A domain name may point to multiple IP addresses to provide server redundancy for the services offered, a feature that is used to manage the traffic of large, popular websites.
+[src:dmarc-email-security/domain-name] Web hosting services, on the other hand, run servers that are typically assigned only one or a few addresses while serving websites for many domains, a technique referred to as virtual web hosting.
+[src:dmarc-email-security/domain-name] Such IP address overloading requires that each request identifies the domain name being referenced, for instance by using the HTTP request header field *Host:*, or Server Name Indication.
+[src:dmarc-email-security/domain-name] Critics often claim abuse of administrative power over domain names.
+[src:dmarc-email-security/domain-name] Particularly noteworthy was the VeriSign Site Finder system which redirected all unregistered .com and .net domains to a VeriSign webpage.
+[src:dmarc-email-security/domain-name] Site Finder, at first, assumed every Internet query was for a website, and it monetized queries for incorrect domain names, taking the user to VeriSign's search site.
+[src:dmarc-email-security/domain-name] Other applications, such as many implementations of email, treat a lack of response to a domain name query as an indication that the domain does not exist, and that the message can be treated as undeliverable.
+[src:dmarc-email-security/domain-name] The original VeriSign implementation broke this assumption for mail, because it would always resolve an erroneous domain name to that of Site Finder.
+[src:dmarc-email-security/domain-name] While VeriSign later changed Site Finder's behaviour with regard to email, there was still widespread protest about VeriSign's action being more in its financial interest than in the interest of the Internet infrastructure component for which VeriSign was the steward.
+[src:dmarc-email-security/domain-name] Despite widespread criticism, VeriSign only reluctantly removed it after the Internet Corporation for Assigned Names and Numbers (ICANN) threatened to revoke its contract to administer the root name servers.
+[src:dmarc-email-security/domain-name] ICANN published the extensive set of letters exchanged, committee reports, and ICANN decisions.
+[src:dmarc-email-security/domain-name] There is also significant disquiet regarding the United States Government's political influence over ICANN.
+[src:dmarc-email-security/domain-name] This was a significant issue in the attempt to create a .xxx top-level domain and sparked greater interest in alternative DNS roots that would be beyond the control of any single country.
+[src:dmarc-email-security/domain-name] Additionally, there are numerous accusations of domain name front running, whereby registrars, when given WHOIS or RDAP queries, automatically register the domain name for themselves.
+[src:dmarc-email-security/domain-name] Network Solutions has been accused of this.
+[src:dmarc-email-security/domain-name] In the United States, the Truth in Domain Names Act of 2003, in combination with the PROTECT Act of 2003, forbids the use of a misleading domain name with the intention of attracting Internet users into visiting Internet pornography sites.
+[src:dmarc-email-security/domain-name] The Truth in Domain Names Act follows the more general Anticybersquatting Consumer Protection Act passed in 1999 aimed at preventing typosquatting and deceptive use of names and trademarks in domain names.
+[src:dmarc-email-security/domain-name] In the early 21st century, the US Department of Justice (DOJ) pursued the seizure of domain names, based on the legal theory that domain names constitute property used to engage in criminal activity, and thus are subject to forfeiture.
+[src:dmarc-email-security/domain-name] For example, in the seizure of the domain name of a gambling website, the DOJ referenced 18 U.S.C. § 981 and 18 U.S.C. § 1955(d).[1] In 2013 the US government seized Liberty Reserve, citing 18 U.S.C. § 982(a)(1).
+[src:dmarc-email-security/domain-name] Congress passed the Combating Online Infringement and Counterfeits Act in 2010.
+[src:dmarc-email-security/domain-name] Consumer Electronics Association vice president Michael Petricone was worried that seizure was a *blunt instrument* that could harm legitimate businesses.
+[src:dmarc-email-security/domain-name] In the United Kingdom, the Police Intellectual Property Crime Unit (PIPCU) has been attempting to seize domain names from registrars without court orders.
+[src:dmarc-email-security/domain-name] PIPCU and other UK law enforcement organisations make domain suspension requests to Nominet which they process on the basis of breach of terms and conditions.
+[src:dmarc-email-security/domain-name] Around 16,000 domains are suspended annually, and about 80% of the requests originate from PIPCU.
+[src:dmarc-email-security/domain-name] Because of the economic value it represents, the European Court of Human Rights has ruled that the exclusive right to a domain name is protected as property under article 1 of Protocol 1 to the European Convention on Human Rights.
+[src:dmarc-email-security/domain-name] ICANN Business Constituency (BC) has spent decades trying to make IDN variants work at the second level, and in the last several years at the top level.
+[src:dmarc-email-security/domain-name] Domain name variants are domain names recognized in different character encodings, like a single domain presented in traditional Chinese and simplified Chinese.
+[src:dmarc-email-security/domain-name] It is an Internationalization and localization problem.
+[src:dmarc-email-security/domain-name] Under Domain Name Variants, the different encodings of the domain name (in simplified and traditional Chinese) would resolve to the same host.
+[src:dmarc-email-security/domain-name] According to John Levine, an expert on Internet related topics, "Unfortunately, variants don't work.
+[src:dmarc-email-security/domain-name] The canonical fictitious domain name is "example.com", specifically set aside by IANA for such use, along with the *.example* TLD.
+[src:dmarc-email-security/domain-name] Microsoft uses the fictitious domain name *tempuri.org* as the default placeholder namespace URI for its development products, such as Visual Studio; as of 2026, it redirects to the Bing homepage.
+[src:dmarc-email-security/domain-name] Domain names used in works of fiction have often been registered in the DNS, either by their creators or by cybersquatters attempting to profit from it.
+[src:dmarc-email-security/domain-name] This phenomenon prompted NBC to purchase the domain name Hornymanatee.com after talk-show host Conan O'Brien spoke the name while ad-libbing on his show.
+[src:dmarc-email-security/domain-name] O'Brien subsequently created a website based on the concept and used it as a running gag on the show.
+[src:dmarc-email-security/domain-name] Companies whose works have used fictitious domain names have also employed firms such as MarkMonitor to park fictional domain names in order to prevent misuse by third parties.
+[src:dmarc-email-security/domain-name] Misspelled domain names, also known as typosquatting or URL hijacking, are domain names that are intentionally or unintentionally misspelled versions of popular or well-known domain names.
+[src:dmarc-email-security/domain-name] The goal of misspelled domain names is to capitalize on internet users who accidentally type in a misspelled domain name, and are then redirected to a different website.
+[src:dmarc-email-security/domain-name] Misspelled domain names are often used for malicious purposes, such as phishing scams or distributing malware.
+[src:dmarc-email-security/domain-name] To avoid being caught by a misspelled domain name, internet users should be careful to type in domain names correctly, and should avoid clicking on links that appear suspicious or unfamiliar.
+[src:dmarc-email-security/domain-name] Additionally, individuals and organizations who own popular or well-known domain names should consider registering common misspellings of their domain names in order to prevent others from using them for malicious purposes.
+[src:dmarc-email-security/domain-name] The term **Domain name spoofing** (or simply though less accurately, **Domain spoofing**) is used generically to describe one or more of a class of phishing attacks that depend on falsifying or misrepresenting an internet domain name.
+[src:dmarc-email-security/domain-name] These are designed to persuade unsuspecting users into visiting a web site other than that intended, or opening an email that is not in reality from the address shown (or apparently shown).
+[src:dmarc-email-security/domain-name] Although website and email spoofing attacks are more widely known, any service that relies on domain name resolution may be compromised.
+[src:dmarc-email-security/domainkeys-identified-mail] The receiver can check that an email that claimed to have come from a specific domain was indeed authorized by the owner of that domain.
+[src:dmarc-email-security/domainkeys-identified-mail] It achieves this by affixing a digital signature, linked to a domain name, to each outgoing email message.
+[src:dmarc-email-security/domainkeys-identified-mail] The recipient system can verify this by looking up the sender's public key published in the DNS.
+[src:dmarc-email-security/domainkeys-identified-mail] A valid signature also guarantees that some parts of the email (possibly including attachments) have not been modified since the signature was affixed.
+[src:dmarc-email-security/domainkeys-identified-mail] Usually, DKIM signatures are not visible to end-users, and are affixed or verified by the infrastructure rather than the message's authors and recipients.
+[src:dmarc-email-security/domainkeys-identified-mail] It is defined in RFC 6376, dated September 2011, with updates in RFC 8301, RFC 8463, RFC 8553, and RFC 8616.
+[src:dmarc-email-security/domainkeys-identified-mail] The need for email validated identification arises because forged addresses and content are otherwise easily created—and widely used in spam, phishing and other email-based fraud.
+[src:dmarc-email-security/domainkeys-identified-mail] For example, a fraudster may send a message claiming to be from *sender@example.com*, with the goal of convincing the recipient to accept and to read the email—and it is difficult for recipients to establish whether to trust this message.
+[src:dmarc-email-security/domainkeys-identified-mail] System administrators also have to deal with complaints about malicious emails that appear to have originated from their systems, but did not.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM provides the ability to sign a message, and allows the signer (*author* organization) to communicate which email it considers legitimate.
+[src:dmarc-email-security/domainkeys-identified-mail] It does not directly prevent or disclose abusive behavior.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM also provides a process for verifying a signed message.
+[src:dmarc-email-security/domainkeys-identified-mail] Verifying modules typically act on behalf of the *receiver* organization, possibly at each hop.
+[src:dmarc-email-security/domainkeys-identified-mail] All of this is independent of Simple Mail Transfer Protocol (SMTP) routing aspects, in that it operates on the RFC 5322 message—the transported mail's header and body—not the SMTP "envelope" defined in RFC 5321.
+[src:dmarc-email-security/domainkeys-identified-mail] Hence, DKIM signatures survive basic relaying across multiple message transfer agents.
+[src:dmarc-email-security/domainkeys-identified-mail] The signing organization can be a direct handler of the message, such as the author, mail submission agent, site, or further intermediary along the transit path, or an indirect handler such as an independent service that is providing assistance to a direct handler.
+[src:dmarc-email-security/domainkeys-identified-mail] Signing modules insert one or more `DKIM-Signature:` header fields, possibly on behalf of the *author* organization or the originating service provider.
+[src:dmarc-email-security/domainkeys-identified-mail] The specification allows signers to choose which header fields they sign, but the `From:` field must always be signed.
+[src:dmarc-email-security/domainkeys-identified-mail] The most relevant ones are **b** for the actual digital signature of the contents (headers and body) of the mail message, **bh** for the body hash (optionally limited to the first **l** octets of the body), **d** for the signing domain, and **s** for the selector.
+[src:dmarc-email-security/domainkeys-identified-mail] An Agent or User Identifier (AUID) can optionally be included.
+[src:dmarc-email-security/domainkeys-identified-mail] The format is an email address with an optional local-part.
+[src:dmarc-email-security/domainkeys-identified-mail] The domain must be equal to, or a subdomain of, the signing domain.
+[src:dmarc-email-security/domainkeys-identified-mail] The semantics of the AUID are intentionally left undefined, and may be used by the signing domain to establish a more fine-grained sphere of responsibility.
+[src:dmarc-email-security/domainkeys-identified-mail] Both header and body contribute to the signature.
+[src:dmarc-email-security/domainkeys-identified-mail] First, the message body is hashed, always from the beginning, possibly truncated to a given length **l** (which may be zero).
+[src:dmarc-email-security/domainkeys-identified-mail] Second, selected header fields are hashed, in the order given by **h**.
+[src:dmarc-email-security/domainkeys-identified-mail] Repeated field names are matched from the bottom of the header upward, which is the order in which `Received:` fields are inserted in the header.
+[src:dmarc-email-security/domainkeys-identified-mail] A non-existing field matches the empty string, so that adding a field with that name will break the signature.
+[src:dmarc-email-security/domainkeys-identified-mail] The `DKIM-Signature:` field of the signature being created, with **bh** equal to the computed body hash and **b** equal to the empty string, is implicitly added to the second hash, albeit its name must not appear in **h** — if it does, it refers to another, preexisting signature.
+[src:dmarc-email-security/domainkeys-identified-mail] For both hashes, text is canonicalized according to the relevant **c** algorithms.
+[src:dmarc-email-security/domainkeys-identified-mail] The result, after encryption with the signer's private key and encoding using Base64, is **b**.
+[src:dmarc-email-security/domainkeys-identified-mail] In addition to the list of header fields listed in **h**, a list of header fields (including both field name and value) present at the time of signing may be provided in **z**.
+[src:dmarc-email-security/domainkeys-identified-mail] This list need not match the list of headers in **h**.
+[src:dmarc-email-security/domainkeys-identified-mail] Algorithms, fields, and body length are meant to be chosen so as to assure unambiguous message identification while still allowing signatures to survive the unavoidable changes which are going to occur in transit.
+[src:dmarc-email-security/domainkeys-identified-mail] No end-to-end data integrity is implied.
+[src:dmarc-email-security/domainkeys-identified-mail] A receiving SMTP server wanting to verify uses the domain name and the selector to perform a DNS lookup.
+[src:dmarc-email-security/domainkeys-identified-mail] For example, given the example signature above: the **d** tag gives the *author* domain to be verified against, *example.net* ; the **s** tag the selector, *brisbane*.
+[src:dmarc-email-security/domainkeys-identified-mail] The string *_domainkey* is a fixed part of the specification.
+[src:dmarc-email-security/domainkeys-identified-mail] Note that the selector and the domain name can be UTF-8 in internationalized email.
+[src:dmarc-email-security/domainkeys-identified-mail] In that case the label must be encoded according to IDNA before lookup.
+[src:dmarc-email-security/domainkeys-identified-mail] The data returned from the query of this record is also a list of tag-value pairs.
+[src:dmarc-email-security/domainkeys-identified-mail] A CNAME record can also be used to point at a different TXT record, for example when one organization sends email on behalf of another.
+[src:dmarc-email-security/domainkeys-identified-mail] The receiver can use the public key (value of the **p** tag) to then validate the signature on the hash value in the header field, and check it against the hash value for the mail message (headers and body) that was received.
+[src:dmarc-email-security/domainkeys-identified-mail] If the two values match, this cryptographically proves that the mail was signed by the indicated domain and has not been tampered with in transit.
+[src:dmarc-email-security/domainkeys-identified-mail] Signature verification failure does not force rejection of the message.
+[src:dmarc-email-security/domainkeys-identified-mail] Instead, the precise reasons why the authenticity of the message could not be proven should be made available to downstream and upstream processes.
+[src:dmarc-email-security/domainkeys-identified-mail] Methods for doing so may include sending back an FBL message, or adding an `Authentication-Results:` header field to the message as described in RFC 7001.
+[src:dmarc-email-security/domainkeys-identified-mail] DomainKeys was covered by U.S. patent 6,986,049, now expired.
+[src:dmarc-email-security/domainkeys-identified-mail] Yahoo! licensed its patent claims under a dual license scheme: the *DomainKeys Patent License Agreement v1.2*, or *GNU General Public License v2.0 (and no other version)*.
+[src:dmarc-email-security/domainkeys-identified-mail] In essence, both DKIM and SPF provide different measures of email authenticity.
+[src:dmarc-email-security/domainkeys-identified-mail] The primary advantage of this system for e-mail recipients is in allowing the signing domain to reliably identify a stream of legitimate email, thereby allowing domain-based blacklists and whitelists to be more effective.
+[src:dmarc-email-security/domainkeys-identified-mail] This is also likely to make certain kinds of phishing attacks easier to detect.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM is a method of labeling a message, and it does not itself filter or identify spam.
+[src:dmarc-email-security/domainkeys-identified-mail] However, widespread use of DKIM can prevent spammers from forging the source address of their messages, a technique they commonly employ today.
+[src:dmarc-email-security/domainkeys-identified-mail] If spammers are forced to show a correct source domain, other filtering techniques can work more effectively.
+[src:dmarc-email-security/domainkeys-identified-mail] In particular, the source domain can feed into a reputation system to better identify spam.
+[src:dmarc-email-security/domainkeys-identified-mail] Conversely, DKIM can make it easier to identify mail that is known not to be spam and need not be filtered.
+[src:dmarc-email-security/domainkeys-identified-mail] If a receiving system has a whitelist of known good sending domains, either locally maintained or from third party certifiers, it can skip the filtering on signed mail from those domains, and perhaps filter the remaining mail more aggressively.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM can be useful as an anti-phishing technology.
+[src:dmarc-email-security/domainkeys-identified-mail] Mailers in heavily phished domains can sign their mail to show that it is genuine.
+[src:dmarc-email-security/domainkeys-identified-mail] Recipients can take the absence of a valid signature on mail from those domains to be an indication that the mail is probably forged.
+[src:dmarc-email-security/domainkeys-identified-mail] The best way to determine the set of domains that merit this degree of scrutiny remains an open question.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM used to have an optional feature called ADSP that lets authors that sign all their mail self-identify, but it was demoted to historic status in November 2013.
+[src:dmarc-email-security/domainkeys-identified-mail] Instead, DMARC can be used for the same purpose and allows domains to self-publish which techniques (including SPF and DKIM) they employ, which makes it easier for the receiver to make an informed decision whether a certain mail is spam or not.
+[src:dmarc-email-security/domainkeys-identified-mail] For example, using DMARC, eBay and PayPal both publish policies that all of their mail is authenticated, and requesting that any receiving system, such as Gmail, should reject any that is not.
+[src:dmarc-email-security/domainkeys-identified-mail] Because it is implemented using DNS records and an added RFC 5322 header field, DKIM is compatible with the existing e-mail infrastructure.
+[src:dmarc-email-security/domainkeys-identified-mail] In particular, it is transparent to existing e-mail systems that lack DKIM support.
+[src:dmarc-email-security/domainkeys-identified-mail] This design approach also is compatible with other, related services, such as the S/MIME and OpenPGP content-protection standards.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM is compatible with the DNSSEC standard and with SPF.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM requires cryptographic checksums to be generated for each message sent through a mail server, which results in computational overhead not otherwise required for e-mail delivery.
+[src:dmarc-email-security/domainkeys-identified-mail] This additional computational overhead is a hallmark of digital postmarks, making sending bulk spam more (computationally) expensive.
+[src:dmarc-email-security/domainkeys-identified-mail] This facet of DKIM may look similar to hashcash, except that the receiver side verification is a negligible amount of work, while a typical hashcash algorithm would require far more work.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM's non-repudiation feature prevents senders (such as spammers) from credibly denying having sent an email.
+[src:dmarc-email-security/domainkeys-identified-mail] It has proven useful to news media sources such as WikiLeaks, which has been able to leverage DKIM body signatures to prove that leaked emails were genuine and not tampered with.
+[src:dmarc-email-security/domainkeys-identified-mail] In practice, it is hard to verify many old emails due to key rotation and difficulty in finding the original keys before rotation, as they are not published anywhere.
+[src:dmarc-email-security/domainkeys-identified-mail] One way to verify old emails is to use archives that collect signatures and selectors from existing emails, and can recover expired public keys from pairs of signatures done by the same key.
+[src:dmarc-email-security/domainkeys-identified-mail] Green considers non-repudiation a non-wanted feature of DKIM, forced by behaviors such as those just described.
+[src:dmarc-email-security/domainkeys-identified-mail] Indeed, DKIM protocol provides for expiration.
+[src:dmarc-email-security/domainkeys-identified-mail] There is an optional **x** tag on each signature, which establishes a formal expiration time; however, verifiers can ignore it.
+[src:dmarc-email-security/domainkeys-identified-mail] In addition, domain owners can revoke a public key by removing its cryptographic data from the record, thereby preventing signature verification unless someone saved the public key data beforehand.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM key rotation is often recommended just to minimize the impact of compromised keys.
+[src:dmarc-email-security/domainkeys-identified-mail] However, in order to definitely disable non-repudiation, expired secret keys can be published, thereby allowing everyone to produce fake signatures, thus voiding the significance of original ones.
+[src:dmarc-email-security/domainkeys-identified-mail] By default, publishing a redacted email is not verifiable because the DKIM body hashes cannot be constructed.
+[src:dmarc-email-security/domainkeys-identified-mail] However, you can still verify such emails if the owner creates a zero-knowledge proof of the DKIM signature on a masked subset of headers or body text, while constraining the disclosed portions match the signed message.
+[src:dmarc-email-security/domainkeys-identified-mail] Implementations often use regex or masking to hide or show selected content.
+[src:dmarc-email-security/domainkeys-identified-mail] This proof can be provided instead of a DKIM signature to third parties in order for anyone to verify the validity of the email.
+[src:dmarc-email-security/domainkeys-identified-mail] These proofs can even be generated locally on a user's device, so that the redacted information is never sent to third parties.
+[src:dmarc-email-security/domainkeys-identified-mail] It can be used to create secure anonymous message boards with private identities but verified affiliations, like a fully private Blind.
+[src:dmarc-email-security/domainkeys-identified-mail] It can also be used when authenticating a sender's claim is needed, but the recipient wants to remain anonymous.
+[src:dmarc-email-security/domainkeys-identified-mail] The RFC itself identifies a number of potential attack vectors.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM signatures do not encompass the message envelope, which holds the return-path and message recipients.
+[src:dmarc-email-security/domainkeys-identified-mail] Since DKIM does not attempt to protect against mis-addressing, this does not affect its utility.
+[src:dmarc-email-security/domainkeys-identified-mail] A number of concerns were raised and refuted in 2013 at the time of the standardization.
+[src:dmarc-email-security/domainkeys-identified-mail] A concern for any cryptographic solution would be message replay abuse, which bypasses techniques that currently limit the level of abuse from larger domains.
+[src:dmarc-email-security/domainkeys-identified-mail] Replay can be inferred by using per-message public keys, tracking the DNS queries for those keys and filtering out the high number of queries due to e-mail being sent to large mailing lists or malicious queries by bad actors.
+[src:dmarc-email-security/domainkeys-identified-mail] For a comparison of different methods also addressing this problem see e-mail authentication.
+[src:dmarc-email-security/domainkeys-identified-mail] As mentioned above, authentication is not the same as abuse prevention.
+[src:dmarc-email-security/domainkeys-identified-mail] A malicious email user of a reputable domain can compose a bad message and have it DKIM-signed and sent from that domain to any mailbox from where they can retrieve it as a file, so as to obtain a signed copy of the message.
+[src:dmarc-email-security/domainkeys-identified-mail] Use of the **l** tag in signatures makes doctoring such messages even easier.
+[src:dmarc-email-security/domainkeys-identified-mail] The signed copy can then be forwarded to a million recipients, for example through a botnet, without control.
+[src:dmarc-email-security/domainkeys-identified-mail] The email provider who signed the message can block the offending user, but cannot stop the diffusion of already-signed messages.
+[src:dmarc-email-security/domainkeys-identified-mail] The validity of signatures in such messages can be limited by always including an expiration time tag in signatures, or by revoking a public key periodically or upon a notification of an incident.
+[src:dmarc-email-security/domainkeys-identified-mail] Effectiveness of the scenario can hardly be limited by filtering outgoing mail, as that implies the ability to detect if a message might potentially be useful to spammers.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM currently features two canonicalization algorithms, simple and relaxed, neither of which is MIME-aware.
+[src:dmarc-email-security/domainkeys-identified-mail] Mail servers can legitimately convert to a different character set, and often document this with `X-MIME-Autoconverted:` header fields.
+[src:dmarc-email-security/domainkeys-identified-mail] In addition, servers in certain circumstances have to rewrite the MIME structure, thereby altering the *preamble*, the *epilogue*, and entity boundaries, any of which breaks DKIM signatures.
+[src:dmarc-email-security/domainkeys-identified-mail] Only plain text messages written in us-ascii, provided that MIME header fields are not signed, enjoy the robustness that end-to-end integrity requires.
+[src:dmarc-email-security/domainkeys-identified-mail] The OpenDKIM Project organized a data collection involving 21 mail servers and millions of messages.
+[src:dmarc-email-security/domainkeys-identified-mail] 92.3% of observed signatures were successfully verified, a success rate that drops slightly (90.5%) when only mailing list traffic is considered.
+[src:dmarc-email-security/domainkeys-identified-mail] The problems might be exacerbated when filtering or relaying software makes changes to a message.
+[src:dmarc-email-security/domainkeys-identified-mail] Without specific precaution implemented by the sender, the footer addition operated by most mailing lists and many central antivirus solutions will break the DKIM signature.
+[src:dmarc-email-security/domainkeys-identified-mail] A possible mitigation is to sign only designated number of bytes of the message body.
+[src:dmarc-email-security/domainkeys-identified-mail] It is indicated by **l** tag in **DKIM-Signature** header.
+[src:dmarc-email-security/domainkeys-identified-mail] Anything added beyond the specified length of the message body is not taken into account while calculating DKIM signature.
+[src:dmarc-email-security/domainkeys-identified-mail] Another workaround is to whitelist known forwarders; e.g., by SPF.
+[src:dmarc-email-security/domainkeys-identified-mail] For yet another workaround, it was proposed that forwarders verify the signature, modify the email, and then re-sign the message with a Sender: header.
+[src:dmarc-email-security/domainkeys-identified-mail] However, this solution has its risk with forwarded third party signed messages received at SMTP receivers supporting the RFC 5617 ADSP protocol.
+[src:dmarc-email-security/domainkeys-identified-mail] Thus, in practice, the receiving server still has to whitelist known *message streams*.
+[src:dmarc-email-security/domainkeys-identified-mail] The Authenticated Received Chain (ARC) is an email authentication system designed to allow an intermediate mail server like a mailing list or forwarding service to sign an email's original authentication results.
+[src:dmarc-email-security/domainkeys-identified-mail] This allows a receiving service to validate an email when the email's SPF and DKIM records are rendered invalid by an intermediate server's processing.
+[src:dmarc-email-security/domainkeys-identified-mail] ARC is defined in RFC 8617, published in July 2019, as "Experimental".
+[src:dmarc-email-security/domainkeys-identified-mail] In October 2012, *Wired* reported that mathematician Zach Harris detected and demonstrated an email source spoofing vulnerability with short DKIM keys for the `google.com` corporate domain, as well as several other high-profile domains.
+[src:dmarc-email-security/domainkeys-identified-mail] He stated that authentication with 384-bit keys can be factored in as little as 24 hours "on my laptop," and 512-bit keys, in about 72 hours with cloud computing resources.
+[src:dmarc-email-security/domainkeys-identified-mail] Harris found that many organizations sign email with such short keys; he factored them all and notified the organizations of the vulnerability.
+[src:dmarc-email-security/domainkeys-identified-mail] He states that 768-bit keys could be factored with access to very large amounts of computing power, so he suggests that DKIM signing should use key lengths greater than 1,024.
+[src:dmarc-email-security/domainkeys-identified-mail] DKIM resulted in 2004 from merging two similar efforts, "enhanced DomainKeys" from Yahoo and "Identified Internet Mail" from Cisco.
+[src:dmarc-email-security/domainkeys-identified-mail] This merged specification has been the basis for a series of IETF standards-track specifications and support documents which eventually resulted in STD 76, currently RFC 6376.
+[src:dmarc-email-security/domainkeys-identified-mail] "Identified Internet Mail" was proposed by Cisco as a signature-based mail authentication standard, while DomainKeys was designed by Yahoo to verify the DNS domain of an e-mail sender and the message integrity.
+[src:dmarc-email-security/domainkeys-identified-mail] Aspects of DomainKeys, along with parts of Identified Internet Mail, were combined to create DomainKeys Identified Mail (DKIM).
+[src:dmarc-email-security/domainkeys-identified-mail] Trendsetting providers implementing DKIM include Yahoo, Gmail, AOL and FastMail.
+[src:dmarc-email-security/domainkeys-identified-mail] Any mail from these organizations should carry a DKIM signature.
+[src:dmarc-email-security/domainkeys-identified-mail] Discussions about DKIM signatures passing through indirect mail flows, formally in the DMARC working group, took place right after the first adoptions of the new protocol wreaked havoc on regular mailing list use.
+[src:dmarc-email-security/domainkeys-identified-mail] However, none of the proposed DKIM changes passed.
+[src:dmarc-email-security/domainkeys-identified-mail] Instead, mailing list software was changed.
+[src:dmarc-email-security/domainkeys-identified-mail] In 2017, another working group was launched, DKIM Crypto Update (dcrup), with the specific restriction to review signing techniques.
+[src:dmarc-email-security/domainkeys-identified-mail] It adds an elliptic curve algorithm to the existing RSA.
+[src:dmarc-email-security/domainkeys-identified-mail] The added key type, `k=ed25519` is adequately strong while featuring short public keys, more easily publishable in DNS.
+[src:dmarc-email-security/domainkeys-identified-mail] The original *DomainKeys* was designed by Mark Delany of Yahoo! and enhanced through comments from many others since 2004.
+[src:dmarc-email-security/domainkeys-identified-mail] It is specified in Historic RFC 4870, superseded by Standards Track RFC 4871, DomainKeys Identified Mail (DKIM) Signatures; both published in May 2007.
+[src:dmarc-email-security/domainkeys-identified-mail] A number of clarifications and conceptualizations were collected thereafter and specified in RFC 5672, August 2009, in the form of corrections to the existing specification.
+[src:dmarc-email-security/domainkeys-identified-mail] In September 2011, RFC 6376 merged and updated the latter two documents, while preserving the substance of the DKIM protocol.
+[src:dmarc-email-security/domainkeys-identified-mail] Public key compatibility with the earlier DomainKeys is also possible.
+[src:dmarc-email-security/domainkeys-identified-mail] Source code development of one common library is led by *The OpenDKIM Project*, following the most recent protocol additions, and licensing under the New BSD License.
+[src:dmarc-email-security/domainkeys-identified-mail] Email providers are increasingly requiring senders to implement email authentication in order to successfully deliver mail to their users' mailboxes.
+[src:dmarc-email-security/domainkeys-identified-mail] In February 2024, Google started requiring bulk senders to authenticate their emails with DKIM to successfully deliver emails to Google-hosted mailboxes.
+[src:dmarc-email-security/domainkeys-identified-mail] Similarly in February 2024, Yahoo started requiring bulk senders to implement SPF and DKIM to successfully deliver emails to Yahoo users.
+[src:dmarc-email-security/email-authentication] The original base of Internet email, Simple Mail Transfer Protocol (SMTP), has no such feature, so forged sender addresses in emails (a practice known as email spoofing) have been widely used in phishing, email spam, and various types of frauds.
+[src:dmarc-email-security/email-authentication] To combat this, many competing email authentication proposals have been developed.
+[src:dmarc-email-security/email-authentication] By 2018 three had been widely adopted – SPF, DKIM and DMARC.
+[src:dmarc-email-security/email-authentication] The results of such validation can be used in automated email filtering, or can assist recipients when selecting an appropriate action.
+[src:dmarc-email-security/email-authentication] This article does not cover user authentication of email submission and retrieval.
+[src:dmarc-email-security/email-authentication] In the early 1980s, when Simple Mail Transfer Protocol (SMTP) was designed, it provided for no real verification of sending user or system.
+[src:dmarc-email-security/email-authentication] This was not a problem while email systems were run by trusted corporations and universities, but since the commercialization of the Internet in the early 1990s, spam, phishing, and other crimes have been found to increasingly involve email.
+[src:dmarc-email-security/email-authentication] Email authentication is a necessary first step towards identifying the origin of messages, and thereby making policies and laws more enforceable.
+[src:dmarc-email-security/email-authentication] Hinging on domain ownership is a stance that emerged in the early 2000.
+[src:dmarc-email-security/email-authentication] It implies a coarse-grained authentication, given that domains appear on the right part of email addresses, after the at sign.
+[src:dmarc-email-security/email-authentication] Fine-grained authentication, at a user level, can be achieved by other means, such as Pretty Good Privacy and S/MIME.
+[src:dmarc-email-security/email-authentication] At present, each individual must ultimately manage their own digital identity.
+[src:dmarc-email-security/email-authentication] An outstanding rationale for email authentication is the ability to automate email filtering at receiving servers.
+[src:dmarc-email-security/email-authentication] That way, spoofed messages can be rejected before they arrive to a user's inbox.
+[src:dmarc-email-security/email-authentication] While protocols strive to devise ways to reliably block distrusted mail, security indicators can tag unauthenticated messages that still reach the inbox.
+[src:dmarc-email-security/email-authentication] A 2018 study shows that security indicators can lower the click-through ratio by more than ten points: 48.9% to 37.2% of the users who open spoofed messages.
+[src:dmarc-email-security/email-authentication] SMTP defines message *transport*, not the message *content*.
+[src:dmarc-email-security/email-authentication] Thus, it defines the mail *envelope* and its parameters, such as the envelope sender, but not the header (except *trace information*) nor the body of the message itself.
+[src:dmarc-email-security/email-authentication] STD 10 and RFC 5321 define SMTP (the envelope), while STD 11 and RFC 5322 define the message (header and body), formally referred to as the Internet Message Format.
+[src:dmarc-email-security/email-authentication] A mail user agent (MUA) knows the *outgoing mail* SMTP server from its configuration.
+[src:dmarc-email-security/email-authentication] An MTA (or a relay server) typically determines which server to connect to by looking up the MX (Mail eXchange) DNS resource record for each recipient's domain name.
+[src:dmarc-email-security/email-authentication] The first few lines at the top of the header are usually trusted by the recipient.
+[src:dmarc-email-security/email-authentication] Those lines are written by machines in the recipient's Administrative Management Domain (ADMD), which act upon their explicit mandate.
+[src:dmarc-email-security/email-authentication] By contrast, the lines that prove the involvement of **A** and **B**, as well as of the purported author's MUA could be a counterfeit created by **C**.
+[src:dmarc-email-security/email-authentication] The `Received:` field shown above is an epoch-making piece of the header.
+[src:dmarc-email-security/email-authentication] The `Return-Path:` is written by **E**, the mail delivery agent (MDA), based on the message *envelope*.
+[src:dmarc-email-security/email-authentication] Additional trace fields, designed for email authentication, can populate the top of the header.
+[src:dmarc-email-security/email-authentication] Normally, messages sent out by an author's ADMD go directly to the destination's MX (that is **B → D** in the figures).
+[src:dmarc-email-security/email-authentication] The sender's ADMD can add authentication tokens only if the message goes through its boxes.
+[src:dmarc-email-security/email-authentication] Properly configured proxies appear as part of the author ADMD.
+[src:dmarc-email-security/email-authentication] Some ADMDs block outbound connection to port 25 (SMTP) to avoid this.
+[src:dmarc-email-security/email-authentication] This proactive technique is described in RFC 5068.
+[src:dmarc-email-security/email-authentication] In addition, some block inbound SMTP connections from IPs listed as dialup/DSL/cable.
+[src:dmarc-email-security/email-authentication] In this case the author's ADMD is not involved at all.
+[src:dmarc-email-security/email-authentication] Some ISPs block port 587, although RFC 5068 clearly says: Access Providers MUST NOT block users from accessing the external Internet using the SUBMISSION port 587.
+[src:dmarc-email-security/email-authentication] SPF allows the receiver to check that an email claimed to have come from a specific domain comes from an IP address authorized by that domain's administrators.
+[src:dmarc-email-security/email-authentication] Usually, a domain administrator will authorize the IP addresses used by their own outbound MTAs, including any proxy or smarthost.
+[src:dmarc-email-security/email-authentication] The IP address of the sending MTA is guaranteed to be valid by the Transmission Control Protocol, as it establishes the connection by checking that the remote host is reachable.
+[src:dmarc-email-security/email-authentication] The receiving mail server receives the `HELO` SMTP command soon after the connection is set up, and a `Mail from:` at the beginning of each message.
+[src:dmarc-email-security/email-authentication] The SPF verifier queries the Domain Name System (DNS) for a matching SPF record, which if it exists will specify the IP addresses authorized by that domain's administrator.
+[src:dmarc-email-security/email-authentication] The result can be "pass", "fail", or some intermediate result - and systems will generally take this into account in their anti-spam filtering.
+[src:dmarc-email-security/email-authentication] DKIM checks the *message content*, deploying digital signatures.
+[src:dmarc-email-security/email-authentication] Rather than using digital certificates, the keys for signature-verification are distributed via the DNS.
+[src:dmarc-email-security/email-authentication] That way, a message gets associated to a domain name.
+[src:dmarc-email-security/email-authentication] A DKIM-compliant domain administrator generates one or more pairs of asymmetric keys, then hands private keys to the signing MTA, and publishes public keys on the DNS.
+[src:dmarc-email-security/email-authentication] The DNS labels are structured as `*selector*._domainkey.example.com`, where *selector* identifies the key pair, and `_domainkey` is a fixed keyword, followed by the signing domain's name so that publication occurs under the authority of that domain's ADMD.
+[src:dmarc-email-security/email-authentication] Just before injecting a message into the SMTP transport system, the signing MTA creates a digital signature that covers selected fields of the header and the body (or just its beginning).
+[src:dmarc-email-security/email-authentication] The signature should cover substantive header fields such as `From:`, `To:`, `Date:`, and `Subject:`, and then is added to the message header itself, as a trace field.
+[src:dmarc-email-security/email-authentication] Any number of relays can receive and forward the message and at every hop, the signature can be verified by retrieving the public key from the DNS.
+[src:dmarc-email-security/email-authentication] As long as intermediate relays do not modify signed parts of a message, its DKIM-signatures remain valid.
+[src:dmarc-email-security/email-authentication] DMARC allows the specification of a policy for authenticated messages.
+[src:dmarc-email-security/email-authentication] It is built on top of two existing mechanisms, Sender Policy Framework (SPF) and DomainKeys Identified Mail (DKIM).
+[src:dmarc-email-security/email-authentication] A range of other methods have been proposed, but are now either deprecated or have not yet gained widespread support.
+[src:dmarc-email-security/email-authentication] ADSP allowed the specification of a policy for messages signed by the author's domain.
+[src:dmarc-email-security/email-authentication] A message had to go through DKIM authentication first, then ADSP could demand a punishing treatment if the message was not signed by the author domain(s) —as per the `From:` header field.
+[src:dmarc-email-security/email-authentication] ADSP was demoted to historic in November 2013.
+[src:dmarc-email-security/email-authentication] VBR adds a vouch to an already authenticated identity.
+[src:dmarc-email-security/email-authentication] This method requires some globally recognized authorities that certify the reputation of domains.
+[src:dmarc-email-security/email-authentication] A sender can apply for a reference at a vouching authority.
+[src:dmarc-email-security/email-authentication] The reference, if accepted, is published on the DNS branch managed by that authority.
+[src:dmarc-email-security/email-authentication] A vouched sender should add a `VBR-Info:` header field to the messages it sends.
+[src:dmarc-email-security/email-authentication] It should also add a DKIM signature, or use some other authentication method, such as SPF.
+[src:dmarc-email-security/email-authentication] A receiver, after validating the sender's identity, can verify the vouch claimed in `VBR-Info:` by looking up the reference.
+[src:dmarc-email-security/email-authentication] Applications should avoid using this method as a means of authentication.
+[src:dmarc-email-security/email-authentication] Nevertheless, it is often carried out and its results, if any, written in the `Received:` header field besides the TCP information required by the SMTP specification.
+[src:dmarc-email-security/email-authentication] The IP reverse, confirmed by looking up the IP address of the name just found, is just an indication that the IP was set up properly in the DNS.
+[src:dmarc-email-security/email-authentication] The reverse resolution of a range of IP addresses can be delegated to the ADMD that uses them, or can remain managed by the network provider.
+[src:dmarc-email-security/email-authentication] In the latter case, no useful identity related to the message can be obtained.
+[src:dmarc-email-security/email-authentication] Looking up a DNSWL (DNS-based whitelist) may provide an assessment of the sender, possibly including its identification.
+[src:dmarc-email-security/email-authentication] RFC 8601 defines a trace header field `Authentication-Results:` where a receiver can record the results of email authentication checks that it carried out.
+[src:dmarc-email-security/email-authentication] Multiple results for multiple *methods* can be reported in the same field, separated by semicolons and wrapped as appropriate.
+[src:dmarc-email-security/email-authentication] The first token after the field name, `receiver.example.org`, is the ID of the authentication server, a token known as an *authserv-id*.
+[src:dmarc-email-security/email-authentication] A receiver supporting RFC 8601 is responsible to remove (or rename) any false header claiming to belong to its domain so that downstream filters cannot get confused.
+[src:dmarc-email-security/email-authentication] However, those filters still need to be configured, as they have to know which identities the domain may use.
+[src:dmarc-email-security/email-authentication] For a Mail User Agent (MUA), it is slightly harder to learn what identities it can trust.
+[src:dmarc-email-security/email-authentication] Since users can receive email from multiple domains—e.g., if they have multiple email addresses -— any of those domains could let `Authentication-Results:` fields pass through because they looked neutral.
+[src:dmarc-email-security/email-authentication] That way, a malicious sender can forge an *authserv-id* that the user would trust if the message arrived from a different domain.
+[src:dmarc-email-security/email-authentication] A legitimate `Authentication-Results:` typically appears just above a `Received:` field by the same domain from which the message was relayed.
+[src:dmarc-email-security/email-authentication] Additional `Received:` fields may appear between that and the top of the header, as the message got transferred internally between servers belonging to that same, trusted ADMD.
+[src:dmarc-email-security/email-authentication] The Internet Assigned Numbers Authority maintains a registry of Email Authentication Parameters.
+[src:dmarc-email-security/email-authentication] Not all parameters need to be registered, though.
+[src:dmarc-email-security/email-authentication] For example, there can be local "policy" values designed for a site's internal use only, which correspond to local configuration and need no registration.
+[src:dmarc-email-security/email-spoofing] The original transmission protocols used for email do not have built-in authentication methods: this deficiency allows spam and phishing emails to use spoofing in order to mislead the recipient.
+[src:dmarc-email-security/email-spoofing] More recent countermeasures have made such spoofing from internet sources more difficult but they have not eliminated it completely; few internal networks have defences against a spoof email from a colleague's compromised computer on that network.
+[src:dmarc-email-security/email-spoofing] Individuals and businesses deceived by spoof emails may suffer significant financial losses; in particular, spoofed emails are often used to infect computers with ransomware.
+[src:dmarc-email-security/email-spoofing] Together, these are sometimes referred to as the "envelope" addressing – an analogy to a traditional paper envelope.
+[src:dmarc-email-security/email-spoofing] The result is that the email recipient sees the email as having come from the address in the *From:* header.
+[src:dmarc-email-security/email-spoofing] They may sometimes be able to find the *MAIL FROM* address, and if they reply to the email, it will go to either the address presented in the *From:* or *Reply-to:* header, but none of these addresses are typically reliable, so automated bounce messages may generate backscatter.
+[src:dmarc-email-security/email-spoofing] Although email spoofing is effective in forging the email address, the IP address of the computer sending the mail can generally be identified from the "Received:" lines in the email header.
+[src:dmarc-email-security/email-spoofing] In malicious cases, however, this is likely to be the computer of an innocent third party infected by malware that is sending the email without the owner's knowledge.
+[src:dmarc-email-security/email-spoofing] Phishing and business email compromise scams generally involve an element of email spoofing.
+[src:dmarc-email-security/email-spoofing] Email spoofing has been responsible for public incidents with serious business and financial consequences.
+[src:dmarc-email-security/email-spoofing] This was the case in an October 2013 email to a news agency which was spoofed to look as if it was from the Swedish company Fingerprint Cards.
+[src:dmarc-email-security/email-spoofing] The email stated that Samsung offered to purchase the company.
+[src:dmarc-email-security/email-spoofing] The news spread and the company's stock price surged by 50%.
+[src:dmarc-email-security/email-spoofing] Malware such as Klez and Sober among many more modern examples often search for email addresses within the computer they have infected, and they use those addresses both as targets for email, and also to create credible forged *From* fields in the emails that they send.
+[src:dmarc-email-security/email-spoofing] This is to ensure that the emails are more likely to be opened.
+[src:dmarc-email-security/email-spoofing] The worm code searches Alice's email address book and finds the addresses of Bob and Charlie.
+[src:dmarc-email-security/email-spoofing] From Alice's computer, the worm sends an infected email to Bob, but is forged to appear as if it was sent by Charlie.
+[src:dmarc-email-security/email-spoofing] In this case, even if Bob's system detects the incoming mail as containing malware, he sees the source as being Charlie, even though it really came from Alice's computer.
+[src:dmarc-email-security/email-spoofing] Meanwhile, Alice may remain unaware that her computer has been infected, and Charlie does not know anything about it at all, unless he receives an error message from Bob.
+[src:dmarc-email-security/email-spoofing] Traditionally, mail servers could accept a mail item, then later send a Non-Delivery Report or "bounce" message if it could not be delivered or had been quarantined for any reason.
+[src:dmarc-email-security/email-spoofing] These would be sent to the "MAIL FROM:" a.k.a.
+[src:dmarc-email-security/email-spoofing] With the massive rise in forged addresses, best practice is now to *not* generate NDRs for detected spam, viruses etc. but to reject the email during the SMTP transaction.
+[src:dmarc-email-security/email-spoofing] When mail administrators fail to take this approach, their systems are guilty of sending "backscatter" emails to innocent parties – in itself a form of spam – or being used to perform "Joe job" attacks.
+[src:dmarc-email-security/email-spoofing] The SSL/TLS system used to encrypt server-to-server email traffic can also be used to enforce authentication, but in practice it is seldom used, and a range of other potential solutions have also failed to gain traction.
+[src:dmarc-email-security/email-spoofing] To effectively stop forged email being delivered, the sending domains, their mail servers, and the receiving system all need to be configured correctly for these higher standards of authentication.
+[src:dmarc-email-security/email-spoofing] Although their use is increasing, estimates vary widely as to what percentage of emails have no form of domain authentication: from 8.6% to "almost half".
+[src:dmarc-email-security/email-spoofing] For this reason, receiving mail systems typically have a range of settings to configure how they treat poorly-configured domains or email.
+[src:dmarc-email-security/email-spoofing] While there has been research into improving email security, little emphasis has been placed on informing users whose email addresses have been used for spoofing.
+[src:dmarc-email-security/email-spoofing] Currently, only the email recipient can identify a fake email, and users whose addresses are spoofed remain unaware unless the recipient manually scrutinizes the message or DMARC reporting is enabled.
+[src:dmarc-email-security/email-spoofing] Typically, an attack targets specific employee roles within an organization by sending spoof emails that fraudulently represent a senior colleague, trusted customer, or supplier.
+[src:dmarc-email-security/email-spoofing] (This type of attack is known as spear phishing).
+[src:dmarc-email-security/email-spoofing] The email will issue instructions, such as approving payments or releasing client data.
+[src:dmarc-email-security/email-spoofing] The emails often use social engineering to trick the victim into making money transfers to the bank account of the fraudster.
+[src:dmarc-email-security/email-spoofing] The United States' Federal Bureau of Investigation recorded $26 billion of US and international losses associated with BEC attacks between June 2016 and July 2019.
+[src:dmarc-email-security/email-spoofing] More recent figures estimate losses of over $50 billion from 2013 to 2022.
+[src:dmarc-email-security/sender-policy-framework] The list of authorized sending hosts and IP addresses for a domain is published in the DNS records for that domain.
+[src:dmarc-email-security/sender-policy-framework] Sender Policy Framework is defined in RFC 7208 dated April 2014 as a "proposed standard".
+[src:dmarc-email-security/sender-policy-framework] The first public mention of the concept was in 2000 but went mostly unnoticed.
+[src:dmarc-email-security/sender-policy-framework] No mention was made of the concept again until a first attempt at an SPF-like specification was published in 2002 on the IETF "namedroppers" mailing list by Dana Valerie Reese, who was unaware of the 2000 mention of the idea.
+[src:dmarc-email-security/sender-policy-framework] The very next day, Paul Vixie posted his own SPF-like specification on the same list.
+[src:dmarc-email-security/sender-policy-framework] These posts ignited a lot of interest, led to the forming of the IETF Anti-Spam Research Group (ASRG) and their mailing list, where the SPF idea was further developed.
+[src:dmarc-email-security/sender-policy-framework] Among the proposals submitted to the ASRG were "Reverse MX" (RMX) by Hadmut Danisch, and "Designated Mailer Protocol" (DMP) by Gordon Fecyk.
+[src:dmarc-email-security/sender-policy-framework] In June 2003, Meng Weng Wong merged the RMX and DMP specifications and solicited suggestions from others.
+[src:dmarc-email-security/sender-policy-framework] Over the next six months, a large number of changes were made and a large community had started working on SPF.
+[src:dmarc-email-security/sender-policy-framework] Originally SPF stood for *Sender Permitted From* and was sometimes also called *SMTP+SPF*; but its name was changed to *Sender Policy Framework* in February 2004.
+[src:dmarc-email-security/sender-policy-framework] In early 2004, the IETF created the MARID working group and tried to use SPF and Microsoft's CallerID proposal as the basis for what is now known as Sender ID; but this collapsed due to technical and licensing conflicts.
+[src:dmarc-email-security/sender-policy-framework] The SPF community returned to the original "classic" version of SPF.
+[src:dmarc-email-security/sender-policy-framework] In July 2005, this version of the specification was approved by the IESG as an IETF *experiment*, inviting the community to observe SPF during the two years following publication.
+[src:dmarc-email-security/sender-policy-framework] On April 28, 2006, the SPF RFC was published as experimental RFC 4408.
+[src:dmarc-email-security/sender-policy-framework] On April 25, 2014 IETF published SPF in RFC 7208 as a "proposed standard" which "obsoleted" RFC 4408 and, as of May 2026, RFC 7208 had not been obsoleted.
+[src:dmarc-email-security/sender-policy-framework] The Simple Mail Transfer Protocol permits any computer to send email claiming to be from any source address.
+[src:dmarc-email-security/sender-policy-framework] This is exploited by spammers and scammers who often use forged email addresses, making it more difficult to trace a message back to its source, and easy for spammers to hide their identity in order to avoid responsibility.
+[src:dmarc-email-security/sender-policy-framework] It is also used in phishing techniques, where users can be duped into disclosing private information in response to an email purportedly sent by an organization such as a bank.
+[src:dmarc-email-security/sender-policy-framework] SPF allows the owner of an Internet domain to specify which computers are authorized to send mail with envelope-from addresses in that domain, using Domain Name System (DNS) records.
+[src:dmarc-email-security/sender-policy-framework] Receivers verifying the SPF information in TXT records may reject messages from unauthorized sources before receiving the body of the message.
+[src:dmarc-email-security/sender-policy-framework] Thus, the principles of operation are similar to those of DNS-based blackhole lists (DNSBL), except that SPF uses the authority delegation scheme of the Domain Name System.
+[src:dmarc-email-security/sender-policy-framework] Current practice requires the use of TXT records, just as early implementations did.
+[src:dmarc-email-security/sender-policy-framework] For a while a new record type (SPF, type 99) was registered and made available in common DNS software.
+[src:dmarc-email-security/sender-policy-framework] Use of TXT records for SPF was intended as a transitional mechanism at the time.
+[src:dmarc-email-security/sender-policy-framework] The experimental RFC, RFC 4408, section 3.1.1, suggested "an SPF-compliant domain name SHOULD have SPF records of both RR types".
+[src:dmarc-email-security/sender-policy-framework] The proposed standard, RFC 7208, says "use of alternative DNS RR types was supported in SPF's experimental phase but has been discontinued".
+[src:dmarc-email-security/sender-policy-framework] The envelope-from address is transmitted at the beginning of the SMTP dialog.
+[src:dmarc-email-security/sender-policy-framework] If the server rejects the domain, the unauthorized client should receive a rejection message, and if that client was a relaying message transfer agent (MTA), a bounce message to the original envelope-from address may be generated.
+[src:dmarc-email-security/sender-policy-framework] If the server accepts the domain, and subsequently also accepts the recipients and the body of the message, it should insert a Return-Path field in the message header in order to save the envelope-from address.
+[src:dmarc-email-security/sender-policy-framework] While the address in the Return-Path often matches other originator addresses in the mail header such as the *header-from*, this is not necessarily the case, and SPF does not prevent forgery of these other addresses such as *sender* header.
+[src:dmarc-email-security/sender-policy-framework] Spammers can send email with an SPF PASS result if they have an account in a domain with a sender policy, or abuse a compromised system in this domain.
+[src:dmarc-email-security/sender-policy-framework] However, doing so makes the spammer easier to trace.
+[src:dmarc-email-security/sender-policy-framework] SPF benefits owners of email addresses that are forged in the Return-Path.
+[src:dmarc-email-security/sender-policy-framework] They receive large numbers of unsolicited error messages and other auto-replies.
+[src:dmarc-email-security/sender-policy-framework] If such receivers use SPF to specify their legitimate source IP addresses and indicate FAIL result for all other addresses, receivers checking SPF can reject forgeries, thus reducing or eliminating the amount of backscatter.
+[src:dmarc-email-security/sender-policy-framework] SPF has potential advantages beyond helping identify unwanted mail.
+[src:dmarc-email-security/sender-policy-framework] In particular, if a sender provides SPF information, then receivers can use SPF PASS results in combination with an allow list to identify known reliable senders.
+[src:dmarc-email-security/sender-policy-framework] Scenarios like compromised systems and shared sending mailers limit this use.
+[src:dmarc-email-security/sender-policy-framework] If a domain publishes an SPF record, spammers and phishers are less likely to forge emails pretending to be from that domain, because the forged emails are more likely to be caught in spam filters which check the SPF record.
+[src:dmarc-email-security/sender-policy-framework] Therefore, an SPF-protected domain is less attractive to spammers and phishers.
+[src:dmarc-email-security/sender-policy-framework] Because an SPF-protected domain is less attractive as a spoofed address, it is less likely to be denylisted by spam filters and so ultimately the legitimate email from the domain is more likely to get through.
+[src:dmarc-email-security/sender-policy-framework] The next hop does not allowlist the forwarder.
+[src:dmarc-email-security/sender-policy-framework] This is a necessary and obvious feature of SPF – checks *behind* the "border" MTA (MX) of the receiver cannot work directly.
+[src:dmarc-email-security/sender-policy-framework] Publishers of SPF FAIL policies must accept the risk of their legitimate emails being rejected or bounced.
+[src:dmarc-email-security/sender-policy-framework] They should test (e.g., with a SOFTFAIL policy) until they are satisfied with the results.
+[src:dmarc-email-security/sender-policy-framework] See below for a list of alternatives to plain message forwarding.
+[src:dmarc-email-security/sender-policy-framework] For an empty Return-Path as used in error messages and other auto-replies, an SPF check of the HELO identity is mandatory.
+[src:dmarc-email-security/sender-policy-framework] With a bogus HELO identity the result NONE would not help, but for valid host names SPF also protects the HELO identity.
+[src:dmarc-email-security/sender-policy-framework] This SPF feature was always supported as an option for receivers, and later SPF drafts including the final specification recommend to check the HELO always.
+[src:dmarc-email-security/sender-policy-framework] This allows receivers to allowlist sending mailers based on a HELO PASS, or to reject all mails after a HELO FAIL.
+[src:dmarc-email-security/sender-policy-framework] It can also be used in reputation systems (any allow or deny list is a simple case of a reputation system).
+[src:dmarc-email-security/sender-policy-framework] Thus, the key issue in SPF is the specification for the new DNS information that domains set and receivers use.
+[src:dmarc-email-security/sender-policy-framework] The following words provide *mechanisms* to use to determine if a domain is eligible to send mail.
+[src:dmarc-email-security/sender-policy-framework] The "ip4" and "a" specify the systems permitted to send messages for the given domain.
+[src:dmarc-email-security/sender-policy-framework] The "-all" at the end specifies that, if the previous *mechanisms* did not match, the message should be rejected.
+[src:dmarc-email-security/sender-policy-framework] The *modifiers* allow for future extensions to the framework.
+[src:dmarc-email-security/sender-policy-framework] As soon as SPF implementations detect syntax errors in a sender policy they **must** abort the evaluation with result PERMERROR.
+[src:dmarc-email-security/sender-policy-framework] Skipping erroneous *mechanisms* cannot work as expected, therefore `include:bad.example` and `redirect=bad.example` also cause a PERMERROR.
+[src:dmarc-email-security/sender-policy-framework] Another safeguard is the maximum of ten mechanisms querying DNS, i.e. any mechanism except from IP4, IP6, and ALL.
+[src:dmarc-email-security/sender-policy-framework] Implementations can abort the evaluation with result TEMPERROR when it takes too long or a DNS query times out or they can continue pretending that the query returned no data —which is called a "void lookup".
+[src:dmarc-email-security/sender-policy-framework] However, they **must** return PERMERROR if the policy directly or indirectly needs more than ten queries for *mechanisms*.
+[src:dmarc-email-security/sender-policy-framework] In addition, they **should** return PERMERROR as soon as more than two "void lookups" have been encountered.
+[src:dmarc-email-security/sender-policy-framework] Any `redirect=` also counts towards this *processing limits*.
+[src:dmarc-email-security/sender-policy-framework] A typical SPF HELO policy `v=spf1 a mx ip4:192.0.2.0 -all` may execute four or more DNS queries: (1) TXT record (SPF type was obsoleted by RFC 7208), (2) A or AAAA for mechanism `a`, (3) MX record and (4+) A or AAAA for each MX name, for mechanism `mx`.
+[src:dmarc-email-security/sender-policy-framework] Except the first one, all those queries count towards the limit of 10.
+[src:dmarc-email-security/sender-policy-framework] In addition if, for example, the sender has an IPv6 address, while its name and its two MX names have only IPv4 addresses, then the evaluation of the first two mechanisms already results in more than two void lookups and hence PERMERROR.
+[src:dmarc-email-security/sender-policy-framework] Mechanisms `ip4`, `ip6` and `all` need no DNS lookup.
+[src:dmarc-email-security/sender-policy-framework] To enable rapid testing and deployment, initial versions of SPF checked for its setting in the DNS TXT record of the sending domain - even though this record was traditionally supposed to be free-form text with no semantics attached.
+[src:dmarc-email-security/sender-policy-framework] Although in July 2005, IANA assigned a specific Resource Record type 99 to SPF the uptake of was never high, and having two mechanisms was confusing for users.
+[src:dmarc-email-security/sender-policy-framework] As SPF increasingly prevents spammers from spoofing the envelope-from address, many have moved to only spoof the address in the From field of the mail header, which is actually displayed to the recipient rather than only processed by the recipient's message transfer agent (MTA).
+[src:dmarc-email-security/sender-policy-framework] SPF (or DKIM) can be used together with DMARC though, to also check the From field of the mail header.
+[src:dmarc-email-security/sender-policy-framework] Custom proprietary implementations are required to protect against such display name spoofing and cannot utilize SPF.
+[src:dmarc-email-security/sender-policy-framework] Anti-spam software such as SpamAssassin version 3.0.0 and ASSP implement SPF.
+[src:dmarc-email-security/sender-policy-framework] Many mail transfer agents (MTAs) support SPF directly such as Courier, CommuniGate Pro, Wildcat, MDaemon, and Microsoft Exchange, or have patches or plug-ins available that support SPF, including Postfix, Sendmail, Exim, qmail, and Qpsmtpd.
+[src:dmarc-email-security/sender-policy-framework] As of 2017, more than eight million domains publish SPF FAIL `-all` policies.
+[src:dmarc-email-security/sender-policy-framework] In a survey published in 2007, 5% of the `.com` and `.net` domains had some kind of SPF policy.
+[src:dmarc-email-security/sender-policy-framework] In 2009, a continuous survey run at Nokia Research reports that 51% of the tested domains specify an SPF policy.
+[src:dmarc-email-security/sender-policy-framework] These results can include trivial policies like `v=spf1 ?all`.
+[src:dmarc-email-security/sender-policy-framework] In April 2007, BITS, a division of the Financial Services Roundtable, published email security recommendations for its members including SPF deployment.
+[src:dmarc-email-security/sender-policy-framework] In 2008, the Messaging Anti-Abuse Working Group (MAAWG) published a paper about email authentication covering SPF, Sender ID, and DomainKeys Identified Mail (DKIM).
+[src:dmarc-email-security/sender-policy-framework] In their "Sender Best Communication Practices" the MAAWG stated: "At the very least, senders should incorporate SPF records for their mailing domains".
+[src:dmarc-email-security/sender-policy-framework] In 2015, the Messaging Anti-Abuse Working Group (MAAWG) revised a paper about email authentication covering SPF, DomainKeys Identified Mail (DKIM), and DMARC (DMARC).
+[src:dmarc-email-security/sender-policy-framework] In their revised "Sender Best Communication Practices" the MAAWG stated: "Authentication supports transparency by further identifying the sender(s) of a message, while also contributing to the reduction or elimination of spoofed and forged addresses".
+[src:dmarc-email-security/sender-policy-framework] From February 1, 2024, Google requires SPF or DKIM for all domains sending emails to Gmail accounts.
+[src:dmarc-email-security/sender-policy-framework] Bulk senders (5000+ emails per day) are required to have SPF, DKIM, and DMARC setup for their domains.

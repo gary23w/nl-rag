@@ -1,0 +1,446 @@
+# nl-rag distilled facts — domain: ray-tracing-rt
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:ray-tracing-rt/bounding-volume-hierarchy] A **bounding volume hierarchy** (**BVH**) is a tree structure on a set of geometric objects.
+[src:ray-tracing-rt/bounding-volume-hierarchy] All geometric objects, which form the leaf nodes of the tree, are wrapped in bounding volumes.
+[src:ray-tracing-rt/bounding-volume-hierarchy] These nodes are then grouped as small sets and enclosed within larger bounding volumes.
+[src:ray-tracing-rt/bounding-volume-hierarchy] These, in turn, are also grouped and enclosed within other larger bounding volumes in a recursive fashion, eventually resulting in a tree structure with a single bounding volume at the top of the tree.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Bounding volume hierarchies are used to support several operations on sets of geometric objects efficiently, such as in collision detection and ray tracing.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Although wrapping objects in bounding volumes and performing collision tests on them before testing the object geometry itself simplifies the tests and can result in significant performance improvements, the same number of pairwise tests between bounding volumes are still being performed.
+[src:ray-tracing-rt/bounding-volume-hierarchy] By arranging the bounding volumes into a bounding volume hierarchy, the time complexity (the number of tests performed) can be reduced to logarithmic in the number of objects.
+[src:ray-tracing-rt/bounding-volume-hierarchy] With such a hierarchy in place, during collision testing, child volumes do not have to be examined if their parent volumes are not intersected (for example, if the bounding volumes of two bumper cars do not intersect, the bounding volumes of the bumpers themselves need not be checked for collision).
+[src:ray-tracing-rt/bounding-volume-hierarchy] The choice of bounding volume is determined by a trade-off between two objectives.
+[src:ray-tracing-rt/bounding-volume-hierarchy] On the one hand, bounding volumes with a very simple shape can be stored in only a few bytes, and intersection tests and distance computations are simple and fast.
+[src:ray-tracing-rt/bounding-volume-hierarchy] On the other hand, bounding volumes should fit the corresponding data objects very tightly.
+[src:ray-tracing-rt/bounding-volume-hierarchy] One of the most commonly used bounding volumes is an axis-aligned minimum bounding box.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The axis-aligned minimum bounding box for a given set of data objects is easy to compute, requires only a few bytes to store, and robust intersection tests are easy to implement and extremely fast.
+[src:ray-tracing-rt/bounding-volume-hierarchy] In terms of the structure of BVH, it has to be decided what degree (the number of children) and height to use in the tree representing the BVH.
+[src:ray-tracing-rt/bounding-volume-hierarchy] A tree of a low degree will be of greater height.
+[src:ray-tracing-rt/bounding-volume-hierarchy] That increases root-to-leaf traversal time.
+[src:ray-tracing-rt/bounding-volume-hierarchy] On the other hand, less work has to be expended at each visited node to check its children for overlap.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The opposite holds for a high-degree tree: although the tree will be of smaller height, more work is spent at each node.
+[src:ray-tracing-rt/bounding-volume-hierarchy] In practice, binary trees (degree = 2) are by far the most common.
+[src:ray-tracing-rt/bounding-volume-hierarchy] One of the main reasons is that binary trees are easier to build.
+[src:ray-tracing-rt/bounding-volume-hierarchy] There are three primary categories of tree construction methods: top-down, bottom-up, and insertion methods.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The most crucial part for this approach is to decide how to partition objects in a node's region among the node's children.
+[src:ray-tracing-rt/bounding-volume-hierarchy] This can be done with a splitting plane to split a node's bounding volume into partitions so that having to traverse many child nodes is minimized.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Simply using the midpoint of volume centroids for splitting might be a sub-optimal choice, as illustrated in the figure, where a big overlap volume occurs.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Hence, good splitting criteria such as the surface-area heuristic (SAH) are often used with equal-size buckets of splitting planes, so that only at these splitting points, re-calculation of SAH is required.
+[src:ray-tracing-rt/bounding-volume-hierarchy] One example for this is the use of a Z-order curve (also known as Morton-order), where clusters can be found by simply taking a linear pass through a Morton-ordered array of leaves.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Given the independent clusters of leaf nodes, sub-trees can be constructed in parallel and then further combined to form higher nodes.
+[src:ray-tracing-rt/bounding-volume-hierarchy] This parallelization makes the BVH construction very fast and can also be implemented in a hybrid manner, where all sub-trees are combined followed by a top-down approach.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Both top-down and bottom-up methods are considered *off-line methods* as they both require all objects to be available before construction starts.
+[src:ray-tracing-rt/bounding-volume-hierarchy] *Insertion methods* build the tree by inserting one object at a time, starting from an empty tree.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The insertion location should be chosen that causes the tree to grow as little as possible according to a cost metric.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Insertion methods are considered *on-line methods* since they do not require all objects to be available before construction starts and thus allow updates to be performed at runtime.
+[src:ray-tracing-rt/bounding-volume-hierarchy] After a BVH tree is constructed, it can then be converted to a compacted form for efficient traversal to improve overall system performance.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The compact representation is often a linear array in memory, where the nodes of the BVH tree are stored in depth-first order.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Hence, for a binary BVH tree, the first child of an internal node will be placed next to itself, and only the offset from the interior node to the index of the second child must be stored explicitly.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The implementation of the traversal can be done without recursive function calls and only a stack is required to store the nodes to be visited next.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The pseudocode provided below is a simple reference for ray tracing applications.
+[src:ray-tracing-rt/bounding-volume-hierarchy] BVHs are often used in ray tracing to eliminate potential intersection candidates within a scene by omitting geometric objects located in bounding volumes which are not intersected by the current ray.
+[src:ray-tracing-rt/bounding-volume-hierarchy] This only requires a small change in line 11-12 of the above pseudo-code.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Similar optimizations during BVH traversal can be employed when descending into child volumes of the second volume, to restrict further search space and thus reduce traversal time.
+[src:ray-tracing-rt/bounding-volume-hierarchy] BVHs also naturally support inserting and removing objects without full rebuild, but with resulting BVH having usually worse query performance compared to full rebuild.
+[src:ray-tracing-rt/bounding-volume-hierarchy] BVHs can also be combined with scene graph methods, and geometry instancing, to reduce memory usage, improve structure update and full rebuild performance, as well as guide better object or primitive splitting.
+[src:ray-tracing-rt/bounding-volume-hierarchy] BVHs are often used for accelerating collision detection computation.
+[src:ray-tracing-rt/bounding-volume-hierarchy] In the context of cloth simulation, BVHs are used to compute collision between a cloth and itself as well as with other objects.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Another powerful use case for BVH is pair-wise distance computation.
+[src:ray-tracing-rt/bounding-volume-hierarchy] A naive approach to find the minimum distance between two set of objects would compute the distance between all of the pair-wise combinations.
+[src:ray-tracing-rt/bounding-volume-hierarchy] A BVH allows us to efficiently prune many of the comparisons without needing to compute potentially elaborate distance between the all objects.
+[src:ray-tracing-rt/bounding-volume-hierarchy] BVH can significantly accelerate ray tracing applications by reducing the number of ray-surface intersection calculations.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Hardware implementation of BVH operations such as traversal can further accelerate ray-tracing.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Currently, real-time ray tracing is available on multiple platforms.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Hardware implementation of BVH is one of the key innovations making it possible.
+[src:ray-tracing-rt/bounding-volume-hierarchy] In 2018, Nvidia introduced RT Cores with their Turing GPU architecture as part of the RTX platform.
+[src:ray-tracing-rt/bounding-volume-hierarchy] RT Cores are specialized hardware units designed to accelerate BVH traversal and ray-triangle intersection tests.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The combination of these key features enables real-time ray tracing that can be use for video games. as well as design applications.
+[src:ray-tracing-rt/bounding-volume-hierarchy] AMD's RDNA (Radeon DNA) architecture, introduced in 2019, has incorporated hardware-accelerated ray tracing since its second iteration, RDNA 2.
+[src:ray-tracing-rt/bounding-volume-hierarchy] The architecture uses dedicated hardware units called Ray Accelerators to perform ray-box and ray-triangle intersection tests, which are crucial for traversing Bounding Volume Hierarchies (BVH).
+[src:ray-tracing-rt/bounding-volume-hierarchy] In RDNA 2 and 3, the shader is responsible for traversing the BVH, while the Ray Accelerators handle intersection tests for box and triangle nodes.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Originally designed to accelerate ray tracing, researchers are now exploring ways to leverage fast BVH traversal to speed up other applications.
+[src:ray-tracing-rt/bounding-volume-hierarchy] These include determining the containing tetrahedron for a point, enhancing granular matter simulations, and performing nearest neighbor calculations.
+[src:ray-tracing-rt/bounding-volume-hierarchy] Some methods repurpose Nvidia's RT core components by reframing these tasks as ray-tracing problems.
+[src:ray-tracing-rt/bounding-volume-hierarchy] This direction seems promising as substantial speedups in performance are reported across the various applications.
+[src:ray-tracing-rt/directx-raytracing] The command list *DispatchRays,* is the start of the rays that are used to generate the reflection graphics.
+[src:ray-tracing-rt/directx-raytracing] These are used by the GPU to begin the raytracing process.
+[src:ray-tracing-rt/directx-raytracing] New HLSL shaders, *ray-generation, closest-hit, any hit,* and *miss*, that are used describe computationally what DXR is doing when rendering raytracing.
+[src:ray-tracing-rt/directx-raytracing] These shaders utilize the *TraceRay* function in HLSL to trace rays in the environment.
+[src:ray-tracing-rt/directx-raytracing] When the ray interacts with the generated plane it can call on one of many selected hit or miss shaders.
+[src:ray-tracing-rt/directx-raytracing] The variation of hit and miss shaders creates different textures.
+[src:ray-tracing-rt/directx-raytracing] *Raytracing pipeline state*, a counterpart to the current Graphics and Compute pipeline state objects.
+[src:ray-tracing-rt/directx-raytracing] Pipeline state objects are hardware settings that determine how the GPU interprets and renders information.
+[src:ray-tracing-rt/directx-raytracing] DXR starts by sending out a ray from each pixel on a given plane and calculates which objects on the plane are hit by the ray first.
+[src:ray-tracing-rt/directx-raytracing] Next, the DXR algorithm estimates the amount of light where the ray intersects the object and attaches that calculation to the object.
+[src:ray-tracing-rt/directx-raytracing] Objects can have different properties that will absorb or reflect light at different rates.
+[src:ray-tracing-rt/directx-raytracing] To stop infinite bounces of a ray from happening, DXR will stop calculations after a certain amount of intersections.
+[src:ray-tracing-rt/directx-raytracing] Rays that never interact with an object are tracked for how far they have gone.
+[src:ray-tracing-rt/directx-raytracing] This is so the algorithm understands when rays have gone too far.
+[src:ray-tracing-rt/directx-raytracing] DXR was released to the public on October 10, 2018 with the Windows 10 October update (version 1809).
+[src:ray-tracing-rt/directx-raytracing] The first major update was made to DXR on May 27, 2020 with the Windows 10 May update (version 2004).
+[src:ray-tracing-rt/directx-raytracing] The May update implemented DXR Tier 1.1, which allows game engines to make real time calculations which makes the raytracing graphics faster and more efficient.
+[src:ray-tracing-rt/directx-raytracing] During GDC 2025, Microsoft announced the next update to DXR (1.2) that will include standardized support for Opacity Micro-maps (OMM) and Shader Execution Reordering (SER).
+[src:ray-tracing-rt/directx-raytracing] Major hardware vendors had announced official statements that they will implement the updated API spec into their products.
+[src:ray-tracing-rt/nvidia-rtx] Nvidia RTX features hardware-enabled real-time ray tracing.
+[src:ray-tracing-rt/nvidia-rtx] Historically, ray tracing had been reserved to non-real time applications (like CGI in visual effects for movies and in photorealistic renderings), with video games having to rely on direct lighting and precalculated indirect contribution for their rendering.
+[src:ray-tracing-rt/nvidia-rtx] RTX facilitates a new development in computer graphics of generating interactive images that react to lighting, shadows and reflections.
+[src:ray-tracing-rt/nvidia-rtx] RTX runs on Nvidia Volta-, Turing-, Ampere-, Ada Lovelace- and Blackwell-based GPUs, specifically utilizing the Tensor cores (and new RT cores on Turing and successors) on the architectures for ray-tracing acceleration.
+[src:ray-tracing-rt/nvidia-rtx] In March 2019, Nvidia announced that selected GTX 10 series (Pascal) and GTX 16 series (Turing) cards would receive support for subsets of RTX technology in upcoming drivers, although functions and performance will be affected by their lack of dedicated hardware cores for ray tracing.
+[src:ray-tracing-rt/nvidia-rtx] In October 2020, Nvidia announced Nvidia RTX A6000 as the first Ampere-architecture-based graphics card for use in professional workstations in the Nvidia RTX product line, replacing the former Quadro product line of professional graphics cards.
+[src:ray-tracing-rt/nvidia-rtx] Nvidia worked with Microsoft to integrate RTX support with Microsoft's DirectX Raytracing API (DXR).
+[src:ray-tracing-rt/nvidia-rtx] RTX is currently available through Nvidia OptiX and for DirectX.
+[src:ray-tracing-rt/nvidia-rtx] For the Turing and Ampere architectures, it is also available for Vulkan.
+[src:ray-tracing-rt/nvidia-rtx] In addition to ray tracing, RTX includes artificial intelligence integration, common asset formats, rasterization (CUDA) support, and simulation APIs.
+[src:ray-tracing-rt/nvidia-rtx] In computer graphics, ray tracing generates an image by tracing rays cast through pixels of an image plane and simulating the effects of its encounters with virtual objects.
+[src:ray-tracing-rt/nvidia-rtx] This enables advanced effects that better reflect real-world optical properties, such as softer and more realistic shadows and reflections, as compared to traditional rasterization techniques which prioritize performance over accuracy.
+[src:ray-tracing-rt/nvidia-rtx] Nvidia RTX achieves this through a combination of hardware and software acceleration.
+[src:ray-tracing-rt/nvidia-rtx] On a hardware level, RTX cards feature fixed-function "RT cores" that are designed to accelerate mathematical operations needed to simulate rays, such as bounding volume hierarchy traversal.
+[src:ray-tracing-rt/nvidia-rtx] The software implementation is open to individual application developers.
+[src:ray-tracing-rt/nvidia-rtx] As ray-tracing is still computationally intensive, many developers choose to take a hybrid rendering approach where certain graphical effects, such as shadows and reflections, are performed using ray-tracing, while the remaining scene is rendered using the more performant rasterization.
+[src:ray-tracing-rt/nvidia-rtx] Nvidia OptiX is part of Nvidia DesignWorks.
+[src:ray-tracing-rt/nvidia-rtx] OptiX is a high-level, or "to-the-algorithm" API, meaning that it is designed to encapsulate the entire algorithm of which ray tracing is a part, not just the ray tracing itself.
+[src:ray-tracing-rt/nvidia-rtx] This is meant to allow the OptiX engine to execute the larger algorithm without application-side changes.
+[src:ray-tracing-rt/nvidia-rtx] Aside from computer graphics rendering, OptiX also helps in optical and acoustical design, radiation and electromagnetic research, artificial intelligence queries and collision analysis.
+[src:ray-tracing-rt/nvidia-rtx] Chat with RTX is an AI-based assistant that runs locally on the user's Windows PC.
+[src:ray-tracing-rt/nvidia-rtx] It uses a large language model and requires an RTX 30, 40 or 50 series GPU with at least 8GB of VRAM.
+[src:ray-tracing-rt/nvidia-rtx] It can be downloaded from Nvidia's website.
+[src:ray-tracing-rt/nvidia-rtx] RTX Remix is a game modding platform designed by Nvidia to remaster older titles by implementing modern technologies such as ray tracing, DLSS, and enhanced assets.
+[src:ray-tracing-rt/ray-casting] The term "Ray Casting" was introduced by Scott Roth while at the General Motors Research Labs from 1978–1980.
+[src:ray-tracing-rt/ray-casting] His paper, "Ray Casting for Modeling Solids", describes modeled solid objects by combining primitive solids, such as blocks and cylinders, using the set operators union (+), intersection (&), and difference (−).
+[src:ray-tracing-rt/ray-casting] The general idea of using these binary operators for solid modeling is largely due to Voelcker and Requicha's geometric modelling group at the University of Rochester.
+[src:ray-tracing-rt/ray-casting] Before ray casting (and ray tracing), computer graphics algorithms projected surfaces or edges (e.g., lines) from the 3D world to the image plane where visibility logic had to be applied.
+[src:ray-tracing-rt/ray-casting] The world-to-image plane projection is a 3D homogeneous coordinate system transformation, also known as 3D projection, affine transformation, or projective transform (homography).
+[src:ray-tracing-rt/ray-casting] Rendering an image this way is difficult to achieve with hidden surface/edge removal.
+[src:ray-tracing-rt/ray-casting] Plus, silhouettes of curved surfaces have to be explicitly solved for whereas it is an implicit by-product of ray casting, so there is no need to explicitly solve for it whenever the view changes.
+[src:ray-tracing-rt/ray-casting] Ray casting greatly simplified image rendering of 3D objects and scenes because a line transforms to a line.
+[src:ray-tracing-rt/ray-casting] So, instead of projecting curved edges and surfaces in the 3D scene to the 2D image plane, transformed lines (rays) are intersected with the objects in the scene.
+[src:ray-tracing-rt/ray-casting] A homogeneous coordinate transformation is represented by a 4×4 matrix.
+[src:ray-tracing-rt/ray-casting] The mathematical technique is common to computer graphics and geometric modeling.
+[src:ray-tracing-rt/ray-casting] A transform includes rotations around the three axes, independent scaling along the axes, translations in 3D, and even skewing.
+[src:ray-tracing-rt/ray-casting] Transforms are easily concatenated via matrix arithmetic.
+[src:ray-tracing-rt/ray-casting] For use with a 4×4 matrix, a point is represented by [*X*, *Y*, *Z*, 1], and a direction vector is represented by [*Dx*, *Dy*, *Dz*, 0].
+[src:ray-tracing-rt/ray-casting] Ray casting is the most basic of many computer graphics rendering algorithms that use the geometric algorithm of ray tracing.
+[src:ray-tracing-rt/ray-casting] Ray tracing-based rendering algorithms operate in image order to render three-dimensional scenes to two-dimensional images.
+[src:ray-tracing-rt/ray-casting] Geometric rays are traced from the eye of the observer to sample the light (radiance) travelling toward the observer from the ray direction.
+[src:ray-tracing-rt/ray-casting] The speed and simplicity of ray casting comes from computing the color of the light without recursively tracing additional rays that sample the radiance incident on the point that the ray hit.
+[src:ray-tracing-rt/ray-casting] This eliminates the possibility of accurately rendering reflections, refractions, or the natural falloff of shadows; however all of these elements can be faked to a degree, by creative use of texture maps or other methods.
+[src:ray-tracing-rt/ray-casting] The high speed of calculation made ray casting a handy rendering method in early real-time 3D video games.
+[src:ray-tracing-rt/ray-casting] The idea behind ray casting is to trace rays from the eye, one per pixel, and find the closest object blocking the path of that ray—think of an image as a screen-door, with each square in the screen being a pixel.
+[src:ray-tracing-rt/ray-casting] This is then the object the eye sees through that pixel.
+[src:ray-tracing-rt/ray-casting] Using the material properties and the effect of the lights in the scene, this algorithm can determine the shading of this object.
+[src:ray-tracing-rt/ray-casting] The simplifying assumption is made that if a surface faces a light, the light will reach that surface and not be blocked or in shadow.
+[src:ray-tracing-rt/ray-casting] The shading of the surface is computed using traditional 3D computer graphics shading models.
+[src:ray-tracing-rt/ray-casting] One important advantage ray casting offered over older scanline algorithms was its ability to easily deal with non-planar surfaces and solids, such as cones and spheres.
+[src:ray-tracing-rt/ray-casting] If a mathematical surface can be intersected by a ray, it can be rendered using ray casting.
+[src:ray-tracing-rt/ray-casting] Elaborate objects can be created by using solid modelling techniques and easily rendered.
+[src:ray-tracing-rt/ray-casting] Light rays and the camera geometry form the basis for all geometric reasoning here.
+[src:ray-tracing-rt/ray-casting] This figure shows a pinhole camera model for perspective effect in image processing and a parallel camera model for mass analysis.
+[src:ray-tracing-rt/ray-casting] The simple pinhole camera model consists of a focal point (or eye point) and a square pixel array (or screen).
+[src:ray-tracing-rt/ray-casting] Straight light rays pass through the pixel array to connect the focal point with the scene, one ray per pixel.
+[src:ray-tracing-rt/ray-casting] To shade pictures, the rays’ intensities are measured and stored as pixels.
+[src:ray-tracing-rt/ray-casting] The reflecting surface responsible for a pixel’s value intersects the pixel’s ray.
+[src:ray-tracing-rt/ray-casting] When the focal length, distance between focal point and screen, is infinite, then the view is called “parallel” because all light rays are parallel to each other, perpendicular to the screen.
+[src:ray-tracing-rt/ray-casting] Although the perspective view is natural for making pictures, some applications need rays that can be uniformly distributed in space.
+[src:ray-tracing-rt/ray-casting] For modeling convenience, a typical standard coordinate system for the camera has the screen in the X–Y plane, the scene in the +Z half space, and the focal point on the −Z axis.
+[src:ray-tracing-rt/ray-casting] A *ray* is simply a straight line in the 3D space of the camera model.
+[src:ray-tracing-rt/ray-casting] It is best defined in parameterized form as a point vector (*X*0, *Y*0, *Z*0) and a direction vector (*Dx*, *Dy*, *Dz*).
+[src:ray-tracing-rt/ray-casting] In this form, points on the line are ordered and accessed via a single parameter t.
+[src:ray-tracing-rt/ray-casting] If the vector is normalized, then the parameter t is distance along the line.
+[src:ray-tracing-rt/ray-casting] Where n is the number of ray-surface intersections.
+[src:ray-tracing-rt/ray-casting] The ordered list of ray parameters, *t* [*i*], denote the enter–exit points.
+[src:ray-tracing-rt/ray-casting] The ray enters a solid at point *t* [1], exits at *t* [2], enters a solid at *t* [3], etc.
+[src:ray-tracing-rt/ray-casting] Point *t* [1] is closest to the camera and *t* [*n*] is furthest.
+[src:ray-tracing-rt/ray-casting] In association with the ray parameters, the surface pointers contain a unique address for the intersected surface’s information.
+[src:ray-tracing-rt/ray-casting] The surface can have various properties such as color, specularity, transparency with/without refraction, translucency, etc.
+[src:ray-tracing-rt/ray-casting] The solid associated with the surface may have its own physical properties such as density.
+[src:ray-tracing-rt/ray-casting] This could be useful, for instance, when an object consists of an assembly of different materials and the overall center of mass and moments of inertia are of interest.
+[src:ray-tracing-rt/ray-casting] Three algorithms using ray casting are to make line drawings, to make shaded pictures, and to compute volumes and other physical properties.
+[src:ray-tracing-rt/ray-casting] Each algorithm, given a camera model, casts one ray per pixel in the screen.
+[src:ray-tracing-rt/ray-casting] For computing volume, the resolution of the pixel screen to use depends on the desired accuracy of the solution.
+[src:ray-tracing-rt/ray-casting] For line drawings and picture shading, the resolution determines the quality of the image.
+[src:ray-tracing-rt/ray-casting] To draw the visible edges of a solid, generate one ray per pixel moving top-down, left-right in the screen.
+[src:ray-tracing-rt/ray-casting] Evaluate each ray in order to identify the visible surface *S* [1], the first surface pointer in the sorted list of ray-surface intersections.
+[src:ray-tracing-rt/ray-casting] If the visible surface at pixel location (*X*, *Y* ) is different than the visible surface at pixel (*X* − 1, *Y* ), then display a vertical line one pixel long centered at (*X* − ½, *Y* ).
+[src:ray-tracing-rt/ray-casting] Similarly, if the visible surface at (*X*, *Y* ) is different than the visible surface at pixel (*X*, *Y* − 1), then display a horizontal line one pixel long centered at (*X*, *Y* − ½).
+[src:ray-tracing-rt/ray-casting] The resulting drawing will consist of horizontal and vertical edges only, looking jagged in coarse resolutions.
+[src:ray-tracing-rt/ray-casting] Roth’s ray casting system generated the images of solid objects on the right.
+[src:ray-tracing-rt/ray-casting] Box enclosures, dynamic bounding, and coherence were used for optimization.
+[src:ray-tracing-rt/ray-casting] For each picture, the screen was sampled with a density of about 100×100 (i.e., 10,000) rays and new edges were located via binary searches.
+[src:ray-tracing-rt/ray-casting] Then all edges were followed by casting additional rays at one pixel increments on the two sides of the edges.
+[src:ray-tracing-rt/ray-casting] Each picture was drawn on a Tektronix tube at 780×780 resolution.
+[src:ray-tracing-rt/ray-casting] To make a shaded picture, again cast one ray per pixel in the screen.
+[src:ray-tracing-rt/ray-casting] This time, however, use the visible surface pointer S[1] at each pixel to access the description of the surface.
+[src:ray-tracing-rt/ray-casting] From this, compute the surface normal at the visible point *t* [1].
+[src:ray-tracing-rt/ray-casting] The pixel’s value, the displayable light intensity, is proportional to the cosine of the angle formed by the surface normal and the light-source-to-surface vector.
+[src:ray-tracing-rt/ray-casting] Processing all pixels this way produces a raster-type picture of the scene.
+[src:ray-tracing-rt/ray-casting] The volume (and similar properties) of a solid bounded by curved surfaces is easily computed by the “approximating sums” integration method, by approximating the solid with a set of rectangular parallelepipeds.
+[src:ray-tracing-rt/ray-casting] This is accomplished by taking an “in-depth” picture of the solid in a parallel view.
+[src:ray-tracing-rt/ray-casting] Casting rays through the screen into the solid partitions the solid into volume elements.
+[src:ray-tracing-rt/ray-casting] Two dimensions of the parallelepipeds are constant, defined by the 2D spacing of rays in the screen.
+[src:ray-tracing-rt/ray-casting] The third dimension is variable, defined by the enter–exit point computed.
+[src:ray-tracing-rt/ray-casting] where L is defined as the length of the direction vector.
+[src:ray-tracing-rt/ray-casting] Each ${\tfrac {t[i]\ -\ t[i-1]}{L}}$ is a length of a ray segment that is inside of the solid.
+[src:ray-tracing-rt/ray-casting] This figure shows the parallelepipeds for a modeled solid using ray casting.
+[src:ray-tracing-rt/ray-casting] This is a use of parallel-projection camera model.
+[src:ray-tracing-rt/ray-casting] This figure shows an example of the binary operators in a composition tree using “+” and “−” where a single ray is evaluated.
+[src:ray-tracing-rt/ray-casting] The ray casting procedure starts at the top of the solid composition tree, recursively descends to the bottom, classifies the ray with respect to the primitive solids, and then returns up the tree combining the classifications of the left and right subtrees.
+[src:ray-tracing-rt/ray-casting] This figure illustrates the combining of the left and right classifications for all three binary operators.
+[src:ray-tracing-rt/ray-casting] Ray casting is a natural modeling tool for making shaded pictures.
+[src:ray-tracing-rt/ray-casting] The grayscale ray-casting system developed by Scott Roth and Daniel Bass at GM Research Labs produced pictures on a Ramtek color raster display around 1979.
+[src:ray-tracing-rt/ray-casting] This figure shows a table scene with shadows from two point light sources.
+[src:ray-tracing-rt/ray-casting] Shading algorithms that implement all of the realistic effects are computationally expensive, but relatively simple.
+[src:ray-tracing-rt/ray-casting] For example, the following figure shows the additional rays that could be cast for a single light source.
+[src:ray-tracing-rt/ray-casting] For a single pixel in the image to be rendered, the algorithm casts a ray starting at the focal point and determines that it intersects a semi-transparent rectangle and a shiny circle.
+[src:ray-tracing-rt/ray-casting] An additional ray must then be cast starting at that point in the direction symmetrically opposite the surface normal at the ray-surface intersection point in order to determine what is visible in the mirrored reflection.
+[src:ray-tracing-rt/ray-casting] That ray intersects the triangle which is opaque.
+[src:ray-tracing-rt/ray-casting] Finally, each ray-surface intersection point is tested to determine if it is in shadow.
+[src:ray-tracing-rt/ray-casting] The “Shadow feeler” ray is cast from the ray-surface intersection point to the light source to determine if any other surface blocks that pathway.
+[src:ray-tracing-rt/ray-casting] The secondary ray is then processed as a specular ray.
+[src:ray-tracing-rt/ray-casting] For the refraction formula and pictorial examples, see Whitted’s paper.
+[src:ray-tracing-rt/ray-casting] Ray casting qualifies as a brute force method for solving problems.
+[src:ray-tracing-rt/ray-casting] The minimal algorithm is simple, particularly in consideration of its many applications and ease of use, but applications typically cast many rays.
+[src:ray-tracing-rt/ray-casting] Millions of rays may be cast to render a single frame of an animated film.
+[src:ray-tracing-rt/ray-casting] Computer processing time increases with the resolution of the screen and the number of primitive solids/surfaces in the composition.
+[src:ray-tracing-rt/ray-casting] By using minimum bounding boxes around the solids in the composition tree, the exhaustive search for a ray-solid intersection resembles an efficient binary search.
+[src:ray-tracing-rt/ray-casting] The brute force algorithm does an exhaustive search because it always visits all the nodes in the tree—transforming the ray into primitives’ local coordinate systems, testing for ray-surface intersections, and combining the classifications—even when the ray clearly misses the solid.
+[src:ray-tracing-rt/ray-casting] In order to detect a “clear miss”, a faster algorithm uses the binary composition tree as a hierarchical representation of the space that the solid composition occupies.
+[src:ray-tracing-rt/ray-casting] But all position, shape, and size information is stored at the leaves of the tree where primitive solids reside.
+[src:ray-tracing-rt/ray-casting] The top and intermediate nodes in the tree only specify combine operators.
+[src:ray-tracing-rt/ray-casting] Characterizing with enclosures the space that all solids fill gives all nodes in the tree an abstract summary of position and size information.
+[src:ray-tracing-rt/ray-casting] Then, the quick “ray intersects enclosure” tests guide the search in the hierarchy.
+[src:ray-tracing-rt/ray-casting] When the test fails at an intermediate node in the tree, the ray is guaranteed to classify as out of the composite, so recursing down its subtrees to further investigate is unnecessary.
+[src:ray-tracing-rt/ray-casting] Accurately assessing the cost savings for using enclosures is difficult because it depends on the spatial distribution of the primitives (the complexity distribution) and on the organization of the composition tree.
+[src:ray-tracing-rt/ray-casting] The following are miscellaneous performance improvements made in Roth’s paper on ray casting, but there have been considerable improvements subsequently made by others.
+[src:ray-tracing-rt/ray-casting] If the operator at a composite node in the tree is − or & and the ray classifies as out of the composite’s left sub-solid, then the ray will classify as out of the composite regardless of the ray’s classification with respect to the right sub-solid.
+[src:ray-tracing-rt/ray-casting] So, classifying the ray with respect to the right sub-solid is unnecessary and should be avoided for efficiency.
+[src:ray-tracing-rt/ray-casting] By initially combining the screen-to-scene transform with the primitive’s scene-to-local transform and storing the resulting screen-to-local transforms in the primitive’s data structures, one ray transform per ray-surface intersection is eliminated.
+[src:ray-tracing-rt/ray-casting] Given a deep composition tree, recursion can be expensive in combination with allocating and freeing up memory.
+[src:ray-tracing-rt/ray-casting] Recursion can be simulated using static arrays as stacks.
+[src:ray-tracing-rt/ray-casting] If only the visible edges of the solid are to be displayed, the ray casting algorithm can dynamically bound the ray to cut off the search.
+[src:ray-tracing-rt/ray-casting] That is, after finding that a ray intersects a sub-solid, the algorithm can use the intersection point closest to the screen to tighten the depth bound for the “ray intersections box” test.
+[src:ray-tracing-rt/ray-casting] This only works for the + part of the tree, starting at the top.
+[src:ray-tracing-rt/ray-casting] With – and &, nearby “in” parts of the ray may later become “out”.
+[src:ray-tracing-rt/ray-casting] The principle of coherence is that the surfaces visible at two neighboring pixels are more likely to be the same than different.
+[src:ray-tracing-rt/ray-casting] Developers of computer graphics and vision systems have applied this empirical truth for efficiency and performance.
+[src:ray-tracing-rt/ray-casting] For line drawings, the image area containing edges is normally much less than the total image area, so ray casting should be concentrated around the edges and not in the open regions.
+[src:ray-tracing-rt/ray-casting] This can be effectively implemented by sparsely sampling the screen with rays and then locating, when neighboring rays identify different visible surfaces, the edges via binary searches.
+[src:ray-tracing-rt/ray-casting] The jagged edges caused by aliasing is an undesirable effect of point sampling techniques and is a classic problem with raster display algorithms.
+[src:ray-tracing-rt/ray-casting] Linear or smoothly curved edges will appear jagged and are particularly objectionable in animations because movement of the image makes the edges appear fuzzy or look like little moving escalators.
+[src:ray-tracing-rt/ray-casting] Also, details in the scene smaller than the spacing between rays may be lost.
+[src:ray-tracing-rt/ray-casting] The jagged edges in a line drawing can be smoothed by edge following.
+[src:ray-tracing-rt/ray-casting] The purpose of such an algorithm is to minimize the number of lines needed to draw the picture within one pixel accuracy.
+[src:ray-tracing-rt/ray-casting] The line drawings above were drawn this way.
+[src:ray-tracing-rt/ray-casting] To smooth the jagged edges in a shaded picture with subpixel accuracy, additional rays should be cast for information about the edges.
+[src:ray-tracing-rt/ray-casting] (See Supersampling for a general approach.) Edges are formed by the intersection of surfaces or by the profile of a curved surface.
+[src:ray-tracing-rt/ray-casting] Applying "Coherence" as described above via binary search, if the visible surface at pixel (*X*, *Y* ) is different than the visible surface at pixel (*X* + 1, *Y* ), then a ray could be generated midway between them at (*X* + ½, *Y* ) and the visible surface there identified.
+[src:ray-tracing-rt/ray-casting] The distance between sample points could be further subdivided, but the search need not be deep.
+[src:ray-tracing-rt/ray-casting] The primary search depth to smooth jagged edges is a function of the intensity gradient across the edge.
+[src:ray-tracing-rt/ray-casting] For the history of ray casting, see Ray tracing (graphics) as both are essentially the same technique under different names.
+[src:ray-tracing-rt/ray-casting] Scott Roth had invented the term "ray casting" before having heard of "ray tracing".
+[src:ray-tracing-rt/ray-casting] Additionally, Scott Roth's development of ray casting at GM Research Labs occurred concurrently with Turner Whitted's ray tracing work at Bell Labs.
+[src:ray-tracing-rt/ray-casting] In early first person games, raycasting was used to efficiently render a 3D world from a 2D playing field using a simple one-dimensional scan over the horizontal width of the screen.
+[src:ray-tracing-rt/ray-casting] Early first-person shooters used 2D ray casting as a technique to create a 3D effect from a 2D world.
+[src:ray-tracing-rt/ray-casting] While the world appears 3D, the player cannot look up or down or only in limited angles with shearing distortion.
+[src:ray-tracing-rt/ray-casting] This style of rendering eliminates the need to fire a ray for each pixel in the frame as is the case with modern engines; once the hit point is found the projection distortion is applied to the surface texture and an entire vertical column is copied from the result into the frame.
+[src:ray-tracing-rt/ray-casting] This style of rendering also imposes limitations on the type of rendering which can be performed, for example **depth sorting** but depth buffering may not.
+[src:ray-tracing-rt/ray-casting] That is polygons must be full in front of or behind one another, they may not partially overlap or intersect.
+[src:ray-tracing-rt/ray-casting] The video game *Wolfenstein 3D* was built from a square based grid of uniform height walls meeting solid-colored floors and ceilings.
+[src:ray-tracing-rt/ray-casting] In order to draw the world, a single ray was traced for every column of screen pixels and a vertical slice of wall texture was selected and scaled according to where in the world the ray hits a wall and how far it travels before doing so.
+[src:ray-tracing-rt/ray-casting] The purpose of the grid based levels was twofold — ray-wall collisions can be found more quickly since the potential hits become more predictable and memory overhead is reduced.
+[src:ray-tracing-rt/ray-casting] However, encoding wide-open areas takes extra space.
+[src:ray-tracing-rt/ray-casting] The Raven Software game *ShadowCaster* uses an improved Wolfenstein-based engine with added floors and ceilings texturing and variable wall heights.
+[src:ray-tracing-rt/ray-casting] The Voxel Space engine developed by NovaLogic for the *Comanche* games traced a ray through each column of screen pixels and tested each ray against points in a heightmap.
+[src:ray-tracing-rt/ray-casting] Then it transformed each element of the heightmap into a column of pixels, determined which are visible (that is, have not been occluded by pixels that have been drawn in front), and drew them with the corresponding color from the texture map.
+[src:ray-tracing-rt/ray-casting] Later DOS games like *id Software's DOOM* kept many of the raycasting 2.5D restrictions for speed but went on to switch to alternative rendering techniques (like BSP), making them no longer raycasting engines.
+[src:ray-tracing-rt/ray-casting] The problem has been investigated for various settings: space dimension, types of objects, restrictions on query rays, etc.
+[src:ray-tracing-rt/ray-casting] One technique is to use a sparse voxel octree.
+[src:ray-tracing-rt/ray-tracing-graphics] In 3D computer graphics, **ray tracing** is a technique for modeling light transport for use in a wide variety of rendering algorithms for generating digital images.
+[src:ray-tracing-rt/ray-tracing-graphics] On a spectrum of computational cost and visual fidelity, ray tracing-based rendering techniques, such as ray casting, recursive ray tracing, distribution ray tracing, photon mapping and path tracing, are generally slower and higher fidelity than scanline rendering methods.
+[src:ray-tracing-rt/ray-tracing-graphics] Ray tracing is capable of simulating a variety of optical effects, such as reflection, refraction, soft shadows, scattering, depth of field, motion blur, caustics, ambient occlusion and dispersion phenomena (such as chromatic aberration).
+[src:ray-tracing-rt/ray-tracing-graphics] It can also be used to trace the path of sound waves in a similar fashion to light waves, making it a viable option for more immersive sound design in video games by rendering realistic reverberation and echoes.
+[src:ray-tracing-rt/ray-tracing-graphics] In fact, any physical wave or particle phenomenon with approximately linear motion can be simulated with ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] Ray tracing–based rendering techniques that sample light over a domain typically generate multiple rays and often rely on denoising to reduce the resulting noise.
+[src:ray-tracing-rt/ray-tracing-graphics] The idea of ray tracing comes from as early as the 16th century, when it was described by Albrecht Dürer, who is credited for its invention.
+[src:ray-tracing-rt/ray-tracing-graphics] Dürer described multiple techniques for projecting 3-D scenes onto an image plane.
+[src:ray-tracing-rt/ray-tracing-graphics] Some of these project chosen geometry onto the image plane, as is done with rasterization today.
+[src:ray-tracing-rt/ray-tracing-graphics] Others determine what geometry is visible along a given ray, as is done with ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] Using a computer for ray tracing to generate shaded pictures was first accomplished by Arthur Appel in 1968.
+[src:ray-tracing-rt/ray-tracing-graphics] Appel used ray tracing for primary visibility (determining the closest surface to the camera at each image point) by tracing a ray through each point to be shaded into the scene to identify the visible surface.
+[src:ray-tracing-rt/ray-tracing-graphics] The closest surface intersected by the ray was the visible one.
+[src:ray-tracing-rt/ray-tracing-graphics] This non-recursive ray tracing-based rendering algorithm is today called "ray casting".
+[src:ray-tracing-rt/ray-tracing-graphics] His algorithm then traced secondary rays to the light source from each point being shaded to determine whether the point was in shadow or not.
+[src:ray-tracing-rt/ray-tracing-graphics] Later, in 1971, Goldstein and Nagel of MAGI (Mathematical Applications Group, Inc.) published "3-D Visual Simulation", wherein ray tracing was used to make shaded pictures of solids.
+[src:ray-tracing-rt/ray-tracing-graphics] At the ray-surface intersection point found, they computed the surface normal and, knowing the position of the light source, computed the brightness of the pixel on the screen.
+[src:ray-tracing-rt/ray-tracing-graphics] Their publication describes a short (30-second) film "made using the University of Maryland's display hardware outfitted with a 16mm camera.
+[src:ray-tracing-rt/ray-tracing-graphics] The film showed the helicopter and a simple ground-level gun emplacement.
+[src:ray-tracing-rt/ray-tracing-graphics] The helicopter was programmed to undergo a series of maneuvers including turns, take-offs, and landings, etc., until it eventually is shot down and crashed." A *CDC 6600* computer was used.
+[src:ray-tracing-rt/ray-tracing-graphics] MAGI produced an animation video called *MAGI/SynthaVision Sampler* in 1974.
+[src:ray-tracing-rt/ray-tracing-graphics] Another early instance of ray casting came in 1976, when Scott Roth created a flip book animation in Bob Sproull's computer graphics course at Caltech.
+[src:ray-tracing-rt/ray-tracing-graphics] The scanned pages are shown as a video in the accompanying image.
+[src:ray-tracing-rt/ray-tracing-graphics] Roth's computer program noted an edge point at a pixel location if the ray intersected a bounded plane different from that of its neighbors.
+[src:ray-tracing-rt/ray-tracing-graphics] Of course, a ray could intersect multiple planes in space, but only the surface point closest to the camera was noted as visible.
+[src:ray-tracing-rt/ray-tracing-graphics] The platform was a DEC PDP-10, a Tektronix storage-tube display, and a printer which would create an image of the display on rolling thermal paper.
+[src:ray-tracing-rt/ray-tracing-graphics] Roth extended the framework, introduced the term *ray casting* in the context of computer graphics and solid modeling, and in 1982 published his work while at GM Research Labs.
+[src:ray-tracing-rt/ray-tracing-graphics] Turner Whitted was the first to show recursive ray tracing for mirror reflection and for refraction through translucent objects, with an angle determined by the solid's index of refraction, and to use ray tracing for anti-aliasing.
+[src:ray-tracing-rt/ray-tracing-graphics] He produced a recursive ray traced film called *The Compleat Angler* in 1979 while an engineer at Bell Labs.
+[src:ray-tracing-rt/ray-tracing-graphics] Whitted's deeply recursive ray tracing algorithm reframed rendering from being primarily a matter of surface visibility determination to being a matter of light transport.
+[src:ray-tracing-rt/ray-tracing-graphics] His paper inspired a series of subsequent work by others that included distribution ray tracing and finally unbiased path tracing, which provides the *rendering equation* framework that has allowed computer-generated imagery to be faithful to reality.
+[src:ray-tracing-rt/ray-tracing-graphics] For decades, global illumination in major films using computer-generated imagery was approximated with additional lights.
+[src:ray-tracing-rt/ray-tracing-graphics] Ray tracing-based rendering eventually changed that by enabling physically based light transport.
+[src:ray-tracing-rt/ray-tracing-graphics] Early feature films rendered entirely using path tracing include *Monster House* (2006), *Cloudy with a Chance of Meatballs* (2009), and *Monsters University* (2013).
+[src:ray-tracing-rt/ray-tracing-graphics] Optical ray tracing describes a method for producing visual images constructed in 3D computer graphics environments, with more photorealism than either ray casting or scanline rendering techniques.
+[src:ray-tracing-rt/ray-tracing-graphics] It works by tracing a path from an imaginary eye through each pixel in a virtual screen, and calculating the color of the object visible through it.
+[src:ray-tracing-rt/ray-tracing-graphics] Scenes in ray tracing are described mathematically by a programmer or by a visual artist (normally using intermediary tools).
+[src:ray-tracing-rt/ray-tracing-graphics] Scenes may also incorporate data from images and models captured by means such as digital photography.
+[src:ray-tracing-rt/ray-tracing-graphics] Typically, each ray must be tested for intersection with some subset of all the objects in the scene.
+[src:ray-tracing-rt/ray-tracing-graphics] Once the nearest object has been identified, the algorithm will estimate the incoming light at the point of intersection, examine the material properties of the object, and combine this information to calculate the final color of the pixel.
+[src:ray-tracing-rt/ray-tracing-graphics] Certain illumination algorithms and reflective or translucent materials may require more rays to be re-cast into the scene.
+[src:ray-tracing-rt/ray-tracing-graphics] It may at first seem counterintuitive or "backward" to send rays *away* from the camera, rather than *into* it (as actual light does in reality), but doing so is many orders of magnitude more efficient.
+[src:ray-tracing-rt/ray-tracing-graphics] Since the overwhelming majority of light rays from a given light source do not make it directly into the viewer's eye, a "forward" simulation could potentially waste a tremendous amount of computation on light paths that are never recorded.
+[src:ray-tracing-rt/ray-tracing-graphics] Therefore, the shortcut taken in ray tracing is to presuppose that a given ray intersects the view frame.
+[src:ray-tracing-rt/ray-tracing-graphics] After either a maximum number of reflections or a ray traveling a certain distance without intersection, the ray ceases to travel and the pixel's value is updated.
+[src:ray-tracing-rt/ray-tracing-graphics] The idea is to find the position of each viewport pixel center $P_{ij}$ which allows us to find the line going from eye E through that pixel and finally get the ray described by point E and vector ${\vec {R}}_{ij}=P_{ij}-E$ (or its normalization ${\vec {r}}_{ij}$ ).
+[src:ray-tracing-rt/ray-tracing-graphics] First we need to find the coordinates of the bottom left viewport pixel $P_{1m}$ and find the next pixel by making a shift along directions parallel to viewport (vectors ${\vec {b}}_{n}$ , ${\vec {v}}_{n}$ ) multiplied by the size of the pixel.
+[src:ray-tracing-rt/ray-tracing-graphics] Below we introduce formulas which include distance d between the eye and the viewport.
+[src:ray-tracing-rt/ray-tracing-graphics] However, this value will be reduced during ray normalization ${\vec {r}}_{ij}$ (so you might as well accept that $d=1$ and remove it from calculations).
+[src:ray-tracing-rt/ray-tracing-graphics] In nature, a light source emits a ray of light which travels, eventually, to a surface that interrupts its progress.
+[src:ray-tracing-rt/ray-tracing-graphics] One can think of this "ray" as a stream of photons traveling along the same path.
+[src:ray-tracing-rt/ray-tracing-graphics] In a perfect vacuum this ray will be a straight line (ignoring relativistic effects).
+[src:ray-tracing-rt/ray-tracing-graphics] Any combination of four things might happen with this light ray: absorption, reflection, refraction and fluorescence.
+[src:ray-tracing-rt/ray-tracing-graphics] A surface may absorb part of the light ray, resulting in a loss of intensity of the reflected and/or refracted light.
+[src:ray-tracing-rt/ray-tracing-graphics] It might also reflect all or part of the light ray, in one or more directions.
+[src:ray-tracing-rt/ray-tracing-graphics] If the surface has any transparent or translucent properties, it refracts a portion of the light beam into itself in a different direction while absorbing some (or all) of the spectrum (and possibly altering the color).
+[src:ray-tracing-rt/ray-tracing-graphics] Less commonly, a surface may absorb some portion of the light and fluorescently re-emit the light at a longer wavelength color in a random direction, though this is rare enough that it can be discounted from most rendering applications.
+[src:ray-tracing-rt/ray-tracing-graphics] Between absorption, reflection, refraction and fluorescence, all of the incoming light must be accounted for, and no more.
+[src:ray-tracing-rt/ray-tracing-graphics] A surface cannot, for instance, reflect 66% of an incoming light ray, and refract 50%, since the two would add up to be 116%.
+[src:ray-tracing-rt/ray-tracing-graphics] From here, the reflected and/or refracted rays may strike other surfaces, where their absorptive, refractive, reflective and fluorescent properties again affect the progress of the incoming rays.
+[src:ray-tracing-rt/ray-tracing-graphics] Some of these rays travel in such a way that they hit our eye, causing us to see the scene and so contribute to the final rendered image.
+[src:ray-tracing-rt/ray-tracing-graphics] The idea behind ray casting, the predecessor to recursive ray tracing, is to trace rays from the eye, one per pixel, and find the closest object blocking the path of that ray.
+[src:ray-tracing-rt/ray-tracing-graphics] Think of an image as a screen-door, with each square in the screen being a pixel.
+[src:ray-tracing-rt/ray-tracing-graphics] The shading of the surface is computed using traditional 3-D computer graphics shading models.
+[src:ray-tracing-rt/ray-tracing-graphics] Elaborate objects can be created by using solid modeling techniques and easily rendered.
+[src:ray-tracing-rt/ray-tracing-graphics] In the method of volume ray casting, each ray is traced so that color and/or density can be sampled along the ray and then be combined into a final pixel color.
+[src:ray-tracing-rt/ray-tracing-graphics] This is often used when objects cannot be easily represented by explicit surfaces (such as triangles), for example when rendering clouds or 3-D medical scans.
+[src:ray-tracing-rt/ray-tracing-graphics] In SDF ray marching, or sphere tracing, each ray is traced in multiple steps to approximate an intersection point between the ray and a surface defined by a signed distance function (SDF).
+[src:ray-tracing-rt/ray-tracing-graphics] The SDF is evaluated for each iteration in order to be able take as large steps as possible without missing any part of the surface.
+[src:ray-tracing-rt/ray-tracing-graphics] A threshold is used to cancel further iteration when a point is reached that is close enough to the surface.
+[src:ray-tracing-rt/ray-tracing-graphics] This method is often used for 3-D fractal rendering.
+[src:ray-tracing-rt/ray-tracing-graphics] Earlier algorithms traced rays from the eye into the scene until they hit an object, but determined the ray color without recursively tracing more rays.
+[src:ray-tracing-rt/ray-tracing-graphics] Recursive ray tracing continues the process.
+[src:ray-tracing-rt/ray-tracing-graphics] These recursive rays add more realism to ray traced images.
+[src:ray-tracing-rt/ray-tracing-graphics] Ray tracing-based rendering's popularity stems from its basis in a realistic simulation of light transport, as compared to other rendering methods, such as rasterization, which focuses more on the realistic simulation of geometry.
+[src:ray-tracing-rt/ray-tracing-graphics] Effects such as reflections and shadows, which are difficult to simulate using other algorithms, are a natural result of the ray tracing algorithm.
+[src:ray-tracing-rt/ray-tracing-graphics] The computational independence of each ray makes ray tracing amenable to a basic level of parallelization, but the divergence of ray paths makes high utilization under parallelism quite difficult to achieve in practice.
+[src:ray-tracing-rt/ray-tracing-graphics] A serious disadvantage of ray tracing is performance, though it can in theory be faster than traditional scanline rendering, depending on scene complexity vs. number of pixels on-screen.
+[src:ray-tracing-rt/ray-tracing-graphics] Until the late 2010s, ray tracing in real time was usually considered impossible on consumer hardware for nontrivial tasks.
+[src:ray-tracing-rt/ray-tracing-graphics] Scanline algorithms and other algorithms use data coherence to share computations between pixels, while ray tracing normally starts the process anew, treating each eye ray separately.
+[src:ray-tracing-rt/ray-tracing-graphics] However, this separation offers other advantages, such as the ability to shoot more rays as needed to perform spatial anti-aliasing and improve image quality where needed.
+[src:ray-tracing-rt/ray-tracing-graphics] Whitted-style recursive ray tracing handles interreflection and optical effects such as refraction, but is not generally photorealistic.
+[src:ray-tracing-rt/ray-tracing-graphics] Improved realism occurs when the rendering equation is fully evaluated, as the equation conceptually includes every physical effect of light flow.
+[src:ray-tracing-rt/ray-tracing-graphics] However, this is infeasible given the computing resources required, and the limitations on geometric and material modeling fidelity.
+[src:ray-tracing-rt/ray-tracing-graphics] Path tracing is an algorithm for evaluating the rendering equation and thus gives higher-fidelity simulations of real-world lighting.
+[src:ray-tracing-rt/ray-tracing-graphics] The process of shooting rays from the eye to the light source to render an image is sometimes called *backwards ray tracing*, since it is the opposite direction photons actually travel.
+[src:ray-tracing-rt/ray-tracing-graphics] However, there is confusion with this terminology.
+[src:ray-tracing-rt/ray-tracing-graphics] Early ray tracing was always done from the eye, and early researchers such as James Arvo used the term *backwards ray tracing* to mean shooting rays from the lights and gathering the results.
+[src:ray-tracing-rt/ray-tracing-graphics] Therefore, it is clearer to distinguish *eye-based* versus *light-based* ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] While the direct illumination is generally best sampled using eye-based ray tracing, certain indirect effects can benefit from rays generated from the lights.
+[src:ray-tracing-rt/ray-tracing-graphics] Caustics are bright patterns caused by the focusing of light off a wide reflective region onto a narrow area of (near-)diffuse surface.
+[src:ray-tracing-rt/ray-tracing-graphics] An algorithm that casts rays directly from lights onto reflective objects, tracing their paths to the eye, will better sample this phenomenon.
+[src:ray-tracing-rt/ray-tracing-graphics] This integration of eye-based and light-based rays is often expressed as bidirectional path tracing, in which paths are traced from both the eye and lights, and the paths subsequently joined by a connecting ray after some length.
+[src:ray-tracing-rt/ray-tracing-graphics] Photon mapping is another method that uses both light-based and eye-based ray tracing; in an initial pass, energetic photons are traced along rays from the light source so as to compute an estimate of radiant flux as a function of 3-dimensional space (the eponymous photon map itself).
+[src:ray-tracing-rt/ray-tracing-graphics] In a subsequent pass, rays are traced from the eye into the scene to determine the visible surfaces, and the photon map is used to estimate the illumination at the visible surface points.
+[src:ray-tracing-rt/ray-tracing-graphics] The advantage of photon mapping versus bidirectional path tracing is the ability to achieve significant reuse of photons, reducing computation, at the cost of statistical bias.
+[src:ray-tracing-rt/ray-tracing-graphics] In such cases, only a very small subset of paths will transport energy; Metropolis light transport is a method which begins with a random search of the path space, and when energetic paths are found, reuses this information by exploring the nearby space of rays.
+[src:ray-tracing-rt/ray-tracing-graphics] To the right is an image showing a simple example of a path of rays recursively generated from the camera (or eye) to the light source using the above algorithm.
+[src:ray-tracing-rt/ray-tracing-graphics] A diffuse surface reflects light in all directions.
+[src:ray-tracing-rt/ray-tracing-graphics] First, a ray is created at an eyepoint and traced through a pixel and into the scene, where it hits a diffuse surface.
+[src:ray-tracing-rt/ray-tracing-graphics] From that surface, the algorithm recursively generates a reflection ray, which is traced through the scene, where it hits another diffuse surface.
+[src:ray-tracing-rt/ray-tracing-graphics] Finally, another reflection ray is generated and traced through the scene, where it hits the light source and is absorbed.
+[src:ray-tracing-rt/ray-tracing-graphics] The color of the pixel now depends on the colors of the first and second diffuse surfaces and the color of the light emitted from the light source.
+[src:ray-tracing-rt/ray-tracing-graphics] For example, if the light source emitted white light and the two diffuse surfaces were blue, then the resulting color of the pixel is blue.
+[src:ray-tracing-rt/ray-tracing-graphics] As a demonstration of the principles involved in ray tracing, consider how one would find the intersection between a ray and a sphere.
+[src:ray-tracing-rt/ray-tracing-graphics] This is merely the math behind the line–sphere intersection and the subsequent determination of the color of the pixel being calculated.
+[src:ray-tracing-rt/ray-tracing-graphics] There is, of course, far more to the general process of ray tracing, but this demonstrates an example of the algorithms used.
+[src:ray-tracing-rt/ray-tracing-graphics] where t is its distance between $\mathbf {x}$ and $\mathbf {s}$ .
+[src:ray-tracing-rt/ray-tracing-graphics] In our problem, we know $\mathbf {c}$ , r , $\mathbf {s}$ (e.g. the position of a light source) and $\mathbf {d}$ , and we need to find t .
+[src:ray-tracing-rt/ray-tracing-graphics] The two values of t found by solving this equation are the two ones such that $\mathbf {s} +t\mathbf {d}$ are the points where the ray intersects the sphere.
+[src:ray-tracing-rt/ray-tracing-graphics] Any value which is negative does not lie on the ray, but rather in the opposite half-line (i.e. the one starting from $\mathbf {s}$ with opposite direction).
+[src:ray-tracing-rt/ray-tracing-graphics] If the quantity under the square root (the discriminant) is negative, then the ray does not intersect the sphere.
+[src:ray-tracing-rt/ray-tracing-graphics] Let us suppose now that there is at least a positive solution, and let t be the minimal one.
+[src:ray-tracing-rt/ray-tracing-graphics] In addition, let us suppose that the sphere is the nearest object on our scene intersecting our ray, and that it is made of a reflective material.
+[src:ray-tracing-rt/ray-tracing-graphics] We need to find in which direction the light ray is reflected.
+[src:ray-tracing-rt/ray-tracing-graphics] The laws of reflection state that the angle of reflection is equal and opposite to the angle of incidence between the incident ray and the normal to the sphere.
+[src:ray-tracing-rt/ray-tracing-graphics] where $\mathbf {y} =\mathbf {s} +t\mathbf {d}$ is the intersection point found before.
+[src:ray-tracing-rt/ray-tracing-graphics] Now we only need to compute the intersection of the latter ray with our field of view, to get the pixel which our reflected light ray will hit.
+[src:ray-tracing-rt/ray-tracing-graphics] Lastly, this pixel is set to an appropriate color, taking into account how the color of the original light source and that of the sphere are combined by the reflection.
+[src:ray-tracing-rt/ray-tracing-graphics] Adaptive depth control means that the renderer stops generating reflected/transmitted rays when the computed intensity becomes less than a certain threshold.
+[src:ray-tracing-rt/ray-tracing-graphics] There must always be a set maximum depth or else the program would generate an infinite number of rays.
+[src:ray-tracing-rt/ray-tracing-graphics] But it is not always necessary to go to the maximum depth if the surfaces are not highly reflective.
+[src:ray-tracing-rt/ray-tracing-graphics] To test for this the ray tracer must compute and keep the product of the global and reflection coefficients as the rays are traced.
+[src:ray-tracing-rt/ray-tracing-graphics] Example: let Kr = 0.5 for a set of surfaces.
+[src:ray-tracing-rt/ray-tracing-graphics] In addition we might implement a distance attenuation factor such as 1/D2, which would also decrease the intensity contribution.
+[src:ray-tracing-rt/ray-tracing-graphics] For a transmitted ray we could do something similar but in that case the distance traveled through the object would cause even faster intensity decrease.
+[src:ray-tracing-rt/ray-tracing-graphics] As an example of this, Hall & Greenberg found that even for a very reflective scene, using this with a maximum depth of 15 resulted in an average ray tree depth of 1.7.
+[src:ray-tracing-rt/ray-tracing-graphics] Enclosing groups of objects in sets of bounding volume hierarchies (BVH) decreases the amount of computations required for ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] A cast ray is first tested for an intersection with the bounding volume, and then if there is an intersection, the volume is recursively divided until the ray hits the object.
+[src:ray-tracing-rt/ray-tracing-graphics] The best type of bounding volume will be determined by the shape of the underlying object or objects.
+[src:ray-tracing-rt/ray-tracing-graphics] For example, if the objects are long and thin, then a sphere will enclose mainly empty space compared to a box.
+[src:ray-tracing-rt/ray-tracing-graphics] Boxes are also easier to generate hierarchical bounding volumes.
+[src:ray-tracing-rt/ray-tracing-graphics] Note that using a hierarchical system like this (assuming it is done carefully) changes the intersection computational time from a linear dependence on the number of objects to something between linear and a logarithmic dependence.
+[src:ray-tracing-rt/ray-tracing-graphics] This is because, for a perfect case, each intersection test would divide the possibilities by two, and result in a binary tree type structure.
+[src:ray-tracing-rt/ray-tracing-graphics] Spatial subdivision methods, discussed below, try to achieve this.
+[src:ray-tracing-rt/ray-tracing-graphics] Furthermore, this acceleration structure makes the ray tracing computation output-sensitive.
+[src:ray-tracing-rt/ray-tracing-graphics] I.e. the complexity of the ray intersection calculations depends on the number of objects that actually intersect the rays and not (only) on the number of objects in the scene.
+[src:ray-tracing-rt/ray-tracing-graphics] The first implementation of an interactive ray tracer was the LINKS-1 Computer Graphics System built in 1982 at Osaka University's School of Engineering, by professors Ohmura Kouichi, Shirakawa Isao and Kawata Toru with 50 students.
+[src:ray-tracing-rt/ray-tracing-graphics] It was a massively parallel processing computer system with 514 microprocessors (257 Zilog Z8001s and 257 iAPX 86s), used for 3D computer graphics with high-speed ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] According to the Information Processing Society of Japan: "The core of 3-D image rendering is calculating the luminance of each pixel making up a rendered surface from the given viewpoint, light source, and object position.
+[src:ray-tracing-rt/ray-tracing-graphics] The LINKS-1 system was developed to realize an image rendering methodology in which each pixel could be parallel processed independently using ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] By developing a new software methodology specifically for high-speed image rendering, LINKS-1 was able to rapidly render highly realistic images." It was used to create an early 3-D planetarium-like video of the heavens made completely with computer graphics.
+[src:ray-tracing-rt/ray-tracing-graphics] The video was presented at the Fujitsu pavilion at the 1985 International Exposition in Tsukuba." It was the second system to do so after the Evans & Sutherland Digistar in 1982.
+[src:ray-tracing-rt/ray-tracing-graphics] The LINKS-1 was claimed by the designers to be the world's most powerful computer in 1984.
+[src:ray-tracing-rt/ray-tracing-graphics] The next interactive ray tracer, and the first known to have been labeled "real-time" was credited at the 2005 SIGGRAPH computer graphics conference as being the REMRT/RT tools developed in 1986 by Mike Muuss for the BRL-CAD solid modeling system.
+[src:ray-tracing-rt/ray-tracing-graphics] Initially published in 1987 at USENIX, the BRL-CAD ray tracer was an early implementation of a parallel network distributed ray tracing system that achieved several frames per second in rendering performance.
+[src:ray-tracing-rt/ray-tracing-graphics] This performance was attained by means of the highly optimized yet platform independent LIBRT ray tracing engine in BRL-CAD and by using solid implicit CSG geometry on several shared memory parallel machines over a commodity network.
+[src:ray-tracing-rt/ray-tracing-graphics] BRL-CAD's ray tracer, including the REMRT/RT tools, continue to be available and developed today as open source software.
+[src:ray-tracing-rt/ray-tracing-graphics] Since then, there have been considerable efforts and research towards implementing ray tracing at real-time speeds for a variety of purposes on stand-alone desktop configurations.
+[src:ray-tracing-rt/ray-tracing-graphics] These purposes include interactive 3-D graphics applications such as demoscene productions, computer and video games, and image rendering.
+[src:ray-tracing-rt/ray-tracing-graphics] Some real-time software 3-D engines based on ray tracing have been developed by hobbyist demo programmers since the late 1990s.
+[src:ray-tracing-rt/ray-tracing-graphics] In 1999 a team from the University of Utah, led by Steven Parker, demonstrated interactive ray tracing live at the 1999 Symposium on Interactive 3D Graphics.
+[src:ray-tracing-rt/ray-tracing-graphics] They rendered a 35 million sphere model at 512 by 512 pixel resolution, running at approximately 15 frames per second on 60 CPUs.
+[src:ray-tracing-rt/ray-tracing-graphics] The Open RT project included a highly optimized software core for ray tracing along with an OpenGL-like API in order to offer an alternative to the current rasterization based approach for interactive 3-D graphics.
+[src:ray-tracing-rt/ray-tracing-graphics] Ray tracing hardware, such as the experimental Ray Processing Unit developed by Sven Woop at the Saarland University, was designed to accelerate some of the computationally intensive operations of ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] The idea that video games could ray trace their graphics in real time received media attention in the late 2000s.
+[src:ray-tracing-rt/ray-tracing-graphics] Intel, a patron of Saarland, became impressed enough that it hired Pohl and embarked on a research program dedicated to ray traced graphics, which it saw as justifying increasing the number of its processors' cores.
+[src:ray-tracing-rt/ray-tracing-graphics] On June 12, 2008, Intel demonstrated a special version of *Enemy Territory: Quake Wars*, titled *Quake Wars: Ray Traced*, using ray tracing for rendering, running in basic HD (720p) resolution.
+[src:ray-tracing-rt/ray-tracing-graphics] *ETQW* operated at 14–29 frames per second on a 16-core (4 socket, 4 core) Xeon Tigerton system running at 2.93 GHz.
+[src:ray-tracing-rt/ray-tracing-graphics] At SIGGRAPH 2009, Nvidia announced OptiX, a free API for real-time ray tracing on Nvidia GPUs.
+[src:ray-tracing-rt/ray-tracing-graphics] The API exposes seven programmable entry points within the ray tracing pipeline, allowing for custom cameras, ray-primitive intersections, shaders, shadowing, etc.
+[src:ray-tracing-rt/ray-tracing-graphics] This flexibility enables bidirectional path tracing, Metropolis light transport, and many other rendering algorithms that cannot be implemented with tail recursion.
+[src:ray-tracing-rt/ray-tracing-graphics] OptiX-based renderers are used in Autodesk Arnold, Adobe AfterEffects, Bunkspeed Shot, Autodesk Maya, 3ds max, and many other renderers.
+[src:ray-tracing-rt/ray-tracing-graphics] Nvidia introduced their GeForce RTX and Quadro RTX GPUs in September 2018, based on the Turing architecture that allows for hardware-accelerated ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] The Nvidia hardware uses a separate functional block, publicly called an "RT core".
+[src:ray-tracing-rt/ray-tracing-graphics] This unit is somewhat comparable to a texture unit in size, latency, and interface to the processor core.
+[src:ray-tracing-rt/ray-tracing-graphics] The unit features BVH traversal, compressed BVH node decompression, ray-AABB intersection testing, and ray-triangle intersection testing.
+[src:ray-tracing-rt/ray-tracing-graphics] AMD, which already offered interactive ray tracing on top of OpenCL through its Radeon ProRender, unveiled in October 2020 the Radeon RX 6000 series, its second generation Navi GPUs with support for hardware-accelerated ray tracing at an online event.
+[src:ray-tracing-rt/ray-tracing-graphics] Subsequent games that render their graphics by such means appeared since, which has been credited to the improvements in hardware and efforts to make more APIs and game engines compatible with the technology.
+[src:ray-tracing-rt/ray-tracing-graphics] Current home gaming consoles implement dedicated ray tracing hardware in their GPUs for real-time ray tracing effects, which began with the ninth-generation consoles PlayStation 5, Xbox Series X and Series S.
+[src:ray-tracing-rt/ray-tracing-graphics] On 4 November 2021, Imagination Technologies announced their IMG CXT GPU with hardware-accelerated ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] On January 18, 2022, Samsung announced their Exynos 2200 AP SoC with hardware-accelerated ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] On June 28, 2022, Arm announced their Immortalis-G715 with hardware-accelerated ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] On November 16, 2022, Qualcomm announced their Snapdragon 8 Gen 2 with hardware-accelerated ray tracing.
+[src:ray-tracing-rt/ray-tracing-graphics] On September 12, 2023, Apple introduced hardware-accelerated ray tracing in its chip designs, beginning with the A17 Pro chip for iPhone 15 Pro models.
+[src:ray-tracing-rt/ray-tracing-graphics] Later the same year, Apple released M3 family of processors with HW enabled ray tracing support.
+[src:ray-tracing-rt/ray-tracing-graphics] Currently, this technology is accessible across iPhones, iPads, and Mac computers via the Metal API.
+[src:ray-tracing-rt/ray-tracing-graphics] Apple reports up to a 4x performance increase over previous software-based ray tracing on the phone and up to 2.5x faster comparing M3 to M1 chips.
+[src:ray-tracing-rt/ray-tracing-graphics] The hardware implementation includes acceleration structure traversal and dedicated ray-box intersections, and the API supports RayQuery (Inline Ray Tracing) as well as RayPipeline features.
+[src:ray-tracing-rt/ray-tracing-graphics] Various complexity results have been proven for certain formulations of the ray tracing problem.
+[src:ray-tracing-rt/ray-tracing-hardware] The problem of rendering 3D graphics can be conceptually presented as finding all intersections between a set of "primitives" (typically triangles or polygons) and a set of "rays" (typically one or more per pixel).
+[src:ray-tracing-rt/ray-tracing-hardware] Up to the 2010s, mass market graphic acceleration boards, called graphics processing units (GPUs), used rasterization algorithms.
+[src:ray-tracing-rt/ray-tracing-hardware] The ray tracing algorithm solves the rendering problem in a different way.
+[src:ray-tracing-rt/ray-tracing-hardware] In each step, it finds all intersections of a ray with a set of relevant primitives of the scene.
+[src:ray-tracing-rt/ray-tracing-hardware] Both approaches have their own benefits and drawbacks.
+[src:ray-tracing-rt/ray-tracing-hardware] Rasterization can be performed using devices based on a stream computing model, one triangle at the time, and access to the complete scene is needed only once.
+[src:ray-tracing-rt/ray-tracing-hardware] The drawback of rasterization is that non-local effects, required for an accurate simulation of a scene, such as reflections and shadows are difficult; and refractions nearly impossible to compute.
+[src:ray-tracing-rt/ray-tracing-hardware] The ray tracing algorithm is inherently suitable for scaling by parallelization of individual ray renders.
+[src:ray-tracing-rt/ray-tracing-hardware] However, anything other than ray casting requires recursion of the ray tracing algorithm (and random access to the scene graph) to complete their analysis, since reflected, refracted, and scattered rays require that various parts of the scene be re-accessed in a way not easily predicted.
+[src:ray-tracing-rt/ray-tracing-hardware] But it can easily compute various kinds of physically correct effects, providing much more realistic impression than rasterization.
+[src:ray-tracing-rt/ray-tracing-hardware] The complexity of a well implemented ray tracing algorithm scales logarithmically; this is due to objects (triangles and collections of triangles) being placed into BSP trees or similar structures, and only being analyzed if a ray intersects with the bounding volume of the binary space partition.

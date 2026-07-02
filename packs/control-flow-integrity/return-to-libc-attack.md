@@ -1,0 +1,22 @@
+---
+title: "Return-to-libc attack"
+source: https://en.wikipedia.org/wiki/Return-to-libc_attack
+domain: control-flow-integrity
+license: CC-BY-SA-4.0
+tags: control flow integrity, return oriented programming defense, shadow stack protection, indirect branch validation, exploit mitigation technique
+fetched: 2026-07-02
+---
+
+# Return-to-libc attack
+
+A **"return-to-libc" attack** is a computer security attack usually starting with a buffer overflow in which a subroutine return address on a call stack is replaced by an address of a subroutine that is already present in the process executable memory, bypassing the no-execute bit feature (if present) and ridding the attacker of the need to inject their own code. The first example of this attack in the wild was contributed by Alexander Peslyak on the Bugtraq mailing list in 1997.
+
+On POSIX-compliant operating systems the C standard library ("`libc`") is commonly used to provide a standard runtime environment for programs written in the C programming language. Although the attacker could make the code return anywhere, `libc` is the most likely target, as it is almost always linked to the program, and it provides useful calls for an attacker (such as the `system` function used to execute shell commands).
+
+## Protection from return-to-libc attacks
+
+A non-executable stack can prevent some buffer overflow exploitation, however it cannot prevent a return-to-libc attack because in the return-to-libc attack only existing executable code is used. On the other hand, these attacks can only call preexisting functions. Stack-smashing protection can prevent or obstruct exploitation as it may detect the corruption of the stack and possibly flush out the compromised segment.
+
+"ASCII armoring" is a technique that can be used to obstruct this kind of attack. With ASCII armoring, all the system libraries (e.g., libc) addresses contain a NULL byte (`0x00`). This is commonly done by placing them in the first `0x01010101` bytes of memory (a few pages more than 16 MB, dubbed the "ASCII armor region"), as every address up to (but not including) this value contains at least one NULL byte. This makes it impossible to emplace code containing those addresses using string manipulation functions such as `strcpy()`. However, this technique does not work if the attacker has a way to overflow NULL bytes into the stack. If the program is too large to fit in the first 16 MB, protection may be incomplete. This technique can be overcome by another attack known as **return-to-plt** where, instead of returning to libc, the attacker uses the Procedure Linkage Table (PLT) functions loaded in the position-independent code (e.g., `system@plt, execve@plt, sprintf@plt, strcpy@plt`).
+
+Address space layout randomization (ASLR) makes this type of attack extremely unlikely to succeed on 64-bit machines as the memory locations of functions are random. For 32-bit systems, however, ASLR provides little benefit since there are only 16 bits available for randomization, and they can be defeated by brute force in a matter of minutes.

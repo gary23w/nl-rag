@@ -1,0 +1,50 @@
+---
+title: "Cloth modeling"
+source: https://en.wikipedia.org/wiki/Cloth_modeling
+domain: cloth-simulation
+license: CC-BY-SA-4.0
+tags: cloth simulation, cloth modeling, soft-body dynamics, mass spring cloth
+fetched: 2026-07-02
+---
+
+# Cloth modeling
+
+**Cloth modeling** is the term used for simulating cloth within a computer program, usually in the context of 3D computer graphics. The main approaches used for this may be classified into three basic types: geometric, physical, and particle/energy.
+
+## Background
+
+Most models of cloth are based on "particles" of mass connected in some manner of mesh. Newtonian physics is used to model each particle through the use of a "black box" called a physics engine. This involves using the basic law of motion (Newton's second law):
+
+${\vec {F}}=m{\vec {a}}$
+
+In all of these models, the goal is to find the position and shape of a piece of fabric using this basic equation and several other methods.
+
+## Geometric methods
+
+Jerry Weil pioneered the first of these, the geometric technique, in 1986. His work was focused on approximating the look of cloth by treating cloth like a collection of cables and using hyperbolic cosine (catenary) curves. Because of this, it is not suitable for dynamic models but works very well for stationary or single-frame renders. This technique creates an underlying shape out of single points; then, it parses through each set of three of these points and maps a catenary curve to the set. It then takes the lowest out of each overlapping set and uses it for the render.
+
+## Physical methods
+
+The second technique treats cloth like a grid work of particles connected to each other by springs. Whereas the geometric approach accounted for none of the inherent stretch of a woven material, this physical model accounts for stretch (tension), stiffness, and weight:
+
+$E(Particle_{i,j})=k_{s}E_{s,i,j}+k_{b}E_{b,i,j}+k_{g}E_{g,i,j}$
+
+- s terms are elasticity (by Hooke's law)
+- b terms are bending
+- g terms are gravity (see Acceleration due to gravity)
+
+Now we apply the basic principle of mechanical equilibrium in which all bodies seek lowest energy by differentiating this equation to find the minimum energy.
+
+## Particle/energy methods
+
+The last method is more complex than the first two. The particle technique takes the physical methods a step further and supposes that we have a network of particles interacting directly. Rather than springs, the energy interactions of the particles are used to determine the cloth's shape. An energy equation that adds onto the following is used:
+
+$U_{Total}=U_{Repel}+U_{Stretch}+U_{Bend}+U_{Trellis}+U_{Gravity}$
+
+- The energy of repelling is an artificial element we add to prevent cloth from intersecting itself.
+- The energy of stretching is governed by Hooke's law as with the physical method.
+- The energy of bending describes the stiffness of the fabric
+- The energy of trellising describes the shearing of the fabric (distortion within the plane of the fabric)
+- The energy of gravity is based on acceleration due to gravity
+
+Terms for energy added by any source can be added to this equation, then derive and find minima, which generalizes our model. This allows for modeling cloth behavior under any circumstance, and since the cloth is treated as a collection of particles its behavior can be described with the dynamics provided in our physics engine.

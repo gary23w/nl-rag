@@ -1,0 +1,32 @@
+---
+title: "Branch target predictor"
+source: https://en.wikipedia.org/wiki/Branch_target_predictor
+domain: branch-prediction-hw
+license: CC-BY-SA-4.0
+tags: hardware branch prediction, branch target predictor, speculative execution, branch misprediction penalty
+fetched: 2026-07-02
+---
+
+# Branch target predictor
+
+In computer architecture, a **branch target predictor** is the part of a processor that predicts the target, i.e., the address of the instruction that is executed next, of a taken conditional branch or unconditional branch instruction before the target of the branch instruction is computed by the execution unit of the processor.
+
+Branch target prediction is not the same as branch prediction, which guesses whether a conditional branch will be taken or not-taken in a binary manner.
+
+In more parallel processor designs, as the instruction cache latency grows longer and the fetch width grows wider, branch target extraction becomes a bottleneck. The recurrence is:
+
+- Instruction cache fetches block of instructions
+- Instructions in block are scanned to identify branches
+- First predicted taken branch is identified
+- Target of that branch is computed
+- Instruction fetch restarts at branch target
+
+In machines where this recurrence takes two cycles, the machine loses one full cycle of fetch after every predicted taken branch. As predicted branches happen every 10 instructions or so, this can force a substantial drop in fetch bandwidth. Some machines with longer instruction cache latencies would have an even larger loss. To ameliorate the loss, some machines implement branch target prediction: given the address of a branch, they predict the target of that branch. A refinement of the idea predicts the start of a sequential run of instructions given the address of the start of the previous sequential run of instructions.
+
+This predictor reduces the recurrence above to:
+
+- Hash the address of the first instruction in a run
+- Fetch the prediction for the addresses of the targets of branches in that run of instructions
+- Select the address corresponding to the branch predicted taken
+
+Branch target histories are either stored in a dedicated branch target buffer (BTB) unit, or share their storage with instruction cache. BTB can have widely varying sizes, but are typically 5–10% of the size of the instruction cache, the fetch happens much faster than the instruction cache fetch, and so this recurrence is much faster. If it were not fast enough, it could be parallelized, by predicting target addresses of target branches.

@@ -1,0 +1,41 @@
+---
+title: "Sequential logic"
+source: https://en.wikipedia.org/wiki/Sequential_logic
+domain: vhdl-design
+license: CC-BY-SA-4.0
+tags: vhdl language, vhdl design, hardware description language, rtl design
+fetched: 2026-07-02
+---
+
+# Sequential logic
+
+In automata theory, **sequential logic** is a type of logic circuit whose output depends on the present value of its input signals and on the sequence of past inputs, the input history. This is in contrast to *combinational logic*, whose output is a function of only the present input. That is, sequential logic has *state* (*memory*) while combinational logic does not.
+
+Sequential logic is used to construct finite-state machines, a basic building block in all digital circuitry. Virtually all circuits in practical digital devices are a mixture of combinational and sequential logic.
+
+A familiar example of a device with sequential logic is a television set with "channel up" and "channel down" buttons. Pressing the "up" button gives the television an input telling it to switch to the next channel above the one it is currently receiving. If the television is on channel 5, pressing "up" switches it to receive channel 6. However, if the television is on channel 8, pressing "up" switches it to channel "9". In order for the channel selection to operate correctly, the television must be aware of which channel it is currently receiving, which was determined by past channel selections. The television stores the current channel as part of its *state*. When a "channel up" or "channel down" input is given to it, the sequential logic of the channel selection circuitry calculates the new channel from the input and the current channel.
+
+Digital sequential logic circuits are divided into synchronous and asynchronous types. In synchronous sequential circuits, the state of the device changes only at discrete times in response to a clock signal. In asynchronous circuits the state of the device can change at any time in response to changing inputs.
+
+## Synchronous sequential logic
+
+Nearly all sequential logic today is *clocked* or *synchronous* logic. In a synchronous circuit, an electronic oscillator called a *clock* (or clock generator) generates a sequence of repetitive pulses called the *clock signal* which is distributed to all the memory elements in the circuit. The basic memory element in synchronous logic is the flip-flop. The output of each flip-flop only changes when triggered by the clock pulse, so changes to the logic signals throughout the circuit all begin at the same time, at regular intervals, synchronized by the clock.
+
+The output of all the storage elements (flip-flops) in the circuit at any given time, the binary data they contain, is called the *state* of the circuit. The state of the synchronous circuit only changes on clock pulses. At each cycle, the next state is determined by the current state and the value of the input signals when the clock pulse occurs.
+
+The main advantage of synchronous logic is its simplicity. The logic gates which perform the operations on the data require a finite amount of time to respond to changes to their inputs. This is called *propagation delay*. The interval between clock pulses must be long enough so that all the logic gates have time to respond to the changes and their outputs "settle" to stable logic values before the next clock pulse occurs. As long as this condition is met (ignoring certain other details) the circuit is guaranteed to be stable and reliable. This determines the maximum operating speed of the synchronous circuit.
+
+Synchronous logic has two main disadvantages:
+
+- The maximum possible clock rate is determined by the slowest logic path in the circuit, otherwise known as the critical path. Every logical calculation, from the simplest to the most complex, must complete in one clock cycle. So logic paths that complete their calculations quickly are idle much of the time, waiting for the next clock pulse. Therefore, synchronous logic can be slower than asynchronous logic. One way to speed up synchronous circuits is to split complex operations into several simple operations which can be performed in successive clock cycles, a technique known as *pipelining*. This technique is extensively used in microprocessor design and helps to improve the performance of modern processors.
+- The clock signal must be distributed to every flip-flop in the circuit. As the clock is usually a high-frequency signal, this distribution consumes a relatively large amount of power and dissipates much heat. Even the flip-flops that are doing nothing consume a small amount of power, thereby generating waste heat in the chip. In battery-powered devices, additional hardware and software complexity is required to reduce the clock speed or temporarily turn off the clock while the device is not being actively used, in order to maintain a usable battery life.
+
+## Asynchronous sequential logic
+
+*Asynchronous* (*clockless* or *self-timed*) *sequential logic* is not synchronized by a clock signal; the outputs of the circuit change directly in response to changes in inputs. The advantage of asynchronous logic is that it can be faster than synchronous logic, because the circuit doesn't have to wait for a clock signal to process inputs. The speed of the device is potentially limited only by the propagation delays of the logic gates used.
+
+However, asynchronous logic is more difficult to design and is subject to problems not encountered in synchronous designs. The main problem is that digital memory elements are sensitive to the order that their input signals arrive; if two signals arrive at a flip-flop or latch at almost the same time, which state the circuit goes into can depend on which signal gets to the gate first. Therefore, the circuit can go into the wrong state, depending on small differences in the propagation delays of the logic gates. This is called a race condition. This problem is not as severe in synchronous circuits because the outputs of the memory elements only change at each clock pulse. The interval between clock signals is designed to be long enough to allow the outputs of the memory elements to "settle" so they are not changing when the next clock comes. Therefore, the only timing problems are due to "asynchronous inputs"; inputs to the circuit from other systems which are not synchronized to the clock signal.
+
+Asynchronous sequential circuits are typically used only in a few critical parts of otherwise synchronous systems where speed is at a premium, such as parts of microprocessors and digital signal processing circuits.
+
+The design of asynchronous logic uses different mathematical models and techniques from synchronous logic, and is an active area of research.

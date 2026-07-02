@@ -1,0 +1,1202 @@
+# nl-rag distilled facts — domain: llvm-ir
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:llvm-ir/control-flow-graph] In computer science, a **control-flow graph** (**CFG**) is a representation, using graph notation, of all paths that might be traversed through a function during its execution, or control flow.
+[src:llvm-ir/control-flow-graph] The control-flow graph was conceived by Frances E.
+[src:llvm-ir/control-flow-graph] Prosser used boolean connectivity matrices for flow analysis before.
+[src:llvm-ir/control-flow-graph] The CFG is essential to many compiler optimizations and static-analysis tools.
+[src:llvm-ir/control-flow-graph] A control flow graph is the directed graph of the basic blocks of the function (the nodes of the graph) and the control flow between them (the edges of the graph).
+[src:llvm-ir/control-flow-graph] The exact details vary between representations.
+[src:llvm-ir/control-flow-graph] Typically, a basic block consists of a straight-line sequence of instructions or statements.
+[src:llvm-ir/control-flow-graph] Only the last instruction or statement in each block can perform control flow, and control flow can only be directed to the first instruction or statement in a block.
+[src:llvm-ir/control-flow-graph] In most CFG representations, there are two specially designated blocks: the *entry block*, through which control enters into the function, and the *exit block*, through which all control exits the function (typically by returning).
+[src:llvm-ir/control-flow-graph] Some representations permit multiple exit blocks, especially if there are different kinds of exit, or permit the exit block to be omitted if it is not reachable .
+[src:llvm-ir/control-flow-graph] If there is a control-flow edge from block A to block B, then A is called a *predecessor* of B, and B is called a *successor* of A.
+[src:llvm-ir/control-flow-graph] The nested structure of the source program makes it a little hard to see the basic blocks.
+[src:llvm-ir/control-flow-graph] As an alternative representation that makes the blocks more obvious, we can flatten that structure into a sequence of labeled blocks.
+[src:llvm-ir/control-flow-graph] To make the control flow explicit, we will require each block to end in either `goto`, an `if`/`else` of `goto`s, or `return` (only in the exit block).
+[src:llvm-ir/control-flow-graph] This is a source-level representation of the CFG.
+[src:llvm-ir/control-flow-graph] The basic blocks consist of sequences of C statements taken directly from the source program.
+[src:llvm-ir/control-flow-graph] Only the structured control flow has been eliminated.
+[src:llvm-ir/control-flow-graph] This style of statement-level CFG representation is not commonly used, and it is shown here only for illustrative purposes.
+[src:llvm-ir/control-flow-graph] Not all programs can be easily represented this way, even in C.
+[src:llvm-ir/control-flow-graph] Notice how the local variable declaration has been raised to the top of function, and its initialization in `block1` has been turned into an assignment.
+[src:llvm-ir/control-flow-graph] This would cause difficulties for scope-driven features such as shadowing and variable-length arrays.
+[src:llvm-ir/control-flow-graph] Statements would also need to be significantly rewritten to deal with expression-level control flow, such as is introduced by the `&&`, `||`, and `? :` operators.
+[src:llvm-ir/control-flow-graph] Most practical CFG representations use something other than complete source statements as the components of their basic blocks.
+[src:llvm-ir/control-flow-graph] For example, compiler frameworks such as LLVM use a CFG in which basic blocks consist of abstract static single-assignment instructions as their primary IR.
+[src:llvm-ir/control-flow-graph] Notice how the block structure is the same in the source-level and the LLVM CFGs.
+[src:llvm-ir/control-flow-graph] In both representations, the functions have the same basic semantics, performing the same sequence of operations and control flow.
+[src:llvm-ir/control-flow-graph] Only the representation of the individual operations is different.
+[src:llvm-ir/control-flow-graph] A very explicit control flow graph can be obtained from a source function by placing each statement into its own basic block.
+[src:llvm-ir/control-flow-graph] If the statement is not a control-flow statement, a "fall-through" jump to the block for the next statement is added to the block.
+[src:llvm-ir/control-flow-graph] Unfortunately, this tends to create a large number of unnecessary basic blocks and fall-through jumps, which makes subsequent analysis more cumbersome and expensive.
+[src:llvm-ir/control-flow-graph] It is usually desirable that successive statements be placed in the same basic block whenever possible.
+[src:llvm-ir/control-flow-graph] However, this contraction-based algorithm is of little practical importance except as a visualization aid for understanding CFG construction because of the expense of building the initial form.
+[src:llvm-ir/control-flow-graph] In typical implementations, the CFG is built directly from the program in a way that minimizes unnecessary blocks by construction, such as by scanning the program for necessary boundaries between basic blocks.
+[src:llvm-ir/control-flow-graph] Reachability is a graph property useful in optimization.
+[src:llvm-ir/control-flow-graph] If a block cannot be reached by any path from the entry block, then it cannot possibly be executed, in which case it is called unreachable code.
+[src:llvm-ir/control-flow-graph] Unreachable code can usually be removed from the control flow graph without any negative consequences.
+[src:llvm-ir/control-flow-graph] If the exit block cannot be reached by any path from the entry block, then control flow cannot leave the graph normally.
+[src:llvm-ir/control-flow-graph] This indicates the presence of either an infinite loop or, in representations that directly support these features, an abnormal exit or termination of the program.
+[src:llvm-ir/control-flow-graph] The exit block being reachable by some path does not mean that the program will necessarily reach it, and it is impossible to prove that it will be reached in a general graph; see Halting problem.
+[src:llvm-ir/control-flow-graph] Optimization can reveal unreachable code and infinite loops that were not apparent in the original program.
+[src:llvm-ir/control-flow-graph] In this form, the loop in this function is not an infinite loop because there is a path which leaves the loop: if `%3` is false, the program will branch to `block3` and return.
+[src:llvm-ir/control-flow-graph] However, a numerical analysis can prove that the product of any number and 2 will be even, which means that `%2` is always zero and `%3` can never be false.
+[src:llvm-ir/control-flow-graph] There is now an infinite loop in the control flow graph, and the exit block can no longer be reached.
+[src:llvm-ir/control-flow-graph] Note that this optimization did not change the behavior of the program: it was always true that the loop would never exit.
+[src:llvm-ir/control-flow-graph] All that has changed is that the control flow graph is more accurately reflecting that truth.
+[src:llvm-ir/control-flow-graph] A block M *dominates* a block N if every path from the entry that reaches block N also has to visit block M.
+[src:llvm-ir/control-flow-graph] M is said to *properly dominate* N if M dominates N and they are different blocks.
+[src:llvm-ir/control-flow-graph] Furthermore, an individual statement or instruction X is said to properly dominate a statement or instruction Y if the block containing X dominates the block containing Y and, if those are the same block, X strictly precedes Y in the block.
+[src:llvm-ir/control-flow-graph] It is said that a block M *immediately dominates* block N if M dominates N, and there is no intervening block P such that M dominates P and P dominates N.
+[src:llvm-ir/control-flow-graph] In other words, M is the last dominator on all paths from entry to N.
+[src:llvm-ir/control-flow-graph] Every reachable block has a unique immediate dominator except for the entry block, which has none.
+[src:llvm-ir/control-flow-graph] The *dominator tree* is a directed graph representing the dominance relationships in the function.
+[src:llvm-ir/control-flow-graph] The nodes of the graph are the reachable basic blocks of the function, and there is an edge from block M to block N if M is an immediate dominator of N.
+[src:llvm-ir/control-flow-graph] Since each non-entry reachable block has a unique immediate dominator, this is a tree rooted at the entry block.
+[src:llvm-ir/control-flow-graph] The dominator tree can be calculated efficiently using Lengauer–Tarjan's algorithm.
+[src:llvm-ir/control-flow-graph] In the reverse direction, block M *post-dominates* block N if every path from N to the exit also has to visit block M.
+[src:llvm-ir/control-flow-graph] (This is sometimes written without a hyphen: M *postdominates* N.) The exit block post-dominates all blocks.
+[src:llvm-ir/control-flow-graph] M is said to *properly post-dominate* N if it post-dominates N and they are different blocks.
+[src:llvm-ir/control-flow-graph] M is an *immediate post-dominator* of N if it post-dominates N and there is no block P such that M post-dominates P and P post-dominates N.
+[src:llvm-ir/control-flow-graph] Every block from which the exit block is reachable has a unique immediate post-dominator except for the exit block, which has none.
+[src:llvm-ir/control-flow-graph] This gives rise to a *post-dominator tree*, rooted at the exit block, over the blocks from which the exit block is reachable.
+[src:llvm-ir/control-flow-graph] The standard definition of dominance includes unreachable blocks, and the standard definition of post-dominance includes blocks from which the exit block cannot be reached.
+[src:llvm-ir/control-flow-graph] However, such blocks have unique properties under these relationships: an unreachable block is dominated by all blocks, and a block from which the exit cannot be reached is post-dominated by all blocks.
+[src:llvm-ir/control-flow-graph] Most analyses relying on dominance or post-dominance will want to ignore them, and they are not included in dominator or post-dominator trees.
+[src:llvm-ir/control-flow-graph] Some representations require the addition of *impossible edges* to prevent these blocks from existing, at least formally.
+[src:llvm-ir/control-flow-graph] A *critical edge* is an edge which is neither the only edge leaving its source block, nor the only edge entering its destination block.
+[src:llvm-ir/control-flow-graph] Some optimizations must *split* critical edges in order to insert instructions along the edge without affecting other paths through the program.
+[src:llvm-ir/control-flow-graph] An edge is split by creating a new block that contains only a jump to the destination block, then replacing the original branch destination with the new block.
+[src:llvm-ir/control-flow-graph] A *retreating edge* is an edge for which there exists a simple path from the entry block to the source block of the edge (such as might be found by a depth-first traversal of the graph) which includes the destination block.
+[src:llvm-ir/control-flow-graph] A retreating edge indicates the presence of a cycle in the control flow graph.
+[src:llvm-ir/control-flow-graph] A retreating edge is called a *back edge* if the destination block is present on all possible paths to the source block, which is to say, if the destination block dominates the source block.
+[src:llvm-ir/control-flow-graph] An *abnormal edge* is an edge whose destination is unknown.
+[src:llvm-ir/control-flow-graph] Exception handling constructs can produce them.
+[src:llvm-ir/control-flow-graph] These edges tend to inhibit optimization.
+[src:llvm-ir/control-flow-graph] An *impossible edge* (also known as a *fake edge*) is an edge which cannot actually be traversed during execution and is only added to the graph to preserve some useful property.
+[src:llvm-ir/control-flow-graph] For example, some representations require the addition of impossible edges to ensure that the exit block is always reachable and post-dominates all blocks.
+[src:llvm-ir/control-flow-graph] A strongly-connected component (SCC) of a control flow graph is a set of basic blocks which are all reachable from one another.
+[src:llvm-ir/control-flow-graph] The blocks that are part of a loop are always part of the same strongly-connected component.
+[src:llvm-ir/control-flow-graph] A block that is not part of a cycle is always in a strongly-connected component by itself.
+[src:llvm-ir/control-flow-graph] In particular, the entry and exit blocks are always their own strongly-connected components.
+[src:llvm-ir/control-flow-graph] The strongly-connected components of a CFG form a directed acyclic graph called the *SCC tree*, where component A has an edge to component B if any block in A has an edge to any block in B.
+[src:llvm-ir/control-flow-graph] The SCC tree is isomorphic to the control flow graph if there are no cycles in the CFG; if there is a cycle, the SCC tree essentially collapses all blocks and edges in it into a single node.
+[src:llvm-ir/control-flow-graph] This can be useful for analyses that wish to treat all of the blocks in a cycle as equivalent.
+[src:llvm-ir/control-flow-graph] For example, when trying to find an object lifetime that covers a set of use-points as narrowly as possible, if one of those use-points is within a cyclic SCC, the lifetime must fully cover every block in that component.
+[src:llvm-ir/control-flow-graph] A *loop header* (sometimes called the *entry point* of the loop) is a dominator that is the target of a loop-forming back edge.
+[src:llvm-ir/control-flow-graph] The loop header dominates all blocks in the loop body.
+[src:llvm-ir/control-flow-graph] A block may be a loop header for more than one loop.
+[src:llvm-ir/control-flow-graph] A loop may have multiple entry points, in which case it has no "loop header".
+[src:llvm-ir/control-flow-graph] Suppose block M is a dominator with several incoming edges, some of them being back edges (so M is a loop header).
+[src:llvm-ir/control-flow-graph] It is advantageous to several optimization passes to break M up into two blocks Mpre and Mloop.
+[src:llvm-ir/control-flow-graph] The contents of M and back edges are moved to Mloop, the rest of the edges are moved to point into Mpre, and a new edge from Mpre to Mloop is inserted (so that Mpre is the immediate dominator of Mloop).
+[src:llvm-ir/control-flow-graph] In the beginning, Mpre would be empty, but passes like loop-invariant code motion could populate it.
+[src:llvm-ir/control-flow-graph] Mpre is called the *loop pre-header*, and Mloop would be the loop header.
+[src:llvm-ir/control-flow-graph] A control flow graph is called *reducible* if all its retreating edges are back edges.
+[src:llvm-ir/control-flow-graph] The other edges in such a CFG are called *forward edges*.
+[src:llvm-ir/control-flow-graph] The forward edges form a directed acyclic graph, and the back edges always lead to a basic block that control flow has already passed through.
+[src:llvm-ir/control-flow-graph] Reducible CFGs generally have stronger static properties and can be more easily analyzed and optimized.
+[src:llvm-ir/control-flow-graph] For example, many loop optimizations are designed to work only on reducible CFGs.
+[src:llvm-ir/control-flow-graph] Structured programming languages are often designed such that all CFGs they produce are reducible, and common structured programming statements such as IF, FOR, WHILE, BREAK, and CONTINUE reliably produce reducible graphs.
+[src:llvm-ir/control-flow-graph] To directly produce an irreducible graph, statements such as GOTO are needed that can jump to an arbitrary point in the program, although not all uses of GOTO produce irreducible CFGs.
+[src:llvm-ir/control-flow-graph] Irreducible CFGs can also be produced by some compiler optimizations, such as jump threading.
+[src:llvm-ir/control-flow-graph] Irreducible CFGs can be converted to reducible CFGs, but this often requires duplicating code or introducing new variables to the program.
+[src:llvm-ir/control-flow-graph] The loop connectedness of a CFG is defined with respect to a given depth-first search tree (DFST) of the CFG.
+[src:llvm-ir/control-flow-graph] This DFST should be rooted at the start node and cover every node of the CFG.
+[src:llvm-ir/control-flow-graph] In this context, edges in the CFG which run from a node to one of its DFST ancestors (including itself) are called back edges.
+[src:llvm-ir/control-flow-graph] This does not necessarily coincide with the usual definition of a back edge because a DFST ancestor need not dominate the source node of the edge.
+[src:llvm-ir/control-flow-graph] The loop connectedness is the largest number of back edges found in any cycle-free path of the CFG.
+[src:llvm-ir/control-flow-graph] In a reducible CFG, the loop connectedness is independent of the DFST chosen.
+[src:llvm-ir/control-flow-graph] Loop connectedness has been used to reason about the time complexity of data-flow analysis.
+[src:llvm-ir/control-flow-graph] While control-flow graphs represent the control flow of a single procedure, inter-procedural control-flow graphs represent the control flow of whole programs.
+[src:llvm-ir/intermediate-representation] An **intermediate representation** (**IR**) is the data structure or code used internally by a compiler or virtual machine to represent source code.
+[src:llvm-ir/intermediate-representation] An IR is designed to be conducive to further processing, such as optimization and translation.
+[src:llvm-ir/intermediate-representation] A "good" IR must be *accurate* – capable of representing the source code without loss of information – and *independent* of any particular source or target language.
+[src:llvm-ir/intermediate-representation] An IR may take one of several forms: an in-memory data structure, or a special tuple- or stack-based code readable by the program.
+[src:llvm-ir/intermediate-representation] In the latter case it is also called an *intermediate language*.
+[src:llvm-ir/intermediate-representation] A canonical example is found in most modern compilers.
+[src:llvm-ir/intermediate-representation] For example, the CPython interpreter transforms the linear human-readable text representing a program into an intermediate graph structure that allows flow analysis and re-arrangement before execution.
+[src:llvm-ir/intermediate-representation] Use of an intermediate representation such as this allows compiler systems like the GNU Compiler Collection and LLVM to be used by many different source languages to generate code for many different target architectures.
+[src:llvm-ir/intermediate-representation] An **intermediate language** is the language of an abstract machine designed to aid in the analysis of computer programs.
+[src:llvm-ir/intermediate-representation] The term comes from their use in compilers, where the source code of a program is translated into a form more suitable for code-improving transformations before being used to generate object or machine code for a target machine.
+[src:llvm-ir/intermediate-representation] A popular format for intermediate languages is three-address code.
+[src:llvm-ir/intermediate-representation] The term is also used to refer to languages used as intermediates by some high-level programming languages which do not output object or machine code themselves, but output the intermediate language only.
+[src:llvm-ir/intermediate-representation] This intermediate language is submitted to a compiler for such language, which then outputs finished object or machine code.
+[src:llvm-ir/intermediate-representation] This is usually done to ease the process of optimization or to increase portability by using an intermediate language that has compilers for many processors and operating systems, such as C.
+[src:llvm-ir/intermediate-representation] Languages used for this fall in complexity between high-level languages and low-level languages, such as assembly languages.
+[src:llvm-ir/intermediate-representation] Variants of C have been designed to provide C's features as a portable assembly language, including C-- and the C Intermediate Language.
+[src:llvm-ir/intermediate-representation] The GNU Compiler Collection (GCC) uses several intermediate languages internally to simplify portability and cross-compilation.
+[src:llvm-ir/intermediate-representation] The LLVM compiler framework is based on the LLVM IR intermediate language, of which the compact, binary serialized representation is also referred to as "bitcode" and has been productized by Apple.
+[src:llvm-ir/intermediate-representation] Like GIMPLE Bytecode, LLVM Bitcode is useful in link-time optimization.
+[src:llvm-ir/intermediate-representation] Like GCC, LLVM also targets some IRs meant for direct distribution, including Google's PNaCl IR and SPIR.
+[src:llvm-ir/intermediate-representation] A further development within LLVM is the use of *Multi-Level Intermediate Representation* (MLIR) with the potential to generate code for different heterogeneous targets, and to combine the outputs of different compilers.
+[src:llvm-ir/intermediate-representation] The ILOC intermediate language is used in classes on compiler design as a simple target language.
+[src:llvm-ir/intermediate-representation] Static analysis tools often use an intermediate representation.
+[src:llvm-ir/intermediate-representation] For instance, Radare2 is a toolbox for binary files analysis and reverse-engineering.
+[src:llvm-ir/intermediate-representation] It uses the intermediate languages ESIL and REIL to analyze binary files.
+[src:llvm-ir/langref-p01] This document is a reference manual for the LLVM assembly language.
+[src:llvm-ir/langref-p01] LLVM is a Static Single Assignment (SSA) based representation that provides type safety, low-level operations, flexibility, and the capability of representing ‘all’ high-level languages cleanly.
+[src:llvm-ir/langref-p01] It is the common code representation used throughout all phases of the LLVM compilation strategy.
+[src:llvm-ir/langref-p01] The LLVM code representation is designed to be used in three different forms: as an in-memory compiler IR, as an on-disk bitcode representation (suitable for fast loading by a Just-In-Time compiler), and as a human readable assembly language representation.
+[src:llvm-ir/langref-p01] This allows LLVM to provide a powerful intermediate representation for efficient compiler transformations and analysis, while providing a natural means to debug and visualize the transformations.
+[src:llvm-ir/langref-p01] The three different forms of LLVM are all equivalent.
+[src:llvm-ir/langref-p01] This document describes the human-readable representation and notation.
+[src:llvm-ir/langref-p01] The LLVM representation aims to be light-weight and low-level while being expressive, typed, and extensible at the same time.
+[src:llvm-ir/langref-p01] It aims to be a “universal IR” of sorts, by being at a low enough level that high-level ideas may be cleanly mapped to it (similar to how microprocessors are “universal IR’s”, allowing many source languages to be mapped to them).
+[src:llvm-ir/langref-p01] By providing type information, LLVM can be used as the target of optimizations: for example, through pointer analysis, it can be proven that a C automatic variable is never accessed outside of the current function, allowing it to be promoted to a simple SSA value instead of a memory location.
+[src:llvm-ir/langref-p01] It is important to note that this document describes ‘well formed’ LLVM assembly language.
+[src:llvm-ir/langref-p01] There is a difference between what the parser accepts and what is considered ‘well formed’.
+[src:llvm-ir/langref-p01] because the definition of `%x` does not dominate all of its uses.
+[src:llvm-ir/langref-p01] The LLVM infrastructure provides a verification pass that may be used to verify that an LLVM module is well formed.
+[src:llvm-ir/langref-p01] This pass is automatically run by the parser after parsing input assembly and by the optimizer before it outputs bitcode.
+[src:llvm-ir/langref-p01] The violations pointed out by the verifier pass indicate bugs in transformation passes or input to the parser.
+[src:llvm-ir/langref-p01] LLVM identifiers come in two basic types: global and local.
+[src:llvm-ir/langref-p01] Global identifiers (functions, global variables) begin with the `'@'` character.
+[src:llvm-ir/langref-p01] Local identifiers (register names, types) begin with the `'%'` character.
+[src:llvm-ir/langref-p01] Unnamed values are represented as an unsigned numeric value with their prefix.
+[src:llvm-ir/langref-p01] Constants, which are described in the section Constants below.
+[src:llvm-ir/langref-p01] LLVM requires that values start with a prefix for two reasons: Compilers don’t need to worry about name clashes with reserved words, and the set of reserved words may be expanded in the future without penalty.
+[src:llvm-ir/langref-p01] Additionally, unnamed identifiers allow a compiler to quickly come up with a temporary variable without having to avoid symbol table conflicts.
+[src:llvm-ir/langref-p01] Reserved words in LLVM are very similar to reserved words in other languages.
+[src:llvm-ir/langref-p01] There are keywords for different opcodes (’`add`’, ‘`bitcast`’, ‘`ret`’, etc…), for primitive type names (’`void`’, ‘`i32`’, etc…), and others.
+[src:llvm-ir/langref-p01] These reserved words cannot conflict with variable names, because none of them start with a prefix character (`'%'` or `'@'`).
+[src:llvm-ir/langref-p01] Unnamed temporaries are created when the result of a computation is not assigned to a named value.
+[src:llvm-ir/langref-p01] By default, unnamed temporaries are numbered sequentially (using a per-function incrementing counter, starting with 0).
+[src:llvm-ir/langref-p01] However, when explicitly specifying temporary numbers, it is allowed to skip over numbers.
+[src:llvm-ir/langref-p01] Note that basic blocks and unnamed function parameters are included in this numbering.
+[src:llvm-ir/langref-p01] For example, if the entry basic block is not given a label name and all function parameters are named, then it will get number 0.
+[src:llvm-ir/langref-p01] It also shows a convention that we follow in this document.
+[src:llvm-ir/langref-p01] When demonstrating instructions, we will follow an instruction with a comment that defines the type and name of value produced.
+[src:llvm-ir/langref-p01] Strings in LLVM programs are delimited by `"` characters.
+[src:llvm-ir/langref-p01] Within a string, all bytes are treated literally with the exception of `\` characters, which start escapes, and the first `"` character, which ends the string.
+[src:llvm-ir/langref-p01] To represent a `"` character, use `\22`.
+[src:llvm-ir/langref-p01] Newlines do not terminate string constants; strings can span multiple lines.
+[src:llvm-ir/langref-p01] The interpretation of string constants (e.g., their character encoding) depends on context.
+[src:llvm-ir/langref-p01] LLVM programs are composed of `Module`’s, each of which is a translation unit of the input programs.
+[src:llvm-ir/langref-p01] Each module consists of functions, global variables, and symbol table entries.
+[src:llvm-ir/langref-p01] Modules may be combined together with the LLVM linker, which merges function (and global variable) definitions, resolves forward declarations, and merges symbol table entries.
+[src:llvm-ir/langref-p01] This example is made up of a global variable named “`.str`”, an external declaration of the “`puts`” function, a function definition for “`main`” and named metadata “`foo`”.
+[src:llvm-ir/langref-p01] In general, a module is made up of a list of global values (where both functions and global variables are global values).
+[src:llvm-ir/langref-p01] Global values are represented by a pointer to a memory location (in this case, a pointer to an array of char, and a pointer to a function), and have one of the following linkage types.
+[src:llvm-ir/langref-p01] Global values with “`private`” linkage are only directly accessible by objects in the current module.
+[src:llvm-ir/langref-p01] In particular, linking code into a module with a private global value may cause the private to be renamed as necessary to avoid collisions.
+[src:llvm-ir/langref-p01] Because the symbol is private to the module, all references can be updated.
+[src:llvm-ir/langref-p01] This doesn’t show up in any symbol table in the object file.
+[src:llvm-ir/langref-p01] Similar to private, but the value shows as a local symbol (`STB_LOCAL` in the case of ELF) in the object file.
+[src:llvm-ir/langref-p01] This corresponds to the notion of the ‘`static`’ keyword in C.
+[src:llvm-ir/langref-p01] Globals with “`available_externally`” linkage are never emitted into the object file corresponding to the LLVM module.
+[src:llvm-ir/langref-p01] From the linker’s perspective, an `available_externally` global is equivalent to an external declaration.
+[src:llvm-ir/langref-p01] They exist to allow inlining and other optimizations to take place given knowledge of the definition of the global, which is known to be somewhere outside the module.
+[src:llvm-ir/langref-p01] Globals with `available_externally` linkage are allowed to be discarded at will, and allow inlining and other optimizations.
+[src:llvm-ir/langref-p01] This linkage type is only allowed on definitions, not declarations.
+[src:llvm-ir/langref-p01] Globals with “`linkonce`” linkage are merged with other globals of the same name when linkage occurs.
+[src:llvm-ir/langref-p01] This can be used to implement some forms of inline functions, templates, or other code which must be generated in each translation unit that uses it, but where the body may be overridden with a more definitive definition later.
+[src:llvm-ir/langref-p01] Unreferenced `linkonce` globals are allowed to be discarded.
+[src:llvm-ir/langref-p01] Note that `linkonce` linkage does not actually allow the optimizer to inline the body of this function into callers because it doesn’t know if this definition of the function is the definitive definition within the program or whether it will be overridden by a stronger definition.
+[src:llvm-ir/langref-p01] To enable inlining and other optimizations, use “`linkonce_odr`” linkage.
+[src:llvm-ir/langref-p01] “`weak`” linkage has the same merging semantics as `linkonce` linkage, except that unreferenced globals with `weak` linkage may not be discarded.
+[src:llvm-ir/langref-p01] This is used for globals that are declared “weak” in C source code.
+[src:llvm-ir/langref-p01] “`common`” linkage is most similar to “`weak`” linkage, but they are used for tentative definitions in C, such as “`int X;`” at global scope.
+[src:llvm-ir/langref-p01] Symbols with “`common`” linkage are merged in the same way as `weak symbols`, and they may not be deleted if unreferenced.
+[src:llvm-ir/langref-p01] `common` symbols may not have an explicit section, must have a zero initializer, and may not be marked ‘constant’.
+[src:llvm-ir/langref-p01] Functions and aliases may not have common linkage.
+[src:llvm-ir/langref-p01] “`appending`” linkage may only be applied to global variables of pointer to array type.
+[src:llvm-ir/langref-p01] When two global variables with appending linkage are linked together, the two global arrays are appended together.
+[src:llvm-ir/langref-p01] This is the LLVM, typesafe, equivalent of having the system linker append together “sections” with identical names when `.o` files are linked.
+[src:llvm-ir/langref-p01] Unfortunately this doesn’t correspond to any feature in `.o` files, so it can only be used for variables like `llvm.global_ctors` which llvm interprets specially.
+[src:llvm-ir/langref-p01] The semantics of this linkage follow the ELF object file model: the symbol is weak until linked, if not linked, the symbol becomes null instead of being an undefined reference.
+[src:llvm-ir/langref-p01] The `odr` suffix indicates that all globals defined with the given name are equivalent, along the lines of the C++ “one definition rule” (“ODR”).
+[src:llvm-ir/langref-p01] Informally, this means we can inline functions and fold loads of constants.
+[src:llvm-ir/langref-p01] Formally, use the following definition: when an `odr` function is called, one of the definitions is non-deterministically chosen to run.
+[src:llvm-ir/langref-p01] For `odr` variables, if any byte in the value is not equal in all initializers, that byte is a poison value.
+[src:llvm-ir/langref-p01] For aliases and ifuncs, apply the rule for the underlying function or variable.
+[src:llvm-ir/langref-p01] These linkage types are otherwise the same as their non-`odr` versions.
+[src:llvm-ir/langref-p01] If none of the above identifiers are used, the global is externally visible, meaning that it participates in linkage and can be used to resolve external symbol references.
+[src:llvm-ir/langref-p01] It is illegal for a global variable or function *declaration* to have any linkage type other than `external` or `extern_weak`.
+[src:llvm-ir/langref-p01] LLVM functions, calls and invokes can all have an optional calling convention specified for the call.
+[src:llvm-ir/langref-p01] The calling convention of any pair of dynamic caller/callee must match, or the behavior of the program is undefined.
+[src:llvm-ir/langref-p01] This calling convention (the default if no other calling convention is specified) matches the target C calling conventions.
+[src:llvm-ir/langref-p01] This calling convention supports varargs function calls and tolerates some mismatch in the declared prototype and implemented declaration of the function (as does normal C).
+[src:llvm-ir/langref-p01] This calling convention attempts to make calls as fast as possible (e.g., by passing things in registers).
+[src:llvm-ir/langref-p01] This calling convention allows the target to use whatever tricks it wants to produce fast code for the target, without having to conform to an externally specified ABI (Application Binary Interface).
+[src:llvm-ir/langref-p01] Targets may use different implementations according to different features.
+[src:llvm-ir/langref-p01] In this case, a TTI interface `useFastCCForInternalCall` must return false when any caller functions and the callee belong to different implementations.
+[src:llvm-ir/langref-p01] Tail calls can only be optimized when this, the tailcc, the GHC or the HiPE convention is used.
+[src:llvm-ir/langref-p01] This calling convention does not support varargs and requires the prototype of all callees to exactly match the prototype of the function definition.
+[src:llvm-ir/langref-p01] This calling convention attempts to make code in the caller as efficient as possible under the assumption that the call is not commonly executed.
+[src:llvm-ir/langref-p01] As such, these calls often preserve all registers so that the call does not break any live ranges in the caller side.
+[src:llvm-ir/langref-p01] Furthermore the inliner doesn’t consider such function calls for inlining.
+[src:llvm-ir/langref-p01] This calling convention has been implemented specifically for use by the Glasgow Haskell Compiler (GHC).
+[src:llvm-ir/langref-p01] It passes everything in registers, going to extremes to achieve this by disabling callee save registers.
+[src:llvm-ir/langref-p01] This calling convention should not be used lightly but only for specific situations such as an alternative to the *register pinning* performance technique often used when implementing functional programming languages.
+[src:llvm-ir/langref-p01] At the moment only X86, AArch64, and RISCV support this convention.
+[src:llvm-ir/langref-p01] This calling convention supports tail call optimization but requires both the caller and callee to use it.
+[src:llvm-ir/langref-p01] This calling convention has been implemented specifically for use by the High-Performance Erlang (HiPE) compiler, *the* native code compiler of the Ericsson’s Open Source Erlang/OTP system.
+[src:llvm-ir/langref-p01] It uses more registers for argument passing than the ordinary C calling convention and defines no callee-saved registers.
+[src:llvm-ir/langref-p01] The calling convention properly supports tail call optimization but requires that both the caller and the callee use it.
+[src:llvm-ir/langref-p01] It uses a *register pinning* mechanism, similar to GHC’s convention, for keeping frequently accessed runtime components pinned to specific hardware registers.
+[src:llvm-ir/langref-p01] At the moment only X86 supports this convention (both 32 and 64 bit).
+[src:llvm-ir/langref-p01] This is a special convention that supports patching an arbitrary code sequence in place of a call site.
+[src:llvm-ir/langref-p01] This convention forces the call arguments into registers but allows them to be dynamically allocated.
+[src:llvm-ir/langref-p01] This can currently only be used with calls to `llvm.experimental.patchpoint` because only this intrinsic records the location of its arguments in a side table.
+[src:llvm-ir/langref-p01] See Stack maps and patch points in LLVM.
+[src:llvm-ir/langref-p01] This calling convention attempts to make the code in the caller as unintrusive as possible.
+[src:llvm-ir/langref-p01] This convention behaves identically to the *C* calling convention on how arguments and return values are passed, but it uses a different set of caller/callee-saved registers.
+[src:llvm-ir/langref-p01] This alleviates the burden of saving and recovering a large register set before and after the call in the caller.
+[src:llvm-ir/langref-p01] If the arguments are passed in callee-saved registers, then they will be preserved by the callee across the call.
+[src:llvm-ir/langref-p01] This doesn’t apply for values returned in callee-saved registers.
+[src:llvm-ir/langref-p01] The idea behind this convention is to support calls to runtime functions that have a hot path and a cold path.
+[src:llvm-ir/langref-p01] The hot path is usually a small piece of code that doesn’t use many registers.
+[src:llvm-ir/langref-p01] The cold path might need to call out to another function and therefore only needs to preserve the caller-saved registers, which haven’t already been saved by the caller.
+[src:llvm-ir/langref-p01] The *PreserveMost* calling convention is very similar to the *cold* calling convention in terms of caller/callee-saved registers, but they are used for different types of function calls.
+[src:llvm-ir/langref-p01] *coldcc* is for function calls that are rarely executed, whereas *preserve_mostcc* function calls are intended to be on the hot path and definitely executed a lot.
+[src:llvm-ir/langref-p01] Furthermore *preserve_mostcc* doesn’t prevent the inliner from inlining the function call.
+[src:llvm-ir/langref-p01] This calling convention will be used by a future version of the Objective-C runtime and should therefore still be considered experimental at this time.
+[src:llvm-ir/langref-p01] Although this convention was created to optimize certain runtime calls to the Objective-C runtime, it is not limited to this runtime and might be used by other runtimes in the future too.
+[src:llvm-ir/langref-p01] The current implementation only supports X86-64, but the intention is to support more architectures in the future.
+[src:llvm-ir/langref-p01] This calling convention attempts to make the code in the caller even less intrusive than the *PreserveMost* calling convention.
+[src:llvm-ir/langref-p01] This calling convention also behaves identically to the *C* calling convention on how arguments and return values are passed, but it uses a different set of caller/callee-saved registers.
+[src:llvm-ir/langref-p01] This removes the burden of saving and recovering a large register set before and after the call in the caller.
+[src:llvm-ir/langref-p01] The idea behind this convention is to support calls to runtime functions that don’t need to call out to any other functions.
+[src:llvm-ir/langref-p01] This calling convention, like the *PreserveMost* calling convention, will be used by a future version of the Objective-C runtime and should be considered experimental at this time.
+[src:llvm-ir/langref-p01] This calling convention doesn’t preserve any general registers.
+[src:llvm-ir/langref-p01] So all general registers are caller saved registers.
+[src:llvm-ir/langref-p01] It also uses all general registers to pass arguments.
+[src:llvm-ir/langref-p01] This attribute doesn’t impact non-general purpose registers (e.g., floating point registers, on X86 XMMs/YMMs).
+[src:llvm-ir/langref-p01] Non-general purpose registers still follow the standard C calling convention.
+[src:llvm-ir/langref-p01] Currently it is for x86_64, AArch64 and LoongArch only.
+[src:llvm-ir/langref-p01] Clang generates an access function to access C++-style Thread Local Storage (TLS).
+[src:llvm-ir/langref-p01] The access function generally has an entry block, an exit block and an initialization block that is run at the first time.
+[src:llvm-ir/langref-p01] The entry and exit blocks can access a few TLS IR variables, each access will be lowered to a platform-specific sequence.
+[src:llvm-ir/langref-p01] This calling convention aims to minimize overhead in the caller by preserving as many registers as possible (all the registers that are preserved on the fast path, composed of the entry and exit blocks).
+[src:llvm-ir/langref-p01] This calling convention behaves identically to the *C* calling convention on how arguments and return values are passed, but it uses a different set of caller/callee-saved registers.
+[src:llvm-ir/langref-p01] Given that each platform has its own lowering sequence, hence its own set of preserved registers, we can’t use the existing *PreserveMost*.
+[src:llvm-ir/langref-p01] This calling convention ensures that calls in tail position will always be tail call optimized.
+[src:llvm-ir/langref-p01] This calling convention is equivalent to fastcc, except for an additional guarantee that tail calls will be produced whenever possible.
+[src:llvm-ir/langref-p01] Tail calls can only be optimized when this, the fastcc, the GHC or the HiPE convention is used.
+[src:llvm-ir/langref-p01] This calling convention is like `swiftcc` in most respects, but also the callee pops the argument area of the stack so that mandatory tail calls are possible as in `tailcc`.
+[src:llvm-ir/langref-p01] This calling convention is used for the Control Flow Guard check function, calls to which can be inserted before indirect calls to check that the call target is a valid function address.
+[src:llvm-ir/langref-p01] The check function has no return value, but it will trigger an OS-level error if the address is not a valid target.
+[src:llvm-ir/langref-p01] The set of registers preserved by the check function, and the register containing the target address are architecture-specific.
+[src:llvm-ir/langref-p01] Any calling convention may be specified by number, allowing target-specific calling conventions to be used.
+[src:llvm-ir/langref-p01] Target-specific calling conventions start at 64.
+[src:llvm-ir/langref-p01] More calling conventions can be added/defined on an as-needed basis, to support Pascal conventions or any other well-known target-independent convention.
+[src:llvm-ir/langref-p01] On targets that use the ELF object file format, default visibility means that the declaration is visible to other modules and, in shared libraries, means that the declared entity may be overridden.
+[src:llvm-ir/langref-p01] On Darwin, default visibility means that the declaration is visible to other modules.
+[src:llvm-ir/langref-p01] On XCOFF, default visibility means no explicit visibility bit will be set and whether the symbol is visible (i.e “exported”) to other modules depends primarily on export lists provided to the linker.
+[src:llvm-ir/langref-p01] Default visibility corresponds to “external linkage” in the language.
+[src:llvm-ir/langref-p01] Two declarations of an object with hidden visibility refer to the same object if they are in the same shared object.
+[src:llvm-ir/langref-p01] Usually, hidden visibility indicates that the symbol will not be placed into the dynamic symbol table, so no other module (executable or shared library) can reference it directly.
+[src:llvm-ir/langref-p01] On ELF, protected visibility indicates that the symbol will be placed in the dynamic symbol table, but that references within the defining module will bind to the local symbol.
+[src:llvm-ir/langref-p01] That is, the symbol cannot be overridden by another module.
+[src:llvm-ir/langref-p01] A symbol with `internal` or `private` linkage must have `default` visibility.
+[src:llvm-ir/langref-p01] “`dllimport`” causes the compiler to reference a function or variable via a global pointer to a pointer that is set up by the DLL exporting the symbol.
+[src:llvm-ir/langref-p01] On Microsoft Windows targets, the pointer name is formed by combining `__imp_` and the function or variable name.
+[src:llvm-ir/langref-p01] On Microsoft Windows targets, “`dllexport`” causes the compiler to provide a global pointer to a pointer in a DLL, so that it can be referenced with the `dllimport` attribute.
+[src:llvm-ir/langref-p01] The pointer name is formed by combining `__imp_` and the function or variable name.
+[src:llvm-ir/langref-p01] On XCOFF targets, `dllexport` indicates that the symbol will be made visible to other modules using “exported” visibility and thus placed by the linker in the loader section symbol table.
+[src:llvm-ir/langref-p01] Since this storage class exists for defining a DLL interface, the compiler, assembler and linker know it is externally referenced and must refrain from deleting the symbol.
+[src:llvm-ir/langref-p01] A symbol with `internal` or `private` linkage cannot have a DLL storage class.
+[src:llvm-ir/langref-p01] A variable may be defined as `thread_local`, which means that it will not be shared by threads (each thread will have a separate copy of the variable).
+[src:llvm-ir/langref-p01] Not all targets support thread-local variables.
+[src:llvm-ir/langref-p01] For variables that are only used within the current shared library.
+[src:llvm-ir/langref-p01] For variables in modules that will not be loaded dynamically.
+[src:llvm-ir/langref-p01] For variables defined in the executable and only used within it.
+[src:llvm-ir/langref-p01] If no explicit model is given, the “general dynamic” model is used.
+[src:llvm-ir/langref-p01] The models correspond to the ELF TLS models; see ELF Handling For Thread-Local Storage for more information on under which circumstances the different models may be used.
+[src:llvm-ir/langref-p01] The target may choose a different TLS model if the specified model is not supported, or if a better choice of model can be made.
+[src:llvm-ir/langref-p01] A model can also be specified in an alias, but then it only governs how the alias is accessed.
+[src:llvm-ir/langref-p01] It will not have any effect on the aliasee.
+[src:llvm-ir/langref-p01] For platforms without linker support of ELF TLS model, the `-femulated-tls` flag can be used to generate GCC-compatible emulated TLS code.
+[src:llvm-ir/langref-p01] Global variables, functions and aliases may have an optional runtime preemption specifier.
+[src:llvm-ir/langref-p01] If a preemption specifier isn’t given explicitly, then a symbol is assumed to be `dso_preemptable`.
+[src:llvm-ir/langref-p01] Indicates that the function or variable may be replaced by a symbol from outside the linkage unit at runtime.
+[src:llvm-ir/langref-p01] The compiler may assume that a function or variable marked as `dso_local` will resolve to a symbol within the same linkage unit.
+[src:llvm-ir/langref-p01] Direct access will be generated even if the definition is not within this compilation unit.
+[src:llvm-ir/langref-p01] LLVM IR allows you to specify both “identified” and “literal” structure types.
+[src:llvm-ir/langref-p01] Literal types are uniqued structurally, but identified types are never uniqued.
+[src:llvm-ir/langref-p01] An opaque structural type can also be used to forward declare a type that is not yet available.
+[src:llvm-ir/langref-p01] Prior to the LLVM 3.0 release, identified types were structurally uniqued.
+[src:llvm-ir/langref-p01] Only literal types are uniqued in recent versions of LLVM.
+[src:llvm-ir/langref-p01] Note: non-integral pointer types are a work in progress, and they should be considered experimental at this time.
+[src:llvm-ir/langref-p01] For most targets, the pointer representation is a direct mapping from the bitwise representation to the address of the underlying memory location.
+[src:llvm-ir/langref-p01] Such pointers are considered “integral”, and any pointers where the representation is not just an integer address are called “non-integral”.
+[src:llvm-ir/langref-p01] These properties (or combinations thereof) can be applied to pointers via the datalayout string.
+[src:llvm-ir/langref-p01] The exact implications of these properties are target-specific.
+[src:llvm-ir/langref-p01] The following subsections describe the IR semantics and restrictions to optimization passes for each of these properties.
+[src:llvm-ir/langref-p01] Pointers in this address space have a bitwise representation that not only has address bits, but also some other target-specific metadata.
+[src:llvm-ir/langref-p01] In most cases pointers with non-address bits behave exactly the same as integral pointers, the only difference is that it is not possible to create a pointer just from an address unless all the non-address bits are also recreated correctly in a target-specific way.
+[src:llvm-ir/langref-p01] An example of pointers with non-address bits are the AMDGPU buffer descriptors which are 160 bits: a 128-bit fat pointer and a 32-bit offset.
+[src:llvm-ir/langref-p01] Similarly, CHERI capabilities contain a 32- or 64-bit address as well as the same number of metadata bits, but unlike the AMDGPU buffer descriptors they have external state in addition to non-address bits.
+[src:llvm-ir/langref-p01] Pointers in this address space have an *unspecified* bitwise representation (i.e., not backed by a fixed integer).
+[src:llvm-ir/langref-p01] The bitwise pattern of such pointers is allowed to change in a target-specific way.
+[src:llvm-ir/langref-p01] For example, this could be a pointer type used with copying garbage collection where the garbage collector could update the pointer at any time in the collection sweep.
+[src:llvm-ir/langref-p01] `inttoptr` and `ptrtoint` instructions have the same semantics as for integral (i.e., normal) pointers in that they convert integers to and from corresponding pointer types, but there are additional implications to be aware of.
+[src:llvm-ir/langref-p01] For “unstable” pointer representations, the bit-representation of the pointer may not be stable, so two identical casts of the same operand may or may not return the same value.
+[src:llvm-ir/langref-p01] Said differently, the conversion to or from the “unstable” pointer type depends on environmental state in an implementation defined manner.
+[src:llvm-ir/langref-p01] If the frontend wishes to observe a *particular* value following a cast, the generated IR must fence with the underlying environment in an implementation defined manner.
+[src:llvm-ir/langref-p01] From the perspective of the optimizer, `inttoptr` and `ptrtoint` for “unstable” pointer types are analogous to ones on integral types with one key exception: the optimizer may not, in general, insert new dynamic occurrences of such casts.
+[src:llvm-ir/langref-p01] If a new cast is inserted, the optimizer would need to either ensure that a) all possible values are valid, or b) appropriate fencing is inserted.
+[src:llvm-ir/langref-p01] Since the appropriate fencing is implementation defined, the optimizer can’t do the latter.
+[src:llvm-ir/langref-p01] The former is challenging as many commonly expected properties, such as `ptrtoint(v)-ptrtoint(v) == 0`, don’t hold for “unstable” pointer types.
+[src:llvm-ir/langref-p01] Similar restrictions apply to intrinsics that might examine the pointer bits, such as llvm.ptrmask.
+[src:llvm-ir/langref-p01] The alignment information provided by the frontend for an “unstable” pointer (typically using attributes or metadata) must be valid for every possible representation of the pointer.
+[src:llvm-ir/langref-p01] A further special case of non-integral pointers is ones that include external state (such as bounds information or a type tag) with a target-defined size.
+[src:llvm-ir/langref-p01] An example of such a type is a CHERI capability, where there is an additional validity bit that is part of all pointer-typed registers, but is located in memory at an implementation-defined address separate from the pointer itself.
+[src:llvm-ir/langref-p01] Another example would be a fat-pointer scheme where pointers remain plain integers, but the associated bounds are stored in an out-of-band table.
+[src:llvm-ir/langref-p01] Unless also marked as “unstable”, the bit-wise representation of pointers with external state is stable and `ptrtoint(x)` always yields a deterministic value.
+[src:llvm-ir/langref-p01] This means transformation passes are still permitted to insert new `ptrtoint` instructions.
+[src:llvm-ir/langref-p01] The `inttoptr` instruction does not recreate the external state and therefore it is target dependent whether it can be used to create a dereferenceable pointer.
+[src:llvm-ir/langref-p01] In general passes should assume that the result of such an `inttoptr` is not dereferenceable.
+[src:llvm-ir/langref-p01] For example, on CHERI targets an `inttoptr` will yield a capability with the external state (the validity tag bit) set to zero, which will cause any dereference to trap.
+[src:llvm-ir/langref-p01] The `ptrtoint` instruction also only returns the “in-band” state and omits all external state.
+[src:llvm-ir/langref-p01] When a `store ptr addrspace(N) %p, ptr @dst` of such a non-integral pointer is performed, the external metadata is also stored to an implementation-defined location.
+[src:llvm-ir/langref-p01] Similarly, a `%val = load ptr addrspace(N), ptr @dst` will fetch the external metadata and make it available for all uses of `%val`.
+[src:llvm-ir/langref-p01] Similarly, the `llvm.memcpy` and `llvm.memmove` intrinsics also transfer the external state.
+[src:llvm-ir/langref-p01] This is essential to allow frontends to efficiently emit copies of structures containing such pointers, since expanding all these copies as individual loads and stores would affect compilation speed and inhibit optimizations.
+[src:llvm-ir/langref-p01] Notionally, these external bits are part of the pointer, but since `inttoptr` / ptrtoint` only operate on the “in-band” bits of the pointer and the external bits are not explicitly exposed, they are not included in the size specified in the datalayout string.
+[src:llvm-ir/langref-p01] When a pointer type has external state, all roundtrips via memory must be performed as loads and stores of the correct type since stores of other types may not propagate the external data.
+[src:llvm-ir/langref-p01] Therefore it is not legal to convert an existing load/store (or a `llvm.memcpy` / `llvm.memmove` intrinsic) of pointer types with external state to a load/store of an integer or byte type with the same bitwidth, as that may drop the external state.
+[src:llvm-ir/langref-p01] Global variables define regions of memory allocated at compilation time instead of run-time.
+[src:llvm-ir/langref-p01] Global variable definitions must be initialized with a sized value.
+[src:llvm-ir/langref-p01] Global variables in other translation units can also be declared, in which case they don’t have an initializer.
+[src:llvm-ir/langref-p01] Global variables can optionally specify a linkage type.
+[src:llvm-ir/langref-p01] Either global variable definitions or declarations may have an explicit section to be placed in and may have an optional explicit alignment specified.
+[src:llvm-ir/langref-p01] If there is a mismatch between the explicit or inferred section information for the variable declaration and its definition, the resulting behavior is undefined.
+[src:llvm-ir/langref-p01] A variable may be defined as a global `constant`, which indicates that the contents of the variable will **never** be modified (enabling better optimization, allowing the global data to be placed in the read-only section of an executable, etc).
+[src:llvm-ir/langref-p01] Note that variables that need runtime initialization cannot be marked `constant` as there is a store to the variable.
+[src:llvm-ir/langref-p01] LLVM explicitly allows *declarations* of global variables to be marked constant, even if the final definition of the global is not.
+[src:llvm-ir/langref-p01] This capability can be used to enable slightly better optimization of the program, but requires the language definition to guarantee that optimizations based on the ‘constantness’ are valid for the translation units that do not include the definition.
+[src:llvm-ir/langref-p01] As SSA values, global variables define pointer values that are in scope for (i.e., they dominate) all basic blocks in the program.
+[src:llvm-ir/langref-p01] Global variables always define a pointer to their “content” type because they describe a region of memory, and all allocated object in LLVM are accessed through pointers.
+[src:llvm-ir/langref-p01] Global variables can be marked with `unnamed_addr` which indicates that the address is not significant, only the content.
+[src:llvm-ir/langref-p01] Constants marked like this can be merged with other constants if they have the same initializer, and can also be duplicated.
+[src:llvm-ir/langref-p01] Note that a constant with significant address *can* be merged with a `unnamed_addr` constant, the result being a constant whose address is significant.
+[src:llvm-ir/langref-p01] Constant duplication currently makes it unsound to compare pointers if either may be `unnamed_addr`, because each reference to the global in the IR may return a different pointer, and optimization passes may create additional references.
+[src:llvm-ir/langref-p01] If the `local_unnamed_addr` attribute is given, the address is known to not be significant within the module.
+[src:llvm-ir/langref-p01] A global variable may be declared to reside in a target-specific numbered address space.
+[src:llvm-ir/langref-p01] For targets that support them, address spaces may affect how optimizations are performed and/or what target instructions are used to access the variable.
+[src:llvm-ir/langref-p01] The address space qualifier must precede any other attributes.
+[src:llvm-ir/langref-p01] LLVM allows an explicit section to be specified for globals.
+[src:llvm-ir/langref-p01] If the target supports it, it will emit globals to the section specified.
+[src:llvm-ir/langref-p01] Additionally, the global can be placed in a comdat if the target has the necessary support.
+[src:llvm-ir/langref-p01] External declarations may have an explicit section specified.
+[src:llvm-ir/langref-p01] Section information is retained in LLVM IR for targets that make use of this information.
+[src:llvm-ir/langref-p01] Attaching section information to an external declaration is an assertion that its definition is located in the specified section.
+[src:llvm-ir/langref-p01] If the definition is located in a different section, the behavior is undefined.
+[src:llvm-ir/langref-p01] LLVM allows an explicit code model to be specified for globals.
+[src:llvm-ir/langref-p01] If the target supports it, it will emit globals in the code model specified, overriding the code model used to compile the translation unit.
+[src:llvm-ir/langref-p01] The allowed values are “tiny”, “small”, “kernel”, “medium”, “large”.
+[src:llvm-ir/langref-p01] This may be extended in the future to specify global data layout that doesn’t cleanly fit into a specific code model.
+[src:llvm-ir/langref-p01] By default, global initializers are optimized by assuming that global variables defined within the module are not modified from their initial values before the start of the global initializer.
+[src:llvm-ir/langref-p01] This is true even for variables potentially accessible from outside the module, including those with external linkage or appearing in `@llvm.used` or dllexported variables.
+[src:llvm-ir/langref-p01] This assumption may be suppressed by marking the variable with `externally_initialized`.
+[src:llvm-ir/langref-p01] An explicit alignment may be specified for a global, which must be a power of 2.
+[src:llvm-ir/langref-p01] If not present, or if the alignment is set to zero, the alignment of the global is set by the target to whatever it feels convenient.
+[src:llvm-ir/langref-p01] If an explicit alignment is specified, the global is forced to have exactly that alignment.
+[src:llvm-ir/langref-p01] Targets and optimizers are not allowed to over-align the global if the global has an assigned section.
+[src:llvm-ir/langref-p01] In this case, the extra alignment could be observable: for example, code could assume that the globals are densely packed in their section and try to iterate over them as an array, alignment padding would break this iteration.
+[src:llvm-ir/langref-p01] For TLS variables, the module flag `MaxTLSAlign`, if present, limits the alignment to the given value.
+[src:llvm-ir/langref-p01] Optimizers are not allowed to impose a stronger alignment on these variables.
+[src:llvm-ir/langref-p01] Globals can also have a DLL storage class, an optional runtime preemption specifier, an optional global attributes and an optional list of attached metadata.
+[src:llvm-ir/langref-p01] Variables and aliases can have a Thread Local Storage Model.
+[src:llvm-ir/langref-p01] Globals cannot be or contain Scalable vectors because their size is unknown at compile time.
+[src:llvm-ir/langref-p01] They are allowed in structs to facilitate intrinsics returning multiple values.
+[src:llvm-ir/langref-p01] Generally, structs containing scalable vectors are not considered “sized” and cannot be used in loads, stores, allocas, or GEPs.
+[src:llvm-ir/langref-p01] The only exception to this rule is for structs that contain scalable vectors of the same type (e.g., `{<vscale x 2 x i32>, <vscale x 2 x i32>}` contains the same type while `{<vscale x 2 x i32>, <vscale x 2 x i64>}` doesn’t).
+[src:llvm-ir/langref-p01] These kinds of structs (we may call them homogeneous scalable vector structs) are considered sized and can be used in loads, stores, allocas, but not GEPs.
+[src:llvm-ir/langref-p01] Globals with `toc-data` attribute set are stored in TOC of XCOFF.
+[src:llvm-ir/langref-p01] Their alignments are not larger than that of a TOC entry.
+[src:llvm-ir/langref-p01] Optimizations should not increase their alignments to mitigate TOC overflow.
+[src:llvm-ir/langref-p01] A function definition contains a list of basic blocks, forming the CFG (Control Flow Graph) for the function.
+[src:llvm-ir/langref-p01] Each basic block may optionally start with a label (giving the basic block a symbol table entry), contains a list of instructions and debug records, and ends with a terminator instruction (such as a branch or function return).
+[src:llvm-ir/langref-p01] If an explicit label name is not provided, a block is assigned an implicit numbered label, using the next value from the same counter as used for unnamed temporaries (see above).
+[src:llvm-ir/langref-p01] For example, if a function entry block does not have an explicit label, it will be assigned label “%0”, then the first unnamed temporary in that block will be “%1”, etc.
+[src:llvm-ir/langref-p01] If a numeric label is explicitly specified, it must match the numeric label that would be used implicitly.
+[src:llvm-ir/langref-p01] The first basic block in a function is special in two ways: it is immediately executed on entrance to the function, and it is not allowed to have predecessor basic blocks (i.e., there can not be any branches to the entry block of a function).
+[src:llvm-ir/langref-p01] Because the block can have no predecessors, it also cannot have any PHI nodes.
+[src:llvm-ir/langref-p01] LLVM allows an explicit section to be specified for functions.
+[src:llvm-ir/langref-p01] If the target supports it, it will emit functions to the section specified.
+[src:llvm-ir/langref-p01] Additionally, the function can be placed in a COMDAT.
+[src:llvm-ir/langref-p01] An explicit minimum alignment (`align`) may be specified for a function.
+[src:llvm-ir/langref-p01] If not present, or if the alignment is set to zero, the alignment of the function is set according to the preferred alignment rules described below.
+[src:llvm-ir/langref-p01] If an explicit minimum alignment is specified, the function is forced to have at least that much alignment.
+[src:llvm-ir/langref-p01] An explicit preferred alignment (`prefalign`) may also be specified for a function (definitions only, and must be a power of 2).
+[src:llvm-ir/langref-p01] If a function does not have a preferred alignment attribute, the preferred alignment is determined in a target-specific way.
+[src:llvm-ir/langref-p01] The preferred alignment, if provided, is treated as a hint; the final alignment of the function will generally be set to a value somewhere between the minimum alignment and the preferred alignment.
+[src:llvm-ir/langref-p01] If the `unnamed_addr` attribute is given, the address is known to not be significant and two identical functions can be merged.
+[src:llvm-ir/langref-p01] If an explicit address space is not given, it will default to the program address space from the datalayout string.
+[src:llvm-ir/langref-p01] Aliases, unlike function or variables, don’t create any new data.
+[src:llvm-ir/langref-p01] They are just a new symbol and metadata for an existing position.
+[src:llvm-ir/langref-p02] Aliases have a name and an aliasee that is either a global value or a constant expression.
+[src:llvm-ir/langref-p02] Aliases may have an optional linkage type, an optional runtime preemption specifier, an optional visibility style, an optional DLL storage class and an optional tls model.
+[src:llvm-ir/langref-p02] The linkage must be one of `private`, `internal`, `linkonce`, `weak`, `linkonce_odr`, `weak_odr`, `external`, `available_externally`.
+[src:llvm-ir/langref-p02] Note that some system linkers might not correctly handle dropping a weak symbol that is aliased.
+[src:llvm-ir/langref-p02] Aliases that are not `unnamed_addr` are guaranteed to have the same address as the aliasee expression.
+[src:llvm-ir/langref-p02] `unnamed_addr` ones are only guaranteed to point to the same content.
+[src:llvm-ir/langref-p02] IFuncs, like aliases, don’t create any new data or func.
+[src:llvm-ir/langref-p02] They are just a new symbol that is resolved at runtime by calling a resolver function.
+[src:llvm-ir/langref-p02] On ELF platforms, IFuncs are resolved by the dynamic linker at load time.
+[src:llvm-ir/langref-p02] On Mach-O platforms, they are lowered in terms of `.symbol_resolver` functions, which lazily resolve the callee the first time they are called.
+[src:llvm-ir/langref-p02] IFunc may have an optional linkage type, an optional visibility style, an option partition, and an optional list of attached metadata.
+[src:llvm-ir/langref-p02] Comdat IR provides access to object file COMDAT/section group functionality which represents interrelated sections.
+[src:llvm-ir/langref-p02] Comdats have a name which represents the COMDAT key and a selection kind to provide input on how the linker deduplicates comdats with the same key in two different object files.
+[src:llvm-ir/langref-p02] A comdat must be included or omitted as a unit.
+[src:llvm-ir/langref-p02] Discarding the whole comdat is allowed but discarding a subset is not.
+[src:llvm-ir/langref-p02] A global object may be a member of at most one comdat.
+[src:llvm-ir/langref-p02] Aliases are placed in the same COMDAT that their aliasee computes to, if any.
+[src:llvm-ir/langref-p02] For selection kinds other than `nodeduplicate`, only one of the duplicate comdats may be retained by the linker and the members of the remaining comdats must be discarded.
+[src:llvm-ir/langref-p02] The linker may choose any COMDAT key, the choice is arbitrary.
+[src:llvm-ir/langref-p02] The linker may choose any COMDAT key but the sections must contain the same data.
+[src:llvm-ir/langref-p02] The linker will choose the section containing the largest COMDAT key.
+[src:llvm-ir/langref-p02] The linker may choose any COMDAT key but the sections must contain the same amount of data.
+[src:llvm-ir/langref-p02] There are some restrictions on the properties of the global object.
+[src:llvm-ir/langref-p02] It, or an alias to it, must have the same name as the COMDAT group when targeting COFF.
+[src:llvm-ir/langref-p02] The contents and size of this object may be used during link-time to determine which COMDAT groups get selected depending on the selection kind.
+[src:llvm-ir/langref-p02] Because the name of the object must match the name of the COMDAT group, the linkage of the global object must not be local; local symbols can get renamed if a collision occurs in the symbol table.
+[src:llvm-ir/langref-p02] The combined use of COMDATS and section attributes may yield surprising results.
+[src:llvm-ir/langref-p02] From the object file perspective, this requires the creation of two sections with the same name.
+[src:llvm-ir/langref-p02] This is necessary because both globals belong to different COMDAT groups and COMDATs, at the object file level, are represented by sections.
+[src:llvm-ir/langref-p02] Note that certain IR constructs like global variables and functions may create COMDATs in the object file in addition to any which are specified using COMDAT IR.
+[src:llvm-ir/langref-p02] This arises when the code generator is configured to emit globals in individual sections (e.g., when *-data-sections* or *-function-sections* is supplied to *llc*).
+[src:llvm-ir/langref-p02] The return type and each parameter of a function type may have a set of *parameter attributes* associated with them.
+[src:llvm-ir/langref-p02] Parameter attributes are used to communicate additional information about the result or parameters of a function.
+[src:llvm-ir/langref-p02] Parameter attributes are considered to be part of the function, not of the function type, so functions with different parameter attributes can have the same function type.
+[src:llvm-ir/langref-p02] Parameter attributes can be placed both on function declarations/definitions, and at call-sites.
+[src:llvm-ir/langref-p02] Parameter attributes are either simple keywords or strings that follow the specified type.
+[src:llvm-ir/langref-p02] Multiple parameter attributes, when required, are separated by spaces.
+[src:llvm-ir/langref-p02] Note that any attributes for the function result (`nonnull`, `signext`) come before the result type.
+[src:llvm-ir/langref-p02] Parameter attributes can be broadly separated into two kinds: ABI attributes that affect how values are passed to/from functions, like `zeroext`, `inreg`, `byval`, or `sret`.
+[src:llvm-ir/langref-p02] And optimization attributes, which provide additional optimization guarantees, like `noalias`, `nonnull` and `dereferenceable`.
+[src:llvm-ir/langref-p02] ABI attributes must be specified *both* at the function declaration/definition and call-site, otherwise the behavior may be undefined.
+[src:llvm-ir/langref-p02] ABI attributes cannot be safely dropped.
+[src:llvm-ir/langref-p02] Optimization attributes do not have to match between call-site and function: The intersection of their implied semantics applies.
+[src:llvm-ir/langref-p02] Optimization attributes can also be freely dropped.
+[src:llvm-ir/langref-p02] If an integer argument to a function is not marked signext/zeroext/noext, the kind of extension used is target-specific.
+[src:llvm-ir/langref-p02] Some targets depend for correctness on the kind of extension to be explicitly specified.
+[src:llvm-ir/langref-p02] This indicates to the code generator that the parameter or return value should be zero-extended to the extent required by the target’s ABI by the caller (for a parameter) or the callee (for a return value).
+[src:llvm-ir/langref-p02] This indicates to the code generator that the parameter or return value should be sign-extended to the extent required by the target’s ABI (which is usually 32-bits) by the caller (for a parameter) or the callee (for a return value).
+[src:llvm-ir/langref-p02] This indicates to the code generator that the parameter or return value has the high bits undefined, as for a struct in a register, and therefore does not need to be sign or zero extended.
+[src:llvm-ir/langref-p02] This is the same as default behavior and is only actually used (by some targets) to validate that one of the attributes is always present.
+[src:llvm-ir/langref-p02] Use of this attribute is target-specific.
+[src:llvm-ir/langref-p02] This indicates that the pointer parameter should really be passed by value to the function.
+[src:llvm-ir/langref-p02] The attribute implies that a hidden copy of the pointee is made between the caller and the callee, so the callee is unable to modify the value in the caller.
+[src:llvm-ir/langref-p02] This attribute is only valid on LLVM pointer arguments.
+[src:llvm-ir/langref-p02] It is generally used to pass structs and arrays by value, but is also valid on pointers to scalars.
+[src:llvm-ir/langref-p02] The copy is considered to belong to the caller not the callee (for example, `readonly` functions should not write to `byval` parameters).
+[src:llvm-ir/langref-p02] This is not a valid attribute for return values.
+[src:llvm-ir/langref-p02] The byval type argument is only used for its allocation size and alignment (if there is no explicit align attribute).
+[src:llvm-ir/langref-p02] That is, the hidden copy is interpreted as a call to memcpy with the allocation size of the specified type, instead of loading from the pointee and storing back into the copy in the type.
+[src:llvm-ir/langref-p02] In particular, the padding between field types of a struct type is still copied.
+[src:llvm-ir/langref-p02] The byval attribute also supports specifying an alignment with the `align` attribute.
+[src:llvm-ir/langref-p02] It indicates the alignment of the stack slot to form and the known alignment of the pointer specified to the call site.
+[src:llvm-ir/langref-p02] If the alignment is not specified, then the code generator makes a target-specific assumption.
+[src:llvm-ir/langref-p02] This indicates that the pointer parameter should really be passed by value to the function, and that the pointer parameter’s pointee has already been initialized before the call instruction.
+[src:llvm-ir/langref-p02] The argument must be the value returned by the appropriate llvm.call.preallocated.arg on non `musttail` calls, or the corresponding caller parameter in `musttail` calls, although it is ignored during codegen.
+[src:llvm-ir/langref-p02] A non `musttail` function call with a `preallocated` attribute in any parameter must have a `"preallocated"` operand bundle.
+[src:llvm-ir/langref-p02] A `musttail` function call cannot have a `"preallocated"` operand bundle.
+[src:llvm-ir/langref-p02] The preallocated attribute requires a type argument.
+[src:llvm-ir/langref-p02] The preallocated attribute also supports specifying an alignment with the `align` attribute.
+[src:llvm-ir/langref-p02] This indicates that the pointer parameter specifies the address of a structure that is the return value of the function in the source program.
+[src:llvm-ir/langref-p02] This pointer must be guaranteed by the caller to be valid: loads and stores to the structure may be assumed by the callee not to trap and to be properly aligned.
+[src:llvm-ir/langref-p02] The sret type argument specifies the in-memory type.
+[src:llvm-ir/langref-p02] A function that accepts an `sret` argument must return `void`.
+[src:llvm-ir/langref-p02] This indicates that the pointer value or vector of pointers has the specified alignment.
+[src:llvm-ir/langref-p02] If applied to a vector of pointers, *all* pointers (elements) have the specified alignment.
+[src:llvm-ir/langref-p02] If the pointer value does not have the specified alignment, poison value is returned or passed instead.
+[src:llvm-ir/langref-p02] The `align` attribute should be combined with the `noundef` attribute to ensure a pointer is aligned, or otherwise the behavior is undefined.
+[src:llvm-ir/langref-p02] Note that `align 1` has no effect on non-byval, non-preallocated arguments.
+[src:llvm-ir/langref-p02] Note that this attribute has additional semantics when combined with the `byval` or `preallocated` attribute, which are documented there.
+[src:llvm-ir/langref-p02] This indicates that memory locations accessed via pointer values based on the argument or return value are not also accessed, during the execution of the function, via pointer values not *based* on the argument or return value.
+[src:llvm-ir/langref-p02] This guarantee only holds for memory locations that are *modified*, by any means, during the execution of the function.
+[src:llvm-ir/langref-p02] If there are other accesses not based on the argument or return value, the behavior is undefined.
+[src:llvm-ir/langref-p02] The attribute on a return value also has additional semantics, as described below.
+[src:llvm-ir/langref-p02] Both the caller and the callee share the responsibility of ensuring that these requirements are met.
+[src:llvm-ir/langref-p02] For further details, please see the discussion of the NoAlias response in alias analysis.
+[src:llvm-ir/langref-p02] Note that this definition of `noalias` is intentionally similar to the definition of `restrict` in C99 for function arguments.
+[src:llvm-ir/langref-p02] For function return values, C99’s `restrict` is not meaningful, while LLVM’s `noalias` is.
+[src:llvm-ir/langref-p02] Furthermore, the semantics of the `noalias` attribute on return values are stronger than the semantics of the attribute when used on function arguments.
+[src:llvm-ir/langref-p02] On function return values, the `noalias` attribute indicates that the function acts like a system memory allocation function, returning a pointer to allocated storage disjoint from the storage for any other object accessible to the caller.
+[src:llvm-ir/langref-p02] This attribute restricts the ways in which the callee may capture the pointer.
+[src:llvm-ir/langref-p02] This attribute applies only to the particular copy of the pointer passed in this argument.
+[src:llvm-ir/langref-p02] Additionally, it is possible to specify that some components are only captured in certain locations.
+[src:llvm-ir/langref-p02] Currently only the return value (`ret`) and other (default) locations are supported.
+[src:llvm-ir/langref-p02] The pointer capture section discusses these semantics in more detail.
+[src:llvm-ir/langref-p02] This indicates that a pointer based on this argument cannot be freed during the execution of the function.
+[src:llvm-ir/langref-p02] This includes frees of the pointer on other threads if the free *happens-before* the function return.
+[src:llvm-ir/langref-p02] Notably, it is still possible to free the underlying object through a pointer that is not based on the argument.
+[src:llvm-ir/langref-p02] This indicates that the pointer parameter can be excised using the trampoline intrinsics.
+[src:llvm-ir/langref-p02] This is not a valid attribute for return values and can only be applied to one parameter.
+[src:llvm-ir/langref-p02] This indicates that the function always returns the argument as its return value.
+[src:llvm-ir/langref-p02] This is a hint to the optimizer and code generator used when generating the caller, allowing value propagation, tail call optimization, and omission of register saves and restores in some cases; it is not checked or enforced when generating the callee.
+[src:llvm-ir/langref-p02] The parameter and the function return type must be valid operands for the bitcast instruction.
+[src:llvm-ir/langref-p02] This indicates that the parameter or return pointer is not null.
+[src:llvm-ir/langref-p02] This attribute may only be applied to pointer-typed parameters.
+[src:llvm-ir/langref-p02] This is not checked or enforced by LLVM; if the parameter or return pointer is null, poison value is returned or passed instead.
+[src:llvm-ir/langref-p02] The `nonnull` attribute only refers to the address bits of the pointers.
+[src:llvm-ir/langref-p02] If all the address bits are zero, the result will be a poison value, even if the pointer has non-zero non-address bits or non-zero external state.
+[src:llvm-ir/langref-p02] The `nonnull` attribute should be combined with the `noundef` attribute to ensure a pointer is not null or otherwise the behavior is undefined.
+[src:llvm-ir/langref-p02] This indicates that the parameter or return pointer is dereferenceable.
+[src:llvm-ir/langref-p02] A pointer that is dereferenceable can be loaded from speculatively without a risk of trapping.
+[src:llvm-ir/langref-p02] The number of bytes known to be dereferenceable must be provided in parentheses.
+[src:llvm-ir/langref-p02] The `nonnull` attribute does not imply dereferenceability (consider a pointer to one element past the end of an array), however `dereferenceable(<n>)` does imply `nonnull` in `addrspace(0)` (which is the default address space), except if the `null_pointer_is_valid` function attribute is present.
+[src:llvm-ir/langref-p02] The pointer should be well defined, otherwise it is undefined behavior.
+[src:llvm-ir/langref-p02] This means `dereferenceable(<n>)` implies `noundef`.
+[src:llvm-ir/langref-p02] This indicates that the parameter or return value isn’t both non-null and non-dereferenceable (up to `<n>` bytes) at the same time.
+[src:llvm-ir/langref-p02] All non-null pointers tagged with `dereferenceable_or_null(<n>)` are `dereferenceable(<n>)`.
+[src:llvm-ir/langref-p02] This indicates that the parameter is the self/context parameter.
+[src:llvm-ir/langref-p02] This indicates that the parameter is the asynchronous context parameter and triggers the creation of a target-specific extended frame record to store this pointer.
+[src:llvm-ir/langref-p02] This attribute is motivated to model and optimize Swift error handling.
+[src:llvm-ir/langref-p02] It can be applied to a parameter with pointer-to-pointer type or a pointer-sized alloca.
+[src:llvm-ir/langref-p02] At the call site, the actual argument that corresponds to a `swifterror` parameter has to come from a `swifterror` alloca or the `swifterror` parameter of the caller.
+[src:llvm-ir/langref-p02] A `swifterror` value (either the parameter or the alloca) can only be loaded and stored from, or used as a `swifterror` argument.
+[src:llvm-ir/langref-p02] These constraints allow the calling convention to optimize access to `swifterror` variables by associating them with a specific register at call boundaries rather than placing them in memory.
+[src:llvm-ir/langref-p02] Since this does change the calling convention, a function which uses the `swifterror` attribute on a parameter is not ABI-compatible with one which does not.
+[src:llvm-ir/langref-p02] These constraints also allow LLVM to assume that a `swifterror` argument does not alias any other memory visible within a function and that a `swifterror` alloca passed as an argument does not escape.
+[src:llvm-ir/langref-p02] This indicates the parameter is required to be an immediate value.
+[src:llvm-ir/langref-p02] This must be a trivial immediate integer or floating-point constant.
+[src:llvm-ir/langref-p02] Undef or constant expressions are not valid.
+[src:llvm-ir/langref-p02] This is only valid on intrinsic declarations and cannot be applied to a call site or arbitrary function.
+[src:llvm-ir/langref-p02] This attribute applies to parameters and return values.
+[src:llvm-ir/langref-p02] If the value representation contains any undefined or poison bits, the behavior is undefined.
+[src:llvm-ir/langref-p02] Note that this does not refer to padding introduced by the type’s storage representation.
+[src:llvm-ir/langref-p02] If memory sanitizer is enabled, `noundef` becomes an ABI attribute and must match between the call-site and the function definition.
+[src:llvm-ir/langref-p02] This attribute applies to parameters and return values with floating-point and vector of floating-point types, as well as supported aggregates of such types (matching the supported types for fast-math flags).
+[src:llvm-ir/langref-p02] The test mask has the same format as the second argument to the llvm.is.fpclass, and indicates which classes of floating-point values are not permitted for the value.
+[src:llvm-ir/langref-p02] For example, a bitmask of 3 indicates the parameter may not be a NaN.
+[src:llvm-ir/langref-p02] If the value is a floating-point class indicated by the `nofpclass` test mask, a poison value is passed or returned instead.
+[src:llvm-ir/langref-p02] This indicates the alignment that should be considered by the backend when assigning this parameter or return value to a stack slot during calling convention lowering.
+[src:llvm-ir/langref-p02] The enforcement of the specified alignment is target-dependent, as target-specific calling convention rules may override this value.
+[src:llvm-ir/langref-p02] This attribute serves the purpose of carrying language-specific alignment information that is not mapped to base types in the backend (for example, over-alignment specification through language attributes).
+[src:llvm-ir/langref-p02] The function parameter marked with this attribute is the alignment in bytes of the newly allocated block returned by this function.
+[src:llvm-ir/langref-p02] The returned value must either have the specified alignment or be the null pointer.
+[src:llvm-ir/langref-p02] The return value MAY be more aligned than the requested alignment, but not less aligned.
+[src:llvm-ir/langref-p02] Invalid (e.g., non-power-of-2) alignments are permitted for the allocalign parameter, so long as the returned pointer is null.
+[src:llvm-ir/langref-p02] This attribute may only be applied to integer parameters.
+[src:llvm-ir/langref-p02] The function parameter marked with this attribute is the pointer that will be manipulated by the allocator.
+[src:llvm-ir/langref-p02] For a realloc-like function the pointer will be invalidated upon success (but the same address may be returned), for a free-like function the pointer will always be invalidated.
+[src:llvm-ir/langref-p02] This attribute indicates that the function does not dereference that pointer argument, even though it may read or write the memory that the pointer points to if accessed through other pointers.
+[src:llvm-ir/langref-p02] If a function reads from or writes to a readnone pointer argument, the behavior is undefined.
+[src:llvm-ir/langref-p02] This attribute indicates that the function does not write through this pointer argument, even though it may write to the memory that the pointer points to.
+[src:llvm-ir/langref-p02] If a function writes to a readonly pointer argument, the behavior is undefined.
+[src:llvm-ir/langref-p02] This attribute indicates that the function may write to, but does not read through this pointer argument (even though it may read from the memory that the pointer points to).
+[src:llvm-ir/langref-p02] This attribute is understood in the same way as the `memory(write)` attribute.
+[src:llvm-ir/langref-p02] That is, the pointer may still be read as long as the read is not observable outside the function.
+[src:llvm-ir/langref-p02] See the `memory` documentation for precise semantics.
+[src:llvm-ir/langref-p02] This attribute is only meaningful in conjunction with `dereferenceable(N)` or another attribute that implies the first `N` bytes of the pointer argument are dereferenceable.
+[src:llvm-ir/langref-p02] In that case, the attribute indicates that the first `N` bytes will be (non-atomically) loaded and stored back on entry to the function.
+[src:llvm-ir/langref-p02] This implies that it’s possible to introduce spurious stores on entry to the function without introducing traps or data races.
+[src:llvm-ir/langref-p02] This does not necessarily hold throughout the whole function, as the pointer may escape to a different thread during the execution of the function.
+[src:llvm-ir/langref-p02] The “other attributes” that imply dereferenceability are `dereferenceable_or_null` (if the pointer is non-null) and the `sret`, `byval`, `byref`, `inalloca`, `preallocated` family of attributes.
+[src:llvm-ir/langref-p02] Note that not all of these combinations are useful, e.g.
+[src:llvm-ir/langref-p02] `byval` arguments are known to be writable even without this attribute.
+[src:llvm-ir/langref-p02] The `writable` attribute cannot be combined with `readnone`, `readonly` or a `memory` attribute that does not contain `argmem: write`.
+[src:llvm-ir/langref-p02] This attribute indicates that the function initializes the ranges of the pointer parameter’s memory `[%p+LoN, %p+HiN)`.
+[src:llvm-ir/langref-p02] Colloquially, this means that all bytes in the specified range are written before the function returns, and not read prior to the initializing write.
+[src:llvm-ir/langref-p02] If the function unwinds, the write may not happen.
+[src:llvm-ir/langref-p02] Formally, this is specified in terms of an “initialized” shadow state for all bytes in the range, which is set to “not initialized” at function entry.
+[src:llvm-ir/langref-p02] Additionally, if the function returns normally, write an undef value to all bytes that are part of the range and have not been marked as “initialized”.
+[src:llvm-ir/langref-p02] This attribute only holds for the memory accessed via this pointer parameter.
+[src:llvm-ir/langref-p02] Other arbitrary accesses to the same memory via other pointers are allowed.
+[src:llvm-ir/langref-p02] The `writable` or `dereferenceable` attribute do not imply the `initializes` attribute.
+[src:llvm-ir/langref-p02] The `initializes` attribute does not imply `writeonly` since `initializes` allows reading from the pointer after writing.
+[src:llvm-ir/langref-p02] This attribute is a list of constant ranges in ascending order with no overlapping or consecutive list elements.
+[src:llvm-ir/langref-p02] `LoN/HiN` are 64-bit integers, and negative values are allowed in case the argument points partway into an allocation.
+[src:llvm-ir/langref-p02] On a `byval` argument, `initializes` refers to the given parts of the callee copy being overwritten.
+[src:llvm-ir/langref-p02] A `byval` callee can never initialize the original caller memory passed to the `byval` argument.
+[src:llvm-ir/langref-p02] At a high level, this attribute indicates that the pointer argument is dead if the call unwinds, in the sense that the caller will not depend on the contents of the memory.
+[src:llvm-ir/langref-p02] Stores that would only be visible on the unwind path can be elided.
+[src:llvm-ir/langref-p02] More precisely, the behavior is as-if any memory written through the pointer during the execution of the function is overwritten with a poison value on unwind.
+[src:llvm-ir/langref-p02] This includes memory written by the implicit write implied by the `writable` attribute.
+[src:llvm-ir/langref-p02] The caller is allowed to access the affected memory, but all loads that are not preceded by a store will return poison.
+[src:llvm-ir/langref-p02] This attribute cannot be applied to return values.
+[src:llvm-ir/langref-p02] This attribute indicates that the memory pointed to by the argument is dead upon function return, both upon normal return and if the calls unwinds, meaning that the caller will not depend on its contents.
+[src:llvm-ir/langref-p02] Stores that would be observable either on the return path or on the unwind path may be elided.
+[src:llvm-ir/langref-p02] A number of bytes known to be dead may optionally be provided in parentheses.
+[src:llvm-ir/langref-p02] If a number of bytes is not specified, all memory reachable through the pointer is marked as dead on return.
+[src:llvm-ir/langref-p02] Specifically, the behavior is as-if any memory written through the pointer during the execution of the function is overwritten with a poison value upon function return.
+[src:llvm-ir/langref-p02] The caller may access the memory, but any load not preceded by a store will return poison.
+[src:llvm-ir/langref-p02] If a byte count is specified, only writes within the specified range are overwritten with poison on function return.
+[src:llvm-ir/langref-p02] This attribute does not imply aliasing properties.
+[src:llvm-ir/langref-p02] For pointer arguments that do not alias other memory locations, `noalias` attribute may be used in conjunction.
+[src:llvm-ir/langref-p02] Conversely, this attribute always implies `dead_on_unwind`.
+[src:llvm-ir/langref-p02] When a byte count is specified, `dead_on_unwind` is implied only for that range.
+[src:llvm-ir/langref-p02] This attribute expresses the possible range of the parameter or return value.
+[src:llvm-ir/langref-p02] If the value is not in the specified range, it is converted to poison.
+[src:llvm-ir/langref-p02] This attribute may only be applied to parameters or return values with integer or vector of integer types.
+[src:llvm-ir/langref-p02] For vector-typed parameters, the range is applied element-wise.
+[src:llvm-ir/langref-p02] The supported values of *name* include those built in to LLVM and any provided by loaded plugins.
+[src:llvm-ir/langref-p02] Specifying a GC strategy will cause the compiler to alter its output in order to support the named garbage collection algorithm.
+[src:llvm-ir/langref-p02] Note that LLVM itself does not contain a garbage collector, this functionality is restricted to generating machine code which can interoperate with a collector provided externally.
+[src:llvm-ir/langref-p02] Prefix data is data associated with a function which the code generator will emit immediately before the function’s entrypoint.
+[src:llvm-ir/langref-p02] The purpose of this feature is to allow frontends to associate language-specific runtime metadata with specific functions and make it available through the function pointer while still allowing the function pointer to be called.
+[src:llvm-ir/langref-p02] To access the data for a given function, a program may bitcast the function pointer to a pointer to the constant’s type and dereference index -1.
+[src:llvm-ir/langref-p02] This implies that the IR symbol points just past the end of the prefix data.
+[src:llvm-ir/langref-p02] Prefix data is laid out as if it were an initializer for a global variable of the prefix data’s type.
+[src:llvm-ir/langref-p02] The function will be placed such that the beginning of the prefix data is aligned.
+[src:llvm-ir/langref-p02] This means that if the size of the prefix data is not a multiple of the alignment size, the function’s entrypoint will not be aligned.
+[src:llvm-ir/langref-p02] If alignment of the function’s entrypoint is desired, padding must be added to the prefix data.
+[src:llvm-ir/langref-p02] A function may have prefix data but no body.
+[src:llvm-ir/langref-p02] This has similar semantics to the `available_externally` linkage in that the data may be used by the optimizers but will not be emitted in the object file.
+[src:llvm-ir/langref-p02] The `prologue` attribute allows arbitrary code (encoded as bytes) to be inserted prior to the function body.
+[src:llvm-ir/langref-p02] This can be used for enabling function hot-patching and instrumentation.
+[src:llvm-ir/langref-p02] To maintain the semantics of ordinary function calls, the prologue data must have a particular format.
+[src:llvm-ir/langref-p02] Specifically, it must begin with a sequence of bytes which decode to a sequence of machine instructions, valid for the module’s target, which transfer control to the point immediately succeeding the prologue data, without performing any other visible action.
+[src:llvm-ir/langref-p02] This allows the inliner and other passes to reason about the semantics of the function definition without needing to reason about the prologue data.
+[src:llvm-ir/langref-p02] Obviously this makes the format of the prologue data highly target dependent.
+[src:llvm-ir/langref-p02] A function may have prologue data but no body.
+[src:llvm-ir/langref-p02] The `personality` attribute permits functions to specify what function to use for exception handling.
+[src:llvm-ir/langref-p02] Attribute groups are groups of attributes that are referenced by objects within the IR.
+[src:llvm-ir/langref-p02] They are important for keeping `.ll` files readable, because a lot of functions will use the same set of attributes.
+[src:llvm-ir/langref-p02] In the degenerate case of a `.ll` file that corresponds to a single `.c` file, the single attribute group will capture the important command line flags used to build that file.
+[src:llvm-ir/langref-p02] An attribute group is a module-level object.
+[src:llvm-ir/langref-p02] To use an attribute group, an object references the attribute group’s ID (e.g., `#37`).
+[src:llvm-ir/langref-p02] An object may refer to more than one attribute group.
+[src:llvm-ir/langref-p02] In that situation, the attributes from the different groups are merged.
+[src:llvm-ir/langref-p02] Function attributes are set to communicate additional information about a function.
+[src:llvm-ir/langref-p02] Function attributes are considered to be part of the function, not of the function type, so functions with different function attributes can have the same function type.
+[src:llvm-ir/langref-p02] Function attributes are simple keywords or strings that follow the specified type.
+[src:llvm-ir/langref-p02] Multiple attributes, when required, are separated by spaces.
+[src:llvm-ir/langref-p02] This attribute indicates that, when emitting the prologue and epilogue, the backend should forcibly align the stack pointer.
+[src:llvm-ir/langref-p02] Specify the desired alignment, which must be a power of two, in parentheses.
+[src:llvm-ir/langref-p02] This indicates which “family” an allocator function is part of.
+[src:llvm-ir/langref-p02] To avoid collisions, the family name should match the mangled name of the primary allocator function, that is “malloc” for malloc/calloc/realloc/free, “_Znwm” for `::operator::new` and `::operator::delete`, and “_ZnwmSt11align_val_t” for aligned `::operator::new` and `::operator::delete`.
+[src:llvm-ir/langref-p02] Matching malloc/realloc/free calls within a family can be optimized, but mismatched ones will be left alone.
+[src:llvm-ir/langref-p02] Describes the behavior of an allocation function.
+[src:llvm-ir/langref-p02] The first three options are mutually exclusive, and the remaining options describe more details of how the function behaves.
+[src:llvm-ir/langref-p02] The remaining options are invalid for “free”-type functions.
+[src:llvm-ir/langref-p02] Calls to functions annotated with `allockind` are subject to allocation elision: Calls to allocator functions can be removed, and the allocation served from a “virtual” allocator instead.
+[src:llvm-ir/langref-p02] Notably, this is allowed even if the allocator calls have side-effects.
+[src:llvm-ir/langref-p02] In other words, for each allocation there is a non-deterministic choice between calling the allocator as usual, or using a virtual, side-effect-free allocator instead.
+[src:llvm-ir/langref-p02] If multiple allocation functions operate on the same allocation, allocation elision is only allowed for pairs of “alloc” and “free” with the same `"alloc-family"` attribute.
+[src:llvm-ir/langref-p02] For this purpose, a “realloc” call may be decomposed into “alloc” and “free” operations, as long as at least one of them will be elided.
+[src:llvm-ir/langref-p02] This attribute indicates that another function is equivalent to an allocator function, but returns zeroed memory.
+[src:llvm-ir/langref-p02] The function must have “zeroed” allocation behavior, the same `alloc-family`, and take exactly the same arguments.
+[src:llvm-ir/langref-p02] This attribute indicates that the annotated function will always return at least a given number of bytes (or null).
+[src:llvm-ir/langref-p02] Its arguments are zero-indexed parameter numbers; if one argument is provided, then it’s assumed that at least `CallSite.Args[EltSizeParam]` bytes will be available at the returned pointer.
+[src:llvm-ir/langref-p02] If two are provided, then it’s assumed that `CallSite.Args[EltSizeParam] * CallSite.Args[NumEltsParam]` bytes are available.
+[src:llvm-ir/langref-p02] The referenced parameters must be integer types.
+[src:llvm-ir/langref-p02] No assumptions are made about the contents of the returned block of memory.
+[src:llvm-ir/langref-p02] This attribute indicates that the inliner should attempt to inline this function into callers whenever possible, ignoring any active inlining size threshold for this caller.
+[src:llvm-ir/langref-p02] This indicates that the callee function at a call site should be recognized as a built-in function, even though the function’s declaration uses the `nobuiltin` attribute.
+[src:llvm-ir/langref-p02] This is only valid at call sites for direct calls to functions that are declared with the `nobuiltin` attribute.
+[src:llvm-ir/langref-p02] This attribute indicates that this function is rarely called.
+[src:llvm-ir/langref-p02] When computing edge weights, basic blocks post-dominated by a cold function call are also considered to be cold and, thus, given a low weight.
+[src:llvm-ir/langref-p02] This attribute indicates that this function is convergent.
+[src:llvm-ir/langref-p02] When it appears on a call/invoke, the convergent attribute indicates that we should treat the call as though we’re calling a convergent function.
+[src:llvm-ir/langref-p02] This is particularly useful on indirect calls; without this we may treat such calls as though the target is non-convergent.
+[src:llvm-ir/langref-p02] See Convergent Operation Semantics for further details.
+[src:llvm-ir/langref-p02] It is an error to call llvm.experimental.convergence.entry from a function that does not have this attribute.
+[src:llvm-ir/langref-p02] When instrumenting code with sanitizers, it can be important to skip certain functions to ensure no instrumentation is applied to them.
+[src:llvm-ir/langref-p02] This attribute is not always similar to absent `sanitize_<name>` attributes: depending on the specific sanitizer, code can be inserted into functions regardless of the `sanitize_<name>` attribute to prevent false positive reports.
+[src:llvm-ir/langref-p02] `disable_sanitizer_instrumentation` disables all kinds of instrumentation, taking precedence over the `sanitize_<name>` attributes and other compiler flags.
+[src:llvm-ir/langref-p02] This attribute denotes that an error diagnostic should be emitted when a call of a function with this attribute is not eliminated via optimization.
+[src:llvm-ir/langref-p02] Front ends can provide optional `srcloc` metadata nodes on call sites of such callees to attach information about where in the source language such a call came from.
+[src:llvm-ir/langref-p02] A string value can be provided as a note.
+[src:llvm-ir/langref-p02] This attribute denotes that a warning diagnostic should be emitted when a call of a function with this attribute is not eliminated via optimization.
+[src:llvm-ir/langref-p02] This attribute tells the code generator that returns from functions should be replaced with jumps to externally-defined architecture-specific symbols.
+[src:llvm-ir/langref-p02] For X86, this symbol’s identifier is `__x86_return_thunk`.
+[src:llvm-ir/langref-p02] This attribute tells the code generator whether the function should keep the frame pointer.
+[src:llvm-ir/langref-p02] The code generator may emit the frame pointer even if this attribute says the frame pointer can be eliminated.
+[src:llvm-ir/langref-p02] This attribute indicates that this function is a hot spot of the program execution.
+[src:llvm-ir/langref-p02] The function will be optimized more aggressively and will be placed into a special subsection of the text section to improve locality.
+[src:llvm-ir/langref-p02] When profile feedback is enabled, this attribute takes precedence over the profile information.
+[src:llvm-ir/langref-p02] By marking a function `hot`, users can work around the cases where the training input does not have good coverage on all the hot functions.
+[src:llvm-ir/langref-p02] This attribute indicates that the source code contained a hint that inlining this function is desirable (such as the “inline” keyword in C/C++).
+[src:llvm-ir/langref-p02] It is just a hint; it imposes no requirements on the inliner.
+[src:llvm-ir/langref-p03] This attribute indicates that the function should be added to a jump-instruction table at code-generation time, and that all address-taken references to this function should be replaced with a reference to the appropriate jump-instruction-table function pointer.
+[src:llvm-ir/langref-p03] Note that this creates a new pointer for the original function, which means that code that depends on function-pointer identity can break.
+[src:llvm-ir/langref-p03] So, any function annotated with `jumptable` must also be `unnamed_addr`.
+[src:llvm-ir/langref-p03] This attribute specifies the possible memory effects of the call-site or function.
+[src:llvm-ir/langref-p03] It allows specifying the possible access kinds (`none`, `read`, `write`, or `readwrite`) for the possible memory location kinds (`argmem`, `inaccessiblemem`, `errnomem`, `target_mem0`, `target_mem1`, as well as a default).
+[src:llvm-ir/langref-p03] If the `memory` attribute is not specified, then `memory(readwrite)` is implied (all memory effects are possible).
+[src:llvm-ir/langref-p03] The memory effects of a call can be computed as `CallSiteEffects & (FunctionEffects | OperandBundleEffects)`.
+[src:llvm-ir/langref-p03] Thus, the call-site annotation takes precedence over the potential effects described by either the function annotation or the operand bundles.
+[src:llvm-ir/langref-p03] This attribute suggests that optimization passes and code generator passes make choices that keep the code size of this function as small as possible and perform optimizations that may sacrifice runtime performance in order to minimize the size of the generated code.
+[src:llvm-ir/langref-p03] This attribute is incompatible with the `optdebug` and `optnone` attributes.
+[src:llvm-ir/langref-p03] This attribute disables prologue / epilogue emission for the function.
+[src:llvm-ir/langref-p03] This can have very system-specific consequences.
+[src:llvm-ir/langref-p03] The arguments of a `naked` function can not be referenced through IR values.
+[src:llvm-ir/langref-p03] When this attribute is set to true, the inliner discards source locations when inlining code and instead uses the source location of the call site.
+[src:llvm-ir/langref-p03] Breakpoints set on code that was inlined into the current function will not fire during the execution of the inlined call sites.
+[src:llvm-ir/langref-p03] If the debugger stops inside an inlined call site, it will appear to be stopped at the outermost inlined call site.
+[src:llvm-ir/langref-p03] When this attribute is set to true, the jump tables and lookup tables that can be generated from a switch case lowering are disabled.
+[src:llvm-ir/langref-p03] This indicates that the callee function at a call site is not recognized as a built-in function.
+[src:llvm-ir/langref-p03] LLVM will retain the original call and not replace it with equivalent code based on the semantics of the built-in function, unless the call site uses the `builtin` attribute.
+[src:llvm-ir/langref-p03] This is valid at call sites and on function declarations and definitions.
+[src:llvm-ir/langref-p03] This attribute indicates that the function is only allowed to jump back into the caller’s module by a return or an exception, and is not allowed to jump back by invoking a callback function, a direct, possibly transitive, external function call, use of `longjmp`, or other means.
+[src:llvm-ir/langref-p03] It is a compiler hint that is used at the module level to improve dataflow analysis, dropped during linking, and has no effect on functions defined in the current module.
+[src:llvm-ir/langref-p03] A call to this function is not a source of divergence.
+[src:llvm-ir/langref-p03] In uniformity analysis, a *source of divergence* is an instruction that generates divergence even if its inputs are uniform.
+[src:llvm-ir/langref-p03] A call with no further information would normally be considered a source of divergence; setting this attribute on a function means that a call to it is not a source of divergence.
+[src:llvm-ir/langref-p03] This attribute indicates that calls to the function cannot be duplicated.
+[src:llvm-ir/langref-p03] A call to a `noduplicate` function may be moved within its parent function, but may not be duplicated within its parent function.
+[src:llvm-ir/langref-p03] A function containing a `noduplicate` call may still be an inlining candidate, provided that the call is not duplicated by inlining.
+[src:llvm-ir/langref-p03] That implies that the function has internal linkage and only has one call site, so the original call is dead after inlining.
+[src:llvm-ir/langref-p03] This function attribute indicates that the function does not free any memory allocation which existed before the call, either through direct calls to a memory-deallocation function like `free`, or through synchronization.
+[src:llvm-ir/langref-p03] Freeing through synchronization here means that a deallocation *happens-before* the function exit but does not *happens-before* the function entry.
+[src:llvm-ir/langref-p03] As a result, pointers that are known to be dereferenceable prior to a call to a function with the `nofree` attribute are still known to be dereferenceable after the call.
+[src:llvm-ir/langref-p03] A `nofree` function is explicitly allowed to free memory which it allocated or arrange for another thread to free such memory on its behalf.
+[src:llvm-ir/langref-p03] As a result, perhaps surprisingly, a `nofree` function can return a pointer to a previously deallocated allocated object.
+[src:llvm-ir/langref-p03] This inhibits optimizations that use floating-point code and floating-point registers for operations that are not nominally floating-point.
+[src:llvm-ir/langref-p03] LLVM instructions that perform floating-point operations or require access to floating-point registers may still cause floating-point code to be generated.
+[src:llvm-ir/langref-p03] Also inhibits optimizations that create SIMD/vector code and registers from scalar code such as vectorization or memcpy/memset optimization.
+[src:llvm-ir/langref-p03] Vector instructions present in IR may still cause vector code to be generated.
+[src:llvm-ir/langref-p03] This attribute indicates that the inliner should never inline this function in any situation.
+[src:llvm-ir/langref-p03] This attribute may not be used together with the `alwaysinline` attribute.
+[src:llvm-ir/langref-p03] Disables any interprocedural analysis that inspects the definition of this function.
+[src:llvm-ir/langref-p03] This attribute is equivalent to moving this function definition to a separate, optimizer-opaque, module.
+[src:llvm-ir/langref-p03] Any attributes on the function are still respected (as they would be if they remained on a function declaration in this module).
+[src:llvm-ir/langref-p03] This attribute does *not* control inlining or outlining.
+[src:llvm-ir/langref-p03] Add the `noinline` and `nooutline` attributes as well in cases where inlining and outlining should additionally be disabled.
+[src:llvm-ir/langref-p03] This attribute indicates that calls to this function should never be merged during optimization.
+[src:llvm-ir/langref-p03] For example, it will prevent tail merging otherwise identical code sequences that raise an exception or terminate the program.
+[src:llvm-ir/langref-p03] Tail merging normally reduces the precision of source location information, making stack traces less useful for debugging.
+[src:llvm-ir/langref-p03] This attribute gives the user control over the tradeoff between code size and debug information precision.
+[src:llvm-ir/langref-p03] This attribute suppresses lazy symbol binding for the function.
+[src:llvm-ir/langref-p03] This may make calls to the function faster, at the cost of extra program startup time if the function is not called during program startup.
+[src:llvm-ir/langref-p03] This function attribute prevents instrumentation-based profiling, used for coverage or profile based optimization, from being added to a function.
+[src:llvm-ir/langref-p03] It also blocks inlining if the caller and callee have different values of this attribute.
+[src:llvm-ir/langref-p03] This attribute does not restrict inlining, so instrumented instructions could end up in this function.
+[src:llvm-ir/langref-p03] This attribute indicates that the code generator should not use a red zone, even if the target-specific ABI normally permits it.
+[src:llvm-ir/langref-p03] This attribute indicates that the code generator should not use direct TLS access through segment registers, even if the target-specific ABI normally permits it.
+[src:llvm-ir/langref-p03] This function attribute indicates that the function never returns normally, hence through a return instruction.
+[src:llvm-ir/langref-p03] This produces undefined behavior at runtime if the function ever does dynamically return.
+[src:llvm-ir/langref-p03] Annotated functions may still raise an exception, i.a., `nounwind` is not implied.
+[src:llvm-ir/langref-p03] This function attribute indicates that the function is not recursive and does not participate in recursion.
+[src:llvm-ir/langref-p03] This means that the function never occurs inside a cycle in the dynamic call graph.
+[src:llvm-ir/langref-p03] This function attribute indicates that a call of this function will either exhibit undefined behavior or comes back and continues execution at a point in the existing call stack that includes the current invocation.
+[src:llvm-ir/langref-p03] If an invocation of an annotated function does not return control back to a point in the call stack, the behavior is undefined.
+[src:llvm-ir/langref-p03] This function attribute indicates that the function does not introduce any *synchronizes-with* edges in the sense of the memory model.
+[src:llvm-ir/langref-p03] In particular, synchronization is considered possible in the presence of *atomic* accesses that enforce an order, thus not “unordered” and “monotonic”, as well as *convergent* function calls.
+[src:llvm-ir/langref-p03] Note that *convergent* operations can involve communication that is considered to be not through memory and does not necessarily imply an ordering between threads for the purposes of the memory model.
+[src:llvm-ir/langref-p03] Therefore, an operation can be both *convergent* and *nosync*.
+[src:llvm-ir/langref-p03] If a *nosync* function does ever synchronize with another thread, the behavior is undefined.
+[src:llvm-ir/langref-p03] This function attribute indicates that the function never raises an exception.
+[src:llvm-ir/langref-p03] If the function does raise an exception, its runtime behavior is undefined.
+[src:llvm-ir/langref-p03] However, functions marked nounwind may still trap or generate asynchronous exceptions.
+[src:llvm-ir/langref-p03] Exception handling schemes that are recognized by LLVM to handle asynchronous exceptions, such as SEH, will still provide their implementation defined semantics.
+[src:llvm-ir/langref-p03] This attribute indicates that bounds checking sanitizer instrumentation is disabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that SanitizerCoverage instrumentation is disabled for this function.
+[src:llvm-ir/langref-p03] If `null_pointer_is_valid` is set, then the `null` address in address-space 0 is considered to be a valid address for memory loads and stores.
+[src:llvm-ir/langref-p03] Any analysis or optimization should not treat dereferencing a pointer to `null` as undefined behavior in this function.
+[src:llvm-ir/langref-p03] Note: Comparing the address of a global variable to `null` may still evaluate to false because of a limitation in querying this attribute inside constant expressions.
+[src:llvm-ir/langref-p03] This attribute suggests that optimization passes and code generator passes should make choices that try to preserve debug info without significantly degrading runtime performance.
+[src:llvm-ir/langref-p03] This attribute is incompatible with the `minsize`, `optsize`, and `optnone` attributes.
+[src:llvm-ir/langref-p03] This attribute indicates that this function should be optimized for maximum fuzzing signal.
+[src:llvm-ir/langref-p03] This function attribute indicates that most optimization passes will skip this function, with the exception of interprocedural optimization passes.
+[src:llvm-ir/langref-p03] Code generation defaults to the “fast” instruction selector.
+[src:llvm-ir/langref-p03] This attribute cannot be used together with the `alwaysinline` attribute; this attribute is also incompatible with the `minsize`, `optsize`, and `optdebug` attributes.
+[src:llvm-ir/langref-p03] This attribute requires the `noinline` attribute to be specified on the function as well, so the function is never inlined into any caller.
+[src:llvm-ir/langref-p03] Only functions with the `alwaysinline` attribute are valid candidates for inlining into the body of this function.
+[src:llvm-ir/langref-p03] This attribute suggests that optimization passes and code generator passes make choices that keep the code size of this function low, and otherwise do optimizations specifically to reduce code size as long as they do not significantly impact runtime performance.
+[src:llvm-ir/langref-p03] This attribute tells the code generator that the code generated for this function needs to follow certain conventions that make it possible for a runtime function to patch over it later.
+[src:llvm-ir/langref-p03] This attribute by itself does not imply restrictions on inter-procedural optimizations.
+[src:llvm-ir/langref-p03] All of the semantic effects the patching may have to be separately conveyed via the linkage type.
+[src:llvm-ir/langref-p03] This attribute specifies the number of target-specific NOP instructions emitted before the function entry label.
+[src:llvm-ir/langref-p03] This attribute specifies the number of target-specific NOP instructions emitted after the function entry label.
+[src:llvm-ir/langref-p03] These NOPs are emitted before the function prologue.
+[src:llvm-ir/langref-p03] This attribute specifies the section used to record the start of the patchable function entry area when such a section is emitted.
+[src:llvm-ir/langref-p03] If omitted, the default section name is `__patchable_function_entries`.
+[src:llvm-ir/langref-p03] This attribute indicates that the function will trigger a guard region in the end of the stack.
+[src:llvm-ir/langref-p03] It ensures that accesses to the stack must be no further apart than the size of the guard region to a previous access of the stack.
+[src:llvm-ir/langref-p03] It takes one required string value, the name of the stack probing function that will be called.
+[src:llvm-ir/langref-p03] If a function that has a `"probe-stack"` attribute is inlined into a function with another `"probe-stack"` attribute, the resulting function has the `"probe-stack"` attribute of the caller.
+[src:llvm-ir/langref-p03] If a function that has a `"probe-stack"` attribute is inlined into a function that has no `"probe-stack"` attribute at all, the resulting function has the `"probe-stack"` attribute of the callee.
+[src:llvm-ir/langref-p03] This attribute controls the behavior of stack probes: either the `"probe-stack"` attribute, or ABI-required stack probes, if any.
+[src:llvm-ir/langref-p03] It defines the size of the guard region.
+[src:llvm-ir/langref-p03] It ensures that if the function may use more stack space than the size of the guard region, a stack probing sequence will be emitted.
+[src:llvm-ir/langref-p03] It takes one required integer value, which is 4096 by default.
+[src:llvm-ir/langref-p03] If a function that has a `"stack-probe-size"` attribute is inlined into a function with another `"stack-probe-size"` attribute, the resulting function has the `"stack-probe-size"` attribute that has the lower numeric value.
+[src:llvm-ir/langref-p03] If a function that has a `"stack-probe-size"` attribute is inlined into a function that has no `"stack-probe-size"` attribute at all, the resulting function has the `"stack-probe-size"` attribute of the callee.
+[src:llvm-ir/langref-p03] This attribute disables ABI-required stack probes, if any.
+[src:llvm-ir/langref-p03] This attribute indicates that this function can return twice.
+[src:llvm-ir/langref-p03] The C `setjmp` is an example of such a function.
+[src:llvm-ir/langref-p03] The compiler disables some optimizations (like tail calls) in the caller of these functions.
+[src:llvm-ir/langref-p03] This attribute indicates that SafeStack protection is enabled for this function.
+[src:llvm-ir/langref-p03] If a function that has a `safestack` attribute is inlined into a function that doesn’t have a `safestack` attribute or which has an `ssp`, `sspstrong` or `sspreq` attribute, then the resulting function will have a `safestack` attribute.
+[src:llvm-ir/langref-p03] This attribute indicates that AddressSanitizer checks (dynamic address safety analysis) are enabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that MemorySanitizer checks (dynamic detection of accesses to uninitialized memory) are enabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that ThreadSanitizer checks (dynamic thread safety analysis) are enabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that HWAddressSanitizer checks (dynamic address safety analysis based on tagged pointers) are enabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that MemTagSanitizer checks (dynamic address safety analysis based on Armv8 MTE) are enabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that RealtimeSanitizer checks (realtime safety analysis - no allocations, syscalls or exceptions) are enabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that RealtimeSanitizer should error immediately if the attributed function is called during invocation of a function attributed with `sanitize_realtime`.
+[src:llvm-ir/langref-p03] This attribute is incompatible with the `sanitize_realtime` attribute.
+[src:llvm-ir/langref-p03] This attribute indicates that implicit allocation token instrumentation is enabled for this function.
+[src:llvm-ir/langref-p03] This attribute indicates that Speculative Load Hardening should be enabled for the function body.
+[src:llvm-ir/langref-p03] Speculative Load Hardening is a best-effort mitigation against information leak attacks that make use of control flow miss-speculation - specifically miss-speculation of whether a branch is taken or not.
+[src:llvm-ir/langref-p03] Typically vulnerabilities enabling such attacks are classified as “Spectre variant #1”.
+[src:llvm-ir/langref-p03] Notably, this does not attempt to mitigate against miss-speculation of branch target, classified as “Spectre variant #2” vulnerabilities.
+[src:llvm-ir/langref-p03] Inlining a function that carries this attribute will cause the caller to gain the attribute.
+[src:llvm-ir/langref-p03] This is intended to provide a maximally conservative model where the code in a function annotated with this attribute will always (even after inlining) end up hardened.
+[src:llvm-ir/langref-p03] This function attribute indicates that the function does not have any effects besides calculating its result and does not have undefined behavior.
+[src:llvm-ir/langref-p03] Note that `speculatable` is not enough to conclude that along any particular execution path the number of calls to this function will not be externally observable.
+[src:llvm-ir/langref-p03] This attribute is only valid on functions and declarations, not on individual call sites.
+[src:llvm-ir/langref-p03] If a function is incorrectly marked as speculatable and really does exhibit undefined behavior, the undefined behavior may be observed even if the call site is dead code.
+[src:llvm-ir/langref-p03] This attribute indicates that the function should emit a stack smashing protector.
+[src:llvm-ir/langref-p03] It is in the form of a “canary” — a random value placed on the stack before the local variables that’s checked upon return from the function to see if it has been overwritten.
+[src:llvm-ir/langref-p03] A heuristic is used to determine if a function needs stack protectors or not.
+[src:llvm-ir/langref-p03] Variables that are identified as requiring a protector will be arranged on the stack such that they are adjacent to the stack protector guard.
+[src:llvm-ir/langref-p03] If a function with an `ssp` attribute is inlined into a calling function, the attribute is not carried over to the calling function.
+[src:llvm-ir/langref-p03] This attribute causes a strong heuristic to be used when determining if a function needs stack protectors.
+[src:llvm-ir/langref-p03] Small arrays and structures containing small arrays (`< ssp-buffer-size`) are 2nd closest to the protector.
+[src:llvm-ir/langref-p03] Variables that have had their address taken are 3rd closest to the protector.
+[src:llvm-ir/langref-p03] This overrides the `ssp` function attribute.
+[src:llvm-ir/langref-p03] If a function with an `sspstrong` attribute is inlined into a calling function which has an `ssp` attribute, the calling function’s attribute will be upgraded to `sspstrong`.
+[src:llvm-ir/langref-p03] This attribute indicates that the function should *always* emit a stack smashing protector.
+[src:llvm-ir/langref-p03] This overrides the `ssp` and `sspstrong` function attributes.
+[src:llvm-ir/langref-p03] If a function with an `sspreq` attribute is inlined into a calling function which has an `ssp` or `sspstrong` attribute, the calling function’s attribute will be upgraded to `sspreq`.
+[src:llvm-ir/langref-p03] This attribute indicates that the function was called from a scope that requires strict floating-point semantics.
+[src:llvm-ir/langref-p03] LLVM will not attempt any optimizations that require assumptions about the floating-point rounding mode or that might alter the state of floating-point status flags that might otherwise be set or cleared by calling this function.
+[src:llvm-ir/langref-p03] LLVM will not introduce any new floating-point instructions that may trap.
+[src:llvm-ir/langref-p03] This indicates the denormal (subnormal) handling that may be assumed for the default floating-point environment.
+[src:llvm-ir/langref-p03] The elements may be one of `ieee`, `preservesign`, `positivezero`, or `dynamic`.
+[src:llvm-ir/langref-p03] The first entry indicates the flushing mode for the result of floating point operations.
+[src:llvm-ir/langref-p03] The second indicates the handling of denormal inputs to floating point instructions.
+[src:llvm-ir/langref-p03] For compatibility with older bitcode, if the second value is omitted, both input and output modes will assume the same mode.
+[src:llvm-ir/langref-p03] If this is attribute is not specified, the default is `ieee|ieee`.
+[src:llvm-ir/langref-p03] If the output mode is `preservesign`, or `positivezero`, denormal outputs may be flushed to zero by standard floating-point operations.
+[src:llvm-ir/langref-p03] It is not mandated that flushing to zero occurs, but if a denormal output is flushed to zero, it must respect the sign mode.
+[src:llvm-ir/langref-p03] If the mode is `dynamic`, the behavior is derived from the dynamic state of the floating-point environment.
+[src:llvm-ir/langref-p03] Transformations which depend on the behavior of denormal values should not be performed.
+[src:llvm-ir/langref-p03] While this indicates the expected floating point mode the function will be executed with, this does not make any attempt to ensure the mode is consistent.
+[src:llvm-ir/langref-p03] User or platform code is expected to set the floating point mode appropriately before function entry.
+[src:llvm-ir/langref-p03] This may optionally specify a second pair, prefixed with `float:`.
+[src:llvm-ir/langref-p03] This provides an override for the behavior of 32-bit float type (or vectors of 32-bit floats).
+[src:llvm-ir/langref-p03] If the input mode is `preservesign`, or `positivezero`, a floating-point operation must treat any input denormal value as zero.
+[src:llvm-ir/langref-p03] In some situations, if an instruction does not respect this mode, the input may need to be converted to 0 as if by `@llvm.canonicalize` during lowering for correctness.
+[src:llvm-ir/langref-p03] This provides an override for the behavior of 32-bit float type.
+[src:llvm-ir/langref-p03] If this is present, this overrides the base handling of the default mode.
+[src:llvm-ir/langref-p03] Not all targets support separately setting the denormal mode per type, and no attempt is made to diagnose unsupported uses.
+[src:llvm-ir/langref-p03] Currently this attribute is respected by the AMDGPU and NVPTX backends.
+[src:llvm-ir/langref-p03] This attribute indicates that the function will delegate to some other function with a tail call.
+[src:llvm-ir/langref-p03] The prototype of a thunk should not be used for optimization purposes.
+[src:llvm-ir/langref-p03] The caller is expected to cast the thunk prototype to match the thunk target prototype.
+[src:llvm-ir/langref-p03] This attribute indicates that the ABI being targeted requires that an unwind table entry be produced for this function even if we can show that no exceptions pass by it.
+[src:llvm-ir/langref-p03] This is normally the case for the ELF x86-64 abi, but it can be disabled for some compilation units.
+[src:llvm-ir/langref-p03] The optional parameter describes what kind of unwind tables to generate: `sync` for normal unwind tables, `async` for asynchronous (instruction precise) unwind tables.
+[src:llvm-ir/langref-p03] Without the parameter, the attribute `uwtable` is equivalent to `uwtable(async)`.
+[src:llvm-ir/langref-p03] This attribute indicates that no control-flow check will be performed on the attributed entity.
+[src:llvm-ir/langref-p03] It disables -fcf-protection=<> for a specific entity to fine grain the HW control flow protection mechanism.
+[src:llvm-ir/langref-p03] The flag is target independent and currently appertains to a function or function pointer.
+[src:llvm-ir/langref-p03] This attribute indicates that the ShadowCallStack checks are enabled for the function.
+[src:llvm-ir/langref-p03] The instrumentation checks that the return address for the function has not changed between the function prologue and epilogue.
+[src:llvm-ir/langref-p03] This attribute indicates that the function is required to return, unwind, or interact with the environment in an observable way e.g., via a volatile memory access, I/O, or other synchronization.
+[src:llvm-ir/langref-p03] The `mustprogress` attribute is intended to model the requirements of the first section of [intro.progress] of the C++ Standard.
+[src:llvm-ir/langref-p03] As a consequence, a loop in a function with the `mustprogress` attribute can be assumed to terminate if it does not interact with the environment in an observable way, and terminating loops without side-effects can be removed.
+[src:llvm-ir/langref-p03] If a `mustprogress` function does not satisfy this contract, the behavior is undefined.
+[src:llvm-ir/langref-p03] If a `mustprogress` function calls a function not marked `mustprogress`, and that function never returns, the program is well-defined even if there isn’t any other observable progress.
+[src:llvm-ir/langref-p03] Note that `willreturn` implies `mustprogress`.
+[src:llvm-ir/langref-p03] This attribute sets a threshold to emit diagnostics once the frame size is known should the frame size exceed the specified value.
+[src:llvm-ir/langref-p03] It takes one required integer value, which should be a non-negative integer, and less than *UINT_MAX*.
+[src:llvm-ir/langref-p03] It’s unspecified which threshold will be used when duplicate definitions are linked together with differing values.
+[src:llvm-ir/langref-p03] This function attribute indicates *vscale* is a power-of-two within a specified range.
+[src:llvm-ir/langref-p03] *min* must be a power-of-two that is greater than 0.
+[src:llvm-ir/langref-p03] When specified, *max* must be a power-of-two greater-than-or-equal to *min* or 0 to signify an unbounded maximum.
+[src:llvm-ir/langref-p03] The syntax *vscale_range(<val>)* can be used to set both *min* and *max* to the same value.
+[src:llvm-ir/langref-p03] Functions that don’t include this attribute make no assumptions about the range of *vscale*.
+[src:llvm-ir/langref-p03] This attribute indicates that outlining passes should not modify the function.
+[src:llvm-ir/langref-p03] This attribute indicates that the result of the function (prior to application of return attributes/metadata) will not be undef or poison if all arguments are not undef and not poison.
+[src:llvm-ir/langref-p03] This attribute indicates that the implementation is modular on a particular format string argument.
+[src:llvm-ir/langref-p03] If the compiler can determine that not all aspects of the implementation are needed, it can report which aspects were needed and redirect the call to a modular implementation function instead.
+[src:llvm-ir/langref-p03] The compiler reports that an implementation aspect is needed by issuing a relocation for the symbol *<impl_name>_<aspect>`*.
+[src:llvm-ir/langref-p03] This arranges for code and data needed to support the aspect of the implementation to be brought into the link to satisfy weak references in the modular implemenation function.
+[src:llvm-ir/langref-p03] The first three arguments have the same semantics as the arguments to the C `format` attribute.
+[src:llvm-ir/langref-p03] This attribute can be attached to a call to list the vector functions associated to the function.
+[src:llvm-ir/langref-p03] Notice that the attribute cannot be attached to a invoke or a callbr instruction.
+[src:llvm-ir/langref-p03] The attribute consists of a comma separated list of mangled names.
+[src:llvm-ir/langref-p03] The order of the list does not imply preference (it is logically a set).
+[src:llvm-ir/langref-p03] The compiler is free to pick any listed vector function of its choosing.
+[src:llvm-ir/langref-p03] When present, the attribute informs the compiler that the function `<scalar_name>` has a corresponding vector variant that can be used to perform the concurrent invocation of `<scalar_name>` on vectors.
+[src:llvm-ir/langref-p03] The shape of the vector function is described by the tokens between the prefix `_ZGV` and the `<scalar_name>` token.
+[src:llvm-ir/langref-p03] The standard name of the vector function is `_ZGV<isa><mask><vlen><parameters>_<scalar_name>`.
+[src:llvm-ir/langref-p03] When present, the optional token `(<vector_redirection>)` informs the compiler that a custom name is provided in addition to the standard one (custom names can be provided for example via the use of `declare variant` in OpenMP 5.0).
+[src:llvm-ir/langref-p03] The declaration of the variant must be present in the IR Module.
+[src:llvm-ir/langref-p03] The signature of the vector variant is determined by the rules of the Vector Function ABI (VFABI) specifications of the target.
+[src:llvm-ir/langref-p03] For Arm and X86, the VFABI can be found at https://github.com/ARM-software/abi-aa and https://software.intel.com/content/www/us/en/develop/download/vector-simd-function-abi.html, respectively.
+[src:llvm-ir/langref-p03] For X86 and Arm targets, the values of the tokens in the standard name are those that are defined in the VFABI.
+[src:llvm-ir/langref-p03] LLVM has an internal `<isa>` token that can be used to create scalar-to-vector mappings for functions that are not directly associated to any of the target ISAs (for example, some of the mappings stored in the TargetLibraryInfo).
+[src:llvm-ir/langref-p03] This attribute is required on calls to `llvm.call.preallocated.arg` and cannot be used on any other call.
+[src:llvm-ir/langref-p03] See llvm.call.preallocated.arg for more details.
+[src:llvm-ir/langref-p03] Attributes may be set to communicate additional information about a global variable.
+[src:llvm-ir/langref-p03] Unlike function attributes, attributes on a global variable are grouped into a single attribute group.
+[src:llvm-ir/langref-p03] This attribute indicates that the global variable should not have AddressSanitizer instrumentation applied to it, because it was annotated with *__attribute__((no_sanitize(“address”)))*, *__attribute__((disable_sanitizer_instrumentation))*, or included in the *-fsanitize-ignorelist* file.
+[src:llvm-ir/langref-p03] This attribute indicates that the global variable should not have HWAddressSanitizer instrumentation applied to it, because it was annotated with *__attribute__((no_sanitize(“hwaddress”)))*, *__attribute__((disable_sanitizer_instrumentation))*, or included in the *-fsanitize-ignorelist* file.
+[src:llvm-ir/langref-p03] This attribute indicates that the global variable should have AArch64 memory tags (MTE) instrumentation applied to it.
+[src:llvm-ir/langref-p03] This attribute causes the suppression of certain optimizations, like GlobalMerge, as well as ensuring extra directives are emitted in the assembly and extra bits of metadata are placed in the object file so that the linker can ensure the accesses are protected by MTE.
+[src:llvm-ir/langref-p03] This attribute is added by clang when *-fsanitize=memtag-globals* is provided, as long as the global is not marked with *__attribute__((no_sanitize(“memtag”)))*, *__attribute__((disable_sanitizer_instrumentation))*, or included in the *-fsanitize-ignorelist* file.
+[src:llvm-ir/langref-p03] The AArch64 Globals Tagging pass may remove this attribute when it’s not possible to tag the global (e.g., it’s a TLS variable).
+[src:llvm-ir/langref-p03] This attribute indicates that the global variable, when instrumented with AddressSanitizer, should be checked for ODR violations.
+[src:llvm-ir/langref-p03] This attribute is applied to global variables that are dynamically initialized according to C++ rules.
+[src:llvm-ir/langref-p03] Operand bundles are tagged sets of SSA values or metadata strings that can be associated with certain LLVM instructions (currently only `call` s and `invoke` s).
+[src:llvm-ir/langref-p03] In a way they are like metadata, but dropping them is incorrect and will change program semantics.
+[src:llvm-ir/langref-p03] Operand bundles are **not** part of a function’s signature, and a given function may be called from multiple places with different kinds of operand bundles.
+[src:llvm-ir/langref-p03] This reflects the fact that the operand bundles are conceptually a part of the `call` (or `invoke`), not the callee being dispatched to.
+[src:llvm-ir/langref-p03] Operand bundles are a generic mechanism intended to support runtime-introspection-like functionality for managed languages.
+[src:llvm-ir/langref-p03] While the exact semantics of an operand bundle depend on the bundle tag, there are certain limitations to how much the presence of an operand bundle can influence the semantics of a program.
+[src:llvm-ir/langref-p03] These restrictions are described as the semantics of an “unknown” operand bundle.
+[src:llvm-ir/langref-p03] As long as the behavior of an operand bundle is describable within these restrictions, LLVM does not need to have special knowledge of the operand bundle to not miscompile programs containing it.
+[src:llvm-ir/langref-p03] More specific types of operand bundles are described below.
+[src:llvm-ir/langref-p03] Deoptimization operand bundles are characterized by the `"deopt"` operand bundle tag.
+[src:llvm-ir/langref-p03] These operand bundles represent an alternate “safe” continuation for the call site they’re attached to, and can be used by a suitable runtime to deoptimize the compiled frame at the specified call site.
+[src:llvm-ir/langref-p03] There can be at most one `"deopt"` operand bundle attached to a call site.
+[src:llvm-ir/langref-p03] Exact details of deoptimization are out of scope for the language reference, but it usually involves rewriting a compiled frame into a set of interpreted frames.
+[src:llvm-ir/langref-p03] From the compiler’s perspective, deoptimization operand bundles make the call sites they’re attached to at least `readonly`.
+[src:llvm-ir/langref-p03] They read through all of their pointer typed operands (even if they’re not otherwise escaped) and the entire visible heap.
+[src:llvm-ir/langref-p03] Deoptimization operand bundles do not capture their operands except during deoptimization, in which case control will not be returned to the compiled frame.
+[src:llvm-ir/langref-p03] The inliner knows how to inline through calls that have deoptimization operand bundles.
+[src:llvm-ir/langref-p03] Just like inlining through a normal call site involves composing the normal and exceptional continuations, inlining through a call site with a deoptimization operand bundle needs to appropriately compose the “safe” deoptimization continuation.
+[src:llvm-ir/langref-p03] The inliner does this by prepending the parent’s deoptimization continuation to every deoptimization continuation in the inlined body.
+[src:llvm-ir/langref-p03] Funclet operand bundles are characterized by the `"funclet"` operand bundle tag.
+[src:llvm-ir/langref-p03] These operand bundles indicate that a call site is within a particular funclet.
+[src:llvm-ir/langref-p03] There can be at most one `"funclet"` operand bundle attached to a call site and it must have exactly one bundle operand.
+[src:llvm-ir/langref-p03] Similarly, if no funclet EH pads have been entered-but-not-yet-exited, executing a `call` or `invoke` with a `"funclet"` bundle is undefined behavior.
+[src:llvm-ir/langref-p03] GC transition operand bundles are characterized by the `"gc-transition"` operand bundle tag.
+[src:llvm-ir/langref-p03] These operand bundles mark a call as a transition between a function with one GC strategy to a function with a different GC strategy.
+[src:llvm-ir/langref-p03] If coordinating the transition between GC strategies requires additional code generation at the call site, these bundles may contain any values that are needed by the generated code.
+[src:llvm-ir/langref-p03] The bundle contains an arbitrary list of Values which need to be passed to GC transition code.
+[src:llvm-ir/langref-p03] They will be lowered and passed as operands to the appropriate `GC_TRANSITION` nodes in the selection DAG.
+[src:llvm-ir/langref-p03] It is assumed that these arguments must be available before and after (but not necessarily during) the execution of the callee.
+[src:llvm-ir/langref-p03] Operand bundles on an llvm.assume allow representing assumptions that hold at the location of the assume.
+[src:llvm-ir/langref-p03] Operand bundles enable assumptions that are either hard or impossible to represent as a boolean argument of an llvm.assume.
+[src:llvm-ir/langref-p03] Assumes with operand bundles must have `i1 true` as the condition operand.
+[src:llvm-ir/langref-p03] Just like for the argument of llvm.assume, if any of the provided guarantees are violated at runtime the behavior is undefined.
+[src:llvm-ir/langref-p03] Equivalent to align(%align) on `%p`, or `%p - %offset` if the `%offset` argument exists, except that `%align` may be a non-power-of-two alignment (including a zero alignment).
+[src:llvm-ir/langref-p03] If `%align` is not a power of two the pointer value must be all-zero.
+[src:llvm-ir/langref-p03] Equivalent to dereferenceable(%size) on `%p`, except that `%size` may also be zero, in which case the bundle doesn’t imply `nonnull`.
+[src:llvm-ir/langref-p03] Equivalent to dereferenceable_or_null(%size) on `%p`, except that `%size` may also be zero.
+[src:llvm-ir/langref-p03] This is used to drop an assume where the `llvm.assume` call cannot be replaced or dropped.
+[src:llvm-ir/langref-p03] This indicates that no pointer based on one of its arguments can alias any pointer based on the other.
+[src:llvm-ir/langref-p03] allows the optimizer to assume that at location of call to llvm.assume `%val` has an alignment of at least 8.
+[src:llvm-ir/langref-p03] allows the optimizer to assume that the llvm.assume call location is cold and that `%val` may not be null.
+[src:llvm-ir/langref-p03] Preallocated operand bundles are characterized by the `"preallocated"` operand bundle tag.
+[src:llvm-ir/langref-p03] These operand bundles allow separation of the allocation of the call argument memory from the call site.
+[src:llvm-ir/langref-p03] This is necessary to pass non-trivially copyable objects by value in a way that is compatible with MSVC on some targets.
+[src:llvm-ir/langref-p03] There can be at most one `"preallocated"` operand bundle attached to a call site and it must have exactly one bundle operand, which is a token generated by `@llvm.call.preallocated.setup`.
+[src:llvm-ir/langref-p03] A call with this operand bundle should not adjust the stack before entering the function, as that will have been done by one of the `@llvm.call.preallocated.*` intrinsics.
+[src:llvm-ir/langref-p03] A “gc-live” operand bundle is only valid on a gc.statepoint intrinsic.
+[src:llvm-ir/langref-p03] The operand bundle must contain every pointer to a garbage collected object which potentially needs to be updated by the garbage collector.
+[src:llvm-ir/langref-p03] When lowered, any relocated value will be recorded in the corresponding stackmap entry.
+[src:llvm-ir/langref-p03] See the intrinsic description for further details.
+[src:llvm-ir/langref-p03] A `"clang.arc.attachedcall"` operand bundle on a call indicates the call is implicitly followed by a marker instruction and a call to an ObjC runtime function that uses the result of the call.
+[src:llvm-ir/langref-p03] The operand bundle takes a mandatory pointer to the runtime function (`@objc_retainAutoreleasedReturnValue` or `@objc_unsafeClaimAutoreleasedReturnValue`).
+[src:llvm-ir/langref-p03] The return value of a call with this bundle is used by a call to `@llvm.objc.clang.arc.noop.use` unless the called function’s return type is void, in which case the operand bundle is ignored.
+[src:llvm-ir/langref-p04] The operand bundle is needed to ensure the call is immediately followed by the marker instruction and the ObjC runtime call in the final output.
+[src:llvm-ir/langref-p04] Pointer Authentication operand bundles are characterized by the `"ptrauth"` operand bundle tag.
+[src:llvm-ir/langref-p04] They are described in the Pointer Authentication document.
+[src:llvm-ir/langref-p04] A `"kcfi"` operand bundle on an indirect call indicates that the call will be preceded by a runtime type check, which validates that the call target is prefixed with a type identifier that matches the operand bundle attribute.
+[src:llvm-ir/langref-p04] Clang emits KCFI operand bundles and the necessary metadata with `-fsanitize=kcfi`.
+[src:llvm-ir/langref-p04] A “convergencectrl” operand bundle is only valid on a `convergent` operation.
+[src:llvm-ir/langref-p04] When present, the operand bundle must contain exactly one value of token type.
+[src:llvm-ir/langref-p04] See the Convergent Operation Semantics document for details.
+[src:llvm-ir/langref-p04] This operand bundle specifies that if the deactivation symbol is defined to a valid value for the target, the marked instruction will return the value of its first argument instead of calling the specified function or intrinsic.
+[src:llvm-ir/langref-p04] This is achieved with `PATCHINST` relocations on the target instructions (see the AArch64 psABI for details).
+[src:llvm-ir/langref-p04] Modules may contain “module-level inline asm” blocks, which corresponds to the GCC “file scope inline asm” blocks.
+[src:llvm-ir/langref-p04] These blocks are internally concatenated by LLVM and treated as a single unit, but may be separated in the `.ll` file if desired.
+[src:llvm-ir/langref-p04] The strings can contain any character by escaping non-printable characters.
+[src:llvm-ir/langref-p04] The escape sequence used is simply “\xx” where “xx” is the two digit hex code for the number.
+[src:llvm-ir/langref-p04] Note that the assembly string *must* be parseable by LLVM’s integrated assembler (unless it is disabled), even when emitting a `.s` file.
+[src:llvm-ir/langref-p04] A module may specify a target-specific data layout string that specifies how data is to be laid out in memory.
+[src:llvm-ir/langref-p04] The *layout specification* consists of a list of specifications separated by the minus sign character (‘-‘).
+[src:llvm-ir/langref-p04] Each specification starts with a letter and may include other information after the letter to define some aspect of the data layout.
+[src:llvm-ir/langref-p04] Specifies that the target lays out data in big-endian form.
+[src:llvm-ir/langref-p04] That is, the bits with the most significance have the lowest address location.
+[src:llvm-ir/langref-p04] Specifies that the target lays out data in little-endian form.
+[src:llvm-ir/langref-p04] That is, the bits with the least significance have the lowest address location.
+[src:llvm-ir/langref-p04] Specifies the natural alignment of the stack in bits.
+[src:llvm-ir/langref-p04] Alignment promotion of stack variables is limited to the natural stack alignment to avoid dynamic stack realignment.
+[src:llvm-ir/langref-p04] If omitted, the natural stack alignment defaults to “unspecified”, which does not prevent any alignment promotions.
+[src:llvm-ir/langref-p04] Specifies the address space that corresponds to program memory.
+[src:llvm-ir/langref-p04] Harvard architectures can use this to specify what space LLVM should place things such as functions into.
+[src:llvm-ir/langref-p04] If omitted, the program memory space defaults to the default address space of 0, which corresponds to a Von Neumann architecture that has code and data in the same space.
+[src:llvm-ir/langref-p04] Specifies the address space to be used by default when creating global variables.
+[src:llvm-ir/langref-p04] If omitted, the globals address space defaults to the default address space 0.
+[src:llvm-ir/langref-p04] Note: variable declarations without an address space are always created in address space 0, this property only affects the default value to be used when creating globals without additional contextual information (e.g., in LLVM passes).
+[src:llvm-ir/langref-p04] Specifies the address space of objects created by ‘`alloca`’.
+[src:llvm-ir/langref-p04] Defaults to the default address space of 0.
+[src:llvm-ir/langref-p04] This specifies the properties of a pointer in address space `as`.
+[src:llvm-ir/langref-p04] The `<size>` parameter specifies the size of the bitwise representation.
+[src:llvm-ir/langref-p04] For non-integral pointers the representation size may be larger than the address width of the underlying address space (e.g., to accommodate additional metadata).
+[src:llvm-ir/langref-p04] The alignment requirements are specified via the `<abi>` and `<pref>`erred alignments parameters.
+[src:llvm-ir/langref-p04] The fourth parameter `<idx>` is the size of the index that used for address calculations such as getelementptr.
+[src:llvm-ir/langref-p04] It must be less than or equal to the pointer size.
+[src:llvm-ir/langref-p04] If not specified, the default index size is equal to the pointer size.
+[src:llvm-ir/langref-p04] The index size also specifies the width of addresses in this address space.
+[src:llvm-ir/langref-p04] The address space, `<as>`, is optional, and if not specified, denotes the default address space 0.
+[src:llvm-ir/langref-p04] The value of `<as>` must be in the range [1,2^24).
+[src:llvm-ir/langref-p04] The optional `<flags>` are used to specify properties of pointers in this address space: the character `u` marks pointers as having an unstable representation, and `e` marks pointers having external state.
+[src:llvm-ir/langref-p04] Additionally, the null pointer bit representation can be specified: `z` indicates it is all-zeros, and `o` indicates it is all-ones.
+[src:llvm-ir/langref-p04] At most one of `z` or `o` may be specified.
+[src:llvm-ir/langref-p04] If neither `z` nor `o` is specified, the null pointer bit representation defaults to all-zeros.
+[src:llvm-ir/langref-p04] The `<name>` is an optional name of that address space, surrounded by `(` and `)`.
+[src:llvm-ir/langref-p04] If the name is specified, it must be unique to that address space and cannot be `A`, `G`, or `P` which are pre-defined names used to denote alloca, global, and program address space respectively.
+[src:llvm-ir/langref-p04] This specifies the alignment for an integer type of a given bit `<size>`.
+[src:llvm-ir/langref-p04] The value of `<size>` must be in the range [1,2^24).
+[src:llvm-ir/langref-p04] For `i8`, the `<abi>` value must equal 8, that is, `i8` must be naturally aligned.
+[src:llvm-ir/langref-p04] This specifies the alignment for a vector type of a given bit `<size>`.
+[src:llvm-ir/langref-p04] Specifies that vectors are element-aligned by default, rather than having natural alignment.
+[src:llvm-ir/langref-p04] This specifies the alignment for a floating-point type of a given bit `<size>`.
+[src:llvm-ir/langref-p04] Only values of `<size>` that are supported by the target will work.
+[src:llvm-ir/langref-p04] 32 (float) and 64 (double) are supported on all targets; 80 or 128 (different flavors of long double) are also supported on some targets.
+[src:llvm-ir/langref-p04] This specifies the alignment for an object of aggregate type.
+[src:llvm-ir/langref-p04] In addition to the usual requirements for alignment values, the value of `<abi>` can also be zero, which means one byte alignment.
+[src:llvm-ir/langref-p04] This specifies the alignment for function pointers.
+[src:llvm-ir/langref-p04] If present, specifies that llvm names are mangled in the output.
+[src:llvm-ir/langref-p04] Symbols prefixed with the mangling escape character `\01` are passed through directly to the assembler without the escape character.
+[src:llvm-ir/langref-p04] This specifies a set of native integer widths for the target CPU in bits.
+[src:llvm-ir/langref-p04] Elements of this set are considered to support most general arithmetic operations efficiently.
+[src:llvm-ir/langref-p04] This marks pointer types with the specified address spaces as unstable.
+[src:llvm-ir/langref-p04] The `0` address space cannot be specified as non-integral.
+[src:llvm-ir/langref-p04] It is only supported for backwards compatibility, the flags of the `p` specifier should be used instead for new code.
+[src:llvm-ir/langref-p04] `<abi>` is a lower bound on what is required for a type to be considered aligned.
+[src:llvm-ir/langref-p04] `<pref>` allows providing a more optimal alignment that should be used when possible, primarily for `alloca` and the alignment of global variables.
+[src:llvm-ir/langref-p04] It is an optional value that must be greater than or equal to `<abi>`.
+[src:llvm-ir/langref-p04] If omitted, the preceding `:` should also be omitted and `<pref>` will be equal to `<abi>`.
+[src:llvm-ir/langref-p04] Unless explicitly stated otherwise, every alignment specification is provided in bits and must be in the range [1,2^16).
+[src:llvm-ir/langref-p04] The value must be a power of two times the width of a byte (i.e., `align = 8 * 2^N`).
+[src:llvm-ir/langref-p04] When constructing the data layout for a given target, LLVM starts with a default set of specifications which are then (possibly) overridden by the specifications in the `datalayout` keyword.
+[src:llvm-ir/langref-p04] If no match is found, and the type sought is an integer type, then the smallest integer type that is larger than the bitwidth of the sought type is used.
+[src:llvm-ir/langref-p04] If none of the specifications are larger than the bitwidth then the largest integer type is used.
+[src:llvm-ir/langref-p04] For example, given the default specifications above, the i7 type will use the alignment of i8 (next largest) while both i65 and i256 will use the alignment of i64 (largest specified).
+[src:llvm-ir/langref-p04] The function of the data layout string may not be what you expect.
+[src:llvm-ir/langref-p04] Notably, this is not a specification from the frontend of what alignment the code generator should use.
+[src:llvm-ir/langref-p04] Instead, if specified, the target data layout is required to match what the ultimate *code generator* expects.
+[src:llvm-ir/langref-p04] This string is used by the mid-level optimizers to improve code, and this only works if it matches what the ultimate code generator uses.
+[src:llvm-ir/langref-p04] There is no way to generate IR that does not embed this target-specific detail into the IR.
+[src:llvm-ir/langref-p04] If you don’t specify the string, the default specifications will be used to generate a Data Layout and the optimization phases will operate accordingly and introduce target specificity into the IR with respect to these default specifications.
+[src:llvm-ir/langref-p04] A module may specify a target triple string that describes the target host.
+[src:llvm-ir/langref-p04] The *target triple* string consists of a series of identifiers delimited by the minus sign character (‘-‘).
+[src:llvm-ir/langref-p04] This information is passed along to the backend so that it generates code for the proper architecture.
+[src:llvm-ir/langref-p04] It’s possible to override this on the command line with the `-mtriple` command-line option.
+[src:llvm-ir/langref-p04] An allocated object, memory object, or simply object, is a region of a memory space that is reserved by a memory allocation such as alloca, heap allocation calls, and global variable definitions.
+[src:llvm-ir/langref-p04] Once it is allocated, the bytes stored in the region can only be read or written through a pointer that is based on the allocation value.
+[src:llvm-ir/langref-p04] If a pointer that is not based on the object tries to read or write to the object, it is undefined behavior.
+[src:llvm-ir/langref-p04] Allocated objects that are created with operations recognized by LLVM (such as alloca, heap allocation functions marked as such, and global variables) may *not* change their size.
+[src:llvm-ir/langref-p04] (`realloc`-style operations do not change the size of an existing allocated object; instead, they create a new allocated object.
+[src:llvm-ir/langref-p04] Even if the object is at the same location as the old one, old pointers cannot be used to access this new object.) However, allocated objects can also be created by means not recognized by LLVM, e.g., by directly calling `mmap`.
+[src:llvm-ir/langref-p04] Those allocated objects are allowed to grow to the right (i.e., keeping the same base address, but increasing their size) while maintaining the validity of existing pointers, as long as they always satisfy the properties described above.
+[src:llvm-ir/langref-p04] Currently, allocated objects are not permitted to grow to the left or to shrink, nor can they have holes.
+[src:llvm-ir/langref-p04] A lifetime of an allocated object is a property that decides its accessibility.
+[src:llvm-ir/langref-p04] Unless stated otherwise, an allocated object is alive since its allocation, and dead after its deallocation.
+[src:llvm-ir/langref-p04] It is undefined behavior to access an allocated object that isn’t alive, but operations that don’t dereference it such as getelementptr, ptrtoint and icmp return a valid result.
+[src:llvm-ir/langref-p04] This explains code motion of these instructions across operations that impact the object’s lifetime.
+[src:llvm-ir/langref-p04] A stack object’s lifetime can be explicitly specified using llvm.lifetime.start and llvm.lifetime.end intrinsic function calls.
+[src:llvm-ir/langref-p04] As an exception to the above, loading from a stack object outside its lifetime is not undefined behavior and returns a poison value instead.
+[src:llvm-ir/langref-p04] Storing to it is still undefined behavior.
+[src:llvm-ir/langref-p04] Any memory access must be done through a pointer value associated with an address range of the memory access, otherwise the behavior is undefined.
+[src:llvm-ir/langref-p04] Note that this definition of *“based”* is intentionally similar to the definition of *“based”* in C99, though it is slightly weaker.
+[src:llvm-ir/langref-p04] LLVM IR does not associate types with memory.
+[src:llvm-ir/langref-p04] The result type of a `load` merely indicates the size and alignment of the memory from which to load, as well as the interpretation of the value.
+[src:llvm-ir/langref-p04] The first operand type of a `store` similarly only indicates the size and alignment of the store.
+[src:llvm-ir/langref-p04] Consequently, type-based alias analysis, aka TBAA, aka `-fstrict-aliasing`, is not applicable to general unadorned LLVM IR.
+[src:llvm-ir/langref-p04] Metadata may be used to encode additional information which specialized optimization passes may use to implement type-based alias analysis.
+[src:llvm-ir/langref-p04] These two cases are discussed in more detail in the following.
+[src:llvm-ir/langref-p04] If an argument does not capture the provenance of the pointer, accesses that are based on the argument and are performed after the function returns (or unwinds) cause undefined behavior.
+[src:llvm-ir/langref-p04] In the case where only read provenance is captured, only stores cause undefined behavior.
+[src:llvm-ir/langref-p04] Or in the case of only capturing read provenance, the permissions are changed to only allow read accesses.
+[src:llvm-ir/langref-p04] Even though the pointer is stored in another location that persists past the return of the function, this does not cause undefined behavior by itself.
+[src:llvm-ir/langref-p04] It depends on whether/how the pointer will be used in the future.
+[src:llvm-ir/langref-p04] In this example, the persisted pointer is accessed after the return of the function, which causes undefined behavior.
+[src:llvm-ir/langref-p04] In this example, we additionally declare that `read_provenance` is captured.
+[src:llvm-ir/langref-p04] This means that the `load` after the function return is still well-defined, while the store causes undefined behavior.
+[src:llvm-ir/langref-p04] The address of the pointer is considered to be captured if the function can exhibit different observable behavior based on the address of the pointer.
+[src:llvm-ir/langref-p04] The function does not capture the provenance of the pointer, because the `icmp` instruction only operates on the pointer address.
+[src:llvm-ir/langref-p04] While the implementation differs based on the addresses of the arguments, the observable behavior stays the same in both branches.
+[src:llvm-ir/langref-p04] A common case where this occurs are runtime aliasing checks for loop versioning.
+[src:llvm-ir/langref-p04] We can further say that the capture only occurs through a specific location.
+[src:llvm-ir/langref-p04] However, we always consider direct inspection of the pointer address (e.g., using `ptrtoint`) to be location-independent.
+[src:llvm-ir/langref-p04] This definition is chosen to allow capture analysis to continue with the return value in the usual fashion.
+[src:llvm-ir/langref-p04] The definitions given above are permissive to facilitate frontend-driven annotations based on language semantics.
+[src:llvm-ir/langref-p04] As inference generally cannot know how pointers will be used after the function returns, it needs to make conservative assumptions.
+[src:llvm-ir/langref-p04] Certain memory accesses, such as load’s, store’s, and llvm.memcpy’s may be marked `volatile`.
+[src:llvm-ir/langref-p04] The optimizers must not change the number of volatile operations or change their order of execution relative to other volatile operations.
+[src:llvm-ir/langref-p04] The optimizers *may* change the order of volatile operations relative to non-volatile operations.
+[src:llvm-ir/langref-p04] This is not Java’s “volatile” and has no cross-thread synchronization behavior.
+[src:llvm-ir/langref-p04] A volatile load or store may have additional target-specific semantics.
+[src:llvm-ir/langref-p04] Any volatile operation can have side effects, and any volatile operation can read and/or modify state which is not accessible via a regular load or store in this module.
+[src:llvm-ir/langref-p04] Volatile operations may use addresses which do not point to memory (like MMIO registers).
+[src:llvm-ir/langref-p04] This means the compiler may not use a volatile operation to prove a non-volatile access to that address has defined behavior.
+[src:llvm-ir/langref-p04] This includes addresses typically forbidden, such as the pointer with bit-value 0.
+[src:llvm-ir/langref-p04] The allowed side-effects for volatile accesses are limited.
+[src:llvm-ir/langref-p04] If a non-volatile store to a given address would be legal, a volatile operation may modify the memory at that address.
+[src:llvm-ir/langref-p04] A volatile operation may not modify any other memory accessible by the module being compiled.
+[src:llvm-ir/langref-p04] A volatile operation may not call any code in the current module.
+[src:llvm-ir/langref-p04] In general (without target-specific context), the address space of a volatile operation may not be changed.
+[src:llvm-ir/langref-p04] Different address spaces may have different trapping behavior when dereferencing an invalid pointer.
+[src:llvm-ir/langref-p04] Volatile operations are permitted to trap.
+[src:llvm-ir/langref-p04] The compiler may not assume that execution will continue after a volatile operation.
+[src:llvm-ir/langref-p04] IR-level volatile loads and stores cannot safely be optimized into `llvm.memcpy` or `llvm.memmove` intrinsics even when those intrinsics are flagged volatile.
+[src:llvm-ir/langref-p04] Likewise, the backend should never split or merge target-legal volatile load/store instructions.
+[src:llvm-ir/langref-p04] Similarly, IR-level volatile loads and stores cannot change from integer to floating-point or vice versa.
+[src:llvm-ir/langref-p04] Platforms may rely on volatile loads and stores of natively supported data width to be executed as single instruction.
+[src:llvm-ir/langref-p04] For example, in C this holds for an l-value of volatile primitive type with native hardware support, but not necessarily for aggregate types.
+[src:llvm-ir/langref-p04] The frontend upholds these expectations, which are intentionally unspecified in the IR.
+[src:llvm-ir/langref-p04] The rules above ensure that IR transformations do not violate the frontend’s contract with the language.
+[src:llvm-ir/langref-p04] The LLVM IR does not define any way to start parallel threads of execution or to register signal handlers.
+[src:llvm-ir/langref-p04] Nonetheless, there are platform-specific ways to create them, and we define LLVM IR’s behavior in their presence.
+[src:llvm-ir/langref-p04] This model is inspired by the C++ memory model.
+[src:llvm-ir/langref-p04] For a more informal introduction to this model, see the LLVM Atomic Instructions and Concurrency Guide.
+[src:llvm-ir/langref-p04] Note that program order does not introduce *happens-before* edges between a thread and signals executing inside that thread.
+[src:llvm-ir/langref-p04] Every (defined) read operation (load instructions, memcpy, atomic loads/read-modify-writes, etc.) R reads a series of bytes written by (defined) write operations (store instructions, atomic stores/read-modify-writes, memcpy, etc.).
+[src:llvm-ir/langref-p04] For the purposes of this section, initialized globals are considered to have a write of the initializer which is atomic and happens before any other read or write of the memory in question.
+[src:llvm-ir/langref-p04] R returns the value composed of the series of bytes it read.
+[src:llvm-ir/langref-p04] This implies that some bytes within the value may be `undef` **without** the entire value being `undef`.
+[src:llvm-ir/langref-p04] Note that this only defines the semantics of the operation; it doesn’t mean that targets will emit more than one instruction to read the series of bytes.
+[src:llvm-ir/langref-p04] Note that in cases where none of the atomic intrinsics are used, this model places only one restriction on IR transformations on top of what is required for single-threaded execution: introducing a store to a byte which might not otherwise be stored is not allowed in general.
+[src:llvm-ir/langref-p04] Atomic instructions (cmpxchg, atomicrmw, fence, atomic load, and atomic store) take ordering parameters that determine which other atomic instructions on the same address they *synchronize with*.
+[src:llvm-ir/langref-p04] These semantics implement the Java or C++ memory models; if these descriptions aren’t precise enough, check those specs (see spec references in the atomics guide). fence instructions treat these orderings somewhat differently since they don’t take an address.
+[src:llvm-ir/langref-p04] See that instruction’s documentation for details.
+[src:llvm-ir/langref-p04] For a simpler introduction to the ordering constraints, see the LLVM Atomic Instructions and Concurrency Guide.
+[src:llvm-ir/langref-p04] The set of values that can be read is governed by the happens-before partial order.
+[src:llvm-ir/langref-p04] A value cannot be read unless some operation wrote it.
+[src:llvm-ir/langref-p04] This is intended to provide a guarantee strong enough to model Java’s non-volatile shared variables.
+[src:llvm-ir/langref-p04] This ordering cannot be specified for read-modify-write operations; it is not strong enough to make them atomic in any interesting way.
+[src:llvm-ir/langref-p04] In addition to the guarantees of `unordered`, there is a single total order for modifications by `monotonic` operations on each address.
+[src:llvm-ir/langref-p04] All modification orders must be compatible with the happens-before order.
+[src:llvm-ir/langref-p04] There is no guarantee that the modification orders can be combined to a global total order for the whole program (and this often will not be possible).
+[src:llvm-ir/langref-p04] If the read in an atomic read-modify-write operation M (cmpxchg and atomicrmw) reads from a `monotonic` (or stronger) write W, W must be immediately before M in the address’s modification order.
+[src:llvm-ir/langref-p04] If one atomic read happens before another atomic read of the same address and both are at least `monotonic`, the later read must not see an earlier value in the address’s modification order.
+[src:llvm-ir/langref-p04] This disallows reordering of `monotonic` (or stronger) operations on the same address.
+[src:llvm-ir/langref-p04] If an address is written `monotonic`-ally by one thread, and other threads `monotonic`-ally read that address repeatedly, the other threads must eventually see the write.
+[src:llvm-ir/langref-p04] This corresponds to the C/C++ `memory_order_relaxed`.
+[src:llvm-ir/langref-p04] In addition to the guarantees of `monotonic`, a *synchronizes-with* edge may be formed with a `release` operation.
+[src:llvm-ir/langref-p04] This is intended to model C/C++’s `memory_order_acquire`.
+[src:llvm-ir/langref-p04] In addition to the guarantees of `monotonic`, if this operation writes a value which is subsequently read by an `acquire` operation, it *synchronizes-with* that operation.
+[src:llvm-ir/langref-p04] Furthermore, this occurs even if the value written by a `release` operation has been modified by a read-modify-write operation before being read.
+[src:llvm-ir/langref-p04] (Such a set of operations comprises a *release sequence*).
+[src:llvm-ir/langref-p04] This corresponds to the C/C++ `memory_order_release`.
+[src:llvm-ir/langref-p04] Acts as both an `acquire` and `release` operation on its address.
+[src:llvm-ir/langref-p04] This corresponds to the C/C++ `memory_order_acq_rel`.
+[src:llvm-ir/langref-p04] In addition to the guarantees of `acq_rel` (`acquire` for an operation that only reads, `release` for an operation that only writes), there is a global total order on all sequentially-consistent operations on all addresses.
+[src:llvm-ir/langref-p04] If an address is only accessed through sequentially-consistent operations, each sequentially-consistent read of that address sees the last preceding write to the same address in this global order.
+[src:llvm-ir/langref-p04] This corresponds to the C/C++ `memory_order_seq_cst` and Java `volatile`.
+[src:llvm-ir/langref-p04] Note: this global total order is *not* guaranteed to be fully consistent with the *happens-before* partial order if non-`seq_cst` accesses are involved.
+[src:llvm-ir/langref-p04] See the C++ standard [atomics.order] section for more details on the exact guarantees.
+[src:llvm-ir/langref-p04] If an atomic operation is marked `syncscope("singlethread")`, it only *synchronizes with* other operations running in the same thread (for example, in signal handlers) and it is related in the seq_cst order and the monotonic modification order with other operations in the same thread.
+[src:llvm-ir/langref-p04] The default LLVM floating-point environment assumes that traps are disabled and status flags are not observable.
+[src:llvm-ir/langref-p04] Therefore, floating-point math operations do not have side effects and may be speculated freely.
+[src:llvm-ir/langref-p04] Results assume the round-to-nearest rounding mode, and subnormals are assumed to be preserved.
+[src:llvm-ir/langref-p04] Running LLVM code in an environment where these assumptions are not met typically leads to undefined behavior.
+[src:llvm-ir/langref-p04] The `strictfp` and denormal_fpenv attributes as well as Constrained Floating-Point Intrinsics can be used to weaken LLVM’s assumptions and ensure defined behavior in non-default floating-point environments; see their respective documentation for details.
+[src:llvm-ir/langref-p04] A floating-point NaN value consists of a sign bit, a quiet/signaling bit, and a payload (which makes up the rest of the mantissa except for the quiet/signaling bit).
+[src:llvm-ir/langref-p04] LLVM assumes that the quiet/signaling bit being set to `1` indicates a quiet NaN (QNaN), and a value of `0` indicates a signaling NaN (SNaN).
+[src:llvm-ir/langref-p04] In the following we will hence just call it the “quiet bit”.
+[src:llvm-ir/langref-p04] The representation bits of a floating-point value do not mutate arbitrarily; in particular, if there is no floating-point operation being performed, NaN signs, quiet bits, and payloads are preserved.
+[src:llvm-ir/langref-p04] For the purpose of this section, `bitcast` as well as the following operations are not “floating-point math operations”: `fneg`, `llvm.fabs`, and `llvm.copysign`.
+[src:llvm-ir/langref-p04] These operations act directly on the underlying bit representation and never change anything except possibly for the sign bit.
+[src:llvm-ir/langref-p04] Floating-point math operations that return a NaN are an exception from the general principle that LLVM implements IEEE 754 semantics.
+[src:llvm-ir/langref-p04] In particular, if all input NaNs are quiet (or if there are no input NaNs), then the output NaN is definitely quiet.
+[src:llvm-ir/langref-p04] Signaling NaN outputs can only occur if they are provided as an input value.
+[src:llvm-ir/langref-p04] For example, “fmul SNaN, 1.0” may be simplified to SNaN rather than QNaN.
+[src:llvm-ir/langref-p04] Similarly, if all input NaNs are preferred (or if there are no input NaNs) and the target does not have any “extra” NaN payloads, then the output NaN is guaranteed to be preferred.
+[src:llvm-ir/langref-p04] Floating-point math operations are allowed to treat all NaNs as if they were quiet NaNs.
+[src:llvm-ir/langref-p04] For example, “pow(1.0, SNaN)” may be simplified to 1.0.
+[src:llvm-ir/langref-p04] Code that requires different behavior than this should use the Constrained Floating-Point Intrinsics.
+[src:llvm-ir/langref-p04] In particular, constrained intrinsics rule out the “Unchanged NaN propagation” case; they are guaranteed to return a QNaN.
+[src:llvm-ir/langref-p04] This section defines the semantics for core floating-point operations on types that use a format specified by IEEE 754.
+[src:llvm-ir/langref-p04] These types are: `half`, `float`, `double`, and `fp128`, which correspond to the binary16, binary32, binary64, and binary128 formats, respectively.
+[src:llvm-ir/langref-p04] The “core” operations are those defined in section 5 of IEEE 754, which all have corresponding LLVM operations.
+[src:llvm-ir/langref-p04] The value returned by those operations matches that of the corresponding IEEE 754 operation executed in the default LLVM floating-point environment, except that the behavior of NaN results is instead as specified here.
+[src:llvm-ir/langref-p04] In particular, such a floating-point instruction returning a non-NaN value is guaranteed to always return the same bit-identical result on all machines and optimization levels.

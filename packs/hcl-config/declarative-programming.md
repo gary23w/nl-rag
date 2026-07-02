@@ -1,0 +1,98 @@
+---
+title: "Declarative programming"
+source: https://en.wikipedia.org/wiki/Declarative_programming
+domain: hcl-config
+license: CC-BY-SA-4.0
+tags: hcl config, hashicorp configuration language, terraform config syntax, infrastructure as code
+fetched: 2026-07-02
+---
+
+# Declarative programming
+
+In computer science, **declarative programming** is a programming paradigm that expresses the logic of a computation without fully describing its control flow.
+
+Languages that permit this style allow a developer to minimize or eliminate side effects by describing *what* the program must accomplish in terms of the problem domain, rather than fully describing *how* to accomplish it as a sequence of the programming language primitives (the *how* being left up to the language's implementation). This is in contrast with imperative programming, which implements algorithms in explicit steps.
+
+Declarative programming may consider programs as theories of a formal logic, and computations as deductions in that logical theory. Declarative programming at times simplifies the writing of parallel programs.
+
+Common declarative language paradigms include logic programming (e.g., Prolog, Datalog, answer set programming), and algebraic modeling systems.
+
+## Definition
+
+Declarative programming is often defined as any style of programming that is not imperative. A number of other common definitions attempt to define it by simply contrasting it with imperative programming. For example:
+
+- A high-level program that describes what a computation should perform.
+- Any programming language that lacks side effects, or more specifically, has referential transparency.
+- A language with a clear correspondence to mathematical logic.
+
+These definitions overlap substantially.
+
+Declarative programming is a non-imperative style of programming in which programs describe their desired results without explicitly listing commands or steps that must be performed. Logic programming languages are characterized by a mostly declarative programming style. In logic programming, programs consist of sentences expressed in logical form, and computation uses those sentences to solve problems, which are also expressed in logical form.
+
+In a pure functional language, such as Haskell, all functions are without side effects, and state changes are only represented as functions that transform the state, which is explicitly represented as a first-class object in the program. Although pure functional languages are non-imperative, they often provide a facility for describing the effect of a function as a series of steps. Other functional languages, such as Lisp, OCaml and Erlang, support a mixture of procedural and functional programming.
+
+Some logic programming languages, such as Prolog, and database query languages, such as SQL, while declarative in principle, also support a procedural style of programming.
+
+## Subparadigms
+
+Declarative programming is an umbrella term that includes a number of better-known programming paradigms.
+
+### Constraint programming
+
+Constraint programming states relations between variables in the form of constraints that specify the properties of the target solution. The set of constraints is solved by giving a value to each variable so that the solution is consistent with the maximum number of constraints. Constraint programming often complements other paradigms: functional, logical, or even imperative programming.
+
+### Hybrid languages
+
+Makefiles, for example, specify dependencies in a declarative fashion, but include an imperative list of actions to take as well. Similarly, yacc specifies a context free grammar declaratively, but includes code snippets from a host language, which is usually imperative (such as C).
+
+### Logic programming
+
+Logic programming languages, such as Prolog, Datalog and answer set programming, compute by proving that a goal is a logical consequence of the program, or by showing that the goal is true in a model defined by the program. Prolog computes by reducing goals to subgoals, top-down using backward reasoning, whereas most Datalog systems compute bottom-up using forward reasoning. Answer set programs typically use SAT solvers to generate a model of the program.
+
+### Modeling
+
+Models, or mathematical representations, of physical systems may be implemented in computer code that is declarative. The code contains a number of equations, not imperative assignments, that describe ("declare") the behavioral relationships. When a model is expressed in this formalism, a computer is able to perform algebraic manipulations to best formulate the solution algorithm. The mathematical causality is typically imposed at the boundaries of the physical system, while the behavioral description of the system itself is declarative or acausal. Declarative modeling languages and environments include Analytica, Modelica and Simile.
+
+## Examples
+
+### Prolog
+
+Prolog (1972) stands for "PROgramming in LOGic." It was developed for natural language question answering, using SL resolution both to deduce answers to queries and to parse and generate natural language sentences.
+
+The building blocks of a Prolog program are *facts* and *rules*. Here is a simple example:
+
+```mw
+cat(tom).                        % tom is a cat
+mouse(jerry).                    % jerry is a mouse
+
+animal(X) :- cat(X).             % each cat is an animal
+animal(X) :- mouse(X).           % each mouse is an animal
+
+big(X)   :- cat(X).              % each cat is big
+small(X) :- mouse(X).            % each mouse is small
+
+eat(X,Y) :- mouse(X), cheese(Y). % each mouse eats each cheese
+eat(X,Y) :- big(X),   small(Y).  % each big being eats each small being
+```
+
+Given this program, the query `eat(tom,jerry)` succeeds, while `eat(jerry,tom)` fails. Moreover, the query `eat(X,jerry)` succeeds with the answer substitution `X=tom`.
+
+Prolog executes programs top-down, using SLD resolution to reason backwards, reducing goals to subgoals. In this example, it uses the last rule of the program to reduce the goal of answering the query `eat(X,jerry)` to the subgoals of first finding an X such that `big(X)` holds and then of showing that `small(jerry)` holds. It repeatedly uses rules to further reduce subgoals to other subgoals, until it eventually succeeds in unifying all subgoals with facts in the program. This backward reasoning, goal-reduction strategy treats rules in logic programs as procedures, and makes Prolog both a declarative and procedural programming language.
+
+The broad range of Prolog applications is highlighted in the Year of Prolog Book, celebrating the 50 year anniversary of Prolog.
+
+### Datalog
+
+The origins of Datalog date back to the beginning of logic programming, but it was identified as a separate area around 1977. Syntactically and semantically, it is a subset of Prolog. But because it lacks compound terms, it is not Turing-complete.
+
+Most Datalog systems execute programs bottom-up, using rules to reason forwards, deriving new facts from existing facts, and terminating when there are no new facts that can be derived, or when the derived facts unify with the query.
+
+Datalog has been applied to such problems as data integration, information extraction, networking, security, cloud computing and machine learning.
+
+### Answer set programming
+
+Answer set programming (ASP) evolved in the late 1990s, based on the stable model (answer set) semantics of logic programming. Like Datalog, it is a subset of Prolog; and, because it lacks compound terms, it is not Turing-complete.
+
+Most implementations of ASP execute a program by first *grounding* the program, replacing all variables in rules by constants in all possible ways, and then using a propositional SAT solver, such as the DPLL algorithm to generate one or more models of the program.
+
+Its applications are oriented towards solving difficult search problems and knowledge representation.

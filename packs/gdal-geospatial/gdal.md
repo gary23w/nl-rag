@@ -1,0 +1,105 @@
+---
+title: "GDAL"
+source: https://en.wikipedia.org/wiki/GDAL
+domain: gdal-geospatial
+license: CC-BY-SA-4.0
+tags: gdal library, raster geospatial, geotiff format, geospatial abstraction
+fetched: 2026-07-02
+---
+
+# GDAL
+
+The **Geospatial Data Abstraction Library** (**GDAL**) is a computer software library for reading and writing raster and vector geospatial data formats (e.g. shapefile), and is released under the permissive X/MIT style free software license by the Open Source Geospatial Foundation. As a library, it presents a single abstract data model to the calling application for all supported formats. It may also be built with a variety of useful command line interface utilities for data translation and processing. Projections and transformations are supported by the PROJ library.
+
+The related *OGR* library (OGR Simple Features Library), which is part of the GDAL source tree, provides a similar ability for simple features vector graphics data.
+
+GDAL was developed mainly by Frank Warmerdam until the release of version 1.3.2, when maintenance was officially transferred to the GDAL/OGR Project Management Committee under the Open Source Geospatial Foundation.
+
+GDAL/OGR is considered a major free software project for its "extensive capabilities of data exchange" and also in the commercial GIS community due to its widespread use and comprehensive set of functionalities.
+
+## Software using GDAL/OGR
+
+Several software programs use the GDAL/OGR libraries to allow them to read and write multiple GIS formats. Such programs include:
+
+- ArcGIS – Uses GDAL for custom raster formats
+- Avenza MAPublisher - GIS and mapping tools for Adobe Illustrator. Uses GDAL for coordinate system transformation, format reading & writing, geometry operations, & unit conversion.
+- Avenza Geographic Imager - Spatial imaging tools for Adobe Photoshop. Uses GDAL for coordinate system transformation, format reading & writing, & unit conversion.
+- Avenza Maps - iOS & Android mobile mapping application. Uses GDAL to read metadata information for geospatial maps / data to transform them to WGS84 for offline navigation.
+- Biosphere3D – Open source landscape scenery globe
+- Biotop Invent
+- Cadwork
+- ENVI – Remote Sensing software
+- ERDAS APOLLO - Image Server and remote sensing geo-services
+- ERDAS GeoCompressor - Image compression to ECW and JP2 formats
+- Geoconcept integrated GDAL in its 7.1 release
+- FWTools – A cross-platform open source GIS software bundle compiled by Frank Warmerdam
+- gdaltokmz – A Python module translating from GDAL-supported raster graphics formats to the Google Earth KMZ format
+- GeoDjango – Django's support for GIS-enabled databases
+- GeoDMS - A framework for building spatial calculation models.
+- GeoView Pro – iOS mobile mapping application
+- Google Earth – A virtual globe and world imaging program
+- GRASS GIS
+- gvSIG
+- JMap
+- MangoMap
+- MapServer
+- MS4W - MapServer for Windows, a widely popular installer for the MapServer community, using GDAL for data access.
+- MapWindow GIS - Open Source C++ based geographic information system, ActiveX Control, and application programmer interface
+- Merkaartor
+- NASA Ames Stereo Pipeline, an open-source software package for photogrammetry
+- World Wind Java – NASA's open source virtual globe and world imaging technology
+- OpenDroneMap – Open-source photogrammetry software to process aerial imagery
+- Open Source Geospatial Foundation (OSSIM) – Libraries and applications used to process imagery, maps, terrain, and vector data
+- OpenEV – Geospatial toolkit and a frontend to that toolkit; to display georeferenced images and elevation data
+- Orfeo toolbox – A satellite image processing library
+- QGIS
+- R – An open source statistical software with extensions for spatial data analysis.
+- SAGA GIS – A cross-platform open source GIS software
+- TopoQuest – Internet topographic map viewer
+- PCI/CATALYST Earth software
+
+## Supported raster data formats
+
+As of version 2.2.3, GDAL/OGR provides at least partial support for 154 raster and 93 vector geospatial data formats. A subset of data formats is supported to ensure the ability to directly create files and georeferencing them with the default GDAL compiling options.
+
+Here follows the list of data formats whose support is, by default, compiled to allow creation and georeferencing.
+
+| Raster data format name | Code |
+|---|---|
+| Arc/Info ASCII Grid | AAIGrid |
+| ADRG/ARC Digitalized Raster Graphics (.gen/.thf) | ADRG |
+| Bathymetric Attributed Grid (.bag) | BAG |
+| Magellan BLX Topo (.blx, .xlb) | BLX |
+| Microsoft Windows Device Independent Bitmap (.bmp) | BMP |
+| VTP Binary Terrain Format (.bt) | BT |
+| Military Elevation Data (.dt0, .dt1, .dt2) | DTED |
+| ESRI .hdr Labelled | EHdr |
+| NASA ELAS | ELAS |
+| ENVI .hdr Labelled Raster | ENVI |
+| ERMapper (.ers) | ERS |
+| NOAA .gtx vertical datum shift | GTX |
+| HF2/HFZ heightfield raster | HF2 |
+| Erdas Imagine (.img) | HFA |
+| Image Display and Analysis (WinDisp) | IDA |
+| ILWIS Raster Map (.mpr,.mpl) | ILWIS |
+| Intergraph Raster | INGR |
+| USGS Astrogeology Isis cube (Version 2) | ISIS2 |
+| KMLSUPEROVERLAY | KMLSUPEROVERLAY |
+| In Memory Raster | MEM |
+| Vexcel MFF | MFF |
+| Vexcel MFF2 | MFF2 (HKV) |
+| NITF | NITF |
+| NTv2 Datum Grid Shift | NTv2 |
+| PCI Geomatica Database File | PCIDSK |
+| Raster Matrix Format (*.rsw, .mtw) | RMF |
+| Idrisi Raster | RST |
+| SAGA GIS Binary format | SAGA |
+| SGI Image Format | SGI |
+| SRTM HGT Format | SRTMHGT |
+| USGS ASCII DEM / CDED (.dem) | USGSDEM |
+| GDAL Virtual (.vrt) | VRT |
+| ASCII Gridded XYZ | XYZ |
+
+## Supported vector data formats
+
+GDAL supports a variety of vector data formats as seen here. It is extensible as well.

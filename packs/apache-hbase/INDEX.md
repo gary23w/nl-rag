@@ -1,6 +1,6 @@
 # apache-hbase — nl-rag pack
 
-Pre-normalized AI markdown. tags: apache hbase, bigtable clone, wide-column store, apache hadoop. license: CC-BY-SA-4.0 (see SOURCES.md).
+Pre-normalized AI markdown. tags: apache hbase, wide column store, google bigtable, distributed key value, nosql database. license: CC-BY-SA-4.0 (see SOURCES.md).
 Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
 
 - [Apache Hadoop](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/apache-hadoop.md) — upstream: https://en.wikipedia.org/wiki/Apache_Hadoop
@@ -47,6 +47,10 @@ Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
 - [Apache HBase® Reference Guide (part 39/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p39.md) — upstream: https://hbase.apache.org/book.html
 - [Apache HBase® Reference Guide (part 40/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p40.md) — upstream: https://hbase.apache.org/book.html
 - [Apache HBase® Reference Guide (part 41/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p41.md) — upstream: https://hbase.apache.org/book.html
+- [Column (data store)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/column-data-store.md) — upstream: https://en.wikipedia.org/wiki/Column_(data_store)
+- [Distributed database](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/distributed-database.md) — upstream: https://en.wikipedia.org/wiki/Distributed_database
 - [Google File System](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/google-file-system.md) — upstream: https://en.wikipedia.org/wiki/Google_File_System
+- [Log-structured merge-tree](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/log-structured-merge-tree.md) — upstream: https://en.wikipedia.org/wiki/Log-structured_merge-tree
+- [NoSQL](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/nosql.md) — upstream: https://en.wikipedia.org/wiki/NoSQL
 - [Wide-column store](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/wide-column-store.md) — upstream: https://en.wikipedia.org/wiki/Wide-column_store
 - [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/pack.facts) — distilled one-line facts (neuron CLI import)

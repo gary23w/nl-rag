@@ -17,6 +17,7 @@ import pkgutil
 # packs). `common` is helpers-only, so it's skipped naturally (no DOMAINS). base loads first so
 # a cross-module domain-name collision names the newer module as the offender.
 _DOMAIN_OWNER: dict[str, str] = {}
+_DUP_NAMES: list[str] = []
 DOMAINS = {}
 
 
@@ -30,9 +31,10 @@ def _load():
             continue
         for name, d in table.items():
             if name in DOMAINS:
-                raise SystemExit(
-                    f"duplicate domain '{name}': in both {_DOMAIN_OWNER[name]} and {modname}"
-                )
+                # many-agent waves can accidentally re-author an existing name; keep the FIRST
+                # owner (base + earlier modules win) and skip the later one — never hard-fail
+                _DUP_NAMES.append(f"{name} ({modname} dup of {_DOMAIN_OWNER[name]})")
+                continue
             DOMAINS[name] = d
             _DOMAIN_OWNER[name] = modname
 

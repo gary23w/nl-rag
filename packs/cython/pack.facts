@@ -1,0 +1,169 @@
+# nl-rag distilled facts — domain: cython
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:cython/compiled-language] Informally, a **compiled language** is a programming language that is usually implemented with a compiler rather than an interpreter.
+[src:cython/compiled-language] Because any language can theoretically be either compiled or interpreted, the term lacks clarity: compilation and interpretation are properties of a programming language implementation, not of a programming language.
+[src:cython/compiled-language] Some languages have both compilers and interpreters.
+[src:cython/compiled-language] Furthermore, a single implementation can involve both a compiler and an interpreter.
+[src:cython/compiled-language] For example, in some environments, source code is first compiled to an intermediate form (e.g., bytecode), which is then interpreted by an application virtual machine.
+[src:cython/compiled-language] In other environments, a just-in-time compiler selectively compiles some code at runtime, blurring the distinction further.
+[src:cython/cython-tutorial] The fundamental nature of Cython can be summed up as follows: Cython is Python with C data types.
+[src:cython/cython-tutorial] Cython is Python: Almost any piece of Python code is also valid Cython code.
+[src:cython/cython-tutorial] (There are a few Limitations, but this approximation will serve for now.) The Cython compiler will convert it into C code which makes equivalent calls to the Python/C API.
+[src:cython/cython-tutorial] But Cython is much more than that, because parameters and variables can be declared to have C data types.
+[src:cython/cython-tutorial] Code which manipulates Python values and C values can be freely intermixed, with conversions occurring automatically wherever possible.
+[src:cython/cython-tutorial] Reference count maintenance and error checking of Python operations is also automatic, and the full power of Python’s exception handling facilities, including the try-except and try-finally statements, is available to you – even in the midst of manipulating C data.
+[src:cython/cython-tutorial] As Cython can accept almost any valid python source file, one of the hardest things in getting started is just figuring out how to compile your extension.
+[src:cython/cython-tutorial] Save this code in a file named `helloworld.py`.
+[src:cython/cython-tutorial] Now we need to create the `setup.py`, which is like a python Makefile (for more information see Source Files and Compilation).
+[src:cython/cython-tutorial] Which will leave a file in your local directory called `helloworld.so` in unix or `helloworld.pyd` in Windows.
+[src:cython/cython-tutorial] You now know how to build a Cython extension.
+[src:cython/cython-tutorial] But so far this example doesn’t really give a feeling why one would ever want to use Cython, so lets create a more realistic example.
+[src:cython/cython-tutorial] Now following the steps for the Hello World example we first save this code to a Python file, let’s say `fibonacci.py`.
+[src:cython/cython-tutorial] Here’s a small example showing some of what can be done.
+[src:cython/cython-tutorial] It’s a routine for finding prime numbers.
+[src:cython/cython-tutorial] You tell it how many primes you want, and it returns them as a Python list.
+[src:cython/cython-tutorial] The two syntax variants (“Pure Python” and “Cython”) represent different ways of annotating the code with C data types.
+[src:cython/cython-tutorial] The first uses regular Python syntax with Cython specific type hints, thus allowing the code to run as a normal Python module.
+[src:cython/cython-tutorial] Python type checkers will ignore most of the type details, but on compilation, Cython interprets them as C data types and uses them to generate tightly adapted C code.
+[src:cython/cython-tutorial] The second variant uses a Cython specific syntax.
+[src:cython/cython-tutorial] This syntax is mostly used in older code bases and in Cython modules that need to make use of advanced C or C++ features when interacting with C/C++ libraries.
+[src:cython/cython-tutorial] The additions to the syntax require a different file format, thus the `.pyx` extension: Python code ‘extended’.
+[src:cython/cython-tutorial] For this tutorial, assuming you have a Python programming background, it’s probably best to stick to the Python syntax examples and glimpse at the Cython specific syntax for comparison.
+[src:cython/cython-tutorial] You can see that the example above starts out just like a normal Python function definition, except that the parameter `nb_primes` is declared to be of Cython type `int` (not the Python type of the same name).
+[src:cython/cython-tutorial] This means that the Python object passed into the function will be converted to a C integer on entry, or a `TypeError` will be raised if it cannot be converted.
+[src:cython/cython-tutorial] Lines 2, 3, 11 and 12 use the variable annotations to define some local C variables.
+[src:cython/cython-tutorial] The result is stored in the C array `p` during processing, and will be copied into a Python list at the end (line 26).
+[src:cython/cython-tutorial] Lines 2 and 3 use the `cdef` statement to define some local C variables.
+[src:cython/cython-tutorial] You cannot create very large arrays in this manner, because they are allocated on the C function call stack, which is a rather precious and scarce resource.
+[src:cython/cython-tutorial] To request larger arrays, or even arrays with a length only known at runtime, you can learn how to make efficient use of C memory allocation, Python arrays or NumPy arrays with Cython.
+[src:cython/cython-tutorial] As in C, declaring a static array requires knowing the size at compile time.
+[src:cython/cython-tutorial] When we run this code from Python, we have to initialize the items in the array.
+[src:cython/cython-tutorial] This is most easily done by filling it with zeros (as seen on line 8-9).
+[src:cython/cython-tutorial] When we compile this with Cython, on the other hand, the array will behave as in C.
+[src:cython/cython-tutorial] It is allocated on the function call stack with a fixed length of 1000 items that contain arbitrary data from the last time that memory was used.
+[src:cython/cython-tutorial] We will then overwrite those items in our calculation.
+[src:cython/cython-tutorial] Lines 11-13 set up a while loop which will test numbers-candidates to primes until the required number of primes has been found.
+[src:cython/cython-tutorial] Lines 15-16, which try to divide a candidate by all the primes found so far, are of particular interest.
+[src:cython/cython-tutorial] Because no Python objects are referred to, the loop is translated entirely into C code, and thus runs very fast.
+[src:cython/cython-tutorial] You will notice the way we iterate over the `p` C array.
+[src:cython/cython-tutorial] The loop gets translated into a fast C loop and works just like iterating over a Python list or NumPy array.
+[src:cython/cython-tutorial] If you don’t slice the C array with `[:len_p]`, then Cython will loop over the 1000 elements of the array.
+[src:cython/cython-tutorial] If no breaks occurred, it means that we found a prime, and the block of code after the `else` line 20 will be executed.
+[src:cython/cython-tutorial] The `else` clause after a for-loop is a lesser known features of the Python language that Cython executes at C speed for you.
+[src:cython/cython-tutorial] If this syntax confuses you, the Python documentation presents a good way to think of the `else` clause: Imagine it paired with the `if` inside the loop.
+[src:cython/cython-tutorial] As the loop executes, it will run a sequence like `if` / `if` / `if` / `else`.
+[src:cython/cython-tutorial] The `if` is inside the loop, encountered a number of times.
+[src:cython/cython-tutorial] If the condition is ever true, a `break` will happen.
+[src:cython/cython-tutorial] If the condition is never true, the `else` clause outside the loop will execute.
+[src:cython/cython-tutorial] In line 26, before returning the result, we need to copy our C array into a Python list, because Python can’t read C arrays.
+[src:cython/cython-tutorial] Cython can automatically convert many C types from and to Python types, as described in the documentation on type conversion, so we can use a simple list comprehension here to copy the C `int` values into a Python list of Python `int` objects, which Cython creates automatically along the way.
+[src:cython/cython-tutorial] You could also have iterated manually over the C array and used `result_as_list.append(prime)`, the result would have been the same.
+[src:cython/cython-tutorial] You’ll notice we declare a Python list exactly the same way it would be in Python.
+[src:cython/cython-tutorial] Because the variable `result_as_list` hasn’t been explicitly declared with a type, it is assumed to hold a Python object, and from the assignment, Cython also knows that the exact type is a Python list.
+[src:cython/cython-tutorial] Finally, at line 27, a normal Python return statement returns the result list.
+[src:cython/cython-tutorial] And if you’re curious about how much work Cython has saved you, take a look at the C code generated for this module.
+[src:cython/cython-tutorial] Cython has a way to visualise where interaction with Python objects and Python’s C-API is taking place.
+[src:cython/cython-tutorial] For this, pass the `annotate=True` parameter to `cythonize()`.
+[src:cython/cython-tutorial] If a line is white, it means that the code generated doesn’t interact with Python, so will run as fast as normal C code.
+[src:cython/cython-tutorial] The darker the yellow, the more Python interaction there is in that line.
+[src:cython/cython-tutorial] Those yellow lines will usually operate on Python objects, raise exceptions, or do other kinds of higher-level operations than what can easily be translated into simple and fast C code.
+[src:cython/cython-tutorial] The function declaration and return use the Python interpreter so it makes sense for those lines to be yellow.
+[src:cython/cython-tutorial] Same for the list comprehension because it involves the creation of a Python object.
+[src:cython/cython-tutorial] Because Cython defaults to the Python behavior, the language will perform division checks at runtime, just like Python does.
+[src:cython/cython-tutorial] You can deactivate those checks by using the compiler directives.
+[src:cython/cython-tutorial] Now let’s see if we get a speed increase even if there is a division check.
+[src:cython/cython-tutorial] For comparison, let’s create a copy of `primes_python.py` and name it `primes_python_compiled.py`.
+[src:cython/cython-tutorial] Then we can compile that module with Cython and compare it to the (non-compiled) Python module with the same code.
+[src:cython/cython-tutorial] The cythonize version of `primes_python` is 2 times faster than the Python one, without changing a single line of code.
+[src:cython/cython-tutorial] The Cython version is 13 times faster than the Python version!
+[src:cython/cython-tutorial] Usually the speedups are between 2x to 1000x.
+[src:cython/cython-tutorial] It depends on how much you call the Python interpreter.
+[src:cython/cython-tutorial] As always, remember to profile before adding types everywhere.
+[src:cython/cython-tutorial] Adding types makes your code less readable, so use them with moderation.
+[src:cython/cython-tutorial] With Cython, it is also possible to take advantage of the C++ language, notably, part of the C++ standard library is directly importable from Cython code.
+[src:cython/cython-tutorial] Let’s see what our code becomes when using vector from the C++ standard library.
+[src:cython/cython-tutorial] Vector in C++ is a data structure which implements a list or stack based on a resizeable C array.
+[src:cython/cython-tutorial] It is similar to the Python `array` type in the `array` standard library module.
+[src:cython/cython-tutorial] There is a method *reserve* available which will avoid copies if you know in advance how many elements you are going to put in the vector.
+[src:cython/cython-tutorial] For more details see this page from cppreference.
+[src:cython/cython-tutorial] The code provided above / on this page uses an external native (non-Python) library through a `cimport` (`cython.cimports`).
+[src:cython/cython-tutorial] Cython compilation enables this, but there is no support for this from plain Python.
+[src:cython/cython-tutorial] Trying to run this code from Python (without compilation) will fail when accessing the external library.
+[src:cython/cython-tutorial] This is described in more detail in Calling C functions.
+[src:cython/cython-tutorial] It tells Cython to compile your code to C++.
+[src:cython/cython-tutorial] This will enable the use of C++ language features and the C++ standard library.
+[src:cython/cython-tutorial] Note that it isn’t possible to compile Cython code to C++ with *pyximport*.
+[src:cython/cython-tutorial] You should use a `setup.py` or a notebook to run this example.
+[src:cython/cython-tutorial] You can see that the API of a vector is similar to the API of a Python list, and can sometimes be used as a drop-in replacement in Cython.
+[src:cython/cython-tutorial] For more details about using C++ with Cython, see Using C++ in Cython.
+[src:cython/cython-tutorial] For more about the Cython language, see Language Basics.
+[src:cython/cython-tutorial] To dive right in to using Cython in a numerical computation context, see Typed Memoryviews.
+[src:cython/cython] Cython is a compiled language that is typically used to generate CPython extension modules.
+[src:cython/cython] Annotated Python-like code is compiled to C and then automatically wrapped in interface code, producing extension modules that can be loaded and used by regular Python code using the import statement, but with significantly less computational overhead at run time.
+[src:cython/cython] Cython also facilitates wrapping independent C or C++ code into Python-importable modules.
+[src:cython/cython] Cython is written in Python and C and works on Windows, macOS, and Linux, producing C source files compatible with CPython 2.6, 2.7, and 3.3 and later versions.
+[src:cython/cython] The Cython source code that Cython compiles (to C) can use both Python 2 and Python 3 syntax, defaulting to Python 2 syntax in Cython 0.x and Python 3 syntax in Cython 3.x.
+[src:cython/cython] The default can be overridden (e.g. in source code comment) to Python 3 (or 2) syntax.
+[src:cython/cython] Since Python 3 syntax has changed in recent versions, Cython may not be up to date with the latest additions.
+[src:cython/cython] Cython has "native support for most of the C++ language" and "compiles almost all existing Python code".
+[src:cython/cython] Cython works by producing a standard Python module.
+[src:cython/cython] However, the behavior differs from standard Python in that the module code, originally written in Python, is translated into C.
+[src:cython/cython] While the resulting code is fast, it makes many calls into the CPython interpreter and CPython standard libraries to perform actual work.
+[src:cython/cython] Choosing this arrangement saved considerably on Cython's development time, but modules have a dependency on the Python interpreter and standard library.
+[src:cython/cython] Although most of the code is C-based, a small stub loader written in interpreted Python is usually required (unless the goal is to create a loader written entirely in C, which may involve work with the undocumented internals of CPython).
+[src:cython/cython] However, this is not a major problem due to the presence of the Python interpreter.
+[src:cython/cython] Cython has a foreign function interface for invoking C/C++ routines and the ability to declare the static type of subroutine parameters and results, local variables, and class attributes.
+[src:cython/cython] A Cython program that implements the same algorithm as a corresponding Python program may consume fewer computing resources such as core memory and processing cycles due to differences between the CPython and Cython execution models.
+[src:cython/cython] A basic Python program is loaded and executed by the CPython virtual machine, so both the runtime and the program itself consume computing resources.
+[src:cython/cython] A Cython program is compiled to C code, which is further compiled to machine code, so the virtual machine is used only briefly when the program is loaded.
+[src:cython/cython] Performance depends both on what C code is generated by Cython and how that code is compiled by the C compiler.
+[src:cython/cython] Cython is a derivative of the Pyrex language, but it supports more features and optimizations than Pyrex.
+[src:cython/cython] Cython was forked from Pyrex in 2007 by developers of the Sage computer algebra package, because they were unhappy with Pyrex's limitations and could not get patches accepted by Pyrex's maintainer Greg Ewing, who envisioned a much smaller scope for his tool than the Sage developers had in mind.
+[src:cython/cython] When they found people were downloading Sage just to get SageX, and developers of other packages (including Stefan Behnel, who maintains the XML library LXML) were also maintaining forks of Pyrex, SageX was split off the Sage project and merged with `cython-lxml` to become Cython.
+[src:cython/cython] At its most basic, Cython code looks exactly like Python code.
+[src:cython/cython] However, whereas standard Python is dynamically typed, in Cython, types can optionally be provided, allowing for improved performance, allowing loops to be converted into C loops where possible.
+[src:cython/cython] A sample hello world program for Cython is more complex than in most languages because it interfaces with the Python C API and `setuptools` or other PEP517-compliant extension building facilities.
+[src:cython/cython] which gives a 95 times improvement over the pure-python version.
+[src:cython/cython] More details on the subject in the official quickstart page.
+[src:cython/cython] Cython is particularly popular among scientific users of Python, where it has "the perfect audience" according to Python creator Guido van Rossum.
+[src:cython/cython] Cython's domain is not limited to just numerical computing.
+[src:cython/cython] For example, the lxml XML toolkit is written mostly in Cython, and like its predecessor Pyrex, Cython is used to provide Python bindings for many C and C++ libraries such as the messaging library ZeroMQ.
+[src:cython/cython] Cython can also be used to develop parallel programs for multi-core processor machines; this feature makes use of the OpenMP library.
+[src:cython/foreign-function-interface] A **foreign function interface** (**FFI**) is a mechanism by which a program written in one programming language can call interoperable routines or make use of services written or compiled in another one.
+[src:cython/foreign-function-interface] An FFI is often used in contexts where calls are made into a binary dynamic-link library.
+[src:cython/foreign-function-interface] The term comes from the specification for Common Lisp, which explicitly refers to the programming language feature enabling for inter-language calls as such; the term is also often used officially by the interpreter and compiler documentation for Haskell, Rust, PHP, Python, and LuaJIT (Lua).
+[src:cython/foreign-function-interface] Other languages use other terminology: Ada has *language bindings*, while Java has *Java Native Interface* (JNI), *Java Native Access* (JNA), or since Java 22, Foreign Function and Memory API.
+[src:cython/foreign-function-interface] Foreign function interface has become generic terminology for mechanisms which provide such services.
+[src:cython/foreign-function-interface] The primary function of a foreign function interface is to mate the semantics and calling conventions of one programming language (the *host* language, or the language which defines the FFI), with the semantics and conventions of another (the *guest* language).
+[src:cython/foreign-function-interface] This process must also take into consideration the runtime environments and application binary interfaces of both.
+[src:cython/foreign-function-interface] C++ offers compatibility with C trivially, however as C++ uses name mangling, symbols that are to be exported in shared libraries must be wrapped in extern "C" blocks which prevent name mangling.
+[src:cython/foreign-function-interface] `extern "C"` functions may call C++ code internally, but may only return C types and may not throw exceptions.
+[src:cython/foreign-function-interface] Many FFIs can be generated automatically: for example, SWIG.
+[src:cython/foreign-function-interface] However, in the case of an extension language a semantic inversion of the relationship of guest and host can occur, when a smaller body of extension language is the guest invoking services in the larger body of host language, such as writing a small plugin for GIMP.
+[src:cython/foreign-function-interface] Some FFIs are restricted to free standing functions, while others also allow calls of functions embedded in an object or class (often called method calls); some even permit migration of complex datatypes or objects across the language boundary.
+[src:cython/foreign-function-interface] In most cases, an FFI is defined by a higher-level language, so that it may employ services defined and implemented in a lower-level language, typically a system programming language like C or C++.
+[src:cython/foreign-function-interface] This is typically done to either access operating system (OS) services in the language in which the OS API is defined, or for performance goals.
+[src:cython/foreign-function-interface] Many FFIs also provide the means for the called language to invoke services in the host language also.
+[src:cython/foreign-function-interface] The term foreign function interface is generally not used to describe multi-lingual runtimes such as the Microsoft Common Language Runtime, where a common *substrate* is provided which enables any CLR-compliant language to use services defined in any other.
+[src:cython/foreign-function-interface] There are some special cases, in which the languages compile into the same bytecode VM, like Clojure and Java, as well as Elixir and Erlang.
+[src:cython/foreign-function-interface] Since there is no interface, it is not an FFI, strictly speaking, while it offers the same functions to the user.
+[src:cython/global-interpreter-lock] A **global interpreter lock** (**GIL**) is a mechanism used in computer-language interpreters to synchronize the execution of threads so that only one native thread (per process) can execute basic operations (such as memory allocation and reference counting) at a time.
+[src:cython/global-interpreter-lock] As a general rule, an interpreter that uses GIL will see only one thread to execute at a time, even if it runs on a multi-core processor, although some implementations provide for CPU intensive code to release the GIL, allowing multiple threads to use multiple cores.
+[src:cython/global-interpreter-lock] Some popular interpreters that have a GIL are CPython and Ruby MRI.
+[src:cython/global-interpreter-lock] A global interpreter lock (GIL) is a mutual-exclusion lock held by a programming language interpreter thread to avoid sharing code that is not thread-safe with other threads.
+[src:cython/global-interpreter-lock] In implementations with a GIL, there is always one GIL for each interpreter process.
+[src:cython/global-interpreter-lock] Applications running on implementations with a GIL can be designed to use separate processes to achieve full parallelism, as each process has its own interpreter and in turn has its own GIL.
+[src:cython/global-interpreter-lock] Otherwise, the GIL can be a significant barrier to parallelism.
+[src:cython/global-interpreter-lock] A way to get around a GIL is creating a separate interpreter per thread, which is too expensive with most languages.
+[src:cython/global-interpreter-lock] Use of a global interpreter lock in a language effectively limits the amount of parallelism reachable through concurrency of a single interpreter process with multiple threads.
+[src:cython/global-interpreter-lock] Due to signaling with a CPU-bound thread, it can cause a significant slowdown, even on single processors.
+[src:cython/global-interpreter-lock] More seriously, when the single native thread calls a blocking OS process (such as disk access), the entire process is blocked, even though other application threads may be waiting.
+[src:cython/global-interpreter-lock] Some language implementations that implement a global interpreter lock are CPython, the most widely-used implementation of Python, and Ruby MRI, the reference implementation of Ruby (where it is called Global VM Lock).
+[src:cython/global-interpreter-lock] JVM-based equivalents of these languages (Jython and JRuby) do not use global interpreter locks.
+[src:cython/global-interpreter-lock] IronPython and IronRuby are implemented on top of Microsoft's Dynamic Language Runtime and also avoid using a GIL.
+[src:cython/global-interpreter-lock] An example of an interpreted language without a GIL is Tcl, which is used in the benchmarking tool HammerDB.
+[src:cython/global-interpreter-lock] Notice how a lock is acquired and released between each instruction call.
+[src:cython/global-interpreter-lock] It uses the Lock object from the threading module.
+[src:cython/global-interpreter-lock] In Python 3.13, an experimental "free-threaded" build of CPython was introduced as part of PEP 703 – *Making the Global Interpreter Lock Optional in CPython*.
+[src:cython/global-interpreter-lock] This build allows developers to compile Python without the Global Interpreter Lock (GIL), enabling true parallel execution of Python bytecode across multiple CPU cores.
+[src:cython/global-interpreter-lock] The feature is still experimental but represents a major step toward improved concurrency in future Python releases.

@@ -3,7 +3,7 @@ title: "Bigtable"
 source: https://en.wikipedia.org/wiki/Bigtable
 domain: apache-hbase
 license: CC-BY-SA-4.0
-tags: apache hbase, bigtable clone, wide-column store, apache hadoop
+tags: apache hbase, wide column store, google bigtable, distributed key value, nosql database
 fetched: 2026-07-02
 ---
 

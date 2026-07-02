@@ -1,0 +1,939 @@
+# nl-rag distilled facts — domain: mesa-graphics-stack
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:mesa-graphics-stack/direct-rendering-manager] The **Direct Rendering Manager** (**DRM**) is a subsystem of the Linux kernel responsible for interfacing with GPUs of modern video cards.
+[src:mesa-graphics-stack/direct-rendering-manager] DRM exposes an API that user-space programs can use to send commands and data to the GPU and perform operations such as configuring the mode setting of the display.
+[src:mesa-graphics-stack/direct-rendering-manager] DRM was first developed as the kernel-space component of the X Server Direct Rendering Infrastructure, but since then it has been used by other graphic stack alternatives such as Wayland and standalone applications and libraries such as SDL2 and Kodi.
+[src:mesa-graphics-stack/direct-rendering-manager] User-space programs can use the DRM API to command the GPU to do hardware-accelerated 3D rendering and video decoding, as well as GPGPU computing.
+[src:mesa-graphics-stack/direct-rendering-manager] The Linux kernel already had an API called fbdev, used to manage the framebuffer of a graphics adapter, but it couldn't be used to handle the needs of modern 3D-accelerated GPU-based video hardware.
+[src:mesa-graphics-stack/direct-rendering-manager] These devices usually require setting and managing a command queue in their own memory to dispatch commands to the GPU and also require management of buffers and free space within that memory.
+[src:mesa-graphics-stack/direct-rendering-manager] Initially, user-space programs (such as the X Server) directly managed these resources, but they usually acted as if they were the only ones with access to them.
+[src:mesa-graphics-stack/direct-rendering-manager] When two or more programs tried to control the same hardware at the same time, and set its resources each one in its own way, most times they ended catastrophically.
+[src:mesa-graphics-stack/direct-rendering-manager] DRM allows multiple programs concurrent access to the 3D video card, avoiding collisions.
+[src:mesa-graphics-stack/direct-rendering-manager] The Direct Rendering Manager was created to allow multiple programs to use video hardware resources cooperatively.
+[src:mesa-graphics-stack/direct-rendering-manager] The DRM gets exclusive access to the GPU and is responsible for initializing and maintaining the command queue, memory, and any other hardware resource.
+[src:mesa-graphics-stack/direct-rendering-manager] Programs wishing to use the GPU send requests to DRM, which acts as an arbitrator and takes care to avoid possible conflicts.
+[src:mesa-graphics-stack/direct-rendering-manager] The scope of DRM has been expanded over the years to cover more functionality previously handled by user-space programs, such as framebuffer managing and mode setting, memory-sharing objects and memory synchronization.
+[src:mesa-graphics-stack/direct-rendering-manager] Some of these expansions were given specific names, such as Graphics Execution Manager (GEM) or kernel mode-setting (KMS), and the terminology prevails when the functionality they provide is specifically alluded.
+[src:mesa-graphics-stack/direct-rendering-manager] But they are really parts of the whole kernel DRM subsystem.
+[src:mesa-graphics-stack/direct-rendering-manager] The trend to include two GPUs in a computer—a discrete GPU and an integrated one—led to new problems such as GPU switching that also needed to be solved at the DRM layer.
+[src:mesa-graphics-stack/direct-rendering-manager] In order to match the Nvidia Optimus technology, DRM was provided with GPU offloading abilities, called PRIME.
+[src:mesa-graphics-stack/direct-rendering-manager] The Direct Rendering Manager resides in kernel space, so user-space programs must use kernel system calls to request its services.
+[src:mesa-graphics-stack/direct-rendering-manager] However, DRM doesn't define its own customized system calls.
+[src:mesa-graphics-stack/direct-rendering-manager] Instead, it follows the Unix principle of "everything is a file" to expose the GPUs through the filesystem name space, using device files under the `/dev` hierarchy.
+[src:mesa-graphics-stack/direct-rendering-manager] Each GPU detected by DRM is referred to as a *DRM device*, and a device file `/dev/dri/card*X*` (where *X* is a sequential number) is created to interface with it.
+[src:mesa-graphics-stack/direct-rendering-manager] User-space programs that want to talk to the GPU must open this file and use ioctl calls to communicate with DRM.
+[src:mesa-graphics-stack/direct-rendering-manager] Different ioctls correspond to different functions of the DRM API.
+[src:mesa-graphics-stack/direct-rendering-manager] A library called *libdrm* was created to facilitate the interface of user-space programs with the DRM subsystem.
+[src:mesa-graphics-stack/direct-rendering-manager] This library is merely a wrapper that provides a function written in C for every ioctl of the DRM API, as well as constants, structures and other helper elements.
+[src:mesa-graphics-stack/direct-rendering-manager] The use of libdrm not only avoids exposing the kernel interface directly to applications, but presents the usual advantages of reusing and sharing code between programs.
+[src:mesa-graphics-stack/direct-rendering-manager] DRM consists of two parts: a generic "DRM core" and a specific one ("DRM driver") for each type of supported hardware.
+[src:mesa-graphics-stack/direct-rendering-manager] DRM core provides the basic framework where different DRM drivers can register and also provides to user space a minimal set of ioctls with common, hardware-independent functionality.
+[src:mesa-graphics-stack/direct-rendering-manager] When a specific DRM driver provides an enhanced API, user-space libdrm is also extended by an extra library libdrm-*driver* that can be used by user space to interface with the additional ioctls.
+[src:mesa-graphics-stack/direct-rendering-manager] The DRM core exports several interfaces to user-space applications, generally intended to be used through corresponding `libdrm` wrapper functions.
+[src:mesa-graphics-stack/direct-rendering-manager] In addition, drivers export device-specific interfaces for use by user-space drivers and device-aware applications through ioctls and sysfs files.
+[src:mesa-graphics-stack/direct-rendering-manager] External interfaces include: memory mapping, context management, DMA operations, AGP management, vblank control, fence management, memory management, and output management.
+[src:mesa-graphics-stack/direct-rendering-manager] There are several operations (ioctls) in the DRM API that either for security purposes or for concurrency issues must be restricted to be used by a single user-space process per device.
+[src:mesa-graphics-stack/direct-rendering-manager] To implement this restriction, DRM limits such ioctls to be only invoked by the process considered the "master" of a DRM device, usually called *DRM-Master*.
+[src:mesa-graphics-stack/direct-rendering-manager] Only one of all processes that have the device node `/dev/dri/card*X*` opened will have its file handle marked as master, specifically the first calling the SET_MASTER ioctl.
+[src:mesa-graphics-stack/direct-rendering-manager] Any attempt to use one of these restricted ioctls without being the DRM-Master will return an error.
+[src:mesa-graphics-stack/direct-rendering-manager] A process can also give up its master role—and let another process acquire it—by calling the DROP_MASTER ioctl.
+[src:mesa-graphics-stack/direct-rendering-manager] The X Server—or any other display server—is commonly the process that acquires the DRM-Master status in every DRM device it manages, usually when it opens the corresponding device node during its startup, and keeps these privileges for the entire graphical session until it finishes or dies.
+[src:mesa-graphics-stack/direct-rendering-manager] For the remaining user-space processes there is another way to gain the privilege to invoke some restricted operations on the DRM device called *DRM-Auth*.
+[src:mesa-graphics-stack/direct-rendering-manager] It is basically a method of authentication against the DRM device, in order to prove to it that the process has the DRM-Master's approval to get such privileges.
+[src:mesa-graphics-stack/direct-rendering-manager] Due to the increasing size of video memory and the growing complexity of graphics APIs such as OpenGL, the strategy of reinitializing the graphics card state at each context switch was too expensive, performance-wise.
+[src:mesa-graphics-stack/direct-rendering-manager] Also, modern Linux desktops needed an optimal way to share off-screen buffers with the compositing manager.
+[src:mesa-graphics-stack/direct-rendering-manager] These requirements led to the development of new methods to manage graphics buffers inside the kernel.
+[src:mesa-graphics-stack/direct-rendering-manager] The *Graphics Execution Manager* (GEM) emerged as one of these methods.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM provides an API with explicit memory management primitives.
+[src:mesa-graphics-stack/direct-rendering-manager] Through GEM, a user-space program can create, handle and destroy memory objects living in the GPU video memory.
+[src:mesa-graphics-stack/direct-rendering-manager] These objects, called "GEM objects", are persistent from the user-space program's perspective and don't need to be reloaded every time the program regains control of the GPU.
+[src:mesa-graphics-stack/direct-rendering-manager] When a user-space program needs a chunk of video memory (to store a framebuffer, texture or any other data required by the GPU), it requests the allocation to the DRM driver using the GEM API.
+[src:mesa-graphics-stack/direct-rendering-manager] The DRM driver keeps track of the used video memory and is able to comply with the request if there is free memory available, returning a "handle" to user space to further refer the allocated memory in coming operations.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM API also provides operations to populate the buffer and to release it when it is not needed anymore.
+[src:mesa-graphics-stack/direct-rendering-manager] Memory from unreleased GEM handles gets recovered when the user-space process closes the DRM device file descriptor—intentionally or because it terminates.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM also allows two or more user-space processes using the same DRM device (hence the same DRM driver) to share a GEM object.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM handles are local 32-bit integers unique to a process but repeatable in other processes, therefore not suitable for sharing.
+[src:mesa-graphics-stack/direct-rendering-manager] What is needed is a global namespace, and GEM provides one through the use of global handles called *GEM names*.
+[src:mesa-graphics-stack/direct-rendering-manager] A GEM name refers to one, and only one, GEM object created within the same DRM device by the same DRM driver, by using a unique 32-bit integer.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM provides an operation *flink* to obtain a GEM name from a GEM handle.
+[src:mesa-graphics-stack/direct-rendering-manager] The process can then pass this GEM name (32-bit integer) to another process using any IPC mechanism available.
+[src:mesa-graphics-stack/direct-rendering-manager] The GEM name can be used by the recipient process to obtain a local GEM handle pointing to the original GEM object.
+[src:mesa-graphics-stack/direct-rendering-manager] Unfortunately, the use of GEM names to share buffers is not secure.
+[src:mesa-graphics-stack/direct-rendering-manager] A malicious third-party process accessing the same DRM device could try to guess the GEM name of a buffer shared by two other processes, simply by probing 32-bit integers.
+[src:mesa-graphics-stack/direct-rendering-manager] Once a GEM name is found, its contents can be accessed and modified, violating the confidentiality and integrity of the information of the buffer.
+[src:mesa-graphics-stack/direct-rendering-manager] This drawback was overcome later by the introduction of DMA-BUF support into DRM, as DMA-BUF represents buffers in userspace as file descriptors, which may be shared securely.
+[src:mesa-graphics-stack/direct-rendering-manager] Another important task for any video-memory management system besides managing the video-memory space is handling the memory synchronization between the GPU and the CPU.
+[src:mesa-graphics-stack/direct-rendering-manager] Current memory architectures are very complex and usually involve various levels of caches for the system memory and sometimes for the video memory too.
+[src:mesa-graphics-stack/direct-rendering-manager] Therefore, video-memory managers should also handle the cache coherence to ensure the data shared between CPU and GPU is consistent.
+[src:mesa-graphics-stack/direct-rendering-manager] This means that often video-memory management internals are highly dependent on hardware details of the GPU and memory architecture, and thus driver-specific.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM was initially developed by Intel engineers to provide a video-memory manager for its i915 driver.
+[src:mesa-graphics-stack/direct-rendering-manager] The Intel GMA 9xx family are integrated GPUs with a Uniform Memory Architecture (UMA), where the GPU and CPU share the physical memory, and there is not a dedicated VRAM.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM defines "memory domains" for memory synchronization, and while these memory domains are GPU-independent, they are specifically designed with an UMA memory architecture in mind, making them less suitable for other memory architectures like those with a separate VRAM.
+[src:mesa-graphics-stack/direct-rendering-manager] For this reason, other DRM drivers have decided to expose to user-space programs the GEM API, but internally they implemented a different memory manager better suited for their particular hardware and memory architecture.
+[src:mesa-graphics-stack/direct-rendering-manager] The GEM API also provides ioctls for control of the execution flow (command buffers), but they are Intel-specific, to be used with Intel i915 and later GPUs.
+[src:mesa-graphics-stack/direct-rendering-manager] No other DRM driver has attempted to implement any part of the GEM API beyond the memory-management specific ioctls.
+[src:mesa-graphics-stack/direct-rendering-manager] The main concept of TTM are the "buffer objects", regions of video memory that at some point must be addressable by the GPU.
+[src:mesa-graphics-stack/direct-rendering-manager] When a user-space graphics application wants access to a certain buffer object (usually to fill it with content), TTM may require relocating it to a type of memory addressable by the CPU.
+[src:mesa-graphics-stack/direct-rendering-manager] Further relocations—or GART mapping operations—could happen when the GPU needs access to a buffer object but it isn't in the GPU's address space yet.
+[src:mesa-graphics-stack/direct-rendering-manager] Each of these relocation operations must handle any related data and cache-coherency issues.
+[src:mesa-graphics-stack/direct-rendering-manager] Another important TTM concept is *fences*.
+[src:mesa-graphics-stack/direct-rendering-manager] Fences are essentially a mechanism to manage concurrency between the CPU and the GPU.
+[src:mesa-graphics-stack/direct-rendering-manager] A fence tracks when a buffer object is no longer used by the GPU, generally to notify any user-space process with access to it.
+[src:mesa-graphics-stack/direct-rendering-manager] Some DRM developers thought that it wouldn't fit well with any specific driver, especially the API.
+[src:mesa-graphics-stack/direct-rendering-manager] When GEM emerged as a simpler memory manager, its API was preferred over the TTM one.
+[src:mesa-graphics-stack/direct-rendering-manager] But some driver developers considered that the approach taken by TTM was more suitable for discrete video cards with dedicated video memory and IOMMUs, so they decided to use TTM internally, while exposing their buffer objects as GEM objects and thus supporting the GEM API.
+[src:mesa-graphics-stack/direct-rendering-manager] Examples of current drivers using TTM as an internal memory manager but providing a GEM API are the radeon driver for AMD video cards and the nouveau driver for NVIDIA video cards.
+[src:mesa-graphics-stack/direct-rendering-manager] The *DMA Buffer Sharing API* (often abbreviated as DMA-BUF) is a Linux kernel internal API designed to provide a generic mechanism to share DMA buffers across multiple devices, possibly managed by different types of device drivers.
+[src:mesa-graphics-stack/direct-rendering-manager] For example, a Video4Linux device and a graphics adapter device could share buffers through DMA-BUF to achieve zero-copy of the data of a video stream produced by the first and consumed by the latter.
+[src:mesa-graphics-stack/direct-rendering-manager] Any Linux device driver can implement this API as exporter, as user (consumer) or both.
+[src:mesa-graphics-stack/direct-rendering-manager] This feature was exploited for the first time in DRM to implement PRIME, a solution for GPU offloading that uses DMA-BUF to share the resulting framebuffers between the DRM drivers of the discrete and the integrated GPU.
+[src:mesa-graphics-stack/direct-rendering-manager] An important feature of DMA-BUF is that a shared buffer is presented to user space as a file descriptor.
+[src:mesa-graphics-stack/direct-rendering-manager] For the development of PRIME two new ioctls were added to the DRM API, one to convert a local GEM handle to a DMA-BUF file descriptor and another for the exact opposite operation.
+[src:mesa-graphics-stack/direct-rendering-manager] These two new ioctls were later reused as a way to fix the inherent unsafety of GEM buffer sharing.
+[src:mesa-graphics-stack/direct-rendering-manager] Unlike GEM names, file descriptors can not be guessed (they are not a global namespace), and Unix operating systems provide a safe way to pass them through a Unix domain socket using the SCM_RIGHTS semantics.
+[src:mesa-graphics-stack/direct-rendering-manager] A process that wants to share a GEM object with another process can convert its local GEM handle to a DMA-BUF file descriptor and pass it to the recipient, which in turn can get its own GEM handle from the received file descriptor.
+[src:mesa-graphics-stack/direct-rendering-manager] This method is used by DRI3 to share buffers between the client and the X Server and also by Wayland.
+[src:mesa-graphics-stack/direct-rendering-manager] In order to work properly, a video card or graphics adapter must set a *mode*—a combination of screen resolution, color depth and refresh rate—that is within the range of values supported by itself and the attached display screen.
+[src:mesa-graphics-stack/direct-rendering-manager] This operation is called mode-setting, and it usually requires raw access to the graphics hardware—i.e. the ability to write to certain registers of the video card display controller.
+[src:mesa-graphics-stack/direct-rendering-manager] A mode-setting operation must be performed before starting to use the framebuffer, and also when the mode is required to change by an application or the user.
+[src:mesa-graphics-stack/direct-rendering-manager] In the early days, user-space programs that wanted to use the graphical framebuffer were also responsible for providing the mode-setting operations.
+[src:mesa-graphics-stack/direct-rendering-manager] Thus, they needed to run with privileged access to the video hardware.
+[src:mesa-graphics-stack/direct-rendering-manager] In Unix-type operating systems, the X Server was the most prominent example.
+[src:mesa-graphics-stack/direct-rendering-manager] Its mode-setting implementation lived in the DDX driver for each specific type of video card.
+[src:mesa-graphics-stack/direct-rendering-manager] This approach, later referred to as *User space Mode-Setting* or UMS, poses several issues.
+[src:mesa-graphics-stack/direct-rendering-manager] It not only breaks the isolation that operating systems should provide between programs and hardware, raising both stability and security concerns, but also could leave the graphics hardware in an inconsistent state if two or more user space programs try to do the mode-setting at the same time.
+[src:mesa-graphics-stack/direct-rendering-manager] To avoid these conflicts, the X Server became in practice the only user space program that performed mode-setting operations; the remainder user space programs relied on the X Server to set the appropriate mode and to handle any other operation involving mode-setting.
+[src:mesa-graphics-stack/direct-rendering-manager] Initially the mode-setting was performed exclusively during the X Server startup process, but later the X Server gained the ability to do it while running.
+[src:mesa-graphics-stack/direct-rendering-manager] The XFree86-VidModeExtension extension was introduced in XFree86 3.1.2 to let any X client request modeline (resolution) changes to the X Server.
+[src:mesa-graphics-stack/direct-rendering-manager] VidMode extension was later superseded by the more generic XRandR extension.
+[src:mesa-graphics-stack/direct-rendering-manager] However, this was not the only code doing mode-setting in a Linux system.
+[src:mesa-graphics-stack/direct-rendering-manager] During the system booting process, the Linux kernel must set a minimal text mode for the virtual console (based on the standard modes defined by VESA BIOS extensions).
+[src:mesa-graphics-stack/direct-rendering-manager] Also the Linux kernel framebuffer driver contained mode-setting code to configure framebuffer devices.
+[src:mesa-graphics-stack/direct-rendering-manager] To avoid mode-setting conflicts, the XFree86 Server—and later the X.Org Server—handled the case when the user switched from the graphical environment to a text virtual console by saving its mode-setting state, and restoring it when the user switched back to X.
+[src:mesa-graphics-stack/direct-rendering-manager] This process caused an annoying flicker in the transition, and also can fail, leading to a corrupted or unusable output display.
+[src:mesa-graphics-stack/direct-rendering-manager] To address these problems, the mode-setting code was moved to a single place inside the kernel, specifically to the existing DRM module.
+[src:mesa-graphics-stack/direct-rendering-manager] Then, every process—including the X Server—should be able to command the kernel to perform mode-setting operations, and the kernel would ensure that concurrent operations don't result in an inconsistent state.
+[src:mesa-graphics-stack/direct-rendering-manager] The new kernel API and code added to the DRM module to perform these mode-setting operations was called *Kernel Mode-Setting* (KMS).
+[src:mesa-graphics-stack/direct-rendering-manager] Kernel Mode-Setting provides several benefits.
+[src:mesa-graphics-stack/direct-rendering-manager] The most immediate is of course the removal of duplicate mode-setting code, from both the kernel (Linux console, fbdev) and user space (X Server DDX drivers).
+[src:mesa-graphics-stack/direct-rendering-manager] KMS also makes it easier to write alternative graphics systems, which now don't need to implement their own mode-setting code.
+[src:mesa-graphics-stack/direct-rendering-manager] By providing centralized mode management, KMS solves the flickering issues while changing between console and X, and also between different instances of X (fast user switching).
+[src:mesa-graphics-stack/direct-rendering-manager] Since it is available in the kernel, it can also be used at the beginning of the boot process, saving flickering due to mode changes in these early stages.
+[src:mesa-graphics-stack/direct-rendering-manager] The fact that KMS is part of the kernel allows it to use resources only available at kernel space such as interrupts.
+[src:mesa-graphics-stack/direct-rendering-manager] For example, the mode recovery after a suspend/resume process simplifies a lot by being managed by the kernel itself, and incidentally improves security (no more user space tools requiring root permissions).
+[src:mesa-graphics-stack/direct-rendering-manager] The kernel also allows the hotplug of new display devices easily, solving a longstanding problem.
+[src:mesa-graphics-stack/direct-rendering-manager] Mode-setting is also closely related to memory management—since framebuffers are basically memory buffers—so a tight integration with the graphics memory manager is highly recommended.
+[src:mesa-graphics-stack/direct-rendering-manager] That's the main reason why the kernel mode-setting code was incorporated into DRM and not as a separate subsystem.
+[src:mesa-graphics-stack/direct-rendering-manager] To avoid breaking backwards compatibility of the DRM API, Kernel Mode-Setting is provided as an additional *driver feature* of certain DRM drivers.
+[src:mesa-graphics-stack/direct-rendering-manager] Any DRM driver can choose to provide the DRIVER_MODESET flag when it registers with the DRM core to indicate that supports the KMS API.
+[src:mesa-graphics-stack/direct-rendering-manager] Those drivers that implement Kernel Mode-Setting are often called *KMS drivers* as a way to differentiate them from the legacy—without KMS—DRM drivers.
+[src:mesa-graphics-stack/direct-rendering-manager] KMS has been adopted to such an extent that certain drivers which lack 3D acceleration (or for which the hardware vendor doesn't want to expose or implement it) nevertheless implement the KMS API without the rest of the DRM API, allowing display servers (like Wayland) to run with ease.
+[src:mesa-graphics-stack/direct-rendering-manager] KMS models and manages the output devices as a series of abstract hardware blocks commonly found on the display output pipeline of a display controller.
+[src:mesa-graphics-stack/direct-rendering-manager] In recent years there has been an ongoing effort to bring atomicity to some regular operations pertaining the KMS API, specifically to the mode setting and page flipping operations.
+[src:mesa-graphics-stack/direct-rendering-manager] This enhanced KMS API is what is called *Atomic Display* (formerly known as *atomic mode-setting* and *atomic* or *nuclear pageflip*).
+[src:mesa-graphics-stack/direct-rendering-manager] Atomic mode-setting allows one to know beforehand if certain specific mode configuration is appropriate, by providing mode testing capabilities.
+[src:mesa-graphics-stack/direct-rendering-manager] When an atomic mode is tested and its validity confirmed, it can be applied with a single indivisible (atomic) commit operation.
+[src:mesa-graphics-stack/direct-rendering-manager] Both test and commit operations are provided by the same new ioctl with different flags.
+[src:mesa-graphics-stack/direct-rendering-manager] The new atomic API is built upon the old KMS API.
+[src:mesa-graphics-stack/direct-rendering-manager] It uses the same model and objects (CRTCs, encoders, connectors, planes, ...), but with an increasing number of object properties that can be modified.
+[src:mesa-graphics-stack/direct-rendering-manager] The atomic procedure is based on changing the relevant properties to build the state that we want to test or commit.
+[src:mesa-graphics-stack/direct-rendering-manager] The properties we want to modify depend on whether we want to do a mode-setting (mostly CRTCs, encoders and connectors properties) or page flipping (usually planes properties).
+[src:mesa-graphics-stack/direct-rendering-manager] The ioctl is the same for both cases, the difference being the list of properties passed with each one.
+[src:mesa-graphics-stack/direct-rendering-manager] In the original DRM API, the DRM device `/dev/dri/card*X*` is used for both privileged (modesetting, other display control) and non-privileged (rendering, GPGPU compute) operations.
+[src:mesa-graphics-stack/direct-rendering-manager] For security reasons, opening the associated DRM device file requires special privileges "equivalent to root-privileges".
+[src:mesa-graphics-stack/direct-rendering-manager] This leads to an architecture where only some reliable user space programs (the X server, a graphical compositor, ...) have full access to the DRM API, including the privileged parts like the modeset API.
+[src:mesa-graphics-stack/direct-rendering-manager] Other user space applications that want to render or make GPGPU computations should be granted by the owner of the DRM device ("DRM Master") through the use of a special authentication interface.
+[src:mesa-graphics-stack/direct-rendering-manager] Then the authenticated applications can render or make computations using a restricted version of the DRM API without privileged operations.
+[src:mesa-graphics-stack/direct-rendering-manager] The "render nodes" concept tries to solve these scenarios by splitting the DRM user space API into two interfaces – one privileged and one non-privileged – and using separate device files (or "nodes") for each one.
+[src:mesa-graphics-stack/direct-rendering-manager] For every GPU found, its corresponding DRM driver—if it supports the render nodes feature—creates a device file `/dev/dri/renderD*X*`, called the *render node*, in addition to the primary node `/dev/dri/card*X*`.
+[src:mesa-graphics-stack/direct-rendering-manager] Display servers, compositors and any other program that requires the modeset API or any other privileged operation must open the standard primary node that grants access to the full DRM API and use it as usual.
+[src:mesa-graphics-stack/direct-rendering-manager] Render nodes explicitly disallow the GEM *flink* operation to prevent buffer sharing using insecure GEM global names; only PRIME (DMA-BUF) file descriptors can be used to share buffers with another client, including the graphics server.
+[src:mesa-graphics-stack/direct-rendering-manager] The Linux DRM subsystem includes free and open-source drivers to support hardware from the 3 main manufacturers of GPUs for desktop computers (AMD, NVIDIA and Intel), as well as from a growing number of mobile GPU and System on a chip (SoC) integrators.
+[src:mesa-graphics-stack/direct-rendering-manager] The quality of each driver varies highly, depending on the degree of cooperation by the manufacturer and other matters.
+[src:mesa-graphics-stack/direct-rendering-manager] There is also a number of drivers for old, obsolete hardware detailed in the next table for historical purposes.
+[src:mesa-graphics-stack/direct-rendering-manager] The Direct Rendering Manager is developed within the Linux kernel, and its source code resides in the `/drivers/gpu/drm` directory of the Linux source code.
+[src:mesa-graphics-stack/direct-rendering-manager] The subsystem maintainer is Dave Airlie, with other maintainers taking care of specific drivers.
+[src:mesa-graphics-stack/direct-rendering-manager] As usual in the Linux kernel development, DRM submaintainers and contributors send their patches with new features and bug fixes to the main DRM maintainer which integrates them into its own Linux repository.
+[src:mesa-graphics-stack/direct-rendering-manager] The DRM maintainer in turn submits all of these patches that are ready to be mainlined to Linus Torvalds whenever a new Linux version is going to be released.
+[src:mesa-graphics-stack/direct-rendering-manager] Torvalds, as top maintainer of the whole kernel, holds the last word on whether a patch is suitable or not for inclusion in the kernel.
+[src:mesa-graphics-stack/direct-rendering-manager] For historical reasons, the source code of the libdrm library is maintained under the umbrella of the Mesa project.
+[src:mesa-graphics-stack/direct-rendering-manager] In 1999, while developing DRI for XFree86, Precision Insight created the first version of DRM for the 3dfx video cards, as a Linux kernel patch included within the Mesa source code.
+[src:mesa-graphics-stack/direct-rendering-manager] Later that year, the DRM code was mainlined in Linux kernel 2.3.18 under the `/drivers/char/drm/` directory for character devices.
+[src:mesa-graphics-stack/direct-rendering-manager] During the following years the number of supported video cards grew.
+[src:mesa-graphics-stack/direct-rendering-manager] The split of DRM into two components, DRM core and DRM driver, called *DRM core/personality split* was done during the second half of 2004, and merged into kernel version 2.6.11.
+[src:mesa-graphics-stack/direct-rendering-manager] This split allowed multiple DRM drivers for multiple devices to work simultaneously, opening the way to multi-GPU support.
+[src:mesa-graphics-stack/direct-rendering-manager] Such code had to be executed using x86 real mode, which prevented it from being invoked by a kernel running in protected mode.
+[src:mesa-graphics-stack/direct-rendering-manager] The situation changed when Luc Verhaegen and other developers found a way to do the mode-setting natively instead of BIOS-based, showing that it was possible to do it using normal kernel code and laying the groundwork for what would become *Kernel Mode Setting*.
+[src:mesa-graphics-stack/direct-rendering-manager] In May 2007 Jesse Barnes (Intel) published the first proposal for a *drm-modesetting* API and a working native implementation of mode-setting for Intel GPUs within the i915 DRM driver.
+[src:mesa-graphics-stack/direct-rendering-manager] In December 2007 Jerome Glisse started to add the native mode-setting code for ATI cards to the radeon DRM driver.
+[src:mesa-graphics-stack/direct-rendering-manager] Work on both the API and drivers continued during 2008, but got delayed by the necessity of a memory manager also in kernel space to handle the framebuffers.
+[src:mesa-graphics-stack/direct-rendering-manager] In October 2008 the Linux kernel 2.6.27 brought a major source code reorganization, prior to some significant upcoming changes.
+[src:mesa-graphics-stack/direct-rendering-manager] The DRM source code tree was moved to its own source directory `/drivers/gpu/drm/` and the different drivers were moved into their own subdirectories.
+[src:mesa-graphics-stack/direct-rendering-manager] Headers were also moved into a new `/include/drm` directory.
+[src:mesa-graphics-stack/direct-rendering-manager] The increasing complexity of video memory management led to several approaches to solving this issue.
+[src:mesa-graphics-stack/direct-rendering-manager] The first attempt was the *Translation Table Maps* (TTM) memory manager, developed by Thomas Hellstrom (Tungsten Graphics) in collaboration with Emma Anholt (Intel) and Dave Airlie (Red Hat).
+[src:mesa-graphics-stack/direct-rendering-manager] TTM was proposed for inclusion into mainline kernel 2.6.25 in November 2007, and again in May 2008, but was ditched in favor of a new approach called *Graphics Execution Manager* (GEM).
+[src:mesa-graphics-stack/direct-rendering-manager] GEM was first developed by Keith Packard and Emma Anholt from Intel as a simpler solution for memory management for their i915 driver.
+[src:mesa-graphics-stack/direct-rendering-manager] GEM was well received and merged into the Linux kernel version 2.6.28 released in December 2008.
+[src:mesa-graphics-stack/direct-rendering-manager] Meanwhile, TTM had to wait until September 2009 to be finally merged into Linux 2.6.31 as a requirement of the new Radeon KMS DRM driver.
+[src:mesa-graphics-stack/direct-rendering-manager] With memory management in place to handle buffer objects, DRM developers could finally add to the kernel the already finished API and code to do mode setting.
+[src:mesa-graphics-stack/direct-rendering-manager] This expanded API is what is called *Kernel Mode-setting* (KMS) and the drivers which implement it are often referred to as *KMS drivers*.
+[src:mesa-graphics-stack/direct-rendering-manager] In March 2009, KMS was merged into the Linux kernel version 2.6.29, along with KMS support for the i915 driver.
+[src:mesa-graphics-stack/direct-rendering-manager] The KMS API has been exposed to user space programs since libdrm 2.4.3.
+[src:mesa-graphics-stack/direct-rendering-manager] The userspace X.Org DDX driver for Intel graphics cards was also the first to use the new GEM and KMS APIs.
+[src:mesa-graphics-stack/direct-rendering-manager] KMS support for the radeon DRM driver was added to Linux 2.6.31 release of September 2009.
+[src:mesa-graphics-stack/direct-rendering-manager] The new radeon KMS driver used the TTM memory manager but exposed GEM-compatible interfaces and ioctls instead of TTM ones.
+[src:mesa-graphics-stack/direct-rendering-manager] Since 2006 the nouveau project had been developing a free software DRM driver for NVIDIA GPUs outside of the official Linux kernel.
+[src:mesa-graphics-stack/direct-rendering-manager] In 2010 the nouveau source code was merged into Linux 2.6.33 as an experimental driver.
+[src:mesa-graphics-stack/direct-rendering-manager] At the time of merging, the driver had been already converted to KMS, and behind the GEM API it used TTM as its memory manager.
+[src:mesa-graphics-stack/direct-rendering-manager] The new KMS API—including the GEM API—was a big milestone in the development of DRM, but it didn't stop the API from being enhanced in the following years.
+[src:mesa-graphics-stack/direct-rendering-manager] KMS gained support for page flips in conjunction with asynchronous VBLANK notifications in Linux 2.6.33—only for the i915 driver, radeon and nouveau added it later during Linux 2.6.38 release.
+[src:mesa-graphics-stack/direct-rendering-manager] The new page flip interface was added to libdrm 2.4.17.
+[src:mesa-graphics-stack/direct-rendering-manager] In early 2011, during the Linux 2.6.39 release cycle, the so-called *dumb buffers*—a hardware-independent non-accelerated way to handle simple buffers suitable for use as framebuffers—were added to the KMS API.
+[src:mesa-graphics-stack/direct-rendering-manager] The goal was to reduce the complexity of applications such as Plymouth that don't need to use special accelerated operations provided by driver-specific ioctls.
+[src:mesa-graphics-stack/direct-rendering-manager] The feature was exposed by libdrm from version 2.4.25 onwards.
+[src:mesa-graphics-stack/direct-rendering-manager] Later that year it also gained a new main type of objects, called *planes*.
+[src:mesa-graphics-stack/direct-rendering-manager] Planes were developed to represent hardware overlays supported by the scanout engine.
+[src:mesa-graphics-stack/direct-rendering-manager] Plane support was merged into Linux 3.3. and libdrm 2.4.30.
+[src:mesa-graphics-stack/direct-rendering-manager] Another concept added to the API—during Linux 3.5 and libdrm 2.4.36 releases—were *generic object properties*, a method to add generic values to any KMS object.
+[src:mesa-graphics-stack/direct-rendering-manager] Properties are specially useful to set special behaviour or features to objects such as CRTCs and planes.
+[src:mesa-graphics-stack/direct-rendering-manager] An early proof of concept to provide GPU offloading between DRM drivers was developed by Dave Airlie in 2010.
+[src:mesa-graphics-stack/direct-rendering-manager] Since Airlie was trying to mimic the NVIDIA Optimus technology, he decided to name it "PRIME".
+[src:mesa-graphics-stack/direct-rendering-manager] Airlie resumed his work on PRIME in late 2011, but based on the new DMA-BUF buffer sharing mechanism introduced by Linux kernel 3.3.
+[src:mesa-graphics-stack/direct-rendering-manager] The basic DMA-BUF PRIME infrastructure was finished in March 2012 and merged into the Linux 3.4 release, as well as into libdrm 2.4.34.
+[src:mesa-graphics-stack/direct-rendering-manager] Later during the Linux 3.5 release, several DRM drivers implemented PRIME support, including i915 for Intel cards, radeon for AMD cards and nouveau for NVIDIA cards.
+[src:mesa-graphics-stack/direct-rendering-manager] In recent years, the DRM API has incrementally expanded with new and improved features.
+[src:mesa-graphics-stack/direct-rendering-manager] In 2013, as part of GSoC, David Herrmann developed the multiple *render nodes* feature.
+[src:mesa-graphics-stack/direct-rendering-manager] His code was added to the Linux kernel version 3.12 as an experimental feature supported by i915, radeon and nouveau drivers, and enabled by default since Linux 3.17.
+[src:mesa-graphics-stack/direct-rendering-manager] In 2014 Matt Roper (Intel) developed the *universal planes* (or *unified planes*) concept by which framebuffers (*primary planes*), overlays (*secondary planes*) and cursors (*cursor planes*) are all treated as a single type of object with an unified API.
+[src:mesa-graphics-stack/direct-rendering-manager] Universal planes support provides a more consistent DRM API with fewer, more generic ioctls.
+[src:mesa-graphics-stack/direct-rendering-manager] In order to maintain the API backwards compatible, the feature is exposed by DRM core as an additional capability that a DRM driver can provide.
+[src:mesa-graphics-stack/direct-rendering-manager] Universal plane support debuted in Linux 3.15 and libdrm 2.4.55.
+[src:mesa-graphics-stack/direct-rendering-manager] Several drivers, such as the Intel i915, have already implemented it.
+[src:mesa-graphics-stack/direct-rendering-manager] The most recent DRM API enhancement is the *atomic mode-setting* API, which brings atomicity to the mode-setting and page flipping operations on a DRM device.
+[src:mesa-graphics-stack/direct-rendering-manager] The idea of an atomic API for mode-setting was first proposed in early 2012.
+[src:mesa-graphics-stack/direct-rendering-manager] Ville Syrjälä (Intel) took over the task of designing and implementing such atomic API.
+[src:mesa-graphics-stack/direct-rendering-manager] Based on his work, Rob Clark (Texas Instruments) took a similar approach aiming to implement atomic page flips.
+[src:mesa-graphics-stack/direct-rendering-manager] Later in 2013 both proposed features were reunited in a single one using a single ioctl for both tasks.
+[src:mesa-graphics-stack/direct-rendering-manager] Since it was a requirement, the feature had to wait for the support of universal planes to be merged in mid-2014.
+[src:mesa-graphics-stack/direct-rendering-manager] During the second half of 2014 the atomic code was greatly enhanced by Daniel Vetter (Intel) and other DRM developers in order to facilitate the transition for the existing KMS drivers to the new atomic framework.
+[src:mesa-graphics-stack/direct-rendering-manager] All of this work was finally merged into Linux 3.19 and Linux 4.0 releases, and enabled by default since Linux 4.2. libdrm exposed the new atomic API since version 2.4.62.
+[src:mesa-graphics-stack/direct-rendering-manager] Multiple drivers have already been converted to the new atomic API.
+[src:mesa-graphics-stack/direct-rendering-manager] By 2018 ten new DRM drivers based on this new atomic model had been added to the Linux kernel.
+[src:mesa-graphics-stack/direct-rendering-manager] The Direct Rendering Manager kernel subsystem was initially developed to be used with the new Direct Rendering Infrastructure of the XFree86 4.0 display server, later inherited by its successor, the X.Org Server.
+[src:mesa-graphics-stack/direct-rendering-manager] Therefore, the main users of DRM were DRI clients that link to the hardware-accelerated OpenGL implementation that lives in the Mesa 3D library, as well as the X Server itself.
+[src:mesa-graphics-stack/direct-rendering-manager] Nowadays DRM is also used by several Wayland compositors, including Weston reference compositor. kmscon is a virtual console implementation that runs in user space using DRM KMS facilities.
+[src:mesa-graphics-stack/direct-rendering-manager] In 2015, version 358.09 (beta) of the proprietary Nvidia GeForce driver received support for the DRM mode-setting interface implemented as a new kernel blob called `nvidia-modeset.ko`.
+[src:mesa-graphics-stack/direct-rendering-manager] This new driver component works in conjunction with the `nvidia.ko` kernel module to program the display engine (i.e. display controller) of the GPU.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A **free and open-source graphics device driver** is a software stack which controls computer-graphics hardware and supports graphics-rendering application programming interfaces (APIs) and is released under a free and open-source software license.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Graphics device drivers are written for specific hardware to work within a specific operating system kernel and to support a range of APIs used by applications to access the graphics hardware.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] They may also control output to the display if the display driver is part of the graphics hardware.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Most free and open-source graphics device drivers are developed by the Mesa project.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The driver is made up of a compiler, a rendering API, and software which manages access to the graphics hardware.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Drivers without freely (and legally) available source code are commonly known as *binary drivers*.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Binary drivers used in the context of operating systems that are prone to ongoing development and change (such as Linux) create problems for end users and package maintainers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] These problems, which affect system stability, security and performance, are the main reason for the independent development of free and open-source drivers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] When no technical documentation is available, an understanding of the underlying hardware is often gained by clean-room reverse engineering.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Based on this understanding, device drivers may be written and legally published under any software license.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In rare cases, a manufacturer's driver source code is available on the Internet without a free license.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] This means that the code can be studied and altered for personal use, but the altered (and usually the original) source code cannot be freely distributed.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Solutions to bugs in the driver cannot be easily shared in the form of modified versions of the driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Therefore, the utility of such drivers is significantly reduced in comparison to free and open-source drivers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] There are objections to binary-only drivers based on copyright, security, reliability and development concerns.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] It is speculated that the bug has existed since 2004; Nvidia has denied this, asserting that the issue was only communicated to them in July 2006 and the 2004 bug was a bug in X.Org (not in Nvidia's driver).
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Features like kernel mode-setting cannot be added to binary drivers by anyone but the vendors, which prevents their inclusion if the vendor lacks capacity or interest.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In the Linux kernel development community, Linus Torvalds has made strong statements on the issue of binary-only modules: "I *refuse* to even consider tying my hands over some binary-only module ...
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] I want people to know that when they use binary-only modules, it's *their* problem".
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In the case of binary drivers, there are objections due to free software philosophy, software quality and security concerns.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Linux kernel has never maintained a stable in-kernel application binary interface.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] There are also concerns that proprietary drivers may contain backdoors, like the one found in Samsung Galaxy-series modem drivers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] When applications such as a 3D game engine or a 3D computer graphics software shunt calculations from the CPU to the GPU, they usually use a special-purpose API like OpenGL or Direct3D and do not address the hardware directly.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Because all translation (from API calls to GPU opcodes) is done by the device driver, it contains specialized knowledge and is an object of optimization.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Due to the history of the rigidity of proprietary driver development there has been a recent surge in the number of community-backed device drivers for desktop and mobile GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Free and Open Hardware organizations like FOSSi, LowRISC, and others, would also benefit from the development of an open graphical hardware standard.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] This would then provide computer manufacturers, hobbyists, and the like with a complete, royalty-free platform with which to develop computing hardware and related devices.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The desktop computer market was long dominated by PC hardware using the x86/x86-64 instruction set and GPUs available for the PC.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] With three major competitors (Nvidia, AMD and Intel).
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The main competing factor was the price of hardware and raw performance in 3D computer games, which is greatly affected by the efficient translation of API calls into GPU opcodes.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The display driver and the video decoder are inherent parts of the graphics card: hardware designed to assist in the calculations necessary for the decoding of video streams.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] As the market for PC hardware has dwindled, it seems unlikely that new competitors will enter this market and it is unclear how much more knowledge one company could gain by seeing the source code of other companies' drivers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The mobile sector presents a different situation.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The development goal is not only raw 3D performance, but system integration, power consumption and 2D capabilities.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] There is also an approach which abandons the traditional method (Vsync) of updating the display and makes better use of sample and hold technology to lower power consumption.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] During the second quarter of 2013 79.3% of smartphones sold worldwide were running a version of Android, and the Linux kernel dominates smartphones.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Hardware developers have an incentive to deliver Linux drivers for their hardware but, due to competition, no incentive to make these drivers free and open-source.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Additional problems are the Android-specific augmentations to the Linux kernel which have not been accepted in mainline, such as the Atomic Display Framework (ADF).
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] ADF is a feature of 3.10 AOSP kernels which provides a dma-buf-centric framework between Android's hwcomposer HAL and the kernel driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] ADF significantly overlaps with the DRM-KMS framework.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] ADF has not been accepted into mainline, but a different set of solutions addressing the same problems (known as atomic mode setting) is under development.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Projects such as libhybris harness Android device drivers to run on Linux platforms other than Android.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Free and open-source drivers are primarily developed on and for Linux by Linux kernel developers, third-party programming enthusiasts and employees of companies such as Advanced Micro Devices.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] This component is hardware-specific; it is executed on the CPU and translates OpenGL commands, for example, into machine code for the GPU.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Because the device driver is split, marshalling is possible.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Mesa 3D is the only free and open-source implementation of OpenGL, OpenGL ES, OpenVG, GLX, EGL and OpenCL.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In July 2014, most of the components conformed to Gallium3D specifications.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A fully functional State Tracker for Direct3D version 9 is written in C, and an unmaintained tracker for Direct3D versions 10 and 11 is written in C++.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Another Wine component translates Direct3D calls into OpenGL calls, working with OpenGL.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A VESA driver is generally available for any operating system.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The VESA driver supports most graphics cards without acceleration and at display resolutions limited to a set programmed in the Video BIOS by the manufacturer.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Linux graphics stack has evolved, detoured by the X Window System core protocol.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] AMD's proprietary driver, AMD Catalyst for their Radeon, is available for Microsoft Windows and Linux (formerly fglrx).
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A current version can be downloaded from AMD's site, and some Linux distributions contain it in their repositories.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] It is in the process of being replaced with an AMDGPU-PRO hybrid driver combining the open-source kernel, X and Mesa multimedia drivers with closed-source OpenGL, OpenCL and Vulkan drivers derived from Catalyst.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The FOSS drivers for ATI-AMD GPUs are being developed under the name Radeon (xf86-video-ati or xserver-xorg-video-radeon).
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] They still must load proprietary microcode into the GPU to enable hardware acceleration.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] An up-to-date feature matrix is available, and there is support for Video Coding Engine and Unified Video Decoder.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The free and open-source Radeon graphics device drivers are not reverse-engineered, but are based on documentation released by AMD without the requirement to sign a non-disclosure agreement (NDA).
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Documentation began to be gradually released in 2007.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In addition to providing the necessary documentation, AMD employees contribute code to support their hardware and features.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] All components of the Radeon graphics device driver are developed by core contributors and interested parties worldwide.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In 2011, the r300g outperformed Catalyst in some cases.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] At the 2014 Game Developers Conference, AMD announced that they were exploring a strategy change to re-base the user-space part of Catalyst on a free and open-source DRM kernel module instead of their proprietary kernel blob.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The release of the new AMDGPU kernel module and stack was announced on the dri-devel mailing list in April 2015.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Although AMDGPU only officially supports *GCN* 1.2 and later graphics cards, experimental support for GCN 1.0 and 1.1 graphics cards (which are only officially supported by the Radeon driver) may be enabled via a kernel parameter.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A separate libdrm, libdrm-amdgpu, has been included since libdrm 2.4.63.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The radeonsi 3D code mentioned in the prior Radeon paragraph is also used with amdgpu; the 3D driver has back ends for both radeon and amdgpu.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nvidia's proprietary driver, Nvidia GeForce driver for GeForce, is available for Windows x86/x86-64, Linux x86/x86-64/ARM, OS X 10.5 and later, Solaris x86/x86-64 and FreeBSD x86/x86-64.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A current version can be downloaded from the Internet, and some Linux distributions contain it in their repositories.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The 4 October 2013 beta Nvidia GeForce driver 331.13 supports the EGL interface, enabling support for Wayland in conjunction with this driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nvidia's free and open-source driver is named nv.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] It is limited (supporting only 2D acceleration), and Matthew Garrett, Dirk Hohndel and others have called its source code confusing.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nvidia decided to deprecate nv, not adding support for Fermi or later GPUs and DisplayPort, in March 2010.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In December 2009, Nvidia announced they would not support free graphics initiatives.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] On 23 September 2013, the company announced that they would release some documentation of their GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nouveau is based almost entirely on information gained through reverse engineering.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] This project aims to produce 3D acceleration for X.Org/Wayland using Gallium3D.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] On March 26, 2012, Nouveau's DRM component was marked stable and promoted from the staging area of the Linux kernel.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nouveau supports Tesla- (and earlier), Fermi-, Kepler- and Maxwell-based GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] On 31 January 2014, Nvidia employee Alexandre Courbot committed an extensive patch set which adds initial support for the GK20A (Tegra K1) to Nouveau.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In June 2014, Codethink reportedly ran a Wayland-based Weston compositor with Linux kernel 3.15, using EGL and a "100% open-source graphics driver stack" on a Tegra K1.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In July 2014, Nouveau was unable to outperform the Nvidia GeForce driver due to missing re-clocking support.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Tegra-re is a project which is working to reverse-engineer nVidia's VLIW-based Tegra series of GPUs that predate Tegra K1.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nvidia distributes proprietary device drivers for Tegra through OEMs and as part of its Linux for Tegra (formerly L4T) development kit.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nvidia and a partner, Avionic Design, were working on submitting Grate (free and open-source drivers for Tegra) upstream of the mainline Linux kernel in April 2012.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The company's co-founder and CEO laid out the Tegra processor roadmap with Ubuntu Unity at the 2013 GPU Technology Conference.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Nvidia's Unified Memory driver (nvidia-uvm.ko), which implements memory management for Pascal and Volta GPUs on Linux, is MIT licensed.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The source code is available in the Nvidia Linux driver downloads on systems that support nvidia-uvm.ko.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In May 2022, Nvidia announced a new initiative and policy to open source its GPU Loadable Kernel Modules with dual GPL–MIT License, but only new models at alpha quality.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] But said "These changes are for the kernel modules, while the user-mode components are untouched.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The user-mode remains closed source and is published with prebuilt binaries in the driver and the CUDA toolkit." The open source driver has since been upgraded to production status and is now officially recommended for the RTX 20 series and later GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Blackwell (RTX 50 generation) and later NVIDIA GPU architectures are only supported by the open driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Intel has a history of producing (or commissioning) open-source drivers for its graphics chips, with the exception of their PowerVR-based chips.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Their 2D X.Org driver is called xf86-video-intel.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The kernel mode-setting driver in the Linux kernel does not use the video BIOS for switching video modes; since some BIOSes have a limited range of modes, this provides more reliable access to those supported by Intel video adapters.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The company worked on optimizing their free Linux drivers for performance approaching their Windows counterparts, especially on Sandy Bridge and newer hardware where performance optimizations have allowed the Intel driver to outperform their proprietary Windows drivers in certain tasks, in 2011.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Some of the performance enhancements may also benefit users of older hardware.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Support for Intel's LLC (Last Level Cache, L4-Cache, Crystalwell and Iris Pro) was added in Linux kernel 3.12.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In 2013, the company had 20 to 30 full-time Linux graphics developers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Matrox develops and manufactures the Matrox Mystique, Parhelia, G200, G400 and G550.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Although the company provides free and open-source drivers for their chipsets which are older than the G550; chipsets newer than the G550 are supported by a closed-source driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] S3 Graphics develops the S3 Trio, ViRGE, Savage and Chrome, supported by OpenChrome.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Arm Ltd is a fabless semiconductor company which licenses semiconductor intellectual property cores.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Although they are known for the licensing the ARM instruction set and CPUs based on it, they also develop and license the Mali series of GPUs, and more recently Imortalis GPUs that support ray-tracing.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] On January 21, 2012, Phoronix reported that Luc Verhaegen was driving a reverse-engineering attempt aimed at the Arm Mali series of GPUs (specifically, the Mali-200 and Mali-400 versions).
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The reverse-engineering project, known as Lima, was presented at FOSDEM on February 4, 2012.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] On February 2, 2013, Verhaegen demonstrated *Quake III Arena* in timedemo mode, running on top of the Lima driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In May 2018, a Lima developer posted the driver for inclusion in the Linux kernel.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] As of May 2019, the Lima driver is part of the mainline Linux kernel.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Panfrost is an open-source driver stack for Mali (and Immortalis) GPUs, covering Txxx (Midgard) and newer generations.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A talk introducing Panfrost was presented at X.Org Developer's Conference 2018.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] As of May 2019, the Panfrost kernel driver is part of the mainline Linux kernel.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The userspace side consists of Mesa's Panfrost driver that provides OpenGL ES and OpenGL; as well as the PanVK userspace driver that provides Vulkan.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Collabora developed the Panthor kernel driver for third-generation and newer Valhall GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Panfrost and PanVK userspace drivers in Mesa use the Panthor kernel driver on these GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Later, Collabora announced the Tyr kernel driver, a joint effort between Collabora, Arm, and Google, written in Rust and designed to eventually replace the Panthor kernel driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Imagination Technologies is a fabless semiconductor company which develops and licenses semiconductor intellectual property cores, among which are the PowerVR GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Intel has manufactured a number of PowerVR-based GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] PowerVR GPUs are widely used in mobile system on a chip (SoC) devices.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Due to its wide use in embedded devices, the Free Software Foundation has put reverse-engineering of the PowerVR driver on its high-priority project list.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] As of March 2022, Imagination has provided a FOSS driver for its Rogue architecture-based PowerVR GX6250 from 2014, and its more recent A-Series architecture-based AXE-1-16M and BXS-4-64 GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Vivante Corporation is a fabless semiconductor company which licenses semiconductor intellectual property cores and develops the GCxxxx series of GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] A Vivante proprietary, closed-source Linux driver consists of kernel- and user-space parts.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Although the kernel component is open-source (GPL), the user-space components—consisting of the GLES(2) implementations and a HAL library—are not; these contain the bulk of the driver logic.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Wladimir J. van der Laan found and documented the state bits, command stream and shader ISA by studying how the blobs work, examining and manipulating command-stream dumps.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Etnaviv Gallium3D driver is being written based on this documentation.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Van der Laan's work was inspired by the Lima driver, and the project has produced a functional-but-unoptimized Gallium3D LLVM driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Etnaviv driver has performed better than Vivante's proprietary code in some benchmarks, and it supports Vivante's GC400, GC800, GC1000, GC2000, GC3000 and GC7000 series.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In January 2017, Etnaviv was added to Mesa with both OpenGL ES 2.0 and Desktop OpenGL 2.1 support.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Qualcomm develops the Adreno (formerly ATI Imageon) mobile GPU series, and includes it as part of their Snapdragon mobile SoC series.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Phoronix and Slashdot reported in 2012 that Rob Clark, inspired by the Lima driver, was working on reverse-engineering drivers for the Adreno GPU series.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In a referenced blog post, Clark wrote that he was doing the project in his spare time and that the Qualcomm platform was his only viable target for working on open 3D graphics.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] His employers (Texas Instruments and Linaro) were affiliated with the Imagination PowerVR and ARM Mali cores, which would have been his primary targets; he had working command streams for 2D support, and 3D commands seemed to have the same characteristics.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The driver code was published on Gitorious "freedreno", and has been moved to Mesa.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In 2012, a working shader assembler was completed; demonstration versions were developed for texture mapping and phong shading, using the reverse-engineered shader compiler.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Clark demonstrated Freedreno running desktop compositing, the XBMC media player and Quake III Arena at FOSDEM on February 2, 2013.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In August 2013, the kernel component of freedreno (MSM driver) was accepted into mainline and is available in Linux kernel 3.12 and later.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The DDX driver gained support for server-managed file descriptors requiring X.Org Server version 1.16 and above in July 2014.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In January 2016, the Mesa Gallium3D-style driver gained support for Adreno 430; in November of that year, the driver added support for the Adreno 500 series.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Freedreno can be used on devices such as 96Boards Dragonboard 410c and Nexus 7 (2013) in traditional Linux distributions (like Debian and Fedora) and on Android.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Broadcom develops and designs the VideoCore GPU series as part of their SoCs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Since it is used by the Raspberry Pi, there has been considerable interest in a FOSS driver for VideoCore.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Raspberry Pi Foundation, in co-operation with Broadcom, announced on October 24, 2012, that they open-sourced "all the ARM (CPU) code that drives the GPU".
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] However, the announcement was misleading; according to the author of the reverse-engineered Lima driver, the newly open-sourced components only allowed message-passing between the ARM CPU and VideoCore but offered little insight into Videocore and little additional programability.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Videocore GPU runs an RTOS which handles the processing; video acceleration is done with RTOS firmware coded for its proprietary GPU, and the firmware was not open-sourced on that date.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Since there was neither a toolchain targeting the proprietary GPU nor a documented instruction set, no advantage could be taken if the firmware source code became available.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Videocoreiv project attempted to document the VideoCore GPUs.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] On February 28, 2014 (the Raspberry Pi's second anniversary), Broadcom and the Raspberry Pi Foundation announced the release of full documentation for the VideoCore IV graphics core and a complete source release of the graphics stack under a 3-clause BSD license.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The free-license 3D graphics code was committed to Mesa on 29 August 2014, and first appeared on Mesa's 10.3 release.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Although Silicon Integrated Systems and VIA Technologies have expressed limited interest in open-source drivers, both have released source code which has been integrated into X.Org by FOSS developers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In July 2008, VIA opened documentation of their products to improve its image in the Linux and open-source communities.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The company has failed to work with the open-source community to provide documentation and a working DRM driver, leaving expectations of Linux support unfulfilled.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] On January 6, 2011, it was announced that VIA was no longer interested in supporting free graphics initiatives.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] DisplayLink announced an open-source project, Libdlo, with the goal of bringing support for their USB graphics technology to Linux and other platforms.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Its code is available under the LGPL license, but it has not been integrated into an X.Org driver.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] DisplayLink graphics support is available through the kernel udlfb driver (with fbdev) in mainline and udl/drm driver, which in March 2012 was only available in the drm-next tree.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Non-hardware-related vendors may also assist free graphics initiatives.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Red Hat has two full-time employees (David Airlie and Jérôme Glisse) working on Radeon software, and the Fedora Project sponsors a Fedora Graphics Test Week event before the launch of their new Linux distribution versions to test free graphics drivers.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Other companies which have provided development or support include Novell and VMware.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] Project VGA aims to create a low-budget, open-source VGA-compatible video card.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Open Graphics Project aimed to create an open-hardware GPU.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] In September 2010, the first 25 OGD1 boards were made available for grant application and purchase.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Milkymist system on a chip, targeted at embedded graphics instead of desktop computers, supports a VGA output, a limited vertex shader and a 2D texturing unit.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] The Nyuzi, an experimental GPGPU processor, includes a synthesizable hardware design written in System Verilog, an instruction set emulator, an LLVM-based C-C++ compiler, software libraries and tests and explores parallel software and hardware.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] It can run on a Terasic DE2-115 field-programmable gate array board.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] If a project uses FPGAs, it generally has a partially (or completely) closed-source toolchain.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] There are currently a couple of open-source toolchains available, however, for Lattice-based FPGAs (notably for iCE40 and ECP5 boards) which utilize Project IceStorm, and Trellis, respectively.
+[src:mesa-graphics-stack/free-and-open-source-graphics-device-driver] There is also a larger, ongoing effort to create the "GCC of FPGAs" called SymbiFlow which includes the aforementioned FPGA toolchains as well as an early-stage open-source toolchain for Xilinx-based FPGAs.
+[src:mesa-graphics-stack/gallium3d] On Linux systems, GPU acceleration is provided primarily through Mesa.
+[src:mesa-graphics-stack/gallium3d] AMD supports the RadeonSI and RADV drivers in Mesa as their official GPU drivers on Linux.
+[src:mesa-graphics-stack/gallium3d] Intel has only ever supported the Mesa drivers on Linux systems.
+[src:mesa-graphics-stack/gallium3d] Google uses the Freedreno driver in Mesa in some Chromebooks with Qualcomm processors.
+[src:mesa-graphics-stack/gallium3d] Systems with Nvidia cards usually use the proprietary Nvidia GeForce driver, but there are ongoing efforts to write Mesa Nvidia drivers called Nouveau and NVK.
+[src:mesa-graphics-stack/gallium3d] As of 2026, NVK is still usually slower than the proprietary driver, but the performance gap is continually decreasing as it is developed further.
+[src:mesa-graphics-stack/gallium3d] Besides 3D applications such as games, modern display servers (X.org's Glamor or Wayland's Weston) use OpenGL/EGL; therefore all graphics typically go through Mesa.
+[src:mesa-graphics-stack/gallium3d] Mesa is hosted by freedesktop.org and was initiated in August 1993 by Brian Paul, who is still active in the project.
+[src:mesa-graphics-stack/gallium3d] Mesa was subsequently widely adopted and now contains numerous contributions from various individuals and corporations worldwide, including from most graphics hardware manufacturers, and other interested parties, such as Valve Corporation.
+[src:mesa-graphics-stack/gallium3d] Mesa is known as housing implementations of graphic APIs.
+[src:mesa-graphics-stack/gallium3d] Historically the main API that Mesa has implemented is OpenGL, along with other Khronos Group related specifications (like OpenVG, OpenGL ES or recently EGL).
+[src:mesa-graphics-stack/gallium3d] But Mesa can implement other APIs and indeed it did with Glide (deprecated) and Direct3D 9 since July 2013.
+[src:mesa-graphics-stack/gallium3d] Mesa is also not specific to Unix-like operating systems: on Windows for example, Mesa provides an OpenGL API over DirectX.
+[src:mesa-graphics-stack/gallium3d] Mesa implements a translation layer between a graphics API such as OpenGL and the graphics hardware drivers in the operating system kernel.
+[src:mesa-graphics-stack/gallium3d] The supported version of the different graphic APIs depends on the driver, because each hardware driver has its own implementation (and therefore status).
+[src:mesa-graphics-stack/gallium3d] This is especially true for the "classic" drivers, while the Gallium3D drivers share common code that tend to homogenize the supported extensions and versions.
+[src:mesa-graphics-stack/gallium3d] Mesa maintains a support matrix with the status of the current OpenGL conformance visualized at mesamatrix.net.
+[src:mesa-graphics-stack/gallium3d] The Khronos Group officially announced Vulkan API in March 2015, and officially released Vulkan 1.0 on 16 February 2016.
+[src:mesa-graphics-stack/gallium3d] Vulkan breaks compatibility with OpenGL and completely abandons its monolithic state machine concept.
+[src:mesa-graphics-stack/gallium3d] The developers of Gallium3D called Vulkan to be something along the lines of Gallium3D 2.0 – Gallium3D separates the code that implements the OpenGL state machine from the code that is specific to the hardware.
+[src:mesa-graphics-stack/gallium3d] Version 1.3 is immediately available with Mesa 22.0.
+[src:mesa-graphics-stack/gallium3d] Hardware with support of OpenGL ES 3.1 should run at Vulkan Level 1.3 and before.
+[src:mesa-graphics-stack/gallium3d] As Gallium3D ingests TGSI, Vulkan ingests SPIR-V (Standard Portable Intermediate Representation version "V" as in "Vulkan").
+[src:mesa-graphics-stack/gallium3d] Intel released their implementation of a Vulkan driver for their hardware the day the specification was officially released, but it was only mainlined in April and so became part of Mesa 12.0, released in July 2016.
+[src:mesa-graphics-stack/gallium3d] While already the i965 driver wasn't written according to the Gallium3D specifications, for the Vulkan driver it makes even less sense to flange it on top of Gallium3D.
+[src:mesa-graphics-stack/gallium3d] Similarly there is no technical reason to flange it with NIR, but yet Intel's employees implemented their Vulkan driver that way.
+[src:mesa-graphics-stack/gallium3d] It is to be expected that AMD's own proprietary Vulkan driver, which was released in March, and was announced to be released as free and open-source software in the future and be mainlined into Mesa, also abandons Gallium3D.
+[src:mesa-graphics-stack/gallium3d] RADV is a free project for AMD and is available since version 13.
+[src:mesa-graphics-stack/gallium3d] Conformance with Khronos-Test came in version 17.3.
+[src:mesa-graphics-stack/gallium3d] Actual is Full support of Vulkan 1.0 and 1.1 since Mesa 18.1.
+[src:mesa-graphics-stack/gallium3d] Nvidia released their proprietary GeForce driver with Vulkan support at launch day and Imagination Technologies (PowerVR), Qualcomm (Adreno) and ARM (Mali) have done the same or at least announced proprietary Vulkan drivers for Android and other operating systems.
+[src:mesa-graphics-stack/gallium3d] But when and whether additional free and open-source Vulkan implementations for these GPUs will show up, remains to be seen.
+[src:mesa-graphics-stack/gallium3d] Mesa Software Driver VIRGL starts Vulkan Development in 2018 with GSOC projects for support of Virtual machines.
+[src:mesa-graphics-stack/gallium3d] Lavapipe is a CPU-based Software Vulkan driver and the brother of LLVMpipe.
+[src:mesa-graphics-stack/gallium3d] Google introduces Venus Vulkan Driver for virtual machines in Mesa 21.1 with full support for Vulkan 1.2+.
+[src:mesa-graphics-stack/gallium3d] Qualcomm Turnip and Broadcom v3dv are new drivers for Qualcomm Adreno and Broadcom Raspberry 4 Hardware.
+[src:mesa-graphics-stack/gallium3d] Turnip is the Vulkan brother of freedreno for OpenGL.
+[src:mesa-graphics-stack/gallium3d] V3dv supports Vulkan 1.0+ since Mesa 20.3.
+[src:mesa-graphics-stack/gallium3d] In Version 21.1 Turnip supports Vulkan 1.1+.
+[src:mesa-graphics-stack/gallium3d] Panfrost PanVK for ARM Mali is at way to Vulkan 1.1, but only 1.0 is stable available with Mesa 22.0.
+[src:mesa-graphics-stack/gallium3d] Project Dozen is connecting direct 3D 12 (d3d12) with Vulkan for Linux Emulation WSL2 in Windows 10 and 11.
+[src:mesa-graphics-stack/gallium3d] In Mesa 23.2 Vulkan 1.0 is full conformant supported and 80% of 1.1 and 1.2 (mesamatrix).
+[src:mesa-graphics-stack/gallium3d] A kind of memory barrier that separates one buffer from the rest of the memory is called a fence.
+[src:mesa-graphics-stack/gallium3d] Fences are there to ensure that a buffer is not being overwritten before rendering and display operations have completed on it.
+[src:mesa-graphics-stack/gallium3d] Implicit fencing is used for synchronization between graphics drivers and the GPU hardware.
+[src:mesa-graphics-stack/gallium3d] The fence signals when a buffer is no longer being used by one component so it can be operated on or reused by another.
+[src:mesa-graphics-stack/gallium3d] In the past the Linux kernel had an implicit fencing mechanism, where a fence is directly attached to a buffer (cf.
+[src:mesa-graphics-stack/gallium3d] GEM handles and FDs), but userspace is unaware of this.
+[src:mesa-graphics-stack/gallium3d] Explicit fencing exposes fences to userspace, where userspace gets fences from both the Direct Rendering Manager (DRM) subsystem and from the GPU.
+[src:mesa-graphics-stack/gallium3d] Explicit fencing is required by Vulkan and offers advantages for tracing and debugging.
+[src:mesa-graphics-stack/gallium3d] Linux kernel 4.9 added Android's synchronization framework to mainline.
+[src:mesa-graphics-stack/gallium3d] Generic Buffer Management (GBM) is an API that provides a mechanism for allocating buffers for graphics rendering tied to Mesa.
+[src:mesa-graphics-stack/gallium3d] GBM is intended to be used as a native platform for EGL on DRM or openwfd.
+[src:mesa-graphics-stack/gallium3d] The handle it creates can be used to initialize EGL and to create render target buffers.
+[src:mesa-graphics-stack/gallium3d] Mesa GBM is an abstraction of the graphics driver specific buffer management APIs (for instance the various libdrm_* libraries), implemented internally by calling into the Mesa GPU drivers.
+[src:mesa-graphics-stack/gallium3d] For example, the Wayland compositor Weston does its rendering using OpenGL ES 2, which it initializes by calling EGL.
+[src:mesa-graphics-stack/gallium3d] Since the server runs on the "bare KMS driver", it uses the EGL DRM platform, which could really be called the GBM platform, since it relies on the Mesa GBM interface.
+[src:mesa-graphics-stack/gallium3d] At XDC2014, Nvidia employee Andy Ritger proposed to enhance EGL in order to replace GBM.
+[src:mesa-graphics-stack/gallium3d] This was not taken positively by the community, and Nvidia eventually changed their mind, and took another approach.
+[src:mesa-graphics-stack/gallium3d] Mesa, which runs in user-space, houses the implementations of several APIs for software, e.g.
+[src:mesa-graphics-stack/gallium3d] For example, Nouveau, which has been developed as part of Mesa, but also includes a Linux kernel component, which is being developed as part of the Linux kernel, supports the PureVideo-branded ASICs and provides access to them through VDPAU and partly through XvMC.
+[src:mesa-graphics-stack/gallium3d] The free radeon driver supports Unified Video Decoder and Video Coding Engine through VDPAU and OpenMAX.
+[src:mesa-graphics-stack/gallium3d] V4L2 is a kernel-to-user-space interface for video bit streams delivered by webcams or TV tuners.
+[src:mesa-graphics-stack/gallium3d] Due to patent concerns regarding the H.264, H.265 and VC-1 video codecs, Fedora Linux disabled support for VAAPI acceleration for those in its build of Mesa in September 2022.
+[src:mesa-graphics-stack/gallium3d] The available free and open-source device drivers for graphic chipsets are "stewarded" by Mesa (because the existing free and open-source implementation of APIs are developed inside of Mesa).
+[src:mesa-graphics-stack/gallium3d] Currently there are two frameworks to write graphics drivers: "classic" and Gallium3D.
+[src:mesa-graphics-stack/gallium3d] An overview over some (but not all) of the drivers available in Mesa is given at mesamatrix.net.
+[src:mesa-graphics-stack/gallium3d] There are device drivers for AMD/ATI R100 to R800, Intel, and Nvidia cards with 3D acceleration.
+[src:mesa-graphics-stack/gallium3d] Previously drivers existed for the IBM/Toshiba/Sony Cell processor of the PlayStation 3, S3 Virge & Savage chipsets, VIA chipsets, Matrox G200 & G400, and more.
+[src:mesa-graphics-stack/gallium3d] The free and open-source drivers compete with proprietary closed-source drivers.
+[src:mesa-graphics-stack/gallium3d] Depending on the availability of hardware documentation and man-power, the free and open-source driver lag behind more or less in supporting 3D acceleration of new hardware.
+[src:mesa-graphics-stack/gallium3d] Also, 3D rendering performance was usually significantly slower with some notable exceptions.
+[src:mesa-graphics-stack/gallium3d] Today this is still true for Nouveau for most NVIDIA GPUs while on AMDs Radeon GPUs the open driver now mostly matches or exceeds the proprietary driver's performance.
+[src:mesa-graphics-stack/gallium3d] At the time 3D graphics cards became more mainstream for PCs, individuals partly supported by some companies began working on adding more support for hardware-accelerated 3D rendering to Mesa.
+[src:mesa-graphics-stack/gallium3d] The Direct Rendering Infrastructure (DRI) was one of these approaches to interface Mesa, OpenGL and other 3D rendering API libraries with the device drivers and hardware.
+[src:mesa-graphics-stack/gallium3d] After reaching a basic level of usability, DRI support was officially added to Mesa.
+[src:mesa-graphics-stack/gallium3d] This significantly broadened the available range of hardware support achievable when using the Mesa library.
+[src:mesa-graphics-stack/gallium3d] With adapting to DRI, the Mesa library finally took over the role of the front end component of a full scale OpenGL framework with varying backend components that could offer different degrees of 3D hardware support while not dropping the full software rendering capability.
+[src:mesa-graphics-stack/gallium3d] The total system used many different software components.
+[src:mesa-graphics-stack/gallium3d] While the design requires all these components to interact carefully, the interfaces between them are relatively fixed.
+[src:mesa-graphics-stack/gallium3d] Nonetheless, as most components interacting with the Mesa stack are open source, experimental work is often done through altering several components at once as well as the interfaces between them.
+[src:mesa-graphics-stack/gallium3d] If such experiments prove successful, they can be incorporated into the next major or minor release.
+[src:mesa-graphics-stack/gallium3d] That applies e.g. to the update of the DRI specification developed in the 2007-2008 timeframe.
+[src:mesa-graphics-stack/gallium3d] The result of this experimentation, DRI2, operates without locks and with improved back buffer support.
+[src:mesa-graphics-stack/gallium3d] For this, a special git branch of Mesa was created.
+[src:mesa-graphics-stack/gallium3d] DRI3 is supported by the Intel driver since 2013 and is default in some Linux distributions since 2016 to enable Vulkan support and more.
+[src:mesa-graphics-stack/gallium3d] It is also default on AMD hardware since late 2016 (X.Org Server 1.18.3 and newer).
+[src:mesa-graphics-stack/gallium3d] Mesa also contains multiple implementations of software rendering, *softpipe*, *llvmpipe*, and *lavapipe*, that allow OpenGL, Vulkan, and more to run on the CPU as a fallback when no graphics hardware accelerators are present.
+[src:mesa-graphics-stack/gallium3d] VirGL is a Rasterizer for Virtual machines implemented in Mesa 11.1 since 2015 with OpenGL 3.3 support and showed in Mesamatrix since Mesa 18.
+[src:mesa-graphics-stack/gallium3d] In actual new Mesa 18.2 it supports more than the others with OpenGL 4.3 and OpenGL ES 3.2.
+[src:mesa-graphics-stack/gallium3d] About 80% of OpenGL 4.4 and 4.5 features are also now ready.
+[src:mesa-graphics-stack/gallium3d] Vulkan Development starts with GSOC 2018 projects.
+[src:mesa-graphics-stack/gallium3d] Actual virGL state in Mesamatrix is full support of OpenGL 4.6+ and OpenGL ES 3.2+ with some necessary Linux software.
+[src:mesa-graphics-stack/gallium3d] D3d12 is a project of Microsoft for WSL2 emulation of OpenGL 3.3+ and OpenCL 1.2+ with Direct3D 12.
+[src:mesa-graphics-stack/gallium3d] Actual state in Mesa 23.1 is OpenGL 4.2+ with nearly 4.4+ and OpenGL ES 3.1+.
+[src:mesa-graphics-stack/gallium3d] Venus is a new Vulkan VirtIO GPU Driver for GPU in virtual machines by Google.
+[src:mesa-graphics-stack/gallium3d] Venus is merged in 21.1 and for public in 21.2 introduced.
+[src:mesa-graphics-stack/gallium3d] Venus supports Vulkan 1.3+ in Mesa 23.1.
+[src:mesa-graphics-stack/gallium3d] Hardware minimum is Vulkan 1.1 with some extensions.
+[src:mesa-graphics-stack/gallium3d] The idea of bundling multiple drivers into a single "mega" driver was proposed by Emma Anholt.
+[src:mesa-graphics-stack/gallium3d] It allows for a single copy of the shared Mesa code to be used among multiple drivers (instead of it existing in each driver separately) and offering better performance than a separate shared library due to the removal of the internal library interface.
+[src:mesa-graphics-stack/gallium3d] The state trackers for VDPAU and XvMC have become separate libraries.
+[src:mesa-graphics-stack/gallium3d] shader-db is a collection of about 20,000 shaders gathered from various computer games and benchmarks as well as some scripts to compile these and collect some statistics.
+[src:mesa-graphics-stack/gallium3d] Shader-db is intended to help validate an optimization.
+[src:mesa-graphics-stack/gallium3d] It was noticed that an unexpected number of shaders are not hand-written but generated.
+[src:mesa-graphics-stack/gallium3d] This means these shaders were originally written in HLSL and then translated into GLSL by some translator program, such as e.g.
+[src:mesa-graphics-stack/gallium3d] The problem is, that the generated code is often far from being optimal.
+[src:mesa-graphics-stack/gallium3d] Matt Turner said it was much easier to fix this in the translator program than having to make Mesa's compiler carry the burden of dealing with such bloated shaders.
+[src:mesa-graphics-stack/gallium3d] shader-db cannot be considered free and open-source software.
+[src:mesa-graphics-stack/gallium3d] To use it legally, one must have a license for all the computer games that the shaders are part of.
+[src:mesa-graphics-stack/gallium3d] The so-called "user-mode graphics device drivers" (UMD) in Mesa have very few commonalities with what is generally called a device driver.
+[src:mesa-graphics-stack/gallium3d] One goal of Mesa is the optimization of code that is to be executed by the respective GPU.
+[src:mesa-graphics-stack/gallium3d] Instead of documenting the pieces of software, this article shall instead look at the Intermediate Representations used in the process of compiling and optimizing.
+[src:mesa-graphics-stack/gallium3d] See Abstract syntax tree (AST) and Static single assignment form (SSA form).
+[src:mesa-graphics-stack/gallium3d] SPIR-V is a certain version of the Standard Portable Intermediate Representation.
+[src:mesa-graphics-stack/gallium3d] The idea is, that graphics applications output SPIR-V instead of GLSL.
+[src:mesa-graphics-stack/gallium3d] In contrast to the latter, SPIR-V is binary to avoid implementation differences between GLSL compiler frontends of different driver implementations, as this has been a major source of application incompatibilities and bugs.
+[src:mesa-graphics-stack/gallium3d] Also SPIR-V binary usually also passed through some general optimizations.
+[src:mesa-graphics-stack/gallium3d] A UMD needs only apply optimizations, that are specific to the supported hardware.
+[src:mesa-graphics-stack/gallium3d] NIR (New Internal Representation) was introduced to overcome TGSI limitations.
+[src:mesa-graphics-stack/gallium3d] NIR was extended in last and actual releases as base of Spir-V support and is since 2016 main development area.
+[src:mesa-graphics-stack/gallium3d] LLVMpipe, i965, RadeonSI, Nouveau, freedreno, vc4 are changed to NIR from TGSI.
+[src:mesa-graphics-stack/gallium3d] RADV, Zink and other new drivers starts with NIR.
+[src:mesa-graphics-stack/gallium3d] All drivers with full OpenGL 4.6 support are related to NIR by SPIR-V support.
+[src:mesa-graphics-stack/gallium3d] Also AMD r600 has a fork with NIR for better support of HD5000 and HD6000 series.
+[src:mesa-graphics-stack/gallium3d] This option for r600 is default since Mesa 21.0.
+[src:mesa-graphics-stack/gallium3d] The Tungsten Graphics Shader Infrastructure (TGSI) was introduced in 2008 by Tungsten Graphics.
+[src:mesa-graphics-stack/gallium3d] NIR is now Main development area, so TGSI is only for older driver like r300g default infrastructure and will be deprecated in some years.
+[src:mesa-graphics-stack/gallium3d] GLSL-To-TGSI code will be deleted in Mesa 22.2.
+[src:mesa-graphics-stack/gallium3d] Default is newer NIR-to-TGSI with GLSL-to-NIR for all native NIR drivers.
+[src:mesa-graphics-stack/gallium3d] Some older TGSI drivers are supported with this NIR Code path.
+[src:mesa-graphics-stack/gallium3d] Later NIR-To-TGSI will be deprecated for native NIR drivers only.
+[src:mesa-graphics-stack/gallium3d] `llvmpipe` does not output machine code, but instead LLVM IR.
+[src:mesa-graphics-stack/gallium3d] From here on, LLVM does optimizations and the compilation to machine code.
+[src:mesa-graphics-stack/gallium3d] This does mean, that a certain minimum version of LLVM has to be installed as well.
+[src:mesa-graphics-stack/gallium3d] Mesa's GLSL compiler generates its own IR.
+[src:mesa-graphics-stack/gallium3d] Because each driver has very different requirements from a LIR, it differentiates between HIR (high-level IR) and LIR (low-level IR).
+[src:mesa-graphics-stack/gallium3d] A feature matrix is being provided at mesamatrix.net.
+[src:mesa-graphics-stack/gallium3d] The development of Gallium3D started in 2008 at Tungsten Graphics, and the implementation is available as free and open-source software as part of Mesa 3D hosted by freedesktop.org.
+[src:mesa-graphics-stack/gallium3d] The primary goal of making driver development easier, bundling otherwise duplicated code of several different drivers at a single point, and to support modern hardware architectures.
+[src:mesa-graphics-stack/gallium3d] This is done by providing a better division of labor, for example, leaving memory management to the kernel DRI driver.
+[src:mesa-graphics-stack/gallium3d] Gallium3D has been a part of Mesa since 2009 and is used by all non-Vulkan drivers as of version 22.0.
+[src:mesa-graphics-stack/gallium3d] As of 2026, there are at least 20 Gallium3D drivers, including hardware drivers, software implementations, virtualization passthrough, and translation layers implementing Gallium3D on top of APIs such as Vulkan, Apple's Metal API, and Microsoft's Direct3D 12.
+[src:mesa-graphics-stack/gallium3d] Gallium3D eases programming of device drivers by splitting the graphics device driver into three parts.
+[src:mesa-graphics-stack/gallium3d] This is accomplished by the introduction of two interfaces: *Gallium3D State Tracker Interface* and the *Gallium3D WinSys Interface*.
+[src:mesa-graphics-stack/gallium3d] Each State Tracker contains an implementation of the Gallium3D State Tracker Interface, and is used by all existent Gallium3D hardware device drivers.
+[src:mesa-graphics-stack/gallium3d] This is the actual code that is specific to the underlying 3D graphic accelerator, but only as far as the Gallium3D WinSys Interface allows.
+[src:mesa-graphics-stack/gallium3d] There is a unique Gallium3D hardware device driver for each available graphics chip and each implements the Gallium3D State Tracker Interface as well as the Gallium3D WinSys Interface.
+[src:mesa-graphics-stack/gallium3d] The Gallium3D hardware device driver understands NIR (NIR Intermediate Representation, a recursive acronym), an intermediate language for describing shaders.
+[src:mesa-graphics-stack/gallium3d] and each one implements the Gallium3D WinSys Interface to interface with all available Gallium3D hardware device drivers.
+[src:mesa-graphics-stack/gallium3d] Gallium3D provides a unified API exposing standard hardware functions, such as shader units found on modern hardware.
+[src:mesa-graphics-stack/gallium3d] Thus, 3D APIs such as OpenGL 1.x/2.x, OpenGL 3.x, OpenVG, GPGPU infrastructure or even Direct3D (as found in the Wine compatibility layer) will need only a single back-end, called a state tracker, targeting the Gallium3D API.
+[src:mesa-graphics-stack/gallium3d] By contrast, legacy DRI device drivers required a different back-end for each hardware platform, and several other APIs needed translation to OpenGL, at the expense of code duplication.
+[src:mesa-graphics-stack/gallium3d] All vendor device drivers, due to their proprietary and closed-source nature, are written that way meaning that, e.g. the AMD Catalyst implements both OpenGL and Direct3D, and the vendor drivers for the GeForce have their implementations.
+[src:mesa-graphics-stack/gallium3d] Under Gallium3D, Direct Rendering Manager (DRM) kernel drivers will manage the memory and Direct Rendering Interface (DRI2) drivers will be more GPU processing oriented.
+[src:mesa-graphics-stack/gallium3d] Tungsten Graphics Shader Infrastructure (TGSI) is an Intermediate representation used within some parts of Mesa.
+[src:mesa-graphics-stack/gallium3d] Shaders written in OpenGL Shading Language are to be translated/compiled into TGSI, then optimizations are made, and then the TGSI shaders are being compiled into shaders for the instruction set of the used GPU.
+[src:mesa-graphics-stack/gallium3d] As of 2026, most drivers have moved away from TGSI, in favor of NIR.
+[src:mesa-graphics-stack/gallium3d] NIR is the primary Intermediate Representation in Mesa.
+[src:mesa-graphics-stack/gallium3d] Development of NIR started in 2014 inside Intel, and over time NIR has replaced TGSI in most parts of Mesa.
+[src:mesa-graphics-stack/gallium3d] Original authors of Gallium3D were Keith Whitwell and Brian Paul at Tungsten Graphics (acquired by VMware in 2008).
+[src:mesa-graphics-stack/gallium3d] Nouveau development is done exclusively for the Gallium framework.
+[src:mesa-graphics-stack/gallium3d] The old DRI driver was removed from the master branch of the Mesa repository on Freedesktop.org.
+[src:mesa-graphics-stack/gallium3d] The gallium-0.2 branch was merged into mainline Master branch of Mesa.
+[src:mesa-graphics-stack/gallium3d] Gallium3D can run on Linux as well as FreeBSD kernels.
+[src:mesa-graphics-stack/gallium3d] to be hardware-accelerated by any Gallium3D-based driver.
+[src:mesa-graphics-stack/gallium3d] Mesa3D 7.5 is released, the first version to include Gallium3D.
+[src:mesa-graphics-stack/gallium3d] Initial support for the Evergreen GPUs was added to the r600g driver.
+[src:mesa-graphics-stack/gallium3d] There are two Gallium3D drivers for ATI hardware known as r300g and r600g for R300-R500 and R600-Evergreen GPUs respectively.
+[src:mesa-graphics-stack/gallium3d] Major commits were made to the code to support Direct3D 10 and 11.
+[src:mesa-graphics-stack/gallium3d] In time, this might offer the ability to use recent Direct3D implementations on Linux systems.
+[src:mesa-graphics-stack/gallium3d] Intel 965g and Cell Gallium drivers were removed from the master branch of Mesa as unmaintained and broken.
+[src:mesa-graphics-stack/gallium3d] Major commits were made to the code to support Direct3D 9.
+[src:mesa-graphics-stack/gallium3d] Mesa 21.2 released with new Intel Crocus driver, based on Gallium3D, supporting Intel Sandy Bridge through Haswell iGPUs, replacing the need for the old non-Gallium3D i965 driver.
+[src:mesa-graphics-stack/gallium3d] Also added was the PanVK Vulkan Driver for ARM Mali GPUs.
+[src:mesa-graphics-stack/gallium3d] Mature drivers in Mesa can often out-perform the proprietary drivers for that same hardware.
+[src:mesa-graphics-stack/gallium3d] Particularly on handheld gaming devices that are significantly constrained in both power and thermals, running Linux with Mesa drivers has been shown to consistently and significantly out-perform Windows with the manufacturer's proprietary drivers on the same hardware, sometimes by as much as 75%.
+[src:mesa-graphics-stack/gallium3d] Microsoft allegedly set an internal goal of being able to match the performance of SteamOS on handheld gaming devices.
+[src:mesa-graphics-stack/gallium3d] Project initiator Brian Paul was a graphics hobbyist.
+[src:mesa-graphics-stack/gallium3d] He thought it would be fun to implement a simple 3D graphics library using the OpenGL API, which he might then use instead of VOGL (very ordinary GL Like Library).
+[src:mesa-graphics-stack/gallium3d] Beginning in 1993, he spent eighteen months of part-time development before he released the software on the Internet in February 1995.
+[src:mesa-graphics-stack/gallium3d] The software was well received, and people began contributing to its development.
+[src:mesa-graphics-stack/gallium3d] Mesa started off by rendering all 3D computer graphics on the CPU.
+[src:mesa-graphics-stack/gallium3d] Despite this, the internal architecture of Mesa was designed to be open for attaching to graphics processor-accelerated 3D rendering.
+[src:mesa-graphics-stack/gallium3d] In this first phase, rendering was done indirectly in the display server, leaving some overhead and noticeable speed lagging behind the theoretical maximum.
+[src:mesa-graphics-stack/gallium3d] The Diamond Monster 3D, using the Voodoo Graphics chipset, was one of the first 3D hardware devices supported by Mesa.
+[src:mesa-graphics-stack/gallium3d] The first true graphics hardware support was added to Mesa in 1997, based upon the Glide API for the then new 3dfx Voodoo I/II graphics cards and their successors.
+[src:mesa-graphics-stack/gallium3d] A major problem of using Glide as the acceleration layer was the habit of Glide to run full screen, which was only suitable for computer games.
+[src:mesa-graphics-stack/gallium3d] Further, Glide took the lock of the screen memory, and thus the display server was blocked from doing any other GUI tasks.
+[src:mesa-graphics-stack/gallium3d] Mesa 10 complies with OpenGL 3.3 for Intel, AMD/ATI, and Nvidia GPU hardware.
+[src:mesa-graphics-stack/gallium3d] Mesa 11 was announced with some drivers being OpenGL 4.1 compliant.
+[src:mesa-graphics-stack/gallium3d] Mesa 12 contains OpenGL 4.2 and 4.3 and Intel Vulkan 1.0 support.
+[src:mesa-graphics-stack/gallium3d] Mesa 13 brought Intel support for OpenGL 4.4 and 4.5 (all Features supported for Intel Gen 8+, Radeon GCN, Nvidia (Fermi, Kepler), but no Khronos-Test for 4.5-Label) and experimental AMD Vulkan 1.0 support through the community driver RADV.
+[src:mesa-graphics-stack/gallium3d] OpenGL ES 3.2 is possible with Intel Skylake (Gen9).
+[src:mesa-graphics-stack/gallium3d] 1st stable version of 2017 is 17.0 (new year Counting).
+[src:mesa-graphics-stack/gallium3d] Ready features are certified OpenGL 4.5, OpenGL 4.5 for Intel Haswell, OpenGL 4.3 for Nvidia Maxwell and Pascal (GM107+).
+[src:mesa-graphics-stack/gallium3d] Huge performance gain was measured with Maxwell 1 (GeForce GTX 750 Ti and more with GM1xx).
+[src:mesa-graphics-stack/gallium3d] Maxwell-2-Cards (GeForce GTX 980 and more with GM2xx) are underclocked without Nvidia information.
+[src:mesa-graphics-stack/gallium3d] The Khronos CTS test suite for OpenGL 4.4, 4.5 and OpenGL ES 3.0+ is in now (2017-01-24) Open Source and all tests for Mesa 13 and 17 are now possible without costs.
+[src:mesa-graphics-stack/gallium3d] 2nd stable version of 2017, 17.1.0, came out on 10 May 2017 with some interesting improvements.
+[src:mesa-graphics-stack/gallium3d] OpenGL 4.2+ for Intel Ivy Bridge and OpenGL 3.3+ for Intel Open SWR Rasterizer are 2 of the highlights.
+[src:mesa-graphics-stack/gallium3d] Due to the modularized nature of OpenGL, Mesa can support extensions from newer versions of OpenGL without claiming full support for such versions.
+[src:mesa-graphics-stack/gallium3d] For example, in July 2016, Mesa supported OpenGL ES 3.1 but also all OpenGL ES 3.2 extensions except for five, as well as a number of extensions not part of any OpenGL or OpenGL ES version.
+[src:mesa-graphics-stack/gallium3d] 3rd Version 17.2 is available since September 2017 with some new OpenGL 4.6 features and velocity improvements in 3D for Intel and AMD.
+[src:mesa-graphics-stack/gallium3d] Only 1.4% of Tests fail for OpenGL 4.5 in Nouveau for Kepler.
+[src:mesa-graphics-stack/gallium3d] 4th Version 17.3 is ready since December 2017.
+[src:mesa-graphics-stack/gallium3d] Many improvements in many drivers are available.
+[src:mesa-graphics-stack/gallium3d] OpenGL 4.6 is nearly fully available (Spir-V is not ready).
+[src:mesa-graphics-stack/gallium3d] AMD Vulkan Driver RADV is now fully conformant in Khronos-Test.
+[src:mesa-graphics-stack/gallium3d] 1st version of 2018 is 18.0 and available since March 2018 by same scheme in 2017.
+[src:mesa-graphics-stack/gallium3d] Full OpenGL 4.6 support is not ready, but many features and improvements were successfully tested in RC3.
+[src:mesa-graphics-stack/gallium3d] 10-bit support for Intel i965 in Colors is also a Highlight.
+[src:mesa-graphics-stack/gallium3d] New is support for Intel Cannon Lake and AMD Vega with actual Linux Version.
+[src:mesa-graphics-stack/gallium3d] AMD Evergreen Chips (RV800 or R900) are near OpenGL 4.5 support.
+[src:mesa-graphics-stack/gallium3d] Old AMD R600 or RV700 Chips can only support OpenGL 3.3 with some features of OpenGL 4.x.
+[src:mesa-graphics-stack/gallium3d] Freedreno is the Driver for Adreno Hardware and near OpenGL 3.3 support.
+[src:mesa-graphics-stack/gallium3d] 2nd version of 2018 is 18.1 and available since May.
+[src:mesa-graphics-stack/gallium3d] Target is Vulkan 1.1.72 in Intel ANV and AMD RADV driver.
+[src:mesa-graphics-stack/gallium3d] OpenGL 4.6 with spir-V is also main target.
+[src:mesa-graphics-stack/gallium3d] Permanent work is possible completion of Features and Optimization of drivers for older hardware like AMD R600/Evergreen, Nvidia Tesla and before, Fermi, Kepler or Intel Sandybridge, Ivybridge, Haswell or Broadwell.
+[src:mesa-graphics-stack/gallium3d] ARM Architecture made also great improvements in Adreno 3xx/4xx/5xx and Broadwell VC4/VC5 for Raspi with main target OpenGL ES.
+[src:mesa-graphics-stack/gallium3d] 3rd version of 2018 is 18.2 and available in calendar stable in September.
+[src:mesa-graphics-stack/gallium3d] OpenGL 4.6 with spir-V and Vulkan 1.1.80 are in WIP.
+[src:mesa-graphics-stack/gallium3d] The soft Driver for virtual machines VIRGL is ready for OpenGL 4.3 and OpenGL ES 3.2.
+[src:mesa-graphics-stack/gallium3d] RadeonSI is also ready for OpenGL ES 3.2.
+[src:mesa-graphics-stack/gallium3d] ASTC Texture Compression Support and Compatibility Modus Support for OpenGL 4.4 (3.1 in 18.1) are other highlights in RadeonSI for AMD GCN Cards.
+[src:mesa-graphics-stack/gallium3d] New Vulkan 1.1 and more features for Intel and AMD are available.
+[src:mesa-graphics-stack/gallium3d] See more Details for Vulkan in Mesamatrix.
+[src:mesa-graphics-stack/gallium3d] 4th version of 2018 is 18.3 and released as stable Version 18.3.1 in December 2018.
+[src:mesa-graphics-stack/gallium3d] Many features in Detail and support of newer hardware are main parts.
+[src:mesa-graphics-stack/gallium3d] Full support of OpenGL 4.6 is not ready.
+[src:mesa-graphics-stack/gallium3d] 1st Version of 2019 is 19.0 and was now released at March.
+[src:mesa-graphics-stack/gallium3d] Full support of OpenGL 4.6 is not ready, but many improvements on this way are in all drivers.
+[src:mesa-graphics-stack/gallium3d] A key feature is the transition of TGSI to NIR, marking a step toward OpenGL 4.6 with SPIR-V support and broader OpenCL compatibility.
+[src:mesa-graphics-stack/gallium3d] RadeonSI performs well with NIR in the development version.
+[src:mesa-graphics-stack/gallium3d] OpenGL 4.6 is Beta ready for new Intel Iris Driver.
+[src:mesa-graphics-stack/gallium3d] OpenGL 4.6 is ready for Intel i965 and optional for new Iris Driver.
+[src:mesa-graphics-stack/gallium3d] Vulkan 1.2 is ready for AMD RADV and Intel ANV.
+[src:mesa-graphics-stack/gallium3d] Intel Iris is default for Intel Broadwell Gen 8+.
+[src:mesa-graphics-stack/gallium3d] RadeonSI driver switched to using NIR by default, instead of TGSI.
+[src:mesa-graphics-stack/gallium3d] Many improvements are ready in many drivers.
+[src:mesa-graphics-stack/gallium3d] Zink is a new virtual driver for OpenGL over Vulkan.
+[src:mesa-graphics-stack/gallium3d] ARM Panfrost is mostly improved with many modules.
+[src:mesa-graphics-stack/gallium3d] Shared virtual memory is possible for OpenCL in Nouveau with Pascal and higher.
+[src:mesa-graphics-stack/gallium3d] 4th Version of 2020 is 20.3. v3d and v3dv are new drivers for OpenGL and Vulkan 1.0 with Broadcom hardware like Raspberry Pi 4.
+[src:mesa-graphics-stack/gallium3d] OpenCL 1.2 is full supported in clover module.
+[src:mesa-graphics-stack/gallium3d] LLVMpipe virtual driver support now OpenGL 4.5+ with 4.6 in view.
+[src:mesa-graphics-stack/gallium3d] Lavapipe (originally called Vallium) as Vulkan Tree of LLVMpipe is merged.
+[src:mesa-graphics-stack/gallium3d] In Mesa 21.0 d3d12 will be merged with OpenGL 3.0 to 3.3.
+[src:mesa-graphics-stack/gallium3d] Microsoft and Collabora develops new emulation d3d12 in WSL2 to Windows 10 with Direct 3D 12.
+[src:mesa-graphics-stack/gallium3d] An acceleration of factor 2 to 5 is done in Benchmark SPECviewperf with improved OpenGL Code.
+[src:mesa-graphics-stack/gallium3d] Many Mesa 21.0 features improves performance.
+[src:mesa-graphics-stack/gallium3d] New Release 21.0.0 is public since 11 March 2021.
+[src:mesa-graphics-stack/gallium3d] Mesa 21.1 is second release of year 2021.
+[src:mesa-graphics-stack/gallium3d] OpenGL 4.6+ and OpenGL ES 3.1+ is available for Zink.
+[src:mesa-graphics-stack/gallium3d] AMD Driver 600g can change to NIR with more possibilities for old Radeon HD 5000 and 6000 cards.
+[src:mesa-graphics-stack/gallium3d] Qualcomm Turnip reaches Vulkan 1.1+ and software emulation Lavapipe Vulkan 1.1+.
+[src:mesa-graphics-stack/gallium3d] Google VirtIO GPU Driver Venus with Vulkan 1.2+ is merged in experimental state with low performance in mesa main tree.
+[src:mesa-graphics-stack/gallium3d] Mesa 21.2 is third release of year 2021.
+[src:mesa-graphics-stack/gallium3d] Google Virtual Vulkan IO Driver Venus will be official introduced with full Vulkan 1.2+ support (more mesamatrix).
+[src:mesa-graphics-stack/gallium3d] ARM Panfrost: OpenGL ES 3.1+ Support is available and panVK is the new Vulkan Driver.
+[src:mesa-graphics-stack/gallium3d] Initial support started for ARM Apple M1 with new driver Asahi.
+[src:mesa-graphics-stack/gallium3d] Proposed architectural changes involve migrating legacy drivers to a standalone "classic" tree to streamline maintenance and bug fixing for the modern **Gallium3D** framework.
+[src:mesa-graphics-stack/gallium3d] A significant complication remains the **Intel i965** driver, which provides critical support for popular legacy hardware—including the **Intel Haswell** microarchitecture—and maintains compatibility with **Windows 10**.
+[src:mesa-graphics-stack/gallium3d] A new Gallium3D driver Crocus for Intel Gen 4 Graphics to Haswell is here in development to complete here the gallium3D area with possible split in the next time of year 2021.
+[src:mesa-graphics-stack/gallium3d] Amber branch is for old drivers without Gallium 3D Functions like Radeon R200, intel i915 and 965 with actual version 21.3.9.
+[src:mesa-graphics-stack/gallium3d] In Version 22.0 Classic drivers are retired.
+[src:mesa-graphics-stack/gallium3d] Vulkan 1.3 is available for Intel Anvil and AMD RADV.
+[src:mesa-graphics-stack/gallium3d] Microsoft introduces new driver „Dozen“ for WSL 2 in early development stage as Vulkan over d3d12 in Mesa 22.1.
+[src:mesa-graphics-stack/gallium3d] RustiCL is available at 22.3 with official OpenCL 3.0 Conformance for Intel XE Graphics.
+[src:mesa-graphics-stack/gallium3d] Performance is equal and better to AMD ROCm with AMD 6700 XT Card.
+[src:mesa-graphics-stack/gallium3d] A main development target of Mesa 23.0 was ray tracing for Vulkan.
+[src:mesa-graphics-stack/gallium3d] Microsoft develops the Dozen driver for Vulkan in WSL.
+[src:mesa-graphics-stack/gallium3d] Vulkan 1.0+ with 80% 1.1 and 1.2 will be available in Mesa 23.2 after delay to 23.1 (See mesamatrix).
+[src:mesa-graphics-stack/gallium3d] RustiCL for AMD hardware is available in 23.1.
+[src:mesa-graphics-stack/gallium3d] VirGL for virtual machines jumps in Mesa 23.2 to OpenGL 4.6.
+[src:mesa-graphics-stack/gallium3d] Apple Asahi for Apple Arm Machines jumps from OpenGL 2.1 to 3.1 with 90% features of OpenGL 3.2 and 3.3 and OpenGL ES 2.0 to 3.0.
+[src:mesa-graphics-stack/gallium3d] Microsoft Supports in WSL OpenGL 4.6+ in Mesa 24.0 (in Mesa 23.3: 4.3+) with DirectX 12 translation driver dozen.
+[src:mesa-graphics-stack/opengl] (SGI) began developing OpenGL in 1991 and released it on June 30, 1992.
+[src:mesa-graphics-stack/opengl] It is used for a variety of applications, including computer-aided design (CAD), video games, scientific visualization, virtual reality, and flight simulation.
+[src:mesa-graphics-stack/opengl] Since 2006, OpenGL has been managed by the non-profit technology consortium Khronos Group.
+[src:mesa-graphics-stack/opengl] The OpenGL specification describes an abstract application programming interface (API) for drawing 2D and 3D graphics.
+[src:mesa-graphics-stack/opengl] It is designed to be implemented mostly or entirely using hardware acceleration such as a GPU, although it is possible for the API to be implemented entirely in software running on a CPU.
+[src:mesa-graphics-stack/opengl] The API is defined as a set of functions which may be called by the client program, alongside a set of named integer constants (for example, the constant GL_TEXTURE_2D, which corresponds to the decimal number 3553).
+[src:mesa-graphics-stack/opengl] Although the function definitions are superficially similar to those of the programming language C, they are language-independent.
+[src:mesa-graphics-stack/opengl] As such, OpenGL has many language bindings, some of the most noteworthy being the JavaScript binding WebGL (API, based on OpenGL ES 2.0, for 3D rendering from within a web browser); the C bindings WGL, GLX and CGL; the C binding provided by iOS; and the Java and C bindings provided by Android.
+[src:mesa-graphics-stack/opengl] In addition to being language-independent, OpenGL is also cross-platform.
+[src:mesa-graphics-stack/opengl] The specification says nothing on the subject of obtaining and managing an OpenGL context, leaving this as a detail of the underlying windowing system.
+[src:mesa-graphics-stack/opengl] For the same reason, OpenGL is purely concerned with rendering, providing no APIs related to input, audio, or windowing.
+[src:mesa-graphics-stack/opengl] New versions of the OpenGL specifications are released by the Khronos Group, each of which extends the API to support various new features.
+[src:mesa-graphics-stack/opengl] The details of each version are decided by consensus between the Group's members, including graphics card manufacturers, operating system designers, and general technology companies such as Mozilla and Google.
+[src:mesa-graphics-stack/opengl] In addition to the features required by the core API, graphics processing unit (GPU) vendors may provide additional functionality in the form of *extensions*.
+[src:mesa-graphics-stack/opengl] Extensions may introduce new functions and new constants, and may relax or remove restrictions on existing OpenGL functions.
+[src:mesa-graphics-stack/opengl] Vendors can use extensions to expose custom APIs without needing support from other vendors or the Khronos Group as a whole, which greatly increases the flexibility of OpenGL.
+[src:mesa-graphics-stack/opengl] All extensions are collected in, and defined by, the OpenGL Registry.
+[src:mesa-graphics-stack/opengl] The features introduced by each new version of OpenGL are typically formed from the combined features of several widely implemented extensions, especially extensions of type ARB or EXT.
+[src:mesa-graphics-stack/opengl] OpenGL is no longer in active development; whereas between 2001 and 2014, OpenGL specification was updated mostly on a yearly basis, with two releases (3.1 and 3.2) taking place in 2009 and three (3.3, 4.0 and 4.1) in 2010.
+[src:mesa-graphics-stack/opengl] The latest OpenGL specification 4.6 was released in 2017 after a three-year break, and was limited to inclusion of eleven existing ARB and EXT extensions into the core profile.
+[src:mesa-graphics-stack/opengl] Active development of OpenGL was dropped in favor of the Vulkan API, released in 2016, and codenamed glNext during initial development.
+[src:mesa-graphics-stack/opengl] In 2017, Khronos Group announced that OpenGL ES would not have new versions and has since concentrated on development of Vulkan and other technologies.
+[src:mesa-graphics-stack/opengl] As a result, certain capabilities offered by modern GPUs, e.g. ray tracing, are not supported by the OpenGL standard.
+[src:mesa-graphics-stack/opengl] However, support for newer features might be provided through the vendor-specific OpenGL extensions.
+[src:mesa-graphics-stack/opengl] The OpenGL Architecture Review Board released a series of manuals along with the specification which have been updated to track changes in the API.
+[src:mesa-graphics-stack/opengl] OpenGL Programming for the X Window System.
+[src:mesa-graphics-stack/opengl] Includes a poster-sized fold-out diagram showing the structure of an idealised OpenGL implementation.
+[src:mesa-graphics-stack/opengl] OpenGL Programming for Windows 95 and Windows NT.
+[src:mesa-graphics-stack/opengl] A book about interfacing OpenGL with Microsoft Windows.
+[src:mesa-graphics-stack/opengl] OpenGL's documentation is also accessible via its official webpage.
+[src:mesa-graphics-stack/opengl] The earliest versions of OpenGL were released with a companion library called the OpenGL Utility Library (GLU).
+[src:mesa-graphics-stack/opengl] It provided simple, useful features which were unlikely to be supported in contemporary hardware, such as tessellating, and generating mipmaps and primitive shapes.
+[src:mesa-graphics-stack/opengl] The GLU specification was last updated in 1998 and depends on OpenGL features which are now deprecated.
+[src:mesa-graphics-stack/opengl] Given that creating an OpenGL context is quite a complex process, and given that it varies between operating systems, automatic OpenGL context creation has become a common feature of several game-development and user-interface libraries, including SDL, Allegro, SFML, FLTK, and Qt.
+[src:mesa-graphics-stack/opengl] A few libraries have been designed solely to produce an OpenGL-capable window.
+[src:mesa-graphics-stack/opengl] The first such library was OpenGL Utility Toolkit (GLUT), later superseded by freeglut.
+[src:mesa-graphics-stack/opengl] Given the high workload involved in identifying and loading OpenGL extensions, a few libraries have been designed which load all available extensions and functions automatically.
+[src:mesa-graphics-stack/opengl] Examples include OpenGL Easy Extension library (GLEE), OpenGL Extension Wrangler Library (GLEW) and glbinding.
+[src:mesa-graphics-stack/opengl] Extensions are also loaded automatically by most language bindings, such as Java OpenGL, PyOpenGL and WebGL.
+[src:mesa-graphics-stack/opengl] Mesa 3D is an open-source implementation of OpenGL.
+[src:mesa-graphics-stack/opengl] It can do pure software rendering, and it may also use hardware acceleration on BSD, Linux, and other platforms by taking advantage of the Direct Rendering Infrastructure.
+[src:mesa-graphics-stack/opengl] As of version 20.0, it implements version 4.6 of the OpenGL standard.
+[src:mesa-graphics-stack/opengl] In the 1980s, developing software that could function with a wide range of graphics hardware was a challenge without a cross-platform library.
+[src:mesa-graphics-stack/opengl] Software developers wrote custom interfaces and drivers for each piece of hardware.
+[src:mesa-graphics-stack/opengl] This was expensive and resulted in multiplication of effort.
+[src:mesa-graphics-stack/opengl] By the early 1990s, Silicon Graphics (SGI) was a leader in 3D graphics for workstations.
+[src:mesa-graphics-stack/opengl] Their IRIS GL API became the industry standard, as IRIS GL was considered easier to use, and it supported immediate mode rendering, therefore being faster than competitors like PHIGS.
+[src:mesa-graphics-stack/opengl] SGI's competitors (including Sun Microsystems, Hewlett-Packard and IBM) were also able to bring to market 3D hardware supported by extensions made to the PHIGS standard, which pressured SGI to open source a version of IRIS GL as a public standard called **OpenGL**.
+[src:mesa-graphics-stack/opengl] However, SGI had many customers for whom the change from IRIS GL to OpenGL would demand significant investment.
+[src:mesa-graphics-stack/opengl] Moreover, IRIS GL had API functions that were irrelevant to 3D graphics.
+[src:mesa-graphics-stack/opengl] For example, it included a windowing, keyboard and mouse API, in part because it was developed before the X Window System and Sun's NeWS.
+[src:mesa-graphics-stack/opengl] IRIS GL libraries were heavily tied into SGI's proprietary graphics hardware and could not be open sourced as-is due to hardware patents and trade secrets.
+[src:mesa-graphics-stack/opengl] These factors required SGI to continue to support the advanced and proprietary Iris Inventor and Iris Performer programming APIs while market support for OpenGL matured.
+[src:mesa-graphics-stack/opengl] One of the restrictions of IRIS GL was that it only provided access to features supported by the underlying hardware.
+[src:mesa-graphics-stack/opengl] If the graphics hardware did not support a feature natively, then the application could not use it.
+[src:mesa-graphics-stack/opengl] OpenGL overcame this problem by providing software implementations of features unsupported by hardware, allowing applications to use advanced graphics on relatively low-powered systems.
+[src:mesa-graphics-stack/opengl] OpenGL standardized access to hardware, pushed the development responsibility of hardware interface programs (device drivers) to hardware manufacturers, and delegated windowing functions to the underlying operating system.
+[src:mesa-graphics-stack/opengl] With so many different kinds of graphics hardware, getting them all to speak the same language in this way had a remarkable impact by giving software developers a higher-level platform for 3D-software development.
+[src:mesa-graphics-stack/opengl] In 1992, SGI led the creation of the OpenGL Architecture Review Board (OpenGL ARB), the group of companies that would maintain and expand the OpenGL specification in the future.
+[src:mesa-graphics-stack/opengl] Two years later, they also played with the idea of releasing something called "OpenGL++" which included elements such as a scene-graph API (presumably based on their Performer technology).
+[src:mesa-graphics-stack/opengl] The specification was circulated among a few interested parties – but never turned into a product.
+[src:mesa-graphics-stack/opengl] Released in 1996, Microsoft's Direct3D eventually became the main competitor of OpenGL.
+[src:mesa-graphics-stack/opengl] Over 50 game developers signed an open letter to Microsoft, released on June 12, 1997, calling on the company to actively support OpenGL.
+[src:mesa-graphics-stack/opengl] On December 17, 1997, Microsoft and SGI initiated the Fahrenheit project, which was a joint effort with the goal of unifying the OpenGL and Direct3D interfaces (and adding a scene-graph API too).
+[src:mesa-graphics-stack/opengl] In 1998, Hewlett-Packard joined the project.
+[src:mesa-graphics-stack/opengl] It initially showed some promise of bringing order to the world of interactive 3D computer graphics APIs, but on account of financial constraints at SGI, strategic reasons at Microsoft, and a general lack of industry support, it was abandoned in 1999.
+[src:mesa-graphics-stack/opengl] In July 2006, the OpenGL Architecture Review Board voted to transfer control of the OpenGL API standard to the Khronos Group.
+[src:mesa-graphics-stack/opengl] OpenGL was the standard for many CAD software (such as Blender) and games in the 1990s and 2000s, and faces wide support across virtually all hardware vendors.
+[src:mesa-graphics-stack/opengl] Despite the emergence of newer graphics APIs like its successor Vulkan or Metal, OpenGL continues to be a widely used standard.
+[src:mesa-graphics-stack/opengl] This continued relevance is supported by several factors: ongoing development with new extensions and driver optimizations, its cross-platform compatibility, and the availability of compatibility layers like ANGLE and Zink.
+[src:mesa-graphics-stack/opengl] These layers allow OpenGL to run efficiently on top of Vulkan and Metal, offering a pathway for continued use or gradual transitions for developers.
+[src:mesa-graphics-stack/opengl] However, the graphics API landscape has been shifting, where some companies are moving away from OpenGL.
+[src:mesa-graphics-stack/opengl] In June 2018, Apple deprecated OpenGL APIs on all of their platforms (iOS, macOS and tvOS), encouraging developers to use their proprietary Metal API, which was introduced in 2014.
+[src:mesa-graphics-stack/opengl] Game developers have also begun to adopt newer APIs. id Software, who has been using OpenGL in their games since the late 1990s in games such as GLQuake or some games of the Doom franchise, transitioned away to its successor Vulkan in its id Tech 7 engine in 2016.
+[src:mesa-graphics-stack/opengl] They first supported Vulkan in an update for their id Tech 6 engine.
+[src:mesa-graphics-stack/opengl] The company's first licensed use of OpenGL was in its Quake II engine, also known as id Tech 2.
+[src:mesa-graphics-stack/opengl] In March 2023, Valve removed OpenGL support from Dota 2 in favor of Vulkan.
+[src:mesa-graphics-stack/opengl] Atypical Games, with support from Samsung, updated their game engine to use Vulkan, rather than OpenGL, across all non-Apple platforms.
+[src:mesa-graphics-stack/opengl] The Khronos Group, the consortium responsible for OpenGL's development, has stopped updating OpenGL, with the last release made in 2017.
+[src:mesa-graphics-stack/opengl] It has not received a number of modern graphics technologies, such as hardware accelerated Ray Tracing, on-GPU video decoding, and advanced anti-aliasing algorithms like Nvidia DLSS and AMD FSR.
+[src:mesa-graphics-stack/opengl] Another modern feature, Mesh Shaders, was initially only supported through an Nvidia exclusive extension, however in 2025, a cross-vendor OpenGL Mesh Shader extension was released.
+[src:mesa-graphics-stack/opengl] Google's Fuchsia OS, while using Vulkan natively and requiring a Vulkan-conformant GPU, still intends to support OpenGL on top of Vulkan via the ANGLE translation layer.
+[src:mesa-graphics-stack/opengl] The first version of OpenGL, version 1.0, was released on June 30, 1992, by Mark Segal and Kurt Akeley.
+[src:mesa-graphics-stack/opengl] Since then, OpenGL has occasionally been extended by releasing a new version of the specification.
+[src:mesa-graphics-stack/opengl] Such releases define a baseline set of features which all conforming graphics cards must support, and against which new extensions can more easily be written.
+[src:mesa-graphics-stack/opengl] Each new version of OpenGL tends to incorporate several extensions which have widespread support among graphics-card vendors, although the details of those extensions may be changed.
+[src:mesa-graphics-stack/opengl] OpenGL 2.0 was originally conceived by 3Dlabs to address concerns that OpenGL was stagnating and lacked a strong direction.
+[src:mesa-graphics-stack/opengl] 3Dlabs proposed a number of major additions to the standard.
+[src:mesa-graphics-stack/opengl] Most of these were, at the time, rejected by the ARB or otherwise never came to fruition in the form that 3Dlabs proposed.
+[src:mesa-graphics-stack/opengl] However, their proposal for a C-style shading language was eventually completed, resulting in the current formulation of the OpenGL Shading Language (GLSL or GLslang).
+[src:mesa-graphics-stack/opengl] Like the assembly-like shading languages it was replacing, it allowed replacing the fixed-function vertex and fragment pipe with shaders, though this time written in a C-like high-level language.
+[src:mesa-graphics-stack/opengl] The design of GLSL was notable for making relatively few concessions to the limits of the hardware then available.
+[src:mesa-graphics-stack/opengl] This harked back to the earlier tradition of OpenGL setting an ambitious, forward-looking target for 3D accelerators rather than merely tracking the state of currently available hardware.
+[src:mesa-graphics-stack/opengl] The final OpenGL 2.0 specification includes support for GLSL 1.10.
+[src:mesa-graphics-stack/opengl] OpenGL 2.1 adds support for Pixel Buffer Objects, sRGB textures and GLSL 1.20.
+[src:mesa-graphics-stack/opengl] Before the release of OpenGL 3.0, the new revision had the codename Longs Peak.
+[src:mesa-graphics-stack/opengl] At the time of its original announcement, Longs Peak was presented as the first major API revision in OpenGL's lifetime.
+[src:mesa-graphics-stack/opengl] It consisted of an overhaul to the way that OpenGL works, calling for fundamental changes to the API.
+[src:mesa-graphics-stack/opengl] The draft introduced a change to object management.
+[src:mesa-graphics-stack/opengl] The GL 2.1 object model was built upon the state-based design of OpenGL.
+[src:mesa-graphics-stack/opengl] That is, to modify an object or to use it, one needs to bind the object to the state system, then make modifications to the state or perform function calls that use the bound object.
+[src:mesa-graphics-stack/opengl] Because of OpenGL's use of a state system, objects must be mutable.
+[src:mesa-graphics-stack/opengl] That is, the basic structure of an object can change at any time, even if the rendering pipeline is asynchronously using that object.
+[src:mesa-graphics-stack/opengl] A texture object can be redefined from 2D to 3D.
+[src:mesa-graphics-stack/opengl] This requires any OpenGL implementations to add a degree of complexity to internal object management.
+[src:mesa-graphics-stack/opengl] Under the Longs Peak API, object creation would become atomic, using templates to define the properties of an object which would be created with one function call.
+[src:mesa-graphics-stack/opengl] The object could then be used immediately across multiple threads.
+[src:mesa-graphics-stack/opengl] Objects would also be immutable; however, they could have their contents changed and updated.
+[src:mesa-graphics-stack/opengl] For example, a texture could change its image, but its size and format could not be changed.
+[src:mesa-graphics-stack/opengl] To support backwards compatibility, the old state based API would still be available, but no new functionality would be exposed via the old API in later versions of OpenGL.
+[src:mesa-graphics-stack/opengl] This would have allowed legacy code bases, such as the majority of CAD products, to continue to run while other software could be written against or ported to the new API.
+[src:mesa-graphics-stack/opengl] Longs Peak was initially due to be finalized in September 2007 under the name OpenGL 3.0, but the Khronos Group announced on October 30 that it had run into several issues that it wished to address before releasing the specification.
+[src:mesa-graphics-stack/opengl] As a result, the spec was delayed, and the Khronos Group went into a media blackout until the release of the final OpenGL 3.0 spec.
+[src:mesa-graphics-stack/opengl] The final specification proved far less revolutionary than the Longs Peak proposal.
+[src:mesa-graphics-stack/opengl] Instead of removing all immediate mode and fixed functionality (non-shader mode), the spec included them as deprecated features.
+[src:mesa-graphics-stack/opengl] The proposed object model was not included, and no plans have been announced to include it in any future revisions.
+[src:mesa-graphics-stack/opengl] As a result, the API remained largely the same with a few existing extensions being promoted to core functionality.
+[src:mesa-graphics-stack/opengl] Among some developer groups this decision caused something of an uproar, with many developers professing that they would switch to DirectX in protest.
+[src:mesa-graphics-stack/opengl] Most complaints revolved around the lack of communication by Khronos to the development community and multiple features being discarded that were viewed favorably by many.
+[src:mesa-graphics-stack/opengl] Other frustrations included the requirement of DirectX 10 level hardware to use OpenGL 3.0 and the absence of geometry shaders and instanced rendering as core features.
+[src:mesa-graphics-stack/opengl] Other sources reported that the community reaction was not quite as severe as originally presented, with many vendors showing support for the update.
+[src:mesa-graphics-stack/opengl] OpenGL 3.0 introduced a deprecation mechanism to simplify future revisions of the API.
+[src:mesa-graphics-stack/opengl] Certain features, marked as deprecated, could be completely disabled by requesting a *forward-compatible context* from the windowing system.
+[src:mesa-graphics-stack/opengl] OpenGL 3.0 features could still be accessed alongside these deprecated features, however, by requesting a *full context*.
+[src:mesa-graphics-stack/opengl] Hardware support: Nvidia GeForce 8 Series and newer, ATI Radeon HD 2000 series and newer, Intel HD Graphics in Intel Sandy Bridge processors and newer.
+[src:mesa-graphics-stack/opengl] OpenGL 3.1 fully removed all of the features which were deprecated in version 3.0, with the exception of wide lines.
+[src:mesa-graphics-stack/opengl] From this version onwards, it's not possible to access new features using a *full context*, or to access deprecated features using a *forward-compatible context*.
+[src:mesa-graphics-stack/opengl] An exception to the former rule is made if the implementation supports the ARB_compatibility extension, but this is not guaranteed.
+[src:mesa-graphics-stack/opengl] Hardware support: Mesa supports ARM Panfrost with Version 21.0.
+[src:mesa-graphics-stack/opengl] OpenGL 3.2 further built on the deprecation mechanisms introduced by OpenGL 3.0, by dividing the specification into a *core profile* and *compatibility profile*.
+[src:mesa-graphics-stack/opengl] Compatibility contexts include the previously removed fixed-function APIs, equivalent to the ARB_compatibility extension released alongside OpenGL 3.1, while core contexts do not.
+[src:mesa-graphics-stack/opengl] OpenGL 3.2 also included an upgrade to GLSL version 1.50.
+[src:mesa-graphics-stack/opengl] OpenGL 3.3 includes minor additions, with the goal of retaining as much functionality as possible from OpenGL 4.0, while keeping support for older hardware.
+[src:mesa-graphics-stack/opengl] Additions include new blending functions, Sampler Objects and new texture and vertex formats.
+[src:mesa-graphics-stack/opengl] Support is also added for GLSL version 3.30, major and minor versions now match with OpenGL.
+[src:mesa-graphics-stack/opengl] OpenGL 4.0 was released alongside version 3.3.
+[src:mesa-graphics-stack/opengl] It was designed for hardware able to support Direct3D 11.
+[src:mesa-graphics-stack/opengl] As in OpenGL 3.0, this version of OpenGL contains a high number of fairly inconsequential extensions, designed to thoroughly expose the abilities of Direct3D 11-class hardware, such as tessellation.
+[src:mesa-graphics-stack/opengl] Hardware support: Nvidia GeForce 400 series and newer, AMD Radeon HD 5000 series and newer (FP64 shaders implemented by emulation on some TeraScale GPUs), Intel HD Graphics in Intel Ivy Bridge processors and newer.
+[src:mesa-graphics-stack/opengl] Hardware support: Nvidia GeForce 400 series and newer, AMD Radeon HD 5000 series and newer (FP64 shaders implemented by emulation on some TeraScale GPUs), Intel HD Graphics in Intel Haswell processors and newer (Linux Mesa: Ivy Bridge and newer).
+[src:mesa-graphics-stack/opengl] Additionally, this is the last core profile supported by Apple macOS.
+[src:mesa-graphics-stack/opengl] Hardware support: Nvidia GeForce 400 series and newer, AMD Radeon HD 5000 series and newer (FP64 shaders implemented by emulation on some TeraScale GPUs), and Intel HD Graphics in Intel Haswell processors and newer.
+[src:mesa-graphics-stack/opengl] Hardware support: AMD Radeon HD 5000 series and newer (FP64 shaders implemented by emulation on some TeraScale GPUs), Intel HD Graphics in Intel Haswell processors and newer.
+[src:mesa-graphics-stack/opengl] (Linux Mesa: Ivy Bridge without stencil texturing, Haswell and newer), Nvidia GeForce 400 series and newer.
+[src:mesa-graphics-stack/opengl] VIRGL Emulation for virtual machines supports 4.3+ with Mesa 20.
+[src:mesa-graphics-stack/opengl] Hardware support: AMD Radeon HD 5000 series and newer (FP64 shaders implemented by emulation on some TeraScale GPUs), Intel HD Graphics in Intel Broadwell processors and newer (Linux Mesa: Haswell and newer), Nvidia GeForce 400 series and newer, Tegra K1.
+[src:mesa-graphics-stack/opengl] Hardware support: AMD Radeon HD 5000 series and newer (FP64 shaders implemented by emulation on some TeraScale GPUs), Intel HD Graphics in Intel Broadwell processors and newer (Linux Mesa: Haswell and newer), Nvidia GeForce 400 series and newer, Tegra K1, and Tegra X1.
+[src:mesa-graphics-stack/opengl] Hardware support: AMD Radeon HD 7000 series and newer (FP64 shaders implemented by emulation on some TeraScale GPUs), Intel Skylake and newer, Nvidia GeForce 400 series and newer.
+[src:mesa-graphics-stack/opengl] Apple deprecated OpenGL in iOS 12 and macOS 10.14 Mojave in favor of Metal, but it is still available as of macOS 15 Sequoia (including on Apple silicon devices).
+[src:mesa-graphics-stack/opengl] The latest version supported for OpenGL is 4.1 from 2011.
+[src:mesa-graphics-stack/opengl] A proprietary library from Molten – authors of MoltenVK – called MoltenGL, can translate OpenGL calls to Metal.
+[src:mesa-graphics-stack/opengl] There are several projects that attempt to implement OpenGL on top of Vulkan.
+[src:mesa-graphics-stack/opengl] The Vulkan backend for Google's ANGLE achieved OpenGL ES 3.1 conformance in July 2020.
+[src:mesa-graphics-stack/opengl] The Mesa3D project also includes such a driver, called *Zink*.
+[src:mesa-graphics-stack/opengl] Microsoft's Windows 11 on Arm added support for OpenGL 3.3 via GLon12, an open source OpenGL implementation on top DirectX 12 via Mesa Gallium.
+[src:mesa-graphics-stack/opengl] Vulkan, formerly named the "Next Generation OpenGL Initiative" (glNext), is a ground-up redesign effort to unify OpenGL and OpenGL ES into one common API that will not be backwards compatible with existing OpenGL versions.
+[src:mesa-graphics-stack/opengl] The initial version of Vulkan API was released on February 16, 2016.
+[src:mesa-graphics-stack/vulkan] Vulkan is intended to offer higher performance and more efficient CPU and GPU usage compared to the older OpenGL and Direct3D 11 APIs, by providing a considerably lower-level API that more closely resembles how modern GPUs work.
+[src:mesa-graphics-stack/vulkan] Vulkan is comparable to Apple's Metal API and Microsoft's Direct3D 12.
+[src:mesa-graphics-stack/vulkan] In addition to its lower CPU usage, Vulkan is designed to allow developers to better distribute work among multiple CPU cores.
+[src:mesa-graphics-stack/vulkan] Vulkan was first announced by the non-profit Khronos Group at GDC 2015.
+[src:mesa-graphics-stack/vulkan] The Vulkan API was initially referred to as the "next generation OpenGL initiative", or "OpenGL next" by Khronos, but use of those names was discontinued when "Vulkan" was announced.
+[src:mesa-graphics-stack/vulkan] Vulkan is derived from and built upon components of AMD's Mantle API, which was donated by AMD to Khronos with the intent of giving Khronos a foundation on which to begin developing a low-level API that they could standardize across the industry.
+[src:mesa-graphics-stack/vulkan] Vulkan is intended to provide a variety of advantages over other APIs as well as over its predecessor, OpenGL.
+[src:mesa-graphics-stack/vulkan] Vulkan offers lower overhead, more direct control over the GPU, and lower CPU usage.
+[src:mesa-graphics-stack/vulkan] Its overall concept and feature set are similar to those of Mantle.
+[src:mesa-graphics-stack/vulkan] They were later adopted by Microsoft with Direct3D 12 and by Apple with Metal.
+[src:mesa-graphics-stack/vulkan] Vulkan is available on multiple modern operating systems and architectures, and provides a single API for both desktop and mobile graphics devices, whereas previously these were split between OpenGL and OpenGL ES respectively.
+[src:mesa-graphics-stack/vulkan] Like OpenGL, and in contrast to Direct3D 12, the Vulkan API is not locked to a single OS or device form factor.
+[src:mesa-graphics-stack/vulkan] Vulkan runs natively on at least Android, Linux, BSD Unix, QNX, Haiku, Nintendo Switch, Raspberry Pi, Stadia, Fuchsia, Tizen, and Windows 7, 8, 10, and 11.
+[src:mesa-graphics-stack/vulkan] MoltenVK provides freely licensed third-party support for macOS, iOS and tvOS by wrapping over Apple's Metal API.
+[src:mesa-graphics-stack/vulkan] Vulkan reduces load on CPUs through the use of batching and other low-level optimizations, thereby reducing CPU workloads and leaving the CPU free to do more computation or rendering than would otherwise be possible.
+[src:mesa-graphics-stack/vulkan] Direct3D 11 and OpenGL 4 were initially designed for use with single-core CPUs and only received augmentation to be executed on multi-cores.
+[src:mesa-graphics-stack/vulkan] Even when application developers use the augmentations, these APIs regularly do not scale well on multi-cores.
+[src:mesa-graphics-stack/vulkan] Vulkan offers improved scalability on multi-core CPUs due to the modernized threading architecture.
+[src:mesa-graphics-stack/vulkan] OpenGL uses the high-level language GLSL for writing shaders, which forces each OpenGL driver to implement its own compiler for GLSL.
+[src:mesa-graphics-stack/vulkan] This then executes at application runtime to translate the program's shaders into the GPU's machine code.
+[src:mesa-graphics-stack/vulkan] In contrast, Vulkan drivers are supposed to ingest shaders already translated into an intermediate binary format called SPIR-V (Standard Portable Intermediate Representation), analogous to the binary format that HLSL shaders are compiled into in Direct3D.
+[src:mesa-graphics-stack/vulkan] By allowing shader pre-compilation, application initialization speed is improved and a larger variety of shaders can be used per scene.
+[src:mesa-graphics-stack/vulkan] A Vulkan driver only needs to perform GPU specific optimization and code generation, resulting in easier driver maintenance, and potentially smaller driver packages.
+[src:mesa-graphics-stack/vulkan] The developers of applications now can also more easily obfuscate proprietary shader code, due to shaders not being stored directly as source code.
+[src:mesa-graphics-stack/vulkan] However, tools are provided that can decompile SPIR-V to human-readable high-level code.
+[src:mesa-graphics-stack/vulkan] AMD states that "Vulkan supports close-to-metal control, enabling faster performance and better image quality across Windows 7, Windows 8.1, Windows 10, and Linux.
+[src:mesa-graphics-stack/vulkan] Vulkan 1.0 was released in February 2016.
+[src:mesa-graphics-stack/vulkan] At SIGGRAPH 2016, Khronos announced that Vulkan would be getting support for automatic multi-GPU features, similar to what is offered by Direct3D 12.
+[src:mesa-graphics-stack/vulkan] Multi-GPU support included in-API removes the need for SLI or Crossfire, which requires graphics cards to be of the same model.
+[src:mesa-graphics-stack/vulkan] API multi-GPU instead allows the API to intelligently split the workload among two or more completely different GPUs.
+[src:mesa-graphics-stack/vulkan] For example, integrated GPUs included on the CPU can be used in conjunction with a high-end dedicated GPU for a slight performance boost.
+[src:mesa-graphics-stack/vulkan] On March 7, 2018, Vulkan 1.1 was released by the Khronos Group.
+[src:mesa-graphics-stack/vulkan] This first major update to the API standardized several extensions, such as multi-view, device groups, cross-process and cross-API sharing, advanced compute functionality, HLSL support, and YCbCr support.
+[src:mesa-graphics-stack/vulkan] At the same time, it brought better compatibility with DirectX 12, explicit multi-GPU support, (optional extensions for supporting hardware, e.g. some Nvidia GPUs, on e.g.
+[src:mesa-graphics-stack/vulkan] Windows and Android) ray tracing support, and laid the groundwork for the next generation of GPUs.
+[src:mesa-graphics-stack/vulkan] Alongside Vulkan 1.1, SPIR-V was updated to version 1.3.
+[src:mesa-graphics-stack/vulkan] On January 15, 2020, Vulkan 1.2 was released by the Khronos Group.
+[src:mesa-graphics-stack/vulkan] This second major update to the API integrates 23 additional commonly used proven Vulkan extensions into the base Vulkan standard.
+[src:mesa-graphics-stack/vulkan] The additional features of Vulkan 1.2 improve its flexibility when it comes to implementing other graphics APIs on top of Vulkan, including "uniform buffer standard layout", "scalar block layout", and "separate stencil usage".
+[src:mesa-graphics-stack/vulkan] On January 25, 2022, Vulkan 1.3 was released by the Khronos Group.
+[src:mesa-graphics-stack/vulkan] This third major update to the API integrates 23 additional commonly used proven Vulkan extensions into the base Vulkan standard.
+[src:mesa-graphics-stack/vulkan] Vulkan 1.3 focuses on reducing fragmentation by making the new features not optional in order for a device to be considered Vulkan 1.3 capable.
+[src:mesa-graphics-stack/vulkan] The new features in Vulkan 1.3 include dynamic rendering, additional dynamic state, improved synchronization API, and device profiles.
+[src:mesa-graphics-stack/vulkan] On December 3, 2024, Vulkan 1.4 was released by the Khronos Group.
+[src:mesa-graphics-stack/vulkan] When releasing OpenCL 2.2, the Khronos Group announced that OpenCL would converge where possible with Vulkan to enable OpenCL software deployment flexibility over both APIs.
+[src:mesa-graphics-stack/vulkan] This has been now demonstrated by Adobe's Premiere Rush using the clspv open source compiler to compile significant amounts of OpenCL C kernel code to run on a Vulkan runtime for deployment on Android.
+[src:mesa-graphics-stack/vulkan] The Khronos Group began a project to create a next generation graphics API in July 2014 with a kickoff meeting at Valve.
+[src:mesa-graphics-stack/vulkan] At SIGGRAPH 2014, the project was publicly announced with a call for participants.
+[src:mesa-graphics-stack/vulkan] According to the US Patent and Trademark Office, the trademark for Vulkan was filed on February 19, 2015.
+[src:mesa-graphics-stack/vulkan] Vulkan was formally named and announced at Game Developers Conference 2015, although speculation and rumors centered around a new API existed beforehand and referred to it as "**glNext**".
+[src:mesa-graphics-stack/vulkan] In early 2015, LunarG (funded by Valve) developed and showcased a Linux driver for Intel which enabled Vulkan compatibility on the HD 4000 series integrated graphics, despite the open-source Mesa drivers not being fully compatible with OpenGL 4.0 until later that year.
+[src:mesa-graphics-stack/vulkan] There is still the possibility of Sandy Bridge support, since it supports compute through Direct3D11.
+[src:mesa-graphics-stack/vulkan] On August 10, 2015, Google announced that future versions of Android would support Vulkan.
+[src:mesa-graphics-stack/vulkan] Android 7.x "Nougat" launched support for Vulkan on August 22, 2016.
+[src:mesa-graphics-stack/vulkan] On December 18, 2015, the Khronos Group announced that the 1.0 version of the Vulkan specification was nearly complete and would be released when conforming drivers were available.
+[src:mesa-graphics-stack/vulkan] The full Vulkan specification and the open-source Vulkan SDK were released on February 16, 2016.
+[src:mesa-graphics-stack/vulkan] On February 26, 2018, Khronos Group announced that the Vulkan API became available to all on macOS and iOS through the MoltenVK library, which enables Vulkan to run on top of Metal.
+[src:mesa-graphics-stack/vulkan] Other new developments were shown at SIGGRAPH 2018.
+[src:mesa-graphics-stack/vulkan] Previously MoltenVK was a proprietary and commercially licensed solution, but Valve made an arrangement with developer Brenwill Workshop Ltd to open-source MoltenVK under the Apache 2.0 license and as a result the library is now available on GitHub.
+[src:mesa-graphics-stack/vulkan] Valve also announced that *Dota 2* can as of February 26, 2018 run on macOS using the Vulkan API, which is based on MoltenVK.
+[src:mesa-graphics-stack/vulkan] On February 25, 2019, the Vulkan Safety Critical (SC) Working Group was announced to bring Vulkan GPU acceleration to safety critical industries.
+[src:mesa-graphics-stack/vulkan] Google's Stadia streaming cloud gaming service used Vulkan on Linux based servers with AMD GPUs.
+[src:mesa-graphics-stack/vulkan] On January 15, 2020, Vulkan 1.2 was released.
+[src:mesa-graphics-stack/vulkan] Alongside the Vulkan 1.2 release, the Khronos Group posted a blog post which considered that HLSL support in Vulkan had reached "production ready" status, given the improvements in Microsoft's DXC compiler and Khronos's glslang compiler, and new features in Vulkan 1.2 which enhance HLSL support.
+[src:mesa-graphics-stack/vulkan] On February 3, 2020, the Raspberry Pi Foundation announced that it was working on an open source Vulkan driver for their Raspberry Pi, a popular single board computer.
+[src:mesa-graphics-stack/vulkan] On June 20, 2020, a graphics engineer revealed that he had created one after two years of work that was capable of running VkQuake3 at over 100FPS on the small computer.
+[src:mesa-graphics-stack/vulkan] On March 17, 2020, Khronos Group released the Ray Tracing extensions, based on Nvidia's proprietary extension, with some major extensions and many minor changes, which in turn was based on Nvidia's OptiX API.
+[src:mesa-graphics-stack/vulkan] On November 23, 2020, these Ray Tracing extensions were finalized.
+[src:mesa-graphics-stack/vulkan] On November 24, 2020, Raspberry Pi Foundation announced that their driver for the Raspberry Pi 4 is Vulkan 1.0 conformant.
+[src:mesa-graphics-stack/vulkan] On January 25, 2022, Vulkan 1.3 was released.
+[src:mesa-graphics-stack/vulkan] On March 1, 2022, Vulkan SC 1.0 was released, bringing Vulkan graphics and compute for the safety-critical industry while being based on the Vulkan 1.2 standard.
+[src:mesa-graphics-stack/vulkan] On August 1, 2022, Raspberry Pi Foundation announced that their driver for the Raspberry Pi 4 is Vulkan 1.2 conformant.
+[src:mesa-graphics-stack/vulkan] On September 1, 2022, Mesh Shading for Vulkan was released.
+[src:mesa-graphics-stack/vulkan] A new Vulkan Roadmap was announced on January 25, 2024.
+[src:mesa-graphics-stack/vulkan] A new extension for decoding AV1 video was released on February 1, 2024.
+[src:mesa-graphics-stack/vulkan] Initial specifications stated that Vulkan drivers can be implemented on any hardware that supports OpenGL ES 3.1 or OpenGL 4.x and up.
+[src:mesa-graphics-stack/vulkan] As Vulkan support requires new graphics drivers, this does not necessarily imply that every existing device that supports OpenGL ES 3.1 or OpenGL 4.x will have Vulkan drivers available.
+[src:mesa-graphics-stack/vulkan] As of March 2023, Intel has split Vulkan driver support on Windows and on Linux.
+[src:mesa-graphics-stack/vulkan] On Windows, Skylake to Ice Lake supports up to Vulkan 1.3, with limited support after July 2022 as future updates will only cover security fixes.
+[src:mesa-graphics-stack/vulkan] Iris Xe and newer are fully supported as of March 2023.
+[src:mesa-graphics-stack/vulkan] On Linux, as of March 2023 there is incomplete Vulkan support for Haswell with it not being Vulkan 1.0 compliant.
+[src:mesa-graphics-stack/vulkan] Apart from Haswell, Ivy Bridge and Broadwell are also supported by a legacy Vulkan driver in Mesa called HASVK.
+[src:mesa-graphics-stack/vulkan] Skylake and newer being supported by a driver in Mesa called ANV.
+[src:mesa-graphics-stack/vulkan] On Windows, Vulkan 1.2 is supported from GCN 1.0 to GCN 3.0, with no further updates planned after June 2021.
+[src:mesa-graphics-stack/vulkan] On Linux there are various different Vulkan drivers with varying and overlapping hardware support.
+[src:mesa-graphics-stack/vulkan] There is the open-source Vulkan driver called AMDVLK, developed by AMD which mirrors Windows support.
+[src:mesa-graphics-stack/vulkan] There is also the proprietary driver called AMDGPU-PRO which is not recommended to be used for most users as of March 2023.
+[src:mesa-graphics-stack/vulkan] There is also the recommended driver called RADV in Mesa developed by Valve, Red Hat, Google and others.
+[src:mesa-graphics-stack/vulkan] This driver as of March 2023 supports all GCN and RDNA cards.
+[src:mesa-graphics-stack/vulkan] On Windows and Linux there is the NVIDIA developed Vulkan driver which supports Vulkan 1.2 on Kepler cards with no further updates planned after September 2021.
+[src:mesa-graphics-stack/vulkan] Maxwell and newer cards support Vulkan 1.4.
+[src:mesa-graphics-stack/vulkan] NVK, an experimental, open source Vulkan driver for Linux based on nouveau, was announced in October 2022.
+[src:mesa-graphics-stack/vulkan] It was merged into mainline Mesa in August 2023.
+[src:mesa-graphics-stack/vulkan] The driver is currently Vulkan 1.4 conformant on Turing and newer cards, Vulkan 1.3 conformant on Maxwell, Pascal and Volta cards and Vulkan 1.2 conformant on Kepler cards.
+[src:mesa-graphics-stack/vulkan] Most modern Android devices support Vulkan.
+[src:mesa-graphics-stack/vulkan] Android 7.0 Nougat includes optional Vulkan 1.0 support, Android 9.0 Pie includes optional Vulkan 1.1 support, and Android 10 expects (but does not require) that all non-low memory 64-bit devices support Vulkan 1.1.
+[src:mesa-graphics-stack/vulkan] Android 13 expects under the same conditions support of Vulkan 1.3.
+[src:mesa-graphics-stack/vulkan] On Linux and some ChromeOS devices, the open-source Mesa driver provides support for Arm Mali (Midgard and Bifrost), Qualcomm Adreno, and Broadcom VideoCore VI hardware.
+[src:mesa-graphics-stack/vulkan] As of June 2022, Apple devices do not provide native support for the Vulkan API.
+[src:mesa-graphics-stack/vulkan] Vulkan support is available via the open-source library MoltenVK, which provides a Vulkan implementation on top of the Metal graphics API provided on iOS and macOS devices, though it has some limitations in regards to certain advanced API features.
+[src:mesa-graphics-stack/vulkan] In June 2022, version 1.3.217 of Vulkan added support for Metal objects, facilitating import and export between the two APIs.
+[src:mesa-graphics-stack/vulkan] In December 2022, Vulkan version 1.3.236 added small fixes for the interaction with Apple Metal.
+[src:mesa-graphics-stack/vulkan] As of August 2023, Huawei provides supports for native Vulkan NAPI with the industry standard SPIR-V shader since HarmonyOS 4.0 API 10 and extended into HarmonyOS NEXT iterative system for current HarmonyOS versions.
+[src:mesa-graphics-stack/vulkan] Microsoft supports Vulkan 1.2 (and higher) on Windows 10 and 11, with a downloadable compatibility pack.
+[src:mesa-graphics-stack/vulkan] Vulkan is not backwards compatible with OpenGL, although there are certain projects that implement OpenGL on top of Vulkan, such as Google's ANGLE and Mesa's Zink.
+[src:mesa-graphics-stack/vulkan] Nor is Vulkan compatible with other graphics APIs such as Direct3D, Metal, and Mantle.
+[src:mesa-graphics-stack/vulkan] Platform-specific graphics APIs implemented atop of Vulkan may also be able to run on alternative platforms.
+[src:mesa-graphics-stack/vulkan] For example, DXVK provides an alternative shared library intended to be used on Linux natively (without the Wine compatibility layer) to help with game porting.

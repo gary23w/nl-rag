@@ -1,0 +1,54 @@
+---
+title: "Sound server"
+source: https://en.wikipedia.org/wiki/Sound_server
+domain: pipewire-audio
+license: CC-BY-SA-4.0
+tags: pipewire server, jack audio connection kit, audio latency, multimedia routing
+fetched: 2026-07-02
+---
+
+# Sound server
+
+A **sound server** is software that manages the use of and access to audio devices (usually a sound card). It commonly runs as a background process.
+
+## Sound server in an operating system
+
+In a Unix-like operating system, a sound server mixes different data streams (usually raw PCM audio) and sends out a single unified audio to an output device. The mixing is usually done by software, or by hardware if there is a supported sound card.
+
+### Layers
+
+The "sound stack" can be visualized as follows, with programs in the upper layers calling elements in the lower layers:
+
+- Applications (e.g. mp3 player, web video)
+- Sound server (e.g. aRts, ESD, JACK, PulseAudio, PipeWire)
+- Sound subsystem (described as kernel modules or drivers; e.g. OSS, ALSA)
+- Operating system kernel (e.g. Linux, Unix)
+
+### Motivation
+
+Sound servers appeared in Unix-like operating systems after limitations in Open Sound System were recognized. OSS is a basic sound interface that was incapable of playing multiple streams simultaneously, dealing with multiple sound cards, or streaming sound over the network.
+
+A sound server can provide these features by running as a daemon. It receives calls from different programs and sound flows, mixes the streams, and sends raw audio out to the audio device.
+
+With a sound server, users can also configure global and per-application sound preferences.
+
+### Diversification and problems
+
+As of 2012 there are multiple sound servers; some focus on providing very low latency, while others concentrate on features suitable for general desktop systems. While diversification allows a user to choose just the features that are important to a particular application, it also forces developers to accommodate these options by necessitating code that is compatible with the various sound servers available. Consequently, this variety has resulted in a desire for a standard API to unify efforts.
+
+In 2017, PipeWire began incorporating audio support, and would then go on to realize that unification for the most part.
+
+## List of sound servers
+
+- aRts
+- Enlightened Sound Daemon
+- JACK
+- Network Audio System
+- PipeWire
+- PulseAudio
+- sndio - OpenBSD audio and MIDI framework
+
+### Streaming
+
+- Icecast
+- SHOUTcast

@@ -1,0 +1,121 @@
+---
+title: "Source-to-source compiler"
+source: https://en.wikipedia.org/wiki/Source-to-source_compiler
+domain: esbuild-internals
+license: CC-BY-SA-4.0
+tags: esbuild bundler, go javascript bundler, fast module bundler, esbuild transform
+fetched: 2026-07-02
+---
+
+# Source-to-source compiler
+
+A **source-to-source translator**, **source-to-source compiler** (**S2S compiler**), **transcompiler**, or **transpiler** is a type of translator that takes the source code of a program written in a programming language as its input and produces an equivalent source code in the same or a different programming language, usually as an intermediate representation. A source-to-source translator converts between programming languages that operate at approximately the same level of abstraction, while a traditional compiler translates from a higher level language to a lower level language. For example, a source-to-source translator may perform a translation of a program from Python to JavaScript, while a traditional compiler translates from a language like C to assembly or Java to bytecode. An automatic parallelizing compiler will frequently take in a high level language program as an input and then transform the code and annotate it with parallel code annotations (e.g., OpenMP) or language constructs (e.g. Fortran's `forall` statements).
+
+Another purpose of source-to-source-compiling is translating legacy code to use the next version of the underlying programming language or an application programming interface (API) that breaks backward compatibility. It will perform automatic code refactoring which is useful when the programs to refactor are outside the control of the original implementer (for example, converting programs from Python 2 to Python 3, or converting programs from an old API to the new API) or when the size of the program makes it impractical or time-consuming to refactor it by hand.
+
+Transcompilers may either keep translated code structure as close to the source code as possible to ease development and debugging of the original source code or may change the structure of the original code so much that the translated code does not look like the source code. There are also debugging utilities that map the transcompiled source code back to the original code; for example, the JavaScript Source Map standard allows mapping of the JavaScript code executed by a web browser back to the original source when the JavaScript code was, for example, minified or produced by a transcompiled-to-JavaScript language.
+
+Examples include Closure Compiler, CoffeeScript, Dart, Haxe, Opal, TypeScript and Emscripten.
+
+## Assembly language translators
+
+So called *Assembly language translators* are a class of source-to-source translators converting code from one assembly language into another, including (but not limited to) across different processor families and system platforms.
+
+### Intel CONV86
+
+Intel marketed their 16-bit processor 8086 to be source compatible to the 8080, an 8-bit processor. To support this, Intel had an ISIS-II-based translator from 8080 to 8086 source code named CONV86 (also referred to as CONV-86 and CONVERT 86) available to OEM customers since 1978, possibly the earliest program of this kind. It supported multiple levels of translation and ran at 2 MHz on an Intel Microprocessor Development System MDS-800 with 8-inch floppy drives. According to user reports, it did not work very reliably.
+
+### SCP TRANS86
+
+Seattle Computer Products (SCP) offered TRANS86.COM, written by Tim Paterson in 1980 while developing 86-DOS. The utility could translate Intel 8080 and Zilog Z80 assembly source code (with Zilog/Mostek mnemonics) into .ASM source code for the Intel 8086 (in a format only compatible with SCP's cross-assembler ASM86 for CP/M-80), but supported only a subset of opcodes, registers and modes, and often still required significant manual correction and rework afterwards. Also, performing only a mere transliteration, the brute-force single-pass translator did not carry out any register and jump optimizations. It took about 24 KB of RAM. The SCP version 1 of TRANS86.COM ran on Z80-based systems. Once 86-DOS was running, Paterson, in a self-hosting-inspired approach, utilized TRANS86 to convert itself into a program running under 86-DOS. Numbered version 2, this was named TRANS.COM instead. Later in 1982, the translator was apparently also available from Microsoft.
+
+### Sorcim TRANS86
+
+Also named TRANS86, Sorcim offered an 8080 to 8086 translator as well since December 1980. Like SCP's program it was designed to port CP/M-80 application code (in ASM, MAC, RMAC or ACT80 assembly format) to MS-DOS (in a format compatible with ACT86). In ACT80 format it also supported a few Z80 mnemonics. The translation occurred on an instruction-by-instruction basis with some optimization applied to conditional jumps. The program ran under CP/M-80, MP/M-80 and Cromemco DOS with a minimum of 24 KB of RAM, and had no restrictions on the source file size.
+
+### Digital Research XLT86
+
+Much more sophisticated and the first to introduce optimizing compiler technologies into the source translation process was Digital Research's XLT86 1.0 in September 1981. XLT86 1.1 was available by April 1982. The program was written by Gary Kildall and translated .ASM source code for the Intel 8080 processor (in a format compatible with ASM, MAC or RMAC assemblers) into .A86 source code for the 8086 (compatible with ASM86). Using global data flow analysis on 8080 register usage, the five-phase multi-pass translator would also optimize the output for code size and take care of calling conventions (CP/M-80 BDOS calls were mapped into BDOS calls for CP/M-86), so that CP/M-80 and MP/M-80 programs could be ported to the CP/M-86 and MP/M-86 platforms automatically. XLT86.COM itself was written in PL/I-80 for CP/M-80 platforms. The program occupied 30 KB of RAM for itself plus additional memory for the program graph. On a 64 KB memory system, the maximum source file size supported was about 6 KB, so that larger files had to be broken down accordingly before translation. Alternatively, XLT86 was also available for DEC VAX/VMS. Although XLT86's input and output worked on source-code level, the translator's in-memory representation of the program and the applied code optimizing technologies set the foundation to binary recompilation.
+
+### Others
+
+2500 AD Software offered an 8080 to 8086 source-code translator as part of their XASM suite for CP/M-80 machines with Z80 as well as for Zilog ZEUS and Olivetti PCOS systems.
+
+Since 1979, Zilog offered a Z80 to Z8000 translator as part of their PDS 8000 development system. Advanced Micro Computers (AMC) and 2500 AD Software offered Z80 to Z8000 translators as well. The latter was named TRANS and was available for Z80 CP/M, CP/M-86, MS-DOS and PCOS.
+
+The Z88DK development kit provides a Z80 to i486 source code translator targeting nasm named "to86.awk", written in 2008 by Stefano Bodrato. It is in turn based on an 8080 to Z80 converter written in 2003 by Douglas Beattie, Jr., named "toz80.awk".
+
+In 2021, Brian Callahan wrote an 8080 CP/M 2.2 to MS-DOS source code translator targeting nasm named 8088ify.
+
+## Programming language implementations
+
+The first implementations of some programming languages started as transcompilers, and the default implementation for some of those languages are still transcompilers. In addition to the table below, a CoffeeScript maintainer provides a list of languages that compile to JavaScript.
+
+| Name | Source language | Target language | Comments |
+|---|---|---|---|
+| Babel | ECMAScript 6+ (JavaScript) | ES5 |   |
+| Cerberus X | Cerberus | JavaScript, Java, C++, C# |   |
+| Cfront | C++ | C |   |
+| ClojureScript | Clojure | JavaScript |   |
+| CoffeeScript | CoffeeScript | JavaScript |   |
+| Dafny | Dafny | C#, JavaScript, Java, C++, Go, Python |   |
+| Dart | Dart | JavaScript |   |
+| h5 | C# | JavaScript |   |
+| Eiffel, via EiffelStudio | Eiffel | C, Common Intermediate Language |   |
+| Elm | Elm | JavaScript |   |
+| Fable | F# | JavaScript |   |
+| Fable Python | F# | Python |   |
+| Haxe | Haxe | ActionScript 3, JavaScript, Java, C++, C#, PHP, Python, Lua |   |
+| HipHop for PHP (HPHPc) | PHP | C++ |   |
+| J2ObjC | Java | Objective-C |   |
+| JSweet | Java | TypeScript |   |
+| Kotlin/JS | Kotlin | JavaScript |   |
+| Maia | Maia | Verilog |   |
+| Melange | OCaml, Reason | JavaScript |   |
+| mrustc | Rust | C | Experimental compiler able to bootstrap official Rust compiler (rustc) |
+| NACA | COBOL | Java |   |
+| Nim | Nim | C, C++, Objective-C, JavaScript |   |
+| PureScript | PureScript | JavaScript |   |
+| ReScript | ReScript | JavaScript |   |
+| Sather | Sather | C |   |
+| Scala.js | Scala | JavaScript |   |
+| Swiftify | Objective-C | Swift |   |
+| V | V | C |   |
+| Vala | Vala | C |   |
+| Visual Eiffel | Eiffel | C |   |
+
+## Porting a codebase
+
+When developers want to switch to a different language while retaining most of an existing codebase, it might be better to use a transcompiler compared to rewriting the whole software by hand. Depending on the quality of the transcompiler, the code may or may not need manual intervention in order to work properly. This is different from "transcompiled languages" where the specifications demand that the output source code always works without modification. All transcompilers used to port a codebase will expect manual adjustment of the output source code if there is a need to achieve maximum code quality in terms of readability and platform convention.
+
+| Tool | Source language | Target language | Comments |
+|---|---|---|---|
+| 2to3 script | Python 2 | Python 3 | Even though 2to3 does its best at automating the translation process, further manual corrections are often needed. |
+| Emscripten | LLVM bytecode | JavaScript | This allows running C/C++ codebases in a browser for example |
+| c2go | C | Go | Before the 1.5 release, the Go compiler was written in C. An automatic translator was developed to automatically convert the compiler codebase from C into Go. Since Go 1.5, the "compiler and runtime are now implemented in Go and assembler, without C". |
+| C2Rust | C | Rust | C2Rust takes C code as input and outputs `unsafe` Rust code, focusing on preserving compatibility with the original codebase. Several documented limitations exist for this process. Converting the resulting code to safe and idiomatic Rust code is a manual effort post translation, although an automated tool exists to ease this task. |
+| Google Web Toolkit | Java program that uses a specific API | JavaScript | The Java code is a little bit constrained compared to normal Java code. |
+| Js_of_ocaml of Ocsigen | OCaml | JavaScript |   |
+| J2Eif | Java | Eiffel | The resulting Eiffel code has classes and structures similar to the Java program but following Eiffel syntax and conventions. |
+| C2Eif | C | Eiffel | The resulting Eiffel code has classes and structures that try to be as clean as possible. The tool is complete and relies on embedding the C and assembly code if it cannot translate it properly. |
+| Skip | Swift | Kotlin | Skip is an Xcode plug-in that transpiles a Swift iOS app or library using SwiftUI into equivalent native Kotlin code for Android using Jetpack Compose. |
+| Swiftify | Objective-C | Swift | Swiftify is an online source to source conversion tool from Objective-C into Swift. It assists developers who are migrating all or part of their iOS codebase into Swift. The conversion is aimed primarily at converting the syntax between Objective-C and Swift, and is helped because Apple took efforts to ensure compatibility between Swift and Objective-C runtimes. |
+| Runtime Converter | PHP | Java | The Runtime Converter is an automatic tool which converts PHP source code into Java source code. There is a Java runtime library for certain features of the PHP language, as well as the ability to call into the PHP binary itself using JNI for PHP standard library and extension function calls. |
+
+## Transcompiler pipelines
+
+A transcompiler pipeline is what results from *recursive transcompiling*. By stringing together multiple layers of tech, with a transcompile step between each layer, technology can be repeatedly transformed, effectively creating a distributed language independent specification.
+
+XSLT is a general-purpose transform tool that can be used between many different technologies, to create such a derivative code pipeline.
+
+### Recursive transcompiling
+
+**Recursive transcompilation** (or **recursive transpiling**) is the process of applying the notion of transcompiling recursively, to create a pipeline of transformations (often starting from a single source of truth) which repeatedly turn one technology into another.
+
+By repeating this process, one can turn A → B → C → D → E → F and then back into A(v2). Some information will be preserved through this pipeline, from A → A(v2), and that information (at an abstract level) demonstrates what each of the components A–F agree on.
+
+In each of the different versions that the transcompiler pipeline produces, that information is preserved. It might take on many different shapes and sizes, but by the time it comes back to A (v2), having been transcompiled six times in the pipeline above, the information returns to its original state.
+
+This information which survives the transform through each format, from A–F–A(v2), is (by definition) derivative content or derivative code.
+
+Recursive transcompilation takes advantage of the fact that transcompilers may either keep translated code as close to the source code as possible to ease development and debugging of the original source code, or else they may change the structure of the original code so much, that the translated code does not look like the source code. There are also debugging utilities that map the transcompiled source code back to the original code; for example, JavaScript source maps allow mapping of the JavaScript code executed by a web browser back to the original source in a transcompiled-to-JavaScript language.

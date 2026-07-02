@@ -1,0 +1,54 @@
+---
+title: "LonWorks"
+source: https://en.wikipedia.org/wiki/LonWorks
+domain: hvac-building-automation
+license: CC-BY-SA-4.0
+tags: hvac control system, building automation, bacnet protocol, knx standard
+fetched: 2026-07-02
+---
+
+# LonWorks
+
+**LonWorks** or **Local Operating Network** is an open standard (ISO/IEC 14908) for networking platforms specifically created to address the needs of control applications. The platform is built on a protocol created by Echelon Corporation for networking devices over media such as twisted pair, power lines, fiber optics, and wireless. It is used for the automation of various functions within buildings such as lighting and HVAC; see building automation.
+
+## Origins and uptake
+
+The technology had its origins with chip designs, power lines, twisted pairs, signaling technology, routers, network management software, and other products from Echelon Corporation. In 1999 the communications protocol (then known as LonTalk) was submitted to ANSI and accepted as a standard for control networking (**ANSI/CEA-709.1-B**). Echelon's power line and twisted pair signaling technology were also submitted to ANSI for standardization and acceptance. Since then, ANSI/CEA-709.1 has been accepted as the basis for IEEE 1473-L (in-train controls), AAR electro-pneumatic braking systems for freight trains, IFSF (European petrol station control), SEMI (semiconductor equipment manufacturing), and in 2005 as EN 14908 (European building automation standard). The protocol is also one of several data link/physical layers of the BACnet ASHRAE/ANSI standard for building automation.
+
+China ratified the technology as a national controls standard, GB/Z 20177.1-2006, and as a building and intelligent community standard, GB/T 20299.4-2006; and in 2007 CECED, the European Committee of Domestic Equipment Manufacturers, adopted the protocol as part of its Household Appliances Control and Monitoring – Application Interworking Specification (AIS) standards.
+
+In 2008, ISO and IEC granted the communications protocol, twisted pair signaling technology, power line signaling technology, and Internet Protocol (IP) compatibility standard numbers ISO/IEC 14908-1, -2, -3, and -4.
+
+## Usage
+
+By 2010, approximately 90 million devices were installed with LonWorks technology. Manufacturers in a variety of industries including building, home, street lighting, transportation, utility, and industrial automation have adopted the platform as the basis for their product and service offerings. Statistics as to the number of locations using the LonWorks technology are scarce, but products and applications built on top of the platform include such diverse functions as embedded machine control, municipal and highway/tunnel/street lighting, heating and air conditioning systems, intelligent electricity metering, subway train control, building lighting, stadium lighting and speaker control, security systems, fire detection and suppression, and newborn location monitoring and alarming, as well as remote power generation load control.
+
+## Technical details
+
+Two physical-layer signaling technologies, twisted pair *free topology* and power-line carrier, are typically included in each of the standards created around the LonWorks technology. The two-wire layer operates at 78 kbit/s using differential Manchester encoding, while the power line achieves either 5.4 or 3.6 kbit/s, depending on frequency.
+
+Additionally, the LonWorks platform uses an affiliated IP tunneling standard—ISO/IEC 14908-4 (ANSI/CEA-852)—in use by a number of manufacturers to connect the devices on previously deployed and new LonWorks platform-based networks to IP-aware applications or remote network-management tools. Many LonWorks platform-based control applications are being implemented with some sort of IP integration, either at the UI/application level or in the controls infrastructure. This is accomplished with Web services or IP-routing products available in the market.
+
+An Echelon Corporation-designed IC consisting of several 8-bit processors, the *Neuron chip* was initially the only way to implement a LonTalk protocol node and is used in the large majority of LonWorks platform-based hardware. Since 1999, the protocol has been available for general-purpose processors: A port of the ANSI/CEA-709.1 standard to IP-based or 32-bit chips.
+
+## Acquisitions
+
+As of 14 September, 2018, Echelon Corporation was acquired by Adesto Technologies Corporation. Adesto was then acquired by Dialog Semiconductor who were then acquired by Renesas Electronics. As of 2024, Renesas continues to offer LonWorks (and BACnet) products.
+
+## Applications using LonWorks
+
+- Semiconductor manufacturing
+- Lighting control systems
+- Energy management systems
+- Heating/ventilation/air-conditioning systems
+- Security systems
+- Home automation
+- Consumer appliance controls
+- Public street lighting, monitoring, and control
+- Petrol station control
+- Electronically controlled pneumatic braking
+- Distributed avionics
+
+## SNVTs (Standard Network Variable Types)
+
+One of the keys to the interoperability of the system is the standardisation of the variables used to describe physical things to LonWorks. This standards list is maintained by LonMark International, and each standard parameter is known as Standard Network Variable Type (SNVT, pronounced "sniv-it.") For example, a thermostat might report temperature using the *SNVT_temp,* defined as a 2-byte integer between zero and 65535, and representing a temperature between -274.0 and 6279.5 degrees Celsius at a precision of 0.1 °C.

@@ -1,0 +1,304 @@
+# nl-rag distilled facts — domain: static-timing-analysis
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:static-timing-analysis/clock-skew] The operation of most digital circuits is synchronized by a periodic signal known as a "clock" that dictates the sequence and pacing of the devices on the circuit.
+[src:static-timing-analysis/clock-skew] This clock is distributed from a single source to all the memory elements of the circuit, which for example could be registers or flip-flops.
+[src:static-timing-analysis/clock-skew] In a circuit using edge-triggered registers, when the clock edge or tick arrives at a register, the register transfers the register input to the register output, and these new output values flow through combinational logic to provide the values at register inputs for the next clock tick.
+[src:static-timing-analysis/clock-skew] Ideally, the input to each memory element reaches its final value in time for the next clock tick so that the behavior of the whole circuit can be predicted exactly.
+[src:static-timing-analysis/clock-skew] The maximum speed at which a system can run must account for the variance that occurs between the various elements of a circuit due to differences in physical composition, temperature, and path length.
+[src:static-timing-analysis/clock-skew] In a synchronous circuit, two registers, or flip-flops, are said to be "sequentially adjacent" if a logic path connects them.
+[src:static-timing-analysis/clock-skew] Given two sequentially adjacent registers R*i* and R*j* with clock arrival times at the source and destination register clock pins equal to TC*i* and TC*j* respectively, clock skew can be defined as: Tskew *i, j* = TC*i* − TC*j*.
+[src:static-timing-analysis/clock-skew] Clock skew can be caused by many different things, such as wire-interconnect length, temperature variations, variation in intermediate devices, capacitive coupling, material imperfections, and differences in input capacitance on the clock inputs of devices using the clock.
+[src:static-timing-analysis/clock-skew] As the clock rate of a circuit increases, timing becomes more critical and less variation can be tolerated if the circuit is to function properly.
+[src:static-timing-analysis/clock-skew] There are two types of clock skew: **negative skew** and **positive skew**.
+[src:static-timing-analysis/clock-skew] Positive skew occurs when the receiving register receives the clock tick later than the transmitting register.
+[src:static-timing-analysis/clock-skew] Negative skew is the opposite: the transmitting register gets the clock tick later than the receiving register.
+[src:static-timing-analysis/clock-skew] Zero clock skew refers to the arrival of the clock tick simultaneously at transmitting and receiving register.
+[src:static-timing-analysis/clock-skew] There are two types of violation that can be caused by clock skew.
+[src:static-timing-analysis/clock-skew] This is called a **hold violation** because the previous data is not held long enough at the destination flip-flop to be properly clocked through.
+[src:static-timing-analysis/clock-skew] Another problem is caused if the destination flip-flop receives the clock tick earlier than the source flip-flop - the data signal has that much less time to reach the destination flip-flop before the next clock tick.
+[src:static-timing-analysis/clock-skew] If it fails to do so, a **setup violation** occurs, so-called because the new data was not set up and stable before the next clock tick arrived.
+[src:static-timing-analysis/clock-skew] A hold violation is more serious than a setup violation because it cannot be fixed by increasing the clock period.
+[src:static-timing-analysis/clock-skew] Positive skew and negative skew cannot negatively impact setup and hold timing constraints respectively (see inequalities below).
+[src:static-timing-analysis/clock-skew] Where a signal broadly clocks a circuit, the signals/state-transitions it initiates must be stabilized before it signals another set of state transitions -- and that limits the clock's upper frequency.
+[src:static-timing-analysis/clock-skew] Skew thus decreases the clock frequency at which the circuit will operate correctly.
+[src:static-timing-analysis/clock-skew] Positive clock skews are good for fixing setup violations, but can cause hold violations.
+[src:static-timing-analysis/clock-skew] Negative clock skew can guard against a hold violation, but can cause a setup violation.
+[src:static-timing-analysis/clock-skew] In the above inequalities, a single parameter, *J*, is used to account for jitter.
+[src:static-timing-analysis/clock-skew] This parameter must be an upper bound for the difference in jitter over all source register/destination register pairs.
+[src:static-timing-analysis/clock-skew] However, if the structure of the clock distribution network is known, different source register/destination register pairs may have different jitter parameters, and a different jitter value may be used for the hold constraint in contrast to the value for the setup constraint.
+[src:static-timing-analysis/clock-skew] For example, if the source register and destination register receive their clock signals from a common nearby clock buffer, the jitter bound for that hold constraint can be very small, since any variation in that clock signal will affect the two registers equally.
+[src:static-timing-analysis/clock-skew] For the same example, the jitter bound for the setup constraint must be larger than for the hold constraint, because jitter can vary from clock tick to clock tick.
+[src:static-timing-analysis/clock-skew] Figures 1 and 2 illustrate a situation where intentional clock skew can benefit a synchronous circuit.
+[src:static-timing-analysis/clock-skew] In the zero-skew circuit of figure 1, a long path goes from flip-flop FF1 to flip-flop FF2, and a short path, such as a shift-register path, from FF2 to FF3.
+[src:static-timing-analysis/clock-skew] The FF2 -> FF3 path is dangerously close to having a hold violation: If even a small amount of extra clock delay occurs at FF3, this could destroy the data at the D input of FF3 before the clock arrives to clock it through to FF3's Q output.
+[src:static-timing-analysis/clock-skew] This could happen even if FF2 and FF3 were physically close to each other, if their clock inputs happened to come from different leaf buffers of a clock distribution network.
+[src:static-timing-analysis/clock-skew] Figure 2 shows how the problem can be fixed with intentional clock skew.
+[src:static-timing-analysis/clock-skew] A small amount of extra delay is interposed before FF2's clock input, which then safely positions the FF2 -> FF3 path away from its hold violation.
+[src:static-timing-analysis/clock-skew] As an added benefit, this same extra clock delay relaxes the setup constraint for the FF1 -> FF2 path.
+[src:static-timing-analysis/clock-skew] The FF1 -> FF2 path can operate correctly at a clock period that is less than what is required for the zero clock skew case, by an amount equal to the delay of the added clock delay buffer.
+[src:static-timing-analysis/clock-skew] A common misconception about intentional clock skew is that it is necessarily more dangerous than zero clock skew, or that it requires more precise control of delays in the clock distribution network.
+[src:static-timing-analysis/clock-skew] However it is the zero skew circuit of figure 1 that is closer to malfunctioning - a small amount of positive clock skew for the FF2 -> FF3 pair will cause a hold violation, whereas the intentional skew circuit of figure 2 is more tolerant of unintended delay variations in clock distribution.
+[src:static-timing-analysis/clock-skew] If the clock arrival times at individual registers are viewed as variables to be adjusted in order to minimize the clock period while satisfying the setup and hold inequalities for all of the paths through the circuit, then the result is a Linear Programming problem.
+[src:static-timing-analysis/clock-skew] In this linear program, zero clock skew is merely a feasible point - the solution to the linear program generally gives a clock period that is less than what is achieved by zero skew.
+[src:static-timing-analysis/clock-skew] In addition, safety margins greater than or equal to the zero skew case can be guaranteed by setting setup and hold times and jitter bound appropriately in the linear program.
+[src:static-timing-analysis/clock-skew] Due to the simple form of this linear program, an easily programmed algorithm is available for arriving at a solution.
+[src:static-timing-analysis/clock-skew] Most CAD systems for VLSI and FPGA design contain facilities for optimizing clock skews.
+[src:static-timing-analysis/clock-skew] In addition to clock skew due to static differences in the clock latency from the clock source to each clocked register, no clock signal is perfectly periodic, so that the clock period or clock cycle time varies even at a single component, and this variation is known as clock jitter.
+[src:static-timing-analysis/clock-skew] At a particular point in a clock distribution network, jitter is the only contributor to the clock timing uncertainty.
+[src:static-timing-analysis/clock-skew] Unfortunately, spatial clock skew varies in time from one cycle to the next due to local time-dependent variations in the power supply, local temperature, and noise coupling to other signals.
+[src:static-timing-analysis/clock-skew] Thus, in the usual case of sending and receiving registers at different locations, there is no clear way to separate the total clock timing uncertainty into spatial skew and jitter.
+[src:static-timing-analysis/clock-skew] Thus some authors use the term clock skew to describe the sum of spatial clock skew and clock jitter.
+[src:static-timing-analysis/clock-skew] This of course means that the clock skew between two points varies from cycle to cycle, which is a complexity that is rarely mentioned.
+[src:static-timing-analysis/clock-skew] Many other authors use the term clock skew only for the spatial variation of clock times, and use the term clock jitter to represent the rest of the total clock timing uncertainty.
+[src:static-timing-analysis/clock-skew] This of course means that the clock jitter must be different at each component, which again is rarely discussed.
+[src:static-timing-analysis/clock-skew] Fortunately, in many cases, spatial clock skew remains fairly constant from cycle to cycle, so that the rest of the total clock timing uncertainty can be well approximated by a single common clock jitter value.
+[src:static-timing-analysis/clock-skew] On a network such as the internet, **clock skew** describes the difference in frequency (first derivative of offset with time) of different clocks within the network.
+[src:static-timing-analysis/clock-skew] Network operations that require timestamps which are comparable across hosts can be affected by clock skew.
+[src:static-timing-analysis/clock-skew] Network Time Protocol) have been designed to reduce clock skew, and produce more stable functions.
+[src:static-timing-analysis/clock-skew] Some applications (such as game servers) may also use their own synchronization mechanism to avoid reliability problems due to clock skew.
+[src:static-timing-analysis/clock-skew] Clock skew is the reason why at fast speeds or long distances, serial interfaces (e.g.
+[src:static-timing-analysis/clock-skew] Serial Attached SCSI or USB) are preferred over parallel interfaces (e.g. parallel SCSI).
+[src:static-timing-analysis/critical-path-method] The **critical path method** (**CPM**), or **critical path analysis** (**CPA**), is an algorithm for scheduling a set of project activities.
+[src:static-timing-analysis/critical-path-method] A critical path is determined by identifying the longest stretch of dependent activities and measuring the time required to complete them from start to finish.
+[src:static-timing-analysis/critical-path-method] It is commonly used in conjunction with the program evaluation and review technique (PERT).
+[src:static-timing-analysis/critical-path-method] The CPM is a project-modeling technique developed in the late 1950s by Morgan R.
+[src:static-timing-analysis/critical-path-method] Kelley and Walker related their memories of the development of CPM in 1989.
+[src:static-timing-analysis/critical-path-method] Kelley attributed the term "critical path" to the developers of the PERT, which was developed at about the same time by Booz Allen Hamilton and the U.S.
+[src:static-timing-analysis/critical-path-method] The precursors of what came to be known as critical path were developed and put into practice by DuPont between 1940 and 1943 and contributed to the success of the Manhattan Project.
+[src:static-timing-analysis/critical-path-method] Critical path analysis is commonly used with all forms of projects, including construction, aerospace and defense, software development, research projects, product development, engineering, and plant maintenance, among others.
+[src:static-timing-analysis/critical-path-method] Any project with interdependent activities can apply this method of mathematical analysis.
+[src:static-timing-analysis/critical-path-method] CPM was used for the first time in 1966 for the major skyscraper development of constructing the former World Trade Center Twin Towers in New York City.
+[src:static-timing-analysis/critical-path-method] Although the original CPM program and approach is no longer used, the term is generally applied to any approach used to analyze a project network logic diagram.
+[src:static-timing-analysis/critical-path-method] Using these values, CPM calculates the longest path of planned activities to logical end points or to the end of the project, and the earliest and latest that each activity can start and finish without making the project longer.
+[src:static-timing-analysis/critical-path-method] This process determines which activities are "critical" (i.e., on the longest path) and which have no float/slack or "total float" zero (i.e., can not be delayed without making the project longer).
+[src:static-timing-analysis/critical-path-method] In project management, a critical path is the sequence of project network activities that adds up to the longest overall duration, regardless of whether that longest duration has float or not.
+[src:static-timing-analysis/critical-path-method] This determines the shortest time possible to complete the project.
+[src:static-timing-analysis/critical-path-method] "Total float" (unused time) can occur within the critical path.
+[src:static-timing-analysis/critical-path-method] For example, if a project is testing a solar panel and task 'B' requires 'sunrise', a scheduling constraint on the testing activity could be that it would not start until the scheduled time for sunrise.
+[src:static-timing-analysis/critical-path-method] This might insert dead time (total float) into the schedule on the activities on that path prior to the sunrise due to needing to wait for this event.
+[src:static-timing-analysis/critical-path-method] This path, with the constraint-generated total float, would actually make the path longer, with total float being part of the shortest possible duration for the overall project.
+[src:static-timing-analysis/critical-path-method] A project can have several, parallel, near-critical paths, and some or all of the tasks could have free float and/or total float.
+[src:static-timing-analysis/critical-path-method] An additional parallel path through the network with the total durations shorter than the critical path is called a subcritical or noncritical path.
+[src:static-timing-analysis/critical-path-method] Activities on subcritical paths have no drag, as they are not extending the project's duration.
+[src:static-timing-analysis/critical-path-method] CPM analysis tools allow a user to select a logical end point in a project and quickly identify its longest series of dependent activities (its longest path).
+[src:static-timing-analysis/critical-path-method] These tools can display the critical path (and near-critical path activities if desired) as a cascading waterfall that flows from the project's start (or current status date) to the selected logical end point.
+[src:static-timing-analysis/critical-path-method] In this diagram, Activities A, B, C, D, and E comprise the critical or longest path, while Activities F, G, and H are off the critical path with floats of 15 days, 5 days, and 20 days respectively.
+[src:static-timing-analysis/critical-path-method] Whereas activities that are off the critical path have float and are therefore not delaying completion of the project, those on the critical path will usually have critical path drag, i.e., they delay project completion.
+[src:static-timing-analysis/critical-path-method] If a critical path activity has another activity in parallel, its drag is equal to whichever is less: its duration or the total float of the parallel activity with the least total float.
+[src:static-timing-analysis/critical-path-method] Thus since B and C are both parallel to F (float of 15) and H (float of 20), B has a duration of 20 and drag of 15 (equal to F's float), while C has a duration of only 5 days and thus drag of only 5.
+[src:static-timing-analysis/critical-path-method] Activity D, with a duration of 10 days, is parallel to G (float of 5) and H (float of 20) and therefore its drag is equal to 5, the float of G.
+[src:static-timing-analysis/critical-path-method] Critical path drag analysis has also been used to optimize schedules in processes outside of strict project-oriented contexts, such as to increase manufacturing throughput by using the technique and metrics to identify and alleviate delaying factors and thus reduce assembly lead time.
+[src:static-timing-analysis/critical-path-method] "Crash duration" is a term referring to the shortest possible time for which an activity can be scheduled.
+[src:static-timing-analysis/critical-path-method] It can be achieved by shifting more resources towards the completion of that activity, resulting in decreased time spent and often a reduced quality of work, as the premium is set on speed.
+[src:static-timing-analysis/critical-path-method] Crash duration is typically modeled as a linear relationship between cost and activity duration, but in many cases, a convex function or a step function is more applicable.
+[src:static-timing-analysis/critical-path-method] Originally, the critical path method considered only logical dependencies between terminal elements.
+[src:static-timing-analysis/critical-path-method] Since then, it has been expanded to allow for the inclusion of resources related to each activity, through processes called activity-based resource assignments and resource optimization techniques such as Resource Leveling and Resource smoothing.
+[src:static-timing-analysis/critical-path-method] A related concept is called the critical chain, which attempts to protect activity and project durations from unforeseen delays due to resource constraints.
+[src:static-timing-analysis/critical-path-method] In addition, the method can easily incorporate the concepts of stochastic predictions, using the PERT and event chain methodology.
+[src:static-timing-analysis/critical-path-method] A schedule generated using the critical path techniques often is not realized precisely, as estimations are used to calculate times: if one mistake is made, the results of the analysis may change.
+[src:static-timing-analysis/critical-path-method] This could cause an upset in the implementation of a project if the estimates are blindly believed, and if changes are not addressed promptly.
+[src:static-timing-analysis/critical-path-method] However, the structure of critical path analysis is such that the variance from the original schedule caused by any change can be measured, and its impact either ameliorated or adjusted for.
+[src:static-timing-analysis/critical-path-method] Indeed, an important element of project postmortem analysis is the 'as built critical path' (ABCP), which analyzes the specific causes and impacts of changes between the planned schedule and eventual schedule as actually implemented.
+[src:static-timing-analysis/critical-path-method] Critical path techniques are widely used in planning, managing and controlling the delivery of construction projects.
+[src:static-timing-analysis/critical-path-method] A technique known as "as-built critical path analysis" can also be used to assess the causes of a delay in completing a project, especially where there may have been more than one delaying factor and liability needs to be established for compensation and damages purposes.
+[src:static-timing-analysis/critical-path-method] However, the use of as-built CPA in a legal context has been criticised, for example in the Scottish court case of *City Inn Ltd. v Shepherd Construction* (2007), because of its susceptibility to easily-made errors which can "invalidate the entire analysis".
+[src:static-timing-analysis/critical-path-method] Independent consultancies such as HSE Contractors provide explanations and applications of CPM scheduling in modern construction projects.
+[src:static-timing-analysis/critical-path-method] Currently, there are several software solutions available in industry which use the CPM method of scheduling; see list of project management software.
+[src:static-timing-analysis/critical-path-method] The method currently used by most project management software is based on a manual calculation approach developed by John Fondahl of Stanford University.
+[src:static-timing-analysis/propagation-delay] See also radio propagation, velocity factor, signal velocity and mechanical wave.
+[src:static-timing-analysis/propagation-delay] Logic gates can have a **gate delay** ranging from picoseconds to more than 10 nanoseconds, depending on the technology being used.
+[src:static-timing-analysis/propagation-delay] It is the time between the gate input becoming stable and the gate output becoming stable.
+[src:static-timing-analysis/propagation-delay] Manufacturers often refer to the time from the input changing to 50% of its final input level, to the output reaching 50% of its final output level; this may depend on the direction of the level change, in which case separate fall and rise delays tPHL and tPLH or tf and tr are given.
+[src:static-timing-analysis/propagation-delay] Reducing gate delays allows digital circuits to process data at a faster rate and improve overall performance.
+[src:static-timing-analysis/propagation-delay] Determining the propagation delay of a combined circuit requires identifying the longest path of propagation delays from input to output, and adding each propagation delay along this path.
+[src:static-timing-analysis/propagation-delay] The principle of logical effort utilizes propagation delays to compare designs implementing the same logical statement.
+[src:static-timing-analysis/propagation-delay] The difference in propagation delays of logic elements is the major contributor to glitches in asynchronous circuits as a result of race conditions.
+[src:static-timing-analysis/propagation-delay] All of these factors influence each other through an RC time constant: any increase in load capacitance increases C, heat-induced resistance the R factor, and supply threshold voltage increases will affect whether more than one time constants are required to reach the threshold.
+[src:static-timing-analysis/propagation-delay] If the output of a logic gate is connected to a long trace or used to drive many other gates (high fanout) the propagation delay increases substantially.
+[src:static-timing-analysis/propagation-delay] In computer networks, propagation delay is the amount of time it takes for the head of the signal to travel from the sender to the receiver.
+[src:static-timing-analysis/propagation-delay] It can be computed as the ratio between the link length and the propagation speed over the specific medium.
+[src:static-timing-analysis/propagation-delay] Propagation delay is equal to *d / s* where *d* is the distance and *s* is the wave propagation speed.
+[src:static-timing-analysis/propagation-delay] In wireless communication, *s*=*c*, i.e. the speed of light.
+[src:static-timing-analysis/propagation-delay] In copper wire, the speed *s* generally ranges from .59c to .77c.
+[src:static-timing-analysis/propagation-delay] This delay is the major obstacle in the development of high-speed computers and is called the interconnect bottleneck in IC systems.
+[src:static-timing-analysis/standard-delay-format] It was originally developed as an OVI standard, and later modified into the IEEE format.
+[src:static-timing-analysis/standard-delay-format] Technically only the SDF version 4.0 onwards are IEEE formats.
+[src:static-timing-analysis/standard-delay-format] It is an ASCII format that is represented in a tool and language independent way and includes path delays, timing constraint values, interconnect delays and high level technology parameters.
+[src:static-timing-analysis/standard-delay-format] It has usually two sections: one for interconnect delays and the other for cell delays.
+[src:static-timing-analysis/standard-delay-format] SDF format can be used for back-annotation as well as forward-annotation.
+[src:static-timing-analysis/static-timing-analysis] High-performance integrated circuits have traditionally been characterized by the clock frequency at which they operate.
+[src:static-timing-analysis/static-timing-analysis] Measuring the ability of a circuit to operate at the specified speed requires an ability to measure, during the design process, its delay at numerous steps.
+[src:static-timing-analysis/static-timing-analysis] Moreover, delay calculation must be incorporated into the inner loop of timing optimizers at various phases of design, such as logic synthesis, layout (placement and routing), and in in-place optimizations performed late in the design cycle.
+[src:static-timing-analysis/static-timing-analysis] While such timing measurements can theoretically be performed using a rigorous circuit simulation, such an approach is liable to be too slow to be practical.
+[src:static-timing-analysis/static-timing-analysis] Static timing analysis plays a vital role in facilitating the fast and reasonably accurate measurement of circuit timing.
+[src:static-timing-analysis/static-timing-analysis] The speedup comes from the use of simplified timing models and by mostly ignoring logical interactions in circuits.
+[src:static-timing-analysis/static-timing-analysis] This has become a mainstay of design over the last few decades.
+[src:static-timing-analysis/static-timing-analysis] One of the earliest descriptions of a static timing approach was based on the Program Evaluation and Review Technique (PERT), in 1966.
+[src:static-timing-analysis/static-timing-analysis] More modern versions and algorithms appeared in the early 1980s.
+[src:static-timing-analysis/static-timing-analysis] In a synchronous digital system, data is supposed to move in "lockstep", advancing one stage on each tick of the clock signal.
+[src:static-timing-analysis/static-timing-analysis] This is enforced by synchronizing elements such as flip-flops or latches, which copy their input to their output when instructed to do so by the clock.
+[src:static-timing-analysis/static-timing-analysis] The time when a signal arrives can vary due to many reasons.
+[src:static-timing-analysis/static-timing-analysis] The input data may vary, the circuit may perform different operations, the temperature and voltage may change, and there are manufacturing differences in the exact construction of each part.
+[src:static-timing-analysis/static-timing-analysis] Prior to the development of static timing analysis, the allowable clock rates for a system were determined heuristically.
+[src:static-timing-analysis/static-timing-analysis] Engineers would guess which paths were longest (there were too many paths to evaluate exhaustively), write test vectors that would exercise that path, and then verify their estimates by testing chips to see how fast they could run.
+[src:static-timing-analysis/static-timing-analysis] This procedure had several disadvantages - the proposed critical path might not be real one, it was hard to account for process variation, and there was no verification of hold time constraints.
+[src:static-timing-analysis/static-timing-analysis] Static timing analysis addresses these issues.
+[src:static-timing-analysis/static-timing-analysis] The main goal of static timing analysis is to verify that despite these possible variations, all signals will arrive neither too early nor too late, and hence proper circuit operation can be assured.
+[src:static-timing-analysis/static-timing-analysis] Since STA is capable of verifying every path, it can detect other problems like glitches, slow paths and clock skew.
+[src:static-timing-analysis/static-timing-analysis] In STA, identifying the critical path involves analyzing the longest topological path through a logic network.
+[src:static-timing-analysis/static-timing-analysis] However, not all topological paths are functionally feasible, as some paths may never be activated by any valid input combination.
+[src:static-timing-analysis/static-timing-analysis] These are referred to as **false paths**, and if not excluded, they can lead to overestimation of timing delays.
+[src:static-timing-analysis/static-timing-analysis] False paths can be classified as **single-cycle** or **multi-cycle** paths.
+[src:static-timing-analysis/static-timing-analysis] A **multi-cycle path** does not require data to propagate within a single clock cycle.
+[src:static-timing-analysis/static-timing-analysis] For instance, control signals such as reset often take multiple cycles to complete their function.
+[src:static-timing-analysis/static-timing-analysis] If such signals are incorrectly treated as part of the critical path, they can distort timing results by suggesting stricter timing requirements than necessary.
+[src:static-timing-analysis/static-timing-analysis] Delay models define the propagation delay of logic gates in digital circuits.
+[src:static-timing-analysis/static-timing-analysis] In the context of Static Timing Analysis (STA), delay models are essential for estimating signal arrival times and verifying timing constraints.
+[src:static-timing-analysis/static-timing-analysis] Given that modern integrated circuits can include millions of gates, delay models should balance between computational efficiency and modelling accuracy.
+[src:static-timing-analysis/static-timing-analysis] The **unit delay model** assumes that every gate has a fixed delay of one time unit.
+[src:static-timing-analysis/static-timing-analysis] This is the simplest abstraction and is typically used for early-stage design validation or educational purposes where modeling simplicity is prioritized over accuracy.
+[src:static-timing-analysis/static-timing-analysis] The **constant delay model** assigns fixed propagation delays to each type of logic gate.
+[src:static-timing-analysis/static-timing-analysis] Unlike the unit delay model, it reflects differences in gate behavior and can be adapted for either technology-dependent or technology-independent timing analysis.
+[src:static-timing-analysis/static-timing-analysis] It remains one of the most widely used models in both academic studies and commercial tools for its simplicity and practicality.
+[src:static-timing-analysis/static-timing-analysis] Process, Voltage, and Temperature (PVT) variations affect gate delays significantly.
+[src:static-timing-analysis/static-timing-analysis] **PVT corner-based models** represent delays under extreme conditions (e.g., worst-case slow process and low voltage) to ensure robustness.
+[src:static-timing-analysis/static-timing-analysis] Each corner represents a specific combination of PVT parameters.
+[src:static-timing-analysis/static-timing-analysis] STA tools evaluate timing across multiple corners to guarantee correct functionality under all expected operating conditions.
+[src:static-timing-analysis/static-timing-analysis] Quite often, designers will want to qualify their design across many conditions.
+[src:static-timing-analysis/static-timing-analysis] Behavior of an electronic circuit is often dependent on various factors in its environment like temperature or local voltage variations.
+[src:static-timing-analysis/static-timing-analysis] In such a case either STA needs to be performed for more than one such set of conditions, or STA must be prepared to work with a range of possible delays for each component, as opposed to a single value.
+[src:static-timing-analysis/static-timing-analysis] With proper techniques, the patterns of condition variations are characterized and their extremes are recorded.
+[src:static-timing-analysis/static-timing-analysis] Each extreme condition can be termed as a corner.
+[src:static-timing-analysis/static-timing-analysis] Extremes in cell characteristics can be considered as ‘process, voltage and temperature (PVT) corners’ and extremes in net characteristics can be considered as ‘extraction corners’.
+[src:static-timing-analysis/static-timing-analysis] Then each combination pattern of PVT extraction corners is referred to as a ‘timing corner’ as it represents a point where timing will be extreme.
+[src:static-timing-analysis/static-timing-analysis] If the design works at each extreme condition, then under the assumption of monotonic behavior, the design is also qualified for all intermediate points.
+[src:static-timing-analysis/static-timing-analysis] The use of corners in static timing analysis has several limitations.
+[src:static-timing-analysis/static-timing-analysis] It may be overly optimistic, since it assumes perfect tracking: if one gate is fast, all gates are assumed fast, or if the voltage is low for one gate, it is also low for all others.
+[src:static-timing-analysis/static-timing-analysis] Corners may also be overly pessimistic, for the worst case corner may seldom occur.
+[src:static-timing-analysis/static-timing-analysis] In an IC, for example, it may not be rare to have one metal layer at the thin or thick end of its allowed range, but it would be very rare for all 10 layers to be at the same limit, since they are manufactured independently.
+[src:static-timing-analysis/static-timing-analysis] Statistical static timing analysis replaces delays with distributions, and tracking with correlation, and offers a more sophisticated approach to the same problem.
+[src:static-timing-analysis/static-timing-analysis] Traditional (deterministic) delay models assume fixed values, which cannot capture the process variations that occur across a die.
+[src:static-timing-analysis/static-timing-analysis] These variations can significantly impact timing, especially in advanced manufacturing nodes.
+[src:static-timing-analysis/static-timing-analysis] **Statistical delay models** address this by representing delays using statistical parameters such as mean and variance.
+[src:static-timing-analysis/static-timing-analysis] This enables a more realistic analysis of worst-case and typical-case timing paths.
+[src:static-timing-analysis/static-timing-analysis] More details about statistical delay models are introduced in statistical static timing analysis (SSTA).
+[src:static-timing-analysis/static-timing-analysis] In static timing analysis, the word *static* alludes to the fact that this timing analysis is carried out in an input-independent manner, and purports to find the worst-case delay of the circuit over all possible input combinations.
+[src:static-timing-analysis/static-timing-analysis] The computational efficiency (linear in the number of edges in the graph) of such an approach has resulted in its widespread use, even though it has some limitations.
+[src:static-timing-analysis/static-timing-analysis] A method that is commonly referred to as PERT is popularly used in STA.
+[src:static-timing-analysis/static-timing-analysis] However, PERT is a misnomer, and the so-called PERT method discussed in most of the literature on timing analysis refers to the critical path method (CPM) that is widely used in project management.
+[src:static-timing-analysis/static-timing-analysis] While the CPM-based methods are the dominant ones in use today, other methods for traversing circuit graphs, such as depth-first search, have been used by various timing analyzers.
+[src:static-timing-analysis/static-timing-analysis] Many of the common problems in chip designing are related to interface timing between different components of the design.
+[src:static-timing-analysis/static-timing-analysis] These can arise because of many factors including incomplete simulation models, lack of test cases to properly verify interface timing, requirements for synchronization, incorrect interface specifications, and lack of designer understanding of a component supplied as a 'black box'.
+[src:static-timing-analysis/static-timing-analysis] There are specialized CAD tools designed explicitly to analyze interface timing, just as there are specific CAD tools to verify that an implementation of an interface conforms to the functional specification (using techniques such as model checking).
+[src:static-timing-analysis/timing-closure] Through timing closure, the circuit can be adjusted through layout improvement and netlist restructuring to modify path delays to make sure the outputs of logic gates arrive at the correct time relative to the clock signal.
+[src:static-timing-analysis/timing-closure] integrated circuit (IC) designs have become increasingly complicated, with modern chips containing billions of transistors and highly interconnected logic.
+[src:static-timing-analysis/timing-closure] Every path in the design must satisfy its timing constraints, or the design may suffer from functional faults, unpredictable consequences, or system-level failure.
+[src:static-timing-analysis/timing-closure] Timing closure is not a simple final validation step, but rather an iterative and comprehensive optimization process.
+[src:static-timing-analysis/timing-closure] It involves continual improvement of both the logical structure of the design and its physical implementation, such as adjusting gate's logical structure and refining placement and routing, in order to reliably meet all timing constraints across the entire chip.
+[src:static-timing-analysis/timing-closure] Clocked digital circuits must meet certain constraints to ensure proper operation.
+[src:static-timing-analysis/timing-closure] For example, the time delay along each path from the output of a D flip-flop, through combinatorial logic gates, then into the next D flip-flop input must satisfy (be less than) the time period between synchronizing clock pulses to the two flip flops.
+[src:static-timing-analysis/timing-closure] If this constraint is not met, so the delay through the elements is greater than the clock period, the circuit will not function correctly.
+[src:static-timing-analysis/timing-closure] Therefore, modifying the circuit to remove any timing failures is an important part of the logic design engineer's task.
+[src:static-timing-analysis/timing-closure] The *critical path* refers to the longest path (in terms of delay) between any two sequential elements in a design.
+[src:static-timing-analysis/timing-closure] It defines the maximum delay of all register-to-register paths, and sets the minimum possible clock cycle time, which in turn limits the maximum speed of the chip.
+[src:static-timing-analysis/timing-closure] In simple design, the user can compute all possible path delays between elements manually, and adjust them until requirements are met.
+[src:static-timing-analysis/timing-closure] In modern designs with thousands to millions of elements this is impractical, and automation is required.
+[src:static-timing-analysis/timing-closure] In the process of IC design, the IC layout should satisfy geometric constraints and timing constraints.
+[src:static-timing-analysis/timing-closure] Geometric constraints refer to physical design regulations and rules imposed by the assembly process, such as correct cell alignment and minimum wire spacing.
+[src:static-timing-analysis/timing-closure] Timing constraints refer to the timing requirements that all signal paths should satisfy.
+[src:static-timing-analysis/timing-closure] Usually, before the output of the signal from flip-flop at the clock edge, the input signal should remain stable for a period called the setup time.
+[src:static-timing-analysis/timing-closure] After the electromagnetic signal reaches the next flip-flop at the clock edge, the signal should remain stable in the storage element for some time, which is called hold time.
+[src:static-timing-analysis/timing-closure] These constraints specify the time length before the clock edge of flip-flop where the data input signal should stay steady, so that the data has enough time to propagate through a logic path and reach the next flip-flop before the next clock edge.
+[src:static-timing-analysis/timing-closure] If the path delay is too long, it may violate setup time constraints and cause problematic data to be latched.
+[src:static-timing-analysis/timing-closure] These constraints specify the time length after the clock edge of flip-flop where the data input signal should stay stable.
+[src:static-timing-analysis/timing-closure] Violating a hold constraint can result in metastability or unwanted behaviors.
+[src:static-timing-analysis/timing-closure] Timing closure is a vital step that ensures that all signals reach their destinations by the required time, and the hold times are all satisfied, so the circuit works reliably.
+[src:static-timing-analysis/timing-closure] Designers start with the register-transfer level (RTL) abstraction and Verilog or VHDL code that describes the circuit.
+[src:static-timing-analysis/timing-closure] This is turned into a netlist, which is a collection of logic gates and connections, and used either to create the placement and routing of an IC, or to configure the FPGA hardware.
+[src:static-timing-analysis/timing-closure] In both conventional ICs and FPGAs, both gate delays and wiring delays can vary considerably.
+[src:static-timing-analysis/timing-closure] If signals arrive too late, or too early, the design may fail timing.
+[src:static-timing-analysis/timing-closure] The timing constraints designers begin to define accurate and realistic timing constraints that reflect the system's performance goals, often in the Synopsys Design Constraint (SDC) format.
+[src:static-timing-analysis/timing-closure] These constraints may include clock period**,** input/output delays, multi-cycle paths, and setup/hold requirements.
+[src:static-timing-analysis/timing-closure] It's critical to analyze whether they are achievable, based on the logic architecture and path delays within the design.
+[src:static-timing-analysis/timing-closure] These constraints guide all downstream timing analysis and optimization processes.
+[src:static-timing-analysis/timing-closure] After logic synthesis and constraints analysis, the design undergoes static timing analysis (STA), a process explicitly designed to evaluate whether the circuit meets its defined timing constraints.
+[src:static-timing-analysis/timing-closure] These tools (such as Cadence Tempus, Synopsys PrimeTime, and Intel Timing Analyzer) can evaluate all timing paths in the design without requiring simulation, making them ideal for scalable and exhaustive analysis.
+[src:static-timing-analysis/timing-closure] In STA, the combinational circuit can represent as directed acyclic graph (DAG) where nodes represent the gates and links represent the interconnect.
+[src:static-timing-analysis/timing-closure] Both are annotated with their corresponding delays.
+[src:static-timing-analysis/timing-closure] Typically initially the clock skew is assumed to be negligible.
+[src:static-timing-analysis/timing-closure] This will be re-visited after place, route, and clock tree synthesis.
+[src:static-timing-analysis/timing-closure] Especially for slack, STA supposes the worst-case scenario where every gate transitions, and computes the slack for each node.
+[src:static-timing-analysis/timing-closure] RAT is the required arrival time, meaning the latest time can transit in the required timing.
+[src:static-timing-analysis/timing-closure] AAT is the actual arrival time, meaning the latest actual transition time, and is defined at the output of every node.
+[src:static-timing-analysis/timing-closure] Negative slack at any input means the circuit doesn't meet timing, while positive slack at all inputs means the circuit meets timing.
+[src:static-timing-analysis/timing-closure] Once the STA reports are generated, engineers can utilize timing optimization techniques, or design automation tools, to examine them to identify the critical or failing paths that need attention.
+[src:static-timing-analysis/timing-closure] They also optimize the physical layout by adjusting placement and routing.
+[src:static-timing-analysis/timing-closure] This loop repeats until all timing constraints are met.
+[src:static-timing-analysis/timing-closure] Through logic synthesis and initial timing optimization, the physical layout of the chip should be mapped.
+[src:static-timing-analysis/timing-closure] Through placement, clock tree synthesis, and routing of these key steps, the physical designs are altered so that the timing behaviors can change significantly, and therefore reduce the path delays and enhance the timing in circuit.
+[src:static-timing-analysis/timing-closure] The EDA tool assigns physical locations to each standard cell (logic gates, flip-flops, etc.) on the IC.
+[src:static-timing-analysis/timing-closure] Placement can reduce path delays by placing interconnected cells close to each other.
+[src:static-timing-analysis/timing-closure] A balanced clock distribution network is built to deliver the clock signal to all sequential elements (flip-flops) evenly and synchronously.
+[src:static-timing-analysis/timing-closure] The CTS tries to minimize **clock skew** (difference in arrival time of the clock signal at different points) while controlling the clock latency (the delivery time of the clock signal to all sequential elements).
+[src:static-timing-analysis/timing-closure] It also tries to satisfy the maximum transition time and the maximum allowed capacitance to ensure the clock network meets design constraints.
+[src:static-timing-analysis/timing-closure] The clock skew affects hold and setup times.
+[src:static-timing-analysis/timing-closure] The clock skew is usually composed of local clock skew and global clock skew.
+[src:static-timing-analysis/timing-closure] A single point clock tree starts off from a single clock source and delivers the clock signal to all sequential elements in a tree structure.
+[src:static-timing-analysis/timing-closure] This method is easy to implement and is appropriate for low-frequency or multi-clock designs.
+[src:static-timing-analysis/timing-closure] Nevertheless, it will be unsuitable for high-frequency or large-scale designs because path asymmetry can lead to larger clock skew.
+[src:static-timing-analysis/timing-closure] A clock mesh dispatches the clock signal through a grid-like structure, providing enhanced clock balance and lesser skew, which is good for high-frequency designs.
+[src:static-timing-analysis/timing-closure] However, constructing a clock mesh means higher power and area overhead, and the design complexity will be increased.
+[src:static-timing-analysis/timing-closure] A multi-source clock tree integrates the advantages of single-point trees and clock meshes.
+[src:static-timing-analysis/timing-closure] The design is partitioned into multiple components, each with its own local clock source.
+[src:static-timing-analysis/timing-closure] This clock tree achieves low skew while reducing power and area consumption, making it well-suited for large-scale designs.
+[src:static-timing-analysis/timing-closure] After placement and clock tree synthesis, the design automation tool creates wires to physically connect cells.
+[src:static-timing-analysis/timing-closure] The physical routing introduces actual parasitic resistance and capacitance effects, which can affect signal delay.
+[src:static-timing-analysis/timing-closure] Incorporating these parasitics enables more precise timing analysis.
+[src:static-timing-analysis/timing-closure] The routing can help with timing closure by giving the nets with the least slack the most direct (and hence fastest) routes.
+[src:static-timing-analysis/timing-closure] One common way to improve the circuit performance is to use timing optimization techniques, such as inserting a register in between the combinational path of the critical path.
+[src:static-timing-analysis/timing-closure] This might improve the performance but increases the total latency (maximum number of registers from input to output path) of the circuit.
+[src:static-timing-analysis/timing-closure] The actual timing optimization techniques usually include physical synthesis, which can eliminate negative slack by using a set of timing optimizations.
+[src:static-timing-analysis/timing-closure] The physical synthesis includes creating timing budgets and implementing timing corrections.
+[src:static-timing-analysis/timing-closure] Usually, the timing budgets contain allocating target delays along paths or nets during placement, routing stages, and timing correction operations.
+[src:static-timing-analysis/timing-closure] Gate sizing involves replacing logic gates with equivalent versions of different drive strengths.
+[src:static-timing-analysis/timing-closure] Larger gates can drive larger loads faster, reducing delays in critical paths.
+[src:static-timing-analysis/timing-closure] This technique balances speed against area and power.
+[src:static-timing-analysis/timing-closure] Suppose a logic gate comes in three sizes, *a*, *b*, and *c*, where $Size(Vc)>Size(Vb)>Size(Va)$ .
+[src:static-timing-analysis/timing-closure] The gates with larger sizes have smaller output resistance.
+[src:static-timing-analysis/timing-closure] According to the RC delay approximation, $t=R_{out}\times C_{load}$ , where **t** represents propagation delay, $R_{out}$ represents output resistance, and $C_{load}$ represents load capacitances.
+[src:static-timing-analysis/timing-closure] Therefore when load capacitances are large, larger logic gates can easily drive larger load capacitances: $t(V_{c})<t(V_{b})<t(V_{a})$ .
+[src:static-timing-analysis/timing-closure] The drawbacks of larger gates, however, usually include higher capacitance on the input, more insertion delay, and higher power consumption.
+[src:static-timing-analysis/timing-closure] Therefore, when load capacitances are small, smaller logic gates are preferred as long as they can meet the timing constraints.
+[src:static-timing-analysis/timing-closure] Used to break long wires and reduce RC (resistance-capacitance) delays, especially in high fan-out or physically distant connections.
+[src:static-timing-analysis/timing-closure] Buffers can also help in adjusting path timing to fix hold violations.
+[src:static-timing-analysis/timing-closure] Buffer insertion must leave the logic function unchanged.
+[src:static-timing-analysis/timing-closure] This is typically implemented by inserting an even number of inverting buffers, or using non-inverting buffers composed of two serially connected inverters.
+[src:static-timing-analysis/timing-closure] Buffers can reduce path delay by easily driving signals through long wires and on large load capacitances.
+[src:static-timing-analysis/timing-closure] In critical paths, inserting a buffer helps reduce resistance and improve signal propagation.
+[src:static-timing-analysis/timing-closure] A signal with a slow rise/fall time can cause unreliable switching and timing violations.
+[src:static-timing-analysis/timing-closure] Buffers sharpen the **signal edges**, improving the slope of the transitions and resulting in more stable digital behavior.
+[src:static-timing-analysis/timing-closure] This helps prevent glitches, short-circuit current, and false logic triggering.
+[src:static-timing-analysis/timing-closure] If a logic gate drives many other gates or long wires, the total load capacitances become large.
+[src:static-timing-analysis/timing-closure] This large load slows down the gate’s output response.
+[src:static-timing-analysis/timing-closure] Inserting a buffer between the gate and its heavy load offloads the burden, allowing the original gate to drive only the buffer and not the full load directly.
+[src:static-timing-analysis/timing-closure] However, the drawbacks may include increased area usage and increased power consumption.
+[src:static-timing-analysis/timing-closure] Operations such as gate downsizing, merging, or simplifying previously expanded logic structures can also be performed if it benefits overall design metrics (e.g., area or power).
+[src:static-timing-analysis/timing-closure] These techniques are often applied automatically by physical synthesis and place-and-route tools (such as Synopsys IC compiler, Cadence Innovus, or Intel Quartus), but can also be manually guided by designers through constraints and optimization directives.
+[src:static-timing-analysis/timing-closure] After the routing steps are completed, the physical details of the design including wire lengths, capacitances, and resistance will be examined and determined.
+[src:static-timing-analysis/timing-closure] Conduct thorough functional verification and validation of the design such as STA to guarantee the integrity of function of timing optimizations, help to identify the timing violations and delay, and verify the effectiveness of the recent timing closure and optimization.
+[src:static-timing-analysis/timing-closure] Also, the designers can use simulation, verification, and hardware testing to validate the design's functionality and performance.
+[src:static-timing-analysis/timing-closure] If the circuit fails to meet the timing then the whole circuit will be placed at the STA process from the start iteratively.
+[src:static-timing-analysis/timing-closure] When the design is completed on the FPGA, post-implementation timing analysis validates that all timing goals are met.
+[src:static-timing-analysis/timing-closure] This analysis acts as a final examination of timing closure confirms the successful timing closure process and accounts for any implementation-specific factors.
+[src:static-timing-analysis/timing-closure] Many logic circuit changes, such as timing optimization techniques, are automatically handled by the user's EDA tools guided by timing constraint directives prepared by a designer.
+[src:static-timing-analysis/timing-closure] A design is said to have achieved timing closure when the design has reached the end of the flow and all its timing requirements are satisfied.
+[src:static-timing-analysis/timing-closure] As of 2026 all major design steps, such as synthesis, placement, and routing, need to be timing-aware for a design to meet its timing requirements properly, but with older technologies only logic synthesis EDA tools were timing aware.
+[src:static-timing-analysis/timing-closure] Even though timing awareness was extended to all these steps starting from well-established principles used for logic synthesis, the logic phase and the physical phase of the timing closure process are still handled by different design teams and different EDA tools.
+[src:static-timing-analysis/timing-closure] Design Compiler by Synopsys, Encounter RTL Compiler by Cadence Design Systems, and BlastCreate by Magma Design Automation are examples of logic synthesis tools.
+[src:static-timing-analysis/timing-closure] IC Compiler by Synopsys, SoC Encounter by Cadence Design Systems, and Blast Fusion by Magma Design Automation are examples of tools capable of timing-aware placement, clock tree synthesis, and routing and therefore used for physical timing closure.
+[src:static-timing-analysis/timing-closure] Some FPGA tools utilize machine learning programs, such as InTime by Plunify, to find an optimum set of FPGA synthesis, map, place and route tool configuration parameters that ensures the circuit will close timing.
+[src:static-timing-analysis/timing-closure] A timing requirement needs to be translated into a static timing constraint for an EDA tool to be able to handle it.
+[src:static-timing-analysis/timing-closure] Recently, the timing closure process has gradually integrated logic synthesis and physical implementation under unified platforms to process optimization.
+[src:static-timing-analysis/timing-closure] Tools such as Fusion Compiler by Synopsys and the Genus-Innovus flow by Cadence offer end-to-end solutions combining logic synthesis, placement, clock tree synthesis, and routing within a single environment.
+[src:static-timing-analysis/timing-closure] Additionally, open-source toolchains like OpenROAD and OpenSTA have gained traction in academia and startup prototyping for their ability to support timing-aware design closure workflows.
+[src:static-timing-analysis/timing-closure] These modern tools are designed to encounter the growing complexity of nanometer-scale circuits by automating trade-offs between performance, area, and power (PPA), and enabling earlier detection and resolution of timing violations in the RTL-to-GDSII design flow.

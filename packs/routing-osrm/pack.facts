@@ -1,0 +1,547 @@
+# nl-rag distilled facts — domain: routing-osrm
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:routing-osrm/contraction-hierarchies] In computer science, the method of **contraction hierarchies** is a speed-up technique for finding the shortest path in a graph.
+[src:routing-osrm/contraction-hierarchies] The most intuitive applications are car-navigation systems: a user wants to drive from A to B using the quickest possible route.
+[src:routing-osrm/contraction-hierarchies] The metric optimized here is the travel time.
+[src:routing-osrm/contraction-hierarchies] Intersections are represented by vertices, the road sections connecting them by edges.
+[src:routing-osrm/contraction-hierarchies] The edge weights represent the time it takes to drive along this segment of the road.
+[src:routing-osrm/contraction-hierarchies] A path from A to B is a sequence of edges (road sections); the shortest path is the one with the minimal sum of edge weights among all possible paths.
+[src:routing-osrm/contraction-hierarchies] The shortest path in a graph can be computed using Dijkstra's algorithm but, given that road networks consist of tens of millions of vertices, this is impractical.
+[src:routing-osrm/contraction-hierarchies] Contraction hierarchies is a speed-up method optimized to exploit properties of graphs representing road networks.
+[src:routing-osrm/contraction-hierarchies] The speed-up is achieved by creating shortcuts in a preprocessing phase which are then used during a shortest-path query to skip over "unimportant" vertices.
+[src:routing-osrm/contraction-hierarchies] This is based on the observation that road networks are highly hierarchical.
+[src:routing-osrm/contraction-hierarchies] Some intersections, for example highway junctions, are "more important" and higher up in the hierarchy than for example a junction leading into a dead end.
+[src:routing-osrm/contraction-hierarchies] Shortcuts can be used to save the precomputed distance between two important junctions such that the algorithm doesn't have to consider the full path between these junctions at query time.
+[src:routing-osrm/contraction-hierarchies] Contraction hierarchies do not know about which roads humans consider "important" (e.g. highways), but they are provided with the graph as input and are able to assign importance to vertices using heuristics.
+[src:routing-osrm/contraction-hierarchies] Contraction hierarchies are not only applied to speed-up algorithms in car-navigation systems but also in web-based route planners, traffic simulation, and logistics optimization.
+[src:routing-osrm/contraction-hierarchies] Implementations of the algorithm are publicly available as open source software.
+[src:routing-osrm/contraction-hierarchies] The contraction hierarchies (CH) algorithm is a two-phase approach to the shortest path problem consisting of a **preprocessing phase** and a **query phase**.
+[src:routing-osrm/contraction-hierarchies] As road networks change rather infrequently, more time (seconds to hours) can be used to once precompute some calculations before queries are to be answered.
+[src:routing-osrm/contraction-hierarchies] Using this precomputed data, many queries can be answered taking very little time (microseconds) each.
+[src:routing-osrm/contraction-hierarchies] CHs rely on shortcuts to achieve this speedup.
+[src:routing-osrm/contraction-hierarchies] A shortcut connects two vertices u and v not adjacent in the original graph.
+[src:routing-osrm/contraction-hierarchies] Its edge weight is the sum of the edge weights on the shortest u - v path.
+[src:routing-osrm/contraction-hierarchies] Consider two large cities connected by a highway.
+[src:routing-osrm/contraction-hierarchies] Between these two cities, there is a multitude of junctions leading to small villages and suburbs.
+[src:routing-osrm/contraction-hierarchies] Most drivers want to get from one city to the other – maybe as part of a larger route – and not take one of the exits on the way.
+[src:routing-osrm/contraction-hierarchies] In the graph representing this road layout, each intersection is represented by a node and edges are created between neighboring intersections.
+[src:routing-osrm/contraction-hierarchies] To calculate the distance between these two cities, the algorithm has to traverse all the edges along the way, adding up their length.
+[src:routing-osrm/contraction-hierarchies] Precomputing this distance once and storing it in an additional edge created between the two large cities will save calculations each time this highway has to be evaluated in a query.
+[src:routing-osrm/contraction-hierarchies] This additional edge is called a "shortcut" and has no counterpart in the real world.
+[src:routing-osrm/contraction-hierarchies] The contraction hierarchies algorithm has no knowledge about road types but is able to determine which shortcuts have to be created using the graph alone as input.
+[src:routing-osrm/contraction-hierarchies] The CH algorithm relies on shortcuts created in the preprocessing phase to reduce the search space – that is the number of vertices CH has to look at, at query time.
+[src:routing-osrm/contraction-hierarchies] To achieve this, iterative vertex contractions are performed.
+[src:routing-osrm/contraction-hierarchies] When contracting a vertex v it is temporarily removed from the graph G , and a shortcut is created between each pair $\{u,w\}$ of neighboring vertices if the shortest path from ${\textstyle u}$ to ${\textstyle w}$ contains v .
+[src:routing-osrm/contraction-hierarchies] The process of determining if the shortest path between ${\textstyle u}$ and ${\textstyle w}$ contains v is called witness search.
+[src:routing-osrm/contraction-hierarchies] It can be performed for example by computing a path from u to w using a forward search using only not yet contracted nodes.
+[src:routing-osrm/contraction-hierarchies] The vertices of the input graph have to be contracted in a way which minimizes the number of edges added to the graph by contractions.
+[src:routing-osrm/contraction-hierarchies] As optimal node ordering is NP-complete, heuristics are used.
+[src:routing-osrm/contraction-hierarchies] In *bottom-up* heuristics, a combination of factors is used to select the next vertex for contraction.
+[src:routing-osrm/contraction-hierarchies] As the number of shortcuts is the primary factor that determines preprocessing and query runtime, we want to keep it as small as possible.
+[src:routing-osrm/contraction-hierarchies] The most important term by which to select the next node for contraction is therefore the net number of edges added when contracting a node x .
+[src:routing-osrm/contraction-hierarchies] This is defined as $A(x)-|\{(u,x)\colon (u,x)\in E\}|$ where $A(x)$ is the number of shortcuts that would be created if x were to be contracted and $|\{(u,x)\colon (u,x)\in E\}|$ is the number of edges incident to x .
+[src:routing-osrm/contraction-hierarchies] Using this criterion alone, a linear path would result in a linear hierarchy (many levels) and no created shortcuts.
+[src:routing-osrm/contraction-hierarchies] By considering the number of nearby vertices that are already contracted, a uniform contraction and a flat hierarchy (less levels) is achieved.
+[src:routing-osrm/contraction-hierarchies] This can, for example, be done by maintaining a counter for each node that is incremented each time a neighboring vertex is contracted.
+[src:routing-osrm/contraction-hierarchies] Nodes with lower counters are then preferred to nodes with higher counters.
+[src:routing-osrm/contraction-hierarchies] In the query phase, a bidirectional search is performed starting from the starting node s and the target node t on the original graph augmented by the shortcuts created in the preprocessing phase.
+[src:routing-osrm/contraction-hierarchies] The most important vertex on the shortest path between s and t will be either s or t themselves or more important than both s and t .
+[src:routing-osrm/contraction-hierarchies] Therefore, the vertex u minimizing $\mathrm {dist} (s,u)+\mathrm {dist} (u,t)$ is on the shortest $s-t$ path in the original graph and $\mathrm {dist} (s,u)+\mathrm {dist} (u,t)=\mathrm {dist} (s,t)$ holds.
+[src:routing-osrm/contraction-hierarchies] This, in combination with how shortcuts are created, means that both forward and backward search only need to relax edges leading to more important nodes (upwards) in the hierarchy which keeps the search space small.
+[src:routing-osrm/contraction-hierarchies] In all up-(down-up)-down paths, the inner (down-up) can be skipped, because a shortcut has been created in the preprocessing stage.
+[src:routing-osrm/contraction-hierarchies] A CH query, as described above, yields the time or distance from s to t but not the actual path.
+[src:routing-osrm/contraction-hierarchies] To obtain the list of edges (roads) on the shortest path, the shortcuts taken have to be unpacked.
+[src:routing-osrm/contraction-hierarchies] Each shortcut is the concatenation of two edges: either two edges of the original graph, or two shortcuts, or one original edge and one shortcut.
+[src:routing-osrm/contraction-hierarchies] Storing the middle vertex of each shortcut during contraction enables linear-time recursive unpacking of the shortest route.
+[src:routing-osrm/contraction-hierarchies] If the edge weights are changed more often than the network topology, CH can be extended to a three-phase approach by including a customization phase between the preprocessing and query phase.
+[src:routing-osrm/contraction-hierarchies] This can be used for example to switch between shortest distance and shortest time or include current traffic information as well as user preferences like avoiding certain types of roads (ferries, highways, ...).
+[src:routing-osrm/contraction-hierarchies] In the preprocessing phase, most of the runtime is spent on computing the order in which the nodes are contracted.
+[src:routing-osrm/contraction-hierarchies] This sequence of contraction operations in the preprocessing phase can be saved for when they are later needed in the customization phase.
+[src:routing-osrm/contraction-hierarchies] Each time the metric is customized, the contractions can then be efficiently applied in the stored order using the custom metric.
+[src:routing-osrm/contraction-hierarchies] Additionally, depending on the new edge weights it may be necessary to recompute some shortcuts.
+[src:routing-osrm/contraction-hierarchies] For this to work, the contraction order has to be computed using metric-independent nested dissections.
+[src:routing-osrm/contraction-hierarchies] CHs as described above search for a shortest path from one starting node to one target node.
+[src:routing-osrm/contraction-hierarchies] This is called *one-to-one* shortest path and is used for example in car-navigation systems.
+[src:routing-osrm/contraction-hierarchies] Other applications include matching GPS traces to road segments and speeding up traffic simulators which have to consider the likely routes taken by all drivers in a network.
+[src:routing-osrm/contraction-hierarchies] In route prediction one tries to estimate where a vehicle is likely headed by calculating how well its current and past positions agree with a shortest path from its starting point to any possible target.
+[src:routing-osrm/contraction-hierarchies] In *one-to-many* scenarios, a starting node s and a set of target nodes T are given and the distance $\mathrm {dist} (s,t)$ for all $t\in T$ has to be computed.
+[src:routing-osrm/contraction-hierarchies] The most prominent application for one-to-many queries are point-of-interest searches.
+[src:routing-osrm/contraction-hierarchies] Typical examples include finding the closest gas station, restaurant or post office using actual travel time instead of geographical distance as metric.
+[src:routing-osrm/contraction-hierarchies] In the *many-to-many* shortest path scenario, a set of starting nodes S and a set of target nodes T are given and the distance $\mathrm {dist} (s_{i},t_{i})$ for all $(s_{i},t_{j})\in S\times T$ has to be computed.
+[src:routing-osrm/contraction-hierarchies] This is used for example in logistic applications.
+[src:routing-osrm/contraction-hierarchies] CHs can be extended to many-to-many queries in the following manner.
+[src:routing-osrm/contraction-hierarchies] First, perform a backward upward search from each $t_{j}\in T$ .
+[src:routing-osrm/contraction-hierarchies] For each vertex u scanned during this search, one stores $\mathrm {dist} (t_{j},u)$ in a bucket $\beta (u)$ .
+[src:routing-osrm/contraction-hierarchies] Then, one runs a forward upward search from each $s_{i}\in S$ , checking for each non-empty bucket, whether the route over the corresponding vertex improves any best distance.
+[src:routing-osrm/contraction-hierarchies] Some applications even require *one-to-all* computations, i.e., finding the distances from a source vertex s to all other vertices in the graph.
+[src:routing-osrm/contraction-hierarchies] As Dijkstra's algorithm visits each edge exactly once and therefore runs in linear time it is theoretically optimal.
+[src:routing-osrm/contraction-hierarchies] Dijkstra's algorithm, however, is hard to parallelize and is not cache-optimal because of its bad locality.
+[src:routing-osrm/contraction-hierarchies] CHs can be used for a more cache-optimal implementation.
+[src:routing-osrm/contraction-hierarchies] For this, a forward upward search from s followed by a downward scan over all nodes in the shortcut-enriched graph is performed.
+[src:routing-osrm/contraction-hierarchies] The later operation scans through memory in a linear fashion, as the nodes are processed in decreasing order of importance and can therefore be placed in memory accordingly.
+[src:routing-osrm/contraction-hierarchies] Note, that this is possible because the order in which the nodes are processed in the second phase is independent of the source node s .
+[src:routing-osrm/contraction-hierarchies] In production, car-navigation systems should be able to compute fastest travel routes using predicted traffic information and display alternative routes.
+[src:routing-osrm/contraction-hierarchies] The former is called routing with time-dependent networks where the travel time of a given edge is no longer constant but rather a function of the time of day when entering the edge.
+[src:routing-osrm/contraction-hierarchies] Alternative routes need to be smooth-looking, significantly different from the shortest path but not significantly longer.
+[src:routing-osrm/contraction-hierarchies] CHs can be extended to optimize multiple metrics at the same time; this is called *multi-criteria* route planning.
+[src:routing-osrm/contraction-hierarchies] For example, one could minimize both travel cost and time.
+[src:routing-osrm/contraction-hierarchies] Another example are electric vehicles for which the available battery charge constrains the valid routes as the battery may not run empty.
+[src:routing-osrm/contraction-hierarchies] A number of bounds have been established on the preprocessing and query performance of contraction hierarchies.
+[src:routing-osrm/contraction-hierarchies] In the following let n be the number of vertices in the graph, m the number of edges, h the highway dimension, D the graph diameter, $td$ is the tree-depth and $tw$ is the tree-width.
+[src:routing-osrm/contraction-hierarchies] The first analysis of contraction hierarchy performance relies in part on a quantity known as the *highway dimension*.
+[src:routing-osrm/contraction-hierarchies] While the definition of this quantity is technical, intuitively a graph has a small highway dimension if for every $r>0$ there is a sparse set of vertices $S_{r}$ such that every shortest path of length greater than r includes a vertex from $S_{r}$ .
+[src:routing-osrm/contraction-hierarchies] Calculating the exact value of the highway dimension is NP-hard and most likely W[1]-hard, but for grids it is known that the highway dimension is $h\in \Theta ({\sqrt {n}})$ .
+[src:routing-osrm/contraction-hierarchies] An alternative analysis was presented in the Customizable Contraction Hierarchy line of work.
+[src:routing-osrm/contraction-hierarchies] Query running times can be bounded by $O(td^{2})$ .
+[src:routing-osrm/contraction-hierarchies] As the tree-depth can be bounded in terms of the tree-width, $O((tw\log n)^{2})$ is also a valid upper bound.
+[src:routing-osrm/contraction-hierarchies] The main source is but the consequences for the worst case running times are better detailed in.
+[src:routing-osrm/open-source-routing-machine] The **Open Source Routing Machine** (abbreviated **OSRM**) is an open-source route planning library and network service.
+[src:routing-osrm/open-source-routing-machine] Written in high-performance C++, OSRM runs on the Linux, FreeBSD, Windows, and macOS platforms.
+[src:routing-osrm/open-source-routing-machine] It is designed for compatibility with OpenStreetMap's road network data.
+[src:routing-osrm/open-source-routing-machine] FOSSGIS operates a free-to-use server that powers walking, cycling, and driving directions on OSM's homepage.
+[src:routing-osrm/open-source-routing-machine] OSRM powered Mapbox's navigation offerings during the 2010s.
+[src:routing-osrm/open-source-routing-machine] OSRM participated in the 2011 Google Summer of Code.
+[src:routing-osrm/open-source-routing-machine] In February 2015, OSRM was integrated into OpenStreetMap's homepage alongside two other routing engines, GraphHopper and Valhalla.
+[src:routing-osrm/open-source-routing-machine] In 2025, a team at Roskilde University and the University of Waterloo used OSRM to solve the travelling salesman problem for a dataset of 81,998 bars from South Korea's National Police Agency, breaking a record set in 2021.
+[src:routing-osrm/open-source-routing-machine] OSRM implements multilevel Dijkstra's algorithm (MLD) as well as another routing algorithm, contraction hierarchies (CH), which is better suited for very large distance matrices.
+[src:routing-osrm/open-source-routing-machine] Shortest path computation on a continental sized network can take up to several seconds if it is done without a so-called speedup-technique.
+[src:routing-osrm/open-source-routing-machine] Via the CH preprocessing pipeline, OSRM can compute and output a shortest path between any origin and destination within a few milliseconds, whereby the pure route computation takes much less time.
+[src:routing-osrm/open-source-routing-machine] Most effort is spent in annotating the route and transmitting the geometry over the network.
+[src:routing-osrm/open-source-routing-machine] This high performance facilitates use cases such as user-interactive route manipulation.
+[src:routing-osrm/open-source-routing-machine] In addition to solving the shortest path problem for road networks, OSRM also includes a map matching service and a travelling salesman problem solver for generating distance matrices.
+[src:routing-osrm/route-planning-software] A **journey planner**, **trip planner**, or **route planner** is a specialized search engine used to find an optimal means of travelling between two or more given locations, sometimes using more than one transport mode.
+[src:routing-osrm/route-planning-software] Searches may be optimized on different criteria, for example *fastest*, *shortest*, *fewest changes*, *cheapest*.
+[src:routing-osrm/route-planning-software] They may be constrained, for example, to leave or arrive at a certain time, to avoid certain waypoints, etc.
+[src:routing-osrm/route-planning-software] A single journey may use a sequence of several modes of transport, meaning the system may know about public transport services as well as transport networks for private transportation.
+[src:routing-osrm/route-planning-software] Trip planning or journey planning is sometimes distinguished from *route planning*, which is typically thought of as using private modes of transportation such as cycling, driving, or walking, normally using a single mode at a time.
+[src:routing-osrm/route-planning-software] In European Standards such as Transmodel, trip planning is used specifically to describe the planning of a route for a passenger, to avoid confusion with the completely separate process of planning the operational journeys to be made by public transport vehicles on which such trips are made.
+[src:routing-osrm/route-planning-software] Trip planners have been widely used in the travel industry since the 1970s, by booking agents.
+[src:routing-osrm/route-planning-software] The growth of the internet, the proliferation of geospatial data, and the development of information technologies generally has led to the rapid development of many self-service app or browser-based, on-line intermodal trip planners.
+[src:routing-osrm/route-planning-software] A trip planner may be used in conjunction with ticketing and reservation systems.
+[src:routing-osrm/route-planning-software] As an example, the largest single use of journey planning technology is used in Great Britain in railway booking systems, often referred to as RTJP (Real Time Journey Planner), which processes the data between two or multiple points.
+[src:routing-osrm/route-planning-software] This can be viewed on National Rail's official website.
+[src:routing-osrm/route-planning-software] In the late 1980s and early 1990s, some national railway operators and major metropolitan transit authorities developed their own specialized trip planners to support their customer enquiry services.
+[src:routing-osrm/route-planning-software] These typically ran on mainframes and were accessed internally with terminals by their own staff in customer information centers, call centers, and at ticket counters in order to answer customer queries.
+[src:routing-osrm/route-planning-software] The data came from the timetable databases used to publish printed timetables and to manage operations and some included simple route planning capabilities.
+[src:routing-osrm/route-planning-software] The HAFAs timetable information system developed in 1989 by the German company Hacon, (now part of Siemens AG) is an example of such a system and was adopted by Swiss Federal Railways (SBB) and Deutsche Bahn in 1989.
+[src:routing-osrm/route-planning-software] The first digital public transport trip planner systems for a microcomputer was developed by Eduard Tulp, an informatica student at the Amsterdam University on an Atari PC.
+[src:routing-osrm/route-planning-software] He was hired by the Dutch Railways to build a digital trip planner for the train services.
+[src:routing-osrm/route-planning-software] In 1990 the first digital trip planner for the Dutch Railways (on diskette) was sold to be installed on PC's and computers for off-line consultation.
+[src:routing-osrm/route-planning-software] The principles of his software program was published in a Dutch university paper in 1991 This was soon expanded to include all public transport in the Netherlands.
+[src:routing-osrm/route-planning-software] Another pioneer was Hans-Jakob Tobler in Switzerland.
+[src:routing-osrm/route-planning-software] His product *Finajour*, which ran for PC DOS and MS-DOS was the first electronic timetable for Switzerland .
+[src:routing-osrm/route-planning-software] The first published version was sold for the timetable period 1989/1990.
+[src:routing-osrm/route-planning-software] Other European countries soon followed with their own journey planners.
+[src:routing-osrm/route-planning-software] The development of the internet allowed HTML based user interfaces to be added to allow direct querying of trip planning systems by the general public.
+[src:routing-osrm/route-planning-software] A test web interface for HaFAs, was launched as Deutsche Bahn's official rail trip planner in 1995 and evolved over time into the main Deutsche Bahn website.
+[src:routing-osrm/route-planning-software] Internet trip planners for major transport networks such as national railways and major cities must sustain very high query rates and so require software architectures optimized to sustain such traffic.
+[src:routing-osrm/route-planning-software] Starting in 2000 the Traveline service provided all parts of the UK with regional multi-modal trip planning on bus, coach, and rail.
+[src:routing-osrm/route-planning-software] A web-based trip planner for UK rail was launched by UK National Rail Enquiries in 2003.
+[src:routing-osrm/route-planning-software] Early public transport trip planners typically required a stop or station to be specified for the endpoints.
+[src:routing-osrm/route-planning-software] Some also supported inputting the name of a tourist attraction or other popular destination places by keeping a table of the nearest stop to the destination.
+[src:routing-osrm/route-planning-software] This was later extended with ability to add addresses or coordinates to offer true point to point planning.
+[src:routing-osrm/route-planning-software] Critical to the development of large-scale multi-modal trip planning in the late 1990s and early 2000s was the development in parallel of standards for encoding stop and schedule data from many different operators and the setting up of workflows to aggregate and distribute data on a regular basis.
+[src:routing-osrm/route-planning-software] This is more challenging for modes such as bus and coach, where there tend to a large number of small operators, than for rail, which typically involves only a few large operators who have exchange formats and processes already in place in order to operate their networks.
+[src:routing-osrm/route-planning-software] In Europe, which has a dense and sophisticated public transport network, the CEN Transmodel Reference Model for Public Transport was developed to support the process of creating and harmonizing standard formats both nationally and internationally.
+[src:routing-osrm/route-planning-software] In the 2000s, Several major projects developed distributed trip planning architectures to allow the federation of separate trip planners each covering a specific area to create a composite engine covering a very large area.
+[src:routing-osrm/route-planning-software] Public transport trip planners proved to be immensely popular (for example by 2005 Deutsche Bahn was already sustaining 2.8 million requests per day and journey planning sites constitute some of the highest trafficked information sites in every country that has them.
+[src:routing-osrm/route-planning-software] Internet trip planners now constitute a primary sales channel for most rail and air transport operators.
+[src:routing-osrm/route-planning-software] Google started to add trip planning capabilities to its product set with a version of Google Transit in 2005, covering trips in the Portland region, as described by the TriMet agency manager Bibiana McHugh.
+[src:routing-osrm/route-planning-software] This led to the development of the General Transit Feed Specification (GTFS), a format for collecting transit data for use in trip planners that has been highly influential in developing an ecosystem of PT data feeds covering many different countries.
+[src:routing-osrm/route-planning-software] The successful uptake of GTFS as an available output format by large operators in many countries has allowed Google to extend its trip planner coverage to many more regions around the world.
+[src:routing-osrm/route-planning-software] The Google Transit trip planning capabilities were integrated into the Google Map product in 2012.
+[src:routing-osrm/route-planning-software] Further evolution of trip planning engines has seen the integration of real time data so that trip plans for the immediate future take into account real time delays and disruptions.
+[src:routing-osrm/route-planning-software] The UK National Rail Enquiries added real time to its rail trip planner in 2007.
+[src:routing-osrm/route-planning-software] Also significant has been the integration of other types of data into the trip planning results such as disruption notices, crowding levels, CO2 costs, etc.
+[src:routing-osrm/route-planning-software] The trip planners of some major metropolitan cities such as the Transport for London trip planner have the ability to dynamically suspend individual stations and whole lines so that modified trip plans are produced during major disruptions that omit the unavailable parts of the network.
+[src:routing-osrm/route-planning-software] Another development has been the addition of accessibility data and the ability for algorithms to optimize plans to take into account the requirements of specific disabilities such as wheelchair access.
+[src:routing-osrm/route-planning-software] For the London 2012 Olympics, an enhanced London trip planner was created that allowed the proposed trip results to be biased to manage available capacity across different routes, spreading traffic to less congested routes.
+[src:routing-osrm/route-planning-software] Another innovation was the detailed modelling of all the access paths into and out of every Olympic venue, (from PT stop to individual arena entrance) with predicted and actual queueing times to allow for security checks and other delays being factored into the recommended travel times.
+[src:routing-osrm/route-planning-software] A public transport route planner is an intermodal journey planner, typically accessed via the web that provides information about available public transport services.
+[src:routing-osrm/route-planning-software] The application prompts a user to input an origin and a destination, and then uses algorithms to find a good route between the two on public transit services.
+[src:routing-osrm/route-planning-software] Time of travel may be constrained to either time of departure or arrival and other routing preferences may be specified as well.
+[src:routing-osrm/route-planning-software] An intermodal journey planner supports intermodal journeys i.e. using more than one modes of transport, such as cycling, rapid transit, bus, ferry, etc.
+[src:routing-osrm/route-planning-software] Many route planners support door-to-door planning while others only work between stops on the transport network, such as stations, airports or bus stops.
+[src:routing-osrm/route-planning-software] For public transport routing the trip planner is constrained by times of arrival or departure.
+[src:routing-osrm/route-planning-software] It may also support different optimization criteria – for example, *fastest route, fewest changes, most accessible*.
+[src:routing-osrm/route-planning-software] Optimization by price (*cheapest, most flexible fare*, etc.) is usually done by a separate algorithm or engine, though trip planners that can return fare prices for the trips they find may also offer sorting or filtering of results by price and product type.
+[src:routing-osrm/route-planning-software] For long-distance rail and air trip planning, where price is a significant consideration in price optimizing trip planners may suggest the cheapest dates to travel for customers are flexible as to travel time.
+[src:routing-osrm/route-planning-software] The planning of road legs is sometimes done by a separate subsystem within a journey planner, but may consider both single mode trip calculations as well as intermodal scenarios (e.g.
+[src:routing-osrm/route-planning-software] Some advanced journey planners can take into account average journey times on road sections, or even real-time predicted average journey times on road sections.
+[src:routing-osrm/route-planning-software] A journey planner will ideally provide detailed routing for pedestrian access to stops, stations, points of interest etc.
+[src:routing-osrm/route-planning-software] This will include options to take into account accessibility requirements for different types of users, for example; 'no steps', 'wheelchair access', 'no lifts', etc.
+[src:routing-osrm/route-planning-software] Some journey planning systems can calculate bicycle routes, integrating all paths accessible by bicycle and often including additional information like topography, traffic, on-street cycling infrastructure, etc.
+[src:routing-osrm/route-planning-software] These systems assume, or allow the user to specify, preferences for quiet or safe roads, minimal elevation change, bicycle lanes, etc.
+[src:routing-osrm/route-planning-software] Trip planners depend on a number of different types of data and the quality and extent of this data limits their capability.
+[src:routing-osrm/route-planning-software] Some trip planners integrate many different kinds of data from numerous sources.
+[src:routing-osrm/route-planning-software] Others may work with one mode only, such as flight itineraries between airports, or using only addresses and the street network for driving directions.
+[src:routing-osrm/route-planning-software] Passengers don't travel because they want to go to a particular station or stop, but because they want to go some destination of interest, such as a sports arena, tourist attraction, shopping center, park, law court, etc., etc.
+[src:routing-osrm/route-planning-software] Many trip planners allow users to look for such "Points of interest", either by name or by category (*museum, stadium, prison,* etc.).
+[src:routing-osrm/route-planning-software] Data sets of systematically named, geocoded and categorized popular destinations can be obtained commercially, for example, The UK PointX data set, or derived from opensource data sets such as OpenStreetMap.
+[src:routing-osrm/route-planning-software] Major operators such as Transport for London or National Rail have historically had well developed sets of such data for use in their Customer Call centers, along with information on the links to the nearest stops.
+[src:routing-osrm/route-planning-software] For points of interest that cover a large area, such as parks, country houses or stadia, a precise geocoding of the entrances is important.
+[src:routing-osrm/route-planning-software] Trip planning user interfaces can be made more usable by integration of Gazetteer data.
+[src:routing-osrm/route-planning-software] Data for this purpose typically comes from additional layers in a map data set such as that provided by Esri, Ordnance Survey, Navtech, or specific data sets such as the UK National Public Transport Gazetteer.
+[src:routing-osrm/route-planning-software] Road trip planners, sometimes referred to as route planners, use street and footpath network data to compute a route using simply the network connectivity (i.e. trips may run at any time and not constrained by a timetable).
+[src:routing-osrm/route-planning-software] Such data can come from one or more public, commercial or crowdsourced datasets such as TIGER, Esri or OpenStreetMap.
+[src:routing-osrm/route-planning-software] The data is fundamental both for computing access legs to reach public transport stops, and to compute road trips in their own right.
+[src:routing-osrm/route-planning-software] The fundamental representation is a graph of nodes and edges (i.e. points and links).
+[src:routing-osrm/route-planning-software] Advanced road trip planners take into account the real-time state of the network.
+[src:routing-osrm/route-planning-software] They use two main types of feed to do this, obtained from road data services using interfaces such as Datex II or UTMC.
+[src:routing-osrm/route-planning-software] For transit route planners to work, transit schedule data must always be kept up to date.
+[src:routing-osrm/route-planning-software] To facilitate data exchange and interoperability between different trip planners, several standard data formats have emerged.
+[src:routing-osrm/route-planning-software] The General Transit Feed Specification, developed in 2006, is now used by hundreds of transit agencies around the world.
+[src:routing-osrm/route-planning-software] In the European Union all public passenger travel operators have the obligation to provide the information under the EU railway timetable data exchange format.
+[src:routing-osrm/route-planning-software] In other parts of the world there similar exchange standards.
+[src:routing-osrm/route-planning-software] The location and identity of public transport access points such as bus, tram and coach stops, stations, airports, ferry landing and ports are fundamental to trip planning and a stop data set is an essential layer of the transport data infrastructure.
+[src:routing-osrm/route-planning-software] In order to integrate stops with spatial searches and road routing engines they are geocoded.
+[src:routing-osrm/route-planning-software] In order to integrate them with the timetables and routes they are given a unique identifier within the transport network.
+[src:routing-osrm/route-planning-software] In order to be recognizable to passengers they are given official names and may also have a public short code (for example the three letter IATA codes for airports) to use in interfaces.
+[src:routing-osrm/route-planning-software] Historically, different operators quite often used a different identifier for the same stop and stop numbers were not unique within a country or even a region.
+[src:routing-osrm/route-planning-software] Timetable exchange formats, such as GTFS, TransXChange or NeTEx include stop data in their formats and spatial data sets such as OpenStreetMap allow stop identifiers to be geocoded.
+[src:routing-osrm/route-planning-software] For public transport networks with a very high frequency of service, such as urban metro cities and inner city bus services, the topology of the network can also be used for route planning, with an average interval being assumed rather than specific departure times.
+[src:routing-osrm/route-planning-software] Data on the routes of trains and buses is also useful for providing visualization of results, for example, to plot the route of a train on a map.
+[src:routing-osrm/route-planning-software] National mapping bodies, such as the UK's Ordnance Survey typically include a transport layer in their data sets and the European INSPIRE framework includes public transport infrastructure links in its set of strategic digital data.
+[src:routing-osrm/route-planning-software] In the UK the Online Journey Planner (OJP) is the engine used by National Rail to plan routes, calculate fares and establish ticket availability.
+[src:routing-osrm/route-planning-software] OJP obtains its route information from SilverRail's planning engine known as IPTIS (Integrated Passenger Transport Information System).
+[src:routing-osrm/route-planning-software] The National Rail website provides information on how businesses can access this data directly via online data feed xml files.
+[src:routing-osrm/route-planning-software] However, OJP was switched off in 2023 in favour of a new journey planner which is currently integrated into nationalrail.co.uk.
+[src:routing-osrm/route-planning-software] Data on public transport schedules is used by trip planners to determine the available journeys at specific times.
+[src:routing-osrm/route-planning-software] Historically rail data has been widely available in national formats, and many countries also have bus and other mode data in national formats such as VDV 452 (Germany), TransXChange (UK) and Neptune (France).
+[src:routing-osrm/route-planning-software] Schedule data is also increasingly becoming available in international formats such as GTFS and NeTEx.
+[src:routing-osrm/route-planning-software] Trip planners may be able to incorporate real-time information into their database and consider them in the selection of optimal routes for travel in the immediate future.
+[src:routing-osrm/route-planning-software] Automatic vehicle location (AVL) systems monitor the position of vehicles using GPS systems and can pass on real-time and forecast information to the journey planning system.
+[src:routing-osrm/route-planning-software] A trip planner may use a real time interface such as the CEN Service Interface for Real Time Information to obtain this data.
+[src:routing-osrm/route-planning-software] A situation is a software representation of an incident or event that is affecting or is likely to affect the transport network.
+[src:routing-osrm/route-planning-software] A trip planner can integrate situation information and use it both to revise its trip planning computations and to annotate its responses so as to inform users through both text and map representations.
+[src:routing-osrm/route-planning-software] A trip planner will typically use a standard interface such as SIRI, TPEG or Datex II to obtain situation information.
+[src:routing-osrm/route-planning-software] Incidents are captured through an incident capturing system (ICS) by different operators and stakeholders, for example in transport operator control rooms, by broadcasters or by the emergency services.
+[src:routing-osrm/route-planning-software] Text and image information can be combined with the trip result.
+[src:routing-osrm/route-planning-software] Recent incidents can be considered within the routing as well as visualized in an interactive map.
+[src:routing-osrm/route-planning-software] Typically journey planners use an efficient in-memory representation of the network and timetable to allow the rapid searching of a large number of paths.
+[src:routing-osrm/route-planning-software] Database queries may also be used where the number of nodes needed to compute a journey is small, and to access ancillary information relating to the journey.
+[src:routing-osrm/route-planning-software] A single engine may contain the entire transport network, and its schedules, or may allow the distributed computation of journeys using a distributed journey planning protocol such as JourneyWeb or Delfi Protocol.
+[src:routing-osrm/route-planning-software] A journey planning engine may be accessed by different front ends, using a software protocol or application program interface specialized for journey queries, to provide a user interface on different types of device.
+[src:routing-osrm/route-planning-software] The development of journey planning engines has gone hand in hand with the development of data standards for representing the stops, routes and timetables of the network, such as TransXChange, NaPTAN, Transmodel or GTFS that ensure that these fit together.
+[src:routing-osrm/route-planning-software] Journey planning algorithms are a classic example of problems in the field of Computational complexity theory.
+[src:routing-osrm/route-planning-software] Real-world implementations involve a tradeoff of computational resources between accuracy, completeness of the answer, and the time required for calculation.
+[src:routing-osrm/route-planning-software] The sub-problem of route planning is an easier problem to solve as it generally involves less data and fewer constraints.
+[src:routing-osrm/route-planning-software] However, with the development of "road timetables", associating different journey times for road links at different times of day, time of travel is increasingly relevant for route planners as well.
+[src:routing-osrm/route-planning-software] Journey planners use a routing algorithm to search a graph representing the transport network.
+[src:routing-osrm/route-planning-software] In the simplest case where routing is independent of time, the graph uses (directed) edges to represent street/path segments and nodes to represent intersections.
+[src:routing-osrm/route-planning-software] Routing on such a graph can be accomplished effectively using any of a number of routing algorithms such as Dijkstra's, A*, Floyd–Warshall, or Johnson's algorithm.
+[src:routing-osrm/route-planning-software] Different weightings such as distance, cost or accessibility may be associated with each edge, and sometimes with nodes.
+[src:routing-osrm/route-planning-software] Automated trip planners generate your itinerary automatically, based on the information you provide.
+[src:routing-osrm/route-planning-software] One way is to submit the desired destination, dates of your trip and interests and the plan will be created in a while.
+[src:routing-osrm/route-planning-software] Another way is to provide the necessary information by forwarding confirmation e-mails from airlines, hotels and car rental companies.
+[src:routing-osrm/route-planning-software] With a custom trip planner the user creates one's own travel itinerary individually by picking the appropriate activities from a database.
+[src:routing-osrm/route-planning-software] Some of these websites like Triphobo.com offer pre-built databases of points of interest, while others rely on user generated content.
+[src:routing-osrm/route-planning-software] A number of community developed trip planners for mobile, such as CoMaps, created route plans from downloaded maps from OpenStreetMap, for use offline.
+[src:routing-osrm/route-planning-software] In 2017, Google released a mobile app called Google Trips.
+[src:routing-osrm/route-planning-software] Custom trip planning startups are seeing renewed interest from investors with the advent of data science, AI and voice technologies in 2018.
+[src:routing-osrm/route-planning-software] Lola.com, an AI based travel planning startup and Hopper.com have managed to raise significant funding for developing trip planning apps.
+[src:routing-osrm/route-planning-software] When bookings and payments are added to a mobile trip planner app, then the result is considered mobility as a service.
+[src:routing-osrm/route-planning-software] Many distribution and logistics companies use route planning software as part of their fleet management systems to improve operational efficiency.
+[src:routing-osrm/route-planning-software] These systems often integrate GPS tracking and telematics functionality, enabling dispatchers to monitor vehicles in real time, analyze performance through reporting tools, and adjust routes as needed.
+[src:routing-osrm/route-planning-software] The goals typically include reducing mileage and idling, cutting fuel consumption, and improving delivery reliability.
+[src:routing-osrm/shortest-path-problem] In graph theory, the **shortest path problem** is the problem of finding a path between two vertices (or nodes) in a graph such that the sum of the weights of its constituent edges is minimized.
+[src:routing-osrm/shortest-path-problem] The problem of finding the shortest path between two intersections on a road map may be modeled as a special case of the shortest path problem in graphs, where the vertices correspond to intersections and the edges correspond to road segments, each weighted by the length or distance of each segment.
+[src:routing-osrm/shortest-path-problem] The shortest path problem can be defined for graphs whether undirected, directed, or mixed.
+[src:routing-osrm/shortest-path-problem] The definition for undirected graphs states that every edge can be traversed in either direction.
+[src:routing-osrm/shortest-path-problem] Directed graphs require that consecutive vertices be connected by an appropriate directed edge.
+[src:routing-osrm/shortest-path-problem] Two vertices are adjacent when they are both incident to a common edge.
+[src:routing-osrm/shortest-path-problem] A path in an undirected graph is a sequence of vertices $P=(v_{1},v_{2},\ldots ,v_{n})\in V\times V\times \cdots \times V$ such that $v_{i}$ is adjacent to $v_{i+1}$ for $1\leq i<n$ .
+[src:routing-osrm/shortest-path-problem] Such a path P is called a path of length $n-1$ from $v_{1}$ to $v_{n}$ .
+[src:routing-osrm/shortest-path-problem] These generalizations have significantly more efficient algorithms than the simplistic approach of running a single-pair shortest path algorithm on all relevant pairs of vertices.
+[src:routing-osrm/shortest-path-problem] Several well-known algorithms exist for solving this problem and its variants.
+[src:routing-osrm/shortest-path-problem] Additional algorithms and associated evaluations may be found in Cherkassky, Goldberg & Radzik (1996).
+[src:routing-osrm/shortest-path-problem] An algorithm using topological sorting can solve the single-source shortest path problem in time Θ(*E* + *V*) in arbitrarily-weighted directed acyclic graphs.
+[src:routing-osrm/shortest-path-problem] The following table is taken from Schrijver (2004), with some corrections and additions.
+[src:routing-osrm/shortest-path-problem] A green background indicates an asymptotically best bound in the table; *L* is the maximum length (or weight) among all edges, assuming integer edge weights.
+[src:routing-osrm/shortest-path-problem] Finds a negative cycle or calculates distances to all vertices.
+[src:routing-osrm/shortest-path-problem] The all-pairs shortest path problem finds the shortest paths between every pair of vertices v, v' in the graph.
+[src:routing-osrm/shortest-path-problem] The all-pairs shortest paths problem for unweighted directed graphs was introduced by Shimbel (1953), who observed that it could be solved by a linear number of matrix multiplications that takes a total time of *O*(*V*4).
+[src:routing-osrm/shortest-path-problem] Shortest path algorithms are applied to automatically find directions between physical locations, such as driving directions on web mapping websites like MapQuest or Google Maps.
+[src:routing-osrm/shortest-path-problem] For this application fast specialized algorithms are available.
+[src:routing-osrm/shortest-path-problem] For example, if vertices represent the states of a puzzle like a Rubik's Cube and each directed edge corresponds to a single move or turn, shortest path algorithms can be used to find a solution that uses the minimum possible number of moves.
+[src:routing-osrm/shortest-path-problem] In a networking or telecommunications mindset, this shortest path problem is sometimes called the min-delay path problem and usually tied with a widest path problem.
+[src:routing-osrm/shortest-path-problem] For example, the algorithm may seek the shortest (min-delay) widest path, or widest shortest (min-delay) path.
+[src:routing-osrm/shortest-path-problem] A more lighthearted application is the games of "six degrees of separation" that try to find the shortest path in graphs like movie stars appearing in the same film.
+[src:routing-osrm/shortest-path-problem] Other applications, often studied in operations research, include plant and facility layout, robotics, transportation, and VLSI design.
+[src:routing-osrm/shortest-path-problem] A road network can be considered as a graph with positive weights.
+[src:routing-osrm/shortest-path-problem] The nodes represent road junctions and each edge of the graph is associated with a road segment between two junctions.
+[src:routing-osrm/shortest-path-problem] The weight of an edge may correspond to the length of the associated road segment, the time needed to traverse the segment, or the cost of traversing the segment.
+[src:routing-osrm/shortest-path-problem] Using directed edges it is also possible to model one-way streets.
+[src:routing-osrm/shortest-path-problem] Such graphs are special in the sense that some edges are more important than others for long-distance travel (e.g. highways).
+[src:routing-osrm/shortest-path-problem] This property has been formalized using the notion of highway dimension.
+[src:routing-osrm/shortest-path-problem] There are a great number of algorithms that exploit this property and are therefore able to compute the shortest path a lot quicker than would be possible on general graphs.
+[src:routing-osrm/shortest-path-problem] All of these algorithms work in two phases.
+[src:routing-osrm/shortest-path-problem] In the first phase, the graph is preprocessed without knowing the source or target node.
+[src:routing-osrm/shortest-path-problem] In this phase, source and target node are known.
+[src:routing-osrm/shortest-path-problem] The idea is that the road network is static, so the preprocessing phase can be done once and used for a large number of queries on the same road network.
+[src:routing-osrm/shortest-path-problem] The algorithm with the fastest known query time is called hub labeling and is able to compute shortest path on the road networks of Europe or the US in a fraction of a microsecond.
+[src:routing-osrm/shortest-path-problem] For shortest path problems in computational geometry, see Euclidean shortest path.
+[src:routing-osrm/shortest-path-problem] The shortest multiple disconnected path is a representation of the primitive path network within the framework of Reptation theory.
+[src:routing-osrm/shortest-path-problem] The widest path problem seeks a path so that the minimum label of any edge is as large as possible.
+[src:routing-osrm/shortest-path-problem] Other related problems may be classified into the following categories.
+[src:routing-osrm/shortest-path-problem] Unlike the shortest path problem, which can be solved in polynomial time in graphs without negative cycles, shortest path problems which include additional constraints on the desired solution path are called Constrained Shortest Path First, and are harder to solve.
+[src:routing-osrm/shortest-path-problem] One example is the constrained shortest path problem, which attempts to minimize the total cost of the path while at the same time maintaining another metric below a given threshold.
+[src:routing-osrm/shortest-path-problem] This makes the problem NP-complete (such problems are not believed to be efficiently solvable for large sets of data, see P = NP problem).
+[src:routing-osrm/shortest-path-problem] Another NP-complete example requires a specific set of vertices to be included in the path, which makes the problem similar to the Traveling Salesman Problem (TSP).
+[src:routing-osrm/shortest-path-problem] The TSP is the problem of finding the shortest path that goes through every vertex exactly once, and returns to the start.
+[src:routing-osrm/shortest-path-problem] The problem of finding the longest path in a graph is also NP-complete.
+[src:routing-osrm/shortest-path-problem] The Canadian traveller problem and the stochastic shortest path problem are generalizations where either the graph is not completely known to the mover, changes over time, or where actions (traversals) are probabilistic.
+[src:routing-osrm/shortest-path-problem] Sometimes, the edges in a graph have personalities: each edge has its own selfish interest.
+[src:routing-osrm/shortest-path-problem] An example is a communication network, in which each edge is a computer that possibly belongs to a different person.
+[src:routing-osrm/shortest-path-problem] Different computers have different transmission speeds, so every edge in the network has a numeric weight equal to the number of milliseconds it takes to transmit a message.
+[src:routing-osrm/shortest-path-problem] Our goal is to send a message between two points in the network in the shortest time possible.
+[src:routing-osrm/shortest-path-problem] If we know the transmission-time of each computer (the weight of each edge), then we can use a standard shortest-paths algorithm.
+[src:routing-osrm/shortest-path-problem] If we do not know the transmission times, then we have to ask each computer to tell us its transmission-time.
+[src:routing-osrm/shortest-path-problem] But, the computers may be selfish: a computer might tell us that its transmission time is very long, so that we will not bother it with our messages.
+[src:routing-osrm/shortest-path-problem] A possible solution to this problem is to use a variant of the VCG mechanism, which gives the computers an incentive to reveal their true weights.
+[src:routing-osrm/shortest-path-problem] In some cases, the main goal is not to find the shortest path, but only to detect if the graph contains a negative cycle.
+[src:routing-osrm/shortest-path-problem] Many problems can be framed as a form of the shortest path for some suitably substituted notions of addition along a path and taking the minimum.
+[src:routing-osrm/shortest-path-problem] The general approach to these is to consider the two operations to be those of a semiring.
+[src:routing-osrm/shortest-path-problem] Semiring multiplication is done along the path, and the addition is between paths.
+[src:routing-osrm/shortest-path-problem] This general framework is known as the algebraic path problem.
+[src:routing-osrm/shortest-path-problem] Most of the classic shortest-path algorithms (and new ones) can be formulated as solving linear systems over such algebraic structures.
+[src:routing-osrm/shortest-path-problem] More recently, an even more general framework for solving these (and much less obviously related problems) has been developed under the banner of valuation algebras.
+[src:routing-osrm/shortest-path-problem] In real-life, a transportation network is usually stochastic and time-dependent.
+[src:routing-osrm/shortest-path-problem] The travel duration on a road segment depends on many factors such as the amount of traffic (origin-destination matrix), road work, weather, accidents and vehicle breakdowns.
+[src:routing-osrm/shortest-path-problem] A more realistic model of such a road network is a stochastic time-dependent (STD) network.
+[src:routing-osrm/shortest-path-problem] There is no accepted definition of optimal path under uncertainty (that is, in stochastic road networks).
+[src:routing-osrm/shortest-path-problem] It is a controversial subject, despite considerable progress during the past decade.
+[src:routing-osrm/shortest-path-problem] One common definition is a path with the minimum expected travel time.
+[src:routing-osrm/shortest-path-problem] The main advantage of this approach is that it can make use of efficient shortest path algorithms for deterministic networks.
+[src:routing-osrm/shortest-path-problem] However, the resulting optimal path may not be reliable, because this approach fails to address travel time variability.
+[src:routing-osrm/shortest-path-problem] To tackle this issue, some researchers use travel duration distribution instead of its expected value.
+[src:routing-osrm/shortest-path-problem] So, they find the probability distribution of total travel duration using different optimization methods such as dynamic programming and Dijkstra's algorithm .
+[src:routing-osrm/shortest-path-problem] These methods use stochastic optimization, specifically stochastic dynamic programming to find the shortest path in networks with probabilistic arc length.
+[src:routing-osrm/shortest-path-problem] The terms *travel time reliability* and *travel time variability* are used as opposites in the transportation research literature: the higher the variability, the lower the reliability of predictions.
+[src:routing-osrm/shortest-path-problem] To account for variability, researchers have suggested two alternative definitions for an optimal path under uncertainty.
+[src:routing-osrm/shortest-path-problem] The *most reliable path* is one that maximizes the probability of arriving on time given a travel time budget.
+[src:routing-osrm/shortest-path-problem] An *α-reliable path* is one that minimizes the travel time budget required to arrive on time with a given probability.
+[src:routing-osrm/travelling-salesman-problem] The travelling purchaser problem, the vehicle routing problem and the ring star problem are three generalizations of TSP.
+[src:routing-osrm/travelling-salesman-problem] The decision version of the TSP (where given a length *L*, the task is to decide whether the graph has a tour whose length is at most *L*) belongs to the class of NP-complete problems.
+[src:routing-osrm/travelling-salesman-problem] Thus, it is possible that the worst-case running time for any algorithm for the TSP increases superpolynomially (but no more than exponentially) with the number of cities.
+[src:routing-osrm/travelling-salesman-problem] The problem was first formulated in 1930 and is one of the most intensively studied problems in optimization.
+[src:routing-osrm/travelling-salesman-problem] It is used as a benchmark for many optimization methods.
+[src:routing-osrm/travelling-salesman-problem] Even though the problem is computationally difficult, many heuristics and exact algorithms are known, so that some instances with tens of thousands of cities can be solved completely, and even problems with millions of cities can be approximated within a small fraction of 1%.
+[src:routing-osrm/travelling-salesman-problem] The TSP has several applications even in its purest formulation, such as planning, logistics, and the manufacture of microchips.
+[src:routing-osrm/travelling-salesman-problem] In warehouse operations, order picking routes are often modelled as variants of the travelling salesman problem, where a picker must visit multiple storage locations and return to a start or drop-off point while minimizing travel distance or time.
+[src:routing-osrm/travelling-salesman-problem] Slightly modified, it appears as a sub-problem in many areas, such as DNA sequencing.
+[src:routing-osrm/travelling-salesman-problem] In these applications, the concept *city* represents, for example, customers, soldering points, or DNA fragments, and the concept *distance* represents travelling times or cost, or a similarity measure between DNA fragments.
+[src:routing-osrm/travelling-salesman-problem] The TSP also appears in astronomy, as astronomers observing many sources want to minimize the time spent moving the telescope between the sources; in such problems, the TSP can be embedded inside an optimal control problem.
+[src:routing-osrm/travelling-salesman-problem] In many applications, additional constraints such as limited resources or time windows may be imposed.
+[src:routing-osrm/travelling-salesman-problem] The origins of the travelling salesman problem are unclear.
+[src:routing-osrm/travelling-salesman-problem] A handbook for travelling salesmen from 1832 mentions the problem and includes example tours through Germany and Switzerland, but contains no mathematical treatment.
+[src:routing-osrm/travelling-salesman-problem] The TSP was mathematically formulated in the 19th century by the Irish mathematician William Rowan Hamilton and by the British mathematician Thomas Kirkman.
+[src:routing-osrm/travelling-salesman-problem] Hamilton's icosian game was a recreational puzzle based on finding a Hamiltonian cycle.
+[src:routing-osrm/travelling-salesman-problem] It was first considered mathematically in the 1930s by Merrill M.
+[src:routing-osrm/travelling-salesman-problem] Flood, who was looking to solve a school bus routing problem.
+[src:routing-osrm/travelling-salesman-problem] Hassler Whitney at Princeton University generated interest in the problem, which he called the "48 states problem".
+[src:routing-osrm/travelling-salesman-problem] In the 1950s and 1960s, the problem became increasingly popular in scientific circles in Europe and the United States after the RAND Corporation in Santa Monica offered prizes for steps in solving the problem.
+[src:routing-osrm/travelling-salesman-problem] Notable contributions were made by George Dantzig, Delbert Ray Fulkerson, and Selmer M.
+[src:routing-osrm/travelling-salesman-problem] Johnson from the RAND Corporation, who expressed the problem as an integer linear program and developed the cutting plane method for its solution.
+[src:routing-osrm/travelling-salesman-problem] They wrote what is considered the seminal paper on the subject in which, with these new methods, they solved an instance with 49 cities to optimality by constructing a tour and proving that no other tour could be shorter.
+[src:routing-osrm/travelling-salesman-problem] Dantzig, Fulkerson, and Johnson, however, speculated that, given a near-optimal solution, one may be able to find optimality or prove optimality by adding a small number of extra inequalities (cuts).
+[src:routing-osrm/travelling-salesman-problem] They used this idea to solve their initial 49-city problem using a string model.
+[src:routing-osrm/travelling-salesman-problem] They found they only needed 26 cuts to come to a solution for their 49 city problem.
+[src:routing-osrm/travelling-salesman-problem] While this paper did not give an algorithmic approach to TSP problems, the ideas that lay within it were indispensable to later creating exact solution methods for the TSP, though it would take 15 years to find an algorithmic approach in creating these cuts.
+[src:routing-osrm/travelling-salesman-problem] As well as cutting plane methods, Dantzig, Fulkerson, and Johnson used branch-and-bound algorithms perhaps for the first time.
+[src:routing-osrm/travelling-salesman-problem] Halton, and John Hammersley published an article entitled "The Shortest Path Through Many Points" in the journal of the Cambridge Philosophical Society.
+[src:routing-osrm/travelling-salesman-problem] The Beardwood–Halton–Hammersley theorem provides a practical solution to the travelling salesman problem.
+[src:routing-osrm/travelling-salesman-problem] The authors derived an asymptotic formula to determine the length of the shortest route for a salesman who starts at a home or office and visits a fixed number of locations before returning to the start.
+[src:routing-osrm/travelling-salesman-problem] In the following decades, the problem was studied by many researchers from mathematics, computer science, chemistry, physics, and other sciences.
+[src:routing-osrm/travelling-salesman-problem] One method of doing this was to create a minimum spanning tree of the graph and then double all its edges, which produces the bound that the length of an optimal tour is at most twice the weight of a minimum spanning tree.
+[src:routing-osrm/travelling-salesman-problem] In 1976, Christofides and Serdyukov (independently of each other) made a big advance in this direction: the Christofides–Serdyukov algorithm yields a solution that, in the worst case, is at most 1.5 times longer than the optimal solution.
+[src:routing-osrm/travelling-salesman-problem] As the algorithm was simple and quick, many hoped it would give way to a near-optimal solution method.
+[src:routing-osrm/travelling-salesman-problem] However, this hope for improvement did not immediately materialize, and the Christofides–Serdyukov algorithm remained the method with the best worst-case scenario until 2011, when a (very) slightly improved approximation algorithm was developed for the subset of "graphical" TSPs.
+[src:routing-osrm/travelling-salesman-problem] In 2020, this tiny improvement was extended to the full (metric) TSP.
+[src:routing-osrm/travelling-salesman-problem] Karp showed in 1972 that the Hamiltonian cycle problem was NP-complete, which implies the NP-hardness of TSP.
+[src:routing-osrm/travelling-salesman-problem] This supplied a mathematical explanation for the apparent computational difficulty of finding optimal tours.
+[src:routing-osrm/travelling-salesman-problem] Great progress was made in the late 1970s and 1980, when Grötschel, Padberg, Rinaldi and others managed to exactly solve instances with up to 2,392 cities, using cutting planes and branch-and-bound.
+[src:routing-osrm/travelling-salesman-problem] In the 1990s, Applegate, Bixby, Chvátal, and Cook developed the program *Concorde* that has been used in many recent record solutions.
+[src:routing-osrm/travelling-salesman-problem] Gerhard Reinelt published the TSPLIB in 1991, a collection of benchmark instances of varying difficulty, which has been used by many research groups for comparing results.
+[src:routing-osrm/travelling-salesman-problem] In 2006, Cook and others computed an optimal tour through an 85,900-city instance given by a microchip layout problem, currently the largest solved TSPLIB instance.
+[src:routing-osrm/travelling-salesman-problem] For many other instances with millions of cities, solutions can be found that are guaranteed to be within 2–3% of an optimal tour.
+[src:routing-osrm/travelling-salesman-problem] TSP can be modeled as an undirected weighted graph, such that cities are the graph's vertices, paths are the graph's edges, and a path's distance is the edge's weight.
+[src:routing-osrm/travelling-salesman-problem] It is a minimization problem starting and finishing at a specified vertex after having visited each other vertex exactly once.
+[src:routing-osrm/travelling-salesman-problem] Often, the model is a complete graph (i.e., each pair of vertices is connected by an edge).
+[src:routing-osrm/travelling-salesman-problem] If no path exists between two cities, then adding a sufficiently long edge will complete the graph without affecting the optimal tour.
+[src:routing-osrm/travelling-salesman-problem] In the *symmetric TSP*, the distance between two cities is the same in each opposite direction, forming an undirected graph.
+[src:routing-osrm/travelling-salesman-problem] This symmetry halves the number of possible solutions.
+[src:routing-osrm/travelling-salesman-problem] In the *asymmetric TSP*, paths may not exist in both directions or the distances might be different, forming a directed graph.
+[src:routing-osrm/travelling-salesman-problem] Traffic congestion, one-way streets, and airfares for cities with different departure and arrival fees are real-world considerations that could yield a TSP problem in asymmetric form.
+[src:routing-osrm/travelling-salesman-problem] The TSP can be formulated as an integer linear program.
+[src:routing-osrm/travelling-salesman-problem] Two notable formulations are the Miller–Tucker–Zemlin (MTZ) formulation and the Dantzig–Fulkerson–Johnson (DFJ) formulation.
+[src:routing-osrm/travelling-salesman-problem] The DFJ formulation is stronger, though the MTZ formulation is still useful in certain settings.
+[src:routing-osrm/travelling-salesman-problem] Common to both these formulations is that one labels the cities with the numbers $1,\ldots ,n$ and takes $c_{ij}>0$ to be the cost (distance) from city i to city j .
+[src:routing-osrm/travelling-salesman-problem] It is because these are 0/1 variables that the formulations become integer programs; all other constraints are purely linear.
+[src:routing-osrm/travelling-salesman-problem] Without further constraints, the $\{x_{ij}\}_{i,j}$ will effectively range over all subsets of the set of edges, which is very far from the sets of edges in a tour, and allows for a trivial minimum where all $x_{ij}=0$ .
+[src:routing-osrm/travelling-salesman-problem] The MTZ and DFJ formulations differ in how they express this final requirement as linear constraints.
+[src:routing-osrm/travelling-salesman-problem] Merely requiring $u_{j}\geq u_{i}+x_{ij}$ would *not* achieve that, because this also requires $u_{j}\geq u_{i}$ when $x_{ij}=0,$ which is not correct.
+[src:routing-osrm/travelling-salesman-problem] The first set of equalities requires that each city is arrived at from exactly one other city, and the second set of equalities requires that from each city there is a departure to exactly one other city.
+[src:routing-osrm/travelling-salesman-problem] The last constraint enforces that there is only a single tour covering all cities, and not two or more disjointed tours that only collectively cover all cities.
+[src:routing-osrm/travelling-salesman-problem] Take $c_{ij}>0$ to be the distance from city *i* to city *j*.
+[src:routing-osrm/travelling-salesman-problem] The last constraint of the DFJ formulation—called a *subtour elimination* constraint—ensures that no proper subset Q can form a sub-tour, so the solution returned is a single tour and not the union of smaller tours.
+[src:routing-osrm/travelling-salesman-problem] Intuitively, for each proper subset Q of the cities, the constraint requires that there be fewer edges than cities in Q: if there were to be as many edges in Q as cities in Q, that would represent a subtour of the cities of Q.
+[src:routing-osrm/travelling-salesman-problem] Because this leads to an exponential number of possible constraints, in practice it is solved with row generation.
+[src:routing-osrm/travelling-salesman-problem] The most direct solution would be to try all permutations (ordered combinations) and see which one is cheapest (using brute-force search).
+[src:routing-osrm/travelling-salesman-problem] The running time for this approach lies within a polynomial factor of $O(n!)$ , the factorial of the number of cities, so this solution becomes impractical even for only 20 cities.
+[src:routing-osrm/travelling-salesman-problem] One of the earliest applications of dynamic programming is the Held–Karp algorithm, which solves the problem in time $O(n^{2}2^{n})$ .
+[src:routing-osrm/travelling-salesman-problem] Improving these time bounds seems to be difficult.
+[src:routing-osrm/travelling-salesman-problem] For example, it has not been determined whether a classical exact algorithm for TSP that runs in time $O(1.9999^{n})$ exists.
+[src:routing-osrm/travelling-salesman-problem] The currently best quantum exact algorithm for TSP due to Ambainis et al. runs in time $O(1.728^{n})$ .
+[src:routing-osrm/travelling-salesman-problem] An exact solution for 15,112 German towns from TSPLIB was found in 2001 using the cutting-plane method proposed by George Dantzig, Ray Fulkerson, and Selmer M.
+[src:routing-osrm/travelling-salesman-problem] Johnson in 1954, based on linear programming.
+[src:routing-osrm/travelling-salesman-problem] The computations were performed on a network of 110 processors located at Rice University and Princeton University.
+[src:routing-osrm/travelling-salesman-problem] The total computation time was equivalent to 22.6 years on a single 500 MHz Alpha processor.
+[src:routing-osrm/travelling-salesman-problem] In May 2004, the travelling salesman problem of visiting all 24,978 towns in Sweden was solved: a tour of length approximately 72,500 kilometres was found, and it was proven that no shorter tour exists.
+[src:routing-osrm/travelling-salesman-problem] In March 2005, the travelling salesman problem of visiting all 33,810 points in a circuit board was solved using *Concorde TSP Solver*: a tour of length 66,048,945 units was found, and it was proven that no shorter tour exists.
+[src:routing-osrm/travelling-salesman-problem] The computation took approximately 15.7 CPU-years (Cook et al.
+[src:routing-osrm/travelling-salesman-problem] In April 2006 an instance with 85,900 points was solved using *Concorde TSP Solver*, taking over 136 CPU-years; see Applegate et al.
+[src:routing-osrm/travelling-salesman-problem] Various heuristics and approximation algorithms, which quickly yield good solutions, have been devised.
+[src:routing-osrm/travelling-salesman-problem] These include the multi-fragment algorithm.
+[src:routing-osrm/travelling-salesman-problem] Modern methods can find solutions for extremely large problems (millions of cities) within a reasonable time which are, with a high probability, just 2–3% away from the optimal solution.
+[src:routing-osrm/travelling-salesman-problem] Several categories of heuristics are recognized.
+[src:routing-osrm/travelling-salesman-problem] The nearest neighbour (NN) algorithm (a greedy algorithm) lets the salesman choose the nearest unvisited city as his next move.
+[src:routing-osrm/travelling-salesman-problem] This algorithm quickly yields an effectively short route.
+[src:routing-osrm/travelling-salesman-problem] For *N* cities randomly distributed on a plane, the algorithm on average yields a path 25% longer than the shortest possible path; however, there exist many specially-arranged city distributions which make the NN algorithm give the worst route.
+[src:routing-osrm/travelling-salesman-problem] This is true for both asymmetric and symmetric TSPs.
+[src:routing-osrm/travelling-salesman-problem] Rosenkrantz et al. showed that the NN algorithm has the approximation factor $\Theta (\log |V|)$ for instances satisfying the triangle inequality.
+[src:routing-osrm/travelling-salesman-problem] A variation of the NN algorithm, called nearest fragment (NF) operator, which connects a group (fragment) of nearest unvisited cities, can find shorter routes with successive iterations.
+[src:routing-osrm/travelling-salesman-problem] The NF operator can also be applied on an initial solution obtained by the NN algorithm for further improvement in an elitist model, where only better solutions are accepted.
+[src:routing-osrm/travelling-salesman-problem] The bitonic tour of a set of points is the minimum-perimeter monotone polygon that has the points as its vertices; it can be computed efficiently with dynamic programming.
+[src:routing-osrm/travelling-salesman-problem] Another constructive heuristic, Match Twice and Stitch (MTS), performs two sequential matchings, where the second matching is executed after deleting all the edges of the first matching, to yield a set of cycles.
+[src:routing-osrm/travelling-salesman-problem] The cycles are then stitched to produce the final tour.
+[src:routing-osrm/travelling-salesman-problem] The algorithm of Christofides and Serdyukov follows a similar outline but combines the minimum spanning tree with a solution of another problem, minimum-weight perfect matching.
+[src:routing-osrm/travelling-salesman-problem] This gives a TSP tour which is at most 1.5 times the optimal.
+[src:routing-osrm/travelling-salesman-problem] It was one of the first approximation algorithms, and was in part responsible for drawing attention to approximation algorithms as a practical approach to intractable problems.
+[src:routing-osrm/travelling-salesman-problem] As a matter of fact, the term "algorithm" was not commonly extended to approximation algorithms until later; the Christofides algorithm was initially referred to as the Christofides heuristic.
+[src:routing-osrm/travelling-salesman-problem] This algorithm looks at things differently by using a result from graph theory which helps improve on the lower bound of the TSP which originated from doubling the cost of the minimum spanning tree.
+[src:routing-osrm/travelling-salesman-problem] Given an Eulerian graph, we can find an Eulerian tour in ⁠ $O(n)$ ⁠ time, so if we had an Eulerian graph with cities from a TSP as vertices, then we can easily see that we could use such a method for finding an Eulerian tour to find a TSP solution.
+[src:routing-osrm/travelling-salesman-problem] By the triangle inequality, we know that the TSP tour can be no longer than the Eulerian tour, and we therefore have a lower bound for the TSP.
+[src:routing-osrm/travelling-salesman-problem] Create duplicates for every edge to create an Eulerian graph.
+[src:routing-osrm/travelling-salesman-problem] Convert to TSP: if a city is visited twice, then create a shortcut from the city before this in the tour to the one after this.
+[src:routing-osrm/travelling-salesman-problem] To improve the lower bound, a better way of creating an Eulerian graph is needed.
+[src:routing-osrm/travelling-salesman-problem] By the triangle inequality, the best Eulerian graph must have the same cost as the best travelling salesman tour; hence, finding optimal Eulerian graphs is at least as hard as TSP.
+[src:routing-osrm/travelling-salesman-problem] One way of doing this is by minimum weight matching using algorithms with a complexity of $O(n^{3})$ .
+[src:routing-osrm/travelling-salesman-problem] Making a graph into an Eulerian graph starts with the minimum spanning tree; all the vertices of odd order must then be made even, so a matching for the odd-degree vertices must be added, which increases the order of every odd-degree vertex by 1.
+[src:routing-osrm/travelling-salesman-problem] This leaves us with a graph where every vertex is of even order, which is thus Eulerian.
+[src:routing-osrm/travelling-salesman-problem] Create a matching for the problem with the set of cities of odd order.
+[src:routing-osrm/travelling-salesman-problem] The pairwise exchange or 2-opt technique involves iteratively removing two edges and replacing them with two different edges that reconnect the fragments created by edge removal into a new and shorter tour.
+[src:routing-osrm/travelling-salesman-problem] Similarly, the 3-opt technique removes 3 edges and reconnects them to form a shorter tour.
+[src:routing-osrm/travelling-salesman-problem] These are special cases of the *k*-opt method.
+[src:routing-osrm/travelling-salesman-problem] The label *Lin–Kernighan* is an often heard misnomer for 2-opt; Lin–Kernighan is actually the more general *k*-opt method.
+[src:routing-osrm/travelling-salesman-problem] For Euclidean instances, 2-opt heuristics give on average solutions that are about 5% better than those yielded by Christofides' algorithm.
+[src:routing-osrm/travelling-salesman-problem] If we start with an initial solution made with a greedy algorithm, then the average number of moves greatly decreases again and is ⁠ $O(n)$ ⁠; however, for random starts, the average number of moves is ⁠ $O(n\log(n))$ ⁠.
+[src:routing-osrm/travelling-salesman-problem] While this is a small increase in size, the initial number of moves for small problems is 10 times as big for a random start compared to one made from a greedy heuristic.
+[src:routing-osrm/travelling-salesman-problem] This is because such 2-opt heuristics exploit 'bad' parts of a solution such as crossings.
+[src:routing-osrm/travelling-salesman-problem] These types of heuristics are often used within vehicle routing problem heuristics to re-optimize route solutions.
+[src:routing-osrm/travelling-salesman-problem] The Lin–Kernighan heuristic is a special case of the *V*-opt or variable-opt technique.
+[src:routing-osrm/travelling-salesman-problem] Reassemble the remaining fragments into a tour, leaving no disjoint subtours (that is, do not connect a fragment's endpoints together).
+[src:routing-osrm/travelling-salesman-problem] This in effect simplifies the TSP under consideration into a much simpler problem.
+[src:routing-osrm/travelling-salesman-problem] Each fragment endpoint can be connected to 2*k* − 2 other possibilities: of 2*k* total fragment endpoints available, the two endpoints of the fragment under consideration are disallowed.
+[src:routing-osrm/travelling-salesman-problem] Such a constrained 2*k*-city TSP can then be solved with brute-force methods to find the least-cost recombination of the original fragments.
+[src:routing-osrm/travelling-salesman-problem] The most popular of the *k*-opt methods are 3-opt, as introduced by Shen Lin of Bell Labs in 1965.
+[src:routing-osrm/travelling-salesman-problem] A special case of 3-opt is where the edges are not disjoint (two of the edges are adjacent to one another).
+[src:routing-osrm/travelling-salesman-problem] In practice, it is often possible to achieve substantial improvement over 2-opt without the combinatorial cost of the general 3-opt by restricting the 3-changes to this special subset where two of the removed edges are adjacent.
+[src:routing-osrm/travelling-salesman-problem] This so-called two-and-a-half-opt typically falls roughly midway between 2-opt and 3-opt, both in terms of the quality of tours achieved and the time required to achieve those tours.
+[src:routing-osrm/travelling-salesman-problem] The variable-opt method is related to, and a generalization of, the *k*-opt method.
+[src:routing-osrm/travelling-salesman-problem] Whereas the *k*-opt methods remove a fixed number (*k*) of edges from the original tour, the variable-opt methods do not fix the size of the edge set to remove.
+[src:routing-osrm/travelling-salesman-problem] Instead, they grow the set as the search process continues.
+[src:routing-osrm/travelling-salesman-problem] The best-known method in this family is the Lin–Kernighan method (mentioned above as a misnomer for 2-opt).
+[src:routing-osrm/travelling-salesman-problem] Shen Lin and Brian Kernighan first published their method in 1972, and it was the most reliable heuristic for solving travelling salesman problems for nearly two decades.
+[src:routing-osrm/travelling-salesman-problem] More advanced variable-opt methods were developed at Bell Labs in the late 1980s by David Johnson and his research team.
+[src:routing-osrm/travelling-salesman-problem] These methods (sometimes called Lin–Kernighan–Johnson) build on the Lin–Kernighan method, adding ideas from tabu search and evolutionary computing.
+[src:routing-osrm/travelling-salesman-problem] The basic Lin–Kernighan technique gives results that are guaranteed to be at least 3-opt.
+[src:routing-osrm/travelling-salesman-problem] The Lin–Kernighan–Johnson methods compute a Lin–Kernighan tour, and then perturb the tour by what has been described as a mutation that removes at least four edges and reconnects the tour in a different way, then *V*-opting the new tour.
+[src:routing-osrm/travelling-salesman-problem] The mutation is often enough to move the tour from the local minimum identified by Lin–Kernighan.
+[src:routing-osrm/travelling-salesman-problem] *V*-opt methods are widely considered the most powerful heuristics for the problem, and are able to address special cases, such as the Hamilton Cycle Problem and other non-metric TSPs that other heuristics fail on.
+[src:routing-osrm/travelling-salesman-problem] For many years, Lin–Kernighan–Johnson had identified optimal solutions for all TSPs where an optimal solution was known and had identified the best-known solutions for all other TSPs on which the method had been tried.
+[src:routing-osrm/travelling-salesman-problem] Optimized Markov chain algorithms which use local searching heuristic sub-algorithms can find a route extremely close to the optimal route for 700 to 800 cities.
+[src:routing-osrm/travelling-salesman-problem] TSP is a touchstone for many general heuristics devised for combinatorial optimization such as genetic algorithms, simulated annealing, tabu search, ant colony optimization, river formation dynamics (see swarm intelligence), and the cross entropy method.
+[src:routing-osrm/travelling-salesman-problem] This starts with a sub-tour such as the convex hull and then inserts other vertices.
+[src:routing-osrm/travelling-salesman-problem] Artificial intelligence researcher Marco Dorigo described in 1993 a method of heuristically generating "good solutions" to the TSP using a simulation of an ant colony called *ACS* (*ant colony system*).
+[src:routing-osrm/travelling-salesman-problem] It models behavior observed in real ants to find short paths between food sources and their nest, an emergent behavior resulting from each ant's preference to follow trail pheromones deposited by other ants.
+[src:routing-osrm/travelling-salesman-problem] ACS sends out a large number of virtual ant agents to explore many possible routes on the map.
+[src:routing-osrm/travelling-salesman-problem] Each ant probabilistically chooses the next city to visit based on a heuristic combining the distance to the city and the amount of virtual pheromone deposited on the edge to the city.
+[src:routing-osrm/travelling-salesman-problem] The ants explore, depositing pheromone on each edge that they cross, until they have all completed a tour.
+[src:routing-osrm/travelling-salesman-problem] At this point the ant which completed the shortest tour deposits virtual pheromone along its complete tour route (*global trail updating*).
+[src:routing-osrm/travelling-salesman-problem] The amount of pheromone deposited is inversely proportional to the tour length: the shorter the tour, the more it deposits.
+[src:routing-osrm/travelling-salesman-problem] In the *metric TSP*, also known as *delta-TSP* or Δ-TSP, the intercity distances satisfy the triangle inequality.
+[src:routing-osrm/travelling-salesman-problem] The edges then build a metric on the set of vertices.
+[src:routing-osrm/travelling-salesman-problem] When the cities are viewed as points in the plane, many natural distance functions are metrics, and so many natural instances of TSP satisfy this constraint.
+[src:routing-osrm/travelling-salesman-problem] The following are some examples of metric TSPs for various metrics.
+[src:routing-osrm/travelling-salesman-problem] The last two metrics appear, for example, in routing a machine that drills a given set of holes in a printed circuit board.
+[src:routing-osrm/travelling-salesman-problem] The Manhattan metric corresponds to a machine that adjusts first one coordinate, and then the other, so the time to move to a new point is the sum of both movements.
+[src:routing-osrm/travelling-salesman-problem] The maximum metric corresponds to a machine that adjusts both coordinates simultaneously, so the time to move to a new point is the slower of the two movements.
+[src:routing-osrm/travelling-salesman-problem] In its definition, the TSP does not allow cities to be visited twice, but many applications do not need this constraint.
+[src:routing-osrm/travelling-salesman-problem] In such cases, a symmetric, non-metric instance can be reduced to a metric one.
+[src:routing-osrm/travelling-salesman-problem] This replaces the original graph with a complete graph in which the inter-city distance $d_{AB}$ is replaced by the shortest path length between *A* and *B* in the original graph.
+[src:routing-osrm/travelling-salesman-problem] For points in the Euclidean plane, the optimal solution to the travelling salesman problem forms a simple polygon through all of the points, a polygonalization of the points.
+[src:routing-osrm/travelling-salesman-problem] Any non-optimal solution with crossings can be made into a shorter solution without crossings by local optimizations.
+[src:routing-osrm/travelling-salesman-problem] The Euclidean distance obeys the triangle inequality, so the Euclidean TSP forms a special case of metric TSP.
+[src:routing-osrm/travelling-salesman-problem] However, even when the input points have integer coordinates, their distances generally take the form of square roots, and the length of a tour is a sum of radicals, making it difficult to perform the symbolic computation needed to perform exact comparisons of the lengths of different tours.
+[src:routing-osrm/travelling-salesman-problem] Like the general TSP, the exact Euclidean TSP is NP-hard, but the issue with sums of radicals is an obstacle to proving that its decision version is in NP, and therefore NP-complete.
+[src:routing-osrm/travelling-salesman-problem] A discretized version of the problem with distances rounded to integers is NP-complete.
+[src:routing-osrm/travelling-salesman-problem] With rational coordinates and the actual Euclidean metric, Euclidean TSP is known to be in the Counting Hierarchy, a subclass of PSPACE.
+[src:routing-osrm/travelling-salesman-problem] With arbitrary real coordinates, Euclidean TSP cannot be in such classes, since there are uncountably many possible inputs.
+[src:routing-osrm/travelling-salesman-problem] Despite these complications, Euclidean TSP is much easier than the general metric case for approximation.
+[src:routing-osrm/travelling-salesman-problem] For example, the minimum spanning tree of the graph associated with an instance of the Euclidean TSP is a Euclidean minimum spanning tree, and so can be computed in expected *O*(*n* log *n*) time for *n* points (considerably less than the number of edges).
+[src:routing-osrm/travelling-salesman-problem] This enables the simple 2-approximation algorithm for TSP with triangle inequality above to operate more quickly.
+[src:routing-osrm/travelling-salesman-problem] time; this is called a polynomial-time approximation scheme (PTAS).
+[src:routing-osrm/travelling-salesman-problem] Mitchell were awarded the Gödel Prize in 2010 for their concurrent discovery of a PTAS for the Euclidean TSP.
+[src:routing-osrm/travelling-salesman-problem] In practice, simpler heuristics with weaker guarantees continue to be used.
+[src:routing-osrm/travelling-salesman-problem] In most cases, the distance between two nodes in the TSP network is the same in both directions.
+[src:routing-osrm/travelling-salesman-problem] The case where the distance from *A* to *B* is not equal to the distance from *B* to *A* is called asymmetric TSP.
+[src:routing-osrm/travelling-salesman-problem] A practical application of an asymmetric TSP is route optimization using street-level routing (which is made asymmetric by one-way streets, slip-roads, motorways, etc.).
+[src:routing-osrm/travelling-salesman-problem] The stacker crane problem can be viewed as a special case of the asymmetric TSP.
+[src:routing-osrm/travelling-salesman-problem] In this problem, the input consists of ordered pairs of points in a metric space, which must be visited consecutively in order by the tour.
+[src:routing-osrm/travelling-salesman-problem] These pairs of points can be viewed as the nodes of an asymmetric TSP, with asymmetric distances reflecting the combined cost of traveling from the first point of a pair to its second and then from the second point of a pair to the first point of the next pair.
+[src:routing-osrm/travelling-salesman-problem] Solving an asymmetric TSP graph can be somewhat complex.
+[src:routing-osrm/travelling-salesman-problem] The following is a 3×3 matrix containing all possible path weights between the nodes *A*, *B* and *C*.
+[src:routing-osrm/travelling-salesman-problem] One option is to turn an asymmetric matrix of size *N* into a symmetric matrix of size 2*N*.
+[src:routing-osrm/travelling-salesman-problem] To double the size, each of the nodes in the graph is duplicated, creating a second *ghost node*, linked to the original node with a "ghost" edge of very low (possibly negative) weight, here denoted −*w*.
+[src:routing-osrm/travelling-salesman-problem] (Alternatively, the ghost edges have weight 0, and weight w is added to all other edges.) The original 3×3 matrix shown above is visible in the bottom left and the transpose of the original in the top-right.
+[src:routing-osrm/travelling-salesman-problem] Both copies of the matrix have had their diagonals replaced by the low-cost hop paths, represented by −*w*.
+[src:routing-osrm/travelling-salesman-problem] In the new graph, no edge directly links original nodes and no edge directly links ghost nodes.
+[src:routing-osrm/travelling-salesman-problem] The weight −*w* of the "ghost" edges linking the ghost nodes to the corresponding original nodes must be low enough to ensure that all ghost edges must belong to any optimal symmetric TSP solution on the new graph (*w* = 0 is not always low enough).
+[src:routing-osrm/travelling-salesman-problem] There is an analogous problem in geometric measure theory which asks the following: under what conditions may a subset *E* of Euclidean space be contained in a rectifiable curve (that is, when is there a curve with finite length that visits every point in *E*)?
+[src:routing-osrm/travelling-salesman-problem] This problem is known as the analyst's travelling salesman problem.
+[src:routing-osrm/travelling-salesman-problem] Suppose $X_{1},\ldots ,X_{n}$ are n independent random variables with uniform distribution in the square $[0,1]^{2}$ , and let $L_{n}^{\ast }$ be the shortest path length (i.e.
+[src:routing-osrm/travelling-salesman-problem] TSP solution) for this set of points, according to the usual Euclidean distance.
+[src:routing-osrm/travelling-salesman-problem] where $\beta$ is a positive constant that is not known explicitly.
+[src:routing-osrm/travelling-salesman-problem] Since $L_{n}^{*}\leq 2{\sqrt {n}}+2$ (see below), it follows from bounded convergence theorem that $\beta =\lim _{n\to \infty }\mathbb {E} [L_{n}^{*}]/{\sqrt {n}}$ , hence lower and upper bounds on $\beta$ follow from bounds on $\mathbb {E} [L_{n}^{*}]$ .
+[src:routing-osrm/travelling-salesman-problem] The almost-sure limit ${\frac {L_{n}^{*}}{\sqrt {n}}}\rightarrow \beta$ as $n\to \infty$ may not exist if the independent locations $X_{1},\ldots ,X_{n}$ are replaced with observations from a stationary ergodic process with uniform marginals.
+[src:routing-osrm/travelling-salesman-problem] Held and Karp gave a polynomial-time algorithm that provides numerical lower bounds for $L_{n}^{*}$ , and thus for $\beta (\simeq L_{n}^{*}/{\sqrt {n}})$ , which seem to be good up to more or less 1%.
+[src:routing-osrm/travelling-salesman-problem] where 0.522 comes from the points near the square boundary which have fewer neighbours, and Christine L.
+[src:routing-osrm/travelling-salesman-problem] The problem has been shown to be NP-hard (more precisely, it is complete for the complexity class FPNP; see function problem), and the decision problem version ("given the costs and a number *x*, decide whether there is a round-trip route cheaper than *x*") is NP-complete.
+[src:routing-osrm/travelling-salesman-problem] The bottleneck travelling salesman problem is also NP-hard.
+[src:routing-osrm/travelling-salesman-problem] The problem remains NP-hard even for the case when the cities are in the plane with Euclidean distances, as well as in a number of other restrictive cases.
+[src:routing-osrm/travelling-salesman-problem] Removing the condition of visiting each city "only once" does not remove the NP-hardness, since in the planar case there is an optimal tour that visits each city only once (otherwise, by the triangle inequality, a shortcut that skips a repeated visit would not increase the tour length).
+[src:routing-osrm/travelling-salesman-problem] In the general case, finding a shortest travelling salesman tour is NPO-complete.
+[src:routing-osrm/travelling-salesman-problem] If the distance measure is a metric (and thus symmetric), the problem becomes APX-complete, and the algorithm of Christofides and Serdyukov approximates it within 1.5.
+[src:routing-osrm/travelling-salesman-problem] If the distances are restricted to 1 and 2 (but still are a metric), then the approximation ratio becomes 8/7.
+[src:routing-osrm/travelling-salesman-problem] In the asymmetric case with triangle inequality, in 2018, a constant factor approximation was developed by Svensson, Tarnawski, and Végh.
+[src:routing-osrm/travelling-salesman-problem] An algorithm by Vera Traub and Jens Vygen achieves a performance ratio of $22+\varepsilon$ .
+[src:routing-osrm/travelling-salesman-problem] This factor was further improved to $17+\varepsilon$ .
+[src:routing-osrm/travelling-salesman-problem] The best known inapproximability bound is 75/74.
+[src:routing-osrm/travelling-salesman-problem] The corresponding maximization problem of finding the *longest* travelling salesman tour is approximable within 63/38.
+[src:routing-osrm/travelling-salesman-problem] If the distance function is symmetric, then the longest tour can be approximated within 4/3 by a deterministic algorithm and within $(33+\varepsilon )/25$ by a randomized algorithm.
+[src:routing-osrm/travelling-salesman-problem] The TSP, in particular the Euclidean variant of the problem, has attracted the attention of researchers in cognitive psychology.
+[src:routing-osrm/travelling-salesman-problem] It has been observed that humans are able to produce near-optimal solutions quickly, in a close-to-linear fashion, with performance that ranges from 1% less efficient, for graphs with 10–20 nodes, to 11% less efficient for graphs with 120 nodes.
+[src:routing-osrm/travelling-salesman-problem] The apparent ease with which humans accurately generate near-optimal solutions to the problem has led researchers to hypothesize that humans use one or more heuristics, with the two most popular theories arguably being the convex-hull hypothesis and the crossing-avoidance heuristic.
+[src:routing-osrm/travelling-salesman-problem] However, additional evidence suggests that human performance is quite varied, and individual differences as well as graph geometry appear to affect performance in the task.
+[src:routing-osrm/travelling-salesman-problem] Nevertheless, results suggest that computer performance on the TSP may be improved by understanding and emulating the methods used by humans for these problems, and have also led to new insights into the mechanisms of human thought.
+[src:routing-osrm/travelling-salesman-problem] The first issue of the *Journal of Problem Solving* was devoted to the topic of human performance on TSP, and a 2011 review listed dozens of papers on the subject.
+[src:routing-osrm/travelling-salesman-problem] In the first experiment, pigeons were placed in the corner of a lab room and allowed to fly to nearby feeders containing peas.
+[src:routing-osrm/travelling-salesman-problem] The researchers found that pigeons largely used proximity to determine which feeder they would select next.
+[src:routing-osrm/travelling-salesman-problem] In the second experiment, the feeders were arranged in such a way that flying to the nearest feeder at every opportunity would be largely inefficient if the pigeons needed to visit every feeder.
+[src:routing-osrm/travelling-salesman-problem] This suggests non-primates may possess a relatively sophisticated spatial cognitive ability.
+[src:routing-osrm/travelling-salesman-problem] Humans are not the only species to show excellent efficiency.
+[src:routing-osrm/travelling-salesman-problem] For example, when presented with a spatial configuration of food sources, the amoeboid *Physarum polycephalum* adapts its morphology to create an efficient path between the food sources, which can also be viewed as an approximate solution to TSP.
+[src:routing-osrm/travelling-salesman-problem] Similarly, honey bees and bumblebees have been shown to be very adept at maximising efficiency to a very high degree of accuracy when collecting nectar and pollen by using collective intelligence.
+[src:routing-osrm/travelling-salesman-problem] For benchmarking of TSP algorithms, TSPLIB is a library of sample instances of the TSP and related problems.
+[src:routing-osrm/travelling-salesman-problem] Many of them are lists of actual cities and layouts of actual printed circuits.

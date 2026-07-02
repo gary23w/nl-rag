@@ -7,18 +7,27 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
 
 ## What's here
 
-- `packs/<domain>/` — one directory per knowledge domain (**741 domains, ~6,300 pack files**):
-  every programming language and dialect (systems, JVM, .NET, functional, lisp family,
-  scripting, assembly, the legacy canon), every paradigm and problem-solving method, the full
-  embedded/IoT stack (microcontrollers, RTOS, buses, IoT protocols, electronics, control
-  theory, DSP, FPGA, PLC/SCADA, robotics, computer architecture), mathematics from arithmetic
-  to category theory and quantum computing, CS systems (OS internals, compilers, automata,
-  distributed systems, formal methods, networking protocols), the complete GoF pattern catalog
-  plus architecture/concurrency patterns, web frontend & backend frameworks, databases (SQL,
-  NoSQL, vector, time-series, graph), cloud platforms (AWS/Azure/GCP/Cloudflare), DevOps &
-  observability tooling, ML/AI frameworks & techniques, defensive security & compliance,
-  blockchain/Web3, developer tooling (testing/build/package/docs/editors), scientific
-  computing, the canonical books of the craft, and Rosetta Code polyglot tasks. Every file is:
+- `packs/<domain>/` — one directory per knowledge domain (**1,364 domains, ~10,700 pack
+  files, ~300 MB**): every programming language and dialect (systems, JVM, .NET, functional,
+  lisp family, scripting, assembly, the legacy canon), every paradigm and problem-solving
+  method, the full embedded/IoT stack + hardware design & EDA (SystemVerilog, synthesis,
+  SPICE, PCB, RF, microarchitecture), mathematics from arithmetic to category theory, quantum
+  computing and the scientific-computing stack (SciPy/SymPy, quantum chemistry, genomics,
+  climate, econometrics, HPC), CS systems (OS internals, compilers, automata, distributed
+  systems, formal methods, networking protocols) and platform APIs (Win32/Cocoa/Android/iOS,
+  Linux distros, packaging, boot), the complete GoF pattern catalog plus architecture/
+  concurrency patterns, web frontend & backend frameworks and the advanced web platform
+  (CSP/CORS, Core Web Vitals, SSR/SSG, micro-frontends, i18n, SEO), databases (SQL, NoSQL,
+  vector, time-series, graph) and the big-data/analytics stack (Spark, Flink, Airflow, dbt,
+  Iceberg, Arrow), cloud platforms (AWS/Azure/GCP/Cloudflare), DevOps & observability tooling,
+  ML/AI frameworks plus model architectures & techniques (BERT/GPT/ViT/CLIP, LoRA, DPO, RL,
+  Bayesian, serving), defensive security & compliance plus the blue-team/DFIR/applied-crypto
+  canon (YARA/Sigma/Suricata/Zeek, TEE/SGX, post-quantum, MPC), blockchain/Web3, graphics &
+  media (DirectX/Metal/WebGPU, codecs, FFmpeg, audio, 3D), game development (engines, netcode,
+  game AI, physics), serialization & protocol standards, config DSLs & compiler infrastructure
+  (HCL/CUE/Rego, LSP/DAP, LLVM/MLIR, WASM), applied verticals (fintech, FHIR/HL7/DICOM, GIS,
+  e-commerce, CMS, telecom, automotive), developer tooling, the canonical books of the craft,
+  and Rosetta Code polyglot tasks. Every file is:
   - **clean markdown** — no HTML, no nav/chrome/cookie banners, fenced code with language
     tags, GFM tables, citation markers stripped
   - **frontmattered** — `title`, `source` (upstream URL), `domain`, `license`, `tags`,

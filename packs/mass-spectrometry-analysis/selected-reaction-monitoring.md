@@ -1,0 +1,42 @@
+---
+title: "Selected reaction monitoring"
+source: https://en.wikipedia.org/wiki/Selected_reaction_monitoring
+domain: mass-spectrometry-analysis
+license: CC-BY-SA-4.0
+tags: mass spectrometry analysis, tandem mass spectrometry, peptide mass fingerprinting, de novo peptide sequencing
+fetched: 2026-07-02
+---
+
+# Selected reaction monitoring
+
+**Selected reaction monitoring** (**SRM**), also called **multiple reaction monitoring** (**MRM**), is a method used in tandem mass spectrometry in which an ion of a particular mass is selected in the first stage of a tandem mass spectrometer and an ion product of a fragmentation reaction of the precursor ions is selected in the second mass spectrometer stage for detection.
+
+## Variants
+
+A general case of SRM can be represented by
+
+$ABCD^{+}\to AB+CD^{+}$
+
+where the precursor ion ABCD+ is selected by the first stage of mass spectrometry (MS1), dissociates into molecule AB and product ion CD+, and the latter is selected by the second stage of mass spectrometry (MS2) and detected. The precursor and product ion pair is called a SRM "transition".
+
+**Consecutive reaction monitoring** (**CRM**) is the serial application of three or more stages of mass spectrometry to SRM, represented in a simple case by
+
+$ABCD^{+}\to AB+CD^{+}\to C+D^{+}$
+
+where ABCD+ is selected by MS1, dissociates into molecule AB and ion CD+. The ion is selected in the second mass spectrometry stage MS2 then undergoes further fragmentation to form ion D+ which is selected in the third mass spectrometry stage MS3 and detected.
+
+**Multiple reaction monitoring** (**MRM**) is the application of selected reaction monitoring to multiple product ions from one or more precursor ions, for example
+
+$ABCD^{+}\to AB+CD^{+}$
+
+$ABCD^{+}\to AB^{+}+CD$
+
+where ABCD+ is selected by MS1 and dissociates by two pathways, forming either AB+ or CD+. The ions are selected sequentially by MS2 and detected. **Parallel reaction monitoring** (**PRM**) is the application of SRM with parallel detection of all transitions in a single analysis using a high resolution mass spectrometer.
+
+## Proteomics
+
+SRM can be used for targeted quantitative proteomics by mass spectrometry. Following ionization in, for example, an electrospray source, a peptide precursor is first isolated to obtain a substantial ion population of mostly the intended species. This population is then fragmented to yield product ions whose signal abundances are indicative of the abundance of the peptide in the sample. This experiment can be performed on triple quadrupole mass spectrometers, where mass-resolving Q1 isolates the precursor, q2 acts as a collision cell, and mass-resolving Q3 is cycled through the product ions which are detected upon exiting the last quadrupole by an electron multiplier. A precursor/product pair is often referred to as a *transition*. Much work goes into ensuring that transitions are selected that have maximum specificity.
+
+Using isotopic labeling with heavy-labeled (e.g., D, 13C, or 15N) peptides to a complex matrix as concentration standards, SRM can be used to construct a calibration curve that can provide the absolute quantification (i.e., copy number per cell) of the native, light peptide, and by extension, its parent protein.
+
+SRM has been used to identify the proteins encoded by wild-type and mutant genes (mutant proteins) and quantify their absolute copy numbers in tumors and biological fluids, thus answering the basic questions about the absolute copy number of proteins in a single cell, which will be essential in digital modelling of mammalian cells and human body, and the relative levels of genetically abnormal proteins in tumors, and proving useful for diagnostic applications. SRM has also been used as a method of triggering full product ion scans of peptides to either a) confirm the specificity of the SRM transition, or b) detect specific post-translational modifications which are below the limit of detection of standard MS analyses. In 2017, SRM has been developed to be a highly sensitive and reproducible mass spectrometry-based protein targeted detection platform (entitled "SAFE-SRM"), and it has been demonstrated that the SRM-based new pipeline has major advantages in clinical proteomics applications over traditional SRM pipelines, and it has demonstrated a dramatically improved diagnostic performance over that from antibody-based protein biomarker diagnostic methods, such as ELISA.

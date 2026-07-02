@@ -1,0 +1,374 @@
+# nl-rag distilled facts — domain: module-federation
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:module-federation/guide-modules] This guide gives you all you need to get started with JavaScript module syntax.
+[src:module-federation/guide-modules] JavaScript programs started off pretty small — most of its usage in the early days was to do isolated scripting tasks, providing a bit of interactivity to your web pages where needed, so large scripts were generally not needed.
+[src:module-federation/guide-modules] Fast forward a few years and we now have complete applications being run in browsers with a lot of JavaScript, as well as JavaScript being used in other contexts (Node.js, for example).
+[src:module-federation/guide-modules] Complex projects necessitate a mechanism for splitting JavaScript programs into separate modules that can be imported when needed.
+[src:module-federation/guide-modules] Node.js has had this ability for a long time, and there are a number of JavaScript libraries and frameworks that enable module usage (for example, other CommonJS and AMD-based module systems like RequireJS, webpack, and Babel).
+[src:module-federation/guide-modules] All modern browsers support module features natively without needing transpilation.
+[src:module-federation/guide-modules] It can only be a good thing — browsers can optimize loading of modules, making it more efficient than having to use a library and do all of that extra client-side processing and extra round trips.
+[src:module-federation/guide-modules] It does not obsolete bundlers like webpack, though — bundlers still do a good job at partitioning code into reasonably sized chunks, and are able to do other optimizations like minification, dead code elimination, and tree-shaking.
+[src:module-federation/guide-modules] To demonstrate usage of modules, we've created a set of examples that you can find on GitHub.
+[src:module-federation/guide-modules] These examples demonstrate a set of modules that create a `<canvas>` element on a webpage, and then draw (and report information about) different shapes on the canvas.
+[src:module-federation/guide-modules] These are fairly trivial, but have been kept deliberately simple to demonstrate modules clearly.
+[src:module-federation/guide-modules] Throughout this article, we've used `.js` extensions for our module files, but in other resources you may see the `.mjs` extension used instead.
+[src:module-federation/guide-modules] V8's documentation recommends this, for example.
+[src:module-federation/guide-modules] However, we decided to keep using `.js`, at least for the moment.
+[src:module-federation/guide-modules] To get modules to work correctly in a browser, you need to make sure that your server is serving them with a `Content-Type` header that contains a JavaScript MIME type such as `text/javascript`.
+[src:module-federation/guide-modules] If you don't, you'll get a strict MIME type checking error along the lines of "The server responded with a non-JavaScript MIME type" and the browser won't run your JavaScript.
+[src:module-federation/guide-modules] Most servers already set the correct type for `.js` files, but not yet for `.mjs` files.
+[src:module-federation/guide-modules] Servers that already serve `.mjs` files correctly include GitHub Pages and `http-server` for Node.js.
+[src:module-federation/guide-modules] This is OK if you are using such an environment already, or if you aren't but you know what you are doing and have access (i.e., you can configure your server to set the correct `Content-Type` for `.mjs` files).
+[src:module-federation/guide-modules] It could however cause confusion if you don't control the server you are serving files from, or are publishing files for public use, as we are here.
+[src:module-federation/guide-modules] For learning and portability purposes, we decided to keep to `.js`.
+[src:module-federation/guide-modules] If you really value the clarity of using `.mjs` for modules versus using `.js` for "normal" JavaScript files, but don't want to run into the problem described above, you could always use `.mjs` during development and convert them to `.js` during your build step.
+[src:module-federation/guide-modules] The first thing you do to get access to module features is export them.
+[src:module-federation/guide-modules] This is done using the `export` statement.
+[src:module-federation/guide-modules] You can export functions, `var`, `let`, `const`, and — as we'll see later — classes.
+[src:module-federation/guide-modules] They need to be top-level items: for example, you can't use `export` inside a function.
+[src:module-federation/guide-modules] A more convenient way of exporting all the items you want to export is to use a single export statement at the end of your module file, followed by a comma-separated list of the features you want to export wrapped in curly braces.
+[src:module-federation/guide-modules] Once you've exported some features out of your module, you need to import them into your script to be able to use them.
+[src:module-federation/guide-modules] You use the `import` statement, followed by a comma-separated list of the features you want to import wrapped in curly braces, followed by the keyword `from`, followed by the *module specifier*.
+[src:module-federation/guide-modules] The *module specifier* provides a string that the JavaScript environment can resolve to a path to the module file.
+[src:module-federation/guide-modules] In a browser, this could be a path relative to the site root, which for our `basic-modules` example would be `/js-examples/module-examples/basic-modules`.
+[src:module-federation/guide-modules] However, here we are instead using the dot (`.`) syntax to mean "the current location", followed by the relative path to the file we are trying to find.
+[src:module-federation/guide-modules] This is much better than writing out the entire absolute path each time, as relative paths are shorter and make the URL portable — the example will still work if you move it to a different location in the site hierarchy.
+[src:module-federation/guide-modules] You can see such lines in action in `main.js`.
+[src:module-federation/guide-modules] Once you've imported the features into your script, you can use them just like they were defined inside the same file.
+[src:module-federation/guide-modules] Import maps allow developers to instead specify almost any text they want in the module specifier when importing a module; the map provides a corresponding value that will replace the text when the module URL is resolved.
+[src:module-federation/guide-modules] For example, the `imports` key in the import map below defines a "module specifier map" JSON object where the property names can be used as module specifiers, and the corresponding values will be substituted when the browser resolves the module URL.
+[src:module-federation/guide-modules] The values must be absolute or relative URLs.
+[src:module-federation/guide-modules] Relative URLs are resolved to absolute URL addresses using the base URL of the document containing the import map.
+[src:module-federation/guide-modules] The import map is defined using a JSON object inside a `<script>` element with the `type` attribute set to `importmap`.
+[src:module-federation/guide-modules] Note that an import map only applies to the document — the specification does not cover how to apply an import map in a worker or worklet context.
+[src:module-federation/guide-modules] With this map you can now use the property names above as module specifiers.
+[src:module-federation/guide-modules] If there is no trailing forward slash on the module specifier key then the whole module specifier key is matched and substituted.
+[src:module-federation/guide-modules] For example, below we match bare module names, and remap a URL to another path.
+[src:module-federation/guide-modules] If the module specifier has a trailing forward slash then the value must have one as well, and the key is matched as a "path prefix".
+[src:module-federation/guide-modules] This allows remapping of whole classes of URLs.
+[src:module-federation/guide-modules] It is possible for multiple keys in an import map to be valid matches for a module specifier.
+[src:module-federation/guide-modules] For example, a module specifier of `shapes/circle/` could match the module specifier keys `shapes/` and `shapes/circle/`.
+[src:module-federation/guide-modules] In this case the browser will select the most specific (longest) matching module specifier key.
+[src:module-federation/guide-modules] Import maps allow modules to be imported using bare module names (as in Node.js), and can also simulate importing modules from packages, both with and without file extensions.
+[src:module-federation/guide-modules] While not shown above, they also allow particular versions of a library to be imported, based on the path of the script that is importing the module.
+[src:module-federation/guide-modules] Generally they let developers write more ergonomic import code, and make it easier to manage the different versions and dependencies of modules used by a site.
+[src:module-federation/guide-modules] This can reduce the effort required to use the same JavaScript libraries in both browser and server.
+[src:module-federation/guide-modules] The following sections expand on the various features outlined above.
+[src:module-federation/guide-modules] In some JavaScript environments, such as Node.js, you can use bare names for the module specifier.
+[src:module-federation/guide-modules] This works because the environment can resolve module names to a standard location in the file system.
+[src:module-federation/guide-modules] For example, you might use the following syntax to import the "square" module.
+[src:module-federation/guide-modules] To use bare names on a browser you need an import map, which provides the information needed by the browser to resolve module specifiers to URLs (JavaScript will throw a `TypeError` if it attempts to import a module specifier that can't be resolved to a module location).
+[src:module-federation/guide-modules] Below you can see a map that defines a `square` module specifier key, which in this case maps to a relative address value.
+[src:module-federation/guide-modules] Module specifier map entries, where both the specifier key and its associated value have a trailing forward slash (`/`), can be used as a path-prefix.
+[src:module-federation/guide-modules] This allows the remapping of a whole set of import URLs from one location to another.
+[src:module-federation/guide-modules] It can also be used to emulate working with "packages and modules", such as you might see in the Node ecosystem.
+[src:module-federation/guide-modules] It is possible to import `fp` above without the `.js` file extension, but you would need to create a bare module specifier key for that file, such as `lodash/fp`, rather than using the path.
+[src:module-federation/guide-modules] This may be reasonable for just one module, but scales poorly if you wish to import many modules.
+[src:module-federation/guide-modules] A module specifier key doesn't have to be path — it can also be an absolute URL (or a URL-like relative path like `./`, `../`, `/`).
+[src:module-federation/guide-modules] This may be useful if you want to remap a module that has absolute paths to a resource with your own local resources.
+[src:module-federation/guide-modules] Ecosystems like Node use package managers such as npm to manage modules and their dependencies.
+[src:module-federation/guide-modules] The package manager ensures that each module is separated from other modules and their dependencies.
+[src:module-federation/guide-modules] As a result, while a complex application might include the same module multiple times with several different versions in different parts of the module graph, users do not need to think about this complexity.
+[src:module-federation/guide-modules] Import maps similarly allow you to have multiple versions of dependencies in your application and refer to them using the same module specifier.
+[src:module-federation/guide-modules] You implement this with the `scopes` key, which allows you to provide module specifier maps that will be used depending on the path of the script performing the import.
+[src:module-federation/guide-modules] With this mapping, if a script with a URL that contains `/node_modules/dependency/` imports `cool-module`, the version in `/node_modules/some/other/location/cool-module/index.js` will be used.
+[src:module-federation/guide-modules] The map in `imports` is used as a fallback if there is no matching scope in the scoped map, or the matching scopes don't contain a matching specifier.
+[src:module-federation/guide-modules] For example, if `cool-module` is imported from a script with a non-matching scope path, then the module specifier map in `imports` will be used instead, mapping to the version in `/node_modules/cool-module/index.js`.
+[src:module-federation/guide-modules] Note that the path used to select a scope does not affect how the address is resolved.
+[src:module-federation/guide-modules] The value in the mapped path does not have to match the scopes path, and relative paths are still resolved to the base URL of the script that contains the import map.
+[src:module-federation/guide-modules] Just as for module specifier maps, you can have many scope keys, and these may contain overlapping paths.
+[src:module-federation/guide-modules] If multiple scopes match the referrer URL, then the most specific scope path is checked first (the longest scope key) for a matching specifier.
+[src:module-federation/guide-modules] The browsers will fall back to the next most specific matching scoped path if there is no matching specifier, and so on.
+[src:module-federation/guide-modules] If there is no matching specifier in any of the matching scopes, the browser checks for a match in the module specifier map in the `imports` key.
+[src:module-federation/guide-modules] Script files used by websites often have hashed filenames to simplify caching.
+[src:module-federation/guide-modules] The downside of this approach is that if a module changes, any modules that import it using its hashed filename will also need to be updated/regenerated.
+[src:module-federation/guide-modules] This potentially results in a cascade of updates, which is wasteful of network resources.
+[src:module-federation/guide-modules] Import maps provide a convenient solution to this problem.
+[src:module-federation/guide-modules] Rather than depending on specific hashed filenames, applications and scripts instead depend on an un-hashed version of the module name (address).
+[src:module-federation/guide-modules] An import map like the one below then provides a mapping to the actual script file.
+[src:module-federation/guide-modules] If `dependency_script` changes, then its hash contained in the file name changes as well.
+[src:module-federation/guide-modules] In this case, we only need to update the import map to reflect the changed name of the module.
+[src:module-federation/guide-modules] We don't have to update the source of any JavaScript code that depends on it, because the specifier in the import statement does not change.
+[src:module-federation/guide-modules] One exciting feature that a unified module architecture brings is the ability to load non-JavaScript resources as modules.
+[src:module-federation/guide-modules] For example, you can import JSON as a JavaScript object, or import CSS as a `CSSStyleSheet` object.
+[src:module-federation/guide-modules] You must explicitly declare what kind of resource you are importing.
+[src:module-federation/guide-modules] By default, the browser assumes that the resource is JavaScript, and will throw an error if the resolved resource is something else.
+[src:module-federation/guide-modules] Browsers will also perform validation on the module type, and fail if, for example, `./data.json` does not resolve to a JSON file.
+[src:module-federation/guide-modules] This ensures that you don't accidentally execute code when you just intend to import data.
+[src:module-federation/guide-modules] Once imported successfully, you can now use the imported value as a normal JavaScript object or `CSSStyleSheet` object.
+[src:module-federation/guide-modules] Now we just need to apply the `main.js` module to our HTML page.
+[src:module-federation/guide-modules] This is very similar to how we apply a regular script to a page, with a few notable differences.
+[src:module-federation/guide-modules] First of all, you need to include `type="module"` in the `<script>` element, to declare this script as a module.
+[src:module-federation/guide-modules] You can only use `import` and `export` statements inside modules, not regular scripts.
+[src:module-federation/guide-modules] An error will be thrown if your `<script>` element doesn't have the `type="module"` attribute and attempts to import other modules.
+[src:module-federation/guide-modules] You should generally define all your modules in separate files.
+[src:module-federation/guide-modules] Modules declared inline in HTML can only import other modules, but anything they export will not be accessible by other modules (because they don't have a URL).
+[src:module-federation/guide-modules] Module-defined variables are scoped to the module unless explicitly attached to the global object.
+[src:module-federation/guide-modules] On the other hand, globally-defined variables are available within the module.
+[src:module-federation/guide-modules] The page would still render `Hello`, because the global variables `text` and `document` are available in the module.
+[src:module-federation/guide-modules] The functionality we've exported so far has been comprised of **named exports** — each item (be it a function, `const`, etc.) has been referred to by its name upon export, and that name has been used to refer to it on import as well.
+[src:module-federation/guide-modules] Let's look at an example as we explain how it works.
+[src:module-federation/guide-modules] In our basic-modules `square.js` you can find a function called `randomSquare()` that creates a square with a random color, size, and position.
+[src:module-federation/guide-modules] This is because there is only one default export allowed per module, and we know that `randomSquare` is it.
+[src:module-federation/guide-modules] So far, our canvas shape drawing modules seem to be working OK.
+[src:module-federation/guide-modules] But what happens if we try to add a module that deals with drawing another shape, like a circle or triangle?
+[src:module-federation/guide-modules] These shapes would probably have associated functions like `draw()`, `reportArea()`, etc. too; if we tried to import different functions of the same name into the same top-level module file, we'd end up with conflicts and errors.
+[src:module-federation/guide-modules] Fortunately there are a number of ways to get around this.
+[src:module-federation/guide-modules] We'll look at these in the following sections.
+[src:module-federation/guide-modules] Inside your `import` and `export` statement's curly braces, you can use the keyword `as` along with a new feature name, to change the identifying name you will use for a feature inside the top-level module.
+[src:module-federation/guide-modules] In our renaming directory you'll see the same module system as in the previous example, except that we've added `circle.js` and `triangle.js` modules to draw and report on circles and triangles.
+[src:module-federation/guide-modules] The browser would throw an error such as "SyntaxError: redeclaration of import name" (Firefox).
+[src:module-federation/guide-modules] Note that you could solve the problem in the module files instead, e.g.
+[src:module-federation/guide-modules] What style you use is up to you, however it arguably makes more sense to leave your module code alone, and make the changes in the imports.
+[src:module-federation/guide-modules] This especially makes sense when you are importing from third party modules that you don't have any control over.
+[src:module-federation/guide-modules] The above method works OK, but it's a little messy and long-winded.
+[src:module-federation/guide-modules] An even better solution is to import each module's features inside a module object.
+[src:module-federation/guide-modules] This grabs all the exports available inside `module.js`, and makes them available as members of an object `Module`, effectively giving it its own namespace.
+[src:module-federation/guide-modules] If you go to our module-objects directory, you'll see the same example again, but rewritten to take advantage of this new syntax.
+[src:module-federation/guide-modules] So you can now write the code just the same as before (as long as you include the object names where needed), and the imports are much neater.
+[src:module-federation/guide-modules] As we hinted at earlier, you can also export and import classes; this is another option for avoiding conflicts in your code, and is especially useful if you've already got your module code written in an object-oriented style.
+[src:module-federation/guide-modules] You can see an example of our shape drawing module rewritten with ES classes in our classes directory.
+[src:module-federation/guide-modules] There will be times where you'll want to aggregate modules together.
+[src:module-federation/guide-modules] You might have multiple levels of dependencies, where you want to simplify things, combining several submodules into one parent module.
+[src:module-federation/guide-modules] For an example, see our module-aggregation directory.
+[src:module-federation/guide-modules] In this example (based on our earlier classes example) we've got an extra module called `shapes.js`, which aggregates all the functionality from `circle.js`, `square.js`, and `triangle.js` together.
+[src:module-federation/guide-modules] We've also moved our submodules inside a subdirectory inside the `modules` directory called `shapes`.
+[src:module-federation/guide-modules] In each of the submodules, the export is of the same form, e.g.
+[src:module-federation/guide-modules] These grab the exports from the individual submodules and effectively make them available from the `shapes.js` module.
+[src:module-federation/guide-modules] A recent addition to JavaScript modules functionality is dynamic module loading.
+[src:module-federation/guide-modules] This allows you to dynamically load modules only when they are needed, rather than having to load everything up front.
+[src:module-federation/guide-modules] This has some obvious performance advantages; let's read on and see how it works.
+[src:module-federation/guide-modules] This new functionality allows you to call `import()` as a function, passing it the path to the module as a parameter.
+[src:module-federation/guide-modules] It returns a `Promise`, which fulfills with a module object (see Creating a module object) giving you access to that object's exports.
+[src:module-federation/guide-modules] In the dynamic-module-imports directory we've got another example based on our classes example.
+[src:module-federation/guide-modules] This time however we are not drawing anything on the canvas when the example loads.
+[src:module-federation/guide-modules] Instead, we include three buttons — "Circle", "Square", and "Triangle" — that, when pressed, dynamically load the required module and then use it to draw the associated shape.
+[src:module-federation/guide-modules] In this example we've only made changes to our `index.html` and `main.js` files — the module exports remain the same as before.
+[src:module-federation/guide-modules] Note that, because the promise fulfillment returns a module object, the class is then made a subfeature of the object, hence we now need to access the constructor with `Module.` prepended to it, e.g., `Module.Square( /* … */ )`.
+[src:module-federation/guide-modules] Another advantage of dynamic imports is that they are always available, even in script environments.
+[src:module-federation/guide-modules] Therefore, if you have an existing `<script>` tag in your HTML that doesn't have `type="module"`, you can still reuse code distributed as modules by dynamically importing it.
+[src:module-federation/guide-modules] Top level await is a feature available within modules.
+[src:module-federation/guide-modules] This means the `await` keyword can be used.
+[src:module-federation/guide-modules] It allows modules to act as big asynchronous functions meaning code can be evaluated before use in parent modules, but without blocking sibling modules from loading.
+[src:module-federation/guide-modules] You can find all the files and code described in this section within the `top-level-await` directory, which extends from the previous examples.
+[src:module-federation/guide-modules] Then we'll create a module called `getColors.js` which uses a fetch request to load the `colors.json` file and return the data as an object.
+[src:module-federation/guide-modules] We're using the keyword `await` before specifying the constant `colors` to export.
+[src:module-federation/guide-modules] This means any other modules which include this one will wait until `colors` has been downloaded and parsed before using it.
+[src:module-federation/guide-modules] This is useful because the code within `main.js` won't execute until the code in `getColors.js` has run.
+[src:module-federation/guide-modules] However it won't block other modules being loaded.
+[src:module-federation/guide-modules] For instance our `canvas.js` module will continue to load while `colors` is being fetched.
+[src:module-federation/guide-modules] In this case, it means that the imported values are available in the module's code even before the place that declares them, and that the imported module's side effects are produced before the rest of the module's code starts running.
+[src:module-federation/guide-modules] Still, it is considered good practice to put all your imports at the top of the code, which makes it easier to analyze dependencies.
+[src:module-federation/guide-modules] Modules can import other modules, and those modules can import other modules, and so on.
+[src:module-federation/guide-modules] This forms a directed graph called the "dependency graph".
+[src:module-federation/guide-modules] In an ideal world, this graph is acyclic.
+[src:module-federation/guide-modules] In this case, the graph can be evaluated using a depth-first traversal.
+[src:module-federation/guide-modules] Cyclic import arises if module `a` imports module `b`, but `b` directly or indirectly depends on `a`.
+[src:module-federation/guide-modules] The imported variable's value is only retrieved when the variable is actually used (hence allowing live bindings), and only if the variable remains uninitialized at that time will a `ReferenceError` be thrown.
+[src:module-federation/guide-modules] In this example, both `a` and `b` are used asynchronously.
+[src:module-federation/guide-modules] Therefore, at the time the module is evaluated, neither `b` nor `a` is actually read, so the rest of the code is executed as normal, and the two `export` declarations produce the values of `a` and `b`.
+[src:module-federation/guide-modules] Then, after the timeout, both `a` and `b` are available, so the two `console.log` statements also execute as normal.
+[src:module-federation/guide-modules] This is because when JavaScript evaluates `a.js`, it needs to first evaluate `b.js`, the dependency of `a.js`.
+[src:module-federation/guide-modules] However, `b.js` uses `a`, which is not yet available.
+[src:module-federation/guide-modules] This is because the evaluation of `b.js` completes normally, so the value of `b` is available when `a.js` is evaluated.
+[src:module-federation/guide-modules] You should usually avoid cyclic imports in your project, because they make your code more error-prone.
+[src:module-federation/guide-modules] However, cyclic imports can also occur if the libraries depend on each other, which is harder to fix.
+[src:module-federation/guide-modules] The introduction of modules encourages the JavaScript ecosystem to distribute and reuse code in a modular fashion.
+[src:module-federation/guide-modules] However, that doesn't necessarily mean a piece of JavaScript code can run in every environment.
+[src:module-federation/guide-modules] Suppose you discovered a module that generates SHA hashes of your user's password.
+[src:module-federation/guide-modules] Can you use it in the browser front end?
+[src:module-federation/guide-modules] Modules still have access to global variables, as demonstrated previously.
+[src:module-federation/guide-modules] If the module references globals like `window`, it can run in the browser, but will throw an error in your Node.js server, because `window` is not available there.
+[src:module-federation/guide-modules] Similarly, if the code requires access to `process` to be functional, it can only be used in Node.js.
+[src:module-federation/guide-modules] In order to maximize the reusability of a module, it is often advised to make the code "isomorphic" — that is, exhibits the same behavior in every runtime.
+[src:module-federation/guide-modules] These practices are not unique to modules.
+[src:module-federation/guide-modules] Still, with the trend of code reusability and modularization, you are encouraged to make your code cross-platform so that it can be enjoyed by as many people as possible.
+[src:module-federation/guide-modules] Runtimes like Node.js are also actively implementing web APIs where possible to improve interoperability with the web.
+[src:module-federation/guide-modules] Here are a few tips that may help you if you are having trouble getting your modules to work.
+[src:module-federation/guide-modules] Feel free to add to the list if you discover more!
+[src:module-federation/loose-coupling] 2. in which each of its components has, or makes use of, little or no knowledge of the definitions of other separate components.
+[src:module-federation/loose-coupling] Subareas include the coupling of classes, interfaces, data, and services.
+[src:module-federation/loose-coupling] Loose coupling is the opposite of tight coupling.
+[src:module-federation/loose-coupling] Components in a loosely coupled system can be replaced with alternative implementations that provide the same services.
+[src:module-federation/loose-coupling] Components in a loosely coupled system are less constrained to the same platform, language, operating system, or build environment.
+[src:module-federation/loose-coupling] If systems are decoupled in time, it is difficult to also provide transactional integrity; additional coordination protocols are required.
+[src:module-federation/loose-coupling] Data replication across different systems provides loose coupling (in availability), but creates issues in maintaining consistency (data synchronization).
+[src:module-federation/loose-coupling] Loose coupling in broader distributed system design is achieved by the use of transactions, queues provided by message-oriented middleware, and interoperability standards.
+[src:module-federation/loose-coupling] Four types of autonomy which promote loose coupling, are: *reference autonomy*, *time autonomy*, *format autonomy*, and *platform autonomy*.
+[src:module-federation/loose-coupling] Loose coupling is an architectural principle and design goal in service-oriented architectures.
+[src:module-federation/loose-coupling] Enterprise Service Bus (ESB) middleware was invented to achieve loose coupling in multiple dimensions.
+[src:module-federation/loose-coupling] However, overengineered and mispositioned ESBs can also have the contrary effect and create undesired tight coupling and a central architectural hotspot.
+[src:module-federation/loose-coupling] Event-driven architecture also aims at promoting loose coupling.
+[src:module-federation/loose-coupling] Loose coupling of interfaces can be enhanced by publishing data in a standard format (such as XML or JSON).
+[src:module-federation/loose-coupling] Loose coupling between program components can be enhanced by using standard data types in parameters.
+[src:module-federation/loose-coupling] Passing customized data types or objects requires both components to have knowledge of the custom data definition.
+[src:module-federation/loose-coupling] Loose coupling of services can be enhanced by reducing the information passed into a service to the key data.
+[src:module-federation/loose-coupling] For example, a service that sends a letter is most reusable when just the customer identifier is passed and the customer address is obtained within the service.
+[src:module-federation/loose-coupling] This decouples services because services do not need to be called in a specific order (e.g.
+[src:module-federation/loose-coupling] Coupling refers to the degree of direct knowledge that one component has of another.
+[src:module-federation/loose-coupling] Loose coupling in computing is interpreted as encapsulation versus non-encapsulation.
+[src:module-federation/loose-coupling] An example of tight coupling is when a dependent class contains a pointer directly to a concrete class which provides the required behavior.
+[src:module-federation/loose-coupling] The dependency cannot be substituted, or its "signature" changed, without requiring a change to the dependent class.
+[src:module-federation/loose-coupling] Loose coupling occurs when the dependent class contains a pointer only to an interface, which can then be implemented by one or many concrete classes.
+[src:module-federation/loose-coupling] The dependent class's dependency is to a "contract" specified by the interface; a defined list of methods and/or properties that implementing classes must provide.
+[src:module-federation/loose-coupling] Any class that implements the interface can thus satisfy the dependency of a dependent class without having to change the class.
+[src:module-federation/loose-coupling] This allows for extensibility in software design.
+[src:module-federation/loose-coupling] A new class implementing an interface can be written to replace a current dependency in some or all situations, without requiring a change to the dependent class; the new and old classes can be interchanged freely.
+[src:module-federation/loose-coupling] Computer programming languages having notions of either functions as the core module (see Functional programming) or functions as objects provide excellent examples of loosely coupled programming.
+[src:module-federation/loose-coupling] Functional languages have patterns of Continuations, Closure, or generators.
+[src:module-federation/loose-coupling] See Clojure and Lisp as examples of functional programming languages.
+[src:module-federation/loose-coupling] Object-oriented languages like Smalltalk and Ruby have code blocks, whereas Eiffel has agents.
+[src:module-federation/loose-coupling] The basic idea is to objectify (encapsulate as an object) a function independent of any other enclosing concept (e.g. decoupling an object function from any direct knowledge of the enclosing object).
+[src:module-federation/loose-coupling] See First-class function for further insight into functions as objects, which qualifies as one form of first-class function.
+[src:module-federation/loose-coupling] For example, in an object-oriented language, when a function of an object is referenced as an object (freeing it from having any knowledge of its enclosing host object) the new function object can be passed, stored, and called at a later time.
+[src:module-federation/loose-coupling] Recipient objects (to whom these functional objects are given) can safely execute (call) the contained function at their own convenience without any direct knowledge of the enclosing host object.
+[src:module-federation/loose-coupling] In this way, a program can execute chains or groups of functional objects, while safely decoupled from having any direct reference to the enclosing host object.
+[src:module-federation/loose-coupling] Phone numbers are an excellent analog and can easily illustrate the degree of this decoupling.
+[src:module-federation/loose-coupling] For example, some entity provides another with a phone number to get a particular job done.
+[src:module-federation/loose-coupling] When the number is called, the calling entity is effectively saying, "Please do this job for me." The decoupling or loose coupling is immediately apparent.
+[src:module-federation/loose-coupling] The entity receiving the number may have no knowledge of where the number came from (e.g. a reference to the supplier of the number).
+[src:module-federation/loose-coupling] On the other side, the caller is decoupled from specific knowledge of who they are calling, where they are, and knowing how the receiver of the call operates internally.
+[src:module-federation/loose-coupling] Carrying the example a step further, the caller might say to the receiver of the call, "Please do this job for me.
+[src:module-federation/loose-coupling] Call me back at this number when you are finished." The 'number' being offered to the receiver is referred to as a "Call-back".
+[src:module-federation/loose-coupling] Again, the loose coupling or decoupled nature of this functional object is apparent.
+[src:module-federation/loose-coupling] The receiver of the call-back is unaware of what or who is being called.
+[src:module-federation/loose-coupling] It only knows that it can make the call and decides for itself when to call.
+[src:module-federation/loose-coupling] In reality, the call-back may not even be to the one who provided the call-back in the first place.
+[src:module-federation/loose-coupling] This level of indirection is what makes function objects an excellent technology for achieving loosely coupled programs.
+[src:module-federation/loose-coupling] The degree of the loose coupling can be measured by noting the number of changes in data elements that could occur in the sending or receiving systems and determining if the computers would still continue communicating correctly.
+[src:module-federation/modular-programming] A module interface expresses the elements that are provided and required by the module.
+[src:module-federation/modular-programming] The elements defined in the interface are detectable by other modules.
+[src:module-federation/modular-programming] The implementation contains the working code that corresponds to the elements declared in the interface.
+[src:module-federation/modular-programming] Modular programming, in the form of subsystems (particularly for I/O) and software libraries, dates to early software systems, where it was used for code reuse.
+[src:module-federation/modular-programming] Modular programming per se, with a goal of modularity, developed in the late 1960s and 1970s, as a larger-scale analog of the concept of structured programming (1960s).
+[src:module-federation/modular-programming] The term "modular programming" dates at least to the National Symposium on Modular Programming, organized at the Information and Systems Institute in July 1968 by Larry Constantine; other key concepts were information hiding (1972) and separation of concerns (SoC, 1974).
+[src:module-federation/modular-programming] Modules were not included in the original specification for ALGOL 68 (1968), but were included as extensions in early implementations, ALGOL 68-R (1970) and ALGOL 68C (1970), and later formalized.
+[src:module-federation/modular-programming] One of the first languages designed from the start for modular programming was the short-lived Modula (1975), by Niklaus Wirth.
+[src:module-federation/modular-programming] Another early modular language was Mesa (1970s), by Xerox PARC, and Wirth drew on Mesa as well as the original Modula in its successor, Modula-2 (1978), which influenced later languages, particularly through its successor, Modula-3 (1980s).
+[src:module-federation/modular-programming] Modula's use of dot-qualified names, like `M.a` to refer to object `a` from module `M`, coincides with notation to access a field of a record (and similarly for attributes or methods of objects), and is now widespread, seen in C++, C#, Dart, Go, Java, OCaml, and Python, among others.
+[src:module-federation/modular-programming] Modular programming became widespread from the 1980s: the original Pascal language (1970) did not include modules, but later versions, notably UCSD Pascal (1978) and Turbo Pascal (1983) included them in the form of "units", as did the Pascal-influenced Ada (1980).
+[src:module-federation/modular-programming] The Extended Pascal ISO 10206:1990 standard kept closer to Modula2 in its modular support.
+[src:module-federation/modular-programming] Standard ML (1984) has one of the most complete module systems, including functors (parameterized modules) to map between modules.
+[src:module-federation/modular-programming] In the 1980s and 1990s, modular programming was overshadowed by and often conflated with object-oriented programming, particularly due to the popularity of C++ and Java.
+[src:module-federation/modular-programming] For example, the C family of languages had support for objects and classes in C++ (originally C with Classes, 1980) and Objective-C (1983), only supporting modules 30 years or more later.
+[src:module-federation/modular-programming] Java (1995) supports modules in the form of packages, though the primary unit of code organization is a class.
+[src:module-federation/modular-programming] However, Python (1991) prominently used both modules and objects from the start, using modules as the primary unit of code organization and "packages" as a larger-scale unit.
+[src:module-federation/modular-programming] Perl 5 (1994) also includes support for both modules and objects, with a vast array of modules being available from CPAN (1993).
+[src:module-federation/modular-programming] OCaml (1996) followed ML by supporting modules and functors.
+[src:module-federation/modular-programming] Modular programming is now widespread, and found in virtually all major languages developed since the 1990s.
+[src:module-federation/modular-programming] The relative importance of modules varies between languages, and in class-based object-oriented languages there is still overlap and confusion with classes as a unit of organization and encapsulation, but these are both well-established as distinct concepts.
+[src:module-federation/modular-programming] The term *assembly* (as in .NET languages like C#, F#, or Visual Basic) or *package* (as in Dart, Go, or Java) is sometimes used instead of *module*.
+[src:module-federation/modular-programming] In other implementations, these are distinct concepts; in Python a package is a set of modules, while in Java 9 the introduction of the Java Platform Module System, in which a new module concept, involving a set of packages with enhanced access control, was implemented.
+[src:module-federation/modular-programming] In Java, the term *package* is used for the module concept in the Java language specification.
+[src:module-federation/modular-programming] The *module*, a kind of set of a package, was introduced in Java 9.
+[src:module-federation/modular-programming] In some Pascal dialects, the term *unit* is used for the module concept.
+[src:module-federation/modular-programming] A component is a similar concept, but typically refers to a higher level; a component is a piece of a whole system, while a module is a piece of an individual program.
+[src:module-federation/modular-programming] The scale of the term "module" varies significantly between languages; in Python it is very small-scale and each file is a module, while in Java 9 it is large-scale, where a module is a set of packages, which are in turn sets of files.
+[src:module-federation/modular-programming] Conspicuous examples of languages that lack support for modules are C, and in their original forms, C++ and Pascal.
+[src:module-federation/modular-programming] C and C++ do, however, allow separate compilation and declarative interfaces to be specified using header files which is commonly considered modularization.
+[src:module-federation/modular-programming] Modules were added to Objective-C in iOS 7 (2013), and to C++ with C++20.
+[src:module-federation/modular-programming] Pascal was superseded by Modula and Oberon, which included modules from the start, and various derivatives that included modules.
+[src:module-federation/modular-programming] JavaScript has had native modules since ECMAScript 2015.
+[src:module-federation/modular-programming] C++ modules have allowed backwards compatibility with headers (with "header units").
+[src:module-federation/modular-programming] Dialects of C allow for modules, for example Clang supports modules for the C language, though the syntax and semantics of Clang C modules differ from C++ modules.
+[src:module-federation/modular-programming] Modular programming can be performed even where the programming language lacks explicit syntactic features to support named modules, like, for example, in C.
+[src:module-federation/modular-programming] This is done by using existing language features, together with, for example, coding conventions, programming idioms and the physical code structure.
+[src:module-federation/modular-programming] IBM i also uses modules when programming in the Integrated Language Environment (ILE).
+[src:module-federation/modular-programming] With modular programming, concerns are separated such that modules perform logically discrete functions, interacting through well-defined interfaces.
+[src:module-federation/modular-programming] Often modules form a directed acyclic graph (DAG); in this case a cyclic dependency between modules is seen as indicating that these should be a single module.
+[src:module-federation/modular-programming] In the case where modules do form a DAG they can be arranged as a hierarchy, where the lowest-level modules are independent, depending on no other modules, and higher-level modules depend on lower-level ones.
+[src:module-federation/modular-programming] A particular program or library is a top-level module of its own hierarchy, but can in turn be seen as a lower-level module of a higher-level program, library, or system.
+[src:module-federation/modular-programming] When creating a modular system, instead of creating a monolithic application (where the smallest component is the whole), several smaller modules are written separately so when they are composed together, they construct the executable application program.
+[src:module-federation/modular-programming] Typically, these are also compiled separately, via separate compilation, and then linked by a linker.
+[src:module-federation/modular-programming] A just-in-time compiler may perform some of this construction "on-the-fly" at run time.
+[src:module-federation/modular-programming] These independent functions are commonly classified as either program control functions or specific task functions.
+[src:module-federation/modular-programming] Program control functions are designed to work for one program.
+[src:module-federation/modular-programming] Specific task functions are closely prepared to be applicable for various programs.
+[src:module-federation/modular-programming] This makes modular designed systems, if built correctly, far more reusable than a traditional monolithic design, since all (or many) of these modules may then be reused (without change) in other projects.
+[src:module-federation/modular-programming] This also facilitates the "breaking down" of projects into several smaller projects.
+[src:module-federation/modular-programming] Theoretically, a modularized software project will be more easily assembled by large teams, since no team members are creating the whole system, or even need to know about the system as a whole.
+[src:module-federation/modular-programming] They can focus just on the assigned smaller task.
+[src:module-federation/operators-import] This feature is well established and works across many devices and browser versions.
+[src:module-federation/operators-import] It’s been available across browsers since January 2020.
+[src:module-federation/operators-import] The **`import()`** syntax, commonly called *dynamic import*, is a function-like expression that allows loading an ECMAScript module asynchronously and dynamically into a potentially non-module environment.
+[src:module-federation/operators-import] Unlike the declaration-style counterpart, dynamic imports are only evaluated when needed, and permit greater syntactic flexibility.
+[src:module-federation/operators-import] The `import()` call is a syntax that closely resembles a function call, but `import` itself is a keyword, not a function.
+[src:module-federation/operators-import] You cannot alias it like `const myImport = import`, which will throw a `SyntaxError`.
+[src:module-federation/operators-import] Trailing commas are only allowed if the runtime also supports `options`.
+[src:module-federation/operators-import] The evaluation of the specifier is host-specified, but always follows the same algorithm as static import declarations.
+[src:module-federation/operators-import] The import declaration syntax (`import something from "somewhere"`) is static and will always result in the imported module being evaluated at load time.
+[src:module-federation/operators-import] Dynamic imports allow one to circumvent the syntactic rigidity of import declarations and load a module conditionally or on demand.
+[src:module-federation/operators-import] The static form is preferable for loading initial dependencies, and can benefit more readily from static analysis tools and tree shaking.
+[src:module-federation/operators-import] If your file is not run as a module (if it's referenced in an HTML file, the script tag must have `type="module"`), you will not be able to use static import declarations.
+[src:module-federation/operators-import] On the other hand, the asynchronous dynamic import syntax is always available, allowing you to import modules into non-module environments.
+[src:module-federation/operators-import] The `options` parameter allows different kinds of import options.
+[src:module-federation/operators-import] Dynamic module import is not permitted in all execution contexts.
+[src:module-federation/operators-import] For example, `import()` can be used in the main thread, a shared worker, or a dedicated worker, but will throw if called within a service worker or a worklet.
+[src:module-federation/operators-import] A *module namespace object* is an object that describes all exports from a module.
+[src:module-federation/operators-import] It is a static object that is created when the module is evaluated.
+[src:module-federation/operators-import] There are two ways to access the module namespace object of a module: through a namespace import (`import * as name from moduleName`), or through the fulfillment value of a dynamic import.
+[src:module-federation/operators-import] The module namespace object is a sealed object with `null` prototype.
+[src:module-federation/operators-import] This means all string keys of the object correspond to the exports of the module and there are never extra keys.
+[src:module-federation/operators-import] All keys are enumerable in lexicographic order (i.e., the default behavior of `Array.prototype.sort()`), with the default export available as a key called `default`.
+[src:module-federation/operators-import] In addition, the module namespace object has a `[Symbol.toStringTag]` property with the value `"Module"`, used in `Object.prototype.toString()`.
+[src:module-federation/operators-import] The string properties are non-configurable and writable when you use `Object.getOwnPropertyDescriptors()` to get their descriptors.
+[src:module-federation/operators-import] However, they are effectively read-only, because you cannot re-assign a property to a new value.
+[src:module-federation/operators-import] This behavior mirrors the fact that static imports create "live bindings" — the values can be re-assigned by the module exporting them, but not by the module importing them.
+[src:module-federation/operators-import] The writability of the properties reflects the possibility of the values changing, because non-configurable and non-writable properties must be constant.
+[src:module-federation/operators-import] For example, you can re-assign the exported value of a variable, and the new value can be observed in the module namespace object.
+[src:module-federation/operators-import] Except in one curious case: because a promise never fulfills to a thenable, if the `my-module.js` module exports a function called `then()`, that function will automatically get called when the dynamic import's promise is fulfilled, as part of the promise resolution process.
+[src:module-federation/operators-import] This aggressive caching ensures that a piece of JavaScript code is never executed more than once, even if it is imported multiple times.
+[src:module-federation/operators-import] Future imports don't even result in HTTP requests or disk access.
+[src:module-federation/operators-import] If you do need to re-import and re-evaluate a module without restarting the entire JavaScript environment, one possible trick is to use a unique query parameter in the module specifier.
+[src:module-federation/operators-import] This works in non-browser runtimes that support URL specifiers too.
+[src:module-federation/operators-import] Note that this can lead to memory leaks in a long-running application, because the engine cannot safely garbage-collect any module namespace objects.
+[src:module-federation/operators-import] Currently, there is no way to manually clear the cache of module namespace objects.
+[src:module-federation/operators-import] However, this is semantically not the same as dynamic import, because user-agent settings like fetch destination, CSP, or module resolution may not be applied correctly.
+[src:module-federation/operators-import] Module namespace object caching only applies to modules that are loaded and linked *successfully*.
+[src:module-federation/operators-import] A module is imported in three steps: loading (fetching the module), linking (mostly, parsing the module), and evaluating (executing the parsed code).
+[src:module-federation/operators-import] Only evaluation failures are cached; if a module fails to load or link, the next import may try to load and link the module again.
+[src:module-federation/operators-import] The browser may or may not cache the result of the fetch operation, but it should follow typical HTTP semantics, so handling such network failures should not be different from handling `fetch()` failures.
+[src:module-federation/operators-import] If your project uses packages that export ESM, you can also import them for side effects only.
+[src:module-federation/operators-import] This will run the code in the package entry point file (and any files it imports) only.
+[src:module-federation/operators-import] If you are destructuring the imported module namespace object, then you must rename the `default` key because `default` is a reserved word.
+[src:module-federation/operators-import] This example shows how to load functionality on to a page based on a user action, in this case a button click, and then call a function within that module.
+[src:module-federation/operators-import] This is not the only way to implement this functionality.
+[src:module-federation/operators-import] The `import()` function also supports `await`.
+[src:module-federation/operators-import] In processes such as server-side rendering, you may need to load different logic on server or in browser because they interact with different globals or modules (for example, browser code has access to web APIs like `document` and `navigator`, while server code has access to the server file system).
+[src:module-federation/operators-import] You can do so through a conditional dynamic import.
+[src:module-federation/operators-import] Dynamic imports allow any expression as the module specifier, not necessarily string literals.
+[src:module-federation/operators-import] Here, we load 10 modules, `/modules/module-0.js`, `/modules/module-1.js`, etc., concurrently, and call the `load` functions that each one exports.
+[src:module-federation/operators-import] Import attributes are accepted as the second parameter of the `import()` syntax.
+[src:module-federation/statements-export] It’s been available across browsers since May 2018.
+[src:module-federation/statements-export] The **`export`** declaration is used to export values from a JavaScript module.
+[src:module-federation/statements-export] Exported values can then be imported into other programs with the `import` declaration or dynamic import.
+[src:module-federation/statements-export] The value of an imported binding is subject to change in the module that exports it — when a module updates the value of a binding that it exports, the update will be visible in its imported value.
+[src:module-federation/statements-export] In order to use the `export` declaration in a source file, the file must be interpreted by the runtime as a module.
+[src:module-federation/statements-export] In HTML, this is done by adding `type="module"` to the `<script>` tag, or by being imported by another module.
+[src:module-federation/statements-export] Modules are automatically interpreted in strict mode.
+[src:module-federation/statements-export] Identifier to be exported (so that it can be imported via `import` in another script).
+[src:module-federation/statements-export] If you use an alias with `as`, the actual exported name can be specified as a string literal, which may not be a valid identifier.
+[src:module-federation/statements-export] Every module can have two different types of export, *named export* and *default export*.
+[src:module-federation/statements-export] You can have multiple named exports per module but only one default export.
+[src:module-federation/statements-export] Each type corresponds to one of the above syntax.
+[src:module-federation/statements-export] After the `export` keyword, you can use `let`, `const`, and `var` declarations, as well as function or class declarations.
+[src:module-federation/statements-export] You can also use the `export { name1, name2 }` syntax to export a list of names declared elsewhere.
+[src:module-federation/statements-export] Note that `export {}` does not export an empty object — it's a no-op declaration that exports nothing (an empty name list).
+[src:module-federation/statements-export] You cannot use `export` on a `using` or `await using` declaration.
+[src:module-federation/statements-export] You can, however, export a variable that was declared elsewhere using `using` or `await using`.
+[src:module-federation/statements-export] Doing so is still strongly discouraged, because the variable is disposed as soon as the module finishes executing, causing all importers to receive a value that's already disposed.
+[src:module-federation/statements-export] Export declarations are not subject to temporal dead zone rules.
+[src:module-federation/statements-export] You can declare that the module exports `X` before the name `X` itself is declared.
+[src:module-federation/statements-export] The `export default` syntax allows any expression.
+[src:module-federation/statements-export] As a special case, functions and classes are exported as *declarations*, not expressions, and these declarations can be anonymous.
+[src:module-federation/statements-export] Named exports are useful when you need to export several values.
+[src:module-federation/statements-export] When importing this module, named exports must be referred to by the exact same name (optionally renaming it with `as`), but the default export can be imported with any name.
+[src:module-federation/statements-export] You can rename a name to something that's not a valid identifier by using a string literal.
+[src:module-federation/statements-export] A module can also "relay" values exported from other modules without the hassle of writing two separate import/export statements.
+[src:module-federation/statements-export] This is often useful when creating a single module concentrating various exports from various modules (usually called a "barrel module").
+[src:module-federation/statements-export] Most of the "import from" syntaxes have "export from" counterparts.
+[src:module-federation/statements-export] There is also `export * from "mod"`, although there's no `import * from "mod"`.
+[src:module-federation/statements-export] This re-exports all **named** exports from `mod` as the named exports of the current module, but the default export of `mod` is not re-exported.
+[src:module-federation/statements-export] If there are two wildcard exports statements that implicitly re-export the same name, neither one is re-exported.
+[src:module-federation/statements-export] Attempting to import the duplicate name directly will throw an error.
+[src:module-federation/statements-export] The "export from" syntax allows the `as` token to be omitted, which makes the default export still re-exported as default export.

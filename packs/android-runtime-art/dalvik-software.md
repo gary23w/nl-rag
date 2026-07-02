@@ -1,0 +1,56 @@
+---
+title: "Dalvik (software)"
+source: https://en.wikipedia.org/wiki/Dalvik_(software)
+domain: android-runtime-art
+license: CC-BY-SA-4.0
+tags: android runtime, dalvik virtual machine, ahead-of-time compilation, dex bytecode
+fetched: 2026-07-02
+---
+
+# Dalvik (software)
+
+**Dalvik** is a discontinued process virtual machine (VM) in the Android operating system that executes applications written for Android. (Dalvik bytecode format is still used as a distribution format, but no longer at runtime in newer Android versions.) Dalvik was an integral part of the Android software stack in the (now unsupported) Android versions 4.4 "KitKat" and earlier, which were commonly used on mobile devices such as mobile phones and tablet computers, and more in some devices such as smart TVs and wearables. Dalvik is open-source software, originally written by Dan Bornstein, who named it after the fishing village of Dalvík in Eyjafjörður, Iceland.
+
+Programs for Android are commonly written in Java and Kotlin, and compiled to bytecode for the Java Virtual Machine, which is then translated to Dalvik bytecode and stored in `.dex` (*Dalvik EXecutable*) and `.odex` (*Optimized Dalvik EXecutable*) files; related terms *odex* and *de-odex* are associated with respective bytecode conversions. The compact Dalvik Executable format is designed for systems that are constrained in terms of memory and processor speed.
+
+The successor of Dalvik is Android Runtime (ART), which uses the same bytecode and .dex files (but not .odex files), with the succession aiming at performance improvements. The new runtime environment was included for the first time in Android 4.4 "KitKat" as a technology preview, and replaced Dalvik entirely in later versions; Android 5.0 "Lollipop" is the first version in which ART is the only included runtime.
+
+## History
+
+Dalvik, named after a town in Iceland by its creator Dan Bornstein, was designed for embedded devices with very low RAM and CPU to run Java code, and eventually support C++ for "heavy-duty apps" and JavaScript for "light-weight widget-like apps" as first-class languages with Java catering to the rest. Android Native Development Kit which eventually paved way for C++ support has existed since Dalvik's first public release. According to Bornstein, Memory-mapping executables and libraries across multiple process and building a faster interpreter with register-based semantics drove much of the early design of the byte-aligned instruction set and the Virtual Machine. Experience working with J2ME on Sidekick at Danger, Bornstein found it was too stripped down and fairly constrained for Android. While improvements such as Isolates as then planned by Sun made process isolation infeasible as it broke Android's intra-Device security model. For Dalvik VM, Bornstein particularly took inspiration from *The Case for Register Machines* authored by Brian Davis et al. of Trinity College, Dublin.
+
+Dalvik was open sourced under Apache License v2 as rest of the Android Open Source Project in 2008.
+
+## Architecture
+
+Unlike Java Virtual Machines, which are stack machines, the Dalvik VM uses a register-based architecture that requires fewer, typically more complex, virtual machine instructions. Dalvik programs are written in Java using the Android application programming interface (API), compiled to Java bytecode, and converted to Dalvik instructions as necessary.
+
+A tool called `dx` is used to convert Java .class files into the .dex format. Multiple classes are included in a single .dex file. Duplicate strings and other constants used in multiple class files are included only once in the .dex output to conserve space. Java bytecode is also converted into an alternative instruction set used by the Dalvik VM. An uncompressed .dex file is typically a few percent smaller in size than a compressed Java archive (JAR) derived from the same .class files.
+
+The Dalvik executables may be modified again when installed onto a mobile device. In order to gain further optimizations, byte order may be swapped in certain data, simple data structures and function libraries may be linked inline, and empty class objects may be short-circuited, for example.
+
+Being optimized for low memory requirements, Dalvik has some specific characteristics that differentiate it from other standard VMs:
+
+- The VM was slimmed down to use less space.
+- The constant pool has been modified to use only 32-bit indices to simplify the interpreter.
+- Standard Java bytecode executes 8-bit stack instructions. Local variables must be copied to or from the operand stack by separate instructions. Dalvik instead uses its own 16-bit instruction set that works directly on local variables. The local variable is commonly picked by a 4-bit "virtual register" field. This lowers Dalvik's instruction count and raises its interpreter speed.
+
+The design of Dalvik permits a device to run multiple instances of the VM efficiently.
+
+Android 2.2 "Froyo" brought trace-based just-in-time (JIT) compilation into Dalvik, optimizing the execution of applications by continually profiling applications each time they run and dynamically compiling frequently executed short segments of their bytecode into native machine code. While Dalvik interprets the rest of application's bytecode, native execution of those short bytecode segments, called "traces", provides significant performance improvements. The potential trace heads are identified in the front-end of the compiler at the parsing stage and after the bytecode conversion. A translation cache is maintained during the runtime. Multiple traces can be chained to reduce synchronisation between the compiler and the interpreter. The trace is optimized by converting it into the Single Static Assignment form, enabling optimizations like dead store elimination, variable folding, and inlining getters and setters.
+
+## Performance
+
+The relative merits of stack machines versus register-based approaches are a subject of ongoing debate.
+
+Generally, stack-based machines must use instructions to load data on the stack and manipulate that data, and, thus, require more instructions than register machines to implement the same high-level code, but the instructions in a register machine must encode the source and destination registers and, therefore, tend to be larger. This difference is of importance to VM interpreters, for which opcode dispatch tends to be expensive, along with other factors similarly relevant to just-in-time compilation.
+
+Tests performed on ARMv7 devices in 2010 by Oracle (owner of the Java technology) with standard non-graphical Java benchmarks showed the HotSpot VM of Java SE embedded to be 2–3 times faster than the JIT-based Dalvik VM of Android 2.2 (the initial Android release that included a JIT compiler). In 2012, academic benchmarks confirmed the factor of 3 between HotSpot and Dalvik on the same Android board, also noting that Dalvik code was not smaller than Hotspot.
+
+Furthermore, as of March 2014, benchmarks performed on an Android device still show up to a factor 100 between native applications and a Dalvik application on the same Android device. Upon running benchmarks using the early interpreter of 2009, both Java Native Interface (JNI) and native code showed an order of magnitude speedup.
+
+## Licensing and patents
+
+Dalvik is published under the terms of the Apache License 2.0. Some say that Dalvik is a clean-room implementation rather than a development on top of a standard Java runtime, which would mean it does not inherit copyright-based license restrictions from either the standard-edition or open-source-edition Java runtimes. Oracle and some reviewers dispute this.
+
+On August 12, 2010, Oracle, which acquired Sun Microsystems in April 2009 and therefore owns the rights to Java, sued Google over claimed infringement of copyrights and patents. Oracle alleged that Google, in developing Android, knowingly, directly and repeatedly infringed Oracle's Java-related intellectual property. In May 2012, the jury in this case found that Google did not infringe on Oracle's patents, and the trial judge ruled that the structure of the Java APIs used by Google was not copyrightable. The parties agreed to zero dollars in statutory damages for 9 lines of copied code.
