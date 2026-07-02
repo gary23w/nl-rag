@@ -1,0 +1,698 @@
+# nl-rag distilled facts — domain: concurrency-patterns
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:concurrency-patterns/compare-and-swap] In computer science, **compare-and-swap** (**CAS**) is an atomic instruction used in multithreading to achieve synchronization.
+[src:concurrency-patterns/compare-and-swap] It compares the contents of a memory location with a given (the previous) value and, only if they are the same, modifies the contents of that memory location to a new given value.
+[src:concurrency-patterns/compare-and-swap] This is done as a single atomic operation.
+[src:concurrency-patterns/compare-and-swap] The atomicity guarantees that the new value is calculated based on up-to-date information; if the value had been updated by another thread in the meantime, the write would fail.
+[src:concurrency-patterns/compare-and-swap] This operation is used to implement synchronization primitives like semaphores and mutexes, as well as more sophisticated lock-free and wait-free algorithms.
+[src:concurrency-patterns/compare-and-swap] Maurice Herlihy (1991) proved that CAS can implement more of these algorithms than atomic read, write, or fetch-and-add, and assuming a fairly large amount of memory, that it can implement all of them.
+[src:concurrency-patterns/compare-and-swap] CAS is equivalent to load-link/store-conditional, in the sense that a constant number of invocations of either primitive can be used to implement the other one in a wait-free manner.
+[src:concurrency-patterns/compare-and-swap] Algorithms built around CAS typically read some key memory location and remember the old value.
+[src:concurrency-patterns/compare-and-swap] Based on that old value, they compute some new value.
+[src:concurrency-patterns/compare-and-swap] Then they try to swap in the new value using CAS, where the comparison checks for the location still being equal to the old value.
+[src:concurrency-patterns/compare-and-swap] If CAS indicates that the attempt has failed, it has to be repeated from the beginning: the location is re-read, a new value is re-computed and the CAS is tried again.
+[src:concurrency-patterns/compare-and-swap] As an example use case of compare-and-swap, here is an algorithm for atomically incrementing or decrementing an integer.
+[src:concurrency-patterns/compare-and-swap] This is useful in a variety of applications that use counters.
+[src:concurrency-patterns/compare-and-swap] The function add performs the action *p ← *p + a, atomically (again denoting pointer indirection by *, as in C) and returns the final value stored in the counter.
+[src:concurrency-patterns/compare-and-swap] Unlike in the cas pseudocode above, there is no requirement that any sequence of operations is atomic except for cas.
+[src:concurrency-patterns/compare-and-swap] In this algorithm, if the value of *p changes after (or while!) it is fetched and before the CAS does the store, CAS will notice and report this fact, causing the algorithm to retry.
+[src:concurrency-patterns/compare-and-swap] Some CAS-based algorithms are affected by and must handle the problem of a false positive match, or the ABA problem.
+[src:concurrency-patterns/compare-and-swap] It is possible that between the time the old value is read and the time CAS is attempted, some other processors or threads change the memory location two or more times such that it acquires a bit pattern which matches the old value.
+[src:concurrency-patterns/compare-and-swap] The problem arises if this new bit pattern, which looks exactly like the old value, has a different meaning: for instance, it could be a recycled address, or a wrapped version counter.
+[src:concurrency-patterns/compare-and-swap] A general solution to this is to use a double-length CAS (DCAS).
+[src:concurrency-patterns/compare-and-swap] E.g., on a 32-bit system, a 64-bit CAS can be used.
+[src:concurrency-patterns/compare-and-swap] The second half is used to hold a counter.
+[src:concurrency-patterns/compare-and-swap] The compare part of the operation compares the previously read value of the pointer *and* the counter, with the current pointer and counter.
+[src:concurrency-patterns/compare-and-swap] If they match, the swap occurs - the new value is written - but the new value has an incremented counter.
+[src:concurrency-patterns/compare-and-swap] An alternative form of this (useful on CPUs which lack DCAS) is to use an index into a freelist, rather than a full pointer, e.g. with a 32-bit CAS, use a 16-bit index and a 16-bit counter.
+[src:concurrency-patterns/compare-and-swap] However, the reduced counter lengths begin to make ABA possible at modern CPU speeds.
+[src:concurrency-patterns/compare-and-swap] One simple technique which helps alleviate this problem is to store an ABA counter in each data structure element, rather than using a single ABA counter for the whole data structure.
+[src:concurrency-patterns/compare-and-swap] A more complicated but more effective solution is to implement safe memory reclamation (SMR).
+[src:concurrency-patterns/compare-and-swap] This is in effect lock-free garbage collection.
+[src:concurrency-patterns/compare-and-swap] The advantage of using SMR is the assurance a given pointer will exist only once at any one time in the data structure, thus the ABA problem is completely solved.
+[src:concurrency-patterns/compare-and-swap] (Without SMR, something like a freelist will be in use, to ensure that all data elements can be accessed safely (no memory access violations) even when they are no longer present in the data structure.
+[src:concurrency-patterns/compare-and-swap] With SMR, only elements actually currently in the data structure will be accessed).
+[src:concurrency-patterns/compare-and-swap] CAS, and other atomic instructions, are sometimes thought to be unnecessary in uniprocessor systems, because the atomicity of any sequence of instructions can be achieved by disabling interrupts while executing it.
+[src:concurrency-patterns/compare-and-swap] However, disabling interrupts has numerous downsides.
+[src:concurrency-patterns/compare-and-swap] For example, code that is allowed to do so must be trusted not to be malicious and monopolize the CPU, as well as to be correct and not accidentally hang the machine in an infinite loop or page fault.
+[src:concurrency-patterns/compare-and-swap] Further, disabling interrupts is often deemed too expensive to be practical.
+[src:concurrency-patterns/compare-and-swap] Thus, even programs only intended to run on uniprocessor machines will benefit from atomic instructions, as in the case of Linux's futexes.
+[src:concurrency-patterns/compare-and-swap] In multiprocessor systems, it is usually impossible to disable interrupts on all processors at the same time.
+[src:concurrency-patterns/compare-and-swap] Even if it were possible, two or more processors could be attempting to access the same semaphore's memory at the same time, and thus atomicity would not be achieved.
+[src:concurrency-patterns/compare-and-swap] The compare-and-swap instruction allows any processor to atomically test and modify a memory location, preventing such multiple-processor collisions.
+[src:concurrency-patterns/compare-and-swap] On server-grade multi-processor architectures of the 2010s, compare-and-swap is cheap relative to a simple load that is not served from cache.
+[src:concurrency-patterns/compare-and-swap] A 2013 paper points out that a CAS is only 1.15 times more expensive than a non-cached load on Intel Xeon (Westmere-EX) and 1.35 times on AMD Opteron (Magny-Cours).
+[src:concurrency-patterns/compare-and-swap] Compare-and-swap (and compare-and-swap-double) has been an integral part of the IBM 370 (and all successor) architectures since 1970.
+[src:concurrency-patterns/compare-and-swap] Similarly, the use of test-and-set was also eliminated.
+[src:concurrency-patterns/compare-and-swap] In these operating systems, new units of work may be instantiated "globally", into the global service priority list, or "locally", into the local service priority list, by the execution of a single compare-and-swap instruction.
+[src:concurrency-patterns/compare-and-swap] This substantially improved the responsiveness of these operating systems.
+[src:concurrency-patterns/compare-and-swap] In the x86 (since 80486) and Itanium architectures this is implemented as the **compare and exchange** (**CMPXCHG**) instruction (on a multiprocessor the LOCK prefix must be used).
+[src:concurrency-patterns/compare-and-swap] As of 2013, most multiprocessor architectures support CAS in hardware, and the compare-and-swap operation is the most popular synchronization primitive for implementing both lock-based and non-blocking concurrent data structures.
+[src:concurrency-patterns/compare-and-swap] The atomic counter and atomic bitmask operations in the Linux kernel typically use a compare-and-swap instruction in their implementation.
+[src:concurrency-patterns/compare-and-swap] The SPARC-V8 and PA-RISC architectures are two of the very few recent architectures that do not support CAS in hardware; the Linux port to these architectures uses a spinlock.
+[src:concurrency-patterns/compare-and-swap] Many C compilers support using compare-and-swap either with the C11 `<stdatomic.h>` functions, or some non-standard C extension of that particular C compiler, or by calling a function written directly in assembly language using the compare-and-swap instruction.
+[src:concurrency-patterns/compare-and-swap] `old_reg_val` is always returned, but it can be tested following the `compare_and_swap` operation to see if it matches `oldval`, as it may be different, meaning that another process has managed to succeed in a competing `compare_and_swap` to change the reg value from `oldval`.
+[src:concurrency-patterns/compare-and-swap] For example, an election protocol can be implemented such that every process checks the result of `compare_and_swap` against its own PID (= newval).
+[src:concurrency-patterns/compare-and-swap] The winning process finds the `compare_and_swap` returning the initial non-PID value (e.g., zero).
+[src:concurrency-patterns/compare-and-swap] For the losers it will return the winning PID.
+[src:concurrency-patterns/compare-and-swap] Since CAS operates on a single pointer-sized memory location, while most lock-free and wait-free algorithms need to modify multiple locations, several extensions have been implemented.
+[src:concurrency-patterns/compare-and-swap] Compares two unrelated memory locations with two expected values, and if they're equal, sets both locations to new values.
+[src:concurrency-patterns/compare-and-swap] The generalization of DCAS to multiple (non-adjacent) words is called MCAS or CASN.
+[src:concurrency-patterns/compare-and-swap] Operates on two adjacent pointer-sized locations (or, equivalently, one location twice as big as a pointer).
+[src:concurrency-patterns/compare-and-swap] serve this role, although early 64-bit AMD CPUs did not support CMPXCHG16B (modern AMD CPUs do).
+[src:concurrency-patterns/compare-and-swap] era also hamper its use, even though the processors support it.
+[src:concurrency-patterns/compare-and-swap] because it required hardware support for CMPXCHG16B.
+[src:concurrency-patterns/compare-and-swap] where the two written pointers are adjacent.
+[src:concurrency-patterns/compare-and-swap] Is a generalisation of normal compare-and-swap.
+[src:concurrency-patterns/compare-and-swap] It can be used to atomically swap an arbitrary number of arbitrarily located memory locations.
+[src:concurrency-patterns/compare-and-swap] Usually, multi-word compare-and-swap is implemented in software using normal double-wide compare-and-swap operations.
+[src:concurrency-patterns/compare-and-swap] The drawback of this approach is a lack of scalability.
+[src:concurrency-patterns/compare-and-swap] Is a combination of persist operation and the normal compare-and-swap.
+[src:concurrency-patterns/compare-and-swap] It can be used to atomically compare-and-swap a value and then persist the value, so there is no gap between concurrent visibility and crash visibility.
+[src:concurrency-patterns/compare-and-swap] Stores a history of previous values of the memory location, with timestamps, to allow a process to obtain a consistent view (or snapshot) of the values that were stored in multiple locations at an earlier time.
+[src:concurrency-patterns/compare-and-swap] This extension can be implemented from ordinary compare-and-swap instructions.
+[src:concurrency-patterns/coroutine] They have been described as "functions whose execution you can pause".
+[src:concurrency-patterns/coroutine] Melvin Conway coined the term *coroutine* in 1958 when he applied it to the construction of an assembly program.
+[src:concurrency-patterns/coroutine] The first published explanation of the coroutine appeared later, in 1963.
+[src:concurrency-patterns/coroutine] There is no single precise definition of coroutine.
+[src:concurrency-patterns/coroutine] 2. the execution of a coroutine is suspended as control leaves it, only to carry on where it left off when control re-enters the coroutine at some later stage.
+[src:concurrency-patterns/coroutine] 3. whether a coroutine is able to suspend its execution from within nested function calls.
+[src:concurrency-patterns/coroutine] Such a coroutine is a *stackful coroutine*.
+[src:concurrency-patterns/coroutine] One to the contrary is called *stackless coroutines*, where unless marked as coroutine, a regular function can't use the keyword `yield`.
+[src:concurrency-patterns/coroutine] The paper "Revisiting Coroutines" published in 2009 proposed the term *full coroutine* to denote one that supports first-class coroutine and is stackful.
+[src:concurrency-patterns/coroutine] Full Coroutines deserve their own name in that they have the same expressive power as one-shot continuations and delimited continuations.
+[src:concurrency-patterns/coroutine] Full coroutines are either symmetric or asymmetric.
+[src:concurrency-patterns/coroutine] Importantly, whether a coroutine is symmetric or asymmetric has no bearing on how expressive it can be, though full coroutines are more expressive than non-full coroutines.
+[src:concurrency-patterns/coroutine] While their expressive power is the same, asymmetrical coroutines more closely resemble routine based control structures in the sense that control is always passed back to the invoker, which programmers may find more familiar.
+[src:concurrency-patterns/coroutine] Subroutines are special cases of coroutines.
+[src:concurrency-patterns/coroutine] When subroutines are invoked, execution begins at the start, and once a subroutine exits, it is finished; an instance of a subroutine only returns once, and does not hold state between invocations.
+[src:concurrency-patterns/coroutine] By contrast, coroutines can exit by calling other coroutines, which may later return to the point where they were invoked in the original coroutine; from the coroutine's point of view, it is not exiting but calling another coroutine.
+[src:concurrency-patterns/coroutine] Thus, a coroutine instance holds state, and varies between invocations; there can be multiple instances of a given coroutine at once.
+[src:concurrency-patterns/coroutine] The difference between calling another coroutine by means of "yielding" to it and simply calling another routine (which then, also, would return to the original point), is that the relationship between two coroutines which yield to each other is not that of caller-callee, but instead symmetric.
+[src:concurrency-patterns/coroutine] Any subroutine can be translated to a coroutine which does not call *yield*.
+[src:concurrency-patterns/coroutine] Here is a simple example of how coroutines can be useful.
+[src:concurrency-patterns/coroutine] Suppose you have a consumer-producer relationship where one routine creates items and adds them to a queue and another removes items from the queue and uses them.
+[src:concurrency-patterns/coroutine] For reasons of efficiency, you want to add and remove several items at once.
+[src:concurrency-patterns/coroutine] The queue is then completely filled or emptied before yielding control to the other coroutine using the *yield* command.
+[src:concurrency-patterns/coroutine] The further coroutines calls are starting right after the *yield*, in the outer coroutine loop.
+[src:concurrency-patterns/coroutine] Although this example is often used as an introduction to multithreading, two threads are not needed for this: the *yield* statement can be implemented by a jump directly from one routine into the other.
+[src:concurrency-patterns/coroutine] However, coroutines are cooperatively multitasked, whereas threads are typically preemptively multitasked.
+[src:concurrency-patterns/coroutine] Coroutines provide concurrency, because they allow tasks to be performed out of order or in a changeable order, without changing the overall outcome, but they do not provide parallelism, because they do not execute multiple tasks simultaneously.
+[src:concurrency-patterns/coroutine] It is possible to implement coroutines using preemptively-scheduled threads, in a way that will be transparent to the calling code, but some of the advantages (particularly the suitability for hard-realtime operation and relative cheapness of switching between them) will be lost.
+[src:concurrency-patterns/coroutine] Generators, also known as semicoroutines, are a subset of coroutines.
+[src:concurrency-patterns/coroutine] That is, since generators are primarily used to simplify the writing of iterators, the `yield` statement in a generator does not specify a coroutine to jump to, but rather passes a value back to a parent routine.
+[src:concurrency-patterns/coroutine] A number of implementations of coroutines for languages with generator support but no native coroutines (e.g.
+[src:concurrency-patterns/coroutine] Python before 2.5) use this or a similar model.
+[src:concurrency-patterns/coroutine] Using coroutines for state machines or concurrency is similar to using mutual recursion with tail calls, as in both cases the control changes to a different one of a set of routines.
+[src:concurrency-patterns/coroutine] However, coroutines are more flexible and generally more efficient.
+[src:concurrency-patterns/coroutine] Further, each mutually recursive call of a subroutine requires a new stack frame (unless tail call elimination is implemented), while passing control between coroutines uses the existing contexts and can be implemented simply by a jump.
+[src:concurrency-patterns/coroutine] Coroutines originated as an assembly language method, but are supported in some high-level programming languages.
+[src:concurrency-patterns/coroutine] Java does not have native or library support for coroutines, but it can call Kotlin coroutines `kotlinx.coroutines` (though this is not ideal and would require a Java wrapper over Kotlin).
+[src:concurrency-patterns/coroutine] Since continuations can be used to implement coroutines, programming languages that support them can also quite easily support coroutines.
+[src:concurrency-patterns/coroutine] As of 2003, many of the most popular programming languages, including C and its derivatives, do not have built-in support for coroutines within the language or their standard libraries.
+[src:concurrency-patterns/coroutine] This is, in large part, due to the limitations of stack-based subroutine implementation.
+[src:concurrency-patterns/coroutine] An exception is the C++ library Boost.Context, part of Boost, which supports context swapping on ARM, MIPS, PowerPC, SPARC and x86 on POSIX, Mac OS X and Windows.
+[src:concurrency-patterns/coroutine] Coroutines can be built upon Boost.Context.
+[src:concurrency-patterns/coroutine] Conditionals within the code result in the execution of different code paths on successive calls, based on the values of the state variables.
+[src:concurrency-patterns/coroutine] Another typical response is to implement an explicit state machine in the form of a large and complex switch statement or via a goto statement, particularly a computed goto.
+[src:concurrency-patterns/coroutine] Such implementations are considered difficult to understand and maintain, and a motivation for coroutine support.
+[src:concurrency-patterns/coroutine] Threads, and to a lesser extent fibers, are an alternative to coroutines in mainstream programming environments today.
+[src:concurrency-patterns/coroutine] Threads provide facilities for managing the real-time cooperative interaction of *simultaneously* executing pieces of code.
+[src:concurrency-patterns/coroutine] Threads are widely available in environments that support C (and are supported natively in many other modern languages), are familiar to many programmers, and are usually well-implemented, well-documented and well-supported.
+[src:concurrency-patterns/coroutine] However, as they solve a large and difficult problem they include many powerful and complex facilities and have a correspondingly difficult learning curve.
+[src:concurrency-patterns/coroutine] As such, when a coroutine is all that is needed, using a thread can be overkill.
+[src:concurrency-patterns/coroutine] One important difference between threads and coroutines is that threads are typically preemptively scheduled while coroutines are not.
+[src:concurrency-patterns/coroutine] Because threads can be rescheduled at any instant and can execute concurrently, programs using threads must be careful about locking.
+[src:concurrency-patterns/coroutine] In contrast, because coroutines can only be rescheduled at specific points in the program and do not execute concurrently, programs using coroutines can often avoid locking entirely.
+[src:concurrency-patterns/coroutine] This property is also cited as a benefit of event-driven or asynchronous programming.
+[src:concurrency-patterns/coroutine] Since fibers are cooperatively scheduled, they provide an ideal base for implementing coroutines above.
+[src:concurrency-patterns/coroutine] However, system support for fibers is often lacking compared to that for threads.
+[src:concurrency-patterns/coroutine] In order to implement general-purpose coroutines, a second call stack must be obtained, which is a feature not directly supported by the C language.
+[src:concurrency-patterns/coroutine] A reliable (albeit platform-specific) way to achieve this is to use a small amount of inline assembly to explicitly manipulate the stack pointer during initial creation of the coroutine.
+[src:concurrency-patterns/coroutine] This is the approach recommended by Tom Duff in a discussion on its relative merits vs. the method used by Protothreads.
+[src:concurrency-patterns/coroutine] On platforms which provide the POSIX sigaltstack system call, a second call stack can be obtained by calling a springboard function from within a signal handler to achieve the same goal in portable C, at the cost of some extra complexity.
+[src:concurrency-patterns/coroutine] C libraries complying to POSIX or the Single Unix Specification (SUSv3) provided such routines as getcontext, setcontext, makecontext and swapcontext, but these functions were declared obsolete in POSIX 1.2008.
+[src:concurrency-patterns/coroutine] Once a second call stack has been obtained with one of the methods listed above, the setjmp and longjmp functions in the standard C library can then be used to implement the switches between coroutines.
+[src:concurrency-patterns/coroutine] These functions save and restore, respectively, the stack pointer, program counter, callee-saved registers, and any other internal state as required by the ABI, such that returning to a coroutine after having yielded restores all the state that would be restored upon returning from a function call.
+[src:concurrency-patterns/coroutine] Minimalist implementations, which do not piggyback off the setjmp and longjmp functions, may achieve the same result via a small block of inline assembly which swaps merely the stack pointer and program counter, and clobbers all other registers.
+[src:concurrency-patterns/coroutine] This can be significantly faster, as setjmp and longjmp must conservatively store all registers which may be in use according to the ABI, whereas the clobber method allows the compiler to store (by spilling to the stack) only what it knows is actually in use.
+[src:concurrency-patterns/coroutine] Due to the lack of direct language support, many authors have written their own libraries for coroutines which hide the above details.
+[src:concurrency-patterns/coroutine] Russ Cox's libtask library is a good example of this genre.
+[src:concurrency-patterns/coroutine] It uses the context functions if they are provided by the native C library; otherwise it provides its own implementations for ARM, PowerPC, Sparc, and x86.
+[src:concurrency-patterns/coroutine] Other notable implementations include libpcl, coro, lthread, libCoroutine, libconcurrency, libcoro, ribs2, libdill., libaco, and libco.
+[src:concurrency-patterns/coroutine] In addition to the general approach above, several attempts have been made to approximate coroutines in C with combinations of subroutines and macros.
+[src:concurrency-patterns/coroutine] Simon Tatham's contribution, based on Duff's device, is a notable example of the genre, and is the basis for Protothreads and similar implementations.
+[src:concurrency-patterns/coroutine] C++20 introduced standardized coroutines as stackless functions that can be suspended in the middle of execution and resumed at a later point.
+[src:concurrency-patterns/coroutine] The suspended state of a coroutine is stored on the heap.
+[src:concurrency-patterns/coroutine] Implementation of this standard is ongoing, with the G++ and MSVC compilers currently fully supporting standard coroutines in recent versions.
+[src:concurrency-patterns/coroutine] A generator class for synchronous and lazy-evaluated ranges, `std::generator`, was added in C++23.
+[src:concurrency-patterns/coroutine] A proper task class, `std::execution::task`, was introduced in C++26.
+[src:concurrency-patterns/coroutine] It is invoked using `std::execution::sync_wait()`, which returns `std::optional<std::tuple<Ts...>>`.
+[src:concurrency-patterns/coroutine] This is an example of C++20 coroutines with the C++26 `std::execution::task` class.
+[src:concurrency-patterns/coroutine] C# 2.0 added semi-coroutine (generator) functionality through the iterator pattern and `yield` keyword.
+[src:concurrency-patterns/coroutine] Cloroutine is a third-party library providing support for stackless coroutines in Clojure.
+[src:concurrency-patterns/coroutine] It's implemented as a macro, statically splitting an arbitrary code block on arbitrary var calls and emitting the coroutine as a stateful function.
+[src:concurrency-patterns/coroutine] D implements coroutines as its standard library class `core.thread.Fiber` for a fiber.
+[src:concurrency-patterns/coroutine] A generator (`std.concurrency.Generator`) makes it trivial to expose a fiber function as an input range (`std.range.interfaces.InputRange`), making any fiber compatible with existing range algorithms.
+[src:concurrency-patterns/coroutine] Go has a built-in concept of "goroutines", a type of green thread which are lightweight, independent processes managed by the Go runtime.
+[src:concurrency-patterns/coroutine] A new goroutine can be started using the "go" keyword.
+[src:concurrency-patterns/coroutine] Each goroutine has a variable-size stack which can be expanded as needed.
+[src:concurrency-patterns/coroutine] Goroutines generally communicate using Go's built-in channels.
+[src:concurrency-patterns/coroutine] However, goroutines are not coroutines (for instance, local data does not persist between successive calls).
+[src:concurrency-patterns/coroutine] There are several implementations for coroutines in Java.
+[src:concurrency-patterns/coroutine] Despite the constraints imposed by Java's abstractions, the JVM does not preclude the possibility.
+[src:concurrency-patterns/coroutine] There are four general methods used, but two break bytecode portability among standards-compliant JVMs.
+[src:concurrency-patterns/coroutine] Since ECMAScript 2015, JavaScript has support for generators, which are a special case of coroutines.
+[src:concurrency-patterns/coroutine] Kotlin implements coroutines as part of a first-party library.
+[src:concurrency-patterns/coroutine] Lua has supported first-class stackful asymmetric coroutines since version 5.0 (2003), in the standard library *coroutine*.
+[src:concurrency-patterns/coroutine] Modula-2 as defined by Wirth implements coroutines as part of the standard SYSTEM library.
+[src:concurrency-patterns/coroutine] The procedure NEWPROCESS() fills in a context given a code block and space for a stack as parameters, and the procedure TRANSFER() transfers control to a coroutine given the coroutine's context as its parameter.
+[src:concurrency-patterns/coroutine] The Mono Common Language Runtime has support for continuations, from which coroutines can be built.
+[src:concurrency-patterns/coroutine] During the development of the .NET Framework 2.0, Microsoft extended the design of the Common Language Runtime (CLR) hosting APIs to handle fiber-based scheduling with an eye towards its use in fiber-mode for SQL server.
+[src:concurrency-patterns/coroutine] Before release, support for the task switching hook `ICLRTask::SwitchOut` was removed due to time constraints.
+[src:concurrency-patterns/coroutine] Consequently, the use of the fiber API to switch tasks is currently not a viable option in the .NET Framework.
+[src:concurrency-patterns/coroutine] OCaml supports coroutines through its `Thread` module.
+[src:concurrency-patterns/coroutine] These coroutines provide concurrency without parallelism, and are scheduled preemptively on a single operating system thread.
+[src:concurrency-patterns/coroutine] Since OCaml 5.0, green threads are also available; provided by different modules.
+[src:concurrency-patterns/coroutine] Coroutines are natively implemented in all Raku backends.
+[src:concurrency-patterns/coroutine] Python has support for coroutines using the `asyncio.create_task()` function.
+[src:concurrency-patterns/coroutine] Racket provides native continuations, with a trivial implementation of coroutines provided in the official package catalog.
+[src:concurrency-patterns/coroutine] Since Scheme provides full support for continuations, implementing coroutines is nearly trivial, requiring only that a queue of continuations be maintained.
+[src:concurrency-patterns/coroutine] Since, in most Smalltalk environments, the execution stack is a first-class citizen, coroutines can be implemented without additional library or VM support.
+[src:concurrency-patterns/coroutine] Since version 8.6, Tcl supports coroutines in the core language.
+[src:concurrency-patterns/coroutine] Vala implements native support for coroutines.
+[src:concurrency-patterns/coroutine] They are designed to be used with a GTK Main Loop, but can be used alone if care is taken to ensure that the end callback will never have to be called before doing, at least, one yield.
+[src:concurrency-patterns/coroutine] Machine-dependent assembly languages often provide direct methods for coroutine execution.
+[src:concurrency-patterns/coroutine] On VAXen (in VAX MACRO) the comparable instruction is "JSB @(SP)+".
+[src:concurrency-patterns/coroutine] Even on a Motorola 6809 there is the instruction "JSR [,S++]"; note the "++", as 2 bytes (of address) are popped from the stack.
+[src:concurrency-patterns/coroutine] This instruction is much used in the (standard) 'monitor' Assist 09.
+[src:concurrency-patterns/double-checked-locking] In software engineering, **double-checked locking** (also known as "double-checked locking optimization") is a software design pattern used to reduce the overhead of acquiring a lock by testing the locking criterion (the "lock hint") before acquiring the lock.
+[src:concurrency-patterns/double-checked-locking] Locking occurs only if the locking criterion check indicates that locking is required.
+[src:concurrency-patterns/double-checked-locking] The original form of the pattern, appearing in *Pattern Languages of Program Design 3*, has data races, depending on the memory model in use, and it is hard to get right.
+[src:concurrency-patterns/double-checked-locking] There are valid forms of the pattern, including the use of the `volatile` keyword in Java and explicit memory barriers in C++.
+[src:concurrency-patterns/double-checked-locking] The pattern is typically used to reduce locking overhead when implementing "lazy initialization" in a multi-threaded environment, especially as part of the Singleton pattern.
+[src:concurrency-patterns/double-checked-locking] Lazy initialization avoids initializing a value until the first time it is accessed.
+[src:concurrency-patterns/double-checked-locking] The problem is that this does not work when using multiple threads.
+[src:concurrency-patterns/double-checked-locking] A lock must be obtained in case two threads call `getHelper()` simultaneously.
+[src:concurrency-patterns/double-checked-locking] Otherwise, either they may both try to create the object at the same time, or one may wind up getting a reference to an incompletely initialized object.
+[src:concurrency-patterns/double-checked-locking] This is correct and will most likely have sufficient performance.
+[src:concurrency-patterns/double-checked-locking] However, the first call to `getHelper()` will create the object and only the few threads trying to access it during that time need to be synchronized; after that all calls just get a reference to the member variable.
+[src:concurrency-patterns/double-checked-locking] Since synchronizing a method could in some extreme cases decrease performance by a factor of 100 or higher, the overhead of acquiring and releasing a lock every time this method is called after the initialization has been completed seems unnecessary.
+[src:concurrency-patterns/double-checked-locking] Double-check whether the variable has already been initialized: if another thread acquired the lock first, it may have already done the initialization.
+[src:concurrency-patterns/double-checked-locking] Otherwise, initialize and return the variable.
+[src:concurrency-patterns/double-checked-locking] Intuitively, this algorithm is an efficient solution to the problem.
+[src:concurrency-patterns/double-checked-locking] But if the pattern is not written carefully, it will have a data race.
+[src:concurrency-patterns/double-checked-locking] Due to the semantics of some programming languages, the code generated by the compiler is allowed to update the shared variable to point to a *partially constructed* object before *A* has finished performing the initialization.
+[src:concurrency-patterns/double-checked-locking] For example, in Java if a call to a constructor has been inlined then the shared variable may immediately be updated once the storage has been allocated but before the inlined constructor initializes the object.
+[src:concurrency-patterns/double-checked-locking] Thread *B* notices that the shared variable has been initialized (or so it appears), and returns its value.
+[src:concurrency-patterns/double-checked-locking] Because thread *B* believes the value is already initialized, it does not acquire the lock.
+[src:concurrency-patterns/double-checked-locking] If *B* uses the object before all of the initialization done by *A* is seen by *B* (either because *A* has not finished initializing it or because some of the initialized values in the object have not yet percolated to the memory *B* uses (cache coherence)), the program will likely crash.
+[src:concurrency-patterns/double-checked-locking] Most runtimes have memory barriers or other methods for managing memory visibility across execution units.
+[src:concurrency-patterns/double-checked-locking] Without a detailed understanding of the language's behavior in this area, the algorithm is difficult to implement correctly.
+[src:concurrency-patterns/double-checked-locking] One of the dangers of using double-checked locking is that even a naive implementation will appear to work most of the time: it is not easy to distinguish between a correct implementation of the technique and one that has subtle problems.
+[src:concurrency-patterns/double-checked-locking] Depending on the compiler, the interleaving of threads by the scheduler and the nature of other concurrent system activity, failures resulting from an incorrect implementation of double-checked locking may only occur intermittently.
+[src:concurrency-patterns/double-checked-locking] Reproducing the failures can be difficult.
+[src:concurrency-patterns/double-checked-locking] `pthread_once()` must be used to initialize library (or sub-module) code when its API does not have a dedicated initialization procedure required to be called in single-threaded mode.
+[src:concurrency-patterns/double-checked-locking] As of J2SE 5.0, the volatile keyword is defined to create a memory barrier.
+[src:concurrency-patterns/double-checked-locking] This allows a solution that ensures that multiple threads handle the singleton instance correctly.
+[src:concurrency-patterns/double-checked-locking] Note the local variable "localRef", which seems unnecessary.
+[src:concurrency-patterns/double-checked-locking] The effect of this is that in cases where helper is already initialized (i.e., most of the time), the volatile field is only accessed once (due to "return localRef;" instead of "return helper;"), which can improve the method's overall performance by as much as 40 percent.
+[src:concurrency-patterns/double-checked-locking] This relies on the fact that nested classes are not loaded until they are referenced.
+[src:concurrency-patterns/double-checked-locking] The local variable tempWrapper is required for correctness: simply using helperWrapper for both null checks and the return statement could fail due to read reordering allowed under the Java Memory Model.
+[src:concurrency-patterns/double-checked-locking] Performance of this implementation is not necessarily better than the volatile implementation.
+[src:concurrency-patterns/green-thread] In computer programming, a **green thread** is a thread that is scheduled by a runtime library or virtual machine (VM) instead of natively by the underlying operating system (OS).
+[src:concurrency-patterns/green-thread] Green threads emulate multithreaded environments without relying on any native OS abilities, and they are managed in user space instead of kernel space, enabling them to work in environments that do not have native thread support.
+[src:concurrency-patterns/green-thread] Green threads refers to the name of the original thread library for Java programming language (that was released in version 1.1 and then Green threads were abandoned in version 1.3 to native threads).
+[src:concurrency-patterns/green-thread] It was designed by *The Green Team* at Sun Microsystems.
+[src:concurrency-patterns/green-thread] Green threads were briefly available in Java between 1997 and 2000.
+[src:concurrency-patterns/green-thread] Green threads share a single operating system thread through co-operative concurrency and can therefore not achieve parallelism performance gains like operating system threads.
+[src:concurrency-patterns/green-thread] The main benefit of coroutines and green threads is ease of implementation.
+[src:concurrency-patterns/green-thread] On a multi-core processor, native thread implementations can automatically assign work to multiple processors, whereas green thread implementations normally cannot.
+[src:concurrency-patterns/green-thread] Green threads can be started much faster on some VMs.
+[src:concurrency-patterns/green-thread] On uniprocessor computers, however, the most efficient model has not yet been clearly determined.
+[src:concurrency-patterns/green-thread] When a green thread executes a blocking system call, not only is that thread blocked, but all of the threads within the process are blocked.
+[src:concurrency-patterns/green-thread] To avoid that problem, green threads must use non-blocking I/O or asynchronous I/O operations, although the increased complexity on the user side can be reduced if the virtual machine implementing the green threads spawns specific I/O processes (hidden to the user) for each I/O operation.
+[src:concurrency-patterns/green-thread] In Java 1.1, green threads were the only threading model used by the Java virtual machine (JVM), at least on Solaris.
+[src:concurrency-patterns/green-thread] As green threads have some limitations compared to native threads, subsequent Java versions dropped them in favor of native threads.
+[src:concurrency-patterns/green-thread] An exception to this is the Squawk virtual machine, which is a mixture between an operating system for low-power devices and a Java virtual machine.
+[src:concurrency-patterns/green-thread] It uses green threads to minimize the use of native code, and to support migrating its isolates.
+[src:concurrency-patterns/green-thread] Kilim and Quasar are open-source projects which implement green threads on later versions of the JVM by modifying the Java bytecode produced by the Java compiler (Quasar also supports Kotlin and Clojure).
+[src:concurrency-patterns/green-thread] There are some other programming languages that implement equivalents of green threads instead of native threads.
+[src:concurrency-patterns/green-thread] The Erlang virtual machine has what might be called *green processes* – they are like operating system processes (they do not share state like threads do) but are implemented within the Erlang Run Time System (erts).
+[src:concurrency-patterns/green-thread] These are sometimes termed *green threads*, but have significant differences from standard green threads.
+[src:concurrency-patterns/green-thread] In the case of GHC Haskell, a context switch occurs at the first allocation after a configurable timeout.
+[src:concurrency-patterns/green-thread] Most Smalltalk virtual machines do not count evaluation steps; however, the VM can still preempt the executing thread on external signals (such as expiring timers, or I/O becoming available).
+[src:concurrency-patterns/green-thread] Other implementations, e.g., QKS Smalltalk, are always time-sharing.
+[src:concurrency-patterns/green-thread] Unlike most green thread implementations, QKS also supports preventing priority inversion.
+[src:concurrency-patterns/green-thread] Virtual threads were introduced as a preview feature in Java 19 and stabilized in Java 21.
+[src:concurrency-patterns/lock-computer-science] In computer science, a **lock** or **mutex** (from mutual exclusion) is a synchronization primitive that prevents state from being modified or accessed by multiple threads of execution at once.
+[src:concurrency-patterns/lock-computer-science] Locks enforce mutual exclusion concurrency control policies, and with a variety of possible methods there exist multiple unique implementations for different applications.
+[src:concurrency-patterns/lock-computer-science] Generally, locks are *advisory locks*, where each thread cooperates by acquiring the lock before accessing the corresponding data.
+[src:concurrency-patterns/lock-computer-science] Some systems also implement *mandatory locks*, where attempting unauthorized access to a locked resource will force an exception in the entity attempting to make the access.
+[src:concurrency-patterns/lock-computer-science] The simplest type of lock is a binary semaphore.
+[src:concurrency-patterns/lock-computer-science] It provides exclusive access to the locked data.
+[src:concurrency-patterns/lock-computer-science] Other schemes also provide shared access for reading data.
+[src:concurrency-patterns/lock-computer-science] Other widely implemented access modes are exclusive, intend-to-exclude and intend-to-upgrade.
+[src:concurrency-patterns/lock-computer-science] Another way to classify locks is by what happens when the lock strategy prevents the progress of a thread.
+[src:concurrency-patterns/lock-computer-science] Most locking designs block the execution of the thread requesting the lock until it is allowed to access the locked resource.
+[src:concurrency-patterns/lock-computer-science] With a spinlock, the thread simply waits ("spins") until the lock becomes available.
+[src:concurrency-patterns/lock-computer-science] This is efficient if threads are blocked for a short time, because it avoids the overhead of operating system process rescheduling.
+[src:concurrency-patterns/lock-computer-science] It is inefficient if the lock is held for a long time, or if the progress of the thread that is holding the lock depends on preemption of the locked thread.
+[src:concurrency-patterns/lock-computer-science] Locks typically require hardware support for efficient implementation.
+[src:concurrency-patterns/lock-computer-science] This support usually takes the form of one or more atomic instructions such as "test-and-set", "fetch-and-add" or "compare-and-swap".
+[src:concurrency-patterns/lock-computer-science] These instructions allow a single process to test if the lock is free, and if free, acquire the lock in a single atomic operation.
+[src:concurrency-patterns/lock-computer-science] Uniprocessor architectures have the option of using uninterruptible sequences of instructions—using special instructions or instruction prefixes to disable interrupts temporarily—but this technique does not work for multiprocessor shared-memory machines.
+[src:concurrency-patterns/lock-computer-science] Proper support for locks in a multiprocessor environment can require quite complex hardware or software support, with substantial synchronization issues.
+[src:concurrency-patterns/lock-computer-science] The reason an atomic operation is required is because of concurrency, where more than one task executes the same logic.
+[src:concurrency-patterns/lock-computer-science] The above example does not guarantee that the task has the lock, since more than one task can be testing the lock at the same time.
+[src:concurrency-patterns/lock-computer-science] Since both tasks will detect that the lock is free, both tasks will attempt to set the lock, not knowing that the other task is also setting the lock.
+[src:concurrency-patterns/lock-computer-science] Dekker's or Peterson's algorithm are possible substitutes if atomic locking operations are not available.
+[src:concurrency-patterns/lock-computer-science] Careless use of locks can result in deadlock or livelock.
+[src:concurrency-patterns/lock-computer-science] A number of strategies can be used to avoid or recover from deadlocks or livelocks, both at design-time and at run-time.
+[src:concurrency-patterns/lock-computer-science] Some languages do support locks syntactically.
+[src:concurrency-patterns/lock-computer-science] C# introduced System.Threading.Lock in C# 13 on .NET 9.
+[src:concurrency-patterns/lock-computer-science] The code `lock(this)` can lead to problems if the instance can be accessed publicly.
+[src:concurrency-patterns/lock-computer-science] Similar to Java, C# can also synchronize entire methods, by using the MethodImplOptions.Synchronized attribute.
+[src:concurrency-patterns/lock-computer-science] There is a tradeoff between decreasing lock overhead and decreasing lock contention when choosing the number of locks in synchronization.
+[src:concurrency-patterns/lock-computer-science] An important property of a lock is its *granularity*.
+[src:concurrency-patterns/lock-computer-science] The granularity is a measure of the amount of data the lock is protecting.
+[src:concurrency-patterns/lock-computer-science] In general, choosing a coarse granularity (a small number of locks, each protecting a large segment of data) results in less *lock overhead* when a single process is accessing the protected data, but worse performance when multiple processes are running concurrently.
+[src:concurrency-patterns/lock-computer-science] This is because of increased *lock contention*.
+[src:concurrency-patterns/lock-computer-science] The more coarse the lock, the higher the likelihood that the lock will stop an unrelated process from proceeding.
+[src:concurrency-patterns/lock-computer-science] Conversely, using a fine granularity (a larger number of locks, each protecting a fairly small amount of data) increases the overhead of the locks themselves but reduces lock contention.
+[src:concurrency-patterns/lock-computer-science] Granular locking where each process must hold multiple locks from a common set of locks can create subtle lock dependencies.
+[src:concurrency-patterns/lock-computer-science] This subtlety can increase the chance that a programmer will unknowingly introduce a *deadlock*.
+[src:concurrency-patterns/lock-computer-science] In a database management system, for example, a lock could protect, in order of decreasing granularity, part of a field, a field, a record, a data page, or an entire table.
+[src:concurrency-patterns/lock-computer-science] Coarse granularity, such as using table locks, tends to give the best performance for a single user, whereas fine granularity, such as record locks, tends to give the best performance for multiple users.
+[src:concurrency-patterns/lock-computer-science] Database locks can be used as a means of ensuring transaction synchronicity. i.e. when making transaction processing concurrent (interleaving transactions), using 2-phased locks ensures that the concurrent execution of the transaction turns out equivalent to some serial ordering of the transaction.
+[src:concurrency-patterns/lock-computer-science] However, deadlocks become an unfortunate side-effect of locking in databases.
+[src:concurrency-patterns/lock-computer-science] Deadlocks are either prevented by pre-determining the locking order between transactions or are detected using waits-for graphs.
+[src:concurrency-patterns/lock-computer-science] An alternate to locking for database synchronicity while avoiding deadlocks involves the use of totally ordered global timestamps.
+[src:concurrency-patterns/lock-computer-science] There are mechanisms employed to manage the actions of multiple concurrent users on a database—the purpose is to prevent lost updates and dirty reads.
+[src:concurrency-patterns/lock-computer-science] Pessimistic concurrency is best implemented when lock times will be short, as in programmatic processing of records.
+[src:concurrency-patterns/lock-computer-science] Pessimistic concurrency requires a persistent connection to the database and is not a scalable option when users are interacting with data, because records might be locked for relatively large periods of time.
+[src:concurrency-patterns/lock-computer-science] It is not appropriate for use in Web application development.
+[src:concurrency-patterns/lock-computer-science] Where to use optimistic locking: this is appropriate in environments where there is low contention for data, or where read-only access to data is required.
+[src:concurrency-patterns/lock-computer-science] where locking data rows for prolonged periods of time would be infeasible.
+[src:concurrency-patterns/lock-computer-science] Also, maintaining record locks requires a persistent connection to the database server, which is not possible in disconnected applications.
+[src:concurrency-patterns/lock-computer-science] Several variations and refinements of these major lock types exist, with respective variations of blocking behavior.
+[src:concurrency-patterns/lock-computer-science] If a first lock blocks another lock, the two locks are called *incompatible*; otherwise the locks are *compatible*.
+[src:concurrency-patterns/lock-computer-science] Often, lock types blocking interactions are presented in the technical literature by a *Lock compatibility table*.
+[src:concurrency-patterns/lock-computer-science] Some concurrency control strategies avoid some or all of these problems.
+[src:concurrency-patterns/lock-computer-science] For example, a funnel or serializing tokens can avoid the biggest problem: deadlocks.
+[src:concurrency-patterns/lock-computer-science] Alternatives to locking include non-blocking synchronization methods, like lock-free programming techniques and transactional memory.
+[src:concurrency-patterns/lock-computer-science] However, such alternative methods often require that the actual lock mechanisms be implemented at a more fundamental level of the operating software.
+[src:concurrency-patterns/lock-computer-science] Therefore, they may only relieve the *application* level from the details of implementing locks, with the problems listed above still needing to be dealt with beneath the application.
+[src:concurrency-patterns/lock-computer-science] Therefore, an application can often be more robust when it recognizes the burdens it places upon an operating system and is capable of graciously recognizing the reporting of impossible demands.
+[src:concurrency-patterns/lock-computer-science] One of lock-based programming's biggest problems is that "locks don't compose": it is hard to combine small, correct lock-based modules into equally correct larger programs without modifying the modules or at least knowing about their internals.
+[src:concurrency-patterns/lock-computer-science] Simon Peyton Jones (an advocate of software transactional memory) gives the following example of a banking application: design a class Account that allows multiple concurrent clients to deposit or withdraw money to an account, and give an algorithm to transfer money from one account to another.
+[src:concurrency-patterns/lock-computer-science] The second part of the problem is much more complicated.
+[src:concurrency-patterns/lock-computer-science] In a concurrent program, this algorithm is incorrect because when one thread is halfway through transfer, another might observe a state where amount has been withdrawn from the first account, but not yet deposited into the other account: money has gone missing from the system.
+[src:concurrency-patterns/lock-computer-science] This solution gets more complicated when more locks are involved, and the transfer function needs to know about all of the locks, so they cannot be hidden.
+[src:concurrency-patterns/lock-computer-science] A mutex is a locking mechanism that sometimes uses the same basic implementation as the binary semaphore.
+[src:concurrency-patterns/lock-computer-science] However, they differ in how they are used.
+[src:concurrency-patterns/lock-computer-science] While a binary semaphore may be colloquially referred to as a mutex, a true mutex has a more specific use-case and definition, in that only the task that locked the mutex is supposed to unlock it.
+[src:concurrency-patterns/lock-computer-science] Premature task termination: Mutexes may also provide deletion safety, where the task holding the mutex cannot be accidentally deleted.
+[src:concurrency-patterns/lock-computer-science] Termination deadlock: If a mutex-holding task terminates for any reason, the OS can release the mutex and signal waiting tasks of this condition.
+[src:concurrency-patterns/lock-computer-science] Recursion deadlock: a task is allowed to lock a reentrant mutex multiple times as it unlocks it an equal number of times.
+[src:concurrency-patterns/lock-computer-science] Accidental release: An error is raised on the release of the mutex if the releasing task is not its owner.
+[src:concurrency-patterns/memory-barrier] In computing, a **memory barrier**, also known as a **membar**, **memory fence** or **fence instruction**, is a type of barrier instruction that causes a central processing unit (CPU) or compiler to enforce an ordering constraint on memory operations issued before and after the barrier instruction.
+[src:concurrency-patterns/memory-barrier] This typically means that operations issued prior to the barrier are guaranteed to be performed before operations issued after the barrier.
+[src:concurrency-patterns/memory-barrier] Memory barriers are necessary because most modern CPUs employ performance optimizations that can result in out-of-order execution.
+[src:concurrency-patterns/memory-barrier] This reordering of memory operations (loads and stores) normally goes unnoticed within a single thread of execution, but can cause unpredictable behavior in concurrent programs and device drivers unless carefully controlled.
+[src:concurrency-patterns/memory-barrier] The exact nature of an ordering constraint is hardware dependent and defined by the architecture's memory ordering model.
+[src:concurrency-patterns/memory-barrier] Some architectures provide multiple barriers for enforcing different ordering constraints.
+[src:concurrency-patterns/memory-barrier] Memory barriers are typically used when implementing low-level machine code that operates on memory shared by multiple devices.
+[src:concurrency-patterns/memory-barrier] Such code includes synchronization primitives and lock-free data structures on multiprocessor systems, and device drivers that communicate with computer hardware.
+[src:concurrency-patterns/memory-barrier] When a program runs on a single-CPU machine, the hardware performs the necessary bookkeeping to ensure that the program executes as if all memory operations were performed in the order specified by the programmer (program order), so memory barriers are not necessary.
+[src:concurrency-patterns/memory-barrier] However, when the memory is shared with multiple devices, such as other CPUs in a multiprocessor system, or memory-mapped peripherals, out-of-order access may affect program behavior.
+[src:concurrency-patterns/memory-barrier] For example, a second CPU may see memory changes made by the first CPU in a sequence that differs from program order.
+[src:concurrency-patterns/memory-barrier] A program is run via a process which can be multi-threaded (i.e. a software thread such as pthreads as opposed to a hardware thread).
+[src:concurrency-patterns/memory-barrier] Different processes do not share a memory space so this discussion does not apply to two programs, each one running in a different process (hence a different memory space).
+[src:concurrency-patterns/memory-barrier] It applies to two or more (software) threads running in a single process (i.e. a single memory space where multiple software threads share a single memory space).
+[src:concurrency-patterns/memory-barrier] Multiple software threads, within a single process, may run concurrently on a multi-core processor.
+[src:concurrency-patterns/memory-barrier] Initially, memory locations x and f both hold the value 0.
+[src:concurrency-patterns/memory-barrier] The software thread running on processor #1 loops while the value of f is zero, then it prints the value of x.
+[src:concurrency-patterns/memory-barrier] The software thread running on processor #2 stores the value 42 into x and then stores the value 1 into f.
+[src:concurrency-patterns/memory-barrier] Pseudo-code for the two program fragments is shown below.
+[src:concurrency-patterns/memory-barrier] The steps of the program correspond to individual processor instructions.
+[src:concurrency-patterns/memory-barrier] One might expect the print statement to always print the number "42"; however, if thread #2's store operations are executed out-of-order, it is possible for f to be updated *before* x, and the print statement might therefore print "0".
+[src:concurrency-patterns/memory-barrier] Similarly, thread #1's load operations may be executed out-of-order and it is possible for x to be read *before* f is checked, and again the print statement might therefore print an unexpected value.
+[src:concurrency-patterns/memory-barrier] For most programs neither of these situations is acceptable.
+[src:concurrency-patterns/memory-barrier] A memory barrier must be inserted before thread #2's assignment to f to ensure that the new value of x is visible to other processors at or prior to the change in the value of f.
+[src:concurrency-patterns/memory-barrier] Another important point is a memory barrier must also be inserted before thread #1's access to x to ensure the value of x is not read prior to seeing the change in the value of f.
+[src:concurrency-patterns/memory-barrier] If the processor's store operations are executed out-of-order, the hardware module may be triggered before data is ready in memory.
+[src:concurrency-patterns/memory-barrier] For another illustrative example (a non-trivial one that arises in actual practice), see double-checked locking.
+[src:concurrency-patterns/memory-barrier] In the case of the ARM architecture family, the DMB, DSB and ISB instructions are used.
+[src:concurrency-patterns/memory-barrier] In the case of the RISC-V architecture, the FENCE instruction is used.
+[src:concurrency-patterns/memory-barrier] In the case of the x86 architecture, the MFENCE, LFENCE, and SFENCE instructions are used.
+[src:concurrency-patterns/memory-barrier] Multithreaded programs usually use synchronization primitives provided by a high-level programming environment—such as Java or .NET—or an application programming interface (API) such as POSIX Threads or Windows API.
+[src:concurrency-patterns/memory-barrier] Synchronization primitives such as mutexes and semaphores are provided to synchronize access to resources from parallel threads of execution.
+[src:concurrency-patterns/memory-barrier] These primitives are usually implemented with the memory barriers required to provide the expected memory visibility semantics.
+[src:concurrency-patterns/memory-barrier] In such environments explicit use of memory barriers is not generally necessary.
+[src:concurrency-patterns/memory-barrier] Memory barrier instructions address reordering effects only at the hardware level.
+[src:concurrency-patterns/memory-barrier] Compilers may also reorder instructions as part of the program optimization process.
+[src:concurrency-patterns/memory-barrier] Although the effects on parallel program behavior can be similar in both cases, in general, it is necessary to take separate measures to inhibit compiler reordering optimizations for data that may be shared by multiple threads of execution.
+[src:concurrency-patterns/memory-barrier] In C and C++, the volatile keyword was intended to allow C and C++ programs to directly access memory-mapped I/O.
+[src:concurrency-patterns/memory-barrier] Memory-mapped I/O generally requires that the reads and writes specified in source code happen in the exact order specified with no omissions.
+[src:concurrency-patterns/memory-barrier] Omissions or reorderings of reads and writes by the compiler would break the communication between the program and the device accessed by memory-mapped I/O.
+[src:concurrency-patterns/memory-barrier] A C or C++ compiler may not omit reads from and writes to volatile memory locations, nor may it reorder read/writes relative to other such actions for the same volatile location (variable).
+[src:concurrency-patterns/memory-barrier] The keyword volatile *does not guarantee a memory barrier* to enforce cache-consistency.
+[src:concurrency-patterns/memory-barrier] Therefore, the use of volatile alone is not sufficient to use a variable for inter-thread communication on all systems and processors.
+[src:concurrency-patterns/memory-barrier] The C and C++ standards prior to C11 and C++11 do not address multiple threads (or multiple processors), and as such, the usefulness of volatile depends on the compiler and hardware.
+[src:concurrency-patterns/monitor-synchronization-p01] In concurrent programming, a **monitor** is a synchronization construct that prevents threads from concurrently accessing a shared object's state *and* allows them to wait for the state to change.
+[src:concurrency-patterns/monitor-synchronization-p01] They provide a mechanism for threads to temporarily give up exclusive access in order to wait for some condition to be met, before regaining exclusive access and resuming their task.
+[src:concurrency-patterns/monitor-synchronization-p01] A monitor consists of a mutex (lock) and at least one condition variable.
+[src:concurrency-patterns/monitor-synchronization-p01] A **condition variable** is explicitly 'signalled' when the object's state is modified, temporarily passing the mutex to another thread 'waiting' on the condition variable.
+[src:concurrency-patterns/monitor-synchronization-p01] Another definition of **monitor** is a **thread-safe** object, class, or module that contains and uses a mutex to safely allow access to its methods or variables by more than one thread.
+[src:concurrency-patterns/monitor-synchronization-p01] The defining characteristic of a monitor is that its methods are executed with mutual exclusion: at each point in time, at most one thread may be executing any of the monitor's methods.
+[src:concurrency-patterns/monitor-synchronization-p01] By using one or more condition variables it can also provide the ability for threads to wait on a certain condition (thus using the first definition of a "monitor").
+[src:concurrency-patterns/monitor-synchronization-p01] Monitors were invented by Per Brinch Hansen and C.
+[src:concurrency-patterns/monitor-synchronization-p01] Hoare, and were first implemented in Brinch Hansen's Concurrent Pascal language.
+[src:concurrency-patterns/monitor-synchronization-p01] While a thread is executing a method of a thread-safe object, it is said to *occupy* the object, by holding its mutex (lock).
+[src:concurrency-patterns/monitor-synchronization-p01] Thread-safe objects are implemented to enforce that *at any point in time, at most one thread may occupy the object*.
+[src:concurrency-patterns/monitor-synchronization-p01] The lock, which is initially unlocked, is locked at the start of each public method, and is unlocked at each return from each public method.
+[src:concurrency-patterns/monitor-synchronization-p01] Upon calling one of the methods, a thread must wait until no other thread is executing any of the thread-safe object's methods before starting execution of its method.
+[src:concurrency-patterns/monitor-synchronization-p01] Note that without this mutual exclusion, two threads could cause data races and logical errors.
+[src:concurrency-patterns/monitor-synchronization-p01] For example, two threads withdrawing 1000 from the account could both return true, while causing the balance to drop by only 1000, as follows: first, both threads fetch the current balance, find it greater than 1000, and subtract 1000 from it; then, both threads store the balance and return.
+[src:concurrency-patterns/monitor-synchronization-p02] For many applications, mutual exclusion is not enough.
+[src:concurrency-patterns/monitor-synchronization-p02] Threads attempting an operation may need to wait until some condition *P* holds true.
+[src:concurrency-patterns/monitor-synchronization-p02] will not work, as mutual exclusion will prevent any other thread from entering the monitor to make the condition true.
+[src:concurrency-patterns/monitor-synchronization-p02] Other "solutions" exist such as having a loop that unlocks the monitor, waits a certain amount of time, locks the monitor and checks for the condition *P*.
+[src:concurrency-patterns/monitor-synchronization-p02] Theoretically, it works and will not deadlock, but issues arise.
+[src:concurrency-patterns/monitor-synchronization-p02] It is hard to decide an appropriate amount of waiting time: too small and the thread will hog the CPU, too big and it will be apparently unresponsive.
+[src:concurrency-patterns/monitor-synchronization-p02] What is needed is a way to signal the thread when the condition *P* is true (or *could* be true).
+[src:concurrency-patterns/monitor-synchronization-p02] The queue is assumed to be non–thread-safe itself, and it can be empty, full, or between empty and full.
+[src:concurrency-patterns/monitor-synchronization-p02] Whenever the queue is full of tasks, then we need the producer threads to block until there is room from consumer threads dequeueing tasks.
+[src:concurrency-patterns/monitor-synchronization-p02] On the other hand, whenever the queue is empty, then we need the consumer threads to block until more tasks are available due to producer threads adding them.
+[src:concurrency-patterns/monitor-synchronization-p02] As the queue is a concurrent object shared between threads, accesses to it must be made atomic, because the queue can be put into an **inconsistent state** during the course of the queue access that should never be exposed between threads.
+[src:concurrency-patterns/monitor-synchronization-p02] Thus, any code that accesses the queue constitutes a **critical section** that must be synchronized by mutual exclusion.
+[src:concurrency-patterns/monitor-synchronization-p02] This code has a serious problem in that accesses to the queue can be interrupted and interleaved with other threads' accesses to the queue.
+[src:concurrency-patterns/monitor-synchronization-p02] The *queue.enqueue* and *queue.dequeue* methods likely have instructions to update the queue's member variables such as its size, beginning and ending positions, assignment and allocation of queue elements, etc.
+[src:concurrency-patterns/monitor-synchronization-p02] In addition, the *queue.isEmpty()* and *queue.isFull()* methods read this shared state as well.
+[src:concurrency-patterns/monitor-synchronization-p02] If producer/consumer threads are allowed to be interleaved during the calls to enqueue/dequeue, then inconsistent state of the queue can be exposed leading to race conditions.
+[src:concurrency-patterns/monitor-synchronization-p02] In addition, if one consumer makes the queue empty in-between another consumer's exiting the busy-wait and calling "dequeue", then the second consumer will attempt to dequeue from an empty queue leading to an error.
+[src:concurrency-patterns/monitor-synchronization-p02] Likewise, if a producer makes the queue full in-between another producer's exiting the busy-wait and calling "enqueue", then the second producer will attempt to add to a full queue leading to an error.
+[src:concurrency-patterns/monitor-synchronization-p02] One naive approach to achieve synchronization, as alluded to above, is to use "**spin-waiting**", in which a mutex is used to protect the critical sections of code and busy-waiting is still used, with the lock being acquired and released in between each busy-wait check.
+[src:concurrency-patterns/monitor-synchronization-p02] This method assures that an inconsistent state does not occur, but wastes CPU resources due to the unnecessary busy-waiting.
+[src:concurrency-patterns/monitor-synchronization-p02] Even if the queue is empty and producer threads have nothing to add for a long time, consumer threads are always busy-waiting unnecessarily.
+[src:concurrency-patterns/monitor-synchronization-p02] Likewise, even if consumers are blocked for a long time on processing their current tasks and the queue is full, producers are always busy-waiting.
+[src:concurrency-patterns/monitor-synchronization-p02] What is needed is a way to make producer threads block until the queue is non-full, and a way to make consumer threads block until the queue is non-empty.
+[src:concurrency-patterns/monitor-synchronization-p02] The solution is to use **condition variables**.
+[src:concurrency-patterns/monitor-synchronization-p02] Conceptually, a condition variable is a queue of threads, associated with a mutex, on which a thread may wait for some condition to become true.
+[src:concurrency-patterns/monitor-synchronization-p02] Thus each condition variable c is associated with an assertion Pc.
+[src:concurrency-patterns/monitor-synchronization-p02] While a thread is waiting on a condition variable, that thread is not considered to occupy the monitor, and so other threads may enter the monitor to change the monitor's state.
+[src:concurrency-patterns/monitor-synchronization-p02] In most types of monitors, these other threads may signal the condition variable c to indicate that assertion Pc is true in the current state.
+[src:concurrency-patterns/monitor-synchronization-p02] Once this thread is subsequently notified/signaled (see below) and resumed, then automatically re-acquire the mutex `*m*`.
+[src:concurrency-patterns/monitor-synchronization-p02] As a design rule, multiple condition variables can be associated with the same mutex, but not vice versa.
+[src:concurrency-patterns/monitor-synchronization-p02] In the producer-consumer example described above, the queue must be protected by a unique mutex object, `*m*`.
+[src:concurrency-patterns/monitor-synchronization-p02] The "producer" threads will want to wait on a monitor using lock `*m*` and a condition variable $c_{full}$ which blocks until the queue is non-full.
+[src:concurrency-patterns/monitor-synchronization-p02] The "consumer" threads will want to wait on a different monitor using the same mutex `*m*` but a different condition variable $c_{empty}$ which blocks until the queue is non-empty.
+[src:concurrency-patterns/monitor-synchronization-p02] It would (usually) not make sense to have different mutexes for the same condition variable, but this classic example shows why it often certainly makes sense to have multiple condition variables using the same mutex.
+[src:concurrency-patterns/monitor-synchronization-p02] Having introduced the usage of condition variables, let us use it to revisit and solve the classic bounded producer/consumer problem.
+[src:concurrency-patterns/monitor-synchronization-p02] This ensures concurrency between the producer and consumer threads sharing the task queue, and blocks the threads that have nothing to do rather than busy-waiting as shown in the aforementioned approach using spin-locks.
+[src:concurrency-patterns/monitor-synchronization-p02] A variant of this solution could use a single condition variable for both producers and consumers, perhaps named "queueFullOrEmptyCV" or "queueSizeChangedCV".
+[src:concurrency-patterns/monitor-synchronization-p02] In this case, more than one condition is associated with the condition variable, such that the condition variable represents a weaker condition than the conditions being checked by individual threads.
+[src:concurrency-patterns/monitor-synchronization-p02] The condition variable represents threads that are waiting for the queue to be non-full *and* ones waiting for it to be non-empty.
+[src:concurrency-patterns/monitor-synchronization-p02] However, doing this would require using *broadcast* in all the threads using the condition variable and cannot use a regular *signal*.
+[src:concurrency-patterns/monitor-synchronization-p02] This is because the regular *signal* might wake up a thread of the wrong type whose condition has not yet been met, and that thread would go back to sleep without a thread of the correct type getting signaled.
+[src:concurrency-patterns/monitor-synchronization-p02] For example, a producer might make the queue full and wake up another producer instead of a consumer, and the woken producer would go back to sleep.
+[src:concurrency-patterns/monitor-synchronization-p02] In the complementary case, a consumer might make the queue empty and wake up another consumer instead of a producer, and the consumer would go back to sleep.
+[src:concurrency-patterns/monitor-synchronization-p02] Using *broadcast* ensures that some thread of the right type will proceed as expected by the problem statement.
+[src:concurrency-patterns/monitor-synchronization-p02] Monitors are implemented using an atomic read-modify-write primitive and a waiting primitive.
+[src:concurrency-patterns/monitor-synchronization-p02] The read-modify-write primitive (usually test-and-set or compare-and-swap) is usually in the form of a memory-locking instruction provided by the ISA, but can also be composed of non-locking instructions on single-processor devices when interrupts are disabled.
+[src:concurrency-patterns/monitor-synchronization-p02] The waiting primitive can be a busy-wait loop or an OS-provided primitive that prevents the thread from being scheduled until it is ready to proceed.
+[src:concurrency-patterns/monitor-synchronization-p02] Hoare and Per Brinch Hansen were for *blocking condition variables*.
+[src:concurrency-patterns/monitor-synchronization-p02] With a blocking condition variable, the signaling thread must wait outside the monitor (at least) until the signaled thread relinquishes occupancy of the monitor by either returning or by again waiting on a condition variable.
+[src:concurrency-patterns/monitor-synchronization-p02] Monitors using blocking condition variables are often called *Hoare-style* monitors or *signal-and-urgent-wait* monitors.
+[src:concurrency-patterns/monitor-synchronization-p02] All queues are typically guaranteed to be fair and, in some implementations, may be guaranteed to be first in first out.
+[src:concurrency-patterns/monitor-synchronization-p02] The implementation of each operation is as follows.
+[src:concurrency-patterns/monitor-synchronization-p02] The `schedule` routine selects the next thread to occupy the monitor or, in the absence of any candidate threads, unlocks the monitor.
+[src:concurrency-patterns/monitor-synchronization-p02] The resulting signaling discipline is known as *"signal and urgent wait,"* as the signaler must wait, but is given priority over threads on the entrance queue.
+[src:concurrency-patterns/monitor-synchronization-p02] An alternative is *"signal and wait,"* in which there is no `s` queue and signaler waits on the `e` queue instead.
+[src:concurrency-patterns/monitor-synchronization-p02] Some implementations provide a **signal and return** operation that combines signaling with returning from a procedure.
+[src:concurrency-patterns/monitor-synchronization-p02] If Pc is true at the start of each **signal** c operation, it will be true at the end of each **wait** c operation.
+[src:concurrency-patterns/monitor-synchronization-p02] This is summarized by the following contracts.
+[src:concurrency-patterns/monitor-synchronization-p02] In these contracts, I is the monitor's invariant.
+[src:concurrency-patterns/monitor-synchronization-p02] In these contracts, it is assumed that I and Pc do not depend on the contents or lengths of any queues.
+[src:concurrency-patterns/monitor-synchronization-p02] (When the condition variable can be queried as to the number of threads waiting on its queue, more sophisticated contracts can be given.
+[src:concurrency-patterns/monitor-synchronization-p02] The assertion Pc is entirely up to the programmer; he or she simply needs to be consistent about what it is.
+[src:concurrency-patterns/monitor-synchronization-p02] We conclude this section with an example of a thread-safe class using a blocking monitor that implements a bounded, thread-safe stack.
+[src:concurrency-patterns/monitor-synchronization-p02] Note that, in this example, the thread-safe stack is internally providing a mutex, which, as in the earlier producer/consumer example, is shared by both condition variables, which are checking different conditions on the same concurrent data.
+[src:concurrency-patterns/monitor-synchronization-p02] The only difference is that the producer/consumer example assumed a regular non-thread-safe queue and was using a standalone mutex and condition variables, without these details of the monitor abstracted away, as is the case here.
+[src:concurrency-patterns/monitor-synchronization-p02] In this example, when the "wait" operation is called, it must somehow be supplied with the thread-safe stack's mutex, such as if the "wait" operation is an integrated part of the "monitor class".
+[src:concurrency-patterns/monitor-synchronization-p02] Aside from this kind of abstracted functionality, when a "raw" monitor is used, it will *always* have to include a mutex and a condition variable, with a unique mutex for each condition variable.
+[src:concurrency-patterns/monitor-synchronization-p02] With *nonblocking condition variables* (also called *"Mesa style"* condition variables or *"signal and continue"* condition variables), signaling does not cause the signaling thread to lose occupancy of the monitor.
+[src:concurrency-patterns/monitor-synchronization-p02] Instead, the signaled threads are moved to the `e` queue.
+[src:concurrency-patterns/monitor-synchronization-p02] With nonblocking condition variables, the **signal** operation is often called **notify** — a terminology we will follow here.
+[src:concurrency-patterns/monitor-synchronization-p02] It is also common to provide a **notify all** operation that moves all threads waiting on a condition variable to the `e` queue.
+[src:concurrency-patterns/monitor-synchronization-p02] The meaning of various operations are given here.
+[src:concurrency-patterns/monitor-synchronization-p02] As a variation on this scheme, the notified thread may be moved to a queue called `w`, which has priority over `e`.
+[src:concurrency-patterns/monitor-synchronization-p02] See Howard and Buhr *et al.* for further discussion.
+[src:concurrency-patterns/monitor-synchronization-p02] It is possible to associate an assertion Pc with each condition variable c such that Pc is sure to be true upon return from `**wait** c`.
+[src:concurrency-patterns/monitor-synchronization-p02] However, one must ensure that Pc is preserved from the time the **notify**ing thread gives up occupancy until the notified thread is selected to re-enter the monitor.
+[src:concurrency-patterns/monitor-synchronization-p02] Between these times, there could be activity by other occupants.
+[src:concurrency-patterns/monitor-synchronization-p02] Thus, it is common for Pc to simply be *true*.
+[src:concurrency-patterns/monitor-synchronization-p02] where P is some condition stronger than Pc.
+[src:concurrency-patterns/monitor-synchronization-p02] The operations `**notify** c` and `**notify all** c` are treated as "hints" that P may be true for some waiting thread.
+[src:concurrency-patterns/monitor-synchronization-p02] Every iteration of such a loop past the first represents a lost notification; thus with nonblocking monitors, one must be careful to ensure that too many notifications cannot be lost.
+[src:concurrency-patterns/monitor-synchronization-p02] In this example, the condition being waited for is a function of the amount to be withdrawn, so it is impossible for a depositing thread to *know* that it made such a condition true.
+[src:concurrency-patterns/monitor-synchronization-p02] It makes sense in this case to allow each waiting thread into the monitor (one at a time) to check if its assertion is true.
+[src:concurrency-patterns/monitor-synchronization-p02] In the Java language, each object may be used as a monitor.
+[src:concurrency-patterns/monitor-synchronization-p02] Methods requiring mutual exclusion must be explicitly marked with the **synchronized** keyword.
+[src:concurrency-patterns/monitor-synchronization-p02] Blocks of code may also be marked by **synchronized**.
+[src:concurrency-patterns/monitor-synchronization-p02] Rather than having explicit condition variables, each monitor (i.e., object) is equipped with a single wait queue in addition to its entrance queue.
+[src:concurrency-patterns/monitor-synchronization-p02] All waiting is done on this single wait queue and all **notify** and **notifyAll** operations apply to this queue.
+[src:concurrency-patterns/monitor-synchronization-p02] This approach has been adopted in other languages, for example C#.
+[src:concurrency-patterns/monitor-synchronization-p02] Another approach to signaling is to omit the **signal** operation.
+[src:concurrency-patterns/monitor-synchronization-p02] Whenever a thread leaves the monitor (by returning or waiting), the assertions of all waiting threads are evaluated until one is found to be true.
+[src:concurrency-patterns/monitor-synchronization-p02] In such a system, condition variables are not needed, but the assertions must be explicitly coded.
+[src:concurrency-patterns/monitor-synchronization-p02] Brinch Hansen and Hoare developed the monitor concept in the early 1970s, based on earlier ideas of their own and of Edsger Dijkstra.
+[src:concurrency-patterns/monitor-synchronization-p02] Brinch Hansen published the first monitor notation, adopting the class concept of Simula 67, and invented a queueing mechanism.
+[src:concurrency-patterns/monitor-synchronization-p02] Hoare refined the rules of process resumption.
+[src:concurrency-patterns/monitor-synchronization-p02] Brinch Hansen created the first implementation of monitors, in Concurrent Pascal.
+[src:concurrency-patterns/monitor-synchronization-p02] Hoare demonstrated their equivalence to semaphores.
+[src:concurrency-patterns/monitor-synchronization-p02] Monitors (and Concurrent Pascal) were soon used to structure process synchronization in the Solo operating system.
+[src:concurrency-patterns/monitor-synchronization-p02] A number of libraries have been written that allow monitors to be constructed in languages that do not support them natively.
+[src:concurrency-patterns/monitor-synchronization-p02] When library calls are used, it is up to the programmer to explicitly mark the start and end of code executed with mutual exclusion.
+[src:concurrency-patterns/non-blocking-algorithm] In computer science, an algorithm is called **non-blocking** if failure or suspension of any thread cannot cause failure or suspension of another thread; for some operations, these algorithms provide a useful alternative to traditional blocking implementations.
+[src:concurrency-patterns/non-blocking-algorithm] A non-blocking algorithm is **lock-free** if there is guaranteed system-wide progress, and **wait-free** if there is also guaranteed per-thread progress.
+[src:concurrency-patterns/non-blocking-algorithm] "Non-blocking" was used as a synonym for "lock-free" in the literature until the introduction of obstruction-freedom in 2003.
+[src:concurrency-patterns/non-blocking-algorithm] The word "non-blocking" was traditionally used to describe telecommunications networks that could route a connection through a set of relays "without having to re-arrange existing calls" (see Clos network).
+[src:concurrency-patterns/non-blocking-algorithm] Also, if the telephone exchange "is not defective, it can always make the connection" (see nonblocking minimal spanning switch).
+[src:concurrency-patterns/non-blocking-algorithm] The traditional approach to multi-threaded programming is to use locks to synchronize access to shared resources.
+[src:concurrency-patterns/non-blocking-algorithm] Synchronization primitives such as mutexes, semaphores, and critical sections are all mechanisms by which a programmer can ensure that certain sections of code do not execute concurrently, if doing so could corrupt shared memory structures.
+[src:concurrency-patterns/non-blocking-algorithm] If one thread attempts to acquire a lock that is already held by another thread, the thread will block until the lock is free.
+[src:concurrency-patterns/non-blocking-algorithm] Blocking a thread can be undesirable for many reasons.
+[src:concurrency-patterns/non-blocking-algorithm] An obvious reason is that while the thread is blocked, it cannot accomplish anything: if the blocked thread had been performing a high-priority or real-time task, it would be highly undesirable to halt its progress.
+[src:concurrency-patterns/non-blocking-algorithm] For example, certain interactions between locks can lead to error conditions such as deadlock, livelock, and priority inversion.
+[src:concurrency-patterns/non-blocking-algorithm] Using locks also involves a trade-off between coarse-grained locking, which can significantly reduce opportunities for parallelism, and fine-grained locking, which requires more careful design, increases locking overhead and is more prone to bugs.
+[src:concurrency-patterns/non-blocking-algorithm] Unlike blocking algorithms, non-blocking algorithms do not suffer from these downsides, and in addition are safe for use in interrupt handlers: even though the preempted thread cannot be resumed, progress is still possible without it.
+[src:concurrency-patterns/non-blocking-algorithm] In contrast, global data structures protected by mutual exclusion cannot safely be accessed in an interrupt handler, as the preempted thread may be the one holding the lock.
+[src:concurrency-patterns/non-blocking-algorithm] While this can be rectified by masking interrupt requests during the critical section, this requires the code in the critical section to have bounded (and preferably short) running time, or excessive interrupt latency may be observed.
+[src:concurrency-patterns/non-blocking-algorithm] A lock-free data structure can be used to improve performance.
+[src:concurrency-patterns/non-blocking-algorithm] A lock-free data structure increases the amount of time spent in parallel execution rather than serial execution, improving performance on a multi-core processor, because access to the shared data structure does not need to be serialized to stay coherent.
+[src:concurrency-patterns/non-blocking-algorithm] With few exceptions, non-blocking algorithms use atomic read-modify-write primitives that the hardware must provide, the most notable of which is compare and swap (CAS).
+[src:concurrency-patterns/non-blocking-algorithm] Critical sections are almost always implemented using standard interfaces over these primitives (in the general case, critical sections will be blocking, even when implemented with these primitives).
+[src:concurrency-patterns/non-blocking-algorithm] In the 1990s all non-blocking algorithms had to be written "natively" with the underlying primitives to achieve acceptable performance.
+[src:concurrency-patterns/non-blocking-algorithm] However, the emerging field of software transactional memory promises standard abstractions for writing efficient non-blocking code.
+[src:concurrency-patterns/non-blocking-algorithm] Much research has also been done in providing basic data structures such as stacks, queues, sets, and hash tables.
+[src:concurrency-patterns/non-blocking-algorithm] These allow programs to easily exchange data between threads asynchronously.
+[src:concurrency-patterns/non-blocking-algorithm] Additionally, some non-blocking data structures are weak enough to be implemented without special atomic primitives.
+[src:concurrency-patterns/non-blocking-algorithm] Several libraries internally use lock-free techniques, but it is difficult to write lock-free code that is correct.
+[src:concurrency-patterns/non-blocking-algorithm] Non-blocking algorithms generally involve a series of read, read-modify-write, and write instructions in a carefully designed order.
+[src:concurrency-patterns/non-blocking-algorithm] Optimizing compilers can aggressively re-arrange operations.
+[src:concurrency-patterns/non-blocking-algorithm] Even when they don't, many modern CPUs often re-arrange such operations (they have a "weak consistency model"), unless a memory barrier is used to tell the CPU not to reorder.
+[src:concurrency-patterns/non-blocking-algorithm] C++11 programmers can use `std::atomic` in `<atomic>`, and C11 programmers can use `<stdatomic.h>`, both of which supply types and functions that tell the compiler not to re-arrange such instructions, and to insert the appropriate memory barriers.
+[src:concurrency-patterns/non-blocking-algorithm] Wait-freedom is the strongest non-blocking guarantee of progress, combining guaranteed system-wide throughput with starvation-freedom.
+[src:concurrency-patterns/non-blocking-algorithm] An algorithm is wait-free if every operation has a bound on the number of steps the algorithm will take before the operation completes.
+[src:concurrency-patterns/non-blocking-algorithm] This property is critical for real-time systems and is always nice to have as long as the performance cost is not too high.
+[src:concurrency-patterns/non-blocking-algorithm] It was shown in the 1980s that all algorithms can be implemented wait-free, and many transformations from serial code, called *universal constructions*, have been demonstrated.
+[src:concurrency-patterns/non-blocking-algorithm] However, the resulting performance does not in general match even naïve blocking designs.
+[src:concurrency-patterns/non-blocking-algorithm] Several papers have since improved the performance of universal constructions, but still, their performance is far below blocking designs.
+[src:concurrency-patterns/non-blocking-algorithm] Several papers have investigated the difficulty of creating wait-free algorithms.
+[src:concurrency-patterns/non-blocking-algorithm] For example, it has been shown that the widely available atomic *conditional* primitives, CAS and LL/SC, cannot provide starvation-free implementations of many common data structures without memory costs growing linearly in the number of threads.
+[src:concurrency-patterns/non-blocking-algorithm] However, these lower bounds do not present a real barrier in practice, as spending a cache line or exclusive reservation granule (up to 2 KB on ARM) of store per thread in the shared memory is not considered too costly for practical systems.
+[src:concurrency-patterns/non-blocking-algorithm] Typically, the amount of store logically required is a word, but physically CAS operations on the same cache line will collide, and LL/SC operations in the same exclusive reservation granule will collide, so the amount of store physically required is greater.
+[src:concurrency-patterns/non-blocking-algorithm] Wait-free algorithms were rare until 2011, both in research and in practice.
+[src:concurrency-patterns/non-blocking-algorithm] However, in 2011 Kogan and Petrank presented a wait-free queue building on the CAS primitive, generally available on common hardware.
+[src:concurrency-patterns/non-blocking-algorithm] Their construction expanded the lock-free queue of Michael and Scott, which is an efficient queue often used in practice.
+[src:concurrency-patterns/non-blocking-algorithm] A follow-up paper by Kogan and Petrank provided a method for making wait-free algorithms fast and used this method to make the wait-free queue practically as fast as its lock-free counterpart.
+[src:concurrency-patterns/non-blocking-algorithm] A subsequent paper by Timnat and Petrank provided an automatic mechanism for generating wait-free data structures from lock-free ones.
+[src:concurrency-patterns/non-blocking-algorithm] Thus, wait-free implementations are now available for many data-structures.
+[src:concurrency-patterns/non-blocking-algorithm] Under reasonable assumptions, Alistarh, Censor-Hillel, and Shavit showed that lock-free algorithms are practically wait-free.
+[src:concurrency-patterns/non-blocking-algorithm] Thus, in the absence of hard deadlines, wait-free algorithms may not be worth the additional complexity that they introduce.
+[src:concurrency-patterns/non-blocking-algorithm] Lock-freedom allows individual threads to starve but guarantees system-wide throughput.
+[src:concurrency-patterns/non-blocking-algorithm] An algorithm is lock-free if, when the program threads are run for a sufficiently long time, at least one of the threads makes progress (for some sensible definition of progress).
+[src:concurrency-patterns/non-blocking-algorithm] In particular, if one thread is suspended, then a lock-free algorithm guarantees that the remaining threads can still make progress.
+[src:concurrency-patterns/non-blocking-algorithm] Hence, if two threads can contend for the same mutex lock or spinlock, then the algorithm is *not* lock-free.
+[src:concurrency-patterns/non-blocking-algorithm] An algorithm is lock-free if infinitely often operation by some processors will succeed in a finite number of steps.
+[src:concurrency-patterns/non-blocking-algorithm] For instance, if *N* processors are trying to execute an operation, some of the *N* processes will succeed in finishing the operation in a finite number of steps and others might fail and retry on failure.
+[src:concurrency-patterns/non-blocking-algorithm] The difference between wait-free and lock-free is that wait-free operation by each process is guaranteed to succeed in a finite number of steps, regardless of the other processors.
+[src:concurrency-patterns/non-blocking-algorithm] In general, a lock-free algorithm can run in four phases: completing one's own operation, assisting an obstructing operation, aborting an obstructing operation, and waiting.
+[src:concurrency-patterns/non-blocking-algorithm] Completing one's own operation is complicated by the possibility of concurrent assistance and abortion, but is invariably the fastest path to completion.
+[src:concurrency-patterns/non-blocking-algorithm] The decision about when to assist, abort or wait when an obstruction is met is the responsibility of a *contention manager*.
+[src:concurrency-patterns/non-blocking-algorithm] This may be very simple (assist higher priority operations, abort lower priority ones), or may be more optimized to achieve better throughput, or lower the latency of prioritized operations.
+[src:concurrency-patterns/non-blocking-algorithm] Correct concurrent assistance is typically the most complex part of a lock-free algorithm, and often very costly to execute: not only does the assisting thread slow down, but thanks to the mechanics of shared memory, the thread being assisted will be slowed, too, if it is still running.
+[src:concurrency-patterns/non-blocking-algorithm] Obstruction-freedom is the weakest natural non-blocking progress guarantee.
+[src:concurrency-patterns/non-blocking-algorithm] An algorithm is obstruction-free if at any point, a single thread executed in isolation (i.e., with all obstructing threads suspended) for a bounded number of steps will complete its operation.
+[src:concurrency-patterns/non-blocking-algorithm] All lock-free algorithms are obstruction-free.
+[src:concurrency-patterns/non-blocking-algorithm] Obstruction-freedom demands only that any partially completed operation can be aborted and the changes made rolled back.
+[src:concurrency-patterns/non-blocking-algorithm] Dropping concurrent assistance can often result in much simpler algorithms that are easier to validate.
+[src:concurrency-patterns/non-blocking-algorithm] Preventing the system from continually live-locking is the task of a contention manager.
+[src:concurrency-patterns/non-blocking-algorithm] Some obstruction-free algorithms use a pair of "consistency markers" in the data structure.
+[src:concurrency-patterns/non-blocking-algorithm] Processes reading the data structure first read one consistency marker, then read the relevant data into an internal buffer, then read the other marker, and then compare the markers.
+[src:concurrency-patterns/non-blocking-algorithm] The data is consistent if the two markers are identical.
+[src:concurrency-patterns/non-blocking-algorithm] Markers may be non-identical when the read is interrupted by another process updating the data structure.
+[src:concurrency-patterns/non-blocking-algorithm] In such a case, the process discards the data in the internal buffer and tries again.
+[src:concurrency-patterns/readers-writer-lock] In computer science, a **readers–writer** (**single-writer** lock, a **multi-reader** lock, a **push lock**, or an **MRSW lock**) is a synchronization primitive that solves one of the readers–writers problems.
+[src:concurrency-patterns/readers-writer-lock] An RW lock allows concurrent access for read-only operations, whereas write operations require exclusive access.
+[src:concurrency-patterns/readers-writer-lock] This means that multiple threads can read the data in parallel but an exclusive lock is needed for writing or modifying data.
+[src:concurrency-patterns/readers-writer-lock] When a writer is writing the data, all other writers and readers will be blocked until the writer is finished writing.
+[src:concurrency-patterns/readers-writer-lock] A common use might be to control access to a data structure in memory that cannot be updated atomically and is invalid (and should not be read by another thread) until the update is complete.
+[src:concurrency-patterns/readers-writer-lock] Readers–writer locks are usually constructed on top of mutexes and condition variables, or on top of semaphores.
+[src:concurrency-patterns/readers-writer-lock] Some RW locks allow the lock to be atomically upgraded from being locked in read-mode to write-mode, as well as being downgraded from write-mode to read-mode.
+[src:concurrency-patterns/readers-writer-lock] Upgrading a lock from read-mode to write-mode is prone to deadlocks, since whenever two threads holding reader locks both attempt to upgrade to writer locks, a deadlock is created that can only be broken by one of the threads releasing its reader lock.
+[src:concurrency-patterns/readers-writer-lock] The deadlock can be avoided by allowing only one thread to acquire the lock in "read-mode with intent to upgrade to write" while there are no threads in write mode and possibly non-zero threads in read-mode.
+[src:concurrency-patterns/readers-writer-lock] RW locks can be designed with different priority policies for reader vs. writer access.
+[src:concurrency-patterns/readers-writer-lock] The lock can either be designed to always give priority to readers (*read-preferring*), to always give priority to writers (*write-preferring*) or be *unspecified* with regard to priority.
+[src:concurrency-patterns/readers-writer-lock] These policies lead to different tradeoffs with regard to concurrency and starvation.
+[src:concurrency-patterns/readers-writer-lock] Several implementation strategies for readers–writer locks exist, reducing them to synchronization primitives that are assumed to pre-exist.
+[src:concurrency-patterns/readers-writer-lock] Raynal demonstrates how to implement an R/W lock using two mutexes and a single integer counter.
+[src:concurrency-patterns/readers-writer-lock] The counter, b, tracks the number of blocking readers.
+[src:concurrency-patterns/readers-writer-lock] One mutex, r, protects b and is only used by readers; the other, g (for "global") ensures mutual exclusion of writers.
+[src:concurrency-patterns/readers-writer-lock] This requires that a mutex acquired by one thread can be released by another.
+[src:concurrency-patterns/readers-writer-lock] Alternatively an RW lock can be implemented in terms of a condition variable, cond, an ordinary (mutex) lock, g, and various counters and flags describing the threads that are currently active or waiting.
+[src:concurrency-patterns/readers-writer-lock] : whether a writer has acquired the lock (Boolean).
+[src:concurrency-patterns/readers-writer-lock] Initially num_readers_active and num_writers_waiting are zero and writer_active is false.
+[src:concurrency-patterns/readers-writer-lock] The read-copy-update (RCU) algorithm is one solution to the readers–writers problem.
+[src:concurrency-patterns/readers-writer-lock] The Linux kernel implements a special solution for few writers called seqlock.
+[src:concurrency-patterns/software-transactional-memory] In computer science, **software transactional memory** (**STM**) is a concurrency control mechanism analogous to database transactions for controlling access to shared memory in concurrent computing.
+[src:concurrency-patterns/software-transactional-memory] It is an alternative to lock-based synchronization.
+[src:concurrency-patterns/software-transactional-memory] STM is a strategy implemented in software, rather than as a hardware component.
+[src:concurrency-patterns/software-transactional-memory] A transaction in this context occurs when a piece of code executes a series of reads and writes to shared memory.
+[src:concurrency-patterns/software-transactional-memory] These reads and writes logically occur at a single instant in time; intermediate states are not visible to other (successful) transactions.
+[src:concurrency-patterns/software-transactional-memory] The idea of providing hardware support for transactions originated in a 1986 paper by Tom Knight.
+[src:concurrency-patterns/software-transactional-memory] The idea was popularized by Maurice Herlihy and J.
+[src:concurrency-patterns/software-transactional-memory] In 1995, Nir Shavit and Dan Touitou extended this idea to software-only transactional memory (STM).
+[src:concurrency-patterns/software-transactional-memory] Since 2005, STM has been the focus of intense research and support for practical implementations is growing.
+[src:concurrency-patterns/software-transactional-memory] Unlike the locking techniques used in most modern multithreaded applications, STM is often very optimistic: a thread completes modifications to shared memory without regard for what other threads might be doing, recording every read and write that it is performing in a log.
+[src:concurrency-patterns/software-transactional-memory] Instead of placing the onus on the writer to make sure it does not adversely affect other operations in progress, it is placed on the reader, who after completing an entire transaction verifies that other threads have not concurrently made changes to memory that it accessed in the past.
+[src:concurrency-patterns/software-transactional-memory] This final operation, in which the changes of a transaction are validated and, if validation is successful, made permanent, is called a *commit*.
+[src:concurrency-patterns/software-transactional-memory] A transaction may also *abort* at any time, causing all of its prior changes to be rolled back or undone.
+[src:concurrency-patterns/software-transactional-memory] If a transaction cannot be committed due to conflicting changes, it is typically aborted and re-executed from the beginning until it succeeds.
+[src:concurrency-patterns/software-transactional-memory] The benefit of this optimistic approach is increased concurrency: no thread needs to wait for access to a resource, and different threads can safely and simultaneously modify disjoint parts of a data structure that would normally be protected under the same lock.
+[src:concurrency-patterns/software-transactional-memory] However, in practice, STM systems also suffer a performance hit compared to fine-grained lock-based systems on small numbers of processors (1 to 4 depending on the application).
+[src:concurrency-patterns/software-transactional-memory] This is due primarily to the overhead associated with maintaining the log and the time spent committing transactions.
+[src:concurrency-patterns/software-transactional-memory] Even in this case performance is typically no worse than twice as slow.
+[src:concurrency-patterns/software-transactional-memory] Advocates of STM believe this penalty is justified by the conceptual benefits of STM.
+[src:concurrency-patterns/software-transactional-memory] Theoretically, the worst case space and time complexity of *n* concurrent transactions is *O*(*n*).
+[src:concurrency-patterns/software-transactional-memory] Actual needs depend on implementation details (one can make transactions fail early enough to avoid overhead), but there will also be cases, albeit rare, where lock-based algorithms have better time complexity than software transactional memory.
+[src:concurrency-patterns/software-transactional-memory] In addition to their performance benefits, STM greatly simplifies conceptual understanding of multithreaded programs and helps make programs more maintainable by working in harmony with existing high-level abstractions such as objects and modules.
+[src:concurrency-patterns/software-transactional-memory] In contrast, the concept of a memory transaction is much simpler, because each transaction can be viewed in isolation as a single-threaded computation.
+[src:concurrency-patterns/software-transactional-memory] Deadlock and livelock are either prevented entirely or handled by an external transaction manager; the programmer need hardly worry about it.
+[src:concurrency-patterns/software-transactional-memory] Priority inversion can still be an issue, but high-priority transactions can abort conflicting lower priority transactions that have not already committed.
+[src:concurrency-patterns/software-transactional-memory] However, the need to retry and abort transactions limits their behavior.
+[src:concurrency-patterns/software-transactional-memory] Any operation performed within a transaction must be idempotent since a transaction might be retried.
+[src:concurrency-patterns/software-transactional-memory] Additionally, if an operation has side effects that must be undone if the transaction is aborted, then a corresponding rollback operation must be included.
+[src:concurrency-patterns/software-transactional-memory] This makes many input/output (I/O) operations difficult or impossible to perform within transactions.
+[src:concurrency-patterns/software-transactional-memory] Such limits are typically overcome in practice by creating buffers that queue up the irreversible operations and perform them after the transaction succeeds.
+[src:concurrency-patterns/software-transactional-memory] In Haskell, this limit is enforced at compile time by the type system.
+[src:concurrency-patterns/software-transactional-memory] In 2005, Tim Harris, Simon Marlow, Simon Peyton Jones, and Maurice Herlihy described an STM system built on Concurrent Haskell that enables arbitrary atomic operations to be composed into larger atomic operations, a useful concept impossible with lock-based programming.
+[src:concurrency-patterns/software-transactional-memory] With STM, this problem is simple to solve: simply wrapping two operations in a transaction makes the combined operation atomic.
+[src:concurrency-patterns/software-transactional-memory] The only sticking point is that it is unclear to the caller, who is unaware of the implementation details of the component methods, when it should attempt to re-execute the transaction if it fails.
+[src:concurrency-patterns/software-transactional-memory] The authors also proposed a mechanism for composition of *alternatives*, the `orElse` function.
+[src:concurrency-patterns/software-transactional-memory] It runs one transaction and, if that transaction does a *retry*, runs a second one.
+[src:concurrency-patterns/software-transactional-memory] If both retry, it tries them both again as soon as a relevant change is made.
+[src:concurrency-patterns/software-transactional-memory] This facility, comparable to features such as the Portable Operating System Interface (POSIX) networking `select()` call, allows the caller to wait on any one of a number of events simultaneously.
+[src:concurrency-patterns/software-transactional-memory] It also simplifies programming interfaces, for example by providing a simple mechanism to convert between blocking and nonblocking operations.
+[src:concurrency-patterns/software-transactional-memory] This scheme has been implemented in the Glasgow Haskell Compiler.
+[src:concurrency-patterns/software-transactional-memory] The conceptual simplicity of STMs enables them to be exposed to the programmer using relatively simple language syntax.
+[src:concurrency-patterns/software-transactional-memory] Tim Harris and Keir Fraser's "Language Support for Lightweight Transactions" proposed the idea of using the classical *conditional critical region* (CCR) to represent transactions.
+[src:concurrency-patterns/software-transactional-memory] When the end of the block is reached, the transaction is committed if possible, or else aborted and retried.
+[src:concurrency-patterns/software-transactional-memory] (This is simply a conceptual example, not correct code.
+[src:concurrency-patterns/software-transactional-memory] If the condition is not satisfied, the transaction manager will wait until another transaction has made a *commit* that affects the condition before retrying.
+[src:concurrency-patterns/software-transactional-memory] This loose coupling between producers and consumers enhances modularity compared to explicit signaling between threads.
+[src:concurrency-patterns/software-transactional-memory] "Composable Memory Transactions" took this a step farther with its **retry** command (discussed above), which can, at any time, abort the transaction and wait until *some value* previously read by the transaction is modified before retrying.
+[src:concurrency-patterns/software-transactional-memory] This ability to retry dynamically late in the transaction simplifies the programming model and opens up new possibilities.
+[src:concurrency-patterns/software-transactional-memory] One issue is how exceptions behave when they propagate outside of transactions.
+[src:concurrency-patterns/software-transactional-memory] In "Composable Memory Transactions", the authors decided that this should abort the transaction, since exceptions normally indicate unexpected errors in Concurrent Haskell, but that the exception could retain information allocated by and read during the transaction for diagnostic purposes.
+[src:concurrency-patterns/software-transactional-memory] They stress that other design decisions may be reasonable in other settings.
+[src:concurrency-patterns/software-transactional-memory] STM can be implemented as a lock-free algorithm or it can use locking.
+[src:concurrency-patterns/software-transactional-memory] There are two types of locking schemes: In encounter-time locking (Ennals, Saha, and Harris), memory writes are done by first temporarily acquiring a lock for a given location, writing the value directly, and logging it in the undo log.
+[src:concurrency-patterns/software-transactional-memory] Commit-time locking locks memory locations only during the commit phase.
+[src:concurrency-patterns/software-transactional-memory] A commit-time scheme named "Transactional Locking II" implemented by Dice, Shalev, and Shavit uses a global version clock.
+[src:concurrency-patterns/software-transactional-memory] Every transaction starts by reading the current value of the clock and storing it as the read-version.
+[src:concurrency-patterns/software-transactional-memory] Then, on every read or write, the version of the particular memory location is compared to the read-version; and, if it is greater, the transaction is aborted.
+[src:concurrency-patterns/software-transactional-memory] This guarantees that the code is executed on a consistent snapshot of memory.
+[src:concurrency-patterns/software-transactional-memory] During commit, all write locations are locked, and version numbers of all read and write locations are re-checked.
+[src:concurrency-patterns/software-transactional-memory] Finally, the global version clock is incremented, new write values from the log are written back to memory and stamped with the new clock version.
+[src:concurrency-patterns/software-transactional-memory] One problem with implementing software transactional memory with optimistic reading is that it is possible for an incomplete transaction to read inconsistent state (that is, to read a mixture of old and new values written by another transaction).
+[src:concurrency-patterns/software-transactional-memory] Provided *x*=*y* initially, neither transaction above alters this invariant, but it is possible that transaction A will read *x* after transaction B updates it but read *y* before transaction B updates it, causing it to enter an infinite loop.
+[src:concurrency-patterns/software-transactional-memory] The usual strategy for dealing with this is to intercept any fatal exceptions and abort any transaction that is not valid.
+[src:concurrency-patterns/software-transactional-memory] One way to deal with these issues is to detect transactions that execute illegal operations or fail to terminate and abort them cleanly; another approach is the transactional locking scheme.
+[src:concurrency-patterns/spinlock] In software engineering, a **spinlock** is a lock that causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking whether the lock is available.
+[src:concurrency-patterns/spinlock] Since the thread remains active but is not performing a useful task, the use of such a lock is a kind of busy waiting.
+[src:concurrency-patterns/spinlock] Once acquired, spinlocks will usually be held until they are explicitly released, although in some implementations they may be automatically released if the thread being waited on (the one that holds the lock) blocks or "goes to sleep".
+[src:concurrency-patterns/spinlock] Because they avoid overhead from operating system process rescheduling or context switching, spinlocks are efficient if threads are likely to be blocked for only short periods.
+[src:concurrency-patterns/spinlock] For this reason, operating-system kernels often use spinlocks.
+[src:concurrency-patterns/spinlock] However, spinlocks become wasteful if held for longer durations, as they may prevent other threads from running and require rescheduling.
+[src:concurrency-patterns/spinlock] The longer a thread holds a lock, the greater the risk that the thread will be interrupted by the OS scheduler while holding the lock.
+[src:concurrency-patterns/spinlock] If this happens, other threads will be left "spinning" (repeatedly trying to acquire the lock), while the thread holding the lock is not making progress towards releasing it.
+[src:concurrency-patterns/spinlock] The result is an indefinite postponement until the thread holding the lock can finish and release it.
+[src:concurrency-patterns/spinlock] This is especially true on a single-processor system, where each waiting thread of the same priority is likely to waste its quantum (allocated time where a thread can run) spinning until the thread that holds the lock is finally finished.
+[src:concurrency-patterns/spinlock] Implementing spinlocks correctly is challenging because programmers must take into account the possibility of simultaneous access to the lock, which could cause race conditions.
+[src:concurrency-patterns/spinlock] Generally, such an implementation is possible only with special assembly language instructions, such as atomic (i.e. un-interruptible) test-and-set operations and cannot be easily implemented in programming languages not supporting truly atomic operations.
+[src:concurrency-patterns/spinlock] On architectures without such operations, or if high-level language implementation is required, a non-atomic locking algorithm may be used, e.g.
+[src:concurrency-patterns/spinlock] However, such an implementation may require more memory than a spinlock, be slower to allow progress after unlocking, and may not be implementable in a high-level language if out-of-order execution is allowed.
+[src:concurrency-patterns/spinlock] The following example uses x86 assembly language to implement a spinlock.
+[src:concurrency-patterns/spinlock] It will work on any Intel 80386 compatible processor.
+[src:concurrency-patterns/spinlock] The simple implementation above works on all CPUs using the x86 architecture.
+[src:concurrency-patterns/spinlock] On later implementations of the x86 architecture, *spin_unlock* can safely use an unlocked MOV instead of the slower locked XCHG.
+[src:concurrency-patterns/spinlock] This is due to subtle memory ordering rules which support this, even though MOV is not a full memory barrier.
+[src:concurrency-patterns/spinlock] However, some processors (some Cyrix processors, some revisions of the Intel Pentium Pro (due to bugs), and earlier Pentium and i486 SMP systems) will do the wrong thing and data protected by the lock could be corrupted.
+[src:concurrency-patterns/spinlock] On most non-x86 architectures, explicit memory barrier or atomic instructions (as in the example) must be used.
+[src:concurrency-patterns/spinlock] On some systems, such as IA-64, there are special "unlock" instructions which provide the needed memory ordering.
+[src:concurrency-patterns/spinlock] To reduce inter-CPU bus traffic, code trying to acquire a lock should loop reading without trying to write anything until it reads a changed value.
+[src:concurrency-patterns/spinlock] Because of MESI caching protocols, this causes the cache line for the lock to become "Shared"; then there is remarkably *no* bus traffic while a CPU waits for the lock.
+[src:concurrency-patterns/spinlock] This optimization is effective on all CPU architectures that have a cache per CPU, because MESI is so widespread.
+[src:concurrency-patterns/spinlock] On Hyper-Threading CPUs, pausing with `rep nop` gives additional performance by hinting to the core that it can work on the other thread while the lock spins waiting.
+[src:concurrency-patterns/spinlock] Transactional Synchronization Extensions and other hardware transactional memory instruction sets serve to replace locks in most cases.
+[src:concurrency-patterns/spinlock] Although locks are still required as a fallback, they have the potential to greatly improve performance by having the processor handle entire blocks of atomic operations.
+[src:concurrency-patterns/spinlock] This feature is built into some mutex implementations, for example in glibc.
+[src:concurrency-patterns/spinlock] The Hardware Lock Elision (HLE) in x86 is a weakened but backwards-compatible version of TSE, and we can use it here for locking without losing any compatibility.
+[src:concurrency-patterns/spinlock] In this particular case, the processor can choose to not lock until two threads actually conflict with each other.
+[src:concurrency-patterns/spinlock] A simpler version of the test can use the `cmpxchg` instruction on x86, or either the `__sync_bool_compare_and_swap` or the newer `__atomic_exchange_n` builtins provided into many Unix compilers.
+[src:concurrency-patterns/spinlock] On any multi-processor system that uses the MESI contention protocol, such a test-and-test-and-set lock (TTAS) performs much better than the simple test-and-set lock (TAS) approach.
+[src:concurrency-patterns/spinlock] With large numbers of processors, adding a random exponential backoff delay before re-checking the lock performs even better than TTAS.
+[src:concurrency-patterns/spinlock] A few multi-core processors have a "power-conscious spin-lock" instruction that puts a processor to sleep, then wakes it up on the next cycle after the lock is freed.
+[src:concurrency-patterns/spinlock] A spin-lock using such instructions is more efficient and uses less energy than spin locks with or without a back-off loop.
+[src:concurrency-patterns/spinlock] The primary disadvantage of a spinlock is that, while waiting to acquire a lock, it wastes time that might be productively spent elsewhere.
+[src:concurrency-patterns/spinlock] Switch to a different thread while waiting.
+[src:concurrency-patterns/spinlock] This typically involves attaching the current thread to a queue of threads waiting for the lock, followed by switching to another thread that is ready to do some useful work.
+[src:concurrency-patterns/spinlock] This scheme also has the advantage that it guarantees that resource starvation does not occur as long as all threads eventually relinquish locks they acquire and scheduling decisions can be made about which thread should progress first.
+[src:concurrency-patterns/spinlock] Spinlocks that never entail switching, usable by real-time operating systems, are sometimes called *raw spinlocks*.
+[src:concurrency-patterns/spinlock] Most operating systems (including Solaris, Mac OS X and FreeBSD) use a hybrid approach called "adaptive mutex".
+[src:concurrency-patterns/spinlock] The idea is to use a spinlock when trying to access a resource locked by a currently-running thread, but to sleep if the thread is not currently running.
+[src:concurrency-patterns/spinlock] OpenBSD attempted to replace spinlocks with ticket locks which enforced first-in-first-out behaviour, however this resulted in more CPU usage in the kernel and larger applications, such as Firefox, becoming much slower.
+[src:concurrency-patterns/thread-pool] In computer programming, a **thread pool** is a software design pattern for achieving concurrency of execution in a computer program.
+[src:concurrency-patterns/thread-pool] Often also called a **replicated workers** or **worker-crew model**, a thread pool maintains multiple threads waiting for tasks to be allocated for concurrent execution by the supervising program.
+[src:concurrency-patterns/thread-pool] By maintaining a pool of threads, the model increases performance and avoids latency in execution due to frequent creation and destruction of threads for short-lived tasks.
+[src:concurrency-patterns/thread-pool] Another good property - the ability to limit system load, when we use fewer threads than available.
+[src:concurrency-patterns/thread-pool] The number of available threads is tuned to the computing resources available to the program, such as a parallel task queue after completion of execution.
+[src:concurrency-patterns/thread-pool] The size of a thread pool is the number of threads kept in reserve for executing tasks.
+[src:concurrency-patterns/thread-pool] It is usually a tuneable parameter of the application, adjusted to optimize program performance.
+[src:concurrency-patterns/thread-pool] Deciding the optimal thread pool size is crucial to optimize performance.
+[src:concurrency-patterns/thread-pool] One benefit of a thread pool over creating a new thread for each task is that thread creation and destruction overhead is restricted to the initial creation of the pool, which may result in better performance and better system stability.
+[src:concurrency-patterns/thread-pool] Creating and destroying a thread and its associated resources can be an expensive process in terms of time.
+[src:concurrency-patterns/thread-pool] An excessive number of threads in reserve, however, wastes memory, and context-switching between the runnable threads invokes performance penalties.
+[src:concurrency-patterns/thread-pool] A socket connection to another network host, which might take many CPU cycles to drop and re-establish, can be maintained more efficiently by associating it with a thread that lives over the course of more than one network transaction.
+[src:concurrency-patterns/thread-pool] Using a thread pool may be useful even putting aside thread startup time.
+[src:concurrency-patterns/thread-pool] There are implementations of thread pools that make it trivial to queue up work, control concurrency and sync threads at a higher level than can be done easily when manually managing threads.
+[src:concurrency-patterns/thread-pool] In these cases the performance benefits of use may be secondary.
+[src:concurrency-patterns/thread-pool] Typically, a thread pool executes on a single computer.
+[src:concurrency-patterns/thread-pool] However, thread pools are conceptually related to server farms in which a master process, which might be a thread pool itself, distributes tasks to worker processes on different computers, in order to increase the overall throughput.
+[src:concurrency-patterns/thread-pool] Embarrassingly parallel problems are highly amenable to this approach.
+[src:concurrency-patterns/thread-pool] The number of threads may be dynamically adjusted during the lifetime of an application based on the number of waiting tasks.
+[src:concurrency-patterns/thread-pool] For example, a web server can add threads if numerous web page requests come in and can remove threads when those requests taper down.
+[src:concurrency-patterns/thread-pool] The cost of having a larger thread pool is increased resource usage.

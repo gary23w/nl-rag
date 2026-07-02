@@ -24,6 +24,9 @@ Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
 - [itertools](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/itertools.md) — upstream: https://docs.python.org/3/library/itertools.html
 - [json](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-json.md) — upstream: https://docs.python.org/3/library/json.html
 - [re — Regular expression operations — Python 3.14.6 documentation](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-re.md) — upstream: https://docs.python.org/3/library/re.html
+- [typing (part 1/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-typing-p01.md) — upstream: https://docs.python.org/3/library/typing.html
+- [typing (part 2/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-typing-p02.md) — upstream: https://docs.python.org/3/library/typing.html
+- [typing (part 3/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-typing-p03.md) — upstream: https://docs.python.org/3/library/typing.html
 - [typing](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-typing.md) — upstream: https://docs.python.org/3/library/typing.html
 - [venv](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/library-venv.md) — upstream: https://docs.python.org/3/library/venv.html
 - [logging (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/python/logging-p01.md) — upstream: https://docs.python.org/3/library/logging.html

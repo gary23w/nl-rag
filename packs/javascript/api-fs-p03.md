@@ -8,9 +8,160 @@ fetched: 2026-07-02
 part: 3/3
 ---
 
+##### `dirent.isDirectory()`
+
+- Returns: `<boolean>`
+
+Returns `true` if the `<fs.Dirent>` object describes a file system directory.
+
+##### `dirent.isFIFO()`
+
+- Returns: `<boolean>`
+
+Returns `true` if the `<fs.Dirent>` object describes a first-in-first-out (FIFO) pipe.
+
+##### `dirent.isFile()`
+
+- Returns: `<boolean>`
+
+Returns `true` if the `<fs.Dirent>` object describes a regular file.
+
+##### `dirent.isSocket()`
+
+- Returns: `<boolean>`
+
+Returns `true` if the `<fs.Dirent>` object describes a socket.
+
+##### `dirent.isSymbolicLink()`
+
+- Returns: `<boolean>`
+
+Returns `true` if the `<fs.Dirent>` object describes a symbolic link.
+
+##### `dirent.name`
+
+- Type: `<string>` | `<Buffer>`
+
+The file name that this `<fs.Dirent>` object refers to. The type of this value is determined by the `options.encoding` passed to `fs.readdir()` or `fs.readdirSync()`.
+
+##### `dirent.parentPath`
+
+- Type: `<string>`
+
+The path to the parent directory of the file this `<fs.Dirent>` object refers to.
+
+#### Class: `fs.FSWatcher`
+
+- Extends `<EventEmitter>`
+
+A successful call to `fs.watch()` method will return a new `<fs.FSWatcher>` object.
+
+All `<fs.FSWatcher>` objects emit a `'change'` event whenever a specific watched file is modified.
+
+##### Event: `'change'`
+
+- `eventType` `<string>` The type of change event that has occurred
+- `filename` `<string>` | `<Buffer>` The filename that changed (if relevant/available)
+
+Emitted when something changes in a watched directory or file. See more details in `fs.watch()`.
+
+The `filename` argument may not be provided depending on operating system support. If `filename` is provided, it will be provided as a `<Buffer>` if `fs.watch()` is called with its `encoding` option set to `'buffer'`, otherwise `filename` will be a UTF-8 string.`import { watch } from 'node:fs'; // Example when handled through fs.watch() listener watch('./tmp', { encoding: 'buffer' }, (eventType, filename) => { if (filename) { console.log(filename); // Prints: <Buffer ...> } });`
+
+##### Event: `'close'`
+
+Emitted when the watcher stops watching for changes. The closed `<fs.FSWatcher>` object is no longer usable in the event handler.
+
+##### Event: `'error'`
+
+- `error` `<Error>`
+
+Emitted when an error occurs while watching the file. The errored `<fs.FSWatcher>` object is no longer usable in the event handler.
+
+##### `watcher.close()`
+
+Stop watching for changes on the given `<fs.FSWatcher>`. Once stopped, the `<fs.FSWatcher>` object is no longer usable.
+
+##### `watcher.ref()`
+
+- Returns: `<fs.FSWatcher>`
+
+When called, requests that the Node.js event loop *not* exit so long as the `<fs.FSWatcher>` is active. Calling `watcher.ref()` multiple times will have no effect.
+
+By default, all `<fs.FSWatcher>` objects are "ref'ed", making it normally unnecessary to call `watcher.ref()` unless `watcher.unref()` had been called previously.
+
+##### `watcher.unref()`
+
+- Returns: `<fs.FSWatcher>`
+
+When called, the active `<fs.FSWatcher>` object will not require the Node.js event loop to remain active. If there is no other activity keeping the event loop running, the process may exit before the `<fs.FSWatcher>` object's callback is invoked. Calling `watcher.unref()` multiple times will have no effect.
+
+#### Class: `fs.StatWatcher`
+
+- Extends `<EventEmitter>`
+
+A successful call to `fs.watchFile()` method will return a new `<fs.StatWatcher>` object.
+
+##### `watcher.ref()`
+
+- Returns: `<fs.StatWatcher>`
+
+When called, requests that the Node.js event loop *not* exit so long as the `<fs.StatWatcher>` is active. Calling `watcher.ref()` multiple times will have no effect.
+
+By default, all `<fs.StatWatcher>` objects are "ref'ed", making it normally unnecessary to call `watcher.ref()` unless `watcher.unref()` had been called previously.
+
+##### `watcher.unref()`
+
+- Returns: `<fs.StatWatcher>`
+
+When called, the active `<fs.StatWatcher>` object will not require the Node.js event loop to remain active. If there is no other activity keeping the event loop running, the process may exit before the `<fs.StatWatcher>` object's callback is invoked. Calling `watcher.unref()` multiple times will have no effect.
+
+#### Class: `fs.ReadStream`
+
+- Extends: `<stream.Readable>`
+
+Instances of `<fs.ReadStream>` cannot be constructed directly. They are created and returned using the `fs.createReadStream()` function.
+
+##### Event: `'close'`
+
+Emitted when the `<fs.ReadStream>`'s underlying file descriptor has been closed.
+
+##### Event: `'open'`
+
+- `fd` `<integer>` Integer file descriptor used by the `<fs.ReadStream>`.
+
+Emitted when the `<fs.ReadStream>`'s file descriptor has been opened.
+
+##### Event: `'ready'`
+
+Emitted when the `<fs.ReadStream>` is ready to be used.
+
+Fires immediately after `'open'`.
+
+##### `readStream.bytesRead`
+
+- Type: `<number>`
+
+The number of bytes that have been read so far.
+
+##### `readStream.path`
+
+- Type: `<string>` | `<Buffer>`
+
+The path to the file the stream is reading from as specified in the first argument to `fs.createReadStream()`. If `path` is passed as a string, then `readStream.path` will be a string. If `path` is passed as a `<Buffer>`, then `readStream.path` will be a `<Buffer>`. If `fd` is specified, then `readStream.path` will be `undefined`.
+
+##### `readStream.pending`
+
+- Type: `<boolean>`
+
+This property is `true` if the underlying file has not been opened yet, i.e. before the `'ready'` event is emitted.
+
 #### Class: `fs.Stats`
 
-A `<fs.Stats>` object provides information about a file.Objects returned from `fs.stat()`, `fs.lstat()`, `fs.fstat()`, and their synchronous counterparts are of this type. If `bigint` in the `options` passed to those methods is true, the numeric values will be `bigint` instead of `number`, and the object will contain additional nanosecond-precision properties suffixed with `Ns`. `Stat` objects are not to be created directly using the `new` keyword.`Stats { dev: 2114, ino: 48064969, mode: 33188, nlink: 1, uid: 85, gid: 100, rdev: 0, size: 527, blksize: 4096, blocks: 8, atimeMs: 1318289051000.1, mtimeMs: 1318289051000.1, ctimeMs: 1318289051000.1, birthtimeMs: 1318289051000.1, // Instances of Date atime: Mon, 10 Oct 2011 23:24:11 GMT, mtime: Mon, 10 Oct 2011 23:24:11 GMT, ctime: Mon, 10 Oct 2011 23:24:11 GMT, birthtime: Mon, 10 Oct 2011 23:24:11 GMT, // Instances of Temporal.Instant atimeInstant: 2011-10-10T23:24:11.0001Z, mtimeInstant: 2011-10-10T23:24:11.0001Z, ctimeInstant: 2011-10-10T23:24:11.0001Z, birthtimeInstant: 2011-10-10T23:24:11.0001Z }``bigint` version:`BigIntStats { dev: 2114n, ino: 48064969n, mode: 33188n, nlink: 1n, uid: 85n, gid: 100n, rdev: 0n, size: 527n, blksize: 4096n, blocks: 8n, atimeMs: 1318289051000n, mtimeMs: 1318289051000n, ctimeMs: 1318289051000n, birthtimeMs: 1318289051000n, atimeNs: 1318289051000000000n, mtimeNs: 1318289051000000000n, ctimeNs: 1318289051000000000n, birthtimeNs: 1318289051000000000n, // Instances of Date atime: Mon, 10 Oct 2011 23:24:11 GMT, mtime: Mon, 10 Oct 2011 23:24:11 GMT, ctime: Mon, 10 Oct 2011 23:24:11 GMT, birthtime: Mon, 10 Oct 2011 23:24:11 GMT, // Instances of Temporal.Instant atimeInstant: 2011-10-10T23:24:11Z, mtimeInstant: 2011-10-10T23:24:11Z, ctimeInstant: 2011-10-10T23:24:11Z, birthtimeInstant: 2011-10-10T23:24:11Z }`
+A `<fs.Stats>` object provides information about a file.
+
+Objects returned from `fs.stat()`, `fs.lstat()`, `fs.fstat()`, and their synchronous counterparts are of this type. If `bigint` in the `options` passed to those methods is true, the numeric values will be `bigint` instead of `number`, and the object will contain additional nanosecond-precision properties suffixed with `Ns`. `Stat` objects are not to be created directly using the `new` keyword.`Stats { dev: 2114, ino: 48064969, mode: 33188, nlink: 1, uid: 85, gid: 100, rdev: 0, size: 527, blksize: 4096, blocks: 8, atimeMs: 1318289051000.1, mtimeMs: 1318289051000.1, ctimeMs: 1318289051000.1, birthtimeMs: 1318289051000.1, // Instances of Date atime: Mon, 10 Oct 2011 23:24:11 GMT, mtime: Mon, 10 Oct 2011 23:24:11 GMT, ctime: Mon, 10 Oct 2011 23:24:11 GMT, birthtime: Mon, 10 Oct 2011 23:24:11 GMT, // Instances of Temporal.Instant atimeInstant: 2011-10-10T23:24:11.0001Z, mtimeInstant: 2011-10-10T23:24:11.0001Z, ctimeInstant: 2011-10-10T23:24:11.0001Z, birthtimeInstant: 2011-10-10T23:24:11.0001Z }`
+
+`bigint` version:`BigIntStats { dev: 2114n, ino: 48064969n, mode: 33188n, nlink: 1n, uid: 85n, gid: 100n, rdev: 0n, size: 527n, blksize: 4096n, blocks: 8n, atimeMs: 1318289051000n, mtimeMs: 1318289051000n, ctimeMs: 1318289051000n, birthtimeMs: 1318289051000n, atimeNs: 1318289051000000000n, mtimeNs: 1318289051000000000n, ctimeNs: 1318289051000000000n, birthtimeNs: 1318289051000000000n, // Instances of Date atime: Mon, 10 Oct 2011 23:24:11 GMT, mtime: Mon, 10 Oct 2011 23:24:11 GMT, ctime: Mon, 10 Oct 2011 23:24:11 GMT, birthtime: Mon, 10 Oct 2011 23:24:11 GMT, // Instances of Temporal.Instant atimeInstant: 2011-10-10T23:24:11Z, mtimeInstant: 2011-10-10T23:24:11Z, ctimeInstant: 2011-10-10T23:24:11Z, birthtimeInstant: 2011-10-10T23:24:11Z }`
 
 ##### `stats.isBlockDevice()`
 
@@ -28,7 +179,9 @@ Returns `true` if the `<fs.Stats>` object describes a character device.
 
 - Returns: `<boolean>`
 
-Returns `true` if the `<fs.Stats>` object describes a file system directory.If the `<fs.Stats>` object was obtained from calling `fs.lstat()` on a symbolic link which resolves to a directory, this method will return `false`. This is because `fs.lstat()` returns information about a symbolic link itself and not the path it resolves to.
+Returns `true` if the `<fs.Stats>` object describes a file system directory.
+
+If the `<fs.Stats>` object was obtained from calling `fs.lstat()` on a symbolic link which resolves to a directory, this method will return `false`. This is because `fs.lstat()` returns information about a symbolic link itself and not the path it resolves to.
 
 ##### `stats.isFIFO()`
 
@@ -52,7 +205,9 @@ Returns `true` if the `<fs.Stats>` object describes a socket.
 
 - Returns: `<boolean>`
 
-Returns `true` if the `<fs.Stats>` object describes a symbolic link.This method is only valid when using `fs.lstat()`.
+Returns `true` if the `<fs.Stats>` object describes a symbolic link.
+
+This method is only valid when using `fs.lstat()`.
 
 ##### `stats.dev`
 
@@ -100,7 +255,9 @@ A numeric device identifier if the file represents a device.
 
 - Type: `<number>` | `<bigint>`
 
-The size of the file in bytes.If the underlying file system does not support getting the size of the file, this will be `0`.
+The size of the file in bytes.
+
+If the underlying file system does not support getting the size of the file, this will be `0`.
 
 ##### `stats.blksize`
 
@@ -188,11 +345,23 @@ The timestamp indicating the creation time of this file.
 
 ##### Stat time values
 
-The `atimeMs`, `mtimeMs`, `ctimeMs`, `birthtimeMs` properties are numeric values that hold the corresponding times in milliseconds. Their precision is platform specific. When `bigint: true` is passed into the method that generates the object, the properties will be bigints, otherwise they will be numbers.The `atimeNs`, `mtimeNs`, `ctimeNs`, `birthtimeNs` properties are bigints that hold the corresponding times in nanoseconds. They are only present when `bigint: true` is passed into the method that generates the object. Their precision is platform specific.`atime`, `mtime`, `ctime`, and `birthtime` are `Date` object alternate representations of the various times. The `Date` and number values are not connected. Assigning a new number value, or mutating the `Date` value, will not be reflected in the corresponding alternate representation.The times in the stat object have the following semantics: `atime` "Access Time": Time when file data last accessed. Changed by the `mknod(2)`, `utimes(2)`, and `read(2)` system calls. `mtime` "Modified Time": Time when file data last modified. Changed by the `mknod(2)`, `utimes(2)`, and `write(2)` system calls. `ctime` "Change Time": Time when file status was last changed (inode data modification). Changed by the `chmod(2)`, `chown(2)`, `link(2)`, `mknod(2)`, `rename(2)`, `unlink(2)`, `utimes(2)`, `read(2)`, and `write(2)` system calls. `birthtime` "Birth Time": Time of file creation. Set once when the file is created. On file systems where birthtime is not available, this field may instead hold either the `ctime` or `1970-01-01T00:00Z` (ie, Unix epoch timestamp `0`). This value may be greater than `atime` or `mtime` in this case. On Darwin and other FreeBSD variants, also set if the `atime` is explicitly set to an earlier value than the current `birthtime` using the `utimes(2)` system call. Prior to Node.js 0.12, the `ctime` held the `birthtime` on Windows systems. As of 0.12, `ctime` is not "creation time", and on Unix systems, it never was.
+The `atimeMs`, `mtimeMs`, `ctimeMs`, `birthtimeMs` properties are numeric values that hold the corresponding times in milliseconds. Their precision is platform specific. When `bigint: true` is passed into the method that generates the object, the properties will be bigints, otherwise they will be numbers.
+
+The `atimeNs`, `mtimeNs`, `ctimeNs`, `birthtimeNs` properties are bigints that hold the corresponding times in nanoseconds. They are only present when `bigint: true` is passed into the method that generates the object. Their precision is platform specific.
+
+`atime`, `mtime`, `ctime`, and `birthtime` are `Date` object alternate representations of the various times. The `Date` and number values are not connected. Assigning a new number value, or mutating the `Date` value, will not be reflected in the corresponding alternate representation.
+
+The times in the stat object have the following semantics: `atime` "Access Time": Time when file data last accessed. Changed by the `mknod(2)`, `utimes(2)`, and `read(2)` system calls. `mtime` "Modified Time": Time when file data last modified. Changed by the `mknod(2)`, `utimes(2)`, and `write(2)` system calls. `ctime` "Change Time": Time when file status was last changed (inode data modification). Changed by the `chmod(2)`, `chown(2)`, `link(2)`, `mknod(2)`, `rename(2)`, `unlink(2)`, `utimes(2)`, `read(2)`, and `write(2)` system calls. `birthtime` "Birth Time": Time of file creation. Set once when the file is created. On file systems where birthtime is not available, this field may instead hold either the `ctime` or `1970-01-01T00:00Z` (ie, Unix epoch timestamp `0`). This value may be greater than `atime` or `mtime` in this case. On Darwin and other FreeBSD variants, also set if the `atime` is explicitly set to an earlier value than the current `birthtime` using the `utimes(2)` system call.
+
+Prior to Node.js 0.12, the `ctime` held the `birthtime` on Windows systems. As of 0.12, `ctime` is not "creation time", and on Unix systems, it never was.
 
 #### Class: `fs.StatFs`
 
-Provides information about a mounted file system.Objects returned from `fs.statfs()` and its synchronous counterpart are of this type. If `bigint` in the `options` passed to those methods is `true`, the numeric values will be `bigint` instead of `number`.`StatFs { type: 1397114950, bsize: 4096, frsize: 4096, blocks: 121938943, bfree: 61058895, bavail: 61058895, files: 999, ffree: 1000000 }``bigint` version:`StatFs { type: 1397114950n, bsize: 4096n, frsize: 4096n, blocks: 121938943n, bfree: 61058895n, bavail: 61058895n, files: 999n, ffree: 1000000n }`
+Provides information about a mounted file system.
+
+Objects returned from `fs.statfs()` and its synchronous counterpart are of this type. If `bigint` in the `options` passed to those methods is `true`, the numeric values will be `bigint` instead of `number`.`StatFs { type: 1397114950, bsize: 4096, frsize: 4096, blocks: 121938943, bfree: 61058895, bavail: 61058895, files: 999, ffree: 1000000 }`
+
+`bigint` version:`StatFs { type: 1397114950n, bsize: 4096n, frsize: 4096n, blocks: 121938943n, bfree: 61058895n, bavail: 61058895n, files: 999n, ffree: 1000000n }`
 
 ##### `statfs.bavail`
 
@@ -399,7 +568,9 @@ Emitted when the `<fs.WriteStream>`'s file is opened.
 
 ##### Event: `'ready'`
 
-Emitted when the `<fs.WriteStream>` is ready to be used.Fires immediately after `'open'`.
+Emitted when the `<fs.WriteStream>` is ready to be used.
+
+Fires immediately after `'open'`.
 
 ##### `writeStream.bytesWritten`
 
@@ -430,24 +601,40 @@ Returns an object containing commonly used constants for file system operations.
 
 ##### FS constants
 
-The following constants are exported by `fs.constants` and `fsPromises.constants`.Not every constant will be available on every operating system; this is especially important for Windows, where many of the POSIX specific definitions are not available. For portable applications it is recommended to check for their presence before use.To use more than one constant, use the bitwise OR `|` operator.Example:`import { open, constants } from 'node:fs'; const { O_RDWR, O_CREAT, O_EXCL, } = constants; open('/path/to/my/file', O_RDWR | O_CREAT | O_EXCL, (err, fd) => { // ... });`
+The following constants are exported by `fs.constants` and `fsPromises.constants`.
+
+Not every constant will be available on every operating system; this is especially important for Windows, where many of the POSIX specific definitions are not available. For portable applications it is recommended to check for their presence before use.
+
+To use more than one constant, use the bitwise OR `|` operator.
+
+Example:`import { open, constants } from 'node:fs'; const { O_RDWR, O_CREAT, O_EXCL, } = constants; open('/path/to/my/file', O_RDWR | O_CREAT | O_EXCL, (err, fd) => { // ... });`
 
 ###### File access constants
 
-The following constants are meant for use as the `mode` parameter passed to `fsPromises.access()`, `fs.access()`, and `fs.accessSync()`. Constant Description `F_OK` Flag indicating that the file is visible to the calling process. This is useful for determining if a file exists, but says nothing about `rwx` permissions. Default if no mode is specified. `R_OK` Flag indicating that the file can be read by the calling process. `W_OK` Flag indicating that the file can be written by the calling process. `X_OK` Flag indicating that the file can be executed by the calling process. This has no effect on Windows (will behave like `fs.constants.F_OK`). The definitions are also available on Windows.
+The following constants are meant for use as the `mode` parameter passed to `fsPromises.access()`, `fs.access()`, and `fs.accessSync()`. Constant Description `F_OK` Flag indicating that the file is visible to the calling process. This is useful for determining if a file exists, but says nothing about `rwx` permissions. Default if no mode is specified. `R_OK` Flag indicating that the file can be read by the calling process. `W_OK` Flag indicating that the file can be written by the calling process. `X_OK` Flag indicating that the file can be executed by the calling process. This has no effect on Windows (will behave like `fs.constants.F_OK`).
+
+The definitions are also available on Windows.
 
 ###### File copy constants
 
-The following constants are meant for use with `fs.copyFile()`. Constant Description `COPYFILE_EXCL` If present, the copy operation will fail with an error if the destination path already exists. `COPYFILE_FICLONE` If present, the copy operation will attempt to create a copy-on-write reflink. If the underlying platform does not support copy-on-write, then a fallback copy mechanism is used. `COPYFILE_FICLONE_FORCE` If present, the copy operation will attempt to create a copy-on-write reflink. If the underlying platform does not support copy-on-write, then the operation will fail with an error. The definitions are also available on Windows.
+The following constants are meant for use with `fs.copyFile()`. Constant Description `COPYFILE_EXCL` If present, the copy operation will fail with an error if the destination path already exists. `COPYFILE_FICLONE` If present, the copy operation will attempt to create a copy-on-write reflink. If the underlying platform does not support copy-on-write, then a fallback copy mechanism is used. `COPYFILE_FICLONE_FORCE` If present, the copy operation will attempt to create a copy-on-write reflink. If the underlying platform does not support copy-on-write, then the operation will fail with an error.
+
+The definitions are also available on Windows.
 
 ###### File open constants
 
-The following constants are meant for use with `fs.open()`. Constant Description `O_RDONLY` Flag indicating to open a file for read-only access. `O_WRONLY` Flag indicating to open a file for write-only access. `O_RDWR` Flag indicating to open a file for read-write access. `O_CREAT` Flag indicating to create the file if it does not already exist. `O_EXCL` Flag indicating that opening a file should fail if the `O_CREAT` flag is set and the file already exists. `O_NOCTTY` Flag indicating that if path identifies a terminal device, opening the path shall not cause that terminal to become the controlling terminal for the process (if the process does not already have one). `O_TRUNC` Flag indicating that if the file exists and is a regular file, and the file is opened successfully for write access, its length shall be truncated to zero. `O_APPEND` Flag indicating that data will be appended to the end of the file. `O_DIRECTORY` Flag indicating that the open should fail if the path is not a directory. `O_NOATIME` Flag indicating reading accesses to the file system will no longer result in an update to the `atime` information associated with the file. This flag is available on Linux operating systems only. `O_NOFOLLOW` Flag indicating that the open should fail if the path is a symbolic link. `O_SYNC` Flag indicating that the file is opened for synchronized I/O with write operations waiting for file integrity. `O_DSYNC` Flag indicating that the file is opened for synchronized I/O with write operations waiting for data integrity. `O_SYMLINK` Flag indicating to open the symbolic link itself rather than the resource it is pointing to. `O_DIRECT` When set, an attempt will be made to minimize caching effects of file I/O. `O_NONBLOCK` Flag indicating to open the file in nonblocking mode when possible. `UV_FS_O_FILEMAP` When set, a memory file mapping is used to access the file. This flag is available on Windows operating systems only. On other operating systems, this flag is ignored. On Windows, only `O_APPEND`, `O_CREAT`, `O_EXCL`, `O_RDONLY`, `O_RDWR`, `O_TRUNC`, `O_WRONLY`, and `UV_FS_O_FILEMAP` are available.
+The following constants are meant for use with `fs.open()`. Constant Description `O_RDONLY` Flag indicating to open a file for read-only access. `O_WRONLY` Flag indicating to open a file for write-only access. `O_RDWR` Flag indicating to open a file for read-write access. `O_CREAT` Flag indicating to create the file if it does not already exist. `O_EXCL` Flag indicating that opening a file should fail if the `O_CREAT` flag is set and the file already exists. `O_NOCTTY` Flag indicating that if path identifies a terminal device, opening the path shall not cause that terminal to become the controlling terminal for the process (if the process does not already have one). `O_TRUNC` Flag indicating that if the file exists and is a regular file, and the file is opened successfully for write access, its length shall be truncated to zero. `O_APPEND` Flag indicating that data will be appended to the end of the file. `O_DIRECTORY` Flag indicating that the open should fail if the path is not a directory. `O_NOATIME` Flag indicating reading accesses to the file system will no longer result in an update to the `atime` information associated with the file. This flag is available on Linux operating systems only. `O_NOFOLLOW` Flag indicating that the open should fail if the path is a symbolic link. `O_SYNC` Flag indicating that the file is opened for synchronized I/O with write operations waiting for file integrity. `O_DSYNC` Flag indicating that the file is opened for synchronized I/O with write operations waiting for data integrity. `O_SYMLINK` Flag indicating to open the symbolic link itself rather than the resource it is pointing to. `O_DIRECT` When set, an attempt will be made to minimize caching effects of file I/O. `O_NONBLOCK` Flag indicating to open the file in nonblocking mode when possible. `UV_FS_O_FILEMAP` When set, a memory file mapping is used to access the file. This flag is available on Windows operating systems only. On other operating systems, this flag is ignored.
+
+On Windows, only `O_APPEND`, `O_CREAT`, `O_EXCL`, `O_RDONLY`, `O_RDWR`, `O_TRUNC`, `O_WRONLY`, and `UV_FS_O_FILEMAP` are available.
 
 ###### File type constants
 
-The following constants are meant for use with the `<fs.Stats>` object's `mode` property for determining a file's type. Constant Description `S_IFMT` Bit mask used to extract the file type code. `S_IFREG` File type constant for a regular file. `S_IFDIR` File type constant for a directory. `S_IFCHR` File type constant for a character-oriented device file. `S_IFBLK` File type constant for a block-oriented device file. `S_IFIFO` File type constant for a FIFO/pipe. `S_IFLNK` File type constant for a symbolic link. `S_IFSOCK` File type constant for a socket. On Windows, only `S_IFCHR`, `S_IFDIR`, `S_IFLNK`, `S_IFMT`, and `S_IFREG`, are available.
+The following constants are meant for use with the `<fs.Stats>` object's `mode` property for determining a file's type. Constant Description `S_IFMT` Bit mask used to extract the file type code. `S_IFREG` File type constant for a regular file. `S_IFDIR` File type constant for a directory. `S_IFCHR` File type constant for a character-oriented device file. `S_IFBLK` File type constant for a block-oriented device file. `S_IFIFO` File type constant for a FIFO/pipe. `S_IFLNK` File type constant for a symbolic link. `S_IFSOCK` File type constant for a socket.
+
+On Windows, only `S_IFCHR`, `S_IFDIR`, `S_IFLNK`, `S_IFMT`, and `S_IFREG`, are available.
 
 ###### File mode constants
 
-The following constants are meant for use with the `<fs.Stats>` object's `mode` property for determining the access permissions for a file. Constant Description `S_IRWXU` File mode indicating readable, writable, and executable by owner. `S_IRUSR` File mode indicating readable by owner. `S_IWUSR` File mode indicating writable by owner. `S_IXUSR` File mode indicating executable by owner. `S_IRWXG` File mode indicating readable, writable, and executable by group. `S_IRGRP` File mode indicating readable by group. `S_IWGRP` File mode indicating writable by group. `S_IXGRP` File mode indicating executable by group. `S_IRWXO` File mode indicating readable, writable, and executable by others. `S_IROTH` File mode indicating readable by others. `S_IWOTH` File mode indicating writable by others. `S_IXOTH` File mode indicating executable by others. On Windows, only `S_IRUSR` and `S_IWUSR` are available.
+The following constants are meant for use with the `<fs.Stats>` object's `mode` property for determining the access permissions for a file. Constant Description `S_IRWXU` File mode indicating readable, writable, and executable by owner. `S_IRUSR` File mode indicating readable by owner. `S_IWUSR` File mode indicating writable by owner. `S_IXUSR` File mode indicating executable by owner. `S_IRWXG` File mode indicating readable, writable, and executable by group. `S_IRGRP` File mode indicating readable by group. `S_IWGRP` File mode indicating writable by group. `S_IXGRP` File mode indicating executable by group. `S_IRWXO` File mode indicating readable, writable, and executable by others. `S_IROTH` File mode indicating readable by others. `S_IWOTH` File mode indicating writable by others. `S_IXOTH` File mode indicating executable by others.
+
+On Windows, only `S_IRUSR` and `S_IWUSR` are available.

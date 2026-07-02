@@ -59,7 +59,83 @@ SELECT
 
 The SELECT statement is used to query the database. The result of a SELECT is zero or more rows of data where each row has a fixed number of columns. A SELECT statement does not make any changes to the database.
 
-The "select-stmt" syntax diagram above attempts to show as much of the SELECT statement syntax as possible in a single diagram, because some readers find that helpful. The following "factored-select-stmt" is an alternative syntax diagrams that expresses the same syntax but tries to break the syntax down into smaller chunks. **factored-select-stmt:** **common-table-expression:** **select-stmt:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **window-defn:** **frame-spec:** **compound-operator:** **expr:** **filter-clause:** **function-arguments:** **literal-value:** **over-clause:** **frame-spec:** **raise-function:** **select-stmt:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **window-defn:** **frame-spec:** **type-name:** **signed-number:** **ordering-term:** **select-core:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **select-stmt:** **window-defn:** **frame-spec:**
+The "select-stmt" syntax diagram above attempts to show as much of the SELECT statement syntax as possible in a single diagram, because some readers find that helpful. The following "factored-select-stmt" is an alternative syntax diagrams that expresses the same syntax but tries to break the syntax down into smaller chunks.
+
+**factored-select-stmt:**
+
+**common-table-expression:**
+
+**select-stmt:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**window-defn:**
+
+**frame-spec:**
+
+**compound-operator:**
+
+**expr:**
+
+**filter-clause:**
+
+**function-arguments:**
+
+**literal-value:**
+
+**over-clause:**
+
+**frame-spec:**
+
+**raise-function:**
+
+**select-stmt:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**window-defn:**
+
+**frame-spec:**
+
+**type-name:**
+
+**signed-number:**
+
+**ordering-term:**
+
+**select-core:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**select-stmt:**
+
+**window-defn:**
+
+**frame-spec:**
 
 Note that there are paths through the syntax diagrams that are not allowed in practice. Some examples:
 
@@ -72,7 +148,87 @@ The SELECT statement is the most complicated command in the SQL language. To mak
 
 # 2. Simple Select Processing
 
-The core of a SELECT statement is a "simple SELECT" shown by the select-core and simple-select-stmt syntax diagrams below. In practice, most SELECT statements are simple SELECT statements. **simple-select-stmt:** **common-table-expression:** **select-stmt:** **compound-operator:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **window-defn:** **frame-spec:** **expr:** **filter-clause:** **function-arguments:** **literal-value:** **over-clause:** **frame-spec:** **raise-function:** **select-stmt:** **compound-operator:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **window-defn:** **frame-spec:** **type-name:** **signed-number:** **ordering-term:** **select-core:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **select-stmt:** **compound-operator:** **window-defn:** **frame-spec:**
+The core of a SELECT statement is a "simple SELECT" shown by the select-core and simple-select-stmt syntax diagrams below. In practice, most SELECT statements are simple SELECT statements.
+
+**simple-select-stmt:**
+
+**common-table-expression:**
+
+**select-stmt:**
+
+**compound-operator:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**window-defn:**
+
+**frame-spec:**
+
+**expr:**
+
+**filter-clause:**
+
+**function-arguments:**
+
+**literal-value:**
+
+**over-clause:**
+
+**frame-spec:**
+
+**raise-function:**
+
+**select-stmt:**
+
+**compound-operator:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**window-defn:**
+
+**frame-spec:**
+
+**type-name:**
+
+**signed-number:**
+
+**ordering-term:**
+
+**select-core:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**select-stmt:**
+
+**compound-operator:**
+
+**window-defn:**
+
+**frame-spec:**
 
 Generating the results of a simple SELECT statement is presented as a four step process in the description below:
 
@@ -162,7 +318,87 @@ One of the ALL or DISTINCT keywords may follow the SELECT keyword in a simple SE
 
 # 3. Compound Select Statements
 
-Two or more simple SELECT statements may be connected together to form a compound SELECT using the UNION, UNION ALL, INTERSECT or EXCEPT operator, as shown by the following diagram: **compound-select-stmt:** **common-table-expression:** **select-stmt:** **compound-operator:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **window-defn:** **frame-spec:** **expr:** **filter-clause:** **function-arguments:** **literal-value:** **over-clause:** **frame-spec:** **raise-function:** **select-stmt:** **compound-operator:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **window-defn:** **frame-spec:** **type-name:** **signed-number:** **ordering-term:** **select-core:** **join-clause:** **join-constraint:** **join-operator:** **result-column:** **table-or-subquery:** **select-stmt:** **compound-operator:** **window-defn:** **frame-spec:**
+Two or more simple SELECT statements may be connected together to form a compound SELECT using the UNION, UNION ALL, INTERSECT or EXCEPT operator, as shown by the following diagram:
+
+**compound-select-stmt:**
+
+**common-table-expression:**
+
+**select-stmt:**
+
+**compound-operator:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**window-defn:**
+
+**frame-spec:**
+
+**expr:**
+
+**filter-clause:**
+
+**function-arguments:**
+
+**literal-value:**
+
+**over-clause:**
+
+**frame-spec:**
+
+**raise-function:**
+
+**select-stmt:**
+
+**compound-operator:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**window-defn:**
+
+**frame-spec:**
+
+**type-name:**
+
+**signed-number:**
+
+**ordering-term:**
+
+**select-core:**
+
+**join-clause:**
+
+**join-constraint:**
+
+**join-operator:**
+
+**result-column:**
+
+**table-or-subquery:**
+
+**select-stmt:**
+
+**compound-operator:**
+
+**window-defn:**
+
+**frame-spec:**
 
 In a compound SELECT, all the constituent SELECTs must return the same number of result columns. As the components of a compound SELECT must be simple SELECT statements, they may not contain ORDER BY or LIMIT clauses. ORDER BY and LIMIT clauses may only occur at the end of the entire compound SELECT, and then only if the final element of the compound is not a VALUES clause.
 
@@ -239,7 +475,9 @@ Whatever the origin of the input quirks, we generally avoid trying to "fix" them
 
 ## 9.1. Strange JOIN names
 
-SQLite accepts all of the usual syntax for JOIN operators: **join-operator:**
+SQLite accepts all of the usual syntax for JOIN operators:
+
+**join-operator:**
 
 But it does not stop there. SQLite is actually very flexible in how you specify a join operator. The general syntax is:
 

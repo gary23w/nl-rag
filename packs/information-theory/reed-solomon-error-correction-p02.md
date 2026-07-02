@@ -1,0 +1,499 @@
+---
+title: "Reed–Solomon error correction (part 2/2)"
+source: https://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction
+domain: information-theory
+license: CC-BY-SA-4.0
+tags: information theory, shannon entropy, channel capacity, error correction, hamming code
+fetched: 2026-07-02
+part: 2/2
+---
+
+## Reed Solomon original view decoders
+
+The decoders described in this section use the Reed Solomon original view of a codeword as a sequence of polynomial values where the polynomial is based on the message to be encoded. The same set of fixed values are used by the encoder and decoder, and the decoder recovers the encoding polynomial (and optionally an error locating polynomial) from the received message.
+
+### Theoretical decoder
+
+Reed and Solomon described a theoretical decoder that corrected errors by finding the most popular message polynomial. The decoder only knows the set of values $a_{1}$ to $a_{n}$ and which encoding method was used to generate the codeword's sequence of values. The original message, the polynomial, and any errors are unknown. A decoding procedure could use a method like Lagrange interpolation on various subsets of n codeword values taken k at a time to repeatedly produce potential polynomials, until a sufficient number of matching polynomials are produced to reasonably eliminate any errors in the received codeword. Once a polynomial is determined, then any errors in the codeword can be corrected, by recalculating the corresponding codeword values. Unfortunately, in all but the simplest of cases, there are too many subsets, so the algorithm is impractical. The number of subsets is the binomial coefficient, ${\textstyle {\binom {n}{k}}={n! \over (n-k)!k!}}$ , and the number of subsets is infeasible for even modest codes. For a (255,249) code that can correct 3 errors, the naïve theoretical decoder would examine 359 billion subsets.
+
+### Berlekamp Welch decoder
+
+In 1986, a decoder known as the Berlekamp–Welch algorithm was developed as a decoder that is able to recover the original message polynomial as well as an error "locator" polynomial that produces zeroes for the input values that correspond to errors, with time complexity *O*(*n*3), where n is the number of values in a message. The recovered polynomial is then used to recover (recalculate as needed) the original message.
+
+#### Example
+
+Using RS(7,3), GF(929), and the set of evaluation points *ai* = *i* − 1
+
+a
+
+= {0, 1, 2, 3, 4, 5, 6}
+
+If the message polynomial is
+
+p
+
+(
+
+x
+
+) = 003
+
+x
+
+2
+
++ 002
+
+x
+
++ 001
+
+The codeword is
+
+c
+
+= {001, 006, 017, 034, 057, 086, 121}
+
+Errors in transmission might cause this to be received instead.
+
+b
+
+=
+
+c
+
++
+
+e
+
+= {001, 006, 123, 456, 057, 086, 121}
+
+The key equation is:
+
+b
+
+i
+
+E
+
+(
+
+a
+
+i
+
+) -
+
+Q
+
+(
+
+a
+
+i
+
+) = 0
+
+Assume maximum number of errors: *e* = 2. The key equation becomes:
+
+b
+
+i
+
+(
+
+e
+
+0
+
++
+
+e
+
+1
+
+a
+
+i
+
+) - (
+
+q
+
+0
+
++
+
+q
+
+1
+
+a
+
+i
+
++
+
+q
+
+2
+
+a
+
+2
+
+i
+
++
+
+q
+
+3
+
+a
+
+3
+
+i
+
++
+
+q
+
+4
+
+a
+
+4
+
+i
+
+) = -
+
+b
+
+i
+
+a
+
+2
+
+i
+
+${\begin{bmatrix}001&000&928&000&000&000&000\\006&006&928&928&928&928&928\\123&246&928&927&925&921&913\\456&439&928&926&920&902&848\\057&228&928&925&913&865&673\\086&430&928&924&904&804&304\\121&726&928&923&893&713&562\end{bmatrix}}{\begin{bmatrix}e_{0}\\e_{1}\\q_{0}\\q_{1}\\q_{2}\\q_{3}\\q_{4}\end{bmatrix}}={\begin{bmatrix}000\\923\\437\\541\\017\\637\\289\end{bmatrix}}$
+
+Using Gaussian elimination:
+
+${\begin{bmatrix}001&000&000&000&000&000&000\\000&001&000&000&000&000&000\\000&000&001&000&000&000&000\\000&000&000&001&000&000&000\\000&000&000&000&001&000&000\\000&000&000&000&000&001&000\\000&000&000&000&000&000&001\end{bmatrix}}{\begin{bmatrix}e_{0}\\e_{1}\\q_{0}\\q_{1}\\q_{2}\\q_{3}\\q_{4}\end{bmatrix}}={\begin{bmatrix}006\\924\\006\\007\\009\\916\\003\end{bmatrix}}$
+
+Q
+
+(
+
+x
+
+) = 003
+
+x
+
+4
+
++ 916
+
+x
+
+3
+
++ 009
+
+x
+
+2
+
++ 007
+
+x
+
++ 006
+
+E
+
+(
+
+x
+
+) = 001
+
+x
+
+2
+
++ 924
+
+x
+
++ 006
+
+⁠
+
+Q
+
+(
+
+x
+
+)
+
+/
+
+E
+
+(
+
+x
+
+)
+
+⁠
+
+=
+
+P
+
+(
+
+x
+
+) = 003
+
+x
+
+2
+
++ 002
+
+x
+
++ 001
+
+Recalculate *P*(*x*) where *E*(*x*) = 0 : {2, 3} to correct b resulting in the corrected codeword:
+
+c
+
+= {001, 006, 017, 034, 057, 086, 121}
+
+}}
+
+### Gao decoder
+
+In 2002, an improved decoder was developed by Shuhong Gao, based on the extended Euclid algorithm.
+
+#### Example
+
+- $R_{-1}=\prod _{i=1}^{n}(x-a_{i})$
+- $R_{0}=$ Lagrange interpolation of $(a_{i},b(a_{i}))$ for $i=1$ to n
+- $A_{-1}=0$
+- $A_{0}=1$
+- generate $R_{i}$ and $A_{i}$ until degree of $R_{i}<(n+k)/2$ , for this example $(n+k)/2=(7+3)/2=5$
+
+| *i* | *Ri* | *Ai* |
+|---|---|---|
+| −1 | 001*x*7 + 908*x*6 + 175*x*5 + 194*x*4 + 695*x*3 + 094*x*2 + 720*x* + 000 | 000 |
+| 0 | 055*x*6 + 440*x*5 + 497*x*4 + 904*x*3 + 424*x*2 + 472*x* + 001 | 001 |
+| 1 | 702*x*5 + 845*x*4 + 691*x*3 + 461*x*2 + 327*x* + 237 | 152 x + 237 |
+| 2 | 266*x*4 + 086*x*3 + 798*x*2 + 311*x* + 532 | 708*x*2 + 176*x* + 532 |
+
+Q
+
+(
+
+x
+
+) =
+
+R
+
+2
+
+= 266
+
+x
+
+4
+
++ 086
+
+x
+
+3
+
++ 798
+
+x
+
+2
+
++ 311
+
+x
+
++ 532
+
+E
+
+(
+
+x
+
+) =
+
+A
+
+2
+
+= 708
+
+x
+
+2
+
++ 176
+
+x
+
++ 532
+
+To duplicate the polynomials generated by Berlekamp Welsh, divide *Q*(*x*) and *E*(*x*) by most significant coefficient of *E*(*x*) = 708.
+
+Q
+
+(
+
+x
+
+) = 003
+
+x
+
+4
+
++ 916
+
+x
+
+3
+
++ 009
+
+x
+
+2
+
++ 007
+
+x
+
++ 006
+
+E
+
+(
+
+x
+
+) = 001
+
+x
+
+2
+
++ 924
+
+x
+
++ 006
+
+⁠
+
+Q
+
+(
+
+x
+
+)
+
+/
+
+E
+
+(
+
+x
+
+)
+
+⁠
+
+=
+
+P
+
+(
+
+x
+
+) = 003
+
+x
+
+2
+
++ 002
+
+x
+
++ 001
+
+Recalculate *P*(*x*) where *E*(*x*) = 0 : {2, 3} to correct *b* resulting in the corrected codeword:
+
+c
+
+= {001, 006, 017, 034, 057, 086, 121}
+
+### Syndrome decoder
+
+Around 2015, an improved decoder was developed. The decoder generates syndromes, and similar to BCH view, the key equation between the error locator polynomial and syndromes is the same, but the error locator polynomial has roots corresponding to $(1/\alpha _{i})$ , and a look up table is used to convert the roots into codeword offsets.
+
+Initialization: A polynomial is defined: $L=\Pi _{i=0}^{n-1}(x-\alpha _{i})$ . A set of n polynomials is defined: $L_{i}=L/(x-\alpha _{i})$ . A set of n values is generated $u_{i}=L_{i}(\alpha _{i})$ . A set of n polynomials is generated: $P_{i}=(u_{i}/(1-\alpha _{i}z))\mod (z^{n-k})$
+
+Decoding - A codeword with possible errors is received $r=\{r_{0},r_{1},\dots ,r_{n-1}\}$ . A syndrome polynomial is generated $S=\Sigma _{i=0}^{n-1}r_{i}P_{i}$ . If $S=0$ then no errors are detected, otherwise extended Euclid starts off with $R_{-1}=z^{n-k}$ , $R_{0}=S$ , $A_{-1}=0$ , $A_{0}=1$ and continues until degree of $R_{i}<(n-k)/2$ The error locator polynomial is $\sigma =A_{i}$ and the error value polynomial is $\omega =R_{i}$ $\sigma$ and $\omega$ are divided by the least significant term of $\sigma$ The formal derivative of $\sigma$ is generated: $\sigma '$ The offsets o of the errors correspond to the roots of $\sigma$ for root = $1/\alpha _{i}$ , $o_{i}=i$ The error value for $o_{i}$ is $e_{i}=(-\alpha _{i}\ \omega (1/\alpha _{i}))/(u_{i}\ \sigma '(1/\alpha _{i}))$ .
+
+If $deg(\omega )=deg(\sigma )$ then an error value corresponding to $\alpha _{b}=0$ has been detected at offset $o_{b}=b$ , and a separate error value is calculated: $B=\{b|\sigma (1/\alpha _{i})=0\}$ , the set of $\alpha _{i}$ corresponding to roots of $\sigma$ $w=$ most significant coefficient of $\omega$ $e_{b}=w\ u_{b}^{-1}\ (\Pi _{\alpha \in B}\ (-\alpha ))^{-1}$
+
+#### Example
+
+Using the same data as the Berlekamp Welch example
+
+Initialization: $a=\{000,001,002,003,004,005,006\}$ $u=\{040,689,600,129,600,689,040\}$
+
+| *i* | P*i* |
+|---|---|
+| 0 | 040 |
+| 1 | 689 *z*3 + 689 *z*2 + 689 *z* + 689 |
+| 2 | 155 *z*3 + 542 *z*2 + 271 *z* + 600 |
+| 3 | 696 *z*3 + 232 *z*2 + 387 *z* + 129 |
+| 4 | 311 *z*3 + 310 *z*2 + 542 *z* + 600 |
+| 5 | 657 *z*3 + 503 *z*2 + 658 *z* + 689 |
+| 6 | 279 *z*3 + 511 *z*2 + 240 *z* + 040 |
+
+Decoding: $r=\{001,006,123,456,057,086,121\}$ $S=785\ z^{3}+213\ z^{2}+666\ z+055$ Euclid:
+
+| *i* | R*i* | A*i* |
+|---|---|---|
+| -1 | 001 *z*4 + 000 *z*3 + 000 *z*2 + 000 *z* + 000 | 000 |
+| 0 | 785 *z*3 + 213 *z*2 + 666 *z* + 055 | 001 |
+| 1 | 658 *z*2 + 858 *z* + 323 | 200 *z* + 141 |
+| 2 | 294 *z* + 709 | 905 *z*2 + 020 *z* + 925 |
+
+$\sigma =905\ z^{2}+020\ z+925$ $\omega =294\ z+709$ divide $\sigma$ and $\omega$ by 925 $\sigma =006\ z^{2}+924\ z+1$ $\omega =391\ z+55$ $\sigma '=012\ z+924$ $o=\{002,003\}$ $e=\{000,000,106,422,000,000,000\}$ $c=\{001,006,017,034,057,086,121\}=r-e$

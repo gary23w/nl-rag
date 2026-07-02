@@ -79,7 +79,22 @@ def fetch(url: str, cache_dir: Path, force: bool = False, timeout: int = 40) -> 
         _last_hit[host] = time.monotonic()
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw = resp.read(MAX_BYTES)
+                # chunked read under a WALL-CLOCK deadline: socket timeouts never fire on a
+                # server that drips bytes, and one dripping host must not wedge the whole pull
+                deadline = time.monotonic() + max(timeout, 90)
+                chunks: list[bytes] = []
+                got = 0
+                while got < MAX_BYTES:
+                    if time.monotonic() > deadline:
+                        raise FetchError(f"wall-clock deadline exceeded: {url}")
+                    # read1 = at most one socket recv: a dripping server can't trap us inside
+                    # a full read(n) (which loops recv until n bytes and defeats the deadline)
+                    chunk = resp.read1(min(1 << 16, MAX_BYTES - got))
+                    if not chunk:
+                        break
+                    chunks.append(chunk)
+                    got += len(chunk)
+                raw = b"".join(chunks)
                 if resp.headers.get("Content-Encoding", "").lower() == "gzip":
                     raw = gzip.GzipFile(fileobj=io.BytesIO(raw)).read(MAX_BYTES)
                 text = _decode(raw, resp.headers.get_content_charset())

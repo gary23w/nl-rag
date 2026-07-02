@@ -1,0 +1,88 @@
+---
+title: "Static program analysis"
+source: https://en.wikipedia.org/wiki/Static_program_analysis
+domain: formal-methods
+license: CC-BY-SA-4.0
+tags: formal verification, model checking, tla+, hoare logic, design by contract, static analysis
+fetched: 2026-07-02
+---
+
+# Static program analysis
+
+In computer science, **static program analysis** (also known as **static analysis** or **static simulation**) is the analysis of computer programs performed without executing them, in contrast with dynamic program analysis, which is performed on programs during their execution in the integrated environment.
+
+The term is usually applied to analysis performed by an automated tool, with human analysis typically being called "program understanding", program comprehension, or code review. In the last of these, software inspection and software walkthroughs are also used. In most cases the analysis is performed on some version of a program's source code, and, in other cases, on some form of its object code.
+
+> Two leading approaches to resource certification have been Static Analysis (SA) and Implicit Computational Complexity (ICC). SA is algorithmic in nature: it focuses on a broad programming language of choice, and seeks to determine by syntactic means whether given programs in that language are feasible. In contrast, ICC attempts to create from the outset specialized programming languages or methods that delineate a complexity class. Thus, SA's focus is on compile time, making no demand on the programmer; whereas ICC is a language-design discipline."
+
+— D. Leivant (2020)
+
+The discipline of static analysis should not be confused with linting, which is the process of checking for coding style mistakes.
+
+## Rationale
+
+The sophistication of the analysis performed by tools varies from those that only consider the behaviour of individual statements and declarations, to those that include the complete source code of a program in their analysis. The uses of the information obtained from the analysis vary from highlighting possible coding errors (e.g., the lint tool) to formal methods that mathematically prove properties about a given program (e.g., its behaviour matches that of its specification).
+
+Software metrics and reverse engineering can be described as forms of static analysis. Deriving software metrics and static analysis are increasingly deployed together, especially in creation of embedded systems, by defining so-called *software quality objectives*.
+
+A growing commercial use of static analysis is in the verification of properties of software used in safety-critical computer systems and locating potentially vulnerable code. For example, the following industries have identified the use of static code analysis as a means of improving the quality of increasingly sophisticated and complex software:
+
+1. Medical software: The US Food and Drug Administration (FDA) has identified the use of static analysis for medical devices.
+2. Nuclear software: In the UK the Office for Nuclear Regulation (ONR) recommends the use of static analysis on reactor protection systems.
+3. Aviation software (in combination with dynamic analysis).
+4. Automotive & Machines (functional safety features form an integral part of each automotive product development phase, ISO 26262, section 8).
+
+A study in 2012 by VDC Research reported that 28.7% of the embedded software engineers surveyed use static analysis tools and 39.7% expect to use them within 2 years. A study from 2010 found that 60% of the interviewed developers in European research projects made at least use of their basic IDE built-in static analyzers. However, only about 10% employed an additional other (and perhaps more advanced) analysis tool.
+
+In the application security industry the name static application security testing (SAST) is also used. SAST is an important part of Security Development Lifecycles (SDLs) such as the SDL defined by Microsoft and a common practice in software companies.
+
+## Tool types
+
+The OMG (Object Management Group) published a study regarding the types of software analysis required for software quality measurement and assessment. This document on "How to Deliver Resilient, Secure, Efficient, and Easily Changed IT Systems in Line with CISQ Recommendations" describes three levels of software analysis.
+
+**Unit Level**
+
+Analysis that takes place within a specific program or subroutine, without connecting to the context of that program.
+
+**Technology Level**
+
+Analysis that takes into account interactions between unit programs to get a more holistic and semantic view of the overall program in order to find issues and avoid obvious
+
+false positives
+
+.
+
+**System Level**
+
+Analysis that takes into account the interactions between unit programs, but without being limited to one specific technology or programming language.
+
+A further level of software analysis can be defined.
+
+**Mission/Business Level**
+
+Analysis that takes into account the business/mission layer terms, rules and processes that are implemented within the software system for its operation as part of enterprise or program/mission layer activities. These elements are implemented without being limited to one specific technology or programming language and in many cases are distributed across multiple languages, but are statically extracted and analyzed for system understanding for mission assurance.
+
+Many static analysis tools use intermediate representations of programs to examine the structure of source code without executing the program. For this purpose, abstract syntax trees (ASTs) are commonly used, since they provide a structured representation of a program's syntactic elements.
+
+## Formal methods
+
+Formal methods is the term applied to the analysis of software (and computer hardware) whose results are obtained purely through the use of rigorous mathematical methods. The mathematical techniques used include denotational semantics, axiomatic semantics, operational semantics, and abstract interpretation.
+
+By a straightforward reduction to the halting problem, it is possible to prove that (for any Turing complete language), finding all possible run-time errors in an arbitrary program (or more generally any kind of violation of a specification on the final result of a program) is undecidable: there is no mechanical method that can always answer truthfully whether an arbitrary program may or may not exhibit runtime errors. This result dates from the works of Church, Gödel and Turing in the 1930s (see: Halting problem and Rice's theorem). As with many undecidable questions, one can still attempt to give useful approximate solutions.
+
+Some of the implementation techniques of formal static analysis include:
+
+- Abstract interpretation, to model the effect that every statement has on the state of an abstract machine (i.e., it 'executes' the software based on the mathematical properties of each statement and declaration). This abstract machine over-approximates the behaviours of the system: the abstract system is thus made simpler to analyze, at the expense of *incompleteness* (not every property true of the original system is true of the abstract system). If properly done, though, abstract interpretation is *sound* (every property true of the abstract system can be mapped to a true property of the original system).
+- Data-flow analysis, a lattice-based technique for gathering information about the possible set of values;
+- Hoare logic, a formal system with a set of logical rules for reasoning rigorously about the correctness of computer programs. There is tool support for some programming languages (e.g., the SPARK programming language (a subset of Ada) and the Java Modeling Language—JML—using ESC/Java and ESC/Java2, Frama-C WP (weakest precondition) plugin for the C language extended with ACSL (ANSI/ISO C Specification Language) ).
+- Model checking, considers systems that have finite state or may be reduced to finite state by abstraction;
+- Symbolic execution, as used to derive mathematical expressions representing the value of mutated variables at particular points in the code.
+- Nullable reference analysis
+
+## Data-driven static analysis
+
+Data-driven static analysis leverages extensive codebases to infer coding rules and improve the accuracy of the analysis. For instance, one can use all Java open-source packages available on GitHub to learn good analysis strategies. The rule inference can use machine learning techniques. It is also possible to learn from a large amount of past fixes and warnings.
+
+## Remediation
+
+Static analyzers produce warnings. For certain types of warnings, it is possible to design and implement automated remediation techniques. For example, Logozzo and Ball have proposed automated remediations for C# *cccheck*.

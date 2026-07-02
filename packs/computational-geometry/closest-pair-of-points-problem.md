@@ -1,0 +1,47 @@
+---
+title: "Closest pair of points problem"
+source: https://en.wikipedia.org/wiki/Closest_pair_of_points_problem
+domain: computational-geometry
+license: CC-BY-SA-4.0
+tags: computational geometry, convex hull, voronoi, triangulation, point in polygon
+fetched: 2026-07-02
+---
+
+# Closest pair of points problem
+
+The **closest pair of points problem** or **closest pair problem** is a problem of computational geometry: given n points in metric space, find a pair of points with the smallest distance between them. The closest pair problem for points in the Euclidean plane was among the first geometric problems that were treated at the origins of the systematic study of the computational complexity of geometric algorithms.
+
+## Time bounds
+
+Randomized algorithms that solve the problem in linear time are known, in Euclidean spaces whose dimension is treated as a constant for the purposes of asymptotic analysis. This is significantly faster than the $O(n^{2})$ time (expressed here in big O notation) that would be obtained by a naive algorithm of finding distances between all pairs of points and selecting the smallest.
+
+It is also possible to solve the problem without randomization, in random-access machine models of computation with unlimited memory that allow the use of the floor function, in near-linear $O(n\log \log n)$ time. In even more restricted models of computation, such as the algebraic decision tree, the problem can be solved in the somewhat slower $O(n\log n)$ time bound, and this is optimal for this model, by a reduction from the element uniqueness problem. Both sweep line algorithms and divide-and-conquer algorithms with this slower time bound are commonly taught as examples of these algorithm design techniques.
+
+## Linear-time randomized algorithms
+
+A linear expected time randomized algorithm of Rabin (1976), modified slightly by Richard Lipton to make its analysis easier, proceeds as follows, on an input set S consisting of n points in a k -dimensional Euclidean space:
+
+1. Select n pairs of points uniformly at random, with replacement, and let d be the minimum distance of the selected pairs.
+2. Round the input points to a square grid of points whose size (the separation between adjacent grid points) is d , and use a hash table to collect together pairs of input points that round to the same grid point.
+3. For each input point, compute the distance to all other inputs that either round to the same grid point or to another grid point within the Moore neighborhood of $3^{k}-1$ surrounding grid points.
+4. Return the smallest of the distances computed throughout this process.
+
+The algorithm will always correctly determine the closest pair, because it maps any pair closer than distance d to the same grid point or to adjacent grid points. The uniform sampling of pairs in the first step of the algorithm (compared to a different method of Rabin for sampling a similar number of pairs) simplifies the proof that the expected number of distances computed by the algorithm is linear.
+
+Instead, a different algorithm Khuller & Matias (1995) goes through two phases: a random iterated filtering process that approximates the closest distance to within an approximation ratio of $2{\sqrt {k}}$ , together with a finishing step that turns this approximate distance into the exact closest distance. The filtering process repeat the following steps, until S becomes empty:
+
+1. Choose a point p uniformly at random from S .
+2. Compute the distances from p to all the other points of S and let d be the minimum such distance.
+3. Round the input points to a square grid of size $d/(2{\sqrt {k}})$ , and delete from S all points whose Moore neighborhood has no other points.
+
+The approximate distance found by this filtering process is the final value of d , computed in the step before S becomes empty. Each step removes all points whose closest neighbor is at distance d or greater, at least half of the points in expectation, from which it follows that the total expected time for filtering is linear. Once an approximate value of d is known, it can be used for the final steps of Rabin's algorithm; in these steps each grid point has a constant number of inputs rounded to it, so again the time is linear.
+
+## Dynamic closest-pair problem
+
+The dynamic version for the closest-pair problem is stated as follows:
+
+- Given a dynamic set of objects, find algorithms and data structures for efficient recalculation of the closest pair of objects each time the objects are inserted or deleted.
+
+If the bounding box for all points is known in advance and the constant-time floor function is available, then the expected $O(n)$ -space data structure was suggested that supports expected-time $O(\log n)$ insertions and deletions and constant query time. When modified for the algebraic decision tree model, insertions and deletions would require $O(\log ^{2}n)$ expected time. The complexity of the dynamic closest pair algorithm cited above is exponential in the dimension d , and therefore such an algorithm becomes less suitable for high-dimensional problems.
+
+An algorithm for the dynamic closest-pair problem in d dimensional space was developed by Sergey Bespamyatnikh in 1998. Points can be inserted and deleted in $O(\log n)$ time per point (in the worst case).

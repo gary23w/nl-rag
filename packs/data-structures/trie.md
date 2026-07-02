@@ -36,7 +36,7 @@ The null links within the children of a node emphasize the following characteris
 1. Characters and string keys are implicitly stored in the trie, and include a character sentinel value indicating string termination.
 2. Each node contains one possible link to a prefix of strong keys of the set.
 
-A basic structure type of nodes in the trie is as follows: Node {\displaystyle {\text{Node}}} ({\displaystyle {\text{Node}}}) may contain an optional Value {\displaystyle {\text{Value}}} ({\displaystyle {\text{Value}}}), which is associated with the key that corresponds to the node.
+A basic structure type of nodes in the trie is as follows: ${\text{Node}}$ may contain an optional ${\text{Value}}$ , which is associated with the key that corresponds to the node.
 
 | **structure** Node Children **Node[***Alphabet-Size***]** Value **Data-Type** **end structure** |
 |---|
@@ -50,7 +50,7 @@ The following pseudocode implements the search procedure for a given string key 
 | Trie-Find(x, key) **for** 0 ≤ i < key.length **do** **if** x.Children[key[i]] = nil **then** **return** nil **end if** x := x.Children[key[i]] **repeat** **return** x.Value |
 |---|
 
-In the above pseudocode, x and key correspond to the pointer of the trie's root node and the string key, respectively. The search operation takes O ( m ) {\displaystyle O(m)} ({\displaystyle O(m)}) time, where m {\displaystyle m} ({\displaystyle m}) is the size of the string parameter key. In a balanced binary search tree, on the other hand, it takes O ( m log ⁡ n ) {\displaystyle O(m\log n)} ({\displaystyle O(m\log n)}) time, in the worst case, since key needs to be compared with O ( log ⁡ n ) {\displaystyle O(\log n)} ({\displaystyle O(\log n)}) other keys and each comparison takes O ( m ) {\displaystyle O(m)} ({\displaystyle O(m)}) time, in the worst case.
+In the above pseudocode, x and key correspond to the pointer of the trie's root node and the string key, respectively. The search operation takes $O(m)$ time, where m is the size of the string parameter key. In a balanced binary search tree, on the other hand, it takes $O(m\log n)$ time, in the worst case, since key needs to be compared with $O(\log n)$ other keys and each comparison takes $O(m)$ time, in the worst case.
 
 The trie occupies less space, in comparison with a binary search tree, in the case of a large number of short strings, since nodes share common initial string subsequences and store the keys implicitly.
 
@@ -78,7 +78,7 @@ The procedure begins by examining key; an empty string indicates arrival at the 
 
 A trie can be used to replace a hash table, over which it has the following advantages:
 
-- Searching for a node with an associated key of size m {\displaystyle m} ({\displaystyle m}) has the complexity of O ( m ) {\displaystyle O(m)} ({\displaystyle O(m)}), whereas an imperfect hash function may have numerous colliding keys, and the worst-case lookup speed of such a table would be O ( N ) {\displaystyle O(N)} ({\displaystyle O(N)}), where N {\displaystyle N} ({\displaystyle N}) denotes the total number of nodes within the table.
+- Searching for a node with an associated key of size m has the complexity of $O(m)$ , whereas an imperfect hash function may have numerous colliding keys, and the worst-case lookup speed of such a table would be $O(N)$ , where N denotes the total number of nodes within the table.
 - Tries do not need a hash function for the operation, unlike a hash table; there are also no collisions of different keys in a trie.
 - Within a trie, keys can be efficiently sorted lexicographically.
 
@@ -86,7 +86,7 @@ However, tries are less efficient than a hash table when the data is directly ac
 
 ## Implementation strategies
 
-Tries can be represented in several ways, corresponding to different trade-offs between memory use and speed of the operations. Using a vector of pointers for representing a trie consumes enormous space; however, memory space can be reduced at the expense of running time if a singly linked list is used for each node vector, as most entries of the vector contains nil {\displaystyle {\text{nil}}} ({\displaystyle {\text{nil}}}).
+Tries can be represented in several ways, corresponding to different trade-offs between memory use and speed of the operations. Using a vector of pointers for representing a trie consumes enormous space; however, memory space can be reduced at the expense of running time if a singly linked list is used for each node vector, as most entries of the vector contains ${\text{nil}}$ .
 
 Techniques such as *alphabet reduction* may reduce the large space requirements by reinterpreting the original string as a longer string over a smaller alphabet. For example, a string of n bytes can alternatively be regarded as a string of 2*n* four-bit units. This can reduce memory usage by a factor of eight; but lookups need to visit twice as many nodes in the worst case. Another technique includes storing a vector of 256 ASCII pointers as a bitmap of 256 bits representing ASCII alphabet, which reduces the size of individual nodes dramatically.
 

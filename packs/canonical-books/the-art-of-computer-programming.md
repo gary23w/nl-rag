@@ -1,0 +1,163 @@
+---
+title: "The Art of Computer Programming"
+source: https://en.wikipedia.org/wiki/The_Art_of_Computer_Programming
+domain: canonical-books
+license: CC-BY-SA-4.0
+tags: sicp, programming book, mythical man-month, pragmatic programmer, design patterns book, taocp
+fetched: 2026-07-02
+---
+
+# *The Art of Computer Programming*
+
+***The Art of Computer Programming*** (***TAOCP***) is a comprehensive multi-volume monograph (Volumes 1–7) written by the computer scientist Donald Knuth presenting programming algorithms and their analysis. As of 2026 it consists of published volumes 1, 2, 3, 4A, and 4B, with more expected to be released in the future. The Volumes 1–5 are intended to represent the central core of computer programming for sequential machines; the subjects of Volumes 6 and 7 are important but more specialized.
+
+When Knuth began the project in 1962, he originally conceived of it as a single book with twelve chapters. The first three volumes of what was then expected to be a seven-volume set were published in 1968, 1969, and 1973. Work began in earnest on Volume 4 in 1973, but was suspended in 1977 for work on typesetting prompted by the second edition of Volume 2. Writing of the final copy of Volume 4A began in longhand in 2001, and the first online pre-fascicle, 2A, appeared later in 2001. The first published installment of Volume 4 appeared in paperback as Fascicle 2 in 2005. The hardback Volume 4A, combining Volume 4, Fascicles 0–4, was published in 2011. Volume 4, Fascicle 6 ("Satisfiability") was released in December 2015; Volume 4, Fascicle 5 ("Mathematical Preliminaries Redux; Backtracking; Dancing Links") was released in November 2019.
+
+Volume 4B consists of material evolved from Fascicles 5 and 6. The manuscript was sent to the publisher on August 1, 2022, and the volume was published in September 2022. Fascicle 7 ("Constraint Satisfaction"), planned for Volume 4C, was the subject of Knuth's talk on August 3, 2022 and was published on February 5, 2025.
+
+## History
+
+After winning a Westinghouse Talent Search scholarship, Knuth enrolled at the Case Institute of Technology (now Case Western Reserve University), where his performance was so outstanding that the faculty voted to award him a master of science upon his completion of the bachelor's degree. During his summer vacations, Knuth was hired by the Burroughs Corporation to write compilers, earning more in his summer months than full professors did for an entire year. Such exploits made Knuth a topic of discussion among the mathematics department, which included Richard S. Varga.
+
+In January 1962, when he was a graduate student in the mathematics department at Caltech, Knuth was approached by Addison-Wesley to write a book about compiler design, and he proposed a larger scope. He came up with a list of twelve chapter titles the same day. In the summer of 1962 he worked on a FORTRAN compiler for UNIVAC, considering that he had "sold my soul to the devil" to develop a FORTRAN compiler after ALGOL developments with Burroughs. He remained as a consultant to Burroughs over the period 1960 to 1968 while writing Volume 1 "Fundamental Algorithms".
+
+During this time, he also developed a mathematical analysis of linear probing, which convinced him to present the material with a quantitative approach. After receiving his Ph.D. in June 1963, he began working on his manuscript, of which he finished his first draft in June 1965, at 3000 hand-written pages. He had assumed that about five hand-written pages would translate into one printed page, but his publisher said instead that about 1+1⁄2 hand-written pages translated to one printed page. This meant he had approximately 2000 printed pages of material, which closely matches the size of the first three published volumes.
+
+The first volume of "The Art of Computer Programming", "Fundamental Algorithms", took five years to complete between 1963 and 1968 while working at both Caltech and Burroughs.
+
+Knuth's dedication in Volume 1 reads:
+
+> This series of books is affectionately dedicated to the Type 650 computer once installed at Case Institute of Technology, in remembrance of many pleasant evenings.
+
+In the preface, he thanks first his wife Jill, then Burroughs for the use of B220 and B5500 computers in testing most of the programs, and Caltech, the National Science Foundation, and the Office of Naval Research.
+
+Section 2.5 of "Fundamental Algorithms" is on Dynamic Storage Allocation. Parts of this are used in the Burroughs approach to memory management. Knuth claims credit for: “the “boundary-tag” method, introduced in Section 2.5, was designed by the author in 1962 for use in a control program for the B5000 computer.”
+
+Knuth received support from Richard S. Varga, who was the scientific adviser to the publisher. Varga was visiting Olga Taussky-Todd and John Todd at Caltech. With Varga's enthusiastic endorsement, the publisher accepted Knuth's expanded plans. In its expanded version, the book would be published in seven volumes, each with just one or two chapters. Due to the growth in Chapter 7, which was fewer than 100 pages of the 1965 manuscript, per Vol. 4A p. vi, the plan for Volume 4 has since expanded to include Volumes 4A, 4B, 4C, 4D, and possibly more.
+
+In 1976, Knuth prepared a second edition of Volume 2, requiring it to be typeset again, but the style of type used in the first edition (called hot type) was no longer readily available. In 1977, he decided to spend some time creating something more suitable. Eight years later, he returned with TEX, which is currently used for all volumes.
+
+Another characteristic of the volumes is the variation in the difficulty of the exercises including a numerical rating varying from 0 to 50, where 0 is trivial, and 50 is an open question in contemporary research.
+
+## Bounty for finding errors
+
+The offer of a so-called Knuth reward check worth "one hexadecimal dollar" (100HEX base 16 cents, in decimal, is $2.56) for any errors found, and the correction of these errors in subsequent printings, has contributed to the highly polished and still-authoritative nature of the work, long after its first publication.
+
+## Assembly language in the book
+
+All examples in the books use a hypothetical language called "MIX assembly language" (MIXAL), which runs on "a mythical computer called 'MIX,'" which was developed to be contemporaneous with other 1960s and 1970s computers. Despite Knuth's intention to have MIX stand the test of time, he remarked in the third edition of the first volume that it had nonetheless become "quite obsolete." During the 1990s, Knuth began developing MMIX, a modern, RISC-based computer, which Knuth described as "A RISC computer for the new millennium." The conversion from MIX to MMIX was a large, multi-year project, for which Knuth solicited help from volunteers. MMIX would reach its stable release in 2011. Knuth considers the use of assembly language necessary for the speed and memory usage of algorithms to be judged.
+
+Regarding the origin of MIX, Knuth remarked it was much like any computer then in existence, "but, perhaps, nicer." The name *MIX* can be represented as 1009 in Roman numerals. Further, Knuth explains the derivation of 1009 came from taking sixteen actual computers he deemed similar to MIX and on which MIX was easily simulated. He averaged the numeric portions of their model numbers with equal weight:
+
+⌊(360 + 650 + 709 + 7070 + U3 + SS80 + 1107 + 1604 + G20 + B220 + S2000 + 920 + 601 + H800 + PDP-4 + II) / 16⌋ = 1009
+
+Software such as the GNU MIX Development Kit (MDK) exists to provide emulation of the MIX architecture.
+
+## Critical response
+
+Knuth was awarded the 1974 Turing Award "for his major contributions to the analysis of algorithms […], and in particular for his contributions to the 'art of computer programming' through his well-known books in a continuous series by this title." *American Scientist* has included this work among "100 or so Books that shaped a Century of Science", referring to the twentieth century. Covers of the third edition of Volume 1 quote Bill Gates as saying, "If you think you're a really good programmer… read (Knuth's) *Art of Computer Programming*… You should definitely send me a résumé if you can read the whole thing." *The New York Times* referred to it as "the profession's defining treatise".
+
+## Volumes
+
+### Completed
+
+- Volume 1 – Fundamental algorithms
+  - Chapter 1 – Basic concepts
+  - Chapter 2 – Information structures
+- Volume 2 – Seminumerical algorithms
+  - Chapter 3 – Random numbers
+  - Chapter 4 – Arithmetic
+- Volume 3 – Sorting and searching
+  - Chapter 5 – Sorting
+  - Chapter 6 – Searching
+- Volume 4A – Combinatorial algorithms
+  - Chapter 7 – Combinatorial searching (part 1)
+- Volume 4B – Combinatorial algorithms
+  - Chapter 7 – Combinatorial searching (part 2)
+
+### Planned
+
+- Volume 4C, 4D, ... Combinatorial algorithms (chapters 7 & 8 released in several subvolumes)
+  - Chapter 7 – Combinatorial searching (continued)
+  - Chapter 8 – Recursion
+- Volume 5 – Syntactic algorithms
+  - Chapter 9 – Lexical scanning (also includes string search and data compression)
+  - Chapter 10 – Parsing techniques
+- Volume 6 – The Theory of context-free languages
+  - Chapter 11 – Mathematical linguistics
+- Volume 7 – Compiler techniques
+  - Chapter 12 – Programming language translation
+
+## English editions
+
+### Current editions
+
+These are the current editions in order by volume number:
+
+- *The Art of Computer Programming, Volumes 1-4B Boxed Set*. (Reading, Massachusetts: Addison-Wesley, 2023), 3904pp. ISBN 978-0-13-793510-9, 0-13-793510-2
+  - *Volume 1: Fundamental Algorithms*. Third Edition (Reading, Massachusetts: Addison-Wesley, 1997), xx+650pp. ISBN 978-0-201-89683-1, 0-201-89683-4. Errata: (from 2011-01-08), (from 2022, 49th printing). Addenda: (2011).
+  - *Volume 2: Seminumerical Algorithms*. Third Edition (Reading, Massachusetts: Addison-Wesley, 1997), xiv+762pp. ISBN 978-0-201-89684-8, 0-201-89684-2. Errata: (from 2011-01-08), (from 2022, 45th printing). Addenda: (2011).
+  - *Volume 3: Sorting and Searching*. Second Edition (Reading, Massachusetts: Addison-Wesley, 1998), xiv+780pp.+foldout. ISBN 978-0-201-89685-5, 0-201-89685-0. Errata: (from 2011-01-08), (from 2022, 45th printing). Addenda: (2011).
+  - *Volume 4A: Combinatorial Algorithms, Part 1*. First Edition (Upper Saddle River, New Jersey: Addison-Wesley, 2011, 26th printing), xv+883pp. ISBN 978-0-201-03804-0, 0-201-03804-8. Errata: (from 2011), (from 2022, 20th printing).
+  - *Volume 4B: Combinatorial Algorithms, Part 2*. First Edition (Upper Saddle River, New Jersey: Addison-Wesley, 2023, 3rd printing), xviii+714pp. ISBN 978-0-201-03806-4, 0-201-03806-4. Errata: (from 2023, 1st printing).
+- *Volume 1, Fascicle 1: MMIX – A RISC Computer for the New Millennium*. (Addison-Wesley, 2005-02-14), 144pp. ISBN 0-201-85392-2. Errata: (from 2005, 1st printing) (will be in the fourth edition of volume 1)
+- *The MMIX Supplement* by Martin Ruckert. (Addison-Wesley), 193pp. ISBN 0-13-399231-4. A conversion of the MIX problems/programs in volumes 1, 2 & 3 to MMIX.
+- *Volume 4, Fascicle 7: Constraint Satisfaction*. (Addison-Wesley, 2025-02-05), xiv+281pp. ISBN 978-0-13-532824-8. Errata: (2025-12-28).
+
+### Previous editions
+
+#### Complete volumes
+
+These volumes were superseded by newer editions and are in order by date.
+
+- *Volume 1: Fundamental Algorithms*. First edition, 1968, xxi+634pp, ISBN 0-201-03801-3.
+- *Volume 2: Seminumerical Algorithms*. First edition, 1969, xi+624pp, ISBN 0-201-03802-1.
+- *Volume 3: Sorting and Searching*. First edition, 1973, xi+723pp+foldout, ISBN 0-201-03803-X. Errata: .
+- *Volume 1: Fundamental Algorithms*. Second edition, 1973, xxi+634pp, ISBN 0-201-03809-9. Errata: .
+- *Volume 2: Seminumerical Algorithms*. Second edition, 1981, xiii+ 688pp, ISBN 0-201-03822-6. Errata: .
+- *The Art of Computer Programming, Volumes 1-3 Boxed Set*. Second Edition (Reading, Massachusetts: Addison-Wesley, 1998), pp. ISBN 978-0-201-48541-7, 0-201-48541-9
+- *The Art of Computer Programming, Volumes 1-4A Boxed Set*. Third Edition (Reading, Massachusetts: Addison-Wesley, 2011), 3168pp. ISBN 978-0-321-75104-1, 0-321-75104-3
+
+#### Fascicles
+
+Volume 4, Fascicles 0–4 were revised and published as Volume 4A.
+
+- *Volume 4, Fascicle 0: Introduction to Combinatorial Algorithms and Boolean Functions*. (Addison-Wesley Professional, 2008-04-28) vi+240pp, ISBN 0-321-53496-4. Errata: (2011-01-01).
+- *Volume 4, Fascicle 1: Bitwise Tricks & Techniques; Binary Decision Diagrams*. (Addison-Wesley Professional, 2009-03-27) viii+260pp, ISBN 0-321-58050-8. Errata: (2011-01-01).
+- *Volume 4, Fascicle 2: Generating All Tuples and Permutations*. (Addison-Wesley, 2005-02-14) v+127pp, ISBN 0-201-85393-0. Errata: (2011-01-01).
+- *Volume 4, Fascicle 3: Generating All Combinations and Partitions*. (Addison-Wesley, 2005-07-26) vi+150pp, ISBN 0-201-85394-9. Errata: (2011-01-01).
+- *Volume 4, Fascicle 4: Generating All Trees; History of Combinatorial Generation*. (Addison-Wesley, 2006-02-06) vi+120pp, ISBN 0-321-33570-8. Errata: (2011-01-01).
+
+Volume 4, Fascicles 5–6 were revised and published as Volume 4B.
+
+- *Volume 4, Fascicle 5: Mathematical Preliminaries Redux; Backtracking; Dancing Links*. (Addison-Wesley, 2019-11-22) xiii+382pp, ISBN 978-0-13-467179-6. Errata: (2020-03-27)
+- *Volume 4, Fascicle 6: Satisfiability*. (Addison-Wesley, 2015-12-08) xiii+310pp, ISBN 978-0-13-439760-3. Errata: (2020-03-26)
+
+#### Pre-fascicles
+
+Pre-fascicles contain draft of evolving material for future Fascicles. They are put online primarily so that experts in the field can check the contents before distributing them to a wider audience.
+
+Volume 1
+
+- Pre-fascicle 1: MMIX was revised and published as Volume 1, fascicle 1.
+
+Volume 4
+
+- Pre-fascicles 0A: Introduction to Combinatorial Searching, 0B: Boolean Basics, and 0C: Boolean Evaluation were revised and published as Volume 4, fascicle 0.
+- Pre-fascicles 1A: Bitwise Tricks and Techniques and 1B: Binary Decision Diagrams were revised and published as Volume 4, fascicle 1.
+- Pre-fascicles 2A: Generating All n-Tuples and 2B: Generating All Permutations were revised and published as Volume 4, fascicle 2.
+- Pre-fascicles 3A: Generating All Combinations and 3B: Generating All Partitions were revised and published as Volume 4, fascicle 3.
+- Pre-fascicles 4A: Generating All Trees and 4B: History of Combinatorial Generation were revised and published as Volume 4, fascicle 4.
+- Pre-fascicles 5A: Preliminaries Redux, 5B: Introduction to Backtracking, and 5C: Dancing Links were revised and published as Volume 4, fascicle 5.
+- Pre-fascicle 6A: Satisfiability was revised and published as Volume 4, fascicle 6.
+- Pre-fascicle 7A: Constraint Satisfaction was revised and published as Volume 4, fascicle 7.
+
+The remaining pre-fascicles contain draft material that is set to appear in future fascicles and volumes.
+
+- *Volume 4, Pre-fascicle 8A: Hamiltonian Paths and Cycles (PDF unmantained Version)*
+- *Volume 4, Pre-fascicle 8B: Cliques*
+- *Volume 4, Pre-fascicle 9B: A Potpourri of Puzzles*
+- *Volume 4, Pre-fascicle 9C: Estimating Backtrack Costs*
+- *Volume 4, Pre-fascicle 12A: Components and Traversal (PDF unmantained Version)*
+- *Volume 4, Pre-fascicle 14A: Bipartite Matching*
+- *Volume 4, Pre-fascicle 16A: Introduction to Recursion*

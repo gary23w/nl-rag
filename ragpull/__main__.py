@@ -146,7 +146,34 @@ def main():
     p.add_argument("domains", nargs="*")
     args = ap.parse_args()
     fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index}[args.cmd]
-    sys.exit(fn(args) or 0)
+
+    # utf-8 stdout everywhere (redirected output on Windows defaults to cp1252 and a single
+    # page title can crash the whole run); big-stack worker thread because the normalizer
+    # recurses to DOM depth and a raised recursionlimit past the native stack is a silent
+    # process kill, not a Python exception
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    import threading
+
+    rc: list[int] = [0]
+
+    def run():
+        try:
+            rc[0] = fn(args) or 0
+        except SystemExit as e:
+            rc[0] = int(e.code or 0)
+        except BaseException:
+            import traceback
+
+            traceback.print_exc()
+            rc[0] = 70  # a thread death must NOT read as success
+
+    threading.stack_size(64 << 20)
+    t = threading.Thread(target=run)
+    t.start()
+    t.join()
+    sys.exit(rc[0])
 
 
 if __name__ == "__main__":

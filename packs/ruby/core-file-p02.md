@@ -668,7 +668,17 @@ click to toggle source
 
 Returns true if `path` matches against `pattern`. The pattern is not a regular expression; instead it follows rules similar to shell filename globbing. It may contain the following metacharacters:
 
-**`*` Matches any file. Can be restricted by other values in the glob. Equivalent to `/.*/x` in regexp. `*` Matches all regular files `c*` Matches all files beginning with `c` `*c` Matches all files ending with `c` `*c*` Matches all files that have `c` in them (including at the beginning or end). To match hidden files (that start with a `.`) set the File::FNM_DOTMATCH flag. `**` Matches directories recursively or files expansively. `?` Matches any one character. Equivalent to `/.{1}/` in regexp. `[set]` Matches any one character in `set`. Behaves exactly like character sets in `Regexp`, including set negation (`[^a-z]`). `\` Escapes the next metacharacter. `{a,b}` Matches pattern a and pattern b if File::FNM_EXTGLOB flag is enabled. Behaves like a `Regexp` union (`(?:a|b)`).**
+**`*` Matches any file. Can be restricted by other values in the glob. Equivalent to `/.*/x` in regexp. `*` Matches all regular files `c*` Matches all files beginning with `c` `*c` Matches all files ending with `c` `*c*` Matches all files that have `c` in them (including at the beginning or end). To match hidden files (that start with a `.`) set the File::FNM_DOTMATCH flag.**
+
+**`**` Matches directories recursively or files expansively.**
+
+**`?` Matches any one character. Equivalent to `/.{1}/` in regexp.**
+
+**`[set]` Matches any one character in `set`. Behaves exactly like character sets in `Regexp`, including set negation (`[^a-z]`).**
+
+**`\` Escapes the next metacharacter.**
+
+**`{a,b}` Matches pattern a and pattern b if File::FNM_EXTGLOB flag is enabled. Behaves like a `Regexp` union (`(?:a|b)`).**
 
 `flags` is a bitwise OR of the `FNM_XXX` constants. The same glob pattern and flags are used by `Dir::glob`.
 
@@ -1014,9 +1024,3 @@ rb_file_s_mtime(VALUE klass, VALUE fname)
 new(path, mode = 'r', perm = 0666, **opts) → file
 
 click to toggle source
-
-Opens the file at the given `path` according to the given `mode`; creates and returns a new `File` object for that file.
-
-The new `File` object is buffered mode (or non-sync mode), unless `filename` is a tty. See `IO#flush`, `IO#fsync`, `IO#fdatasync`, and `IO#sync=`.
-
-Argument `path` must be a valid file path:

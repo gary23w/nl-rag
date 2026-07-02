@@ -300,6 +300,7 @@
 [src:sql-sqlite/lang-aggfunc] Total() never throws an integer overflow.
 [src:sql-sqlite/lang-aggfunc] When summing floating-point values, if the magnitudes of the values differ wildly then the resulting sum might be imprecise due to the fact that IEEE 754 floating point values are approximations.
 [src:sql-sqlite/lang-aggfunc] Use the decimal_sum(X) aggregate in the decimal extension to obtain an exact summation of floating point numbers.
+[src:sql-sqlite/lang-aggfunc] The large values ±1.55e+308 cancel each other out, but the cancellation does not occur until the end of the sum and in the meantime the large +1.55e+308 swamps the tiny 3.2e-16 value.
 [src:sql-sqlite/lang-aggfunc] The end result is an imprecise result for the sum().
 [src:sql-sqlite/lang-aggfunc] The decimal_sum() aggregate generates an exact answer, at the cost of additional CPU and memory usage.
 [src:sql-sqlite/lang-aggfunc] Note also that decimal_sum() is not built into the SQLite core; it is a loadable extension.
@@ -666,8 +667,8 @@
 [src:sql-sqlite/lang-expr] Standard SQL does not support the compact IS and IS NOT notation.
 [src:sql-sqlite/lang-expr] Those compact forms are an SQLite extension.
 [src:sql-sqlite/lang-expr] You must use the less readable IS NOT DISTINCT FROM and IS DISTINCT FROM operators in most other SQL database engines.
-[src:sql-sqlite/lang-expr] Literal Values (Constants) A literal value represents a constant.
 [src:sql-sqlite/lang-expr] Literal values may be integers, floating point numbers, strings, BLOBs, or NULLs.
+[src:sql-sqlite/lang-expr] If a numeric literal has a decimal point or an exponentiation clause or if it is less than -9223372036854775808 or greater than 9223372036854775807, then it is a floating point literal.
 [src:sql-sqlite/lang-expr] The "E" character that begins the exponentiation clause of a floating point literal can be either upper or lower case.
 [src:sql-sqlite/lang-expr] The "." character is always used as the decimal point even if the locale setting specifies "," for this role - the use of "," for the decimal point would result in syntactic ambiguity.
 [src:sql-sqlite/lang-expr] Beginning in SQLite version 3.46.0 (2024-05-23), a single extra underscore ("_") character can be added between any two digits.
@@ -682,29 +683,13 @@
 [src:sql-sqlite/lang-expr] A single quote within the string can be encoded by putting two single quotes in a row - as in Pascal.
 [src:sql-sqlite/lang-expr] C-style escapes using the backslash character are not supported because they are not standard SQL.
 [src:sql-sqlite/lang-expr] BLOB literals are string literals containing hexadecimal data and preceded by a single "x" or "X" character.
-[src:sql-sqlite/lang-expr] Example: X'53514C697465' A literal value can also be the token "NULL".
-[src:sql-sqlite/lang-expr] Parameters A "variable" or "parameter" token specifies a placeholder in the expression for a value that is filled in at runtime using the sqlite3_bind() family of C/C++ interfaces.
-[src:sql-sqlite/lang-expr] Parameters can take several forms: **?***NNN* A question mark followed by a number *NNN* holds a spot for the NNN-th parameter.
-[src:sql-sqlite/lang-expr] NNN must be between 1 and SQLITE_MAX_VARIABLE_NUMBER.
-[src:sql-sqlite/lang-expr] **?** A question mark that is not followed by a number creates a parameter with a number one greater than the largest parameter number already assigned.
-[src:sql-sqlite/lang-expr] If this means the parameter number is greater than SQLITE_MAX_VARIABLE_NUMBER, it is an error.
-[src:sql-sqlite/lang-expr] This parameter format is provided for compatibility with other database engines.
-[src:sql-sqlite/lang-expr] But because it is easy to miscount the question marks, the use of this parameter format is discouraged.
-[src:sql-sqlite/lang-expr] Programmers are encouraged to use one of the symbolic formats below or the ?NNN format above instead.
-[src:sql-sqlite/lang-expr] **:***AAAA* A colon followed by an identifier name holds a spot for a named parameter with the name :AAAA.
-[src:sql-sqlite/lang-expr] The number assigned is one greater than the largest parameter number already assigned.
-[src:sql-sqlite/lang-expr] If this means the parameter would be assigned a number greater than SQLITE_MAX_VARIABLE_NUMBER, it is an error.
-[src:sql-sqlite/lang-expr] To avoid confusion, it is best to avoid mixing named and numbered parameters.
-[src:sql-sqlite/lang-expr] **@***AAAA* An "at" sign works exactly like a colon, except that the name of the parameter created is @AAAA.
-[src:sql-sqlite/lang-expr] **$***AAAA* A dollar-sign followed by an identifier name also holds a spot for a named parameter with the name $AAAA.
-[src:sql-sqlite/lang-expr] The identifier name in this case can include one or more occurrences of "::" and a suffix enclosed in "(...)" containing any text without whitespace.
-[src:sql-sqlite/lang-expr] This syntax is the form of a variable name in the Tcl programming language.
-[src:sql-sqlite/lang-expr] The presence of this syntax results from the fact that SQLite is really a Tcl extension that has escaped into the wild.
+[src:sql-sqlite/lang-expr] A literal value can also be the token "NULL".
+[src:sql-sqlite/lang-expr] A "variable" or "parameter" token specifies a placeholder in the expression for a value that is filled in at runtime using the sqlite3_bind() family of C/C++ interfaces.
 [src:sql-sqlite/lang-expr] Parameters that are not assigned values using sqlite3_bind() are treated as NULL.
 [src:sql-sqlite/lang-expr] The sqlite3_bind_parameter_index() interface can be used to translate a symbolic parameter name into its equivalent numeric index.
 [src:sql-sqlite/lang-expr] The maximum parameter number is set at compile-time by the SQLITE_MAX_VARIABLE_NUMBER macro.
 [src:sql-sqlite/lang-expr] An individual database connection D can reduce its maximum parameter number below the compile-time maximum using the sqlite3_limit(D, SQLITE_LIMIT_VARIABLE_NUMBER,...) interface.
-[src:sql-sqlite/lang-expr] The LIKE, GLOB, REGEXP, MATCH, and extract operators The LIKE operator does a pattern matching comparison.
+[src:sql-sqlite/lang-expr] The LIKE operator does a pattern matching comparison.
 [src:sql-sqlite/lang-expr] The operand to the right of the LIKE operator contains the pattern and the left hand operand contains the string to match against the pattern.
 [src:sql-sqlite/lang-expr] A percent symbol ("%") in the LIKE pattern matches any sequence of zero or more characters in the string.
 [src:sql-sqlite/lang-expr] An underscore ("_") in the LIKE pattern matches any single character in the string.
@@ -730,8 +715,8 @@
 [src:sql-sqlite/lang-expr] But extensions can override the match() function with more helpful logic.
 [src:sql-sqlite/lang-expr] The extract operators act as a special syntax for functions "->"() and "->>"().
 [src:sql-sqlite/lang-expr] Default implementations for these functions perform JSON subcomponent extraction, but extensions can override them for other purposes.
-[src:sql-sqlite/lang-expr] The BETWEEN operator The BETWEEN operator is logically equivalent to a pair of comparisons.
-[src:sql-sqlite/lang-expr] The CASE expression A CASE expression serves a role similar to IF-THEN-ELSE in other programming languages.
+[src:sql-sqlite/lang-expr] The BETWEEN operator is logically equivalent to a pair of comparisons.
+[src:sql-sqlite/lang-expr] A CASE expression serves a role similar to IF-THEN-ELSE in other programming languages.
 [src:sql-sqlite/lang-expr] The optional expression that occurs in between the CASE keyword and the first WHEN keyword is called the "base" expression.
 [src:sql-sqlite/lang-expr] There are two fundamental forms of the CASE expression: those with a base expression and those without.
 [src:sql-sqlite/lang-expr] In a CASE without a base expression, each WHEN expression is evaluated and the result treated as a boolean, starting with the leftmost and continuing to the right.
@@ -746,60 +731,40 @@
 [src:sql-sqlite/lang-expr] When comparing a base expression against a WHEN expression, the same collating sequence, affinity, and NULL-handling rules apply as if the base expression and WHEN expression are respectively the left- and right-hand operands of an **=** operator.
 [src:sql-sqlite/lang-expr] If the base expression is NULL then the result of the CASE is always the result of evaluating the ELSE expression if it exists, or NULL if it does not.
 [src:sql-sqlite/lang-expr] Both forms of the CASE expression use lazy, or short-circuit, evaluation.
+[src:sql-sqlite/lang-expr] The built-in iif(x,y,z) SQL function is logically equivalent to "CASE WHEN x THEN y ELSE z END".
 [src:sql-sqlite/lang-expr] The iif() function is found in SQL Server and is included in SQLite for compatibility.
 [src:sql-sqlite/lang-expr] Some developers prefer the iif() function because it is more concise.
-[src:sql-sqlite/lang-expr] The IN and NOT IN operators The IN and NOT IN operators take an expression on the left and a list of values or a subquery on the right.
+[src:sql-sqlite/lang-expr] The IN and NOT IN operators take an expression on the left and a list of values or a subquery on the right.
 [src:sql-sqlite/lang-expr] When the right operand of an IN or NOT IN operator is a subquery, the subquery must have the same number of columns as there are columns in the row value of the left operand.
 [src:sql-sqlite/lang-expr] The subquery on the right of an IN or NOT IN operator must be a scalar subquery if the left expression is not a row value expression.
 [src:sql-sqlite/lang-expr] If the right operand of an IN or NOT IN operator is a list of values, each of those values must be scalars and the left expression must also be a scalar.
 [src:sql-sqlite/lang-expr] The right-hand side of an IN or NOT IN operator can be a table *name* or table-valued function *name* in which case the right-hand side is understood to be a subquery of the form "(SELECT * FROM *name*)".
 [src:sql-sqlite/lang-expr] When the right operand is an empty set, the result of IN is false and the result of NOT IN is true, regardless of the left operand and even if the left operand is NULL.
-[src:sql-sqlite/lang-expr] Table Column Names A column name can be any of the names defined in the CREATE TABLE statement or one of the following special identifiers: "**ROWID**", "**OID**", or "**_ROWID_**".
+[src:sql-sqlite/lang-expr] Note that SQLite allows the parenthesized list of scalar values on the right-hand side of an IN or NOT IN operator to be an empty list but most other SQL database engines and the SQL92 standard require the list to contain at least one element.
+[src:sql-sqlite/lang-expr] A column name can be any of the names defined in the CREATE TABLE statement or one of the following special identifiers: "**ROWID**", "**OID**", or "**_ROWID_**".
 [src:sql-sqlite/lang-expr] The three special identifiers describe the unique integer key (the rowid) associated with every row of every table and so are not available on WITHOUT ROWID tables.
 [src:sql-sqlite/lang-expr] The special identifiers only refer to the row key if the CREATE TABLE statement does not define a real column with the same name.
 [src:sql-sqlite/lang-expr] The rowid can be used anywhere a regular column can be used.
-[src:sql-sqlite/lang-expr] The EXISTS operator The EXISTS operator always evaluates to one of the integer values 0 and 1.
+[src:sql-sqlite/lang-expr] The EXISTS operator always evaluates to one of the integer values 0 and 1.
 [src:sql-sqlite/lang-expr] If executing the SELECT statement specified as the right-hand operand of the EXISTS operator would return one or more rows, then the EXISTS operator evaluates to 1.
 [src:sql-sqlite/lang-expr] If executing the SELECT would return no rows at all, then the EXISTS operator evaluates to 0.
 [src:sql-sqlite/lang-expr] The number of columns in each row returned by the SELECT statement (if any) and the specific values returned have no effect on the results of the EXISTS operator.
 [src:sql-sqlite/lang-expr] In particular, rows containing NULL values are not handled any differently from rows without NULL values.
-[src:sql-sqlite/lang-expr] Subquery Expressions A SELECT statement enclosed in parentheses is a subquery.
+[src:sql-sqlite/lang-expr] A SELECT statement enclosed in parentheses is a subquery.
 [src:sql-sqlite/lang-expr] All types of SELECT statement, including aggregate and compound SELECT queries (queries with keywords like UNION or EXCEPT) are allowed as scalar subqueries.
 [src:sql-sqlite/lang-expr] The value of a subquery expression is the first row of the result from the enclosed SELECT statement.
 [src:sql-sqlite/lang-expr] The value of a subquery expression is NULL if the enclosed SELECT statement returns no rows.
 [src:sql-sqlite/lang-expr] A subquery that returns a single column is a scalar subquery and can be used most anywhere.
 [src:sql-sqlite/lang-expr] A subquery that returns two or more columns is a row value subquery and can only be used as an operand of a comparison operator or as the value in an UPDATE SET clause whose column name list has the same size.
-[src:sql-sqlite/lang-expr] Correlated Subqueries A SELECT statement used as either a scalar subquery or as the right-hand operand of an IN, NOT IN or EXISTS expression may contain references to columns in the outer query.
+[src:sql-sqlite/lang-expr] A SELECT statement used as either a scalar subquery or as the right-hand operand of an IN, NOT IN or EXISTS expression may contain references to columns in the outer query.
 [src:sql-sqlite/lang-expr] Such a subquery is known as a correlated subquery.
 [src:sql-sqlite/lang-expr] A correlated subquery is reevaluated each time its result is required.
 [src:sql-sqlite/lang-expr] An uncorrelated subquery is evaluated only once and the result reused as necessary.
-[src:sql-sqlite/lang-expr] CAST expressions A CAST expression of the form "CAST(*expr* AS *type-name*)" is used to convert the value of *expr* to a different storage class specified by type-name.
+[src:sql-sqlite/lang-expr] A CAST expression of the form "CAST(*expr* AS *type-name*)" is used to convert the value of *expr* to a different storage class specified by type-name.
 [src:sql-sqlite/lang-expr] If the value of *expr* is NULL, then the result of the CAST expression is also NULL.
 [src:sql-sqlite/lang-expr] Otherwise, the storage class of the result is determined by applying the rules for determining column affinity to the type-name.
-[src:sql-sqlite/lang-expr] Affinity of type-name Conversion Processing NONE Casting a value to a type-name with no affinity causes the value to be converted into a BLOB.
-[src:sql-sqlite/lang-expr] Casting to a BLOB consists of first casting the value to TEXT in the encoding of the database connection, then interpreting the resulting byte sequence as a BLOB instead of as TEXT.
-[src:sql-sqlite/lang-expr] TEXT To cast a BLOB value to TEXT, the sequence of bytes that make up the BLOB is interpreted as text encoded using the database encoding.
-[src:sql-sqlite/lang-expr] Casting an INTEGER or REAL value into TEXT renders the value as if via sqlite3_snprintf() except that the resulting TEXT uses the encoding of the database connection.
-[src:sql-sqlite/lang-expr] REAL When casting a BLOB value to a REAL, the value is first converted to TEXT.
-[src:sql-sqlite/lang-expr] When casting a TEXT value to REAL, the longest possible prefix of the value that can be interpreted as a real number is extracted from the TEXT value and the remainder ignored.
-[src:sql-sqlite/lang-expr] Any leading spaces in the TEXT value are ignored when converting from TEXT to REAL.
-[src:sql-sqlite/lang-expr] If there is no prefix that can be interpreted as a real number, the result of the conversion is 0.0.
-[src:sql-sqlite/lang-expr] INTEGER When casting a BLOB value to INTEGER, the value is first converted to TEXT.
-[src:sql-sqlite/lang-expr] When casting a TEXT value to INTEGER, the longest possible prefix of the value that can be interpreted as an integer number is extracted from the TEXT value and the remainder ignored.
-[src:sql-sqlite/lang-expr] Any leading spaces in the TEXT value when converting from TEXT to INTEGER are ignored.
-[src:sql-sqlite/lang-expr] If there is no prefix that can be interpreted as an integer number, the result of the conversion is 0.
-[src:sql-sqlite/lang-expr] When casting to INTEGER, if the text looks like a floating point value with an exponent, the exponent will be ignored because it is no part of the integer prefix.
-[src:sql-sqlite/lang-expr] The CAST operator understands decimal integers only — conversion of hexadecimal integers stops at the "x" in the "0x" prefix of the hexadecimal integer string and thus result of the CAST is always zero.
-[src:sql-sqlite/lang-expr] A cast of a REAL value into an INTEGER results in the integer between the REAL value and zero that is closest to the REAL value.
-[src:sql-sqlite/lang-expr] If a REAL is greater than the greatest possible signed integer (+9223372036854775807) then the result is the greatest possible signed integer and if the REAL is less than the least possible signed integer (-9223372036854775808) then the result is the least possible signed integer.
-[src:sql-sqlite/lang-expr] This behavior was meant to emulate the behavior of x86/x64 hardware when doing the equivalent cast.
-[src:sql-sqlite/lang-expr] NUMERIC Casting a TEXT or BLOB value into NUMERIC yields either an INTEGER or a REAL result.
-[src:sql-sqlite/lang-expr] If the input text looks like an integer (there is no decimal point nor exponent) and the value is small enough to fit in a 64-bit signed integer, then the result will be INTEGER.
-[src:sql-sqlite/lang-expr] Input text that looks like floating point (there is a decimal point and/or an exponent) and the text describes a value that can be losslessly converted back and forth between IEEE 754 64-bit float and a 51-bit signed integer, then the result is INTEGER.
-[src:sql-sqlite/lang-expr] Casting a REAL or INTEGER value to NUMERIC is a no-op, even if a real value could be losslessly converted to an integer.
 [src:sql-sqlite/lang-expr] Note that the result from casting any non-BLOB value into a BLOB and the result from casting any BLOB value into a non-BLOB value may be different depending on whether the database encoding is UTF-8, UTF-16be, or UTF-16le.
-[src:sql-sqlite/lang-expr] Boolean Expressions The SQL language features several contexts where an expression is evaluated and the result converted to a boolean (true or false) value.
-[src:sql-sqlite/lang-expr] These contexts are: the WHERE clause of a SELECT, UPDATE or DELETE statement, the ON or USING clause of a join in a SELECT statement, the HAVING clause of a SELECT statement, the WHEN clause of an SQL trigger, and the WHEN clause or clauses of some CASE expressions.
+[src:sql-sqlite/lang-expr] The SQL language features several contexts where an expression is evaluated and the result converted to a boolean (true or false) value.
 [src:sql-sqlite/lang-expr] To convert the results of an SQL expression to a boolean value, SQLite first casts the result to a NUMERIC value in the same way as a CAST expression.
 [src:sql-sqlite/lang-expr] A numeric zero value (integer value 0 or real value 0.0) is considered to be false.
 [src:sql-sqlite/lang-expr] For example, the values NULL, 0.0, 0, 'english' and '0' are all considered to be false.
@@ -808,13 +773,13 @@
 [src:sql-sqlite/lang-expr] If there already exists columns or tables or other objects named TRUE or FALSE, then for the sake of backwards compatibility, the TRUE and FALSE identifiers refer to those other objects, not to the boolean values.
 [src:sql-sqlite/lang-expr] The boolean identifiers TRUE and FALSE are usually just aliases for the integer values 1 and 0, respectively.
 [src:sql-sqlite/lang-expr] However, if TRUE or FALSE occur on the right-hand side of an IS operator, then the IS operator evaluates the left-hand operand as a boolean value and returns an appropriate answer.
-[src:sql-sqlite/lang-expr] Functions SQLite supports many simple, aggregate, and window SQL functions.
+[src:sql-sqlite/lang-expr] SQLite supports many simple, aggregate, and window SQL functions.
 [src:sql-sqlite/lang-expr] For presentation purposes, simple functions are further subdivided into core functions, date-time functions, math functions, and JSON functions.
 [src:sql-sqlite/lang-expr] Applications can add new functions, written in C/C++, using the sqlite3_create_function() interface.
 [src:sql-sqlite/lang-expr] The main expression bubble diagram above shows a single syntax for all function invocations.
 [src:sql-sqlite/lang-expr] But this is merely to simplify the expression bubble diagram.
 [src:sql-sqlite/lang-expr] In reality, each type of function has a slightly different syntax, shown below.
-[src:sql-sqlite/lang-expr] The function invocation syntax shown in the main expression bubble diagram is the union of the three syntaxes shown here: **simple-function-invocation:** **aggregate-function-invocation:** **window-function-invocation:** The OVER clause is required for window functions and is prohibited otherwise.
+[src:sql-sqlite/lang-expr] The OVER clause is required for window functions and is prohibited otherwise.
 [src:sql-sqlite/lang-expr] The DISTINCT keyword and the ORDER BY clause is only allowed in aggregate functions.
 [src:sql-sqlite/lang-expr] The FILTER clause may not appear on a simple function.
 [src:sql-sqlite/lang-expr] It is possible to have an aggregate function with the same name as a simple function, as long as the number of arguments for the two forms of the function are different.
@@ -1200,3 +1165,38 @@
 [src:sql-sqlite/queryplanner] A multi-column index follows the same pattern as a single-column index; the indexed columns are added in front of the rowid.
 [src:sql-sqlite/queryplanner] The only difference is that now multiple columns are added.
 [src:sql-sqlite/queryplanner] The left-most column is the primary key used for ordering the rows in the index.
+[src:sql-sqlite/queryplanner] The second column is used to break ties in the left-most column.
+[src:sql-sqlite/queryplanner] If there were a third column, it would be used to break ties for the first two columns.
+[src:sql-sqlite/queryplanner] And so forth for all columns in the index.
+[src:sql-sqlite/queryplanner] Because rowid is guaranteed to be unique, every row of the index will be unique even if all of the content columns for two rows are the same.
+[src:sql-sqlite/queryplanner] That case does not happen in our sample data, but there is one case (fruit='Orange') where there is a tie on the first column which must be broken by the second column.
+[src:sql-sqlite/queryplanner] With the Idx3 index on both columns that are constrained by the WHERE clause, SQLite can do a single binary search against Idx3 to find the one rowid for California oranges, then do a single binary search to find the price for that item in the original table.
+[src:sql-sqlite/queryplanner] There are no dead-ends and no wasted binary searches.
+[src:sql-sqlite/queryplanner] Note that Idx3 contains all the same information as the original Idx1.
+[src:sql-sqlite/queryplanner] And so if we have Idx3, we do not really need Idx1 any more.
+[src:sql-sqlite/queryplanner] Hence, a good rule of thumb is that your database schema should never contain two indices where one index is a prefix of the other.
+[src:sql-sqlite/queryplanner] SQLite will still be able to do efficient lookups with the longer index.
+[src:sql-sqlite/queryplanner] The "price of California oranges" query was made more efficient through the use of a two-column index.
+[src:sql-sqlite/queryplanner] This new index contains all the columns of the original FruitsForSale table that are used by the query - both the search terms and the output.
+[src:sql-sqlite/queryplanner] Because all of the information needed is in the covering index, SQLite never needs to consult the original table in order to find the price.
+[src:sql-sqlite/queryplanner] Hence, by adding extra "output" columns onto the end of an index, one can avoid having to reference the original table and thereby cut the number of binary searches for a query in half.
+[src:sql-sqlite/queryplanner] This is a constant-factor improvement in performance (roughly a doubling of the speed).
+[src:sql-sqlite/queryplanner] But on the other hand, it is also just a refinement; A two-fold performance increase is not nearly as dramatic as the one-million-fold increase seen when the table was first indexed.
+[src:sql-sqlite/queryplanner] And for most queries, the difference between 1 microsecond and 2 microseconds is unlikely to be noticed.
+[src:sql-sqlite/queryplanner] Multi-column indices only work if the constraint terms in the WHERE clause of the query are connected by AND.
+[src:sql-sqlite/queryplanner] So Idx3 and Idx4 are helpful when the search is for items that are both Oranges and grown in California, but neither index would be that useful if we wanted all items that were either oranges *or* are grown in California.
+[src:sql-sqlite/queryplanner] When confronted with OR-connected terms in a WHERE clause, SQLite examines each OR term separately and tries to use an index to find the rowids associated with each term.
+[src:sql-sqlite/queryplanner] It then takes the union of the resulting rowid sets to find the end result.
+[src:sql-sqlite/queryplanner] The diagram above implies that SQLite computes all of the rowids first and then combines them with a union operation before starting to do rowid lookups on the original table.
+[src:sql-sqlite/queryplanner] In reality, the rowid lookups are interspersed with rowid computations.
+[src:sql-sqlite/queryplanner] SQLite uses one index at a time to find rowids while remembering which rowids it has seen before so as to avoid duplicates.
+[src:sql-sqlite/queryplanner] That is just an implementation detail, though.
+[src:sql-sqlite/queryplanner] The diagram, while not 100% accurate, provides a good overview of what is happening.
+[src:sql-sqlite/queryplanner] In order for the OR-by-UNION technique shown above to be useful, there must be an index available that helps resolve every OR-connected term in the WHERE clause.
+[src:sql-sqlite/queryplanner] One can see how the OR-by-UNION technique could also be leveraged to use multiple indices on queries where the WHERE clause has terms connected by AND, by using an intersect operator in place of union.
+[src:sql-sqlite/queryplanner] Many SQL database engines will do just that.
+[src:sql-sqlite/queryplanner] But the performance gain over using just a single index is slight and so SQLite does not implement that technique at this time.
+[src:sql-sqlite/queryplanner] However, a future version SQLite might be enhanced to support AND-by-INTERSECT.
+[src:sql-sqlite/queryplanner] SQLite (like all other SQL database engines) can also use indices to satisfy the ORDER BY clauses in a query, in addition to expediting lookup.
+[src:sql-sqlite/queryplanner] In other words, indices can be used to speed up sorting as well as searching.
+[src:sql-sqlite/queryplanner] When no appropriate indices are available, a query with an ORDER BY clause must be sorted as a separate step.

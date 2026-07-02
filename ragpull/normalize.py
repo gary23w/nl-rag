@@ -34,7 +34,8 @@ class Node:
 
     def __init__(self, tag, attrs=None, parent=None):
         self.tag = tag
-        self.attrs = dict(attrs or [])
+        # a valueless attribute (<div class>) parses as None — normalize so consumers can .lower()
+        self.attrs = {k: (v if v is not None else "") for k, v in (attrs or [])}
         self.children = []
         self.parent = parent
 
@@ -63,6 +64,10 @@ class TreeBuilder(HTMLParser):
         self.title = ""
         self._in_title = False
 
+    # HTML5 implicit end tags: a new <p> closes an open <p>, <li> closes <li>, etc. Without
+    # this, legacy no-close-tag HTML (the Lua manual) nests thousands deep and blows recursion.
+    _AUTOCLOSE = {"p", "li", "td", "th", "tr", "dd", "dt", "option"}
+
     def handle_starttag(self, tag, attrs):
         if tag == "title" and not self.title:
             self._in_title = True
@@ -75,6 +80,8 @@ class TreeBuilder(HTMLParser):
                 self.kill_depth = 1
                 self.kill_tag = tag
             return
+        if tag in self._AUTOCLOSE and self.cur.tag == tag:
+            self.cur = self.cur.parent
         node = Node(tag, attrs, self.cur)
         self.cur.children.append(node)
         if tag not in VOID:
@@ -115,32 +122,42 @@ CONTENT_CLASSES = ("markdown-body", "md-content", "body", "document", "article-c
 
 
 def _find_content_root(root: Node) -> Node:
-    by_tag = {"main": None, "article": None, "body": None}
-    by_id = None
-    by_class = None
+    """Tiered candidate search; within a tier the DENSEST candidate wins (a site can carry a
+    decorative div.content next to the real container), and a tier only wins with >=400 chars
+    of text (else fall through — an empty <main> must not mask the body)."""
+    tiers: dict[str, list[Node]] = {"main": [], "article": [], "id": [], "class": [], "body": []}
     stack = [root]
     while stack:
         n = stack.pop()
         if isinstance(n, str):
             continue
-        if n.tag in by_tag and by_tag[n.tag] is None:
-            by_tag[n.tag] = n
-        if n.attrs.get("role", "") == "main" and by_id is None:
-            by_id = n
-        nid = n.attrs.get("id", "").lower()
-        if nid in CONTENT_IDS and by_id is None:
-            by_id = n
-        if by_class is None:
-            classes = n.attrs.get("class", "").lower().split()
-            for c in CONTENT_CLASSES:
-                if c in classes:
-                    by_class = n
-                    break
+        if n.tag in ("main", "article", "body"):
+            tiers[n.tag].append(n)
+        if n.attrs.get("role", "") == "main" or n.attrs.get("id", "").lower() in CONTENT_IDS:
+            tiers["id"].append(n)
+        cls = n.attrs.get("class", "").lower()
+        classes = cls.split()
+        # exact token match for the generic names, substring for "content" (sites prefix it:
+        # clj-content-container, td-content, post-content...); densest candidate wins the tier
+        if any(c in classes for c in CONTENT_CLASSES) or ("content" in cls and n.tag in ("div", "section", "td")):
+            tiers["class"].append(n)
         stack.extend(n.children)
-    return by_tag["main"] or by_tag["article"] or by_id or by_class or by_tag["body"] or root
+    page_len = max((len(n.text()) for n in tiers["body"]), default=len(root.text()))
+    for tier in ("main", "article", "id", "class", "body"):
+        cands = tiers[tier]
+        if not cands:
+            continue
+        best = max(cands, key=lambda n: len(n.text()))
+        # DOMINANCE: the winner must hold a real share of the page, or it's a decorative
+        # wrapper (the GNU manuals' div.region-contents TOC is 0.9% of the page) — fall through
+        if len(best.text()) >= max(400, 0.2 * page_len):
+            return best
+    return tiers["body"][0] if tiers["body"] else root
 
 
-def _prune(node: Node):
+def _prune(node: Node, root_len: int = 0):
+    if not root_len:
+        root_len = len(node.text())
     kept = []
     for c in node.children:
         if isinstance(c, str):
@@ -148,12 +165,15 @@ def _prune(node: Node):
             continue
         ci = c.cls_id()
         if ci and JUNK_RE.search(ci):
-            continue
+            # a junk-NAMED node holding most of the page is a WRAPPER around the article
+            # (scala-lang wraps the book body in div.content-nav) — recurse, don't drop
+            if len(c.text()) <= 0.5 * max(root_len, 1):
+                continue
         if c.tag == "sup" and "reference" in c.attrs.get("class", ""):
             continue  # wikipedia [n] citation markers
         if c.tag == "span" and "mw-cite-backlink" in ci:
             continue
-        _prune(c)
+        _prune(c, root_len)
         kept.append(c)
     node.children = kept
 
@@ -164,10 +184,30 @@ class Renderer:
         self.drop_section_level = 0  # >0: currently inside a dropped wikipedia-style section
 
     # ---- inline -------------------------------------------------------------
+    @staticmethod
+    def _tex_annotation(node):
+        """MathML carries the source TeX in <annotation>; one $TeX$ beats the triple
+        rendering (spaced mrow text + {\\displaystyle ...} annotation + img alt)."""
+        stack = [node]
+        while stack:
+            n = stack.pop()
+            if isinstance(n, str):
+                continue
+            if n.tag == "annotation":
+                tex = " ".join(n.text().split())
+                m = re.match(r"^\{\\displaystyle\s*(.*)\}$", tex)
+                return (m.group(1) if m else tex).strip()
+            stack.extend(n.children)
+        return ""
+
     def inline(self, node) -> str:
         if isinstance(node, str):
             return _WS_RE.sub(" ", node)
         t = node.tag
+        if t == "math" or "mwe-math" in node.attrs.get("class", ""):
+            tex = self._tex_annotation(node)
+            if tex:
+                return f" ${tex}$ " if len(tex) > 1 else f" {tex} "
         inner = "".join(self.inline(c) for c in node.children)
         if t == "code":
             txt = inner.strip()
@@ -367,6 +407,11 @@ class Renderer:
             return
         if t == "hr":
             return
+        if t == "math" or "mwe-math" in node.attrs.get("class", ""):
+            txt = self.inline(node).strip()  # display equations: same $TeX$ collapse as inline
+            if txt:
+                self.emit(txt)
+            return
         # transparent containers
         for c in node.children:
             self.block(c)
@@ -419,6 +464,10 @@ def unwrap_manpage(body: str) -> str:
 
 def normalize(html: str) -> tuple[str, str]:
     """Return (title, markdown_body)."""
+    import sys
+
+    if sys.getrecursionlimit() < 20000:
+        sys.setrecursionlimit(20000)  # _prune/render recurse to DOM depth; huge legacy pages run deep
     tb = TreeBuilder()
     try:
         tb.feed(html)
@@ -433,6 +482,14 @@ def normalize(html: str) -> tuple[str, str]:
     body = body.replace("\xa0", " ").replace("​", "")
     body = re.sub(r"\n{3,}", "\n\n", body).strip()
     body = unwrap_manpage(body)
+    # feedback-widget lines ("Was this page helpful?") are chrome the class-pruner can't
+    # always name — a standalone line is deleted wherever it appears (typescriptlang renders
+    # the widget BEFORE the article); a trailing half occurrence truncates the tail
+    body = re.sub(r"(?im)^[^\w\n]*was this page helpful\??[^\w\n]*$\n?", "", body)
+    m = re.search(r"(?i)was this page helpful", body)
+    if m and m.start() > len(body) // 2:
+        body = body[: m.start()].rstrip()
+    body = re.sub(r"\n{3,}", "\n\n", body).strip()
     title = _WS_RE.sub(" ", tb.title.replace("\xa0", " ")).strip()
     # strip site suffixes: "json — Python 3.13 documentation" keeps the meaningful head
     for sep in (" — ", " | ", " - ", " – "):

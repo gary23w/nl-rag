@@ -1,0 +1,1019 @@
+# nl-rag distilled facts — domain: compression
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:compression/arithmetic-coding] Arithmetic coding achieves compression by subdividing the interval [0, 1) into sub-intervals proportional to symbol probabilities.
+[src:compression/arithmetic-coding] When symbol probabilities are unequal, more probable symbols receive larger sub-intervals, which require fewer bits to specify a point within.
+[src:compression/arithmetic-coding] The theoretical limit on this compression is given by the entropy of the source, which Shannon's source coding theorem establishes as the minimum average number of bits per symbol that any lossless method can achieve.
+[src:compression/arithmetic-coding] Arithmetic coding approaches this limit closely, especially for long messages.
+[src:compression/arithmetic-coding] When all symbols are equally likely, each sub-interval has the same size, and no symbol can be represented with fewer bits than any other.
+[src:compression/arithmetic-coding] In this case the entropy reaches its maximum of $\log _{2}n$ bits per symbol (where n is the alphabet size), and no compression is possible.
+[src:compression/arithmetic-coding] For example, a stream of independent fair coin flips has entropy of exactly 1 bit per symbol — the full cost of storage — so arithmetic coding provides no benefit.
+[src:compression/arithmetic-coding] Similarly, independent ternary symbols with equal probabilities have entropy of about 1.585 bits per symbol, the maximum for a three-symbol alphabet, and are likewise incompressible.
+[src:compression/arithmetic-coding] Compression becomes possible when probabilities are unequal, because the sub-intervals become unequal in size.
+[src:compression/arithmetic-coding] For instance, a binary source with probabilities 0.9 and 0.1 has entropy of approximately 0.469 bits per symbol.
+[src:compression/arithmetic-coding] The symbol with probability 0.9 receives 90% of each interval, so most encoding steps barely shrink the interval, and fewer bits are needed to identify the final value.
+[src:compression/arithmetic-coding] This allows arithmetic coding to achieve a compression ratio of roughly 2.1:1.
+[src:compression/arithmetic-coding] In the simplest case, the probability of each symbol occurring is equal.
+[src:compression/arithmetic-coding] For example, consider a set of three symbols, A, B, and C, each equally likely to occur.
+[src:compression/arithmetic-coding] Encoding the symbols one by one would require 2 bits per symbol, which is wasteful: one of the bit variations is never used.
+[src:compression/arithmetic-coding] That is to say, symbols A, B and C might be encoded respectively as 00, 01 and 10, with 11 unused.
+[src:compression/arithmetic-coding] A more efficient solution is to represent a sequence of these three symbols as a rational number in base 3 where each digit represents a symbol.
+[src:compression/arithmetic-coding] For example, the sequence "ABBCAB" could become 0.0112013, in arithmetic coding as a value in the interval [0, 1).
+[src:compression/arithmetic-coding] The next step is to encode this ternary number using a fixed-point binary number of sufficient precision to recover it, such as 0.00101100012 – this is only 10 bits; 2 bits are saved in comparison with naïve block encoding.
+[src:compression/arithmetic-coding] This is feasible for long sequences because there are efficient, in-place algorithms for converting the base of arbitrarily precise numbers.
+[src:compression/arithmetic-coding] To decode the value, knowing the original string had length 6, one can simply convert back to base 3, round to 6 digits, and recover the string.
+[src:compression/arithmetic-coding] In general, arithmetic coders can produce near-optimal output for any given set of symbols and probabilities.
+[src:compression/arithmetic-coding] (The optimal value is −log2*P* bits for each symbol of probability *P*; see *Source coding theorem*.) Compression algorithms that use arithmetic coding start by determining a model of the data – basically a prediction of what patterns will be found in the symbols of the message.
+[src:compression/arithmetic-coding] The more accurate this prediction is, the closer to optimal the output will be.
+[src:compression/arithmetic-coding] Models can also handle alphabets other than the simple four-symbol set chosen for this example.
+[src:compression/arithmetic-coding] Models can even be *adaptive*, so that they continually change their prediction of the data based on what the stream actually contains.
+[src:compression/arithmetic-coding] The decoder must have the same model as the encoder.
+[src:compression/arithmetic-coding] The encoder divides the current interval into sub-intervals, each representing a fraction of the current interval proportional to the probability of that symbol in the current context.
+[src:compression/arithmetic-coding] Whichever interval corresponds to the actual symbol that is next to be encoded becomes the interval used in the next step.
+[src:compression/arithmetic-coding] When all symbols have been encoded, the resulting interval unambiguously identifies the sequence of symbols that produced it.
+[src:compression/arithmetic-coding] Anyone who has the same final interval and model that is being used can reconstruct the symbol sequence that must have entered the encoder to result in that final interval.
+[src:compression/arithmetic-coding] It is not necessary to transmit the final interval, however; it is only necessary to transmit *one fraction* that lies within that interval.
+[src:compression/arithmetic-coding] In particular, it is only necessary to transmit enough digits (in whatever base) of the fraction so that all fractions that begin with those digits fall into the final interval; this will guarantee that the resulting code is a prefix code.
+[src:compression/arithmetic-coding] Consider the process for decoding a message encoded with the given four-symbol model.
+[src:compression/arithmetic-coding] The process starts with the same interval used by the encoder: [0,1), and using the same model, dividing it into the same four sub-intervals that the encoder must have.
+[src:compression/arithmetic-coding] The fraction 0.538 falls into the sub-interval for NEUTRAL, [0, 0.6); this indicates that the first symbol the encoder read must have been NEUTRAL, so this is the first symbol of the message.
+[src:compression/arithmetic-coding] Since 0.538 is within the interval [0.48, 0.54), the second symbol of the message must have been NEGATIVE.
+[src:compression/arithmetic-coding] Now 0.538 falls within the interval of the END-OF-DATA symbol; therefore, this must be the next symbol.
+[src:compression/arithmetic-coding] Since it is also the internal termination symbol, it means the decoding is complete.
+[src:compression/arithmetic-coding] If the stream is not internally terminated, there needs to be some other way to indicate where the stream stops.
+[src:compression/arithmetic-coding] Otherwise, the decoding process could continue forever, mistakenly reading more symbols from the fraction than were in fact encoded into it.
+[src:compression/arithmetic-coding] The message 0.538 in the previous example could have been encoded by the equally short fractions 0.534, 0.535, 0.536, 0.537 or 0.539.
+[src:compression/arithmetic-coding] This suggests that the use of decimal instead of binary introduced some inefficiency.
+[src:compression/arithmetic-coding] This is correct; the information content of a three-digit decimal is $3\times \log _{2}(10)\approx 9.966$ bits; the same message could have been encoded in the binary fraction 0.10001001 (equivalent to 0.53515625 decimal) at a cost of only 8 bits.
+[src:compression/arithmetic-coding] But an integer number of bits must be used in the binary encoding, so an encoder for this message would use at least 8 bits, resulting in a message 8.4% larger than the entropy contents.
+[src:compression/arithmetic-coding] This inefficiency of at most 1 bit results in relatively less overhead as the message size grows.
+[src:compression/arithmetic-coding] Moreover, the claimed symbol probabilities were [0.6, 0.2, 0.1, 0.1), but the actual frequencies in this example are [0.33, 0, 0.33, 0.33).
+[src:compression/arithmetic-coding] If the intervals are readjusted for these frequencies, the entropy of the message would be 4.755 bits and the same NEUTRAL NEGATIVE END-OF-DATA message could be encoded as intervals [0, 1/3); [1/9, 2/9); [5/27, 6/27); and a binary interval of [0.00101111011, 0.00111000111).
+[src:compression/arithmetic-coding] This is also an example of how statistical coding methods like arithmetic encoding can produce an output message that is larger than the input message, especially if the probability model is off.
+[src:compression/arithmetic-coding] One advantage of arithmetic coding over other similar methods of data compression is the convenience of adaptation.
+[src:compression/arithmetic-coding] *Adaptation* is the changing of the frequency (or probability) tables while processing the data.
+[src:compression/arithmetic-coding] The decoded data matches the original data as long as the frequency table in decoding is replaced in the same way and in the same step as in encoding.
+[src:compression/arithmetic-coding] The synchronization is, usually, based on a combination of symbols occurring during the encoding and decoding process.
+[src:compression/arithmetic-coding] The above explanations of arithmetic coding contain some simplification.
+[src:compression/arithmetic-coding] In particular, they are written as if the encoder first calculated the fractions representing the endpoints of the interval in full, using infinite precision, and only converted the fraction to its final form at the end of encoding.
+[src:compression/arithmetic-coding] Rather than try to simulate infinite precision, most arithmetic coders instead operate at a fixed limit of precision which they know the decoder will be able to match, and round the calculated fractions to their nearest equivalents at that precision.
+[src:compression/arithmetic-coding] An example shows how this would work if the model called for the interval [0,1) to be divided into thirds, and this was approximated with 8 bit precision.
+[src:compression/arithmetic-coding] Note that since now the precision is known, so are the binary ranges we'll be able to use.
+[src:compression/arithmetic-coding] A process called *renormalization* keeps the finite precision from becoming a limit on the total number of symbols that can be encoded.
+[src:compression/arithmetic-coding] Whenever the range is reduced to the point where all values in the range share certain beginning digits, those digits are sent to the output.
+[src:compression/arithmetic-coding] For however many digits of precision the computer *can* handle, it is now handling fewer than that, so the existing digits are shifted left, and at the right, new digits are added to expand the range as widely as possible.
+[src:compression/arithmetic-coding] Note that this result occurs in two of the three cases from our previous example.
+[src:compression/arithmetic-coding] Recall that in the case where the symbols had equal probabilities, arithmetic coding could be implemented by a simple change of base, or radix.
+[src:compression/arithmetic-coding] In general, arithmetic (and range) coding may be interpreted as a *generalized* change of radix.
+[src:compression/arithmetic-coding] as a number in a certain base presuming that the involved symbols form an ordered set and each symbol in the ordered set denotes a sequential integer A = 0, B = 1, C = 2, D = 3, and so on.
+[src:compression/arithmetic-coding] The *cumulative frequency* for an item is the sum of all frequencies preceding the item.
+[src:compression/arithmetic-coding] In other words, cumulative frequency is a running total of frequencies.
+[src:compression/arithmetic-coding] In a positional numeral system the radix, or base, is numerically equal to a number of different symbols used to express the number.
+[src:compression/arithmetic-coding] For example, in the decimal system the number of symbols is 10, namely 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9.
+[src:compression/arithmetic-coding] The radix is used to express any finite integer in a presumed multiplier in polynomial form.
+[src:compression/arithmetic-coding] For example, the number 457 is actually 4×102 + 5×101 + 7×100, where base 10 is presumed but not shown explicitly.
+[src:compression/arithmetic-coding] Initially, we will convert DABDDB into a base-6 numeral, because 6 is the length of the string.
+[src:compression/arithmetic-coding] The result 23671 has a length of 15 bits, which is not very close to the theoretical limit (the entropy of the message), which is approximately 9 bits.
+[src:compression/arithmetic-coding] To encode a message with a length closer to the theoretical limit imposed by information theory we need to slightly generalize the classic formula for changing the radix.
+[src:compression/arithmetic-coding] We will compute lower and upper bounds *L* and *U* and choose a number between them.
+[src:compression/arithmetic-coding] The difference between this polynomial and the polynomial above is that each term is multiplied by the product of the frequencies of all previously occurring symbols.
+[src:compression/arithmetic-coding] where $\scriptstyle C_{i}$ are the cumulative frequencies and $\scriptstyle f_{k}$ are the frequencies of occurrences.
+[src:compression/arithmetic-coding] Indexes denote the position of the symbol in a message.
+[src:compression/arithmetic-coding] In the special case where all frequencies $\scriptstyle f_{k}$ are 1, this is the change-of-base formula.
+[src:compression/arithmetic-coding] Now we can choose any number from the interval [*L*, *U*) to represent the message; one convenient choice is the value with the longest possible trail of zeroes, 25100, since it allows us to achieve compression by representing the result as 251×102.
+[src:compression/arithmetic-coding] The zeroes can also be truncated, giving 251, if the length of the message is stored separately.
+[src:compression/arithmetic-coding] Longer messages will tend to have longer trails of zeroes.
+[src:compression/arithmetic-coding] To decode the integer 25100, the polynomial computation can be reversed as shown in the table below.
+[src:compression/arithmetic-coding] At each stage the current symbol is identified, then the corresponding term is subtracted from the result.
+[src:compression/arithmetic-coding] During decoding we take the floor after dividing by the corresponding power of 6.
+[src:compression/arithmetic-coding] The result is then matched against the cumulative intervals and the appropriate symbol is selected from look up table.
+[src:compression/arithmetic-coding] When the symbol is identified the result is corrected.
+[src:compression/arithmetic-coding] The process is continued for the known length of the message or while the remaining result is positive.
+[src:compression/arithmetic-coding] The only difference compared to the classical change-of-base is that there may be a range of values associated with each symbol.
+[src:compression/arithmetic-coding] In this example, A is always 0, B is either 1 or 2, and D is any of 3, 4, 5.
+[src:compression/arithmetic-coding] This is in exact accordance with our intervals that are determined by the frequencies.
+[src:compression/arithmetic-coding] When all intervals are equal to 1 we have a special case of the classic base change.
+[src:compression/arithmetic-coding] The lower bound *L* never exceeds *n**n*, where *n* is the size of the message, and so can be represented in $\log _{2}(n^{n})=n\log _{2}(n)$ bits.
+[src:compression/arithmetic-coding] After the computation of the upper bound *U* and the reduction of the message by selecting a number from the interval [*L*, *U*) with the longest trail of zeros we can presume that this length can be reduced by $\textstyle \log _{2}\left(\prod _{k=1}^{n}f_{k}\right)$ bits.
+[src:compression/arithmetic-coding] In other words, the efficiency of arithmetic encoding approaches the theoretical limit of H bits per symbol, as the message length approaches infinity.
+[src:compression/arithmetic-coding] Suppose the source is ergodic, then it has the asymptotic equipartition property (AEP).
+[src:compression/arithmetic-coding] By the AEP, after a long stream of n symbols, the interval of $(0,1)$ is almost partitioned into almost equally-sized intervals.
+[src:compression/arithmetic-coding] Technically, for any small $\epsilon >0$ , for all large enough n , there exists $2^{nH(X)(1+O(\epsilon ))}$ strings $x_{1:n}$ , such that each string has almost equal probability $Pr(x_{1:n})=2^{-nH(X)(1+O(\epsilon ))}$ , and their total probability is $1-O(\epsilon )$ .
+[src:compression/arithmetic-coding] For any such string, it is arithmetically encoded by a binary string of length k , where k is the smallest k such that there exists a fraction of form ${\frac {?}{2^{k}}}$ in the interval for $x_{1:n}$ .
+[src:compression/arithmetic-coding] Thus, with high probability, $x_{1:n}$ can be arithmetically encoded with a binary string of length $nH(X)(1+O(\epsilon ))$ .
+[src:compression/arithmetic-coding] Because arithmetic coding doesn't compress one datum at a time, it can get arbitrarily close to entropy when compressing IID strings.
+[src:compression/arithmetic-coding] By contrast, using the extension of Huffman coding (to strings) does not reach entropy unless all probabilities of alphabet symbols are powers of two, in which case both Huffman and arithmetic coding achieve entropy.
+[src:compression/arithmetic-coding] When naively Huffman coding binary strings, no compression is possible, even if entropy is low (e.g.
+[src:compression/arithmetic-coding] Huffman encoding assigns 1 bit to each value, resulting in a code of the same length as the input.
+[src:compression/arithmetic-coding] One simple way to address Huffman coding's suboptimality is to concatenate symbols ("blocking") to form a new alphabet in which each new symbol represents a sequence of original symbols – in this case bits – from the original alphabet.
+[src:compression/arithmetic-coding] With this grouping, Huffman coding averages 1.3 bits for every three symbols, or 0.433 bits per symbol, compared with one bit per symbol in the original encoding, i.e., $56.7\%$ compression.
+[src:compression/arithmetic-coding] Allowing arbitrarily large sequences gets arbitrarily close to entropy – just like arithmetic coding – but requires huge codes to do so, so is not as practical as arithmetic coding for this purpose.
+[src:compression/arithmetic-coding] An alternative is encoding run lengths via Huffman-based Golomb-Rice codes.
+[src:compression/arithmetic-coding] Such an approach allows simpler and faster encoding/decoding than arithmetic coding or even Huffman coding, since the latter requires a table lookups.
+[src:compression/arithmetic-coding] In the {0.95, 0.05} example, a Golomb-Rice code with a four-bit remainder achieves a compression ratio of $71.1\%$ , far closer to optimum than using three-bit blocks.
+[src:compression/arithmetic-coding] Golomb-Rice codes only apply to Bernoulli inputs such as the one in this example, however, so it is not a substitute for blocking in all cases.
+[src:compression/arithmetic-coding] Basic algorithms for arithmetic coding were developed independently by Jorma J.
+[src:compression/arithmetic-coding] Rissanen, at IBM Research, and by Richard C.
+[src:compression/arithmetic-coding] Pasco, a Ph.D. student at Stanford University; both were published in May 1976.
+[src:compression/arithmetic-coding] Less than a year after publication, IBM filed for a US patent on Rissanen's work.
+[src:compression/arithmetic-coding] A variety of specific techniques for arithmetic coding have historically been covered by US patents, although various well-known methods have since passed into the public domain as the patents have expired.
+[src:compression/arithmetic-coding] Techniques covered by patents may be essential for implementing the algorithms for arithmetic coding that are specified in some formal international standards.
+[src:compression/arithmetic-coding] When this is the case, such patents are generally available for licensing under what is called "reasonable and non-discriminatory" (RAND) licensing terms (at least as a matter of standards-committee policy).
+[src:compression/arithmetic-coding] In some well-known instances, (including some involving IBM patents that have since expired), such licenses were available for free, and in other instances, licensing fees have been required.
+[src:compression/arithmetic-coding] The availability of licenses under RAND terms does not necessarily satisfy everyone who might want to use the technology, as what may seem "reasonable" for a company preparing a proprietary commercial software product may seem much less reasonable for a free software or open source project.
+[src:compression/arithmetic-coding] At least one significant compression software program, bzip2, deliberately discontinued the use of arithmetic coding in favor of Huffman coding due to the perceived patent situation at the time.
+[src:compression/arithmetic-coding] JPEG XL, as well as archivers like PackJPG, Brunsli and Lepton, that can losslessly convert Huffman encoded files to ones with arithmetic coding (or asymmetric numeral systems in case of JPEG XL), show up to 25% size saving.
+[src:compression/arithmetic-coding] The JPEG image compression format's arithmetic coding algorithm is based on the following cited patents (since expired).
+[src:compression/arithmetic-coding] Other patents (mostly also expired) related to arithmetic coding include the following.
+[src:compression/arithmetic-coding] See the following links for a list of more US patents.
+[src:compression/arithmetic-coding] The Dirac codec uses arithmetic coding and is not patent pending.
+[src:compression/arithmetic-coding] Patents on arithmetic coding may exist in other jurisdictions; see software patents for a discussion of the patentability of software around the world.
+[src:compression/arithmetic-coding] Every programmatic implementation of arithmetic encoding has a different compression ratio and performance.
+[src:compression/arithmetic-coding] While compression ratios vary only a little (usually under 1%), the code execution time can vary by a factor of 10.
+[src:compression/arithmetic-coding] Choosing the right encoder from a list of publicly available encoders is not a simple task because performance and compression ratio depend also on the type of data, particularly on the size of the alphabet (number of different symbols).
+[src:compression/arithmetic-coding] One of two particular encoders may have better performance for small alphabets while the other may show better performance for large alphabets.
+[src:compression/arithmetic-coding] Most encoders have limitations on the size of the alphabet and many of them are specialized for alphabets of exactly two symbols (0 and 1).
+[src:compression/burrows-wheeler-transform] The **Burrows–Wheeler transform** (**BWT**) rearranges a character string into runs of similar characters, in a manner that can be reversed to recover the original string.
+[src:compression/burrows-wheeler-transform] Since compression techniques such as move-to-front transform and run-length encoding are more effective when such runs are present, the BWT can be used as a preparatory step to improve the efficiency of a compression algorithm, and is used this way in software such as bzip2.
+[src:compression/burrows-wheeler-transform] The algorithm can be implemented efficiently using a suffix array thus reaching linear time complexity.
+[src:compression/burrows-wheeler-transform] It was invented by David Wheeler in 1983, and later published by him and Michael Burrows in 1994.
+[src:compression/burrows-wheeler-transform] Their paper included a compression algorithm, called the **Block-sorting Lossless Data Compression Algorithm** or **BSLDCA**, that compresses data by using the BWT followed by move-to-front coding and Huffman coding or arithmetic coding.
+[src:compression/burrows-wheeler-transform] The transform is done by constructing a matrix (known as the Burrows–Wheeler matrix) whose rows are the circular shifts of the input text, sorted in lexicographic order, then taking the final column of that matrix.
+[src:compression/burrows-wheeler-transform] The output of the encoding phase is the last column `L = BNN^AA$A` after step 3, and the index (0-based) `I` of the row containing the original string `S`, in this case `I = 6`.
+[src:compression/burrows-wheeler-transform] It is not necessary to use both `$` and `^`, but at least one must be used, else we cannot invert the transform, since all circular permutations of a string have the same Burrows–Wheeler transform.
+[src:compression/burrows-wheeler-transform] The following pseudocode gives a simple (though inefficient) way to calculate the BWT and its inverse.
+[src:compression/burrows-wheeler-transform] It assumes that the input string `s` contains a special character "EOF", which is the last character and occurs nowhere else in the text.
+[src:compression/burrows-wheeler-transform] If the original string had several substrings that occurred often, then the BWT-transformed string will have several places where a single character is repeated many times in a row, creating more-easily-compressible data.
+[src:compression/burrows-wheeler-transform] Similarly, rotations beginning with "e " are grouped together, but "e " is often preceded by "h", so we see the output above contains a run of five consecutive "h" characters.
+[src:compression/burrows-wheeler-transform] Thus it can be seen that the success of this transform depends upon one value having a high probability of occurring before a sequence, so that in general it needs fairly long samples (a few kilobytes at least) of appropriate data (such as text).
+[src:compression/burrows-wheeler-transform] The remarkable thing about the BWT is not that it generates a more easily encoded output—an ordinary sort would do that—but that it does this *reversibly*, allowing the original document to be re-generated from the last column data.
+[src:compression/burrows-wheeler-transform] Take the final table in the BWT algorithm, and erase all but the last column.
+[src:compression/burrows-wheeler-transform] Given only this information, you can easily reconstruct the first column.
+[src:compression/burrows-wheeler-transform] The last column tells you all the characters in the text, so just sort these characters alphabetically to get the first column.
+[src:compression/burrows-wheeler-transform] Then, the last and first columns (of each row) together give you all *pairs* of successive characters in the document, where pairs are taken cyclically so that the last and first character form a pair.
+[src:compression/burrows-wheeler-transform] Sorting the list of pairs gives the first *and second* columns.
+[src:compression/burrows-wheeler-transform] To obtain the third column, the last column is again prepended to the table, and the rows are sorted lexicographically.
+[src:compression/burrows-wheeler-transform] Continuing in this manner, you can reconstruct the entire list.
+[src:compression/burrows-wheeler-transform] Then, the row with the "end of file" character at the end is the original text.
+[src:compression/burrows-wheeler-transform] A number of optimizations can make these algorithms run more efficiently without changing the output.
+[src:compression/burrows-wheeler-transform] There is no need to represent the table in either the encoder or decoder.
+[src:compression/burrows-wheeler-transform] In the encoder, each row of the table can be represented by a single pointer into the strings, and the sort performed using the indices.
+[src:compression/burrows-wheeler-transform] In the decoder, there is also no need to store the table, and the decoded string can be generated one character at a time from left to right.
+[src:compression/burrows-wheeler-transform] Comparative sorting can even be avoided in favor of linear sorting, with performance proportional to the alphabet size and string length.
+[src:compression/burrows-wheeler-transform] A "character" in the algorithm can be a byte, or a bit, or any other convenient size.
+[src:compression/burrows-wheeler-transform] One may also make the observation that mathematically, the encoded string can be computed as a simple modification of the suffix array, and suffix arrays can be computed with linear time and memory.
+[src:compression/burrows-wheeler-transform] There is no need to have an actual 'EOF' character.
+[src:compression/burrows-wheeler-transform] Instead, a pointer can be used that remembers where in a string the 'EOF' would be if it existed.
+[src:compression/burrows-wheeler-transform] In this approach, the output of the BWT must include both the transformed string, and the final value of the pointer.
+[src:compression/burrows-wheeler-transform] The inverse transform then shrinks it back down to the original size: it is given a string and a pointer, and returns just a string.
+[src:compression/burrows-wheeler-transform] A complete description of the algorithms can be found in Burrows and Wheeler's paper, or in a number of online sources.
+[src:compression/burrows-wheeler-transform] The algorithms vary somewhat by whether EOF is used, and in which direction the sorting was done.
+[src:compression/burrows-wheeler-transform] In fact, the original formulation did not use an EOF marker.
+[src:compression/burrows-wheeler-transform] Since any rotation of the input string will lead to the same transformed string, the BWT cannot be inverted without adding an EOF marker to the end of the input or doing something equivalent, making it possible to distinguish the input string from all its rotations.
+[src:compression/burrows-wheeler-transform] Increasing the size of the alphabet (by appending the EOF character) makes later compression steps awkward.
+[src:compression/burrows-wheeler-transform] There is a bijective version of the transform, by which the transformed string uniquely identifies the original, and the two have the same length and contain exactly the same characters, just in a different order.
+[src:compression/burrows-wheeler-transform] The bijective transform is computed by factoring the input into a non-increasing sequence of Lyndon words; such a factorization exists and is unique by the Chen–Fox–Lyndon theorem, and may be found in linear time and constant space.
+[src:compression/burrows-wheeler-transform] The algorithm sorts the rotations of all the words; as in the Burrows–Wheeler transform, this produces a sorted sequence of *n* strings.
+[src:compression/burrows-wheeler-transform] The transformed string is then obtained by picking the final character of each string in this sorted list.
+[src:compression/burrows-wheeler-transform] The one important caveat here is that strings of different lengths are not ordered in the usual way; the two strings are repeated forever, and the infinite repeats are sorted.
+[src:compression/burrows-wheeler-transform] For example, "ORO" precedes "OR" because "OROORO..." precedes "OROROR...".
+[src:compression/burrows-wheeler-transform] For example, the text "^BANANA$" is transformed into "ANNBAA^$" through these steps (the red $ character indicates the EOF pointer) in the original string.
+[src:compression/burrows-wheeler-transform] The EOF character is unneeded in the bijective transform, so it is dropped during the transform and re-added to its proper place in the file.
+[src:compression/burrows-wheeler-transform] The string is broken into Lyndon words so the words in the sequence are decreasing using the comparison method above.
+[src:compression/burrows-wheeler-transform] (Note that we're sorting '^' as succeeding other characters.) "^BANANA" becomes (^) (B) (AN) (AN) (A).
+[src:compression/burrows-wheeler-transform] Up until the last step, the process is identical to the inverse Burrows–Wheeler process, but here it will not necessarily give rotations of a single sequence; it instead gives rotations of Lyndon words (which will start to repeat as the process is continued).
+[src:compression/burrows-wheeler-transform] Here, we can see (repetitions of) four distinct Lyndon words: (A), (AN) (twice), (B), and (^).
+[src:compression/burrows-wheeler-transform] (NANA... doesn't represent a distinct word, as it is a cycle of ANAN....) At this point, these words are sorted into reverse order: (^), (B), (AN), (AN), (A).
+[src:compression/burrows-wheeler-transform] The whole string is now a Lyndon word, and running it through the bijective process will therefore result in a transformed result that, when inverted, gives back the Lyndon word, with no need for reassembling at the end.
+[src:compression/burrows-wheeler-transform] The bijective transform includes eight runs of identical characters.
+[src:compression/burrows-wheeler-transform] In total, 18 characters are used in these runs.
+[src:compression/burrows-wheeler-transform] When a text is edited, its Burrows–Wheeler transform will change.
+[src:compression/burrows-wheeler-transform] This Python implementation sacrifices speed for simplicity: the program is short, but takes more than the linear time that would be desired in a practical implementation.
+[src:compression/burrows-wheeler-transform] It essentially does what the pseudocode section does.
+[src:compression/burrows-wheeler-transform] The inverse transform repeatedly inserts `r` as the left column of the table and sorts the table.
+[src:compression/burrows-wheeler-transform] After the whole table is built, it returns the row that ends with ETX, minus the STX and ETX.
+[src:compression/burrows-wheeler-transform] Following implementation notes from Manzini, it is equivalent to use a simple null character suffix instead.
+[src:compression/burrows-wheeler-transform] The sorting should be done in colexicographic order (string read right-to-left), i.e.
+[src:compression/burrows-wheeler-transform] (The above control codes actually fail to satisfy EOF being the last character; the two codes are actually the *first*.
+[src:compression/burrows-wheeler-transform] As a lossless compression algorithm the Burrows–Wheeler transform offers the important quality that its encoding is reversible and hence the original data may be recovered from the resulting compression.
+[src:compression/burrows-wheeler-transform] The lossless quality of Burrows algorithm has provided for different algorithms with different purposes in mind.
+[src:compression/burrows-wheeler-transform] To name a few, Burrows–Wheeler transform is used in algorithms for sequence alignment, image compression, data compression, etc.
+[src:compression/burrows-wheeler-transform] The following is a compilation of some uses given to the Burrows–Wheeler Transform.
+[src:compression/burrows-wheeler-transform] The advent of next-generation sequencing (NGS) techniques at the end of the 2000s decade has led to another application of the Burrows–Wheeler transformation.
+[src:compression/burrows-wheeler-transform] In NGS, DNA is fragmented into small pieces, of which the first few bases are sequenced, yielding several millions of "reads", each 30 to 500 base pairs ("DNA characters") long.
+[src:compression/burrows-wheeler-transform] In many experiments, e.g., in ChIP-Seq, the task is now to align these reads to a reference genome, i.e., to the known, nearly complete sequence of the organism in question (which may be up to several billion base pairs long).
+[src:compression/burrows-wheeler-transform] A number of alignment programs, specialized for this task, were published, which initially relied on hashing (e.g., Eland, SOAP, or Maq).
+[src:compression/burrows-wheeler-transform] In an effort to reduce the memory requirement for sequence alignment, several alignment programs were developed (Bowtie, BWA, and SOAP2) that use the Burrows–Wheeler transform.
+[src:compression/burrows-wheeler-transform] The Burrows–Wheeler transformation has proved to be fundamental for image compression applications.
+[src:compression/burrows-wheeler-transform] For example, Showed a compression pipeline based on the application of the Burrows–Wheeler transformation followed by inversion, run-length, and arithmetic encoders.
+[src:compression/burrows-wheeler-transform] The pipeline developed in this case is known as Burrows–Wheeler transform with an inversion encoder (BWIC).
+[src:compression/burrows-wheeler-transform] The results shown by BWIC are shown to outperform the compression performance of well-known and widely used algorithms like Lossless JPEG and JPEG 2000.
+[src:compression/burrows-wheeler-transform] BWIC is shown to outperform those in terms of final compression size of radiography medical images on the order of 5.1% and 4.1% respectively.
+[src:compression/burrows-wheeler-transform] The improvements are achieved by combining BWIC and a pre-BWIC scan of the image in a vertical snake order fashion.
+[src:compression/burrows-wheeler-transform] More recently, additional works have shown the implementation of the Burrows–Wheeler Transform in conjunction with the known move-to-front transform (MTF) achieve near lossless compression of images.
+[src:compression/burrows-wheeler-transform] Cox et al. presented a genomic compression scheme that uses BWT as the algorithm applied during the first stage of compression of several genomic datasets including the human genomic information.
+[src:compression/burrows-wheeler-transform] Their work proposed that BWT compression could be enhanced by including a second stage compression mechanism called same-as-previous encoding ("SAP"), which makes use of the fact that suffixes of two or more prefix letters could be equal.
+[src:compression/burrows-wheeler-transform] With the compression mechanism BWT-SAP, Cox et al. showed that in the genomic database ERA015743, 135.5 GB in size, the compression scheme BWT-SAP compresses the ERA015743 dataset by around 94%, to 8.2 GB.
+[src:compression/burrows-wheeler-transform] BWT has also been proved to be useful on sequence prediction which is a common area of study in machine learning and natural-language processing.
+[src:compression/burrows-wheeler-transform] In particular, Ktistakis et al. proposed a sequence prediction scheme called SuBSeq that exploits the lossless compression of data of the Burrows–Wheeler transform.
+[src:compression/burrows-wheeler-transform] SuBSeq exploits BWT by extracting the FM-index and then performing a series of operations called backwardSearch, forwardSearch, neighbourExpansion, and getConsequents in order to search for predictions given a suffix.
+[src:compression/burrows-wheeler-transform] The predictions are then classified based on a weight and put into an array from which the element with the highest weight is given as the prediction from the SuBSeq algorithm.
+[src:compression/burrows-wheeler-transform] SuBSeq has been shown to outperform state of the art algorithms for sequence prediction both in terms of training time and accuracy.
+[src:compression/data-compression] In information theory, **data compression**, **source coding**, or **bit-rate reduction** is the process of encoding information using fewer bits than the original representation.
+[src:compression/data-compression] Any particular compression is either lossy or lossless.
+[src:compression/data-compression] Lossless compression reduces bits by identifying and eliminating statistical redundancy.
+[src:compression/data-compression] No information is lost in lossless compression.
+[src:compression/data-compression] Lossy compression reduces bits by removing unnecessary or less important information.
+[src:compression/data-compression] Typically, a device that performs data compression is referred to as an encoder, and one that performs the reversal of the process (decompression) as a decoder.
+[src:compression/data-compression] The process of reducing the size of a data file is often referred to as data compression.
+[src:compression/data-compression] In the context of data transmission, it is called source coding: encoding is done at the source of the data before it is stored or transmitted.
+[src:compression/data-compression] Source coding should not be confused with channel coding, for error detection and correction or line coding, the means for mapping data onto a signal.
+[src:compression/data-compression] Data compression algorithms present a space–time complexity trade-off between the bytes needed to store or transmit information, and the computational resources needed to perform the encoding and decoding.
+[src:compression/data-compression] The design of data compression schemes involves balancing the degree of compression, the amount of distortion introduced (when using lossy data compression), and the computational resources or time required to compress and decompress the data.
+[src:compression/data-compression] Lossless data compression algorithms usually exploit statistical redundancy to represent data without losing any information, so that the process is reversible.
+[src:compression/data-compression] Lossless compression is possible because most real-world data exhibits statistical redundancy.
+[src:compression/data-compression] For example, an image may have areas of color that do not change over several pixels; instead of coding "red pixel, red pixel, ..." the data may be encoded as "279 red pixels".
+[src:compression/data-compression] This is a basic example of run-length encoding; there are many schemes to reduce file size by eliminating redundancy.
+[src:compression/data-compression] The Lempel–Ziv (LZ) compression methods are among the most popular algorithms for lossless storage.
+[src:compression/data-compression] DEFLATE is a variation on LZ optimized for decompression speed and compression ratio, but compression can be slow.
+[src:compression/data-compression] In the mid-1980s, following work by Terry Welch, the Lempel–Ziv–Welch (LZW) algorithm rapidly became the method of choice for most general-purpose compression systems.
+[src:compression/data-compression] LZW is used in GIF images, programs such as PKZIP, and hardware devices such as modems.
+[src:compression/data-compression] LZ methods use a table-based compression model where table entries are substituted for repeated strings of data.
+[src:compression/data-compression] For most LZ methods, this table is generated dynamically from earlier data in the input.
+[src:compression/data-compression] The table itself is often Huffman encoded.
+[src:compression/data-compression] Grammar-based codes like this can compress highly repetitive input extremely effectively, for instance, a biological data collection of the same or closely related species, a huge versioned document collection, internet archival, etc.
+[src:compression/data-compression] The basic task of grammar-based codes is constructing a context-free grammar deriving a single string.
+[src:compression/data-compression] Other practical grammar compression algorithms include Sequitur and Re-Pair.
+[src:compression/data-compression] The strongest modern lossless compressors use probabilistic models, such as prediction by partial matching.
+[src:compression/data-compression] The Burrows–Wheeler transform can also be viewed as an indirect form of statistical modelling.
+[src:compression/data-compression] In a further refinement of the direct use of probabilistic modelling, statistical estimates can be coupled to an algorithm called arithmetic coding.
+[src:compression/data-compression] Arithmetic coding is a more modern coding technique that uses the mathematical calculations of a finite-state machine to produce a string of encoded bits from a series of input data symbols.
+[src:compression/data-compression] It can achieve superior compression compared to other techniques, such as the better-known Huffman algorithm.
+[src:compression/data-compression] It uses an internal memory state to avoid the need to perform a one-to-one mapping of individual input symbols to distinct representations that use an integer number of bits, and it clears out the internal memory only after encoding the entire string of data symbols.
+[src:compression/data-compression] Arithmetic coding applies especially well to adaptive data compression tasks where the statistics vary and are context-dependent, as it can be easily coupled with an adaptive model of the probability distribution of the input data.
+[src:compression/data-compression] An early example of the use of arithmetic coding was in an optional (but not widely used) feature of the JPEG image coding standard.
+[src:compression/data-compression] It has since been applied in various other designs including H.263, H.264/MPEG-4 AVC and HEVC for video coding.
+[src:compression/data-compression] Archive software typically has the ability to adjust the "dictionary size", where a larger size demands more random-access memory during compression and decompression, but compresses more strongly, especially on repeating patterns in files' content.
+[src:compression/data-compression] In the late 1980s, digital images became more common, and standards for lossless image compression emerged.
+[src:compression/data-compression] In the early 1990s, lossy compression methods began to be widely used.
+[src:compression/data-compression] In these schemes, some loss of information is accepted as dropping nonessential detail can save storage space.
+[src:compression/data-compression] There is a corresponding trade-off between preserving information and reducing size.
+[src:compression/data-compression] Lossy data compression schemes are designed based on research on how people perceive the data in question.
+[src:compression/data-compression] For example, the human eye is more sensitive to subtle variations in luminance than it is to the variations in color.
+[src:compression/data-compression] JPEG image compression works in part by rounding off nonessential bits of information.
+[src:compression/data-compression] A number of popular compression formats exploit these perceptual differences, including psychoacoustics for sound, and psychovisuals for images and video.
+[src:compression/data-compression] Most forms of lossy compression are based on transform coding, especially the discrete cosine transform (DCT).
+[src:compression/data-compression] It was first proposed in 1972 by Nasir Ahmed, who then developed a working algorithm with T.
+[src:compression/data-compression] Rao in 1973, before introducing it in January 1974.
+[src:compression/data-compression] DCT is the most widely used lossy compression method, and is used in multimedia formats for images (such as JPEG and HEIF), video (such as MPEG, AVC and HEVC) and audio (such as MP3, AAC and Vorbis).
+[src:compression/data-compression] Lossy image compression is used in digital cameras, to increase storage capacities.
+[src:compression/data-compression] Similarly, DVDs, Blu-ray and streaming video use lossy video coding formats.
+[src:compression/data-compression] Lossy compression is extensively used in video.
+[src:compression/data-compression] In lossy audio compression, methods of psychoacoustics are used to remove non-audible (or less audible) components of the audio signal.
+[src:compression/data-compression] Compression of human speech is often performed with even more specialized techniques; speech coding is distinguished as a separate discipline from general-purpose audio compression.
+[src:compression/data-compression] Speech coding is used in internet telephony, for example, audio compression is used for CD ripping and is decoded by the audio players.
+[src:compression/data-compression] Lossy compression can cause generation loss.
+[src:compression/data-compression] The theoretical basis for compression is provided by information theory and, more specifically, Shannon's source coding theorem; domain-specific theories include algorithmic information theory for lossless compression and rate–distortion theory for lossy compression.
+[src:compression/data-compression] These areas of study were essentially created by Claude Shannon, who published fundamental papers on the topic in the late 1940s and early 1950s.
+[src:compression/data-compression] Other topics associated with compression include coding theory and statistical inference.
+[src:compression/data-compression] There is a close connection between machine learning and compression.
+[src:compression/data-compression] A system that predicts the posterior probabilities of a sequence given its entire history can be used for optimal data compression (by using arithmetic coding on the output distribution).
+[src:compression/data-compression] Conversely, an optimal compressor can be used for prediction (by finding the symbol that compresses best, given the previous history).
+[src:compression/data-compression] This equivalence has been used as a justification for using data compression as a benchmark for "general intelligence".
+[src:compression/data-compression] An alternative view can show compression algorithms implicitly map strings into implicit feature space vectors, and compression-based similarity measures compute similarity within these feature spaces.
+[src:compression/data-compression] For each compressor C(.) we define an associated vector space ℵ, such that C(.) maps an input string x, corresponding to the vector norm ||~x||.
+[src:compression/data-compression] An exhaustive examination of the feature spaces underlying all compression algorithms is precluded by space; instead, feature vectors chooses to examine three representative lossless compression methods, LZW, LZ77, and PPM.
+[src:compression/data-compression] According to AIXI theory, a connection more directly explained in Hutter Prize, the best possible compression of x is the smallest possible software that generates x.
+[src:compression/data-compression] For example, in that model, a zip file's compressed size includes both the zip file and the unzipping software, since you can not unzip it without both, but there may be an even smaller combined form.
+[src:compression/data-compression] Examples of AI-powered audio/video compression software include NVIDIA Maxine, AIVC.
+[src:compression/data-compression] Examples of software that can perform AI-powered image compression include OpenCV, TensorFlow, MATLAB's Image Processing Toolbox (IPT) and High-Fidelity Generative Image Compression.
+[src:compression/data-compression] In unsupervised machine learning, k-means clustering can be utilized to compress data by grouping similar data points into clusters.
+[src:compression/data-compression] This technique simplifies handling extensive datasets that lack predefined labels and finds widespread use in fields such as image compression.
+[src:compression/data-compression] Data compression aims to reduce the size of data files, enhancing storage efficiency and speeding up data transmission.
+[src:compression/data-compression] K-means clustering, an unsupervised machine learning algorithm, is employed to partition a dataset into a specified number of clusters, k, each represented by the centroid of its points.
+[src:compression/data-compression] This process condenses extensive datasets into a more compact set of representative points.
+[src:compression/data-compression] Particularly beneficial in image and signal processing, k-means clustering aids in data reduction by replacing groups of data points with their centroids, thereby preserving the core information of the original data while significantly decreasing the required storage space.
+[src:compression/data-compression] Large language models (LLMs) are also efficient lossless data compressors on some data sets, as demonstrated by DeepMind's research with the Chinchilla 70B model.
+[src:compression/data-compression] Developed by DeepMind, Chinchilla 70B effectively compressed data, outperforming conventional methods such as Portable Network Graphics (PNG) for images and Free Lossless Audio Codec (FLAC) for audio.
+[src:compression/data-compression] It achieved compression of image and audio data to 43.4% and 16.4% of their original sizes, respectively.
+[src:compression/data-compression] There is, however, some reason to be concerned that the data set used for testing overlaps the LLM training data set, making it possible that the Chinchilla 70B model is only an efficient compression tool on data it has already been trained on.
+[src:compression/data-compression] Data compression can be viewed as a special case of data differencing.
+[src:compression/data-compression] This is the same as considering absolute entropy (corresponding to data compression) as a special case of relative entropy (corresponding to data differencing) with no initial data.
+[src:compression/data-compression] The term *differential compression* is used to emphasize the data differencing connection.
+[src:compression/data-compression] Entropy coding originated in the 1940s with the introduction of Shannon–Fano coding, the basis for Huffman coding which was developed in 1950.
+[src:compression/data-compression] Transform coding dates back to the late 1960s, with the introduction of fast Fourier transform (FFT) coding in 1968 and the Hadamard transform in 1969.
+[src:compression/data-compression] An important image compression technique is the discrete cosine transform (DCT), a technique developed in the early 1970s.
+[src:compression/data-compression] DCT is the basis for JPEG, a lossy compression format which was introduced by the Joint Photographic Experts Group (JPEG) in 1992.
+[src:compression/data-compression] JPEG greatly reduces the amount of data required to represent an image at the cost of a relatively small reduction in image quality and has become the most widely used image file format.
+[src:compression/data-compression] Its highly efficient DCT-based compression algorithm was largely responsible for the wide proliferation of digital images and digital photos.
+[src:compression/data-compression] Lempel–Ziv–Welch (LZW) is a lossless compression algorithm developed in 1984.
+[src:compression/data-compression] It is used in the GIF format, introduced in 1987.
+[src:compression/data-compression] DEFLATE, a lossless compression algorithm specified in 1996, is used in the Portable Network Graphics (PNG) format.
+[src:compression/data-compression] Wavelet compression, the use of wavelets in image compression, began after the development of DCT coding.
+[src:compression/data-compression] The JPEG 2000 standard was introduced in 2000.
+[src:compression/data-compression] In contrast to the DCT algorithm used by the original JPEG format, JPEG 2000 instead uses discrete wavelet transform (DWT) algorithms.
+[src:compression/data-compression] JPEG 2000 technology, which includes the Motion JPEG 2000 extension, was selected as the video coding standard for digital cinema in 2004.
+[src:compression/data-compression] Audio data compression, not to be confused with dynamic range compression, has the potential to reduce the transmission bandwidth and storage requirements of audio data.
+[src:compression/data-compression] Audio compression formats compression algorithms are implemented in software as audio codecs.
+[src:compression/data-compression] In both lossy and lossless compression, information redundancy is reduced, using methods such as coding, quantization, DCT and linear prediction to reduce the amount of information used to represent the uncompressed data.
+[src:compression/data-compression] Lossy audio compression algorithms provide higher compression and are used in numerous audio applications including Vorbis and MP3.
+[src:compression/data-compression] These algorithms almost all rely on psychoacoustics to eliminate or reduce fidelity of less audible sounds, thereby reducing the space required to store or transmit them.
+[src:compression/data-compression] The acceptable trade-off between loss of audio quality and transmission or storage size depends upon the application.
+[src:compression/data-compression] For example, one 640 MB compact disc (CD) holds approximately one hour of uncompressed high fidelity music, less than 2 hours of music compressed losslessly, or 7 hours of music compressed in the MP3 format at a medium bit rate.
+[src:compression/data-compression] A digital sound recorder can typically store around 200 hours of clearly intelligible speech in 640 MB.
+[src:compression/data-compression] Lossless audio compression produces a representation of digital data that can be decoded to an exact digital duplicate of the original.
+[src:compression/data-compression] Compression ratios are around 50–60% of the original size, which is similar to those for generic lossless data compression.
+[src:compression/data-compression] Lossless codecs use curve fitting or linear prediction as a basis for estimating the signal.
+[src:compression/data-compression] Parameters describing the estimation and the difference between the estimation and the actual signal are coded separately.
+[src:compression/data-compression] A number of lossless audio compression formats exist.
+[src:compression/data-compression] See list of lossless codecs for a listing.
+[src:compression/data-compression] Some formats are associated with a distinct system, such as Direct Stream Transfer, used in Super Audio CD and Meridian Lossless Packing, used in DVD-Audio, Dolby TrueHD, Blu-ray and HD DVD.
+[src:compression/data-compression] Some audio file formats feature a combination of a lossy format and a lossless correction; this allows stripping the correction to easily obtain a lossy file.
+[src:compression/data-compression] Such formats include MPEG-4 SLS (Scalable to Lossless), WavPack, and OptimFROG DualStream.
+[src:compression/data-compression] When audio files are to be processed, either by further compression or for editing, it is desirable to work from an unchanged original (uncompressed or losslessly compressed).
+[src:compression/data-compression] Processing of a lossily compressed file for some purpose usually produces a final result inferior to the creation of the same compressed file from an uncompressed original.
+[src:compression/data-compression] In addition to sound editing or mixing, lossless audio compression is often used for archival storage, or as master copies.
+[src:compression/data-compression] Lossy audio compression is used in a wide range of applications.
+[src:compression/data-compression] In addition to standalone audio-only applications of file playback in MP3 players or computers, digitally compressed audio streams are used in most video DVDs, digital television, streaming media on the Internet, satellite and cable radio, and increasingly in terrestrial radio broadcasts.
+[src:compression/data-compression] Lossy compression typically achieves far greater compression than lossless compression, by discarding less-critical data based on psychoacoustic optimizations.
+[src:compression/data-compression] Psychoacoustics recognizes that not all data in an audio stream can be perceived by the human auditory system.
+[src:compression/data-compression] Most lossy compression reduces redundancy by first identifying perceptually irrelevant sounds, that is, sounds that are very hard to hear.
+[src:compression/data-compression] Typical examples include high frequencies or sounds that occur at the same time as louder sounds.
+[src:compression/data-compression] Those irrelevant sounds are coded with decreased accuracy or not at all.
+[src:compression/data-compression] Due to the nature of lossy algorithms, audio quality suffers a digital generation loss when a file is decompressed and recompressed.
+[src:compression/data-compression] This makes lossy compression unsuitable for storing the intermediate results in professional audio engineering applications, such as sound editing and multitrack recording.
+[src:compression/data-compression] However, lossy formats such as MP3 are very popular with end-users as the file size is reduced to 5-20% of the original size and a megabyte can store about a minute's worth of music at adequate quality.
+[src:compression/data-compression] Several proprietary lossy compression algorithms have been developed that provide higher quality audio performance by using a combination of lossless and lossy algorithms with adaptive bit rates and lower compression ratios.
+[src:compression/data-compression] Examples include aptX, LDAC, LHDC, MQA and SCL6.
+[src:compression/data-compression] To determine what information in an audio signal is perceptually irrelevant, most lossy compression algorithms use transforms such as the modified discrete cosine transform (MDCT) to convert time domain sampled waveforms into a transform domain, typically the frequency domain.
+[src:compression/data-compression] Once transformed, component frequencies can be prioritized according to how audible they are.
+[src:compression/data-compression] Equal-loudness contours may also be used to weigh the perceptual importance of components.
+[src:compression/data-compression] Models of the human ear-brain combination incorporating such effects are often called psychoacoustic models.
+[src:compression/data-compression] Other types of lossy compressors, such as the linear predictive coding (LPC) used with speech, are source-based coders.
+[src:compression/data-compression] LPC uses a model of the human vocal tract to analyze speech sounds and infer the parameters used by the model to produce them moment to moment.
+[src:compression/data-compression] These changing parameters are transmitted or stored and used to drive another model in the decoder, which reproduces the sound.
+[src:compression/data-compression] Lossy formats are often used for the distribution of streaming audio or interactive communication (such as in cell phone networks).
+[src:compression/data-compression] In such applications, the data must be decompressed as the data flows, rather than after the entire data stream has been transmitted.
+[src:compression/data-compression] Not all audio codecs can be used for streaming applications.
+[src:compression/data-compression] Latency is introduced by the methods used to encode and decode the data.
+[src:compression/data-compression] Some codecs will analyze a longer segment, called a *frame*, of the data to optimize efficiency, and then code it in a manner that requires a larger segment of data at one time to decode.
+[src:compression/data-compression] The inherent latency of the coding algorithm can be critical; for example, when there is a two-way transmission of data, such as with a telephone conversation, significant delays may seriously degrade the perceived quality.
+[src:compression/data-compression] In contrast to the speed of compression, which is proportional to the number of operations required by the algorithm, here latency refers to the number of samples that must be analyzed before a block of audio is processed.
+[src:compression/data-compression] In the minimum case, latency is zero samples (e.g., if the coder/decoder simply reduces the number of bits used to quantize the signal).
+[src:compression/data-compression] Time domain algorithms such as LPC also often have low latencies, hence their popularity in speech coding for telephony.
+[src:compression/data-compression] In algorithms such as MP3, however, a large number of samples have to be analyzed to implement a psychoacoustic model in the frequency domain, and latency is on the order of 23 ms.
+[src:compression/data-compression] Speech encoding is an important category of audio data compression.
+[src:compression/data-compression] The perceptual models used to estimate what aspects of speech a human ear can hear are generally somewhat different from those used for music.
+[src:compression/data-compression] The range of frequencies needed to convey the sounds of a human voice is normally far narrower than that needed for music, and the sound is normally less complex.
+[src:compression/data-compression] As a result, speech can be encoded at high quality using a relatively low bit rate.
+[src:compression/data-compression] The earliest algorithms used in speech encoding (and audio data compression in general) were the A-law algorithm and the μ-law algorithm.
+[src:compression/data-compression] Early audio research was conducted at Bell Labs.
+[src:compression/data-compression] Chapin Cutler filed the patent on differential pulse-code modulation (DPCM).
+[src:compression/data-compression] In 1973, Adaptive DPCM (ADPCM) was introduced by P.
+[src:compression/data-compression] Perceptual coding was first used for speech coding compression, with linear predictive coding (LPC).
+[src:compression/data-compression] Initial concepts for LPC date back to the work of Fumitada Itakura (Nagoya University) and Shuzo Saito (Nippon Telegraph and Telephone) in 1966.
+[src:compression/data-compression] Perceptual coding is used by modern audio compression formats such as MP3 and AAC.
+[src:compression/data-compression] Discrete cosine transform (DCT), developed by Nasir Ahmed, T.
+[src:compression/data-compression] Rao in 1974, provided the basis for the modified discrete cosine transform (MDCT) used by modern audio compression formats such as MP3, Dolby Digital, and AAC.
+[src:compression/data-compression] Bradley in 1987, following earlier work by Princen and Bradley in 1986.
+[src:compression/data-compression] The world's first commercial broadcast automation audio compression system was developed by Oscar Bonello, an engineering professor at the University of Buenos Aires.
+[src:compression/data-compression] This broadcast automation system was launched in 1987 under the name Audicom.
+[src:compression/data-compression] A literature compendium for a large variety of audio coding systems was published in the IEEE's *Journal on Selected Areas in Communications* (*JSAC*), in February 1988.
+[src:compression/data-compression] While there were some papers from before that time, this collection documented an entire variety of finished, working audio coders, nearly all of them using perceptual techniques and some kind of frequency analysis and back-end noiseless coding.
+[src:compression/data-compression] Uncompressed video requires a very high data rate.
+[src:compression/data-compression] Although lossless video compression codecs perform at a compression factor of 5 to 12, a typical H.264 lossy compression video has a compression factor between 20 and 200.
+[src:compression/data-compression] The two key video compression techniques used in video coding standards are the DCT and motion compensation (MC).
+[src:compression/data-compression] Most video coding standards, such as the H.26x and MPEG formats, typically use motion-compensated DCT video coding (block motion compensation).
+[src:compression/data-compression] Most video codecs are used alongside audio compression techniques to store the separate but complementary data streams as one combined package using so-called *container formats*.
+[src:compression/data-compression] Video data may be represented as a series of still image frames.
+[src:compression/data-compression] Such data usually contains abundant amounts of spatial and temporal redundancy.
+[src:compression/data-compression] Video compression algorithms attempt to reduce redundancy and store information more compactly.
+[src:compression/data-compression] Most video compression formats and codecs exploit both spatial and temporal redundancy (e.g., through difference coding with motion compensation).
+[src:compression/data-compression] Similarities can be encoded by only storing differences between e.g., temporally adjacent frames (inter-frame coding) or spatially adjacent pixels (intra-frame coding).
+[src:compression/data-compression] Inter-frame compression (a temporal delta encoding) (re)uses data from one or more earlier or later frames in a sequence to describe the current frame.
+[src:compression/data-compression] Intra-frame coding, on the other hand, uses only data from within the current frame, effectively being still-image compression.
+[src:compression/data-compression] The intra-frame video coding formats used in camcorders and video editing employ simpler compression that uses only intra-frame prediction.
+[src:compression/data-compression] This simplifies video editing software, as it prevents a situation in which a compressed frame refers to data that the editor has deleted.
+[src:compression/data-compression] Usually, video compression additionally employs lossy compression techniques like quantization that reduce aspects of the source data that are (more or less) irrelevant to the human visual perception by exploiting perceptual features of human vision.
+[src:compression/data-compression] For example, small differences in color are more difficult to perceive than are changes in brightness.
+[src:compression/data-compression] Compression algorithms can average a color across these similar areas in a manner similar to those used in JPEG image compression.
+[src:compression/data-compression] As in all lossy compression, there is a trade-off between video quality and bit rate, cost of processing the compression and decompression, and system requirements.
+[src:compression/data-compression] Highly compressed video may present visible or distracting artifacts.
+[src:compression/data-compression] Other methods other than the prevalent DCT-based transform formats, such as fractal compression, matching pursuit and the use of a discrete wavelet transform (DWT), have been the subject of some research, but are typically not used in practical products.
+[src:compression/data-compression] Wavelet compression is used in still-image coders and video coders without motion compensation.
+[src:compression/data-compression] Interest in fractal compression seems to be waning, due to recent theoretical analysis showing a comparative lack of effectiveness of such methods.
+[src:compression/data-compression] In inter-frame coding, individual frames of a video sequence are compared from one frame to the next, and the video compression codec records the differences to the reference frame.
+[src:compression/data-compression] If the frame contains areas where nothing has moved, the system can simply issue a short command that copies that part of the previous frame into the next one.
+[src:compression/data-compression] If sections of the frame move in a simple manner, the compressor can emit a (slightly longer) command that tells the decompressor to shift, rotate, lighten, or darken the copy.
+[src:compression/data-compression] This longer command still remains much shorter than data generated by intra-frame compression.
+[src:compression/data-compression] Usually, the encoder will also transmit a residue signal which describes the remaining, more subtle differences to the reference imagery.
+[src:compression/data-compression] Using entropy coding, these residue signals have a more compact representation than the full signal.
+[src:compression/data-compression] In areas of video with more motion, the compression must encode more data to keep up with the larger number of pixels that are changing.
+[src:compression/data-compression] Commonly, the high-frequency detail of explosions, flames, flocks of animals, and some panning shots will lead to decreases in quality or increases in the variable bitrate.
+[src:compression/data-compression] Many commonly used video compression methods (e.g., those in standards approved by the ITU-T or ISO) share the same basic architecture that dates back to H.261, which was standardized in 1988 by the ITU-T.
+[src:compression/data-compression] They mostly rely on the DCT, applied to rectangular blocks of neighboring pixels, and temporal prediction using motion vectors, as well as nowadays also an in-loop filtering step.
+[src:compression/data-compression] In the prediction stage, various deduplication and difference-coding techniques are applied that help decorrelate data and describe new data based on already transmitted data.
+[src:compression/data-compression] Then, rectangular blocks of remaining pixel data are transformed to the frequency domain.
+[src:compression/data-compression] In the main lossy processing stage, frequency domain data gets quantized in order to reduce information that is irrelevant to human visual perception.
+[src:compression/data-compression] In the last stage, statistical redundancy gets largely eliminated by an entropy coder, which often applies some form of arithmetic coding.
+[src:compression/data-compression] In an additional in-loop filtering stage, various filters can be applied to the reconstructed image signal.
+[src:compression/data-compression] By computing these filters also inside the encoding loop, they can help compression because they can be applied to reference material before it gets used in the prediction process and they can be guided using the original signal.
+[src:compression/data-compression] The most popular example are deblocking filters that blur out blocking artifacts from quantization discontinuities at transform block boundaries.
+[src:compression/data-compression] Cherry proposed a run-length encoding bandwidth compression scheme for the transmission of analog television signals.
+[src:compression/data-compression] The DCT, which is fundamental to modern video compression, was introduced by Nasir Ahmed, T.
+[src:compression/data-compression] H.261, which debuted in 1988, commercially introduced the prevalent basic architecture of video compression technology.
+[src:compression/data-compression] It was the first video coding format based on DCT compression.
+[src:compression/data-compression] H.261 was developed by a number of companies, including Hitachi, PictureTel, NTT, BT and Toshiba.
+[src:compression/data-compression] The most popular video coding standards used for codecs have been the MPEG standards.
+[src:compression/data-compression] MPEG-1 was developed by the Motion Picture Experts Group (MPEG) in 1991, and it was designed to compress VHS-quality video.
+[src:compression/data-compression] It was succeeded in 1994 by MPEG-2/H.262, which was developed by a number of companies, primarily Sony, Thomson and Mitsubishi Electric.
+[src:compression/data-compression] MPEG-2 became the standard video format for DVD and SD digital television.
+[src:compression/data-compression] It was also developed by a number of companies, primarily Mitsubishi Electric, Hitachi and Panasonic.
+[src:compression/data-compression] H.264/MPEG-4 AVC was developed in 2003 by a number of organizations, primarily Panasonic, Godo Kaisha IP Bridge and LG Electronics.
+[src:compression/data-compression] AVC commercially introduced the modern context-adaptive binary arithmetic coding (CABAC) and context-adaptive variable-length coding (CAVLC) algorithms.
+[src:compression/data-compression] Genetics compression algorithms are the latest generation of lossless algorithms that compress data (typically sequences of nucleotides) using both conventional compression algorithms and genetic algorithms adapted to the specific datatype.
+[src:compression/data-compression] In 2012, a team of scientists from Johns Hopkins University published a genetic compression algorithm that does not use a reference genome for compression.
+[src:compression/data-compression] HAPZIPPER was tailored for HapMap data and achieves over 20-fold compression (95% reduction in file size), providing 2- to 4-fold better compression and is less computationally intensive than the leading general-purpose compression utilities.
+[src:compression/data-compression] For this, Chanda, Elhaik, and Bader introduced MAF-based encoding (MAFE), which reduces the heterogeneity of the dataset by sorting SNPs by their minor allele frequency, thus homogenizing the dataset.
+[src:compression/data-compression] Other algorithms developed in 2009 and 2013 (DNAZip and GenomeZip) have compression ratios of up to 1200-fold—allowing 6 billion basepair diploid human genomes to be stored in 2.5 megabytes (relative to a reference genome or averaged over many genomes).
+[src:compression/data-compression] It is estimated that the total amount of data that is stored on the world's storage devices could be further compressed with existing compression algorithms by a remaining average factor of 4.5:1.
+[src:compression/data-compression] It is estimated that the combined technological capacity of the world to store information provides 1,300 exabytes of hardware digits in 2007, but when the corresponding content is optimally compressed, this only represents 295 exabytes of Shannon information.
+[src:compression/deflate] In computing, **Deflate** (stylized as **DEFLATE**, and also called **Flate**) is a lossless data compression algorithm that uses a combination of LZ77 and Huffman coding.
+[src:compression/deflate] It was designed by Phil Katz, for version 2 of his PKZIP archiving tool.
+[src:compression/deflate] Deflate was later specified in Request for Comments (RFC) 1951 (1996).
+[src:compression/deflate] Katz also designed the original algorithm used to construct Deflate streams.
+[src:compression/deflate] This algorithm received software patent U.S. patent 5,051,745, assigned to PKWare, Inc.
+[src:compression/deflate] As stated in the RFC document, an algorithm producing Deflate files was widely thought to be implementable in a manner not covered by patents.
+[src:compression/deflate] For example, in the zlib data format, gzip file format, Portable Network Graphics (PNG) image file, ZIP file format for which Katz originally designed it.
+[src:compression/deflate] Deflate compression takes any sequence of bytes and outputs a **sequence of blocks** (commonly called *Deflate stream*).
+[src:compression/deflate] Deflate decompression takes a sequence of blocks and outputs the original sequence of bytes.
+[src:compression/deflate] **Bit 0** is the least significant bit in a byte.
+[src:compression/deflate] Most compressible data will end up being encoded using method `10`, the *dynamic Huffman* encoding, which produces an optimized Huffman tree customized for each block of data individually.
+[src:compression/deflate] Instructions to generate the necessary Huffman tree immediately follow the block header.
+[src:compression/deflate] The static Huffman option is used for short messages, where the fixed saving gained by omitting the tree outweighs the percentage compression loss due to using a non-optimal (thus, not technically Huffman) code.
+[src:compression/deflate] Within compressed blocks, if a duplicate series of bytes is spotted (a repeated string), then a back-reference is inserted, linking to the prior location of that identical string instead.
+[src:compression/deflate] An encoded match to an earlier string consists of an 8-bit length (3–258 bytes) and a 15-bit distance (1–32,768 bytes) to the start of the duplicate.
+[src:compression/deflate] Relative back-references can be made across any number of blocks, as long as the distance appears within the last 32 KiB of uncompressed data decoded (termed the *sliding window*).
+[src:compression/deflate] If the distance is less than the length, the duplicate overlaps itself, indicating repetition.
+[src:compression/deflate] For example, a run of 10 identical bytes can be encoded as one byte, followed by a duplicate of length 9, starting with the prior byte.
+[src:compression/deflate] Searching the preceding text for duplicate substrings is the most computationally expensive part of the Deflate algorithm, and the operation which compression level settings affect.
+[src:compression/deflate] The second compression stage consists of replacing commonly used symbols with shorter representations and less commonly used symbols with longer representations.
+[src:compression/deflate] The method used is Huffman coding which creates an unprefixed tree of non-overlapping intervals, where the length of each sequence is inversely proportional to the logarithm of the probability of that symbol needing to be encoded.
+[src:compression/deflate] The more likely it is that a symbol has to be encoded, the shorter its bit-sequence will be.
+[src:compression/deflate] A match length code will always be followed by a distance code.
+[src:compression/deflate] Based on the distance code read, further "extra" bits may be read in order to produce the final distance.
+[src:compression/deflate] For the match distance symbols 2–29, the number of extra bits can be calculated as $\left\lfloor {\frac {n}{2}}\right\rfloor -1$ .
+[src:compression/deflate] The two codes (the 288-symbol length/literal tree and the 32-symbol distance tree) are themselves encoded as canonical Huffman codes by giving the bit length of the code for each symbol.
+[src:compression/deflate] The bit lengths are themselves run-length encoded to produce as compact a representation as possible.
+[src:compression/deflate] As an alternative to including the tree representation, the "static tree" option provides standard fixed Huffman trees.
+[src:compression/deflate] The compressed size using the static trees can be computed using the same statistics (the number of times each symbol appears) as are used to generate the dynamic trees, so it is easy for a compressor to choose whichever is smaller.
+[src:compression/deflate] During the compression stage, it is the *encoder* that chooses the amount of time spent looking for matching strings.
+[src:compression/deflate] The zlib/gzip reference implementation allows the user to select from a sliding scale of likely resulting compression-level vs. speed of encoding.
+[src:compression/deflate] Options range from `0` (do not attempt compression, just store uncompressed) to `9` representing the maximum capability of the reference implementation in zlib/gzip.
+[src:compression/deflate] Other Deflate encoders have been produced, all of which will also produce a compatible bitstream capable of being decompressed by any existing Deflate decoder.
+[src:compression/deflate] Differing implementations will likely produce variations on the final encoded bit-stream produced.
+[src:compression/deflate] The focus with non-zlib versions of an encoder has normally been to produce a more efficiently compressed and smaller encoded stream.
+[src:compression/deflate] Deflate64, specified by PKWARE, is a proprietary variant of Deflate.
+[src:compression/deflate] What has changed is the increase in dictionary size from 32 KB to 64 KB, an extension of the distance codes to 16 bits so that they may address a range of 64 KB, and the length code, which is extended to 16-bit, so that it may define lengths of three to 65,538 bytes.
+[src:compression/deflate] This leads to Deflate64 having a longer compression time, and potentially a slightly higher compression ratio, than Deflate.
+[src:compression/deflate] Several free and/or open source projects support Deflate64, such as 7-Zip, while others, such as zlib, do not, because the procedure is proprietary, and the performance increase over Deflate is small.
+[src:compression/deflate] Implementations of Deflate are freely available in many languages.
+[src:compression/deflate] Apps written in C typically use the zlib library (under the permissive zlib License).
+[src:compression/deflate] Apps in Borland Pascal (and compatible languages) can use paszlib.
+[src:compression/deflate] Apps in C++ can take advantage of the improved Deflate library in 7-Zip.
+[src:compression/deflate] Both Java and .NET framework offer out-of-the-box support for Deflate in their libraries (respectively, `java.util.zip` and System.IO.Compression).
+[src:compression/deflate] Apps in Ada can use Zip-Ada (pure) or ZLib-Ada.
+[src:compression/deflate] AdvanceCOMP uses the higher compression ratio versions of Deflate in 7-Zip, libdeflate, and Zopfli to enable recompression of gzip, PNG, multiple-image Network Graphics (MNG) and ZIP files with the possibility of smaller file sizes than zlib is able to achieve at maximum settings.
+[src:compression/deflate] Inflate is the decoding process that takes a Deflate bitstream for decompression and correctly produces the original full-size data or file.
+[src:compression/deflate] The normal intent with an alternative Inflate implementation is highly optimized decoding speed, or extremely predictable random-access memory (RAM) use for microcontroller embedded systems.
+[src:compression/huffman-coding] In computer science and information theory, a **Huffman code** is a particular type of optimal prefix code that is commonly used for lossless data compression.
+[src:compression/huffman-coding] The process of finding or using such a code is **Huffman coding**, an algorithm developed by David A.
+[src:compression/huffman-coding] Huffman while he was a Sc.D. student at MIT, and published in the 1952 paper "A Method for the Construction of Minimum-Redundancy Codes".
+[src:compression/huffman-coding] The output from Huffman's algorithm can be viewed as a variable-length code table for encoding a source symbol (such as a character in a file).
+[src:compression/huffman-coding] The algorithm derives this table from the estimated probability or frequency of occurrence (*weight*) for each possible value of the source symbol.
+[src:compression/huffman-coding] As in other entropy encoding methods, more common symbols are generally represented using fewer bits than less common symbols.
+[src:compression/huffman-coding] Huffman's method can be efficiently implemented, finding a code in time linear to the number of input weights if these weights are sorted.
+[src:compression/huffman-coding] However, although optimal among methods encoding symbols separately, Huffman coding is not always optimal among all compression methods – it is replaced with arithmetic coding if a better compression ratio is required.
+[src:compression/huffman-coding] Huffman and his MIT information theory classmates were given the choice of a term paper or a final exam.
+[src:compression/huffman-coding] Fano, assigned a term paper on the problem of finding the most efficient binary code.
+[src:compression/huffman-coding] Huffman, unable to prove any codes were the most efficient, was about to give up and start studying for the final when he hit upon the idea of using a frequency-sorted binary tree and quickly proved this method the most efficient.
+[src:compression/huffman-coding] In doing so, Huffman outdid Fano, who had worked with Claude Shannon to develop a similar code.
+[src:compression/huffman-coding] Building the tree from the bottom up guaranteed optimality, unlike the top-down approach of Shannon–Fano coding.
+[src:compression/huffman-coding] Huffman coding uses a specific method for choosing the representation for each symbol, resulting in a prefix code (sometimes called "prefix-free codes", that is, the bit string representing some particular symbol is never a prefix of the bit string representing any other symbol).
+[src:compression/huffman-coding] Huffman coding is such a widespread method for creating prefix codes that the term "Huffman code" is widely used as a synonym for "prefix code" even when such a code is not produced by Huffman's algorithm.
+[src:compression/huffman-coding] We give an example of the result of Huffman coding for a code with five characters and given weights.
+[src:compression/huffman-coding] We will not verify that it minimizes *L* over all codes, but we will compute *L* and compare it to the Shannon entropy *H* of the given set of weights; the result is nearly optimal.
+[src:compression/huffman-coding] For any code that is *biunique*, meaning that the code is *uniquely decodeable*, the sum of the probability budgets across all symbols is always less than or equal to one.
+[src:compression/huffman-coding] In this example, the sum is strictly equal to one; as a result, the code is termed a *complete* code.
+[src:compression/huffman-coding] If this is not the case, one can always derive an equivalent code by adding extra symbols (with associated null probabilities), to make the code complete while keeping it *biunique*.
+[src:compression/huffman-coding] (Note: A symbol with zero probability has zero contribution to the entropy, since $\lim _{w\to 0^{+}}w\log _{2}w=0$ .
+[src:compression/huffman-coding] As a consequence of Shannon's source coding theorem, the entropy is a measure of the smallest codeword length that is theoretically possible for the given alphabet with associated weights.
+[src:compression/huffman-coding] In this example, the weighted average codeword length is 2.25 bits per symbol, only slightly larger than the calculated entropy of 2.205 bits per symbol.
+[src:compression/huffman-coding] So not only is this code optimal in the sense that no other feasible code performs better, but it is very close to the theoretical limit established by Shannon.
+[src:compression/huffman-coding] In general, a Huffman code need not be unique.
+[src:compression/huffman-coding] Thus the set of Huffman codes for a given probability distribution is a non-empty subset of the codes minimizing $L(C)$ for that probability distribution.
+[src:compression/huffman-coding] The technique works by creating a binary tree of nodes.
+[src:compression/huffman-coding] These can be stored in a regular array, the size of which depends on the number of symbols, n .
+[src:compression/huffman-coding] A node can be either a leaf node or an internal node.
+[src:compression/huffman-coding] Initially, all nodes are leaf nodes, which contain the **symbol** itself, the **weight** (frequency of appearance) of the symbol and optionally, a link to a **parent** node which makes it easy to read the code (in reverse) starting from a leaf node.
+[src:compression/huffman-coding] Internal nodes contain a **weight**, links to **two child nodes** and an optional link to a **parent** node.
+[src:compression/huffman-coding] As a common convention, bit '0' represents following the left child and bit '1' represents following the right child.
+[src:compression/huffman-coding] A finished tree has up to n leaf nodes and $n-1$ internal nodes.
+[src:compression/huffman-coding] A Huffman tree that omits unused symbols produces the most optimal code lengths.
+[src:compression/huffman-coding] The process begins with the leaf nodes containing the probabilities of the symbol they represent.
+[src:compression/huffman-coding] Then, the process takes the two nodes with smallest probability, and creates a new internal node having these two nodes as children.
+[src:compression/huffman-coding] The weight of the new node is set to the sum of the weight of the children.
+[src:compression/huffman-coding] We then apply the process again, on the new internal node and on the remaining nodes (i.e., we exclude the two leaf nodes), we repeat this process until only one node remains, which is the root of the Huffman tree.
+[src:compression/huffman-coding] Create a new internal node with these two nodes as children and with probability equal to the sum of the two nodes' probabilities.
+[src:compression/huffman-coding] The remaining node is the root node and the tree is complete.
+[src:compression/huffman-coding] Since efficient priority queue data structures require O(log *n*) time per insertion, and a tree with *n* leaves has 2*n*−1 nodes, this algorithm operates in O(*n* log *n*) time, where *n* is the number of symbols.
+[src:compression/huffman-coding] Enqueue all leaf nodes into the first queue (by probability in increasing order so that the least likely item is in the head of the queue).
+[src:compression/huffman-coding] Create a new internal node, with the two just-removed nodes as children (either node can be either child) and the sum of their weights as the new weight.
+[src:compression/huffman-coding] Enqueue the new node into the rear of the second queue.
+[src:compression/huffman-coding] The remaining node is the root node; the tree has now been generated.
+[src:compression/huffman-coding] If node is not a leaf node, label the edge to the left child as 0 and the edge to the right child as 1.
+[src:compression/huffman-coding] Repeat the process at both the left child and the right child.
+[src:compression/huffman-coding] The final encoding of any symbol is then read by a concatenation of the labels on the edges along the path from the root node to the symbol.
+[src:compression/huffman-coding] It is generally beneficial to minimize the variance of codeword length.
+[src:compression/huffman-coding] For example, a communication buffer receiving Huffman-encoded data may need to be larger to deal with especially long symbols if the tree is especially unbalanced.
+[src:compression/huffman-coding] To minimize variance, simply break ties between queues by choosing the item in the first queue.
+[src:compression/huffman-coding] This modification will retain the mathematical optimality of the Huffman coding while both minimizing variance and minimizing the length of the longest character code.
+[src:compression/huffman-coding] Before this can take place, however, the Huffman tree must be somehow reconstructed.
+[src:compression/huffman-coding] In the simplest case, where character frequencies are fairly predictable, the tree can be preconstructed (and even statistically adjusted on each compression cycle) and thus reused every time, at the expense of at least some measure of compression efficiency.
+[src:compression/huffman-coding] Otherwise, the information to reconstruct the tree must be sent a priori.
+[src:compression/huffman-coding] A naive approach might be to prepend the frequency count of each character to the compression stream.
+[src:compression/huffman-coding] Unfortunately, the overhead in such a case could amount to several kilobytes, so this method has little practical use.
+[src:compression/huffman-coding] If the data is compressed using canonical encoding, the compression model can be precisely reconstructed with just $B\cdot 2^{B}$ bits of information (where B is the number of bits per symbol).
+[src:compression/huffman-coding] Another method is to simply prepend the Huffman tree, bit by bit, to the output stream.
+[src:compression/huffman-coding] For example, assuming that the value of 0 represents a parent node and 1 a leaf node, whenever the latter is encountered the tree building routine simply reads the next 8 bits to determine the character value of that particular leaf.
+[src:compression/huffman-coding] The process continues recursively until the last leaf node is reached; at that point, the Huffman tree will thus be faithfully reconstructed.
+[src:compression/huffman-coding] The overhead using such a method ranges from roughly 2 to 320 bytes (assuming an 8-bit alphabet).
+[src:compression/huffman-coding] Many other techniques are possible as well.
+[src:compression/huffman-coding] In any case, since the compressed data can include unused "trailing bits" the decompressor must be able to determine when to stop producing output.
+[src:compression/huffman-coding] This can be accomplished by either transmitting the length of the compressed data along with the compression model or by defining a special code symbol to signify the end of input (the latter method can adversely affect code length optimality, however).
+[src:compression/huffman-coding] The probabilities used can be generic ones for the application domain that are based on average experience, or they can be the actual frequencies found in the text being compressed.
+[src:compression/huffman-coding] This requires that a frequency table must be stored with the compressed text.
+[src:compression/huffman-coding] See the Decompression section above for more information about the various techniques employed for this purpose.
+[src:compression/huffman-coding] Huffman's original algorithm is optimal for a symbol-by-symbol coding with a known input probability distribution, i.e., separately encoding unrelated symbols in such a data stream.
+[src:compression/huffman-coding] However, it is not optimal when the symbol-by-symbol restriction is dropped, or when the probability mass functions are unknown.
+[src:compression/huffman-coding] Also, if symbols are not independent and identically distributed, a single code may be insufficient for optimality.
+[src:compression/huffman-coding] Other methods such as arithmetic coding often have better compression capability.
+[src:compression/huffman-coding] Such flexibility is especially useful when input probabilities are not precisely known or vary significantly within the stream.
+[src:compression/huffman-coding] However, Huffman coding is usually faster and arithmetic coding was historically a subject of some concern over patent issues.
+[src:compression/huffman-coding] Thus many technologies have historically avoided arithmetic coding in favor of Huffman and other prefix coding techniques.
+[src:compression/huffman-coding] As of mid-2010, the most commonly used techniques for this alternative to Huffman coding have passed into the public domain as the early patents have expired.
+[src:compression/huffman-coding] For a set of symbols with a uniform probability distribution and a number of members which is a power of two, Huffman coding is equivalent to simple binary block encoding, e.g., ASCII coding.
+[src:compression/huffman-coding] This reflects the fact that compression is not possible with such an input, no matter what the compression method, i.e., doing nothing to the data is the optimal thing to do.
+[src:compression/huffman-coding] Huffman coding is optimal among all methods in any case where each position in the input stream is a known independent and identically distributed random variable having a probability that is dyadic.
+[src:compression/huffman-coding] Prefix codes, and thus Huffman coding in particular, tend to have inefficiency on small alphabets, where probabilities often fall between these optimal (dyadic) points.
+[src:compression/huffman-coding] The worst case for Huffman coding can happen when the probability of the most likely symbol far exceeds 2−1 = 0.5, making the upper limit of inefficiency unbounded.
+[src:compression/huffman-coding] There are two related approaches for getting around this particular inefficiency while still using Huffman coding.
+[src:compression/huffman-coding] Combining a fixed number of symbols together ("blocking") often increases (and never decreases) compression.
+[src:compression/huffman-coding] As the size of the block approaches infinity, Huffman coding theoretically approaches the entropy limit, i.e., optimal compression.
+[src:compression/huffman-coding] However, blocking arbitrarily large groups of symbols is impractical, as the complexity of a Huffman code is linear in the number of possibilities to be encoded, a number that is exponential in the size of a block.
+[src:compression/huffman-coding] This limits the amount of blocking that is done in practice.
+[src:compression/huffman-coding] A practical alternative, in widespread use, is run-length encoding.
+[src:compression/huffman-coding] This technique adds one step in advance of entropy coding, specifically counting (runs) of repeated symbols, which are then encoded.
+[src:compression/huffman-coding] For the simple case of Bernoulli processes, Golomb coding is optimal among prefix codes for coding run length, a fact proved via the techniques of Huffman coding.
+[src:compression/huffman-coding] A similar approach is taken by fax machines using modified Huffman coding.
+[src:compression/huffman-coding] However, run-length coding is not as adaptable to as many input types as other compression technologies.
+[src:compression/huffman-coding] Many variations of Huffman coding exist, some of which use a Huffman-like algorithm, and others of which find optimal prefix codes (while, for example, putting different restrictions on the output).
+[src:compression/huffman-coding] Note that, in the latter case, the method need not be Huffman-like, and, indeed, need not even be polynomial time.
+[src:compression/huffman-coding] The ***n*-ary Huffman** algorithm uses an alphabet of size *n*, typically {0, 1, ..., n-1}, to encode messages and build an *n*-ary tree.
+[src:compression/huffman-coding] This approach was considered by Huffman in his original paper.
+[src:compression/huffman-coding] The same algorithm applies as for binary ( $n=2$ ) codes, but instead of combining the two least likely symbols, the *n* least likely symbols are grouped together.
+[src:compression/huffman-coding] Note that for *n* > 2, not all sets of source words can properly form a complete *n*-ary tree for Huffman coding.
+[src:compression/huffman-coding] In these cases, additional placeholder symbols with 0 probability may need to be added.
+[src:compression/huffman-coding] This is because the structure of the tree needs to repeatedly join *n* branches into one - also known as an "*n* to 1" combination.
+[src:compression/huffman-coding] For binary coding, this is a "2 to 1" combination, which works with any number of symbols.
+[src:compression/huffman-coding] For *n*-ary coding, a complete tree is only possible when the total number of symbols (real + placeholders) leaves a remainder of 1 when divided by (n-1).
+[src:compression/huffman-coding] A variation called **adaptive Huffman coding** involves calculating the probabilities dynamically based on recent actual frequencies in the sequence of source symbols, and changing the coding tree structure to match the updated probability estimates.
+[src:compression/huffman-coding] It is used rarely in practice, since the cost of updating the tree makes it slower than optimized adaptive arithmetic coding, which is more flexible and has better compression.
+[src:compression/huffman-coding] Most often, the weights used in implementations of Huffman coding represent numeric probabilities, but the algorithm given above does not require this; it requires only that the weights form a totally ordered commutative monoid, meaning a way to order weights and to add them.
+[src:compression/huffman-coding] The **Huffman template algorithm** enables one to use any kind of weights (costs, frequencies, pairs of weights, non-numerical weights) and one of many combining methods (not just addition).
+[src:compression/huffman-coding] Such algorithms can solve other minimization problems, such as minimizing $\max _{i}\left[w_{i}+\mathrm {length} \left(c_{i}\right)\right]$ , a problem first applied to circuit design.
+[src:compression/huffman-coding] In the standard Huffman coding problem, it is assumed that each symbol in the set that the code words are constructed from has an equal cost to transmit: a code word whose length is *N* digits will always have a cost of *N*, no matter how many of those digits are 0s, how many are 1s, etc.
+[src:compression/huffman-coding] When working under this assumption, minimizing the total cost of the message and minimizing the total number of digits are the same thing.
+[src:compression/huffman-coding] In the standard Huffman coding problem, it is assumed that any codeword can correspond to any input symbol.
+[src:compression/huffman-coding] In the alphabetic version, the alphabetic order of inputs and outputs must be identical.
+[src:compression/huffman-coding] This is also known as the **Hu–Tucker** problem, after T.
+[src:compression/huffman-coding] Hu and Alan Tucker, the authors of the paper presenting the first $O(n\log n)$ -time solution to this optimal binary alphabetic problem, which has some similarities to Huffman algorithm, but is not a variation of this algorithm.
+[src:compression/huffman-coding] A later method, the Garsia–Wachs algorithm of Adriano Garsia and Michelle L.
+[src:compression/huffman-coding] Wachs (1977), uses simpler logic to perform the same comparisons in the same total time bound.
+[src:compression/huffman-coding] These optimal alphabetic binary trees are often used as binary search trees.
+[src:compression/huffman-coding] If weights corresponding to the alphabetically ordered inputs are in numerical order, the Huffman code has the same lengths as the optimal alphabetic code, which can be found from calculating these lengths, rendering Hu–Tucker coding unnecessary.
+[src:compression/huffman-coding] The code resulting from numerically (re-)ordered input is sometimes called the *canonical Huffman code* and is often the code used in practice, due to ease of encoding/decoding.
+[src:compression/huffman-coding] The technique for finding this code is sometimes called **Huffman–Shannon–Fano coding**, since it is optimal like Huffman coding, but alphabetic in weight probability, like Shannon–Fano coding.
+[src:compression/huffman-coding] The Huffman–Shannon–Fano code corresponding to the example is $\{000,001,01,10,11\}$ , which, having the same codeword lengths as the original solution, is also optimal.
+[src:compression/huffman-coding] Arithmetic coding and Huffman coding produce equivalent results — achieving entropy — when every symbol has a probability of the form 1/2*k*.
+[src:compression/huffman-coding] In other circumstances, arithmetic coding can offer better compression than Huffman coding because — intuitively — its "code words" can have effectively non-integer bit lengths, whereas code words in prefix codes such as Huffman codes can only have an integer number of bits.
+[src:compression/huffman-coding] Therefore, a code word of length *k* only optimally matches a symbol of probability 1/2*k* and other probabilities are not represented optimally; whereas the code word length in arithmetic coding can be made to exactly match the true probability of the symbol.
+[src:compression/huffman-coding] This difference is especially striking for small alphabet sizes.
+[src:compression/huffman-coding] Prefix codes nevertheless remain in wide use because of their simplicity, high speed, and lack of patent coverage.
+[src:compression/huffman-coding] They are often used as a "back-end" to other compression methods.
+[src:compression/lempel-ziv-welch] A large English text file can typically be compressed via LZW to about half its original size.
+[src:compression/lempel-ziv-welch] The algorithm became the first widely used universal data compression method used on computers.
+[src:compression/lempel-ziv-welch] The algorithm was used in the compress program commonly included in Unix systems starting around 1986.
+[src:compression/lempel-ziv-welch] It has since disappeared from many distributions, because it both infringed the LZW patent and because gzip produced better compression ratios using the LZ77-based DEFLATE algorithm.
+[src:compression/lempel-ziv-welch] The algorithm found wide use when it became part of the GIF image format in 1987.
+[src:compression/lempel-ziv-welch] It may optionally be used in TIFF and PDF files.
+[src:compression/lempel-ziv-welch] Although LZW is available in Adobe Acrobat software, Acrobat by default uses DEFLATE for most text and color-table-based image data in PDF files.
+[src:compression/lempel-ziv-welch] The scenario described by Welch's 1984 paper encodes sequences of 8-bit data as fixed-length 12-bit codes.
+[src:compression/lempel-ziv-welch] The codes from 0 to 255 represent 1-character sequences consisting of the corresponding 8-bit character, and the codes 256 through 4095 are created in a dictionary for sequences encountered in the data as it is encoded.
+[src:compression/lempel-ziv-welch] At each stage in compression, input bytes are gathered into a sequence until the next character would make a sequence with no code yet in the dictionary.
+[src:compression/lempel-ziv-welch] The code for the sequence (without that character) is added to the output, and a new code (for the sequence with that character) is added to the dictionary.
+[src:compression/lempel-ziv-welch] In the practical application of image compression and for an image based on a color table, a natural character alphabet is the set of color table indexes.
+[src:compression/lempel-ziv-welch] In the 1980s, many images had small color tables (on the order of 16 colors).
+[src:compression/lempel-ziv-welch] When the maximum code value is reached, encoding proceeds using the existing table, but new codes are not generated for addition to the table.
+[src:compression/lempel-ziv-welch] The clear code lets the table be reinitialized after it fills up, which lets the encoding adapt to changing patterns in the input data.
+[src:compression/lempel-ziv-welch] Smart encoders can monitor the compression efficiency and clear the table whenever the existing table no longer matches the input well.
+[src:compression/lempel-ziv-welch] Since codes are added in a manner determined by the data, the decoder mimics building the table as it sees the resulting codes.
+[src:compression/lempel-ziv-welch] It is critical that the encoder and decoder agree on the variety of LZW used: the size of the alphabet, the maximum table size (and code width), whether variable-width encoding is used, initial code size, and whether to use the clear and stop codes (and what values they have).
+[src:compression/lempel-ziv-welch] Most formats that employ LZW build this information into the format specification or provide explicit fields for them in a compression header for the data.
+[src:compression/lempel-ziv-welch] Find the longest string **W** in the dictionary that matches the current input.
+[src:compression/lempel-ziv-welch] Emit the dictionary index for **W** to output and remove **W** from the input.
+[src:compression/lempel-ziv-welch] Add **W** followed by the next symbol in the input to the dictionary.
+[src:compression/lempel-ziv-welch] A dictionary is initialized to contain the single-character strings corresponding to all the possible input characters (and nothing else except the clear and stop codes if they're being used).
+[src:compression/lempel-ziv-welch] The algorithm works by scanning through the input string for successively longer substrings until it finds one that is not in the dictionary.
+[src:compression/lempel-ziv-welch] When such a string is found, the index for the string without the last character (i.e., the longest substring that *is* in the dictionary) is retrieved from the dictionary and sent to output, and the new string (including the last character) is added to the dictionary with the next available code.
+[src:compression/lempel-ziv-welch] The last input character is then used as the next starting point to scan for substrings.
+[src:compression/lempel-ziv-welch] In this way, successively longer strings are registered in the dictionary and available for subsequent encoding as single output values.
+[src:compression/lempel-ziv-welch] The algorithm works best on data with repeated patterns, so the initial parts of a message see little compression.
+[src:compression/lempel-ziv-welch] As the message grows, however, the compression ratio tends asymptotically to the maximum (i.e., the compression factor or ratio improves on an increasing curve, and not linearly, approaching a theoretical maximum inside a limited time period rather than over infinite time).
+[src:compression/lempel-ziv-welch] If the symbol is not encoded in the dictionary, goto step 7.
+[src:compression/lempel-ziv-welch] Emit the corresponding string **W** to output.
+[src:compression/lempel-ziv-welch] Concatenate the previous string emitted to output with the first symbol of **W**; add this to the dictionary.
+[src:compression/lempel-ziv-welch] Concatenate the previous string emitted to output with its first symbol; call this string **V**.
+[src:compression/lempel-ziv-welch] Add **V** to the dictionary and emit **V** to output.
+[src:compression/lempel-ziv-welch] The decoding algorithm works by reading a value from the encoded input and outputting the corresponding string from the dictionary.
+[src:compression/lempel-ziv-welch] However, the full dictionary is not needed, only the initial dictionary that contains single-character strings (and that is usually hard coded in the program, instead of sent with the encoded data).
+[src:compression/lempel-ziv-welch] The decoder then proceeds to the next input (which was already read in the previous iteration) and processes it as before, and so on until it has exhausted the input stream.
+[src:compression/lempel-ziv-welch] If variable-width codes are being used, the encoder and decoder must be careful to change the width at the same points in the encoded data so they don't disagree on boundaries between individual codes in the stream.
+[src:compression/lempel-ziv-welch] In the standard version, the encoder increases the width from *p* to *p* + 1 when a sequence ω + *s* is encountered that is not in the table (so that a code must be added for it) but the next available code in the table is 2*p* (the first code requiring *p* + 1 bits).
+[src:compression/lempel-ziv-welch] The encoder emits the code for ω at width *p* (since that code does not require *p* + 1 bits), and then increases the code width so that the next code emitted is *p* + 1 bits wide.
+[src:compression/lempel-ziv-welch] The decoder is always one code behind the encoder in building the table, so when it sees the code for ω, it generates an entry for code 2*p* − 1.
+[src:compression/lempel-ziv-welch] Since this is the point where the encoder increases the code width, the decoder must increase the width here as well—at the point where it generates the largest code that fits in *p* bits.
+[src:compression/lempel-ziv-welch] Unfortunately, some early implementations of the encoding algorithm increase the code width and *then* emit ω at the new width instead of the old width, so that to the decoder it looks like the width changes one code too early.
+[src:compression/lempel-ziv-welch] This is called "early change"; it caused so much confusion that Adobe now allows both versions in PDF files, but includes an explicit flag in the header of each LZW-compressed stream to indicate whether early change is being used.
+[src:compression/lempel-ziv-welch] Of the graphics file formats that support LZW compression, TIFF uses early change, while GIF and most others don't.
+[src:compression/lempel-ziv-welch] When the table is cleared in response to a clear code, both encoder and decoder change the code width after the clear code back to the initial code width, starting with the code immediately following the clear code.
+[src:compression/lempel-ziv-welch] Since the codes emitted typically do not fall on byte boundaries, the encoder and decoder must agree on how codes are packed into bytes.
+[src:compression/lempel-ziv-welch] The two common methods are *LSB-first* ("least significant bit first") and *MSB-first* ("most significant bit first").
+[src:compression/lempel-ziv-welch] MSB-first packing aligns the first code so that its *most* significant bit falls in the MSB of the first stream byte, with overflow aligned with the MSB of the next byte; further codes are written with MSB going into the most significant bit not yet used in the current stream byte.
+[src:compression/lempel-ziv-welch] TIFF files and PDF files use MSB-first packing order.
+[src:compression/lempel-ziv-welch] Many applications extend the algorithm by applying further encoding to the sequence of output symbols.
+[src:compression/lempel-ziv-welch] Some package the coded stream as printable characters using some form of binary-to-text encoding.
+[src:compression/lempel-ziv-welch] This increases the encoded length and decreases the compression rate.
+[src:compression/lempel-ziv-welch] Conversely, increased compression can often be achieved with an *adaptive entropy encoder*.
+[src:compression/lempel-ziv-welch] Such a coder estimates the probability distribution for the value of the next symbol, based on the observed frequencies of values so far.
+[src:compression/lempel-ziv-welch] A standard entropy encoding such as Huffman coding or arithmetic coding then uses shorter codes for values with higher probabilities.
+[src:compression/lempel-ziv-welch] The following example illustrates the LZW algorithm in action, showing the status of the output and the dictionary at every stage, both in encoding and decoding the data.
+[src:compression/lempel-ziv-welch] This example has been constructed to give reasonable compression on a very short message.
+[src:compression/lempel-ziv-welch] In real text data, repetition is generally less pronounced, so longer input streams are typically necessary before the compression builds up efficiency.
+[src:compression/lempel-ziv-welch] There are 26 symbols in the plaintext alphabet (the capital letters *A* through *Z*).
+[src:compression/lempel-ziv-welch] *#* is used to represent a stop code: a code outside the plaintext alphabet that triggers special handling.
+[src:compression/lempel-ziv-welch] We arbitrarily assign these the values 1 through 26 for the letters, and 0 for the stop code '#'.
+[src:compression/lempel-ziv-welch] (Most flavors of LZW would put the stop code *after* the data alphabet, but nothing in the basic algorithm requires that.
+[src:compression/lempel-ziv-welch] A computer renders these as strings of bits.
+[src:compression/lempel-ziv-welch] Five-bit codes are needed to give sufficient combinations to encompass this set of 27 values.
+[src:compression/lempel-ziv-welch] The dictionary is initialized with these 27 values.
+[src:compression/lempel-ziv-welch] As the dictionary grows, the codes must grow in width to accommodate the additional entries.
+[src:compression/lempel-ziv-welch] A 5-bit code gives 25 = 32 possible combinations of bits, so when the 33rd dictionary word is created, the algorithm must switch at that point from 5-bit strings to 6-bit strings (for *all* code values, including those previously output with only five bits).
+[src:compression/lempel-ziv-welch] Note that since the all-zero code 00000 is used, and is labeled "0", the 33rd dictionary entry is labeled **32**.
+[src:compression/lempel-ziv-welch] Buffer input characters in a sequence ω until ω + next character is not in the dictionary.
+[src:compression/lempel-ziv-welch] Emit the code for ω, and add ω + next character to the dictionary.
+[src:compression/lempel-ziv-welch] Start buffering again with the next character.
+[src:compression/lempel-ziv-welch] Encoded length = (6 codes × 5 bits/code) + (11 codes × 6 bits/code) = 96 bits.
+[src:compression/lempel-ziv-welch] Using LZW has saved 29 bits out of 125, reducing the message by more than 23%.
+[src:compression/lempel-ziv-welch] If the message were longer, then the dictionary words would begin to represent longer and longer sections of text, sending repeated words very compactly.
+[src:compression/lempel-ziv-welch] To decode an LZW-compressed archive, one needs to know in advance the initial dictionary used, but additional entries can be reconstructed as they are always simply concatenations of previous entries.
+[src:compression/lempel-ziv-welch] At each stage, the decoder receives a code X; it looks X up in the table and outputs the sequence χ it codes, and it conjectures χ + ? as the entry the encoder just added – because the encoder emitted X for χ precisely because χ + ? was not in the table, and the encoder goes ahead and adds it.
+[src:compression/lempel-ziv-welch] It is the first letter in the sequence coded by the *next* code Z that the decoder receives.
+[src:compression/lempel-ziv-welch] So the decoder looks up Z, decodes it into the sequence ω and takes the first letter z and tacks it onto the end of χ as the next dictionary entry.
+[src:compression/lempel-ziv-welch] This works as long as the codes received are in the decoder's dictionary, so that they can be decoded into sequences.
+[src:compression/lempel-ziv-welch] What happens if the decoder receives a code Z that is not yet in its dictionary?
+[src:compression/lempel-ziv-welch] Since the decoder is always just one code behind the encoder, Z can be in the encoder's dictionary only if the encoder *just* generated it, when emitting the previous code X for χ.
+[src:compression/lempel-ziv-welch] The decoder knows that the encoder just added Z as a code for χ + some unknown character *c*, so ω = χ + *c*.
+[src:compression/lempel-ziv-welch] Since *c* is the first character in the input stream after χ, and since ω is the string appearing immediately after χ, *c* must be the first character of the sequence ω.
+[src:compression/lempel-ziv-welch] Since χ is an initial substring of ω, *c* must also be the first character of χ.
+[src:compression/lempel-ziv-welch] So even though the Z code is not in the table, the decoder is able to infer the unknown sequence and adds χ + (the first character of χ) to the table as the value of Z.
+[src:compression/lempel-ziv-welch] This situation occurs whenever the encoder encounters input of the form *cScSc*, where *c* is a single character, *S* is a string and *cS* is already in the dictionary, but *cSc* is not.
+[src:compression/lempel-ziv-welch] The encoder emits the code for *cS*, putting a new code for *cSc* into the dictionary.
+[src:compression/lempel-ziv-welch] Next it sees *cSc* in the input (starting at the second *c* of *cScSc*) and emits the new code it just inserted.
+[src:compression/lempel-ziv-welch] The argument above shows that whenever the decoder receives a code not in its dictionary, the situation must look like this.
+[src:compression/lempel-ziv-welch] Although input of form *cScSc* might seem unlikely, this pattern is fairly common when the input stream is characterized by significant repetition.
+[src:compression/lempel-ziv-welch] In particular, long strings of a single character (which are common in the kinds of images LZW is often used to encode) repeatedly generate patterns of this sort.
+[src:compression/lempel-ziv-welch] Various patents have been issued in the United States and other countries for LZW and similar algorithms.
+[src:compression/lempel-ziv-welch] LZ78 was covered by U.S. patent 4,464,650 by Lempel, Ziv, Cohn, and Eastman, assigned to Sperry Corporation, later Unisys Corporation, filed on August 10, 1981.
+[src:compression/lempel-ziv-welch] Two US patents were issued for the LZW algorithm: U.S. patent 4,814,746 by Victor S.
+[src:compression/lempel-ziv-welch] Wegman and assigned to IBM, originally filed on June 1, 1983, and U.S. patent 4,558,302 by Welch, assigned to Sperry Corporation, later Unisys Corporation, filed on June 20, 1983.
+[src:compression/lempel-ziv-welch] In addition to the above patents, Welch's 1983 patent also includes citations to several other patents that influenced it, including two 1980 Japanese patents (JP9343880A and JP17790880A) from NEC's Jun Kanatsu, U.S. patent 4,021,782 (1974) from John S.
+[src:compression/lempel-ziv-welch] Holtz, and a 1981 German patent (DE19813118676) from Karl Eckhart Heinz.
+[src:compression/lempel-ziv-welch] In 1993–94, and again in 1999, Unisys Corporation received widespread condemnation when it attempted to enforce licensing fees for LZW in GIF images.
+[src:compression/lempel-ziv-welch] Unisys's US patent on the LZW algorithm expired on June 20, 2003, 20 years after it had been filed.
+[src:compression/lempel-ziv-welch] Patents that had been filed in the United Kingdom, France, Germany, Italy, Japan and Canada all expired in 2004, likewise 20 years after they had been filed.
+[src:compression/lempel-ziv-welch] LZMW (1985), by Victor Miller and Mark Wegman, searches input for the longest string already in the dictionary (the "current" match) and then adds the concatenation of the previous match with the current match to the dictionary.
+[src:compression/lempel-ziv-welch] Dictionary entries thus grow more rapidly, but this scheme is much more complicated to implement.
+[src:compression/lempel-ziv-welch] Miller and Wegman suggest deleting low-frequency entries from the dictionary when the dictionary fills up.
+[src:compression/lempel-ziv-welch] LZAP (1988), by James Storer, is a modification of LZMW.
+[src:compression/lempel-ziv-welch] Instead of adding just the concatenation of the previous match with the current match to the dictionary, add the concatenations of the previous match with each initial substring of the current match ("AP" stands for "all prefixes").
+[src:compression/lempel-ziv-welch] For example, if the previous match is "wiki" and current match is "pedia", then the LZAP encoder adds 5 new sequences to the dictionary: "wikip", "wikipe", "wikiped", "wikipedi", and "wikipedia", where the LZMW encoder adds only the one sequence "wikipedia".
+[src:compression/lempel-ziv-welch] This eliminates some of the complexity of LZMW, at the price of adding more dictionary entries.
+[src:compression/lempel-ziv-welch] LZWL is a syllable-based variant of LZW.
+[src:compression/lossless-compression] By operation of the pigeonhole principle, no lossless compression algorithm can shrink the size of all possible data: Some data will get longer by at least one symbol or bit.
+[src:compression/lossless-compression] Compression algorithms are usually effective for human- and machine-readable documents and cannot shrink the size of random data that contain no redundancy.
+[src:compression/lossless-compression] Different algorithms exist that are designed either with a specific type of input data in mind or with specific assumptions about what kinds of redundancy the uncompressed data are likely to contain.
+[src:compression/lossless-compression] Lossless data compression is used in many applications.
+[src:compression/lossless-compression] For example, it is used in the ZIP file format and in the GNU tool gzip.
+[src:compression/lossless-compression] It is also often used as a component within lossy data compression technologies (e.g. lossless mid/side joint stereo preprocessing by MP3 encoders and other lossy audio encoders).
+[src:compression/lossless-compression] Lossless compression is used in cases where it is important that the original and the decompressed data be identical, or where deviations from the original data would be unfavourable.
+[src:compression/lossless-compression] Common examples are executable programs, text documents, and source code.
+[src:compression/lossless-compression] Some image file formats, like PNG or GIF, use only lossless compression, while others like TIFF and MNG may use either lossless or lossy methods.
+[src:compression/lossless-compression] Lossless audio formats are most often used for archiving or production purposes, while smaller lossy audio files are typically used on portable players and in other cases where storage space is limited or exact replication of the audio is unnecessary.
+[src:compression/lossless-compression] The primary encoding algorithms used to produce bit sequences are Huffman coding (also used by the deflate algorithm) and arithmetic coding.
+[src:compression/lossless-compression] Arithmetic coding achieves compression rates close to the best possible for a particular statistical model, which is given by the information entropy, whereas Huffman compression is simpler and faster but produces poor results for models that deal with symbol probabilities close to 1.
+[src:compression/lossless-compression] There are two primary ways of constructing statistical models: in a *static* model, the data is analyzed and a model is constructed, then this model is stored with the compressed data.
+[src:compression/lossless-compression] This approach is simple and modular, but has the disadvantage that the model itself can be expensive to store, and also that it forces using a single model for all data being compressed, and so performs poorly on files that contain heterogeneous data.
+[src:compression/lossless-compression] *Adaptive* models dynamically update the model as the data is compressed.
+[src:compression/lossless-compression] Both the encoder and decoder begin with a trivial model, yielding poor compression of initial data, but as they learn more about the data, performance improves.
+[src:compression/lossless-compression] Most popular types of compression used in practice now use adaptive coders.
+[src:compression/lossless-compression] Lossless compression methods may be categorized according to the type of data they are designed to compress.
+[src:compression/lossless-compression] While, in principle, any general-purpose lossless compression algorithm (*general-purpose* meaning that they can accept any bitstring) can be used on any type of data, many are unable to achieve significant compression on data that are not of the form for which they were designed to compress.
+[src:compression/lossless-compression] Many of the lossless compression techniques used for text also work reasonably well for indexed-color images.
+[src:compression/lossless-compression] These techniques take advantage of the specific characteristics of images such as the common phenomenon of contiguous 2-D areas of similar tones.
+[src:compression/lossless-compression] Every pixel but the first is replaced by the difference to its left neighbor.
+[src:compression/lossless-compression] This leads to small values having a much higher probability than large values.
+[src:compression/lossless-compression] This is often also applied to sound files, and can compress files that contain mostly low frequencies and low volumes.
+[src:compression/lossless-compression] For images, this step can be repeated by taking the difference to the top pixel, and then in videos, the difference to the pixel in the next frame can be taken.
+[src:compression/lossless-compression] The adaptive encoding uses the probabilities from the previous sample in sound encoding, from the left and upper pixel in image encoding, and additionally from the previous frame in video encoding.
+[src:compression/lossless-compression] In the wavelet transformation, the probabilities are also passed through the hierarchy.
+[src:compression/lossless-compression] Many of these methods are implemented in open-source and proprietary tools, particularly LZW and its variants.
+[src:compression/lossless-compression] Some algorithms are patented in the United States and other countries and their legal usage requires licensing by the patent holder.
+[src:compression/lossless-compression] However, the patents on LZW expired on June 20, 2003.
+[src:compression/lossless-compression] As mentioned previously, lossless sound compression is a somewhat specialized area.
+[src:compression/lossless-compression] Lossless sound compression algorithms can take advantage of the repeating patterns shown by the wave-like nature of the data‍—‍essentially using autoregressive models to predict the "next" value and encoding the (possibly small) difference between the expected value and the actual data.
+[src:compression/lossless-compression] If the difference between the predicted and the actual data (called the *error*) tends to be small, then certain difference values (like 0, +1, −1 etc. on sample values) become very frequent, which can be exploited by encoding them in few output bits.
+[src:compression/lossless-compression] It is sometimes beneficial to compress only the differences between two versions of a file (or, in video compression, of successive images within a sequence).
+[src:compression/lossless-compression] This is called delta encoding (from the Greek letter Δ, which in mathematics, denotes a difference), but the term is typically only used if both versions are meaningful outside compression and decompression.
+[src:compression/lossless-compression] For example, while the process of compressing the error in the above-mentioned lossless audio compression scheme could be described as delta encoding from the approximated sound wave to the original sound wave, the approximated version of the sound wave is not meaningful in any other context.
+[src:compression/lossless-compression] No lossless compression algorithm can efficiently compress all possible data .
+[src:compression/lossless-compression] For this reason, many different algorithms exist that are designed either with a specific type of input data in mind or with specific assumptions about what kinds of redundancy the uncompressed data are likely to contain.
+[src:compression/lossless-compression] Some of the most common lossless compression algorithms are listed below.
+[src:compression/lossless-compression] Cryptosystems often compress data (the "plaintext") *before* encryption for added security.
+[src:compression/lossless-compression] When properly implemented, compression greatly increases the unicity distance by removing patterns that might facilitate cryptanalysis.
+[src:compression/lossless-compression] However, many ordinary lossless compression algorithms produce headers, wrappers, tables, or other predictable output that might instead make cryptanalysis easier.
+[src:compression/lossless-compression] Thus, cryptosystems must utilize compression algorithms whose output does not contain these predictable patterns.
+[src:compression/lossless-compression] Genetics compression algorithms (not to be confused with genetic algorithms) are the latest generation of lossless algorithms that compress data (typically sequences of nucleotides) using both conventional compression algorithms and specific algorithms adapted to genetic data.
+[src:compression/lossless-compression] In 2012, a team of scientists from Johns Hopkins University published the first genetic compression algorithm that does not rely on external genetic databases for compression.
+[src:compression/lossless-compression] HAPZIPPER was tailored for HapMap data and achieves over 20-fold compression (95% reduction in file size), providing 2- to 4-fold better compression much faster than leading general-purpose compression utilities.
+[src:compression/lossless-compression] Genomic sequence compression algorithms, also known as DNA sequence compressors, explore the fact that DNA sequences have characteristic properties, such as inverted repeats.
+[src:compression/lossless-compression] The most successful compressors are XM and GeCo.
+[src:compression/lossless-compression] For eukaryotes XM is slightly better in compression ratio, though for sequences larger than 100 MB its computational requirements are impractical.
+[src:compression/lossless-compression] Self-extracting executables contain a compressed application and a decompressor.
+[src:compression/lossless-compression] When executed, the decompressor transparently decompresses and runs the original application.
+[src:compression/lossless-compression] This is especially often used in demo coding, where competitions are held for demos with strict size limits, as small as 1 kilobyte.
+[src:compression/lossless-compression] This type of compression is not strictly limited to binary executables, but can also be applied to scripts, such as JavaScript.
+[src:compression/lossless-compression] Lossless compression algorithms and their implementations are routinely tested in head-to-head benchmarks.
+[src:compression/lossless-compression] There are a number of better-known compression benchmarks.
+[src:compression/lossless-compression] Some benchmarks cover only the data compression ratio, so winners in these benchmarks may be unsuitable for everyday use due to the slow speed of the top performers.
+[src:compression/lossless-compression] Another drawback of some benchmarks is that their data files are known, so some program writers may optimize their programs for best performance on a particular data set.
+[src:compression/lossless-compression] The winners on these benchmarks often come from the class of context-mixing compression software.
+[src:compression/lossless-compression] The Compression Ratings website published a chart summary of the "frontier" in compression ratio and time.
+[src:compression/lossless-compression] The **Silesia corpus** is a collection of files that was created in 2003 as an alternative for the Canterbury corpus and Calgary corpus, based on concerns about how well these represented modern files.
+[src:compression/lossless-compression] It contains various data types, including large text documents, executable files, and databases.
+[src:compression/lossless-compression] It is widely used in data compression research.
+[src:compression/lossless-compression] The corpus consists of 12 files, totaling 211MB.
+[src:compression/lossless-compression] The files were chosen to represent what the author considered to be data types likely to grow rapidly in size over time, such as computer programs and databases, along with more traditional compression benchmarks, such as large text files.
+[src:compression/lossless-compression] Because it has a broader and more modern selection of datatypes, it is considered a better source of test data for compression algorithms when compared to the Calgary corpus.
+[src:compression/lossless-compression] Lossless data compression algorithms cannot guarantee compression for all input data sets.
+[src:compression/lossless-compression] In other words, for any lossless data compression algorithm, there will be an input data set that does not get smaller when processed by the algorithm, and for any lossless data compression algorithm that makes at least one file smaller, there will be at least one file that it makes larger.
+[src:compression/lossless-compression] Most practical compression algorithms provide an "escape" facility that can turn off the normal coding for files that would become longer by being encoded.
+[src:compression/lossless-compression] In theory, only a single additional bit is required to tell the decoder that the normal coding has been turned off for the entire input; however, most encoding algorithms use at least one full byte (and typically more than one) for this purpose.
+[src:compression/lossless-compression] For example, deflate compressed files never need to grow by more than 5 bytes per 65,535 bytes of input.
+[src:compression/lossless-compression] In fact, if we consider files of length N, if all files were equally probable, then for any lossless compression that reduces the size of some file, the expected length of a compressed file (averaged over all possible files of length N) must necessarily be *greater* than N.
+[src:compression/lossless-compression] So if we know nothing about the properties of the data we are compressing, we might as well not compress it at all.
+[src:compression/lossless-compression] A lossless compression algorithm is useful only when we are more likely to compress certain types of files than others; then the algorithm could be designed to compress those types of data better.
+[src:compression/lossless-compression] Thus, the main lesson from the argument is not that one risks big losses, but merely that one cannot always win.
+[src:compression/lossless-compression] To choose an algorithm always means implicitly to select a *subset* of all files that will become usefully shorter.
+[src:compression/lossless-compression] This is the theoretical reason why we need to have different compression algorithms for different kinds of files: there cannot be any algorithm that is good for all kinds of data.
+[src:compression/lossless-compression] Algorithms are generally quite specifically tuned to a particular type of file: for example, lossless audio compression programs do not work well on text files, and vice versa.
+[src:compression/lossless-compression] In particular, files of random data cannot be consistently compressed by any conceivable lossless data compression algorithm; indeed, this result is used to *define* the concept of randomness in Kolmogorov complexity.
+[src:compression/lossless-compression] It is provably impossible to create an algorithm that can losslessly compress any data.
+[src:compression/lossless-compression] Such an algorithm contradicts fundamental laws of mathematics because, if it existed, it could be applied repeatedly to losslessly reduce any file to length 1.
+[src:compression/lossless-compression] On the other hand, it has also been proven that there is no algorithm to determine whether a file is incompressible in the sense of Kolmogorov complexity.
+[src:compression/lossless-compression] Hence it is possible that any particular file, even if it appears random, may be significantly compressed, even including the size of the decompressor.
+[src:compression/lossless-compression] An example is the digits of the mathematical constant *pi*, which appear random but can be generated by a very small program.
+[src:compression/lossless-compression] However, even though it cannot be determined whether a particular file is incompressible, a simple theorem about incompressible strings shows that over 99% of files of any given length cannot be compressed by more than one byte (including the size of the decompressor).
+[src:compression/lossless-compression] Abstractly, a compression algorithm can be viewed as a function on sequences (normally of octets).
+[src:compression/lossless-compression] Compression is successful if the resulting sequence is shorter than the original sequence (and the instructions for the decompression map).
+[src:compression/lossless-compression] For a compression algorithm to be lossless, the compression map must form an injection from "plain" to "compressed" bit sequences.
+[src:compression/lossless-compression] The pigeonhole principle prohibits a bijection between the collection of sequences of length *N* and any subset of the collection of sequences of length *N*−1.
+[src:compression/lossless-compression] Therefore, it is not possible to produce a lossless algorithm that reduces the size of every possible input sequence.
+[src:compression/lossless-compression] Real compression algorithm designers accept that streams of high information entropy cannot be compressed, and accordingly, include facilities for detecting and handling this condition.
+[src:compression/lossless-compression] An obvious way of detection is applying a raw compression algorithm and testing if its output is smaller than its input.
+[src:compression/lossless-compression] Sometimes, detection is made by heuristics; for example, a compression application may consider files whose names end in ".zip", ".arj" or ".lha" uncompressible without any more sophisticated detection.
+[src:compression/lossless-compression] A common way of handling this situation is quoting input, or uncompressible parts of the input in the output, minimizing the compression overhead.
+[src:compression/lossless-compression] For example, the zip data format specifies the 'compression method' of 'Stored' for input files that have been copied into the archive verbatim.
+[src:compression/lossy-compression] In information technology, **lossy compression**, or **irreversible compression**, is the class of data compression methods that uses inexact approximations and partial data discarding to represent the content.
+[src:compression/lossy-compression] These techniques are used to reduce data size for storing, handling, and transmitting content.
+[src:compression/lossy-compression] Higher degrees of approximation create coarser images as more details are removed.
+[src:compression/lossy-compression] This is opposed to lossless data compression (reversible data compression) which does not degrade the data.
+[src:compression/lossy-compression] The amount of data reduction possible using lossy compression is much higher than using lossless techniques.
+[src:compression/lossy-compression] Well-designed lossy compression technology often reduces file sizes significantly before degradation is noticed by the end-user.
+[src:compression/lossy-compression] Even when noticeable by the user, further data reduction may be desirable (e.g., for real-time communication or to reduce transmission times or storage needs).
+[src:compression/lossy-compression] The most widely used lossy compression algorithm is the discrete cosine transform (DCT), first published by Nasir Ahmed, T.
+[src:compression/lossy-compression] Lossy compression is most commonly used to compress multimedia data (audio, video, and images), especially in applications such as streaming media and internet telephony.
+[src:compression/lossy-compression] By contrast, lossless compression is typically required for text and data files, such as bank records and text articles.
+[src:compression/lossy-compression] It can be advantageous to make a master lossless file which can then be used to produce additional copies from.
+[src:compression/lossy-compression] This allows one to avoid basing new compressed copies on a lossy source file, which would yield additional artifacts and further unnecessary information loss.
+[src:compression/lossy-compression] It is possible to compress many types of digital data in a way that reduces the size of a computer file needed to store it, or the bandwidth needed to transmit it, with no loss of the full information contained in the original file.
+[src:compression/lossy-compression] A picture, for example, is converted to a digital file by considering it to be an array of dots and specifying the color and brightness of each dot.
+[src:compression/lossy-compression] The original data contains a certain amount of information, and there is a lower bound to the size of a file that can still carry all the information.
+[src:compression/lossy-compression] Basic information theory says that there is an absolute limit in reducing the size of this data.
+[src:compression/lossy-compression] When data is compressed, its entropy increases, and it cannot increase indefinitely.
+[src:compression/lossy-compression] For example, a compressed ZIP file is smaller than its original, but repeatedly compressing the same file will not reduce the size to nothing.
+[src:compression/lossy-compression] Most compression algorithms can recognize when further compression would be pointless and would in fact increase the size of the data.
+[src:compression/lossy-compression] In many cases, files or data streams contain more information than is needed.
+[src:compression/lossy-compression] For example, a picture may have more detail than the eye can distinguish when reproduced at the largest size intended; likewise, an audio file does not need a lot of fine detail during a very loud passage.
+[src:compression/lossy-compression] Developing lossy compression techniques as closely matched to human perception as possible is a complex task.
+[src:compression/lossy-compression] Sometimes the ideal is a file that provides exactly the same perception as the original, with as much digital information as possible removed; other times, perceptible loss of quality is considered a valid tradeoff.
+[src:compression/lossy-compression] The terms "irreversible" and "reversible" are preferred over "lossy" and "lossless" respectively for some applications, such as medical image compression, to circumvent the negative implications of "loss".
+[src:compression/lossy-compression] The type and amount of loss can affect the utility of the images.
+[src:compression/lossy-compression] Artifacts or undesirable effects of compression may be clearly discernible yet the result still useful for the intended purpose.
+[src:compression/lossy-compression] Or lossy compressed images may be 'visually lossless', or in the case of medical images, so-called diagnostically acceptable irreversible compression (DAIC) may have been applied.
+[src:compression/lossy-compression] Some forms of lossy compression can be thought of as an application of transform coding, which is a type of data compression used for digital images, digital audio signals, and digital video.
+[src:compression/lossy-compression] The transformation is typically used to enable better (more targeted) quantization.
+[src:compression/lossy-compression] Knowledge of the application is used to choose information to discard, thereby lowering its bandwidth.
+[src:compression/lossy-compression] The remaining information can then be compressed via a variety of methods.
+[src:compression/lossy-compression] When the output is decoded, the result may not be identical to the original input, but is expected to be close enough for the purpose of the application.
+[src:compression/lossy-compression] The most common form of lossy compression is a transform coding method, the discrete cosine transform (DCT), which was first published by Nasir Ahmed, T.
+[src:compression/lossy-compression] DCT is the most widely used form of lossy compression, for popular image compression formats (such as JPEG), video coding standards (such as MPEG and H.264/AVC) and audio compression formats (such as MP3 and AAC).
+[src:compression/lossy-compression] In the case of audio data, a popular form of transform coding is perceptual coding, which transforms the raw data to a domain that more accurately reflects the information content.
+[src:compression/lossy-compression] For example, rather than expressing a sound file as the amplitude levels over time, one may express it as the frequency spectrum over time, which corresponds more accurately to human audio perception.
+[src:compression/lossy-compression] This is because uncompressed audio can only reduce file size by lowering bit rate or depth, whereas compressing audio can reduce size while maintaining bit rate and depth.
+[src:compression/lossy-compression] This compression becomes a selective loss of the least significant data, rather than losing data across the board.
+[src:compression/lossy-compression] Further, a transform coding may provide a better domain for manipulating or otherwise editing the data – for example, equalization of audio is most naturally expressed in the frequency domain (boost the bass, for instance) rather than in the raw time domain.
+[src:compression/lossy-compression] From this point of view, perceptual encoding is not essentially about *discarding* data, but rather about a *better representation* of data.
+[src:compression/lossy-compression] Another use is for backward compatibility and graceful degradation: in color television, encoding color via a luminance-chrominance transform domain (such as YUV) means that black-and-white sets display the luminance, while ignoring the color information.
+[src:compression/lossy-compression] Lossy compression formats suffer from generation loss: repeatedly compressing and decompressing the file will cause it to progressively lose quality.
+[src:compression/lossy-compression] This is in contrast with lossless data compression, where data will not be lost via the use of such a procedure.
+[src:compression/lossy-compression] Information-theoretical foundations for lossy data compression are provided by rate-distortion theory.
+[src:compression/lossy-compression] Much like the use of probability in optimal coding theory, rate-distortion theory heavily draws on Bayesian estimation and decision theory in order to model perceptual distortion and even aesthetic judgment.
+[src:compression/lossy-compression] In some systems the two techniques are combined, with transform codecs being used to compress the error signals generated by the predictive stage.
+[src:compression/lossy-compression] The advantage of lossy methods over lossless methods is that in some cases a lossy method can produce a much smaller compressed file than any lossless method, while still meeting the requirements of the application.
+[src:compression/lossy-compression] Lossy methods are most often used for compressing sound, images or videos.
+[src:compression/lossy-compression] This is because these types of data are intended for human interpretation where the mind can easily "fill in the blanks" or see past very minor errors or inconsistencies – ideally lossy compression is transparent (imperceptible), which can be verified via an ABX test.
+[src:compression/lossy-compression] Data files using lossy compression are smaller in size and thus cost less to store and to transmit over the Internet, a crucial consideration for streaming video services such as Netflix and streaming audio services such as Spotify.
+[src:compression/lossy-compression] When a user acquires a lossily compressed file, (for example, to reduce download time) the retrieved file can be quite different from the original at the bit level while being indistinguishable to the human ear or eye for most practical purposes.
+[src:compression/lossy-compression] Many compression methods focus on the idiosyncrasies of human physiology, taking into account, for instance, that the human eye can see only certain wavelengths of light.
+[src:compression/lossy-compression] The psychoacoustic model describes how sound can be highly compressed without degrading perceived quality.
+[src:compression/lossy-compression] Flaws caused by lossy compression that are noticeable to the human eye or ear are known as compression artifacts.
+[src:compression/lossy-compression] The compression ratio (that is, the size of the compressed file compared to that of the uncompressed file) of lossy video codecs is nearly always far superior to that of the audio and still-image equivalents.
+[src:compression/lossy-compression] An important caveat about lossy compression (formally transcoding), is that editing lossily compressed files causes digital generation loss from the re-encoding.
+[src:compression/lossy-compression] This can be avoided by only producing lossy files from (lossless) originals and only editing (copies of) original files, such as images in raw image format instead of JPEG.
+[src:compression/lossy-compression] If data which has been compressed lossily is decoded and compressed losslessly, the size of the result can be comparable with the size of the data before lossy compression, but the data already lost cannot be recovered.
+[src:compression/lossy-compression] When deciding to use lossy conversion without keeping the original, format conversion may be needed in the future to achieve compatibility with software or devices (format shifting), or to avoid paying patent royalties for decoding or distribution of compressed files.
+[src:compression/lossy-compression] By modifying the compressed data directly without decoding and re-encoding, some editing of lossily compressed files without degradation of quality is possible.
+[src:compression/lossy-compression] Editing which reduces the file size as if it had been compressed to a greater degree, but without more loss than this, is sometimes also possible.
+[src:compression/lossy-compression] The primary programs for lossless editing of JPEGs are `jpegtran`, and the derived `exiftran` (which also preserves Exif information), and Jpegcrop (which provides a Windows interface).
+[src:compression/lossy-compression] These allow the image to be cropped, rotated, flipped, and flopped, or even converted to grayscale (by dropping the chrominance channel).
+[src:compression/lossy-compression] While unwanted information is destroyed, the quality of the remaining portion is unchanged.
+[src:compression/lossy-compression] Some other transforms are possible to some extent, such as joining images with the same encoding (composing side by side, as on a grid) or pasting images such as logos onto existing images (both via Jpegjoin), or scaling.
+[src:compression/lossy-compression] The freeware Windows-only IrfanView has some lossless JPEG operations in its `JPG_TRANSFORM` plugin.
+[src:compression/lossy-compression] Metadata, such as ID3 tags, Vorbis comments, or Exif information, can usually be modified or removed without modifying the underlying data.
+[src:compression/lossy-compression] Some well-known designs that have this capability include JPEG 2000 for still images and H.264/MPEG-4 AVC based Scalable Video Coding for video.
+[src:compression/lossy-compression] Such schemes have also been standardized for older designs as well, such as JPEG images with progressive encoding, and MPEG-2 and MPEG-4 Part 2 video, although those prior schemes had limited success in terms of adoption into real-world common usage.
+[src:compression/lossy-compression] Similar techniques are used in mipmaps, pyramid representations, and more sophisticated scale space methods.
+[src:compression/lossy-compression] Some audio formats feature a combination of a lossy format and a lossless correction which when combined reproduce the original signal; the correction can be stripped, leaving a smaller, lossily compressed, file.
+[src:compression/lossy-compression] Such formats include MPEG-4 SLS (Scalable to Lossless), WavPack, OptimFROG DualStream, and DTS-HD Master Audio in lossless (XLL) mode).
+[src:compression/lossy-compression] Researchers have performed lossy compression on text by either using a thesaurus to substitute short words for long ones, or generative text techniques, although these sometimes fall into the related category of lossy data conversion.
+[src:compression/lossy-compression] A general kind of lossy compression is to lower the resolution of an image, as in image scaling, particularly decimation.
+[src:compression/lossy-compression] One may also remove less "lower information" parts of an image, such as by seam carving.
+[src:compression/lossy-compression] Many media transforms, such as Gaussian blur, are, like lossy compression, irreversible: the original signal cannot be reconstructed from the transformed signal.
+[src:compression/lossy-compression] However, in general these will have the same size as the original, and are not a form of compression.
+[src:compression/lossy-compression] Lowering resolution has practical uses, as the NASA New Horizons craft transmitted thumbnails of its encounter with Pluto-Charon before it sent the higher resolution images.
+[src:compression/lossy-compression] Another solution for slow connections is the usage of Image interlacing which progressively defines the image.
+[src:compression/lossy-compression] Thus a partial transmission is enough to preview the final image, in a lower resolution version, without creating a scaled and a full version too.
+[src:compression/lz77-and-lz78] They are both theoretically dictionary coders.
+[src:compression/lz77-and-lz78] LZ77 maintains a sliding window during compression.
+[src:compression/lz77-and-lz78] This was later shown to be equivalent to the *explicit dictionary* constructed by LZ78—however, they are only equivalent when the entire data is intended to be decompressed.
+[src:compression/lz77-and-lz78] Since LZ77 encodes and decodes from a sliding window over previously seen characters, decompression must always start at the beginning of the input.
+[src:compression/lz77-and-lz78] Conceptually, LZ78 decompression could allow random access to the input if the entire dictionary were known in advance.
+[src:compression/lz77-and-lz78] However, in practice the dictionary is created during encoding and decoding by creating a new phrase whenever a token is output.
+[src:compression/lz77-and-lz78] The algorithms were named an IEEE Milestone in 2004.
+[src:compression/lz77-and-lz78] In 2021 Jacob Ziv was awarded the IEEE Medal of Honor for his involvement in their development.
+[src:compression/lz77-and-lz78] In the second of the two papers that introduced these algorithms they are analyzed as encoders defined by finite-state machines.
+[src:compression/lz77-and-lz78] A measure analogous to information entropy is developed for individual sequences (as opposed to probabilistic ensembles).
+[src:compression/lz77-and-lz78] This measure gives a bound on the data compression ratio that can be achieved.
+[src:compression/lz77-and-lz78] It is then shown that there exists finite lossless encoders for every sequence that achieve this bound as the length of the sequence grows to infinity.
+[src:compression/lz77-and-lz78] In this sense an algorithm based on this scheme produces asymptotically optimal encodings.
+[src:compression/lz77-and-lz78] This result can be proven more directly, as for example in notes by Peter Shor.
+[src:compression/lz77-and-lz78] Similar theorems apply to other versions of LZ algorithm.
+[src:compression/lz77-and-lz78] LZ77 algorithms achieve compression by replacing repeated occurrences of data with references to a single copy of that data existing earlier in the uncompressed data stream.
+[src:compression/lz77-and-lz78] A match is encoded by a pair of numbers called a *length–distance pair*, which is equivalent to the statement "each of the next *length* characters is equal to the characters exactly *distance* characters behind it in the uncompressed stream".
+[src:compression/lz77-and-lz78] To spot matches, the encoder must keep track of some amount of the most recent data, such as the last 2 KB, 4 KB, or 32 KB.
+[src:compression/lz77-and-lz78] The structure in which this data is held is called a *sliding window*, which is why LZ77 is sometimes called *sliding-window compression*.
+[src:compression/lz77-and-lz78] The encoder needs to keep this data to look for matches, and the decoder needs to keep this data to interpret the matches the encoder refers to.
+[src:compression/lz77-and-lz78] The larger the sliding window is, the longer back the encoder may search for creating references.
+[src:compression/lz77-and-lz78] It is not only acceptable but frequently useful to allow length–distance pairs to specify a length that actually exceeds the distance.
+[src:compression/lz77-and-lz78] As a copy command, this is puzzling: "Go back *four* characters and copy *ten* characters from that position into the current position".
+[src:compression/lz77-and-lz78] How can ten characters be copied over when only four of them are actually in the buffer?
+[src:compression/lz77-and-lz78] Tackling one byte at a time, there is no problem serving this request, because as a byte is copied over, it may be fed again as input to the copy command.
+[src:compression/lz77-and-lz78] When the copy-from position makes it to the initial destination position, it is consequently fed data that was pasted from the *beginning* of the copy-from position.
+[src:compression/lz77-and-lz78] The operation is thus equivalent to the statement "copy the data you were given and repetitively paste it until it fits".
+[src:compression/lz77-and-lz78] As this type of pair repeats a single copy of data multiple times, it can be used to incorporate a flexible and easy form of run-length encoding.
+[src:compression/lz77-and-lz78] Then as the search pointer proceeds past the search window and forward, as far as the run pattern repeats in the input, the search and input pointers will be in sync and match characters until the run pattern is interrupted.
+[src:compression/lz77-and-lz78] Then *L* characters have been matched in total, *L* > *D*, and the code is [*D*, *L*, *c*].
+[src:compression/lz77-and-lz78] When the first *L*R characters are read to the output, this corresponds to a single run unit appended to the output buffer.
+[src:compression/lz77-and-lz78] At this point, the read pointer could be thought of as only needing to return int(*L*/*L*R) + (1 if *L* mod *L*R ≠ 0) times to the start of that single buffered run unit, read *L*R characters (or maybe fewer on the last return), and repeat until a total of *L* characters are read.
+[src:compression/lz77-and-lz78] But mirroring the encoding process, since the pattern is repetitive, the read pointer need only trail in sync with the write pointer by a fixed distance equal to the run length *L*R until *L* characters have been copied to output in total.
+[src:compression/lz77-and-lz78] The following pseudocode is a reproduction of the LZ77 compression algorithm sliding window.
+[src:compression/lz77-and-lz78] The LZ78 algorithms compress sequential data by building a dictionary of token sequences from the input, and then replacing the second and subsequent occurrence of the sequence in the data stream with a reference to the dictionary entry.
+[src:compression/lz77-and-lz78] The observation is that the number of repeated sequences is a good measure of the non-random nature of a sequence.
+[src:compression/lz77-and-lz78] The algorithms represent the dictionary as an *n*-ary tree, where *n* is the number of tokens used to form token sequences.
+[src:compression/lz77-and-lz78] Each dictionary entry is of the form `dictionary[...] = {index, token}`, where `index` is the index to a dictionary entry representing a previously seen sequence, and `token` is the next token from the input that makes this entry unique in the dictionary.
+[src:compression/lz77-and-lz78] Note how the algorithm is greedy, and so nothing is added to the table until a unique making token is found.
+[src:compression/lz77-and-lz78] The algorithm is to initialize last matching index = 0 and next available index = 1 and then, for each token of the input stream, the dictionary searched for a match: `{last matching index, token}`.
+[src:compression/lz77-and-lz78] If a match is found, then last matching index is set to the index of the matching entry, nothing is output, and last matching index is left representing the input so far.
+[src:compression/lz77-and-lz78] Input is processed until a match is *not* found.
+[src:compression/lz77-and-lz78] Then a new dictionary entry is created, `dictionary[next available index] = {last matching index, token}`, and the algorithm outputs last matching index, followed by token, then resets last matching index = 0 and increments next available index.
+[src:compression/lz77-and-lz78] and the output sequence of the compressed data would be 0A1B0B.
+[src:compression/lz77-and-lz78] Note that the last A is not represented yet, as the algorithm cannot know what comes next.
+[src:compression/lz77-and-lz78] In practice, an EOF marker is added to the input: AABBA$, for example.
+[src:compression/lz77-and-lz78] Note also that in this case the output 0A1B0B1$ is longer than the original input, but compression ratio improves considerably as the dictionary grows, and in binary the indexes need not be represented by any more than the minimum number of bits.
+[src:compression/lz77-and-lz78] Decompression consists of rebuilding the dictionary from the compressed sequence.
+[src:compression/lz77-and-lz78] From the sequence 0A1B0B1$ the first entry is always the terminator 0 {...} , and the first from the sequence would be 1 {0,A} .
+[src:compression/lz77-and-lz78] The second pair from the input is 1B and results in entry number 2 in the dictionary, {1,B}.
+[src:compression/lz77-and-lz78] The token `B` is output, preceded by the sequence represented by dictionary entry 1.
+[src:compression/lz77-and-lz78] Entry 1 is an `A` (followed by "entry 0" – nothing) so AB is added to the output.
+[src:compression/lz77-and-lz78] Next 0B is added to the dictionary as the next entry, 3 {0,B} , and `B` (preceded by nothing) is added to the output.
+[src:compression/lz77-and-lz78] Finally a dictionary entry for 1$ is created, and A$ is output, resulting in A AB B A$, or AABBA, removing the spaces and EOF marker.
+[src:compression/lz77-and-lz78] LZW is an LZ78-based algorithm that uses a dictionary pre-initialized with all possible characters (symbols) or emulation of a pre-initialized dictionary.
+[src:compression/lz77-and-lz78] Refer to the LZW article for implementation details.
+[src:compression/lz77-and-lz78] BTLZ is an LZ78-based algorithm that was developed for use in real-time communications systems (originally modems) and standardized by CCITT/ITU as V.42bis.
+[src:compression/lz77-and-lz78] When the trie-structured dictionary is full, a simple re-use/recovery algorithm is used to ensure that the dictionary can keep adapting to changing data.
+[src:compression/lz77-and-lz78] A counter cycles through the dictionary.
+[src:compression/lz77-and-lz78] When a new entry is needed, the counter steps through the dictionary until a leaf node is found (a node with no dependents).
+[src:compression/lz77-and-lz78] This is deleted and the space re-used for the new entry.
+[src:compression/lz77-and-lz78] This is simpler to implement than LRU or LFU and achieves equivalent performance.
+[src:compression/run-length-encoding] Run-length encoding is most efficient on data that contains many such runs, for example, simple graphic images such as icons, line drawings, games, and animations.
+[src:compression/run-length-encoding] For files that do not have many runs, encoding them with RLE could increase the file size.
+[src:compression/run-length-encoding] RLE may also refer to particular image formats that use the encoding.
+[src:compression/run-length-encoding] RLE is an early graphics file format supported by CompuServe for compressing black and white images, that was widely supplanted by their later Graphics Interchange Format (GIF).
+[src:compression/run-length-encoding] It is also the name of a little-used image format in Windows 3.x that is saved with the file extension `rle`, consisting of a run-length encoded bitmap; it was used as the format for the Windows 3.x startup screen.
+[src:compression/run-length-encoding] Run-length encoding (RLE) schemes were employed in the transmission of analog television signals as far back as 1967.
+[src:compression/run-length-encoding] In 1983, run-length encoding was patented by Hitachi.
+[src:compression/run-length-encoding] RLE is particularly well suited to palette-based bitmap images (which use relatively few colors) such as computer icons, and was a popular image compression method on early online services such as CompuServe before the advent of more sophisticated formats such as GIF.
+[src:compression/run-length-encoding] It does not work well on continuous-tone images (which use very many colors) such as photographs, although JPEG uses it on the coefficients that remain after transforming and quantizing image blocks.
+[src:compression/run-length-encoding] Common formats for run-length encoded data include Truevision TGA, PackBits (by Apple, used in MacPaint), PCX and ILBM.
+[src:compression/run-length-encoding] The International Telecommunication Union also describes a standard to encode run-length color for fax machines, known as T.45.
+[src:compression/run-length-encoding] That fax color coding standard, which along with other techniques is incorporated into Modified Huffman coding, is relatively efficient because most faxed documents are primarily white space, with occasional interruptions of black.
+[src:compression/run-length-encoding] RLE has a space complexity of ⁠ $O(n)$ ⁠, where n is the size of the input data.
+[src:compression/run-length-encoding] Run-length encoding compresses data by reducing the physical size of a repeating string of characters.
+[src:compression/run-length-encoding] This process involves converting the input data into a compressed format by identifying and counting consecutive occurrences of each character.
+[src:compression/run-length-encoding] Count the number of consecutive repeating characters (run length).
+[src:compression/run-length-encoding] The decoding process involves reconstructing the original data from the encoded format by repeating characters according to their counts.
+[src:compression/run-length-encoding] For each count-character pair, repeat the character count times.
+[src:compression/run-length-encoding] Append these characters to the result string.
+[src:compression/run-length-encoding] Consider a screen containing plain black text on a solid white background.
+[src:compression/run-length-encoding] There will be many long runs of white pixels in the blank space, and many short runs of black pixels within the text.
+[src:compression/run-length-encoding] This can be interpreted as a sequence of twelve Ws, one B, twelve Ws, three Bs, etc., and represents the original 67 characters in only 18.
+[src:compression/run-length-encoding] While the actual format used for the storage of images is generally binary rather than ASCII characters like this, the principle remains the same.
+[src:compression/run-length-encoding] Even binary data files can be compressed with this method; file format specifications often dictate repeated bytes in files as padding space.
+[src:compression/run-length-encoding] However, newer compression methods such as DEFLATE often use LZ77-based algorithms, a generalization of run-length encoding that can take advantage of runs of strings of characters (such as `BWWBWWBWWBWW`).
+[src:compression/run-length-encoding] Run-length encoding can be expressed in multiple ways to accommodate data properties as well as additional compression algorithms.
+[src:compression/run-length-encoding] For instance, one popular method encodes run lengths for runs of two or more characters only, using an "escape" symbol to identify runs, or using the character itself as the escape, so that any time a character appears twice it denotes a run.
+[src:compression/run-length-encoding] This would be interpreted as a run of twelve Ws, a B, a run of twelve Ws, a run of three Bs, etc.
+[src:compression/run-length-encoding] In data where runs are less frequent, this can significantly improve the compression rate.
+[src:compression/run-length-encoding] One other matter is the application of additional compression algorithms.
+[src:compression/run-length-encoding] To overcome this, some run-length encoders separate the data and escape symbols from the run lengths, so that the two can be handled independently.
+[src:compression/run-length-encoding] For the example data, this would result in two outputs, the string "`WWBWWBBWWBWW`" and the numbers (`12,12,3,24,14`).
+[src:compression/zstd] The algorithm was published in 2018 as RFC 8478, which also defines an associated media type "application/zstd", filename extension "zst", and HTTP content encoding "zstd".
+[src:compression/zstd] Zstandard was designed to give a compression ratio comparable to that of the DEFLATE algorithm (developed in 1991 and used in the original ZIP and gzip programs), but faster, especially for decompression.
+[src:compression/zstd] It is tunable with compression levels ranging from negative 7 (fastest) to 22 (slowest in compression speed, but best compression ratio).
+[src:compression/zstd] Starting from version 1.3.2 (October 2017), zstd optionally implements very-long-range search and deduplication (`--long`, 128 MiB window) similar to rzip or lrzip.
+[src:compression/zstd] Compression speed can vary by a factor of 20 or more between the fastest and slowest levels, while decompression is uniformly fast, varying by less than 20% between the fastest and slowest levels.
+[src:compression/zstd] The Zstandard command-line has an "adaptive" (`--adapt`) mode that varies compression level depending on I/O conditions, mainly how fast it can write the output.
+[src:compression/zstd] Zstandard at its maximum compression level gives a compression ratio close to lzma, lzham, and ppmx.
+[src:compression/zstd] As of 2019, Zstandard reaches the Pareto frontier for decompression, as it produces output faster than any other open source algorithm with a similar or better compression ratio.
+[src:compression/zstd] Dictionaries can have a large impact on the compression ratio of small files, so Zstandard can use a user-provided compression dictionary.
+[src:compression/zstd] It also offers a training mode, able to generate a dictionary from a set of samples.
+[src:compression/zstd] In particular, one dictionary can be loaded to process large sets of files with redundancy between files, but not necessarily within each file, such as for log files.
+[src:compression/zstd] Zstandard combines a dictionary-matching stage (LZ77) with a large search window and a fast entropy-coding stage.
+[src:compression/zstd] It uses Huffman coding alongside finite-state entropy (FSE), a variant of tANS.
+[src:compression/zstd] The Linux kernel has included Zstandard since November 2017 (version 4.14) as a compression method for the btrfs and squashfs filesystems, as well as for loadable kernel modules.
+[src:compression/zstd] In 2017, Allan Jude integrated Zstandard into the FreeBSD kernel, and it was subsequently integrated as a compressor option for core dumps (both user programs and kernel panics).
+[src:compression/zstd] It was also used to create a proof-of-concept OpenZFS compression method which was integrated in 2020.
+[src:compression/zstd] The AWS Redshift and RocksDB databases include support for field compression using Zstandard.
+[src:compression/zstd] In March 2018, Canonical tested the use of zstd as a deb package compression method by default for the Ubuntu Linux distribution.
+[src:compression/zstd] Compared with xz compression of deb packages, zstd at level 19 decompresses significantly faster, but at the cost of 6% larger package files.
+[src:compression/zstd] Support was added to Debian (and subsequently, Ubuntu) in April 2018 (in version 1.6~rc1).
+[src:compression/zstd] Fedora added ZStandard support to RPM in May 2018 (Fedora release 28) and used it for packaging the release in October 2019 (Fedora 31).
+[src:compression/zstd] In Fedora 33, the filesystem is compressed by default with zstd.
+[src:compression/zstd] Arch Linux added support for zstd as a package compression method in October 2019 with the release of the pacman 5.2 package manager and in January 2020 switched from xz to zstd for the packages in the official repository.
+[src:compression/zstd] Arch Linux later also switched to zstd as the default compression algorithm for mkinitcpio initial ramdisk generator.
+[src:compression/zstd] On 15 June 2020, Zstandard was implemented in version 6.3.8 of the zip file format with codec number 93, deprecating the previous codec number of 20 as it was implemented in version 6.3.7, released on 1 June.
+[src:compression/zstd] In March 2024, Google Chrome version 123 (and Chromium-based browsers such as Brave or Microsoft Edge) added zstd support in the HTTP header `Content-Encoding`.
+[src:compression/zstd] In May 2024, Firefox release 126.0 added zstd support in the HTTP header `Content-Encoding`.
+[src:compression/zstd] The reference implementation is licensed under the BSD license, published at GitHub.
+[src:compression/zstd] Since version 1.0, published 31 August 2016, it had an additional Grant of Patent Rights.
+[src:compression/zstd] From version 1.3.1, released 20 August 2017, this patent grant was dropped and the license was changed to a BSD + GPLv2 dual license.

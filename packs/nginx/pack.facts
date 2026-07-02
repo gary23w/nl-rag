@@ -1,0 +1,178 @@
+# nl-rag distilled facts — domain: nginx
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:nginx/beginners-guide] This guide gives a basic introduction to nginx and describes some simple tasks that can be done with it.
+[src:nginx/beginners-guide] It is supposed that nginx is already installed on the reader’s machine.
+[src:nginx/beginners-guide] If it is not, see the Installing nginx page.
+[src:nginx/beginners-guide] This guide describes how to start and stop nginx, and reload its configuration, explains the structure of the configuration file and describes how to set up nginx to serve out static content, how to configure nginx as a proxy server, and how to connect it with a FastCGI application.
+[src:nginx/beginners-guide] nginx has one master process and several worker processes.
+[src:nginx/beginners-guide] The main purpose of the master process is to read and evaluate configuration, and maintain worker processes.
+[src:nginx/beginners-guide] Worker processes do actual processing of requests. nginx employs event-based model and OS-dependent mechanisms to efficiently distribute requests among worker processes.
+[src:nginx/beginners-guide] The number of worker processes is defined in the configuration file and may be fixed for a given configuration or automatically adjusted to the number of available CPU cores (see worker_processes).
+[src:nginx/beginners-guide] The way nginx and its modules work is determined in the configuration file.
+[src:nginx/beginners-guide] By default, the configuration file is named `nginx.conf` and placed in the directory `/usr/local/nginx/conf`, `/etc/nginx`, or `/usr/local/etc/nginx`.
+[src:nginx/beginners-guide] To start nginx, run the executable file.
+[src:nginx/beginners-guide] Once nginx is started, it can be controlled by invoking the executable with the `-s` parameter.
+[src:nginx/beginners-guide] Changes made in the configuration file will not be applied until the command to reload configuration is sent to nginx or it is restarted.
+[src:nginx/beginners-guide] Once the master process receives the signal to reload configuration, it checks the syntax validity of the new configuration file and tries to apply the configuration provided in it.
+[src:nginx/beginners-guide] If this is a success, the master process starts new worker processes and sends messages to old worker processes, requesting them to shut down.
+[src:nginx/beginners-guide] Otherwise, the master process rolls back the changes and continues to work with the old configuration.
+[src:nginx/beginners-guide] Old worker processes, receiving a command to shut down, stop accepting new connections and continue to service current requests until all such requests are serviced.
+[src:nginx/beginners-guide] After that, the old worker processes exit.
+[src:nginx/beginners-guide] A signal may also be sent to nginx processes with the help of Unix tools such as the `kill` utility.
+[src:nginx/beginners-guide] In this case a signal is sent directly to a process with a given process ID.
+[src:nginx/beginners-guide] The process ID of the nginx master process is written, by default, to the `nginx.pid` in the directory `/usr/local/nginx/logs` or `/var/run`.
+[src:nginx/beginners-guide] For more information on sending signals to nginx, see Controlling nginx.
+[src:nginx/beginners-guide] nginx consists of modules which are controlled by directives specified in the configuration file.
+[src:nginx/beginners-guide] Directives are divided into simple directives and block directives.
+[src:nginx/beginners-guide] A simple directive consists of the name and parameters separated by spaces and ends with a semicolon (`;`).
+[src:nginx/beginners-guide] A block directive has the same structure as a simple directive, but instead of the semicolon it ends with a set of additional instructions surrounded by braces (`{` and `}`).
+[src:nginx/beginners-guide] If a block directive can have other directives inside braces, it is called a context (examples: events, http, server, and location).
+[src:nginx/beginners-guide] Directives placed in the configuration file outside of any contexts are considered to be in the main context.
+[src:nginx/beginners-guide] The `events` and `http` directives reside in the `main` context, `server` in `http`, and `location` in `server`.
+[src:nginx/beginners-guide] The rest of a line after the `#` sign is considered a comment.
+[src:nginx/beginners-guide] An important web server task is serving out files (such as images or static HTML pages).
+[src:nginx/beginners-guide] You will implement an example where, depending on the request, files will be served from different local directories: `/data/www` (which may contain HTML files) and `/data/images` (containing images).
+[src:nginx/beginners-guide] This will require editing of the configuration file and setting up of a server block inside the http block with two location blocks.
+[src:nginx/beginners-guide] First, create the `/data/www` directory and put an `index.html` file with any text content into it and create the `/data/images` directory and place some images in it.
+[src:nginx/beginners-guide] The default configuration file already includes several examples of the `server` block, mostly commented out.
+[src:nginx/beginners-guide] Generally, the configuration file may include several `server` blocks distinguished by ports on which they listen to and by server names.
+[src:nginx/beginners-guide] Once nginx decides which `server` processes a request, it tests the URI specified in the request’s header against the parameters of the `location` directives defined inside the `server` block.
+[src:nginx/beginners-guide] This `location` block specifies the “`/`” prefix compared with the URI from the request.
+[src:nginx/beginners-guide] For matching requests, the URI will be added to the path specified in the root directive, that is, to `/data/www`, to form the path to the requested file on the local file system.
+[src:nginx/beginners-guide] If there are several matching `location` blocks nginx selects the one with the longest prefix.
+[src:nginx/beginners-guide] The `location` block above provides the shortest prefix, of length one, and so only if all other `location` blocks fail to provide a match, this block will be used.
+[src:nginx/beginners-guide] It will be a match for requests starting with `/images/` (`location /` also matches such requests, but has shorter prefix).
+[src:nginx/beginners-guide] This is already a working configuration of a server that listens on the standard port 80 and is accessible on the local machine at `http://localhost/`.
+[src:nginx/beginners-guide] In response to requests with URIs starting with `/images/`, the server will send files from the `/data/images` directory.
+[src:nginx/beginners-guide] For example, in response to the `http://localhost/images/example.png` request nginx will send the `/data/images/example.png` file.
+[src:nginx/beginners-guide] If such file does not exist, nginx will send a response indicating the 404 error.
+[src:nginx/beginners-guide] Requests with URIs not starting with `/images/` will be mapped onto the `/data/www` directory.
+[src:nginx/beginners-guide] For example, in response to the `http://localhost/some/example.html` request nginx will send the `/data/www/some/example.html` file.
+[src:nginx/beginners-guide] One of the frequent uses of nginx is setting it up as a proxy server, which means a server that receives requests, passes them to the proxied servers, retrieves responses from them, and sends them to the clients.
+[src:nginx/beginners-guide] We will configure a basic proxy server, which serves requests of images with files from the local directory and sends all other requests to a proxied server.
+[src:nginx/beginners-guide] In this example, both servers will be defined on a single nginx instance.
+[src:nginx/beginners-guide] This will be a simple server that listens on the port 8080 (previously, the `listen` directive has not been specified since the standard port 80 was used) and maps all requests to the `/data/up1` directory on the local file system.
+[src:nginx/beginners-guide] Create this directory and put the `index.html` file into it.
+[src:nginx/beginners-guide] Note that the `root` directive is placed in the `server` context.
+[src:nginx/beginners-guide] Such `root` directive is used when the `location` block selected for serving a request does not include its own `root` directive.
+[src:nginx/beginners-guide] Next, use the server configuration from the previous section and modify it to make it a proxy server configuration.
+[src:nginx/beginners-guide] We will modify the second `location` block, which currently maps requests with the `/images/` prefix to the files under the `/data/images` directory, to make it match the requests of images with typical file extensions.
+[src:nginx/beginners-guide] The parameter is a regular expression matching all URIs ending with `.gif`, `.jpg`, or `.png`.
+[src:nginx/beginners-guide] A regular expression should be preceded with `~`.
+[src:nginx/beginners-guide] The corresponding requests will be mapped to the `/data/images` directory.
+[src:nginx/beginners-guide] When nginx selects a `location` block to serve a request it first checks location directives that specify prefixes, remembering `location` with the longest prefix, and then checks regular expressions.
+[src:nginx/beginners-guide] If there is a match with a regular expression, nginx picks this `location` or, otherwise, it picks the one remembered earlier.
+[src:nginx/beginners-guide] This server will filter requests ending with `.gif`, `.jpg`, or `.png` and map them to the `/data/images` directory (by adding URI to the `root` directive’s parameter) and pass all other requests to the proxied server configured above.
+[src:nginx/beginners-guide] To apply new configuration, send the `reload` signal to nginx as described in the previous sections.
+[src:nginx/beginners-guide] There are many more directives that may be used to further configure a proxy connection.
+[src:nginx/beginners-guide] nginx can be used to route requests to FastCGI servers which run applications built with various frameworks and programming languages such as PHP.
+[src:nginx/beginners-guide] The most basic nginx configuration to work with a FastCGI server includes using the fastcgi_pass directive instead of the `proxy_pass` directive, and fastcgi_param directives to set parameters passed to a FastCGI server.
+[src:nginx/beginners-guide] Suppose the FastCGI server is accessible on `localhost:9000`.
+[src:nginx/beginners-guide] Taking the proxy configuration from the previous section as a basis, replace the `proxy_pass` directive with the `fastcgi_pass` directive and change the parameter to `localhost:9000`.
+[src:nginx/beginners-guide] In PHP, the `SCRIPT_FILENAME` parameter is used for determining the script name, and the `QUERY_STRING` parameter is used to pass request parameters.
+[src:nginx/beginners-guide] This will set up a server that will route all requests except for requests for static images to the proxied server operating on `localhost:9000` through the FastCGI protocol.
+[src:nginx/nginx] A company of the same name (Nginx, Inc.) was founded in 2011 to provide support and *NGINX Plus* paid software.
+[src:nginx/nginx] In March 2019, the company was acquired by F5 for $670 million.
+[src:nginx/nginx] As of April 2025, W3Tech's web server count of all web sites ranked nginx first with 33.8%.
+[src:nginx/nginx] Apache was second at 26.4% and Cloudflare Server third at 23.4%.
+[src:nginx/nginx] As of March 2020, Netcraft estimated that nginx served 20.11% of the million busiest websites with Cloudflare a little ahead at 22.99%.
+[src:nginx/nginx] Apache at 17.83% and Microsoft Internet Information Services at 4.16% rounded out the top four servers for the busiest websites.
+[src:nginx/nginx] Some of Netcraft's other statistics show nginx ahead of Apache.
+[src:nginx/nginx] A 2018 survey of Docker usage found that nginx was the most commonly deployed technology in Docker containers.
+[src:nginx/nginx] In OpenBSD version 5.2 (November 2012), nginx became part of the OpenBSD base system, providing an alternative to the system's fork of Apache 1.3, which it was intended to replace, but later in version 5.7 (November 2014) it was removed in favor of OpenBSD's own httpd(8).
+[src:nginx/nginx] nginx may be configured to serve static web content or to act as a proxy server.
+[src:nginx/nginx] nginx can be deployed to also serve dynamic content on the network using FastCGI, SCGI handlers for scripts, WSGI application servers or Phusion Passenger modules, and can serve as a software load balancer.
+[src:nginx/nginx] nginx uses an asynchronous event-driven approach, rather than threads, to handle requests.
+[src:nginx/nginx] Nginx's modular event-driven architecture can provide predictable performance under high loads.
+[src:nginx/nginx] Other features include upgrading executable and configuration without client connections loss, and a module-based architecture with both core and third-party module support.
+[src:nginx/nginx] The paid Plus product includes additional features such as advanced load balancing and access to an expanded suite of metrics for performance monitoring.
+[src:nginx/nginx] nginx was written with an explicit goal of being faster than the Apache web server.
+[src:nginx/nginx] While nginx initially outperformed, Apache has offered similar performance since version 2.4.
+[src:nginx/nginx] This former performance boost came at a cost of decreased flexibility, such as the ability to override system-wide access settings on a per-file basis (Apache accomplishes this with an .htaccess file, while nginx has no such feature built in).
+[src:nginx/nginx] Formerly, adding third-party modules to nginx required recompiling the application from source with the modules statically linked.
+[src:nginx/nginx] This was partially overcome in version 1.9.11 in February 2016, with the addition of dynamic module loading.
+[src:nginx/nginx] However, the modules still must be compiled at the same time as nginx, and not all modules are compatible with this system; some require the older static linking process.
+[src:nginx/nginx] NGINX Unit is an open-source web application server, released in 2017 by Nginx, Inc. to target multi-language microservices-based applications.
+[src:nginx/nginx] The initial release supported applications written in Go, PHP, and Python.
+[src:nginx/nginx] By version 1.11.0, the support was extended to Java, Node.js, Perl, and Ruby applications; other features include dynamic configuration, request routing, and load balancing.
+[src:nginx/nginx] NGINX Unit was archived by its maintainers in October of 2025 and is no longer receiving any updates.
+[src:nginx/nginx] Igor Sysoev began development of nginx in 2002.
+[src:nginx/nginx] Originally, nginx was developed to solve the C10k problem, and to fill the needs of multiple websites including the Rambler search engine and portal, for which it was serving 500 million requests per day by September 2008.
+[src:nginx/nginx] Nginx, Inc. was founded in July 2011 by Sysoev and Maxim Konovalov to provide commercial products and support for the software.
+[src:nginx/nginx] In October 2011, Nginx, Inc. raised $3 million from BV Capital, Runa Capital, and MSD Capital, Michael Dell's venture fund.
+[src:nginx/nginx] The company announced commercial support options for companies using nginx in production.
+[src:nginx/nginx] Nginx, Inc. offered commercial support in February 2012, and paid NGINX Plus subscription in August 2013.
+[src:nginx/nginx] Support packages focus on installation, configuration, performance improvement, etc.
+[src:nginx/nginx] Support includes proactive notifications about major changes, security patches, updates and patches.
+[src:nginx/nginx] Nginx, Inc. also offers consulting services to assist customers in custom configuration or adding additional features.
+[src:nginx/nginx] In October 2013, Nginx, Inc. raised a $10 million series B investment round led by New Enterprise Associates.
+[src:nginx/nginx] That round included previous investors, as well as Aaron Levie, CEO and founder of Box.com.
+[src:nginx/nginx] In December 2014, Nginx, Inc. raised a $20 million series B1 round led by New Enterprise Associates, with participation from e.ventures (formerly *BV Capital*), Runa Capital, Index Ventures and Nginx's own CEO Gus Robertson.
+[src:nginx/nginx] In September 2017, Nginx, Inc. announced an API management tool, NGINX Controller, which would build off of their API Gateway, NGINX Plus.
+[src:nginx/nginx] In October 2017, Nginx, Inc. announced general available NGINX Amplify SaaS providing monitoring and analytics capabilities for nginx.
+[src:nginx/nginx] In June 2018, Nginx, Inc. raised $43 million in Series C Funding in a round led by Goldman Sachs "to Accelerate Application Modernization and Digital Transformation for Enterprises".
+[src:nginx/nginx] On 11 March 2019, F5 acquired Nginx, Inc. for US$670 million.
+[src:nginx/nginx] On 12 December 2019, it was reported that the Moscow offices of Nginx, Inc. had been raided by police, and that Sysoev and Konovalov had been detained.
+[src:nginx/nginx] The raid was conducted under a search warrant connected to a copyright claim over nginx by Rambler—which asserts that it owns all rights to the code because it was written while Sysoev was an employee of the company.
+[src:nginx/nginx] On 18 January 2022, F5 announced that Igor Sysoev was leaving Nginx, Inc. and F5.
+[src:nginx/nginx] In late 2022, **Angie**, an open source fork of nginx, was released by some of the former nginx developers.
+[src:nginx/nginx] Igor Sysoev is not actively involved in this project.
+[src:nginx/nginx] In February 2024, Maxim Dounin, one of nginx's core developers, created a nginx fork called **freenginx**.
+[src:nginx/nginx] In the open letter announcing the creation, Maxim Dounin criticised F5's interference with nginx's development.
+[src:nginx/request-processing] nginx first decides which *server* should process the request.
+[src:nginx/request-processing] In this configuration nginx tests only the request’s header field “Host” to determine which server the request should be routed to.
+[src:nginx/request-processing] If its value does not match any server name, or the request does not contain this header field at all, then nginx will route the request to the default server for this port.
+[src:nginx/request-processing] In the configuration above, the default server is the first one — which is nginx’s standard default behaviour.
+[src:nginx/request-processing] Note that the default server is a property of the listen port and not of the server name.
+[src:nginx/request-processing] Here, the server name is set to an empty string that will match requests without the “Host” header field, and a special nginx’s non-standard code 444 is returned that closes the connection.
+[src:nginx/request-processing] In this configuration, nginx first tests the IP address and port of the request against the listen directives of the server blocks.
+[src:nginx/request-processing] It then tests the “Host” header field of the request against the server_name entries of the server blocks that matched the IP address and port.
+[src:nginx/request-processing] If the server name is not found, the request will be processed by the default server.
+[src:nginx/request-processing] For example, a request for `www.example.com` received on the 192.168.1.1:80 port will be handled by the default server of the 192.168.1.1:80 port, i.e., by the first server, since there is no `www.example.com` defined for this port.
+[src:nginx/request-processing] nginx first searches for the most specific prefix location given by literal strings regardless of the listed order.
+[src:nginx/request-processing] In the configuration above the only prefix location is “`/`” and since it matches any request it will be used as a last resort.
+[src:nginx/request-processing] Then nginx checks locations given by regular expression in the order listed in the configuration file.
+[src:nginx/request-processing] The first matching expression stops the search and nginx will use this location.
+[src:nginx/request-processing] If no regular expression matches a request, then nginx uses the most specific prefix location found earlier.
+[src:nginx/request-processing] Note that locations of all types test only a URI part of request line without arguments.
+[src:nginx/reverse-proxy] In computer networks, a **reverse proxy** or surrogate server is a proxy server that appears to any client to be an ordinary web server, but in reality merely acts as an intermediary that forwards the client's requests to one or more ordinary web servers.
+[src:nginx/reverse-proxy] Reverse proxies help increase scalability, performance, resilience, and security, but they also carry a number of risks.
+[src:nginx/reverse-proxy] Companies that run web servers often set up reverse proxies to facilitate the communication between an Internet user's browser and the web servers.
+[src:nginx/reverse-proxy] An important advantage of doing so is that the web servers can be hidden behind a firewall on a company-internal network, and only the reverse proxy needs to be directly exposed to the Internet.
+[src:nginx/reverse-proxy] Reverse proxy servers are implemented in popular open-source web servers.
+[src:nginx/reverse-proxy] Dedicated reverse proxy servers are used by some of the biggest websites on the Internet.
+[src:nginx/reverse-proxy] A reverse proxy is capable of tracking IP addresses of requests that are relayed through it as well as reading and/or modifying any non-encrypted traffic.
+[src:nginx/reverse-proxy] However, this implies that anyone who has compromised the server could do so as well.
+[src:nginx/reverse-proxy] Reverse proxies differ from forward proxies, which are used when the client is restricted to a private, internal network and asks a forward proxy to retrieve resources from the public Internet.
+[src:nginx/reverse-proxy] Large websites and content delivery networks use reverse proxies, together with other techniques, to balance the load between internal servers.
+[src:nginx/reverse-proxy] Reverse proxies can keep a cache of static content, which further reduces the load on these internal servers and the internal network.
+[src:nginx/reverse-proxy] It is also common for reverse proxies to add features such as compression or TLS encryption to the communication channel between the client and the reverse proxy.
+[src:nginx/reverse-proxy] Reverse proxies can inspect HTTP headers, which, for example, allows them to present a single IP address to the Internet while relaying requests to different internal servers based on the URL of the HTTP request.
+[src:nginx/reverse-proxy] Reverse proxies can hide the existence and characteristics of origin servers.
+[src:nginx/reverse-proxy] This can make it more difficult to determine the actual location of the origin server / website and, for instance, more challenging to initiate legal action such as takedowns or block access to the website, as the IP address of the website may not be immediately apparent.
+[src:nginx/reverse-proxy] Additionally, the reverse proxy may be located in a different jurisdiction with different legal requirements, further complicating the takedown process.
+[src:nginx/reverse-proxy] Application firewall features can protect against common web-based attacks, like a denial-of-service attack (DoS) or distributed denial-of-service attacks (DDoS).
+[src:nginx/reverse-proxy] Without a reverse proxy, removing malware or initiating takedowns (while simultaneously dealing with the attack) on one's own site, for example, can be difficult.
+[src:nginx/reverse-proxy] In the case of secure websites, a web server may not perform TLS encryption itself, but instead offload the task to a reverse proxy that may be equipped with TLS acceleration hardware.
+[src:nginx/reverse-proxy] A reverse proxy can distribute the load from incoming requests to several servers, with each server supporting its own application area.
+[src:nginx/reverse-proxy] In the case of reverse proxying web servers, the reverse proxy may have to rewrite the URL in each incoming request in order to match the relevant internal location of the requested resource.
+[src:nginx/reverse-proxy] A reverse proxy can reduce load on its origin servers by caching static content and dynamic content, known as web acceleration.
+[src:nginx/reverse-proxy] Proxy caches of this sort can often satisfy a considerable number of website requests, greatly reducing the load on the origin server(s).
+[src:nginx/reverse-proxy] A reverse proxy can optimize content by compressing it in order to speed up loading times.
+[src:nginx/reverse-proxy] In a technique named "spoon-feeding", a dynamically generated page can be produced in its entirety and served to the reverse proxy, which can feed the page to the client as the connection allows.
+[src:nginx/reverse-proxy] The program that generates the page need not remain open, thus releasing server resources during the possibly extended time the client requires to complete the transfer.
+[src:nginx/reverse-proxy] Reverse proxies can operate wherever multiple web-servers must be accessible via a single public IP address.
+[src:nginx/reverse-proxy] The web servers listen on different ports in the same machine, with the same local IP address or, possibly, on different machines with different local IP addresses.
+[src:nginx/reverse-proxy] The reverse proxy analyzes each incoming request and delivers it to the right server within the local area network.
+[src:nginx/reverse-proxy] Reverse proxies can perform A/B testing and multivariate testing without requiring application code to handle the logic of which version is served to a client.
+[src:nginx/reverse-proxy] A reverse proxy can add access authentication to a web server that does not have any authentication.
+[src:nginx/reverse-proxy] When the transit traffic is encrypted and the reverse proxy needs to filter/cache/compress or otherwise modify or improve the traffic, the proxy first must decrypt and re-encrypt communications.
+[src:nginx/reverse-proxy] This requires the proxy to possess the TLS certificate and its corresponding private key, extending the number of systems that can have access to non-encrypted data and making it a more valuable target for attackers.
+[src:nginx/reverse-proxy] The vast majority of external data breaches happen either when hackers succeed in abusing an existing reverse proxy that was intentionally deployed by an organization, or when hackers succeed in converting an existing Internet-facing server into a reverse proxy server.
+[src:nginx/reverse-proxy] Compromised or converted systems allow external attackers to specify where they want their attacks proxied to, enabling their access to internal networks and systems.
+[src:nginx/reverse-proxy] Applications that were developed for the internal use of a company are not typically hardened to public standards and are not necessarily designed to withstand all hacking attempts.
+[src:nginx/reverse-proxy] When an organization allows external access to such internal applications via a reverse proxy, they might unintentionally increase their own attack surface and invite hackers.
+[src:nginx/reverse-proxy] If a reverse proxy is not configured to filter attacks or it does not receive daily updates to keep its attack signature database up to date, a zero-day vulnerability can pass through unfiltered, enabling attackers to gain control of the system(s) that are behind the reverse proxy server.
+[src:nginx/reverse-proxy] Giving the reverse proxy of a third party access to private keys (for caching or optimizing content) places the entire triad of confidentiality, integrity and availability in the hands of the third party who operates the proxy.
+[src:nginx/reverse-proxy] A reverse proxy is a single point of failure for the back-end services it fronts: an outage caused by misconfiguration, a denial-of-service attack, or a software fault can make every fronted service unreachable to outside clients, even when the back-end services themselves remain healthy.
+[src:nginx/reverse-proxy] For example, a 2020 outage at Cloudflare briefly took down major sites and services that relied on its reverse-proxy edge, including Discord.

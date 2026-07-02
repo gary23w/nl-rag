@@ -29,135 +29,23 @@ The definition and analysis of the HMAC construction was first published in 1996
 
 This definition is taken from RFC 2104:
 
-HMAC
-
-⁡
-
-(
-
-K
-
-,
-
-m
-
-)
-
-=
-
-H
-
-⁡
-
-(
-
-(
-
-K
-
-′
-
-⊕
-
-o
-
-p
-
-a
-
-d
-
-)
-
-∥
-
-H
-
-⁡
-
-(
-
-(
-
-K
-
-′
-
-⊕
-
-i
-
-p
-
-a
-
-d
-
-)
-
-∥
-
-m
-
-)
-
-)
-
-K
-
-′
-
-=
-
-{
-
-H
-
-⁡
-
-(
-
-K
-
-)
-
-if
-
-K
-
-is larger than block size
-
-K
-
-otherwise
-
-{\displaystyle {\begin{aligned}\operatorname {HMAC} (K,m)&=\operatorname {H} {\Bigl (}{\bigl (}K'\oplus opad{\bigr )}\parallel \operatorname {H} {\bigl (}\left(K'\oplus ipad\right)\parallel m{\bigr )}{\Bigr )}\\K'&={\begin{cases}\operatorname {H} \left(K\right)&{\text{if}}\ K{\text{ is larger than block size}}\\K&{\text{otherwise}}\end{cases}}\end{aligned}}}
+${\begin{aligned}\operatorname {HMAC} (K,m)&=\operatorname {H} {\Bigl (}{\bigl (}K'\oplus opad{\bigr )}\parallel \operatorname {H} {\bigl (}\left(K'\oplus ipad\right)\parallel m{\bigr )}{\Bigr )}\\K'&={\begin{cases}\operatorname {H} \left(K\right)&{\text{if}}\ K{\text{ is larger than block size}}\\K&{\text{otherwise}}\end{cases}}\end{aligned}}$
 
 where
 
-H
-
-{\displaystyle \operatorname {H} }
+$\operatorname {H}$
 
 is a cryptographic hash function.
 
 m
 
-{\displaystyle m}
-
 is the message to be authenticated.
 
 K
 
-{\displaystyle K}
-
 is the secret key.
 
-K
-
-′
-
-{\displaystyle K'}
+$K'$
 
 is a block-sized key derived from the secret key,
 
@@ -165,9 +53,7 @@ K
 
 ; either by padding to the right with 0s up to the block size, or by hashing down to less than or equal to the block size first and then padding to the right with zeros.
 
-∥
-
-{\displaystyle \parallel }
+$\parallel$
 
 denotes
 
@@ -175,9 +61,7 @@ concatenation
 
 .
 
-⊕
-
-{\displaystyle \oplus }
+$\oplus$
 
 denotes bitwise
 
@@ -185,27 +69,11 @@ exclusive or
 
 (XOR).
 
-o
-
-p
-
-a
-
-d
-
-{\displaystyle opad}
+$opad$
 
 is the block-sized outer padding, consisting of repeated bytes valued 0x5c.
 
-i
-
-p
-
-a
-
-d
-
-{\displaystyle ipad}
+$ipad$
 
 is the block-sized inner padding, consisting of repeated bytes valued 0x36.
 

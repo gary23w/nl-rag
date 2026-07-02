@@ -7,8 +7,13 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
 
 ## What's here
 
-- `packs/<domain>/` — one directory per knowledge domain (28 domains, ~430 files, ~300
-  upstream pages). Every file is:
+- `packs/<domain>/` — one directory per knowledge domain (121 domains, ~1100 upstream
+  pages): every language paradigm and problem-solving method, the full embedded/IoT stack
+  (microcontrollers, RTOS, buses, IoT protocols, electronics, control theory, DSP, FPGA,
+  PLC/SCADA, robotics), mathematics from linear algebra to category theory, CS systems
+  (OS, compilers, automata, distributed systems, formal methods), the complete GoF pattern
+  catalog plus architecture/concurrency patterns, AI/ML, graphics and game development,
+  cloud, the canonical books of the craft, and Rosetta Code polyglot tasks. Every file is:
   - **clean markdown** — no HTML, no nav/chrome/cookie banners, fenced code with language
     tags, GFM tables, citation markers stripped
   - **frontmattered** — `title`, `source` (upstream URL), `domain`, `license`, `tags`,
@@ -24,11 +29,22 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
 
 ## Domains
 
-Languages (python, rust, ruby, golang, javascript, zig, c-cpp) · web (web-platform,
-http-rest, web-frameworks) · data (sql-sqlite, databases, data-formats) · CS foundations
-(algorithms, data-structures, software-design, concurrency, machine-learning) · security
-(security, crypto) · tooling & ops (git, shell-linux, sysadmin-ops, docker-containers,
-networking, build-systems, testing, regex)
+Languages (python, rust, ruby, golang, javascript, typescript, zig, c-cpp, java, kotlin,
+scala, clojure, csharp-dotnet, haskell, ocaml, elixir, erlang, racket, common-lisp,
+perl, lua, php, swift, dart, r, julia, x86/arm/risc-v assembly, the legacy canon) ·
+paradigms & problem-solving · embedded & IoT (embedded-systems, iot-protocols,
+hardware-interfaces, electronics, control-systems, dsp, fpga-hdl, plc-scada, robotics,
+real-time-systems, freertos, esp32, arduino, raspberry-pi, computer-architecture) ·
+mathematics (linear-algebra, calculus, discrete-mathematics, number-theory,
+numerical-methods, floating-point, statistics, logic, lambda/type theory, category-theory,
+information-theory, computational-geometry, optimization) · CS systems (operating-systems,
+compilers, automata, distributed-systems, consensus, complexity, formal-methods,
+performance, compression, debugging) · patterns & practice (full GoF catalog,
+architecture-patterns, concurrency-patterns, code-quality, agile-devops,
+sre-observability, canonical-books) · data & AI (machine-learning, classic-ai,
+data-engineering, databases, caching) · web & cloud (react, vue, svelte, graphql, grpc,
+kubernetes, cloud-computing, graphics, game-dev) · security & crypto · tooling & ops ·
+rosetta-code (the same task in dozens of languages)
 
 ## The tool
 

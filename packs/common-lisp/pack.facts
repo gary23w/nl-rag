@@ -1,0 +1,1202 @@
+# nl-rag distilled facts — domain: common-lisp
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:common-lisp/cl-cookbook-clos-p01] CLOS is the “Common Lisp Object System”, arguably one of the most powerful object systems available in any language.
+[src:common-lisp/cl-cookbook-clos-p01] The functionality belonging to this name was added to the Common Lisp language between the publication of Steele’s first edition of “Common Lisp, the Language” in 1984 and the formalization of the language as an ANSI standard ten years later.
+[src:common-lisp/cl-cookbook-clos-p01] This page aims to give a good understanding of how to use CLOS, but only a brief introduction to the MOP.
+[src:common-lisp/cl-cookbook-clos-p01] Let’s dive in with an example showing class definition, creation of objects, slot access, methods specialized for a given class, and inheritance.
+[src:common-lisp/cl-cookbook-clos-p01] The macro used for defining new data types in CLOS is `defclass`.
+[src:common-lisp/cl-cookbook-clos-p01] This gives us a CLOS type (or class) called `person` and two slots, named `name` and `lisper`.
+[src:common-lisp/cl-cookbook-clos-p01] So, our `person` class doesn’t explicitly inherit from another class (it gets the empty parentheses `()`).
+[src:common-lisp/cl-cookbook-clos-p01] However it still inherits by default from the class `t` and from `standard-object`.
+[src:common-lisp/cl-cookbook-clos-p01] or even without slot specifiers: `(defclass point () ())`.
+[src:common-lisp/cl-cookbook-clos-p01] This has the direct advantage that you can control the required arguments.
+[src:common-lisp/cl-cookbook-clos-p01] You should now export the constructor from your package and not the class itself.
+[src:common-lisp/cl-cookbook-clos-p01] The function to access any slot anytime is `(slot-value <object> <slot-name>)`.
+[src:common-lisp/cl-cookbook-clos-p01] If you don’t specify any of these, you can still use `slot-value`.
+[src:common-lisp/cl-cookbook-clos-p01] You can give a slot more than one `:accessor`, `:reader` or `:initarg`.
+[src:common-lisp/cl-cookbook-clos-p01] 1- `with-slots` allows to abbreviate several calls to slot-value.
+[src:common-lisp/cl-cookbook-clos-p01] The first argument is a list of slot names.
+[src:common-lisp/cl-cookbook-clos-p01] The second argument evaluates to a CLOS instance.
+[src:common-lisp/cl-cookbook-clos-p01] This is followed by optional declarations and an implicit `progn`.
+[src:common-lisp/cl-cookbook-clos-p01] Lexically during the evaluation of the body, an access to any of these names as a variable is equivalent to accessing the corresponding slot of the instance with `slot-value`.
+[src:common-lisp/cl-cookbook-clos-p01] 2- `with-accessors` is equivalent, but instead of a list of slots it takes a list of accessor functions.
+[src:common-lisp/cl-cookbook-clos-p01] Any reference to the variable inside the macro is equivalent to a call to the accessor function.
+[src:common-lisp/cl-cookbook-clos-p01] `:allocation` specifies whether this slot is *local* or *shared*.
+[src:common-lisp/cl-cookbook-clos-p01] In the following example, note how changing the value of the class slot `species` of `p2` affects all instances of the class (whether or not those instances exist yet).
+[src:common-lisp/cl-cookbook-clos-p01] Each slot accepts one `:documentation` option.
+[src:common-lisp/cl-cookbook-clos-p01] To obtain its documentation via `documentation`, you need to obtain the slot object.
+[src:common-lisp/cl-cookbook-clos-p01] This can be done compatibly using a library such as closer-mop.
+[src:common-lisp/cl-cookbook-clos-p01] Note however that generally it may be better to document slot accessors instead, as a popular viewpoint is that slots are implementation details and not part of the public interface.
+[src:common-lisp/cl-cookbook-clos-p01] The `:type` slot option may not do the job you expect it does.
+[src:common-lisp/cl-cookbook-clos-p01] If you are new to the CLOS, we suggest you skip this section and use your own constructors to manually check slot types.
+[src:common-lisp/cl-cookbook-clos-p01] Indeed, whether slot types are being checked or not is undefined.
+[src:common-lisp/cl-cookbook-clos-p01] Clozure CL does it, SBCL does it since its version 1.5.9 (November, 2019) or when safety is high (`(declaim (optimise safety))`).
+[src:common-lisp/cl-cookbook-clos-p01] To do it otherwise, see this Stack-Overflow answer, and see also quid-pro-quo, a contract programming library.
+[src:common-lisp/cl-cookbook-clos-p01] Note: this is your first introduction to the MOP.
+[src:common-lisp/cl-cookbook-clos-p01] The object `my-point` is an instance of the class named `point`, and the class named `point` is itself an instance of the class named `standard-class`.
+[src:common-lisp/cl-cookbook-clos-p01] We say that the class named `standard-class` is the *metaclass* (i.e. the class of the class) of `my-point`.
+[src:common-lisp/cl-cookbook-clos-p01] We can make good uses of metaclasses, as we’ll see later.
+[src:common-lisp/cl-cookbook-clos-p01] As illustrated above, `child` is a subclass of `person`.
+[src:common-lisp/cl-cookbook-clos-p01] All objects inherit from the class `standard-object` and `t`.
+[src:common-lisp/cl-cookbook-clos-p01] Every child instance is also an instance of `person`.
+[src:common-lisp/cl-cookbook-clos-p01] The closer-mop library is *the* portable way to do CLOS/MOP operations.
+[src:common-lisp/cl-cookbook-clos-p01] A subclass inherits all of its parents’ slots, and it can override any of their slot options.
+[src:common-lisp/cl-cookbook-clos-p01] Common Lisp makes this process dynamic, great for REPL session, and we can even control parts of it (like, do something when a given slot is removed/updated/added, etc).
+[src:common-lisp/cl-cookbook-clos-p01] We can further inspect our classes with `class-direct-[subclasses, slots, default-initargs]` and many more functions.
+[src:common-lisp/cl-cookbook-clos-p01] Last but not least, be warned that inheritance is fairly easy to misuse, and multiple inheritance is multiply so, so please take a little care.
+[src:common-lisp/cl-cookbook-clos-p01] Ask yourself whether `foo` really wants to inherit from `bar`, or whether instances of `foo` want a slot containing a `bar`.
+[src:common-lisp/cl-cookbook-clos-p01] A good general guide is that if `foo` and `bar` are “same sort of thing” then it’s correct to mix them together by inheritance, but if they’re really separate concepts then you should use slots to keep them apart.
+[src:common-lisp/cl-cookbook-clos-p01] The first class on the list of parent classes is the most specific one, `child`’s slots will take precedence over the `person`’s.
+[src:common-lisp/cl-cookbook-clos-p01] Note that both `child` and `person` have to be defined prior to defining `baby` in this example.
+[src:common-lisp/cl-cookbook-clos-p01] Suffice it to say that everything’s configurable by implementing methods exposed by the MOP.
+[src:common-lisp/cl-cookbook-clos-p01] To redefine a class, simply evaluate a new `defclass` form.
+[src:common-lisp/cl-cookbook-clos-p01] This then takes the place of the old definition, the existing class object is updated, and **all instances of the class** (and, recursively, its subclasses) **are lazily updated to reflect the new definition**.
+[src:common-lisp/cl-cookbook-clos-p01] You don’t have to recompile anything other than the new `defclass`, nor to invalidate any of your objects.
+[src:common-lisp/cl-cookbook-clos-p01] Think about it for a second: this is awesome !
+[src:common-lisp/cl-cookbook-clos-p01] In the above example, I became a `child`, and I inherited the `can-walk-p` slot, which is true by default.
+[src:common-lisp/cl-cookbook-clos-p01] What if we want to show more information ?
+[src:common-lisp/cl-cookbook-clos-p01] `print-unreadable-object` prints the `#<...>`, that says to the reader that this object can not be read back in.
+[src:common-lisp/cl-cookbook-clos-p01] Its `:type t` argument asks to print the object-type prefix, that is, `PERSON`.
+[src:common-lisp/cl-cookbook-clos-p01] Caution: trying to access a slot that is not bound by default will lead to an error.
+[src:common-lisp/cl-cookbook-clos-p01] Where we approach that we don’t need CLOS objects to use CLOS.
+[src:common-lisp/cl-cookbook-clos-p01] We see here that symbols are instances of the system class `symbol`.
+[src:common-lisp/cl-cookbook-clos-p01] This is one of 75 cases in which the language requires a class to exist with the same name as the corresponding lisp type.
+[src:common-lisp/cl-cookbook-clos-p01] Many of these cases are concerned with CLOS itself (for example, the correspondence between the type `standard-class` and the CLOS class of that name) or with the condition system (which might or might not be built using CLOS classes in any given implementation).
+[src:common-lisp/cl-cookbook-clos-p01] Note that not all “traditional” lisp types are included in this list.
+[src:common-lisp/cl-cookbook-clos-p01] Just as every lisp object is of type `t`, every lisp object is also a member of the class named `t`.
+[src:common-lisp/cl-cookbook-clos-p01] This is a simple example of membership of more then one class at a time, and it brings into question the issue of *inheritance*, which we will consider in some detail later.
+[src:common-lisp/cl-cookbook-clos-p01] The metaclass of a `structure-object` is the class `structure-class`.
+[src:common-lisp/cl-cookbook-clos-p01] It is implementation-dependent whether the metaclass of a “traditional” lisp object is `standard-class`, `structure-class`, or `built-in-class`.
+[src:common-lisp/cl-cookbook-clos-p01] `built-in-class`: May not use `make-instance`, may not use `slot-value`, may not use `defclass` to modify, may not create subclasses.
+[src:common-lisp/cl-cookbook-clos-p01] `structure-class`: May not use `make-instance`, might work with `slot-value` (implementation-dependent).
+[src:common-lisp/cl-cookbook-clos-p01] Use `defstruct` to subclass application structure types.
+[src:common-lisp/cl-cookbook-clos-p01] Consequences of modifying an existing `structure-class` are undefined: full recompilation may be necessary.
+[src:common-lisp/cl-cookbook-clos-p01] `standard-class`: None of these restrictions.
+[src:common-lisp/cl-cookbook-clos-p01] We already saw some introspection functions.
+[src:common-lisp/cl-cookbook-clos-p01] Your best option is to discover the closer-mop library and to keep the CLOS & MOP specifications at hand.
+[src:common-lisp/cl-cookbook-clos-p01] Below we create methods, we specialize them, we use method combination (before, after, around), and qualifiers.
+[src:common-lisp/cl-cookbook-clos-p01] A `generic function` is a lisp function which is associated with a set of methods and dispatches them when it’s invoked.
+[src:common-lisp/cl-cookbook-clos-p01] All the methods with the same function name belong to the same generic function.
+[src:common-lisp/cl-cookbook-clos-p01] The `defmethod` form is similar to a `defun`.
+[src:common-lisp/cl-cookbook-clos-p01] It associates a body of code with a function name, but that body may only be executed if the types of the arguments match the pattern declared by the lambda list.
+[src:common-lisp/cl-cookbook-clos-p01] They can have optional, keyword and `&rest` arguments.
+[src:common-lisp/cl-cookbook-clos-p01] The `defgeneric` form defines the generic function.
+[src:common-lisp/cl-cookbook-clos-p01] If we write a `defmethod` without a corresponding `defgeneric`, a generic function is automatically created (see examples).
+[src:common-lisp/cl-cookbook-clos-p01] It is generally a good idea to write the `defgeneric`s.
+[src:common-lisp/cl-cookbook-clos-p01] We can add a default implementation and even some documentation.
+[src:common-lisp/cl-cookbook-clos-p01] This method can take any argument, it is always applicable.
+[src:common-lisp/cl-cookbook-clos-p01] The variable `foo` is bound to the corresponding argument value, as usual.
+[src:common-lisp/cl-cookbook-clos-p01] In this case, the variable `foo` is bound to the corresponding argument only if that argument is of specializer class `person` *or a subclass*, like `child` (indeed, a “child” is also a “person”).
+[src:common-lisp/cl-cookbook-clos-p01] If any argument fails to match its specializer then the method is not *applicable* and it cannot be executed with those arguments.We’ll get an error message like “there is no applicable method for the generic function xxx when called with arguments yyy”.
+[src:common-lisp/cl-cookbook-clos-p01] In place of a simple symbol (`:soup`), the eql specializer can be any lisp form.
+[src:common-lisp/cl-cookbook-clos-p01] It is evaluated at the same time of the defmethod.
+[src:common-lisp/cl-cookbook-clos-p01] You can define any number of methods with the same function name but with different specializers, as long as the form of the lambda list is *congruent* with the shape of the generic function.
+[src:common-lisp/cl-cookbook-clos-p01] The system chooses the most *specific* applicable method and executes its body.
+[src:common-lisp/cl-cookbook-clos-p01] The most specific method is the one whose specializers are nearest to the head of the `class-precedence-list` of the argument (classes on the left of the lambda list are more specific).
+[src:common-lisp/cl-cookbook-clos-p01] A method with specializers is more specific to one without any.
+[src:common-lisp/cl-cookbook-clos-p01] Multimethods explicitly specialize more than one of the generic function’s required parameters.
+[src:common-lisp/cl-cookbook-clos-p01] They don’t belong to a particular class.
+[src:common-lisp/cl-cookbook-clos-p01] Meaning, we don’t have to decide on the class that would be best to host this method, as we might have to in other languages.
+[src:common-lisp/cl-cookbook-clos-p01] In Lisp, we can define `setf` counterparts of functions or methods.
+[src:common-lisp/cl-cookbook-clos-p01] We might want this to have more control on how to update an object.
+[src:common-lisp/cl-cookbook-clos-p01] If you know Python, this behaviour is provided by the `@property` decorator.
+[src:common-lisp/cl-cookbook-clos-p01] When a generic function is invoked, the application cannot directly invoke a method.
+[src:common-lisp/cl-cookbook-clos-p01] During the execution of a method, the remaining applicable methods are still accessible, via the *local function* `call-next-method`.
+[src:common-lisp/cl-cookbook-clos-p01] This function has lexical scope within the body of a method but indefinite extent.
+[src:common-lisp/cl-cookbook-clos-p01] It invokes the next most specific method, and returns whatever value that method returned.
+[src:common-lisp/cl-cookbook-clos-p01] Calling `call-next-method` when there is no next method signals an error.
+[src:common-lisp/cl-cookbook-clos-p01] You can find out whether a next method exists by calling the local function `next-method-p` (which also has has lexical scope and indefinite extent).
+[src:common-lisp/cl-cookbook-clos-p01] Note finally that the body of every method establishes a block with the same name as the method’s generic function.
+[src:common-lisp/cl-cookbook-clos-p01] If you `return-from` that name you are exiting the current method, not the call to the enclosing generic function.
+[src:common-lisp/cl-cookbook-clos-p01] They are wrappers around the core mechanism we just described.
+[src:common-lisp/cl-cookbook-clos-p01] They can be useful to catch return values or to set up an environment around the primary method (set up a catch, a lock, timing an execution,…).
+[src:common-lisp/cl-cookbook-clos-p01] If the dispatch mechanism finds an around-method, it calls it and returns its result.
+[src:common-lisp/cl-cookbook-clos-p01] If the around-method has a `call-next-method`, it calls the next most applicable around-method.
+[src:common-lisp/cl-cookbook-clos-p01] It is only when we reach the primary method that we start calling the before and after-methods.
+[src:common-lisp/cl-cookbook-clos-p01] Think of it as an onion, with all the `:around` methods in the outermost layer, `:before` and `:after` methods in the middle layer, and primary methods on the inside.
+[src:common-lisp/cl-cookbook-clos-p01] The default method combination type we just saw is named `standard`, but other method combination types are available, and no need to say that you can define your own.
+[src:common-lisp/cl-cookbook-clos-p01] You notice that these types are named after a lisp operator.
+[src:common-lisp/cl-cookbook-clos-p01] Indeed, what they do is they define a framework that combines the applicable primary methods inside a call to the lisp operator of that name.
+[src:common-lisp/cl-cookbook-clos-p01] Here, unlike the standard mechanism, all the primary methods applicable for a given object are called, the most specific first.
+[src:common-lisp/cl-cookbook-clos-p01] Similarly, using the `list` type is equivalent to returning the list of the values of the methods.
+[src:common-lisp/cl-cookbook-clos-p01] Note that these operators don’t support `before`, `after` and `around` methods (indeed, there is no room for them anymore).
+[src:common-lisp/cl-cookbook-clos-p01] They do support around methods, where `call-next-method` is allowed, but they don’t support calling `call-next-method` in the primary methods (it would indeed be redundant since all primary methods are called, or clunky to *not* call one).
+[src:common-lisp/cl-cookbook-clos-p01] CLOS allows us to define a new operator as a method combination type, be it a lisp function, macro or special form.
+[src:common-lisp/cl-cookbook-clos-p01] We’ll let you refer to the books if you feel the need.
+[src:common-lisp/cl-cookbook-clos-p01] It is possible to trace the method combination, but this is implementation dependent.
+[src:common-lisp/cl-cookbook-clos-p01] In SBCL, we can use `(trace foo :methods t)`.
+[src:common-lisp/cl-cookbook-clos-p01] See this post by an SBCL core developer.
+[src:common-lisp/cl-cookbook-clos-p01] There is a difference between declaring methods inside a `defgeneric` body or by writing multiple `defmethod`s: the two methods handle re-definition of methods differently.
+[src:common-lisp/cl-cookbook-clos-p01] `defgeneric` will delete methods that are not in its body anymore.
+[src:common-lisp/cl-cookbook-clos-p01] You can try them with `(goodbye (make-instance 'person :name "you"))`.
+[src:common-lisp/cl-cookbook-clos-p01] Now, later in your work session, you decide that you don’t need the one specializing on `child` any more.
+[src:common-lisp/cl-cookbook-clos-p01] But **the method still exists in the image**.
+[src:common-lisp/cl-cookbook-clos-p01] You have to programmatically remove the method, see below.
+[src:common-lisp/cl-cookbook-clos-p01] Had you used `defgeneric`, all the methods would have been updated, added or deleted.
+[src:common-lisp/cl-cookbook-clos-p01] It works for any object type, a person or a child.
+[src:common-lisp/cl-cookbook-clos-p01] Try it on a string: `(tidy "tidy what?")`, it works.
+[src:common-lisp/cl-cookbook-clos-p01] This might or might not be important to you during development, but knowing this can help you keep your lisp image in sync with your source code.
+[src:common-lisp/cl-cookbook-clos-p01] Otherwise, you can remove an old method when it gets on your way.
+[src:common-lisp/cl-cookbook-clos-p01] `find-method` takes as arguments: a function reference, a qualifier (like before, after or around), and a list of class specializers.
+[src:common-lisp/cl-cookbook-clos-p01] Once you found the method, use `remove-method`.
+[src:common-lisp/cl-cookbook-clos-p01] You could use `(fmakunbound 'goodbye)`, but this makes *all* methods unbound.
+[src:common-lisp/cl-cookbook-clos-p02] We gather here some examples that make use of the framework provided by the meta-object protocol, the configurable object system that rules Lisp’s object system.
+[src:common-lisp/cl-cookbook-clos-p02] We touch advanced concepts so, new reader, don’t worry: you don’t need to understand this section to start using the Common Lisp Object System.
+[src:common-lisp/cl-cookbook-clos-p02] We won’t explain much about the MOP here, but hopefully sufficiently to make you see its possibilities or to help you understand how some CL libraries are built.
+[src:common-lisp/cl-cookbook-clos-p02] We invite you to read the books referenced in the introduction.
+[src:common-lisp/cl-cookbook-clos-p02] Metaclasses are needed to control the behaviour of other classes.
+[src:common-lisp/cl-cookbook-clos-p02] But we’ll change it to one of our own, so that we’ll be able to **count the creation of instances**.
+[src:common-lisp/cl-cookbook-clos-p02] This same mechanism could be used to auto increment the primary key of a database system (this is how the Postmodern or Mito libraries do), to log the creation of objects, etc.
+[src:common-lisp/cl-cookbook-clos-p02] The `:metaclass` class option can appear only once.
+[src:common-lisp/cl-cookbook-clos-p02] Actually you should have gotten a message asking to implement `validate-superclass`.
+[src:common-lisp/cl-cookbook-clos-p02] See that an `:after` qualifier is the safest choice, we let the standard method run as usual and return a new instance.
+[src:common-lisp/cl-cookbook-clos-p02] The `&key` is necessary, remember that `make-instance` is given initargs.
+[src:common-lisp/cl-cookbook-clos-p02] To further control the creation of object instances, we can specialize the method `initialize-instance`.
+[src:common-lisp/cl-cookbook-clos-p02] It is called by `make-instance`, just after a new instance was created but wasn’t initialized yet with the default initargs and initforms.
+[src:common-lisp/cl-cookbook-clos-p02] It is recommended (Keene) to create an after method, since creating a primary method would prevent slots’ initialization.
+[src:common-lisp/cl-cookbook-clos-p02] A typical example would be to validate the initial values.
+[src:common-lisp/cl-cookbook-clos-p02] We are prompted into the interactive debugger and we are given a choice of restarts (continue, retry, abort).
+[src:common-lisp/cl-cookbook-clos-p02] So while we’re at it, here’s an assertion that uses the debugger features to offer to change “name”.
+[src:common-lisp/cl-cookbook-clos-p02] The CLOS implementation of `make-instance` is in two stages: allocate the new object, and then pass it along with all the `make-instance` keyword arguments, to the generic function `initialize-instance`.
+[src:common-lisp/cl-cookbook-clos-p02] Implementors and application writers define `:after` methods on `initialize-instance`, to initialize the slots of the instance.
+[src:common-lisp/cl-cookbook-clos-p02] The system-supplied primary method does this with regard to (a) `:initform` and `:initarg` values supplied with the class was defined and (b) the keywords passed through from `make-instance`.
+[src:common-lisp/cl-cookbook-clos-p02] Other methods can extend this behaviour as they see fit.
+[src:common-lisp/cl-cookbook-clos-p02] For example, they might accept an additional keyword which invokes a database access to fill certain slots.
+[src:common-lisp/cl-cookbook-clos-p02] Suppose you created a “circle” class, with coordinates and a diameter.
+[src:common-lisp/cl-cookbook-clos-p02] Later on, you decide to replace the diameter by a radius.
+[src:common-lisp/cl-cookbook-clos-p02] You want all the existing objects to be cleverly updated: the radius should have the diameter value, divided by 2.
+[src:common-lisp/cl-cookbook-clos-p02] Use `update-instance-for-redefined-class`.
+[src:common-lisp/cl-cookbook-clos-p02] Nothing happens yet, you don’t see the output of our “plist values” print.
+[src:common-lisp/cl-cookbook-clos-p02] Inspect or `describe` the object: now it will be updated, and you’ll find the `radius` slot.
+[src:common-lisp/cl-cookbook-clos-p02] See more on the HyperSpec or on the Community Spec.
+[src:common-lisp/cl-cookbook-clos-p02] Now imagine you are working with the `circle` class, but you realize you only need a `surface` kind of objects.
+[src:common-lisp/cl-cookbook-clos-p02] You will discard the circle class altogether, but you want your existing objects to be updated -to this new class, and compute new slots intelligently.
+[src:common-lisp/cl-cookbook-clos-p02] Use `update-instance-for-different-class`.
+[src:common-lisp/cl-cookbook-clos-p02] You want to check if a method exists with a given set of *qualifiers* (such as the `:around` method) and, most importantly, *specializers* (the type(s) the method dispatches on.
+[src:common-lisp/cl-cookbook-clos-p02] Now, in our program that uses some introspection, we want to see if such a function exists, and get a reference to it.
+[src:common-lisp/cl-cookbook-clos-p02] The first argument, `nil`, is a list of qualifiers.
+[src:common-lisp/cl-cookbook-clos-p02] We are not interested in the `:around`, `:before` or `:after` methods, so we keep it `nil`.
+[src:common-lisp/cl-cookbook-clos-p02] The second argument is a list of the method’s arguments’ types.
+[src:common-lisp/cl-cookbook-clos-p02] `print-object` takes 2 arguments, a person and a stream.
+[src:common-lisp/cl-cookbook-clos-p02] We can use `'(t t)` to get a reference to the generic function.
+[src:common-lisp/cl-cookbook-clos-p02] We use `'(person t)` to get a reference to the method that specializes on a person, and on any stream.
+[src:common-lisp/cl-cookbook-clos-p02] unless you set its last optional argument `errorp` to `nil`.
+[src:common-lisp/common-lisp-p01] The Common Lisp language was developed as a standardized and improved successor of Maclisp.
+[src:common-lisp/common-lisp-p01] By the early 1980s several groups were already at work on diverse successors to MacLisp: Lisp Machine Lisp (aka ZetaLisp), Spice Lisp, NIL and S-1 Lisp.
+[src:common-lisp/common-lisp-p01] Common Lisp sought to unify, standardize, and extend the features of these MacLisp dialects.
+[src:common-lisp/common-lisp-p01] Common Lisp is not an implementation, but rather a language specification.
+[src:common-lisp/common-lisp-p01] Several implementations of the Common Lisp standard are available, including free and open-source software and proprietary products.
+[src:common-lisp/common-lisp-p01] Common Lisp is a general-purpose, multi-paradigm programming language.
+[src:common-lisp/common-lisp-p01] It supports a combination of procedural, functional, and object-oriented programming paradigms.
+[src:common-lisp/common-lisp-p01] As a dynamic programming language, it facilitates evolutionary and incremental software development, with iterative compilation into efficient run-time programs.
+[src:common-lisp/common-lisp-p01] This incremental development is often done interactively without interrupting the running application.
+[src:common-lisp/common-lisp-p01] It also supports optional type annotation and casting, which can be added as necessary at the later profiling and optimization stages, to permit the compiler to generate more efficient code.
+[src:common-lisp/common-lisp-p01] For instance, `fixnum` can hold an unboxed integer in a range supported by the hardware and implementation, permitting more efficient arithmetic than on big integers or arbitrary precision types.
+[src:common-lisp/common-lisp-p01] Similarly, the compiler can be told on a per-module or per-function basis which type of safety level is wanted, using *optimize* declarations.
+[src:common-lisp/common-lisp-p01] Common Lisp includes CLOS, an object system that supports multimethods and method combinations.
+[src:common-lisp/common-lisp-p01] It is often implemented with a Metaobject Protocol.
+[src:common-lisp/common-lisp-p01] Common Lisp is extensible through standard features such as *Lisp macros* (code transformations) and *reader macros* (input parsers for characters).
+[src:common-lisp/common-lisp-p01] Common Lisp provides partial backwards compatibility with Maclisp and John McCarthy's original Lisp.
+[src:common-lisp/common-lisp-p01] This allows older Lisp software to be ported to Common Lisp.
+[src:common-lisp/common-lisp-p01] Work on Common Lisp started in 1981 after an initiative by ARPA manager Bob Engelmore to develop a single community standard Lisp dialect.
+[src:common-lisp/common-lisp-p01] Much of the initial language design was done via electronic mail.
+[src:common-lisp/common-lisp-p01] Steele Jr. gave the first overview of Common Lisp at the 1982 ACM Symposium on LISP and functional programming.
+[src:common-lisp/common-lisp-p01] The first language documentation was published in 1984 as Common Lisp the Language (known as CLtL1), first edition.
+[src:common-lisp/common-lisp-p01] A second edition (known as CLtL2), published in 1990, incorporated many changes to the language, made during the ANSI Common Lisp standardization process: extended LOOP syntax, the Common Lisp Object System, the Condition System for error handling, an interface to the pretty printer and much more.
+[src:common-lisp/common-lisp-p01] But CLtL2 does not describe the final ANSI Common Lisp standard and thus is not a documentation of ANSI Common Lisp.
+[src:common-lisp/common-lisp-p01] The final ANSI Common Lisp standard then was published in 1994.
+[src:common-lisp/common-lisp-p01] Since then no update to the standard has been published.
+[src:common-lisp/common-lisp-p01] Various extensions and improvements to Common Lisp (examples are Unicode, Concurrency, CLOS-based IO) have been provided by implementations and libraries.
+[src:common-lisp/common-lisp-p01] It uses S-expressions to denote both code and data structure.
+[src:common-lisp/common-lisp-p01] The Common Lisp *character* type is not limited to ASCII characters.
+[src:common-lisp/common-lisp-p01] Most modern implementations allow Unicode characters.
+[src:common-lisp/common-lisp-p01] The *symbol* type is common to Lisp languages, but largely unknown outside them.
+[src:common-lisp/common-lisp-p01] A symbol is a unique, named data object with several parts: name, value, function, property list, and package.
+[src:common-lisp/common-lisp-p01] Of these, *value cell* and *function cell* are the most important.
+[src:common-lisp/common-lisp-p01] Symbols in Lisp are often used similarly to identifiers in other languages: to hold the value of a variable; however there are many other uses.
+[src:common-lisp/common-lisp-p01] Normally, when a symbol is evaluated, its value is returned.
+[src:common-lisp/common-lisp-p01] Some symbols evaluate to themselves, for example, all symbols in the keyword package are self-evaluating.
+[src:common-lisp/common-lisp-p01] Boolean values in Common Lisp are represented by the self-evaluating symbols T and NIL.
+[src:common-lisp/common-lisp-p01] Common Lisp has namespaces for symbols, called 'packages'.
+[src:common-lisp/common-lisp-p01] A number of functions are available for rounding scalar numeric values in various ways.
+[src:common-lisp/common-lisp-p01] The function `round` rounds the argument to the nearest integer, with halfway cases rounded to the even integer.
+[src:common-lisp/common-lisp-p01] The functions `truncate`, `floor`, and `ceiling` round towards zero, down, or up respectively.
+[src:common-lisp/common-lisp-p01] All these functions return the discarded fractional part as a secondary value.
+[src:common-lisp/common-lisp-p01] As in almost all other Lisp dialects, *lists* in Common Lisp are composed of *conses*, sometimes called *cons cells* or *pairs*.
+[src:common-lisp/common-lisp-p01] A cons is a data structure with two slots, called its *car* and *cdr*.
+[src:common-lisp/common-lisp-p01] A list is a linked chain of conses or the empty list.
+[src:common-lisp/common-lisp-p01] Each cons's car refers to a member of the list (possibly another list).
+[src:common-lisp/common-lisp-p01] Each cons's cdr refers to the next cons—except for the last cons in a list, whose cdr refers to the `nil` value.
+[src:common-lisp/common-lisp-p01] Conses can also easily be used to implement trees and other complex data structures; though it is usually advised to use structure or class instances instead.
+[src:common-lisp/common-lisp-p01] It is also possible to create circular data structures with conses.
+[src:common-lisp/common-lisp-p01] Common Lisp supports multidimensional *arrays*, and can dynamically resize *adjustable* arrays if required.
+[src:common-lisp/common-lisp-p01] Multidimensional arrays can be used for matrix mathematics.
+[src:common-lisp/common-lisp-p01] Arrays can carry any type as members (even mixed types in the same array) or can be specialized to contain a specific type of members, as in a vector of bits.
+[src:common-lisp/common-lisp-p01] Usually, only a few types are supported.
+[src:common-lisp/common-lisp-p01] Many implementations can optimize array functions when the array used is type-specialized.
+[src:common-lisp/common-lisp-p01] Two type-specialized array types are standard: a *string* is a vector of characters, while a *bit-vector* is a vector of bits.
+[src:common-lisp/common-lisp-p01] Common Lisp supports first-class functions.
+[src:common-lisp/common-lisp-p01] For instance, it is possible to write functions that take other functions as arguments or return functions as well.
+[src:common-lisp/common-lisp-p01] This makes it possible to describe very general operations.
+[src:common-lisp/common-lisp-p01] The Common Lisp library relies heavily on such higher-order functions.
+[src:common-lisp/common-lisp-p01] For example, the `sort` function takes a relational operator as an argument and key function as an optional keyword argument.
+[src:common-lisp/common-lisp-p01] This can be used not only to sort any type of data, but also to sort data structures according to a key.
+[src:common-lisp/common-lisp-p01] The evaluation model for functions is very simple.
+[src:common-lisp/common-lisp-p01] The name of a function (default), which may either be a symbol, or a sub-form beginning with the symbol `lambda`.
+[src:common-lisp/common-lisp-p01] If `f` is the name of a function, then the arguments `a1, a2, ..., an` are evaluated in left-to-right order, and the function is found and invoked with those values supplied as parameters.
+[src:common-lisp/common-lisp-p01] Function definitions may include compiler directives, known as *declarations*, which provide hints to the compiler about optimization settings or the data types of arguments.
+[src:common-lisp/common-lisp-p01] Anonymous functions (function literals) are defined using `lambda` expressions, e.g.
+[src:common-lisp/common-lisp-p01] `(lambda (x) (* x x))` for a function that squares its argument.
+[src:common-lisp/common-lisp-p01] Lisp programming style frequently uses higher-order functions for which it is useful to provide anonymous functions as arguments.
+[src:common-lisp/common-lisp-p01] Local functions can be defined with `flet` and `labels`.
+[src:common-lisp/common-lisp-p01] There are several other operators related to the definition and manipulation of functions.
+[src:common-lisp/common-lisp-p01] For instance, a function may be compiled with the `compile` operator.
+[src:common-lisp/common-lisp-p01] (Some Lisp systems run functions using an interpreter by default unless instructed to compile; others compile every function).
+[src:common-lisp/common-lisp-p01] The macro `defgeneric` defines generic functions.
+[src:common-lisp/common-lisp-p01] Generic functions are a collection of methods.
+[src:common-lisp/common-lisp-p01] Methods can specialize their parameters over CLOS *standard classes*, *system classes*, *structure classes* or individual objects.
+[src:common-lisp/common-lisp-p01] For many types, there are corresponding *system classes*.
+[src:common-lisp/common-lisp-p01] When a generic function is called, multiple-dispatch will determine the effective method to use.
+[src:common-lisp/common-lisp-p01] Generic Functions are also a first class data type.
+[src:common-lisp/common-lisp-p01] There are many more features to Generic Functions and Methods than described above.
+[src:common-lisp/common-lisp-p01] A key difference between Common Lisp and Scheme is that Common Lisp's namespace for function names is separate from its namespace for data variables.
+[src:common-lisp/common-lisp-p01] For Common Lisp, operators that define names in the function namespace include `defun`, `flet`, `labels`, `defmethod` and `defgeneric`.
+[src:common-lisp/common-lisp-p01] This follows the pattern established by John McCarthy's Lisp 1.5, which first split variables and functions into their own namespaces; John McCarthy's original Lisp language having only a single namespace for both.
+[src:common-lisp/common-lisp-p01] To pass a Common Lisp function by name as an argument to another function, one must use the `function` special operator, commonly abbreviated as `#'`.
+[src:common-lisp/common-lisp-p01] The first `sort` example above refers to the function named by the symbol `>` in the function namespace, with the code `#'>`.
+[src:common-lisp/common-lisp-p01] Conversely, to call a function passed in such a way, one would use the `funcall` operator on the argument.
+[src:common-lisp/common-lisp-p01] Scheme's evaluation model is simpler: there is only one namespace, and all positions in the form are evaluated (in any order) – not just the arguments.
+[src:common-lisp/common-lisp-p01] Code written in one dialect is therefore sometimes confusing to programmers more experienced in the other.
+[src:common-lisp/common-lisp-p01] For instance, many Common Lisp programmers like to use descriptive variable names such as *list* or *string* which could cause problems in Scheme, as they would locally shadow function names.
+[src:common-lisp/common-lisp-p01] Whether a separate namespace for functions is an advantage is a source of contention in the Lisp community.
+[src:common-lisp/common-lisp-p01] It is usually referred to as the *Lisp-1 vs.
+[src:common-lisp/common-lisp-p01] Lisp-1 refers to Scheme's model and Lisp-2 refers to Common Lisp's model.
+[src:common-lisp/common-lisp-p01] These names were coined in a 1988 paper by Richard P.
+[src:common-lisp/common-lisp-p01] Gabriel and Kent Pitman, which extensively compares the two approaches.
+[src:common-lisp/common-lisp-p01] Common Lisp supports the concept of *multiple values*, where any expression always has a single *primary value*, but it might also have any number of *secondary values*, which might be received and inspected by interested callers.
+[src:common-lisp/common-lisp-p01] This concept is distinct from returning a list value, as the secondary values are fully optional, and passed via a dedicated side channel.
+[src:common-lisp/common-lisp-p01] This means that callers may remain entirely unaware of the secondary values being there if they have no need for them, and it makes it convenient to use the mechanism for communicating information that is sometimes useful, but not always necessary.
+[src:common-lisp/common-lisp-p01] Like programs in many other programming languages, Common Lisp programs make use of names to refer to variables, functions, and many other kinds of entities.
+[src:common-lisp/common-lisp-p01] The association between a name and the entity which the name refers to is called a binding.
+[src:common-lisp/common-lisp-p01] Scope refers to the set of circumstances in which a name is determined to have a particular binding.
+[src:common-lisp/common-lisp-p01] Some environments in Lisp are globally pervasive.
+[src:common-lisp/common-lisp-p01] For instance, if a new type is defined, it is known everywhere thereafter.
+[src:common-lisp/common-lisp-p01] References to that type look it up in this global environment.
+[src:common-lisp/common-lisp-p01] One type of environment in Common Lisp is the dynamic environment.
+[src:common-lisp/common-lisp-p01] However, a dynamic binding is not just visible within that block; it is also visible to all functions invoked from that block.
+[src:common-lisp/common-lisp-p01] This type of visibility is known as indefinite scope.
+[src:common-lisp/common-lisp-p01] Bindings which exhibit dynamic extent (lifetime tied to the activation and deactivation of a block) and indefinite scope (visible to all functions which are called from that block) are said to have dynamic scope.
+[src:common-lisp/common-lisp-p01] Common Lisp has support for dynamically scoped variables, which are also called special variables.
+[src:common-lisp/common-lisp-p01] Certain other kinds of bindings are necessarily dynamically scoped also, such as restarts and catch tags.
+[src:common-lisp/common-lisp-p01] Dynamic scope is extremely useful because it adds referential clarity and discipline to global variables.
+[src:common-lisp/common-lisp-p01] Global variables are frowned upon in computer science as potential sources of error, because they can give rise to ad-hoc, covert channels of communication among modules that lead to unwanted, surprising interactions.
+[src:common-lisp/common-lisp-p01] In Common Lisp, a special variable which has only a top-level binding behaves just like a global variable in other programming languages.
+[src:common-lisp/common-lisp-p01] A new value can be stored into it, and that value simply replaces what is in the top-level binding.
+[src:common-lisp/common-lisp-p01] Careless replacement of the value of a global variable is at the heart of bugs caused by the use of global variables.
+[src:common-lisp/common-lisp-p01] However, another way to work with a special variable is to give it a new, local binding within an expression.
+[src:common-lisp/common-lisp-p01] This is sometimes referred to as "rebinding" the variable.
+[src:common-lisp/common-lisp-p01] Binding a dynamically scoped variable temporarily creates a new memory location for that variable, and associates the name with that location.
+[src:common-lisp/common-lisp-p01] While that binding is in effect, all references to that variable refer to the new binding; the previous binding is hidden.
+[src:common-lisp/common-lisp-p01] When execution of the binding expression terminates, the temporary memory location is gone, and the old binding is revealed, with the original value intact.
+[src:common-lisp/common-lisp-p01] Of course, multiple dynamic bindings for the same variable can be nested.
+[src:common-lisp/common-lisp-p01] In Common Lisp implementations which support multithreading, dynamic scopes are specific to each thread of execution.
+[src:common-lisp/common-lisp-p01] Thus special variables serve as an abstraction for thread local storage.
+[src:common-lisp/common-lisp-p01] If one thread rebinds a special variable, this rebinding has no effect on that variable in other threads.
+[src:common-lisp/common-lisp-p01] The value stored in a binding can only be retrieved by the thread which created that binding.
+[src:common-lisp/common-lisp-p01] If each thread binds some special variable `*x*`, then `*x*` behaves like thread-local storage.
+[src:common-lisp/common-lisp-p01] Among threads which do not rebind `*x*`, it behaves like an ordinary global: all of these threads refer to the same top-level binding of `*x*`.
+[src:common-lisp/common-lisp-p01] Dynamic variables can be used to extend the execution context with additional context information which is implicitly passed from function to function without having to appear as an extra function parameter.
+[src:common-lisp/common-lisp-p01] This is especially useful when the control transfer has to pass through layers of unrelated code, which simply cannot be extended with extra parameters to pass the additional data.
+[src:common-lisp/common-lisp-p01] A situation like this usually calls for a global variable.
+[src:common-lisp/common-lisp-p01] That global variable must be saved and restored, so that the scheme doesn't break under recursion: dynamic variable rebinding takes care of this.
+[src:common-lisp/common-lisp-p01] And that variable must be made thread-local (or else a big mutex must be used) so the scheme doesn't break under threads: dynamic scope implementations can take care of this also.
+[src:common-lisp/common-lisp-p01] In the Common Lisp library, there are many standard special variables.
+[src:common-lisp/common-lisp-p01] For instance, all standard I/O streams are stored in the top-level bindings of well-known special variables.
+[src:common-lisp/common-lisp-p01] The standard output stream is stored in *standard-output*.
+[src:common-lisp/common-lisp-p01] Common Lisp supports lexical environments.
+[src:common-lisp/common-lisp-p01] Formally, the bindings in a lexical environment have lexical scope and may have either an indefinite extent or dynamic extent, depending on the type of namespace.
+[src:common-lisp/common-lisp-p01] Lexical scope means that visibility is physically restricted to the block in which the binding is established.
+[src:common-lisp/common-lisp-p01] References which are not textually (i.e. lexically) embedded in that block simply do not see that binding.
+[src:common-lisp/common-lisp-p01] The tags in a TAGBODY have lexical scope.
+[src:common-lisp/common-lisp-p01] The expression (GO X) is erroneous if it is not embedded in a TAGBODY which contains a label X.
+[src:common-lisp/common-lisp-p01] However, the label bindings disappear when the TAGBODY terminates its execution, because they have dynamic extent.
+[src:common-lisp/common-lisp-p01] When the TAGBODY is executed, it first evaluates the setf form which stores a function in the special variable *stashed*.
+[src:common-lisp/common-lisp-p01] Then the (go end-label) transfers control to end-label, skipping the code (print "Hello").
+[src:common-lisp/common-lisp-p01] Since end-label is at the end of the tagbody, the tagbody terminates, yielding NIL.
+[src:common-lisp/common-lisp-p01] One implementation's response is an error condition containing the message, "GO: tagbody for tag SOME-LABEL has already been left".
+[src:common-lisp/common-lisp-p01] The function tried to evaluate (go some-label), which is lexically embedded in the tagbody, and resolves to the label.
+[src:common-lisp/common-lisp-p01] However, the tagbody isn't executing (its extent has ended), and so the control transfer cannot take place.
+[src:common-lisp/common-lisp-p01] Local function bindings in Lisp have lexical scope, and variable bindings also have lexical scope by default.
+[src:common-lisp/common-lisp-p01] By contrast with GO labels, both of these have indefinite extent.
+[src:common-lisp/common-lisp-p01] When a lexical function or variable binding is established, that binding continues to exist for as long as references to it are possible, even after the construct which established that binding has terminated.
+[src:common-lisp/common-lisp-p01] References to lexical variables and functions after the termination of their establishing construct are possible thanks to lexical closures.
+[src:common-lisp/common-lisp-p01] Lexical binding is the default binding mode for Common Lisp variables.
+[src:common-lisp/common-lisp-p01] For an individual symbol, it can be switched to dynamic scope, either by a local declaration, by a global declaration.
+[src:common-lisp/common-lisp-p01] The latter may occur implicitly through the use of a construct like DEFVAR or DEFPARAMETER.
+[src:common-lisp/common-lisp-p01] It is an important convention in Common Lisp programming that special (i.e. dynamically scoped) variables have names which begin and end with an asterisk sigil `*` in what is called the "earmuff convention".
+[src:common-lisp/common-lisp-p01] If adhered to, this convention effectively creates a separate namespace for special variables, so that variables intended to be lexical are not accidentally made special.
+[src:common-lisp/common-lisp-p01] Lexical scope is useful for several reasons.
+[src:common-lisp/common-lisp-p01] Firstly, references to variables and functions can be compiled to efficient machine code, because the run-time environment structure is relatively simple.
+[src:common-lisp/common-lisp-p01] In many cases it can be optimized to stack storage, so opening and closing lexical scopes has minimal overhead.
+[src:common-lisp/common-lisp-p01] Even in cases where full closures must be generated, access to the closure's environment is still efficient; typically each variable becomes an offset into a vector of bindings, and so a variable reference becomes a simple load or store instruction with a base-plus-offset addressing mode.
+[src:common-lisp/common-lisp-p01] Secondly, lexical scope (combined with indefinite extent) gives rise to the lexical closure, which in turn creates a whole paradigm of programming centered around the use of functions being first-class objects, which is at the root of functional programming.
+[src:common-lisp/common-lisp-p01] Thirdly, perhaps most importantly, even if lexical closures are not exploited, the use of lexical scope isolates program modules from unwanted interactions.
+[src:common-lisp/common-lisp-p01] Due to their restricted visibility, lexical variables are private.
+[src:common-lisp/common-lisp-p01] If one module A binds a lexical variable X, and calls another module B, references to X in B will not accidentally resolve to the X bound in A.
+[src:common-lisp/common-lisp-p01] For situations in which disciplined interactions through a variable are desirable, Common Lisp provides special variables.
+[src:common-lisp/common-lisp-p01] Special variables allow for a module A to set up a binding for a variable X which is visible to another module B, called from A.
+[src:common-lisp/common-lisp-p01] Being able to do this is an advantage, and being able to prevent it from happening is also an advantage; consequently, Common Lisp supports both lexical and dynamic scope.
+[src:common-lisp/common-lisp-p01] A *macro* in Lisp superficially resembles a function in usage.
+[src:common-lisp/common-lisp-p01] However, rather than representing an expression which is evaluated, it represents a transformation of the program source code.
+[src:common-lisp/common-lisp-p01] The macro gets the source it surrounds as arguments, binds them to its parameters and computes a new source form.
+[src:common-lisp/common-lisp-p01] The macro expansion is repeated until the new source form does not use a macro.
+[src:common-lisp/common-lisp-p01] The final computed form is the source code executed at runtime.
+[src:common-lisp/common-lisp-p01] Macros are defined by the *defmacro* macro.
+[src:common-lisp/common-lisp-p01] The special operator *macrolet* allows the definition of local (lexically scoped) macros.
+[src:common-lisp/common-lisp-p01] It is also possible to define macros for symbols using *define-symbol-macro* and *symbol-macrolet*.
+[src:common-lisp/common-lisp-p01] Paul Graham's book On Lisp describes the use of macros in Common Lisp in detail.
+[src:common-lisp/common-lisp-p01] Doug Hoyte's book Let Over Lambda extends the discussion on macros, claiming "Macros are the single greatest advantage that lisp has as a programming language and the single greatest advantage of any programming language." Hoyte provides several examples of iterative development of macros.
+[src:common-lisp/common-lisp-p01] Macros allow Lisp programmers to create new syntactic forms in the language.
+[src:common-lisp/common-lisp-p01] One typical use is to create new control structures.
+[src:common-lisp/common-lisp-p01] The example macro provides an `until` looping construct.
+[src:common-lisp/common-lisp-p01] The code can be expanded using the function *macroexpand-1*.
+[src:common-lisp/common-lisp-p01] During macro expansion the value of the variable *test* is *(= (random 10) 0)* and the value of the variable *body* is *((write-line "Hello"))*.
+[src:common-lisp/common-lisp-p01] Symbols are usually automatically upcased.
+[src:common-lisp/common-lisp-p01] The expansion uses the TAGBODY with two labels.
+[src:common-lisp/common-lisp-p01] The symbols for these labels are computed by GENSYM and are not interned in any package.
+[src:common-lisp/common-lisp-p01] Two *go* forms use these tags to jump to.
+[src:common-lisp/common-lisp-p01] Since *tagbody* is a primitive operator in Common Lisp (and not a macro), it will not be expanded into something else.
+[src:common-lisp/common-lisp-p01] The expanded form uses the *when* macro, which also will be expanded.
+[src:common-lisp/common-lisp-p01] Fully expanding a source form is called *code walking*.
+[src:common-lisp/common-lisp-p01] All macros must be expanded before the source code containing them can be evaluated or compiled normally.
+[src:common-lisp/common-lisp-p01] Macros can be considered functions that accept and return S-expressions – similar to abstract syntax trees, but not limited to those.
+[src:common-lisp/common-lisp-p01] These functions are invoked before the evaluator or compiler to produce the final source code.
+[src:common-lisp/common-lisp-p01] Macros are written in normal Common Lisp, and may use any Common Lisp (or third-party) operator available.
+[src:common-lisp/common-lisp-p01] Common Lisp macros are capable of what is commonly called *variable capture*, where symbols in the macro-expansion body coincide with those in the calling context, allowing the programmer to create macros wherein various symbols have special meaning.
+[src:common-lisp/common-lisp-p01] The term *variable capture* is somewhat misleading, because all namespaces are vulnerable to unwanted capture, including the operator and function namespace, the tagbody label namespace, catch tag, condition handler and restart namespaces.
+[src:common-lisp/common-lisp-p01] The Scheme dialect of Lisp provides a macro-writing system which provides the referential transparency that eliminates both types of capture problem.
+[src:common-lisp/common-lisp-p01] This type of macro system is sometimes called "hygienic", in particular by its proponents (who regard macro systems which do not automatically solve this problem as unhygienic).
+[src:common-lisp/common-lisp-p01] In Common Lisp, macro hygiene is ensured one of two different ways.
+[src:common-lisp/common-lisp-p01] One approach is to use gensyms: guaranteed-unique symbols which can be used in a macro-expansion without threat of capture.
+[src:common-lisp/common-lisp-p01] The use of gensyms in a macro definition is a manual chore, but macros can be written which simplify the instantiation and use of gensyms.
+[src:common-lisp/common-lisp-p01] Gensyms solve type 2 capture easily, but they are not applicable to type 1 capture in the same way, because the macro expansion cannot rename the interfering symbols in the surrounding code which capture its references.
+[src:common-lisp/common-lisp-p01] Gensyms could be used to provide stable aliases for the global symbols which the macro expansion needs.
+[src:common-lisp/common-lisp-p01] The macro expansion would use these secret aliases rather than the well-known names, so redefinition of the well-known names would have no ill effect on the macro.
+[src:common-lisp/common-lisp-p01] A macro defined in its own package can simply use internal symbols in that package in its expansion.
+[src:common-lisp/common-lisp-p01] The use of packages deals with type 1 and type 2 capture.
+[src:common-lisp/common-lisp-p01] However, packages don't solve the type 1 capture of references to standard Common Lisp functions and operators.
+[src:common-lisp/common-lisp-p01] The reason is that the use of packages to solve capture problems revolves around the use of private symbols (symbols in one package, which are not imported into, or otherwise made visible in other packages).
+[src:common-lisp/common-lisp-p01] Whereas the Common Lisp library symbols are external, and frequently imported into or made visible in user-defined packages.
+[src:common-lisp/common-lisp-p01] The `until` macro will expand into a form which calls `do` which is intended to refer to the standard Common Lisp macro `do`.
+[src:common-lisp/common-lisp-p01] However, in this context, `do` may have a completely different meaning, so `until` may not work properly.
+[src:common-lisp/common-lisp-p01] Common Lisp solves the problem of the shadowing of standard operators and functions by forbidding their redefinition.
+[src:common-lisp/common-lisp-p01] Because it redefines the standard operator `do`, the preceding is actually a fragment of non-conforming Common Lisp, which allows implementations to diagnose and reject it.
+[src:common-lisp/common-lisp-p01] The *condition system* is responsible for exception handling in Common Lisp.
+[src:common-lisp/common-lisp-p01] It provides *conditions*, *handler*s and *restart*s.
+[src:common-lisp/common-lisp-p01] *Condition*s are objects describing an exceptional situation (for example an error).
+[src:common-lisp/common-lisp-p01] If a *condition* is signaled, the Common Lisp system searches for a *handler* for this condition type and calls the handler.
+[src:common-lisp/common-lisp-p01] The *handler* can now search for restarts and use one of these restarts to automatically repair the current problem, using information such as the condition type and any relevant information provided as part of the condition object, and call the appropriate restart function.
+[src:common-lisp/common-lisp-p01] These restarts, if unhandled by code, can be presented to users (as part of a user interface, that of a debugger for example), so that the user can select and invoke one of the available restarts.
+[src:common-lisp/common-lisp-p01] Since the condition handler is called in the context of the error (without unwinding the stack), full error recovery is possible in many cases, where other exception handling systems would have already terminated the current routine.
+[src:common-lisp/common-lisp-p01] The debugger itself can also be customized or replaced using the `*debugger-hook*` dynamic variable.
+[src:common-lisp/common-lisp-p01] Code found within *unwind-protect* forms such as finalizers will also be executed as appropriate despite the exception.
+[src:common-lisp/common-lisp-p01] In the following example (using Symbolics Genera) the user tries to open a file in a Lisp function *test* called from the Read-Eval-Print-LOOP (REPL), when the file does not exist.
+[src:common-lisp/common-lisp-p01] The user selects the *Retry OPEN using a different pathname* restart and enters a different pathname (lispm-init.lisp instead of lispm-int.lisp).
+[src:common-lisp/common-lisp-p01] The user code does not contain any error handling code.
+[src:common-lisp/common-lisp-p01] The whole error handling and restart code is provided by the Lisp system, which can handle and repair the error without terminating the user code.
+[src:common-lisp/common-lisp-p01] Common Lisp includes a toolkit for object-oriented programming, the Common Lisp Object System or CLOS.
+[src:common-lisp/common-lisp-p01] Peter Norvig explains how many Design Patterns are simpler to implement in a dynamic language with the features of CLOS (Multiple Inheritance, Mixins, Multimethods, Metaclasses, Method combinations, etc.).
+[src:common-lisp/common-lisp-p01] Several extensions to Common Lisp for object-oriented programming have been proposed to be included into the ANSI Common Lisp standard, but eventually CLOS was adopted as the standard object-system for Common Lisp.
+[src:common-lisp/common-lisp-p01] CLOS is a dynamic object system with multiple dispatch and multiple inheritance, and differs radically from the OOP facilities found in static languages such as C++ or Java.
+[src:common-lisp/common-lisp-p01] As a dynamic object system, CLOS allows changes at runtime to generic functions and classes.
+[src:common-lisp/common-lisp-p01] Methods can be added and removed, classes can be added and redefined, objects can be updated for class changes and the class of objects can be changed.
+[src:common-lisp/common-lisp-p01] CLOS has been integrated into ANSI Common Lisp.
+[src:common-lisp/common-lisp-p01] Generic functions can be used like normal functions and are a first-class data type.
+[src:common-lisp/common-lisp-p01] Every CLOS class is integrated into the Common Lisp type system.
+[src:common-lisp/common-lisp-p01] Many Common Lisp types have a corresponding class.
+[src:common-lisp/common-lisp-p01] There is more potential use of CLOS for Common Lisp.
+[src:common-lisp/common-lisp-p01] The specification does not say whether conditions are implemented with CLOS.
+[src:common-lisp/common-lisp-p01] Pathnames and streams could be implemented with CLOS.
+[src:common-lisp/common-lisp-p01] These further usage possibilities of CLOS for ANSI Common Lisp are not part of the standard.
+[src:common-lisp/common-lisp-p01] Actual Common Lisp implementations use CLOS for pathnames, streams, input–output, conditions, the implementation of CLOS itself and more.
+[src:common-lisp/common-lisp-p01] A Lisp interpreter directly executes Lisp source code provided as Lisp objects (lists, symbols, numbers, ...) read from s-expressions.
+[src:common-lisp/common-lisp-p01] A Lisp compiler generates bytecode or machine code from Lisp source code.
+[src:common-lisp/common-lisp-p01] Common Lisp allows both individual Lisp functions to be compiled in memory and the compilation of whole files to externally stored compiled code (*fasl* files).
+[src:common-lisp/common-lisp-p01] Several implementations of earlier Lisp dialects provided both an interpreter and a compiler.
+[src:common-lisp/common-lisp-p01] Unfortunately often the semantics were different.
+[src:common-lisp/common-lisp-p01] These earlier Lisps implemented lexical scoping in the compiler and dynamic scoping in the interpreter.
+[src:common-lisp/common-lisp-p01] Common Lisp requires that both the interpreter and compiler use lexical scoping by default.
+[src:common-lisp/common-lisp-p01] The Common Lisp standard describes both the semantics of the interpreter and a compiler.
+[src:common-lisp/common-lisp-p01] The compiler can be called using the function *compile* for individual functions and using the function *compile-file* for files.
+[src:common-lisp/common-lisp-p01] Common Lisp allows type declarations and provides ways to influence the compiler code generation policy.
+[src:common-lisp/common-lisp-p01] For the latter various optimization qualities can be given values between 0 (not important) and 3 (most important): *speed*, *space*, *safety*, *debug* and *compilation-speed*.
+[src:common-lisp/common-lisp-p01] There is also a function to evaluate Lisp code: `eval`.
+[src:common-lisp/common-lisp-p01] `eval` takes code as pre-parsed s-expressions and not, like in some other languages, as text strings.
+[src:common-lisp/common-lisp-p01] This way code can be constructed with the usual Lisp functions for constructing lists and symbols and then this code can be evaluated with the function `eval`.
+[src:common-lisp/common-lisp-p01] Several Common Lisp implementations (like Clozure CL and SBCL) are implementing `eval` using their compiler.
+[src:common-lisp/common-lisp-p01] This way code is compiled, even though it is evaluated using the function `eval`.
+[src:common-lisp/common-lisp-p01] The file compiler is invoked using the function *compile-file*.
+[src:common-lisp/common-lisp-p01] The generated file with compiled code is called a *fasl* (from *fast load*) file.
+[src:common-lisp/common-lisp-p01] These *fasl* files and also source code files can be loaded with the function *load* into a running Common Lisp system.
+[src:common-lisp/common-lisp-p01] Depending on the implementation, the file compiler generates byte-code (for example for the Java Virtual Machine), C language code (which then is compiled with a C compiler) or, directly, native code.
+[src:common-lisp/common-lisp-p01] Common Lisp implementations can be used interactively, even though the code gets fully compiled.
+[src:common-lisp/common-lisp-p01] The idea of an Interpreted language thus does not apply for interactive Common Lisp.
+[src:common-lisp/common-lisp-p01] The language makes a distinction between read-time, compile-time, load-time, and run-time, and allows user code to also make this distinction to perform the wanted type of processing at the wanted step.
+[src:common-lisp/common-lisp-p01] Some special operators are provided to especially suit interactive development; for instance, `defvar` will only assign a value to its provided variable if it wasn't already bound, while `defparameter` will always perform the assignment.
+[src:common-lisp/common-lisp-p01] This distinction is useful when interactively evaluating, compiling and loading code in a live image.
+[src:common-lisp/common-lisp-p01] Some features are also provided to help writing compilers and interpreters.
+[src:common-lisp/common-lisp-p01] Symbols consist of first-level objects and are directly manipulable by user code.
+[src:common-lisp/common-lisp-p01] The `progv` special operator allows to create lexical bindings programmatically, while packages are also manipulable.
+[src:common-lisp/common-lisp-p01] The Lisp compiler is available at runtime to compile files or individual functions.
+[src:common-lisp/common-lisp-p01] These make it easy to use Lisp as an intermediate compiler or interpreter for another language.
+[src:common-lisp/common-lisp-p02] The following program calculates the smallest number of people in a room for whom the probability of unique birthdays is less than 50% (the birthday paradox, where for 1 person the probability is obviously 100%, for 2 it is 364/365, etc.).
+[src:common-lisp/common-lisp-p02] In Common Lisp, by convention, constants are enclosed with + characters.
+[src:common-lisp/common-lisp-p02] We define a class `person` and a method for displaying the name and age of a person.
+[src:common-lisp/common-lisp-p02] Next we define a group of persons as a list of `person` objects.
+[src:common-lisp/common-lisp-p02] It prints the three names with descending age.
+[src:common-lisp/common-lisp-p02] WITH-OPEN-FILE is a macro that opens a file and provides a stream.
+[src:common-lisp/common-lisp-p02] When the form is returning, the file is automatically closed.
+[src:common-lisp/common-lisp-p02] The LOOP collects all lines that match the predicate.
+[src:common-lisp/common-lisp-p02] The function AVAILABLE-SHELLS calls the above function LIST-MATCHING-LINES with a pathname and an anonymous function as the predicate.
+[src:common-lisp/common-lisp-p02] The predicate returns the pathname of a shell or NIL (if the string is not the filename of a shell).
+[src:common-lisp/common-lisp-p02] Common Lisp is most frequently compared with, and contrasted to, Scheme—if only because they are the two most popular Lisp dialects.
+[src:common-lisp/common-lisp-p02] Scheme predates CL, and comes not only from the same Lisp tradition but from some of the same engineers—Guy Steele, with whom Gerald Jay Sussman designed Scheme, chaired the standards committee for Common Lisp.
+[src:common-lisp/common-lisp-p02] Common Lisp is a general-purpose programming language, in contrast to Lisp variants such as Emacs Lisp and AutoLISP which are extension languages embedded in particular products (GNU Emacs and AutoCAD, respectively).
+[src:common-lisp/common-lisp-p02] Unlike many earlier Lisps, Common Lisp (like Scheme) uses lexical variable scope by default for both interpreted and compiled code.
+[src:common-lisp/common-lisp-p02] Most of the Lisp systems whose designs contributed to Common Lisp—such as ZetaLisp and Franz Lisp—used dynamically scoped variables in their interpreters and lexically scoped variables in their compilers.
+[src:common-lisp/common-lisp-p02] Scheme introduced the sole use of lexically scoped variables to Lisp; an inspiration from ALGOL 68.
+[src:common-lisp/common-lisp-p02] CL supports dynamically scoped variables as well, but they must be explicitly declared as "special".
+[src:common-lisp/common-lisp-p02] There are no differences in scoping between ANSI CL interpreters and compilers.
+[src:common-lisp/common-lisp-p02] Common Lisp is sometimes termed a *Lisp-2* and Scheme a *Lisp-1*, referring to CL's use of separate namespaces for functions and variables.
+[src:common-lisp/common-lisp-p02] (In fact, CL has *many* namespaces, such as those for go tags, block names, and `loop` keywords).
+[src:common-lisp/common-lisp-p02] There is a long-standing controversy between CL and Scheme advocates over the tradeoffs involved in multiple namespaces.
+[src:common-lisp/common-lisp-p02] In Scheme, it is (broadly) necessary to avoid giving variables names that clash with functions; Scheme functions frequently have arguments named `lis`, `lst`, or `lyst` so as not to conflict with the system function `list`.
+[src:common-lisp/common-lisp-p02] However, in CL it is necessary to explicitly refer to the function namespace when passing a function as an argument—which is also a common occurrence, as in the `sort` example above.
+[src:common-lisp/common-lisp-p02] CL also differs from Scheme in its handling of Boolean values.
+[src:common-lisp/common-lisp-p02] Scheme uses the special values #t and #f to represent truth and falsity.
+[src:common-lisp/common-lisp-p02] CL follows the older Lisp convention of using the symbols T and NIL, with NIL standing also for the empty list.
+[src:common-lisp/common-lisp-p02] In CL, *any* non-NIL value is treated as true by conditionals, such as `if`, whereas in Scheme all non-#f values are treated as true.
+[src:common-lisp/common-lisp-p02] These conventions allow some operators in both languages to serve both as predicates (answering a Boolean-valued question) and as returning a useful value for further computation, but in Scheme the value '() which is equivalent to NIL in Common Lisp evaluates to true in a Boolean expression.
+[src:common-lisp/common-lisp-p02] Lastly, the Scheme standards documents require tail-call optimization, which the CL standard does not.
+[src:common-lisp/common-lisp-p02] Most CL implementations do offer tail-call optimization, although often only when the programmer uses an optimization directive.
+[src:common-lisp/common-lisp-p02] See the Category Common Lisp implementations.
+[src:common-lisp/common-lisp-p02] Common Lisp is defined by a specification (like Ada and C) rather than by one implementation (like Perl).
+[src:common-lisp/common-lisp-p02] There are many implementations, and the standard details areas in which they may validly differ.
+[src:common-lisp/common-lisp-p02] Free and open-source software libraries have been created to support extensions to Common Lisp in a portable way, and are most notably found in the repositories of the Common-Lisp.net and CLOCC (Common Lisp Open Code Collection) projects.
+[src:common-lisp/common-lisp-p02] Common Lisp implementations may use any mix of native code compilation, byte code compilation or interpretation.
+[src:common-lisp/common-lisp-p02] Common Lisp has been designed to support incremental compilers, file compilers and block compilers.
+[src:common-lisp/common-lisp-p02] Standard declarations to optimize compilation (such as function inlining or type specialization) are proposed in the language specification.
+[src:common-lisp/common-lisp-p02] Most Common Lisp implementations compile source code to native machine code.
+[src:common-lisp/common-lisp-p02] Some implementations can create (optimized) stand-alone applications.
+[src:common-lisp/common-lisp-p02] Others compile to interpreted bytecode, which is less efficient than native code, but eases binary-code portability.
+[src:common-lisp/common-lisp-p02] Some compilers compile Common Lisp code to C code.
+[src:common-lisp/common-lisp-p02] The misconception that Lisp is a purely interpreted language is most likely because Lisp environments provide an interactive prompt and that code is compiled one-by-one, in an incremental way.
+[src:common-lisp/common-lisp-p02] With Common Lisp incremental compilation is widely used.
+[src:common-lisp/common-lisp-p02] Some Unix-based implementations (CLISP, SBCL) can be used as a scripting language; that is, invoked by the system transparently in the way that a Perl or Unix shell interpreter is.
+[src:common-lisp/common-lisp-p02] For Microsoft Windows, FreeBSD, Linux, Apple macOS and various UNIX variants.
+[src:common-lisp/common-lisp-p02] (for Windows and Linux) and extensive capabilities for application delivery.
+[src:common-lisp/common-lisp-p02] for Microsoft Windows, FreeBSD, Linux, Apple macOS, iOS, Android and various UNIX variants.
+[src:common-lisp/common-lisp-p02] (available for most platforms, but not for iOS and Android) and extensive capabilities for application delivery.
+[src:common-lisp/common-lisp-p02] Designed for high-performance scientific computing.
+[src:common-lisp/common-lisp-p02] , and allows access to Java libraries from CL.
+[src:common-lisp/common-lisp-p02] An LLVM-based implementation that seamlessly interoperates with C++ libraries.
+[src:common-lisp/common-lisp-p02] ), as well as Microsoft Windows and several other systems.
+[src:common-lisp/common-lisp-p02] Additionally, there are Power PC ports for macOS and Linux.
+[src:common-lisp/common-lisp-p02] CCL was previously known as OpenMCL, but that name is no longer used to avoid confusion with the open source version of Macintosh Common Lisp.
+[src:common-lisp/common-lisp-p02] for Intel x86 and PowerPC; and Solaris, IRIX, and HP-UX on their native platforms.
+[src:common-lisp/common-lisp-p02] In January 2015, Corman Lisp was published under the MIT license.
+[src:common-lisp/common-lisp-p02] ECL includes a bytecode interpreter and compiler.
+[src:common-lisp/common-lisp-p02] It can also compile Lisp code to machine code via a C compiler.
+[src:common-lisp/common-lisp-p02] ECL then compiles Lisp code to C, compiles the C code with a C compiler, and can then load the resulting machine code.
+[src:common-lisp/common-lisp-p02] programs, and C code into Common Lisp programs.
+[src:common-lisp/common-lisp-p02] Version 5.2 for Apple Macintosh computers with a PowerPC processor running macOS X is open source.
+[src:common-lisp/common-lisp-p02] RMCL (based on MCL 5.2) runs on Intel-based Apple Macintosh computers using the Rosetta binary translator from Apple.
+[src:common-lisp/common-lisp-p02] MKCL emphasises reliability, stability, and overall code quality through a heavily reworked, natively multi-threaded runtime system.
+[src:common-lisp/common-lisp-p02] On Linux, MKCL features a fully POSIX-compliant runtime system.
+[src:common-lisp/common-lisp-p02] computers without relying on any underlying OS.
+[src:common-lisp/common-lisp-p02] (SML), allowing mixed language programming.
+[src:common-lisp/common-lisp-p02] For all, the implementation language is POP-11, which is compiled incrementally.
+[src:common-lisp/common-lisp-p02] SBCL runs on the platforms CMUCL does, except HP/UX; in addition, it runs on Linux for AMD64, PowerPC, SPARC, MIPS, Windows x86, and AMD64.
+[src:common-lisp/common-lisp-p02] SBCL does not use an interpreter by default; all expressions are compiled to native code unless the user switches the interpreter on.
+[src:common-lisp/common-lisp-p02] Port of CLISP for Windows with core written in C++.
+[src:common-lisp/common-lisp-p02] Used for the commercial version of the computer algebra system Axiom.
+[src:common-lisp/common-lisp-p02] An early implementation for the Apple Macintosh by ExperTelligence.
+[src:common-lisp/common-lisp-p02] An implementation for the PC by GoldHill Inc.
+[src:common-lisp/common-lisp-p02] A commercialized version of Kyoto Common Lisp.
+[src:common-lisp/common-lisp-p02] The first Common Lisp compiler that used C as a target language.
+[src:common-lisp/common-lisp-p02] GCL, ECL and MKCL originate from this Common Lisp implementation.
+[src:common-lisp/common-lisp-p02] provided implementations of Common Lisp in addition to their native Lisp dialect (Lisp Machine Lisp or Interlisp).
+[src:common-lisp/common-lisp-p02] Symbolics provides an enhanced version Common Lisp.
+[src:common-lisp/common-lisp-p02] An implementation for Windows and macOS, used by Franz for their Windows port of Allegro CL.
+[src:common-lisp/common-lisp-p02] An early implementation for concurrent execution.
+[src:common-lisp/common-lisp-p02] An implementation written by David Betz.
+[src:common-lisp/common-lisp-p02] Common Lisp is used to develop research applications (often in Artificial Intelligence), for rapid development of prototypes or for deployed applications.
+[src:common-lisp/common-lisp-p02] Common Lisp is used in many commercial applications, including the Yahoo!
+[src:common-lisp/common-lisp-p02] Store web-commerce site, which originally involved Paul Graham and was later rewritten in C++ and Perl.
+[src:common-lisp/data-structures-p01] We hope to give here a clear reference of the common data structures.
+[src:common-lisp/data-structures-p01] To really learn the language, you should take the time to read other resources.
+[src:common-lisp/data-structures-p01] Don’t miss the appendix and when you need more data structures, have a look at the awesome-cl list and Quickdocs.
+[src:common-lisp/data-structures-p01] but there are more constructors, and you should also know that lists are made of `cons` cells.
+[src:common-lisp/data-structures-p01] The list basic element is the cons cell.
+[src:common-lisp/data-structures-p01] We build lists by assembling cons cells.
+[src:common-lisp/data-structures-p01] See that the representation is not a dotted pair ?
+[src:common-lisp/data-structures-p01] The Lisp printer understands the convention.
+[src:common-lisp/data-structures-p01] which is shorthand notation for the function call `(quote (1 2))`.
+[src:common-lisp/data-structures-p01] A cons cell car or cdr can refer to other objects, including itself or other cells in the same list.
+[src:common-lisp/data-structures-p01] They can therefore be used to define self-referential structures such as circular lists.
+[src:common-lisp/data-structures-p01] The list-length function recognises circular lists, returning `nil`.
+[src:common-lisp/data-structures-p01] The reader can also create circular lists, using Sharpsign Equal-Sign notation.
+[src:common-lisp/data-structures-p01] An object (like a list) can be prefixed with `#n=` where `n` is an unsigned decimal integer (one or more digits).
+[src:common-lisp/data-structures-p01] Note that the label given to the reader (`n=42`) is discarded after reading, and the printer defines a new label (`n=1`).
+[src:common-lisp/data-structures-p01] We can assign *any* new value with `setf`.
+[src:common-lisp/data-structures-p01] return the last cons cell in a list (or the nth last cons cells).
+[src:common-lisp/data-structures-p01] `reverse` and `nreverse` return a new sequence.
+[src:common-lisp/data-structures-p01] The N stands for **non-consing**, meaning it doesn’t need to allocate any new cons cells.
+[src:common-lisp/data-structures-p01] `push` prepends *item* to the list that is stored in *place*, stores the resulting list in *place*, and returns the list.
+[src:common-lisp/data-structures-p01] `pushnew` is similar, but it does nothing if the element already exists in the place.
+[src:common-lisp/data-structures-p01] See also `adjoin` below that doesn’t modify the target list.
+[src:common-lisp/data-structures-p01] `push` is equivalent to `(setf place (cons item place ))` except that the subforms of *place* are evaluated only once, and *item* is evaluated before *place*.
+[src:common-lisp/data-structures-p01] There is no built-in function to **add to the end of a list**.
+[src:common-lisp/data-structures-p01] It is a more costly operation (have to traverse the whole list).
+[src:common-lisp/data-structures-p01] So if you need to do this: either consider using another data structure, either just `reverse` your list when needed.
+[src:common-lisp/data-structures-p01] `pushnew` accepts key arguments: `:key`, `:test`, `:test-not`.
+[src:common-lisp/data-structures-p01] Use this if `first`, `second` and the rest up to `tenth` are not enough.
+[src:common-lisp/data-structures-p01] They make sense when applied to lists containing other lists.
+[src:common-lisp/data-structures-p01] This macro does simple pattern matching on lists.
+[src:common-lisp/data-structures-p01] From a declaration of parameters, it binds each parameter to its value taken from the input list.
+[src:common-lisp/data-structures-p01] We can destructure lists and nested lists, with a fixed or a variable number of elements, we can provide defaults to absent elements, and we can match the keys of property lists, using the lambla list keywords we know from a `defun` or a `defmacro`: `&key`, `&rest`, `&allow-other-keys`, etc.
+[src:common-lisp/data-structures-p01] On this example we want to match exactly `(x y z)`, so the list we match on must provide x, y and z.
+[src:common-lisp/data-structures-p01] Below we make the presence of `z` optional.
+[src:common-lisp/data-structures-p01] We can bind the variable number of elements to `z` with `&rest`.
+[src:common-lisp/data-structures-p01] The `&whole` parameter is bound to the whole list.
+[src:common-lisp/data-structures-p01] Another useful feature is destructuring a plist, a list alternating a keyword and a value.
+[src:common-lisp/data-structures-p01] A destructuring lambda list can contain all the same keywords as a macro lambda list, except for `&environment`.
+[src:common-lisp/data-structures-p01] `destructuring-bind`’s structure is: a lambda-list, an input list, an optional declaration using `declare`, one or many forms in the body.
+[src:common-lisp/data-structures-p01] If this gives you the will to do pattern matching, see pattern matching.
+[src:common-lisp/data-structures-p01] `null` is equivalent to `not`, but considered better style.
+[src:common-lisp/data-structures-p01] `listp` tests whether an object is a list or nil.
+[src:common-lisp/data-structures-p01] `consp` tests wether an object is a cons cell.
+[src:common-lisp/data-structures-p01] The empty list is *not* a cons, so `(consp nil)` is falsy, while `(listp nil)` is truthy.
+[src:common-lisp/data-structures-p01] `atom` checks if its argument is an atom, in other words, if it isn’t a `cons`.
+[src:common-lisp/data-structures-p01] and see also all the sequences’ predicates.
+[src:common-lisp/data-structures-p01] `list*`, like `list`, accepts a variable number of arguments.
+[src:common-lisp/data-structures-p01] and this result is not a proper list: it is a suite of cons cells.
+[src:common-lisp/data-structures-p01] the last cons cell is the number 3 and `nil`, which is the termination for a proper list.
+[src:common-lisp/data-structures-p01] If object is the same as some tail of list, `tailp` returns true; otherwise, it returns false.
+[src:common-lisp/data-structures-p01] If object is the same as some tail of list, `ldiff` returns a fresh list of the elements of list that precede object in the list structure of list; otherwise, it returns a copy of list.
+[src:common-lisp/data-structures-p01] Check your implementation’s documentation.
+[src:common-lisp/data-structures-p01] If it detects circularity it must return false.
+[src:common-lisp/data-structures-p01] Returns the tail of `list` beginning with the first element satisfying `eql`ity.
+[src:common-lisp/data-structures-p01] Accepts `:test`, `:test-not`, `:key` (functions or symbols).
+[src:common-lisp/data-structures-p01] sublis allows to replace many objects at once.
+[src:common-lisp/data-structures-p01] `sublis` accepts the `:test` and `:key` arguments.
+[src:common-lisp/data-structures-p01] `:test` is a function that takes two arguments, the key and the subtree.
+[src:common-lisp/data-structures-p01] Many of the sequence functions take keyword arguments.
+[src:common-lisp/data-structures-p01] All keyword arguments are optional and, if specified, may appear in any order.
+[src:common-lisp/data-structures-p01] The `:key` argument can be passed a function of one argument.
+[src:common-lisp/data-structures-p01] This key function is used as a filter through which the elements of the sequence are seen.
+[src:common-lisp/data-structures-p01] searches for an element in the sequence whose `second` element equals 42, rather than for an element which equals 42 itself.
+[src:common-lisp/data-structures-p01] If `:key` is omitted or nil, the filter is effectively the `identity` function.
+[src:common-lisp/data-structures-p01] You can use a `lambda` function or any function that accepts one argument.
+[src:common-lisp/data-structures-p01] `every, notevery (test, sequence)`: they return nil or t, respectively, as soon as one test on any set of the corresponding elements of sequences returns nil.
+[src:common-lisp/data-structures-p01] `some`, `notany` *(test, sequence)*: they return either the value of the test, or nil.
+[src:common-lisp/data-structures-p01] Return the number of elements in sequence that match *foo*.
+[src:common-lisp/data-structures-p01] Additional paramaters: `:from-end`, `:start`, `:end`.
+[src:common-lisp/data-structures-p01] See also `count-if`, `count-not` *(test-function sequence)*.
+[src:common-lisp/data-structures-p01] `subseq` is “setf”able, but only works if the new sequence has the same length of the one to replace.
+[src:common-lisp/data-structures-p01] Unlike `sort`, `stable-sort` guarantees to keep the order of the argument.
+[src:common-lisp/data-structures-p01] On my tests, the order is preserved, but the standard does not guarantee it.
+[src:common-lisp/data-structures-p01] It destructively replaces the elements in `sequence`, in-between the `start` and `end` position, by `item` (a sequence).
+[src:common-lisp/data-structures-p01] also `find-if`, `find-if-not`, `position-if`, `position-if-not` *(test sequence)*.
+[src:common-lisp/data-structures-p01] `search` searches in sequence-b for a subsequence that matches sequence-a.
+[src:common-lisp/data-structures-p01] It returns the *position* in sequence-b, or NIL.
+[src:common-lisp/data-structures-p01] It has the `from-end`, `end1`, `end2` and the usual `test` and `key` parameters.
+[src:common-lisp/data-structures-p01] Return a sequence of the same kind as `sequence` with the same elements, except that all elements equal to `old` are replaced with `new`.
+[src:common-lisp/data-structures-p01] `nsubstitute` is the “non-consing”, destructive version.
+[src:common-lisp/data-structures-p01] Destructively replace elements of sequence-a with elements of sequence-b.
+[src:common-lisp/data-structures-p01] Elements are copied to the subsequence bounded by START1 and END1, from the subsequence bounded by START2 and END2.
+[src:common-lisp/data-structures-p01] If these subsequences are not of the same length, then the shorter length determines how many elements are copied.
+[src:common-lisp/data-structures-p01] Make a copy of sequence without elements matching foo.
+[src:common-lisp/data-structures-p01] Has `:start/end`, `:key` and `:count` parameters.
+[src:common-lisp/data-structures-p01] `delete` is the recycling version of `remove`.
+[src:common-lisp/data-structures-p01] remove-duplicates returns a new sequence with unique elements.
+[src:common-lisp/data-structures-p01] `delete-duplicates` may modify the original sequence.
+[src:common-lisp/data-structures-p01] `remove-duplicates` accepts the following, usual arguments: `from-end test test-not start end key`.
+[src:common-lisp/data-structures-p01] If you’re used to map and filter in other languages, you probably want `mapcar`.
+[src:common-lisp/data-structures-p01] But it only works on lists, so to iterate on vectors (and produce either a vector or a list, use `(map 'list function vector)`.
+[src:common-lisp/data-structures-p01] mapcar also accepts multiple lists with `&rest more-seqs`.
+[src:common-lisp/data-structures-p01] The mapping stops as soon as the shortest sequence runs out.
+[src:common-lisp/data-structures-p01] With Alexandria, we have the `flatten` function.
+[src:common-lisp/data-structures-p01] The backquote first warns we’ll do interpolation, the comma introduces the value of the variable.
+[src:common-lisp/data-structures-p01] Weitz warns that “objects generated this way will very likely share structure (see Recipe 2-7)”.
+[src:common-lisp/data-structures-p01] We show below how to use set operations on lists.
+[src:common-lisp/data-structures-p01] A set doesn’t contain the same element twice and is unordered.
+[src:common-lisp/data-structures-p01] Most of these functions have recycling (modifying) counterparts, starting with “n”, e.g.`nintersection` and `nreverse`.
+[src:common-lisp/data-structures-p01] The “n” is for “non-consing”, a lisp parlance for “don’t create objects in memory”.
+[src:common-lisp/data-structures-p01] They all accept the usual `:key` and `:test` arguments, so use the test `#'string=` or `#'equal` if you are working with strings.
+[src:common-lisp/data-structures-p01] For more, see functions in Alexandria: `setp`, `set-equal`,… and the FSet library, shown in the next section.
+[src:common-lisp/data-structures-p01] What elements are both in list-a and list-b ?
+[src:common-lisp/data-structures-p01] `nunion` is the recycling, destructive version.
+[src:common-lisp/data-structures-p01] A new set is returned, the original set is not modified.
+[src:common-lisp/data-structures-p01] You can also use `pushnew`, that modifies the list (see above).
+[src:common-lisp/data-structures-p01] A *simple array* is neither displaced (using `:displaced-to`, to point to another array) nor adjustable (`:adjust-array`), nor does it have a fill pointer (`fill-pointer`, that moves when we add or remove elements).
+[src:common-lisp/data-structures-p01] A **vector** is an array with rank 1 (of one dimension).
+[src:common-lisp/data-structures-p01] A *simple vector* is a simple array that is also not specialized (it doesn’t use `:element-type` to set the types of the elements).
+[src:common-lisp/data-structures-p01] `aref` *(array i j k …)* or `row-major-aref` *(array i)* equivalent to `(aref i i i …)`.
+[src:common-lisp/data-structures-p01] `array-total-size` *(array)*: how many elements will fit in the array ?
+[src:common-lisp/data-structures-p01] `array-dimensions` *(array)*: list containing the length of the array’s dimensions.
+[src:common-lisp/data-structures-p01] `array-dimension` *(array i)*: length of the *i*th dimension.
+[src:common-lisp/data-structures-p01] `array-rank` number of dimensions of the array.
+[src:common-lisp/data-structures-p01] Create with `vector` or the reader macro `#()`.
+[src:common-lisp/data-structures-p01] The following shows how to create an array that can be pushed to and popped from arbitrarily, growing its storage capacity as needed.
+[src:common-lisp/data-structures-p01] This is roughly equivalent to a `list` in Python, an `ArrayList` in Java, or a `vector<T>` in C++ – though note that elements are not erased when they’re popped.
+[src:common-lisp/data-structures-p01] If you’re mapping over it, see the `map` function whose first parameter is the result type.
+[src:common-lisp/data-structures-p01] Hash Tables are a powerful data structure, associating keys with values in a very efficient way.
+[src:common-lisp/data-structures-p01] Hash Tables are often preferred over association lists whenever performance is an issue, but they introduce a little overhead that makes assoc lists better if there are only a few key-value pairs to maintain.
+[src:common-lisp/data-structures-p01] Hash Tables are created using the function `make-hash-table`.
+[src:common-lisp/data-structures-p01] Its most used optional keyword argument is `:test`, specifying the function used to test the equality of keys.
+[src:common-lisp/data-structures-p01] If you want to add an element to a hash table, you can use `gethash`, the function to retrieve elements from the hash table, in conjunction with `setf`.
+[src:common-lisp/data-structures-p01] The function `gethash` takes two required arguments: a key and a hash table.
+[src:common-lisp/data-structures-p01] It returns two values: the value corresponding to the key in the hash table (or `nil` if not found), and a boolean indicating whether the key was found in the table.
+[src:common-lisp/data-structures-p01] That second value is necessary since `nil` is a valid value in a key-value pair, so getting `nil` as first value from `gethash` does not necessarily mean that the key was not found in the table.
+[src:common-lisp/data-structures-p01] The Alexandria library (in Quicklisp) has the functions `hash-table-keys` and `hash-table-values` for that.
+[src:common-lisp/data-structures-p01] Use `equalp` to compare the equality of hash-tables, element by element.
+[src:common-lisp/data-structures-p01] `equalp` is case-insensitive for strings.
+[src:common-lisp/data-structures-p01] The first value returned by `gethash` is the object in the hash table that’s associated with the key you provided as an argument to `gethash` or `nil` if no value exists for this key.
+[src:common-lisp/data-structures-p01] This value can act as a generalized boolean if you want to test for the presence of keys.
+[src:common-lisp/data-structures-p01] But note that this does *not* work if `nil` is amongst the values that you want to store in the hash.
+[src:common-lisp/data-structures-p01] In this case you’ll have to check the *second* return value of `gethash` which will always return `nil` if no value is found and T otherwise.
+[src:common-lisp/data-structures-p01] Both the key and its associated value will be removed from the hash table.
+[src:common-lisp/data-structures-p01] `remhash` returns T if there was such an entry, `nil` otherwise.
+[src:common-lisp/data-structures-p01] This will remove all of the data from the hash table and return the deleted table.
+[src:common-lisp/data-structures-p01] No need to use your fingers - Common Lisp has a built-in function to do it for you: `hash-table-count`.
+[src:common-lisp/data-structures-p01] It is very tempting to use `print-object`.
+[src:common-lisp/data-structures-p01] It works under several implementations, but this method is actually not portable.
+[src:common-lisp/data-structures-p01] The standard doesn’t permit to do so, so this is undefined behaviour.
+[src:common-lisp/data-structures-p01] The Serapeum library has the `dict` constructor, the function `pretty-print-hash-table` and the `toggle-pretty-print-hash-table` switch, all which do *not* use `print-object` under the hood.
+[src:common-lisp/data-structures-p01] This printed representation can be read back in.
+[src:common-lisp/data-structures-p01] The standard hash-table in Common Lisp is not thread-safe.
+[src:common-lisp/data-structures-p01] That means that simple access operations can be interrupted in the middle and return a wrong result.
+[src:common-lisp/data-structures-p01] Implementations offer different solutions.
+[src:common-lisp/data-structures-p01] With **SBCL**, we can create thread-safe hash tables with the `:synchronized` keyword to `make-hash-table`: http://www.sbcl.org/manual/#Hash-Table-Extensions.
+[src:common-lisp/data-structures-p01] In **LispWorks**, hash-tables are thread-safe by default.
+[src:common-lisp/data-structures-p01] But likewise, there is no guarantee of atomicity *between* access operations, so we can use with-hash-table-locked.
+[src:common-lisp/data-structures-p01] Ultimately, you might like what the **cl-gserver library** proposes.
+[src:common-lisp/data-structures-p01] It offers helper functions around hash-tables and its actors/agent system to allow thread-safety.
+[src:common-lisp/data-structures-p01] They also maintain the order of updates and reads.
+[src:common-lisp/data-structures-p01] The `make-hash-table` function has a couple of optional parameters which control the initial size of your hash table and how it’ll grow if it needs to grow.
+[src:common-lisp/data-structures-p01] This can be an important performance issue if you’re working with large hash tables.
+[src:common-lisp/data-structures-p01] The values for `hash-table-size` and `hash-table-rehash-size` are implementation-dependent.
+[src:common-lisp/data-structures-p01] In our case, CMUCL chooses and initial size of 65, and it will increase the size of the hash by 50 percent whenever it needs to grow.
+[src:common-lisp/data-structures-p01] The hash has to be re-sized 19 times until it’s big enough to hold 100,000 entries.
+[src:common-lisp/data-structures-p01] That explains why we saw a lot of consing and why it took rather long to fill the hash table.
+[src:common-lisp/data-structures-p01] It also explains why the second run was much faster - the hash table already had the correct size.
+[src:common-lisp/data-structures-p01] And there was no consing involved because we didn’t have to re-size at all.
+[src:common-lisp/data-structures-p01] If we don’t know the final size in advance but can guess the growth behaviour of our hash table we can also provide this value to `make-hash-table`.
+[src:common-lisp/data-structures-p01] We can provide an integer to specify absolute growth or a float to specify relative growth.
+[src:common-lisp/data-structures-p01] Also rather fast (we only needed one re-size) but much more consing because almost the whole hash table (minus 65 initial elements) had to be built during the loop.
+[src:common-lisp/data-structures-p01] Note that you can also specify the `rehash-threshold` while creating a new hash table.
+[src:common-lisp/data-structures-p01] An association list is a list of cons cells.
+[src:common-lisp/data-structures-p01] Keep in mind that using quote doesn’t evaluate the expressions inside it.
+[src:common-lisp/data-structures-p01] To get a key, we have `assoc` (use `:test 'equal` when your keys are strings, as usual).
+[src:common-lisp/data-structures-p01] It returns the whole cons cell, so you may want to use `cdr` or `rest` to get the value, or even `assoc-value list key` from `Alexandria`.
+[src:common-lisp/data-structures-p01] If the alist has repeating (duplicate) keys, you can use `remove-if-not`, for example, to retrieve all of them.
+[src:common-lisp/data-structures-p02] A property list is simply a list that alternates a key, a value, and so on, where its keys are keywords or symbols.
+[src:common-lisp/data-structures-p02] A plist is a key-value store, like hash-tables.
+[src:common-lisp/data-structures-p02] The keys could be any other object, but if they are not comparable by `eq` (the lowest-level equality function), like strings (that are comparable with `equal` or `string-equal`), you won’t be able to get them back with `getf`.
+[src:common-lisp/data-structures-p02] To be more precise, a plist first has a cons cell whose `car` is the key, whose `cdr` points to the following cons cell whose `car` is the value.
+[src:common-lisp/data-structures-p02] In the example above, we used keywords for the keys: `:foo`, `:bar`.
+[src:common-lisp/data-structures-p02] This is just the most common way to define the keys.
+[src:common-lisp/data-structures-p02] You can use quoted symbols instead: `'foo`, `'bar`, but it’s just less conventional.
+[src:common-lisp/data-structures-p02] Remember that if you use symbols for keys, then when you’ll want to access those keys from another package, you’ll need to use the fully-qualified symbol name.
+[src:common-lisp/data-structures-p02] However, all keywords live in the same package so they always evaluate to themselves.
+[src:common-lisp/data-structures-p02] Remember that we can’t set a `:test` keyword to `getf`.
+[src:common-lisp/data-structures-p02] Keys must be *identical* by `eq` for `getf` to get you the key.
+[src:common-lisp/data-structures-p02] To add elements to a plist, you can use `list*` and `append`, which are *not* destructive.
+[src:common-lisp/data-structures-p02] They don’t modify the original plist in place.
+[src:common-lisp/data-structures-p02] Use `(setf my-plist (append …))` if you want to change the plist.
+[src:common-lisp/data-structures-p02] You can of course `setf` a place you got with `getf`.
+[src:common-lisp/data-structures-p02] Structures offer a way to store data in named slots.
+[src:common-lisp/data-structures-p02] Classes provided by the Common Lisp Object System (CLOS) are more flexible however structures may offer better performance (see for example the SBCL manual).
+[src:common-lisp/data-structures-p02] At creation slots are optional and default to `nil`.
+[src:common-lisp/data-structures-p02] note that printed representations can be read back by the reader.
+[src:common-lisp/data-structures-p02] We can set the structure’s constructor so as to create the structure without using keyword arguments, which can be more convenient sometimes.
+[src:common-lisp/data-structures-p02] we then also have `person-age` and `person-id`.
+[src:common-lisp/data-structures-p02] Note that the CLOS object system is more powerful.
+[src:common-lisp/data-structures-p02] Here the math involved in the `move-ship` function is easier to read than if accessor functions were used.
+[src:common-lisp/data-structures-p02] In this function all the accessors are not too hard to read, but with more complex operations it would quickly get cluttered.
+[src:common-lisp/data-structures-p02] Though it is not mentioned in the standard, many modern implementations of Common Lisp permit the use of the CLOS macro `with-slots` with structures.
+[src:common-lisp/data-structures-p02] In the standard `with-slots` itself is defined using `symbol-macrolet`.
+[src:common-lisp/data-structures-p02] After a change, instances are not updated.
+[src:common-lisp/data-structures-p02] If we try to add a slot (`email` below), we have the choice to lose all instances, or to continue using the new definition of `person`.
+[src:common-lisp/data-structures-p02] But the effects of redefining a structure are undefined by the standard, so it is best to re-compile and re-run the changed code.
+[src:common-lisp/data-structures-p02] There is also very little introspection.
+[src:common-lisp/data-structures-p02] Portable Common Lisp does not define ways of finding out defined super/sub-structures nor what slots a structure has.
+[src:common-lisp/data-structures-p02] The Common Lisp Object System (which came after into the language) doesn’t have such limitations.
+[src:common-lisp/data-structures-p02] A tree can be built with lists of lists.
+[src:common-lisp/data-structures-p02] The functions `tree-equal` and `copy-tree` descend recursively into the car and the cdr of the cons cells they visit.
+[src:common-lisp/data-structures-p02] See the functions `subst` and `sublis` above to replace elements in a tree.
+[src:common-lisp/data-structures-p02] You may want to have a look at the **FSet** library (in Quicklisp) and its excellent documentation to use immutable data structures.
+[src:common-lisp/data-structures-p02] You can start reading its excellent documentation that includes a high level conceptual background, a tutorial, an API reference and a comparison with functional data structures from other ecosystems.
+[src:common-lisp/data-structures-p02] Another fast, purely functional data structure library for Common Lisp is Sycamore.
+[src:common-lisp/data-structures-p02] Use `*print-length*` and `*print-level*`.
+[src:common-lisp/data-structures-p02] If you have a very big list, printing it on the REPL or in a stacktrace can take a long time and bring your editor or even your server down.
+[src:common-lisp/data-structures-p02] `*print-length*` will be applied at each level.
+[src:common-lisp/data-structures-p02] A destructive function alters the argument(s) it was given.
+[src:common-lisp/data-structures-p02] How do you know which functions are destructive?
+[src:common-lisp/data-structures-p02] The solutions presented below might help you getting started, but keep in mind that they’ll have a performance impact and that error messages will be less explicit.
+[src:common-lisp/data-structures-p02] Sometimes we work with nested data structures, and we might want an easier way to access a nested element than intricated “getf” and “assoc” and all.
+[src:common-lisp/data-structures-p02] Also, we might want to just be returned a `nil` when an intermediary key doesn’t exist.
+[src:common-lisp/data-structures-p02] The `access` library given above provides this, with `(accesses var key1 key2…)`.
+[src:common-lisp/functions] Creating named functions is done with the `defun` keyword.
+[src:common-lisp/functions] The return value is the value returned by the last expression of the body (see below for more).
+[src:common-lisp/functions] The `print` function prints its one argument to standard output *and returns it*. “hello world!” is thus the returned value of our function.
+[src:common-lisp/functions] Optional arguments are declared after the `&optional` keyword in the lambda list.
+[src:common-lisp/functions] They are ordered, they must appear one after another.
+[src:common-lisp/functions] It is not always convenient to remember the order of the arguments.
+[src:common-lisp/functions] It is thus possible to supply arguments by name: we declare them using `&key argname`, we set them with `:argname "value"` in the function call, and we use `argname` as a regular variable in the function body.
+[src:common-lisp/functions] It is generally a style warning, but it is possible.
+[src:common-lisp/functions] You can skip this tip for now if you want, but come back later to it as it can turn handy.
+[src:common-lisp/functions] We saw that a default key parameter is `nil` by default (`(defun hello (name &key happy) …)`).
+[src:common-lisp/functions] But how can be distinguish between “the value is NIL by default” and “the user wants it to be NIL”?
+[src:common-lisp/functions] where `happy-p` serves as a *predicate* variable (using `-p` is only a convention, give it the name you want) to know if the key was supplied.
+[src:common-lisp/functions] So now, we will print a sad face if `:happy` was explicitely set to NIL.
+[src:common-lisp/functions] Sometimes you want a function to accept a variable number of arguments.
+[src:common-lisp/functions] Use `&rest <variable>`, where `<variable>` will be a list.
+[src:common-lisp/functions] We might need `&allow-other-keys` when passing around arguments or with higher level manipulation of functions.
+[src:common-lisp/functions] We define a function to open a file that always uses `:if-exists :supersede`, but still passes any other keys to the `open` function.
+[src:common-lisp/functions] In the case of a duplicated `:if-exists` argument, our first one takes precedence.
+[src:common-lisp/functions] The return value of the function is the value returned by the last executed form of the body.
+[src:common-lisp/functions] There are ways for non-local exits (`return-from <function name> <value>`), but they are usually not needed.
+[src:common-lisp/functions] Common Lisp has also the concept of multiple return values.
+[src:common-lisp/functions] Returning multiple values is **not** like returning a list of results.
+[src:common-lisp/functions] We didn’t ask to capture the remaining values, so `:b` and `:c` were discarded.
+[src:common-lisp/functions] This is actually very handy: you can change a function to return more multiple values than it did, and you don’t need to change and refactor the call sites.
+[src:common-lisp/functions] Calling `values` with no arguments returns no value at all.
+[src:common-lisp/functions] While most Common Lisp forms return a single value, it is sometimes useful for a function to return several (or none).
+[src:common-lisp/functions] Most of the time you only need the rounded value, but if for some reason you want to know the remainder, it can be captured.
+[src:common-lisp/functions] If you expect all the values calculated by a function to be used most of the time, then it is better to bundle up the results in a list, a CLOS instance, *etc.,* and return that.
+[src:common-lisp/functions] Only use multiple values when the first values are most often needed, and the later ones less often used.
+[src:common-lisp/functions] Similarly, getting the content of a hash-table returns two values: the result, and a boolean saying if the key was found or not.
+[src:common-lisp/functions] It acts as a `let` binding: the values `c` and `d` exist in the scope of `multiple-value-bind`.
+[src:common-lisp/functions] The number of values returned does not have to match the number of variables to bind.
+[src:common-lisp/functions] A typical use for multiple values is to distinguish between finding `nil` and a lookup failure.
+[src:common-lisp/functions] For example, `gethash` returns two values.
+[src:common-lisp/functions] The first is the result of the lookup, which might be `nil` if nothing is found, but could be an actual `nil` stored in the hashtable.
+[src:common-lisp/functions] We can call a lambda with `funcall` or `apply` (see below).
+[src:common-lisp/functions] There is one thing to keep in mind with `apply`, it is that we can’t use it with super-large lists: the argument list of functions have a length limit.
+[src:common-lisp/functions] We can find this limit in the variable `call-arguments-limit`.
+[src:common-lisp/functions] While it is rather large on SBCL (4611686018427387903), we have another option to apply a function with arguments of arbitrary length: `reduce`.
+[src:common-lisp/functions] `reduce` is used to apply functions on lists and vectors of arbitrary length.
+[src:common-lisp/functions] It repeateadly calls the function with two arguments and walks over the argument list.
+[src:common-lisp/functions] If our argument was 1000 elements long, `apply` would call the `min` function with 1000 arguments, while `reduce` would call `min` (nearly) a 1000 times with 2 arguments each time.
+[src:common-lisp/functions] where `key`, `from-end`, `start` and `end` are key arguments found in other built-in functions (see our data-structures chapter).
+[src:common-lisp/functions] If given, `:initial-value` is placed before the first subsequence.
+[src:common-lisp/functions] In the example above, we used `#'`, but a single quote also works, and we can encounter it in the wild.
+[src:common-lisp/functions] It is generally safer to use `#'`, because it respects lexical scope.
+[src:common-lisp/functions] Using `function` or the `#'` shorthand allows us to refer to local functions.
+[src:common-lisp/functions] If we pass instead a symbol to `funcall`, what is called is always the function named by that symbol in the *global environment*.
+[src:common-lisp/functions] In addition, `#'` catches the function by value.
+[src:common-lisp/functions] If the function is redefined, bindings that refered to this function by `#'` will still run its original behaviour.
+[src:common-lisp/functions] The behaviour you want depends on your use case.
+[src:common-lisp/functions] Generally, using sharpsign-quote is less surprising.
+[src:common-lisp/functions] But if you are running a tight loop and you want live-update mechanisms (think a game or live visualisations), you might want to use a single quote so that your loop picks up the user’s new function definition.
+[src:common-lisp/functions] Here we have defined the function `adder` which returns an *object* of *type* `function`.
+[src:common-lisp/functions] Indeed, CL has different *namespaces* for functions and variables, i.e. the same *name* can refer to different things depending on its position in a form that’s evaluated.
+[src:common-lisp/functions] To simplify a bit, you can think of each symbol in CL having (at least) two “cells” in which information is stored.
+[src:common-lisp/functions] One cell - sometimes referred to as its *value cell* - can hold a value that is *bound* to this symbol, and you can use `boundp` to test whether the symbol is bound to a value (in the global environment).
+[src:common-lisp/functions] You can access the value cell of a symbol with `symbol-value`.
+[src:common-lisp/functions] The other cell - sometimes referred to as its *function cell* - can hold the definition of the symbol’s (global) function binding.
+[src:common-lisp/functions] In this case, the symbol is said to be *fbound* to this definition.
+[src:common-lisp/functions] You can use `fboundp` to test whether a symbol is fbound.
+[src:common-lisp/functions] You can access the function cell of a symbol (in the global environment) with `symbol-function`.
+[src:common-lisp/functions] Now, if a *symbol* is evaluated, it is treated as a *variable* in that its value cell is returned (just `foo`).
+[src:common-lisp/functions] If a *compound form*, i.e. a *cons*, is evaluated and its *car* is a symbol, then the function cell of this symbol is used (as in `(foo 3)`).
+[src:common-lisp/functions] In Common Lisp, as opposed to Scheme, it is *not* possible that the car of the compound form to be evaluated is an arbitrary form.
+[src:common-lisp/functions] If it is not a symbol, it *must* be a *lambda expression*, which looks like `(lambda lambda-list form*)`.
+[src:common-lisp/functions] This explains the error message we got above - `(adder 3)` is neither a symbol nor a lambda expression.
+[src:common-lisp/functions] Read the CLHS section about form evaluation for more.
+[src:common-lisp/functions] Closures allow you to capture lexical bindings.
+[src:common-lisp/functions] This can be useful to store state that you don’t want to have to keep passing into your function(s), either as a convenience or to keep state variables out of a reachable namespace.
+[src:common-lisp/functions] In addition to counter generators, another common use of lexical closures is memoization — caching previous results of functions that are expensive to calculate.
+[src:common-lisp/functions] Using the non-memoized Fibonacci function below quickly gets quite time-consuting to calculate.
+[src:common-lisp/functions] Using a hash table to store previously calculated results can speed things up.
+[src:common-lisp/functions] We could use a `defvar`, but this is a good use case for a closure since that avoids adding a variable only used by one function to the namespace.
+[src:common-lisp/functions] There are several memoization libraries, some of which wrap this lexical closure and caching mechanics up in a macro.
+[src:common-lisp/functions] This mechanism is often used for CLOS methods.
+[src:common-lisp/functions] Let’s say we manipulate a hash-table that represents a square.
+[src:common-lisp/functions] During our program life cycle, we can change the square width, with `setf` as we did above.
+[src:common-lisp/functions] We define a function to compute a square area.
+[src:common-lisp/functions] We don’t store it in the hash-table as it is redundant with the dimension.
+[src:common-lisp/functions] Now, our programming needs lead to the situation where it would be very handy to change the `*area*` of the square… and have this reflected on the square’s dimensions.
+[src:common-lisp/functions] and check your square (`describe`, `inspect`…), the new width was set.
+[src:common-lisp/functions] Note that setf-functions only have one mandatory argument, the new value.
+[src:common-lisp/functions] The second and other arguments are optional.
+[src:common-lisp/functions] This setf-function sets a global parameter (`*current-buffer*`) to the new value.
+[src:common-lisp/functions] A related concept is that of *currying* which you might be familiar with if you’re coming from a functional language.
+[src:common-lisp/functions] Now that you know how to do it, you may appreciate using the implementation of the Alexandria library (in Quicklisp).
+[src:common-lisp/getting-started] We’ll begin by presenting easy steps to install a development environment and to start a new Common Lisp project.
+[src:common-lisp/getting-started] Common Lisp is an ANSI standard but implementations can vary greatly in what they provide in addition to the standard.
+[src:common-lisp/getting-started] See Wikipedia’s list of implementations.
+[src:common-lisp/getting-started] You can also install the Emacs editor with Homebrew, but it isn’t *required* to use Common Lisp.
+[src:common-lisp/getting-started] Read below on how to use SBCL on the terminal and see the Editor Support section.
+[src:common-lisp/getting-started] All implementations above can be installed on Windows.
+[src:common-lisp/getting-started] SBCL is available on Chocolatey, albeit this is *not* an official installation method.
+[src:common-lisp/getting-started] You can also use plain-common-lisp, a trivial way to get a native Common Lisp environment on Windows.
+[src:common-lisp/getting-started] It lets you install Emacs with Slime, Quicklisp and SBCL in a couple clicks: you only have to extract its archive in your workspace.
+[src:common-lisp/getting-started] If you already know Docker, you can get started with Common Lisp pretty quickly.
+[src:common-lisp/getting-started] The clfoundation/cl-devel image comes with recent versions of SBCL, CCL, ECL and ABCL, plus Quicklisp installed in the home (`/home/cl`), so than we can `ql:quickload` libraries straight away.
+[src:common-lisp/getting-started] Docker works on GNU/Linux, Mac and Windows.
+[src:common-lisp/getting-started] We still want to develop using Emacs and SLIME, so we need to connect SLIME to the Lisp inside Docker.
+[src:common-lisp/getting-started] See slime-docker, which is a library that helps on setting that up.
+[src:common-lisp/getting-started] The asdf-vm tool can be used to manage a large ecosystem of runtimes and tools.
+[src:common-lisp/getting-started] Steel Bank Common Lisp (SBCL) is available via the asdf-sbcl plugin.
+[src:common-lisp/getting-started] You’ll find several ways of installation on its wiki (Debian package, Windows installer, Brew/Linux Brew,…).
+[src:common-lisp/getting-started] Just launch the implementation executable on the command line to enter the REPL (Read Eval Print Loop), i.e. the interactive interpreter.
+[src:common-lisp/getting-started] Quit with `(quit)` or `ctr-d` (on some implementations).
+[src:common-lisp/getting-started] Here is a sample session: we start the `sbcl` binary, we see a startup message, we are landed in a Lisp prompt (the `*`), we enter a lisp form, then we quit.
+[src:common-lisp/getting-started] You just evaluated Lisp code in a REPL, congratulations.
+[src:common-lisp/getting-started] Of course, you’ll want to write code to a `.lisp` file.
+[src:common-lisp/getting-started] Use `sbcl --load myfile.lisp` to load, compile and run this file.
+[src:common-lisp/getting-started] After the top-level commands were run, the Lisp process doesn’t exit and it gives you a REPL, so you can keep working.
+[src:common-lisp/getting-started] Once you edit your .lisp file, you don’t need to quit and call the SBCL command to `--load` your file again.
+[src:common-lisp/getting-started] It’s the default Lisp prompt in a terminal.
+[src:common-lisp/getting-started] In our editors, we usually see `CL-USER>`, denoting the current package.
+[src:common-lisp/getting-started] Speaking of editors: of course, we can have a much more interactive workflow with a good editor setup.
+[src:common-lisp/getting-started] The REPL is not very ergonomic out of the box, at least with SBCL: the arrow keys do not work in order to recall history (the previous commands entered), you don’t have completion of built-in Lisp functions, etc.
+[src:common-lisp/getting-started] You can slightly enhance its functionality by installing and using `rlwrap`.
+[src:common-lisp/getting-started] This brings *some* quality of life to a bare-bones terminal REPL, but we’ll setup our editor to offer a much better editing experience instead of working in such a terminal REPL.
+[src:common-lisp/getting-started] The CLISP implementation has a better default REPL for the terminal (readline capabilities, completion of symbols).
+[src:common-lisp/getting-started] to have error messages without the debugger.
+[src:common-lisp/getting-started] It's handy to try things out, but we recommend to set-up your editor and to use SBCL or CCL.
+[src:common-lisp/getting-started] switch to rlwrap, you can autocomplete file names.
+[src:common-lisp/getting-started] ICL, Interactive Common Lisp, is an enhanced REPL for the terminal.
+[src:common-lisp/getting-started] It works with any implementation you have on your system.
+[src:common-lisp/getting-started] While it doesn’t replace a good editor, it can actually complement it.
+[src:common-lisp/getting-started] Also note that ICL is beginner friendly.
+[src:common-lisp/getting-started] It doesn’t have an interactive debugger.
+[src:common-lisp/getting-started] Instead, it handles any error, prints the error message, and allows the programmer to see the backtrace with the `,bt` command.
+[src:common-lisp/getting-started] You can install it with GNU/Linux pre-built binaries and packages (.deb, .rpm), on Windows with a zip, an exe or a MSI installer.
+[src:common-lisp/getting-started] A similar project is `cl-repl`, see the editors section.
+[src:common-lisp/getting-started] ICL is a project coded with the help of LLMs.
+[src:common-lisp/getting-started] Lisp is interactive by nature, so in case of an error we enter the debugger.
+[src:common-lisp/getting-started] This can be annoying in certain cases, so you might want to use SBCL’s `--disable-debugger` option.
+[src:common-lisp/getting-started] Also, note that `icl` (see above) doesn’t have an interactive debugger, it prints the error message and allows you to print the backtrace.
+[src:common-lisp/getting-started] Common Lisp has thousands of libraries available under a free software license.
+[src:common-lisp/getting-started] Quicklisp is more than a package manager, it is also a central repository (a *dist*) that ensures that all libraries build together.
+[src:common-lisp/getting-started] It provides a command-line tool, it works with project-local dependencies (read more below), it uses HTTPS by default and it is a repository independent from Quicklisp.
+[src:common-lisp/getting-started] It provides its own *dist* but it is also possible to build our own.
+[src:common-lisp/getting-started] This will create the `~/quicklisp/` directory, where Quicklisp will maintain its state and downloaded projects.
+[src:common-lisp/getting-started] If you wish, you can install Quicklisp to a different location.
+[src:common-lisp/getting-started] this adds the right stuff to the init file of your CL implementation.
+[src:common-lisp/getting-started] Otherwise, you have to run `(load "~/quicklisp/setup.lisp")` in every session if you want to use Quicklisp or any of the libraries installed through it.
+[src:common-lisp/getting-started] , section "Accessing symbols from a package".
+[src:common-lisp/getting-started] We can install more than one library at once.
+[src:common-lisp/getting-started] Anytime you want to use a third-party library in your Lisp REPL, you can run this `ql:quickload` command.
+[src:common-lisp/getting-started] It will not hit the network a second time if it finds that the library is already installed on your file system.
+[src:common-lisp/getting-started] Libraries are by default installed in `~/quicklisp/dists/quicklisp/`.
+[src:common-lisp/getting-started] Note also that dozens of Common Lisp libraries are packaged in Debian.
+[src:common-lisp/getting-started] The package names usually begin with the cl- prefix (use `apt-cache search --names-only "^cl-.*"` to list them all).
+[src:common-lisp/getting-started] For example, in order to use the `cl-ppcre` library, one should first install the `cl-ppcre` package.
+[src:common-lisp/getting-started] Here we pretend we don’t have Quicklisp installed and we use `require` to load a module that is available on the file system.
+[src:common-lisp/getting-started] See Quicklisp’s documentation for more commands.
+[src:common-lisp/getting-started] For instance, see how to upgrade or rollback your Quicklisp’s distribution.
+[src:common-lisp/getting-started] A library installed here is automatically available for every project.
+[src:common-lisp/getting-started] `*central-registry*` is a top-level variable inside the `asdf` package written with so-called “*earmuffs*”.
+[src:common-lisp/getting-started] They are a useful convention, see the Variables chapter.
+[src:common-lisp/getting-started] The practical difference between the two is that `ql:quickload` first tries to fetch the system from the Internet if it is not already installed.
+[src:common-lisp/getting-started] Note that symlinks in local-projects to another location of your liking work too.
+[src:common-lisp/getting-started] If we need libraries to be installed locally, for only one project, or in order to easily ship a list of dependencies with an application, we can use Qlot or ocicl.
+[src:common-lisp/getting-started] Both projects provide a command-line tool, allow to pin dependencies in a lock file (`qlfile.lock` and `ocicl.csv`) and commands to install and manage dependencies locally, without touching your global Quicklisp installation (`qlot install`, `ocicl install`).
+[src:common-lisp/getting-started] Of course you are recognizing the dependency management style that is predominant out there in other ecosystems: `npm`, `pip` etc.
+[src:common-lisp/getting-started] However we are only presenting these tools now because they are far less needed in Common Lisp.
+[src:common-lisp/getting-started] newcomers don't need to worry about project-local dependencies yet.
+[src:common-lisp/getting-started] We can go a long way with global Quicklisp dependencies and quicklisp/local-projects/.
+[src:common-lisp/getting-started] Choose the simplest tool for you (and it's surely Quicklisp).
+[src:common-lisp/getting-started] The reasons are at least two fold: the language (and its implementations) is very stable, for example implementations *never* introduce breaking changes of *lisp syntax*.
+[src:common-lisp/getting-started] They introduce minor breaking changes from time to time that only hardcore users will notice.
+[src:common-lisp/getting-started] Second, the ecosystem is very stable too and usually *library authors play the game of stability*.
+[src:common-lisp/getting-started] We saw deprecation warnings staying for 12 (twelve) years.
+[src:common-lisp/getting-started] All in all, a newcomer in Common Lisp land doesn’t need to worry too much if at all about project-local dependencies.
+[src:common-lisp/getting-started] Let’s mention another couple tools for the task.
+[src:common-lisp/getting-started] Quicklisp also provides Quicklisp bundles.
+[src:common-lisp/getting-started] They are self-contained sets of systems that are exported from Quicklisp and loadable without involving Quicklisp.
+[src:common-lisp/getting-started] At last, there’s Quicklisp controller to help us build *dists*.
+[src:common-lisp/getting-started] Now that we have Quicklisp and our editor ready, we can start writing Lisp code in a file and interacting with the REPL.
+[src:common-lisp/getting-started] But if we want to work with an existing project or create a new one, how do we proceed?
+[src:common-lisp/getting-started] What’s the right sequence of `defpackage`?
+[src:common-lisp/getting-started] How do we load the project into the REPL ?
+[src:common-lisp/getting-started] Some project builders help to scaffold the project structure.
+[src:common-lisp/getting-started] We like cl-project, which also sets up a test skeleton.
+[src:common-lisp/getting-started] You have created a new project, or you have an existing one, and you want to work with it in the REPL, but Quicklisp doesn’t know about it.
+[src:common-lisp/getting-started] Well first, if you create it or clone it into one of `~/common-lisp`, `~/.local/share/common-lisp/source/` or `~/quicklisp/local-projects`, you’ll be able to `(ql:quickload …)` it with no further ado.
+[src:common-lisp/getting-started] Otherwise you’ll need to compile and load its system definition (`.asd`) first.
+[src:common-lisp/getting-started] In SLIME with the `slime-asdf` contrib loaded, type `C-c C-k` (*slime-compile-and-load-file*) in the `.asd`, then you can `(ql:quickload …)` it.
+[src:common-lisp/getting-started] You can use `(asdf:load-asd "my-project.asd")` programmatically instead of `C-c C-k`.
+[src:common-lisp/getting-started] Lastly, you can compile or eval the sources (`my-project.lisp`) with `C-c C-k` or `C-c C-c` (*slime-compile-defun*) in a form, and see its result in the REPL.
+[src:common-lisp/getting-started] and since ASDF is integrated into Quicklisp, we can `quickload` our project right away.
+[src:common-lisp/lisp-programming-language] Lisp was originally created as a practical mathematical notation for computer programs, influenced by (though not originally derived from) the notation of Alonzo Church's lambda calculus.
+[src:common-lisp/lisp-programming-language] It quickly became a favored programming language for artificial intelligence (AI) research.
+[src:common-lisp/lisp-programming-language] As one of the earliest programming languages, Lisp pioneered many ideas in computer science, including tree data structures, automatic storage management, dynamic typing, conditionals, higher-order functions, recursion, the self-hosting compiler, and the read–eval–print loop.
+[src:common-lisp/lisp-programming-language] The name *LISP* derives from "List Processor".
+[src:common-lisp/lisp-programming-language] Linked lists are one of Lisp's major data structures, and Lisp source code is made of lists.
+[src:common-lisp/lisp-programming-language] Thus, Lisp programs can manipulate source code as a data structure, giving rise to the macro systems that allow programmers to create new syntax or new domain-specific languages embedded in Lisp.
+[src:common-lisp/lisp-programming-language] The interchangeability of code and data gives Lisp its instantly recognizable syntax.
+[src:common-lisp/lisp-programming-language] All program code is written as *s-expressions*, or parenthesized lists.
+[src:common-lisp/lisp-programming-language] A function call or syntactic form is written as a list with the function or operator's name first, and the arguments following; for instance, a function `f` that takes three arguments would be called as `(f arg1 arg2 arg3)`.
+[src:common-lisp/lisp-programming-language] John McCarthy began developing Lisp in 1958 while he was at the Massachusetts Institute of Technology (MIT).
+[src:common-lisp/lisp-programming-language] Due to these factors, he consulted on the design of the Fortran List Processing Language, which was implemented as a Fortran library.
+[src:common-lisp/lisp-programming-language] However, he was dissatisfied with it because it did not support recursion or a modern if-then-else statement (which was a new concept when Lisp was first introduced).
+[src:common-lisp/lisp-programming-language] McCarthy's original notation used bracketed "M-expressions" that would be translated into S-expressions.
+[src:common-lisp/lisp-programming-language] As an example, the M-expression `car[cons[A,B]]` is equivalent to the S-expression `(car (cons A B))`.
+[src:common-lisp/lisp-programming-language] Once Lisp was implemented, programmers rapidly chose to use S-expressions, and M-expressions were abandoned.
+[src:common-lisp/lisp-programming-language] M-expressions surfaced again with short-lived attempts of MLisp by Horace Enea and CGOL by Vaughan Pratt.
+[src:common-lisp/lisp-programming-language] Lisp was first implemented by Steve Russell on an IBM 704 computer using punched cards.
+[src:common-lisp/lisp-programming-language] Russell was working for McCarthy at the time and realized (to McCarthy's surprise) that the Lisp *eval* function could be implemented in machine code.
+[src:common-lisp/lisp-programming-language] The result was a working Lisp interpreter which could be used to run Lisp programs, or more properly, "evaluate Lisp expressions".
+[src:common-lisp/lisp-programming-language] Lisp dialects still use `car` and `cdr` (/kɑːr/ and /ˈkʊdər/) for the operations that return the first item in a list and the rest of the list, respectively.
+[src:common-lisp/lisp-programming-language] McCarthy published Lisp's design in a paper in *Communications of the ACM* on April 1, 1960, entitled "Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I".
+[src:common-lisp/lisp-programming-language] He showed that with a few simple operators and a notation for anonymous functions borrowed from Church, one can build a Turing-complete language for algorithms.
+[src:common-lisp/lisp-programming-language] This compiler introduced the Lisp model of incremental compilation, in which compiled and interpreted functions can intermix freely.
+[src:common-lisp/lisp-programming-language] The language used in Hart and Levin's memo is much closer to modern Lisp style than McCarthy's earlier code.
+[src:common-lisp/lisp-programming-language] Garbage collection routines were developed by MIT graduate student Daniel Edwards, prior to 1962.
+[src:common-lisp/lisp-programming-language] During the 1980s and 1990s, a great effort was made to unify the work on new Lisp dialects (mostly successors to Maclisp such as ZetaLisp and NIL (New Implementation of Lisp)) into a single language.
+[src:common-lisp/lisp-programming-language] The new language, Common Lisp, was somewhat compatible with the dialects it replaced (the book *Common Lisp the Language* notes the compatibility of various constructs).
+[src:common-lisp/lisp-programming-language] In 1994, ANSI published the Common Lisp standard, "ANSI X3.226-1994 Information Technology Programming Language Common Lisp".
+[src:common-lisp/lisp-programming-language] Since its inception, Lisp was closely connected with the artificial intelligence research community, especially on PDP-10 systems.
+[src:common-lisp/lisp-programming-language] Lisp was used as the implementation of the language Micro Planner, which was used in the famous AI system SHRDLU.
+[src:common-lisp/lisp-programming-language] In the 1970s, as AI research spawned commercial offshoots, the performance of existing Lisp systems became a growing issue, as programmers needed to be familiar with the performance ramifications of the various techniques and choices involved in the implementation of Lisp.
+[src:common-lisp/lisp-programming-language] Over its sixty-year history, Lisp has spawned many variations on the core theme of an S-expression language.
+[src:common-lisp/lisp-programming-language] Some of these variations have been standardized and implemented by different groups with different priorities (for example, both Common Lisp and Scheme have multiple implementations).
+[src:common-lisp/lisp-programming-language] However, in other cases a software project defines a Lisp without a standard and there is no clear distinction between the dialect and the implementation (for example, Clojure and Emacs Lisp fall into this category).
+[src:common-lisp/lisp-programming-language] Differences between dialects (and/or implementations) may be quite visible—for instance, Common Lisp uses the keyword `defun` to name a function, but Scheme uses `define`.
+[src:common-lisp/lisp-programming-language] Within a dialect that is standardized conforming implementations support the same core language, but with different extensions and libraries.
+[src:common-lisp/lisp-programming-language] This sometimes also creates quite visible changes from the base language - for instance, Guile (an implementation of Scheme) uses `define*` to create functions which can have default arguments and/or keyword arguments, neither of which are standardized.
+[src:common-lisp/lisp-programming-language] After having declined somewhat in the 1990s, Lisp has experienced a resurgence of interest after 2000.
+[src:common-lisp/lisp-programming-language] Most new activity has been focused around implementations of Common Lisp, Scheme, Emacs Lisp, Clojure, and Racket, and includes development of new portable libraries and applications.
+[src:common-lisp/lisp-programming-language] Many new Lisp programmers were inspired by writers such as Paul Graham and Eric S.
+[src:common-lisp/lisp-programming-language] Raymond to pursue a language others considered antiquated.
+[src:common-lisp/lisp-programming-language] New Lisp programmers often describe the language as an eye-opening experience and claim to be substantially more productive than in other languages.
+[src:common-lisp/lisp-programming-language] This increase in awareness may be contrasted to the "AI winter" and Lisp's brief gain in the mid-1990s.
+[src:common-lisp/lisp-programming-language] As of 2010, there were eleven actively maintained Common Lisp implementations.
+[src:common-lisp/lisp-programming-language] *Common-lisp.net* is a hosting site for open source Common Lisp projects.
+[src:common-lisp/lisp-programming-language] Quicklisp is a library manager for Common Lisp.
+[src:common-lisp/lisp-programming-language] Fifty years of Lisp (1958–2008) was celebrated at LISP50@OOPSLA.
+[src:common-lisp/lisp-programming-language] There are regular local user meetings in Boston, Vancouver, and Hamburg.
+[src:common-lisp/lisp-programming-language] Other events include the European Common Lisp Meeting, the European Lisp Symposium and an International Lisp Conference.
+[src:common-lisp/lisp-programming-language] The Scheme community actively maintains over twenty implementations.
+[src:common-lisp/lisp-programming-language] Several significant new implementations (Chicken, Gambit, Gauche, Ikarus, Larceny, Ypsilon) have been developed in the 2000s (decade).
+[src:common-lisp/lisp-programming-language] The Revised5 Report on the Algorithmic Language Scheme standard of Scheme was widely accepted in the Scheme community.
+[src:common-lisp/lisp-programming-language] The Scheme Requests for Implementation process has created a lot of quasi-standard libraries and extensions for Scheme.
+[src:common-lisp/lisp-programming-language] User communities of individual Scheme implementations continue to grow.
+[src:common-lisp/lisp-programming-language] A new language standardization process was started in 2003 and led to the R6RS Scheme standard in 2007.
+[src:common-lisp/lisp-programming-language] Academic use of Scheme for teaching computer science seems to have declined somewhat.
+[src:common-lisp/lisp-programming-language] Some universities are no longer using Scheme in their computer science introductory courses; MIT now uses Python instead of Scheme for its undergraduate computer science program and MITx massive open online course.
+[src:common-lisp/lisp-programming-language] There are several new dialects of Lisp: Arc, Hy, Nu, Liskell, and LFE (Lisp Flavored Erlang).
+[src:common-lisp/lisp-programming-language] The parser for Julia is implemented in Femtolisp, a dialect of Scheme (Julia is inspired by Scheme, which in turn is a Lisp dialect).
+[src:common-lisp/lisp-programming-language] Common Lisp and Scheme represent two major streams of Lisp development.
+[src:common-lisp/lisp-programming-language] These languages embody significantly different design choices.
+[src:common-lisp/lisp-programming-language] The primary influences were Lisp Machine Lisp, Maclisp, NIL, S-1 Lisp, Spice Lisp, and Scheme.
+[src:common-lisp/lisp-programming-language] It has many of the features of Lisp Machine Lisp (a large Lisp dialect used to program Lisp Machines), but was designed to be efficiently implementable on any personal computer or workstation.
+[src:common-lisp/lisp-programming-language] Common Lisp is a general-purpose programming language and thus has a large language standard including many built-in data types, functions, macros and other language elements, and an object system (Common Lisp Object System).
+[src:common-lisp/lisp-programming-language] Common Lisp also borrowed certain features from Scheme such as lexical scoping and lexical closures.
+[src:common-lisp/lisp-programming-language] Common Lisp implementations are available for targeting different platforms such as the LLVM, the Java virtual machine, x86-64, PowerPC, Alpha, ARM, Motorola 68000, and MIPS, and operating systems such as Windows, macOS, Linux, Solaris, FreeBSD, NetBSD, OpenBSD, Dragonfly BSD, and Heroku.
+[src:common-lisp/lisp-programming-language] Scheme is a statically scoped and properly tail-recursive dialect of the Lisp programming language invented by Guy L.
+[src:common-lisp/lisp-programming-language] It was designed to have exceptionally clear and simple semantics and few different ways to form expressions.
+[src:common-lisp/lisp-programming-language] Designed about a decade earlier than Common Lisp, Scheme is a more minimalist design.
+[src:common-lisp/lisp-programming-language] It has a much smaller set of standard features but with certain implementation features (such as tail-call optimization and full continuations) not specified in Common Lisp.
+[src:common-lisp/lisp-programming-language] A wide variety of programming paradigms, including imperative, functional, and message passing styles, find convenient expression in Scheme.
+[src:common-lisp/lisp-programming-language] Scheme continues to evolve with a series of standards (Revisedn Report on the Algorithmic Language Scheme) and a series of Scheme Requests for Implementation.
+[src:common-lisp/lisp-programming-language] Clojure is a dialect of Lisp that targets mainly the Java virtual machine, and the Common Language Runtime (CLR), the Python VM, the Ruby VM YARV, and compiling to JavaScript.
+[src:common-lisp/lisp-programming-language] It is designed to be a pragmatic general-purpose language.
+[src:common-lisp/lisp-programming-language] Clojure draws considerable influences from Haskell and places a very strong emphasis on immutability.
+[src:common-lisp/lisp-programming-language] Clojure provides access to Java frameworks and libraries, with optional type hints and type inference, so that calls to Java can avoid reflection and enable fast primitive operations.
+[src:common-lisp/lisp-programming-language] Clojure is not designed to be backwards compatible with other Lisp dialects.
+[src:common-lisp/lisp-programming-language] Further, Lisp dialects are used as scripting languages in many applications, with the best-known being Emacs Lisp in the Emacs editor, AutoLISP and later Visual Lisp in AutoCAD, Nyquist in Audacity, and Scheme in LilyPond.
+[src:common-lisp/lisp-programming-language] The potential small size of a useful Scheme interpreter makes it particularly popular for embedded scripting.
+[src:common-lisp/lisp-programming-language] Examples include SIOD and TinyScheme, both of which have been successfully embedded in the GIMP image processor under the generic name "Script-fu".
+[src:common-lisp/lisp-programming-language] LIBREP, a Lisp interpreter by John Harper originally based on the Emacs Lisp language, has been embedded in the Sawfish window manager.
+[src:common-lisp/lisp-programming-language] Lisp has officially standardized dialects: R6RS Scheme, R7RS Scheme, IEEE Scheme, ANSI Common Lisp and ISO ISLISP.
+[src:common-lisp/lisp-programming-language] Lisp was the first language where the structure of program code is represented faithfully and directly in a standard data structure—a quality much later dubbed "homoiconicity".
+[src:common-lisp/lisp-programming-language] Thus, Lisp functions can be manipulated, altered or even created within a Lisp program without lower-level manipulations.
+[src:common-lisp/lisp-programming-language] This is generally considered one of the main advantages of the language with regard to its expressive power, and makes the language suitable for syntactic macros and meta-circular evaluation.
+[src:common-lisp/lisp-programming-language] A conditional using an *if–then–else* syntax was invented by McCarthy for a chess program written in Fortran.
+[src:common-lisp/lisp-programming-language] He proposed its inclusion in ALGOL, but it was not made part of the Algol 58 specification.
+[src:common-lisp/lisp-programming-language] For Lisp, McCarthy used the more general *cond*-structure.
+[src:common-lisp/lisp-programming-language] Algol 60 took up *if–then–else* and popularized it.
+[src:common-lisp/lisp-programming-language] Lisp deeply influenced Alan Kay, the leader of the research team that developed Smalltalk at Xerox PARC; and in turn Lisp was influenced by Smalltalk, with later dialects adopting object-oriented programming features (inheritance classes, encapsulating instances, message passing, etc.) in the 1970s.
+[src:common-lisp/lisp-programming-language] The Flavors object system introduced the concept of multiple inheritance and the mixin.
+[src:common-lisp/lisp-programming-language] The Common Lisp Object System provides multiple inheritance, multimethods with multiple dispatch, and first-class generic functions, yielding a flexible and powerful form of dynamic dispatch.
+[src:common-lisp/lisp-programming-language] Many years later, Alan Kay suggested that as a result of the confluence of these features, only Smalltalk and Lisp could be regarded as properly conceived object-oriented programming systems.
+[src:common-lisp/lisp-programming-language] Lisp introduced the concept of automatic garbage collection, in which the system walks the heap looking for unused memory.
+[src:common-lisp/lisp-programming-language] Progress in modern sophisticated garbage collection algorithms such as generational garbage collection was stimulated by its use in Lisp.
+[src:common-lisp/lisp-programming-language] Largely because of its resource requirements with respect to early computing hardware (including early microprocessors), Lisp did not become as popular outside of the AI community as Fortran and the ALGOL-descended C language.
+[src:common-lisp/lisp-programming-language] Because of its suitability to complex and dynamic applications, Lisp enjoyed some resurgence of popular interest in the 2010s.
+[src:common-lisp/lisp-programming-language] Lisp is an expression oriented language.
+[src:common-lisp/lisp-programming-language] Unlike most other languages, no distinction is made between "expressions" and "statements"; all code and data are written as expressions.
+[src:common-lisp/lisp-programming-language] When an expression is *evaluated*, it produces a value (possibly multiple values), which can then be embedded into other expressions.
+[src:common-lisp/lisp-programming-language] McCarthy's 1958 paper introduced two types of syntax: *Symbolic expressions* (S-expressions, sexps), which mirror the internal representation of code and data; and *Meta expressions* (M-expressions), which express functions of S-expressions.
+[src:common-lisp/lisp-programming-language] M-expressions never found favor, and almost all Lisps today use S-expressions to manipulate both code and data.
+[src:common-lisp/lisp-programming-language] The use of parentheses is Lisp's most immediately obvious difference from other programming language families.
+[src:common-lisp/lisp-programming-language] As a result, students have long given Lisp nicknames such as *Lost In Stupid Parentheses*, or *Lots of Irritating Superfluous Parentheses*.
+[src:common-lisp/lisp-programming-language] However, the S-expression syntax is also responsible for much of Lisp's power: the syntax is simple and consistent, which facilitates manipulation by computer.
+[src:common-lisp/lisp-programming-language] However, the syntax of Lisp is not limited to traditional parentheses notation.
+[src:common-lisp/lisp-programming-language] It can be extended to include alternative notations.
+[src:common-lisp/lisp-programming-language] For example, XMLisp is a Common Lisp extension that employs the metaobject protocol to integrate S-expressions with the Extensible Markup Language (XML).
+[src:common-lisp/lisp-programming-language] The reliance on expressions gives the language great flexibility.
+[src:common-lisp/lisp-programming-language] Because Lisp functions are written as lists, they can be processed exactly like data.
+[src:common-lisp/lisp-programming-language] This allows easy writing of programs which manipulate other programs (metaprogramming).
+[src:common-lisp/lisp-programming-language] Many Lisp dialects exploit this feature using macro systems, which enables extension of the language almost without limit.
+[src:common-lisp/lisp-programming-language] A Lisp list is written with its elements separated by whitespace, and surrounded by parentheses.
+[src:common-lisp/lisp-programming-language] For example, `(1 2 foo)` is a list whose elements are the three *atoms* `1`, `2`, and `foo`.
+[src:common-lisp/lisp-programming-language] These values are implicitly typed: they are respectively two integers and a Lisp-specific data type called a "symbol", and do not have to be declared as such.
+[src:common-lisp/lisp-programming-language] The empty list `()` is also represented as the special atom `nil`.
+[src:common-lisp/lisp-programming-language] This is the only entity in Lisp which is both an atom and a list.
+[src:common-lisp/lisp-programming-language] Expressions are written as lists, using prefix notation.
+[src:common-lisp/lisp-programming-language] The first element in the list is the name of a function, the name of a macro, a lambda expression or the name of a "special operator" (see below).
+[src:common-lisp/lisp-programming-language] The remainder of the list are the arguments.
+[src:common-lisp/lisp-programming-language] The "quote" before the `foo` in the preceding example is a "special operator" which returns its argument without evaluating it.
+[src:common-lisp/lisp-programming-language] Any unquoted expressions are recursively evaluated before the enclosing expression is evaluated.
+[src:common-lisp/lisp-programming-language] The third argument is a list; lists can be nested.
+[src:common-lisp/lisp-programming-language] Arithmetic operators are treated similarly.
+[src:common-lisp/lisp-programming-language] The equivalent under infix notation would be "`1 + 2 + 3 + 4`".
+[src:common-lisp/lisp-programming-language] Lisp has no notion of operators as implemented in ALGOL-derived languages.
+[src:common-lisp/lisp-programming-language] Arithmetic operators in Lisp are variadic functions (or *n-ary*), able to take any number of arguments.
+[src:common-lisp/lisp-programming-language] equivalent to `(setq x (+ x 1))`, returning the new value of `x`.
+[src:common-lisp/lisp-programming-language] "Special operators" (sometimes called "special forms") provide Lisp's control structure.
+[src:common-lisp/lisp-programming-language] For example, the special operator `if` takes three arguments.
+[src:common-lisp/lisp-programming-language] If the first argument is non-nil, it evaluates to the second argument; otherwise, it evaluates to the third argument.
+[src:common-lisp/lisp-programming-language] Of course, this would be more useful if a non-trivial expression had been substituted in place of `nil`.
+[src:common-lisp/lisp-programming-language] Lisp also provides logical operators **and**, **or** and **not**.
+[src:common-lisp/lisp-programming-language] The **and** and **or** operators do short-circuit evaluation and will return their first nil and non-nil argument respectively.
+[src:common-lisp/lisp-programming-language] Another special operator, `lambda`, is used to bind variables to values which are then evaluated within an expression.
+[src:common-lisp/lisp-programming-language] This operator is also used to create functions: the arguments to `lambda` are a list of arguments, and the expression or expressions to which the function evaluates (the returned value is the value of the last expression that is evaluated).
+[src:common-lisp/lisp-programming-language] evaluates to a function that, when applied, takes one argument, binds it to `arg` and returns the number one greater than that argument.
+[src:common-lisp/lisp-programming-language] Lambda expressions are treated no differently from named functions; they are invoked the same way.
+[src:common-lisp/lisp-programming-language] Here, we're doing a function application: we execute the anonymous function by passing to it the value 5.
+[src:common-lisp/lisp-programming-language] Named functions are created by storing a lambda expression in a symbol using the defun macro.
+[src:common-lisp/lisp-programming-language] `(defun f (a) b...)` defines a new function named `f` in the global environment.
+[src:common-lisp/lisp-programming-language] where `setf` is a macro used to set the value of the first argument `fdefinition 'f` to a new function object.
+[src:common-lisp/lisp-programming-language] `fdefinition` is a global function definition for the function named `f`.
+[src:common-lisp/lisp-programming-language] `#'` is an abbreviation for `function` special operator, returning a function object.
+[src:common-lisp/lisp-programming-language] In the original **LISP** there were two fundamental data types: atoms and lists.
+[src:common-lisp/lisp-programming-language] A list was a finite ordered sequence of elements, where each element is either an atom or a list, and an atom was a number or a symbol.
+[src:common-lisp/lisp-programming-language] A symbol was essentially a unique named item, written as an alphanumeric string in source code, and used either as a variable name or as a data item in symbolic processing.
+[src:common-lisp/lisp-programming-language] For example, the list `(FOO (BAR 1) 2)` contains three elements: the symbol `FOO`, the list `(BAR 1)`, and the number 2.
+[src:common-lisp/lisp-programming-language] The essential difference between atoms and lists was that atoms were immutable and unique.
+[src:common-lisp/lisp-programming-language] Two atoms that appeared in different places in source code but were written in exactly the same way represented the same object, whereas each list was a separate object that could be altered independently of other lists and could be distinguished from other lists by comparison operators.
+[src:common-lisp/lisp-programming-language] As more data types were introduced in later Lisp dialects, and programming styles evolved, the concept of an atom lost importance.
+[src:common-lisp/lisp-programming-language] Many dialects still retained the predicate *atom* for legacy compatibility, defining it true for any object which is not a cons.
+[src:common-lisp/lisp-programming-language] A Lisp list is implemented as a singly linked list.
+[src:common-lisp/lisp-programming-language] Each cell of this list is called a *cons* (in Scheme, a *pair*) and is composed of two pointers, called the *car* and *cdr*.
+[src:common-lisp/lisp-programming-language] These are respectively equivalent to the `data` and `next` fields discussed in the article *linked list*.
+[src:common-lisp/lisp-programming-language] Of the many data structures that can be built out of cons cells, one of the most basic is called a *proper list*.
+[src:common-lisp/lisp-programming-language] A proper list is either the special `nil` (empty list) symbol, or a cons in which the `car` points to a datum (which may be another cons structure, such as a list), and the `cdr` points to another proper list.
+[src:common-lisp/lisp-programming-language] If a given cons is taken to be the head of a linked list, then its car points to the first element of the list, and its cdr points to the rest of the list.
+[src:common-lisp/lisp-programming-language] For this reason, the `car` and `cdr` functions are also called `first` and `rest` when referring to conses which are part of a linked list (rather than, say, a tree).
+[src:common-lisp/lisp-programming-language] Thus, a Lisp list is not an atomic object, as an instance of a container class in C++ or Java would be.
+[src:common-lisp/lisp-programming-language] A list is nothing more than an aggregate of linked conses.
+[src:common-lisp/lisp-programming-language] A variable that refers to a given list is simply a pointer to the first cons in the list.
+[src:common-lisp/lisp-programming-language] Traversal of a list can be done by *cdring down* the list; that is, taking successive cdrs to visit each cons of the list; or by using any of several higher-order functions to map a function over a list.
+[src:common-lisp/lisp-programming-language] Because conses and lists are so universal in Lisp systems, it is a common misconception that they are Lisp's only data structures.
+[src:common-lisp/lisp-programming-language] In fact, all but the most simplistic Lisps have other data structures, such as vectors (arrays), hash tables, structures, and so forth.
+[src:common-lisp/lisp-programming-language] Parenthesized S-expressions represent linked list structures.
+[src:common-lisp/lisp-programming-language] There are several ways to represent the same list as an S-expression.
+[src:common-lisp/lisp-programming-language] A cons can be written in *dotted-pair notation* as `(a . b)`, where `a` is the car and `b` the cdr.
+[src:common-lisp/lisp-programming-language] A longer proper list might be written `(a .
+[src:common-lisp/lisp-programming-language] This is conventionally abbreviated as `(a b c d)` in *list notation*.
+[src:common-lisp/lisp-programming-language] An improper list may be written in a combination of the two – as `(a b c . d)` for the list of three conses whose last cdr is `d` (i.e., the list `(a .
+[src:common-lisp/lisp-programming-language] Lisp provides many built-in procedures for accessing and controlling lists.
+[src:common-lisp/lisp-programming-language] Lists can be created directly with the `list` procedure, which takes any number of arguments, and returns the list of these arguments.
+[src:common-lisp/lisp-programming-language] Because of the way that lists are constructed from cons pairs, the `cons` procedure can be used to add an element to the front of a list.
+[src:common-lisp/lisp-programming-language] The `cons` procedure is asymmetric in how it handles list arguments, because of how lists are constructed.
+[src:common-lisp/lisp-programming-language] The `append` procedure appends two (or more) lists to one another.
+[src:common-lisp/lisp-programming-language] Lisp lists, being simple linked lists, can share structure with one another.
+[src:common-lisp/lisp-programming-language] That is to say, two lists can have the same *tail*, or final sequence of conses.
+[src:common-lisp/lisp-programming-language] the lists `foo` and `bar` are `(a b c)` and `(x b c)` respectively.
+[src:common-lisp/lisp-programming-language] However, the tail `(b c)` is the same structure in both lists.
+[src:common-lisp/lisp-programming-language] It is not a copy; the cons cells pointing to `b` and `c` are in the same memory locations for both lists.
+[src:common-lisp/lisp-programming-language] Sharing structure rather than copying can give a dramatic performance improvement.
+[src:common-lisp/lisp-programming-language] However, this technique can interact in undesired ways with functions that alter lists passed to them as arguments.
+[src:common-lisp/lisp-programming-language] This changes `foo` to `(a b goose)`, but thereby also changes `bar` to `(x b goose)` – a possibly unexpected result.
+[src:common-lisp/lisp-programming-language] This can be a source of bugs, and functions which alter their arguments are documented as *destructive* for this very reason.
+[src:common-lisp/lisp-programming-language] Aficionados of functional programming avoid destructive functions.
+[src:common-lisp/lisp-programming-language] In the Scheme dialect, which favors the functional style, the names of destructive functions are marked with a cautionary exclamation point, or "bang"—such as `set-car!` (read *set car bang*), which replaces the car of a cons.
+[src:common-lisp/lisp-programming-language] In the Common Lisp dialect, destructive functions are commonplace; the equivalent of `set-car!` is named `rplaca` for "replace car".
+[src:common-lisp/lisp-programming-language] This function is rarely seen, however, as Common Lisp includes a special facility, `setf`, to make it easier to define and use destructive functions.
+[src:common-lisp/lisp-programming-language] A frequent style in Common Lisp is to write code functionally (without destructive calls) when prototyping, then to add destructive calls as an optimization where it is safe to do so.
+[src:common-lisp/lisp-programming-language] Lisp evaluates expressions which are entered by the user.
+[src:common-lisp/lisp-programming-language] Symbols and lists evaluate to some other (usually, simpler) expression – for instance, a symbol evaluates to the value of the variable it names; `(+ 2 3)` evaluates to `5`.
+[src:common-lisp/lisp-programming-language] However, most other forms evaluate to themselves: if entering `5` into Lisp, it returns `5`.
+[src:common-lisp/lisp-programming-language] Any expression can also be marked to prevent it from being evaluated (as is necessary for symbols and lists).
+[src:common-lisp/lisp-programming-language] This is the role of the `quote` special operator, or its abbreviation `'` (one quotation mark).
+[src:common-lisp/lisp-programming-language] For instance, usually if entering the symbol `foo`, it returns the value of the corresponding variable (or an error, if there is no such variable).
+[src:common-lisp/lisp-programming-language] To refer to the literal symbol, enter `(quote foo)` or, usually, `'foo`.
+[src:common-lisp/lisp-programming-language] Both Common Lisp and Scheme also support the *backquote* operator (termed *quasiquote* in Scheme), entered with the ` character (Backtick).
+[src:common-lisp/lisp-programming-language] This is almost the same as the plain quote, except it allows expressions to be evaluated and their values interpolated into a quoted list with the comma `,` *unquote* and comma-at `,@` *splice* operators.
+[src:common-lisp/lisp-programming-language] If the variable `snue` has the value `(bar baz)` then `(foo ,snue) evaluates to `(foo (bar baz))`, while `(foo ,@snue) evaluates to `(foo bar baz)`.
+[src:common-lisp/lisp-programming-language] The backquote is most often used in defining macro expansions.
+[src:common-lisp/lisp-programming-language] Self-evaluating forms and quoted forms are Lisp's equivalent of literals.
+[src:common-lisp/lisp-programming-language] It may be possible to modify the values of (mutable) literals in program code.
+[src:common-lisp/lisp-programming-language] For instance, if a function returns a quoted form, and the code that calls the function modifies the form, this may alter the behavior of the function on subsequent invocations.
+[src:common-lisp/lisp-programming-language] Modifying a quoted form like this is generally considered bad style, and is defined by ANSI Common Lisp as erroneous (resulting in "undefined" behavior in compiled files, because the file-compiler can coalesce similar constants, put them in write-protected memory, etc.).
+[src:common-lisp/lisp-programming-language] Lisp's formalization of quotation has been noted by Douglas Hofstadter (in *Gödel, Escher, Bach*) and others as an example of the philosophical idea of self-reference.
+[src:common-lisp/lisp-programming-language] The Lisp family splits over the use of dynamic or static (a.k.a. lexical) scope.
+[src:common-lisp/lisp-programming-language] Clojure, Common Lisp and Scheme make use of static scoping by default, while newLISP, Picolisp and the embedded languages in Emacs and AutoCAD use dynamic scoping.
+[src:common-lisp/lisp-programming-language] Since version 24.1, Emacs uses both dynamic and lexical scoping.
+[src:common-lisp/lisp-programming-language] A fundamental distinction between Lisp and other languages is that in Lisp, the textual representation of a program is simply a human-readable description of the same internal data structures (linked lists, symbols, number, characters, etc.) as would be used by the underlying Lisp system.
+[src:common-lisp/lisp-programming-language] Lisp uses this to implement a very powerful macro system.
+[src:common-lisp/lisp-programming-language] Like other macro languages such as the one defined by the C preprocessor (the macro preprocessor for the C, Objective-C and C++ programming languages), a macro returns code that can then be compiled.
+[src:common-lisp/lisp-programming-language] However, unlike C preprocessor macros, the macros are Lisp functions and so can exploit the full power of Lisp.
+[src:common-lisp/lisp-programming-language] Further, because Lisp code has the same structure as lists, macros can be built with any of the list-processing functions in the language.
+[src:common-lisp/lisp-programming-language] In short, anything that Lisp can do to a data structure, Lisp macros can do to code.
+[src:common-lisp/lisp-programming-language] In contrast, in most other languages, the parser's output is purely internal to the language implementation and cannot be manipulated by the programmer.
+[src:common-lisp/lisp-programming-language] This feature makes it easy to develop *efficient* languages within languages.
+[src:common-lisp/lisp-programming-language] For example, the Common Lisp Object System can be implemented cleanly as a language extension using macros.
+[src:common-lisp/lisp-programming-language] This means that if an application needs a different inheritance mechanism, it can use a different object system.
+[src:common-lisp/lisp-programming-language] This is in stark contrast to most other languages; for example, Java does not support multiple inheritance and there is no reasonable way to add it.
+[src:common-lisp/lisp-programming-language] In simplistic Lisp implementations, this list structure is directly interpreted to run the program; a function is literally a piece of list structure which is traversed by the interpreter in executing it.
+[src:common-lisp/lisp-programming-language] However, most substantial Lisp systems also include a compiler.
+[src:common-lisp/lisp-programming-language] The compiler translates list structure into machine code or bytecode for execution.
+[src:common-lisp/lisp-programming-language] This code can run as fast as code compiled in conventional languages such as C.
+[src:common-lisp/lisp-programming-language] Macros expand before the compilation step, and thus offer some interesting options.
+[src:common-lisp/lisp-programming-language] If a program needs a precomputed table, then a macro might create the table at compile time, so the compiler need only output the table and need not call code to create the table at run time.
+[src:common-lisp/lisp-programming-language] Some Lisp implementations even have a mechanism, `eval-when`, that allows code to be present during compile time (when a macro would need it), but not present in the emitted module.
+[src:common-lisp/lisp-programming-language] Lisp languages are often used with an interactive command line, which may be combined with an integrated development environment (IDE).
+[src:common-lisp/lisp-programming-language] The user types in expressions at the command line, or directs the IDE to transmit them to the Lisp system.
+[src:common-lisp/lisp-programming-language] Lisp *reads* the entered expressions, *evaluates* them, and *prints* the result.
+[src:common-lisp/lisp-programming-language] For this reason, the Lisp command line is called a *read–eval–print loop* (REPL).
+[src:common-lisp/lisp-programming-language] The basic operation of the REPL is as follows.
+[src:common-lisp/lisp-programming-language] This is a simplistic description which omits many elements of a real Lisp, such as quoting and macros.
+[src:common-lisp/lisp-programming-language] The `read` function accepts textual S-expressions as input, and parses them into an internal data structure.
+[src:common-lisp/lisp-programming-language] For instance, if you type the text `(+ 1 2)` at the prompt, `read` translates this into a linked list with three elements: the symbol `+`, the number 1, and the number 2.
+[src:common-lisp/lisp-programming-language] It so happens that this list is also a valid piece of Lisp code; that is, it can be evaluated.
+[src:common-lisp/lisp-programming-language] This is because the car of the list names a function—the addition operation.
+[src:common-lisp/lisp-programming-language] A `foo` will be read as a single symbol.
+[src:common-lisp/lisp-programming-language] `123` will be read as the number one hundred and twenty-three.
+[src:common-lisp/lisp-programming-language] The `eval` function evaluates the data, returning zero or more other Lisp data as a result.
+[src:common-lisp/lisp-programming-language] Evaluation does not have to mean interpretation; some Lisp systems compile every expression to native machine code.
+[src:common-lisp/lisp-programming-language] It is simple, however, to describe evaluation as interpretation: To evaluate a list whose car names a function, `eval` first evaluates each of the arguments given in its cdr, then applies the function to the arguments.
+[src:common-lisp/lisp-programming-language] In this case, the function is addition, and applying it to the argument list `(1 2)` yields the answer `3`.
+[src:common-lisp/lisp-programming-language] The symbol `foo` evaluates to the value of the symbol foo.
+[src:common-lisp/lisp-programming-language] Data like the string "123" evaluates to the same string.
+[src:common-lisp/lisp-programming-language] The list `(quote (1 2 3))` evaluates to the list (1 2 3).
+[src:common-lisp/lisp-programming-language] It is the job of the `print` function to represent output to the user.
+[src:common-lisp/lisp-programming-language] For a simple result such as `3` this is trivial.
+[src:common-lisp/lisp-programming-language] An expression which evaluated to a piece of list structure would require that `print` traverse the list and print it out as an S-expression.
+[src:common-lisp/lisp-programming-language] To implement a Lisp REPL, it is necessary only to implement these three functions and an infinite-loop function.
+[src:common-lisp/lisp-programming-language] (Naturally, the implementation of `eval` will be complex, since it must also implement all special operators like `if` or `lambda`.) This done, a basic REPL is one line of code: `(loop (print (eval (read))))`.
+[src:common-lisp/lisp-programming-language] The Lisp REPL typically also provides input editing, an input history, error handling and an interface to the debugger.
+[src:common-lisp/lisp-programming-language] In Common Lisp, arguments are evaluated in applicative order ('leftmost innermost'), while in Scheme order of arguments is undefined, leaving room for optimization by a compiler.
+[src:common-lisp/lisp-programming-language] Lisp originally had very few control structures, but many more were added during the language's evolution.
+[src:common-lisp/lisp-programming-language] Programmers in the Scheme dialect often express loops using tail recursion.
+[src:common-lisp/lisp-programming-language] Scheme's commonality in academic computer science has led some students to believe that tail recursion is the only, or the most common, way to write iterations in Lisp, but this is incorrect.
+[src:common-lisp/lisp-programming-language] All oft-seen Lisp dialects have imperative-style iteration constructs, from Scheme's `do` loop to Common Lisp's complex `loop` expressions.
+[src:common-lisp/lisp-programming-language] By contrast, ANSI Common Lisp does not require the optimization commonly termed a tail call elimination.
+[src:common-lisp/lisp-programming-language] Some Lisp control structures are *special operators*, equivalent to other languages' syntactic keywords.
+[src:common-lisp/lisp-programming-language] Expressions using these operators have the same surface appearance as function calls, but differ in that the arguments are not necessarily evaluated—or, in the case of an iteration expression, may be evaluated more than once.
+[src:common-lisp/lisp-programming-language] In contrast to most other major programming languages, Lisp allows implementing control structures using the language.
+[src:common-lisp/lisp-programming-language] Several control structures are implemented as Lisp macros, and can even be macro-expanded by the programmer who wants to know how they work.
+[src:common-lisp/lisp-programming-language] Both Common Lisp and Scheme have operators for non-local control flow.
+[src:common-lisp/lisp-programming-language] The differences in these operators are some of the deepest differences between the two dialects.
+[src:common-lisp/lisp-programming-language] Scheme supports *re-entrant continuations* using the `call/cc` procedure, which allows a program to save (and later restore) a particular place in execution.

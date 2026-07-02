@@ -13,7 +13,7 @@ fetched: 2026-07-02
 
 Dijkstra's algorithm finds the shortest path from a given source node to every other node. It can be used to find the shortest path to a specific destination node, by terminating the algorithm after determining the shortest path to that node. For example, if the nodes of the graph represent cities, and the costs of edges represent the distances between pairs of cities connected by a direct road, then Dijkstra's algorithm can be used to find the shortest route between one city and all other cities. A common application of shortest path algorithms is network routing protocols, most notably IS-IS (Intermediate System to Intermediate System) and OSPF (Open Shortest Path First). It is also employed as a subroutine in algorithms such as Johnson's algorithm.
 
-The algorithm uses a min-priority queue data structure for selecting the shortest paths known so far. Before more advanced priority queue structures were discovered, Dijkstra's original algorithm ran in Θ ( | V | 2 ) {\displaystyle \Theta (|V|^{2})} ({\displaystyle \Theta (|V|^{2})}) time, where | V | {\displaystyle |V|} ({\displaystyle |V|}) is the number of nodes. Fredman & Tarjan 1984 proposed a Fibonacci heap priority queue to optimize the running time complexity to Θ ( | E | + | V | log ⁡ | V | ) {\displaystyle \Theta (|E|+|V|\log |V|)} ({\displaystyle \Theta (|E|+|V|\log |V|)}), where | E | {\displaystyle |E|} ({\displaystyle |E|}) is the number of edges. This is asymptotically the fastest known single-source shortest-path algorithm for arbitrary directed graphs with unbounded non-negative weights. However, specialized cases (such as bounded/integer weights, directed acyclic graphs etc.) can be improved further. If preprocessing is allowed, algorithms such as contraction hierarchies can be up to seven orders of magnitude faster.
+The algorithm uses a min-priority queue data structure for selecting the shortest paths known so far. Before more advanced priority queue structures were discovered, Dijkstra's original algorithm ran in $\Theta (|V|^{2})$ time, where $|V|$ is the number of nodes. Fredman & Tarjan 1984 proposed a Fibonacci heap priority queue to optimize the running time complexity to $\Theta (|E|+|V|\log |V|)$ , where $|E|$ is the number of edges. This is asymptotically the fastest known single-source shortest-path algorithm for arbitrary directed graphs with unbounded non-negative weights. However, specialized cases (such as bounded/integer weights, directed acyclic graphs etc.) can be improved further. If preprocessing is allowed, algorithms such as contraction hierarchies can be up to seven orders of magnitude faster.
 
 Dijkstra's algorithm is commonly used on graphs where the edge weights are positive integers or real numbers. It can be generalized to any graph where the edge weights are partially ordered, provided the subsequent labels (a subsequent label is produced when traversing an edge) are monotonically non-decreasing.
 
@@ -135,7 +135,7 @@ The base case is when there is just one visited node, source. Its distance is de
 
 ### Induction
 
-Assuming that the hypothesis holds for k {\displaystyle k} ({\displaystyle k}) visited nodes, to show it holds for k + 1 {\displaystyle k+1} ({\displaystyle k+1}) nodes, let u be the next visited node, i.e. the node with minimum `dist[u]`. The claim is that `dist[u]` is the shortest distance from source to u.
+Assuming that the hypothesis holds for k visited nodes, to show it holds for $k+1$ nodes, let u be the next visited node, i.e. the node with minimum `dist[u]`. The claim is that `dist[u]` is the shortest distance from source to u.
 
 The proof is by contradiction. If a shorter path were available, then this shorter path either contains another unvisited node or not.
 
@@ -150,107 +150,21 @@ After all nodes are visited, the shortest path from source to any node v consist
 
 ## Running time
 
-Bounds of the running time of Dijkstra's algorithm on a graph with edges E and vertices V can be expressed as a function of the number of edges, denoted | E | {\displaystyle |E|} ({\displaystyle |E|}), and the number of vertices, denoted | V | {\displaystyle |V|} ({\displaystyle |V|}), using big-O notation. The complexity bound depends mainly on the data structure used to represent the set Q. In the following, upper bounds can be simplified because | E | {\displaystyle |E|} ({\displaystyle |E|}) is O ( | V | 2 ) {\displaystyle O(|V|^{2})} ({\displaystyle O(|V|^{2})}) for any simple graph, but that simplification disregards the fact that in some problems, other upper bounds on | E | {\displaystyle |E|} ({\displaystyle |E|}) may hold.
+Bounds of the running time of Dijkstra's algorithm on a graph with edges E and vertices V can be expressed as a function of the number of edges, denoted $|E|$ , and the number of vertices, denoted $|V|$ , using big-O notation. The complexity bound depends mainly on the data structure used to represent the set Q. In the following, upper bounds can be simplified because $|E|$ is $O(|V|^{2})$ for any simple graph, but that simplification disregards the fact that in some problems, other upper bounds on $|E|$ may hold.
 
 For any data structure for the vertex set Q, the running time is:
 
-Θ
+$\Theta (|E|\cdot T_{\mathrm {dk} }+|V|\cdot T_{\mathrm {em} }),$
 
-(
+where $T_{\mathrm {dk} }$ and $T_{\mathrm {em} }$ are the complexities of the *decrease-key* and *extract-minimum* operations in Q, respectively.
 
-|
+The simplest version of Dijkstra's algorithm stores the vertex set Q as a linked list or array, and edges as an adjacency list or matrix. In this case, extract-minimum is simply a linear search through all vertices in Q, so the running time is ${\textstyle \Theta (|E|+|V|^{2})=\Theta (|V|^{2})}$ .
 
-E
+For sparse graphs, that is, graphs with far fewer than $|V|^{2}$ edges, Dijkstra's algorithm can be implemented more efficiently by storing the graph in the form of adjacency lists and using a self-balancing binary search tree, binary heap, pairing heap, Fibonacci heap or a priority heap as a priority queue to implement extracting minimum efficiently. To perform decrease-key steps in a binary heap efficiently, it is necessary to use an auxiliary data structure that maps each vertex to its position in the heap, and to update this structure as the priority queue Q changes. With a self-balancing binary search tree or binary heap, the algorithm requires ${\textstyle \Theta ((|E|+|V|)\log |V|)}$ time in the worst case; for connected graphs this time bound can be simplified to ${\textstyle \Theta (|E|\log |V|)}$ . The Fibonacci heap improves this to ${\textstyle \Theta (|E|+|V|\log |V|)}$ .
 
-|
+When using binary heaps, the average case time complexity is lower than the worst-case: assuming edge costs are drawn independently from a common probability distribution, the expected number of *decrease-key* operations is bounded by $\Theta (|V|\log(|E|/|V|))$ , giving a total running time of
 
-⋅
-
-T
-
-d
-
-k
-
-+
-
-|
-
-V
-
-|
-
-⋅
-
-T
-
-e
-
-m
-
-)
-
-,
-
-{\displaystyle \Theta (|E|\cdot T_{\mathrm {dk} }+|V|\cdot T_{\mathrm {em} }),}
-
-where T d k {\displaystyle T_{\mathrm {dk} }} ({\displaystyle T_{\mathrm {dk} }}) and T e m {\displaystyle T_{\mathrm {em} }} ({\displaystyle T_{\mathrm {em} }}) are the complexities of the *decrease-key* and *extract-minimum* operations in Q, respectively.
-
-The simplest version of Dijkstra's algorithm stores the vertex set Q as a linked list or array, and edges as an adjacency list or matrix. In this case, extract-minimum is simply a linear search through all vertices in Q, so the running time is Θ ( | E | + | V | 2 ) = Θ ( | V | 2 ) {\textstyle \Theta (|E|+|V|^{2})=\Theta (|V|^{2})} ({\textstyle \Theta (|E|+|V|^{2})=\Theta (|V|^{2})}).
-
-For sparse graphs, that is, graphs with far fewer than | V | 2 {\displaystyle |V|^{2}} ({\displaystyle |V|^{2}}) edges, Dijkstra's algorithm can be implemented more efficiently by storing the graph in the form of adjacency lists and using a self-balancing binary search tree, binary heap, pairing heap, Fibonacci heap or a priority heap as a priority queue to implement extracting minimum efficiently. To perform decrease-key steps in a binary heap efficiently, it is necessary to use an auxiliary data structure that maps each vertex to its position in the heap, and to update this structure as the priority queue Q changes. With a self-balancing binary search tree or binary heap, the algorithm requires Θ ( ( | E | + | V | ) log ⁡ | V | ) {\textstyle \Theta ((|E|+|V|)\log |V|)} ({\textstyle \Theta ((|E|+|V|)\log |V|)}) time in the worst case; for connected graphs this time bound can be simplified to Θ ( | E | log ⁡ | V | ) {\textstyle \Theta (|E|\log |V|)} ({\textstyle \Theta (|E|\log |V|)}). The Fibonacci heap improves this to Θ ( | E | + | V | log ⁡ | V | ) {\textstyle \Theta (|E|+|V|\log |V|)} ({\textstyle \Theta (|E|+|V|\log |V|)}).
-
-When using binary heaps, the average case time complexity is lower than the worst-case: assuming edge costs are drawn independently from a common probability distribution, the expected number of *decrease-key* operations is bounded by Θ ( | V | log ⁡ ( | E | / | V | ) ) {\displaystyle \Theta (|V|\log(|E|/|V|))} ({\displaystyle \Theta (|V|\log(|E|/|V|))}), giving a total running time of
-
-O
-
-(
-
-|
-
-E
-
-|
-
-+
-
-|
-
-V
-
-|
-
-log
-
-⁡
-
-|
-
-E
-
-|
-
-|
-
-V
-
-|
-
-log
-
-⁡
-
-|
-
-V
-
-|
-
-)
-
-.
-
-{\displaystyle O\left(|E|+|V|\log {\frac {|E|}{|V|}}\log |V|\right).}
+$O\left(|E|+|V|\log {\frac {|E|}{|V|}}\log |V|\right).$
 
 ### Practical optimizations and infinite graphs
 
@@ -289,83 +203,15 @@ Two distance arrays are maintained: *df*[*v*] (distance from s to v) and *db*[*v
 
 The algorithm repeatedly extracts the minimum-distance vertex from whichever queue currently has the smaller key, relaxes its outgoing (or incoming) edges, and updates μ whenever it discovers a connection between the two settled sets:
 
-μ
-
-←
-
-min
-
-(
-
-μ
-
-,
-
-d
-
-f
-
-[
-
-u
-
-]
-
-+
-
-w
-
-(
-
-u
-
-,
-
-x
-
-)
-
-+
-
-d
-
-b
-
-[
-
-x
-
-]
-
-)
-
-{\displaystyle \mu \leftarrow \min(\mu ,\;d_{f}[u]+w(u,x)+d_{b}[x])}
+$\mu \leftarrow \min(\mu ,\;d_{f}[u]+w(u,x)+d_{b}[x])$
 
 when relaxing edge
 
-(
-
-u
-
-,
-
-x
-
-)
-
-{\displaystyle (u,x)}
+$(u,x)$
 
 in the forward search and
 
-x
-
-∈
-
-S
-
-b
-
-{\displaystyle x\in S_{b}}
+$x\in S_{b}$
 
 ,
 
@@ -399,7 +245,7 @@ As well as simply computing distances and paths, Dijkstra's algorithm can be use
 
 ### Specialized variants
 
-When arc weights are small integers (bounded by a parameter C {\displaystyle C} ({\displaystyle C})), specialized queues can be used for increased speed. The first algorithm of this type was Dial's algorithm for graphs with positive integer edge weights, which uses a bucket queue to obtain a running time O ( | E | + | V | C ) {\displaystyle O(|E|+|V|C)} ({\displaystyle O(|E|+|V|C)}). The use of a Van Emde Boas tree as the priority queue brings the complexity to O ( | E | + | V | log ⁡ C / log ⁡ log ⁡ | V | C ) {\displaystyle O(|E|+|V|\log C/\log \log |V|C)} ({\displaystyle O(|E|+|V|\log C/\log \log |V|C)}). Another interesting variant based on a combination of a new radix heap and the well-known Fibonacci heap runs in time O ( | E | + | V | log ⁡ C ) {\displaystyle O(|E|+|V|{\sqrt {\log C}})} ({\displaystyle O(|E|+|V|{\sqrt {\log C}})}). Finally, the best algorithms in this special case run in O ( | E | log ⁡ log ⁡ | V | ) {\displaystyle O(|E|\log \log |V|)} ({\displaystyle O(|E|\log \log |V|)}) time and O ( | E | + | V | min { ( log ⁡ | V | ) 1 / 3 + ε , ( log ⁡ C ) 1 / 4 + ε } ) {\displaystyle O(|E|+|V|\min\{(\log |V|)^{1/3+\varepsilon },(\log C)^{1/4+\varepsilon }\})} ({\displaystyle O(|E|+|V|\min\{(\log |V|)^{1/3+\varepsilon },(\log C)^{1/4+\varepsilon }\})}) time.
+When arc weights are small integers (bounded by a parameter C ), specialized queues can be used for increased speed. The first algorithm of this type was Dial's algorithm for graphs with positive integer edge weights, which uses a bucket queue to obtain a running time $O(|E|+|V|C)$ . The use of a Van Emde Boas tree as the priority queue brings the complexity to $O(|E|+|V|\log C/\log \log |V|C)$ . Another interesting variant based on a combination of a new radix heap and the well-known Fibonacci heap runs in time $O(|E|+|V|{\sqrt {\log C}})$ . Finally, the best algorithms in this special case run in $O(|E|\log \log |V|)$ time and $O(|E|+|V|\min\{(\log |V|)^{1/3+\varepsilon },(\log C)^{1/4+\varepsilon }\})$ time.
 
 Dijkstra's original algorithm can be extended with modifications. For example, sometimes it is desirable to present solutions which are less than mathematically optimal. To obtain a ranked list of less-than-optimal solutions, the optimal solution is first calculated. A single edge appearing in the optimal solution is removed from the graph, and the optimum solution to this new graph is calculated. Each edge of the original solution is suppressed in turn and a new shortest-path calculated. The secondary solutions are then ranked and presented after the first optimal solution.
 

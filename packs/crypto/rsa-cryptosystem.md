@@ -47,7 +47,7 @@ When the patent was issued, terms of patent were 17 years. The patent was about 
 
 The RSA algorithm involves four steps: key generation, key distribution, public-key operation (used for encryption or verifying a signature), and private key operation (used for decryption or signing a message).
 
-A basic principle behind RSA is the observation that it is practical to find three very large positive integers e, d, and n, such that for all integers x (0 ≤ *x* < *n*), both (*x**e*)*d* and x have the same remainder when divided by n (they are congruent modulo n): ( x e ) d ≡ x ( mod n ) . {\displaystyle (x^{e})^{d}\equiv x{\pmod {n}}.} ({\displaystyle (x^{e})^{d}\equiv x{\pmod {n}}.})However, when given only e and n, it is infeasible to compute eth roots modulo n; that is, for uniform random y (0 ≤ *y* < *n*), it is extremely difficult to find x such that *x**e* ≡ *y* (mod *n*).
+A basic principle behind RSA is the observation that it is practical to find three very large positive integers e, d, and n, such that for all integers x (0 ≤ *x* < *n*), both (*x**e*)*d* and x have the same remainder when divided by n (they are congruent modulo n): $(x^{e})^{d}\equiv x{\pmod {n}}.$ However, when given only e and n, it is infeasible to compute eth roots modulo n; that is, for uniform random y (0 ≤ *y* < *n*), it is extremely difficult to find x such that *x**e* ≡ *y* (mod *n*).
 
 The integers n and e form the public key and d is the private key. The modular exponentiation to the power of e is used in encryption and in verifying signatures, and exponentiation to the power of d is used in decryption and in signing messages.
 
@@ -89,7 +89,7 @@ After Bob obtains Alice's public key, he can send a message M to Alice.
 
 To do it, he first turns M into an integer m, the padded plaintext, such that 0 ≤ *m* < *n*, by using an agreed-upon reversible protocol known as a padding scheme. He then computes the ciphertext c, using Alice's public key e, by:
 
-c ≡ m e ( mod n ) . {\displaystyle c\equiv m^{e}{\pmod {n}}.} ({\displaystyle c\equiv m^{e}{\pmod {n}}.})
+$c\equiv m^{e}{\pmod {n}}.$
 
 This can be done reasonably quickly, even for very large numbers, using modular exponentiation. Bob then transmits c to Alice. Note that at least nine values of m will yield a ciphertext c equal to m, but this is very unlikely to occur in practice.
 
@@ -97,7 +97,7 @@ This can be done reasonably quickly, even for very large numbers, using modular 
 
 Alice can recover m from c by using her private key exponent d by computing
 
-c d ≡ ( m e ) d ≡ m ( mod n ) . {\displaystyle c^{d}\equiv (m^{e})^{d}\equiv m{\pmod {n}}.} ({\displaystyle c^{d}\equiv (m^{e})^{d}\equiv m{\pmod {n}}.})
+$c^{d}\equiv (m^{e})^{d}\equiv m{\pmod {n}}.$
 
 Given m, she can recover the original message M by reversing the padding scheme, or discard it as corrupted if the padding is invalid.
 
@@ -107,27 +107,27 @@ Alice **must** discard m if the padding is invalid: if she reveals any informati
 
 Here is an example of RSA encryption and decryption, ignoring the details of padding:
 
-1. Choose two distinct prime numbers, such as p = 61 {\displaystyle p=61} ({\displaystyle p=61}) and q = 53 {\displaystyle q=53} ({\displaystyle q=53}).
-2. Compute *n* = *pq* giving n = 61 × 53 = 3233. {\displaystyle n=61\times 53=3233.} ({\displaystyle n=61\times 53=3233.})
-3. Compute the Carmichael's totient function of the product as *λ*(*n*) = lcm(*p* − 1, *q* − 1) giving λ ( 3233 ) = lcm ⁡ ( 60 , 52 ) = 780. {\displaystyle \lambda (3233)=\operatorname {lcm} (60,52)=780.} ({\displaystyle \lambda (3233)=\operatorname {lcm} (60,52)=780.})
-4. Choose any number 1 < *e* < 780 that is coprime to 780. Choosing a prime number for e leaves us only to check that e is not a divisor of 780. Let e = 17 {\displaystyle e=17} ({\displaystyle e=17}).
-5. Compute d, the modular multiplicative inverse of *e* (mod *λ*(*n*)), yielding d = 413 , {\displaystyle d=413,} ({\displaystyle d=413,}) as 1 = ( 17 × 413 ) mod 7 80. {\displaystyle 1=(17\times 413){\bmod {7}}80.} ({\displaystyle 1=(17\times 413){\bmod {7}}80.})
+1. Choose two distinct prime numbers, such as $p=61$ and $q=53$ .
+2. Compute *n* = *pq* giving $n=61\times 53=3233.$
+3. Compute the Carmichael's totient function of the product as *λ*(*n*) = lcm(*p* − 1, *q* − 1) giving $\lambda (3233)=\operatorname {lcm} (60,52)=780.$
+4. Choose any number 1 < *e* < 780 that is coprime to 780. Choosing a prime number for e leaves us only to check that e is not a divisor of 780. Let $e=17$ .
+5. Compute d, the modular multiplicative inverse of *e* (mod *λ*(*n*)), yielding $d=413,$ as $1=(17\times 413){\bmod {7}}80.$
 
-The **public key** is (*n* = 3233, *e* = 17). For a padded plaintext message m, the encryption function is c ( m ) = m e mod n = m 17 mod 3 233. {\displaystyle {\begin{aligned}c(m)&=m^{e}{\bmod {n}}\\&=m^{17}{\bmod {3}}233.\end{aligned}}} ({\displaystyle {\begin{aligned}c(m)&=m^{e}{\bmod {n}}\\&=m^{17}{\bmod {3}}233.\end{aligned}}})
+The **public key** is (*n* = 3233, *e* = 17). For a padded plaintext message m, the encryption function is ${\begin{aligned}c(m)&=m^{e}{\bmod {n}}\\&=m^{17}{\bmod {3}}233.\end{aligned}}$
 
-The **private key** is (*n* = 3233, *d* = 413). For an encrypted ciphertext c, the decryption function is m ( c ) = c d mod n = c 413 mod 3 233. {\displaystyle {\begin{aligned}m(c)&=c^{d}{\bmod {n}}\\&=c^{413}{\bmod {3}}233.\end{aligned}}} ({\displaystyle {\begin{aligned}m(c)&=c^{d}{\bmod {n}}\\&=c^{413}{\bmod {3}}233.\end{aligned}}})
+The **private key** is (*n* = 3233, *d* = 413). For an encrypted ciphertext c, the decryption function is ${\begin{aligned}m(c)&=c^{d}{\bmod {n}}\\&=c^{413}{\bmod {3}}233.\end{aligned}}$
 
-For instance, in order to encrypt *m* = 65, one calculates c = 65 17 mod 3 233 = 2790. {\displaystyle c=65^{17}{\bmod {3}}233=2790.} ({\displaystyle c=65^{17}{\bmod {3}}233=2790.})
+For instance, in order to encrypt *m* = 65, one calculates $c=65^{17}{\bmod {3}}233=2790.$
 
-To decrypt *c* = 2790, one calculates m = 2790 413 mod 3 233 = 65. {\displaystyle m=2790^{413}{\bmod {3}}233=65.} ({\displaystyle m=2790^{413}{\bmod {3}}233=65.})
+To decrypt *c* = 2790, one calculates $m=2790^{413}{\bmod {3}}233=65.$
 
 Both of these calculations can be computed efficiently using the square-and-multiply algorithm for modular exponentiation. In real-life situations the primes selected would be much larger; in our example it would be trivial to factor *n* = 3233 (obtained from the freely available public key) back to the primes p and q. e, also from the public key, is then inverted to get d, thus acquiring the private key.
 
 Practical implementations use the Chinese remainder theorem to speed up the calculation using modulus of factors (mod *pq* using mod *p* and mod *q*).
 
-The values d*p*, d*q* and qinv, which are part of the private key are computed as follows: d p = d mod ( p − 1 ) = 413 mod ( 61 − 1 ) = 53 , d q = d mod ( q − 1 ) = 413 mod ( 53 − 1 ) = 49 , q inv = q − 1 mod p = 53 − 1 mod 6 1 = 38 ⇒ ( q inv × q ) mod p = 38 × 53 mod 6 1 = 1. {\displaystyle {\begin{aligned}d_{p}&=d{\bmod {(}}p-1)=413{\bmod {(}}61-1)=53,\\d_{q}&=d{\bmod {(}}q-1)=413{\bmod {(}}53-1)=49,\\q_{\text{inv}}&=q^{-1}{\bmod {p}}=53^{-1}{\bmod {6}}1=38\\&\Rightarrow (q_{\text{inv}}\times q){\bmod {p}}=38\times 53{\bmod {6}}1=1.\end{aligned}}} ({\displaystyle {\begin{aligned}d_{p}&=d{\bmod {(}}p-1)=413{\bmod {(}}61-1)=53,\\d_{q}&=d{\bmod {(}}q-1)=413{\bmod {(}}53-1)=49,\\q_{\text{inv}}&=q^{-1}{\bmod {p}}=53^{-1}{\bmod {6}}1=38\\&\Rightarrow (q_{\text{inv}}\times q){\bmod {p}}=38\times 53{\bmod {6}}1=1.\end{aligned}}})
+The values d*p*, d*q* and qinv, which are part of the private key are computed as follows: ${\begin{aligned}d_{p}&=d{\bmod {(}}p-1)=413{\bmod {(}}61-1)=53,\\d_{q}&=d{\bmod {(}}q-1)=413{\bmod {(}}53-1)=49,\\q_{\text{inv}}&=q^{-1}{\bmod {p}}=53^{-1}{\bmod {6}}1=38\\&\Rightarrow (q_{\text{inv}}\times q){\bmod {p}}=38\times 53{\bmod {6}}1=1.\end{aligned}}$
 
-Here is how d*p*, d*q* and qinv are used for efficient decryption (encryption is efficient by choice of a suitable d and e pair): m 1 = c d p mod p = 2790 53 mod 6 1 = 4 , m 2 = c d q mod q = 2790 49 mod 5 3 = 12 , h = ( q inv × ( m 1 − m 2 ) ) mod p = ( 38 × − 8 ) mod 6 1 = 1 , m = m 2 + h × q = 12 + 1 × 53 = 65. {\displaystyle {\begin{aligned}m_{1}&=c^{d_{p}}{\bmod {p}}=2790^{53}{\bmod {6}}1=4,\\m_{2}&=c^{d_{q}}{\bmod {q}}=2790^{49}{\bmod {5}}3=12,\\h&=(q_{\text{inv}}\times (m_{1}-m_{2})){\bmod {p}}=(38\times -8){\bmod {6}}1=1,\\m&=m_{2}+h\times q=12+1\times 53=65.\end{aligned}}} ({\displaystyle {\begin{aligned}m_{1}&=c^{d_{p}}{\bmod {p}}=2790^{53}{\bmod {6}}1=4,\\m_{2}&=c^{d_{q}}{\bmod {q}}=2790^{49}{\bmod {5}}3=12,\\h&=(q_{\text{inv}}\times (m_{1}-m_{2})){\bmod {p}}=(38\times -8){\bmod {6}}1=1,\\m&=m_{2}+h\times q=12+1\times 53=65.\end{aligned}}})
+Here is how d*p*, d*q* and qinv are used for efficient decryption (encryption is efficient by choice of a suitable d and e pair): ${\begin{aligned}m_{1}&=c^{d_{p}}{\bmod {p}}=2790^{53}{\bmod {6}}1=4,\\m_{2}&=c^{d_{q}}{\bmod {q}}=2790^{49}{\bmod {5}}3=12,\\h&=(q_{\text{inv}}\times (m_{1}-m_{2})){\bmod {p}}=(38\times -8){\bmod {6}}1=1,\\m&=m_{2}+h\times q=12+1\times 53=65.\end{aligned}}$
 
 ### Signing
 
@@ -135,9 +135,9 @@ Suppose Alice wishes to send a signed message m to Bob. She produces a hash valu
 
 ### Verifying
 
-When Bob receives the message m and signature s, he uses the same hash algorithm in conjunction with Alice's public key to compute *h* = hash(*m*). He raises the signature s to the power of e (modulo n), and compares the resulting hash value with the message's hash value: s e ≡ ? h ( mod n ) {\displaystyle s^{e}\mathrel {\stackrel {?}{\equiv }} h{\pmod {n}}} ({\displaystyle s^{e}\mathrel {\stackrel {?}{\equiv }} h{\pmod {n}}}) If the two agree, he knows that the author of the message was in possession of Alice's private key and that the message has not been tampered with since being sent.
+When Bob receives the message m and signature s, he uses the same hash algorithm in conjunction with Alice's public key to compute *h* = hash(*m*). He raises the signature s to the power of e (modulo n), and compares the resulting hash value with the message's hash value: $s^{e}\mathrel {\stackrel {?}{\equiv }} h{\pmod {n}}$ If the two agree, he knows that the author of the message was in possession of Alice's private key and that the message has not been tampered with since being sent.
 
-This equation is satisfied when *s* = *h**d* mod *n* because of exponentiation rules: s e = ( h d ) e = h d e = h e d = ( h e ) d ≡ h ( mod n ) . {\displaystyle s^{e}=(h^{d})^{e}=h^{de}=h^{ed}=(h^{e})^{d}\equiv h{\pmod {n}}.} ({\displaystyle s^{e}=(h^{d})^{e}=h^{de}=h^{ed}=(h^{e})^{d}\equiv h{\pmod {n}}.})
+This equation is satisfied when *s* = *h**d* mod *n* because of exponentiation rules: $s^{e}=(h^{d})^{e}=h^{de}=h^{ed}=(h^{e})^{d}\equiv h{\pmod {n}}.$
 
 The modular exponentiation for signing and verification is the same underlying mathematics as for decryption and encryption, but all the other details of padding scheme for secure public-key encryption and hashing for secure digital signature are different.
 
@@ -149,20 +149,20 @@ The use of a hash, first proposed in 1978 by Michael O. Rabin in the related Rab
 
 The proof of the correctness of RSA is based on Fermat's little theorem, stating that *a**p* − 1 ≡ 1 (mod *p*) for any integer a and prime p, not dividing a.
 
-We want to show that ( m e ) d ≡ m ( mod p q ) {\displaystyle (m^{e})^{d}\equiv m{\pmod {pq}}} ({\displaystyle (m^{e})^{d}\equiv m{\pmod {pq}}}) for every integer m when p and q are distinct prime numbers and e and d are positive integers satisfying *ed* ≡ 1 (mod *λ*(*pq*)).
+We want to show that $(m^{e})^{d}\equiv m{\pmod {pq}}$ for every integer m when p and q are distinct prime numbers and e and d are positive integers satisfying *ed* ≡ 1 (mod *λ*(*pq*)).
 
-Since *λ*(*pq*) = lcm(*p* − 1, *q* − 1) is, by construction, divisible by both *p* − 1 and *q* − 1, we can write e d − 1 = h ( p − 1 ) = k ( q − 1 ) {\displaystyle ed-1=h(p-1)=k(q-1)} ({\displaystyle ed-1=h(p-1)=k(q-1)}) for some nonnegative integers h and k.
+Since *λ*(*pq*) = lcm(*p* − 1, *q* − 1) is, by construction, divisible by both *p* − 1 and *q* − 1, we can write $ed-1=h(p-1)=k(q-1)$ for some nonnegative integers h and k.
 
 To check whether two numbers, such as m*ed* and m, are congruent mod *pq*, it suffices (and in fact is equivalent) to check that they are congruent mod *p* and mod *q* separately.
 
 To show *med* ≡ *m* (mod *p*), we consider two cases:
 
 1. If *m* ≡ 0 (mod *p*), m is a multiple of p. Thus *med* is a multiple of p. So *med* ≡ 0 ≡ *m* (mod *p*).
-2. If *m* ≢ 0 (mod *p*), m e d = m e d − 1 m = m h ( p − 1 ) m = ( m p − 1 ) h m ≡ 1 h m ≡ m ( mod p ) , {\displaystyle m^{ed}=m^{ed-1}m=m^{h(p-1)}m=(m^{p-1})^{h}m\equiv 1^{h}m\equiv m{\pmod {p}},} ({\displaystyle m^{ed}=m^{ed-1}m=m^{h(p-1)}m=(m^{p-1})^{h}m\equiv 1^{h}m\equiv m{\pmod {p}},}) where we used Fermat's little theorem to replace *m**p*−1 mod *p* with 1.
+2. If *m* ≢ 0 (mod *p*), $m^{ed}=m^{ed-1}m=m^{h(p-1)}m=(m^{p-1})^{h}m\equiv 1^{h}m\equiv m{\pmod {p}},$ where we used Fermat's little theorem to replace *m**p*−1 mod *p* with 1.
 
 The verification that *med* ≡ *m* (mod *q*) proceeds in a completely analogous way:
 
 1. If *m* ≡ 0 (mod *q*), *med* is a multiple of q. So *med* ≡ 0 ≡ *m* (mod *q*).
-2. If *m* ≢ 0 (mod *q*), m e d = m e d − 1 m = m k ( q − 1 ) m = ( m q − 1 ) k m ≡ 1 k m ≡ m ( mod q ) . {\displaystyle m^{ed}=m^{ed-1}m=m^{k(q-1)}m=(m^{q-1})^{k}m\equiv 1^{k}m\equiv m{\pmod {q}}.} ({\displaystyle m^{ed}=m^{ed-1}m=m^{k(q-1)}m=(m^{q-1})^{k}m\equiv 1^{k}m\equiv m{\pmod {q}}.})
+2. If *m* ≢ 0 (mod *q*), $m^{ed}=m^{ed-1}m=m^{k(q-1)}m=(m^{q-1})^{k}m\equiv 1^{k}m\equiv m{\pmod {q}}.$
 
-This completes the proof that, for any integer m, and integers e, d such that *ed* ≡ 1 (mod *λ*(*pq*)), ( m e ) d ≡ m ( mod p q ) . {\displaystyle (m^{e})^{d}\equiv m{\pmod {pq}}.} ({\displaystyle (m^{e})^{d}\equiv m{\pmod {pq}}.})
+This completes the proof that, for any integer m, and integers e, d such that *ed* ≡ 1 (mod *λ*(*pq*)), $(m^{e})^{d}\equiv m{\pmod {pq}}.$

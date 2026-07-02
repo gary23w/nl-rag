@@ -98,7 +98,11 @@ The count(X) function returns a count of the number of times that *X* is not NUL
 
 ****group_concat(*X*) group_concat(*X*,*Y*) string_agg(*X*,*Y*)****
 
-The group_concat() function returns a string which is the concatenation of all non-NULL values of *X*. If parameter *Y* is present then it is used as the separator between instances of *X*. A comma (",") is used as the separator if *Y* is omitted. The string_agg(X,Y) function is an alias for group_concat(X,Y). String_agg() is compatible with PostgreSQL and SQL-Server and group_concat() is compatible with MySQL. The order of the concatenated elements is arbitrary unless an ORDER BY argument is included immediately after the last parameter.
+The group_concat() function returns a string which is the concatenation of all non-NULL values of *X*. If parameter *Y* is present then it is used as the separator between instances of *X*. A comma (",") is used as the separator if *Y* is omitted.
+
+The string_agg(X,Y) function is an alias for group_concat(X,Y). String_agg() is compatible with PostgreSQL and SQL-Server and group_concat() is compatible with MySQL.
+
+The order of the concatenated elements is arbitrary unless an ORDER BY argument is included immediately after the last parameter.
 
 ****max(*X*)****
 
@@ -106,7 +110,9 @@ The max() aggregate function returns the maximum value of all values in the grou
 
 ****median(*X*)****
 
-The median() function returns the median value of all non-NULL *X* within a group. The median(X) function is equivalent to percentile_cont(X,0.5). See separate documentation on the percentile extension for additional information. The median() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
+The median() function returns the median value of all non-NULL *X* within a group. The median(X) function is equivalent to percentile_cont(X,0.5). See separate documentation on the percentile extension for additional information.
+
+The median() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
 
 ****min(*X*)****
 
@@ -114,15 +120,23 @@ The min() aggregate function returns the minimum non-NULL value of all values in
 
 ****percentile(*Y*,*P*)****
 
-The percentile(Y,P) aggregate function computes an answer X which is a value that is greater than or equal to P percent of the non-NULL inputs and which is less than or equal to 100-P percent of the inputs. The parameter P must be a number between 0.0 and 100.0. The value of P must be the same for all terms of the aggregate and may not be NULL. Y inputs must be either NULL or numeric. NULL values for Y are ignored. Any non-NULL Y input that is not numeric causes an error to be raised. The percentile(Y,P) function is equivalent to percentile_cont(Y,p/100.0). See separate documentation on the percentile extension for additional information. The percentile() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
+The percentile(Y,P) aggregate function computes an answer X which is a value that is greater than or equal to P percent of the non-NULL inputs and which is less than or equal to 100-P percent of the inputs. The parameter P must be a number between 0.0 and 100.0. The value of P must be the same for all terms of the aggregate and may not be NULL. Y inputs must be either NULL or numeric. NULL values for Y are ignored. Any non-NULL Y input that is not numeric causes an error to be raised.
+
+The percentile(Y,P) function is equivalent to percentile_cont(Y,p/100.0). See separate documentation on the percentile extension for additional information.
+
+The percentile() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
 
 ****percentile_cont(*Y*,*P*)****
 
-The percentile(Y,P) aggregate function computes an answer X which is a value that is greater than or equal to fraction P of the non-NULL inputs and which is less than or equal to fraction 1.0-P of the inputs. The parameter P must be a number between 0.0 and 1.0. The value of P must be the same for all terms of the aggregate and may not be NULL. Y inputs must be either NULL or numeric. NULL values for Y are ignored. Any non-NULL Y input that is not numeric causes an error to be raised. The percentile_cont(Y,P) function works like percentile(Y,P) except that the P value spans the range of 0.0 to 1.0 instead of 0.0 to 100.0. Thus the result of percentile_cont(Y,P) is the same as percentile(Y,P*100). See separate documentation on the percentile extension for additional information. The percentile_cont() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
+The percentile(Y,P) aggregate function computes an answer X which is a value that is greater than or equal to fraction P of the non-NULL inputs and which is less than or equal to fraction 1.0-P of the inputs. The parameter P must be a number between 0.0 and 1.0. The value of P must be the same for all terms of the aggregate and may not be NULL. Y inputs must be either NULL or numeric. NULL values for Y are ignored. Any non-NULL Y input that is not numeric causes an error to be raised. The percentile_cont(Y,P) function works like percentile(Y,P) except that the P value spans the range of 0.0 to 1.0 instead of 0.0 to 100.0. Thus the result of percentile_cont(Y,P) is the same as percentile(Y,P*100). See separate documentation on the percentile extension for additional information.
+
+The percentile_cont() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
 
 ****percentile_disc(*Y*,*P*)****
 
-The percentile_disc(Y,P) function works like percentile_cont(Y,P) except that instead of doing a weighted average of the closest available inputs, it always returns a value that is one of the input values - the smaller of the two possible choices. See separate documentation on the percentile extension for additional information. The percentile_cont() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
+The percentile_disc(Y,P) function works like percentile_cont(Y,P) except that instead of doing a weighted average of the closest available inputs, it always returns a value that is one of the input values - the smaller of the two possible choices. See separate documentation on the percentile extension for additional information.
+
+The percentile_cont() function is available since SQLite version 3.51.0 (2025-11-04) if the amalgamation is compiled using -DSQLITE_ENABLE_PERCENTILE, or as a loadable extension in prior versions of SQLite.
 
 ****sum(*X*) total(*X*)****
 
@@ -130,6 +144,16 @@ The sum() and total() aggregate functions return the sum of all non-NULL values 
 
 The result of total() is always a floating point value. The result of sum() is an integer value if all non-NULL inputs are integers. If any input to sum() is neither an integer nor a NULL, then sum() returns a floating point value which is an approximation of the mathematical sum.
 
-Sum() will throw an "integer overflow" exception if all inputs are integers or NULL and an integer overflow occurs at any point during the computation. No overflow error is ever raised if any prior input was a floating point value. Total() never throws an integer overflow. When summing floating-point values, if the magnitudes of the values differ wildly then the resulting sum might be imprecise due to the fact that IEEE 754 floating point values are approximations. Use the decimal_sum(X) aggregate in the decimal extension to obtain an exact summation of floating point numbers. Consider this test case: CREATE TABLE t1(x REAL); INSERT INTO t1 VALUES(1.55e+308),(1.23),(3.2e-16),(-1.23),(-1.55e308); SELECT sum(x), decimal_sum(x) FROM t1; The large values ±1.55e+308 cancel each other out, but the cancellation does not occur until the end of the sum and in the meantime the large +1.55e+308 swamps the tiny 3.2e-16 value. The end result is an imprecise result for the sum(). The decimal_sum() aggregate generates an exact answer, at the cost of additional CPU and memory usage. Note also that decimal_sum() is not built into the SQLite core; it is a loadable extension. If sum of inputs is too large to represent as a IEEE 754 floating point value, then a +Infinity or -Infinity result may be returned. If very large values with differing signs are used such that the SUM() or TOTAL() function is unable to determine if the correct result is +Infinity or -Infinity or some other value in between, then the result is NULL. Hence, for example, the following query returns NULL: WITH t1(x) AS (VALUES(1.0),(-9e+999),(2.0),(+9e+999),(3.0)) SELECT sum(x) FROM t1;
+Sum() will throw an "integer overflow" exception if all inputs are integers or NULL and an integer overflow occurs at any point during the computation. No overflow error is ever raised if any prior input was a floating point value. Total() never throws an integer overflow.
+
+When summing floating-point values, if the magnitudes of the values differ wildly then the resulting sum might be imprecise due to the fact that IEEE 754 floating point values are approximations. Use the decimal_sum(X) aggregate in the decimal extension to obtain an exact summation of floating point numbers. Consider this test case:
+
+CREATE TABLE t1(x REAL); INSERT INTO t1 VALUES(1.55e+308),(1.23),(3.2e-16),(-1.23),(-1.55e308); SELECT sum(x), decimal_sum(x) FROM t1;
+
+The large values ±1.55e+308 cancel each other out, but the cancellation does not occur until the end of the sum and in the meantime the large +1.55e+308 swamps the tiny 3.2e-16 value. The end result is an imprecise result for the sum(). The decimal_sum() aggregate generates an exact answer, at the cost of additional CPU and memory usage. Note also that decimal_sum() is not built into the SQLite core; it is a loadable extension.
+
+If sum of inputs is too large to represent as a IEEE 754 floating point value, then a +Infinity or -Infinity result may be returned. If very large values with differing signs are used such that the SUM() or TOTAL() function is unable to determine if the correct result is +Infinity or -Infinity or some other value in between, then the result is NULL. Hence, for example, the following query returns NULL:
+
+WITH t1(x) AS (VALUES(1.0),(-9e+999),(2.0),(+9e+999),(3.0)) SELECT sum(x) FROM t1;
 
 *This page was last updated on 2025-11-13 07:12:58Z*

@@ -76,91 +76,11 @@ The simplest and the original implementation, later formalized as **Finite Field
 
 Both Alice and Bob have arrived at the same values because under mod *p*,
 
-A
-
-b
-
-mod
-
-p
-
-=
-
-g
-
-a
-
-b
-
-mod
-
-p
-
-=
-
-g
-
-b
-
-a
-
-mod
-
-p
-
-=
-
-B
-
-a
-
-mod
-
-p
-
-{\displaystyle {\color {Blue}A}^{\color {Red}{\boldsymbol {b}}}{\bmod {\color {Blue}p}}={\color {Blue}g}^{\color {Red}{\boldsymbol {ab}}}{\bmod {\color {Blue}p}}={\color {Blue}g}^{\color {Red}{\boldsymbol {ba}}}{\bmod {\color {Blue}p}}={\color {Blue}B}^{\color {Red}{\boldsymbol {a}}}{\bmod {\color {Blue}p}}}
+${\color {Blue}A}^{\color {Red}{\boldsymbol {b}}}{\bmod {\color {Blue}p}}={\color {Blue}g}^{\color {Red}{\boldsymbol {ab}}}{\bmod {\color {Blue}p}}={\color {Blue}g}^{\color {Red}{\boldsymbol {ba}}}{\bmod {\color {Blue}p}}={\color {Blue}B}^{\color {Red}{\boldsymbol {a}}}{\bmod {\color {Blue}p}}$
 
 More specifically,
 
-(
-
-g
-
-a
-
-mod
-
-p
-
-)
-
-b
-
-mod
-
-p
-
-=
-
-(
-
-g
-
-b
-
-mod
-
-p
-
-)
-
-a
-
-mod
-
-p
-
-{\displaystyle ({\color {Blue}g}^{\color {Red}{\boldsymbol {a}}}{\bmod {\color {Blue}p}})^{\color {Red}{\boldsymbol {b}}}{\bmod {\color {Blue}p}}=({\color {Blue}g}^{\color {Red}{\boldsymbol {b}}}{\bmod {\color {Blue}p}})^{\color {Red}{\boldsymbol {a}}}{\bmod {\color {Blue}p}}}
+$({\color {Blue}g}^{\color {Red}{\boldsymbol {a}}}{\bmod {\color {Blue}p}})^{\color {Red}{\boldsymbol {b}}}{\bmod {\color {Blue}p}}=({\color {Blue}g}^{\color {Red}{\boldsymbol {b}}}{\bmod {\color {Blue}p}})^{\color {Red}{\boldsymbol {a}}}{\bmod {\color {Blue}p}}$
 
 Only *a* and *b* are kept secret. All the other values – *p*, *g*, *ga* mod *p*, and *gb* mod *p* – are sent in the clear. The strength of the scheme comes from the fact that *gab* mod *p* = *gba* mod *p* take extremely long times to compute by any known classical algorithm just from the knowledge of *p*, *g*, *ga* mod *p*, and *gb* mod *p*. Such a function that is easy to compute but hard to invert is called a one-way function. Once Alice and Bob compute the shared secret they can use it as an encryption key, known only to them, for sending messages across the same open communications channel.
 
@@ -214,11 +134,11 @@ In 1997 a kind of triple DH was proposed by Simon Blake-Wilson, Don Johnson and 
 
 The long term secret keys of Alice and Bob are denoted by *a* and *b* respectively, with public keys *A* and *B*, as well as the ephemeral key pairs (*x*, *X*) and (*y*, *Y*). Then protocol is:
 
-| Alice ( A = g a {\displaystyle A=g^{a}} ({\displaystyle A=g^{a}})) |   | Bob ( B = g b {\displaystyle B=g^{b}} ({\displaystyle B=g^{b}})) |
+| Alice ( $A=g^{a}$ ) |   | Bob ( $B=g^{b}$ ) |
 |---|---|---|
-| X = g x {\displaystyle X=g^{x}} ({\displaystyle X=g^{x}}) | X → {\displaystyle X\rightarrow {}} ({\displaystyle X\rightarrow {}}) |   |
-|   | ← Y {\displaystyle {}\leftarrow Y} ({\displaystyle {}\leftarrow Y}) | Y = g y {\displaystyle Y=g^{y}} ({\displaystyle Y=g^{y}}) |
-| K = KDF ⁡ ( Y x , B x , Y a , X , Y , A , B ) {\displaystyle K=\operatorname {KDF} \left(Y^{x},\,B^{x},\,Y^{a},\,X,\,Y,\,A,\,B\right)} ({\displaystyle K=\operatorname {KDF} \left(Y^{x},\,B^{x},\,Y^{a},\,X,\,Y,\,A,\,B\right)}) |   | K = KDF ⁡ ( X y , X b , A y , X , Y , A , B ) {\displaystyle K=\operatorname {KDF} \left(X^{y},\,X^{b},\,A^{y},\,X,\,Y,\,A,\,B\right)} ({\displaystyle K=\operatorname {KDF} \left(X^{y},\,X^{b},\,A^{y},\,X,\,Y,\,A,\,B\right)}) |
+| $X=g^{x}$ | $X\rightarrow {}$ |   |
+|   | ${}\leftarrow Y$ | $Y=g^{y}$ |
+| $K=\operatorname {KDF} \left(Y^{x},\,B^{x},\,Y^{a},\,X,\,Y,\,A,\,B\right)$ |   | $K=\operatorname {KDF} \left(X^{y},\,X^{b},\,A^{y},\,X,\,Y,\,A,\,B\right)$ |
 
 The long term public keys need to be transferred somehow. That can be done beforehand in a separate, trusted channel, or the public keys can be encrypted using some partial key agreement to preserve anonymity. For more of such details as well as other improvements like side channel protection or explicit key confirmation, as well as early messages and additional password authentication, see e.g. US patent "Advanced modular handshake for key agreement and optional authentication".
 
@@ -311,6 +231,6 @@ An example of such a protocol is the Secure Remote Password protocol.
 
 ### Public key
 
-It is also possible to use Diffie–Hellman as part of a public key infrastructure, allowing Bob to encrypt a message so that only Alice will be able to decrypt it, with no prior communication between them other than Bob having trusted knowledge of Alice's public key. Alice's public key is ( g a mod p , g , p ) {\displaystyle (g^{a}{\bmod {p}},g,p)} ({\displaystyle (g^{a}{\bmod {p}},g,p)}). To send her a message, Bob chooses a random *b* and then sends Alice g b mod p {\displaystyle g^{b}{\bmod {p}}} ({\displaystyle g^{b}{\bmod {p}}}) (unencrypted) together with the message encrypted with symmetric key ( g a ) b mod p {\displaystyle (g^{a})^{b}{\bmod {p}}} ({\displaystyle (g^{a})^{b}{\bmod {p}}}). Only Alice can determine the symmetric key and hence decrypt the message because only she has *a* (the private key). A pre-shared public key also prevents man-in-the-middle attacks.
+It is also possible to use Diffie–Hellman as part of a public key infrastructure, allowing Bob to encrypt a message so that only Alice will be able to decrypt it, with no prior communication between them other than Bob having trusted knowledge of Alice's public key. Alice's public key is $(g^{a}{\bmod {p}},g,p)$ . To send her a message, Bob chooses a random *b* and then sends Alice $g^{b}{\bmod {p}}$ (unencrypted) together with the message encrypted with symmetric key $(g^{a})^{b}{\bmod {p}}$ . Only Alice can determine the symmetric key and hence decrypt the message because only she has *a* (the private key). A pre-shared public key also prevents man-in-the-middle attacks.
 
 In practice, Diffie–Hellman is not used in this way, with RSA being the dominant public key algorithm. This is largely for historical and commercial reasons, namely that RSA Security created a certificate authority for key signing that became Verisign. Diffie–Hellman, as elaborated above, cannot directly be used to sign certificates. However, the ElGamal and DSA signature algorithms are mathematically related to it, as well as MQV, STS and the IKE component of the IPsec protocol suite for securing Internet Protocol communications.

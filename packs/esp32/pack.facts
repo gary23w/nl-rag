@@ -1,0 +1,448 @@
+# nl-rag distilled facts — domain: esp32
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:esp32/build-system-p01] This document explains the implementation of the ESP-IDF build system and the concept of "components".
+[src:esp32/build-system-p01] Read this document if you want to know how to organize and build a new ESP-IDF project or component.
+[src:esp32/build-system-p01] An ESP-IDF project can be seen as an amalgamation of a number of components.
+[src:esp32/build-system-p01] ESP-IDF makes these components explicit and configurable.
+[src:esp32/build-system-p01] To do that, when a project is compiled, the build system will look up all the components in the ESP-IDF directories, the project directories and (optionally) in additional custom component directories.
+[src:esp32/build-system-p01] It then allows the user to configure the ESP-IDF project using a text-based menu system to customize each component.
+[src:esp32/build-system-p01] After the components in the project are configured, the build system will compile the project.
+[src:esp32/build-system-p01] The `idf.py` command-line tool provides a front-end for easily managing your project builds.
+[src:esp32/build-system-p01] For more details about configuring the build system using `idf.py`, please refer to IDF Frontend.
+[src:esp32/build-system-p01] idf.py is a wrapper around CMake for convenience.
+[src:esp32/build-system-p01] However, you can also invoke CMake directly.
+[src:esp32/build-system-p01] When `idf.py` does something, it prints each command that it runs for easy reference.
+[src:esp32/build-system-p01] In the above list, the `cmake` command configures the project and generates build files for use with the final build tool.
+[src:esp32/build-system-p01] In this case, the final build tool is Ninja: running `ninja` actually builds the project.
+[src:esp32/build-system-p01] It's not necessary to run `cmake` more than once.
+[src:esp32/build-system-p01] After the first build, you only need to run `ninja` each time.
+[src:esp32/build-system-p01] `ninja` will automatically re-invoke `cmake` if the project needs reconfiguration.
+[src:esp32/build-system-p01] If using CMake with `ninja` or `make`, there are also targets for more of the `idf.py` sub-commands.
+[src:esp32/build-system-p01] For example, running `make menuconfig` or `ninja menuconfig` in the build directory will work the same as `idf.py menuconfig`.
+[src:esp32/build-system-p01] If you're already familiar with CMake, you may find the ESP-IDF CMake-based build system unusual because it wraps a lot of CMake's functionality to reduce boilerplate.
+[src:esp32/build-system-p01] See writing pure CMake components for some information about writing more "CMake style" components.
+[src:esp32/build-system-p01] Available targets are: `flash`, `app-flash` (app only), `bootloader-flash` (bootloader only).
+[src:esp32/build-system-p01] When flashing this way, optionally set the `ESPPORT` and `ESPBAUD` environment variables to specify the serial port and baud rate.
+[src:esp32/build-system-p01] You can set environment variables in your operating system or IDE project.
+[src:esp32/build-system-p01] Providing environment variables at the start of the command like this is Bash shell Syntax.
+[src:esp32/build-system-p01] It won't work when using Windows Command Prompt, but it will work when using Bash-like shells on Windows.
+[src:esp32/build-system-p01] Providing variables at the end of the command line is `make` syntax, and works for `make` on all platforms.
+[src:esp32/build-system-p01] You can also use an IDE with CMake integration.
+[src:esp32/build-system-p01] The IDE will want to know the path to the project's `CMakeLists.txt` file.
+[src:esp32/build-system-p01] IDEs with CMake integration often provide their own build tools (CMake calls these "generators") to build the source files as part of the IDE.
+[src:esp32/build-system-p01] When adding custom non-build steps like "flash" to the IDE, it is recommended to execute `idf.py` for these "special" commands.
+[src:esp32/build-system-p01] For more detailed information about integrating ESP-IDF with CMake into an IDE, see Build System Metadata.
+[src:esp32/build-system-p01] ESP-IDF works well with Python version 3.10+.
+[src:esp32/build-system-p01] `idf.py` and other Python scripts will run with the default Python interpreter, i.e., `python`.
+[src:esp32/build-system-p01] You can switch to a different one like `python3 $IDF_PATH/tools/idf.py ...`, or you can set up a shell alias or another script to simplify the command.
+[src:esp32/build-system-p01] If using CMake directly, running `cmake -D PYTHON=python3 ...` will cause CMake to override the default Python interpreter.
+[src:esp32/build-system-p01] If using an IDE with CMake, setting the `PYTHON` value as a CMake cache override in the IDE UI will override the default Python interpreter.
+[src:esp32/build-system-p01] To manage the Python version more generally via the command line, check out the tools pyenv or virtualenv.
+[src:esp32/build-system-p01] These let you change the default Python version.
+[src:esp32/build-system-p01] Component directories each contain a component `CMakeLists.txt` file.
+[src:esp32/build-system-p01] This file contains variable definitions to control the build process of the component, and its integration into the overall project.
+[src:esp32/build-system-p01] See Component CMakeLists Files for more details.
+[src:esp32/build-system-p01] Each component may also include a `Kconfig` file defining the component configuration options that can be set via `menuconfig`.
+[src:esp32/build-system-p01] Some components may also include `Kconfig.projbuild` and `project_include.cmake` files, which are special files for overriding parts of the project.
+[src:esp32/build-system-p01] Each project has a single top-level `CMakeLists.txt` file that contains build settings for the entire project.
+[src:esp32/build-system-p01] By default, the project CMakeLists can be quite minimal.
+[src:esp32/build-system-p01] These variables all have default values that can be overridden for custom behavior.
+[src:esp32/build-system-p01] Look in /tools/cmake/project.cmake for all of the implementation details.
+[src:esp32/build-system-p01] Any paths in these variables can be absolute paths, or set relative to the project directory.
+[src:esp32/build-system-p01] To set these variables, use the cmake set command ie `set(VARIABLE "VALUE")`.
+[src:esp32/build-system-p01] The `set()` commands should be placed after the `cmake_minimum(...)` line but before the `include(...)` line.
+[src:esp32/build-system-p01] The build system provides special treatment to the `main` component.
+[src:esp32/build-system-p01] It is a component that gets automatically added to the build provided that it is in the expected location, PROJECT_DIR/main.
+[src:esp32/build-system-p01] All other components in the build are also added as its dependencies, saving the user from hunting down dependencies and providing a build that works right out of the box.
+[src:esp32/build-system-p01] Renaming the `main` component causes the loss of these behind-the-scenes heavy lifting, requiring the user to specify the location of the newly renamed component and manually specify its dependencies.
+[src:esp32/build-system-p01] Set `EXTRA_COMPONENT_DIRS` in the project CMakeLists.txt to include the renamed `main` directory.
+[src:esp32/build-system-p01] Specify the dependencies in the renamed component's CMakeLists.txt file via REQUIRES or PRIV_REQUIRES arguments on component registration.
+[src:esp32/build-system-p01] A project without a `main` component cannot use the `MINIMAL_BUILD` build property, as this property explicitly relies on the presence of the `main` component.
+[src:esp32/build-system-p01] Ensure that the `MINIMAL_BUILD` build property is not set for projects that do not include a `main` component.
+[src:esp32/build-system-p01] The build sets some global build specifications (compile flags, definitions, etc.) that gets used in compiling all sources from all components.
+[src:esp32/build-system-p01] For example, one of the default build specifications set is the compile option `-Wextra`.
+[src:esp32/build-system-p01] This ensures that the compile options set by the user won't be overridden by the default build specifications, since the latter are set inside `project()`.
+[src:esp32/build-system-p01] Each project contains one or more components.
+[src:esp32/build-system-p01] Components can be part of ESP-IDF, part of the project's own components directory, or added from custom component directories (see above).
+[src:esp32/build-system-p01] A component is any directory in the `COMPONENT_DIRS` list which contains a `CMakeLists.txt` file.
+[src:esp32/build-system-p01] The list of directories in `COMPONENT_DIRS` is searched for the project's components.
+[src:esp32/build-system-p01] Directories in this list can either be components themselves (ie they contain a *CMakeLists.txt* file), or they can be top-level directories whose sub-directories are components.
+[src:esp32/build-system-p01] When CMake runs to configure the project, it logs the components included in the build.
+[src:esp32/build-system-p01] This list can be useful for debugging the inclusion/exclusion of certain components.
+[src:esp32/build-system-p01] If two or more of these directories contain component sub-directories with the same name, the component with higher precedence is used.
+[src:esp32/build-system-p01] This allows, for example, overriding ESP-IDF components with a modified version by copying that component from the ESP-IDF components directory to the project components directory and then modifying it there.
+[src:esp32/build-system-p01] If used in this way, the ESP-IDF directory itself can remain untouched.
+[src:esp32/build-system-p01] If a component is overridden in an existing project by moving it to a new location, the project will not automatically see the new component path.
+[src:esp32/build-system-p01] Run `idf.py reconfigure` (or delete the project build folder) and then build again.
+[src:esp32/build-system-p01] A library with the name of the component will be built and linked to the final app.
+[src:esp32/build-system-p01] Directories are usually specified relative to the `CMakeLists.txt` file itself, although they can be absolute.
+[src:esp32/build-system-p01] There are other arguments that can be passed to `idf_component_register`.
+[src:esp32/build-system-p01] See example component requirements and example component CMakeLists for more complete component `CMakeLists.txt` examples.
+[src:esp32/build-system-p01] This can be useful if there is upstream code that emits warnings.
+[src:esp32/build-system-p01] CMake set_source_files_properties command is not applicable when the source files have been populated with help of the `SRC_DIRS` variable in `idf_component_register`.
+[src:esp32/build-system-p01] See File Globbing & Incremental Builds for more details.
+[src:esp32/build-system-p01] When using these commands, place them after the call to `idf_component_register` in the component CMakeLists file.
+[src:esp32/build-system-p01] Each component can also have a `Kconfig` file, alongside `CMakeLists.txt`.
+[src:esp32/build-system-p01] This contains configuration settings to add to the configuration menu for this component.
+[src:esp32/build-system-p01] These settings are found under the "Component Settings" menu when menuconfig is run.
+[src:esp32/build-system-p01] To create a component Kconfig file, it is easiest to start with one of the Kconfig files distributed with ESP-IDF.
+[src:esp32/build-system-p01] For an example, see Adding conditional configuration.
+[src:esp32/build-system-p01] For a more detailed guide, see Component Configuration Guide.
+[src:esp32/build-system-p01] When compiling each component, the ESP-IDF build system recursively evaluates its dependencies.
+[src:esp32/build-system-p01] This means each component needs to declare the components that it depends on ("requires").
+[src:esp32/build-system-p01] If a component only supports some target chips (values of `IDF_TARGET`) then it can specify `REQUIRED_IDF_TARGETS` in the `idf_component_register` call to express these requirements.
+[src:esp32/build-system-p01] In this case, the build system will generate an error if the component is included in the build, but does not support the selected target.
+[src:esp32/build-system-p01] In CMake terms, `REQUIRES` & `PRIV_REQUIRES` are approximate wrappers around the CMake functions `target_link_libraries(...
+[src:esp32/build-system-p01] PUBLIC ...)` and `target_link_libraries(...
+[src:esp32/build-system-p01] The `car.h` header file is the public interface for the `car` component.
+[src:esp32/build-system-p01] In this component, `engine` depends on `spark_plug` but this is a private dependency.
+[src:esp32/build-system-p01] `spark_plug.h` is needed to compile `engine.c`, but not needed to include `engine.h`.
+[src:esp32/build-system-p01] As a result, source files in the `car` component don't need the `spark_plug` include directories added to their compiler search path.
+[src:esp32/build-system-p01] This can speed up compilation, and stops compiler command lines from becoming longer than necessary.
+[src:esp32/build-system-p01] The `spark_plug` component doesn't depend on anything else.
+[src:esp32/build-system-p01] It has a public header file `spark_plug.h`, but this doesn't include headers from any other components.
+[src:esp32/build-system-p01] The component named `main` is special because it automatically requires all other components in the build.
+[src:esp32/build-system-p01] So it's not necessary to pass `REQUIRES` or `PRIV_REQUIRES` to this component.
+[src:esp32/build-system-p01] See renaming main for a description of what needs to be changed if no longer using the `main` component.
+[src:esp32/build-system-p01] To avoid duplication, every component automatically requires some "common" IDF components even if they are not mentioned explicitly.
+[src:esp32/build-system-p01] Headers from these components can always be included.
+[src:esp32/build-system-p01] The list of common components is: cxx, esp_libc, freertos, esp_hw_support, heap, log, soc, hal, esp_rom, esp_common, esp_system, xtensa/riscv.
+[src:esp32/build-system-p01] Certain features and configurations, such as those provided by esp_psram or espcoredump components, may not be available to your project by default if the minimal list of components is used.
+[src:esp32/build-system-p01] When using the `COMPONENTS` variable, ensure that all necessary components are included.
+[src:esp32/build-system-p01] Similarly, when using the `MINIMAL_BUILD` build property, ensure that all required components are specified in the `REQUIRES` or `PRIV_REQUIRES` argument during component registration.
+[src:esp32/build-system-p01] It's possible for a project to contain Component A that requires (`REQUIRES` or `PRIV_REQUIRES`) Component B, and Component B that requires Component A.
+[src:esp32/build-system-p01] This is known as a dependency cycle or a circular dependency.
+[src:esp32/build-system-p01] CMake will usually handle circular dependencies automatically by repeating the component library names twice on the linker command line.
+[src:esp32/build-system-p01] However this strategy doesn't always work, and the build may fail with a linker error about "Undefined reference to ...", referencing a symbol defined by one of the components inside the circular dependency.
+[src:esp32/build-system-p01] This is particularly likely if there is a large circular dependency, i.e., A > B > C > D > A.
+[src:esp32/build-system-p01] The best solution is to restructure the components to remove the circular dependency.
+[src:esp32/build-system-p01] In most cases, a software architecture without circular dependencies has desirable properties of modularity and clean layering and will be more maintainable in the long term.
+[src:esp32/build-system-p01] However, removing circular dependencies is not always possible.
+[src:esp32/build-system-p01] To bypass a linker error caused by a circular dependency, the simplest workaround is to increase the CMake LINK_INTERFACE_MULTIPLICITY property of one of the component libraries.
+[src:esp32/build-system-p01] This causes CMake to repeat this library and its dependencies more than two times on the linker command line.
+[src:esp32/build-system-p01] If only one or two symbols are causing a circular dependency, and all other dependencies are linear, then there is an alternative method to avoid linker errors: Specify the specific symbols required for the "reverse" dependency as undefined symbols at link time.
+[src:esp32/build-system-p01] See the target_link_libraries documentation for more information about this CMake function.
+[src:esp32/build-system-p01] The ESP-IDF CMake helper function `idf_component_add_link_dependency` adds a link-only dependency between one component and another.
+[src:esp32/build-system-p01] In almost all cases, it is better to use the `PRIV_REQUIRES` feature in `idf_component_register` to create a dependency.
+[src:esp32/build-system-p01] However, in some cases, it's necessary to add the link-time dependency of another component to this component, i.e., the reverse order to `PRIV_REQUIRES` (for example: Overriding Default Chip Drivers).
+[src:esp32/build-system-p01] Place this line after the line with `idf_component_register`.
+[src:esp32/build-system-p01] For components that have build requirements that must be evaluated before any component CMakeLists files are evaluated, you can create a file called `project_include.cmake` in the component directory.
+[src:esp32/build-system-p01] This CMake file is included when `project.cmake` is evaluating the entire project.
+[src:esp32/build-system-p01] `project_include.cmake` files are used inside ESP-IDF, for defining project-wide build features such as `esptool` command line arguments and the `bootloader` "special app".
+[src:esp32/build-system-p01] Unlike component `CMakeLists.txt` files, when including a `project_include.cmake` file the current source directory (`CMAKE_CURRENT_SOURCE_DIR` and working directory) is the project directory.
+[src:esp32/build-system-p01] Use the variable `COMPONENT_DIR` for the absolute directory of the component.
+[src:esp32/build-system-p01] Note that `project_include.cmake` isn't necessary for the most common component uses, such as adding include directories to the project, or `LDFLAGS` to the final linking step.
+[src:esp32/build-system-p01] These values can be customized via the `CMakeLists.txt` file itself.
+[src:esp32/build-system-p01] See Optional Project Variables for details.
+[src:esp32/build-system-p01] `project_include.cmake` files are included in the order given in `BUILD_COMPONENTS` variable (as logged by CMake).
+[src:esp32/build-system-p01] This means that a component's `project_include.cmake` file will be included after it's all dependencies' `project_include.cmake` files, unless both components are part of a dependency cycle.
+[src:esp32/build-system-p01] This is important if a `project_include.cmake` file relies on variables set by another component.
+[src:esp32/build-system-p01] Take great care when setting variables or targets in a `project_include.cmake` file.
+[src:esp32/build-system-p01] As the values are included in the top-level project CMake pass, they can influence or break functionality across all components!
+[src:esp32/build-system-p01] This is an equivalent to `project_include.cmake` for Component Configuration Kconfig files.
+[src:esp32/build-system-p01] If you want to include configuration options at the top level of menuconfig, rather than inside the "Component Configuration" sub-menu, then these can be defined in the Kconfig.projbuild file alongside the `CMakeLists.txt` file.
+[src:esp32/build-system-p01] Take care when adding configuration values in this file, as they will be included across the entire project configuration.
+[src:esp32/build-system-p01] Where possible, it's generally better to create a Kconfig file for Component Configuration.
+[src:esp32/build-system-p01] For more information, see Kconfig Files section in the Configuration Guide.
+[src:esp32/build-system-p01] Thanks to the linker's wrap feature, it is possible to redefine or extend the behavior of an existing ESP-IDF function.
+[src:esp32/build-system-p01] Where `function_to_redefine` is the name of the function to redefine or extend.
+[src:esp32/build-system-p01] This option will let the linker replace all the calls to `function_to_redefine` functions in the binary libraries with calls to `__wrap_function_to_redefine` function.
+[src:esp32/build-system-p01] Thus, you must define this new symbol in your application.
+[src:esp32/build-system-p01] The linker will provide a new symbol named `__real_function_to_redefine` which points to the former implementation of the function to redefine.
+[src:esp32/build-system-p01] It can be called from the new implementation, making it an extension of the former one.
+[src:esp32/build-system-p01] This mechanism is shown in the example build_system/wrappers.
+[src:esp32/build-system-p01] Check examples/build_system/wrappers/README.md for more details.
+[src:esp32/build-system-p01] Thanks to the optional `bootloader_components` directory present in your ESP-IDF project, it is possible to override the default ESP-IDF bootloader.
+[src:esp32/build-system-p01] Here, the `my_bootloader.c` file becomes source code for the new bootloader, which means that it will need to perform all the required operations to set up and load the `main` application from flash.
+[src:esp32/build-system-p01] It is also possible to conditionally replace the bootloader depending on a certain condition, such as the target for example.
+[src:esp32/build-system-p01] This can be achieved thanks to the `BOOTLOADER_IGNORE_EXTRA_COMPONENT` CMake variable.
+[src:esp32/build-system-p01] This list can be used to tell the ESP-IDF bootloader project to ignore and not compile the given components present in `bootloader_components`.
+[src:esp32/build-system-p01] It is important to note that this can also be used for any other bootloader components than `main`.
+[src:esp32/build-system-p01] In all cases, the prefix `bootloader_component` must not be specified.
+[src:esp32/build-system-p01] See custom_bootloader/bootloader_override for an example of overriding the default bootloader.
+[src:esp32/build-system-p01] Similarly to regular applications, it is possible to include external components, not placed in *bootloader_component*, as part of the bootloader build thanks to the build property `BOOTLOADER_EXTRA_COMPONENT_DIRS`.
+[src:esp32/build-system-p01] It can either refer to a directory that contains several components, or refer to a single component.
+[src:esp32/build-system-p01] See custom_bootloader/bootloader_extra_dir for an example of adding extra components to the bootloader build.
+[src:esp32/build-system-p01] Special components which contain no source files, only `Kconfig.projbuild` and `Kconfig`, can have a one-line `CMakeLists.txt` file which calls the function `idf_component_register()` with no arguments specified.
+[src:esp32/build-system-p01] This function will include the component in the project build, but no library will be built *and* no header files will be added to any included paths.
+[src:esp32/build-system-p01] For full details about CMake and CMake commands, see the CMake v3.22 documentation.
+[src:esp32/build-system-p01] When included from a project CMakeLists file, the `project.cmake` file defines some utility modules and global variables and then sets `IDF_PATH` if it was not set in the system environment.
+[src:esp32/build-system-p01] It also defines an overridden custom version of the built-in CMake `project` function.
+[src:esp32/build-system-p01] This function is overridden to add all of the ESP-IDF specific project functionality.
+[src:esp32/build-system-p01] By default, the function of warnings on undefined variables is disabled.
+[src:esp32/build-system-p01] To enable this function, we can pass the `--warn-uninitialized` flag to CMake or pass the `--cmake-warn-uninitialized` flag to `idf.py` so it will print a warning if an undefined variable is referenced in the build.
+[src:esp32/build-system-p01] This can be very useful to find buggy CMake files.
+[src:esp32/build-system-p01] Browse the /tools/cmake/project.cmake file and supporting functions in /tools/cmake/ for more details.
+[src:esp32/build-system-p02] Because the build environment tries to set reasonable defaults that will work most of the time, component `CMakeLists.txt` can be very small or even empty (see Minimal Component CMakeLists).
+[src:esp32/build-system-p02] However, overriding preset_component_variables is usually required for some functionality.
+[src:esp32/build-system-p02] Here are some more advanced examples of component CMakeLists files.
+[src:esp32/build-system-p02] The configuration system can be used to conditionally compile some files depending on the options selected in the project configuration.
+[src:esp32/build-system-p02] This example makes use of the CMake if function and list APPEND function.
+[src:esp32/build-system-p02] The current target is available to CMake files via `IDF_TARGET` variable.
+[src:esp32/build-system-p02] In addition to that, if target `xyz` is used (`IDF_TARGET=xyz`), then Kconfig variable `CONFIG_IDF_TARGET_XYZ` will be set.
+[src:esp32/build-system-p02] Note that component dependencies may depend on `IDF_TARGET` variable, but not on Kconfig variables.
+[src:esp32/build-system-p02] Also one can not use Kconfig variables in `include` statements in CMake files, but `IDF_TARGET` can be used in such context.
+[src:esp32/build-system-p02] Some components will have a situation where a source file isn't supplied with the component itself but has to be generated from another file.
+[src:esp32/build-system-p02] Say our component has a header file that consists of the converted binary data of a BMP file, converted using a hypothetical tool called bmp2h.
+[src:esp32/build-system-p02] This answer is adapted from the CMake FAQ entry, which contains some other examples that will also work with ESP-IDF builds.
+[src:esp32/build-system-p02] In this example, logo.h will be generated in the current directory (the build directory) while logo.bmp comes with the component and resides under the component path.
+[src:esp32/build-system-p02] Because logo.h is a generated file, it should be cleaned when the project is cleaned.
+[src:esp32/build-system-p02] For this reason, it is added to the ADDITIONAL_CLEAN_FILES property.
+[src:esp32/build-system-p02] If a a source file from another component included `logo.h`, then `add_dependencies` would need to be called to add a dependency between the two components, to ensure that the component source files were always compiled in the correct order.
+[src:esp32/build-system-p02] Sometimes you have a file with some binary or text data that you'd like to make available to your component, but you don't want to reformat the file as a C source.
+[src:esp32/build-system-p02] Or if the file is a string, you can use the variable `EMBED_TXTFILES`.
+[src:esp32/build-system-p02] The names are generated from the full name of the file, as given in `EMBED_FILES`.
+[src:esp32/build-system-p02] Characters /, ., etc. are replaced with underscores.
+[src:esp32/build-system-p02] The _binary prefix in the symbol name is added by objcopy and is the same for both text and binary files.
+[src:esp32/build-system-p02] Place this line after the `project()` line in your project CMakeLists.txt file.
+[src:esp32/build-system-p02] Replace `myproject.elf` with your project name.
+[src:esp32/build-system-p02] The final argument can be `TEXT` to embed a null-terminated string, or `BINARY` to embed the content as-is.
+[src:esp32/build-system-p02] For an example of using this technique, see the "main" component of the file_serving example protocols/http_server/file_serving/main/CMakeLists.txt - two files are loaded at build time and linked into the firmware.
+[src:esp32/build-system-p02] In the example above, `my_processed_file.bin` is generated from `my_unprocessed_file.bin` through some command `my_process_file_cmd`, then embedded into the target.
+[src:esp32/build-system-p02] The `DEPENDS` argument to `target_add_binary_data` ensures that the target executes first.
+[src:esp32/build-system-p02] ESP-IDF has a feature called linker script generation that enables components to define where its code and data will be placed in memory through linker fragment files.
+[src:esp32/build-system-p02] These files are processed by the build system, and is used to augment the linker script used for linking app binary.
+[src:esp32/build-system-p02] See Linker Script Generation for a quick start guide as well as a detailed discussion of the mechanism.
+[src:esp32/build-system-p02] Obviously, there are cases where all these recipes are insufficient for a certain component, for example when the component is basically a wrapper around another third-party component not originally intended to be compiled under this build system.
+[src:esp32/build-system-p02] In that case, it's possible to forego the ESP-IDF build system entirely by using a CMake feature called ExternalProject.
+[src:esp32/build-system-p02] The best of these approaches for building an external project will depend on the project itself, its build system, and whether you anticipate needing to frequently recompile the project.
+[src:esp32/build-system-p02] For more detailed information about `sdkconfig.defaults` file, please visit sdkconfig.defaults file in Project Configuration section.
+[src:esp32/build-system-p02] For example projects or other projects where you don't want to specify a full sdkconfig configuration, but you do want to override some key values from the ESP-IDF defaults, it is possible to create a file `sdkconfig.defaults` in the project directory.
+[src:esp32/build-system-p02] This file will be used when creating a new config from scratch, or when any new config value hasn't yet been set in the `sdkconfig` file.
+[src:esp32/build-system-p02] To override the name of this file or to specify multiple files, set the `SDKCONFIG_DEFAULTS` environment variable or set `SDKCONFIG_DEFAULTS` in top-level `CMakeLists.txt`.
+[src:esp32/build-system-p02] File names that are not specified as full paths are resolved relative to current project's directory.
+[src:esp32/build-system-p02] When specifying multiple files, use a semicolon as the list separator.
+[src:esp32/build-system-p02] Files listed first will be applied first.
+[src:esp32/build-system-p02] If a particular key is defined in multiple files, the definition in the latter file will override definitions from former files.
+[src:esp32/build-system-p02] Some of the IDF examples include a `sdkconfig.ci` file.
+[src:esp32/build-system-p02] This is part of the continuous integration (CI) test framework and is ignored by the normal build process.
+[src:esp32/build-system-p02] If and only if an `sdkconfig.defaults` file exists, the build system will also attempt to load defaults from an `sdkconfig.defaults.TARGET_NAME` file, where `TARGET_NAME` is the value of `IDF_TARGET`.
+[src:esp32/build-system-p02] For example, for `esp32` target, default settings will be taken from `sdkconfig.defaults` first, and then from `sdkconfig.defaults.esp32`.
+[src:esp32/build-system-p02] If there are no generic default settings, an empty `sdkconfig.defaults` still needs to be created if the build system should recognize any additional target-dependent `sdkconfig.defaults.TARGET_NAME` files.
+[src:esp32/build-system-p02] If `SDKCONFIG_DEFAULTS` is used to override the name of defaults file/files, the name of target-specific defaults file will be derived from `SDKCONFIG_DEFAULTS` value/values using the rule above.
+[src:esp32/build-system-p02] `sdkconfig.defaults.esp32` - build system will always try to load target specific variation of every file listed in `SDKCONFIG_DEFAULTS`.
+[src:esp32/build-system-p02] The build system will also attempt to load a file named `sdkconfig_devkit1.esp32`, but because there is no file with this name, no additional file will be loaded.
+[src:esp32/build-system-p02] In the second example, the standard `sdkconfig.defaults` (or its target specific variation) is not applied, because it was not explicitly included in `SDKCONFIG_DEFAULTS`.
+[src:esp32/build-system-p02] You can find more detailed information on how the project configuration works in the Project Configuration Guide.
+[src:esp32/build-system-p02] In the Configuration Files Structure and Relationships, you can find lower-level information about the configuration files.
+[src:esp32/build-system-p02] There are some scenarios that we want to flash the target board without IDF.
+[src:esp32/build-system-p02] For this case we want to save the built binaries, esptool and esptool write-flash arguments.
+[src:esp32/build-system-p02] It's simple to write a script to save binaries and esptool.
+[src:esp32/build-system-p02] Alternatively, it is possible to manually copy the parameters from the argument file and pass them on the command line.
+[src:esp32/build-system-p02] The build directory also contains a generated file `flasher_args.json` which contains project flash information, in JSON format.
+[src:esp32/build-system-p02] This file is used by `idf.py` and can also be used by other tools which need information about the project build.
+[src:esp32/build-system-p02] The bootloader is a special "subproject" inside /components/bootloader/subproject.
+[src:esp32/build-system-p02] It has its own project CMakeLists.txt file and builds separate .ELF and .BIN files to the main project.
+[src:esp32/build-system-p02] However, it shares its configuration and build directory with the main project.
+[src:esp32/build-system-p02] The subproject is inserted as an external project from the top-level project, by the file /components/bootloader/project_include.cmake.
+[src:esp32/build-system-p02] The main build process runs CMake for the subproject, which includes discovering components (a subset of the main components) and generating a bootloader-specific config (derived from the main `sdkconfig`).
+[src:esp32/build-system-p02] The ESP-IDF build system "wraps" CMake with the concept of "components", and helper functions to automatically integrate these components into a project build.
+[src:esp32/build-system-p02] However, underneath the concept of "components" is a full CMake build system.
+[src:esp32/build-system-p02] It is also possible to make a component which is pure CMake.
+[src:esp32/build-system-p02] CMake is used for a lot of open-source C and C++ projects — code that users can tap into for their applications.
+[src:esp32/build-system-p02] One of the benefits of having a CMake build system is the ability to import these third-party projects, sometimes even without modification!
+[src:esp32/build-system-p02] This allows for users to be able to get functionality that may not yet be provided by a component, or use another library for the same functionality.
+[src:esp32/build-system-p02] For an actual example, take a look at build_system/cmake/import_lib.
+[src:esp32/build-system-p02] Take note that what needs to be done in order to import the library may vary.
+[src:esp32/build-system-p02] It is recommended to read up on the library's documentation for instructions on how to import it from other projects.
+[src:esp32/build-system-p02] Studying the library's CMakeLists.txt and build structure can also be helpful.
+[src:esp32/build-system-p02] It is also possible to wrap a third-party library to be used as a component in this manner.
+[src:esp32/build-system-p02] For example, the mbedtls component is a wrapper for Espressif's fork of mbedtls.
+[src:esp32/build-system-p02] The CMake variable `ESP_PLATFORM` is set to 1 whenever the ESP-IDF build system is being used.
+[src:esp32/build-system-p02] Tests such as `if (ESP_PLATFORM)` can be used in generic CMake code if special IDF-specific logic is required.
+[src:esp32/build-system-p02] The above example assumes that the external library `foo` (or `tinyxml` in the case of the `import_lib` example) doesn't need to use any ESP-IDF APIs apart from common APIs such as libc, libstdc++, etc.
+[src:esp32/build-system-p02] If the external library needs to use APIs provided by other ESP-IDF components, this needs to be specified in the external CMakeLists.txt file by adding a dependency on the library target `idf::<componentname>`.
+[src:esp32/build-system-p02] Another possibility is that you have a prebuilt static library (`.a` file), built by some other build process.
+[src:esp32/build-system-p02] Optional arguments `REQUIRES` and `PRIV_REQUIRES` specify dependency on other components.
+[src:esp32/build-system-p02] These have the same meaning as the arguments for `idf_component_register`.
+[src:esp32/build-system-p02] Take note that the prebuilt library must have been compiled for the same target as the consuming project.
+[src:esp32/build-system-p02] Configuration relevant to the prebuilt library must also match.
+[src:esp32/build-system-p02] If not paid attention to, these two factors may contribute to subtle bugs in the app.
+[src:esp32/build-system-p02] For an example, take a look at build_system/cmake/import_prebuilt.
+[src:esp32/build-system-p02] ESP-IDF provides a template CMake project for easily creating an application.
+[src:esp32/build-system-p02] However, in some instances the user might already have an existing CMake project or may want to create a custom one.
+[src:esp32/build-system-p02] In these cases it is desirable to be able to consume IDF components as libraries to be linked to the user's targets (libraries/executables).
+[src:esp32/build-system-p02] It is possible to do so by using the build system APIs provided by tools/cmake/idf.cmake.
+[src:esp32/build-system-p02] The example in build_system/cmake/idf_as_lib demonstrates the creation of an application equivalent to hello world application using a custom CMake project.
+[src:esp32/build-system-p02] The IDF build system can only set compiler flags for source files that it builds.
+[src:esp32/build-system-p02] When an external CMakeLists.txt file is used and PSRAM is enabled, remember to add `-mfix-esp32-psram-cache-issue` to the C compiler arguments.
+[src:esp32/build-system-p02] See CONFIG_SPIRAM_CACHE_WORKAROUND for details of this flag.
+[src:esp32/build-system-p02] Retrieve a build property *property* and store it in *var* accessible from the current scope.
+[src:esp32/build-system-p02] Specifying *GENERATOR_EXPRESSION* will retrieve the generator expression string for that property, instead of the actual value, which can be used with CMake commands that support generator expressions.
+[src:esp32/build-system-p02] Set a build property *property* with value *val*.
+[src:esp32/build-system-p02] Specifying *APPEND* will append the specified value to the current value of the property.
+[src:esp32/build-system-p02] If the property does not previously exist or it is currently empty, the specified value becomes the first element/member instead.
+[src:esp32/build-system-p02] Present a directory *component_dir* that contains a component to the build system.
+[src:esp32/build-system-p02] Relative paths are converted to absolute paths with respect to current directory.
+[src:esp32/build-system-p02] An optional *component_source* argument can be specified to indicate the source of the component.
+[src:esp32/build-system-p02] This argument determines the overriding priority for components with the same name.
+[src:esp32/build-system-p02] For detailed information, see Multiple Components with the Same Name.
+[src:esp32/build-system-p02] For instance, if a component named "json" is present as both "idf_components", and "project_components", the component as "project_components" takes precedence over the one as "idf_components".
+[src:esp32/build-system-p02] All calls to this command must be performed before *idf_build_process*.
+[src:esp32/build-system-p02] This command does not guarantee that the component will be processed during build (see the *COMPONENTS* argument description for *idf_build_process*).
+[src:esp32/build-system-p02] Performs the bulk of the behind-the-scenes magic for including ESP-IDF components such as component configuration, libraries creation, dependency expansion and resolution.
+[src:esp32/build-system-p02] Among these functions, perhaps the most important from a user's perspective is the libraries creation by calling each component's `idf_component_register`.
+[src:esp32/build-system-p02] This command creates the libraries for each component, which are accessible using aliases in the form idf::*component_name*.
+[src:esp32/build-system-p02] These aliases can be used to link the components to the user's own targets, either libraries or executables.
+[src:esp32/build-system-p02] The call requires the target chip to be specified with *target* argument.
+[src:esp32/build-system-p02] Specify the executable *executable* for ESP-IDF build.
+[src:esp32/build-system-p02] This attaches additional targets such as dependencies related to flashing, generating additional binary files, etc.
+[src:esp32/build-system-p02] Should be called after `idf_build_process`.
+[src:esp32/build-system-p02] Much like build properties, specifying *GENERATOR_EXPRESSION* will retrieve the generator expression string for that config, instead of the actual value, which can be used with CMake commands that support generator expressions.
+[src:esp32/build-system-p02] Actual config values are only known after call to `idf_build_process`, however.
+[src:esp32/build-system-p02] Register a dependency that must run after the ELF is linked (post-ELF) and before the binary image is generated.
+[src:esp32/build-system-p02] This is useful when a component needs to post‑process the ELF in place prior to `elf2image` execution (for example, inserting metadata, stripping sections, or generating additional symbol files).
+[src:esp32/build-system-p02] The dependency target `dep_target` must be a valid CMake target.
+[src:esp32/build-system-p02] If your rule reads or modifies the ELF, declare the ELF file as a `DEPENDS` of your custom command.
+[src:esp32/build-system-p02] Following these rules ensures the post‑ELF hook runs in the intended order without triggering infinite rebuild loops.
+[src:esp32/build-system-p02] Retrieve the list of post-ELF dependencies registered for the given ELF file and store it in `out_var`.
+[src:esp32/build-system-p02] These are properties that describe the build.
+[src:esp32/build-system-p02] Values of build properties can be retrieved by using the build command `idf_build_get_property`.
+[src:esp32/build-system-p02] Retrieve a specified *component*'s component property, *property* and store it in *var* accessible from the current scope.
+[src:esp32/build-system-p02] Set a specified *component*'s component property, *property* with value *val*.
+[src:esp32/build-system-p02] Register a component to the build system.
+[src:esp32/build-system-p02] Much like the `project()` CMake command, this should be called from the component's CMakeLists.txt directly (not through a function or macro) and is recommended to be called before any other command.
+[src:esp32/build-system-p02] Commands that set and operate on variables are generally okay to call before `idf_component_register`.
+[src:esp32/build-system-p02] The following are used for embedding data into the component, and is considered as source files when determining if a component is config-only.
+[src:esp32/build-system-p02] These are properties that describe a component.
+[src:esp32/build-system-p02] Values of component properties can be retrieved by using the build command `idf_component_get_property`.
+[src:esp32/build-system-p02] This preference reflects the CMake best practice of manually listing source files.
+[src:esp32/build-system-p02] This could, however, be inconvenient when there are lots of source files to add to the build.
+[src:esp32/build-system-p02] This uses globbing behind the scenes to find source files in the specified directories.
+[src:esp32/build-system-p02] Be aware, however, that if a new source file is added and this method is used, then CMake won't know to automatically re-run and this file won't be added to the build.
+[src:esp32/build-system-p02] The trade-off is acceptable when you're adding the file yourself, because you can trigger a clean build or run `idf.py reconfigure` to manually re-run CMake.
+[src:esp32/build-system-p02] However, the problem gets harder when you share your project with others who may check out a new version using a source control tool like Git...
+[src:esp32/build-system-p02] For components which are part of ESP-IDF, we use a third party Git CMake integration module (/tools/cmake/third_party/GetGitRevisionDescription.cmake) which automatically re-runs CMake any time the repository commit changes.
+[src:esp32/build-system-p02] This means if you check out a new ESP-IDF version, CMake will automatically rerun.
+[src:esp32/build-system-p02] The best option will depend on your particular project and its users.
+[src:esp32/build-system-p03] The listfiles for the ESP-IDF build system reside in /tools/cmake.
+[src:esp32/build-system-p03] The rest of the files in /tools/cmake are support or third-party scripts used in the build process.
+[src:esp32/build-system-p03] This section describes the standard ESP-IDF application build process.
+[src:esp32/build-system-p03] This phase sets up necessary parameters for the build.
+[src:esp32/build-system-p03] Browse /tools/cmake/project.cmake for more details.
+[src:esp32/build-system-p03] Some aspects of the CMake-based ESP-IDF build system are very similar to the older GNU Make-based system.
+[src:esp32/build-system-p03] The developer needs to provide values the include directories, source files etc.
+[src:esp32/build-system-p03] There is a syntactical difference, however, as the developer needs to pass these as arguments to the registration command, `idf_component_register`.
+[src:esp32/build-system-p03] An automatic project conversion tool is available in *tools/cmake/convert_to_cmake.py* in ESP-IDF v4.x releases.
+[src:esp32/build-system-p03] The script was removed in v5.0 because of its *make* build system dependency.
+[src:esp32/build-system-p03] Some features are significantly different or removed in the CMake-based system.
+[src:esp32/build-system-p03] `make flash` and similar targets still work to build and flash.
+[src:esp32/build-system-p03] However, project `sdkconfig` no longer specifies serial port and baud rate.
+[src:esp32/build-system-p03] Environment variables can be used to override these.
+[src:esp32/build-system-p03] See Flashing with Ninja or Make for more details.
+[src:esp32/esp32] Typically, the ESP32 is embedded on device-specific printed circuit boards or offered as part of development kits that include a variety of GPIO pins and connectors, with configurations varying by model and manufacturer.
+[src:esp32/esp32] The ESP32 was designed by Espressif Systems and is manufactured by TSMC using their 40 nm process.
+[src:esp32/esp32] It is a successor to the ESP8266 microcontroller.
+[src:esp32/esp32] Since the release of the original ESP32, a number of variants have been introduced and announced.
+[src:esp32/esp32] They form the ESP32 family of microcontrollers.
+[src:esp32/esp32] These chips have different CPUs and capabilities, but all share the same SDK and are largely code-compatible.
+[src:esp32/esp32] Additionally, the original ESP32 was revised (see ESP32 ECO V3, for example).
+[src:esp32/esp32] ESP32 is housed in quad-flat no-leads (QFN) packages of varying sizes with 49 pads.
+[src:esp32/esp32] Specifically, 48 connection pads along the sides and one large thermal pad (connected to ground) on the bottom.
+[src:esp32/esp32] The ESP32 system on a chip integrated circuit is packaged in both 6 mm × 6 mm and 5 mm × 5 mm sized QFN packages.
+[src:esp32/esp32] used for beta testing; no longer available.
+[src:esp32/esp32] Initial production release chip of the ESP32 series.
+[src:esp32/esp32] Smaller physical package variation similar to ESP32-D0WDQ6.
+[src:esp32/esp32] 2 MiB (16 Mibit) embedded flash memory variation.
+[src:esp32/esp32] Single-core processor and 4 MiB (32 Mibit) embedded flash memory variation.
+[src:esp32/esp32] SPI0/SPI1 pins for flash connection are not bonded.
+[src:esp32/esp32] In 2020, chips ESP32-D0WDQ6 and ESP32-D0WD also got a V3 version (ESP32 ECO V3), which fixes some of the bugs and introduces improvements over the previous versions.
+[src:esp32/esp32] The ESP32 PICO system in package modules combine an ESP32 silicon chip, crystal oscillator, flash memory chip, filter capacitors, and RF matching links into a single 7 mm × 7 mm sized QFN package.
+[src:esp32/esp32] The first released PICO was the ESP32-PICO-D4 with 2 CPUs at 240 MHz, 4MiB internal flash, a 40 MHz oscillator and 34 GPIOs.
+[src:esp32/esp32] Later, in 2020, the ESP32-PICO-V3 and ESP32-PICO-V3-02 modules were introduced both based on the ESP32 ECO V3 wafer.
+[src:esp32/esp32] In 2022 the ESP32-S3-PICO-1 module was introduced with USB OTG and internal PSRAM.
+[src:esp32/esp32] ESP32 based surface-mount printed circuit board modules directly contain the ESP32 SoC and are designed to be easily integrated onto other circuit boards.
+[src:esp32/esp32] Meandered inverted-F antenna designs are used for the PCB trace antennas on the modules listed below.
+[src:esp32/esp32] In addition to flash memory, some modules include pseudostatic RAM (pSRAM).
+[src:esp32/esp32] Development and break-out boards extend wiring and may add functionality, often building upon ESP32 module boards and making them easier to use for development purposes, especially with breadboards.
+[src:esp32/esp32] † ESP32 SoC incorporated directly onto development board; no module board used.
+[src:esp32/esp32] In March 2025, researchers from Tarlogic Security identified undocumented Host Controller Interface (HCI) commands in the ESP32 Bluetooth firmware, prompting discussions about their functionality and potential implications.
+[src:esp32/esp32] This discovery was presented on March 6, 2025, at the RootedCON conference by the Tarlogic Security team.
+[src:esp32/esp32] The identified commands, such as *Write Memory* (0xFC02), are vendor-specific HCI commands used primarily for debugging and testing purposes.
+[src:esp32/esp32] These types of commands are common in Bluetooth controller implementations to assist with development and troubleshooting.
+[src:esp32/esp32] They are not part of the standard HCI command set and are typically used in controlled environments.
+[src:esp32/esp32] Espressif Systems provided clarification regarding these commands, stating that they are intended for debugging and do not pose a security risk under normal operating conditions.
+[src:esp32/esp32] The company emphasized that these commands cannot be triggered remotely and are not used in standard Bluetooth operations.
+[src:esp32/esp32] These commands are present only in ESP32 chips and are not included in the ESP32-C, ESP32-S, and ESP32-H series.
+[src:esp32/esp32] To address concerns raised within the security community, Espressif announced that future versions of the ESP-IDF would include updates to restrict access to these debugging commands and improve documentation for vendor-specific HCI commands.
+[src:esp32/esp32] These actions aim to provide additional transparency and ensure developers are well-informed about available functionalities.
+[src:esp32/esp8266] The **ESP8266** is a low-cost Wi-Fi microchip, with built-in TCP/IP networking software, and microcontroller capability, produced by Espressif Systems in Shanghai, China.
+[src:esp32/esp8266] The chip was popularized in the English-speaking maker community in August 2014 via the **ESP-01** module, made by a third-party manufacturer Ai-Thinker.
+[src:esp32/esp8266] This small module allows microcontrollers to connect to a Wi-Fi network and make simple TCP/IP connections using Hayes-style commands.
+[src:esp32/esp8266] However, at first, there was almost no English-language documentation on the chip and the commands it accepted.
+[src:esp32/esp8266] The very low price and the fact that there were very few external components on the module, which suggested that it could eventually be very inexpensive in volume, attracted many hackers to explore the module, the chip, and the software on it, as well as to translate the Chinese documentation.
+[src:esp32/esp8266] The **ESP8285** is a similar chip with a built-in 1 MiB flash memory, allowing the design of single-chip devices capable of connecting via Wi-Fi.
+[src:esp32/esp8266] These microcontroller chips have been succeeded by the ESP32 family of devices.
+[src:esp32/esp8266] GPIO 2, General-purpose input/output No.
+[src:esp32/esp8266] GPIO 0, General-purpose input/output No.
+[src:esp32/esp8266] In October 2014, Espressif Systems released a software development kit (SDK) for programming the chip directly, which removed the need for a separate microcontroller.
+[src:esp32/esp8266] Since then, there have been many official SDK releases from Espressif; Espressif maintains two versions of the SDK — one that is based on FreeRTOS and the other based on callbacks.
+[src:esp32/esp8266] An alternative to Espressif's official SDK is the open-source ESP-Open-SDK that is based on the GNU Compiler Collection (GCC) toolchain, maintained by Max Filippov.
+[src:esp32/esp8266] Another alternative is the "Unofficial Development Kit" by Mikhail Grigorev.
+[src:esp32/esp8266] Revision of ESP-WROOM-02 compatible with both 150-mil and 208-mil flash memory chips.
+[src:esp32/esp8266] Differs from ESP-WROOM-02D in that includes an U.FL compatible antenna socket connector.
+[src:esp32/esp8266] In the table above (and the two tables which follow), "Active pins" include the GPIO and ADC pins with which external devices can be attached to the ESP8266 MCU.
+[src:esp32/esp8266] The "Pitch" is the space between pins on the ESP8266 module, which is important to know if the device will be used on a breadboard.
+[src:esp32/esp8266] The "Form factor" also describes the module packaging as "2 × 9 DIL", meaning two rows of 9 pins arranged "Dual In Line", like the pins of DIP ICs.
+[src:esp32/esp8266] Many ESP-xx modules include a small onboard LED which can be programmed to blink and thereby indicate activity.
+[src:esp32/esp8266] There are several antenna options for ESP-xx boards including a trace antenna, an onboard ceramic antenna, and an external connector that allows an external Wi-Fi antenna to be attached.
+[src:esp32/esp8266] Since Wi-Fi communications generate a lot of RFI (Radio Frequency Interference), governmental bodies like the FCC like shielded electronics to minimize interference with other devices.
+[src:esp32/esp8266] Some of the ESP-xx modules come housed within a metal box with an FCC seal of approval stamped on it.
+[src:esp32/esp8266] First and second world markets will likely demand FCC approval and shielded Wi-Fi devices.
+[src:esp32/esp8266] This is the first series of modules made with the ESP8266 by the third-party manufacturer *Ai-Thinker* and remains the most widely available.
+[src:esp32/esp8266] They are collectively referred to as "ESP-xx modules".
+[src:esp32/esp8266] To form a workable development system, they require additional components, especially a serial TTL-to-USB adapter (sometimes called a USB-to-UART bridge) and an external 3.3 volt power supply.
+[src:esp32/esp8266] Novice ESP8266 developers are encouraged to consider larger ESP8266 Wi-Fi development boards like the NodeMCU which includes the USB-to-UART bridge and a Micro-USB connector coupled with a 3.3 volt power regulator already built into the board.
+[src:esp32/esp8266] When project development is complete, those components are not needed and these cheaper ESP-xx modules are a lower power, smaller footprint option for production runs.
+[src:esp32/esp8266] In the Notes column, Flash memory sizes apply to the given module and all those below it in the table.
+[src:esp32/esp8266] Exceptions which apply to a single module are shown in ().
+[src:esp32/esp8266] 512 KiB Flash and blue PCB from a generic manufacturer.
+[src:esp32/esp8266] 1 MiB Flash, AI-Cloud and black PCB from AI-Thinker.
+[src:esp32/esp8266] Shielded module is placed sideways, as compared to the ESP-12 modules.
+[src:esp32/esp8266] Mostly advertised with "AI Cloud Inside".
+[src:esp32/esp8266] With earlier ESP-xx modules, these two items (the USB-to-serial adapter and the regulator) had to be purchased separately and be wired into the ESP-xx circuit.
+[src:esp32/esp8266] Modern ESP8266 boards like the NodeMCU are easier to work with and offer more GPIO pins.
+[src:esp32/esp8266] Most of the boards listed here are based on the ESP-12E module, but new modules are being introduced seemingly every few months.
+[src:esp32/esp8266] Comes with an onboard SD card and features like Lib-Discovery and Fail Safe Mode.
+[src:esp32/esp8266] Only RX/TX are connected to UEXT connector.
+[src:esp32/esp8266] All available GPIO pins are connected, also has pads for soldering UEXT connector (with RX/TX and SDA/SCL signals).
+[src:esp32/esp8266] Uses the ESP-12 module; includes USB to serial interface.
+[src:esp32/esp8266] FTDI serial header, Micro-USB socket for power, includes Li-ion battery charger.
+[src:esp32/esp8266] CP2102 USB bridge, includes battery charger, micro-USB socket for power and battery charging, 1 RGB LED and USER / Reflash button.
+[src:esp32/esp8266] Uses the AI Thinker's ESP8266MOD module and features Micro-USB port, Battery pins, Camera pins and uSD card all on the same board.
+[src:esp32/esp8266] Fully compatible with Arduino Uno shields.
+[src:esp32/esp8266] Uses the ESP-WROOM-02 (ESP-13) module and USB Type B port.
+[src:esp32/esp8266] Uses the AI Thinker Model ESP8266MOD (ESP-13) module and FTDI for Programming and Mini-USB port for power.
+[src:esp32/esp8266] Fully compatible with Adafruit Huzzah software.
+[src:esp32/esp8266] Includes BMP280 Barometer, ADS1115 and Grove I2C connectors.
+[src:esp32/esp8266] Plugs for Anemometer/Wind Vane/Rain Bucket.
+[src:esp32/esp8266] Uses the ESP-12F module and Micro-USB socket.
+[src:esp32/esp8266] Uses ESP-12F module and has Micro-USB socket.
+[src:esp32/esp8266] Uses ESP-12S module and has Micro-USB socket.
+[src:esp32/esp8266] MiB flash built-in; has Micro-USB socket.
+[src:esp32/esp8266] Uses ESP8266EX chip; has Micro-USB socket, U.FL antenna connector, and 16 MiB flash.
+[src:esp32/esp8266] Produced in limited quantity as beta version.
+[src:esp32/esp8266] Development board with Espressif ESP-WROOM-02 module and four relays.
+[src:esp32/esp8266] Development board with Espressif ESP8266 ESP-12E and separate board for CH340G USB interface.
+[src:esp32/esp8266] In 2020, Espressif announced a new chip, ESP32-C3, which is pin-compatible with ESP8266.
+[src:esp32/esp8266] It is based on a single core RISC-V 32-bit CPU with a clock speed of up to 160 MHz.
+[src:esp32/esp8266] It includes 400 KiB of SRAM and 384 KiB ROM storage space built in.
+[src:esp32/get-started-index] This document is intended to help you set up the software development environment for the hardware based on the ESP32 chip by Espressif.
+[src:esp32/get-started-index] After that, a simple example will show you how to use ESP-IDF (Espressif IoT Development Framework) for menu configuration, then for building and flashing firmware onto an ESP32 board.
+[src:esp32/get-started-index] This is documentation for stable version v6.0.2 of ESP-IDF.
+[src:esp32/get-started-index] Other ESP-IDF Versions are also available.
+[src:esp32/get-started-index] Powered by 40 nm technology, ESP32 offers excellent power efficiency, RF performance, security, and reliability, making it suitable for a wide range of application scenarios and power consumption requirements.
+[src:esp32/get-started-index] Espressif provides basic hardware and software resources to help application developers realize their ideas using the ESP32 series hardware.
+[src:esp32/get-started-index] The software development framework by Espressif is intended for development of Internet-of-Things (IoT) applications with Wi-Fi, Bluetooth, power management and several other system features.
+[src:esp32/get-started-index] Currently, some of the development boards are using USB Type C connectors.
+[src:esp32/get-started-index] Be sure you have the correct cable to connect your board!
+[src:esp32/get-started-index] If you have one of ESP32 official development boards listed below, you can click on the link to learn more about the hardware.
+[src:esp32/get-started-index] To install ESP-IDF, build tools, and the toolchain, use the ESP-IDF Installation Manager (EIM) available for multiple operating systems.
+[src:esp32/get-started-index] Once you have the ESP-IDF installed, you can build your first project either using an IDE or from the command line.
+[src:esp32/get-started-index] For instructions on how to set up and use these IDEs with ESP-IDF, please refer to their respective documentation linked above.
+[src:esp32/get-started-index] If you have not yet installed ESP-IDF, please go to Installation and follow the instructions there to install all required software before proceeding.
+[src:esp32/get-started-index] To uninstall ESP-IDF and related tools installed via EIM, you can use either the graphical user interface (GUI) or the command line interface (CLI).
+[src:esp32/get-started-index] Launch the ESP-IDF Installation Manager.
+[src:esp32/get-started-index] Under `Manage Installations`, click `Open Dashboard`.
+[src:esp32/get-started-index] To remove a specific ESP-IDF version, click the `Remove` button under the version you want to remove.
+[src:esp32/get-started-index] To remove all ESP-IDF versions, click `Purge All` button at the bottom of the page.

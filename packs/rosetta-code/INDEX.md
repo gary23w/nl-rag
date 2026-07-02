@@ -1,0 +1,90 @@
+# rosetta-code — nl-rag pack
+
+Pre-normalized AI markdown. tags: rosetta code, cross-language comparison, polyglot example. license: GFDL-1.2 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [100 doors (part 1/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p01.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 2/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p02.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 3/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p03.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 4/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p04.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 5/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p05.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 6/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p06.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 7/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p07.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 8/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p08.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 9/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p09.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [100 doors (part 10/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/100-doors-p10.md) — upstream: https://rosettacode.org/wiki/100_doors
+- [99 bottles of beer (part 1/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/99-bottles-of-beer-p01.md) — upstream: https://rosettacode.org/wiki/99_Bottles_of_Beer
+- [99 bottles of beer (part 2/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/99-bottles-of-beer-p02.md) — upstream: https://rosettacode.org/wiki/99_Bottles_of_Beer
+- [99 bottles of beer (part 3/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/99-bottles-of-beer-p03.md) — upstream: https://rosettacode.org/wiki/99_Bottles_of_Beer
+- [99 bottles of beer (part 4/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/99-bottles-of-beer-p04.md) — upstream: https://rosettacode.org/wiki/99_Bottles_of_Beer
+- [99 bottles of beer (part 5/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/99-bottles-of-beer-p05.md) — upstream: https://rosettacode.org/wiki/99_Bottles_of_Beer
+- [Ackermann function (part 1/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/ackermann-function-p01.md) — upstream: https://rosettacode.org/wiki/Ackermann_function
+- [Ackermann function (part 2/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/ackermann-function-p02.md) — upstream: https://rosettacode.org/wiki/Ackermann_function
+- [Ackermann function (part 3/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/ackermann-function-p03.md) — upstream: https://rosettacode.org/wiki/Ackermann_function
+- [Ackermann function (part 4/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/ackermann-function-p04.md) — upstream: https://rosettacode.org/wiki/Ackermann_function
+- [Ackermann function (part 5/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/ackermann-function-p05.md) — upstream: https://rosettacode.org/wiki/Ackermann_function
+- [Ackermann function (part 6/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/ackermann-function-p06.md) — upstream: https://rosettacode.org/wiki/Ackermann_function
+- [Binary search (part 1/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/binary-search-p01.md) — upstream: https://rosettacode.org/wiki/Binary_search
+- [Binary search (part 2/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/binary-search-p02.md) — upstream: https://rosettacode.org/wiki/Binary_search
+- [Binary search (part 3/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/binary-search-p03.md) — upstream: https://rosettacode.org/wiki/Binary_search
+- [Binary search (part 4/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/binary-search-p04.md) — upstream: https://rosettacode.org/wiki/Binary_search
+- [Binary search (part 5/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/binary-search-p05.md) — upstream: https://rosettacode.org/wiki/Binary_search
+- [Binary search (part 6/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/binary-search-p06.md) — upstream: https://rosettacode.org/wiki/Binary_search
+- [Dining philosophers (part 1/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/dining-philosophers-p01.md) — upstream: https://rosettacode.org/wiki/Dining_philosophers
+- [Dining philosophers (part 2/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/dining-philosophers-p02.md) — upstream: https://rosettacode.org/wiki/Dining_philosophers
+- [Dining philosophers (part 3/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/dining-philosophers-p03.md) — upstream: https://rosettacode.org/wiki/Dining_philosophers
+- [Dining philosophers (part 4/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/dining-philosophers-p04.md) — upstream: https://rosettacode.org/wiki/Dining_philosophers
+- [Dining philosophers (part 5/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/dining-philosophers-p05.md) — upstream: https://rosettacode.org/wiki/Dining_philosophers
+- [Dining philosophers (part 6/6)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/dining-philosophers-p06.md) — upstream: https://rosettacode.org/wiki/Dining_philosophers
+- [Fibonacci sequence (part 1/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p01.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 2/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p02.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 3/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p03.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 4/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p04.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 5/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p05.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 6/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p06.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 7/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p07.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 8/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p08.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 9/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p09.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [Fibonacci sequence (part 10/10)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fibonacci-sequence-p10.md) — upstream: https://rosettacode.org/wiki/Fibonacci_sequence
+- [FizzBuzz (part 1/7)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fizzbuzz-p01.md) — upstream: https://rosettacode.org/wiki/FizzBuzz
+- [FizzBuzz (part 2/7)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fizzbuzz-p02.md) — upstream: https://rosettacode.org/wiki/FizzBuzz
+- [FizzBuzz (part 3/7)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fizzbuzz-p03.md) — upstream: https://rosettacode.org/wiki/FizzBuzz
+- [FizzBuzz (part 4/7)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fizzbuzz-p04.md) — upstream: https://rosettacode.org/wiki/FizzBuzz
+- [FizzBuzz (part 5/7)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fizzbuzz-p05.md) — upstream: https://rosettacode.org/wiki/FizzBuzz
+- [FizzBuzz (part 6/7)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fizzbuzz-p06.md) — upstream: https://rosettacode.org/wiki/FizzBuzz
+- [FizzBuzz (part 7/7)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/fizzbuzz-p07.md) — upstream: https://rosettacode.org/wiki/FizzBuzz
+- [Sieve of Eratosthenes (part 1/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p01.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 2/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p02.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 3/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p03.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 4/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p04.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 5/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p05.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 6/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p06.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 7/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p07.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 8/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p08.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 9/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p09.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 10/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p10.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 11/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p11.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 12/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p12.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 13/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p13.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 14/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p14.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 15/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p15.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 16/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p16.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 17/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p17.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 18/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p18.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 19/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p19.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 20/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p20.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sieve of Eratosthenes (part 21/21)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sieve-of-eratosthenes-p21.md) — upstream: https://rosettacode.org/wiki/Sieve_of_Eratosthenes
+- [Sorting algorithms/Quicksort (part 1/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p01.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Sorting algorithms/Quicksort (part 2/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p02.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Sorting algorithms/Quicksort (part 3/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p03.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Sorting algorithms/Quicksort (part 4/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p04.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Sorting algorithms/Quicksort (part 5/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p05.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Sorting algorithms/Quicksort (part 6/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p06.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Sorting algorithms/Quicksort (part 7/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p07.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Sorting algorithms/Quicksort (part 8/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/sorting-algorithms-quicksort-p08.md) — upstream: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- [Towers of Hanoi (part 1/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/towers-of-hanoi-p01.md) — upstream: https://rosettacode.org/wiki/Towers_of_Hanoi
+- [Towers of Hanoi (part 2/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/towers-of-hanoi-p02.md) — upstream: https://rosettacode.org/wiki/Towers_of_Hanoi
+- [Towers of Hanoi (part 3/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/towers-of-hanoi-p03.md) — upstream: https://rosettacode.org/wiki/Towers_of_Hanoi
+- [Towers of Hanoi (part 4/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/towers-of-hanoi-p04.md) — upstream: https://rosettacode.org/wiki/Towers_of_Hanoi
+- [Towers of Hanoi (part 5/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/towers-of-hanoi-p05.md) — upstream: https://rosettacode.org/wiki/Towers_of_Hanoi
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rosetta-code/pack.facts) — distilled one-line facts (neuron CLI import)

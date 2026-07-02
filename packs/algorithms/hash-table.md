@@ -27,20 +27,20 @@ The first published work on hashing with chaining is credited to Arnold Dumey, w
 
 ## Overview
 
-An associative array stores a set of (key, value) pairs and allows insertion, deletion, and lookup (search), with the constraint of unique keys. In the hash table implementation of associative arrays, an array A {\displaystyle A} ({\displaystyle A}) of length m {\displaystyle m} ({\displaystyle m}) is partially filled with n {\displaystyle n} ({\displaystyle n}) elements, where m ≥ n {\displaystyle m\geq n} ({\displaystyle m\geq n}). A key **x {\displaystyle x} ({\displaystyle x})** is hashed using a hash function h {\displaystyle h} ({\displaystyle h}) to compute an index location A [ h ( x ) ] {\displaystyle A[h(x)]} ({\displaystyle A[h(x)]}) in the hash table, where h ( x ) < m {\displaystyle h(x)<m} ({\displaystyle h(x)<m}). The efficiency of a hash table depends on the load factor, defined as the ratio of the number of stored elements to the number of available slots, with lower load factors generally yielding faster operations. At this index, both the key and its associated value are stored. Storing the key alongside the value ensures that lookups can verify the key at the index to retrieve the correct value, even in the presence of collisions. Under reasonable assumptions, hash tables have better time complexity bounds on search, delete, and insert operations in comparison to self-balancing binary search trees.
+An associative array stores a set of (key, value) pairs and allows insertion, deletion, and lookup (search), with the constraint of unique keys. In the hash table implementation of associative arrays, an array A of length m is partially filled with n elements, where $m\geq n$ . A key **x** is hashed using a hash function h to compute an index location $A[h(x)]$ in the hash table, where $h(x)<m$ . The efficiency of a hash table depends on the load factor, defined as the ratio of the number of stored elements to the number of available slots, with lower load factors generally yielding faster operations. At this index, both the key and its associated value are stored. Storing the key alongside the value ensures that lookups can verify the key at the index to retrieve the correct value, even in the presence of collisions. Under reasonable assumptions, hash tables have better time complexity bounds on search, delete, and insert operations in comparison to self-balancing binary search trees.
 
 Hash tables are also commonly used to implement sets, by omitting the stored value for each key and merely tracking whether the key is present.
 
 ### Load factor
 
-A *load factor* α {\displaystyle \alpha } ({\displaystyle \alpha }) is a critical statistic of a hash table, and is defined as follows: load factor   ( α ) = n m , {\displaystyle {\text{load factor}}\ (\alpha )={\frac {n}{m}},} ({\displaystyle {\text{load factor}}\ (\alpha )={\frac {n}{m}},}) where
+A *load factor* $\alpha$ is a critical statistic of a hash table, and is defined as follows: ${\text{load factor}}\ (\alpha )={\frac {n}{m}},$ where
 
-- n {\displaystyle n} ({\displaystyle n}) is the number of entries occupied in the hash table.
-- m {\displaystyle m} ({\displaystyle m}) is the number of buckets.
+- n is the number of entries occupied in the hash table.
+- m is the number of buckets.
 
-The performance of the hash table deteriorates in relation to the load factor α {\displaystyle \alpha } ({\displaystyle \alpha }). In the limit of large m {\displaystyle m} ({\displaystyle m}) and n {\displaystyle n} ({\displaystyle n}), each bucket statistically has a Poisson distribution with expectation λ = α {\displaystyle \lambda =\alpha } ({\displaystyle \lambda =\alpha }) for an ideally random hash function.
+The performance of the hash table deteriorates in relation to the load factor $\alpha$ . In the limit of large m and n , each bucket statistically has a Poisson distribution with expectation $\lambda =\alpha$ for an ideally random hash function.
 
-The software typically ensures that the load factor α {\displaystyle \alpha } ({\displaystyle \alpha }) remains below a certain constant, α max {\displaystyle \alpha _{\max }} ({\displaystyle \alpha _{\max }}). This helps maintain good performance. Therefore, a common approach is to resize or "rehash" the hash table whenever the load factor α {\displaystyle \alpha } ({\displaystyle \alpha }) reaches α max {\displaystyle \alpha _{\max }} ({\displaystyle \alpha _{\max }}). Similarly the table may also be resized if the load factor drops below α max / 4 {\displaystyle \alpha _{\max }/4} ({\displaystyle \alpha _{\max }/4}).
+The software typically ensures that the load factor $\alpha$ remains below a certain constant, $\alpha _{\max }$ . This helps maintain good performance. Therefore, a common approach is to resize or "rehash" the hash table whenever the load factor $\alpha$ reaches $\alpha _{\max }$ . Similarly the table may also be resized if the load factor drops below $\alpha _{\max }/4$ .
 
 #### Load factor for separate chaining
 
@@ -48,7 +48,7 @@ With separate chaining hash tables, each slot of the bucket array stores a point
 
 Separate chaining hash tables suffer gradually declining performance as the load factor grows, and no fixed point beyond which resizing is absolutely needed.
 
-With separate chaining, the value of α max {\displaystyle \alpha _{\max }} ({\displaystyle \alpha _{\max }}) that gives best performance is typically between 1 and 3.
+With separate chaining, the value of $\alpha _{\max }$ that gives best performance is typically between 1 and 3.
 
 #### Load factor for open addressing
 
@@ -56,15 +56,15 @@ With open addressing, each slot of the bucket array holds exactly one item. Ther
 
 The performance of open addressing becomes very bad when the load factor approaches 1.
 
-Therefore a hash table that uses open addressing *must* be resized or *rehashed* if the load factor α {\displaystyle \alpha } ({\displaystyle \alpha }) approaches 1.
+Therefore a hash table that uses open addressing *must* be resized or *rehashed* if the load factor $\alpha$ approaches 1.
 
-With open addressing, acceptable figures of max load factor α max {\displaystyle \alpha _{\max }} ({\displaystyle \alpha _{\max }}) should range around 0.6 to 0.75.
+With open addressing, acceptable figures of max load factor $\alpha _{\max }$ should range around 0.6 to 0.75.
 
 ## Hash function
 
-A hash function h : U → { 0 , . . . , m − 1 } {\displaystyle h:U\rightarrow \{0,...,m-1\}} ({\displaystyle h:U\rightarrow \{0,...,m-1\}}) maps the universe U {\displaystyle U} ({\displaystyle U}) of keys to indices or slots within the table, that is, h ( x ) ∈ { 0 , . . . , m − 1 } {\displaystyle h(x)\in \{0,...,m-1\}} ({\displaystyle h(x)\in \{0,...,m-1\}}) for x ∈ U {\displaystyle x\in U} ({\displaystyle x\in U}). The conventional implementations of hash functions are based on the *integer universe assumption* that all elements of the table stem from the universe U = { 0 , . . . , u − 1 } {\displaystyle U=\{0,...,u-1\}} ({\displaystyle U=\{0,...,u-1\}}), where the bit length of u {\displaystyle u} ({\displaystyle u}) is confined within the word size of a computer architecture.
+A hash function $h:U\rightarrow \{0,...,m-1\}$ maps the universe U of keys to indices or slots within the table, that is, $h(x)\in \{0,...,m-1\}$ for $x\in U$ . The conventional implementations of hash functions are based on the *integer universe assumption* that all elements of the table stem from the universe $U=\{0,...,u-1\}$ , where the bit length of u is confined within the word size of a computer architecture.
 
-A hash function h {\displaystyle h} ({\displaystyle h}) is said to be perfect for a given set S {\displaystyle S} ({\displaystyle S}) if it is injective on S {\displaystyle S} ({\displaystyle S}), that is, if each element x ∈ S {\displaystyle x\in S} ({\displaystyle x\in S}) maps to a different value in 0 , . . . , m − 1 {\displaystyle {0,...,m-1}} ({\displaystyle {0,...,m-1}}). A perfect hash function can be created if all the keys are known ahead of time.
+A hash function h is said to be perfect for a given set S if it is injective on S , that is, if each element $x\in S$ maps to a different value in ${0,...,m-1}$ . A perfect hash function can be created if all the keys are known ahead of time.
 
 ### Integer universe assumption
 
@@ -72,11 +72,11 @@ The schemes of hashing used in *integer universe assumption* include hashing by 
 
 #### Hashing by division
 
-The scheme in hashing by division is as follows: h ( x )   =   x mod m , {\displaystyle h(x)\ =\ x\,{\bmod {\,}}m,} ({\displaystyle h(x)\ =\ x\,{\bmod {\,}}m,}) where h ( x ) {\displaystyle h(x)} ({\displaystyle h(x)}) is the hash value of x ∈ S {\displaystyle x\in S} ({\displaystyle x\in S}) and m {\displaystyle m} ({\displaystyle m}) is the size of the table.
+The scheme in hashing by division is as follows: $h(x)\ =\ x\,{\bmod {\,}}m,$ where $h(x)$ is the hash value of $x\in S$ and m is the size of the table.
 
 #### Hashing by multiplication
 
-The scheme in hashing by multiplication is as follows: h ( x ) = ⌊ m ( ( x A ) mod 1 ) ⌋ {\displaystyle h(x)=\lfloor m{\bigl (}(xA){\bmod {1}}{\bigr )}\rfloor } ({\displaystyle h(x)=\lfloor m{\bigl (}(xA){\bmod {1}}{\bigr )}\rfloor }) Where A {\displaystyle A} ({\displaystyle A}) is a non-integer real-valued constant and m {\displaystyle m} ({\displaystyle m}) is the size of the table. An advantage of the hashing by multiplication is that the m {\displaystyle m} ({\displaystyle m}) is not critical. Although any value A {\displaystyle A} ({\displaystyle A}) produces a hash function, Donald Knuth suggests using the golden ratio.
+The scheme in hashing by multiplication is as follows: $h(x)=\lfloor m{\bigl (}(xA){\bmod {1}}{\bigr )}\rfloor$ Where A is a non-integer real-valued constant and m is the size of the table. An advantage of the hashing by multiplication is that the m is not critical. Although any value A produces a hash function, Donald Knuth suggests using the golden ratio.
 
 #### String hashing
 
@@ -98,7 +98,7 @@ A search algorithm that uses hashing consists of two parts. The first part is co
 
 ### Separate chaining
 
-In separate chaining, the process involves building a linked list with key–value pair for each search array index. The collided items are chained together through a single linked list, which can be traversed to access the item with a unique search key. Collision resolution through chaining with linked list is a common method of implementation of hash tables. Let T {\displaystyle T} ({\displaystyle T}) and x {\displaystyle x} ({\displaystyle x}) be the hash table and the node respectively, the operation involves as follows:
+In separate chaining, the process involves building a linked list with key–value pair for each search array index. The collided items are chained together through a single linked list, which can be traversed to access the item with a unique search key. Collision resolution through chaining with linked list is a common method of implementation of hash tables. Let T and x be the hash table and the node respectively, the operation involves as follows:
 
 ```
 Chained-Hash-Insert(T, k)
@@ -115,9 +115,9 @@ If the element is comparable either numerically or lexically, and inserted into 
 
 #### Other data structures for separate chaining
 
-If the keys are ordered, it could be efficient to use "self-organizing" concepts such as using a self-balancing binary search tree, through which the theoretical worst case could be brought down to O ( log ⁡ n ) {\displaystyle O(\log {n})} ({\displaystyle O(\log {n})}), although it introduces additional complexities.
+If the keys are ordered, it could be efficient to use "self-organizing" concepts such as using a self-balancing binary search tree, through which the theoretical worst case could be brought down to $O(\log {n})$ , although it introduces additional complexities.
 
-In dynamic perfect hashing, two-level hash tables are used to reduce the look-up complexity to be a guaranteed O ( 1 ) {\displaystyle O(1)} ({\displaystyle O(1)}) in the worst case. In this technique, the buckets of k {\displaystyle k} ({\displaystyle k}) entries are organized as perfect hash tables with k 2 {\displaystyle k^{2}} ({\displaystyle k^{2}}) slots providing constant worst-case lookup time, and low amortized time for insertion. A study shows array-based separate chaining to be 97% more performant when compared to the standard linked list method under heavy load.
+In dynamic perfect hashing, two-level hash tables are used to reduce the look-up complexity to be a guaranteed $O(1)$ in the worst case. In this technique, the buckets of k entries are organized as perfect hash tables with $k^{2}$ slots providing constant worst-case lookup time, and low amortized time for insertion. A study shows array-based separate chaining to be 97% more performant when compared to the standard linked list method under heavy load.
 
 Techniques such as using fusion tree for each buckets also result in constant time for all operations with high probability.
 
@@ -137,7 +137,7 @@ Well-known probe sequences include:
 - Quadratic probing, in which the interval between probes is increased by adding the successive outputs of a quadratic polynomial to the value given by the original hash computation.
 - Double hashing, in which the interval between probes is computed by a secondary hash function.
 
-The performance of open addressing may be slower compared to separate chaining since the probe sequence increases when the load factor α {\displaystyle \alpha } ({\displaystyle \alpha }) approaches 1. The probing results in an infinite loop if the load factor reaches 1, in the case of a completely filled table. The average cost of linear probing depends on the hash function's ability to distribute the elements uniformly throughout the table to avoid runs, since formation of runs would result in increased search time.
+The performance of open addressing may be slower compared to separate chaining since the probe sequence increases when the load factor $\alpha$ approaches 1. The probing results in an infinite loop if the load factor reaches 1, in the case of a completely filled table. The average cost of linear probing depends on the hash function's ability to distribute the elements uniformly throughout the table to avoid runs, since formation of runs would result in increased search time.
 
 #### Caching and locality of reference
 
@@ -151,26 +151,26 @@ Coalesced hashing is a hybrid of both separate chaining and open addressing in w
 
 ##### Cuckoo hashing
 
-Cuckoo hashing is a form of open addressing collision resolution technique which guarantees O ( 1 ) {\displaystyle O(1)} ({\displaystyle O(1)}) worst-case lookup complexity and constant amortized time for insertions. The collision is resolved through maintaining two hash tables, each having its own hashing function, and collided slot gets replaced with the given item, and the preoccupied element of the slot gets displaced into the other hash table. The process continues until every key has its own spot in the empty buckets of the tables; if the procedure enters into infinite loop—which is identified through maintaining a threshold loop counter—both hash tables get rehashed with newer hash functions and the procedure continues.
+Cuckoo hashing is a form of open addressing collision resolution technique which guarantees $O(1)$ worst-case lookup complexity and constant amortized time for insertions. The collision is resolved through maintaining two hash tables, each having its own hashing function, and collided slot gets replaced with the given item, and the preoccupied element of the slot gets displaced into the other hash table. The process continues until every key has its own spot in the empty buckets of the tables; if the procedure enters into infinite loop—which is identified through maintaining a threshold loop counter—both hash tables get rehashed with newer hash functions and the procedure continues.
 
 ##### Hopscotch hashing
 
 Hopscotch hashing is an open addressing based algorithm which combines the elements of cuckoo hashing, linear probing and chaining through the notion of a *neighbourhood* of buckets—the subsequent buckets around any given occupied bucket, also called a "virtual" bucket. The algorithm is designed to deliver better performance when the load factor of the hash table grows beyond 90%; it also provides high throughput in concurrent settings, thus well suited for implementing resizable concurrent hash table. The neighbourhood characteristic of hopscotch hashing guarantees a property that, the cost of finding the desired item from any given buckets within the neighbourhood is very close to the cost of finding it in the bucket itself; the algorithm attempts to be an item into its neighbourhood—with a possible cost involved in displacing other items.
 
-Each bucket within the hash table includes an additional "hop-information"—an *H*-bit bit array for indicating the relative distance of the item which was originally hashed into the current virtual bucket within *H* − 1 entries. Let k {\displaystyle k} ({\displaystyle k}) and B k {\displaystyle Bk} ({\displaystyle Bk}) be the key to be inserted and bucket to which the key is hashed into respectively; several cases are involved in the insertion procedure such that the neighbourhood property of the algorithm is vowed: if B k {\displaystyle Bk} ({\displaystyle Bk}) is empty, the element is inserted, and the leftmost bit of bitmap is set to 1; if not empty, linear probing is used for finding an empty slot in the table, the bitmap of the bucket gets updated followed by the insertion; if the empty slot is not within the range of the *neighbourhood,* i.e. *H* − 1, subsequent swap and hop-info bit array manipulation of each bucket is performed in accordance with its neighbourhood invariant properties.
+Each bucket within the hash table includes an additional "hop-information"—an *H*-bit bit array for indicating the relative distance of the item which was originally hashed into the current virtual bucket within *H* − 1 entries. Let k and $Bk$ be the key to be inserted and bucket to which the key is hashed into respectively; several cases are involved in the insertion procedure such that the neighbourhood property of the algorithm is vowed: if $Bk$ is empty, the element is inserted, and the leftmost bit of bitmap is set to 1; if not empty, linear probing is used for finding an empty slot in the table, the bitmap of the bucket gets updated followed by the insertion; if the empty slot is not within the range of the *neighbourhood,* i.e. *H* − 1, subsequent swap and hop-info bit array manipulation of each bucket is performed in accordance with its neighbourhood invariant properties.
 
 ##### Robin Hood hashing
 
 Robin Hood hashing is an open addressing based collision resolution algorithm; the collisions are resolved through favouring the displacement of the element that is farthest—or longest *probe sequence length* (PSL)—from its "home location" i.e. the bucket to which the item was hashed into. It is named after Robin Hood, a mythical heroic outlaw who stole from the rich to give to the poor.
 
-Although Robin Hood hashing does not change the theoretical search cost, it significantly affects the variance of the distribution of the items on the buckets, i.e. dealing with long run formation in the hash table. Each node within the hash table that uses Robin Hood hashing should be augmented to store an extra PSL value. Let x {\displaystyle x} ({\displaystyle x}) be the key to be inserted, x . psl {\displaystyle x{.}{\text{psl}}} ({\displaystyle x{.}{\text{psl}}}) be the (incremental) PSL length of x {\displaystyle x} ({\displaystyle x}), T {\displaystyle T} ({\displaystyle T}) be the hash table and j {\displaystyle j} ({\displaystyle j}) be the index, the insertion procedure is as follows:
+Although Robin Hood hashing does not change the theoretical search cost, it significantly affects the variance of the distribution of the items on the buckets, i.e. dealing with long run formation in the hash table. Each node within the hash table that uses Robin Hood hashing should be augmented to store an extra PSL value. Let x be the key to be inserted, $x{.}{\text{psl}}$ be the (incremental) PSL length of x , T be the hash table and j be the index, the insertion procedure is as follows:
 
-- If x . psl   ≤   T [ j ] . psl {\displaystyle x{.}{\text{psl}}\ \leq \ T[j]{.}{\text{psl}}} ({\displaystyle x{.}{\text{psl}}\ \leq \ T[j]{.}{\text{psl}}}): the iteration goes into the next bucket without attempting an external probe.
-- If x . psl   >   T [ j ] . psl {\displaystyle x{.}{\text{psl}}\ >\ T[j]{.}{\text{psl}}} ({\displaystyle x{.}{\text{psl}}\ >\ T[j]{.}{\text{psl}}}): insert the item x {\displaystyle x} ({\displaystyle x}) into the bucket j {\displaystyle j} ({\displaystyle j}); swap x {\displaystyle x} ({\displaystyle x}) with T [ j ] {\displaystyle T[j]} ({\displaystyle T[j]})—let it be x ′ {\displaystyle x'} ({\displaystyle x'}); continue the probe from the ( j + 1 ) {\displaystyle (j+1)} ({\displaystyle (j+1)})th bucket to insert x ′ {\displaystyle x'} ({\displaystyle x'}); repeat the procedure until every element is inserted.
+- If $x{.}{\text{psl}}\ \leq \ T[j]{.}{\text{psl}}$ : the iteration goes into the next bucket without attempting an external probe.
+- If $x{.}{\text{psl}}\ >\ T[j]{.}{\text{psl}}$ : insert the item x into the bucket j ; swap x with $T[j]$ —let it be $x'$ ; continue the probe from the $(j+1)$ th bucket to insert $x'$ ; repeat the procedure until every element is inserted.
 
 ## Dynamic resizing
 
-Repeated insertions cause the number of entries in a hash table to grow, which consequently increases the load factor; to maintain the amortized O ( 1 ) {\displaystyle O(1)} ({\displaystyle O(1)}) performance of the lookup and insertion operations, a hash table is dynamically resized and the items of the tables are *rehashed* into the buckets of the new hash table, since the items cannot be copied over as varying table sizes results in different hash value due to modulo operation. If a hash table becomes "too empty" after deleting some elements, resizing may be performed to avoid excessive memory usage.
+Repeated insertions cause the number of entries in a hash table to grow, which consequently increases the load factor; to maintain the amortized $O(1)$ performance of the lookup and insertion operations, a hash table is dynamically resized and the items of the tables are *rehashed* into the buckets of the new hash table, since the items cannot be copied over as varying table sizes results in different hash value due to modulo operation. If a hash table becomes "too empty" after deleting some elements, resizing may be performed to avoid excessive memory usage.
 
 ### Resizing by moving all entries
 
@@ -178,10 +178,10 @@ Generally, a new hash table with a size double that of the original hash table g
 
 ### Alternatives to all-at-once rehashing
 
-Some hash table implementations, notably in real-time systems, cannot pay the price of enlarging the hash table all at once, because it may interrupt time-critical operations. If one cannot avoid dynamic resizing, a solution is to perform the resizing gradually to avoid storage blip—typically at 50% of new table's size—during rehashing and to avoid memory fragmentation that triggers heap compaction due to deallocation of large memory blocks caused by the old hash table. In such case, the rehashing operation is done incrementally through extending prior memory block allocated for the old hash table such that the buckets of the hash table remain unaltered. A common approach for amortized rehashing involves maintaining two hash functions h old {\displaystyle h_{\text{old}}} ({\displaystyle h_{\text{old}}}) and h new {\displaystyle h_{\text{new}}} ({\displaystyle h_{\text{new}}}). The process of rehashing a bucket's items in accordance with the new hash function is termed as *cleaning*, which is implemented through command pattern by encapsulating the operations such as A d d ( k e y ) {\displaystyle \mathrm {Add} (\mathrm {key} )} ({\displaystyle \mathrm {Add} (\mathrm {key} )}), G e t ( k e y ) {\displaystyle \mathrm {Get} (\mathrm {key} )} ({\displaystyle \mathrm {Get} (\mathrm {key} )}) and D e l e t e ( k e y ) {\displaystyle \mathrm {Delete} (\mathrm {key} )} ({\displaystyle \mathrm {Delete} (\mathrm {key} )}) through a L o o k u p ( k e y , command ) {\displaystyle \mathrm {Lookup} (\mathrm {key} ,{\text{command}})} ({\displaystyle \mathrm {Lookup} (\mathrm {key} ,{\text{command}})}) wrapper such that each element in the bucket gets rehashed and its procedure involve as follows:
+Some hash table implementations, notably in real-time systems, cannot pay the price of enlarging the hash table all at once, because it may interrupt time-critical operations. If one cannot avoid dynamic resizing, a solution is to perform the resizing gradually to avoid storage blip—typically at 50% of new table's size—during rehashing and to avoid memory fragmentation that triggers heap compaction due to deallocation of large memory blocks caused by the old hash table. In such case, the rehashing operation is done incrementally through extending prior memory block allocated for the old hash table such that the buckets of the hash table remain unaltered. A common approach for amortized rehashing involves maintaining two hash functions $h_{\text{old}}$ and $h_{\text{new}}$ . The process of rehashing a bucket's items in accordance with the new hash function is termed as *cleaning*, which is implemented through command pattern by encapsulating the operations such as $\mathrm {Add} (\mathrm {key} )$ , $\mathrm {Get} (\mathrm {key} )$ and $\mathrm {Delete} (\mathrm {key} )$ through a $\mathrm {Lookup} (\mathrm {key} ,{\text{command}})$ wrapper such that each element in the bucket gets rehashed and its procedure involve as follows:
 
-- Clean T a b l e [ h old ( k e y ) ] {\displaystyle \mathrm {Table} [h_{\text{old}}(\mathrm {key} )]} ({\displaystyle \mathrm {Table} [h_{\text{old}}(\mathrm {key} )]}) bucket.
-- Clean T a b l e [ h new ( k e y ) ] {\displaystyle \mathrm {Table} [h_{\text{new}}(\mathrm {key} )]} ({\displaystyle \mathrm {Table} [h_{\text{new}}(\mathrm {key} )]}) bucket.
+- Clean $\mathrm {Table} [h_{\text{old}}(\mathrm {key} )]$ bucket.
+- Clean $\mathrm {Table} [h_{\text{new}}(\mathrm {key} )]$ bucket.
 - The *command* gets executed.
 
 #### Linear hashing
@@ -190,9 +190,9 @@ Linear hashing is an implementation of the hash table which enables dynamic grow
 
 ## Performance
 
-The performance of a hash table is dependent on the hash function's ability in generating quasi-random numbers ( σ {\displaystyle \sigma } ({\displaystyle \sigma })) for entries in the hash table where K {\displaystyle K} ({\displaystyle K}), n {\displaystyle n} ({\displaystyle n}) and h ( x ) {\displaystyle h(x)} ({\displaystyle h(x)}) denotes the key, number of buckets and the hash function such that σ   =   h ( K )   %   n {\displaystyle \sigma \ =\ h(K)\ \%\ n} ({\displaystyle \sigma \ =\ h(K)\ \%\ n}). If the hash function generates the same σ {\displaystyle \sigma } ({\displaystyle \sigma }) for distinct keys ( K 1 ≠ K 2 ,   h ( K 1 )   =   h ( K 2 ) {\displaystyle K_{1}\neq K_{2},\ h(K_{1})\ =\ h(K_{2})} ({\displaystyle K_{1}\neq K_{2},\ h(K_{1})\ =\ h(K_{2})})), this results in *collision*, which is dealt with in a variety of ways. The constant time complexity ( O ( 1 ) {\displaystyle O(1)} ({\displaystyle O(1)})) of the operation in a hash table is presupposed on the condition that the hash function doesn't generate colliding indices; thus, the performance of the hash table is directly proportional to the chosen hash function's ability to disperse the indices. However, construction of such a hash function is practically infeasible, that being so, implementations depend on case-specific collision resolution techniques in achieving higher performance.
+The performance of a hash table is dependent on the hash function's ability in generating quasi-random numbers ( $\sigma$ ) for entries in the hash table where K , n and $h(x)$ denotes the key, number of buckets and the hash function such that $\sigma \ =\ h(K)\ \%\ n$ . If the hash function generates the same $\sigma$ for distinct keys ( $K_{1}\neq K_{2},\ h(K_{1})\ =\ h(K_{2})$ ), this results in *collision*, which is dealt with in a variety of ways. The constant time complexity ( $O(1)$ ) of the operation in a hash table is presupposed on the condition that the hash function doesn't generate colliding indices; thus, the performance of the hash table is directly proportional to the chosen hash function's ability to disperse the indices. However, construction of such a hash function is practically infeasible, that being so, implementations depend on case-specific collision resolution techniques in achieving higher performance.
 
-The best performance is obtained in the case that the hash function distributes the elements of the universe uniformaly, and the elements stored at the table are drawn at random from the universe. In this case, in hashing with chaining, the expected time for a successful search is 1 + α 2 + Θ ( 1 m ) {\textstyle 1+{\frac {\alpha }{2}}+\Theta \left({\frac {1}{m}}\right)} ({\textstyle 1+{\frac {\alpha }{2}}+\Theta \left({\frac {1}{m}}\right)}), and the expected time for an unsuccessful search is e − α + α + Θ ( 1 m ) {\textstyle e^{-\alpha }+\alpha +\Theta \left({\frac {1}{m}}\right)} ({\textstyle e^{-\alpha }+\alpha +\Theta \left({\frac {1}{m}}\right)}).
+The best performance is obtained in the case that the hash function distributes the elements of the universe uniformaly, and the elements stored at the table are drawn at random from the universe. In this case, in hashing with chaining, the expected time for a successful search is ${\textstyle 1+{\frac {\alpha }{2}}+\Theta \left({\frac {1}{m}}\right)}$ , and the expected time for an unsuccessful search is ${\textstyle e^{-\alpha }+\alpha +\Theta \left({\frac {1}{m}}\right)}$ .
 
 ## Applications
 

@@ -8,7 +8,64 @@ fetched: 2026-07-02
 part: 2/2
 ---
 
-# Events
+### `events.setMaxListeners(n[, ...eventTargets])`
+
+- `n` `<number>` A non-negative number. The maximum number of listeners per `EventTarget` event.
+- `...eventsTargets` `<EventTarget>`[] | `<EventEmitter>`[] Zero or more `<EventTarget>` or `<EventEmitter>` instances. If none are specified, `n` is set as the default max for all newly created `<EventTarget>` and `<EventEmitter>` objects.
+
+```mjs
+import { setMaxListeners, EventEmitter } from 'node:events';
+
+const target = new EventTarget();
+const emitter = new EventEmitter();
+
+setMaxListeners(5, target, emitter);
+const {
+  setMaxListeners,
+  EventEmitter,
+} = require('node:events');
+
+const target = new EventTarget();
+const emitter = new EventEmitter();
+
+setMaxListeners(5, target, emitter);
+```
+
+### `events.addAbortListener(signal, listener)`
+
+- `signal` `<AbortSignal>`
+- `listener` `<Function>` | `<EventListener>`
+- Returns: `<Disposable>` A Disposable that removes the `abort` listener.
+
+Listens once to the `abort` event on the provided `signal`.
+
+Listening to the `abort` event on abort signals is unsafe and may lead to resource leaks since another third party with the signal can call `e.stopImmediatePropagation()`. Unfortunately Node.js cannot change this since it would violate the web standard. Additionally, the original API makes it easy to forget to remove listeners.
+
+This API allows safely using `AbortSignal`s in Node.js APIs by solving these two issues by listening to the event such that `stopImmediatePropagation` does not prevent the listener from running.
+
+Returns a disposable so that it may be unsubscribed from more easily.const { addAbortListener } = require('node:events'); function example(signal) { signal.addEventListener('abort', (e) => e.stopImmediatePropagation()); // addAbortListener() returns a disposable, so the `using` keyword ensures // the abort listener is automatically removed when this scope exits. using _ = addAbortListener(signal, (e) => { // Do something when signal is aborted. }); }import { addAbortListener } from 'node:events'; function example(signal) { signal.addEventListener('abort', (e) => e.stopImmediatePropagation()); // addAbortListener() returns a disposable, so the `using` keyword ensures // the abort listener is automatically removed when this scope exits. using _ = addAbortListener(signal, (e) => { // Do something when signal is aborted. }); }
+
+### Class: `events.EventEmitterAsyncResource extends EventEmitter`
+
+Integrates `EventEmitter` with `<AsyncResource>` for `EventEmitter`s that require manual async tracking. Specifically, all events emitted by instances of `events.EventEmitterAsyncResource` will run within its async context.`import { EventEmitterAsyncResource, EventEmitter } from 'node:events'; import { notStrictEqual, strictEqual } from 'node:assert'; import { executionAsyncId, triggerAsyncId } from 'node:async_hooks'; // Async tracking tooling will identify this as 'Q'. const ee1 = new EventEmitterAsyncResource({ name: 'Q' }); // 'foo' listeners will run in the EventEmitters async context. ee1.on('foo', () => { strictEqual(executionAsyncId(), ee1.asyncId); strictEqual(triggerAsyncId(), ee1.triggerAsyncId); }); const ee2 = new EventEmitter(); // 'foo' listeners on ordinary EventEmitters that do not track async // context, however, run in the same async context as the emit(). ee2.on('foo', () => { notStrictEqual(executionAsyncId(), ee2.asyncId); notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId); }); Promise.resolve().then(() => { ee1.emit('foo'); ee2.emit('foo'); });``const { EventEmitterAsyncResource, EventEmitter } = require('node:events'); const { notStrictEqual, strictEqual } = require('node:assert'); const { executionAsyncId, triggerAsyncId } = require('node:async_hooks'); // Async tracking tooling will identify this as 'Q'. const ee1 = new EventEmitterAsyncResource({ name: 'Q' }); // 'foo' listeners will run in the EventEmitters async context. ee1.on('foo', () => { strictEqual(executionAsyncId(), ee1.asyncId); strictEqual(triggerAsyncId(), ee1.triggerAsyncId); }); const ee2 = new EventEmitter(); // 'foo' listeners on ordinary EventEmitters that do not track async // context, however, run in the same async context as the emit(). ee2.on('foo', () => { notStrictEqual(executionAsyncId(), ee2.asyncId); notStrictEqual(triggerAsyncId(), ee2.triggerAsyncId); }); Promise.resolve().then(() => { ee1.emit('foo'); ee2.emit('foo'); });`
+
+The `EventEmitterAsyncResource` class has the same methods and takes the same options as `EventEmitter` and `AsyncResource` themselves.
+
+#### `new events.EventEmitterAsyncResource([options])`
+
+- `options` `<Object>`
+  - `captureRejections` `<boolean>` It enables automatic capturing of promise rejection. **Default:** `false`.
+  - `name` `<string>` The type of async event. **Default:** `new.target.name`.
+  - `triggerAsyncId` `<number>` The ID of the execution context that created this async event. **Default:** `executionAsyncId()`.
+  - `requireManualDestroy` `<boolean>` If set to `true`, disables `emitDestroy` when the object is garbage collected. This usually does not need to be set (even if `emitDestroy` is called manually), unless the resource's `asyncId` is retrieved and the sensitive API's `emitDestroy` is called with it. When set to `false`, the `emitDestroy` call on garbage collection will only take place if there is at least one active `destroy` hook. **Default:** `false`.
+
+#### `eventemitterasyncresource.asyncId`
+
+- Type: `<number>` The unique `asyncId` assigned to the resource.
+
+#### `eventemitterasyncresource.asyncResource`
+
+- Type: `<AsyncResource>` The underlying `<AsyncResource>`.
 
 The returned `AsyncResource` object has an additional `eventEmitter` property that provides a reference to this `EventEmitterAsyncResource`.
 
@@ -34,11 +91,29 @@ The `NodeEventTarget` object implements a modified subset of the `EventEmitter` 
 
 #### Event listener
 
-Event listeners registered for an event `type` may either be JavaScript functions or objects with a `handleEvent` property whose value is a function.In either case, the handler function is invoked with the `event` argument passed to the `eventTarget.dispatchEvent()` function.Async functions may be used as event listeners. If an async handler function rejects, the rejection is captured and handled as described in `EventTarget` error handling.An error thrown by one handler function does not prevent the other handlers from being invoked.The return value of a handler function is ignored.Handlers are always invoked in the order they were added.Handler functions may mutate the `event` object.`function handler1(event) { console.log(event.type); // Prints 'foo' event.a = 1; } async function handler2(event) { console.log(event.type); // Prints 'foo' console.log(event.a); // Prints 1 } const handler3 = { handleEvent(event) { console.log(event.type); // Prints 'foo' }, }; const handler4 = { async handleEvent(event) { console.log(event.type); // Prints 'foo' }, }; const target = new EventTarget(); target.addEventListener('foo', handler1); target.addEventListener('foo', handler2); target.addEventListener('foo', handler3); target.addEventListener('foo', handler4, { once: true });`
+Event listeners registered for an event `type` may either be JavaScript functions or objects with a `handleEvent` property whose value is a function.
+
+In either case, the handler function is invoked with the `event` argument passed to the `eventTarget.dispatchEvent()` function.
+
+Async functions may be used as event listeners. If an async handler function rejects, the rejection is captured and handled as described in `EventTarget` error handling.
+
+An error thrown by one handler function does not prevent the other handlers from being invoked.
+
+The return value of a handler function is ignored.
+
+Handlers are always invoked in the order they were added.
+
+Handler functions may mutate the `event` object.`function handler1(event) { console.log(event.type); // Prints 'foo' event.a = 1; } async function handler2(event) { console.log(event.type); // Prints 'foo' console.log(event.a); // Prints 1 } const handler3 = { handleEvent(event) { console.log(event.type); // Prints 'foo' }, }; const handler4 = { async handleEvent(event) { console.log(event.type); // Prints 'foo' }, }; const target = new EventTarget(); target.addEventListener('foo', handler1); target.addEventListener('foo', handler2); target.addEventListener('foo', handler3); target.addEventListener('foo', handler4, { once: true });`
 
 #### `EventTarget` error handling
 
-When a registered event listener throws (or returns a Promise that rejects), by default the error is treated as an uncaught exception on `process.nextTick()`. This means uncaught exceptions in `EventTarget`s will terminate the Node.js process by default.Throwing within an event listener will *not* stop the other registered handlers from being invoked.The `EventTarget` does not implement any special default handling for `'error'` type events like `EventEmitter`.Currently errors are first forwarded to the `process.on('error')` event before reaching `process.on('uncaughtException')`. This behavior is deprecated and will change in a future release to align `EventTarget` with other Node.js APIs. Any code relying on the `process.on('error')` event should be aligned with the new behavior.
+When a registered event listener throws (or returns a Promise that rejects), by default the error is treated as an uncaught exception on `process.nextTick()`. This means uncaught exceptions in `EventTarget`s will terminate the Node.js process by default.
+
+Throwing within an event listener will *not* stop the other registered handlers from being invoked.
+
+The `EventTarget` does not implement any special default handling for `'error'` type events like `EventEmitter`.
+
+Currently errors are first forwarded to the `process.on('error')` event before reaching `process.on('uncaughtException')`. This behavior is deprecated and will change in a future release to align `EventTarget` with other Node.js APIs. Any code relying on the `process.on('error')` event should be aligned with the new behavior.
 
 #### Class: `Event`
 
@@ -162,14 +237,20 @@ The event type identifier.
   - `capture` `<boolean>` Not directly used by Node.js. Added for API completeness. **Default:** `false`.
   - `signal` `<AbortSignal>` The listener will be removed when the given AbortSignal object's `abort()` method is called.
 
-Adds a new handler for the `type` event. Any given `listener` is added only once per `type` and per `capture` option value.If the `once` option is `true`, the `listener` is removed after the next time a `type` event is dispatched.The `capture` option is not used by Node.js in any functional way other than tracking registered event listeners per the `EventTarget` specification. Specifically, the `capture` option is used as part of the key when registering a `listener`. Any individual `listener` may be added once with `capture = false`, and once with `capture = true`.`function handler(event) {} const target = new EventTarget(); target.addEventListener('foo', handler, { capture: true }); // first target.addEventListener('foo', handler, { capture: false }); // second // Removes the second instance of handler target.removeEventListener('foo', handler); // Removes the first instance of handler target.removeEventListener('foo', handler, { capture: true });`
+Adds a new handler for the `type` event. Any given `listener` is added only once per `type` and per `capture` option value.
+
+If the `once` option is `true`, the `listener` is removed after the next time a `type` event is dispatched.
+
+The `capture` option is not used by Node.js in any functional way other than tracking registered event listeners per the `EventTarget` specification. Specifically, the `capture` option is used as part of the key when registering a `listener`. Any individual `listener` may be added once with `capture = false`, and once with `capture = true`.`function handler(event) {} const target = new EventTarget(); target.addEventListener('foo', handler, { capture: true }); // first target.addEventListener('foo', handler, { capture: false }); // second // Removes the second instance of handler target.removeEventListener('foo', handler); // Removes the first instance of handler target.removeEventListener('foo', handler, { capture: true });`
 
 ##### `eventTarget.dispatchEvent(event)`
 
 - `event` `<Event>`
 - Returns: `<boolean>` `true` if either event's `cancelable` attribute value is false or its `preventDefault()` method was not invoked, otherwise `false`.
 
-Dispatches the `event` to the list of handlers for `event.type`.The registered event listeners is synchronously invoked in the order they were registered.
+Dispatches the `event` to the list of handlers for `event.type`.
+
+The registered event listeners is synchronously invoked in the order they were registered.
 
 ##### `eventTarget.removeEventListener(type, listener[, options])`
 

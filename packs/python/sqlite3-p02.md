@@ -317,7 +317,9 @@ Create or remove a user-defined SQL aggregate function.
 
 - **name** (*str*) – The name of the SQL aggregate function.
 - **n_arg** (*int*) – The number of arguments the SQL aggregate function can accept. If `-1`, it may take any number of arguments.
-- **aggregate_class** (class | None) – A class must implement the following methods: `step()`: Add a row to the aggregate. `finalize()`: Return the final result of the aggregate as a type natively supported by SQLite. The number of arguments that the `step()` method must accept is controlled by *n_arg*. Set to `None` to remove an existing SQL aggregate function.
+- **aggregate_class** (class | None) – A class must implement the following methods: The number of arguments that the `step()` method must accept is controlled by *n_arg*. Set to `None` to remove an existing SQL aggregate function.
+  - `step()`: Add a row to the aggregate.
+  - `finalize()`: Return the final result of the aggregate as a type natively supported by SQLite.
 
 Example:
 
@@ -353,7 +355,11 @@ Create or remove a user-defined aggregate window function.
 
 - **name** (*str*) – The name of the SQL aggregate window function to create or remove.
 - **num_params** (*int*) – The number of arguments the SQL aggregate window function can accept. If `-1`, it may take any number of arguments.
-- **aggregate_class** (class | None) – A class that must implement the following methods: `step()`: Add a row to the current window. `value()`: Return the current value of the aggregate. `inverse()`: Remove a row from the current window. `finalize()`: Return the final result of the aggregate as a type natively supported by SQLite. The number of arguments that the `step()` and `value()` methods must accept is controlled by *num_params*. Set to `None` to remove an existing SQL aggregate window function.
+- **aggregate_class** (class | None) – A class that must implement the following methods: The number of arguments that the `step()` and `value()` methods must accept is controlled by *num_params*. Set to `None` to remove an existing SQL aggregate window function.
+  - `step()`: Add a row to the current window.
+  - `value()`: Return the current value of the aggregate.
+  - `inverse()`: Remove a row from the current window.
+  - `finalize()`: Return the final result of the aggregate as a type natively supported by SQLite.
 
 **Raises:**
 

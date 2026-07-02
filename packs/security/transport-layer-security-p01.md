@@ -1,11 +1,11 @@
 ---
-title: "Transport Layer Security (part 1/3)"
+title: "Transport Layer Security (part 1/2)"
 source: https://en.wikipedia.org/wiki/Transport_Layer_Security
 domain: security
 license: CC-BY-SA-4.0 (OWASP) / CC-BY-SA-4.0 (Wikipedia)
 tags: security, authentication, password hashing, session token, tls, owasp
 fetched: 2026-07-02
-part: 1/3
+part: 1/2
 ---
 
 # Transport Layer Security

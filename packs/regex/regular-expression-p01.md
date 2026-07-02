@@ -198,69 +198,11 @@ The derivative of a regular expression can be defined using the Brzozowski deriv
 
 The formal definition of regular expressions is minimal on purpose, and avoids defining `?` and `+`—these can be expressed as follows: `a+`=`aa*`, and `a?`=`(a|ε)`. Sometimes the complement operator is added, to give a *generalized regular expression*; here *Rc* matches all strings over Σ* that do not match *R*. In principle, the complement operator is redundant, because it does not grant any more expressive power. However, it can make a regular expression much more concise—eliminating a single complement operator can cause a double exponential blow-up of its length.
 
-Regular expressions in this sense can express the regular languages, exactly the class of languages accepted by deterministic finite automata. There is, however, a significant difference in compactness. Some classes of regular languages can only be described by deterministic finite automata whose size grows exponentially in the size of the shortest equivalent regular expressions. The standard example here is the languages *Lk* consisting of all strings over the alphabet {*a*,*b*} whose *k*th-from-last letter equals *a*. On the one hand, a regular expression describing *L*4 is given by ( a ∣ b ) ∗ a ( a ∣ b ) ( a ∣ b ) ( a ∣ b ) {\displaystyle (a\mid b)^{*}a(a\mid b)(a\mid b)(a\mid b)} ({\displaystyle (a\mid b)^{*}a(a\mid b)(a\mid b)(a\mid b)}).
+Regular expressions in this sense can express the regular languages, exactly the class of languages accepted by deterministic finite automata. There is, however, a significant difference in compactness. Some classes of regular languages can only be described by deterministic finite automata whose size grows exponentially in the size of the shortest equivalent regular expressions. The standard example here is the languages *Lk* consisting of all strings over the alphabet {*a*,*b*} whose *k*th-from-last letter equals *a*. On the one hand, a regular expression describing *L*4 is given by $(a\mid b)^{*}a(a\mid b)(a\mid b)(a\mid b)$ .
 
 Generalizing this pattern to *Lk* gives the expression:
 
-(
-
-a
-
-∣
-
-b
-
-)
-
-∗
-
-a
-
-(
-
-a
-
-∣
-
-b
-
-)
-
-(
-
-a
-
-∣
-
-b
-
-)
-
-⋯
-
-(
-
-a
-
-∣
-
-b
-
-)
-
-⏟
-
-k
-
-−
-
-1
-
-times
-
-.
-
-{\displaystyle (a\mid b)^{*}a\underbrace {(a\mid b)(a\mid b)\cdots (a\mid b)} _{k-1{\text{ times}}}.\,}
+$(a\mid b)^{*}a\underbrace {(a\mid b)(a\mid b)\cdots (a\mid b)} _{k-1{\text{ times}}}.\,$
 
 On the other hand, it is known that every deterministic finite automaton accepting the language *Lk* must have at least 2*k* states. Luckily, there is a simple mapping from regular expressions to the more general nondeterministic finite automata (NFAs) that does not lead to such a blowup in size; for this reason NFAs are often used as alternative representations of regular languages. NFAs are a simple variation of the type-3 grammars of the Chomsky hierarchy.
 
@@ -447,7 +389,7 @@ Although backtracking implementations only give an exponential guarantee in the 
 
 Sublinear runtime algorithms have been achieved using Boyer-Moore (BM) based algorithms and related DFA optimization techniques such as the reverse scan. GNU grep, which supports a wide variety of POSIX syntaxes and extensions, uses BM for a first-pass prefiltering, and then uses an implicit DFA. Wu agrep, which implements approximate matching, combines the prefiltering into the DFA in BDM (backward DAWG matching). NR-grep's BNDM extends the BDM technique with Shift-Or bit-level parallelism.
 
-A few theoretical alternatives to backtracking for backreferences exist, and their "exponents" are tamer in that they are only related to the number of backreferences, a fixed property of some regexp languages such as POSIX. One naive method that duplicates a non-backtracking NFA for each backreference note has a complexity of ⁠ O ( n 2 k + 2 ) {\displaystyle {\mathrm {O} }(n^{2k+2})} ({\displaystyle {\mathrm {O} }(n^{2k+2})})⁠ time and ⁠ O ( n 2 k + 1 ) {\displaystyle {\mathrm {O} }(n^{2k+1})} ({\displaystyle {\mathrm {O} }(n^{2k+1})})⁠ space for a haystack of length n and k backreferences in the RegExp. Theoretical work based on memory automata gives a tighter bound based on "active" variable nodes used, and a polynomial possibility for some backreferenced regexps.
+A few theoretical alternatives to backtracking for backreferences exist, and their "exponents" are tamer in that they are only related to the number of backreferences, a fixed property of some regexp languages such as POSIX. One naive method that duplicates a non-backtracking NFA for each backreference note has a complexity of ⁠ ${\mathrm {O} }(n^{2k+2})$ ⁠ time and ⁠ ${\mathrm {O} }(n^{2k+1})$ ⁠ space for a haystack of length n and k backreferences in the RegExp. Theoretical work based on memory automata gives a tighter bound based on "active" variable nodes used, and a polynomial possibility for some backreferenced regexps.
 
 
 ## Unicode

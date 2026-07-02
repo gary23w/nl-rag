@@ -8,6 +8,7 @@ Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
 - [Binary search tree](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/data-structures/binary-search-tree.md) — upstream: https://en.wikipedia.org/wiki/Binary_search_tree
 - [Bloom filter (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/data-structures/bloom-filter-p01.md) — upstream: https://en.wikipedia.org/wiki/Bloom_filter
 - [Bloom filter (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/data-structures/bloom-filter-p02.md) — upstream: https://en.wikipedia.org/wiki/Bloom_filter
+- [Bloom filter](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/data-structures/bloom-filter.md) — upstream: https://en.wikipedia.org/wiki/Bloom_filter
 - [Graph (abstract data type)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/data-structures/graph-abstract-data-type.md) — upstream: https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
 - [Heap (data structure)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/data-structures/heap-data-structure.md) — upstream: https://en.wikipedia.org/wiki/Heap_(data_structure)
 - [Linked list](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/data-structures/linked-list.md) — upstream: https://en.wikipedia.org/wiki/Linked_list

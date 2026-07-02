@@ -95,7 +95,7 @@ Note that while each of these tasks is trivial or obvious for human native speak
 
 In general, there are 3 classes of language modelling tasks: "masked", "autoregressive", and "prefixLM". These classes are independent of a specific modeling architecture such as transformer, but they are often discussed in the context of transformer.
 
-In a masked task, one or more of the tokens is masked out, and the model would produce a probability distribution predicting what the masked-out tokens are based on the context. The loss function for the task is typically sum of log-perplexities for the masked-out tokens: Loss = − ∑ t ∈ masked tokens ln ⁡ ( probability of  t  conditional on its context ) {\displaystyle {\text{Loss}}=-\sum _{t\in {\text{masked tokens}}}\ln({\text{probability of }}t{\text{ conditional on its context}})} ({\displaystyle {\text{Loss}}=-\sum _{t\in {\text{masked tokens}}}\ln({\text{probability of }}t{\text{ conditional on its context}})})and the model is trained to minimize this loss function. The BERT series of models are trained for masked token prediction and another task.
+In a masked task, one or more of the tokens is masked out, and the model would produce a probability distribution predicting what the masked-out tokens are based on the context. The loss function for the task is typically sum of log-perplexities for the masked-out tokens: ${\text{Loss}}=-\sum _{t\in {\text{masked tokens}}}\ln({\text{probability of }}t{\text{ conditional on its context}})$ and the model is trained to minimize this loss function. The BERT series of models are trained for masked token prediction and another task.
 
 In an autoregressive task, the entire sequence is masked at first, and the model produces a probability distribution for the first token. Then the first token is revealed and the model predicts the second token, and so on. The loss function for the task is still typically the same. The GPT series of models are trained by autoregressive tasks.
 
@@ -115,15 +115,15 @@ All transformers have the same primary components:
 
 The following description follows exactly the transformer as described in the original paper. There are variants, described in the following section.
 
-By convention, we write all vectors as row vectors. For example, pushing a vector through a linear layer means multiplying it by a weight matrix on the right, as x W {\displaystyle xW} ({\displaystyle xW}).
+By convention, we write all vectors as row vectors. For example, pushing a vector through a linear layer means multiplying it by a weight matrix on the right, as $xW$ .
 
 ### Tokenization
 
 As the transformer architecture natively consists of operations over numbers (matrix multiplications, dot products, activation functions) rather than over text, there must first be a mapping from any input text to some numerical representation. This happens in three steps.
 
-First, the input text is treated by a *preprocessor*, which performs both textual transformations and splits the text into coarse-grained segments called *pretokens*. The latter is referred to as *pretokenization*. Second, each pretoken is segmented further into *tokens* by a *tokenizer* that expects to only see pretokens output by its preprocessor. Each token it produces is a string of one or more characters belonging to a finite set of strings called the *vocabulary* V {\displaystyle V} ({\displaystyle V}). Third, because the vocabulary is finite and known beforehand, each token can be assigned an integer identifier, and this mapping is applied to the sequence of tokens to represent any input text as a numerical sequence. Since this mapping is bijective, the output side can produce a sequence of integer identifiers which can then be turned back into tokens. After undoing some of the preprocessing, the result is again legible text.
+First, the input text is treated by a *preprocessor*, which performs both textual transformations and splits the text into coarse-grained segments called *pretokens*. The latter is referred to as *pretokenization*. Second, each pretoken is segmented further into *tokens* by a *tokenizer* that expects to only see pretokens output by its preprocessor. Each token it produces is a string of one or more characters belonging to a finite set of strings called the *vocabulary* V . Third, because the vocabulary is finite and known beforehand, each token can be assigned an integer identifier, and this mapping is applied to the sequence of tokens to represent any input text as a numerical sequence. Since this mapping is bijective, the output side can produce a sequence of integer identifiers which can then be turned back into tokens. After undoing some of the preprocessing, the result is again legible text.
 
-Training a tokenizer (sometimes referred to as *vocabularization*) means finding a suitable vocabulary V {\displaystyle V} ({\displaystyle V}), but also learning how to use it, since any given string s {\displaystyle s} ({\displaystyle s}) of length | s | {\displaystyle |s|} ({\displaystyle |s|}) has 2 | s | − 1 {\displaystyle 2^{|s|-1}} ({\displaystyle 2^{|s|-1}}) hypothetical segmentations, some of which containing segments that are not in the vocabulary. The most important hyperparameter during vocabularization is the *vocabulary size* | V | {\displaystyle |V|} ({\displaystyle |V|}): when it is small, the learned vocabulary generally consists of characters and smaller strings, and words will be segmented into many tokens. At larger sizes, it becomes affordable to dedicate tokens to full words, although depending on the preprocessor and tokenizer, it is not necessarily the case that large vocabularies will always use the largest token(s) available to segment a word.
+Training a tokenizer (sometimes referred to as *vocabularization*) means finding a suitable vocabulary V , but also learning how to use it, since any given string s of length $|s|$ has $2^{|s|-1}$ hypothetical segmentations, some of which containing segments that are not in the vocabulary. The most important hyperparameter during vocabularization is the *vocabulary size* $|V|$ : when it is small, the learned vocabulary generally consists of characters and smaller strings, and words will be segmented into many tokens. At larger sizes, it becomes affordable to dedicate tokens to full words, although depending on the preprocessor and tokenizer, it is not necessarily the case that large vocabularies will always use the largest token(s) available to segment a word.
 
 Because tokens are not always full words, they may also be referred to as *subwords* and tokenization algorithms may be referred to as *subword tokenizers*. This is also to differentiate these systems from traditional terminology used in older information retrieval and natural language processing systems, where "tokenization" was used to denote what is today called "pretokenization" (very crudely: splitting into words). In tokenizers that produce tokens that are *not* part of the vocabulary, a special token that does belong to the vocabulary is used as a generic stand-in, written as "[UNK]" for "unknown". In principle, any string could be hidden by such an [UNK]. Indeed, in information retrieval, pretokenizers were themselves used as tokenizers (and also called "tokenizers") with a word-level vocabulary that contained an [UNK].
 
@@ -131,29 +131,29 @@ Commonly used subword tokenization algorithms are byte pair encoding (BPE) and t
 
 ### Embedding
 
-Each integer token identifier is converted into an embedding vector via a lookup table. Equivalently stated, it multiplies a one-hot representation of the token identifier by an embedding matrix M {\displaystyle M} ({\displaystyle M}). For example, if the input token's identifier is 3 {\displaystyle 3} ({\displaystyle 3}), then the one-hot representation is [ 0 , 0 , 0 , 1 , 0 , 0 , … ] {\displaystyle [0,0,0,1,0,0,\dots ]} ({\displaystyle [0,0,0,1,0,0,\dots ]}), and its embedding vector is E m b e d ( 3 ) = [ 0 , 0 , 0 , 1 , 0 , 0 , … ] M {\displaystyle \mathrm {Embed} (3)=[0,0,0,1,0,0,\dots ]M} ({\displaystyle \mathrm {Embed} (3)=[0,0,0,1,0,0,\dots ]M})The token embedding vectors are added to their respective positional encoding vectors (see below), producing the sequence of input vectors.
+Each integer token identifier is converted into an embedding vector via a lookup table. Equivalently stated, it multiplies a one-hot representation of the token identifier by an embedding matrix M . For example, if the input token's identifier is 3 , then the one-hot representation is $[0,0,0,1,0,0,\dots ]$ , and its embedding vector is $\mathrm {Embed} (3)=[0,0,0,1,0,0,\dots ]M$ The token embedding vectors are added to their respective positional encoding vectors (see below), producing the sequence of input vectors.
 
-The dimension of an embedding vector is called *hidden size* or *embedding size* and written as d emb {\displaystyle d_{\text{emb}}} ({\displaystyle d_{\text{emb}}}). This size is written as d model {\displaystyle d_{\text{model}}} ({\displaystyle d_{\text{model}}}) in the original transformer paper.
+The dimension of an embedding vector is called *hidden size* or *embedding size* and written as $d_{\text{emb}}$ . This size is written as $d_{\text{model}}$ in the original transformer paper.
 
 ### Un-embedding
 
 An un-embedding layer is almost the reverse of an embedding layer. Whereas an embedding layer converts a token identifier into a vector, an un-embedding layer converts a vector into a probability distribution over tokens.
 
-The un-embedding layer is a linear-softmax layer: U n E m b e d ( x ) = s o f t m a x ( x W + b ) {\displaystyle \mathrm {UnEmbed} (x)=\mathrm {softmax} (xW+b)} ({\displaystyle \mathrm {UnEmbed} (x)=\mathrm {softmax} (xW+b)})The matrix has shape ( d emb , | V | ) {\displaystyle (d_{\text{emb}},|V|)} ({\displaystyle (d_{\text{emb}},|V|)}). Some architectures use the transpose of the embedding matrix M {\displaystyle M} ({\displaystyle M}) as the un-embedding matrix W {\displaystyle W} ({\displaystyle W}) in order to avoid needing double the amount of embedding-related parameters and to avoid divergence during training. This practice is called *weight tying*.
+The un-embedding layer is a linear-softmax layer: $\mathrm {UnEmbed} (x)=\mathrm {softmax} (xW+b)$ The matrix has shape $(d_{\text{emb}},|V|)$ . Some architectures use the transpose of the embedding matrix M as the un-embedding matrix W in order to avoid needing double the amount of embedding-related parameters and to avoid divergence during training. This practice is called *weight tying*.
 
 ### Positional encoding
 
 A positional encoding is a fixed-size vector representation of the relative positions of tokens within a sequence: it provides the transformer model with information about *where* the words are in the input sequence. This induces a bias towards the order of the input sequence, so that, for example, the input sequence "man bites dog" is processed differently from "dog bites man".
 
-The positional encoding is defined as a function of type f : R → R d {\displaystyle f:\mathbb {R} \to \mathbb {R} ^{d}} ({\displaystyle f:\mathbb {R} \to \mathbb {R} ^{d}}), where d {\displaystyle d} ({\displaystyle d}) is a positive even integer. The full positional encoding defined in the original paper is: ( f ( t ) 2 k , f ( t ) 2 k + 1 ) = ( sin ⁡ ( θ ) , cos ⁡ ( θ ) ) ∀ k ∈ { 0 , 1 , … , d / 2 − 1 } {\displaystyle (f(t)_{2k},f(t)_{2k+1})=(\sin(\theta ),\cos(\theta ))\quad \forall k\in \{0,1,\ldots ,d/2-1\}} ({\displaystyle (f(t)_{2k},f(t)_{2k+1})=(\sin(\theta ),\cos(\theta ))\quad \forall k\in \{0,1,\ldots ,d/2-1\}})where θ = t r k , r = N 2 / d {\displaystyle \theta ={\frac {t}{r^{k}}},r=N^{2/d}} ({\displaystyle \theta ={\frac {t}{r^{k}}},r=N^{2/d}}).
+The positional encoding is defined as a function of type $f:\mathbb {R} \to \mathbb {R} ^{d}$ , where d is a positive even integer. The full positional encoding defined in the original paper is: $(f(t)_{2k},f(t)_{2k+1})=(\sin(\theta ),\cos(\theta ))\quad \forall k\in \{0,1,\ldots ,d/2-1\}$ where $\theta ={\frac {t}{r^{k}}},r=N^{2/d}$ .
 
-Here, N {\displaystyle N} ({\displaystyle N}) is a free parameter that should be significantly larger than the biggest k {\displaystyle k} ({\displaystyle k}) that would be input into the positional encoding function. The original paper uses N = 10000 {\displaystyle N=10000} ({\displaystyle N=10000}).
+Here, N is a free parameter that should be significantly larger than the biggest k that would be input into the positional encoding function. The original paper uses $N=10000$ .
 
-The function is in a simpler form when written as a complex function of type f : R → C d / 2 {\displaystyle f:\mathbb {R} \to \mathbb {C} ^{d/2}} ({\displaystyle f:\mathbb {R} \to \mathbb {C} ^{d/2}}) f ( t ) = ( e i t / r k ) k = 0 , 1 , … , d 2 − 1 {\displaystyle f(t)=\left(e^{it/r^{k}}\right)_{k=0,1,\ldots ,{\frac {d}{2}}-1}} ({\displaystyle f(t)=\left(e^{it/r^{k}}\right)_{k=0,1,\ldots ,{\frac {d}{2}}-1}})where r = N 2 / d {\displaystyle r=N^{2/d}} ({\displaystyle r=N^{2/d}}).
+The function is in a simpler form when written as a complex function of type $f:\mathbb {R} \to \mathbb {C} ^{d/2}$ $f(t)=\left(e^{it/r^{k}}\right)_{k=0,1,\ldots ,{\frac {d}{2}}-1}$ where $r=N^{2/d}$ .
 
-The main reason for using this positional encoding function is that using it, shifts are linear transformations: f ( t + Δ t ) = d i a g ( f ( Δ t ) ) f ( t ) {\displaystyle f(t+\Delta t)=\mathrm {diag} (f(\Delta t))f(t)} ({\displaystyle f(t+\Delta t)=\mathrm {diag} (f(\Delta t))f(t)})where Δ t ∈ R {\displaystyle \Delta t\in \mathbb {R} } ({\displaystyle \Delta t\in \mathbb {R} }) is the distance one wishes to shift. This allows the transformer to take any encoded position, and find the encoding of the position n-steps-ahead or n-steps-behind, by a matrix multiplication.
+The main reason for using this positional encoding function is that using it, shifts are linear transformations: $f(t+\Delta t)=\mathrm {diag} (f(\Delta t))f(t)$ where $\Delta t\in \mathbb {R}$ is the distance one wishes to shift. This allows the transformer to take any encoded position, and find the encoding of the position n-steps-ahead or n-steps-behind, by a matrix multiplication.
 
-By taking a linear sum, any convolution can also be implemented as linear transformations: ∑ j c j f ( t + Δ t j ) = ( ∑ j c j d i a g ( f ( Δ t j ) ) ) f ( t ) {\displaystyle \sum _{j}c_{j}f(t+\Delta t_{j})=\left(\sum _{j}c_{j}\,\mathrm {diag} (f(\Delta t_{j}))\right)f(t)} ({\displaystyle \sum _{j}c_{j}f(t+\Delta t_{j})=\left(\sum _{j}c_{j}\,\mathrm {diag} (f(\Delta t_{j}))\right)f(t)})for any constants c j {\displaystyle c_{j}} ({\displaystyle c_{j}}). This allows the transformer to take any encoded position and find a linear sum of the encoded locations of its neighbors. This sum of encoded positions, when fed into the attention mechanism, would create attention weights on its neighbors, much like what happens in a convolutional neural network language model. In the author's words, "we hypothesized it would allow the model to easily learn to attend by relative position."
+By taking a linear sum, any convolution can also be implemented as linear transformations: $\sum _{j}c_{j}f(t+\Delta t_{j})=\left(\sum _{j}c_{j}\,\mathrm {diag} (f(\Delta t_{j}))\right)f(t)$ for any constants $c_{j}$ . This allows the transformer to take any encoded position and find a linear sum of the encoded locations of its neighbors. This sum of encoded positions, when fed into the attention mechanism, would create attention weights on its neighbors, much like what happens in a convolutional neural network language model. In the author's words, "we hypothesized it would allow the model to easily learn to attend by relative position."
 
 In typical implementations, all operations are done over the real numbers, not the complex numbers, but since complex multiplication can be implemented as real 2-by-2 matrix multiplication, this is a mere notational difference.
 
@@ -167,55 +167,55 @@ Both the encoder and decoder layers have a feed-forward neural network for addit
 
 ### Feedforward network
 
-The feedforward network (FFN) modules in a transformer are 2-layered multilayer perceptrons: F F N ( x ) = ϕ ( x W ( 1 ) + b ( 1 ) ) W ( 2 ) + b ( 2 ) {\displaystyle \mathrm {FFN} (x)=\phi (xW^{(1)}+b^{(1)})W^{(2)}+b^{(2)}} ({\displaystyle \mathrm {FFN} (x)=\phi (xW^{(1)}+b^{(1)})W^{(2)}+b^{(2)}})where W ( 1 ) {\displaystyle W^{(1)}} ({\displaystyle W^{(1)}}) and W ( 2 ) {\displaystyle W^{(2)}} ({\displaystyle W^{(2)}}) are weight matrices and b ( 1 ) {\displaystyle b^{(1)}} ({\displaystyle b^{(1)}}) and b ( 2 ) {\displaystyle b^{(2)}} ({\displaystyle b^{(2)}}) are bias vectors, and ϕ {\displaystyle \phi } ({\displaystyle \phi }) is its activation function. The original transformer used ReLU activation.
+The feedforward network (FFN) modules in a transformer are 2-layered multilayer perceptrons: $\mathrm {FFN} (x)=\phi (xW^{(1)}+b^{(1)})W^{(2)}+b^{(2)}$ where $W^{(1)}$ and $W^{(2)}$ are weight matrices and $b^{(1)}$ and $b^{(2)}$ are bias vectors, and $\phi$ is its activation function. The original transformer used ReLU activation.
 
-The number of neurons in the middle layer is called *intermediate size* (GPT), *filter size* (BERT), or *feedforward size* (BERT). It is typically larger than the embedding size. For example, in both GPT-2 series and BERT series, the intermediate size of a model is 4 times its embedding size: d ffn = 4 d emb {\displaystyle d_{\text{ffn}}=4d_{\text{emb}}} ({\displaystyle d_{\text{ffn}}=4d_{\text{emb}}}).
+The number of neurons in the middle layer is called *intermediate size* (GPT), *filter size* (BERT), or *feedforward size* (BERT). It is typically larger than the embedding size. For example, in both GPT-2 series and BERT series, the intermediate size of a model is 4 times its embedding size: $d_{\text{ffn}}=4d_{\text{emb}}$ .
 
 ### Scaled dot-product attention
 
 #### Attention head
 
-The attention mechanism used in the transformer architecture are scaled dot-product attention units. For each unit, the transformer model learns three weight matrices: the query weights W Q {\displaystyle W^{Q}} ({\displaystyle W^{Q}}), the key weights W K {\displaystyle W^{K}} ({\displaystyle W^{K}}), and the value weights W V {\displaystyle W^{V}} ({\displaystyle W^{V}}).
+The attention mechanism used in the transformer architecture are scaled dot-product attention units. For each unit, the transformer model learns three weight matrices: the query weights $W^{Q}$ , the key weights $W^{K}$ , and the value weights $W^{V}$ .
 
-The module takes three sequences, a query sequence, a key sequence, and a value sequence. The query sequence is a sequence of length ℓ seq, query {\displaystyle \ell _{\text{seq, query}}} ({\displaystyle \ell _{\text{seq, query}}}), and each entry is a vector of dimension d emb, query {\displaystyle d_{\text{emb, query}}} ({\displaystyle d_{\text{emb, query}}}). Similarly for the key and value sequences.
+The module takes three sequences, a query sequence, a key sequence, and a value sequence. The query sequence is a sequence of length $\ell _{\text{seq, query}}$ , and each entry is a vector of dimension $d_{\text{emb, query}}$ . Similarly for the key and value sequences.
 
-For each vector x i , query {\displaystyle x_{i,{\text{query}}}} ({\displaystyle x_{i,{\text{query}}}}) in the query sequence, it is multiplied by a matrix W Q {\displaystyle W^{Q}} ({\displaystyle W^{Q}}) to produce a query vector q i = x i , query W Q {\displaystyle q_{i}=x_{i,{\text{query}}}W^{Q}} ({\displaystyle q_{i}=x_{i,{\text{query}}}W^{Q}}). The matrix of all query vectors is the query matrix: Q = X query W Q {\displaystyle Q=X_{\text{query}}W^{Q}} ({\displaystyle Q=X_{\text{query}}W^{Q}})Similarly, we construct the key matrix K = X key W K {\displaystyle K=X_{\text{key}}W^{K}} ({\displaystyle K=X_{\text{key}}W^{K}}) and the value matrix V = X value W V {\displaystyle V=X_{\text{value}}W^{V}} ({\displaystyle V=X_{\text{value}}W^{V}}).
+For each vector $x_{i,{\text{query}}}$ in the query sequence, it is multiplied by a matrix $W^{Q}$ to produce a query vector $q_{i}=x_{i,{\text{query}}}W^{Q}$ . The matrix of all query vectors is the query matrix: $Q=X_{\text{query}}W^{Q}$ Similarly, we construct the key matrix $K=X_{\text{key}}W^{K}$ and the value matrix $V=X_{\text{value}}W^{V}$ .
 
-It is usually the case that all W Q , W K , W V {\displaystyle W^{Q},W^{K},W^{V}} ({\displaystyle W^{Q},W^{K},W^{V}}) are square matrices, meaning d emb, query = d query {\displaystyle d_{\text{emb, query}}=d_{\text{query}}} ({\displaystyle d_{\text{emb, query}}=d_{\text{query}}}), etc.
+It is usually the case that all $W^{Q},W^{K},W^{V}$ are square matrices, meaning $d_{\text{emb, query}}=d_{\text{query}}$ , etc.
 
-Attention weights are calculated using the query and key vectors: the attention weight a i j {\displaystyle a_{ij}} ({\displaystyle a_{ij}}) from token i {\displaystyle i} ({\displaystyle i}) to token j {\displaystyle j} ({\displaystyle j}) is the dot product between q i {\displaystyle q_{i}} ({\displaystyle q_{i}}) and k j {\displaystyle k_{j}} ({\displaystyle k_{j}}). The attention weights are divided by the square root of the dimension of the key vectors, d k {\displaystyle {\sqrt {d_{k}}}} ({\displaystyle {\sqrt {d_{k}}}}), which stabilizes gradients during training, and passed through a softmax which normalizes the weights. The fact that W Q {\displaystyle W^{Q}} ({\displaystyle W^{Q}}) and W K {\displaystyle W^{K}} ({\displaystyle W^{K}}) are different matrices allows attention to be non-symmetric: if token i {\displaystyle i} ({\displaystyle i}) attends to token j {\displaystyle j} ({\displaystyle j}) (i.e. q i ⋅ k j {\displaystyle q_{i}\cdot k_{j}} ({\displaystyle q_{i}\cdot k_{j}}) is large), this does not necessarily mean that token j {\displaystyle j} ({\displaystyle j}) will attend to token i {\displaystyle i} ({\displaystyle i}) (i.e. q j ⋅ k i {\displaystyle q_{j}\cdot k_{i}} ({\displaystyle q_{j}\cdot k_{i}}) could be small). The output of the attention unit for token i {\displaystyle i} ({\displaystyle i}) is the weighted sum of the value vectors of all tokens, weighted by a i j {\displaystyle a_{ij}} ({\displaystyle a_{ij}}), the attention from token i {\displaystyle i} ({\displaystyle i}) to each token.
+Attention weights are calculated using the query and key vectors: the attention weight $a_{ij}$ from token i to token j is the dot product between $q_{i}$ and $k_{j}$ . The attention weights are divided by the square root of the dimension of the key vectors, ${\sqrt {d_{k}}}$ , which stabilizes gradients during training, and passed through a softmax which normalizes the weights. The fact that $W^{Q}$ and $W^{K}$ are different matrices allows attention to be non-symmetric: if token i attends to token j (i.e. $q_{i}\cdot k_{j}$ is large), this does not necessarily mean that token j will attend to token i (i.e. $q_{j}\cdot k_{i}$ could be small). The output of the attention unit for token i is the weighted sum of the value vectors of all tokens, weighted by $a_{ij}$ , the attention from token i to each token.
 
-The attention calculation for all tokens can be expressed as one large matrix calculation using the softmax function, which is useful for training due to computational matrix operation optimizations that quickly compute matrix operations. The matrices Q {\displaystyle Q} ({\displaystyle Q}), K {\displaystyle K} ({\displaystyle K}) and V {\displaystyle V} ({\displaystyle V}) are defined as the matrices where the i {\displaystyle i} ({\displaystyle i})th rows are vectors q i {\displaystyle q_{i}} ({\displaystyle q_{i}}), k i {\displaystyle k_{i}} ({\displaystyle k_{i}}), and v i {\displaystyle v_{i}} ({\displaystyle v_{i}}) respectively. Then we can represent the attention as Attention ( Q , K , V ) = softmax ( Q K T d k ) V {\displaystyle {\begin{aligned}{\text{Attention}}(Q,K,V)={\text{softmax}}\left({\frac {QK^{\mathrm {T} }}{\sqrt {d_{k}}}}\right)V\end{aligned}}} ({\displaystyle {\begin{aligned}{\text{Attention}}(Q,K,V)={\text{softmax}}\left({\frac {QK^{\mathrm {T} }}{\sqrt {d_{k}}}}\right)V\end{aligned}}})
+The attention calculation for all tokens can be expressed as one large matrix calculation using the softmax function, which is useful for training due to computational matrix operation optimizations that quickly compute matrix operations. The matrices Q , K and V are defined as the matrices where the i th rows are vectors $q_{i}$ , $k_{i}$ , and $v_{i}$ respectively. Then we can represent the attention as ${\begin{aligned}{\text{Attention}}(Q,K,V)={\text{softmax}}\left({\frac {QK^{\mathrm {T} }}{\sqrt {d_{k}}}}\right)V\end{aligned}}$
 
 where the softmax is applied over each of the rows of the matrix.
 
-The number of dimensions in a query vector is *query size* d query {\displaystyle d_{\text{query}}} ({\displaystyle d_{\text{query}}}) and similarly for the *key size* d key {\displaystyle d_{\text{key}}} ({\displaystyle d_{\text{key}}}) and *value size* d value {\displaystyle d_{\text{value}}} ({\displaystyle d_{\text{value}}}). The output dimension of an attention head is its *head dimension* d head {\displaystyle d_{\text{head}}} ({\displaystyle d_{\text{head}}}). The attention mechanism requires the following three equalities to hold: ℓ seq, key = ℓ seq, value , d query = d key , d value = d head {\displaystyle \ell _{\text{seq, key}}=\ell _{\text{seq, value}},\;d_{\text{query}}=d_{\text{key}},\;d_{\text{value}}=d_{\text{head}}} ({\displaystyle \ell _{\text{seq, key}}=\ell _{\text{seq, value}},\;d_{\text{query}}=d_{\text{key}},\;d_{\text{value}}=d_{\text{head}}})but is otherwise unconstrained.
+The number of dimensions in a query vector is *query size* $d_{\text{query}}$ and similarly for the *key size* $d_{\text{key}}$ and *value size* $d_{\text{value}}$ . The output dimension of an attention head is its *head dimension* $d_{\text{head}}$ . The attention mechanism requires the following three equalities to hold: $\ell _{\text{seq, key}}=\ell _{\text{seq, value}},\;d_{\text{query}}=d_{\text{key}},\;d_{\text{value}}=d_{\text{head}}$ but is otherwise unconstrained.
 
-If the attention head is used in a self-attention fashion, then X query = X key = X value {\displaystyle X_{\text{query}}=X_{\text{key}}=X_{\text{value}}} ({\displaystyle X_{\text{query}}=X_{\text{key}}=X_{\text{value}}}). If the attention head is used in a cross-attention fashion, then usually X query ≠ X key = X value {\displaystyle X_{\text{query}}\neq X_{\text{key}}=X_{\text{value}}} ({\displaystyle X_{\text{query}}\neq X_{\text{key}}=X_{\text{value}}}). It is theoretically possible for all three to be different, but that is rarely the case in practice.
+If the attention head is used in a self-attention fashion, then $X_{\text{query}}=X_{\text{key}}=X_{\text{value}}$ . If the attention head is used in a cross-attention fashion, then usually $X_{\text{query}}\neq X_{\text{key}}=X_{\text{value}}$ . It is theoretically possible for all three to be different, but that is rarely the case in practice.
 
 #### Multihead attention
 
-One set of ( W Q , W K , W V ) {\displaystyle \left(W^{Q},W^{K},W^{V}\right)} ({\displaystyle \left(W^{Q},W^{K},W^{V}\right)}) matrices is called an *attention head*, and each layer in a transformer model has multiple attention heads. While each attention head attends to the tokens that are relevant to each token, multiple attention heads allow the model to do this for different definitions of "relevance". Specifically, the query and key projection matrices, W Q {\displaystyle W^{Q}} ({\displaystyle W^{Q}}) and W K {\displaystyle W^{K}} ({\displaystyle W^{K}}) , which are involved in the attention score computation, defines the "relevance". Meanwhile, the value projection matrix W V {\displaystyle W^{V}} ({\displaystyle W^{V}}), in combination with the part of the output projection matrix W O {\displaystyle W^{O}} ({\displaystyle W^{O}}), determines how the attended tokens influence what information is passed to subsequent layers and ultimately the output logits. In addition, the scope of attention, or the range of token relationships captured by each attention head, can expand as tokens pass through successive layers. This allows the model to capture more complex and long-range dependencies in deeper layers. Many transformer attention heads encode relevance relations that are meaningful to humans. For example, some attention heads can attend mostly to the next word, while others mainly attend from verbs to their direct objects. The computations for each attention head can be performed in parallel, which allows for fast processing. The outputs for the attention layer are concatenated to pass into the feedforward neural network layers.
+One set of $\left(W^{Q},W^{K},W^{V}\right)$ matrices is called an *attention head*, and each layer in a transformer model has multiple attention heads. While each attention head attends to the tokens that are relevant to each token, multiple attention heads allow the model to do this for different definitions of "relevance". Specifically, the query and key projection matrices, $W^{Q}$ and $W^{K}$ , which are involved in the attention score computation, defines the "relevance". Meanwhile, the value projection matrix $W^{V}$ , in combination with the part of the output projection matrix $W^{O}$ , determines how the attended tokens influence what information is passed to subsequent layers and ultimately the output logits. In addition, the scope of attention, or the range of token relationships captured by each attention head, can expand as tokens pass through successive layers. This allows the model to capture more complex and long-range dependencies in deeper layers. Many transformer attention heads encode relevance relations that are meaningful to humans. For example, some attention heads can attend mostly to the next word, while others mainly attend from verbs to their direct objects. The computations for each attention head can be performed in parallel, which allows for fast processing. The outputs for the attention layer are concatenated to pass into the feedforward neural network layers.
 
-Concretely, let the multiple attention heads be indexed by i {\displaystyle i} ({\displaystyle i}), then we have MultiheadAttention ( Q , K , V ) = Concat i ∈ [ n heads ] ( Attention ( X W i Q , X W i K , X W i V ) ) W O {\displaystyle {\text{MultiheadAttention}}(Q,K,V)={\text{Concat}}_{i\in [n_{\text{heads}}]}({\text{Attention}}(XW_{i}^{Q},XW_{i}^{K},XW_{i}^{V}))W^{O}} ({\displaystyle {\text{MultiheadAttention}}(Q,K,V)={\text{Concat}}_{i\in [n_{\text{heads}}]}({\text{Attention}}(XW_{i}^{Q},XW_{i}^{K},XW_{i}^{V}))W^{O}}) where the matrix X {\displaystyle X} ({\displaystyle X}) is the concatenation of word embeddings, and the matrices W i Q , W i K , W i V {\displaystyle W_{i}^{Q},W_{i}^{K},W_{i}^{V}} ({\displaystyle W_{i}^{Q},W_{i}^{K},W_{i}^{V}}) are "projection matrices" owned by individual attention head i {\displaystyle i} ({\displaystyle i}), and W O {\displaystyle W^{O}} ({\displaystyle W^{O}}) is a final projection matrix owned by the whole multihead attention head.
+Concretely, let the multiple attention heads be indexed by i , then we have ${\text{MultiheadAttention}}(Q,K,V)={\text{Concat}}_{i\in [n_{\text{heads}}]}({\text{Attention}}(XW_{i}^{Q},XW_{i}^{K},XW_{i}^{V}))W^{O}$ where the matrix X is the concatenation of word embeddings, and the matrices $W_{i}^{Q},W_{i}^{K},W_{i}^{V}$ are "projection matrices" owned by individual attention head i , and $W^{O}$ is a final projection matrix owned by the whole multihead attention head.
 
-It is theoretically possible for each attention head to have a different head dimension d head {\displaystyle d_{\text{head}}} ({\displaystyle d_{\text{head}}}), but that is rarely the case in practice.
+It is theoretically possible for each attention head to have a different head dimension $d_{\text{head}}$ , but that is rarely the case in practice.
 
-As an example, in the smallest GPT-2 model, there are only self-attention mechanisms. It has the following dimensions: d emb = 768 , n head = 12 , d head = 64 {\displaystyle d_{\text{emb}}=768,n_{\text{head}}=12,d_{\text{head}}=64} ({\displaystyle d_{\text{emb}}=768,n_{\text{head}}=12,d_{\text{head}}=64})Since 12 × 64 = 768 {\displaystyle 12\times 64=768} ({\displaystyle 12\times 64=768}), its output projection matrix W O ∈ R ( 12 × 64 ) × 768 {\displaystyle W^{O}\in \mathbb {R} ^{(12\times 64)\times 768}} ({\displaystyle W^{O}\in \mathbb {R} ^{(12\times 64)\times 768}}) is a square matrix.
+As an example, in the smallest GPT-2 model, there are only self-attention mechanisms. It has the following dimensions: $d_{\text{emb}}=768,n_{\text{head}}=12,d_{\text{head}}=64$ Since $12\times 64=768$ , its output projection matrix $W^{O}\in \mathbb {R} ^{(12\times 64)\times 768}$ is a square matrix.
 
 #### Masked attention
 
-The transformer architecture is constructed to calculate output tokens iteratively. Assuming t = 0 {\displaystyle t=0} ({\displaystyle t=0}) refers to the calculation of the first output token i = 0 {\displaystyle i=0} ({\displaystyle i=0}), for step t > 0 {\displaystyle t>0} ({\displaystyle t>0}), the output token i = 0 {\displaystyle i=0} ({\displaystyle i=0}) shall remain constant. This ensures properties of the model similar to autoregressive models. Therefore, at every time step t {\displaystyle t} ({\displaystyle t}), the calculation for all outputs i {\displaystyle i} ({\displaystyle i}) should not have access to tokens at position j {\displaystyle j} ({\displaystyle j}) for j >= i {\displaystyle j>=i} ({\displaystyle j>=i}) (as it naturally is the case for time step t = i {\displaystyle t=i} ({\displaystyle t=i}), when tokens j > t {\displaystyle j>t} ({\displaystyle j>t}) are not yet calculated). This behavior may be accomplished before the softmax stage by adding a mask matrix M {\displaystyle M} ({\displaystyle M}) that is − ∞ {\displaystyle -\infty } ({\displaystyle -\infty }) at entries where the attention link must be cut, and 0 {\displaystyle 0} ({\displaystyle 0}) at other places: MaskedAttention ( Q , K , V ) = softmax ( M + Q K T d k ) V {\displaystyle {\begin{aligned}{\text{MaskedAttention}}(Q,K,V)={\text{softmax}}\left(M+{\frac {QK^{\mathrm {T} }}{\sqrt {d_{k}}}}\right)V\end{aligned}}} ({\displaystyle {\begin{aligned}{\text{MaskedAttention}}(Q,K,V)={\text{softmax}}\left(M+{\frac {QK^{\mathrm {T} }}{\sqrt {d_{k}}}}\right)V\end{aligned}}}) The following matrix is commonly used in decoder self-attention modules, called "causal masking": M causal = [ 0 − ∞ − ∞ … − ∞ 0 0 − ∞ … − ∞ 0 0 0 … − ∞ ⋮ ⋮ ⋮ ⋱ ⋮ 0 0 0 … 0 ] {\displaystyle M_{\text{causal}}={\begin{bmatrix}0&-\infty &-\infty &\dots &-\infty \\0&0&-\infty &\dots &-\infty \\0&0&0&\dots &-\infty \\\vdots &\vdots &\vdots &\ddots &\vdots \\0&0&0&\dots &0\end{bmatrix}}} ({\displaystyle M_{\text{causal}}={\begin{bmatrix}0&-\infty &-\infty &\dots &-\infty \\0&0&-\infty &\dots &-\infty \\0&0&0&\dots &-\infty \\\vdots &\vdots &\vdots &\ddots &\vdots \\0&0&0&\dots &0\end{bmatrix}}})
+The transformer architecture is constructed to calculate output tokens iteratively. Assuming $t=0$ refers to the calculation of the first output token $i=0$ , for step $t>0$ , the output token $i=0$ shall remain constant. This ensures properties of the model similar to autoregressive models. Therefore, at every time step t , the calculation for all outputs i should not have access to tokens at position j for $j>=i$ (as it naturally is the case for time step $t=i$ , when tokens $j>t$ are not yet calculated). This behavior may be accomplished before the softmax stage by adding a mask matrix M that is $-\infty$ at entries where the attention link must be cut, and 0 at other places: ${\begin{aligned}{\text{MaskedAttention}}(Q,K,V)={\text{softmax}}\left(M+{\frac {QK^{\mathrm {T} }}{\sqrt {d_{k}}}}\right)V\end{aligned}}$ The following matrix is commonly used in decoder self-attention modules, called "causal masking": $M_{\text{causal}}={\begin{bmatrix}0&-\infty &-\infty &\dots &-\infty \\0&0&-\infty &\dots &-\infty \\0&0&0&\dots &-\infty \\\vdots &\vdots &\vdots &\ddots &\vdots \\0&0&0&\dots &0\end{bmatrix}}$
 
-In words, it means that each token can pay attention to itself, and every token before it, but not any after it. A non-masked attention module can be thought of as a masked attention module where the mask has all entries zero. As an example of an uncommon use of mask matrix, the XLNet considers all masks of the form P M causal P − 1 {\displaystyle PM_{\text{causal}}P^{-1}} ({\displaystyle PM_{\text{causal}}P^{-1}}), where P {\displaystyle P} ({\displaystyle P}) is a random permutation matrix.
+In words, it means that each token can pay attention to itself, and every token before it, but not any after it. A non-masked attention module can be thought of as a masked attention module where the mask has all entries zero. As an example of an uncommon use of mask matrix, the XLNet considers all masks of the form $PM_{\text{causal}}P^{-1}$ , where P is a random permutation matrix.
 
 ### Encoder
 
 An encoder consists of an embedding layer, followed by multiple encoder layers.
 
-Each encoder layer consists of two major components: a self-attention mechanism and a feed-forward layer. It takes an input as a sequence of input vectors, applies the self-attention mechanism, to produce an intermediate sequence of vectors, then applies the feed-forward layer for each vector individually. Schematically, we have: given input vectors  h 0 , h 1 , … combine them into a matrix  H = [ h 0 h 1 ⋮ ] EncoderLayer ( H ) = [ FFN ( MultiheadAttention ( H , H , H ) 0 ) FFN ( MultiheadAttention ( H , H , H ) 1 ) ⋮ ] {\displaystyle {\begin{aligned}{\text{given input vectors }}&h_{0},h_{1},\dots \\{\text{combine them into a matrix }}H&={\begin{bmatrix}h_{0}\\h_{1}\\\vdots \end{bmatrix}}\\{\text{EncoderLayer}}(H)&={\begin{bmatrix}{\text{FFN}}({\text{MultiheadAttention}}(H,H,H)_{0})\\{\text{FFN}}({\text{MultiheadAttention}}(H,H,H)_{1})\\\vdots \end{bmatrix}}\\\end{aligned}}} ({\displaystyle {\begin{aligned}{\text{given input vectors }}&h_{0},h_{1},\dots \\{\text{combine them into a matrix }}H&={\begin{bmatrix}h_{0}\\h_{1}\\\vdots \end{bmatrix}}\\{\text{EncoderLayer}}(H)&={\begin{bmatrix}{\text{FFN}}({\text{MultiheadAttention}}(H,H,H)_{0})\\{\text{FFN}}({\text{MultiheadAttention}}(H,H,H)_{1})\\\vdots \end{bmatrix}}\\\end{aligned}}})
+Each encoder layer consists of two major components: a self-attention mechanism and a feed-forward layer. It takes an input as a sequence of input vectors, applies the self-attention mechanism, to produce an intermediate sequence of vectors, then applies the feed-forward layer for each vector individually. Schematically, we have: ${\begin{aligned}{\text{given input vectors }}&h_{0},h_{1},\dots \\{\text{combine them into a matrix }}H&={\begin{bmatrix}h_{0}\\h_{1}\\\vdots \end{bmatrix}}\\{\text{EncoderLayer}}(H)&={\begin{bmatrix}{\text{FFN}}({\text{MultiheadAttention}}(H,H,H)_{0})\\{\text{FFN}}({\text{MultiheadAttention}}(H,H,H)_{1})\\\vdots \end{bmatrix}}\\\end{aligned}}$
 
-where FFN {\displaystyle {\text{FFN}}} ({\displaystyle {\text{FFN}}}) stands for "feed-forward network". We can more succinctly write it as EncoderLayer ( H ) = FFN ( MultiheadAttention ( H , H , H ) ) {\displaystyle {\text{EncoderLayer}}(H)={\text{FFN}}({\text{MultiheadAttention}}(H,H,H))} ({\displaystyle {\text{EncoderLayer}}(H)={\text{FFN}}({\text{MultiheadAttention}}(H,H,H))})with the implicit convention that the FFN {\displaystyle {\text{FFN}}} ({\displaystyle {\text{FFN}}}) is applied to each row of the matrix individually.
+where ${\text{FFN}}$ stands for "feed-forward network". We can more succinctly write it as ${\text{EncoderLayer}}(H)={\text{FFN}}({\text{MultiheadAttention}}(H,H,H))$ with the implicit convention that the ${\text{FFN}}$ is applied to each row of the matrix individually.
 
 The encoder layers are stacked. The first encoder layer takes the sequence of input vectors from the embedding layer, producing a sequence of vectors. This sequence of vectors is processed by the second encoder, and so on. The output from the final encoder layer is then used by the decoder.
 
@@ -231,6 +231,116 @@ Like the first encoder, the first decoder takes positional information and embed
 
 In contrast, the cross-attention mechanism attends to the output vectors of the encoder, which is computed before the decoder starts decoding. Consequently, there is no need for masking in the cross-attention mechanism.
 
-Schematically, we have: H ′ = MaskedMultiheadAttention ( H , H , H ) DecoderLayer ( H ) = FFN ( MultiheadAttention ( H ′ , H E , H E ) ) {\displaystyle {\begin{aligned}H'&={\text{MaskedMultiheadAttention}}(H,H,H)\\{\text{DecoderLayer}}(H)&={\text{FFN}}({\text{MultiheadAttention}}(H',H^{E},H^{E}))\end{aligned}}} ({\displaystyle {\begin{aligned}H'&={\text{MaskedMultiheadAttention}}(H,H,H)\\{\text{DecoderLayer}}(H)&={\text{FFN}}({\text{MultiheadAttention}}(H',H^{E},H^{E}))\end{aligned}}})where H E {\displaystyle H^{E}} ({\displaystyle H^{E}}) is the matrix with rows being the output vectors from the encoder.
+Schematically, we have: ${\begin{aligned}H'&={\text{MaskedMultiheadAttention}}(H,H,H)\\{\text{DecoderLayer}}(H)&={\text{FFN}}({\text{MultiheadAttention}}(H',H^{E},H^{E}))\end{aligned}}$ where $H^{E}$ is the matrix with rows being the output vectors from the encoder.
 
 The last decoder is followed by a final un-embedding layer to produce the output probabilities over the vocabulary. Then, one of the tokens is sampled according to the probability, and the decoder can be run again to produce the next token, etc., autoregressively generating output text.
+
+
+## Full transformer architecture
+
+### Sublayers
+
+Each encoder layer contains 2 sublayers: the self-attention and the feedforward network. Each decoder layer contains 3 sublayers: the causally masked self-attention, the cross-attention, and the feedforward network.
+
+The final points of detail are the residual connections and layer normalization, (denoted as "LayerNorm", or "LN" in the following), which while conceptually unnecessary, are necessary for numerical stability and convergence.
+
+The residual connections are introduced to avoid vanishing gradient issues and stabilize the training process. They can be expressed by $x\mapsto F(x)+x$ , where F is a given component of the transformer. Adding the input x can preserve the input information and avoid issues when the gradient of $F(x)$ is close to zero.
+
+Similarly to how the feedforward network modules are applied individually to each vector, the LayerNorm is also applied individually to each vector.
+
+There are two common conventions in use: the *post-LN* and the *pre-LN* convention. In the post-LN convention, the output of each sublayer is $\mathrm {LayerNorm} (x+\mathrm {Sublayer} (x))$ where $\mathrm {Sublayer} (x)$ is the function implemented by the sublayer itself.
+
+In the pre-LN convention, the output of each sublayer is $x+\mathrm {Sublayer} (\mathrm {LayerNorm} (x))$ The original 2017 transformer used the post-LN convention. It was difficult to train and required careful hyperparameter tuning and a "warm-up" in learning rate, where it starts small and gradually increases. The pre-LN convention, proposed several times in 2018, was found to be easier to train, requiring no warm-up, leading to faster convergence.
+
+### Pseudocode
+
+The following is the pseudocode for a standard pre-LN encoder–decoder transformer, adapted from *Formal Algorithms for Transformers*
+
+```
+input: Encoder input t_e
+       Decoder input t_d
+output: Array of probability distributions, with shape (decoder vocabulary size x length(decoder output sequence))
+
+/* encoder */
+z_e ← encoder.tokenizer(t_e)
+
+for each t in 1:length(z_e) do
+    z_e[t] ← encoder.embedding(z_e[t]) + encoder.positional_embedding(t)
+
+for each l in 1:length(encoder.layers) do
+    layer ← encoder.layers[l]
+
+    /* first sublayer */
+    z_e_copy ← copy(z_e)
+    for each t in 1:length(z_e) do
+        z_e[t] ← layer.layer_norm(z_e[t])
+    z_e ← layer.multihead_attention(z_e, z_e, z_e)
+    for each t in 1:length(z_e) do
+        z_e[t] ← z_e[t] + z_e_copy[t]
+
+    /* second sublayer */
+    z_e_copy ← copy(z_e)
+    for each t in 1:length(z_e) do
+        z_e[t] ← layer.layer_norm(z_e[t])
+    z_e ← layer.feedforward(z_e)
+    for each t in 1:length(z_e) do
+        z_e[t] ← z_e[t] + z_e_copy[t]
+
+for each t in 1:length(z_e) do
+    z_e[t] ← encoder.final_layer_norm(z_e[t])
+
+/* decoder */
+z_d ← decoder.tokenizer(t_d)
+
+for each t in 1:length(z_d) do
+    z_d[t] ← decoder.embedding(z_d[t]) + decoder.positional_embedding(t)
+
+for each l in 1:length(decoder.layers) do
+        layer ← decoder.layers[l]
+
+        /* first sublayer */
+        z_d_copy ← copy(z_d)
+        for each t in 1:length(z_d) do
+            z_d[t] ← layer.layer_norm(z_d[t])
+        z_d ← layer.masked_multihead_attention(z_d, z_d, z_d)
+        for each t in 1:length(z_d) do
+            z_d[t] ← z_d[t] + z_d_copy[t]
+
+        /* second sublayer */
+        z_d_copy ← copy(z_d)
+        for each t in 1:length(z_d) do
+            z_d[t] ← layer.layer_norm(z_d[t])
+        z_d ← layer.multihead_attention(z_d, z_e, z_e) 
+       for each t in 1:length(z_d) do
+           z_d[t] ← z_d[t] + z_d_copy[t]
+
+        /* third sublayer */
+        z_d_copy ← copy(z_d)
+        for each t in 1:length(z_d) do
+            z_d[t] ← layer.layer_norm(z_d[t])
+        z_d ← layer.feedforward(z_d)
+        for each t in 1:length(z_d) do
+            z_d[t] ← z_d[t] + z_d_copy[t]
+
+z_d ← decoder.final_layer_norm(z_d)
+
+output_distributions ← []
+for each t in 1:length(z_d) do
+    output_distributions.append(decoder.unembed(z_d[t]))
+
+return output_distributions
+```
+
+### Terminology
+
+The transformer architecture, being modular, allows variations. Several common variations are described here.
+
+An "encoder-only" transformer applies the encoder to map an input text into a sequence of vectors that represent the input text. This is usually used for text embedding and representation learning for downstream applications. BERT is encoder-only. They are less often used currently, as they were found to be not significantly better than training an encoder–decoder transformer, then taking just the encoder. They are also referred to as "all-to-all" or "BERT-like".
+
+A "decoder-only" transformer is not literally decoder-only, since without an encoder, the cross-attention mechanism has nothing to attend to. Thus, the decoder layers in a decoder-only transformer is composed of just two sublayers: the causally masked self-attention, and the feedforward network. This is usually used for text generation and instruction following. The models in the GPT series and Chinchilla series are decoder-only. They are also referred to as "autoregressive" or "causal".
+
+An "encoder–decoder" transformer is generally the same as the original transformer, with 2 sublayers per encoder layer and 3 sublayers per decoder layer, etc. They might have minor architectural improvements, such as alternative activation functions, changing the location of normalization, etc. This is also usually used for text generation and instruction following. The models in the T5 series are encoder–decoder.
+
+A "prefixLM" (prefix language model) is a decoder-only architecture, but with prefix masking, which is different from causal masking. Specifically, it has mask of the form $M_{\text{prefixLM}}={\begin{bmatrix}\mathbf {0} &-\infty \\\mathbf {0} &M_{\text{causal}}\end{bmatrix}}$ where the first columns correspond to the "prefix", and the subsequent columns correspond to the autoregressively generated text based on the prefix. They resemble encoder–decoder models, but has less "sparsity". Such models are rarely used, though they are cited as theoretical possibilities and benchmarked comparisons.
+
+There are also mixed seq2seq models. For example, in 2020, Google Translate replaced the previous RNN-encoder–RNN-decoder model with a transformer-encoder–RNN-decoder model, as transformer-based decoders did not appear to significantly increase quality unlike the encoder, while the RNN decoder was much faster.

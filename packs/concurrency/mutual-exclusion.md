@@ -82,7 +82,7 @@ It is often preferable to use synchronization facilities provided by an operatin
 
 ## Bound on the mutual exclusion problem
 
-One binary test&set register is sufficient to provide the deadlock-free solution to the mutual exclusion problem. But a solution built with a test&set register can possibly lead to the starvation of some processes which become caught in the trying section. In fact, Ω ( n ) {\displaystyle \Omega ({\sqrt {n}})} ({\displaystyle \Omega ({\sqrt {n}})}) distinct memory states are required to avoid lockout. To avoid unbounded waiting, *n* distinct memory states are required.
+One binary test&set register is sufficient to provide the deadlock-free solution to the mutual exclusion problem. But a solution built with a test&set register can possibly lead to the starvation of some processes which become caught in the trying section. In fact, $\Omega ({\sqrt {n}})$ distinct memory states are required to avoid lockout. To avoid unbounded waiting, *n* distinct memory states are required.
 
 ## Recoverable mutual exclusion
 

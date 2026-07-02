@@ -15,7 +15,7 @@ A **greedy algorithm** is an algorithm which, at each step, makes the choice tha
 
 In many cases, a greedy algorithm does not produce an exact solution, but can yield solutions that approximate an exact solution in a reasonable amount of time.
 
-An example of a problem which admits an exact greedy solution, the activity selection problem. Given a collection of tasks which can be done between allotted time intervals, the problem is to determine the maximum number of tasks that can be done. A greedy algorithm in O ( n log ⁡ ( n ) ) {\displaystyle O(n\log(n))} ({\displaystyle O(n\log(n))}) which solves this problem sorts the tasks by the end time and then repeatedly chooses the first task that begins after the last task ended.
+An example of a problem which admits an exact greedy solution, the activity selection problem. Given a collection of tasks which can be done between allotted time intervals, the problem is to determine the maximum number of tasks that can be done. A greedy algorithm in $O(n\log(n))$ which solves this problem sorts the tasks by the end time and then repeatedly chooses the first task that begins after the last task ended.
 
 Many classic algorithms in computer science such as the Huffman coding algorithm, Prim's algorithm, Kruskal's algorithm, and Dijkstra's algorithm all use greedy properties in their design. Mathematicians frequently use *greedy strategies* in proofs as well. A classic example is what Raphael Yuster refers to as the greedy proof that every tournament in graph contains a Hamiltonian path.
 
@@ -65,11 +65,11 @@ Graph theory is a rich source of greedy algorithms. Computing scientists frequen
 - The Sequitur and Lempel-Ziv-Welch algorithms are greedy algorithms for grammar induction.
 - A greedy algorithm finds the maximum independent set in a tree.
 
-Greedy algorithms are also used to find upper bounds for the chromatic numbers. A simple example is the bound χ ( G ) ≤ Δ ( G ) + 1 {\displaystyle \chi (G)\leq \Delta (G)+1} ({\displaystyle \chi (G)\leq \Delta (G)+1}) obtained by a greedy algorithm. We begin by taking a vertex that has not been colored. Since it has at most Δ ( G ) {\displaystyle \Delta (G)} ({\displaystyle \Delta (G)}) neighbours, at most Δ ( G ) {\displaystyle \Delta (G)} ({\displaystyle \Delta (G)}) colors are used in adjacent vertices, leaving a color free for the vertex under consideration.
+Greedy algorithms are also used to find upper bounds for the chromatic numbers. A simple example is the bound $\chi (G)\leq \Delta (G)+1$ obtained by a greedy algorithm. We begin by taking a vertex that has not been colored. Since it has at most $\Delta (G)$ neighbours, at most $\Delta (G)$ colors are used in adjacent vertices, leaving a color free for the vertex under consideration.
 
 ## Greedy approximation algorithms
 
-A solution to the NP-complete travelling salesman problem can be approximated by starting from an empty edge set and then adding the next cheapest edge which is a subgraph of a complete tour. This greedy algorithm has been proven to yield at most Θ ( log ⁡ n ) {\displaystyle \Theta (\log n)} ({\displaystyle \Theta (\log n)}) times longer than the optimal tour.
+A solution to the NP-complete travelling salesman problem can be approximated by starting from an empty edge set and then adding the next cheapest edge which is a subgraph of a complete tour. This greedy algorithm has been proven to yield at most $\Theta (\log n)$ times longer than the optimal tour.
 
 Another example is that a solution for the 0-1 knapsack problem can be approximated by using the greedy algorithm for the fractional knapsack problem. This greedy algorithm has been proven to yield a solution at least half the value of the optimal solution.
 

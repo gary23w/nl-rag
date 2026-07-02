@@ -66,9 +66,9 @@ Indexes are useful for many applications but come with some limitations. Conside
 
 Consider this SQL statement: `SELECT email_address FROM customers WHERE email_address LIKE '%@wikipedia.org';`. This query would yield an email address for every customer whose email address ends with "@wikipedia.org", but even if the email_address column has been indexed the database must perform a full index scan. This is because the index is built with the assumption that words go from left to right. With a wildcard at the beginning of the search-term, the database software is unable to use the underlying index data structure (in other words, the WHERE-clause is *not sargable*). This problem can be solved through the addition of another index created on `reverse(email_address)` and a SQL query like this: `SELECT email_address FROM customers WHERE reverse(email_address) LIKE reverse('%@wikipedia.org');`. This puts the wild-card at the right-most part of the query (now gro.aidepikiw@%), which the index on reverse(email_address) can satisfy.
 
-When the wildcard characters are used on both sides of the search word as *%wikipedia.org%*, the index available on this field is not used. Rather only a sequential search is performed, which takes ⁠ O ( N ) {\displaystyle O(N)} ({\displaystyle O(N)})⁠ time.
+When the wildcard characters are used on both sides of the search word as *%wikipedia.org%*, the index available on this field is not used. Rather only a sequential search is performed, which takes ⁠ $O(N)$ ⁠ time.
 
-To mitigate this, a full-text indexing approach can be used. For example, text can be split into trigrams (3-character chunks) and stored in a GIN (Generalized inverted index) to reduce complexity of lookup to about O ( log N ) {\displaystyle O(\log _{N})} ({\displaystyle O(\log _{N})}) time
+To mitigate this, a full-text indexing approach can be used. For example, text can be split into trigrams (3-character chunks) and stored in a GIN (Generalized inverted index) to reduce complexity of lookup to about $O(\log _{N})$ time
 
 ## Types of indexes
 

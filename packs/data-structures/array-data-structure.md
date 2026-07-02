@@ -159,35 +159,7 @@ Often the coefficients are chosen so that the elements occupy a contiguous area 
 
 There are two systematic compact layouts for a two-dimensional array. For example, consider the matrix
 
-A
-
-=
-
-[
-
-1
-
-2
-
-3
-
-4
-
-5
-
-6
-
-7
-
-8
-
-9
-
-]
-
-.
-
-{\displaystyle A={\begin{bmatrix}1&2&3\\4&5&6\\7&8&9\end{bmatrix}}.}
+$A={\begin{bmatrix}1&2&3\\4&5&6\\7&8&9\end{bmatrix}}.$
 
 In the row-major order layout (adopted by C for statically declared arrays), the elements in each row are stored in consecutive positions and all of the elements of a row have a lower address than any of the elements of a consecutive row:
 

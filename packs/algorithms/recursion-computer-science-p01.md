@@ -66,7 +66,7 @@ In recursive computer programming, omitting the base case or defining it incorre
 
 The recursive case describes how to break down a problem into smaller sub-problems of the same form. Each recursive step transforms the input so that it approaches a base case, ensuring progress toward termination. If the reduction step fails to progress toward a base case, the algorithm can get trapped in an infinite loop.
 
-In the factorial example, the recursive case is defined as: n ! = n ⋅ ( n − 1 ) ! , ∀ n > 0. {\displaystyle n!=n\cdot (n-1)!\,,\forall n>0.} ({\displaystyle n!=n\cdot (n-1)!\,,\forall n>0.}) Here, each invocation of the function decreases the input n {\displaystyle n} ({\displaystyle n}) by 1. Thus, it ensures that the recursion eventually reaches the base case of n = 0 {\displaystyle n=0} ({\displaystyle n=0}).
+In the factorial example, the recursive case is defined as: $n!=n\cdot (n-1)!\,,\forall n>0.$ Here, each invocation of the function decreases the input n by 1. Thus, it ensures that the recursion eventually reaches the base case of $n=0$ .
 
 The recursive case is analogous to the inductive step in a proof by induction: it assumes that the function works for a smaller instance and then extends this assumption to the current input. Recursive definitions and algorithms thus closely parallel inductive arguments in mathematics, and their correctness often relies on similar reasoning techniques.
 
@@ -371,57 +371,7 @@ Also note that the *order* of the print statements is reversed, which is due to 
 
 A classic example of a recursive procedure is the function used to calculate the factorial of a natural number:
 
-fact
-
-⁡
-
-(
-
-n
-
-)
-
-=
-
-{
-
-1
-
-if
-
-n
-
-=
-
-0
-
-n
-
-⋅
-
-fact
-
-⁡
-
-(
-
-n
-
-−
-
-1
-
-)
-
-if
-
-n
-
->
-
-0
-
-{\displaystyle \operatorname {fact} (n)={\begin{cases}1&{\mbox{if }}n=0\\n\cdot \operatorname {fact} (n-1)&{\mbox{if }}n>0\\\end{cases}}}
+$\operatorname {fact} (n)={\begin{cases}1&{\mbox{if }}n=0\\n\cdot \operatorname {fact} (n-1)&{\mbox{if }}n>0\\\end{cases}}$
 
 | Pseudocode (recursive): |
 |---|
@@ -429,33 +379,9 @@ n
 
 The function can also be written as a recurrence relation:
 
-b
+$b_{n}=nb_{n-1}$
 
-n
-
-=
-
-n
-
-b
-
-n
-
-−
-
-1
-
-{\displaystyle b_{n}=nb_{n-1}}
-
-b
-
-0
-
-=
-
-1
-
-{\displaystyle b_{0}=1}
+$b_{0}=1$
 
 This evaluation of the recurrence relation demonstrates the computation that would be performed in evaluating the pseudocode above:
 
@@ -471,125 +397,7 @@ This factorial function can also be described without using recursion by making 
 
 The imperative code above is equivalent to this mathematical definition using an accumulator variable *t*:
 
-fact
-
-⁡
-
-(
-
-n
-
-)
-
-=
-
-f
-
-a
-
-c
-
-t
-
-a
-
-c
-
-c
-
-⁡
-
-(
-
-n
-
-,
-
-1
-
-)
-
-f
-
-a
-
-c
-
-t
-
-a
-
-c
-
-c
-
-⁡
-
-(
-
-n
-
-,
-
-t
-
-)
-
-=
-
-{
-
-t
-
-if
-
-n
-
-=
-
-0
-
-f
-
-a
-
-c
-
-t
-
-a
-
-c
-
-c
-
-⁡
-
-(
-
-n
-
-−
-
-1
-
-,
-
-n
-
-t
-
-)
-
-if
-
-n
-
->
-
-0
-
-{\displaystyle {\begin{aligned}\operatorname {fact} (n)&=\operatorname {fact_{acc}} (n,1)\\\operatorname {fact_{acc}} (n,t)&={\begin{cases}t&{\mbox{if }}n=0\\\operatorname {fact_{acc}} (n-1,nt)&{\mbox{if }}n>0\\\end{cases}}\end{aligned}}}
+${\begin{aligned}\operatorname {fact} (n)&=\operatorname {fact_{acc}} (n,1)\\\operatorname {fact_{acc}} (n,t)&={\begin{cases}t&{\mbox{if }}n=0\\\operatorname {fact_{acc}} (n-1,nt)&{\mbox{if }}n>0\\\end{cases}}\end{aligned}}$
 
 The definition above translates straightforwardly to functional programming languages such as Scheme; this is an example of iteration implemented recursively.
 
@@ -599,131 +407,21 @@ The Euclidean algorithm, which computes the greatest common divisor of two integ
 
 *Function definition*:
 
-gcd
-
-(
-
-x
-
-,
-
-y
-
-)
-
-=
-
-{
-
-x
-
-if
-
-y
-
-=
-
-0
-
-gcd
-
-(
-
-y
-
-,
-
-remainder
-
-⁡
-
-(
-
-x
-
-,
-
-y
-
-)
-
-)
-
-if
-
-y
-
->
-
-0
-
-{\displaystyle \gcd(x,y)={\begin{cases}x&{\mbox{if }}y=0\\\gcd(y,\operatorname {remainder} (x,y))&{\mbox{if }}y>0\\\end{cases}}}
+$\gcd(x,y)={\begin{cases}x&{\mbox{if }}y=0\\\gcd(y,\operatorname {remainder} (x,y))&{\mbox{if }}y>0\\\end{cases}}$
 
 | Pseudocode (recursive): |
 |---|
 | **function** gcd is: **input**: integer *x*, integer *y* such that *x* > 0 and *y* >= 0 1. if *y* is 0, **return** *x* 2. otherwise, **return** [ gcd( *y*, (remainder of *x*/*y*) ) ] **end** gcd |
 
-Recurrence relation for greatest common divisor, where x % y {\displaystyle x\%y} ({\displaystyle x\%y}) expresses the remainder of x / y {\displaystyle x/y} ({\displaystyle x/y}):
+Recurrence relation for greatest common divisor, where $x\%y$ expresses the remainder of $x/y$ :
 
-gcd
-
-(
-
-x
-
-,
-
-y
-
-)
-
-=
-
-gcd
-
-(
-
-y
-
-,
-
-x
-
-%
-
-y
-
-)
-
-{\displaystyle \gcd(x,y)=\gcd(y,x\%y)}
+$\gcd(x,y)=\gcd(y,x\%y)$
 
 if
 
-y
+$y\neq 0$
 
-≠
-
-0
-
-{\displaystyle y\neq 0}
-
-gcd
-
-(
-
-x
-
-,
-
-0
-
-)
-
-=
-
-x
-
-{\displaystyle \gcd(x,0)=x}
+$\gcd(x,0)=x$
 
 | Computing the recurrence relation for x = 27 and y = 9: |
 |---|
@@ -745,95 +443,13 @@ The Towers of Hanoi is a mathematical puzzle whose solution illustrates recursio
 
 *Function definition*:
 
-hanoi
-
-⁡
-
-(
-
-n
-
-)
-
-=
-
-{
-
-1
-
-if
-
-n
-
-=
-
-1
-
-2
-
-⋅
-
-hanoi
-
-⁡
-
-(
-
-n
-
-−
-
-1
-
-)
-
-+
-
-1
-
-if
-
-n
-
->
-
-1
-
-{\displaystyle \operatorname {hanoi} (n)={\begin{cases}1&{\mbox{if }}n=1\\2\cdot \operatorname {hanoi} (n-1)+1&{\mbox{if }}n>1\\\end{cases}}}
+$\operatorname {hanoi} (n)={\begin{cases}1&{\mbox{if }}n=1\\2\cdot \operatorname {hanoi} (n-1)+1&{\mbox{if }}n>1\\\end{cases}}$
 
 *Recurrence relation for hanoi*:
 
-h
+$h_{n}=2h_{n-1}+1$
 
-n
-
-=
-
-2
-
-h
-
-n
-
-−
-
-1
-
-+
-
-1
-
-{\displaystyle h_{n}=2h_{n-1}+1}
-
-h
-
-1
-
-=
-
-1
-
-{\displaystyle h_{1}=1}
+$h_{1}=1$
 
 | Computing the recurrence relation for n = 4: |
 |---|
@@ -1025,3 +641,20 @@ This code is both recursion and iteration - the files and directories are iterat
 The "rtraverse" method is an example of direct recursion, whilst the "traverse" method is a wrapper function.
 
 The "base case" scenario is that there will always be a fixed number of files and/or directories in a given filesystem.
+
+
+## Time-efficiency of recursive algorithms
+
+The time efficiency of recursive algorithms can be expressed in a recurrence relation of Big O notation. They can (usually) then be simplified into a single Big-O term.
+
+### Shortcut rule (master theorem)
+
+If the time-complexity of the function is in the form $T(n)=a\cdot T(n/b)+f(n)$
+
+Then the Big O of the time-complexity is thus:
+
+- If $f(n)=O(n^{\log _{b}a-\varepsilon })$ for some constant $\varepsilon >0$ , then $T(n)=\Theta (n^{\log _{b}a})$
+- If $f(n)=\Theta (n^{\log _{b}a})$ , then $T(n)=\Theta (n^{\log _{b}a}\log n)$
+- If $f(n)=\Omega (n^{\log _{b}a+\varepsilon })$ for some constant $\varepsilon >0$ , and if $a\cdot f(n/b)\leq c\cdot f(n)$ for some constant *c* < 1 and all sufficiently large n, then $T(n)=\Theta (f(n))$
+
+where a represents the number of recursive calls at each level of recursion, b represents by what factor smaller the input is for the next level of recursion (i.e. the number of pieces you divide the problem into), and *f*(*n*) represents the work that the function does independently of any recursion (e.g. partitioning, recombining) at each level of recursion.

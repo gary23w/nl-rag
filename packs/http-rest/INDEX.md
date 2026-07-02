@@ -10,5 +10,18 @@ Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
 - [HTTP request methods - HTTP](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/http-methods.md) — upstream: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 - [Overview of HTTP - HTTP](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/http-overview.md) — upstream: https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview
 - [HTTP response status codes - HTTP](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/http-status.md) — upstream: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+- [RFC 9110: HTTP Semantics (part 1/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p01.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 2/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p02.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 3/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p03.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 4/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p04.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 5/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p05.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 6/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p06.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 7/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p07.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 8/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p08.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 9/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p09.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 10/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p10.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 11/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p11.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 12/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p12.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
+- [RFC 9110: HTTP Semantics (part 13/13)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110-p13.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
 - [RFC 9110: HTTP Semantics](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/rfc9110.md) — upstream: https://www.rfc-editor.org/rfc/rfc9110.html
 - [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/http-rest/pack.facts) — distilled one-line facts (neuron CLI import)

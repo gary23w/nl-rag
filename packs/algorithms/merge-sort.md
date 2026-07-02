@@ -238,7 +238,7 @@ In sorting *n* objects, merge sort has an average and worst-case performance of 
 
 The number of comparisons made by merge sort in the worst case is given by the sorting numbers. These numbers are equal to or slightly smaller than (*n* ⌈lg *n*⌉ − 2⌈lg *n*⌉ + 1), which is between (*n* lg *n* − *n* + 1) and (*n* lg *n* + *n* + O(lg *n*)). Merge sort's best case takes about half as many iterations as its worst case.
 
-For large *n* and a randomly ordered input list, merge sort's expected (average) number of comparisons approaches *α*·*n* fewer than the worst case, where α = − 1 + ∑ k = 0 ∞ 1 2 k + 1 ≈ 0.2645. {\displaystyle \alpha =-1+\sum _{k=0}^{\infty }{\frac {1}{2^{k}+1}}\approx 0.2645.} ({\displaystyle \alpha =-1+\sum _{k=0}^{\infty }{\frac {1}{2^{k}+1}}\approx 0.2645.})
+For large *n* and a randomly ordered input list, merge sort's expected (average) number of comparisons approaches *α*·*n* fewer than the worst case, where $\alpha =-1+\sum _{k=0}^{\infty }{\frac {1}{2^{k}+1}}\approx 0.2645.$
 
 In the *worst* case, merge sort uses approximately 39% fewer comparisons than quicksort does in its *average* case, and in terms of moves, merge sort's worst case complexity is O(*n* log *n*) - the same complexity as quicksort's best case.
 
@@ -258,7 +258,7 @@ Merge       : (1  2  3  4  5  7  8  9)(0  6)
 Merge       : (0  1  2  3  4  5  6  7  8  9)
 ```
 
-Formally, the natural merge sort is said to be Runs-optimal, where R u n s ( L ) {\displaystyle {\mathtt {Runs}}(L)} ({\displaystyle {\mathtt {Runs}}(L)}) is the number of runs in L {\displaystyle L} ({\displaystyle L}), minus one.
+Formally, the natural merge sort is said to be Runs-optimal, where ${\mathtt {Runs}}(L)$ is the number of runs in L , minus one.
 
 Tournament replacement selection sorts are used to gather the initial runs for external sorting algorithms.
 
@@ -319,7 +319,7 @@ algorithm mergesort(A, lo, hi) is
         merge(A, lo, mid, hi)
 ```
 
-This algorithm is the trivial modification of the sequential version and does not parallelize well. Therefore, its speedup is not very impressive. It has a span of Θ ( n ) {\displaystyle \Theta (n)} ({\displaystyle \Theta (n)}), which is only an improvement of Θ ( log ⁡ n ) {\displaystyle \Theta (\log n)} ({\displaystyle \Theta (\log n)}) compared to the sequential version (see Introduction to Algorithms). This is mainly due to the sequential merge method, as it is the bottleneck of the parallel executions.
+This algorithm is the trivial modification of the sequential version and does not parallelize well. Therefore, its speedup is not very impressive. It has a span of $\Theta (n)$ , which is only an improvement of $\Theta (\log n)$ compared to the sequential version (see Introduction to Algorithms). This is mainly due to the sequential merge method, as it is the bottleneck of the parallel executions.
 
 ### Merge sort with parallel merging
 
@@ -352,33 +352,33 @@ algorithm parallelMergesort(A, lo, hi, B, off) is
 
 In order to analyze a recurrence relation for the worst case span, the recursive calls of parallelMergesort have to be incorporated only once due to their parallel execution, obtaining
 
-T ∞ sort ( n ) = T ∞ sort ( n 2 ) + T ∞ merge ( n ) = T ∞ sort ( n 2 ) + Θ ( log ⁡ ( n ) 2 ) . {\displaystyle T_{\infty }^{\text{sort}}(n)=T_{\infty }^{\text{sort}}\left({\frac {n}{2}}\right)+T_{\infty }^{\text{merge}}(n)=T_{\infty }^{\text{sort}}\left({\frac {n}{2}}\right)+\Theta \left(\log(n)^{2}\right).} ({\displaystyle T_{\infty }^{\text{sort}}(n)=T_{\infty }^{\text{sort}}\left({\frac {n}{2}}\right)+T_{\infty }^{\text{merge}}(n)=T_{\infty }^{\text{sort}}\left({\frac {n}{2}}\right)+\Theta \left(\log(n)^{2}\right).})
+$T_{\infty }^{\text{sort}}(n)=T_{\infty }^{\text{sort}}\left({\frac {n}{2}}\right)+T_{\infty }^{\text{merge}}(n)=T_{\infty }^{\text{sort}}\left({\frac {n}{2}}\right)+\Theta \left(\log(n)^{2}\right).$
 
 For detailed information about the complexity of the parallel merge procedure, see Merge algorithm.
 
 The solution of this recurrence is given by
 
-T ∞ sort = Θ ( log ⁡ ( n ) 3 ) . {\displaystyle T_{\infty }^{\text{sort}}=\Theta \left(\log(n)^{3}\right).} ({\displaystyle T_{\infty }^{\text{sort}}=\Theta \left(\log(n)^{3}\right).})
+$T_{\infty }^{\text{sort}}=\Theta \left(\log(n)^{3}\right).$
 
-This parallel merge algorithm reaches a parallelism of Θ ( n ( log ⁡ n ) 2 ) {\textstyle \Theta \left({\frac {n}{(\log n)^{2}}}\right)} ({\textstyle \Theta \left({\frac {n}{(\log n)^{2}}}\right)}), which is much higher than the parallelism of the previous algorithm. Such a sort can perform well in practice when combined with a fast stable sequential sort, such as insertion sort, and a fast sequential merge as a base case for merging small arrays.
+This parallel merge algorithm reaches a parallelism of ${\textstyle \Theta \left({\frac {n}{(\log n)^{2}}}\right)}$ , which is much higher than the parallelism of the previous algorithm. Such a sort can perform well in practice when combined with a fast stable sequential sort, such as insertion sort, and a fast sequential merge as a base case for merging small arrays.
 
 ### Parallel multiway merge sort
 
-It seems arbitrary to restrict the merge sort algorithms to a binary merge method, since there are usually p > 2 processors available. A better approach may be to use a K-way merge method, a generalization of binary merge, in which k {\displaystyle k} ({\displaystyle k}) sorted sequences are merged. This merge variant is well suited to describe a sorting algorithm on a PRAM.
+It seems arbitrary to restrict the merge sort algorithms to a binary merge method, since there are usually p > 2 processors available. A better approach may be to use a K-way merge method, a generalization of binary merge, in which k sorted sequences are merged. This merge variant is well suited to describe a sorting algorithm on a PRAM.
 
 #### Basic idea
 
-Given an unsorted sequence of n {\displaystyle n} ({\displaystyle n}) elements, the goal is to sort the sequence with p {\displaystyle p} ({\displaystyle p}) available processors. These elements are distributed equally among all processors and sorted locally using a sequential Sorting algorithm. Hence, the sequence consists of sorted sequences S 1 , . . . , S p {\displaystyle S_{1},...,S_{p}} ({\displaystyle S_{1},...,S_{p}}) of length ⌈ n p ⌉ {\textstyle \lceil {\frac {n}{p}}\rceil } ({\textstyle \lceil {\frac {n}{p}}\rceil }). For simplification let n {\displaystyle n} ({\displaystyle n}) be a multiple of p {\displaystyle p} ({\displaystyle p}), so that | S i | = n p {\textstyle \left\vert S_{i}\right\vert ={\frac {n}{p}}} ({\textstyle \left\vert S_{i}\right\vert ={\frac {n}{p}}}) for i = 1 , . . . , p {\displaystyle i=1,...,p} ({\displaystyle i=1,...,p}).
+Given an unsorted sequence of n elements, the goal is to sort the sequence with p available processors. These elements are distributed equally among all processors and sorted locally using a sequential Sorting algorithm. Hence, the sequence consists of sorted sequences $S_{1},...,S_{p}$ of length ${\textstyle \lceil {\frac {n}{p}}\rceil }$ . For simplification let n be a multiple of p , so that ${\textstyle \left\vert S_{i}\right\vert ={\frac {n}{p}}}$ for $i=1,...,p$ .
 
-These sequences will be used to perform a multisequence selection/splitter selection. For j = 1 , . . . , p {\displaystyle j=1,...,p} ({\displaystyle j=1,...,p}), the algorithm determines splitter elements v j {\displaystyle v_{j}} ({\displaystyle v_{j}}) with global rank k = j n p {\textstyle k=j{\frac {n}{p}}} ({\textstyle k=j{\frac {n}{p}}}). Then the corresponding positions of v 1 , . . . , v p {\displaystyle v_{1},...,v_{p}} ({\displaystyle v_{1},...,v_{p}}) in each sequence S i {\displaystyle S_{i}} ({\displaystyle S_{i}}) are determined with binary search and thus the S i {\displaystyle S_{i}} ({\displaystyle S_{i}}) are further partitioned into p {\displaystyle p} ({\displaystyle p}) subsequences S i , 1 , . . . , S i , p {\displaystyle S_{i,1},...,S_{i,p}} ({\displaystyle S_{i,1},...,S_{i,p}}) with S i , j := { x ∈ S i | r a n k ( v j − 1 ) < r a n k ( x ) ≤ r a n k ( v j ) } {\textstyle S_{i,j}:=\{x\in S_{i}|rank(v_{j-1})<rank(x)\leq rank(v_{j})\}} ({\textstyle S_{i,j}:=\{x\in S_{i}|rank(v_{j-1})<rank(x)\leq rank(v_{j})\}}).
+These sequences will be used to perform a multisequence selection/splitter selection. For $j=1,...,p$ , the algorithm determines splitter elements $v_{j}$ with global rank ${\textstyle k=j{\frac {n}{p}}}$ . Then the corresponding positions of $v_{1},...,v_{p}$ in each sequence $S_{i}$ are determined with binary search and thus the $S_{i}$ are further partitioned into p subsequences $S_{i,1},...,S_{i,p}$ with ${\textstyle S_{i,j}:=\{x\in S_{i}|rank(v_{j-1})<rank(x)\leq rank(v_{j})\}}$ .
 
-Furthermore, the elements of S 1 , i , . . . , S p , i {\displaystyle S_{1,i},...,S_{p,i}} ({\displaystyle S_{1,i},...,S_{p,i}}) are assigned to processor i {\displaystyle i} ({\displaystyle i}), means all elements between rank ( i − 1 ) n p {\textstyle (i-1){\frac {n}{p}}} ({\textstyle (i-1){\frac {n}{p}}}) and rank i n p {\textstyle i{\frac {n}{p}}} ({\textstyle i{\frac {n}{p}}}), which are distributed over all S i {\displaystyle S_{i}} ({\displaystyle S_{i}}). Thus, each processor receives a sequence of sorted sequences. The fact that the rank k {\displaystyle k} ({\displaystyle k}) of the splitter elements v i {\displaystyle v_{i}} ({\displaystyle v_{i}}) was chosen globally, provides two important properties: On the one hand, k {\displaystyle k} ({\displaystyle k}) was chosen so that each processor can still operate on n / p {\textstyle n/p} ({\textstyle n/p}) elements after assignment. The algorithm is perfectly load-balanced. On the other hand, all elements on processor i {\displaystyle i} ({\displaystyle i}) are less than or equal to all elements on processor i + 1 {\displaystyle i+1} ({\displaystyle i+1}). Hence, each processor performs the *p*-way merge locally and thus obtains a sorted sequence from its sub-sequences. Because of the second property, no further *p*-way-merge has to be performed, the results only have to be put together in the order of the processor number.
+Furthermore, the elements of $S_{1,i},...,S_{p,i}$ are assigned to processor i , means all elements between rank ${\textstyle (i-1){\frac {n}{p}}}$ and rank ${\textstyle i{\frac {n}{p}}}$ , which are distributed over all $S_{i}$ . Thus, each processor receives a sequence of sorted sequences. The fact that the rank k of the splitter elements $v_{i}$ was chosen globally, provides two important properties: On the one hand, k was chosen so that each processor can still operate on ${\textstyle n/p}$ elements after assignment. The algorithm is perfectly load-balanced. On the other hand, all elements on processor i are less than or equal to all elements on processor $i+1$ . Hence, each processor performs the *p*-way merge locally and thus obtains a sorted sequence from its sub-sequences. Because of the second property, no further *p*-way-merge has to be performed, the results only have to be put together in the order of the processor number.
 
 #### Multi-sequence selection
 
-In its simplest form, given p {\displaystyle p} ({\displaystyle p}) sorted sequences S 1 , . . . , S p {\displaystyle S_{1},...,S_{p}} ({\displaystyle S_{1},...,S_{p}}) distributed evenly on p {\displaystyle p} ({\displaystyle p}) processors and a rank k {\displaystyle k} ({\displaystyle k}), the task is to find an element x {\displaystyle x} ({\displaystyle x}) with a global rank k {\displaystyle k} ({\displaystyle k}) in the union of the sequences. Hence, this can be used to divide each S i {\displaystyle S_{i}} ({\displaystyle S_{i}}) in two parts at a splitter index l i {\displaystyle l_{i}} ({\displaystyle l_{i}}), where the lower part contains only elements which are smaller than x {\displaystyle x} ({\displaystyle x}), while the elements bigger than x {\displaystyle x} ({\displaystyle x}) are located in the upper part.
+In its simplest form, given p sorted sequences $S_{1},...,S_{p}$ distributed evenly on p processors and a rank k , the task is to find an element x with a global rank k in the union of the sequences. Hence, this can be used to divide each $S_{i}$ in two parts at a splitter index $l_{i}$ , where the lower part contains only elements which are smaller than x , while the elements bigger than x are located in the upper part.
 
-The presented sequential algorithm returns the indices of the splits in each sequence, e.g. the indices l i {\displaystyle l_{i}} ({\displaystyle l_{i}}) in sequences S i {\displaystyle S_{i}} ({\displaystyle S_{i}}) such that S i [ l i ] {\displaystyle S_{i}[l_{i}]} ({\displaystyle S_{i}[l_{i}]}) has a global rank less than k {\displaystyle k} ({\displaystyle k}) and r a n k ( S i [ l i + 1 ] ) ≥ k {\displaystyle \mathrm {rank} \left(S_{i}[l_{i}+1]\right)\geq k} ({\displaystyle \mathrm {rank} \left(S_{i}[l_{i}+1]\right)\geq k}).
+The presented sequential algorithm returns the indices of the splits in each sequence, e.g. the indices $l_{i}$ in sequences $S_{i}$ such that $S_{i}[l_{i}]$ has a global rank less than k and $\mathrm {rank} \left(S_{i}[l_{i}+1]\right)\geq k$ .
 
 ```
 algorithm msSelect(S : Array of sorted Sequences [S_1,..,S_p], k : int) is
@@ -398,9 +398,9 @@ algorithm msSelect(S : Array of sorted Sequences [S_1,..,S_p], k : int) is
     return l
 ```
 
-For the complexity analysis the PRAM model is chosen. If the data is evenly distributed over all p {\displaystyle p} ({\displaystyle p}), the p-fold execution of the *binarySearch* method has a running time of O ( p log ⁡ ( n / p ) ) {\displaystyle {\mathcal {O}}\left(p\log \left(n/p\right)\right)} ({\displaystyle {\mathcal {O}}\left(p\log \left(n/p\right)\right)}). The expected recursion depth is O ( log ⁡ ( ∑ i | S i | ) ) = O ( log ⁡ ( n ) ) {\displaystyle {\mathcal {O}}\left(\log \left(\textstyle \sum _{i}|S_{i}|\right)\right)={\mathcal {O}}(\log(n))} ({\displaystyle {\mathcal {O}}\left(\log \left(\textstyle \sum _{i}|S_{i}|\right)\right)={\mathcal {O}}(\log(n))}) as in the ordinary Quickselect. Thus the overall expected running time is O ( p log ⁡ ( n / p ) log ⁡ ( n ) ) {\displaystyle {\mathcal {O}}\left(p\log(n/p)\log(n)\right)} ({\displaystyle {\mathcal {O}}\left(p\log(n/p)\log(n)\right)}).
+For the complexity analysis the PRAM model is chosen. If the data is evenly distributed over all p , the p-fold execution of the *binarySearch* method has a running time of ${\mathcal {O}}\left(p\log \left(n/p\right)\right)$ . The expected recursion depth is ${\mathcal {O}}\left(\log \left(\textstyle \sum _{i}|S_{i}|\right)\right)={\mathcal {O}}(\log(n))$ as in the ordinary Quickselect. Thus the overall expected running time is ${\mathcal {O}}\left(p\log(n/p)\log(n)\right)$ .
 
-Applied on the parallel multiway merge sort, this algorithm has to be invoked in parallel such that all splitter elements of rank i n p {\textstyle i{\frac {n}{p}}} ({\textstyle i{\frac {n}{p}}}) for i = 1 , . . , p {\displaystyle i=1,..,p} ({\displaystyle i=1,..,p}) are found simultaneously. These splitter elements can then be used to partition each sequence in p {\displaystyle p} ({\displaystyle p}) parts, with the same total running time of O ( p log ⁡ ( n / p ) log ⁡ ( n ) ) {\displaystyle {\mathcal {O}}\left(p\,\log(n/p)\log(n)\right)} ({\displaystyle {\mathcal {O}}\left(p\,\log(n/p)\log(n)\right)}).
+Applied on the parallel multiway merge sort, this algorithm has to be invoked in parallel such that all splitter elements of rank ${\textstyle i{\frac {n}{p}}}$ for $i=1,..,p$ are found simultaneously. These splitter elements can then be used to partition each sequence in p parts, with the same total running time of ${\mathcal {O}}\left(p\,\log(n/p)\log(n)\right)$ .
 
 #### Pseudocode
 
@@ -430,15 +430,15 @@ algorithm parallelMultiwayMergesort(d : Array, n : int, p : int) is
 
 #### Analysis
 
-Firstly, each processor sorts the assigned n / p {\displaystyle n/p} ({\displaystyle n/p}) elements locally using a sorting algorithm with complexity O ( n / p log ⁡ ( n / p ) ) {\displaystyle {\mathcal {O}}\left(n/p\;\log(n/p)\right)} ({\displaystyle {\mathcal {O}}\left(n/p\;\log(n/p)\right)}). After that, the splitter elements have to be calculated in time O ( p log ⁡ ( n / p ) log ⁡ ( n ) ) {\displaystyle {\mathcal {O}}\left(p\,\log(n/p)\log(n)\right)} ({\displaystyle {\mathcal {O}}\left(p\,\log(n/p)\log(n)\right)}). Finally, each group of p {\displaystyle p} ({\displaystyle p}) splits have to be merged in parallel by each processor with a running time of O ( log ⁡ ( p ) n / p ) {\displaystyle {\mathcal {O}}(\log(p)\;n/p)} ({\displaystyle {\mathcal {O}}(\log(p)\;n/p)}) using a sequential p-way merge algorithm. Thus, the overall running time is given by
+Firstly, each processor sorts the assigned $n/p$ elements locally using a sorting algorithm with complexity ${\mathcal {O}}\left(n/p\;\log(n/p)\right)$ . After that, the splitter elements have to be calculated in time ${\mathcal {O}}\left(p\,\log(n/p)\log(n)\right)$ . Finally, each group of p splits have to be merged in parallel by each processor with a running time of ${\mathcal {O}}(\log(p)\;n/p)$ using a sequential p-way merge algorithm. Thus, the overall running time is given by
 
-O ( n p log ⁡ ( n p ) + p log ⁡ ( n p ) log ⁡ ( n ) + n p log ⁡ ( p ) ) {\displaystyle {\mathcal {O}}\left({\frac {n}{p}}\log \left({\frac {n}{p}}\right)+p\log \left({\frac {n}{p}}\right)\log(n)+{\frac {n}{p}}\log(p)\right)} ({\displaystyle {\mathcal {O}}\left({\frac {n}{p}}\log \left({\frac {n}{p}}\right)+p\log \left({\frac {n}{p}}\right)\log(n)+{\frac {n}{p}}\log(p)\right)}).
+${\mathcal {O}}\left({\frac {n}{p}}\log \left({\frac {n}{p}}\right)+p\log \left({\frac {n}{p}}\right)\log(n)+{\frac {n}{p}}\log(p)\right)$ .
 
 #### Practical adaption and application
 
 The multiway merge sort algorithm is very scalable through its high parallelization capability, which allows the use of many processors. This makes the algorithm a viable candidate for sorting large amounts of data, such as those processed in computer clusters. Also, since in such systems memory is usually not a limiting resource, the disadvantage of space complexity of merge sort is negligible. However, other factors become important in such systems, which are not taken into account when modelling on a PRAM. Here, the following aspects need to be considered: Memory hierarchy, when the data does not fit into the processors cache, or the communication overhead of exchanging data between processors, which could become a bottleneck when the data can no longer be accessed via the shared memory.
 
-Sanders et al. have presented in their paper a bulk synchronous parallel algorithm for multilevel multiway mergesort, which divides p {\displaystyle p} ({\displaystyle p}) processors into r {\displaystyle r} ({\displaystyle r}) groups of size p ′ {\displaystyle p'} ({\displaystyle p'}). All processors sort locally first. Unlike single level multiway mergesort, these sequences are then partitioned into r {\displaystyle r} ({\displaystyle r}) parts and assigned to the appropriate processor groups. These steps are repeated recursively in those groups. This reduces communication and especially avoids problems with many small messages. The hierarchical structure of the underlying real network can be used to define the processor groups (e.g. racks, clusters,...).
+Sanders et al. have presented in their paper a bulk synchronous parallel algorithm for multilevel multiway mergesort, which divides p processors into r groups of size $p'$ . All processors sort locally first. Unlike single level multiway mergesort, these sequences are then partitioned into r parts and assigned to the appropriate processor groups. These steps are repeated recursively in those groups. This reduces communication and especially avoids problems with many small messages. The hierarchical structure of the underlying real network can be used to define the processor groups (e.g. racks, clusters,...).
 
 ### Further variants
 

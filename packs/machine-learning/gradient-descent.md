@@ -21,137 +21,27 @@ A simple extension of gradient descent, stochastic gradient descent, serves as t
 
 ## Description
 
-Gradient descent is based on the observation that if the multi-variable function f ( x ) {\displaystyle f(\mathbf {x} )} ({\displaystyle f(\mathbf {x} )}) is defined and differentiable in a neighborhood of a point a {\displaystyle \mathbf {a} } ({\displaystyle \mathbf {a} }), then f ( x ) {\displaystyle f(\mathbf {x} )} ({\displaystyle f(\mathbf {x} )}) decreases *fastest* if one goes from a {\displaystyle \mathbf {a} } ({\displaystyle \mathbf {a} }) in the direction of the negative gradient of f {\displaystyle f} ({\displaystyle f}) at a , i . e . , − ∇ f ( a ) {\displaystyle \mathbf {a} ,i.e.,-\nabla f(\mathbf {a} )} ({\displaystyle \mathbf {a} ,i.e.,-\nabla f(\mathbf {a} )}). It follows that, if
+Gradient descent is based on the observation that if the multi-variable function $f(\mathbf {x} )$ is defined and differentiable in a neighborhood of a point $\mathbf {a}$ , then $f(\mathbf {x} )$ decreases *fastest* if one goes from $\mathbf {a}$ in the direction of the negative gradient of f at $\mathbf {a} ,i.e.,-\nabla f(\mathbf {a} )$ . It follows that, if
 
-a
+$\mathbf {a} _{n+1}=\mathbf {a} _{n}-\eta \nabla f(\mathbf {a} _{n})$
 
-n
+for a small enough step size or learning rate $\eta \in \mathbb {R} _{+}$ , then $f(\mathbf {a_{n}} )\geq f(\mathbf {a_{n+1}} )$ . In other words, the term $\eta \nabla f(\mathbf {a} )$ is subtracted from $\mathbf {a}$ because we want to move against the gradient, toward the local minimum. With this observation in mind, one starts with a guess $\mathbf {x} _{0}$ for a local minimum of f , and considers the sequence $\mathbf {x} _{0},\mathbf {x} _{1},\mathbf {x} _{2},\ldots$ such that
 
-+
-
-1
-
-=
-
-a
-
-n
-
-−
-
-η
-
-∇
-
-f
-
-(
-
-a
-
-n
-
-)
-
-{\displaystyle \mathbf {a} _{n+1}=\mathbf {a} _{n}-\eta \nabla f(\mathbf {a} _{n})}
-
-for a small enough step size or learning rate η ∈ R + {\displaystyle \eta \in \mathbb {R} _{+}} ({\displaystyle \eta \in \mathbb {R} _{+}}), then f ( a n ) ≥ f ( a n + 1 ) {\displaystyle f(\mathbf {a_{n}} )\geq f(\mathbf {a_{n+1}} )} ({\displaystyle f(\mathbf {a_{n}} )\geq f(\mathbf {a_{n+1}} )}). In other words, the term η ∇ f ( a ) {\displaystyle \eta \nabla f(\mathbf {a} )} ({\displaystyle \eta \nabla f(\mathbf {a} )}) is subtracted from a {\displaystyle \mathbf {a} } ({\displaystyle \mathbf {a} }) because we want to move against the gradient, toward the local minimum. With this observation in mind, one starts with a guess x 0 {\displaystyle \mathbf {x} _{0}} ({\displaystyle \mathbf {x} _{0}}) for a local minimum of f {\displaystyle f} ({\displaystyle f}), and considers the sequence x 0 , x 1 , x 2 , … {\displaystyle \mathbf {x} _{0},\mathbf {x} _{1},\mathbf {x} _{2},\ldots } ({\displaystyle \mathbf {x} _{0},\mathbf {x} _{1},\mathbf {x} _{2},\ldots }) such that
-
-x
-
-n
-
-+
-
-1
-
-=
-
-x
-
-n
-
-−
-
-η
-
-n
-
-∇
-
-f
-
-(
-
-x
-
-n
-
-)
-
-,
-
-n
-
-≥
-
-0.
-
-{\displaystyle \mathbf {x} _{n+1}=\mathbf {x} _{n}-\eta _{n}\nabla f(\mathbf {x} _{n}),\ n\geq 0.}
+$\mathbf {x} _{n+1}=\mathbf {x} _{n}-\eta _{n}\nabla f(\mathbf {x} _{n}),\ n\geq 0.$
 
 We have a monotonic sequence
 
-f
+$f(\mathbf {x} _{0})\geq f(\mathbf {x} _{1})\geq f(\mathbf {x} _{2})\geq \cdots ,$
 
-(
+so the sequence $(\mathbf {x} _{n})$ converges to the desired local minimum. Note that the value of the *step size* $\eta$ is allowed to change at every iteration.
 
-x
+It is possible to guarantee the convergence to a local minimum under certain assumptions on the function f (for example, f convex and $\nabla f$ Lipschitz) and particular choices of $\eta$ . Those include the sequence
 
-0
+$\eta _{n}={\frac {\left|\left(\mathbf {x} _{n}-\mathbf {x} _{n-1}\right)^{\top }\left[\nabla f(\mathbf {x} _{n})-\nabla f(\mathbf {x} _{n-1})\right]\right|}{\left\|\nabla f(\mathbf {x} _{n})-\nabla f(\mathbf {x} _{n-1})\right\|^{2}}}$
 
-)
+as in the Barzilai-Borwein method, or a sequence $\eta _{n}$ satisfying the Wolfe conditions (which can be found by using line search). When the function f is convex, all local minima are also global minima, so in this case gradient descent can converge to the global solution.
 
-≥
-
-f
-
-(
-
-x
-
-1
-
-)
-
-≥
-
-f
-
-(
-
-x
-
-2
-
-)
-
-≥
-
-⋯
-
-,
-
-{\displaystyle f(\mathbf {x} _{0})\geq f(\mathbf {x} _{1})\geq f(\mathbf {x} _{2})\geq \cdots ,}
-
-so the sequence ( x n ) {\displaystyle (\mathbf {x} _{n})} ({\displaystyle (\mathbf {x} _{n})}) converges to the desired local minimum. Note that the value of the *step size* η {\displaystyle \eta } ({\displaystyle \eta }) is allowed to change at every iteration.
-
-It is possible to guarantee the convergence to a local minimum under certain assumptions on the function f {\displaystyle f} ({\displaystyle f}) (for example, f {\displaystyle f} ({\displaystyle f}) convex and ∇ f {\displaystyle \nabla f} ({\displaystyle \nabla f}) Lipschitz) and particular choices of η {\displaystyle \eta } ({\displaystyle \eta }). Those include the sequence
-
-η n = | ( x n − x n − 1 ) ⊤ [ ∇ f ( x n ) − ∇ f ( x n − 1 ) ] | ‖ ∇ f ( x n ) − ∇ f ( x n − 1 ) ‖ 2 {\displaystyle \eta _{n}={\frac {\left|\left(\mathbf {x} _{n}-\mathbf {x} _{n-1}\right)^{\top }\left[\nabla f(\mathbf {x} _{n})-\nabla f(\mathbf {x} _{n-1})\right]\right|}{\left\|\nabla f(\mathbf {x} _{n})-\nabla f(\mathbf {x} _{n-1})\right\|^{2}}}} ({\displaystyle \eta _{n}={\frac {\left|\left(\mathbf {x} _{n}-\mathbf {x} _{n-1}\right)^{\top }\left[\nabla f(\mathbf {x} _{n})-\nabla f(\mathbf {x} _{n-1})\right]\right|}{\left\|\nabla f(\mathbf {x} _{n})-\nabla f(\mathbf {x} _{n-1})\right\|^{2}}}})
-
-as in the Barzilai-Borwein method, or a sequence η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}}) satisfying the Wolfe conditions (which can be found by using line search). When the function f {\displaystyle f} ({\displaystyle f}) is convex, all local minima are also global minima, so in this case gradient descent can converge to the global solution.
-
-This process is illustrated in the adjacent picture. Here, f {\displaystyle f} ({\displaystyle f}) is assumed to be defined on the plane, and that its graph has a bowl shape. The blue curves are the contour lines, that is, the regions on which the value of f {\displaystyle f} ({\displaystyle f}) is constant. A red arrow originating at a point shows the direction of the negative gradient at that point. Note that the (negative) gradient at a point is orthogonal to the contour line going through that point. We see that gradient *descent* leads us to the bottom of the bowl, that is, to the point where the value of the function f {\displaystyle f} ({\displaystyle f}) is minimal.
+This process is illustrated in the adjacent picture. Here, f is assumed to be defined on the plane, and that its graph has a bowl shape. The blue curves are the contour lines, that is, the regions on which the value of f is constant. A red arrow originating at a point shows the direction of the negative gradient at that point. Note that the (negative) gradient at a point is orthogonal to the contour line going through that point. We see that gradient *descent* leads us to the bottom of the bowl, that is, to the point where the value of the function f is minimal.
 
 ### An analogy for understanding gradient descent
 
@@ -161,404 +51,74 @@ In this analogy, the people represent the algorithm, and the path taken down the
 
 ### Choosing the step size and descent direction
 
-Since using a step size η {\displaystyle \eta } ({\displaystyle \eta }) that is too small would slow convergence, and a η {\displaystyle \eta } ({\displaystyle \eta }) too large would lead to overshoot and divergence, finding a good setting of η {\displaystyle \eta } ({\displaystyle \eta }) is an important practical problem. Philip Wolfe also advocated using "clever choices of the [descent] direction" in practice. While using a direction that deviates from the steepest descent direction may seem counter-intuitive, the idea is that the smaller slope may be compensated for by being sustained over a much longer distance.
+Since using a step size $\eta$ that is too small would slow convergence, and a $\eta$ too large would lead to overshoot and divergence, finding a good setting of $\eta$ is an important practical problem. Philip Wolfe also advocated using "clever choices of the [descent] direction" in practice. While using a direction that deviates from the steepest descent direction may seem counter-intuitive, the idea is that the smaller slope may be compensated for by being sustained over a much longer distance.
 
-To reason about this mathematically, consider a direction p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}) and step size η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}}) and consider the more general update:
+To reason about this mathematically, consider a direction $\mathbf {p} _{n}$ and step size $\eta _{n}$ and consider the more general update:
 
-a
-
-n
-
-+
-
-1
-
-=
-
-a
-
-n
-
-−
-
-η
-
-n
-
-p
-
-n
-
-{\displaystyle \mathbf {a} _{n+1}=\mathbf {a} _{n}-\eta _{n}\,\mathbf {p} _{n}}
+$\mathbf {a} _{n+1}=\mathbf {a} _{n}-\eta _{n}\,\mathbf {p} _{n}$
 
 .
 
-Finding good settings of p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}) and η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}}) requires some thought. First of all, we would like the update direction to point downhill. Mathematically, letting θ n {\displaystyle \theta _{n}} ({\displaystyle \theta _{n}}) denote the angle between − ∇ f ( a n ) {\displaystyle -\nabla f(\mathbf {a_{n}} )} ({\displaystyle -\nabla f(\mathbf {a_{n}} )}) and p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}), this requires that cos ⁡ θ n > 0. {\displaystyle \cos \theta _{n}>0.} ({\displaystyle \cos \theta _{n}>0.}) To say more, we need more information about the objective function that we are optimising. Under the fairly weak assumption that f {\displaystyle f} ({\displaystyle f}) is continuously differentiable, we may prove that:
+Finding good settings of $\mathbf {p} _{n}$ and $\eta _{n}$ requires some thought. First of all, we would like the update direction to point downhill. Mathematically, letting $\theta _{n}$ denote the angle between $-\nabla f(\mathbf {a_{n}} )$ and $\mathbf {p} _{n}$ , this requires that $\cos \theta _{n}>0.$ To say more, we need more information about the objective function that we are optimising. Under the fairly weak assumption that f is continuously differentiable, we may prove that:
 
-| f ( a n + 1 ) ≤ f ( a n ) − η n ‖ ∇ f ( a n ) ‖ 2 ‖ p n ‖ 2 ( cos ⁡ θ n − max t ∈ [ 0 , 1 ] ‖ ∇ f ( a n − t η n p n ) − ∇ f ( a n ) ‖ 2 ‖ ∇ f ( a n ) ‖ 2 ) {\displaystyle f(\mathbf {a} _{n+1})\leq f(\mathbf {a} _{n})-\eta _{n}\\|\nabla f(\mathbf {a} _{n})\\|_{2}\\|\mathbf {p} _{n}\\|_{2}\left(\cos \theta _{n}-\max _{t\in [0,1]}{\frac {\\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\\|_{2}}{\\|\nabla f(\mathbf {a} _{n})\\|_{2}}}\right)} ({\displaystyle f(\mathbf {a} _{n+1})\leq f(\mathbf {a} _{n})-\eta _{n}\\|\nabla f(\mathbf {a} _{n})\\|_{2}\\|\mathbf {p} _{n}\\|_{2}\left(\cos \theta _{n}-\max _{t\in [0,1]}{\frac {\\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\\|_{2}}{\\|\nabla f(\mathbf {a} _{n})\\|_{2}}}\right)}) |   | 1 |
+| $f(\mathbf {a} _{n+1})\leq f(\mathbf {a} _{n})-\eta _{n}\\|\nabla f(\mathbf {a} _{n})\\|_{2}\\|\mathbf {p} _{n}\\|_{2}\left(\cos \theta _{n}-\max _{t\in [0,1]}{\frac {\\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\\|_{2}}{\\|\nabla f(\mathbf {a} _{n})\\|_{2}}}\right)$ |   | 1 |
 |---|---|---|
 
-This inequality implies that the amount by which we can be sure the function f {\displaystyle f} ({\displaystyle f}) is decreased depends on a trade off between the two terms in square brackets. The first term in square brackets measures the angle between the descent direction and the negative gradient. The second term measures how quickly the gradient changes along the descent direction.
+This inequality implies that the amount by which we can be sure the function f is decreased depends on a trade off between the two terms in square brackets. The first term in square brackets measures the angle between the descent direction and the negative gradient. The second term measures how quickly the gradient changes along the descent direction.
 
-In principle inequality (**1**) could be optimized over p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}) and η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}}) to choose an optimal step size and direction. The problem is that evaluating the second term in square brackets requires evaluating ∇ f ( a n − t η n p n ) {\displaystyle \nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})} ({\displaystyle \nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})}), and extra gradient evaluations are generally expensive and undesirable. Some ways around this problem are:
+In principle inequality (**1**) could be optimized over $\mathbf {p} _{n}$ and $\eta _{n}$ to choose an optimal step size and direction. The problem is that evaluating the second term in square brackets requires evaluating $\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})$ , and extra gradient evaluations are generally expensive and undesirable. Some ways around this problem are:
 
-- Forgo the benefits of a clever descent direction by setting p n = ∇ f ( a n ) {\displaystyle \mathbf {p} _{n}=\nabla f(\mathbf {a_{n}} )} ({\displaystyle \mathbf {p} _{n}=\nabla f(\mathbf {a_{n}} )}), and use line search to find a suitable step-size γ n {\displaystyle \gamma _{n}} ({\displaystyle \gamma _{n}}), such as one that satisfies the Wolfe conditions. A more economic way of choosing learning rates is backtracking line search, a method that has both good theoretical guarantees and experimental results. Note that one does not need to choose p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}) to be the gradient; any direction that has positive inner product with the gradient will result in a reduction of the function value (for a sufficiently small value of η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}})).
-- Assuming that f {\displaystyle f} ({\displaystyle f}) is twice-differentiable, use its Hessian ∇ 2 f {\displaystyle \nabla ^{2}f} ({\displaystyle \nabla ^{2}f}) to estimate ‖ ∇ f ( a n − t η n p n ) − ∇ f ( a n ) ‖ 2 ≈ ‖ t η n ∇ 2 f ( a n ) p n ‖ . {\displaystyle \|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}\approx \|t\eta _{n}\nabla ^{2}f(\mathbf {a} _{n})\mathbf {p} _{n}\|.} ({\displaystyle \|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}\approx \|t\eta _{n}\nabla ^{2}f(\mathbf {a} _{n})\mathbf {p} _{n}\|.})Then choose p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}) and η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}}) by optimising inequality (**1**).
-- Assuming that ∇ f {\displaystyle \nabla f} ({\displaystyle \nabla f}) is Lipschitz, use its Lipschitz constant L {\displaystyle L} ({\displaystyle L}) to bound ‖ ∇ f ( a n − t η n p n ) − ∇ f ( a n ) ‖ 2 ≤ L t η n ‖ p n ‖ . {\displaystyle \|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}\leq Lt\eta _{n}\|\mathbf {p} _{n}\|.} ({\displaystyle \|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}\leq Lt\eta _{n}\|\mathbf {p} _{n}\|.}) Then choose p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}) and η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}}) by optimising inequality (**1**).
-- Build a custom model of max t ∈ [ 0 , 1 ] ‖ ∇ f ( a n − t η n p n ) − ∇ f ( a n ) ‖ 2 ‖ ∇ f ( a n ) ‖ 2 {\displaystyle \max _{t\in [0,1]}{\frac {\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}}{\|\nabla f(\mathbf {a} _{n})\|_{2}}}} ({\displaystyle \max _{t\in [0,1]}{\frac {\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}}{\|\nabla f(\mathbf {a} _{n})\|_{2}}}}) for f {\displaystyle f} ({\displaystyle f}). Then choose p n {\displaystyle \mathbf {p} _{n}} ({\displaystyle \mathbf {p} _{n}}) and η n {\displaystyle \eta _{n}} ({\displaystyle \eta _{n}}) by optimising inequality (**1**).
-- Under stronger assumptions on the function f {\displaystyle f} ({\displaystyle f}) such as convexity, more advanced techniques may be possible.
+- Forgo the benefits of a clever descent direction by setting $\mathbf {p} _{n}=\nabla f(\mathbf {a_{n}} )$ , and use line search to find a suitable step-size $\gamma _{n}$ , such as one that satisfies the Wolfe conditions. A more economic way of choosing learning rates is backtracking line search, a method that has both good theoretical guarantees and experimental results. Note that one does not need to choose $\mathbf {p} _{n}$ to be the gradient; any direction that has positive inner product with the gradient will result in a reduction of the function value (for a sufficiently small value of $\eta _{n}$ ).
+- Assuming that f is twice-differentiable, use its Hessian $\nabla ^{2}f$ to estimate $\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}\approx \|t\eta _{n}\nabla ^{2}f(\mathbf {a} _{n})\mathbf {p} _{n}\|.$ Then choose $\mathbf {p} _{n}$ and $\eta _{n}$ by optimising inequality (**1**).
+- Assuming that $\nabla f$ is Lipschitz, use its Lipschitz constant L to bound $\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}\leq Lt\eta _{n}\|\mathbf {p} _{n}\|.$ Then choose $\mathbf {p} _{n}$ and $\eta _{n}$ by optimising inequality (**1**).
+- Build a custom model of $\max _{t\in [0,1]}{\frac {\|\nabla f(\mathbf {a} _{n}-t\eta _{n}\mathbf {p} _{n})-\nabla f(\mathbf {a} _{n})\|_{2}}{\|\nabla f(\mathbf {a} _{n})\|_{2}}}$ for f . Then choose $\mathbf {p} _{n}$ and $\eta _{n}$ by optimising inequality (**1**).
+- Under stronger assumptions on the function f such as convexity, more advanced techniques may be possible.
 
-Usually by following one of the recipes above, convergence to a local minimum can be guaranteed. When the function f {\displaystyle f} ({\displaystyle f}) is convex, all local minima are also global minima, so in this case gradient descent can converge to the global solution.
+Usually by following one of the recipes above, convergence to a local minimum can be guaranteed. When the function f is convex, all local minima are also global minima, so in this case gradient descent can converge to the global solution.
 
 ## Solution of a linear system
 
 Gradient descent can be used to solve a system of linear equations
 
-A
+$\mathbf {A} \mathbf {x} -\mathbf {b} =0$
 
-x
+reformulated as a quadratic minimization problem. If the system matrix $\mathbf {A}$ is real symmetric and positive-definite, an objective function is defined as the quadratic function, with minimization of
 
-−
-
-b
-
-=
-
-0
-
-{\displaystyle \mathbf {A} \mathbf {x} -\mathbf {b} =0}
-
-reformulated as a quadratic minimization problem. If the system matrix A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }) is real symmetric and positive-definite, an objective function is defined as the quadratic function, with minimization of
-
-f
-
-(
-
-x
-
-)
-
-=
-
-x
-
-⊤
-
-A
-
-x
-
-−
-
-2
-
-x
-
-⊤
-
-b
-
-,
-
-{\displaystyle f(\mathbf {x} )=\mathbf {x} ^{\top }\mathbf {A} \mathbf {x} -2\mathbf {x} ^{\top }\mathbf {b} ,}
+$f(\mathbf {x} )=\mathbf {x} ^{\top }\mathbf {A} \mathbf {x} -2\mathbf {x} ^{\top }\mathbf {b} ,$
 
 so that
 
-∇
+$\nabla f(\mathbf {x} )=2(\mathbf {A} \mathbf {x} -\mathbf {b} ).$
 
-f
+For a general real matrix $\mathbf {A}$ , linear least squares define
 
-(
+$f(\mathbf {x} )=\left\|\mathbf {A} \mathbf {x} -\mathbf {b} \right\|^{2}.$
 
-x
+In traditional linear least squares for real $\mathbf {A}$ and $\mathbf {b}$ the Euclidean norm is used, in which case
 
-)
+$\nabla f(\mathbf {x} )=2\mathbf {A} ^{\top }(\mathbf {A} \mathbf {x} -\mathbf {b} ).$
 
-=
+The line search minimization, finding the locally optimal step size $\eta$ on every iteration, can be performed analytically for quadratic functions, and explicit formulas for the locally optimal $\eta$ are known.
 
-2
+For example, for real symmetric and positive-definite matrix $\mathbf {A}$ , a simple algorithm can be as follows,
 
-(
+${\begin{aligned}&{\text{repeat in the loop:}}\\&\qquad \mathbf {r$
 
-A
+To avoid multiplying by $\mathbf {A}$ twice per iteration, we note that $\mathbf {x$ implies $\mathbf {r$ , which gives the traditional algorithm,
 
-x
+${\begin{aligned}&\mathbf {r$
 
-−
-
-b
-
-)
-
-.
-
-{\displaystyle \nabla f(\mathbf {x} )=2(\mathbf {A} \mathbf {x} -\mathbf {b} ).}
-
-For a general real matrix A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }), linear least squares define
-
-f
-
-(
-
-x
-
-)
-
-=
-
-‖
-
-A
-
-x
-
-−
-
-b
-
-‖
-
-2
-
-.
-
-{\displaystyle f(\mathbf {x} )=\left\|\mathbf {A} \mathbf {x} -\mathbf {b} \right\|^{2}.}
-
-In traditional linear least squares for real A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }) and b {\displaystyle \mathbf {b} } ({\displaystyle \mathbf {b} }) the Euclidean norm is used, in which case
-
-∇
-
-f
-
-(
-
-x
-
-)
-
-=
-
-2
-
-A
-
-⊤
-
-(
-
-A
-
-x
-
-−
-
-b
-
-)
-
-.
-
-{\displaystyle \nabla f(\mathbf {x} )=2\mathbf {A} ^{\top }(\mathbf {A} \mathbf {x} -\mathbf {b} ).}
-
-The line search minimization, finding the locally optimal step size η {\displaystyle \eta } ({\displaystyle \eta }) on every iteration, can be performed analytically for quadratic functions, and explicit formulas for the locally optimal η {\displaystyle \eta } ({\displaystyle \eta }) are known.
-
-For example, for real symmetric and positive-definite matrix A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }), a simple algorithm can be as follows,
-
-repeat in the loop:
-
-r
-
-:=
-
-b
-
-−
-
-A
-
-x
-
-η
-
-:=
-
-r
-
-⊤
-
-r
-
-/
-
-r
-
-⊤
-
-A
-
-r
-
-x
-
-:=
-
-x
-
-+
-
-η
-
-r
-
-if
-
-r
-
-⊤
-
-r
-
-is sufficiently small, then exit loop
-
-end repeat loop
-
-return
-
-x
-
-as the result
-
-{\displaystyle {\begin{aligned}&{\text{repeat in the loop:}}\\&\qquad \mathbf {r}
-
-:=\mathbf {b} -\mathbf {Ax} \\&\qquad \eta
-
-:={\mathbf {r} ^{\top }\mathbf {r} }/{\mathbf {r} ^{\top }\mathbf {Ar} }\\&\qquad \mathbf {x}
-
-:=\mathbf {x} +\eta \mathbf {r} \\&\qquad {\hbox{if }}\mathbf {r} ^{\top }\mathbf {r} {\text{ is sufficiently small, then exit loop}}\\&{\text{end repeat loop}}\\&{\text{return }}\mathbf {x} {\text{ as the result}}\end{aligned}}}
-
-To avoid multiplying by A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }) twice per iteration, we note that x := x + η r {\displaystyle \mathbf {x} :=\mathbf {x} +\eta \mathbf {r} } ({\displaystyle \mathbf {x} :=\mathbf {x} +\eta \mathbf {r} }) implies r := r − η A r {\displaystyle \mathbf {r} :=\mathbf {r} -\eta \mathbf {Ar} } ({\displaystyle \mathbf {r} :=\mathbf {r} -\eta \mathbf {Ar} }), which gives the traditional algorithm,
-
-r
-
-:=
-
-b
-
-−
-
-A
-
-x
-
-repeat in the loop:
-
-η
-
-:=
-
-r
-
-⊤
-
-r
-
-/
-
-r
-
-⊤
-
-A
-
-r
-
-x
-
-:=
-
-x
-
-+
-
-η
-
-r
-
-if
-
-r
-
-⊤
-
-r
-
-is sufficiently small, then exit loop
-
-r
-
-:=
-
-r
-
-−
-
-η
-
-A
-
-r
-
-end repeat loop
-
-return
-
-x
-
-as the result
-
-{\displaystyle {\begin{aligned}&\mathbf {r}
-
-:=\mathbf {b} -\mathbf {Ax} \\&{\text{repeat in the loop:}}\\&\qquad \eta
-
-:={\mathbf {r} ^{\top }\mathbf {r} }/{\mathbf {r} ^{\top }\mathbf {Ar} }\\&\qquad \mathbf {x}
-
-:=\mathbf {x} +\eta \mathbf {r} \\&\qquad {\hbox{if }}\mathbf {r} ^{\top }\mathbf {r} {\text{ is sufficiently small, then exit loop}}\\&\qquad \mathbf {r}
-
-:=\mathbf {r} -\eta \mathbf {Ar} \\&{\text{end repeat loop}}\\&{\text{return }}\mathbf {x} {\text{ as the result}}\end{aligned}}}
-
-The method is rarely used for solving linear equations, with the conjugate gradient method being one of the most popular alternatives. The number of gradient descent iterations is commonly proportional to the spectral condition number κ ( A ) {\displaystyle \kappa (\mathbf {A} )} ({\displaystyle \kappa (\mathbf {A} )}) of the system matrix A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }) (the ratio of the maximum to minimum eigenvalues of A ⊤ A {\displaystyle \mathbf {A} ^{\top }\mathbf {A} } ({\displaystyle \mathbf {A} ^{\top }\mathbf {A} })), while the convergence of conjugate gradient method is typically determined by a square root of the condition number, i.e., is much faster. Both methods can benefit from preconditioning, where gradient descent may require less assumptions on the preconditioner.
+The method is rarely used for solving linear equations, with the conjugate gradient method being one of the most popular alternatives. The number of gradient descent iterations is commonly proportional to the spectral condition number $\kappa (\mathbf {A} )$ of the system matrix $\mathbf {A}$ (the ratio of the maximum to minimum eigenvalues of $\mathbf {A} ^{\top }\mathbf {A}$ ), while the convergence of conjugate gradient method is typically determined by a square root of the condition number, i.e., is much faster. Both methods can benefit from preconditioning, where gradient descent may require less assumptions on the preconditioner.
 
 ### Geometric behavior and residual orthogonality
 
-In steepest descent applied to solving A x = b {\displaystyle \mathbf {Ax} =\mathbf {b} } ({\displaystyle \mathbf {Ax} =\mathbf {b} }), where A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }) is symmetric positive-definite, the residual vectors r k = b − A x k {\displaystyle \mathbf {r} _{k}=\mathbf {b} -\mathbf {A} \mathbf {x} _{k}} ({\displaystyle \mathbf {r} _{k}=\mathbf {b} -\mathbf {A} \mathbf {x} _{k}}) are orthogonal across iterations:
+In steepest descent applied to solving $\mathbf {Ax} =\mathbf {b}$ , where $\mathbf {A}$ is symmetric positive-definite, the residual vectors $\mathbf {r} _{k}=\mathbf {b} -\mathbf {A} \mathbf {x} _{k}$ are orthogonal across iterations:
 
-⟨
+$\langle \mathbf {r} _{k+1},\mathbf {r} _{k}\rangle =0.$
 
-r
+Because each step is taken in the steepest direction, steepest-descent steps alternate between directions aligned with the extreme axes of the elongated level sets. When $\kappa (\mathbf {A} )$ is large, this produces a characteristic zig–zag path. The poor conditioning of $\mathbf {A}$ is the primary cause of the slow convergence, and orthogonality of successive residuals reinforces this alternation.
 
-k
-
-+
-
-1
-
-,
-
-r
-
-k
-
-⟩
-
-=
-
-0.
-
-{\displaystyle \langle \mathbf {r} _{k+1},\mathbf {r} _{k}\rangle =0.}
-
-Because each step is taken in the steepest direction, steepest-descent steps alternate between directions aligned with the extreme axes of the elongated level sets. When κ ( A ) {\displaystyle \kappa (\mathbf {A} )} ({\displaystyle \kappa (\mathbf {A} )}) is large, this produces a characteristic zig–zag path. The poor conditioning of A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }) is the primary cause of the slow convergence, and orthogonality of successive residuals reinforces this alternation.
-
-As shown in the image on the right, steepest descent converges slowly due to the high condition number of A {\displaystyle \mathbf {A} } ({\displaystyle \mathbf {A} }), and the orthogonality of residuals forces each new direction to undo the overshoot from the previous step. The result is a path that zigzags toward the solution. This inefficiency is one reason conjugate gradient or preconditioning methods are preferred.
+As shown in the image on the right, steepest descent converges slowly due to the high condition number of $\mathbf {A}$ , and the orthogonality of residuals forces each new direction to undo the overshoot from the previous step. The result is a path that zigzags toward the solution. This inefficiency is one reason conjugate gradient or preconditioning methods are preferred.
 
 ## Solution of a non-linear system
 
@@ -566,977 +126,59 @@ Gradient descent can also be used to solve a system of nonlinear equations. Belo
 
 Consider the nonlinear system of equations
 
-{
-
-3
-
-x
-
-1
-
-−
-
-cos
-
-⁡
-
-(
-
-x
-
-2
-
-x
-
-3
-
-)
-
-−
-
-3
-
-2
-
-=
-
-0
-
-4
-
-x
-
-1
-
-2
-
-−
-
-625
-
-x
-
-2
-
-2
-
-+
-
-2
-
-x
-
-2
-
-−
-
-1
-
-=
-
-0
-
-exp
-
-⁡
-
-(
-
-−
-
-x
-
-1
-
-x
-
-2
-
-)
-
-+
-
-20
-
-x
-
-3
-
-+
-
-10
-
-π
-
-−
-
-3
-
-3
-
-=
-
-0
-
-{\displaystyle {\begin{cases}3x_{1}-\cos(x_{2}x_{3})-{\tfrac {3}{2}}=0\\4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1=0\\\exp(-x_{1}x_{2})+20x_{3}+{\tfrac {10\pi -3}{3}}=0\end{cases}}}
+${\begin{cases}3x_{1}-\cos(x_{2}x_{3})-{\tfrac {3}{2}}=0\\4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1=0\\\exp(-x_{1}x_{2})+20x_{3}+{\tfrac {10\pi -3}{3}}=0\end{cases}}$
 
 Let us introduce the associated function
 
-G
-
-(
-
-x
-
-)
-
-=
-
-[
-
-3
-
-x
-
-1
-
-−
-
-cos
-
-⁡
-
-(
-
-x
-
-2
-
-x
-
-3
-
-)
-
-−
-
-3
-
-2
-
-4
-
-x
-
-1
-
-2
-
-−
-
-625
-
-x
-
-2
-
-2
-
-+
-
-2
-
-x
-
-2
-
-−
-
-1
-
-exp
-
-⁡
-
-(
-
-−
-
-x
-
-1
-
-x
-
-2
-
-)
-
-+
-
-20
-
-x
-
-3
-
-+
-
-10
-
-π
-
-−
-
-3
-
-3
-
-]
-
-,
-
-{\displaystyle G(\mathbf {x} )={\begin{bmatrix}3x_{1}-\cos(x_{2}x_{3})-{\tfrac {3}{2}}\\4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1\\\exp(-x_{1}x_{2})+20x_{3}+{\tfrac {10\pi -3}{3}}\\\end{bmatrix}},}
+$G(\mathbf {x} )={\begin{bmatrix}3x_{1}-\cos(x_{2}x_{3})-{\tfrac {3}{2}}\\4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1\\\exp(-x_{1}x_{2})+20x_{3}+{\tfrac {10\pi -3}{3}}\\\end{bmatrix}},$
 
 where
 
-x
-
-=
-
-[
-
-x
-
-1
-
-x
-
-2
-
-x
-
-3
-
-]
-
-.
-
-{\displaystyle \mathbf {x} ={\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\\\end{bmatrix}}.}
+$\mathbf {x} ={\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\\\end{bmatrix}}.$
 
 One might now define the objective function
 
-f
-
-(
-
-x
-
-)
-
-=
-
-1
-
-2
-
-G
-
-⊤
-
-(
-
-x
-
-)
-
-G
-
-(
-
-x
-
-)
-
-=
-
-1
-
-2
-
-[
-
-(
-
-3
-
-x
-
-1
-
-−
-
-cos
-
-⁡
-
-(
-
-x
-
-2
-
-x
-
-3
-
-)
-
-−
-
-3
-
-2
-
-)
-
-2
-
-+
-
-(
-
-4
-
-x
-
-1
-
-2
-
-−
-
-625
-
-x
-
-2
-
-2
-
-+
-
-2
-
-x
-
-2
-
-−
-
-1
-
-)
-
-2
-
-+
-
-(
-
-exp
-
-⁡
-
-(
-
-−
-
-x
-
-1
-
-x
-
-2
-
-)
-
-+
-
-20
-
-x
-
-3
-
-+
-
-10
-
-π
-
-−
-
-3
-
-3
-
-)
-
-2
-
-]
-
-,
-
-{\displaystyle {\begin{aligned}f(\mathbf {x} )&={\frac {1}{2}}G^{\top }(\mathbf {x} )G(\mathbf {x} )\\&={\frac {1}{2}}\left[\left(3x_{1}-\cos(x_{2}x_{3})-{\frac {3}{2}}\right)^{2}+\left(4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1\right)^{2}+\right.\\&{}\qquad \left.\left(\exp(-x_{1}x_{2})+20x_{3}+{\frac {10\pi -3}{3}}\right)^{2}\right],\end{aligned}}}
+${\begin{aligned}f(\mathbf {x} )&={\frac {1}{2}}G^{\top }(\mathbf {x} )G(\mathbf {x} )\\&={\frac {1}{2}}\left[\left(3x_{1}-\cos(x_{2}x_{3})-{\frac {3}{2}}\right)^{2}+\left(4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1\right)^{2}+\right.\\&{}\qquad \left.\left(\exp(-x_{1}x_{2})+20x_{3}+{\frac {10\pi -3}{3}}\right)^{2}\right],\end{aligned}}$
 
 which we will attempt to minimize. As an initial guess, let us use
 
-x
-
-(
-
-0
-
-)
-
-=
-
-0
-
-=
-
-[
-
-0
-
-0
-
-0
-
-]
-
-.
-
-{\displaystyle \mathbf {x} ^{(0)}=\mathbf {0} ={\begin{bmatrix}0\\0\\0\\\end{bmatrix}}.}
+$\mathbf {x} ^{(0)}=\mathbf {0} ={\begin{bmatrix}0\\0\\0\\\end{bmatrix}}.$
 
 We know that
 
-x
+$\mathbf {x} ^{(1)}=\mathbf {0} -\eta _{0}\nabla f(\mathbf {0} )=\mathbf {0} -\eta _{0}J_{G}(\mathbf {0} )^{\top }G(\mathbf {0} ),$
 
-(
+where the Jacobian matrix $J_{G}$ is given by
 
-1
-
-)
-
-=
-
-0
-
-−
-
-η
-
-0
-
-∇
-
-f
-
-(
-
-0
-
-)
-
-=
-
-0
-
-−
-
-η
-
-0
-
-J
-
-G
-
-(
-
-0
-
-)
-
-⊤
-
-G
-
-(
-
-0
-
-)
-
-,
-
-{\displaystyle \mathbf {x} ^{(1)}=\mathbf {0} -\eta _{0}\nabla f(\mathbf {0} )=\mathbf {0} -\eta _{0}J_{G}(\mathbf {0} )^{\top }G(\mathbf {0} ),}
-
-where the Jacobian matrix J G {\displaystyle J_{G}} ({\displaystyle J_{G}}) is given by
-
-J
-
-G
-
-(
-
-x
-
-)
-
-=
-
-[
-
-3
-
-sin
-
-⁡
-
-(
-
-x
-
-2
-
-x
-
-3
-
-)
-
-x
-
-3
-
-sin
-
-⁡
-
-(
-
-x
-
-2
-
-x
-
-3
-
-)
-
-x
-
-2
-
-8
-
-x
-
-1
-
-−
-
-1250
-
-x
-
-2
-
-+
-
-2
-
-0
-
-−
-
-x
-
-2
-
-exp
-
-⁡
-
-(
-
-−
-
-x
-
-1
-
-x
-
-2
-
-)
-
-−
-
-x
-
-1
-
-exp
-
-⁡
-
-(
-
-−
-
-x
-
-1
-
-x
-
-2
-
-)
-
-20
-
-]
-
-.
-
-{\displaystyle J_{G}(\mathbf {x} )={\begin{bmatrix}3&\sin(x_{2}x_{3})x_{3}&\sin(x_{2}x_{3})x_{2}\\8x_{1}&-1250x_{2}+2&0\\-x_{2}\exp {(-x_{1}x_{2})}&-x_{1}\exp(-x_{1}x_{2})&20\\\end{bmatrix}}.}
+$J_{G}(\mathbf {x} )={\begin{bmatrix}3&\sin(x_{2}x_{3})x_{3}&\sin(x_{2}x_{3})x_{2}\\8x_{1}&-1250x_{2}+2&0\\-x_{2}\exp {(-x_{1}x_{2})}&-x_{1}\exp(-x_{1}x_{2})&20\\\end{bmatrix}}.$
 
 We calculate:
 
-J
-
-G
-
-(
-
-0
-
-)
-
-=
-
-[
-
-3
-
-0
-
-0
-
-0
-
-2
-
-0
-
-0
-
-0
-
-20
-
-]
-
-,
-
-G
-
-(
-
-0
-
-)
-
-=
-
-[
-
-−
-
-2.5
-
-−
-
-1
-
-10.472
-
-]
-
-.
-
-{\displaystyle J_{G}(\mathbf {0} )={\begin{bmatrix}3&0&0\\0&2&0\\0&0&20\end{bmatrix}},\qquad G(\mathbf {0} )={\begin{bmatrix}-2.5\\-1\\10.472\end{bmatrix}}.}
+$J_{G}(\mathbf {0} )={\begin{bmatrix}3&0&0\\0&2&0\\0&0&20\end{bmatrix}},\qquad G(\mathbf {0} )={\begin{bmatrix}-2.5\\-1\\10.472\end{bmatrix}}.$
 
 Thus
 
-x
-
-(
-
-1
-
-)
-
-=
-
-0
-
-−
-
-η
-
-0
-
-[
-
-−
-
-7.5
-
-−
-
-2
-
-209.44
-
-]
-
-,
-
-{\displaystyle \mathbf {x} ^{(1)}=\mathbf {0} -\eta _{0}{\begin{bmatrix}-7.5\\-2\\209.44\end{bmatrix}},}
+$\mathbf {x} ^{(1)}=\mathbf {0} -\eta _{0}{\begin{bmatrix}-7.5\\-2\\209.44\end{bmatrix}},$
 
 and
 
-f
+$f(\mathbf {0} )=0.5\left((-2.5)^{2}+(-1)^{2}+(10.472)^{2}\right)=58.456.$
 
-(
+Now, a suitable $\eta _{0}$ must be found such that
 
-0
+$f\left(\mathbf {x} ^{(1)}\right)\leq f\left(\mathbf {x} ^{(0)}\right)=f(\mathbf {0} ).$
 
-)
+This can be done with any of a variety of line search algorithms. One might also simply guess $\eta _{0}=0.001,$ which gives
 
-=
-
-0.5
-
-(
-
-(
-
-−
-
-2.5
-
-)
-
-2
-
-+
-
-(
-
-−
-
-1
-
-)
-
-2
-
-+
-
-(
-
-10.472
-
-)
-
-2
-
-)
-
-=
-
-58.456.
-
-{\displaystyle f(\mathbf {0} )=0.5\left((-2.5)^{2}+(-1)^{2}+(10.472)^{2}\right)=58.456.}
-
-Now, a suitable η 0 {\displaystyle \eta _{0}} ({\displaystyle \eta _{0}}) must be found such that
-
-f
-
-(
-
-x
-
-(
-
-1
-
-)
-
-)
-
-≤
-
-f
-
-(
-
-x
-
-(
-
-0
-
-)
-
-)
-
-=
-
-f
-
-(
-
-0
-
-)
-
-.
-
-{\displaystyle f\left(\mathbf {x} ^{(1)}\right)\leq f\left(\mathbf {x} ^{(0)}\right)=f(\mathbf {0} ).}
-
-This can be done with any of a variety of line search algorithms. One might also simply guess η 0 = 0.001 , {\displaystyle \eta _{0}=0.001,} ({\displaystyle \eta _{0}=0.001,}) which gives
-
-x
-
-(
-
-1
-
-)
-
-=
-
-[
-
-0.0075
-
-0.002
-
-−
-
-0.20944
-
-]
-
-.
-
-{\displaystyle \mathbf {x} ^{(1)}={\begin{bmatrix}0.0075\\0.002\\-0.20944\\\end{bmatrix}}.}
+$\mathbf {x} ^{(1)}={\begin{bmatrix}0.0075\\0.002\\-0.20944\\\end{bmatrix}}.$
 
 Evaluating the objective function at this value, yields
 
-f
+$f\left(\mathbf {x} ^{(1)}\right)=0.5\left((-2.48)^{2}+(-1.00)^{2}+(6.28)^{2}\right)=23.306.$
 
-(
+The decrease from $f(\mathbf {0} )=58.456$ to the next step's value of
 
-x
-
-(
-
-1
-
-)
-
-)
-
-=
-
-0.5
-
-(
-
-(
-
-−
-
-2.48
-
-)
-
-2
-
-+
-
-(
-
-−
-
-1.00
-
-)
-
-2
-
-+
-
-(
-
-6.28
-
-)
-
-2
-
-)
-
-=
-
-23.306.
-
-{\displaystyle f\left(\mathbf {x} ^{(1)}\right)=0.5\left((-2.48)^{2}+(-1.00)^{2}+(6.28)^{2}\right)=23.306.}
-
-The decrease from f ( 0 ) = 58.456 {\displaystyle f(\mathbf {0} )=58.456} ({\displaystyle f(\mathbf {0} )=58.456}) to the next step's value of
-
-f
-
-(
-
-x
-
-(
-
-1
-
-)
-
-)
-
-=
-
-23.306
-
-{\displaystyle f\left(\mathbf {x} ^{(1)}\right)=23.306}
+$f\left(\mathbf {x} ^{(1)}\right)=23.306$
 
 is a sizable decrease in the objective function. Further steps would reduce its value further until an approximate solution to the system was found.
 
@@ -1548,11 +190,11 @@ The gradient descent can take many iterations to compute a local minimum with a 
 
 The gradient descent can be modified via momentums (Nesterov, Polyak, and Frank–Wolfe) and heavy-ball parameters (exponential moving averages and positive-negative momentum). The main examples of such optimizers are Adam, DiffGrad, Yogi, AdaBelief, etc.
 
-Methods based on Newton's method and inversion of the Hessian using conjugate gradient techniques can be better alternatives. Generally, such methods converge in fewer iterations, but the cost of each iteration is higher. An example is the BFGS method which consists in calculating on every step a matrix by which the gradient vector is multiplied to go into a "better" direction, combined with a more sophisticated line search algorithm, to find the "best" value of η . {\displaystyle \eta .} ({\displaystyle \eta .}) For extremely large problems, where the computer-memory issues dominate, a limited-memory method such as L-BFGS should be used instead of BFGS or the steepest descent.
+Methods based on Newton's method and inversion of the Hessian using conjugate gradient techniques can be better alternatives. Generally, such methods converge in fewer iterations, but the cost of each iteration is higher. An example is the BFGS method which consists in calculating on every step a matrix by which the gradient vector is multiplied to go into a "better" direction, combined with a more sophisticated line search algorithm, to find the "best" value of $\eta .$ For extremely large problems, where the computer-memory issues dominate, a limited-memory method such as L-BFGS should be used instead of BFGS or the steepest descent.
 
 While it is sometimes possible to substitute gradient descent for a local search algorithm, gradient descent is not in the same family: although it is an iterative method for local optimization, it relies on an objective function's gradient rather than an explicit exploration of a solution space.
 
-Gradient descent can be viewed as applying Euler's method for solving ordinary differential equations x ′ ( t ) = − ∇ f ( x ( t ) ) {\displaystyle x'(t)=-\nabla f(x(t))} ({\displaystyle x'(t)=-\nabla f(x(t))}) to a gradient flow. In turn, this equation may be derived as an optimal controller for the control system x ′ ( t ) = u ( t ) {\displaystyle x'(t)=u(t)} ({\displaystyle x'(t)=u(t)}) with u ( t ) {\displaystyle u(t)} ({\displaystyle u(t)}) given in feedback form u ( t ) = − ∇ f ( x ( t ) ) {\displaystyle u(t)=-\nabla f(x(t))} ({\displaystyle u(t)=-\nabla f(x(t))}).
+Gradient descent can be viewed as applying Euler's method for solving ordinary differential equations $x'(t)=-\nabla f(x(t))$ to a gradient flow. In turn, this equation may be derived as an optimal controller for the control system $x'(t)=u(t)$ with $u(t)$ given in feedback form $u(t)=-\nabla f(x(t))$ .
 
 ## Modifications
 
@@ -1560,7 +202,7 @@ Gradient descent can converge to a local minimum and slow down in a neighborhood
 
 ### Fast gradient methods
 
-Yurii Nesterov has proposed a simple modification that enables faster convergence for convex problems and has been since further generalized. For unconstrained smooth problems, the method is called the fast gradient method (FGM) or the accelerated gradient method (AGM). Specifically, if the differentiable function f {\displaystyle f} ({\displaystyle f}) is convex and ∇ f {\displaystyle \nabla f} ({\displaystyle \nabla f}) is Lipschitz, and it is not assumed that f {\displaystyle f} ({\displaystyle f}) is strongly convex, then the error in the objective value generated at each step k {\displaystyle k} ({\displaystyle k}) by the gradient descent method will be bounded by O ( k − 1 ) {\textstyle {\mathcal {O}}\left({k^{-1}}\right)} ({\textstyle {\mathcal {O}}\left({k^{-1}}\right)}). Using the Nesterov acceleration technique, the error decreases at O ( k − 2 ) {\textstyle {\mathcal {O}}\left({k^{-2}}\right)} ({\textstyle {\mathcal {O}}\left({k^{-2}}\right)}). It is known that the rate O ( k − 2 ) {\displaystyle {\mathcal {O}}\left({k^{-2}}\right)} ({\displaystyle {\mathcal {O}}\left({k^{-2}}\right)}) for the decrease of the cost function is optimal for first-order optimization methods. Nevertheless, there is the opportunity to improve the algorithm by reducing the constant factor. The optimized gradient method (OGM) reduces that constant by a factor of two and is an optimal first-order method for large-scale problems.
+Yurii Nesterov has proposed a simple modification that enables faster convergence for convex problems and has been since further generalized. For unconstrained smooth problems, the method is called the fast gradient method (FGM) or the accelerated gradient method (AGM). Specifically, if the differentiable function f is convex and $\nabla f$ is Lipschitz, and it is not assumed that f is strongly convex, then the error in the objective value generated at each step k by the gradient descent method will be bounded by ${\textstyle {\mathcal {O}}\left({k^{-1}}\right)}$ . Using the Nesterov acceleration technique, the error decreases at ${\textstyle {\mathcal {O}}\left({k^{-2}}\right)}$ . It is known that the rate ${\mathcal {O}}\left({k^{-2}}\right)$ for the decrease of the cost function is optimal for first-order optimization methods. Nevertheless, there is the opportunity to improve the algorithm by reducing the constant factor. The optimized gradient method (OGM) reduces that constant by a factor of two and is an optimal first-order method for large-scale problems.
 
 For constrained or non-smooth problems, Nesterov's FGM is called the fast proximal gradient method (FPGM), an acceleration of the proximal gradient method.
 

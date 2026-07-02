@@ -503,118 +503,134 @@
 [src:golang/effective-go-p02] Second, if the same name appears at the same nesting level, it is usually an error; it would be erroneous to embed `log.Logger` if the `Job` struct contained another field or method called `Logger`.
 [src:golang/effective-go-p02] However, if the duplicate name is never mentioned in the program outside the type definition, it is OK.
 [src:golang/effective-go-p02] This qualification provides some protection against changes made to types embedded from outside; there is no problem if a field is added that conflicts with another field in another subtype if neither field is ever used.
-[src:golang/effective-go-p03] Concurrent programming is a large topic and there is space only for some Go-specific highlights here.
-[src:golang/effective-go-p03] Concurrent programming in many environments is made difficult by the subtleties required to implement correct access to shared variables.
-[src:golang/effective-go-p03] Go encourages a different approach in which shared values are passed around on channels and, in fact, never actively shared by separate threads of execution.
-[src:golang/effective-go-p03] Only one goroutine has access to the value at any given time.
-[src:golang/effective-go-p03] Reference counts may be best done by putting a mutex around an integer variable, for instance.
-[src:golang/effective-go-p03] But as a high-level approach, using channels to control access makes it easier to write clear, correct programs.
-[src:golang/effective-go-p03] One way to think about this model is to consider a typical single-threaded program running on one CPU.
-[src:golang/effective-go-p03] It has no need for synchronization primitives.
-[src:golang/effective-go-p03] Now run another such instance; it too needs no synchronization.
-[src:golang/effective-go-p03] Now let those two communicate; if the communication is the synchronizer, there's still no need for other synchronization.
-[src:golang/effective-go-p03] Unix pipelines, for example, fit this model perfectly.
-[src:golang/effective-go-p03] Although Go's approach to concurrency originates in Hoare's Communicating Sequential Processes (CSP), it can also be seen as a type-safe generalization of Unix pipes.
-[src:golang/effective-go-p03] They're called *goroutines* because the existing terms—threads, coroutines, processes, and so on—convey inaccurate connotations.
-[src:golang/effective-go-p03] A goroutine has a simple model: it is a function executing concurrently with other goroutines in the same address space.
-[src:golang/effective-go-p03] It is lightweight, costing little more than the allocation of stack space.
-[src:golang/effective-go-p03] And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required.
-[src:golang/effective-go-p03] Goroutines are multiplexed onto multiple OS threads so if one should block, such as while waiting for I/O, others continue to run.
-[src:golang/effective-go-p03] Their design hides many of the complexities of thread creation and management.
-[src:golang/effective-go-p03] Prefix a function or method call with the `go` keyword to run the call in a new goroutine.
-[src:golang/effective-go-p03] When the call completes, the goroutine exits, silently.
-[src:golang/effective-go-p03] A function literal can be handy in a goroutine invocation.
-[src:golang/effective-go-p03] In Go, function literals are closures: the implementation makes sure the variables referred to by the function survive as long as they are active.
-[src:golang/effective-go-p03] These examples aren't too practical because the functions have no way of signaling completion.
-[src:golang/effective-go-p03] Like maps, channels are allocated with `make`, and the resulting value acts as a reference to an underlying data structure.
-[src:golang/effective-go-p03] If an optional integer parameter is provided, it sets the buffer size for the channel.
-[src:golang/effective-go-p03] The default is zero, for an unbuffered or synchronous channel.
-[src:golang/effective-go-p03] Unbuffered channels combine communication—the exchange of a value—with synchronization—guaranteeing that two calculations (goroutines) are in a known state.
-[src:golang/effective-go-p03] There are lots of nice idioms using channels.
-[src:golang/effective-go-p03] In the previous section we launched a sort in the background.
-[src:golang/effective-go-p03] A channel can allow the launching goroutine to wait for the sort to complete.
-[src:golang/effective-go-p03] Receivers always block until there is data to receive.
-[src:golang/effective-go-p03] If the channel is unbuffered, the sender blocks until the receiver has received the value.
-[src:golang/effective-go-p03] If the channel has a buffer, the sender blocks only until the value has been copied to the buffer; if the buffer is full, this means waiting until some receiver has retrieved a value.
-[src:golang/effective-go-p03] A buffered channel can be used like a semaphore, for instance to limit throughput.
-[src:golang/effective-go-p03] In this example, incoming requests are passed to `handle`, which sends a value into the channel, processes the request, and then receives a value from the channel to ready the “semaphore” for the next consumer.
-[src:golang/effective-go-p03] The capacity of the channel buffer limits the number of simultaneous calls to `process`.
-[src:golang/effective-go-p03] Once `MaxOutstanding` handlers are executing `process`, any more will block trying to send into the filled channel buffer, until one of the existing handlers finishes and receives from the buffer.
-[src:golang/effective-go-p03] This design has a problem, though: `Serve` creates a new goroutine for every incoming request, even though only `MaxOutstanding` of them can run at any moment.
-[src:golang/effective-go-p03] As a result, the program can consume unlimited resources if the requests come in too fast.
-[src:golang/effective-go-p03] (Note that in Go versions before 1.22 this code has a bug: the loop variable is shared across all goroutines.
-[src:golang/effective-go-p03] Another approach that manages resources well is to start a fixed number of `handle` goroutines all reading from the request channel.
-[src:golang/effective-go-p03] The number of goroutines limits the number of simultaneous calls to `process`.
-[src:golang/effective-go-p03] This `Serve` function also accepts a channel on which it will be told to exit; after launching the goroutines it blocks receiving from that channel.
-[src:golang/effective-go-p03] One of the most important properties of Go is that a channel is a first-class value that can be allocated and passed around like any other.
-[src:golang/effective-go-p03] A common use of this property is to implement safe, parallel demultiplexing.
-[src:golang/effective-go-p03] In the example in the previous section, `handle` was an idealized handler for a request but we didn't define the type it was handling.
-[src:golang/effective-go-p03] If that type includes a channel on which to reply, each client can provide its own path for the answer.
-[src:golang/effective-go-p03] Here's a schematic definition of type `Request`.
-[src:golang/effective-go-p03] The client provides a function and its arguments, as well as a channel inside the request object on which to receive the answer.
-[src:golang/effective-go-p03] On the server side, the handler function is the only thing that changes.
-[src:golang/effective-go-p03] There's clearly a lot more to do to make it realistic, but this code is a framework for a rate-limited, parallel, non-blocking RPC system, and there's not a mutex in sight.
-[src:golang/effective-go-p03] Another application of these ideas is to parallelize a calculation across multiple CPU cores.
-[src:golang/effective-go-p03] If the calculation can be broken into separate pieces that can execute independently, it can be parallelized, with a channel to signal when each piece completes.
-[src:golang/effective-go-p03] Let's say we have an expensive operation to perform on a vector of items, and that the value of the operation on each item is independent, as in this idealized example.
-[src:golang/effective-go-p03] We launch the pieces independently in a loop, one per CPU.
-[src:golang/effective-go-p03] They can complete in any order but it doesn't matter; we just count the completion signals by draining the channel after launching all the goroutines.
-[src:golang/effective-go-p03] Rather than create a constant value for numCPU, we can ask the runtime what value is appropriate.
-[src:golang/effective-go-p03] There is also a function `runtime.GOMAXPROCS`, which reports (or sets) the user-specified number of cores that a Go program can have running simultaneously.
-[src:golang/effective-go-p03] It defaults to the value of `runtime.NumCPU` but can be overridden by setting the similarly named shell environment variable or by calling the function with a positive number.
-[src:golang/effective-go-p03] Calling it with zero just queries the value.
-[src:golang/effective-go-p03] Be sure not to confuse the ideas of concurrency—structuring a program as independently executing components—and parallelism—executing calculations in parallel for efficiency on multiple CPUs.
-[src:golang/effective-go-p03] Although the concurrency features of Go can make some problems easy to structure as parallel computations, Go is a concurrent language, not a parallel one, and not all parallelization problems fit Go's model.
-[src:golang/effective-go-p03] For a discussion of the distinction, see the talk cited in this blog post.
-[src:golang/effective-go-p03] A leaky buffer The tools of concurrent programming can even make non-concurrent ideas easier to express.
-[src:golang/effective-go-p03] Here's an example abstracted from an RPC package.
-[src:golang/effective-go-p03] The client goroutine loops receiving data from some source, perhaps a network.
-[src:golang/effective-go-p03] To avoid allocating and freeing buffers, it keeps a free list, and uses a buffered channel to represent it.
-[src:golang/effective-go-p03] If the channel is empty, a new buffer gets allocated.
-[src:golang/effective-go-p03] The server's send to `freeList` puts `b` back on the free list unless the list is full, in which case the buffer is dropped on the floor to be reclaimed by the garbage collector.
-[src:golang/effective-go-p03] (The `default` clauses in the `select` statements execute when no other case is ready, meaning that the `selects` never block.) This implementation builds a leaky bucket free list in just a few lines, relying on the buffered channel and the garbage collector for bookkeeping.
-[src:golang/effective-go-p03] Errors Library routines must often return some sort of error indication to the caller.
+[src:golang/effective-go-p02] Concurrent programming is a large topic and there is space only for some Go-specific highlights here.
+[src:golang/effective-go-p02] Concurrent programming in many environments is made difficult by the subtleties required to implement correct access to shared variables.
+[src:golang/effective-go-p02] Go encourages a different approach in which shared values are passed around on channels and, in fact, never actively shared by separate threads of execution.
+[src:golang/effective-go-p02] Only one goroutine has access to the value at any given time.
+[src:golang/effective-go-p02] Reference counts may be best done by putting a mutex around an integer variable, for instance.
+[src:golang/effective-go-p02] But as a high-level approach, using channels to control access makes it easier to write clear, correct programs.
+[src:golang/effective-go-p02] One way to think about this model is to consider a typical single-threaded program running on one CPU.
+[src:golang/effective-go-p02] It has no need for synchronization primitives.
+[src:golang/effective-go-p02] Now run another such instance; it too needs no synchronization.
+[src:golang/effective-go-p02] Now let those two communicate; if the communication is the synchronizer, there's still no need for other synchronization.
+[src:golang/effective-go-p02] Unix pipelines, for example, fit this model perfectly.
+[src:golang/effective-go-p02] Although Go's approach to concurrency originates in Hoare's Communicating Sequential Processes (CSP), it can also be seen as a type-safe generalization of Unix pipes.
+[src:golang/effective-go-p02] They're called *goroutines* because the existing terms—threads, coroutines, processes, and so on—convey inaccurate connotations.
+[src:golang/effective-go-p02] A goroutine has a simple model: it is a function executing concurrently with other goroutines in the same address space.
+[src:golang/effective-go-p02] It is lightweight, costing little more than the allocation of stack space.
+[src:golang/effective-go-p02] And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required.
+[src:golang/effective-go-p02] Goroutines are multiplexed onto multiple OS threads so if one should block, such as while waiting for I/O, others continue to run.
+[src:golang/effective-go-p02] Their design hides many of the complexities of thread creation and management.
+[src:golang/effective-go-p02] Prefix a function or method call with the `go` keyword to run the call in a new goroutine.
+[src:golang/effective-go-p02] When the call completes, the goroutine exits, silently.
+[src:golang/effective-go-p02] A function literal can be handy in a goroutine invocation.
+[src:golang/effective-go-p02] In Go, function literals are closures: the implementation makes sure the variables referred to by the function survive as long as they are active.
+[src:golang/effective-go-p02] These examples aren't too practical because the functions have no way of signaling completion.
+[src:golang/effective-go-p02] Like maps, channels are allocated with `make`, and the resulting value acts as a reference to an underlying data structure.
+[src:golang/effective-go-p02] If an optional integer parameter is provided, it sets the buffer size for the channel.
+[src:golang/effective-go-p02] The default is zero, for an unbuffered or synchronous channel.
+[src:golang/effective-go-p02] Unbuffered channels combine communication—the exchange of a value—with synchronization—guaranteeing that two calculations (goroutines) are in a known state.
+[src:golang/effective-go-p02] There are lots of nice idioms using channels.
+[src:golang/effective-go-p02] In the previous section we launched a sort in the background.
+[src:golang/effective-go-p02] A channel can allow the launching goroutine to wait for the sort to complete.
+[src:golang/effective-go-p02] Receivers always block until there is data to receive.
+[src:golang/effective-go-p02] If the channel is unbuffered, the sender blocks until the receiver has received the value.
+[src:golang/effective-go-p02] If the channel has a buffer, the sender blocks only until the value has been copied to the buffer; if the buffer is full, this means waiting until some receiver has retrieved a value.
+[src:golang/effective-go-p02] A buffered channel can be used like a semaphore, for instance to limit throughput.
+[src:golang/effective-go-p02] In this example, incoming requests are passed to `handle`, which sends a value into the channel, processes the request, and then receives a value from the channel to ready the “semaphore” for the next consumer.
+[src:golang/effective-go-p02] The capacity of the channel buffer limits the number of simultaneous calls to `process`.
+[src:golang/effective-go-p02] Once `MaxOutstanding` handlers are executing `process`, any more will block trying to send into the filled channel buffer, until one of the existing handlers finishes and receives from the buffer.
+[src:golang/effective-go-p02] This design has a problem, though: `Serve` creates a new goroutine for every incoming request, even though only `MaxOutstanding` of them can run at any moment.
+[src:golang/effective-go-p02] As a result, the program can consume unlimited resources if the requests come in too fast.
+[src:golang/effective-go-p02] (Note that in Go versions before 1.22 this code has a bug: the loop variable is shared across all goroutines.
+[src:golang/effective-go-p02] Another approach that manages resources well is to start a fixed number of `handle` goroutines all reading from the request channel.
+[src:golang/effective-go-p02] The number of goroutines limits the number of simultaneous calls to `process`.
+[src:golang/effective-go-p02] This `Serve` function also accepts a channel on which it will be told to exit; after launching the goroutines it blocks receiving from that channel.
+[src:golang/effective-go-p02] One of the most important properties of Go is that a channel is a first-class value that can be allocated and passed around like any other.
+[src:golang/effective-go-p02] A common use of this property is to implement safe, parallel demultiplexing.
+[src:golang/effective-go-p02] In the example in the previous section, `handle` was an idealized handler for a request but we didn't define the type it was handling.
+[src:golang/effective-go-p02] If that type includes a channel on which to reply, each client can provide its own path for the answer.
+[src:golang/effective-go-p02] Here's a schematic definition of type `Request`.
+[src:golang/effective-go-p02] The client provides a function and its arguments, as well as a channel inside the request object on which to receive the answer.
+[src:golang/effective-go-p02] On the server side, the handler function is the only thing that changes.
+[src:golang/effective-go-p02] There's clearly a lot more to do to make it realistic, but this code is a framework for a rate-limited, parallel, non-blocking RPC system, and there's not a mutex in sight.
+[src:golang/effective-go-p02] Another application of these ideas is to parallelize a calculation across multiple CPU cores.
+[src:golang/effective-go-p02] If the calculation can be broken into separate pieces that can execute independently, it can be parallelized, with a channel to signal when each piece completes.
+[src:golang/effective-go-p02] Let's say we have an expensive operation to perform on a vector of items, and that the value of the operation on each item is independent, as in this idealized example.
+[src:golang/effective-go-p02] We launch the pieces independently in a loop, one per CPU.
+[src:golang/effective-go-p02] They can complete in any order but it doesn't matter; we just count the completion signals by draining the channel after launching all the goroutines.
+[src:golang/effective-go-p02] Rather than create a constant value for numCPU, we can ask the runtime what value is appropriate.
+[src:golang/effective-go-p02] There is also a function `runtime.GOMAXPROCS`, which reports (or sets) the user-specified number of cores that a Go program can have running simultaneously.
+[src:golang/effective-go-p02] It defaults to the value of `runtime.NumCPU` but can be overridden by setting the similarly named shell environment variable or by calling the function with a positive number.
+[src:golang/effective-go-p02] Calling it with zero just queries the value.
+[src:golang/effective-go-p02] Be sure not to confuse the ideas of concurrency—structuring a program as independently executing components—and parallelism—executing calculations in parallel for efficiency on multiple CPUs.
+[src:golang/effective-go-p02] Although the concurrency features of Go can make some problems easy to structure as parallel computations, Go is a concurrent language, not a parallel one, and not all parallelization problems fit Go's model.
+[src:golang/effective-go-p02] For a discussion of the distinction, see the talk cited in this blog post.
+[src:golang/effective-go-p02] The tools of concurrent programming can even make non-concurrent ideas easier to express.
+[src:golang/effective-go-p02] Here's an example abstracted from an RPC package.
+[src:golang/effective-go-p02] The client goroutine loops receiving data from some source, perhaps a network.
+[src:golang/effective-go-p02] To avoid allocating and freeing buffers, it keeps a free list, and uses a buffered channel to represent it.
+[src:golang/effective-go-p02] If the channel is empty, a new buffer gets allocated.
+[src:golang/effective-go-p02] Once the message buffer is ready, it's sent to the server on `serverChan`.
+[src:golang/effective-go-p02] The server loop receives each message from the client, processes it, and returns the buffer to the free list.
+[src:golang/effective-go-p02] The client attempts to retrieve a buffer from `freeList`; if none is available, it allocates a fresh one.
+[src:golang/effective-go-p02] The server's send to `freeList` puts `b` back on the free list unless the list is full, in which case the buffer is dropped on the floor to be reclaimed by the garbage collector.
+[src:golang/effective-go-p02] (The `default` clauses in the `select` statements execute when no other case is ready, meaning that the `selects` never block.) This implementation builds a leaky bucket free list in just a few lines, relying on the buffered channel and the garbage collector for bookkeeping.
+[src:golang/effective-go-p03] Library routines must often return some sort of error indication to the caller.
 [src:golang/effective-go-p03] As mentioned earlier, Go's multivalue return makes it easy to return a detailed error description alongside the normal return value.
 [src:golang/effective-go-p03] It is good style to use this feature to provide detailed error information.
 [src:golang/effective-go-p03] For example, as we'll see, `os.Open` doesn't just return a `nil` pointer on failure, it also returns an error value that describes what went wrong.
-[src:golang/effective-go-p03] By convention, errors have type `error`, a simple built-in interface. type error interface { Error() string } A library writer is free to implement this interface with a richer model under the covers, making it possible not only to see the error but also to provide some context.
+[src:golang/effective-go-p03] By convention, errors have type `error`, a simple built-in interface.
+[src:golang/effective-go-p03] A library writer is free to implement this interface with a richer model under the covers, making it possible not only to see the error but also to provide some context.
 [src:golang/effective-go-p03] As mentioned, alongside the usual `*os.File` return value, `os.Open` also returns an error value.
-[src:golang/effective-go-p03] If the file is opened successfully, the error will be `nil`, but when there is a problem, it will hold an `os.PathError`: // PathError records an error and the operation and // file path that caused it. type PathError struct { Op string // "open", "unlink", etc.
+[src:golang/effective-go-p03] Such an error, which includes the problematic file name, the operation, and the operating system error it triggered, is useful even if printed far from the call that caused it; it is much more informative than the plain "no such file or directory".
 [src:golang/effective-go-p03] When feasible, error strings should identify their origin, such as by having a prefix naming the operation or package that generated the error.
 [src:golang/effective-go-p03] For example, in package `image`, the string representation for a decoding error due to an unknown format is "image: unknown format".
 [src:golang/effective-go-p03] Callers that care about the precise error details can use a type switch or a type assertion to look for specific errors and extract details.
+[src:golang/effective-go-p03] For `PathErrors` this might include examining the internal `Err` field for recoverable failures.
+[src:golang/effective-go-p03] The second `if` statement here is another type assertion.
 [src:golang/effective-go-p03] If it fails, `ok` will be false, and `e` will be `nil`.
 [src:golang/effective-go-p03] If it succeeds, `ok` will be true, which means the error was of type `*os.PathError`, and then so is `e`, which we can examine for more information about the error.
-[src:golang/effective-go-p03] Panic The usual way to report an error to a caller is to return an `error` as an extra return value.
+[src:golang/effective-go-p03] The usual way to report an error to a caller is to return an `error` as an extra return value.
 [src:golang/effective-go-p03] The canonical `Read` method is a well-known instance; it returns a byte count and an `error`.
 [src:golang/effective-go-p03] Sometimes the program simply cannot continue.
 [src:golang/effective-go-p03] For this purpose, there is a built-in function `panic` that in effect creates a run-time error that will stop the program (but see the next section).
 [src:golang/effective-go-p03] The function takes a single argument of arbitrary type—often a string—to be printed as the program dies.
+[src:golang/effective-go-p03] It's also a way to indicate that something impossible has happened, such as exiting an infinite loop.
+[src:golang/effective-go-p03] This is only an example but real library functions should avoid `panic`.
 [src:golang/effective-go-p03] If the problem can be masked or worked around, it's always better to let things continue to run rather than taking down the whole program.
+[src:golang/effective-go-p03] One possible counterexample is during initialization: if the library truly cannot set itself up, it might be reasonable to panic, so to speak.
+[src:golang/effective-go-p03] When `panic` is called, including implicitly for run-time errors such as indexing a slice out of bounds or failing a type assertion, it immediately stops execution of the current function and begins unwinding the stack of the goroutine, running any deferred functions along the way.
 [src:golang/effective-go-p03] If that unwinding reaches the top of the goroutine's stack, the program dies.
 [src:golang/effective-go-p03] However, it is possible to use the built-in function `recover` to regain control of the goroutine and resume normal execution.
 [src:golang/effective-go-p03] A call to `recover` stops the unwinding and returns the argument passed to `panic`.
 [src:golang/effective-go-p03] Because the only code that runs while unwinding is inside deferred functions, `recover` is only useful inside deferred functions.
+[src:golang/effective-go-p03] One application of `recover` is to shut down a failing goroutine inside a server without killing the other executing goroutines.
+[src:golang/effective-go-p03] In this example, if `do(work)` panics, the result will be logged and the goroutine will exit cleanly without disturbing the others.
 [src:golang/effective-go-p03] There's no need to do anything else in the deferred closure; calling `recover` handles the condition completely.
 [src:golang/effective-go-p03] Because `recover` always returns `nil` unless called directly from a deferred function, deferred code can call library routines that themselves use `panic` and `recover` without failing.
 [src:golang/effective-go-p03] As an example, the deferred function in `safelyDo` might call a logging function before calling `recover`, and that logging code would run unaffected by the panicking state.
 [src:golang/effective-go-p03] With our recovery pattern in place, the `do` function (and anything it calls) can get out of any bad situation cleanly by calling `panic`.
 [src:golang/effective-go-p03] We can use that idea to simplify error handling in complex software.
 [src:golang/effective-go-p03] Let's look at an idealized version of a `regexp` package, which reports parsing errors by calling `panic` with a local error type.
+[src:golang/effective-go-p03] Here's the definition of `Error`, an `error` method, and the `Compile` function.
+[src:golang/effective-go-p03] If `doParse` panics, the recovery block will set the return value to `nil`—deferred functions can modify named return values.
 [src:golang/effective-go-p03] It will then check, in the assignment to `err`, that the problem was a parse error by asserting that it has the local type `Error`.
 [src:golang/effective-go-p03] If it does not, the type assertion will fail, causing a run-time error that continues the stack unwinding as though nothing had interrupted it.
 [src:golang/effective-go-p03] This check means that if something unexpected happens, such as an index out of bounds, the code will fail even though we are using `panic` and `recover` to handle parse errors.
+[src:golang/effective-go-p03] Useful though this pattern is, it should be used only within a package.
 [src:golang/effective-go-p03] `Parse` turns its internal `panic` calls into `error` values; it does not expose `panics` to its client.
 [src:golang/effective-go-p03] By the way, this re-panic idiom changes the panic value if an actual error occurs.
 [src:golang/effective-go-p03] However, both the original and new failures will be presented in the crash report, so the root cause of the problem will still be visible.
 [src:golang/effective-go-p03] Thus this simple re-panic approach is usually sufficient—it's a crash after all—but if you want to display only the original value, you can write a little more code to filter unexpected problems and re-panic with the original error.
 [src:golang/effective-go-p03] That's left as an exercise for the reader.
-[src:golang/effective-go-p03] A web server Let's finish with a complete Go program, a web server.
+[src:golang/effective-go-p03] Let's finish with a complete Go program, a web server.
 [src:golang/effective-go-p03] This one is actually a kind of web re-server.
 [src:golang/effective-go-p03] Google provides a service at `chart.apis.google.com` that does automatic formatting of data into charts and graphs.
 [src:golang/effective-go-p03] It's hard to use interactively, though, because you need to put the data into the URL as a query.
 [src:golang/effective-go-p03] The program here provides a nicer interface to one form of data: given a short piece of text, it calls on the chart server to produce a QR code, a matrix of boxes that encode the text.
 [src:golang/effective-go-p03] That image can be grabbed with your cell phone's camera and interpreted as, for instance, a URL, saving you typing the URL into the phone's tiny keyboard.
+[src:golang/effective-go-p03] The pieces up to `main` should be easy to follow.
 [src:golang/effective-go-p03] The one flag sets a default HTTP port for our server.
 [src:golang/effective-go-p03] The template variable `templ` is where the fun happens.
 [src:golang/effective-go-p03] It builds an HTML template that will be executed by the server to display the page; more about that in a moment.
@@ -1184,19 +1200,3 @@
 [src:golang/net-http-p01] It's used by the optional Server.ConnState hook.
 [src:golang/net-http-p01] A Cookie represents an HTTP cookie as sent in the Set-Cookie header of an HTTP response or the Cookie header of an HTTP request.
 [src:golang/net-http-p01] See https://tools.ietf.org/html/rfc6265 for details.
-[src:golang/net-http-p01] ParseCookie parses a Cookie header value and returns all the cookies which were set in it.
-[src:golang/net-http-p01] Since the same cookie name can appear multiple times the returned Values can contain more than one value for a given key.
-[src:golang/net-http-p01] ParseSetCookie parses a Set-Cookie header value and returns a cookie.
-[src:golang/net-http-p01] String returns the serialization of the cookie for use in a Cookie header (if only Name and Value are set) or a Set-Cookie response header (if other fields are set).
-[src:golang/net-http-p01] If c is nil or c.Name is invalid, the empty string is returned.
-[src:golang/net-http-p01] Valid reports whether the cookie is valid.
-[src:golang/net-http-p01] A CookieJar manages storage and use of cookies in HTTP requests.
-[src:golang/net-http-p01] Implementations of CookieJar must be safe for concurrent use by multiple goroutines.
-[src:golang/net-http-p01] The net/http/cookiejar package provides a CookieJar implementation.
-[src:golang/net-http-p01] CrossOriginProtection implements protections against Cross-Site Request Forgery (CSRF) by rejecting non-safe cross-origin browser requests.
-[src:golang/net-http-p01] Cross-origin requests are currently detected with the Sec-Fetch-Site header, available in all browsers since 2023, or by comparing the hostname of the Origin header with the Host header.
-[src:golang/net-http-p01] The GET, HEAD, and OPTIONS methods are safe methods and are always allowed.
-[src:golang/net-http-p01] It's important that applications do not perform any state changing actions due to requests with safe methods.
-[src:golang/net-http-p01] Requests without Sec-Fetch-Site or Origin headers are currently assumed to be either same-origin or non-browser requests, and are allowed.
-[src:golang/net-http-p01] The zero value of CrossOriginProtection is valid and has no trusted origins or bypass patterns.
-[src:golang/net-http-p01] NewCrossOriginProtection returns a new CrossOriginProtection value.

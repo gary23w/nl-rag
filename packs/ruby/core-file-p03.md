@@ -10,6 +10,12 @@ part: 3/3
 
 # class File
 
+Opens the file at the given `path` according to the given `mode`; creates and returns a new `File` object for that file.
+
+The new `File` object is buffered mode (or non-sync mode), unless `filename` is a tty. See `IO#flush`, `IO#fsync`, `IO#fdatasync`, and `IO#sync=`.
+
+Argument `path` must be a valid file path:
+
 ```
 f = File.new('/etc/fstab')
 f.close

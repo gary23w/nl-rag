@@ -144,7 +144,7 @@ Note the following variable definitions:
 
 In B-trees, the following properties are maintained for these nodes:
 
-- If ki exists in any node in a B-tree, then *k**i*-1 exists in that node where i ≥ 1 {\displaystyle i\geq 1} ({\displaystyle i\geq 1}).
+- If ki exists in any node in a B-tree, then *k**i*-1 exists in that node where $i\geq 1$ .
 - All leaf nodes have the same number of ancestors (i.e., they are all at the same depth).
 
 Each internal node in a B-tree has the following format:
@@ -217,19 +217,19 @@ The node bounds are summarized in the table below:
 |---|---|---|---|---|
 | Min | Max | Min | Max |   |
 | Root node when it is a leaf node | 0 | K | 0 | 0 |
-| Root node when it is an internal node | 1 | K | 2 | K + 1 {\displaystyle K+1} ({\displaystyle K+1}) |
-| Internal node | ⌊ K / 2 ⌋ {\displaystyle \lfloor K/2\rfloor } ({\displaystyle \lfloor K/2\rfloor }) | K | ⌈ ( K + 1 ) / 2 ⌉ ≡ ⌊ K / 2 ⌋ + 1 {\displaystyle \lceil (K+1)/2\rceil \equiv \lfloor K/2\rfloor +1} ({\displaystyle \lceil (K+1)/2\rceil \equiv \lfloor K/2\rfloor +1}) | K + 1 {\displaystyle K+1} ({\displaystyle K+1}) |
-| Leaf node | ⌈ K / 2 ⌉ {\displaystyle \lceil K/2\rceil } ({\displaystyle \lceil K/2\rceil }) | K | 0 | 0 |
+| Root node when it is an internal node | 1 | K | 2 | $K+1$ |
+| Internal node | $\lfloor K/2\rfloor$ | K | $\lceil (K+1)/2\rceil \equiv \lfloor K/2\rfloor +1$ | $K+1$ |
+| Leaf node | $\lceil K/2\rceil$ | K | 0 | 0 |
 
 ### Insertion and deletion
 
 To maintain the predefined range of child nodes, internal nodes may be joined or split.
 
-Usually, the number of keys is chosen to vary between d and 2 d {\displaystyle 2d} ({\displaystyle 2d}), where d is the minimum number of keys, and d + 1 {\displaystyle d+1} ({\displaystyle d+1}) is the minimum degree or branching factor of the tree. The factor of 2 will guarantee that nodes can be split or combined.
+Usually, the number of keys is chosen to vary between d and $2d$ , where d is the minimum number of keys, and $d+1$ is the minimum degree or branching factor of the tree. The factor of 2 will guarantee that nodes can be split or combined.
 
-If an internal node has 2 d {\displaystyle 2d} ({\displaystyle 2d}) keys, then adding a key to that node can be accomplished by splitting the hypothetical 2 d + 1 {\displaystyle 2d+1} ({\displaystyle 2d+1}) key node into two d key nodes and moving the key that would have been in the middle to the parent node. Each split node has the required minimum number of keys. Similarly, if an internal node and its neighbor each have d keys, then a key may be deleted from the internal node by combining it with its neighbor. Deleting the key would make the internal node have d − 1 {\displaystyle d-1} ({\displaystyle d-1}) keys; joining the neighbor would add d keys plus one more key brought down from the neighbor's parent. The result is an entirely full node of 2 d {\displaystyle 2d} ({\displaystyle 2d}) keys.
+If an internal node has $2d$ keys, then adding a key to that node can be accomplished by splitting the hypothetical $2d+1$ key node into two d key nodes and moving the key that would have been in the middle to the parent node. Each split node has the required minimum number of keys. Similarly, if an internal node and its neighbor each have d keys, then a key may be deleted from the internal node by combining it with its neighbor. Deleting the key would make the internal node have $d-1$ keys; joining the neighbor would add d keys plus one more key brought down from the neighbor's parent. The result is an entirely full node of $2d$ keys.
 
-A B-tree is kept balanced after insertion by splitting a would-be overfilled node, of 2 d + 1 {\displaystyle 2d+1} ({\displaystyle 2d+1}) keys, into two d-key siblings and inserting the mid-value key into the parent. Depth only increases when the root is split, maintaining balance. Similarly, a B-tree is kept balanced after deletion by merging or redistributing keys among siblings to maintain the d-key minimum for non-root nodes. A merger reduces the number of keys in the parent, potentially forcing it to merge or redistribute keys with its siblings, and so on. The only change in depth occurs when the root has two children, of d and (transitionally) d − 1 {\displaystyle d-1} ({\displaystyle d-1}) keys, in which case the two siblings and parent are merged, reducing the depth by one.
+A B-tree is kept balanced after insertion by splitting a would-be overfilled node, of $2d+1$ keys, into two d-key siblings and inserting the mid-value key into the parent. Depth only increases when the root is split, maintaining balance. Similarly, a B-tree is kept balanced after deletion by merging or redistributing keys among siblings to maintain the d-key minimum for non-root nodes. A merger reduces the number of keys in the parent, potentially forcing it to merge or redistribute keys with its siblings, and so on. The only change in depth occurs when the root has two children, of d and (transitionally) $d-1$ keys, in which case the two siblings and parent are merged, reducing the depth by one.
 
 This depth will increase slowly as elements are added to the tree, but an increase in the overall depth is infrequent, and results in all leaf nodes being one more node farther away from the root.
 
@@ -303,77 +303,13 @@ Let *h* ≥ –1 be the height of the classic B-tree (see Tree (data structure) 
 
 It can be shown (by induction for example) that a B-tree of height *h* with all its nodes completely filled has *n* = *m**h*+1–1 entries. Hence, the best case height (i.e. the minimum height) of a B-tree is:
 
-h
+$h_{\mathrm {min} }=\lceil \log _{m}(n+1)\rceil -1$
 
-m
-
-i
-
-n
-
-=
-
-⌈
-
-log
-
-m
-
-⁡
-
-(
-
-n
-
-+
-
-1
-
-)
-
-⌉
-
-−
-
-1
-
-{\displaystyle h_{\mathrm {min} }=\lceil \log _{m}(n+1)\rceil -1}
-
-Let d {\displaystyle d} ({\displaystyle d}) be the minimum number of children an internal (non-root) node must have. For an ordinary B-tree, d = ⌈ m / 2 ⌉ . {\displaystyle d=\left\lceil m/2\right\rceil .} ({\displaystyle d=\left\lceil m/2\right\rceil .})
+Let d be the minimum number of children an internal (non-root) node must have. For an ordinary B-tree, $d=\left\lceil m/2\right\rceil .$
 
 Comer (1979) and Cormen et al. (2001) give the worst case height (the maximum height) of a B-tree as:
 
-h
-
-m
-
-a
-
-x
-
-=
-
-⌊
-
-log
-
-d
-
-⁡
-
-n
-
-+
-
-1
-
-2
-
-⌋
-
-.
-
-{\displaystyle h_{\mathrm {max} }=\left\lfloor \log _{d}{\frac {n+1}{2}}\right\rfloor .}
+$h_{\mathrm {max} }=\left\lfloor \log _{d}{\frac {n+1}{2}}\right\rfloor .$
 
 ## Algorithms
 
@@ -465,13 +401,13 @@ At the end of bulk loading, the tree is composed almost entirely of completely f
 
 ## In filesystems
 
-In addition to its use in databases, the B-tree (or § Variants) is also used in filesystems to allow quick random access to an arbitrary block in a particular file. The basic problem is turning the file block i {\displaystyle i} ({\displaystyle i}) address into a disk block address.
+In addition to its use in databases, the B-tree (or § Variants) is also used in filesystems to allow quick random access to an arbitrary block in a particular file. The basic problem is turning the file block i address into a disk block address.
 
-Some early operating systems, and some highly specialized ones, required the application to allocate the maximum size of a file when the file was created. The file can then be allocated as contiguous disk blocks. In that case, to convert the file block address i {\displaystyle i} ({\displaystyle i}) into a disk block address, the operating system simply adds the file block address i {\displaystyle i} ({\displaystyle i}) to the address of the first disk block constituting the file. The scheme is simple, but the file cannot exceed its created size.
+Some early operating systems, and some highly specialized ones, required the application to allocate the maximum size of a file when the file was created. The file can then be allocated as contiguous disk blocks. In that case, to convert the file block address i into a disk block address, the operating system simply adds the file block address i to the address of the first disk block constituting the file. The scheme is simple, but the file cannot exceed its created size.
 
 All modern, mainstream operating systems allow a file to grow. The resulting disk blocks may not be contiguous, so mapping logical blocks to physical blocks is more involved.
 
-MS-DOS, for example, used a simple File Allocation Table (FAT). The FAT has an entry for each disk block, and that entry identifies whether its block is used by a file and if so, which block (if any) is the next disk block of the same file. So, the allocation of each file is represented as a linked list in the table. In order to find the disk address of file block i {\displaystyle i} ({\displaystyle i}), the operating system (or disk utility) must sequentially follow the file's linked list in the FAT. Worse, to find a free disk block, it must sequentially scan the FAT. For MS-DOS, that was not a huge penalty because the disks and files were small and the FAT had few entries and relatively short file chains. In the FAT12 filesystem (used on floppy disks and early hard disks), there were no more than 4,080 entries, and the FAT would usually be resident in memory. As disks got bigger, the FAT architecture began to confront penalties. On a large disk using FAT, it may be necessary to perform disk reads to learn the disk location of a file block to be read or written.
+MS-DOS, for example, used a simple File Allocation Table (FAT). The FAT has an entry for each disk block, and that entry identifies whether its block is used by a file and if so, which block (if any) is the next disk block of the same file. So, the allocation of each file is represented as a linked list in the table. In order to find the disk address of file block i , the operating system (or disk utility) must sequentially follow the file's linked list in the FAT. Worse, to find a free disk block, it must sequentially scan the FAT. For MS-DOS, that was not a huge penalty because the disks and files were small and the FAT had few entries and relatively short file chains. In the FAT12 filesystem (used on floppy disks and early hard disks), there were no more than 4,080 entries, and the FAT would usually be resident in memory. As disks got bigger, the FAT architecture began to confront penalties. On a large disk using FAT, it may be necessary to perform disk reads to learn the disk location of a file block to be read or written.
 
 TOPS-20 used a 0 to 2 level tree that has similarities to a B-tree. A disk block was 512 36-bit words. If the file fit in a 512 (29) word block, then the file directory would point to that physical disk block. If the file fit in 218 words, then the directory would point to an aux index; the 512 words of that index would either be NULL (the block isn't allocated) or point to the physical address of the block. If the file fit in 227 words, then the directory would point to a block holding an aux-aux index; each entry would either be NULL or point to an aux index. Consequently, the physical disk block for a 227 word file could be located in two disk reads and read on the third.
 
@@ -503,4 +439,4 @@ A Maple tree is a B-tree developed for use in the Linux kernel to reduce lock co
 
 ### (a,b)-tree
 
-(a,b)-trees are generalizations of B-trees. B-trees require that each internal node have a minimum of ⌊ K / 2 ⌋ + 1 {\displaystyle \lfloor K/2\rfloor +1} ({\displaystyle \lfloor K/2\rfloor +1}) children and a maximum of K {\displaystyle K} ({\displaystyle K}) children, for some preset value of K {\displaystyle K} ({\displaystyle K}). In contrast, an (a,b)-tree allows the minimum number of children for an internal node to be set arbitrarily low. In an (a,b)-tree, each internal node has between a and b children, for some preset values of a and b.
+(a,b)-trees are generalizations of B-trees. B-trees require that each internal node have a minimum of $\lfloor K/2\rfloor +1$ children and a maximum of K children, for some preset value of K . In contrast, an (a,b)-tree allows the minimum number of children for an internal node to be set arbitrarily low. In an (a,b)-tree, each internal node has between a and b children, for some preset values of a and b.
