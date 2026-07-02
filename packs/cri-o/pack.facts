@@ -1,0 +1,338 @@
+# nl-rag distilled facts — domain: cri-o
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:cri-o/architecture-cri] The CRI is a plugin interface which enables the kubelet to use a wide variety of container runtimes, without having a need to recompile the cluster components.
+[src:cri-o/architecture-cri] You need a working container runtime on each Node in your cluster, so that the kubelet can launch Pods and their containers.
+[src:cri-o/architecture-cri] The Container Runtime Interface (CRI) is the main protocol for the communication between the kubelet and Container Runtime.
+[src:cri-o/architecture-cri] The Kubernetes Container Runtime Interface (CRI) defines the main gRPC protocol for the communication between the node components kubelet and container runtime.
+[src:cri-o/architecture-cri] The kubelet acts as a client when connecting to the container runtime via gRPC.
+[src:cri-o/architecture-cri] The runtime and image service endpoints have to be available in the container runtime, which can be configured separately within the kubelet by using the `--container-runtime-endpoint` command line flag.
+[src:cri-o/architecture-cri] For Kubernetes v1.26 and later, the kubelet requires that the container runtime supports the `v1` CRI API.
+[src:cri-o/architecture-cri] If a container runtime does not support the `v1` API, the kubelet will not register the node.
+[src:cri-o/architecture-cri] When upgrading the Kubernetes version on a node, the kubelet restarts.
+[src:cri-o/architecture-cri] If the container runtime does not support the `v1` CRI API, the kubelet will fail to register and report an error.
+[src:cri-o/architecture-cri] If a gRPC re-dial is required because the container runtime has been upgraded, the runtime must support the `v1` CRI API for the connection to succeed.
+[src:cri-o/architecture-cri] This might require a restart of the kubelet after the container runtime is correctly configured.
+[src:cri-o/architecture-cri] The standard CRI list RPCs (`ListContainers`, `ListPodSandbox`, `ListImages`) return all results in a single unary response.
+[src:cri-o/architecture-cri] On nodes with a large number of containers (for example, more than roughly 10,000 including both running and stopped), these responses can exceed gRPC's default 16 MiB message size limit, causing the kubelet to fail when reconciling state with the container runtime.
+[src:cri-o/architecture-cri] With the `CRIListStreaming` feature gate enabled, the kubelet uses server-side streaming RPCs (such as `StreamContainers`, `StreamPodSandboxes`, `StreamImages`) that allow the container runtime to divide results across multiple response messages, bypassing the per-message size limit.
+[src:cri-o/architecture-cri] If the container runtime does not support streaming RPCs, the kubelet automatically falls back to the standard unary RPCs for backward compatibility.
+[src:cri-o/container-runtimes] Dockershim has been removed from the Kubernetes project as of release 1.24.
+[src:cri-o/container-runtimes] You need to install a container runtime into each node in the cluster so that Pods can run there.
+[src:cri-o/container-runtimes] This page outlines what is involved and describes related tasks for setting up nodes.
+[src:cri-o/container-runtimes] Kubernetes 1.36 requires that you use a runtime that conforms with the Container Runtime Interface (CRI).
+[src:cri-o/container-runtimes] See CRI version support for more information.
+[src:cri-o/container-runtimes] This page provides an outline of how to use several common container runtimes with Kubernetes.
+[src:cri-o/container-runtimes] Kubernetes releases before v1.24 included a direct integration with Docker Engine, using a component named *dockershim*.
+[src:cri-o/container-runtimes] That special direct integration is no longer part of Kubernetes (this removal was announced as part of the v1.20 release).
+[src:cri-o/container-runtimes] You can read Check whether Dockershim removal affects you to understand how this removal might affect you.
+[src:cri-o/container-runtimes] To learn about migrating from using dockershim, see Migrating from dockershim.
+[src:cri-o/container-runtimes] If you are running a version of Kubernetes other than v1.36, check the documentation for that version.
+[src:cri-o/container-runtimes] By default, the Linux kernel does not allow IPv4 packets to be routed between interfaces.
+[src:cri-o/container-runtimes] Most Kubernetes cluster networking implementations will change this setting (if needed), but some might expect the administrator to do it for them.
+[src:cri-o/container-runtimes] On Linux, control groups are used to constrain resources that are allocated to processes.
+[src:cri-o/container-runtimes] Both the kubelet and the underlying container runtime need to interface with control groups to enforce resource management for pods and containers and set resources such as cpu/memory requests and limits.
+[src:cri-o/container-runtimes] To interface with control groups, the kubelet and the container runtime need to use a *cgroup driver*.
+[src:cri-o/container-runtimes] It's critical that the kubelet and the container runtime use the same cgroup driver and are configured the same.
+[src:cri-o/container-runtimes] The `cgroupfs` driver is the default cgroup driver in the kubelet.
+[src:cri-o/container-runtimes] When the `cgroupfs` driver is used, the kubelet and the container runtime directly interface with the cgroup filesystem to configure cgroups.
+[src:cri-o/container-runtimes] The `cgroupfs` driver is **not** recommended when systemd is the init system because systemd expects a single cgroup manager on the system.
+[src:cri-o/container-runtimes] Additionally, if you use cgroup v2, use the `systemd` cgroup driver instead of `cgroupfs`.
+[src:cri-o/container-runtimes] When systemd is chosen as the init system for a Linux distribution, the init process generates and consumes a root control group (`cgroup`) and acts as a cgroup manager.
+[src:cri-o/container-runtimes] systemd has a tight integration with cgroups and allocates a cgroup per systemd unit.
+[src:cri-o/container-runtimes] As a result, if you use `systemd` as the init system with the `cgroupfs` driver, the system gets two different cgroup managers.
+[src:cri-o/container-runtimes] Two cgroup managers result in two views of the available and in-use resources in the system.
+[src:cri-o/container-runtimes] In some cases, nodes that are configured to use `cgroupfs` for the kubelet and container runtime, but use `systemd` for the rest of the processes become unstable under resource pressure.
+[src:cri-o/container-runtimes] The approach to mitigate this instability is to use `systemd` as the cgroup driver for the kubelet and the container runtime when systemd is the selected init system.
+[src:cri-o/container-runtimes] To set `systemd` as the cgroup driver, edit the `KubeletConfiguration` option of `cgroupDriver` and set it to `systemd`.
+[src:cri-o/container-runtimes] If you configure `systemd` as the cgroup driver for the kubelet, you must also configure `systemd` as the cgroup driver for the container runtime.
+[src:cri-o/container-runtimes] Refer to the documentation for your container runtime for instructions.
+[src:cri-o/container-runtimes] In Kubernetes 1.36, with the `KubeletCgroupDriverFromCRI` feature gate enabled and a container runtime that supports the `RuntimeConfig` CRI RPC, the kubelet automatically detects the appropriate cgroup driver from the runtime, and ignores the `cgroupDriver` setting within the kubelet configuration.
+[src:cri-o/container-runtimes] However, older versions of container runtimes (specifically, containerd 1.y and below) do not support the `RuntimeConfig` CRI RPC, and may not respond correctly to this query, and thus the Kubelet falls back to using the value in its own `--cgroup-driver` flag.
+[src:cri-o/container-runtimes] In Kubernetes 1.38, this fallback behavior will be dropped, and older versions of containerd will fail with newer kubelets.
+[src:cri-o/container-runtimes] Changing the cgroup driver of a Node that has joined a cluster is a sensitive operation.
+[src:cri-o/container-runtimes] If the kubelet has created Pods using the semantics of one cgroup driver, changing the container runtime to another cgroup driver can cause errors when trying to re-create the Pod sandbox for such existing Pods.
+[src:cri-o/container-runtimes] Restarting the kubelet may not solve such errors.
+[src:cri-o/container-runtimes] If you have automation that makes it feasible, replace the node with another using the updated configuration, or reinstall it using automation.
+[src:cri-o/container-runtimes] If you wish to migrate to the `systemd` cgroup driver in existing kubeadm managed clusters, follow configuring a cgroup driver.
+[src:cri-o/container-runtimes] Your container runtime must support v1 of the container runtime interface.
+[src:cri-o/container-runtimes] Kubernetes starting v1.26 *only works* with v1 of the CRI API.
+[src:cri-o/container-runtimes] If a container runtime does not support the v1 API, the kubelet will not register as a node.
+[src:cri-o/container-runtimes] This section links to third party projects that provide functionality required by Kubernetes.
+[src:cri-o/container-runtimes] The Kubernetes project authors aren't responsible for these projects, which are listed alphabetically.
+[src:cri-o/container-runtimes] This section outlines the necessary steps to use containerd as CRI runtime.
+[src:cri-o/container-runtimes] To install containerd on your system, follow the instructions on getting started with containerd.
+[src:cri-o/container-runtimes] Return to this step once you've created a valid `config.toml` configuration file.
+[src:cri-o/container-runtimes] You can find this file under the path `/etc/containerd/config.toml`.
+[src:cri-o/container-runtimes] You can find this file under the path `C:\Program Files\containerd\config.toml`.
+[src:cri-o/container-runtimes] On Linux the default CRI socket for containerd is `/run/containerd/containerd.sock`.
+[src:cri-o/container-runtimes] On Windows the default CRI endpoint is `npipe://./pipe/containerd-containerd`.
+[src:cri-o/container-runtimes] The `systemd` cgroup driver is recommended if you use cgroup v2.
+[src:cri-o/container-runtimes] If you installed containerd from a package (for example, RPM or `.deb`), you may find that the CRI integration plugin is disabled by default.
+[src:cri-o/container-runtimes] You need CRI support enabled to use containerd with Kubernetes.
+[src:cri-o/container-runtimes] Make sure that `cri` is not included in the`disabled_plugins` list within `/etc/containerd/config.toml`; if you made changes to that file, also restart `containerd`.
+[src:cri-o/container-runtimes] If you experience container crash loops after the initial cluster installation or after installing a CNI, the containerd configuration provided with the package might contain incompatible configuration parameters.
+[src:cri-o/container-runtimes] Consider resetting the containerd configuration with `containerd config default > /etc/containerd/config.toml` as specified in getting-started.md and then set the configuration parameters specified above accordingly.
+[src:cri-o/container-runtimes] When using kubeadm, manually configure the cgroup driver for kubelet.
+[src:cri-o/container-runtimes] In Kubernetes v1.28, you can enable automatic detection of the cgroup driver as an alpha feature.
+[src:cri-o/container-runtimes] See systemd cgroup driver for more details.
+[src:cri-o/container-runtimes] You might need to restart `containerd` as well once you've updated the config file: `systemctl restart containerd`.
+[src:cri-o/container-runtimes] This section contains the necessary steps to install CRI-O as a container runtime.
+[src:cri-o/container-runtimes] To install CRI-O, follow CRI-O Install Instructions.
+[src:cri-o/container-runtimes] CRI-O uses the systemd cgroup driver per default, which is likely to work fine for you.
+[src:cri-o/container-runtimes] You should also note the changed `conmon_cgroup`, which has to be set to the value `pod` when using CRI-O with `cgroupfs`.
+[src:cri-o/container-runtimes] It is generally necessary to keep the cgroup driver configuration of the kubelet (usually done via kubeadm) and CRI-O in sync.
+[src:cri-o/container-runtimes] For CRI-O, the CRI socket is `/var/run/crio/crio.sock` by default.
+[src:cri-o/container-runtimes] This config option supports live configuration reload to apply this change: `systemctl reload crio` or by sending `SIGHUP` to the `crio` process.
+[src:cri-o/container-runtimes] adapter to integrate Docker Engine with Kubernetes.
+[src:cri-o/container-runtimes] Install `cri-dockerd`, following the directions in the install section of the documentation.
+[src:cri-o/container-runtimes] For `cri-dockerd`, the CRI socket is `/run/cri-dockerd.sock` by default.
+[src:cri-o/container-runtimes] Mirantis Container Runtime (MCR) is a commercially available container runtime that was formerly known as Docker Enterprise Edition.
+[src:cri-o/container-runtimes] You can use Mirantis Container Runtime with Kubernetes using the open source `cri-dockerd` component, included with MCR.
+[src:cri-o/container-runtimes] To learn more about how to install Mirantis Container Runtime, visit MCR Deployment Guide.
+[src:cri-o/container-runtimes] Check the systemd unit named `cri-docker.socket` to find out the path to the CRI socket.
+[src:cri-o/container-runtimes] The `cri-dockerd` adapter accepts a command line argument for specifying which container image to use as the Pod infrastructure container (“pause image”).
+[src:cri-o/container-runtimes] The command line argument to use is `--pod-infra-container-image`.
+[src:cri-o/container-runtimes] As well as a container runtime, your cluster will need a working network plugin.
+[src:cri-o/container-runtimes] Items on this page refer to third party products or projects that provide functionality required by Kubernetes.
+[src:cri-o/container-runtimes] The Kubernetes project authors aren't responsible for those third-party products or projects.
+[src:cri-o/container-runtimes] See the CNCF website guidelines for more details.
+[src:cri-o/container-runtimes] You should read the content guide before proposing a change that adds an extra third-party link.
+[src:cri-o/container-virtualization] In software engineering, **containerization** is operating-system-level virtualization or application-level virtualization over multiple resources so that software applications can run in isolated user spaces called *containers* in any cloud or non-cloud environment, regardless of type or vendor.
+[src:cri-o/container-virtualization] The term "container" has different meanings in different contexts, and it is important to ensure that the intended definition aligns with the audience's understanding.
+[src:cri-o/container-virtualization] Each *container* is basically a fully functional and portable cloud or non-cloud computing environment surrounding the application and keeping it independent of other environments running in parallel.
+[src:cri-o/container-virtualization] Individually, each container simulates a different software application and runs isolated processes by bundling related configuration files, libraries and dependencies.
+[src:cri-o/container-virtualization] But, collectively, multiple containers share a common operating system kernel (OS).
+[src:cri-o/container-virtualization] In recent times, containerization technology has been widely adopted by cloud computing platforms like Amazon Web Services, Microsoft Azure, Google Cloud Platform, and IBM Cloud.
+[src:cri-o/container-virtualization] Containerization has also been pursued by the U.S.
+[src:cri-o/container-virtualization] Department of Defense as a way of more rapidly developing and fielding software updates, with first application in its F-22 air superiority fighter.
+[src:cri-o/container-virtualization] Container orchestration or container management is mostly used in the context of application containers.
+[src:cri-o/container-virtualization] Implementations providing such orchestration include Kubernetes and Docker swarm.
+[src:cri-o/container-virtualization] This includes functionality to create a cluster, to upgrade the software or repair it, balance the load between existing instances, scale by starting or stopping instances to adapt to the number of users, to log activities and monitor produced logs or the application itself by querying sensors.
+[src:cri-o/container-virtualization] Open-source implementations of such software include OKD and Rancher.
+[src:cri-o/container-virtualization] Quite a number of companies provide container cluster management as a managed service, like Alibaba, Amazon, Google, and Microsoft.
+[src:cri-o/cri-o-io] CRI-O uses the same basic layout in OBS as Kubernetes project `isv:kubernetes`, but lives in a dedicated umbrella project called `isv:cri-o`.
+[src:cri-o/cri-o-io] This project contains a bunch of other subprojects.
+[src:cri-o/cri-o-io] We switched from `https://pkgs.k8s.io/addons:/cri-o` to a new subproject `https://download.opensuse.org/repositories/isv:/cri-o` to work independently from the pkgs.k8s.io CDN.
+[src:cri-o/cri-o-io] Please switch over if you haven’t already (see the examples below).
+[src:cri-o/cri-o-io] All packages are based on the static binary bundles provided by the CRI-O CI.
+[src:cri-o/cri-o-io] Alternatively, the packages are available in the Fedora packaging system.
+[src:cri-o/cri-o-io] As of Fedora 40 and later, CRI-O now only packages one version per version of fedora.
+[src:cri-o/cri-o-io] These correspond to the version of the kubernetes, cri-tools, and golang packages.
+[src:cri-o/cri-o-io] For more information on installation, visit our install guide.
+[src:cri-o/cri-o-io] CRI-O is an implementation of the Kubernetes CRI (Container Runtime Interface) to enable using OCI (Open Container Initiative) compatible runtimes.
+[src:cri-o/cri-o-io] It is a lightweight alternative to using Docker as the runtime for kubernetes.
+[src:cri-o/cri-o-io] It allows Kubernetes to use any OCI-compliant runtime as the container runtime for running pods.
+[src:cri-o/cri-o-io] Today it supports runc and Kata Containers as the container runtimes but any OCI-conformant runtime can be plugged in principle.
+[src:cri-o/cri-o-io] CRI-O supports OCI container images and can pull from any container registry.
+[src:cri-o/cri-o-io] It is a lightweight alternative to using Docker, Moby or rkt as the runtime for Kubernetes.
+[src:cri-o/cri-o-io] CRI-O is developed by maintainers and contributors from these companies and others.
+[src:cri-o/cri-o-io] It is a community-driven, open source project.
+[src:cri-o/cri-o-io] Feedback, users, and of course, contributors, are always welcome via the cri-o/cri-o GitHub project.
+[src:cri-o/cri-o-io] CRI-O is made up of several components that are found in different GitHub repositories.
+[src:cri-o/cri-o-io] CRI-O supports any OCI compatible runtime.
+[src:cri-o/cri-o-io] We test with runc and Clear Containers today.
+[src:cri-o/cri-o-io] The containers/storage library is used for managing layers and creating root file-systems for the containers in a pod: `Overlayfs`, `devicemapper`, `AUFS` and `btrfs` are implemented, with `Overlayfs` as the default driver.
+[src:cri-o/cri-o-io] Support for network based file system images (NFS, GlusterFS, CephFS) is on the development roadmap.
+[src:cri-o/cri-o-io] The containers/image library is used for pulling images from registries.
+[src:cri-o/cri-o-io] Currently, it supports Docker schema 2/version 1 as well as schema 2/version 2.
+[src:cri-o/cri-o-io] It also passes all Docker and Kubernetes tests.
+[src:cri-o/cri-o-io] The Container Network Interface CNI is used for setting up networking for the pods.
+[src:cri-o/cri-o-io] Various CNI plugins such as Flannel, Weave and OpenShift-SDN have been tested with CRI-O and are working as expected.
+[src:cri-o/cri-o-io] conmon is a utility within CRI-O that is used to monitor the containers, handle logging from the container process, serve attach clients and detects Out Of Memory (OOM) situations.
+[src:cri-o/cri-o-io] Container security separation policies are provided by a series of tools including SELinux, Capabilities, seccomp, and other security separation policies as specified in the OCI Specification.
+[src:cri-o/cri-o-io] CRI-O is a Cloud Native Computing Foundation graduated project.
+[src:cri-o/cri-o-io] The Linux Foundation has registered trademarks and uses trademarks.
+[src:cri-o/kubernetes] The name *Kubernetes* comes from the Ancient Greek term κυβερνήτης, *kubernḗtēs* (helmsman, pilot), which is also the origin of the words *cybernetics* and (through Latin) *governor*.
+[src:cri-o/kubernetes] "Kubernetes" is often abbreviated with the numerical contraction "K8s", meaning "the letter K, followed by 8 letters, followed by s".
+[src:cri-o/kubernetes] Kubernetes assembles one or more computers, either virtual machines or bare metal, into a cluster which can run workloads in containers.
+[src:cri-o/kubernetes] It works with various container runtimes, such as containerd and CRI-O.
+[src:cri-o/kubernetes] Its suitability for running and managing workloads of all sizes and styles has led to its widespread adoption in clouds and data centers.
+[src:cri-o/kubernetes] There are multiple distributions of this platform—from independent software vendors (ISVs) as well as hosted-on-cloud offerings from all the major public cloud vendors.
+[src:cri-o/kubernetes] The software consists of a control plane and nodes on which the actual applications run.
+[src:cri-o/kubernetes] It includes tools like `kubeadm` and `kubectl` which can be used to interact with its REST-based API.
+[src:cri-o/kubernetes] Kubernetes was announced by Google on June 6, 2014.
+[src:cri-o/kubernetes] The project was conceived and created by Google employees Joe Beda, Brendan Burns, and Craig McLuckie.
+[src:cri-o/kubernetes] Others at Google soon joined to help build the project including Ville Aikas, Dawn Chen, Brian Grant, Tim Hockin, and Daniel Smith.
+[src:cri-o/kubernetes] Other companies such as Red Hat and CoreOS joined the effort soon after, with notable contributors such as Clayton Coleman and Kelsey Hightower.
+[src:cri-o/kubernetes] The design and development of Kubernetes was inspired by Google's Borg cluster manager and based on Promise Theory.
+[src:cri-o/kubernetes] Many of its top contributors had previously worked on Borg; they codenamed Kubernetes "Project 7" after the *Star Trek* ex-Borg character Seven of Nine and gave its logo a seven-spoked ship's wheel (designed by Tim Hockin).
+[src:cri-o/kubernetes] Unlike Borg, which was written in C++, Kubernetes is written in the Go language.
+[src:cri-o/kubernetes] Kubernetes was announced in June, 2014 and version 1.0 was released on July 21, 2015.
+[src:cri-o/kubernetes] Google worked with the Linux Foundation to form the Cloud Native Computing Foundation (CNCF) and offered Kubernetes as the seed technology.
+[src:cri-o/kubernetes] Google was already offering a managed Kubernetes service, GKE, and Red Hat was supporting Kubernetes as part of OpenShift since the inception of the Kubernetes project in 2014.
+[src:cri-o/kubernetes] On March 6, 2018, Kubernetes Project reached ninth place in the list of GitHub projects by the number of commits, and second place in authors and issues, after the Linux kernel.
+[src:cri-o/kubernetes] Until version 1.18, Kubernetes followed an N-2 support policy, meaning that the three most recent minor versions receive security updates and bug fixes.
+[src:cri-o/kubernetes] Starting with version 1.19, Kubernetes follows an N-3 support policy.
+[src:cri-o/kubernetes] Kubernetes defines a set of building blocks ("primitives") that collectively provide mechanisms that deploy, maintain, and scale applications based on CPU, memory or custom metrics.
+[src:cri-o/kubernetes] Kubernetes is loosely coupled and extensible to meet the needs of different workloads.
+[src:cri-o/kubernetes] The internal components as well as extensions and containers that run on Kubernetes rely on the Kubernetes API.
+[src:cri-o/kubernetes] The platform exerts its control over compute and storage resources by defining resources as objects, which can then be managed as such.
+[src:cri-o/kubernetes] Kubernetes follows the primary/replica architecture.
+[src:cri-o/kubernetes] The components of Kubernetes can be divided into those that manage an individual node and those that are part of the control plane.
+[src:cri-o/kubernetes] The Kubernetes master node handles the Kubernetes control plane of the cluster, managing its workload and directing communication across the system.
+[src:cri-o/kubernetes] The Kubernetes control plane consists of various components such as TLS encryption, role-based access control (RBAC) and a strong authentication method, network separation, each its own process, that can run both on a single master node or on multiple masters supporting high-availability clusters.
+[src:cri-o/kubernetes] The various components of the Kubernetes control plane are as follows.
+[src:cri-o/kubernetes] Etcd is a persistent, lightweight, distributed, key-value data store (originally developed as part of CoreOS).
+[src:cri-o/kubernetes] It reliably stores the configuration data of the cluster, representing the overall state of the cluster at any given point of time.
+[src:cri-o/kubernetes] Etcd favors consistency over availability in the event of a network partition (see CAP theorem).
+[src:cri-o/kubernetes] The consistency is crucial for correctly scheduling and operating services.
+[src:cri-o/kubernetes] The API server serves the Kubernetes API using JSON over HTTP, which provides both the internal and external interface to Kubernetes.
+[src:cri-o/kubernetes] The API server processes, validates REST requests, and updates the state of the API objects in etcd, thereby allowing clients to configure workloads and containers across worker nodes.
+[src:cri-o/kubernetes] The API server uses etcd's watch API to monitor the cluster, roll out critical configuration changes, or restore any divergences of the state of the cluster back to the desired state as declared in etcd.
+[src:cri-o/kubernetes] As an example, a human operator may specify that three instances of a particular "pod" (see below) need to be running, and etcd stores this fact.
+[src:cri-o/kubernetes] If the Deployment controller finds that only two instances are running (conflicting with the etcd declaration), it schedules the creation of an additional instance of that pod.
+[src:cri-o/kubernetes] The scheduler is an extensible component that selects the node that an unscheduled pod (the basic unit of workloads to be scheduled) runs on, based on resource availability and other constraints.
+[src:cri-o/kubernetes] The scheduler tracks resource allocation on each node to ensure that workload is not scheduled in excess of available resources.
+[src:cri-o/kubernetes] For this purpose, the scheduler must know the resource requirements, resource availability, and other user-provided constraints or policy directives such as quality-of-service, affinity/anti-affinity requirements, and data locality.
+[src:cri-o/kubernetes] The scheduler's role is to match resource "supply" to workload "demand".
+[src:cri-o/kubernetes] Kubernetes allows running multiple schedulers within a single cluster.
+[src:cri-o/kubernetes] As such, scheduler plug-ins may be developed and installed as in-process extensions to the native vanilla scheduler by running it as a separate scheduler, as long as they conform to the Kubernetes scheduling framework.
+[src:cri-o/kubernetes] This allows cluster administrators to extend or modify the behavior of the default Kubernetes scheduler according to their needs.
+[src:cri-o/kubernetes] A controller is a reconciliation loop that drives the actual cluster state toward the desired state, communicating with the API server to create, update, and delete the resources it manages (e.g., pods or service endpoints).
+[src:cri-o/kubernetes] An example controller is a ReplicaSet controller, which handles replication and scaling by running a specified number of copies of a pod across the cluster.
+[src:cri-o/kubernetes] The controller also handles creating replacement pods if the underlying node fails.
+[src:cri-o/kubernetes] Other controllers that are part of the core Kubernetes system include a DaemonSet controller for running exactly one pod on every machine (or some subset of machines), and a Job controller for running pods that run to completion (e.g. as part of a batch job).
+[src:cri-o/kubernetes] Labels selectors often form part of the controller's definition that specify the set of pods that a controller manages.
+[src:cri-o/kubernetes] The controller manager is a single process that manages several core Kubernetes controllers (including the examples described above), is distributed as part of the standard Kubernetes installation and responding to the loss of nodes.
+[src:cri-o/kubernetes] Custom controllers may also be installed in the cluster, further allowing the behavior and API of Kubernetes to be extended when used in conjunction with custom resources (see custom resources, controllers and operators below).
+[src:cri-o/kubernetes] A node, also known as a worker or a minion, is a machine where containers (workloads) are deployed.
+[src:cri-o/kubernetes] Every node in the cluster must run a container runtime, as well as the below-mentioned components, for communication with the primary network configuration of these containers.
+[src:cri-o/kubernetes] kubelet is responsible for the running state of each node, ensuring that all containers on the node are healthy.
+[src:cri-o/kubernetes] It takes care of starting, stopping, and maintaining application containers organized into pods as directed by the control plane. kubelet monitors the state of a pod, and if not in the desired state, the pod re-deploys to the same node.
+[src:cri-o/kubernetes] Node status is relayed every few seconds via heartbeat messages to the API server.
+[src:cri-o/kubernetes] Once the control plane detects a node failure, a higher-level controller is expected to observe this state change and launch pods on another healthy node.
+[src:cri-o/kubernetes] A container runtime is responsible for the lifecycle of containers, including launching, reconciling and killing of containers. kubelet interacts with container runtimes via the Container Runtime Interface (CRI), which decouples the maintenance of core Kubernetes from the actual CRI implementation.
+[src:cri-o/kubernetes] Originally, kubelet interfaced exclusively with the Docker runtime through a "dockershim".
+[src:cri-o/kubernetes] However, from November 2020 up to April 2022, Kubernetes has deprecated the shim in favor of directly interfacing with the container through containerd, or replacing Docker with a runtime that is compliant with the Container Runtime Interface (CRI).
+[src:cri-o/kubernetes] With the release of v1.24 in May 2022, the "dockershim" has been removed entirely.
+[src:cri-o/kubernetes] Examples of popular container runtimes that are compatible with kubelet include containerd (initially supported via Docker) and CRI-O.
+[src:cri-o/kubernetes] kube-proxy is an implementation of a network proxy and a load balancer, and it supports the service abstraction along with the other networking operations.
+[src:cri-o/kubernetes] It is responsible for routing traffic to the appropriate container based on IP and port number of the incoming request.
+[src:cri-o/kubernetes] In Kubernetes, namespaces are utilized to segregate the resources it handles into distinct and non-intersecting collections.
+[src:cri-o/kubernetes] They are intended for use in environments with many users spread across multiple teams, or projects, or even separating environments like development, test, and production.
+[src:cri-o/kubernetes] The basic scheduling unit in Kubernetes is a pod, which consists of one or more containers that are guaranteed to be co-located on the same node.
+[src:cri-o/kubernetes] Each pod in Kubernetes is assigned a unique IP address within the cluster, allowing applications to use ports without the risk of conflict.
+[src:cri-o/kubernetes] Within the pod, all containers can reference each other.
+[src:cri-o/kubernetes] The container is the lowest level of a micro-service, which holds the running application, libraries, and their dependencies.
+[src:cri-o/kubernetes] Kubernetes supports several abstractions of workloads that are at a higher level over simple pods.
+[src:cri-o/kubernetes] This allows users to declaratively define and manage these high-level abstractions, instead of having to manage individual pods by themselves.
+[src:cri-o/kubernetes] Several of these abstractions, supported by a standard installation of Kubernetes, are described below.
+[src:cri-o/kubernetes] A ReplicaSet's purpose is to maintain a stable set of replica pods running at any given time.
+[src:cri-o/kubernetes] As such, it is often used to guarantee the availability of a specified number of identical Pods.
+[src:cri-o/kubernetes] The ReplicaSet can also be said to be a grouping mechanism that lets Kubernetes maintain the number of instances that have been declared for a given pod.
+[src:cri-o/kubernetes] The definition of a ReplicaSet uses a selector, whose evaluation will result in identifying all pods that are associated with it.
+[src:cri-o/kubernetes] A ReplicationController, similar to a ReplicaSet, serves the same purpose and behaves similarly to a ReplicaSet, which is to ensure that there will always be a specified number of pod replicas as desired.
+[src:cri-o/kubernetes] The ReplicationController workload was the predecessor of a ReplicaSet, but was eventually deprecated in favor of ReplicaSet to make use of set-based label selectors.
+[src:cri-o/kubernetes] Deployments are a higher-level management mechanism for ReplicaSets.
+[src:cri-o/kubernetes] While the ReplicaSet controller manages the scale of the ReplicaSet, the Deployment controller manages what happens to the ReplicaSet – whether an update has to be rolled out, or rolled back, etc.
+[src:cri-o/kubernetes] When Deployments are scaled up or down, this results in the declaration of the ReplicaSet changing, and this change in the declared state is managed by the ReplicaSet controller.
+[src:cri-o/kubernetes] StatefulSets are controllers that enforce the properties of uniqueness and ordering amongst instances of a pod, and can be used to run stateful applications.
+[src:cri-o/kubernetes] While scaling stateless applications is only a matter of adding more running pods, doing so for stateful workloads is harder, because the state needs to be preserved if a pod is restarted.
+[src:cri-o/kubernetes] If the application is scaled up or down, the state may need to be redistributed.
+[src:cri-o/kubernetes] Databases are an example of stateful workloads.
+[src:cri-o/kubernetes] When run in high-availability mode, many databases come with the notion of a primary instance and secondary instances.
+[src:cri-o/kubernetes] In this case, the notion of ordering of instances is important.
+[src:cri-o/kubernetes] Other applications like Apache Kafka distribute the data amongst their brokers; hence, one broker is not the same as another.
+[src:cri-o/kubernetes] In this case, the notion of instance uniqueness is important.
+[src:cri-o/kubernetes] DaemonSets are responsible for ensuring that a pod is created on every single node in the cluster.
+[src:cri-o/kubernetes] Generally, most workloads scale in response to a desired replica count, depending on the availability and performance requirements as needed by the application.
+[src:cri-o/kubernetes] However, in other scenarios it may be necessary to deploy a pod to every single node in the cluster, scaling up the number of total pods as nodes are added and garbage collecting them as they are removed.
+[src:cri-o/kubernetes] This is particularly helpful for use cases where the workload has some dependency on the actual node or host machine, such as log collection, ingress controllers, and storage services.
+[src:cri-o/kubernetes] A Kubernetes service is a set of pods that work together, such as one tier of a multi-tier application.
+[src:cri-o/kubernetes] The set of pods that constitute a service are defined by a label selector.
+[src:cri-o/kubernetes] Kubernetes provides two modes of service discovery, using environment variables or using Kubernetes DNS.
+[src:cri-o/kubernetes] Service discovery assigns a stable IP address and DNS name to the service, and load balances traffic in a round-robin manner to network connections of that IP address among the pods matching the selector (even as failures cause the pods to move from machine to machine).
+[src:cri-o/kubernetes] By default a service is exposed inside a cluster (e.g., back end pods might be grouped into a service, with requests from the front-end pods load-balanced among them), but a service can also be exposed outside a cluster (e.g., for clients to reach front-end pods).
+[src:cri-o/kubernetes] Filesystems in the Kubernetes container provide ephemeral storage, by default.
+[src:cri-o/kubernetes] This means that a restart of the pod will wipe out any data on such containers, and therefore, this form of storage is quite limiting in anything but trivial applications.
+[src:cri-o/kubernetes] A Kubernetes volume provides persistent storage that exists for the lifetime of the pod itself.
+[src:cri-o/kubernetes] This storage can also be used as shared disk space for containers within the pod.
+[src:cri-o/kubernetes] Volumes are mounted at specific mount points within the container, which are defined by the pod configuration, and cannot mount onto other volumes or link to other volumes.
+[src:cri-o/kubernetes] The same volume can be mounted at different points in the file system tree by different containers.
+[src:cri-o/kubernetes] A common application challenge is deciding where to store and manage configuration information, some of which may contain sensitive data.
+[src:cri-o/kubernetes] Configuration data can be anything as fine-grained as individual properties, or coarse-grained information like entire configuration files such as JSON or XML documents.
+[src:cri-o/kubernetes] Kubernetes provides two closely related mechanisms to deal with this need, known as ConfigMaps and Secrets, both of which allow for configuration changes to be made without requiring an application rebuild.
+[src:cri-o/kubernetes] The data from ConfigMaps and Secrets will be made available to every single instance of the application to which these objects have been bound via the Deployment.
+[src:cri-o/kubernetes] A Secret and/or a ConfigMap is sent to a node only if a pod on that node requires it, which will only be stored in memory on the node.
+[src:cri-o/kubernetes] Once the pod that depends on the Secret or ConfigMap is deleted, the in-memory copy of all bound Secrets and ConfigMaps are deleted as well.
+[src:cri-o/kubernetes] Mounted within a volume accessible within the container's filesystem, which supports automatic reloading without restarting the container.
+[src:cri-o/kubernetes] The biggest difference between a Secret and a ConfigMap is that Secrets are specifically designed for containing secure and confidential data, although they are not encrypted at rest by default, and requires additional setup in order to fully secure the use of Secrets within the cluster.
+[src:cri-o/kubernetes] Secrets are often used to store confidential or sensitive data like certificates, credentials to work with image registries, passwords, and ssh keys.
+[src:cri-o/kubernetes] Kubernetes enables clients (users or internal components) to attach keys called labels to any API object in the system, such as pods and nodes.
+[src:cri-o/kubernetes] Correspondingly, label selectors are queries against labels that resolve to matching objects.
+[src:cri-o/kubernetes] When a service is defined, one can define the label selectors that will be used by the service router/load balancer to select the pod instances that the traffic will be routed to.
+[src:cri-o/kubernetes] Thus, simply changing the labels of the pods or changing the label selectors on the service can be used to control which pods get traffic and which don't, which can be used to support various deployment patterns like blue–green deployments or A/B testing.
+[src:cri-o/kubernetes] This capability to dynamically control how services utilize implementing resources provides a loose coupling within the infrastructure.
+[src:cri-o/kubernetes] Just like labels, field selectors also let one select Kubernetes resources.
+[src:cri-o/kubernetes] Unlike labels, the selection is based on the attribute values inherent to the resource being selected, rather than user-defined categorization.
+[src:cri-o/kubernetes] `metadata.name` and `metadata.namespace` are field selectors that will be present on all Kubernetes objects.
+[src:cri-o/kubernetes] Other selectors that can be used depend on the object/resource type.
+[src:cri-o/kubernetes] Add-ons are additional features of the Kubernetes cluster implemented as applications running within it.
+[src:cri-o/kubernetes] The pods may be managed by Deployments, ReplicationControllers, and so on.
+[src:cri-o/kubernetes] Cluster DNS is a DNS server, in addition to the other DNS server(s) in the environment, which serves DNS records for Kubernetes services.
+[src:cri-o/kubernetes] Containers started by Kubernetes automatically include this DNS server in their DNS searches.
+[src:cri-o/kubernetes] This is a general purpose, web-based UI for Kubernetes clusters.
+[src:cri-o/kubernetes] It allows administrators to manage and troubleshoot applications running in the cluster, as well as the cluster itself.
+[src:cri-o/kubernetes] Container Resource Monitoring records metrics about containers in a central database, and provides a UI for browsing that data.
+[src:cri-o/kubernetes] Kubernetes cost monitoring applications allow breakdown of costs by pods, nodes, namespaces, and labels.
+[src:cri-o/kubernetes] To prevent the loss of event data in the event of node or pod failures, container logs can be saved to a central log store with a search/browsing interface.
+[src:cri-o/kubernetes] Kubernetes provides no native storage for log data, but one can integrate many existing logging solutions into the Kubernetes cluster.
+[src:cri-o/kubernetes] Containers emerged as a way to make software portable.
+[src:cri-o/kubernetes] The container contains all the packages needed to run a service.
+[src:cri-o/kubernetes] The provided file system makes containers extremely portable and easy to use in development.
+[src:cri-o/kubernetes] A container can be moved from development to test or production with no or relatively few configuration changes.
+[src:cri-o/kubernetes] Historically Kubernetes was suitable only for stateless services.
+[src:cri-o/kubernetes] However, many applications have a database, which requires persistence, leading to the creation of persistent storage for Kubernetes.
+[src:cri-o/kubernetes] Implementing persistent storage for containers is one of the top challenges of Kubernetes administrators, DevOps and cloud engineers.
+[src:cri-o/kubernetes] Containers may be ephemeral, but more and more of their data is not, so one needs to ensure the data's survival in case of container termination or hardware failure.
+[src:cri-o/kubernetes] When deploying containers with Kubernetes or containerized applications, organizations often realize that they need persistent storage.
+[src:cri-o/kubernetes] They need to provide fast and reliable storage for databases, root images and other data used by the containers.
+[src:cri-o/kubernetes] In addition to the landscape, the Cloud Native Computing Foundation (CNCF), has published other information about Kubernetes Persistent Storage including a blog helping to define the container attached storage pattern.
+[src:cri-o/kubernetes] This pattern can be thought of as one that uses Kubernetes itself as a component of the storage system or service.
+[src:cri-o/kubernetes] Container Attached Storage is a type of data storage that emerged as Kubernetes gained prominence.
+[src:cri-o/kubernetes] The Container Attached Storage approach or pattern relies on Kubernetes itself for certain capabilities while delivering primarily block, file, object and interfaces to workloads running on Kubernetes.
+[src:cri-o/kubernetes] Common attributes of Container Attached Storage include the use of extensions to Kubernetes, such as custom resource definitions, and the use of Kubernetes itself for functions that otherwise would be separately developed and deployed for storage or data management.
+[src:cri-o/kubernetes] Examples of functionality delivered by custom resource definitions or by Kubernetes itself include retry logic, delivered by Kubernetes itself, and the creation and maintenance of an inventory of available storage media and volumes, typically delivered via a custom resource definition.
+[src:cri-o/kubernetes] In Kubernetes version 1.9, the initial Alpha release of Container Storage Interface (CSI) was introduced.
+[src:cri-o/kubernetes] Previously, storage volume plug-ins were included in the Kubernetes distribution.
+[src:cri-o/kubernetes] By creating a standardized CSI, the code required to interface with external storage systems was separated from the core Kubernetes code base.
+[src:cri-o/kubernetes] Just one year later, the CSI feature was made Generally Available (GA) in Kubernetes.
+[src:cri-o/kubernetes] A key component of the Kubernetes control plane is the API Server, which exposes an HTTP API that can be invoked by other parts of the cluster as well as end users and external components.
+[src:cri-o/kubernetes] This API is a REST API and is declarative in nature, and is the same API exposed to the control plane.
+[src:cri-o/kubernetes] The API server is backed by etcd to store all records persistently.
+[src:cri-o/kubernetes] In Kubernetes, all objects serve as the "record of intent" of the cluster's state, and are able to define the desired state that the writer of the object wishes for the cluster to be in.
+[src:cri-o/kubernetes] All objects in Kubernetes are subject to the same API conventions.
+[src:cri-o/kubernetes] The Kubernetes API can be extended using *Custom Resources*, which represent objects that are not part of the standard Kubernetes installation.
+[src:cri-o/kubernetes] These custom resources are declared using *Custom Resource Definitions* (CRDs), which is a kind of resource that can be dynamically registered and unregistered without shutting down or restarting a cluster that is currently running.
+[src:cri-o/kubernetes] Custom controllers are another extension mechanism that interact with the Kubernetes API, similar to the default controllers in the standard pre-installed Kubernetes controller manager.
+[src:cri-o/kubernetes] These controllers may interact with custom resources to allow for a declarative API: users may declare the desired state of the system via the custom resources, and it is the responsibility of the custom controller to observe the change and reconcile it.
+[src:cri-o/kubernetes] The combination of custom resources and custom controllers are often referred to as a *Kubernetes* *Operator*.
+[src:cri-o/kubernetes] The key use case for operators are to capture the aim of a human operator who is managing a service or set of services and to implement them using automation, and with a declarative API supporting this automation.
+[src:cri-o/kubernetes] Human operators who look after specific applications and services have deep knowledge of how the system ought to behave, how to deploy it, and how to react if there are problems.
+[src:cri-o/kubernetes] Examples of problems solved by operators include taking and restoring backups of that application's state, and handling upgrades of the application code alongside related changes such as database schemas or extra configuration settings.
+[src:cri-o/kubernetes] Several notable projects under the Cloud Native Computing Foundation's incubation program follow the operator pattern to extend Kubernetes, including Argo, Open Policy Agent and Istio.
+[src:cri-o/kubernetes] Kubernetes defines the following strategies for controlling access to its API.
+[src:cri-o/kubernetes] The Kubernetes API server listens on a TCP port that serves HTTPS traffic, in order to enforce transport layer security (TLS) using CA certificates.
+[src:cri-o/kubernetes] In older versions of Kubernetes, the API server supported listening on both HTTP and HTTPS ports (with the HTTP port number having no transport security whatsoever).
+[src:cri-o/kubernetes] This was deprecated in v1.10 and eventually dropped support in v1.20 of Kubernetes.
+[src:cri-o/kubernetes] Users are typically expected to indicate and define cluster URL details along with the necessary credentials in a *kubeconfig* file, which are natively supported by other Kubernetes tools like kubectl and the official Kubernetes client libraries.
+[src:cri-o/kubernetes] *Attribute-based access control (ABAC) mode*: Grants access rights to users through the use of defined access control policies which combine attributes together.
+[src:cri-o/kubernetes] *Role-based access control (RBAC) mode*: Grants access rights to users based on roles that are granted to the user, where each role defines a list of actions that are allowed.
+[src:cri-o/kubernetes] *Webhook mode*: Queries a REST API service to determine if a user is authorized to perform a given action.
+[src:cri-o/kubernetes] The same API design principles have been used to define an API to harness a program in order to create, configure, and manage Kubernetes clusters.
+[src:cri-o/kubernetes] A key concept embodied in the API is using Infrastructure as Software, or the notion that the Kubernetes cluster infrastructure is itself a resource / object that can be managed just like any other Kubernetes resources.
+[src:cri-o/kubernetes] Similarly, machines that make up the cluster are also treated as a Kubernetes resource.
+[src:cri-o/kubernetes] The API has two pieces – the core API, and a provider implementation.
+[src:cri-o/kubernetes] The provider implementation consists of cloud-provider specific functions that let Kubernetes provide the cluster API in a fashion that is well-integrated with the cloud-provider's services and resources.
+[src:cri-o/kubernetes] Kubernetes is commonly used as a way to host a microservice-based implementation, because it and its associated ecosystem of tools provide all the capabilities needed to address key concerns of any microservice architecture.
+[src:cri-o/kubernetes] A common criticism of Kubernetes is that it is too complex.
+[src:cri-o/kubernetes] Various vendors offer Kubernetes-based platforms or infrastructure as a service (IaaS) that deploy Kubernetes.
+[src:cri-o/kubernetes] These are typically categorized according to open-source, commercial or managed distributions.
+[src:cri-o/open-container-initiative] The **Open Container Initiative** (**OCI**) is a Linux Foundation project, started in June 2015 by Docker, CoreOS, and the maintainers of appc (short for "App Container") to design open standards for operating system-level virtualization (containers).
+[src:cri-o/open-container-initiative] At launch, OCI was focused on Linux containers and subsequent work has extended it to other operating systems.
+[src:cri-o/open-container-initiative] There are currently three OCI specifications in development and use: the *Runtime Specification* (runtime-spec), the *Image Specification* (image-spec), and the *Distribution Specification* (distribution-spec).
+[src:cri-o/open-container-initiative] The OCI Image Format Project was split out from the Runtime Project into its own specification on March 23, 2016.
+[src:cri-o/open-container-initiative] The image-spec is a software shipping container image format spec (OCI Image Format) that reached version 1.0.0 on July 19, 2017.
+[src:cri-o/open-container-initiative] The OCI Distribution Spec Project defines the distribution-spec, an API protocol to facilitate and standardize the distribution of content.
+[src:cri-o/open-container-initiative] The distribution-spec was created on March 8, 2018, from a Proposal for a JSON Registry API V2.1.
+[src:cri-o/open-container-initiative] The distribution-spec reached version 1.0.0 on April 26, 2021.

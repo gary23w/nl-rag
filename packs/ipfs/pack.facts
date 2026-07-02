@@ -1,0 +1,420 @@
+# nl-rag distilled facts — domain: ipfs
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:ipfs/concepts-dht] A distributed hash table (DHT) is a distributed system for mapping keys to values.
+[src:ipfs/concepts-dht] In IPFS, the DHT is used as the fundamental component of the content routing system and acts like a cross between a catalog and a navigation system.
+[src:ipfs/concepts-dht] It maps what the user is looking for to the peer that is storing the matching content.
+[src:ipfs/concepts-dht] Think of it as a huge table that stores *who* has *what* data.
+[src:ipfs/concepts-dht] These record types hold slightly different semantics, but they are all updated and found using the same DHT protocol; IPFS's take on Kademlia.
+[src:ipfs/concepts-dht] A *metric* to order the peers in the address space and therefore visualize all the peers along a line ordered from smallest to largest.
+[src:ipfs/concepts-dht] IPFS takes `SHA256(PeerID)` and interprets it as an integer between `0` and `2^256-1`.
+[src:ipfs/concepts-dht] A *projection* that will take a `record key` and calculate a position in the address space where the peer or peers most ideally suited to store the record should be near.
+[src:ipfs/concepts-dht] Having this address space and a peer ordering metric allows us to search the network as though it was a sorted list.
+[src:ipfs/concepts-dht] In particular, we can turn the system into something like a *skip-list* where a peer knows other peers with distances of around `1,2,4,8...` away from it.
+[src:ipfs/concepts-dht] This will allow us to search the list in time that is logarithmic in the network's size, `O(log(N))` lookup time.
+[src:ipfs/concepts-dht] Unlike a skip-list, Kademlia is somewhat unstable since peers can join, leave, and rejoin the network at any time.
+[src:ipfs/concepts-dht] To deal with the unstable nature of the system, a Kademlia peer does not just keep links to the peers with distance `1,2,4,8...` away from it.
+[src:ipfs/concepts-dht] Instead, for each multiple of 2 away, it keeps up to `K` links.
+[src:ipfs/concepts-dht] For example, instead of a peer keeping a single link 128 away, it would keep 20 links that are between 65 and 128 away.
+[src:ipfs/concepts-dht] The selection of network-wide parameters like `K` is not arbitrary.
+[src:ipfs/concepts-dht] It is determined based on the observed average *churn* in the network and the frequency with which the network will republish information.
+[src:ipfs/concepts-dht] System parameters, like `K`, are computed to maximize the probability that the network stays connected and that no data is lost while maintaining the desired latency for queries and assuming the average churn observations stay constant.
+[src:ipfs/concepts-dht] These system and network parameters drive the decisions made in Kademlia's two main components: the routing table, which tracks all those links in the network, and the lookup algorithm, which determines how to traverse those links to store and retrieve data.
+[src:ipfs/concepts-dht] A major property of Kademlia is that all peers can be arranged from smallest to largest.
+[src:ipfs/concepts-dht] This is useful because as peer `0` *walks* down the line to find peer `55`, it can know it's getting progressively closer.
+[src:ipfs/concepts-dht] However, this requires that everyone on the line can talk to each other.
+[src:ipfs/concepts-dht] Otherwise, peer `33`might send peer`0` down a dead-end by telling them the content they want is on a node they can't communicate with.
+[src:ipfs/concepts-dht] This can result in a slow and fragmented network, with data being accessible by some peers and not others.
+[src:ipfs/concepts-dht] While having peers that cannot talk to each other may sound like an oddity, two prevalent causes of unreachability are network address translators (NATs) and firewalls.
+[src:ipfs/concepts-dht] Having asymmetrical networks where peers `X`, `Y`, and `Z` can connect to `A`, but `A` cannot connect to them is fairly common.
+[src:ipfs/concepts-dht] Similarly, it is *extremely* common that peers `A` and `B`, which are both behind NATs, cannot talk to each other.
+[src:ipfs/concepts-dht] To deal with this, IPFS nodes ignore other nodes assumed to be unreachable by the general public.
+[src:ipfs/concepts-dht] Nodes also filter themselves out of the network if they suspect they are not reachable.
+[src:ipfs/concepts-dht] To do this, we use libp2p's AutoNAT (opens new window), which acts as a distributed *session traversal utility for NAT* (STUN) layer, informing peers of their observed addresses and whether or not they appear to be publicly dialable.
+[src:ipfs/concepts-dht] Only when peers detect that they are publicly dialable do they switch from client mode (where they can query the DHT but not respond to queries) to server mode (where they can both query and respond to queries).
+[src:ipfs/concepts-dht] Similarly, if a server discovers that it is no longer publicly dialable, it will switch back into client mode.
+[src:ipfs/concepts-dht] IPFS exposes a *rate-limited* AutoNAT service on all IPFS nodes that have discovered that they are publicly dialable.
+[src:ipfs/concepts-dht] These requests are infrequent and do not have a noticeable overhead.
+[src:ipfs/concepts-dht] Many IPFS nodes utilize the public Amino DHT to discover and advertise content.
+[src:ipfs/concepts-dht] However, some nodes operate in segregated networks such as local networks or isolated VPNs.
+[src:ipfs/concepts-dht] For these users, having a DHT where all non-publicly dialable nodes are clients is very problematic since none of them are publicly dialable.
+[src:ipfs/concepts-dht] A separate DHT is available to nodes that are not part of the public network called *LAN DHT*.
+[src:ipfs/concepts-dht] This is completely separate from the public Amino *WAN DHT*.
+[src:ipfs/concepts-dht] The main difference between the WAN and LAN DHTs are the acceptance criteria for peers: which peers are eligible to be part of a routing table or query and which are not.
+[src:ipfs/concepts-dht] The WAN DHT's criteria is *do you look like a public address*, and the LAN DHT's criteria is *do you look like a non-public address*.
+[src:ipfs/concepts-dht] While WAN DHT nodes switch from client to server mode based on whether they are publicly dialable, LAN DHT nodes are always servers unless the `dhtclient` option has been set.
+[src:ipfs/concepts-dht] A routing table is a set of rules used to decide where data traveling over a network should go.
+[src:ipfs/concepts-dht] All IP-enabled devices, including routers and switches, use routing tables.
+[src:ipfs/concepts-dht] Every IPFS peer maintains a routing table with links to other peers in the network.
+[src:ipfs/concepts-dht] If it qualifies, determine how close the new peer is to us to figure out which *bucket* it should go into.
+[src:ipfs/concepts-dht] If we ever fail to connect to a peer in our routing table, drop them from the routing table.
+[src:ipfs/concepts-dht] There are three properties of note here: qualification, buckets, and refreshing/dropping peers.
+[src:ipfs/concepts-dht] Ensure the peer has IP addresses that match the ranges we expect.
+[src:ipfs/concepts-dht] A bucket is a collection of up to 20 peers that have *similar* addresses.
+[src:ipfs/concepts-dht] For example, if the peer is between `2^7` and `2^8` away from us, and the address space is of size `2^256`, the peer goes into bucket `256-8`.
+[src:ipfs/concepts-dht] Peers can be added into a bucket if that bucket has less than 20 peers.
+[src:ipfs/concepts-dht] If the bucket already has 20 peers, then IPFS determines if any peers can be dropped.
+[src:ipfs/concepts-dht] Otherwise, IPFS doesn't add the peer to the bucket.
+[src:ipfs/concepts-dht] To keep the routing tables accurate and up to date, IPFS refreshes the routing table every 10 minutes.
+[src:ipfs/concepts-dht] While this is likely a higher frequency than is strictly necessary, it's important to protect the network's health as IPFS learns more about the dynamics of the DHT network.
+[src:ipfs/concepts-dht] Also, search for ourselves in the network, just in case the network size and distribution are such that the first 15 buckets do not suffice to learn about the `K` peers closest to us.
+[src:ipfs/concepts-dht] Peers can be dropped from the routing table for several reasons, usually because that peer is offline or unreachable.
+[src:ipfs/concepts-dht] After every refresh, IPFS goes through the routing table and attempt to connect to peers that we have not queried recently.
+[src:ipfs/concepts-dht] If any peers are not active or online, they are dropped from the routing table.
+[src:ipfs/concepts-dht] Peers can also be dropped if they have not been useful within the time period during which they are *probabilistically expected* to have been utilized in a refresh.
+[src:ipfs/concepts-dht] That value is `Log(1/K) / Log(1 - α/K) * refreshPeriod`, where `α` is the number of peers dialed that can be simultaneously queried.
+[src:ipfs/concepts-dht] Additionally, IPFS defines *useful* as responding within 2x when it takes any other peer from our routing table to respond to us.
+[src:ipfs/concepts-dht] This biases against peers that are slow, overloaded, unreliable, or have bad network connectivity to us.
+[src:ipfs/concepts-dht] The lookup algorithm answers the question *What are the `K` closest peers to `X`?*.
+[src:ipfs/concepts-dht] When a query to a peer finishes, add those results to the query-queue.
+[src:ipfs/concepts-dht] Pull the next-closest peer off the queue and query them.
+[src:ipfs/concepts-dht] The query terminates whenever the closest known three peers to `X` have been successfully queried without any timeouts or errors.
+[src:ipfs/concepts-dht] After the query is done, take the `K` closest peers that have not failed and return them.
+[src:ipfs/concepts-dht] Put the provider record at those K closest peers, and also store it ourselves.
+[src:ipfs/concepts-dht] Currently, you are only allowed to put a provider record for yourself.
+[src:ipfs/concepts-dht] *Alice* cannot advertise that *Bob* has content.
+[src:ipfs/concepts-dht] Ask each peer *who are the `K` closest peers to `X` you know about?*.
+[src:ipfs/concepts-dht] Also, ask *send me the record corresponding to `X` if you have it*.
+[src:ipfs/concepts-dht] The peer adds new providers it has learned about and continues until the lookup terminates.
+[src:ipfs/concepts-dht] Depending on which API is used, the lookup can also be forced to abort after receiving a certain number of provider records.
+[src:ipfs/concepts-dht] Put the IPNS record at those `K` closest peers and store it ourselves.
+[src:ipfs/concepts-dht] If we receive a record with a higher IPNS sequence number, update the existing one, and continue until the lookup terminates.
+[src:ipfs/concepts-dht] This is needed to make sure that the user gets the latest record.
+[src:ipfs/concepts-dht] Recall that IPNS records are mutable, and therefore, we need to make sure that we point a request to the latest version of the content.
+[src:ipfs/concepts-dht] Once the lookup is done, if any of the `K` closest peers to `X` did not have the newest IPNS record, send them the newest record.
+[src:ipfs/concepts-dht] When libp2p peers connect, they exchange peer information automatically.
+[src:ipfs/concepts-dht] Being part of the DHT as either a client or server requires frequent contact with your `K` closest peers; therefore, they inherently end up with your peer record.
+[src:ipfs/concepts-dht] Also, ask *send me the peer record for `H` if you have it*.
+[src:ipfs/concepts-dht] IPFS tries to connect to the peer with ID `H` as soon as we learn addresses about it.
+[src:ipfs/concepts-dht] The lookup can terminate early if we end up connecting to the peer.
+[src:ipfs/concepts-ipns] Content addressing in IPFS is by nature *immutable*: when you add a file to IPFS, it creates a hash from the data, with which the CID is constructed.
+[src:ipfs/concepts-ipns] Changing a file changes its hash, and consequently its CID which is used as an address.
+[src:ipfs/concepts-ipns] Yet, there are many situations where content-addressed data needs to be regularly updated, for example, when publishing a website that frequently changes.
+[src:ipfs/concepts-ipns] It would be impractical to share a new CID every time you update the website.
+[src:ipfs/concepts-ipns] With **mutable pointers**, you can share the address of the pointer once, and update the pointer – to the new CID – every time you publish a change.
+[src:ipfs/concepts-ipns] The InterPlanetary Name System (IPNS) is a system for creating such mutable pointers to CIDs known as **names** or **IPNS names**.
+[src:ipfs/concepts-ipns] IPNS names can be thought of as links that can be updated over time, while retaining the verifiability of content addressing.
+[src:ipfs/concepts-ipns] By analogy, IPNS names are like tags in git, which can be updated over time, and CIDs are like commit hashes in Git, which point to a snapshot of the files in the repository.
+[src:ipfs/concepts-ipns] An IPNS name can point to any arbitrary content path (`/ipfs/` or `/ipns/`), *including another IPNS name or DNSLink path*.
+[src:ipfs/concepts-ipns] However, it most commonly points to a fully resolved and immutable path, i.e.
+[src:ipfs/concepts-ipns] A **name** in IPNS is the hash of a public key.
+[src:ipfs/concepts-ipns] It is associated with an **IPNS record** (opens new window) containing the content path (`/ipfs/CID`) it links to and other information such as the expiration, the version number, and a cryptographic signature signed by the corresponding private key.
+[src:ipfs/concepts-ipns] New records can be signed and published at any time by the holder of the private key.
+[src:ipfs/concepts-ipns] For example, the following is an IPNS name represented by a CIDv1 of public key: `k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8` (opens new window).
+[src:ipfs/concepts-ipns] IPNS record can point at an immutable or a mutable path.
+[src:ipfs/concepts-ipns] IPNS names are essentially pointers (IPNS names) to pointers (IPFS CIDs) whereas IPFS CIDs are immutable (because they're derived from the content) pointers to content.
+[src:ipfs/concepts-ipns] This means that an IPNS record contains all the information necessary to certify its authenticity.
+[src:ipfs/concepts-ipns] This self-certifying nature gives IPNS several benefits not present in hierarchical and consensus systems such as DNS, and blockchain identifiers.
+[src:ipfs/concepts-ipns] Notably, IPNS records can come from anywhere, not just a particular service/system, and it is very fast and easy to confirm a record is authentic.
+[src:ipfs/concepts-ipns] The self-certifying nature of IPNS records means that they are not tied to a specific transport protocol.
+[src:ipfs/concepts-ipns] In practice, most IPFS implementations rely on the **DHT** and **libp2p PubSub** (opens new window) to publish and resolve IPNS records.
+[src:ipfs/concepts-ipns] There are nuanced differences and trade-offs between the **DHT** and **PubSub** to be aware of.
+[src:ipfs/concepts-ipns] The main qualitative difference between the two is that IPNS over the DHT publishes and resolves to a global shared state, whereas IPNS over PubSub uses messaging over topics (where each IPNS name has a unique topic) to publish to and resolve from **interested peers**.
+[src:ipfs/concepts-ipns] The main implication of this difference is that IPNS operations (publishing and resolving) over the DHT can take longer than over PubSub, while potentially ensuring higher consistency (you resolve to the latest version).
+[src:ipfs/concepts-ipns] The DHT is the default transport mechanism for IPNS records in many IPFS implementations.
+[src:ipfs/concepts-ipns] Due to the ephemeral nature of the DHT, records expire after 48 hours (opens new window).
+[src:ipfs/concepts-ipns] This applies to any record in the DHT, irrespective of the `validity` (also referred to as `lifetime`) field in the IPNS record.
+[src:ipfs/concepts-ipns] Therefore, IPNS records need to be regularly (re-)published to the DHT.
+[src:ipfs/concepts-ipns] By default, Kubo will republish IPNS records to the DHT based on the `Ipns.RepublishPeriod` (opens new window) configuration which defaults to 4 hours.
+[src:ipfs/concepts-ipns] It's worth noting that publishing and resolving IPNS names using the DHT can be slow.
+[src:ipfs/concepts-ipns] This is because multiple records need to be found to ensure the latest version (record with the highest `sequence`), which involves round trips to multiple nodes.
+[src:ipfs/concepts-ipns] IPNS over PubSub uses the Libp2p PubSub (opens new window) to publish records and resolve names amongst **interested peers**.
+[src:ipfs/concepts-ipns] This is achieved by deriving the PubSub topic name from the IPNS name so that each IPNS name has a unique topic.
+[src:ipfs/concepts-ipns] Because PubSub doesn't have the notion of persistence (messages are ephemeral and dropped after propagation), IPNS over PubSub adds a persistence layer (opens new window) to ensure that IPNS records are always available to the network.
+[src:ipfs/concepts-ipns] In Kubo, IPNS over PubSub is not enabled by default and can be enabled using the `Ipns.UsePubsub` (opens new window) configuration.
+[src:ipfs/concepts-ipns] Initial operations, e.g. resolving or publishing an IPNS name for the first time can take time as they involve a roundtrip to the DHT (to lookup or publish provider records for the topic).
+[src:ipfs/concepts-ipns] After the subscription to the topic is established, PubSub usually improves both publishing and resolving times of IPNS by relying on interested peers for both operations.
+[src:ipfs/concepts-ipns] It should be noted that there's an upper limit to the number of unique IPNS names you can resolve over PubSub, because for each name, a subscription is created which opens several (by default 6) network connections to mesh members.
+[src:ipfs/concepts-ipns] Calculate PubSub topic name from IPNS name.
+[src:ipfs/concepts-ipns] Join the topic by querying the DHT for the topic's provider records.
+[src:ipfs/concepts-ipns] Whenever a new peer joins the topic (opens new window) (specifically your mesh), ask them for the record.
+[src:ipfs/concepts-ipns] If they respond with a newer record, update it locally and publish the updated record to the topic.
+[src:ipfs/concepts-ipns] Periodically (by default every 10 minutes) rebroadcast the IPNS record.
+[src:ipfs/concepts-ipns] Steps 5 and 6 describe from a high level how IPNS record persistence is layered over PubSub by ensuring continuous propagation of the IPNS record in the face of node churn (nodes dropping in and out of the network).
+[src:ipfs/concepts-ipns] The self-certifying nature of IPNS comes with an inherent tradeoff between **consistency** and **availability**.
+[src:ipfs/concepts-ipns] Consistency means ensuring that users resolve to the latest published IPNS record for the name (with the highest sequence number) at the cost of potentially not being able to resolve.
+[src:ipfs/concepts-ipns] Availability means resolving to a valid IPNS record, at the cost of potentially resolving to an outdated record.
+[src:ipfs/concepts-ipns] When setting the `validity` (referred to as `lifetime` by Kubo (opens new window)) field of an IPNS record, you typically need to choose whether you favor **consistency** (short validity period, e.g.
+[src:ipfs/concepts-ipns] 48 hours) or **availability** (long validity period, e.g.
+[src:ipfs/concepts-ipns] 1 month), due to the inherent trade-off between the two.
+[src:ipfs/concepts-ipns] If you experience slow IPNS update propagation, the Time-to-Live (TTL) setting is the first thing to check.
+[src:ipfs/concepts-ipns] When you publish an IPNS Record, the default TTL, which controls caching, might be set to a high value, such as one hour.
+[src:ipfs/concepts-ipns] If you want third-party gateways and nodes to bypass the cache and check for updates more frequently, consider lowering this value.
+[src:ipfs/concepts-ipns] You should have the ability to override the TTL provided by the publisher and set a lower cap on how long resolution results are cached.
+[src:ipfs/concepts-ipns] The most important thing to consider with IPNS names is **how frequently you intend on updating the name** and **how long a valid record should be cached before checking for an update**.
+[src:ipfs/concepts-ipns] See the following guide on publishing IPNS names with Kubo and Helia.
+[src:ipfs/concepts-ipns] IPNS is not the only way to create mutable addresses on IPFS.
+[src:ipfs/concepts-ipns] You can also use DNSLink, which is currently much faster than IPNS, uses human-readable names, and can also point to IPNS names.
+[src:ipfs/concepts-ipns] Other community members are exploring ways to use blockchains to store common name records.
+[src:ipfs/content-addressable-storage] CAS systems work by passing the content of the file through a cryptographic hash function to generate a unique key, the "content address".
+[src:ipfs/content-addressable-storage] The file system's directory stores these addresses and a pointer to the physical storage of the content.
+[src:ipfs/content-addressable-storage] Because an attempt to store the same file will generate the same key, CAS systems ensure that the files within them are unique, and because changing the file will result in a new key, CAS systems provide assurance that the file is unchanged.
+[src:ipfs/content-addressable-storage] CAS became a significant market during the 2000s, especially after the introduction of the 2002 Sarbanes–Oxley Act in the United States which required the storage of enormous numbers of documents for long periods and retrieved only rarely.
+[src:ipfs/content-addressable-storage] Ever-increasing performance of traditional file systems and new software systems have eroded the value of legacy CAS systems, which have become increasingly rare after roughly 2018.
+[src:ipfs/content-addressable-storage] However, the principles of content addressability continue to be of great interest to computer scientists, and form the core of numerous emerging technologies, such as peer-to-peer file sharing, cryptocurrencies, and distributed computing.
+[src:ipfs/content-addressable-storage] Traditional file systems generally track files based on their filename.
+[src:ipfs/content-addressable-storage] On random-access media like a floppy disk, this is accomplished using a directory that consists of some sort of list of filenames and pointers to the data.
+[src:ipfs/content-addressable-storage] The pointers refer to a physical location on the disk, normally using disk sectors.
+[src:ipfs/content-addressable-storage] On more modern systems and larger formats like hard drives, the directory is itself split into many subdirectories, each tracking a subset of the overall collection of files.
+[src:ipfs/content-addressable-storage] Subdirectories are themselves represented as files in a parent directory, producing a hierarchy or tree-like organization.
+[src:ipfs/content-addressable-storage] The series of directories leading to a particular file is known as a "path".
+[src:ipfs/content-addressable-storage] In the context of CAS, these traditional approaches are referred to as "location-addressed", as each file is represented by a list of one or more locations, the path and filename, on the physical storage.
+[src:ipfs/content-addressable-storage] In these systems, the same file with two different names will be stored as two files on disk and thus have two addresses.
+[src:ipfs/content-addressable-storage] The same is true if the same file, even with the same name, is stored in more than one location in the directory hierarchy.
+[src:ipfs/content-addressable-storage] This makes them less than ideal for a digital archive, where any unique information should only be stored once.
+[src:ipfs/content-addressable-storage] As the concept of the hierarchical directory became more common in operating systems especially during the late 1980s, this sort of access pattern began to be used by entirely unrelated systems.
+[src:ipfs/content-addressable-storage] For instance, the World Wide Web uses a similar pathname/filename-like system known as the URL to point to documents.
+[src:ipfs/content-addressable-storage] The same document on another web server has a different URL in spite of being identical content.
+[src:ipfs/content-addressable-storage] Likewise, if an existing location changes in any way, if the filename changes or the server moves to a new domain name service name, the document is no longer accessible.
+[src:ipfs/content-addressable-storage] This leads to the common problem of link rot.
+[src:ipfs/content-addressable-storage] Although location-based storage is widely used in many fields, this was not always the case.
+[src:ipfs/content-addressable-storage] Previously, the most common way to retrieve data from a large collection was to use some sort of identifier based on the content of the document.
+[src:ipfs/content-addressable-storage] For instance, the ISBN system is used to generate a unique number for every book.
+[src:ipfs/content-addressable-storage] If one performs a web search for "ISBN 0465048994", one will be provided with a list of locations for the book *Why Information Grows* on the topic of information storage.
+[src:ipfs/content-addressable-storage] Although many locations will be returned, they all refer to the same work, and the user can then pick whichever location is most appropriate.
+[src:ipfs/content-addressable-storage] Additionally, if any one of these locations changes or disappears, the content can be found at any of the other locations.
+[src:ipfs/content-addressable-storage] CAS systems attempt to produce ISBN-like results automatically and on any document.
+[src:ipfs/content-addressable-storage] They do this by using a cryptographic hash function on the data of the document to produce what is sometimes known as a "key" or "fingerprint".
+[src:ipfs/content-addressable-storage] This key is strongly tied to the exact content of the document, adding a single space at the end of the file, for instance, will produce a different key.
+[src:ipfs/content-addressable-storage] In a CAS system, the directory does not map filenames onto locations, but uses the keys instead.
+[src:ipfs/content-addressable-storage] For one, when a file is sent to the CAS for storage, the hash function will produce a key and then check to see if that key already exists in the directory.
+[src:ipfs/content-addressable-storage] If it does, the file is not stored as the one already in storage is identical.
+[src:ipfs/content-addressable-storage] This allows CAS systems to easily avoid duplicate data.
+[src:ipfs/content-addressable-storage] Additionally, as the key is based on the content of the file, retrieving a document with a given key ensures that the stored file has not been changed.
+[src:ipfs/content-addressable-storage] The downside to this approach is that any changes to the document produces a different key, which makes CAS systems unsuitable for files that are often edited.
+[src:ipfs/content-addressable-storage] For all of these reasons, CAS systems are normally used for archives of largely static documents, and are sometimes known as "fixed content storage" (FCS).
+[src:ipfs/content-addressable-storage] Because the keys are not human-readable, CAS systems implement a second type of directory that stores metadata that will help users find a document.
+[src:ipfs/content-addressable-storage] These almost always include a filename, allowing the classic name-based retrieval to be used.
+[src:ipfs/content-addressable-storage] But the directory will also include fields for common identification systems like ISBN or ISSN codes, user-provided keywords, time and date stamps, and full-text search indexes.
+[src:ipfs/content-addressable-storage] Users can search these directories and retrieve a key, which can then be used to retrieve the actual document.
+[src:ipfs/content-addressable-storage] Using a CAS is very similar to using a web search engine.
+[src:ipfs/content-addressable-storage] The primary difference is that a web search is generally performed on a topic basis using an internal algorithm that finds "related" content and then produces a list of locations.
+[src:ipfs/content-addressable-storage] The results may be a list of the identical content in multiple locations.
+[src:ipfs/content-addressable-storage] In a CAS, more than one document may be returned for a given search, but each of those documents will be unique and presented only once.
+[src:ipfs/content-addressable-storage] Another advantage to CAS is that the physical location in storage is not part of the lookup system.
+[src:ipfs/content-addressable-storage] If, for instance, a library's card catalog stated a book could be found on "shelf 43, bin 10", if the library is re-arranged the entire catalog has to be updated.
+[src:ipfs/content-addressable-storage] In contrast, the ISBN will not change and the book can be found by looking for the shelf with those numbers.
+[src:ipfs/content-addressable-storage] In the computer setting, a file in the DOS filesystem at the path A:\myfiles\textfile.txt points to the physical storage of the file in the myfiles subdirectory.
+[src:ipfs/content-addressable-storage] This file disappears if the floppy is moved to the B: drive, and even moving its location within the disk hierarchy requires the user-facing directories to be updated.
+[src:ipfs/content-addressable-storage] In CAS, only the internal mapping from key to physical location changes, and this exists in only one place and can be designed for efficient updating.
+[src:ipfs/content-addressable-storage] This allows files to be moved among storage devices, and even across media, without requiring any changes to the retrieval.
+[src:ipfs/content-addressable-storage] For data that changes frequently, CAS is not as efficient as location-based addressing.
+[src:ipfs/content-addressable-storage] In these cases, the CAS device would need to continually recompute the address of data as it was changed.
+[src:ipfs/content-addressable-storage] This would result in multiple copies of the entire almost-identical document being stored, the problem that CAS attempts to avoid.
+[src:ipfs/content-addressable-storage] Additionally, the user-facing directories would have to be continually updated with these "new" files, which would become polluted by many similar documents that would make searching more difficult.
+[src:ipfs/content-addressable-storage] In contrast, updating a file in a location-based system is highly optimized, only the internal list of sectors has to be changed and many years of tuning have been applied to this operation.
+[src:ipfs/content-addressable-storage] Because CAS is used primarily for archiving, file deletion is often tightly controlled or even impossible under user control.
+[src:ipfs/content-addressable-storage] In contrast, automatic deletion is a common feature, removing all files older than some legally defined requirement, say ten years.
+[src:ipfs/content-addressable-storage] The simplest way to implement a CAS system is to store all of the files within a typical database to which clients connect to add, query, and retrieve files.
+[src:ipfs/content-addressable-storage] In a distributed system, content hashes are often used for quick network-wide searches for specific files, or to quickly see which data in a given file has been changed and must be propagated to other members of the network with minimal bandwidth usage.
+[src:ipfs/content-addressable-storage] In these systems, content addressability allows highly variable network topology to be abstracted away from users who wish to access data, compared to systems like the World Wide Web, in which a consistent location of a file or service is key to easy use.
+[src:ipfs/content-addressable-storage] The content-addressable network (CAN) is a distributed, decentralized P2P infrastructure that provides hash table functionality on an Internet-like scale.
+[src:ipfs/content-addressable-storage] CAN was one of the original four distributed hash table proposals, introduced concurrently with Chord, Pastry, and Tapestry.
+[src:ipfs/content-addressable-storage] A hardware device called the Content Addressable File Store (CAFS) was developed by International Computers Limited (ICL) in the late 1960s and put into use by British Telecom in the early 1970s for telephone directory lookups.
+[src:ipfs/content-addressable-storage] The user-accessible search functionality was maintained by the disk controller with a high-level application programming interface (API) so users could send queries into what appeared to be a black box that returned documents.
+[src:ipfs/content-addressable-storage] The advantage was that no information had to be exchanged with the host computer while the disk performed the search.
+[src:ipfs/content-addressable-storage] Paul Carpentier and Jan van Riel coined the term CAS while working at a company called FilePool in the late 1990s.
+[src:ipfs/content-addressable-storage] FilePool was purchased by EMC Corporation in 2001 and was released the next year as Centera.
+[src:ipfs/content-addressable-storage] The timing was perfect; the introduction of the Sarbanes–Oxley Act in 2002 required companies to store huge amounts of documentation for extended periods and required them to do so in a fashion that ensured they were not edited after-the-fact.
+[src:ipfs/content-addressable-storage] A number of similar products soon appeared from other large-system vendors.
+[src:ipfs/content-addressable-storage] In mid-2004, the industry group SNIA began working with a number of CAS providers to create standard behavior and interoperability guidelines for CAS systems.
+[src:ipfs/content-addressable-storage] In addition to CAS, a number of similar products emerged that added CAS-like capabilities to existing products; notable among these was IBM Tivoli Storage Manager.
+[src:ipfs/content-addressable-storage] The rise of cloud computing and the associated elastic cloud storage systems like Amazon S3 further diluted the value of dedicated CAS systems.
+[src:ipfs/content-addressable-storage] Dell purchased EMC in 2016 and stopped sales of the original Centera in 2018 in favor of their elastic storage product.
+[src:ipfs/content-addressable-storage] CAS was not associated with peer-to-peer applications until the 2000s, when rapidly proliferating Internet access in homes and businesses led to a large number of computer users who wanted to swap files, originally doing so on centrally managed services like Napster.
+[src:ipfs/content-addressable-storage] However, an injunction against Napster prompted the independent development of file-sharing services such as BitTorrent, which could not be centrally shut down.
+[src:ipfs/content-addressable-storage] In order to function without a central federating server, these services rely heavily on CAS to enforce the faithful copying and easy querying of unique files.
+[src:ipfs/content-addressable-storage] Around this time, individual users of public-key cryptography used CAS to store their public keys on systems such as key servers.
+[src:ipfs/content-addressable-storage] Furthermore, growing concerns about the centralization of computing power in the hands of large technology companies, potential monopoly power abuses, and privacy concerns led to a number of projects created with the goal of creating more decentralized systems.
+[src:ipfs/content-addressable-storage] Bitcoin uses CAS and public/private key pairs to manage wallet addresses, as do most other cryptocurrencies.
+[src:ipfs/content-addressable-storage] IPFS uses CAS to identify and address communally hosted files on its network.
+[src:ipfs/content-addressable-storage] Numerous other peer-to-peer systems designed to run on smartphones, which often access the Internet from varying locations, utilize CAS to store and access user data for both convenience and data privacy purposes, such as secure instant messaging.
+[src:ipfs/content-addressable-storage] The Centera CAS system consists of a series of networked nodes (typically large servers running Linux), divided between storage nodes and access nodes.
+[src:ipfs/content-addressable-storage] The access nodes maintain a synchronized directory of content addresses, and the corresponding storage node where each address can be found.
+[src:ipfs/content-addressable-storage] When a new data element, or blob, is added, the device calculates a hash of the content and returns this hash as the blob's content address.
+[src:ipfs/content-addressable-storage] As mentioned above, the hash is searched to verify that identical content is not already present.
+[src:ipfs/content-addressable-storage] If the content already exists, the device does not need to perform any additional steps; the content address already points to the proper content.
+[src:ipfs/content-addressable-storage] Otherwise, the data is passed off to a storage node and written to the physical media.
+[src:ipfs/content-addressable-storage] When a content address is provided to the device, it first queries the directory for the physical location of the specified content address.
+[src:ipfs/content-addressable-storage] The information is then retrieved from a storage node, and the actual hash of the data recomputed and verified.
+[src:ipfs/content-addressable-storage] Once this is complete, the device can supply the requested data to the client.
+[src:ipfs/content-addressable-storage] Within the Centera system, each content address actually represents a number of distinct data blobs, as well as optional metadata.
+[src:ipfs/content-addressable-storage] Whenever a client adds an additional blob to an existing content block, the system recomputes the content address.
+[src:ipfs/content-addressable-storage] To provide additional data security, the Centera access nodes, when no read or write operation is in progress, constantly communicate with the storage nodes, checking the presence of at least two copies of each blob as well as their integrity.
+[src:ipfs/content-addressable-storage] Additionally, they can be configured to exchange data with a different, e.g., off-site, Centera system, thereby strengthening the precautions against accidental data loss.
+[src:ipfs/content-addressable-storage] IBM has another flavor of CAS which can be software-based, Tivoli Storage manager 5.3, or hardware-based, the IBM DR550.
+[src:ipfs/content-addressable-storage] The architecture is different in that it is based on hierarchical storage management (HSM) design which provides some additional flexibility such as being able to support not only WORM disk but WORM tape and the migration of data from WORM disk to WORM tape and vice versa.
+[src:ipfs/content-addressable-storage] This provides for additional flexibility in disaster recovery situations as well as the ability to reduce storage costs by moving data off the disk to tape.
+[src:ipfs/content-addressable-storage] Another typical implementation is iCAS from iTernity.
+[src:ipfs/content-addressable-storage] The concept of iCAS is based on containers.
+[src:ipfs/content-addressable-storage] Each container is addressed by its hash value.
+[src:ipfs/content-addressable-storage] A container holds different numbers of fixed content documents.
+[src:ipfs/content-addressable-storage] The container is not changeable, and the hash value is fixed after the write process.
+[src:ipfs/content-addressing] As described in IPFS and the problems it solves, IPFS is a modular suite of protocols purpose built for the organization and transfer of content-addressed data.
+[src:ipfs/content-addressing] In this guide, you'll learn more about the fundamentals of content-addressing in IPFS and how IPFS uses Content Identifiers (CIDs) to handle content-addressed data.
+[src:ipfs/content-addressing] A *content identifier*, or CID, is a label used to point to material in IPFS.
+[src:ipfs/content-addressing] It doesn't indicate *where* the content is stored, but it forms a kind of address based on the content itself.
+[src:ipfs/content-addressing] CIDs are short, regardless of the size of their underlying content.
+[src:ipfs/content-addressing] CIDs are based on the content’s cryptographic hash.
+[src:ipfs/content-addressing] IPFS uses the `sha-256` hashing algorithm by default, but there is support for many other algorithms.
+[src:ipfs/content-addressing] The Multihash (opens new window) project represents the work for this, with the aim of future-proofing applications' use of hashes and allowing multiple hash functions to coexist.
+[src:ipfs/content-addressing] CIDs contain the hash and the codec of the data.
+[src:ipfs/content-addressing] A CID can be represented in string or binary format.
+[src:ipfs/content-addressing] For a break-down of an actual CID, see this example with the IPFS CID inspector (opens new window).
+[src:ipfs/content-addressing] Hash functions are widely used to check for file integrity.
+[src:ipfs/content-addressing] Because IPFS splits content into blocks and verifies them through directed acyclic graphs (DAGs), SHA file hashes won't match CIDs.
+[src:ipfs/content-addressing] Here's an example of what will happen if you try to do that.
+[src:ipfs/content-addressing] A download provider may publish the output of a hash function for a file, often called a *checksum*.
+[src:ipfs/content-addressing] The checksum enables users to verify that a file has not been altered since it was published.
+[src:ipfs/content-addressing] This check is done by performing the same hash function against the downloaded file that was used to generate the checksum.
+[src:ipfs/content-addressing] If that checksum that the user receives from the downloaded file exactly matches the checksum on the website, then the user knows that the file was not altered and can be trusted.
+[src:ipfs/content-addressing] The string `QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB` returned by the `ipfs add` command is the content identifier (CID) of the file `ubuntu-20.04.1-desktop-amd64.iso`.
+[src:ipfs/content-addressing] We can use the CID Inspector (opens new window) to see what the CID includes.
+[src:ipfs/content-addressing] The names of hash functions are not used consistently.`SHA-2`, `SHA-256` or `SHA-256 bit` all refer to the same hash function.
+[src:ipfs/content-addressing] As we can see, the hash included in the CID does NOT match the hash of the input file `ubuntu-20.04.1-desktop-amd64.iso`.
+[src:ipfs/content-addressing] The example above shows that the Multihash inside a CID does not match a simple file checksum.
+[src:ipfs/content-addressing] This is because the Multihash is the hash of the root block, not a direct hash of the file's bytes.
+[src:ipfs/content-addressing] The root block contains links to all the other blocks, and it's this root block that gets hashed to produce the Multihash in your CID.
+[src:ipfs/content-addressing] There is one case where the Multihash does equal the file's hash: when the CID uses the `raw` codec and the file fits in a single block.
+[src:ipfs/content-addressing] The `raw` codec stores bytes without any wrapper, so for small files added with `--raw-leaves`, the Multihash is a direct hash of the file contents.
+[src:ipfs/content-addressing] Two identical files can produce different CIDs.
+[src:ipfs/content-addressing] UnixFS is the default format for files and directories, but you can use other codecs or create custom ones for specialized needs.
+[src:ipfs/content-addressing] When you need reproducible CIDs across different tools, the community documents common parameter sets called CID profiles (opens new window).
+[src:ipfs/content-addressing] These define standard combinations of chunking, DAG layout, and codec settings.
+[src:ipfs/content-addressing] To explore how a CID is structured, use the CID Inspector (opens new window).
+[src:ipfs/content-addressing] To see the DAG behind a CID, use the DAG Explorer (opens new window).
+[src:ipfs/content-addressing] CIDs can take a few different forms with different encoding bases or CID versions.
+[src:ipfs/content-addressing] Many of the existing IPFS tools still generate v0 CIDs, although the `files` (Mutable File System) and `object` operations now use CIDv1 by default.
+[src:ipfs/content-addressing] When IPFS was first designed, we used base 58-encoded multihashes as the content identifiers.
+[src:ipfs/content-addressing] This is simpler but much less flexible than newer CIDs.
+[src:ipfs/content-addressing] CIDv0 is still used by default for many IPFS operations, so you should generally support v0.
+[src:ipfs/content-addressing] If a CID is 46 characters starting with "Qm", it's a CIDv0 (for more details, check the decoding algorithm (opens new window) in the CID specification).
+[src:ipfs/content-addressing] CID v1 contains some leading identifiers that clarify exactly which representation is used, along with the content-hash itself.
+[src:ipfs/content-addressing] These leading identifiers also provide forward-compatibility, supporting different formats to be used in future versions of CID.
+[src:ipfs/content-addressing] You can use the first few bytes of the CID to interpret the remainder of the content address and know how to decode the content after being fetched from IPFS.
+[src:ipfs/content-addressing] For more details, check out the CID specification (opens new window).
+[src:ipfs/content-addressing] It includes a decoding algorithm (opens new window) and links to existing software implementations for decoding CIDs.
+[src:ipfs/content-addressing] If you can't decide between CIDv0 and CIDv1, consider choosing CIDv1 for your new project and opt in by passing a version flag (`ipfs add --cid-version 1`).
+[src:ipfs/content-addressing] This is more future-proof and safe for use in browser contexts.
+[src:ipfs/content-addressing] The IPFS project will switch to CIDv1 as the new default in the near future.
+[src:ipfs/content-addressing] It's easy to explore a CID for yourself.
+[src:ipfs/content-addressing] Want to pull apart a specific CID's multibase, multicodec, or multihash info?
+[src:ipfs/content-addressing] You can use the CID Inspector (opens new window) or the CID Info panel in IPLD Explorer (opens new window) (both links launch using a sample CID) for an interactive breakdown of differently-formatted CIDs.
+[src:ipfs/content-addressing] Check out ProtoSchool's Anatomy of a CID (opens new window) tutorial to see how a single file can be represented in multiple CID versions.
+[src:ipfs/content-addressing] Converting a CID from v0 to v1 enables it to be represented in multibase encodings.
+[src:ipfs/content-addressing] The default for CIDv1 is the case-insensitive `base32`, but use of the shorter `base36` is encouraged for IPNS names to ensure same text representation on subdomains.
+[src:ipfs/content-addressing] Conversion from CIDv1 to CIDv0 is only possible when the CIDv1 uses the `dag-pb` codec (0x70), as CIDv0 only supports `dag-pb`.
+[src:ipfs/content-addressing] CIDs using other codecs like `raw` (0x55), `dag-cbor` (0x71), or `dag-json` (0x0129) cannot be converted to CIDv0.
+[src:ipfs/content-addressing] Note: The above example works because `bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi` uses the `dag-pb` codec.
+[src:ipfs/content-addressing] Attempting to convert a CIDv1 with a different codec will result in an error.
+[src:ipfs/content-addressing] A CID can be encoded using any of the encodings specified in the multibase table (opens new window).
+[src:ipfs/content-addressing] The use of different encodings can impact speed and storage efficiency.
+[src:ipfs/content-addressing] To convert a CIDv1 `cidV1` from one encoding to another, use the `toString()` method.
+[src:ipfs/content-addressing] Sometimes, a hexadecimal (opens new window) representation of raw bytes is preferred for debug purposes.
+[src:ipfs/content-addressing] For a hand-on, interactive application that converts between CID versions and encodings, use the CodeSandbox below.
+[src:ipfs/distributed-hash-table] A **distributed hash table** (**DHT**) is a distributed system that provides a lookup service similar to a hash table.
+[src:ipfs/distributed-hash-table] Key–value pairs are stored in a DHT, and any participating node can efficiently retrieve the value associated with a given key.
+[src:ipfs/distributed-hash-table] The main advantage of a DHT is that nodes can be added or removed with minimum work around re-distributing keys.
+[src:ipfs/distributed-hash-table] *Keys* are unique identifiers which map to particular *values*, which in turn can be anything from addresses, to documents, to arbitrary data.
+[src:ipfs/distributed-hash-table] Responsibility for maintaining the mapping from keys to values is distributed among the nodes, in such a way that a change in the set of participants causes a minimal amount of disruption.
+[src:ipfs/distributed-hash-table] This allows a DHT to scale to extremely large numbers of nodes and to handle continual node arrivals, departures, and failures.
+[src:ipfs/distributed-hash-table] DHTs form an infrastructure that can be used to build more complex services, such as anycast, cooperative web caching, distributed file systems, domain name services, instant messaging, multicast, and also peer-to-peer file sharing and content distribution systems.
+[src:ipfs/distributed-hash-table] Notable distributed networks that use DHTs include BitTorrent's distributed tracker, the Kad network, the Storm botnet, the Tox instant messenger, Freenet, the YaCy search engine, and the InterPlanetary File System.
+[src:ipfs/distributed-hash-table] DHT research was originally motivated, in part, by peer-to-peer (P2P) systems such as Freenet, Gnutella, BitTorrent and Napster, which took advantage of resources distributed across the Internet to provide a single useful application.
+[src:ipfs/distributed-hash-table] In particular, they took advantage of increased bandwidth and hard disk capacity to provide a file-sharing service.
+[src:ipfs/distributed-hash-table] These systems differed in how they located the data offered by their peers.
+[src:ipfs/distributed-hash-table] Napster, the first large-scale P2P content delivery system, required a central index server: each node, upon joining, would send a list of locally held files to the server, which would perform searches and refer the queries to the nodes that held the results.
+[src:ipfs/distributed-hash-table] This central component left the system vulnerable to attacks and lawsuits.
+[src:ipfs/distributed-hash-table] Gnutella and similar networks moved to a query flooding model – in essence, each search would result in a message being broadcast to every machine in the network.
+[src:ipfs/distributed-hash-table] While avoiding a single point of failure, this method was significantly less efficient than Napster.
+[src:ipfs/distributed-hash-table] Later versions of Gnutella clients moved to a dynamic querying model which vastly improved efficiency.
+[src:ipfs/distributed-hash-table] Freenet is fully distributed, but employs a heuristic key-based routing in which each file is associated with a key, and files with similar keys tend to cluster on a similar set of nodes.
+[src:ipfs/distributed-hash-table] Queries are likely to be routed through the network to such a cluster without needing to visit many peers.
+[src:ipfs/distributed-hash-table] However, Freenet does not guarantee that data will be found.
+[src:ipfs/distributed-hash-table] Distributed hash tables use a more structured key-based routing in order to attain both the decentralization of Freenet and Gnutella, and the efficiency and guaranteed results of Napster.
+[src:ipfs/distributed-hash-table] One drawback is that, like Freenet, DHTs only directly support exact-match search, rather than keyword search, although Freenet's routing algorithm can be generalized to any key type where a closeness operation can be defined.
+[src:ipfs/distributed-hash-table] In 2001, four systems—CAN, Chord, Pastry, and Tapestry—brought attention to DHTs.
+[src:ipfs/distributed-hash-table] A project called the Infrastructure for Resilient Internet Systems (Iris) was funded by a $12 million grant from the United States National Science Foundation in 2002.
+[src:ipfs/distributed-hash-table] Researchers included Sylvia Ratnasamy, Ion Stoica, Hari Balakrishnan and Scott Shenker.
+[src:ipfs/distributed-hash-table] Outside academia, DHT technology has been adopted as a component of BitTorrent and in PlanetLab projects such as the Coral Content Distribution Network.
+[src:ipfs/distributed-hash-table] A key technique used to achieve these goals is that any one node needs to coordinate with only a few other nodes in the system‍— most commonly, O(log *n*) of the *n* participants (see below)‍— so that only a limited amount of work needs to be done for each change in membership.
+[src:ipfs/distributed-hash-table] Some DHT designs seek to be secure against malicious participants and to allow participants to remain anonymous, though this is less common than in many other peer-to-peer (especially file sharing) systems; see anonymous P2P.
+[src:ipfs/distributed-hash-table] The structure of a DHT can be decomposed into several main components.
+[src:ipfs/distributed-hash-table] The foundation is an abstract keyspace, such as the set of 160-bit strings.
+[src:ipfs/distributed-hash-table] A keyspace partitioning scheme splits ownership of this keyspace among the participating nodes.
+[src:ipfs/distributed-hash-table] An overlay network then connects the nodes, allowing them to find the owner of any given key in the keyspace.
+[src:ipfs/distributed-hash-table] Once these components are in place, a typical use of the DHT for storage and retrieval might proceed as follows.
+[src:ipfs/distributed-hash-table] Suppose the keyspace is the set of 160-bit strings.
+[src:ipfs/distributed-hash-table] To index a file with given filename and data in the DHT, the SHA-1 hash of filename is generated, producing a 160-bit key k, and a message *put*(*k, data*) is sent to any node participating in the DHT.
+[src:ipfs/distributed-hash-table] The message is forwarded from node to node through the overlay network until it reaches the single node responsible for key k as specified by the keyspace partitioning.
+[src:ipfs/distributed-hash-table] That node then stores the key and the data.
+[src:ipfs/distributed-hash-table] Any other client can then retrieve the contents of the file by again hashing filename to produce k and asking any DHT node to find the data associated with k with a message *get*(*k*).
+[src:ipfs/distributed-hash-table] The message will again be routed through the overlay to the node responsible for k, which will reply with the stored data.
+[src:ipfs/distributed-hash-table] The keyspace partitioning and overlay network components are described below with the goal of capturing the principal ideas common to most DHTs; many designs differ in the details.
+[src:ipfs/distributed-hash-table] Most DHTs use some variant of consistent hashing or rendezvous hashing to map keys to nodes.
+[src:ipfs/distributed-hash-table] The two algorithms appear to have been devised independently and simultaneously to solve the distributed hash table problem.
+[src:ipfs/distributed-hash-table] Both consistent hashing and rendezvous hashing have the essential property that removal or addition of one node changes only the set of keys owned by the nodes with adjacent IDs, and leaves all other nodes unaffected.
+[src:ipfs/distributed-hash-table] Contrast this with a traditional hash table in which addition or removal of one bucket causes nearly the entire keyspace to be remapped.
+[src:ipfs/distributed-hash-table] Since any change in ownership typically corresponds to bandwidth-intensive movement of objects stored in the DHT from one node to another, minimizing such reorganization is required to efficiently support high rates of churn (node arrival and failure).
+[src:ipfs/distributed-hash-table] Consistent hashing employs a function $\delta (k_{1},k_{2})$ that defines an abstract notion of the distance between the keys $k_{1}$ and $k_{2}$ , which is unrelated to geographical distance or network latency.
+[src:ipfs/distributed-hash-table] Each node is assigned a single key called its *identifier* (ID).
+[src:ipfs/distributed-hash-table] A node with ID $i_{x}$ owns all the keys $k_{m}$ for which $i_{x}$ is the closest ID, measured according to $\delta (k_{m},i_{x})$ .
+[src:ipfs/distributed-hash-table] For example, the Chord DHT uses consistent hashing, which treats nodes as points on a circle, and $\delta (k_{1},k_{2})$ is the distance traveling clockwise around the circle from $k_{1}$ to $k_{2}$ .
+[src:ipfs/distributed-hash-table] Thus, the circular keyspace is split into contiguous segments whose endpoints are the node identifiers.
+[src:ipfs/distributed-hash-table] If $i_{1}$ and $i_{2}$ are two adjacent IDs, with a shorter clockwise distance from $i_{1}$ to $i_{2}$ , then the node with ID $i_{2}$ owns all the keys that fall between $i_{1}$ and $i_{2}$ .
+[src:ipfs/distributed-hash-table] In rendezvous hashing, also called highest random weight (HRW) hashing, all clients use the same hash function $h()$ (chosen ahead of time) to associate a key to one of the *n* available servers.
+[src:ipfs/distributed-hash-table] Each client has the same list of identifiers {*S*1, *S*2, ..., *S**n* }, one for each server.
+[src:ipfs/distributed-hash-table] The client associates that key with the server corresponding to the highest hash weight for that key.
+[src:ipfs/distributed-hash-table] A server with ID $S_{x}$ owns all the keys $k_{m}$ for which the hash weight $h(S_{x},k_{m})$ is higher than the hash weight of any other node for that key.
+[src:ipfs/distributed-hash-table] Locality-preserving hashing ensures that similar keys are assigned to similar objects.
+[src:ipfs/distributed-hash-table] This can enable a more efficient execution of range queries, however, in contrast to using consistent hashing, there is no more assurance that the keys (and thus the load) is uniformly randomly distributed over the key space and the participating peers.
+[src:ipfs/distributed-hash-table] DHT protocols such as Self-Chord and Oscar address such issues.
+[src:ipfs/distributed-hash-table] Self-Chord decouples object keys from peer IDs and sorts keys along the ring with a statistical approach based on the swarm intelligence paradigm.
+[src:ipfs/distributed-hash-table] Sorting ensures that similar keys are stored by neighbour nodes and that discovery procedures, including range queries, can be performed in logarithmic time.
+[src:ipfs/distributed-hash-table] Oscar constructs a navigable small-world network based on random walk sampling also assuring logarithmic search time.
+[src:ipfs/distributed-hash-table] Each node maintains a set of links to other nodes (its *neighbors* or routing table).
+[src:ipfs/distributed-hash-table] Together, these links form the overlay network.
+[src:ipfs/distributed-hash-table] A node picks its neighbors according to a certain structure, called the network's topology.
+[src:ipfs/distributed-hash-table] All DHT topologies share some variant of the most essential property: for any key k, each node either has a node ID that owns k or has a link to a node whose node ID is *closer* to k, in terms of the keyspace distance defined above.
+[src:ipfs/distributed-hash-table] It is then easy to route a message to the owner of any key k using the following greedy algorithm (that is not necessarily globally optimal): at each step, forward the message to the neighbor whose ID is closest to k.
+[src:ipfs/distributed-hash-table] When there is no such neighbor, then we must have arrived at the closest node, which is the owner of k as defined above.
+[src:ipfs/distributed-hash-table] This style of routing is sometimes called key-based routing.
+[src:ipfs/distributed-hash-table] Of course, having shorter routes requires higher maximum degree.
+[src:ipfs/distributed-hash-table] The most common choice, $O(\log n)$ degree/route length, is not optimal in terms of degree/route length tradeoff, but such topologies typically allow more flexibility in choice of neighbors.
+[src:ipfs/distributed-hash-table] Many DHTs use that flexibility to pick neighbors that are close in terms of latency in the physical underlying network.
+[src:ipfs/distributed-hash-table] In general, all DHTs construct navigable small-world network topologies, which trade-off route length vs. network degree.
+[src:ipfs/distributed-hash-table] Maximum route length is closely related to diameter: the maximum number of hops in any shortest path between nodes.
+[src:ipfs/distributed-hash-table] Clearly, the network's worst case route length is at least as large as its diameter, so DHTs are limited by the degree/diameter tradeoff that is fundamental in graph theory.
+[src:ipfs/distributed-hash-table] Route length can be greater than diameter, since the greedy routing algorithm may not find shortest paths.
+[src:ipfs/distributed-hash-table] Aside from routing, there exist many algorithms that exploit the structure of the overlay network for sending a message to all nodes, or a subset of nodes, in a DHT.
+[src:ipfs/distributed-hash-table] These algorithms are used by applications to do overlay multicast, range queries, or to collect statistics.
+[src:ipfs/distributed-hash-table] Two systems that are based on this approach are Structella, which implements flooding and random walks on a Pastry overlay, and DQ-DHT, which implements a dynamic querying search algorithm over a Chord network.
+[src:ipfs/distributed-hash-table] Because of the decentralization, fault tolerance, and scalability of DHTs, they are inherently more resilient against a hostile attacker than a centralized system.
+[src:ipfs/distributed-hash-table] Open systems for distributed data storage that are robust against massive hostile attackers are feasible.
+[src:ipfs/distributed-hash-table] A DHT system that is carefully designed to have Byzantine fault tolerance can defend against a security weakness, known as the Sybil attack, which affects most current DHT designs.
+[src:ipfs/distributed-hash-table] Whanau is a DHT designed to be resistant to Sybil attacks.
+[src:ipfs/distributed-hash-table] Petar Maymounkov, one of the original authors of Kademlia, has proposed a way to circumvent the weakness to the Sybil attack by incorporating social trust relationships into the system design.
+[src:ipfs/distributed-hash-table] The new system, codenamed Tonika or also known by its domain name as 5ttt, is based on an algorithm design known as "electric routing" and co-authored with the mathematician Jonathan Kelner.
+[src:ipfs/distributed-hash-table] Maymounkov has now undertaken a comprehensive implementation effort of this new system.
+[src:ipfs/distributed-hash-table] However, research into effective defences against Sybil attacks is generally considered an open question, and wide variety of potential defences are proposed every year in top security research conferences.
+[src:ipfs/interplanetary-file-system] The **InterPlanetary File System** (**IPFS**) is a protocol, hypermedia and file sharing peer-to-peer network for sharing data using a distributed hash table to store provider information.
+[src:ipfs/interplanetary-file-system] By using content addressing, IPFS uniquely identifies each file in a global namespace that connects IPFS hosts, creating a distributed system of file storage and sharing.
+[src:ipfs/interplanetary-file-system] IPFS allows users to host and receive content in a manner similar to BitTorrent.
+[src:ipfs/interplanetary-file-system] As opposed to a centrally located server, IPFS is built around a decentralized system of user-operators who hold a portion of the overall data.
+[src:ipfs/interplanetary-file-system] Any user in the network can serve a file by its content address, and other peers in the network can find and request that content from any node who has it using a distributed hash table (DHT).
+[src:ipfs/interplanetary-file-system] In contrast to traditional location-based protocols like HTTP and HTTPS, IPFS uses content-based addressing to provide a decentralized alternative for distributing the World Wide Web.
+[src:ipfs/interplanetary-file-system] The InterPlanetary File System (IPFS) is a decentralized protocol, hypermedia, and peer-to-peer (P2P) network for distributed file storage and sharing.
+[src:ipfs/interplanetary-file-system] By using content-addressing, IPFS uniquely identifies files in a global namespace that interlinks IPFS hosts, creating a hypermedia system that enables efficient and reliable data distribution.
+[src:ipfs/interplanetary-file-system] As opposed to a centrally located server, IPFS is built around a decentralized system of user-operators who hold a portion of the overall data, creating a resilient system of file storage and sharing.
+[src:ipfs/interplanetary-file-system] In contrast to BitTorrent, IPFS aims to create a single global network.
+[src:ipfs/interplanetary-file-system] This means that if two users publish a block of data with the same hash, the peers downloading content from one user will also exchange data with those downloading it from the second.
+[src:ipfs/interplanetary-file-system] IPFS gateways allow browsers and tools that lack native IPFS support to access IPFS content over HTTP.
+[src:ipfs/interplanetary-file-system] Users may choose not to install an IPFS client on their device and instead use a public gateway.
+[src:ipfs/interplanetary-file-system] A list of these gateways is maintained on the IPFS GitHub page.
+[src:ipfs/interplanetary-file-system] IPFS was created by Juan Benet, who later founded Protocol Labs in May 2014.
+[src:ipfs/interplanetary-file-system] An alpha version was launched in February 2015, and by October of the same year was described by TechCrunch as "quickly spreading by word of mouth." Network service provider Cloudflare started using IPFS in 2018 and launched its own IPFS gateway in 2022.
+[src:ipfs/interplanetary-file-system] In March 2020, the Opera browser provided access to the centralized resources of the Unstoppable Domains provider by hosting content in IPFS.
+[src:ipfs/interplanetary-file-system] Phishing attacks have also been distributed through Cloudflare's IPFS gateway since July 2018.
+[src:ipfs/interplanetary-file-system] The phishing scam HTML is stored on IPFS, and displayed via Cloudflare's gateway.
+[src:ipfs/interplanetary-file-system] The connection shows as secure via a Cloudflare TLS certificate.
+[src:ipfs/interplanetary-file-system] The IPStorm botnet, first detected in June 2019, uses IPFS so it can hide its command-and-control amongst the flow of legitimate data on the IPFS network.
+[src:ipfs/interplanetary-file-system] Security researchers had previously identified the possibility of using IPFS as a botnet command-and-control system.

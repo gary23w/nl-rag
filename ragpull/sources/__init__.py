@@ -10,30 +10,34 @@ Thematic modules aggregate into one DOMAINS dict; names match nl-veil's atlas en
 an atlas entry exists, so pack wiring stays mechanical (many atlas entries may map onto one pack).
 """
 
-from . import (
-    base,
-    books_rosetta,
-    cs_systems,
-    data_ai,
-    embedded_iot,
-    languages,
-    mathematics,
-    paradigms_problem,
-    patterns_practice,
-    web_cloud,
-)
+import importlib
+import pkgutil
 
-_MODULES = [
-    base, languages, paradigms_problem, embedded_iot, mathematics,
-    cs_systems, patterns_practice, data_ai, web_cloud, books_rosetta,
-]
-
+# Auto-discover every submodule that exposes a DOMAINS dict (base + thematic + ext_* expansion
+# packs). `common` is helpers-only, so it's skipped naturally (no DOMAINS). base loads first so
+# a cross-module domain-name collision names the newer module as the offender.
+_DOMAIN_OWNER: dict[str, str] = {}
 DOMAINS = {}
-for _m in _MODULES:
-    for _name, _d in _m.DOMAINS.items():
-        if _name in DOMAINS:
-            raise SystemExit(f"duplicate domain across modules: {_name} ({_m.__name__})")
-        DOMAINS[_name] = _d
+
+
+def _load():
+    names = [m.name for m in pkgutil.iter_modules(__path__) if m.name != "common"]
+    names.sort(key=lambda n: (n != "base", n))  # base first, then alphabetical
+    for modname in names:
+        mod = importlib.import_module(f"{__name__}.{modname}")
+        table = getattr(mod, "DOMAINS", None)
+        if not table:
+            continue
+        for name, d in table.items():
+            if name in DOMAINS:
+                raise SystemExit(
+                    f"duplicate domain '{name}': in both {_DOMAIN_OWNER[name]} and {modname}"
+                )
+            DOMAINS[name] = d
+            _DOMAIN_OWNER[name] = modname
+
+
+_load()
 
 
 def slug_for(url: str) -> str:
@@ -57,18 +61,30 @@ def slug_for(url: str) -> str:
     s = "".join(out)
     while "--" in s:
         s = s.replace("--", "-")
-    return s.strip("-")[:80] or "page"
+    s = s.strip("-")[:80] or "page"
+    # "index" collides with the pack's INDEX.md on a case-insensitive filesystem (Windows),
+    # where index.md and INDEX.md are the same file — reserve it
+    return "index-page" if s == "index" else s
 
 
-def check_registry():
-    """Fail fast on slug collisions inside a domain."""
-    for name, d in DOMAINS.items():
-        seen = {}
+def dedupe_slugs():
+    """Two URLs in one domain can slug to the same filename (a Wikipedia article and a doc page
+    both ending .../graph-database). Keep the FIRST (agents list Wikipedia first — the reliable
+    floor) and drop the rest so one page never silently overwrites another at emit time. Returns
+    the number dropped. Idempotent."""
+    dropped = 0
+    for d in DOMAINS.values():
+        seen = set()
+        kept = []
         for url in d["pages"]:
             s = slug_for(url)
             if s in seen:
-                raise SystemExit(f"slug collision in {name}: {seen[s]} vs {url} -> {s}")
-            seen[s] = url
+                dropped += 1
+                continue
+            seen.add(s)
+            kept.append(url)
+        d["pages"] = kept
+    return dropped
 
 
-check_registry()
+_SLUG_DROPPED = dedupe_slugs()

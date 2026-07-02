@@ -1,0 +1,34 @@
+---
+title: "Lint (software)"
+source: https://en.wikipedia.org/wiki/Lint_(software)
+domain: eslint
+license: CC-BY-SA-4.0
+tags: eslint linter, javascript linter, lint rules, static analysis js
+fetched: 2026-07-02
+---
+
+# Lint (software)
+
+**Lint** is a Unix utility that performs static program analysis on C language source code. The software gives its name to modern computing tools responsible for checking for coding style or formatting errors, known as a "**linters**" or "**linting tools**", even though the original Lint program performed static program analysis.
+
+## History
+
+Stephen C. Johnson, a computer scientist at Bell Labs, came up with the term "lint" in 1978 while debugging the yacc grammar he was writing for C and dealing with portability issues stemming from porting Unix to a 32-bit machine. The term was borrowed from lint, the tiny bits of fiber and fluff shed by clothing, as the command he wrote would act like a lint trap in a clothes dryer, capturing waste fibers while leaving whole fabrics intact. The lint program was released outside of Bell Labs in Unix V7, in 1979.
+
+Over the years, different versions of lint have been developed for many C and C++ compilers, and while modern-day compilers have lint-like functions, static analysis tools have also advanced their capabilities.
+
+Today linting refers to checking code for formatting and stylistic errors and can be seen in tools such as PHP CodeSniffer (PHP), ESLint (JavaScript), Stylelint (CSS), Pylint (Python), RuboCop (Ruby) and golint (Go). Many linting tools also perform static analysis.
+
+## Overview
+
+In his 1978 paper, Johnson explained his reasons for creating a new program to detect errors: "...the general notion of having two programs is a good one" because they concentrate on different things, thereby allowing the programmer to "concentrate at one stage of the programming process solely on the algorithms, data structures, and correctness of the program, and then later retrofit, with the aid of lint, the desirable properties of universality and portability".
+
+## Successors of Lint
+
+Although today "linting" refers to style and formatting analysis of code, the successors of the original Lint continue its tradition by performing static program analysis.
+
+The analysis performed by Lint-like tools can also be performed by an optimizing compiler, which aims to generate faster code. Even though modern compilers have evolved to include many of lint's historical functions, lint-like tools have also evolved to detect an even wider variety of suspicious constructs. These include "warnings about syntax errors, uses of undeclared variables, calls to deprecated functions, spacing and formatting conventions, misuse of scope, implicit fallthrough in switch statements, missing license headers, [and]...dangerous language features".
+
+Lint-like tools are especially useful for dynamically typed languages like JavaScript and Python. Because the interpreters of such languages typically do not enforce as many and as strict rules during execution, linter tools can also be used as simple debuggers for finding common errors (e.g. syntactic discrepancies) as well as hard-to-find errors such as heisenbugs (drawing attention to suspicious code as "possible errors"). Lint-like tools generally perform static analysis of source code.
+
+Lint-like tools have also been developed for other aspects of software development, such as enforcing grammar and style guides for given language source code. Some tools (such as ESLint) also allow rules to be auto-fixable: a rule definition can also come with the definition of a transform that resolves the warning. Rules about style are especially likely to come with an auto-fix. If the linter is run in "fix all" mode on a file that triggers only rules about formatting, the linter will act just like a formatter.

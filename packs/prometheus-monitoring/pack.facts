@@ -1,0 +1,265 @@
+# nl-rag distilled facts — domain: prometheus-monitoring
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:prometheus-monitoring/concepts-data-model] Prometheus fundamentally stores all data as *time series*: streams of timestamped values belonging to the same metric and the same set of labeled dimensions.
+[src:prometheus-monitoring/concepts-data-model] Besides stored time series, Prometheus may generate temporary derived time series as the result of queries.
+[src:prometheus-monitoring/concepts-data-model] Every time series is uniquely identified by its metric name and optional key-value pairs called labels.
+[src:prometheus-monitoring/concepts-data-model] Labels let you capture different instances of the same metric name.
+[src:prometheus-monitoring/concepts-data-model] For example: all HTTP requests that used the method `POST` to the `/api/tracks` handler.
+[src:prometheus-monitoring/concepts-data-model] We refer to this as Prometheus's "dimensional data model".
+[src:prometheus-monitoring/concepts-data-model] The query language allows filtering and aggregation based on these dimensions.
+[src:prometheus-monitoring/concepts-data-model] The change of any label's value, including adding or removing labels, will create a new time series.
+[src:prometheus-monitoring/concepts-data-model] WARNING: The UTF-8 support for metric and label names was added relatively recently in Prometheus v3.0.0.
+[src:prometheus-monitoring/concepts-data-model] It might take time for the wider ecosystem (downstream PromQL compatible projects and vendors, tooling, third-party instrumentation, collectors, etc.) to adopt new quoting mechanisms, relaxed validation etc.
+[src:prometheus-monitoring/concepts-data-model] For the best compatibility it's recommended to stick to the recommended ("SHOULD") character set.
+[src:prometheus-monitoring/concepts-data-model] INFO: See also the best practices for naming metrics and labels.
+[src:prometheus-monitoring/concepts-data-model] Samples form the actual time series data.
+[src:prometheus-monitoring/concepts-data-model] This is the same notation that OpenTSDB uses.
+[src:prometheus-monitoring/getting-started] This guide is a "Hello World"-style tutorial which shows how to install, configure, and use a simple Prometheus instance.
+[src:prometheus-monitoring/getting-started] You will download and run Prometheus locally, configure it to scrape itself and an example application, then work with queries, rules, and graphs to use collected time series data.
+[src:prometheus-monitoring/getting-started] Before starting Prometheus, let's configure it.
+[src:prometheus-monitoring/getting-started] Prometheus collects metrics from *targets* by scraping metrics HTTP endpoints.
+[src:prometheus-monitoring/getting-started] Since Prometheus exposes data in the same manner about itself, it can also scrape and monitor its own health.
+[src:prometheus-monitoring/getting-started] While a Prometheus server that collects only data about itself is not very useful, it is a good starting example.
+[src:prometheus-monitoring/getting-started] For a complete specification of configuration options, see the configuration documentation.
+[src:prometheus-monitoring/getting-started] You should also be able to browse to a status page about itself at localhost:9090 .
+[src:prometheus-monitoring/getting-started] Give it a couple of seconds to collect data about itself from its own HTTP metrics endpoint.
+[src:prometheus-monitoring/getting-started] Let us explore data that Prometheus has collected about itself.
+[src:prometheus-monitoring/getting-started] To use Prometheus's built-in expression browser, navigate to http://localhost:9090/query and choose the "Graph" tab.
+[src:prometheus-monitoring/getting-started] As you can gather from localhost:9090/metrics , one metric that Prometheus exports about itself is named `prometheus_target_interval_length_seconds` (the actual amount of time between target scrapes).
+[src:prometheus-monitoring/getting-started] This should return a number of different time series (along with the latest value recorded for each), each with the metric name `prometheus_target_interval_length_seconds`, but with different labels.
+[src:prometheus-monitoring/getting-started] These labels designate different latency percentiles and target group intervals.
+[src:prometheus-monitoring/getting-started] For more about the expression language, see the expression language documentation.
+[src:prometheus-monitoring/getting-started] To graph expressions, navigate to http://localhost:9090/query and use the "Graph" tab.
+[src:prometheus-monitoring/getting-started] Experiment with the graph range parameters and other settings.
+[src:prometheus-monitoring/getting-started] Let's add additional targets for Prometheus to scrape.
+[src:prometheus-monitoring/getting-started] The Node Exporter is used as an example target, for more information on using it see these instructions.
+[src:prometheus-monitoring/getting-started] You should now have example targets listening on http://localhost:8080/metrics , http://localhost:8081/metrics , and http://localhost:8082/metrics .
+[src:prometheus-monitoring/getting-started] Now we will configure Prometheus to scrape these new targets.
+[src:prometheus-monitoring/getting-started] Let's group all three endpoints into one job called `node`.
+[src:prometheus-monitoring/getting-started] We will imagine that the first two endpoints are production targets, while the third one represents a canary instance.
+[src:prometheus-monitoring/getting-started] To model this in Prometheus, we can add several groups of endpoints to a single job, adding extra labels to each group of targets.
+[src:prometheus-monitoring/getting-started] In this example, we will add the `group="production"` label to the first group of targets, while adding `group="canary"` to the second.
+[src:prometheus-monitoring/getting-started] Go to the expression browser and verify that Prometheus now has information about time series that these example endpoints expose, such as `node_cpu_seconds_total`.
+[src:prometheus-monitoring/getting-started] Though not a problem in our example, queries that aggregate over thousands of time series can get slow when computed ad-hoc.
+[src:prometheus-monitoring/getting-started] To make this more efficient, Prometheus can prerecord expressions into new persisted time series via configured *recording rules*.
+[src:prometheus-monitoring/getting-started] Let's say we are interested in recording the per-second rate of cpu time (`node_cpu_seconds_total`) averaged over all cpus per instance (but preserving the `job`, `instance` and `mode` dimensions) as measured over a window of 5 minutes.
+[src:prometheus-monitoring/getting-started] To make Prometheus pick up this new rule, add a `rule_files` statement in your `prometheus.yml`.
+[src:prometheus-monitoring/getting-started] Restart Prometheus with the new configuration and verify that a new time series with the metric name `job_instance_mode:node_cpu_seconds:avg_rate5m` is now available by querying it through the expression browser or graphing it.
+[src:prometheus-monitoring/getting-started] As mentioned in the configuration documentation a Prometheus instance can have its configuration reloaded without restarting the process by using the `SIGHUP` signal.
+[src:prometheus-monitoring/getting-started] If you're running on Linux this can be performed by using `kill -s SIGHUP <PID>`, replacing `<PID>` with your Prometheus process ID.
+[src:prometheus-monitoring/getting-started] While Prometheus does have recovery mechanisms in the case that there is an abrupt process failure it is recommended to use signals or interrupts for a clean shutdown of a Prometheus instance.
+[src:prometheus-monitoring/getting-started] On Linux, this can be done by sending the `SIGTERM` or `SIGINT` signals to the Prometheus process.
+[src:prometheus-monitoring/getting-started] For example, you can use `kill -s <SIGNAL> <PID>`, replacing `<SIGNAL>` with the signal name and `<PID>` with the Prometheus process ID.
+[src:prometheus-monitoring/getting-started] Alternatively, you can press the interrupt character at the controlling terminal, which by default is `^C` (Control-C).
+[src:prometheus-monitoring/instrumenting-exporters] There are a number of libraries and servers which help in exporting existing metrics from third-party systems as Prometheus metrics.
+[src:prometheus-monitoring/instrumenting-exporters] This is useful for cases where it is not feasible to instrument a given system with Prometheus metrics directly (for example, HAProxy or Linux system stats).
+[src:prometheus-monitoring/instrumenting-exporters] Some of these exporters are maintained as part of the official Prometheus GitHub organization , those are marked as *official*, others are externally contributed and maintained.
+[src:prometheus-monitoring/instrumenting-exporters] We encourage the creation of more exporters but cannot vet all of them for best practices.
+[src:prometheus-monitoring/instrumenting-exporters] Commonly, those exporters are hosted outside of the Prometheus GitHub organization.
+[src:prometheus-monitoring/instrumenting-exporters] The exporter default port wiki page has become another catalog of exporters, and may include exporters not listed here due to overlapping functionality or still being in development.
+[src:prometheus-monitoring/instrumenting-exporters] The JMX exporter can export from a wide variety of JVM-based applications, for example Kafka and Cassandra .
+[src:prometheus-monitoring/instrumenting-exporters] When implementing a new Prometheus exporter, please follow the guidelines on writing exporters Please also consider consulting the development mailing list .
+[src:prometheus-monitoring/instrumenting-exporters] We are happy to give advice on how to make your exporter as useful and consistent as possible.
+[src:prometheus-monitoring/instrumenting-exporters] The software marked *direct* is also directly instrumented with a Prometheus client library.
+[src:prometheus-monitoring/instrumenting-exporters] This section lists libraries and other utilities that help you instrument code in a certain language.
+[src:prometheus-monitoring/instrumenting-exporters] They are not Prometheus client libraries themselves but make use of one of the normal Prometheus client libraries under the hood.
+[src:prometheus-monitoring/instrumenting-exporters] As for all independently maintained software, we cannot vet all of them for best practices.
+[src:prometheus-monitoring/introduction-overview] Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud .
+[src:prometheus-monitoring/introduction-overview] Since its inception in 2012, many companies and organizations have adopted Prometheus, and the project has a very active developer and user community.
+[src:prometheus-monitoring/introduction-overview] It is now a standalone open source project and maintained independently of any company.
+[src:prometheus-monitoring/introduction-overview] To emphasize this, and to clarify the project's governance structure, Prometheus joined the Cloud Native Computing Foundation in 2016 as the second hosted project, after Kubernetes .
+[src:prometheus-monitoring/introduction-overview] Prometheus collects and stores its metrics as time series data, i.e. metrics information is stored with the timestamp at which it was recorded, alongside optional key-value pairs called labels.
+[src:prometheus-monitoring/introduction-overview] For more elaborate overviews of Prometheus, see the resources linked from the media section.
+[src:prometheus-monitoring/introduction-overview] Metrics are numerical measurements in layperson terms.
+[src:prometheus-monitoring/introduction-overview] The term time series refers to the recording of changes over time.
+[src:prometheus-monitoring/introduction-overview] What users want to measure differs from application to application.
+[src:prometheus-monitoring/introduction-overview] For a web server, it could be request times; for a database, it could be the number of active connections or active queries, and so on.
+[src:prometheus-monitoring/introduction-overview] Metrics play an important role in understanding why your application is working in a certain way.
+[src:prometheus-monitoring/introduction-overview] Let's assume you are running a web application and discover that it is slow.
+[src:prometheus-monitoring/introduction-overview] To learn what is happening with your application, you will need some information.
+[src:prometheus-monitoring/introduction-overview] For example, when the number of requests is high, the application may become slow.
+[src:prometheus-monitoring/introduction-overview] If you have the request count metric, you can determine the cause and increase the number of servers to handle the load.
+[src:prometheus-monitoring/introduction-overview] Most Prometheus components are written in Go , making them easy to build and deploy as static binaries.
+[src:prometheus-monitoring/introduction-overview] Prometheus scrapes metrics from instrumented jobs, either directly or via an intermediary push gateway for short-lived jobs.
+[src:prometheus-monitoring/introduction-overview] It stores all scraped samples locally and runs rules over this data to either aggregate and record new time series from existing data or generate alerts.
+[src:prometheus-monitoring/introduction-overview] Grafana or other API consumers can be used to visualize the collected data.
+[src:prometheus-monitoring/introduction-overview] Prometheus works well for recording any purely numeric time series.
+[src:prometheus-monitoring/introduction-overview] It fits both machine-centric monitoring as well as monitoring of highly dynamic service-oriented architectures.
+[src:prometheus-monitoring/introduction-overview] In a world of microservices, its support for multi-dimensional data collection and querying is a particular strength.
+[src:prometheus-monitoring/introduction-overview] Prometheus is designed for reliability, to be the system you go to during an outage to allow you to quickly diagnose problems.
+[src:prometheus-monitoring/introduction-overview] Each Prometheus server is standalone, not depending on network storage or other remote services.
+[src:prometheus-monitoring/introduction-overview] You can rely on it when other parts of your infrastructure are broken, and you do not need to set up extensive infrastructure to use it.
+[src:prometheus-monitoring/introduction-overview] You can always view what statistics are available about your system, even under failure conditions.
+[src:prometheus-monitoring/introduction-overview] If you need 100% accuracy, such as for per-request billing, Prometheus is not a good choice, as the collected data will likely not be detailed and complete enough.
+[src:prometheus-monitoring/introduction-overview] In such a case, you would be best off using some other system to collect and analyze the data for billing, and Prometheus for the rest of your monitoring.
+[src:prometheus-monitoring/prometheus-software] Prometheus originated at SoundCloud in 2012 and was accepted by the Cloud Native Computing Foundation (CNCF) in 2016, graduating from incubation in 2018.
+[src:prometheus-monitoring/prometheus-software] It is commonly paired with Grafana for dashboard visualization and supports a wide range of exporters and integrations.
+[src:prometheus-monitoring/prometheus-software] Prometheus was developed at SoundCloud starting in 2012, after the company found that its existing metrics tools, based on StatsD and Graphite, could not meet the demands of its containerized infrastructure.
+[src:prometheus-monitoring/prometheus-software] The design goals included a multi-dimensional data model, operational simplicity, scalable data collection, and a powerful query language in a single tool.
+[src:prometheus-monitoring/prometheus-software] The project was open source from the start and was adopted by Boxever and Docker users before any official announcement.
+[src:prometheus-monitoring/prometheus-software] The design was influenced by Borgmon, Google's internal time-series monitoring system, which treated time-series data as a source for alert generation.
+[src:prometheus-monitoring/prometheus-software] By 2013, Prometheus was in production use at SoundCloud.
+[src:prometheus-monitoring/prometheus-software] The project was publicly announced in January 2015.
+[src:prometheus-monitoring/prometheus-software] In May 2016, the Cloud Native Computing Foundation accepted Prometheus as its second incubated project, after Kubernetes.
+[src:prometheus-monitoring/prometheus-software] In August 2018, the CNCF announced that Prometheus had graduated from incubation.
+[src:prometheus-monitoring/prometheus-software] Prometheus 1.0 was released in July 2016.
+[src:prometheus-monitoring/prometheus-software] Subsequent releases through 2016 and 2017 led to Prometheus 2.0 in November 2017, which introduced a new storage engine with significantly improved performance and reduced disk usage.
+[src:prometheus-monitoring/prometheus-software] A typical Prometheus monitoring deployment consists of several components working together.
+[src:prometheus-monitoring/prometheus-software] Exporters run on monitored hosts to collect and expose local metrics.
+[src:prometheus-monitoring/prometheus-software] The Prometheus server scrapes those exporters at a configured interval, aggregates the data, and stores it locally.
+[src:prometheus-monitoring/prometheus-software] Alertmanager receives alerts from Prometheus and handles routing, grouping, and silencing before forwarding notifications.
+[src:prometheus-monitoring/prometheus-software] Grafana is commonly used to build dashboards from Prometheus data.
+[src:prometheus-monitoring/prometheus-software] Queries against all of these are written in PromQL, Prometheus's native query language.
+[src:prometheus-monitoring/prometheus-software] Prometheus data is organized as named metrics, each optionally qualified by an arbitrary number of key-value label pairs.
+[src:prometheus-monitoring/prometheus-software] Labels can identify the data source (server name, datacenter) or carry application-specific context such as HTTP status code, request method, or endpoint.
+[src:prometheus-monitoring/prometheus-software] Querying in real time against any combination of labels is what makes the data model multi-dimensional.
+[src:prometheus-monitoring/prometheus-software] Prometheus stores data locally on disk for fast writes and queries.
+[src:prometheus-monitoring/prometheus-software] Metrics can also be forwarded to remote storage backends, including Grafana Mimir and other Prometheus-compatible systems.
+[src:prometheus-monitoring/prometheus-software] Prometheus collects data through a pull model: the server periodically queries a configured list of targets (exporters) and aggregates the returned time-series values.
+[src:prometheus-monitoring/prometheus-software] Prometheus includes several service discovery mechanisms to automatically locate targets in dynamic environments.
+[src:prometheus-monitoring/prometheus-software] Prometheus provides its own query language, PromQL (Prometheus Query Language), which allows users to select and aggregate time-series data.
+[src:prometheus-monitoring/prometheus-software] The language includes time-oriented constructs such as the rate() function, instant vectors, and range vectors that return multiple samples per series over a specified time window.
+[src:prometheus-monitoring/prometheus-software] Alert rules in Prometheus specify a condition and a duration; if the condition holds for that duration, Prometheus fires an alert to Alertmanager.
+[src:prometheus-monitoring/prometheus-software] Alertmanager handles silencing, inhibition, and routing to notification destinations including email, Slack, and PagerDuty.
+[src:prometheus-monitoring/prometheus-software] Additional targets such as Microsoft Teams can be reached through the Alertmanager webhook receiver interface.
+[src:prometheus-monitoring/prometheus-software] Prometheus includes its own time series database.
+[src:prometheus-monitoring/prometheus-software] Recent data (by default, one to three hours) is held in a combination of memory and mmap-backed files.
+[src:prometheus-monitoring/prometheus-software] Older data is written to persistent blocks indexed with an inverted index, which suits Prometheus's label-based query patterns.
+[src:prometheus-monitoring/prometheus-software] A background compaction process merges smaller blocks into larger ones to reduce read overhead.
+[src:prometheus-monitoring/prometheus-software] Durability against crashes is provided by a write-ahead log (WAL).
+[src:prometheus-monitoring/prometheus-software] Prometheus includes a basic expression browser but is not a full dashboard system.
+[src:prometheus-monitoring/prometheus-software] Grafana is the standard pairing, querying Prometheus via PromQL to produce dashboards; the need to deploy and maintain Grafana separately is sometimes cited as an operational drawback.
+[src:prometheus-monitoring/prometheus-software] Prometheus favors white-box monitoring, where applications publish internal metrics for collection.
+[src:prometheus-monitoring/prometheus-software] Exporters and agents are available for many applications and systems.
+[src:prometheus-monitoring/prometheus-software] For transition from existing monitoring stacks, Prometheus supports several protocols: Graphite, StatsD, SNMP, JMX, and CollectD.
+[src:prometheus-monitoring/prometheus-software] Metrics are typically retained for a few weeks.
+[src:prometheus-monitoring/prometheus-software] For longer retention, Prometheus can stream data to remote storage backends.
+[src:prometheus-monitoring/prometheus-software] An effort to standardize the Prometheus exposition format as OpenMetrics has gained adoption from several vendors, including InfluxData's TICK suite, InfluxDB, Google Cloud Platform, Datadog, and New Relic.
+[src:prometheus-monitoring/prometheus-software] The OpenMetrics specification is maintained separately from the Prometheus project.
+[src:prometheus-monitoring/prometheus-software] Prometheus client libraries are available for most major programming languages.
+[src:prometheus-monitoring/prometheus-software] The POCO C++ Libraries expose Prometheus metrics through the `Poco::Prometheus` namespace.
+[src:prometheus-monitoring/querying-basics] Prometheus provides a functional query language called PromQL (Prometheus Query Language) that lets the user select and aggregate time series data in real time.
+[src:prometheus-monitoring/querying-basics] When you send a query request to Prometheus, it can be an *instant query*, evaluated at one point in time, or a *range query* at equally-spaced steps between a start and an end time.
+[src:prometheus-monitoring/querying-basics] PromQL works exactly the same in each case; the range query is just like an instant query run multiple times at different timestamps.
+[src:prometheus-monitoring/querying-basics] In the Prometheus UI, the "Table" tab is for instant queries and the "Graph" tab is for range queries.
+[src:prometheus-monitoring/querying-basics] Other programs can fetch the result of a PromQL expression via the HTTP API.
+[src:prometheus-monitoring/querying-basics] This document is a Prometheus basic language reference.
+[src:prometheus-monitoring/querying-basics] For learning, it may be easier to start with a couple of examples.
+[src:prometheus-monitoring/querying-basics] The value of a sample at a given timestamp returned by PromQL may be a float or a native histogram.
+[src:prometheus-monitoring/querying-basics] A float sample is a simple floating point number, whereas a native histograms sample contains a full histogram including count, sum, and buckets.
+[src:prometheus-monitoring/querying-basics] Note that the term “histogram sample” in the PromQL documentation always refers to a native histogram.
+[src:prometheus-monitoring/querying-basics] The term "classic histogram" refers to a set of time series containing float samples with the `_bucket`, `_count`, and `_sum` suffixes that together describe a histogram.
+[src:prometheus-monitoring/querying-basics] From the perspective of PromQL, these contain just float samples, there are no “classic histogram samples”.
+[src:prometheus-monitoring/querying-basics] Both float samples and histogram samples can have a counter or a gauge “flavor”.
+[src:prometheus-monitoring/querying-basics] Float samples with a counter or gauge flavor are generally simply called “counters” or “gauges”, respectively, while their histogram counterparts are called “counter histograms” or “gauge histograms”.
+[src:prometheus-monitoring/querying-basics] Float samples do not store their flavor, leaving it to the user to take their flavor into account when writing PromQL queries.
+[src:prometheus-monitoring/querying-basics] Since histogram samples “know” their counter or gauge flavor, this allows reliable warnings about mismatched operations.
+[src:prometheus-monitoring/querying-basics] For example, applying the `rate` function to gauge floats will most likely produce a nonsensical result, but the query will be processed without complains.
+[src:prometheus-monitoring/querying-basics] However, if applied to gauge histograms, the result of the query will be annotated with a warning.
+[src:prometheus-monitoring/querying-basics] Depending on the use case (e.g. when graphing vs. displaying the output of an expression), only some of these types are legal as the result of a user-specified expression.
+[src:prometheus-monitoring/querying-basics] For instant queries, any of the above data types are allowed as the root of the expression.
+[src:prometheus-monitoring/querying-basics] Range queries only support scalar-typed and instant-vector-typed expressions.
+[src:prometheus-monitoring/querying-basics] Both vectors and time series may contain a mix of float samples and histogram samples.
+[src:prometheus-monitoring/querying-basics] Native histograms can have different bucket layouts, but they are generally convertible to compatible versions to apply binary and aggregation operations to them.
+[src:prometheus-monitoring/querying-basics] Functions acting on range vectors that are applicable to native histograms also perform such reconciliation.
+[src:prometheus-monitoring/querying-basics] In binary operations this reconciliation is performed pairwise, in aggregation operations and functions all histogram samples are reconciled to one compatible bucket layout.
+[src:prometheus-monitoring/querying-basics] Not all bucket layouts can be reconciled, if incompatible histograms are encountered in an operation, the corresponding output vector element is removed from the result, flagged with a warn-level annotation.
+[src:prometheus-monitoring/querying-basics] More details can be found in the native histogram specification.
+[src:prometheus-monitoring/querying-basics] The following section describes literal values of various kinds.
+[src:prometheus-monitoring/querying-basics] Note that there is no “histogram literal”.
+[src:prometheus-monitoring/querying-basics] String literals are designated by single quotes, double quotes or backticks.
+[src:prometheus-monitoring/querying-basics] PromQL follows the same escaping rules as Go .
+[src:prometheus-monitoring/querying-basics] For string literals in single or double quotes, a backslash begins an escape sequence, which may be followed by `a`, `b`, `f`, `n`, `r`, `t`, `v` or `\`.
+[src:prometheus-monitoring/querying-basics] Specific characters can be provided using octal (`\nnn`) or hexadecimal (`\xnn`, `\unnnn` and `\Unnnnnnnn`) notations.
+[src:prometheus-monitoring/querying-basics] Conversely, escape characters are not parsed in string literals designated by backticks.
+[src:prometheus-monitoring/querying-basics] It is important to note that, unlike Go, Prometheus does not discard newlines inside backticks.
+[src:prometheus-monitoring/querying-basics] Additionally, underscores (`_`) can be used in between decimal or hexadecimal digits to improve readability.
+[src:prometheus-monitoring/querying-basics] Float literals are also used to specify durations in seconds.
+[src:prometheus-monitoring/querying-basics] Suffixing a decimal integer number with one of the units above is a different representation of the equivalent number of seconds as a bare float literal.
+[src:prometheus-monitoring/querying-basics] Multiple units can be combined by concatenation of suffixed integers.
+[src:prometheus-monitoring/querying-basics] Units must be ordered from the longest to the shortest.
+[src:prometheus-monitoring/querying-basics] A given unit must only appear once per float literal.
+[src:prometheus-monitoring/querying-basics] These are the basic building-blocks that instruct PromQL what data to fetch.
+[src:prometheus-monitoring/querying-basics] Instant vector selectors allow the selection of a set of time series and a single sample value for each at a given timestamp (point in time).
+[src:prometheus-monitoring/querying-basics] In the simplest form, only a metric name is specified, which results in an instant vector containing elements for all time series that have this metric name.
+[src:prometheus-monitoring/querying-basics] The value returned will be that of the most recent sample at or before the query's evaluation timestamp (in the case of an instant query) or the current step within the query (in the case of a range query).
+[src:prometheus-monitoring/querying-basics] The `@` modifier allows overriding the timestamp relative to which the selection takes place.
+[src:prometheus-monitoring/querying-basics] Time series are only returned if their most recent sample is less than the lookback period ago.
+[src:prometheus-monitoring/querying-basics] It is possible to filter these time series further by appending a comma-separated list of label matchers in curly braces (`{}`).
+[src:prometheus-monitoring/querying-basics] It is also possible to negatively match a label value, or to match label values against regular expressions.
+[src:prometheus-monitoring/querying-basics] For example, this selects all `http_requests_total` time series for `staging`, `testing`, and `development` environments and HTTP methods other than `GET`.
+[src:prometheus-monitoring/querying-basics] Label matchers that match empty label values also select all time series that do not have the specific label set at all.
+[src:prometheus-monitoring/querying-basics] It is possible to have multiple matchers for the same label name.
+[src:prometheus-monitoring/querying-basics] Multiple matchers can be used for the same label name; they all must pass for a result to be returned.
+[src:prometheus-monitoring/querying-basics] Vector selectors must either specify a name or at least one label matcher that does not match the empty string.
+[src:prometheus-monitoring/querying-basics] In contrast, these expressions are valid as they both have a selector that does not match empty label values.
+[src:prometheus-monitoring/querying-basics] Label matchers can also be applied to metric names by matching against the internal `__name__` label.
+[src:prometheus-monitoring/querying-basics] For example, the expression `http_requests_total` is equivalent to `{__name__="http_requests_total"}`.
+[src:prometheus-monitoring/querying-basics] The metric name must not be one of the keywords `bool`, `on`, `ignoring`, `group_left` and `group_right`.
+[src:prometheus-monitoring/querying-basics] Range vector literals work like instant vector literals, except that they select a range of samples back from the current instant.
+[src:prometheus-monitoring/querying-basics] Syntactically, a float literal is appended in square brackets (`[]`) at the end of a vector selector to specify for how many seconds back in time values should be fetched for each resulting range vector element.
+[src:prometheus-monitoring/querying-basics] Commonly, the float literal uses the syntax with one or more time units, e.g.
+[src:prometheus-monitoring/querying-basics] The range is a left-open and right-closed interval, i.e. samples with timestamps coinciding with the left boundary of the range are excluded from the selection, while samples coinciding with the right boundary of the range are included in the selection.
+[src:prometheus-monitoring/querying-basics] The `offset` modifier allows changing the time offset for individual instant and range vectors in a query.
+[src:prometheus-monitoring/querying-basics] Note that this allows a query to look ahead of its evaluation time.
+[src:prometheus-monitoring/querying-basics] The `@` modifier allows changing the evaluation time for individual instant and range vectors in a query.
+[src:prometheus-monitoring/querying-basics] The time supplied to the `@` modifier is a Unix timestamp and described with a float literal.
+[src:prometheus-monitoring/querying-basics] The `@` modifier supports all representations of numeric literals described above.
+[src:prometheus-monitoring/querying-basics] It works with the `offset` modifier where the offset is applied relative to the `@` modifier time.
+[src:prometheus-monitoring/querying-basics] The results are the same irrespective of the order of the modifiers.
+[src:prometheus-monitoring/querying-basics] Additionally, `start()` and `end()` can also be used as values for the `@` modifier as special values.
+[src:prometheus-monitoring/querying-basics] For a range query, they resolve to the start and end of the range query respectively and remain the same for all steps.
+[src:prometheus-monitoring/querying-basics] For an instant query, `start()` and `end()` both resolve to the evaluation time.
+[src:prometheus-monitoring/querying-basics] Note that the `@` modifier allows a query to look ahead of its evaluation time.
+[src:prometheus-monitoring/querying-basics] Subquery allows you to run an instant query for a given range and resolution.
+[src:prometheus-monitoring/querying-basics] The result of a subquery is a range vector.
+[src:prometheus-monitoring/querying-basics] Prometheus supports many binary and aggregation operators.
+[src:prometheus-monitoring/querying-basics] These are described in detail in the expression language operators page.
+[src:prometheus-monitoring/querying-basics] Prometheus supports several functions to operate on data.
+[src:prometheus-monitoring/querying-basics] These are described in detail in the expression language functions page.
+[src:prometheus-monitoring/querying-basics] PromQL supports line comments that start with `#`.
+[src:prometheus-monitoring/querying-basics] All regular expressions in Prometheus use RE2 syntax .
+[src:prometheus-monitoring/querying-basics] Regex matches are always fully anchored.
+[src:prometheus-monitoring/querying-basics] The timestamps at which to sample data, during a query, are selected independently of the actual present time series data.
+[src:prometheus-monitoring/querying-basics] This is mainly to support cases like aggregation (`sum`, `avg`, and so on), where multiple aggregated time series do not precisely align in time.
+[src:prometheus-monitoring/querying-basics] Because of their independence, Prometheus needs to assign a value at those timestamps for each relevant time series.
+[src:prometheus-monitoring/querying-basics] It does so by taking the newest sample that is less than the lookback period ago.
+[src:prometheus-monitoring/querying-basics] The lookback period is 5 minutes by default, but can be set with the `--query.lookback-delta` flag or overridden on an individual query via the `lookback_delta` parameter.
+[src:prometheus-monitoring/querying-basics] If a target scrape or rule evaluation no longer returns a sample for a time series that was previously present, this time series will be marked as stale.
+[src:prometheus-monitoring/querying-basics] If a target is removed, the previously retrieved time series will be marked as stale soon after removal.
+[src:prometheus-monitoring/querying-basics] If a query is evaluated at a sampling timestamp after a time series is marked as stale, then no value is returned for that time series.
+[src:prometheus-monitoring/querying-basics] If new samples are subsequently ingested for that time series, they will be returned as expected.
+[src:prometheus-monitoring/querying-basics] A time series will go stale when it is no longer exported, or the target no longer exists.
+[src:prometheus-monitoring/querying-basics] Such time series will disappear from graphs at the times of their latest collected sample, and they will not be returned in queries after they are marked stale.
+[src:prometheus-monitoring/querying-basics] Some exporters, which put their own timestamps on samples, get a different behaviour: series that stop being exported take the last value for (by default) 5 minutes before disappearing.
+[src:prometheus-monitoring/querying-basics] The `track_timestamps_staleness` setting can change this.
+[src:prometheus-monitoring/querying-basics] If a query needs to operate on a substantial amount of data, graphing it might time out or overload the server or browser.
+[src:prometheus-monitoring/querying-basics] Thus, when constructing queries over unknown data, always start building the query in the tabular view of Prometheus's expression browser until the result set seems reasonable (hundreds, not thousands, of time series at most).
+[src:prometheus-monitoring/querying-basics] Only when you have filtered or aggregated your data sufficiently, switch to graph mode.
+[src:prometheus-monitoring/querying-basics] If the expression still takes too long to graph ad-hoc, pre-record it via a recording rule.
+[src:prometheus-monitoring/querying-basics] This is especially relevant for Prometheus's query language, where a bare metric name selector like `api_http_requests_total` could expand to thousands of time series with different labels.
+[src:prometheus-monitoring/querying-basics] Also, keep in mind that expressions that aggregate over many time series will generate load on the server even if the output is only a small number of time series.
+[src:prometheus-monitoring/querying-basics] This is similar to how it would be slow to sum all values of a column in a relational database, even if the output value is only a single number.
+[src:prometheus-monitoring/time-series-database] A **time series database** is a software system that is optimized for storing and serving time series through associated pairs of time(s) and value(s).
+[src:prometheus-monitoring/time-series-database] In some fields, *time series* may be called profiles, curves, traces or trends.
+[src:prometheus-monitoring/time-series-database] Several early time series databases are associated with industrial applications which could efficiently store measured values from sensory equipment (also referred to as data historians), but now are used in support of a much wider range of applications.
+[src:prometheus-monitoring/time-series-database] In many cases, the repositories of time-series data will utilize compression algorithms to manage the data efficiently.
+[src:prometheus-monitoring/time-series-database] Although it is possible to store time-series data in many different database types, the design of these systems with time as a key index is distinctly different from relational databases which reduce discrete relationships through referential models.
+[src:prometheus-monitoring/time-series-database] Time series datasets are relatively large and uniform compared to other datasets―usually being composed of a timestamp and associated data.
+[src:prometheus-monitoring/time-series-database] Time series datasets can also have fewer relationships between data entries in different tables and don't require indefinite storage of entries.
+[src:prometheus-monitoring/time-series-database] The unique properties of time series datasets mean that time series databases can provide significant improvements in storage space and performance over general purpose databases.
+[src:prometheus-monitoring/time-series-database] For instance, due to the uniformity of time series data, specialized compression algorithms can provide improvements over regular compression algorithms designed to work on less uniform data.
+[src:prometheus-monitoring/time-series-database] Time series databases can also be configured to regularly delete (or downsample) old data, unlike regular databases which are designed to store data indefinitely.
+[src:prometheus-monitoring/time-series-database] Special database indices can also provide boosts in query performance.
+[src:prometheus-monitoring/time-series-database] Time series databases are commonly designed for append-heavy workloads, where large numbers of measurements or events are continuously written together with timestamps.
+[src:prometheus-monitoring/time-series-database] Specialized time series management systems have been developed for data from monitoring, automation, the Internet of Things, and cyber-physical systems, where data may be produced at high velocity and in large volumes.
+[src:prometheus-monitoring/time-series-database] Common design goals include high-throughput data ingestion, low-latency queries over time ranges, efficient compression, and support for aggregation or downsampling over time windows.
+[src:prometheus-monitoring/time-series-database] Many systems also organize data by tags, devices, sensors, or other metadata, so that users can retrieve measurements by both time range and source.
+[src:prometheus-monitoring/time-series-database] Time series databases are used in application areas where data is collected continuously over time.
+[src:prometheus-monitoring/time-series-database] Examples include industrial monitoring, operational historians, infrastructure and application monitoring, Internet of Things sensor data, energy systems, financial market data, and scientific measurements.
+[src:prometheus-monitoring/time-series-database] In monitoring applications, time series database systems may need to process large amounts of sensor or metric data in real time, execute continuous queries, and support analytical tasks such as data exploration, anomaly detection, predictive modeling, trend analysis, and missing-value recovery.
+[src:prometheus-monitoring/time-series-database] Time series databases are often used as storage and query systems for downstream analytical tasks, including forecasting, anomaly detection, imputation, and pattern matching.
+[src:prometheus-monitoring/time-series-database] Some systems also integrate analytical or machine-learning functions closer to the database layer, allowing users to invoke forecasting or anomaly detection through database query interfaces such as SQL.
+[src:prometheus-monitoring/time-series-database] Recent research in time series analysis has also explored large pre-trained models for tasks such as forecasting, imputation, and anomaly detection.
+[src:prometheus-monitoring/time-series-database] These models are usually discussed as analytical methods for time series data rather than as defining features of time series databases.
+[src:prometheus-monitoring/time-series-database] The following database systems have functionality optimized for handling time series data.

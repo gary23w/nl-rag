@@ -1,0 +1,332 @@
+---
+title: "Top (Gforth Manual)"
+source: https://gforth.org/manual/
+domain: forth-lang
+license: CC-BY-SA-4.0
+tags: forth language, forth lang, gforth, forth stack
+fetched: 2026-07-02
+---
+
+# Top (Gforth Manual)
+
+- 1 Goals of Gforth
+- 2 Gforth Environment
+  - 2.1 Invoking Gforth
+  - 2.2 Leaving Gforth
+  - 2.3 Command-line editing
+  - 2.4 Environment variables
+  - 2.5 Gforth files
+  - 2.6 Gforth in pipes
+  - 2.7 Startup speed
+- 3 Forth Tutorial
+  - 3.1 Starting Gforth
+  - 3.2 Syntax
+  - 3.3 Crash Course
+  - 3.4 Stack
+  - 3.5 Arithmetics
+  - 3.6 Stack Manipulation
+  - 3.7 Using files for Forth code
+  - 3.8 Comments
+  - 3.9 Colon Definitions
+  - 3.10 Decompilation
+  - 3.11 Stack-Effect Comments
+  - 3.12 Types
+  - 3.13 Factoring
+  - 3.14 Designing the stack effect
+  - 3.15 Local Variables
+  - 3.16 Conditional execution
+  - 3.17 Flags and Comparisons
+  - 3.18 General Loops
+  - 3.19 Counted loops
+  - 3.20 Recursion
+  - 3.21 Leaving definitions or loops
+  - 3.22 Return Stack
+  - 3.23 Memory
+  - 3.24 Characters and Strings
+  - 3.25 Alignment
+  - 3.26 Floating Point
+  - 3.27 Files
+    - 3.27.1 Open file for input
+    - 3.27.2 Create file for output
+    - 3.27.3 Scan file for a particular line
+    - 3.27.4 Copy input to output
+    - 3.27.5 Close files
+  - 3.28 Interpretation and Compilation Semantics and Immediacy
+  - 3.29 Execution Tokens
+  - 3.30 Exceptions
+  - 3.31 Defining Words
+  - 3.32 Arrays and Records
+  - 3.33 `POSTPONE`
+  - 3.34 `Literal`
+  - 3.35 Advanced macros
+  - 3.36 Compilation Tokens
+  - 3.37 Wordlists and Search Order
+- 4 An Introduction to Standard Forth
+  - 4.1 Introducing the Text Interpreter
+  - 4.2 Stacks, postfix notation and parameter passing
+  - 4.3 Your first Forth definition
+  - 4.4 How does that work?
+  - 4.5 Forth is written in Forth
+  - 4.6 Review - elements of a Forth system
+  - 4.7 Where To Go Next
+  - 4.8 Exercises
+- 5 Forth Words
+  - 5.1 Notation
+  - 5.2 Case insensitivity
+  - 5.3 Comments
+  - 5.4 Boolean Flags
+  - 5.5 Arithmetic
+    - 5.5.1 Single precision
+    - 5.5.2 Double precision
+    - 5.5.3 Bitwise operations
+    - 5.5.4 Numeric comparison
+    - 5.5.5 Mixed precision
+    - 5.5.6 Floating Point
+  - 5.6 Stack Manipulation
+    - 5.6.1 Data stack
+    - 5.6.2 Floating point stack
+    - 5.6.3 Return stack
+    - 5.6.4 Locals stack
+    - 5.6.5 Stack pointer manipulation
+  - 5.7 Memory
+    - 5.7.1 Memory model
+    - 5.7.2 Dictionary allocation
+    - 5.7.3 Heap allocation
+    - 5.7.4 Memory Access
+    - 5.7.5 Address arithmetic
+    - 5.7.6 Memory Blocks
+  - 5.8 Control Structures
+    - 5.8.1 Selection
+    - 5.8.2 Simple Loops
+    - 5.8.3 Counted Loops
+    - 5.8.4 `Begin` loops with multiple exits
+    - 5.8.5 General control structures with `case`
+    - 5.8.6 Arbitrary control structures
+      - 5.8.6.1 Programming Style
+    - 5.8.7 Calls and returns
+    - 5.8.8 Exception Handling
+  - 5.9 Defining Words
+    - 5.9.1 `CREATE`
+    - 5.9.2 Variables
+    - 5.9.3 Constants
+    - 5.9.4 Values
+    - 5.9.5 Colon Definitions
+    - 5.9.6 Anonymous Definitions
+    - 5.9.7 Quotations
+    - 5.9.8 Supplying the name of a defined word
+    - 5.9.9 User-defined Defining Words
+      - 5.9.9.1 Applications of `CREATE..DOES>`
+      - 5.9.9.2 The gory details of `CREATE..DOES>`
+      - 5.9.9.3 Advanced does> usage example
+      - 5.9.9.4 `Const-does>`
+    - 5.9.10 Deferred Words
+    - 5.9.11 Forward
+    - 5.9.12 Aliases
+  - 5.10 Interpretation and Compilation Semantics
+    - 5.10.1 Combined Words
+  - 5.11 Tokens for Words
+    - 5.11.1 Execution token
+    - 5.11.2 Compilation token
+    - 5.11.3 Name token
+  - 5.12 Compiling words
+    - 5.12.1 Literals
+    - 5.12.2 Macros
+  - 5.13 The Text Interpreter
+    - 5.13.1 Input Sources
+    - 5.13.2 Number Conversion
+    - 5.13.3 Interpret/Compile states
+    - 5.13.4 Interpreter Directives
+    - 5.13.5 Recognizers
+  - 5.14 The Input Stream
+  - 5.15 Word Lists
+    - 5.15.1 Vocabularies
+    - 5.15.2 Why use word lists?
+    - 5.15.3 Word list example
+  - 5.16 Environmental Queries
+  - 5.17 Files
+    - 5.17.1 Forth source files
+    - 5.17.2 General files
+    - 5.17.3 Redirection
+    - 5.17.4 Directories
+    - 5.17.5 Search Paths
+      - 5.17.5.1 Source Search Paths
+      - 5.17.5.2 General Search Paths
+  - 5.18 Blocks
+  - 5.19 Other I/O
+    - 5.19.1 Simple numeric output
+    - 5.19.2 Formatted numeric output
+    - 5.19.3 String Formats
+    - 5.19.4 Displaying characters and strings
+    - 5.19.5 String words
+    - 5.19.6 Terminal output
+    - 5.19.7 Single-key input
+    - 5.19.8 Line input and conversion
+    - 5.19.9 Pipes
+    - 5.19.10 Xchars and Unicode
+  - 5.20 OS command line arguments
+  - 5.21 Locals
+    - 5.21.1 Gforth locals
+      - 5.21.1.1 Where are locals visible by name?
+      - 5.21.1.2 How long do locals live?
+      - 5.21.1.3 Locals programming style
+      - 5.21.1.4 Locals implementation
+    - 5.21.2 Standard Forth locals
+  - 5.22 Structures
+    - 5.22.1 Why explicit structure support?
+    - 5.22.2 Structure Usage
+    - 5.22.3 Structure Naming Convention
+    - 5.22.4 Structure Implementation
+    - 5.22.5 Structure Glossary
+    - 5.22.6 Forth200x Structures
+  - 5.23 Object-oriented Forth
+    - 5.23.1 Why object-oriented programming?
+    - 5.23.2 Object-Oriented Terminology
+    - 5.23.3 The objects.fs model
+      - 5.23.3.1 Properties of the objects.fs model
+      - 5.23.3.2 Basic objects.fs Usage
+      - 5.23.3.3 The object.fs base class
+      - 5.23.3.4 Creating objects
+      - 5.23.3.5 Object-Oriented Programming Style
+      - 5.23.3.6 Class Binding
+      - 5.23.3.7 Method conveniences
+      - 5.23.3.8 Classes and Scoping
+      - 5.23.3.9 Dividing classes
+      - 5.23.3.10 Object Interfaces
+      - 5.23.3.11 objects.fs Implementation
+      - 5.23.3.12 objects.fs Glossary
+    - 5.23.4 The oof.fs model
+      - 5.23.4.1 Properties of the oof.fs model
+      - 5.23.4.2 Basic oof.fs Usage
+      - 5.23.4.3 The oof.fs base class
+      - 5.23.4.4 Class Declaration
+      - 5.23.4.5 Class Implementation
+    - 5.23.5 The mini-oof.fs model
+      - 5.23.5.1 Basic mini-oof.fs Usage
+      - 5.23.5.2 Mini-OOF Example
+      - 5.23.5.3 mini-oof.fs Implementation
+    - 5.23.6 Comparison with other object models
+  - 5.24 Programming Tools
+    - 5.24.1 Examining data and code
+    - 5.24.2 Forgetting words
+    - 5.24.3 Debugging
+    - 5.24.4 Assertions
+    - 5.24.5 Singlestep Debugger
+  - 5.25 Multitasker
+    - 5.25.1 Ptheads
+      - 5.25.1.1 Semaphores
+      - 5.25.1.2 Atomic operations
+      - 5.25.1.3 Message Queues
+      - 5.25.1.4 Conditions
+  - 5.26 C Interface
+    - 5.26.1 Calling C functions
+    - 5.26.2 Declaring C Functions
+    - 5.26.3 Calling C function pointers from Forth
+    - 5.26.4 Defining library interfaces
+    - 5.26.5 Declaring OS-level libraries
+    - 5.26.6 Callbacks
+    - 5.26.7 How the C interface works
+    - 5.26.8 Low-Level C Interface Words
+    - 5.26.9 Migrating from Gforth 0.7
+  - 5.27 Assembler and Code Words
+    - 5.27.1 Definitions in assembly language
+    - 5.27.2 Common Assembler
+    - 5.27.3 Common Disassembler
+    - 5.27.4 386 Assembler
+    - 5.27.5 AMD64 (x86_64) Assembler
+    - 5.27.6 Alpha Assembler
+    - 5.27.7 MIPS assembler
+    - 5.27.8 PowerPC assembler
+    - 5.27.9 ARM Assembler
+    - 5.27.10 Other assemblers
+  - 5.28 Threading Words
+  - 5.29 Passing Commands to the Operating System
+  - 5.30 Keeping track of Time
+  - 5.31 Miscellaneous Words
+- 6 Error messages
+- 7 Tools
+  - 7.1 ans-report.fs: Report the words used, sorted by wordset
+    - 7.1.1 Caveats
+  - 7.2 Stack depth changes during interpretation
+- 8 Standard conformance
+  - 8.1 The Core Words
+    - 8.1.1 Implementation Defined Options
+    - 8.1.2 Ambiguous conditions
+    - 8.1.3 Other system documentation
+  - 8.2 The optional Block word set
+    - 8.2.1 Implementation Defined Options
+    - 8.2.2 Ambiguous conditions
+    - 8.2.3 Other system documentation
+  - 8.3 The optional Double Number word set
+    - 8.3.1 Ambiguous conditions
+  - 8.4 The optional Exception word set
+    - 8.4.1 Implementation Defined Options
+  - 8.5 The optional Facility word set
+    - 8.5.1 Implementation Defined Options
+    - 8.5.2 Ambiguous conditions
+  - 8.6 The optional File-Access word set
+    - 8.6.1 Implementation Defined Options
+    - 8.6.2 Ambiguous conditions
+  - 8.7 The optional Floating-Point word set
+    - 8.7.1 Implementation Defined Options
+    - 8.7.2 Ambiguous conditions
+  - 8.8 The optional Locals word set
+    - 8.8.1 Implementation Defined Options
+    - 8.8.2 Ambiguous conditions
+  - 8.9 The optional Memory-Allocation word set
+    - 8.9.1 Implementation Defined Options
+  - 8.10 The optional Programming-Tools word set
+    - 8.10.1 Implementation Defined Options
+    - 8.10.2 Ambiguous conditions
+  - 8.11 The optional Search-Order word set
+    - 8.11.1 Implementation Defined Options
+    - 8.11.2 Ambiguous conditions
+- 9 Should I use Gforth extensions?
+- 10 Model
+- 11 Integrating Gforth into C programs
+  - 11.1 Types
+  - 11.2 Variables
+  - 11.3 Functions
+  - 11.4 Signals
+- 12 Emacs and Gforth
+  - 12.1 Installing gforth.el
+  - 12.2 Emacs Tags
+  - 12.3 Hilighting
+  - 12.4 Auto-Indentation
+  - 12.5 Blocks Files
+- 13 Image Files
+  - 13.1 Image Licensing Issues
+  - 13.2 Image File Background
+  - 13.3 Non-Relocatable Image Files
+  - 13.4 Data-Relocatable Image Files
+  - 13.5 Fully Relocatable Image Files
+    - 13.5.1 gforthmi
+    - 13.5.2 cross.fs
+  - 13.6 Stack and Dictionary Sizes
+  - 13.7 Running Image Files
+  - 13.8 Modifying the Startup Sequence
+- 14 Engine
+  - 14.1 Portability
+  - 14.2 Threading
+    - 14.2.1 Scheduling
+    - 14.2.2 Direct or Indirect Threaded?
+    - 14.2.3 Dynamic Superinstructions
+    - 14.2.4 DOES>
+  - 14.3 Primitives
+    - 14.3.1 Automatic Generation
+    - 14.3.2 TOS Optimization
+    - 14.3.3 Produced code
+  - 14.4 Performance
+- 15 Cross Compiler
+  - 15.1 Using the Cross Compiler
+  - 15.2 How the Cross Compiler Works
+- Appendix A Bugs
+- Appendix B Authors and Ancestors of Gforth
+  - B.1 Authors and Contributors
+  - B.2 Pedigree
+- Appendix C Other Forth-related information
+- Appendix D Licenses
+  - D.1 GNU Free Documentation License
+    - D.1.1 ADDENDUM: How to use this License for your documents
+  - D.2 GNU GENERAL PUBLIC LICENSE
+- Word Index
+- Concept and Word Index

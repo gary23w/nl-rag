@@ -1,0 +1,620 @@
+# nl-rag distilled facts — domain: helm-charts
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:helm-charts/charts-hooks] Helm provides a *hook* mechanism to allow chart developers to intervene at certain points in a release's life cycle.
+[src:helm-charts/charts-hooks] Hooks work like regular templates, but they have special annotations that cause Helm to utilize them differently.
+[src:helm-charts/charts-hooks] In this section, we cover the basic usage pattern for hooks.
+[src:helm-charts/charts-hooks] Hooks allow you, the chart developer, an opportunity to perform operations at strategic points in a release lifecycle.
+[src:helm-charts/charts-hooks] For example, consider the lifecycle for a `helm install`.
+[src:helm-charts/charts-hooks] Helm defines two hooks for the `install` lifecycle: `pre-install` and `post-install`.
+[src:helm-charts/charts-hooks] The library sorts hooks by weight (assigning a weight of 0 by default), by resource kind and finally by name in ascending order.
+[src:helm-charts/charts-hooks] The library loads the resulting resources into Kubernetes.
+[src:helm-charts/charts-hooks] Note that if the `--wait` flag is set, the library will wait until all resources are in a ready state and will not run the `post-install` hook until they are ready.
+[src:helm-charts/charts-hooks] What does it mean to wait until a hook is ready?
+[src:helm-charts/charts-hooks] This depends on the resource declared in the hook.
+[src:helm-charts/charts-hooks] If the resource is a `Job` or `Pod` kind, Helm will wait until it successfully runs to completion.
+[src:helm-charts/charts-hooks] And if the hook fails, the release will fail.
+[src:helm-charts/charts-hooks] This is a *blocking operation*, so the Helm client will pause while the Job is run.
+[src:helm-charts/charts-hooks] For all other kinds, as soon as Kubernetes marks the resource as loaded (added or updated), the resource is considered "Ready".
+[src:helm-charts/charts-hooks] When many resources are declared in a hook, the resources are executed serially.
+[src:helm-charts/charts-hooks] If they have hook weights (see below), they are executed in weighted order.
+[src:helm-charts/charts-hooks] Starting from Helm 3.2.0 hook resources with same weight are installed in the same order as normal non-hook resources.
+[src:helm-charts/charts-hooks] (In Helm 2.3.0 and after, they are sorted alphabetically.
+[src:helm-charts/charts-hooks] That behavior, though, is not considered binding and could change in the future.) It is considered good practice to add a hook weight, and set it to `0` if weight is not important.
+[src:helm-charts/charts-hooks] The resources that a hook creates are currently not tracked or managed as part of the release.
+[src:helm-charts/charts-hooks] Once Helm verifies that the hook has reached its ready state, it will leave the hook resource alone.
+[src:helm-charts/charts-hooks] Garbage collection of hook resources when the corresponding release is deleted may be added to Helm 3 in the future, so any hook resources that must never be deleted should be annotated with `helm.sh/resource-policy: keep`.
+[src:helm-charts/charts-hooks] Practically speaking, this means that if you create resources in a hook, you cannot rely upon `helm uninstall` to remove the resources.
+[src:helm-charts/charts-hooks] To destroy such resources, you need to either add a custom `helm.sh/hook-delete-policy` annotation to the hook template file, or set the time to live (TTL) field of a Job resource.
+[src:helm-charts/charts-hooks] Hooks are just Kubernetes manifest files with special annotations in the `metadata` section.
+[src:helm-charts/charts-hooks] Because they are template files, you can use all of the normal template features, including reading `.Values`, `.Release`, and `.Template`.
+[src:helm-charts/charts-hooks] Similarly, there is no limit to the number of different resources that may implement a given hook.
+[src:helm-charts/charts-hooks] For example, one could declare both a secret and a config map as a pre-install hook.
+[src:helm-charts/charts-hooks] When subcharts declare hooks, those are also evaluated.
+[src:helm-charts/charts-hooks] There is no way for a top-level chart to disable the hooks declared by subcharts.
+[src:helm-charts/charts-hooks] It is possible to define a weight for a hook which will help build a deterministic executing order.
+[src:helm-charts/charts-hooks] Hook weights can be positive or negative numbers but must be represented as strings.
+[src:helm-charts/charts-hooks] When Helm starts the execution cycle of hooks of a particular Kind it will sort those hooks in ascending order.
+[src:helm-charts/charts-hooks] It is possible to define policies that determine when to delete corresponding hook resources.
+[src:helm-charts/charts-hooks] If no hook deletion policy annotation is specified, the `before-hook-creation` behavior applies by default.
+[src:helm-charts/getting-started] In this section of the guide, we'll create a chart and then add a first template.
+[src:helm-charts/getting-started] The chart we created here will be used throughout the rest of the guide.
+[src:helm-charts/getting-started] To get going, let's take a brief look at a Helm chart.
+[src:helm-charts/getting-started] The `templates/` directory is for template files.
+[src:helm-charts/getting-started] When Helm evaluates a chart, it will send all of the files in the `templates/` directory through the template rendering engine.
+[src:helm-charts/getting-started] It then collects the results of those templates and sends them on to Kubernetes.
+[src:helm-charts/getting-started] The `values.yaml` file is also important to templates.
+[src:helm-charts/getting-started] This file contains the *default values* for a chart.
+[src:helm-charts/getting-started] These values may be overridden by users during `helm install` or `helm upgrade`.
+[src:helm-charts/getting-started] The `Chart.yaml` file contains a description of the chart.
+[src:helm-charts/getting-started] You can access it from within a template.
+[src:helm-charts/getting-started] The `charts/` directory *may* contain other charts (which we call *subcharts*).
+[src:helm-charts/getting-started] Later in this guide we will see how those work when it comes to template rendering.
+[src:helm-charts/getting-started] For this guide, we'll create a simple chart called `mychart`, and then we'll create some templates inside of the chart.
+[src:helm-charts/getting-started] If you take a look at the `mychart/templates/` directory, you'll notice a few files already there.
+[src:helm-charts/getting-started] *remove them all!* That way we can work through our tutorial from scratch.
+[src:helm-charts/getting-started] We'll actually create our own `NOTES.txt` and `_helpers.tpl` as we go.
+[src:helm-charts/getting-started] When you're writing production grade charts, having basic versions of these charts can be really useful.
+[src:helm-charts/getting-started] So in your day-to-day chart authoring, you probably won't want to remove them.
+[src:helm-charts/getting-started] The first template we are going to create will be a `ConfigMap`.
+[src:helm-charts/getting-started] In Kubernetes, a ConfigMap is simply an object for storing configuration data.
+[src:helm-charts/getting-started] Other things, like pods, can access the data in a ConfigMap.
+[src:helm-charts/getting-started] Because ConfigMaps are basic resources, they make a great starting point for us.
+[src:helm-charts/getting-started] The YAML file above is a bare-bones ConfigMap, having the minimal necessary fields.
+[src:helm-charts/getting-started] By virtue of the fact that this file is in the `mychart/templates/` directory, it will be sent through the template engine.
+[src:helm-charts/getting-started] It is just fine to put a plain YAML file like this in the `mychart/templates/` directory.
+[src:helm-charts/getting-started] When Helm reads this template, it will simply send it to Kubernetes as-is.
+[src:helm-charts/getting-started] With this simple template, we now have an installable chart.
+[src:helm-charts/getting-started] Using Helm, we can retrieve the release and see the actual template that was loaded.
+[src:helm-charts/getting-started] The `helm get manifest` command takes a release name (`full-coral`) and prints out all of the Kubernetes resources that were uploaded to the server.
+[src:helm-charts/getting-started] Each file begins with `---` to indicate the start of a YAML document, and then is followed by an automatically generated comment line that tells us what template file generated this YAML document.
+[src:helm-charts/getting-started] From there on, we can see that the YAML data is exactly what we put in our `configmap.yaml` file.
+[src:helm-charts/getting-started] Now we can uninstall our release: `helm uninstall full-coral`.
+[src:helm-charts/getting-started] Hard-coding the `name:` into a resource is usually considered to be bad practice.
+[src:helm-charts/getting-started] So we might want to generate a name field by inserting the release name.
+[src:helm-charts/getting-started] Let's alter `configmap.yaml` accordingly.
+[src:helm-charts/getting-started] The big change comes in the value of the `name:` field, which is now `{{ .Release.Name }}-configmap`.
+[src:helm-charts/getting-started] The template directive `{{ .Release.Name }}` injects the release name into the template.
+[src:helm-charts/getting-started] The values that are passed into a template can be thought of as *namespaced objects*, where a dot (`.`) separates each namespaced element.
+[src:helm-charts/getting-started] The leading dot before `Release` indicates that we start with the top-most namespace for this scope (we'll talk about scope in a bit).
+[src:helm-charts/getting-started] So we could read `.Release.Name` as "start at the top namespace, find the `Release` object, then look inside of it for an object called `Name`".
+[src:helm-charts/getting-started] The `Release` object is one of the built-in objects for Helm, and we'll cover it in more depth later.
+[src:helm-charts/getting-started] But for now, it is sufficient to say that this will display the release name that the library assigns to our release.
+[src:helm-charts/getting-started] You can run `helm get manifest clunky-serval` to see the entire generated YAML.
+[src:helm-charts/getting-started] Note that the ConfigMap inside Kubernetes name is `clunky-serval-configmap` instead of `mychart-configmap` previously.
+[src:helm-charts/getting-started] At this point, we've seen templates at their most basic: YAML files that have template directives embedded in `{{` and `}}`.
+[src:helm-charts/getting-started] In the next part, we'll take a deeper look into templates.
+[src:helm-charts/getting-started] But before moving on, there's one quick trick that can make building templates faster: When you want to test the template rendering, but not actually install anything, you can use `helm install --debug --dry-run goodly-guppy ./mychart`.
+[src:helm-charts/getting-started] Using `--dry-run` will make it easier to test your code, but it won't ensure that Kubernetes itself will accept the templates you generate.
+[src:helm-charts/getting-started] It's best not to assume that your chart will install just because `--dry-run` works.
+[src:helm-charts/getting-started] In the Chart Template Guide, we take the basic chart we defined here and explore the Helm template language in detail.
+[src:helm-charts/getting-started] And we'll get started with built-in objects.
+[src:helm-charts/helm-package-manager] Helm was accepted to Cloud Native Computing Foundation on June 1, 2018 at the Incubating maturity level and then moved to the Graduated maturity level on May 1, 2020.
+[src:helm-charts/intro-using-helm] This page has not yet been updated for Helm 4.
+[src:helm-charts/intro-using-helm] Some of the content might be inaccurate or not applicable to Helm 4.
+[src:helm-charts/intro-using-helm] For more information about the Helm 4 new features, improvements, and breaking changes, see Helm 4 Overview.
+[src:helm-charts/intro-using-helm] This guide explains the basics of using Helm to manage packages on your Kubernetes cluster.
+[src:helm-charts/intro-using-helm] It assumes that you have already installed the Helm client.
+[src:helm-charts/intro-using-helm] If you are simply interested in running a few quick commands, you may wish to begin with the Quickstart Guide.
+[src:helm-charts/intro-using-helm] This chapter covers the particulars of Helm commands, and explains how to use Helm.
+[src:helm-charts/intro-using-helm] It contains all of the resource definitions necessary to run an application, tool, or service inside of a Kubernetes cluster.
+[src:helm-charts/intro-using-helm] Think of it like the Kubernetes equivalent of a Homebrew formula, an Apt dpkg, or a Yum RPM file.
+[src:helm-charts/intro-using-helm] A *Repository* is the place where charts can be collected and shared.
+[src:helm-charts/intro-using-helm] It's like Perl's CPAN archive or the Fedora Package Database, but for Kubernetes packages.
+[src:helm-charts/intro-using-helm] A *Release* is an instance of a chart running in a Kubernetes cluster.
+[src:helm-charts/intro-using-helm] One chart can often be installed many times into the same cluster.
+[src:helm-charts/intro-using-helm] And each time it is installed, a new *release* is created.
+[src:helm-charts/intro-using-helm] If you want two databases running in your cluster, you can install that chart twice.
+[src:helm-charts/intro-using-helm] Each one will have its own *release*, which will in turn have its own *release name*.
+[src:helm-charts/intro-using-helm] Helm installs *charts* into Kubernetes, creating a new *release* for each installation.
+[src:helm-charts/intro-using-helm] And to find new charts, you can search Helm chart *repositories*.
+[src:helm-charts/intro-using-helm] Helm comes with a powerful search command.
+[src:helm-charts/intro-using-helm] The above searches for all `wordpress` charts on Artifact Hub.
+[src:helm-charts/intro-using-helm] With no filter, `helm search hub` shows you all of the available charts.
+[src:helm-charts/intro-using-helm] `helm search hub` exposes the URL to the location on artifacthub.io but not the actual Helm repo.
+[src:helm-charts/intro-using-helm] `helm search hub --list-repo-url` exposes the actual Helm repo URL which comes in handy when you are looking to add a new repo: `helm repo add [NAME] [URL]`.
+[src:helm-charts/intro-using-helm] Search is a good way to find available packages.
+[src:helm-charts/intro-using-helm] Once you have found a package you want to install, you can use `helm install` to install it.
+[src:helm-charts/intro-using-helm] To install a new package, use the `helm install` command.
+[src:helm-charts/intro-using-helm] At its simplest, it takes two arguments: A release name that you pick, and the name of the chart you want to install.
+[src:helm-charts/intro-using-helm] Note that installing a chart creates a new *release* object.
+[src:helm-charts/intro-using-helm] The release above is named `happy-panda`.
+[src:helm-charts/intro-using-helm] During installation, the `helm` client will print useful information about which resources were created, what the state of the release is, and also whether there are additional configuration steps you can or should take.
+[src:helm-charts/intro-using-helm] Helm does not wait until all of the resources are running before it exits.
+[src:helm-charts/intro-using-helm] Many charts require Docker images that are over 600MB in size, and may take a long time to install into the cluster.
+[src:helm-charts/intro-using-helm] The above shows the current state of your release.
+[src:helm-charts/intro-using-helm] Installing the way we have here will only use the default configuration options for this chart.
+[src:helm-charts/intro-using-helm] Many times, you will want to customize the chart to use your preferred configuration.
+[src:helm-charts/intro-using-helm] You can then override any of these settings in a YAML formatted file, and then pass that file during installation.
+[src:helm-charts/intro-using-helm] The above will create a default MariaDB user with the name `user0`, and grant this user access to a newly created `user0db` database, but will accept all the rest of the defaults for that chart.
+[src:helm-charts/intro-using-helm] If both are used, `--set` values are merged into `--values` with higher precedence.
+[src:helm-charts/intro-using-helm] Overrides specified with `--set` are persisted in a Secret.
+[src:helm-charts/intro-using-helm] Values that have been `--set` can be viewed for a given release with `helm get values <release-name>`.
+[src:helm-charts/intro-using-helm] Values that have been `--set` can be cleared by running `helm upgrade` with `--reset-values` specified.
+[src:helm-charts/intro-using-helm] The `--set` option takes zero or more name/value pairs.
+[src:helm-charts/intro-using-helm] At its simplest, it is used like this: `--set name=value`.
+[src:helm-charts/intro-using-helm] Multiple values are separated by `,` characters.
+[src:helm-charts/intro-using-helm] Lists can be expressed by enclosing values in `{` and `}`.
+[src:helm-charts/intro-using-helm] Certain name/key can be set to be `null` or to be an empty array `[]`.
+[src:helm-charts/intro-using-helm] As of Helm 2.5.0, it is possible to access list items using an array index syntax.
+[src:helm-charts/intro-using-helm] Sometimes you need to use special characters in your `--set` lines.
+[src:helm-charts/intro-using-helm] Similarly, you can escape dot sequences as well, which may come in handy when charts use the `toYaml` function to parse annotations, labels and node selectors.
+[src:helm-charts/intro-using-helm] Deeply nested data structures can be difficult to express using `--set`.
+[src:helm-charts/intro-using-helm] Chart designers are encouraged to consider the `--set` usage when designing the format of a `values.yaml` file (read more about Values Files).
+[src:helm-charts/intro-using-helm] When a new version of a chart is released, or when you want to change the configuration of your release, you can use the `helm upgrade` command.
+[src:helm-charts/intro-using-helm] An upgrade takes an existing release and upgrades it according to the information you provide.
+[src:helm-charts/intro-using-helm] Because Kubernetes charts can be large and complex, Helm tries to perform the least invasive upgrade.
+[src:helm-charts/intro-using-helm] It will only update things that have changed since the last release.
+[src:helm-charts/intro-using-helm] We can use `helm get values` to see whether that new setting took effect.
+[src:helm-charts/intro-using-helm] The `helm get` command is a useful tool for looking at a release in the cluster.
+[src:helm-charts/intro-using-helm] And as we can see above, it shows that our new values from `panda.yaml` were deployed to the cluster.
+[src:helm-charts/intro-using-helm] Now, if something does not go as planned during a release, it is easy to roll back to a previous release using `helm rollback [RELEASE] [REVISION]`.
+[src:helm-charts/intro-using-helm] The above rolls back our happy-panda to its very first release version.
+[src:helm-charts/intro-using-helm] A release version is an incremental revision.
+[src:helm-charts/intro-using-helm] Every time an install, upgrade, or rollback happens, the revision number is incremented by 1.
+[src:helm-charts/intro-using-helm] And we can use `helm history [RELEASE]` to see revision numbers for a certain release.
+[src:helm-charts/intro-using-helm] If a release was created by a rollback, pass `--show-rollback-revision` to `helm history` to add a `ROLLBACK` column to the output.
+[src:helm-charts/intro-using-helm] This column shows which revision each rollback targeted.
+[src:helm-charts/intro-using-helm] There are several other helpful options you can specify for customizing the behavior of Helm during an install/upgrade/rollback.
+[src:helm-charts/intro-using-helm] Please note that this is not a full list of cli flags.
+[src:helm-charts/intro-using-helm] To see a description of all flags, just run `helm <command> --help`.
+[src:helm-charts/intro-using-helm] This will remove the release from the cluster.
+[src:helm-charts/intro-using-helm] From the output above, we can see that the `happy-panda` release was uninstalled.
+[src:helm-charts/intro-using-helm] In previous versions of Helm, when a release was deleted, a record of its deletion would remain.
+[src:helm-charts/intro-using-helm] In Helm 3, deletion removes the release record as well.
+[src:helm-charts/intro-using-helm] If you wish to keep a deletion release record, use `helm uninstall --keep-history`.
+[src:helm-charts/intro-using-helm] Using `helm list --uninstalled` will only show releases that were uninstalled with the `--keep-history` flag.
+[src:helm-charts/intro-using-helm] Note that because releases are now deleted by default, it is no longer possible to rollback an uninstalled resource.
+[src:helm-charts/intro-using-helm] Helm 3 no longer ships with a default chart repository.
+[src:helm-charts/intro-using-helm] The `helm repo` command group provides commands to add, list, and remove repositories.
+[src:helm-charts/intro-using-helm] Because chart repositories change frequently, at any point you can make sure your Helm client is up to date by running `helm repo update`.
+[src:helm-charts/intro-using-helm] Repositories can be removed with `helm repo remove`.
+[src:helm-charts/intro-using-helm] The Chart Development Guide explains how to develop your own charts.
+[src:helm-charts/intro-using-helm] Now there is a chart in `./deis-workflow`.
+[src:helm-charts/intro-using-helm] You can edit it and create your own templates.
+[src:helm-charts/intro-using-helm] As you edit your chart, you can validate that it is well-formed by running `helm lint`.
+[src:helm-charts/intro-using-helm] Charts that are packaged can be loaded into chart repositories.
+[src:helm-charts/intro-using-helm] See the documentation for Helm chart repositories for more details.
+[src:helm-charts/intro-using-helm] This chapter has covered the basic usage patterns of the `helm` client, including searching, installation, upgrading, and uninstalling.
+[src:helm-charts/intro-using-helm] It has also covered useful utility commands like `helm status`, `helm get`, and `helm repo`.
+[src:helm-charts/intro-using-helm] For more information on these commands, take a look at Helm's built-in help: `helm help`.
+[src:helm-charts/intro-using-helm] In the next chapter, we look at the process of developing charts.
+[src:helm-charts/kubernetes] The name *Kubernetes* comes from the Ancient Greek term κυβερνήτης, *kubernḗtēs* (helmsman, pilot), which is also the origin of the words *cybernetics* and (through Latin) *governor*.
+[src:helm-charts/kubernetes] "Kubernetes" is often abbreviated with the numerical contraction "K8s", meaning "the letter K, followed by 8 letters, followed by s".
+[src:helm-charts/kubernetes] Kubernetes assembles one or more computers, either virtual machines or bare metal, into a cluster which can run workloads in containers.
+[src:helm-charts/kubernetes] It works with various container runtimes, such as containerd and CRI-O.
+[src:helm-charts/kubernetes] Its suitability for running and managing workloads of all sizes and styles has led to its widespread adoption in clouds and data centers.
+[src:helm-charts/kubernetes] There are multiple distributions of this platform—from independent software vendors (ISVs) as well as hosted-on-cloud offerings from all the major public cloud vendors.
+[src:helm-charts/kubernetes] The software consists of a control plane and nodes on which the actual applications run.
+[src:helm-charts/kubernetes] It includes tools like `kubeadm` and `kubectl` which can be used to interact with its REST-based API.
+[src:helm-charts/kubernetes] Kubernetes was announced by Google on June 6, 2014.
+[src:helm-charts/kubernetes] The project was conceived and created by Google employees Joe Beda, Brendan Burns, and Craig McLuckie.
+[src:helm-charts/kubernetes] Others at Google soon joined to help build the project including Ville Aikas, Dawn Chen, Brian Grant, Tim Hockin, and Daniel Smith.
+[src:helm-charts/kubernetes] Other companies such as Red Hat and CoreOS joined the effort soon after, with notable contributors such as Clayton Coleman and Kelsey Hightower.
+[src:helm-charts/kubernetes] The design and development of Kubernetes was inspired by Google's Borg cluster manager and based on Promise Theory.
+[src:helm-charts/kubernetes] Many of its top contributors had previously worked on Borg; they codenamed Kubernetes "Project 7" after the *Star Trek* ex-Borg character Seven of Nine and gave its logo a seven-spoked ship's wheel (designed by Tim Hockin).
+[src:helm-charts/kubernetes] Unlike Borg, which was written in C++, Kubernetes is written in the Go language.
+[src:helm-charts/kubernetes] Kubernetes was announced in June, 2014 and version 1.0 was released on July 21, 2015.
+[src:helm-charts/kubernetes] Google worked with the Linux Foundation to form the Cloud Native Computing Foundation (CNCF) and offered Kubernetes as the seed technology.
+[src:helm-charts/kubernetes] Google was already offering a managed Kubernetes service, GKE, and Red Hat was supporting Kubernetes as part of OpenShift since the inception of the Kubernetes project in 2014.
+[src:helm-charts/kubernetes] On March 6, 2018, Kubernetes Project reached ninth place in the list of GitHub projects by the number of commits, and second place in authors and issues, after the Linux kernel.
+[src:helm-charts/kubernetes] Until version 1.18, Kubernetes followed an N-2 support policy, meaning that the three most recent minor versions receive security updates and bug fixes.
+[src:helm-charts/kubernetes] Starting with version 1.19, Kubernetes follows an N-3 support policy.
+[src:helm-charts/kubernetes] Kubernetes defines a set of building blocks ("primitives") that collectively provide mechanisms that deploy, maintain, and scale applications based on CPU, memory or custom metrics.
+[src:helm-charts/kubernetes] Kubernetes is loosely coupled and extensible to meet the needs of different workloads.
+[src:helm-charts/kubernetes] The internal components as well as extensions and containers that run on Kubernetes rely on the Kubernetes API.
+[src:helm-charts/kubernetes] The platform exerts its control over compute and storage resources by defining resources as objects, which can then be managed as such.
+[src:helm-charts/kubernetes] Kubernetes follows the primary/replica architecture.
+[src:helm-charts/kubernetes] The components of Kubernetes can be divided into those that manage an individual node and those that are part of the control plane.
+[src:helm-charts/kubernetes] The Kubernetes master node handles the Kubernetes control plane of the cluster, managing its workload and directing communication across the system.
+[src:helm-charts/kubernetes] The Kubernetes control plane consists of various components such as TLS encryption, role-based access control (RBAC) and a strong authentication method, network separation, each its own process, that can run both on a single master node or on multiple masters supporting high-availability clusters.
+[src:helm-charts/kubernetes] The various components of the Kubernetes control plane are as follows.
+[src:helm-charts/kubernetes] Etcd is a persistent, lightweight, distributed, key-value data store (originally developed as part of CoreOS).
+[src:helm-charts/kubernetes] It reliably stores the configuration data of the cluster, representing the overall state of the cluster at any given point of time.
+[src:helm-charts/kubernetes] Etcd favors consistency over availability in the event of a network partition (see CAP theorem).
+[src:helm-charts/kubernetes] The consistency is crucial for correctly scheduling and operating services.
+[src:helm-charts/kubernetes] The API server serves the Kubernetes API using JSON over HTTP, which provides both the internal and external interface to Kubernetes.
+[src:helm-charts/kubernetes] The API server processes, validates REST requests, and updates the state of the API objects in etcd, thereby allowing clients to configure workloads and containers across worker nodes.
+[src:helm-charts/kubernetes] The API server uses etcd's watch API to monitor the cluster, roll out critical configuration changes, or restore any divergences of the state of the cluster back to the desired state as declared in etcd.
+[src:helm-charts/kubernetes] As an example, a human operator may specify that three instances of a particular "pod" (see below) need to be running, and etcd stores this fact.
+[src:helm-charts/kubernetes] If the Deployment controller finds that only two instances are running (conflicting with the etcd declaration), it schedules the creation of an additional instance of that pod.
+[src:helm-charts/kubernetes] The scheduler is an extensible component that selects the node that an unscheduled pod (the basic unit of workloads to be scheduled) runs on, based on resource availability and other constraints.
+[src:helm-charts/kubernetes] The scheduler tracks resource allocation on each node to ensure that workload is not scheduled in excess of available resources.
+[src:helm-charts/kubernetes] For this purpose, the scheduler must know the resource requirements, resource availability, and other user-provided constraints or policy directives such as quality-of-service, affinity/anti-affinity requirements, and data locality.
+[src:helm-charts/kubernetes] The scheduler's role is to match resource "supply" to workload "demand".
+[src:helm-charts/kubernetes] Kubernetes allows running multiple schedulers within a single cluster.
+[src:helm-charts/kubernetes] As such, scheduler plug-ins may be developed and installed as in-process extensions to the native vanilla scheduler by running it as a separate scheduler, as long as they conform to the Kubernetes scheduling framework.
+[src:helm-charts/kubernetes] This allows cluster administrators to extend or modify the behavior of the default Kubernetes scheduler according to their needs.
+[src:helm-charts/kubernetes] A controller is a reconciliation loop that drives the actual cluster state toward the desired state, communicating with the API server to create, update, and delete the resources it manages (e.g., pods or service endpoints).
+[src:helm-charts/kubernetes] An example controller is a ReplicaSet controller, which handles replication and scaling by running a specified number of copies of a pod across the cluster.
+[src:helm-charts/kubernetes] The controller also handles creating replacement pods if the underlying node fails.
+[src:helm-charts/kubernetes] Other controllers that are part of the core Kubernetes system include a DaemonSet controller for running exactly one pod on every machine (or some subset of machines), and a Job controller for running pods that run to completion (e.g. as part of a batch job).
+[src:helm-charts/kubernetes] Labels selectors often form part of the controller's definition that specify the set of pods that a controller manages.
+[src:helm-charts/kubernetes] The controller manager is a single process that manages several core Kubernetes controllers (including the examples described above), is distributed as part of the standard Kubernetes installation and responding to the loss of nodes.
+[src:helm-charts/kubernetes] Custom controllers may also be installed in the cluster, further allowing the behavior and API of Kubernetes to be extended when used in conjunction with custom resources (see custom resources, controllers and operators below).
+[src:helm-charts/kubernetes] A node, also known as a worker or a minion, is a machine where containers (workloads) are deployed.
+[src:helm-charts/kubernetes] Every node in the cluster must run a container runtime, as well as the below-mentioned components, for communication with the primary network configuration of these containers.
+[src:helm-charts/kubernetes] kubelet is responsible for the running state of each node, ensuring that all containers on the node are healthy.
+[src:helm-charts/kubernetes] It takes care of starting, stopping, and maintaining application containers organized into pods as directed by the control plane. kubelet monitors the state of a pod, and if not in the desired state, the pod re-deploys to the same node.
+[src:helm-charts/kubernetes] Node status is relayed every few seconds via heartbeat messages to the API server.
+[src:helm-charts/kubernetes] Once the control plane detects a node failure, a higher-level controller is expected to observe this state change and launch pods on another healthy node.
+[src:helm-charts/kubernetes] A container runtime is responsible for the lifecycle of containers, including launching, reconciling and killing of containers. kubelet interacts with container runtimes via the Container Runtime Interface (CRI), which decouples the maintenance of core Kubernetes from the actual CRI implementation.
+[src:helm-charts/kubernetes] Originally, kubelet interfaced exclusively with the Docker runtime through a "dockershim".
+[src:helm-charts/kubernetes] However, from November 2020 up to April 2022, Kubernetes has deprecated the shim in favor of directly interfacing with the container through containerd, or replacing Docker with a runtime that is compliant with the Container Runtime Interface (CRI).
+[src:helm-charts/kubernetes] With the release of v1.24 in May 2022, the "dockershim" has been removed entirely.
+[src:helm-charts/kubernetes] Examples of popular container runtimes that are compatible with kubelet include containerd (initially supported via Docker) and CRI-O.
+[src:helm-charts/kubernetes] kube-proxy is an implementation of a network proxy and a load balancer, and it supports the service abstraction along with the other networking operations.
+[src:helm-charts/kubernetes] It is responsible for routing traffic to the appropriate container based on IP and port number of the incoming request.
+[src:helm-charts/kubernetes] In Kubernetes, namespaces are utilized to segregate the resources it handles into distinct and non-intersecting collections.
+[src:helm-charts/kubernetes] They are intended for use in environments with many users spread across multiple teams, or projects, or even separating environments like development, test, and production.
+[src:helm-charts/kubernetes] The basic scheduling unit in Kubernetes is a pod, which consists of one or more containers that are guaranteed to be co-located on the same node.
+[src:helm-charts/kubernetes] Each pod in Kubernetes is assigned a unique IP address within the cluster, allowing applications to use ports without the risk of conflict.
+[src:helm-charts/kubernetes] Within the pod, all containers can reference each other.
+[src:helm-charts/kubernetes] The container is the lowest level of a micro-service, which holds the running application, libraries, and their dependencies.
+[src:helm-charts/kubernetes] Kubernetes supports several abstractions of workloads that are at a higher level over simple pods.
+[src:helm-charts/kubernetes] This allows users to declaratively define and manage these high-level abstractions, instead of having to manage individual pods by themselves.
+[src:helm-charts/kubernetes] Several of these abstractions, supported by a standard installation of Kubernetes, are described below.
+[src:helm-charts/kubernetes] A ReplicaSet's purpose is to maintain a stable set of replica pods running at any given time.
+[src:helm-charts/kubernetes] As such, it is often used to guarantee the availability of a specified number of identical Pods.
+[src:helm-charts/kubernetes] The ReplicaSet can also be said to be a grouping mechanism that lets Kubernetes maintain the number of instances that have been declared for a given pod.
+[src:helm-charts/kubernetes] The definition of a ReplicaSet uses a selector, whose evaluation will result in identifying all pods that are associated with it.
+[src:helm-charts/kubernetes] A ReplicationController, similar to a ReplicaSet, serves the same purpose and behaves similarly to a ReplicaSet, which is to ensure that there will always be a specified number of pod replicas as desired.
+[src:helm-charts/kubernetes] The ReplicationController workload was the predecessor of a ReplicaSet, but was eventually deprecated in favor of ReplicaSet to make use of set-based label selectors.
+[src:helm-charts/kubernetes] Deployments are a higher-level management mechanism for ReplicaSets.
+[src:helm-charts/kubernetes] While the ReplicaSet controller manages the scale of the ReplicaSet, the Deployment controller manages what happens to the ReplicaSet – whether an update has to be rolled out, or rolled back, etc.
+[src:helm-charts/kubernetes] When Deployments are scaled up or down, this results in the declaration of the ReplicaSet changing, and this change in the declared state is managed by the ReplicaSet controller.
+[src:helm-charts/kubernetes] StatefulSets are controllers that enforce the properties of uniqueness and ordering amongst instances of a pod, and can be used to run stateful applications.
+[src:helm-charts/kubernetes] While scaling stateless applications is only a matter of adding more running pods, doing so for stateful workloads is harder, because the state needs to be preserved if a pod is restarted.
+[src:helm-charts/kubernetes] If the application is scaled up or down, the state may need to be redistributed.
+[src:helm-charts/kubernetes] Databases are an example of stateful workloads.
+[src:helm-charts/kubernetes] When run in high-availability mode, many databases come with the notion of a primary instance and secondary instances.
+[src:helm-charts/kubernetes] In this case, the notion of ordering of instances is important.
+[src:helm-charts/kubernetes] Other applications like Apache Kafka distribute the data amongst their brokers; hence, one broker is not the same as another.
+[src:helm-charts/kubernetes] In this case, the notion of instance uniqueness is important.
+[src:helm-charts/kubernetes] DaemonSets are responsible for ensuring that a pod is created on every single node in the cluster.
+[src:helm-charts/kubernetes] Generally, most workloads scale in response to a desired replica count, depending on the availability and performance requirements as needed by the application.
+[src:helm-charts/kubernetes] However, in other scenarios it may be necessary to deploy a pod to every single node in the cluster, scaling up the number of total pods as nodes are added and garbage collecting them as they are removed.
+[src:helm-charts/kubernetes] This is particularly helpful for use cases where the workload has some dependency on the actual node or host machine, such as log collection, ingress controllers, and storage services.
+[src:helm-charts/kubernetes] A Kubernetes service is a set of pods that work together, such as one tier of a multi-tier application.
+[src:helm-charts/kubernetes] The set of pods that constitute a service are defined by a label selector.
+[src:helm-charts/kubernetes] Kubernetes provides two modes of service discovery, using environment variables or using Kubernetes DNS.
+[src:helm-charts/kubernetes] Service discovery assigns a stable IP address and DNS name to the service, and load balances traffic in a round-robin manner to network connections of that IP address among the pods matching the selector (even as failures cause the pods to move from machine to machine).
+[src:helm-charts/kubernetes] By default a service is exposed inside a cluster (e.g., back end pods might be grouped into a service, with requests from the front-end pods load-balanced among them), but a service can also be exposed outside a cluster (e.g., for clients to reach front-end pods).
+[src:helm-charts/kubernetes] Filesystems in the Kubernetes container provide ephemeral storage, by default.
+[src:helm-charts/kubernetes] This means that a restart of the pod will wipe out any data on such containers, and therefore, this form of storage is quite limiting in anything but trivial applications.
+[src:helm-charts/kubernetes] A Kubernetes volume provides persistent storage that exists for the lifetime of the pod itself.
+[src:helm-charts/kubernetes] This storage can also be used as shared disk space for containers within the pod.
+[src:helm-charts/kubernetes] Volumes are mounted at specific mount points within the container, which are defined by the pod configuration, and cannot mount onto other volumes or link to other volumes.
+[src:helm-charts/kubernetes] The same volume can be mounted at different points in the file system tree by different containers.
+[src:helm-charts/kubernetes] A common application challenge is deciding where to store and manage configuration information, some of which may contain sensitive data.
+[src:helm-charts/kubernetes] Configuration data can be anything as fine-grained as individual properties, or coarse-grained information like entire configuration files such as JSON or XML documents.
+[src:helm-charts/kubernetes] Kubernetes provides two closely related mechanisms to deal with this need, known as ConfigMaps and Secrets, both of which allow for configuration changes to be made without requiring an application rebuild.
+[src:helm-charts/kubernetes] The data from ConfigMaps and Secrets will be made available to every single instance of the application to which these objects have been bound via the Deployment.
+[src:helm-charts/kubernetes] A Secret and/or a ConfigMap is sent to a node only if a pod on that node requires it, which will only be stored in memory on the node.
+[src:helm-charts/kubernetes] Once the pod that depends on the Secret or ConfigMap is deleted, the in-memory copy of all bound Secrets and ConfigMaps are deleted as well.
+[src:helm-charts/kubernetes] Mounted within a volume accessible within the container's filesystem, which supports automatic reloading without restarting the container.
+[src:helm-charts/kubernetes] The biggest difference between a Secret and a ConfigMap is that Secrets are specifically designed for containing secure and confidential data, although they are not encrypted at rest by default, and requires additional setup in order to fully secure the use of Secrets within the cluster.
+[src:helm-charts/kubernetes] Secrets are often used to store confidential or sensitive data like certificates, credentials to work with image registries, passwords, and ssh keys.
+[src:helm-charts/kubernetes] Kubernetes enables clients (users or internal components) to attach keys called labels to any API object in the system, such as pods and nodes.
+[src:helm-charts/kubernetes] Correspondingly, label selectors are queries against labels that resolve to matching objects.
+[src:helm-charts/kubernetes] When a service is defined, one can define the label selectors that will be used by the service router/load balancer to select the pod instances that the traffic will be routed to.
+[src:helm-charts/kubernetes] Thus, simply changing the labels of the pods or changing the label selectors on the service can be used to control which pods get traffic and which don't, which can be used to support various deployment patterns like blue–green deployments or A/B testing.
+[src:helm-charts/kubernetes] This capability to dynamically control how services utilize implementing resources provides a loose coupling within the infrastructure.
+[src:helm-charts/kubernetes] Just like labels, field selectors also let one select Kubernetes resources.
+[src:helm-charts/kubernetes] Unlike labels, the selection is based on the attribute values inherent to the resource being selected, rather than user-defined categorization.
+[src:helm-charts/kubernetes] `metadata.name` and `metadata.namespace` are field selectors that will be present on all Kubernetes objects.
+[src:helm-charts/kubernetes] Other selectors that can be used depend on the object/resource type.
+[src:helm-charts/kubernetes] Add-ons are additional features of the Kubernetes cluster implemented as applications running within it.
+[src:helm-charts/kubernetes] The pods may be managed by Deployments, ReplicationControllers, and so on.
+[src:helm-charts/kubernetes] Cluster DNS is a DNS server, in addition to the other DNS server(s) in the environment, which serves DNS records for Kubernetes services.
+[src:helm-charts/kubernetes] Containers started by Kubernetes automatically include this DNS server in their DNS searches.
+[src:helm-charts/kubernetes] This is a general purpose, web-based UI for Kubernetes clusters.
+[src:helm-charts/kubernetes] It allows administrators to manage and troubleshoot applications running in the cluster, as well as the cluster itself.
+[src:helm-charts/kubernetes] Container Resource Monitoring records metrics about containers in a central database, and provides a UI for browsing that data.
+[src:helm-charts/kubernetes] Kubernetes cost monitoring applications allow breakdown of costs by pods, nodes, namespaces, and labels.
+[src:helm-charts/kubernetes] To prevent the loss of event data in the event of node or pod failures, container logs can be saved to a central log store with a search/browsing interface.
+[src:helm-charts/kubernetes] Kubernetes provides no native storage for log data, but one can integrate many existing logging solutions into the Kubernetes cluster.
+[src:helm-charts/kubernetes] Containers emerged as a way to make software portable.
+[src:helm-charts/kubernetes] The container contains all the packages needed to run a service.
+[src:helm-charts/kubernetes] The provided file system makes containers extremely portable and easy to use in development.
+[src:helm-charts/kubernetes] A container can be moved from development to test or production with no or relatively few configuration changes.
+[src:helm-charts/kubernetes] Historically Kubernetes was suitable only for stateless services.
+[src:helm-charts/kubernetes] However, many applications have a database, which requires persistence, leading to the creation of persistent storage for Kubernetes.
+[src:helm-charts/kubernetes] Implementing persistent storage for containers is one of the top challenges of Kubernetes administrators, DevOps and cloud engineers.
+[src:helm-charts/kubernetes] Containers may be ephemeral, but more and more of their data is not, so one needs to ensure the data's survival in case of container termination or hardware failure.
+[src:helm-charts/kubernetes] When deploying containers with Kubernetes or containerized applications, organizations often realize that they need persistent storage.
+[src:helm-charts/kubernetes] They need to provide fast and reliable storage for databases, root images and other data used by the containers.
+[src:helm-charts/kubernetes] In addition to the landscape, the Cloud Native Computing Foundation (CNCF), has published other information about Kubernetes Persistent Storage including a blog helping to define the container attached storage pattern.
+[src:helm-charts/kubernetes] This pattern can be thought of as one that uses Kubernetes itself as a component of the storage system or service.
+[src:helm-charts/kubernetes] Container Attached Storage is a type of data storage that emerged as Kubernetes gained prominence.
+[src:helm-charts/kubernetes] The Container Attached Storage approach or pattern relies on Kubernetes itself for certain capabilities while delivering primarily block, file, object and interfaces to workloads running on Kubernetes.
+[src:helm-charts/kubernetes] Common attributes of Container Attached Storage include the use of extensions to Kubernetes, such as custom resource definitions, and the use of Kubernetes itself for functions that otherwise would be separately developed and deployed for storage or data management.
+[src:helm-charts/kubernetes] Examples of functionality delivered by custom resource definitions or by Kubernetes itself include retry logic, delivered by Kubernetes itself, and the creation and maintenance of an inventory of available storage media and volumes, typically delivered via a custom resource definition.
+[src:helm-charts/kubernetes] In Kubernetes version 1.9, the initial Alpha release of Container Storage Interface (CSI) was introduced.
+[src:helm-charts/kubernetes] Previously, storage volume plug-ins were included in the Kubernetes distribution.
+[src:helm-charts/kubernetes] By creating a standardized CSI, the code required to interface with external storage systems was separated from the core Kubernetes code base.
+[src:helm-charts/kubernetes] Just one year later, the CSI feature was made Generally Available (GA) in Kubernetes.
+[src:helm-charts/kubernetes] A key component of the Kubernetes control plane is the API Server, which exposes an HTTP API that can be invoked by other parts of the cluster as well as end users and external components.
+[src:helm-charts/kubernetes] This API is a REST API and is declarative in nature, and is the same API exposed to the control plane.
+[src:helm-charts/kubernetes] The API server is backed by etcd to store all records persistently.
+[src:helm-charts/kubernetes] In Kubernetes, all objects serve as the "record of intent" of the cluster's state, and are able to define the desired state that the writer of the object wishes for the cluster to be in.
+[src:helm-charts/kubernetes] All objects in Kubernetes are subject to the same API conventions.
+[src:helm-charts/kubernetes] The Kubernetes API can be extended using *Custom Resources*, which represent objects that are not part of the standard Kubernetes installation.
+[src:helm-charts/kubernetes] These custom resources are declared using *Custom Resource Definitions* (CRDs), which is a kind of resource that can be dynamically registered and unregistered without shutting down or restarting a cluster that is currently running.
+[src:helm-charts/kubernetes] Custom controllers are another extension mechanism that interact with the Kubernetes API, similar to the default controllers in the standard pre-installed Kubernetes controller manager.
+[src:helm-charts/kubernetes] These controllers may interact with custom resources to allow for a declarative API: users may declare the desired state of the system via the custom resources, and it is the responsibility of the custom controller to observe the change and reconcile it.
+[src:helm-charts/kubernetes] The combination of custom resources and custom controllers are often referred to as a *Kubernetes* *Operator*.
+[src:helm-charts/kubernetes] The key use case for operators are to capture the aim of a human operator who is managing a service or set of services and to implement them using automation, and with a declarative API supporting this automation.
+[src:helm-charts/kubernetes] Human operators who look after specific applications and services have deep knowledge of how the system ought to behave, how to deploy it, and how to react if there are problems.
+[src:helm-charts/kubernetes] Examples of problems solved by operators include taking and restoring backups of that application's state, and handling upgrades of the application code alongside related changes such as database schemas or extra configuration settings.
+[src:helm-charts/kubernetes] Several notable projects under the Cloud Native Computing Foundation's incubation program follow the operator pattern to extend Kubernetes, including Argo, Open Policy Agent and Istio.
+[src:helm-charts/kubernetes] Kubernetes defines the following strategies for controlling access to its API.
+[src:helm-charts/kubernetes] The Kubernetes API server listens on a TCP port that serves HTTPS traffic, in order to enforce transport layer security (TLS) using CA certificates.
+[src:helm-charts/kubernetes] In older versions of Kubernetes, the API server supported listening on both HTTP and HTTPS ports (with the HTTP port number having no transport security whatsoever).
+[src:helm-charts/kubernetes] This was deprecated in v1.10 and eventually dropped support in v1.20 of Kubernetes.
+[src:helm-charts/kubernetes] Users are typically expected to indicate and define cluster URL details along with the necessary credentials in a *kubeconfig* file, which are natively supported by other Kubernetes tools like kubectl and the official Kubernetes client libraries.
+[src:helm-charts/kubernetes] *Attribute-based access control (ABAC) mode*: Grants access rights to users through the use of defined access control policies which combine attributes together.
+[src:helm-charts/kubernetes] *Role-based access control (RBAC) mode*: Grants access rights to users based on roles that are granted to the user, where each role defines a list of actions that are allowed.
+[src:helm-charts/kubernetes] *Webhook mode*: Queries a REST API service to determine if a user is authorized to perform a given action.
+[src:helm-charts/kubernetes] The same API design principles have been used to define an API to harness a program in order to create, configure, and manage Kubernetes clusters.
+[src:helm-charts/kubernetes] A key concept embodied in the API is using Infrastructure as Software, or the notion that the Kubernetes cluster infrastructure is itself a resource / object that can be managed just like any other Kubernetes resources.
+[src:helm-charts/kubernetes] Similarly, machines that make up the cluster are also treated as a Kubernetes resource.
+[src:helm-charts/kubernetes] The API has two pieces – the core API, and a provider implementation.
+[src:helm-charts/kubernetes] The provider implementation consists of cloud-provider specific functions that let Kubernetes provide the cluster API in a fashion that is well-integrated with the cloud-provider's services and resources.
+[src:helm-charts/kubernetes] Kubernetes is commonly used as a way to host a microservice-based implementation, because it and its associated ecosystem of tools provide all the capabilities needed to address key concerns of any microservice architecture.
+[src:helm-charts/kubernetes] A common criticism of Kubernetes is that it is too complex.
+[src:helm-charts/kubernetes] Various vendors offer Kubernetes-based platforms or infrastructure as a service (IaaS) that deploy Kubernetes.
+[src:helm-charts/kubernetes] These are typically categorized according to open-source, commercial or managed distributions.
+[src:helm-charts/package-manager] A **package manager**, or **package management system**, is software that supports installing, upgrading, configuring, and removing software for the host system in a consistent manner.
+[src:helm-charts/package-manager] A package manager deals with *packages*, distributions of software and data in archive files.
+[src:helm-charts/package-manager] Packages contain metadata, such as the software's name, description of its purpose, version number, vendor, checksum (usually a cryptographic hash function), and a list of dependencies necessary for the software to run properly.
+[src:helm-charts/package-manager] Upon installation, metadata is stored in a local package database.
+[src:helm-charts/package-manager] Package managers typically maintain a database of software dependencies and version information to prevent software mismatches and missing prerequisites.
+[src:helm-charts/package-manager] They work closely with software repositories, binary repository managers, and app stores.
+[src:helm-charts/package-manager] Package managers are designed to eliminate the need for manual installs and updates.
+[src:helm-charts/package-manager] This can be particularly useful for large enterprises whose operating systems (OSes) typically consist of hundreds or even tens of thousands of distinct packages.
+[src:helm-charts/package-manager] An early package manager was SMIT (and its backend install) from IBM AIX.
+[src:helm-charts/package-manager] SMIT was introduced with AIX 3.0 in 1989.
+[src:helm-charts/package-manager] Package managers like dpkg have existed as early as 1994.
+[src:helm-charts/package-manager] Early package managers, from around 1994, had no automatic dependency resolution but could already simplify the process of adding and removing software from a running system.
+[src:helm-charts/package-manager] By around 1995, beginning with CPAN, package managers began handling package repository downloads, and dependency resolution and installation as needed, making it easier to install, uninstall and update software.
+[src:helm-charts/package-manager] A software package is an archive file containing a computer program as well as necessary metadata for its deployment.
+[src:helm-charts/package-manager] The program may be in source code that has to be compiled and built first.
+[src:helm-charts/package-manager] Package metadata include the software's description, version number, and dependencies.
+[src:helm-charts/package-manager] Package managers are charged with the task of finding, installing, maintaining or uninstalling packages upon the user's command.
+[src:helm-charts/package-manager] Computer systems that rely on dynamic library linking, instead of static library linking, share executable libraries of machine instructions across packages and applications.
+[src:helm-charts/package-manager] In these systems, conflicting relationships between different packages requiring different versions of libraries results in a situation called *dependency hell*.
+[src:helm-charts/package-manager] On Microsoft Windows systems, this is also called *DLL hell* when working with dynamically-linked libraries.
+[src:helm-charts/package-manager] Modern package managers have mostly solved these problems by allowing parallel installation of multiple library versions (e.g.
+[src:helm-charts/package-manager] OPENSTEP's *Framework* system), a dependency of any kind (e.g.
+[src:helm-charts/package-manager] *slots* in Gentoo Portage), and even packages compiled with different compiler versions (e.g. dynamic libraries built by the Glasgow Haskell Compiler, where a stable ABI does not exist), in order to enable other packages to specify which version they are linked or installed against.
+[src:helm-charts/package-manager] System administrators may install and maintain software using tools other than package managers.
+[src:helm-charts/package-manager] For example, a local administrator may download unpackaged source code, compile it, and install it.
+[src:helm-charts/package-manager] This may cause the local system to fall out of synchronization with the package manager's database.
+[src:helm-charts/package-manager] The local administrator will be required to take additional measures, such as manually managing some dependencies or integrating the changes into the package manager.
+[src:helm-charts/package-manager] There are tools to ensure that locally-compiled packages are integrated with the package management.
+[src:helm-charts/package-manager] Upgrades of configuration files may be particularly troublesome.
+[src:helm-charts/package-manager] Since package managers, at least on Unix systems, originated as extensions of file archivers, they can usually only overwrite or retain configuration files, rather than apply rules to them.
+[src:helm-charts/package-manager] There are exceptions to this that usually apply to kernel configuration (which, if broken, will render the computer unusable after a restart).
+[src:helm-charts/package-manager] Problems can be caused if the configuration file format changes; for instance, if the old file does not explicitly disable new options that should be disabled.
+[src:helm-charts/package-manager] Some package managers, such as Debian's dpkg, allow configuration during installation.
+[src:helm-charts/package-manager] In other situations, packages are installed with the default configuration, which is then overwritten, for example in headless installations to a large number of computers.
+[src:helm-charts/package-manager] This kind of pre-configured installation is also supported by dpkg.
+[src:helm-charts/package-manager] To give users more control over the software they allow to be installed on their systems, and sometimes due to legal or convenience reasons on the distributors' side, packages are often downloaded from software repositories.
+[src:helm-charts/package-manager] Many package managers can be configured to never upgrade certain packages, or to upgrade them only when critical vulnerabilities or instabilities are found in the previous version, as defined by the packager of the software.
+[src:helm-charts/package-manager] This process is called *upgrade suppression*, or *version pinning*.
+[src:helm-charts/package-manager] Some of the more advanced package management features offer *cascading package removal*, in which all packages that depend on the target package and all packages that only it depends on are also removed.
+[src:helm-charts/package-manager] Although commands are specific to each package manager, they are translatable to a large extent, as most package managers offer similar functions.
+[src:helm-charts/package-manager] The Arch Linux wiki offers an extensive overview of commands.
+[src:helm-charts/package-manager] Linux distributions oriented to binary packages rely heavily on package management systems as their primary means of managing and maintaining software.
+[src:helm-charts/package-manager] Mobile operating systems such as Android (Linux-based) and iOS (Unix-based) rely almost exclusively on their respective vendors' app stores and thus use their own dedicated package management systems.
+[src:helm-charts/package-manager] A package manager is often called an *install manager*, which can lead to a confusion between package managers and installers.
+[src:helm-charts/package-manager] Most software configuration management systems treat building software and deploying software as separate, independent steps.
+[src:helm-charts/package-manager] A build automation utility typically takes human-readable source code files already on a computer, and automates the process of converting them into an executable package on the same or a remote computer.
+[src:helm-charts/package-manager] Later, a package manager typically running on another computer downloads the pre-built executable and installs it.
+[src:helm-charts/package-manager] A few tools, such as Maak and A-A-P, are designed to handle both building and deployment, and can be used as either build automation utilities, package managers, or both.
+[src:helm-charts/package-manager] App stores can also be considered application-level package managers (without the ability to install all levels of programs).
+[src:helm-charts/package-manager] Unlike traditional package managers, app stores are designed to enable payment for the software itself (instead of for software development), and may only offer monolithic packages with no dependencies or dependency resolution.
+[src:helm-charts/package-manager] They are usually limited in their management functionality, due to focusing on ease-of-use over power or emergence, and are common in commercial operating systems and smart devices.
+[src:helm-charts/package-manager] Package managers also often have only human-reviewed code.
+[src:helm-charts/package-manager] Many app stores, such as Google Play and Apple's App Store, mainly screen apps using automated tools only; malware can pass these tests by detecting when the app is being tested, and delaying malicious activity.
+[src:helm-charts/package-manager] There are exceptions: the npm package database, for instance, relies entirely on post-publication review of its code, while the Debian package database has an extensive human review process before any package goes into the main database.
+[src:helm-charts/package-manager] The XZ Utils backdoor used years of trust-building to insert a backdoor, which was nonetheless caught while in the testing database.
+[src:helm-charts/package-manager] Also known as binary repository manager, it is a software tool designed to optimize the download and storage of binary files, artifacts and packages used and produced in the software development process.
+[src:helm-charts/package-manager] These package managers aim to standardize the way enterprises treat all package types.
+[src:helm-charts/package-manager] They give users the ability to apply security and compliance metrics across all artifact types.
+[src:helm-charts/package-manager] Universal package managers have been referred to as being at the center of a DevOps toolchain.
+[src:helm-charts/package-manager] Each package manager relies on the format and metadata of the packages in its repository.
+[src:helm-charts/package-manager] That is, package managers need groups of files to be bundled along with appropriate metadata, such as dependencies.
+[src:helm-charts/package-manager] Often, a core set of utilities manages the basic installation from these packages and multiple package managers use these utilities to provide additional functionality.
+[src:helm-charts/package-manager] For example, yum relies on rpm as a backend.
+[src:helm-charts/package-manager] Yum extends the functionality of rpm by adding features such as simple configuration for maintaining a network of systems.
+[src:helm-charts/package-manager] As another example, the Synaptic Package Manager provides a graphical user interface by using the Advanced Packaging Tool (apt) library, which in turn relies on dpkg for core functionality.
+[src:helm-charts/package-manager] Alien is a program that converts between different Linux package formats, supporting conversion between Linux Standard Base (LSB) compliant .rpm packages, .deb, Stampede (.slp), Solaris (.pkg) and Slackware (.tgz, .txz, .tbz, .tlz) packages.
+[src:helm-charts/package-manager] For mobile operating systems, Google Play uses the Android application package (APK) package format while Microsoft Store uses the APPX and XAP formats.
+[src:helm-charts/package-manager] Both Google Play and Microsoft Store have eponymous package managers.
+[src:helm-charts/package-manager] By the nature of free and open-source software (FOSS), packages under similar and compatible licenses are available on a number of operating systems.
+[src:helm-charts/package-manager] These packages can be combined and distributed using configurable packaging systems to handle many permutations of software and manage version-specific dependencies and conflicts.
+[src:helm-charts/package-manager] Some managers of FOSS packages are released as FOSS themselves.
+[src:helm-charts/package-manager] The ability to continuously upgrade third-party software is typically added by adding the URL of the corresponding repository to the package management's configuration file.
+[src:helm-charts/package-manager] Besides system-level application managers, there are add-on package managers for operating systems with limited capabilities and for programming languages in which developers need the latest libraries.
+[src:helm-charts/package-manager] Unlike system-level package managers, application-level package managers focus on a small part of the software system.
+[src:helm-charts/package-manager] They typically reside within a directory tree that is not maintained by the system-level manager, such as c:\cygwin or /opt/sw.
+[src:helm-charts/package-manager] This may not be the case for managers that deal with programming libraries, leading to possible conflicts, as both managers may claim to own a file and may break upgrades.
+[src:helm-charts/package-manager] Ian Murdock commented that package management is "the single biggest advancement Linux has brought to the industry", that it blurs the boundaries between operating systems and applications, and that it makes it "easier to push new innovations [...] into the marketplace and [...] evolve the OS".
+[src:helm-charts/package-manager] There is also a conference for package manager developers known as PackagingCon.
+[src:helm-charts/package-manager] It was established in 2021 with the aim to understand different approaches to package management.
+[src:helm-charts/page] Helm is the package manager for Kubernetes, and you can read detailed background information in the CNCF Helm Project Journey report.
+[src:helm-charts/page] Everything you need to know about how the documentation is organized.
+[src:helm-charts/page] Helm v4 represents a significant evolution from v3, introducing breaking changes, new architectural patterns, and enhanced functionality while maintaining backwards compatibility for charts.
+[src:helm-charts/page] Terms used to describe components of Helm's architecture.
+[src:helm-charts/topics-charts] Helm uses a packaging format called *charts*.
+[src:helm-charts/topics-charts] A chart is a collection of files that describe a related set of Kubernetes resources.
+[src:helm-charts/topics-charts] A single chart might be used to deploy something simple, like a memcached pod, or something complex, like a full web app stack with HTTP servers, databases, caches, and so on.
+[src:helm-charts/topics-charts] Charts are created as files laid out in a particular directory tree.
+[src:helm-charts/topics-charts] They can be packaged into versioned archives to be deployed.
+[src:helm-charts/topics-charts] If you want to download and look at the files for a published chart, without installing it, you can do so with `helm pull chartrepo/chartname`.
+[src:helm-charts/topics-charts] This document explains the chart format, and provides basic guidance for building charts with Helm.
+[src:helm-charts/topics-charts] A chart is organized as a collection of files inside of a directory.
+[src:helm-charts/topics-charts] The directory name is the name of the chart (without versioning information).
+[src:helm-charts/topics-charts] Thus, a chart describing WordPress would be stored in a `wordpress/` directory.
+[src:helm-charts/topics-charts] Helm reserves use of the `charts/`, `crds/`, and `templates/` directories, and of the listed file names.
+[src:helm-charts/topics-charts] The `Chart.yaml` file is required for a chart.
+[src:helm-charts/topics-charts] As of v3.3.2, additional fields are not allowed.
+[src:helm-charts/topics-charts] The recommended approach is to add custom metadata in `annotations`.
+[src:helm-charts/topics-charts] A version should follow the SemVer 2 standard but it is not strictly enforced.
+[src:helm-charts/topics-charts] Unlike Helm Classic, Helm v2 and later uses version numbers as release markers.
+[src:helm-charts/topics-charts] Packages in repositories are identified by name plus version.
+[src:helm-charts/topics-charts] More complex SemVer 2 names are also supported, such as `version: 1.2.3-alpha.1+ef365`.
+[src:helm-charts/topics-charts] But non-SemVer names are explicitly disallowed by the system.
+[src:helm-charts/topics-charts] Subject to exception are versions in format `x` or `x.y`.
+[src:helm-charts/topics-charts] For example, if there is a leading v or a version listed without all 3 parts (e.g. v1.2) it will attempt to coerce it into a valid semantic version (e.g., v1.2.0).
+[src:helm-charts/topics-charts] The `version` field inside of the `Chart.yaml` is used by many of the Helm tools, including the CLI.
+[src:helm-charts/topics-charts] When generating a package, the `helm package` command will use the version that it finds in the `Chart.yaml` as a token in the package name.
+[src:helm-charts/topics-charts] The system assumes that the version number in the chart package name matches the version number in the `Chart.yaml`.
+[src:helm-charts/topics-charts] Failure to meet this assumption will cause an error.
+[src:helm-charts/topics-charts] The `apiVersion` field should be `v2` for Helm charts that require at least Helm 3.
+[src:helm-charts/topics-charts] Charts supporting previous Helm versions have an `apiVersion` set to `v1` and are still installable by Helm 3.
+[src:helm-charts/topics-charts] Note that the `appVersion` field is not related to the `version` field.
+[src:helm-charts/topics-charts] It is a way of specifying the version of the application.
+[src:helm-charts/topics-charts] For example, the `drupal` chart may have an `appVersion: "8.2.1"`, indicating that the version of Drupal included in the chart (by default) is `8.2.1`.
+[src:helm-charts/topics-charts] This field is informational, and has no impact on chart version calculations.
+[src:helm-charts/topics-charts] Wrapping the version in quotes is highly recommended.
+[src:helm-charts/topics-charts] It forces the YAML parser to treat the version number as a string.
+[src:helm-charts/topics-charts] Leaving it unquoted can lead to parsing issues in some cases.
+[src:helm-charts/topics-charts] For example, YAML interprets `1.0` as a floating point value, and a git commit SHA like `1234e10` as scientific notation.
+[src:helm-charts/topics-charts] As of Helm v3.5.0, `helm create` wraps the default `appVersion` field in quotes.
+[src:helm-charts/topics-charts] The optional `kubeVersion` field can define semver constraints on supported Kubernetes versions.
+[src:helm-charts/topics-charts] Helm will validate the version constraints when installing the chart and fail if the cluster runs an unsupported Kubernetes version.
+[src:helm-charts/topics-charts] In this example the version `1.14.0` is excluded, which can make sense if a bug in certain versions is known to prevent the chart from running properly.
+[src:helm-charts/topics-charts] For a detailed explanation of supported semver constraints see Masterminds/semver.
+[src:helm-charts/topics-charts] When managing charts in a Chart Repository, it is sometimes necessary to deprecate a chart.
+[src:helm-charts/topics-charts] The optional `deprecated` field in `Chart.yaml` can be used to mark a chart as deprecated.
+[src:helm-charts/topics-charts] If the **latest** version of a chart in the repository is marked as deprecated, then the chart as a whole is considered to be deprecated.
+[src:helm-charts/topics-charts] The chart name can be later reused by publishing a newer version that is not marked as deprecated.
+[src:helm-charts/topics-charts] The `type` field defines the type of chart.
+[src:helm-charts/topics-charts] There are two types: `application` and `library`.
+[src:helm-charts/topics-charts] Application is the default type and it is the standard chart which can be operated on fully.
+[src:helm-charts/topics-charts] The library chart provides utilities or functions for the chart builder.
+[src:helm-charts/topics-charts] A library chart differs from an application chart because it is not installable and usually doesn't contain any resource objects.
+[src:helm-charts/topics-charts] Charts can also contain files that describe the installation, configuration, usage and license of a chart.
+[src:helm-charts/topics-charts] A LICENSE is a plain text file containing the license for the chart.
+[src:helm-charts/topics-charts] The chart can contain a license as it may have programming logic in the templates and would therefore not be configuration only.
+[src:helm-charts/topics-charts] There can also be separate license(s) for the application installed by the chart, if required.
+[src:helm-charts/topics-charts] When hubs and other user interfaces display details about a chart that detail is pulled from the content in the `README.md` file.
+[src:helm-charts/topics-charts] The chart can also contain a short plain text `templates/NOTES.txt` file that will be printed out after installation, and when viewing the status of a release.
+[src:helm-charts/topics-charts] This file is evaluated as a template, and can be used to display usage notes, next steps, or any other information relevant to a release of the chart.
+[src:helm-charts/topics-charts] For example, instructions could be provided for connecting to a database, or accessing a web UI.
+[src:helm-charts/topics-charts] Since this file is printed to STDOUT when running `helm install` or `helm status`, it is recommended to keep the content brief and point to the README for greater detail.
+[src:helm-charts/topics-charts] In Helm, one chart may depend on any number of other charts.
+[src:helm-charts/topics-charts] These dependencies can be dynamically linked using the `dependencies` field in `Chart.yaml` or brought in to the `charts/` directory and managed manually.
+[src:helm-charts/topics-charts] The charts required by the current chart are defined as a list in the `dependencies` field.
+[src:helm-charts/topics-charts] Once you have defined dependencies, you can run `helm dependency update` and it will use your dependency file to download all the specified charts into your `charts/` directory for you.
+[src:helm-charts/topics-charts] When `helm dependency update` retrieves charts, it will store them as chart archives in the `charts/` directory.
+[src:helm-charts/topics-charts] In addition to the other fields above, each requirements entry may contain the optional field `alias`.
+[src:helm-charts/topics-charts] Adding an alias for a dependency chart would put a chart in dependencies using alias as name of new dependency.
+[src:helm-charts/topics-charts] One can use `alias` in cases where they need to access a chart with other name(s).
+[src:helm-charts/topics-charts] The manual way of achieving this is by copy/pasting the same chart in the `charts/` directory multiple times with different names.
+[src:helm-charts/topics-charts] In addition to the other fields above, each requirements entry may contain the optional fields `tags` and `condition`.
+[src:helm-charts/topics-charts] If `tags` or `condition` fields are present, they will be evaluated and used to control loading for the chart(s) they are applied to.
+[src:helm-charts/topics-charts] Condition - The condition field holds one or more YAML paths (delimited by commas).
+[src:helm-charts/topics-charts] If this path exists in the top parent's values and resolves to a boolean value, the chart will be enabled or disabled based on that boolean value.
+[src:helm-charts/topics-charts] Only the first valid path found in the list is evaluated and if no paths exist then the condition has no effect.
+[src:helm-charts/topics-charts] Tags - The tags field is a YAML list of labels to associate with this chart.
+[src:helm-charts/topics-charts] In the top parent's values, all charts with tags can be enabled or disabled by specifying the tag and a boolean value.
+[src:helm-charts/topics-charts] In the above example all charts with the tag `front-end` would be disabled but since the `subchart1.enabled` path evaluates to 'true' in the parent's values, the condition will override the `front-end` tag and `subchart1` will be enabled.
+[src:helm-charts/topics-charts] Since `subchart2` is tagged with `back-end` and that tag evaluates to `true`, `subchart2` will be enabled.
+[src:helm-charts/topics-charts] Also note that although `subchart2` has a condition specified, there is no corresponding path and value in the parent's values so that condition has no effect.
+[src:helm-charts/topics-charts] The `--set` parameter can be used as usual to alter tag and condition values.
+[src:helm-charts/topics-charts] In some cases it is desirable to allow a child chart's values to propagate to the parent chart and be shared as common defaults.
+[src:helm-charts/topics-charts] An additional benefit of using the `exports` format is that it will enable future tooling to introspect user-settable values.
+[src:helm-charts/topics-charts] The keys containing the values to be imported can be specified in the parent chart's `dependencies` in the field `import-values` using a YAML list.
+[src:helm-charts/topics-charts] Each item in the list is a key which is imported from the child chart's `exports` field.
+[src:helm-charts/topics-charts] To import values not contained in the `exports` key, use the child-parent format.
+[src:helm-charts/topics-charts] Examples of both formats are described below.
+[src:helm-charts/topics-charts] Since we are specifying the key `data` in our import list, Helm looks in the `exports` field of the child chart for `data` key and imports its contents.
+[src:helm-charts/topics-charts] Please note the parent key `data` is not contained in the parent's final values.
+[src:helm-charts/topics-charts] If you need to specify the parent key, use the 'child-parent' format.
+[src:helm-charts/topics-charts] To access values that are not contained in the `exports` key of the child chart's values, you will need to specify the source key of the values to be imported (`child`) and the destination path in the parent chart's values (`parent`).
+[src:helm-charts/topics-charts] The parent's final values now contains the `myint` and `mybool` fields imported from subchart1.
+[src:helm-charts/topics-charts] If more control over dependencies is desired, these dependencies can be expressed explicitly by copying the dependency charts into the `charts/` directory.
+[src:helm-charts/topics-charts] A dependency should be an unpacked chart directory but its name cannot start with `_` or `.`.
+[src:helm-charts/topics-charts] Such files are ignored by the chart loader.
+[src:helm-charts/topics-charts] The example above shows how the WordPress chart expresses its dependency on Apache and MySQL by including those charts inside of its `charts/` directory.
+[src:helm-charts/topics-charts] The above sections explain how to specify chart dependencies, but how does this affect chart installation using `helm install` and `helm upgrade`?
+[src:helm-charts/topics-charts] After installation/upgrade of chart A a single Helm release is created/modified.
+[src:helm-charts/topics-charts] Hence a single release is created with all the objects for the chart and its dependencies.
+[src:helm-charts/topics-charts] The install order of Kubernetes types is given by the enumeration InstallOrder in kind_sorter.go (see the Helm source file).
+[src:helm-charts/topics-charts] Helm Chart templates are written in the Go template language, with the addition of 50 or so add-on template functions from the Sprig library and a few other specialized functions.
+[src:helm-charts/topics-charts] All template files are stored in a chart's `templates/` folder.
+[src:helm-charts/topics-charts] When Helm renders the charts, it will pass every file in that directory through the template engine.
+[src:helm-charts/topics-charts] When a user supplies custom values, these values will override the values in the chart's `values.yaml` file.
+[src:helm-charts/topics-charts] Template files follow the standard conventions for writing Go templates (see the text/template Go package documentation for details).
+[src:helm-charts/topics-charts] The above example, based loosely on https://github.com/deis/charts, is a template for a Kubernetes replication controller.
+[src:helm-charts/topics-charts] All of these values are defined by the template author.
+[src:helm-charts/topics-charts] Helm does not require or dictate parameters.
+[src:helm-charts/topics-charts] To see many working charts, check out the CNCF Artifact Hub.
+[src:helm-charts/topics-charts] Values that are supplied via a `values.yaml` file (or via the `--set` flag) are accessible from the `.Values` object in a template.
+[src:helm-charts/topics-charts] But there are other pre-defined pieces of data you can access in your templates.
+[src:helm-charts/topics-charts] The following values are pre-defined, are available to every template, and cannot be overridden.
+[src:helm-charts/topics-charts] As with all values, the names are *case sensitive*.
+[src:helm-charts/topics-charts] A chart may include a default `values.yaml` file.
+[src:helm-charts/topics-charts] When values are passed in this way, they will be merged into the default values file.
+[src:helm-charts/topics-charts] Note that only the last field was overridden.
+[src:helm-charts/topics-charts] Values files can declare values for the top-level chart, as well as for any of the charts that are included in that chart's `charts/` directory.
+[src:helm-charts/topics-charts] Or, to phrase it differently, a values file can supply values to the chart as well as to any of its dependencies.
+[src:helm-charts/topics-charts] For example, the demonstration WordPress chart above has both `mysql` and `apache` as dependencies.
+[src:helm-charts/topics-charts] Charts at a higher level have access to all of the variables defined beneath.
+[src:helm-charts/topics-charts] So the WordPress chart can access the MySQL password as `.Values.mysql.password`.
+[src:helm-charts/topics-charts] But lower level charts cannot access things in parent charts, so MySQL will not be able to access the `title` property.
+[src:helm-charts/topics-charts] Nor, for that matter, can it access `apache.port`.
+[src:helm-charts/topics-charts] Values are namespaced, but namespaces are pruned.
+[src:helm-charts/topics-charts] So for the WordPress chart, it can access the MySQL password field as `.Values.mysql.password`.
+[src:helm-charts/topics-charts] But for the MySQL chart, the scope of the values has been reduced and the namespace prefix removed, so it will see the password field simply as `.Values.password`.
+[src:helm-charts/topics-charts] As of 2.0.0-Alpha.2, Helm supports special "global" value.
+[src:helm-charts/topics-charts] The above adds a `global` section with the value `app: MyWordPress`.
+[src:helm-charts/topics-charts] This value is available to *all* charts as `.Values.global.app`.
+[src:helm-charts/topics-charts] For example, the `mysql` templates may access `app` as `{{ .Values.global.app}}`, and so can the `apache` chart.
+[src:helm-charts/topics-charts] This provides a way of sharing one top-level variable with all subcharts, which is useful for things like setting `metadata` properties like labels.
+[src:helm-charts/topics-charts] If a subchart declares a global variable, that global will be passed *downward* (to the subchart's subcharts), but not *upward* to the parent chart.
+[src:helm-charts/topics-charts] There is no way for a subchart to influence the values of the parent chart.
+[src:helm-charts/topics-charts] Also, global variables of parent charts take precedence over the global variables from subcharts.
+[src:helm-charts/topics-charts] Sometimes, a chart maintainer might want to define a structure on their values.
+[src:helm-charts/topics-charts] This can be done by defining a schema in the `values.schema.json` file.
+[src:helm-charts/topics-charts] A schema is represented as a JSON Schema.
+[src:helm-charts/topics-charts] This schema will be applied to the values to validate it.
+[src:helm-charts/topics-charts] Note that the schema is applied to the final `.Values` object, and not just to the `values.yaml` file.
+[src:helm-charts/topics-charts] This means that the following `yaml` file is valid, given that the chart is installed with the appropriate `--set` option shown below.
+[src:helm-charts/topics-charts] Furthermore, the final `.Values` object is checked against *all* subchart schemas.
+[src:helm-charts/topics-charts] This means that restrictions on a subchart can't be circumvented by a parent chart.
+[src:helm-charts/topics-charts] This also works backwards - if a subchart has a requirement that is not met in the subchart's `values.yaml` file, the parent chart *must* satisfy those restrictions in order to be valid.
+[src:helm-charts/topics-charts] Schema validation can be disabled by setting the option shown below.
+[src:helm-charts/topics-charts] This is particularly useful in air-gapped environments when a chart's JSON Schema file contains remote references.
+[src:helm-charts/topics-charts] When it comes to writing templates, values, and schema files, there are several standard references that will help you out.
+[src:helm-charts/topics-charts] Kubernetes provides a mechanism for declaring new types of Kubernetes objects.
+[src:helm-charts/topics-charts] Using CustomResourceDefinitions (CRDs), Kubernetes developers can declare custom resource types.
+[src:helm-charts/topics-charts] In Helm 3, CRDs are treated as a special kind of object.
+[src:helm-charts/topics-charts] They are installed before the rest of the chart, and are subject to some limitations.
+[src:helm-charts/topics-charts] CRD YAML files should be placed in the `crds/` directory inside of a chart.
+[src:helm-charts/topics-charts] Multiple CRDs (separated by YAML start and end markers) may be placed in the same file.
+[src:helm-charts/topics-charts] Helm will attempt to load *all* of the files in the CRD directory into Kubernetes.
+[src:helm-charts/topics-charts] When Helm installs a new chart, it will upload the CRDs, pause until the CRDs are made available by the API server, and then start the template engine, render the rest of the chart, and upload it to Kubernetes.
+[src:helm-charts/topics-charts] Because of this ordering, CRD information is available in the `.Capabilities` object in Helm templates, and Helm templates may create new instances of objects that were declared in CRDs.
+[src:helm-charts/topics-charts] Helm will make sure that the `CronTab` kind has been installed and is available from the Kubernetes API server before it proceeds installing the things in `templates/`.
+[src:helm-charts/topics-charts] Unlike most objects in Kubernetes, CRDs are installed globally.
+[src:helm-charts/topics-charts] For that reason, Helm takes a very cautious approach in managing CRDs.
+[src:helm-charts/topics-charts] Operators who want to upgrade or delete CRDs are encouraged to do this manually and with great care.
+[src:helm-charts/topics-charts] The `helm` tool has several commands for working with charts.
+[src:helm-charts/topics-charts] A *chart repository* is an HTTP server that houses one or more packaged charts.
+[src:helm-charts/topics-charts] While `helm` can be used to manage local chart directories, when it comes to sharing charts, the preferred mechanism is a chart repository.
+[src:helm-charts/topics-charts] Any HTTP server that can serve YAML files and tar files and can answer GET requests can be used as a repository server.
+[src:helm-charts/topics-charts] The Helm team has tested some servers, including Google Cloud Storage with website mode enabled, and S3 with website mode enabled.
+[src:helm-charts/topics-charts] A repository is characterized primarily by the presence of a special file called `index.yaml` that has a list of all of the packages supplied by the repository, together with metadata that allows retrieving and verifying those packages.
+[src:helm-charts/topics-charts] On the client side, repositories are managed with the `helm repo` commands.
+[src:helm-charts/topics-charts] However, Helm does not provide tools for uploading charts to remote repository servers.
+[src:helm-charts/topics-charts] This is because doing so would add substantial requirements to an implementing server, and thus raise the barrier for setting up a repository.
+[src:helm-charts/topics-charts] The `helm create` command takes an optional `--starter` option that lets you specify a "starter chart".
+[src:helm-charts/topics-charts] Also, the starter option has a short alias `-p`.
+[src:helm-charts/topics-charts] Starters are just regular charts, but are located in `$XDG_DATA_HOME/helm/starters`.
+[src:helm-charts/topics-charts] As a chart developer, you may author charts that are specifically designed to be used as starters.
+[src:helm-charts/topics-charts] Currently the only way to add a chart to `$XDG_DATA_HOME/helm/starters` is to manually copy it there.
+[src:helm-charts/topics-charts] In your chart's documentation, you may want to explain that process.

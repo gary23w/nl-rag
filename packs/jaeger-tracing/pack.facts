@@ -1,0 +1,132 @@
+# nl-rag distilled facts — domain: jaeger-tracing
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:jaeger-tracing/architecture] Jaeger v2 is designed to be a versatile and flexible tracing platform.
+[src:jaeger-tracing/architecture] It can be deployed as a single binary that can be configured to perform different **roles** within the Jaeger architecture.
+[src:jaeger-tracing/architecture] Choosing between the **all-in-one** and the **collector**/**query** configurations is a matter of preference.
+[src:jaeger-tracing/architecture] When using external storage backend, both configurations are horizontally scalable, but the **collector**/**query** configuration allows to separate the read and write traffic and to scale them independently, as well as to apply different access and security policies.
+[src:jaeger-tracing/architecture] The **all-in-one** configuration with in-memory storage is most suitable for development and testing, but it is not recommended for production since the data is lost on restarts.
+[src:jaeger-tracing/architecture] **all-in-one** with the Badger backend *can* be used in production, but only for modest data volumes since it is limited to a single instance and cannot be scaled horizontally.
+[src:jaeger-tracing/architecture] The two most common deployment options for a scalable Jaeger backend are direct-to-storage and using Kafka as a buffer.
+[src:jaeger-tracing/architecture] In this deployment the **collector**s receive the data from traced applications and write it directly to storage.
+[src:jaeger-tracing/architecture] The storage must be able to handle both average and peak traffic.
+[src:jaeger-tracing/architecture] The **collector**s may use an in-memory queue to smooth short-term traffic peaks, but a sustained traffic spike may result in dropped data if the storage is not able to keep up.
+[src:jaeger-tracing/architecture] To prevent data loss between **collector**s and storage, Kafka can be used as an intermediary, persistent queue.
+[src:jaeger-tracing/architecture] The **collector**s are configured with Kafka exporters.
+[src:jaeger-tracing/architecture] An additional component, **ingester**, needs to be deployed to read data from Kafka and save it to storage.
+[src:jaeger-tracing/architecture] Multiple **ingester**s can be deployed to scale up ingestion; they will automatically partition the load across them.
+[src:jaeger-tracing/architecture] In practice, an **ingester** is very similar to a **collector**, only configured with a Kafka receiver instead of RPC-based receivers.
+[src:jaeger-tracing/architecture] You **do not need** to use the OpenTelemetry Collector to operate Jaeger, because Jaeger is a customized distribution of the OpenTelemetry Collector with different roles.
+[src:jaeger-tracing/architecture] However, if you already use the OpenTelemetry Collectors, for gathering other types of telemetry or for pre-processing / enriching the tracing data, it can be placed *in front of* Jaeger in the collection pipeline.
+[src:jaeger-tracing/architecture] The OpenTelemetry Collectors can be run as an application sidecar, as a host agent / daemon, or as a remote service cluster.
+[src:jaeger-tracing/architecture] The OpenTelemetry Collector supports Jaeger’s Remote Sampling protocol and can either serve static configurations from config files directly, or proxy the requests to the Jaeger backend (e.g., when using adaptive sampling).
+[src:jaeger-tracing/cloud-native-computing-foundation] The **Cloud Native Computing Foundation** (**CNCF**) is a subsidiary of the Linux Foundation founded in 2015 to support cloud-native computing.
+[src:jaeger-tracing/cloud-native-computing-foundation] It was announced alongside Kubernetes 1.0, an open source container cluster manager, which was contributed to the Linux Foundation by Google as a seed technology.
+[src:jaeger-tracing/cloud-native-computing-foundation] Founding members include Google, CoreOS, Mesosphere, Red Hat, Twitter, Huawei, Intel, RX-M, Cisco, IBM, Docker, Univa, and VMware.
+[src:jaeger-tracing/cloud-native-computing-foundation] Today, CNCF is supported by over 450 members.
+[src:jaeger-tracing/cloud-native-computing-foundation] In August 2018 Google announced that it was handing over operational control of Kubernetes to the community.
+[src:jaeger-tracing/getting-started] If you are new to distributed tracing, please check the Introduction page.
+[src:jaeger-tracing/getting-started] This runs the **all-in-one** configuration of Jaeger (see Architecture) that combines collector and query components in a single process and uses a transient in-memory storage for trace data.
+[src:jaeger-tracing/getting-started] You can navigate to `http://localhost:16686` to access the Jaeger UI.
+[src:jaeger-tracing/getting-started] See the APIs page for a full list of exposed ports.
+[src:jaeger-tracing/getting-started] In order to run Jaeger in other roles (see Architecture), an explicit configuration file (see Configuration) must be provided via the `--config` command line argument.
+[src:jaeger-tracing/getting-started] Your applications must be instrumented before they can send tracing data to Jaeger.
+[src:jaeger-tracing/getting-started] HotROD (Rides on Demand) is a demo application that consists of several microservices and illustrates the use of OpenTelemetry and distributed tracing.
+[src:jaeger-tracing/getting-started] A tutorial / walkthrough is available in the blog post: Take Jaeger for a HotROD ride.
+[src:jaeger-tracing/getting-started] Then navigate to `http://localhost:8080`.
+[src:jaeger-tracing/getting-started] See the README for other ways to run the demo.
+[src:jaeger-tracing/getting-started] The Service Performance Monitoring (SPM) page has its own Quick Start that shows how to explore that aspect of Jaeger.
+[src:jaeger-tracing/latest-deployment] Jaeger backend is released as a single binary or container image (see Downloads).
+[src:jaeger-tracing/latest-deployment] Despite that, it can be configured to operate in different **roles**, such as **all-in-one**, **collector**, **query**, and **ingester** (see Architecture).
+[src:jaeger-tracing/latest-deployment] An explicit YAML configuration file must be provided via the `--config` command line argument (see Configuration).
+[src:jaeger-tracing/latest-deployment] Both Jaeger **collector** and **query** are stateless and thus many instances can be run in parallel.
+[src:jaeger-tracing/latest-deployment] Since Jaeger microservices (components) are stateless, all the state lives in the data store(s).
+[src:jaeger-tracing/latest-deployment] When no breaking changes are introduced in a release, the order of upgrades for individual Jaeger components does not matter.
+[src:jaeger-tracing/latest-deployment] We try to avoid any kinds of breaking changes in new versions, but sometimes they are unavoidable and will be clearly called out in the release notes.
+[src:jaeger-tracing/latest-deployment] In those cases the safest upgrade order is by starting from the end of the ingestion pipeline: first **query**, then **ingester** if using Kafka, then **collector**.
+[src:jaeger-tracing/latest-deployment] This order ensures that the receiving component is running on a newer version and is capable of understanding any protocol changes from the other components earlier in the pipeline before those are upgraded.
+[src:jaeger-tracing/latest-deployment] Finally, sometimes we introduce storage schema changes that may require some proactive steps before upgrading Jaeger components.
+[src:jaeger-tracing/latest-deployment] Such changes will always be marked as breaking changes in the release notes and contain specific instructions for upgrading.
+[src:jaeger-tracing/latest-deployment] Service Performance Monitoring (SPM) requires a deployment of Prometheus-compatible metrics storage (see SPM page).
+[src:jaeger-tracing/latest-deployment] In order to display service dependency diagrams, production deployments need an external process that aggregates data and computes dependency links between services.
+[src:jaeger-tracing/latest-deployment] Project spark-dependencies is a Spark job which derives dependency links and writes them directly to the storage.
+[src:jaeger-tracing/observability-software] In software engineering, more specifically in distributed computing, **observability** is the ability to collect data about programs' execution, modules' internal states, and the communication among components.
+[src:jaeger-tracing/observability-software] To improve observability, software engineers use a wide range of logging and tracing techniques to gather telemetry information, and tools to analyze and use it.
+[src:jaeger-tracing/observability-software] Observability is foundational to site reliability engineering, as it is the first step in triaging a service outage.
+[src:jaeger-tracing/observability-software] One of the goals of observability is to minimize the amount of prior knowledge needed to debug an issue.
+[src:jaeger-tracing/observability-software] The term is borrowed from control theory, where the "observability" of a system measures how well its state can be determined from its outputs.
+[src:jaeger-tracing/observability-software] Similarly, software observability measures how well a system's state can be understood from the obtained telemetry (metrics, logs, traces, profiling).
+[src:jaeger-tracing/observability-software] The term is frequently referred to as its numeronym **o11y** (where 11 stands for the number of letters between the first letter and the last letter of the word).
+[src:jaeger-tracing/observability-software] This is similar to other computer science abbreviations such as i18n and l10n and k8s.
+[src:jaeger-tracing/observability-software] Observability and monitoring are sometimes used interchangeably.
+[src:jaeger-tracing/observability-software] As tooling, commercial offerings and practices evolved in complexity, "monitoring" was re-branded as observability in order to differentiate new tools from the old.
+[src:jaeger-tracing/observability-software] The terms are commonly contrasted in that systems are *monitored* using predefined sets of *telemetry*, and monitored systems may be *observable*.
+[src:jaeger-tracing/observability-software] Majors et al. suggest that engineering teams that only have monitoring tools end up relying on expert foreknowledge (seniority), whereas teams that have observability tools rely on exploratory analysis (curiosity).
+[src:jaeger-tracing/observability-software] Observability relies on three main types of telemetry data: metrics, logs and traces.
+[src:jaeger-tracing/observability-software] Those are often referred to as "pillars of observability".
+[src:jaeger-tracing/observability-software] A metric is a point in time measurement (scalar) that represents some system state.
+[src:jaeger-tracing/observability-software] Monitoring tools are typically configured to emit alerts when certain metric values exceed set thresholds.
+[src:jaeger-tracing/observability-software] Thresholds are set based on knowledge about normal operating conditions and experience.
+[src:jaeger-tracing/observability-software] Metrics are typically tagged to facilitate grouping and searchability.
+[src:jaeger-tracing/observability-software] Application developers choose what kind of metrics to instrument their software with, before it is released.
+[src:jaeger-tracing/observability-software] As a result, when a previously unknown issue is encountered, it is impossible to add new metrics without shipping new code.
+[src:jaeger-tracing/observability-software] Furthermore, their cardinality can quickly make the storage size of telemetry data prohibitively expensive.
+[src:jaeger-tracing/observability-software] Since metrics are cardinality-limited, they are often used to represent aggregate values (for example: average page load time, or 5-second average of the request rate).
+[src:jaeger-tracing/observability-software] Without external context, it is impossible to correlate between events (such as user requests) and distinct metric values.
+[src:jaeger-tracing/observability-software] Logs, or log lines, are generally free-form, unstructured text blobs that are intended to be human readable.
+[src:jaeger-tracing/observability-software] Modern logging is structured to enable machine parsability.
+[src:jaeger-tracing/observability-software] As with metrics, an application developer must instrument the application upfront and ship new code if different logging information is required.
+[src:jaeger-tracing/observability-software] Logs typically include a timestamp and severity level.
+[src:jaeger-tracing/observability-software] An event (such as a user request) may be fragmented across multiple log lines and interweave with logs from concurrent events.
+[src:jaeger-tracing/observability-software] A cloud native application is typically made up of distributed services which together fulfill a single request.
+[src:jaeger-tracing/observability-software] A distributed trace is an interrelated series of discrete events (also called spans) that track the progression of a single user request.
+[src:jaeger-tracing/observability-software] A trace shows the causal and temporal relationships between the services that interoperate to fulfill a request.
+[src:jaeger-tracing/observability-software] Instrumenting an application with traces means sending span information to a tracing backend.
+[src:jaeger-tracing/observability-software] The tracing backend correlates the received spans to generate presentable traces.
+[src:jaeger-tracing/observability-software] To be able to follow a request as it traverses multiple services, spans are labeled with unique identifiers that enable constructing a parent-child relationship between spans.
+[src:jaeger-tracing/observability-software] Span information is typically shared in the HTTP headers of outbound requests.
+[src:jaeger-tracing/observability-software] Continuous profiling is another telemetry type used to precisely determine how an application consumes resources.
+[src:jaeger-tracing/observability-software] To be able to observe an application, telemetry about the application's behavior needs to be collected or exported.
+[src:jaeger-tracing/observability-software] Instrumentation means generating telemetry alongside the normal operation of the application.
+[src:jaeger-tracing/observability-software] Telemetry is then collected by an independent backend for later analysis.
+[src:jaeger-tracing/observability-software] Instrumentation can be automatic, or custom.
+[src:jaeger-tracing/observability-software] Automatic instrumentation offers blanket coverage and immediate value; custom instrumentation brings higher value but requires more intimate involvement with the instrumented application.
+[src:jaeger-tracing/observability-software] Instrumentation can be native - done in-code (modifying the code of the instrumented application) - or out-of-code (e.g. sidecar, eBPF).
+[src:jaeger-tracing/observability-software] Verifying new features in production by shipping them together with custom instrumentation is a practice called "observability-driven development".
+[src:jaeger-tracing/observability-software] Metrics, logs and traces are most commonly listed as the pillars of observability.
+[src:jaeger-tracing/observability-software] Self monitoring is a practice where observability stacks monitor each other, in order to reduce the risk of inconspicuous outages.
+[src:jaeger-tracing/observability-software] Self monitoring may be put in place in addition to high availability and redundancy to further avoid correlated failures.
+[src:jaeger-tracing/tracing-software] Logs that record program usage (such as a server log) or operating-system events primarily of interest to a system administrator (see for example *Event Viewer*) fall into a terminological gray area.
+[src:jaeger-tracing/tracing-software] Tracing is primarily used for anomaly detection, fault analysis, debugging or diagnostic purposes in distributed software systems, such as microservices or serverless functions.
+[src:jaeger-tracing/tracing-software] Software tracing is a tool for developers to gather information for debugging.
+[src:jaeger-tracing/tracing-software] This information is used both during development cycles and post-release.
+[src:jaeger-tracing/tracing-software] Unlike event logging, software tracing usually does not have the concept of a "class" of event or an "event code".
+[src:jaeger-tracing/tracing-software] OpenTelemetry is a CNCF open source project that provides comprehensive support for distributed tracing.
+[src:jaeger-tracing/tracing-software] Some vendors including Datadog, Dynatrace, New Relic, Splunk also offer tracing SaaS services.
+[src:jaeger-tracing/tracing-software] Google and Meta have developed their own tracing frameworks, named Dapper and Canopy respectively.
+[src:jaeger-tracing/tracing-software] In operating systems, tracing can be used in situations (such as booting) where some of the technologies used to provide event logging may not be available.
+[src:jaeger-tracing/tracing-software] Linux offers system-level and user-level tracing capabilities with kernel markers and LTTng. ftrace also supports Linux kernel tracing. syslog is another tool in various operating systems for logging and tracing system messages.
+[src:jaeger-tracing/tracing-software] FreeBSD and SmartOS employ DTrace for tracing in both user space and kernel space.
+[src:jaeger-tracing/tracing-software] In embedded software, tracing also requires special techniques for efficient instrumentation and logging and low CPU overhead.
+[src:jaeger-tracing/tracing-software] Trace generation of method calls can be done with source code instrumentation, runtime information collection, or under debugger control.
+[src:jaeger-tracing/tracing-software] Tracing macros, aspect-oriented programming and related instrumentation techniques can be employed.
+[src:jaeger-tracing/tracing-software] Libraries used in source code send data to an agent or directly to the collection component.
+[src:jaeger-tracing/tracing-software] To model execution trees, ISVis converts a rooted tree into a directed acyclic graph while Jinsight utilizes the call frame principle to gather and represent cumulative information about traces.
+[src:jaeger-tracing/tracing-software] The primary visualization method is the swimlane view, which is exemplified by tools like Jaeger and often includes annotations and key-value attributes.
+[src:jaeger-tracing/tracing-software] Despite its widespread use, this design lacks rigorous justification and users frequently face challenges like missing features and confusing navigation.
+[src:jaeger-tracing/tracing-software] Alternatives to swimlane views exist, like Jaeger’s service dependency view or SkyWalking’s List, Tree, and Table views.
+[src:jaeger-tracing/tracing-software] Aggregate visualizations are also used for analyzing large volumes of traces, with systems like Canopy offering queryable metrics and Jaeger providing trace comparison features.
+[src:jaeger-tracing/tracing-software] Event logging provides system administrators with information useful for diagnostics and auditing.
+[src:jaeger-tracing/tracing-software] The different classes of events that will be logged, as well as what details will appear in the event messages, are often considered early in the development cycle.
+[src:jaeger-tracing/tracing-software] Many event logging technologies allow or even require each class of event to be assigned a unique "code", which is used by the event logging software or a separate viewer (e.g., Event Viewer) to format and output a human-readable message.
+[src:jaeger-tracing/tracing-software] This facilitates localization and allows system administrators to more easily obtain information on problems that occur.
+[src:jaeger-tracing/tracing-software] Because event logging is used to log high-level information (often failure information), performance of the logging implementation is often less important.
+[src:jaeger-tracing/tracing-software] A special concern, preventing duplicate events from being recorded "too often" is taken care of through event throttling.
+[src:jaeger-tracing/tracing-software] Difficulties in making a clear distinction between event logging and software tracing arise from the fact that some of the same technologies are used for both, and further because many of the criteria that distinguish between the two are continuous rather than discrete.
+[src:jaeger-tracing/tracing-software] Enabling or disabling tracing during runtime often necessitates the inclusion of extra data in the binary.
+[src:jaeger-tracing/tracing-software] This can lead to performance degradation, even when tracing is not active.
+[src:jaeger-tracing/tracing-software] The overhead of tracing depends on the used framework and the activated features; in production servers, there is a trade-off between how fine-grained the tracing is and the incurred overhead.
+[src:jaeger-tracing/tracing-software] If tracing is enabled or disabled at compile-time, collecting trace data from a client's system hinges on their willingness and capability to install a version of the software specifically enabled for tracing, and subsequently replicate the issue.
+[src:jaeger-tracing/tracing-software] Tracing in software typically demands high standards of robustness, not only in the accuracy and reliability of the trace output but also in ensuring that the process being traced remains uninterrupted.
+[src:jaeger-tracing/tracing-software] Given its low-level nature, tracing can generate a large volume of messages.
+[src:jaeger-tracing/tracing-software] To mitigate performance issues, it's often necessary to have the option to deactivate software tracing, either at the time of compilation or during run-time.
+[src:jaeger-tracing/tracing-software] In proprietary software, tracing data may include sensitive information about the product's source code.

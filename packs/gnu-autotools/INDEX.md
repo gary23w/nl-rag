@@ -1,0 +1,57 @@
+# gnu-autotools — nl-rag pack
+
+Pre-normalized AI markdown. tags: gnu autotools, autoconf configure, automake build, build automation. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [Autoconf (part 1/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p01.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 2/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p02.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 3/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p03.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 4/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p04.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 5/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p05.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 6/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p06.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 7/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p07.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 8/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p08.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 9/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p09.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 10/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p10.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 11/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p11.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 12/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p12.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 13/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p13.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 14/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p14.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 15/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p15.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 16/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p16.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 17/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p17.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 18/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p18.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 19/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p19.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 20/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p20.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 21/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p21.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 22/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p22.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 23/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p23.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 24/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p24.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 25/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p25.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [Autoconf (part 26/26)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/autoconf-p26.md) — upstream: https://www.gnu.org/software/autoconf/manual/autoconf.html
+- [automake (part 1/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p01.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 2/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p02.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 3/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p03.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 4/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p04.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 5/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p05.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 6/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p06.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 7/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p07.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 8/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p08.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 9/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p09.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 10/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p10.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 11/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p11.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 12/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p12.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 13/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p13.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [automake (part 14/14)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/automake-p14.md) — upstream: https://www.gnu.org/software/automake/manual/automake.html
+- [Build automation](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/build-automation.md) — upstream: https://en.wikipedia.org/wiki/Build_automation
+- [GNU Autotools](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/gnu-autotools.md) — upstream: https://en.wikipedia.org/wiki/GNU_Autotools
+- [Libtool (part 1/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p01.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Libtool (part 2/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p02.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Libtool (part 3/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p03.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Libtool (part 4/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p04.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Libtool (part 5/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p05.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Libtool (part 6/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p06.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Libtool (part 7/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p07.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Libtool (part 8/8)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/libtool-p08.md) — upstream: https://www.gnu.org/software/libtool/manual/libtool.html
+- [Software build](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/software-build.md) — upstream: https://en.wikipedia.org/wiki/Software_build
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/gnu-autotools/pack.facts) — distilled one-line facts (neuron CLI import)

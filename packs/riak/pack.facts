@@ -1,0 +1,227 @@
+# nl-rag distilled facts — domain: riak
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:riak/clusters-index] Riak’s default mode of operation is to work as a cluster consisting of multiple nodes, i.e. multiple well-connected data hosts.
+[src:riak/clusters-index] Each host in the cluster runs a single instance of Riak, referred to as a Riak node.
+[src:riak/clusters-index] Each Riak node manages a set of virtual nodes, or vnodes, that are responsible for storing a separate portion of the keys stored in the cluster.
+[src:riak/clusters-index] In contrast to some high-availability systems, Riak nodes are *not* clones of one another, and they do not all participate in fulfilling every request.
+[src:riak/clusters-index] Instead, you can configure, at runtime or at request time, the number of nodes on which data is to be replicated, as well as when replication occurs and which merge strategy and failure model are to be followed.
+[src:riak/clusters-index] Though much of this section is discussed in our annotated discussion of the Amazon Dynamo paper, it nonetheless provides a summary of how Riak implements the distribution of data throughout a cluster.
+[src:riak/clusters-index] Any client interface to Riak interacts with objects in terms of the bucket and key in which a value is stored, as well as the bucket type that is used to set the bucket’s properties.
+[src:riak/clusters-index] Internally, Riak computes a 160-bit binary hash of each bucket/key pair and maps this value to a position on an ordered **ring** of all such values.
+[src:riak/clusters-index] This ring is divided into partitions, with each Riak vnode responsible for one of these partitions (we say that each vnode *claims* that partition).
+[src:riak/clusters-index] The nodes of a Riak cluster each attempt to run a roughly equal number of vnodes at any given time.
+[src:riak/clusters-index] In the general case, this means that each node in the cluster is responsible for 1/(number of nodes) of the ring, or (number of partitions)/(number of nodes) vnodes.
+[src:riak/clusters-index] If two nodes define a 16-partition cluster, for example, then each node will run 8 vnodes.
+[src:riak/clusters-index] Nodes attempt to claim their partitions at intervals around the ring such that there is an even distribution amongst the member nodes and that no node is responsible for more than one replica of a key.
+[src:riak/clusters-index] When an object is being stored in the cluster, any node may participate as the **coordinating node** for the request.
+[src:riak/clusters-index] The write request may also specify that at least W (=< N) of those vnodes reply with success, and that DW (=< W) reply with success only after durably storing the value.
+[src:riak/clusters-index] A read, or GET, request operates similarly, sending requests to the vnode that “claims” the partition in which the key resides, as well as to the next N-1 partitions.
+[src:riak/clusters-index] The request also specifies R (=< N), the number of vnodes that must reply before a response is returned.
+[src:riak/clusters-index] When N is set to 3, the value `REM` is stored in the key `artist`.
+[src:riak/clusters-index] That key is assigned to 3 partitions out of 32 available partitions.
+[src:riak/clusters-index] When a read request is made to Riak, the ring state will be used to determine which partitions are responsible.
+[src:riak/clusters-index] From there, a variety of configurable parameters determine how Riak will behave in case the value is not immediately found.
+[src:riak/clusters-index] The ring state is shared around the cluster by means of a “gossip protocol.” Whenever a node changes its claim on the ring, it announces, i.e. “gossips,” this change to other nodes so that the other nodes can respond appropriately.
+[src:riak/clusters-index] Nodes also periodically re-announce what they know about ring in case any nodes happened to miss previous updates.
+[src:riak/consistent-hashing] In computer science, **consistent hashing** is a special kind of hashing technique such that when a hash table is resized, only $n/m$ keys need to be remapped on average where n is the number of keys and m is the number of slots.
+[src:riak/consistent-hashing] Consistent hashing evenly distributes cache keys across shards, even if some of the shards crash or become unavailable.
+[src:riak/consistent-hashing] In contrast, in most traditional hash tables, a change in the number of array slots causes nearly all keys to be remapped because the mapping between the keys and the slots is defined by a modular operation.
+[src:riak/consistent-hashing] Consistent hashing is used by Content Delivery Networks because it is useful for distributing requests for content from a rotating population of web servers.
+[src:riak/consistent-hashing] Tim Berners-Lee credits consistent hashing algorithms, and Daniel Lewin as their inventor, with solving the slashdotting problem which plagued the World Wide Web in the 1990s.
+[src:riak/consistent-hashing] The term "consistent hashing" was introduced by David Karger *et al.* at MIT for use in distributed caching, particularly for the web.
+[src:riak/consistent-hashing] This academic paper from 1997 in Symposium on Theory of Computing introduced the term "consistent hashing" as a way of distributing requests among a changing population of web servers.
+[src:riak/consistent-hashing] Each slot is then represented by a server in a distributed system or cluster.
+[src:riak/consistent-hashing] The addition of a server and the removal of a server (during scalability or outage) requires only $num\_keys/num\_slots$ items to be re-shuffled when the number of slots (i.e. servers) change.
+[src:riak/consistent-hashing] The authors mention linear hashing and its ability to handle sequential server addition and removal, while consistent hashing allows servers to be added and removed in an arbitrary order.
+[src:riak/consistent-hashing] The paper was later re-purposed to address technical challenge of keeping track of a file in peer-to-peer networks such as a distributed hash table.
+[src:riak/consistent-hashing] Teradata used this technique in their distributed database, released in 1986, although they did not use this term.
+[src:riak/consistent-hashing] Teradata still uses the concept of a hash table to fulfill exactly this purpose.
+[src:riak/consistent-hashing] Akamai Technologies was founded in 1998 by the scientists Daniel Lewin and F.
+[src:riak/consistent-hashing] Thomson Leighton (co-authors of the article coining "consistent hashing").
+[src:riak/consistent-hashing] In Akamai's content delivery network, consistent hashing is used to balance the load within a cluster of servers, while a stable marriage algorithm is used to balance load across clusters.
+[src:riak/consistent-hashing] Consistent hashing has also been used to reduce the impact of partial system failures in large web applications to provide robust caching without incurring the system-wide fallout of a failure.
+[src:riak/consistent-hashing] Consistent hashing is also the cornerstone of distributed hash tables (DHTs), which employ hash values to partition a keyspace across a distributed set of nodes, then construct an overlay network of connected nodes that provide efficient node retrieval by key.
+[src:riak/consistent-hashing] Rendezvous hashing, designed in 1996, is a simpler and more general technique .
+[src:riak/consistent-hashing] It achieves the goals of consistent hashing using the very different highest random weight (HRW) algorithm.
+[src:riak/consistent-hashing] However, when a server is added or removed during outage or scaling (when n changes), all the BLOBs in every server should be reassigned and moved due to rehashing, but this operation is expensive.
+[src:riak/consistent-hashing] Consistent hashing was designed to avoid the problem of having to reassign every BLOB when a server is added or removed throughout the cluster.
+[src:riak/consistent-hashing] The central idea is to use a hash function that maps both the BLOB and servers to a unit circle, usually $2\pi$ radians.
+[src:riak/consistent-hashing] For example, $\zeta =\Phi \ \%\ 360$ (where $\Phi$ is hash of a BLOB or server's identifier, like IP address or UUID).
+[src:riak/consistent-hashing] Each BLOB is then assigned to the next server that appears on the circle in clockwise order.
+[src:riak/consistent-hashing] This provides an even distribution of BLOBs to servers.
+[src:riak/consistent-hashing] But, more importantly, if a server fails and is removed from the circle, only the BLOBs that were mapped to the failed server need to be reassigned to the next server in clockwise order.
+[src:riak/consistent-hashing] Likewise, if a new server is added, it is added to the unit circle, and only the BLOBs mapped to that server need to be reassigned.
+[src:riak/consistent-hashing] Importantly, when a server is added or removed, the vast majority of the BLOBs maintain their prior server assignments, and the addition of $n^{th}$ server only causes $1/n$ fraction of the BLOBs to relocate.
+[src:riak/consistent-hashing] Although the process of moving BLOBs across cache servers in the cluster depends on the context, commonly, the newly added cache server identifies its "predecessor" and moves all the BLOBs, whose mapping belongs to this server (i.e. whose hash value is less than that of the new server), from it.
+[src:riak/consistent-hashing] However, in the case of web page caches, in most implementations there is no involvement of moving or copying, assuming the cached BLOB is small enough.
+[src:riak/consistent-hashing] When a request hits a newly added cache server, a cache miss happens and a request to the actual web server is made and the BLOB is cached locally for future requests.
+[src:riak/consistent-hashing] The redundant BLOBs on the previously used cache servers would be removed as per the cache eviction policies.
+[src:riak/consistent-hashing] Let $h_{b}(x)$ and $h_{s}(x)$ be the hash functions used for the BLOB and server's unique identifier respectively.
+[src:riak/consistent-hashing] In practice, a binary search tree (BST) is used to dynamically maintain the ${\text{server ID}}$ within a cluster or hashring, and to find the successor or minimum within the BST, tree traversal is used.
+[src:riak/consistent-hashing] To avoid skewness of multiple nodes within the radian, which happen due to lack of uniform distribution of the servers within the cluster, multiple labels are used.
+[src:riak/consistent-hashing] Those duplicate labels are called "virtual nodes" i.e. multiple labels which point to a single "real" label or server within the cluster.
+[src:riak/consistent-hashing] The amount of virtual nodes or duplicate labels used for a particular server within a cluster is called the "weight" of that particular server.
+[src:riak/consistent-hashing] A number of extensions to the basic technique are needed for effectively using consistent hashing for load balancing in practice.
+[src:riak/consistent-hashing] In the basic scheme above, if a server fails, all its BLOBs are reassigned to the next server in clockwise order, potentially doubling the load of that server.
+[src:riak/consistent-hashing] To ensure a more even redistribution of BLOBs on server failure, each server can be hashed to multiple locations on the unit circle.
+[src:riak/consistent-hashing] When a server fails, the BLOBs assigned to each of its replicas on the unit circle will get reassigned to a different server in clockwise order, thus redistributing the BLOBs more evenly.
+[src:riak/consistent-hashing] Another extension concerns a situation where a single BLOB gets "hot" and is accessed a large number of times and will have to be hosted in multiple servers.
+[src:riak/consistent-hashing] In this situation, the BLOB may be assigned to multiple contiguous servers by traversing the unit circle in clockwise order.
+[src:riak/consistent-hashing] A more complex practical consideration arises when two BLOBs are hashed near each other in the unit circle and both get "hot" at the same time.
+[src:riak/consistent-hashing] In this case, both BLOBs will use the same set of contiguous servers in the unit circle.
+[src:riak/consistent-hashing] This situation can be ameliorated by each BLOB choosing a different hash function for mapping servers to the unit circle.
+[src:riak/consistent-hashing] Rendezvous hashing, designed in 1996, is a simpler and more general technique, and permits fully distributed agreement on a set of k options out of a possible set of n options.
+[src:riak/consistent-hashing] It can in fact be shown that consistent hashing is a special case of rendezvous hashing.
+[src:riak/consistent-hashing] Because of its simplicity and generality, rendezvous hashing is now being used in place of Consistent Hashing in many applications.
+[src:riak/consistent-hashing] If key values will always increase monotonically, an alternative approach using a hash table with monotonic keys may be more suitable than consistent hashing.
+[src:riak/consistent-hashing] The $O(K/N)$ is an average cost for redistribution of keys and the $O(\log N)$ complexity for consistent hashing comes from the fact that a binary search among nodes angles is required to find the next node on the ring.
+[src:riak/eventual-consistency] Eventually-consistent services are often classified as providing BASE semantics (basically-available, soft-state, eventual consistency), in contrast to traditional ACID (atomicity, consistency, isolation, durability).
+[src:riak/eventual-consistency] Eventual consistency faces criticism for adding complexity to distributed software applications.
+[src:riak/eventual-consistency] This complexity arises because eventual consistency provides only a liveness guarantee (ensuring reads eventually return the same value) without safety guarantees—allowing any intermediate value before convergence.
+[src:riak/eventual-consistency] Application developers find this challenging because it differs from single-threaded programming, where variables reliably return their assigned values immediately.
+[src:riak/eventual-consistency] With weak consistency guarantees, developers must carefully consider these limitations, as incorrect assumptions about consistency levels can lead to subtle bugs that only surface during network failures or high concurrency.
+[src:riak/eventual-consistency] In order to ensure replica convergence, a system must reconcile differences between multiple copies of distributed data.
+[src:riak/eventual-consistency] The most appropriate approach to reconciliation depends on the application.
+[src:riak/eventual-consistency] A widespread approach is "last writer wins".
+[src:riak/eventual-consistency] Another is to invoke a user-specified conflict handler.
+[src:riak/eventual-consistency] Timestamps and vector clocks are often used to detect concurrency between updates.
+[src:riak/eventual-consistency] Some people use "first writer wins" in situations where "last writer wins" is unacceptable.
+[src:riak/eventual-consistency] Whereas eventual consistency is only a liveness guarantee (updates will be observed eventually), **strong eventual consistency** (SEC) adds the safety guarantee that any two nodes that have received the same (unordered) set of updates will be in the same state.
+[src:riak/eventual-consistency] A common approach to ensure SEC is conflict-free replicated data types.
+[src:riak/key-value-database] A **key-value database**, or **key-value store**, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a *dictionary*.
+[src:riak/key-value-database] Dictionaries contain a collection of *objects*, or *records*, which in turn have many different *fields* within them.
+[src:riak/key-value-database] These records are stored and retrieved using a *key* that uniquely identifies the record, and is used to find the data within the database.
+[src:riak/key-value-database] Key-value databases differ from the better known relational databases (RDB).
+[src:riak/key-value-database] RDBs pre-define the data structure in the database as a series of tables containing fields with well-defined data types.
+[src:riak/key-value-database] Exposing the data types to the database program allows it to apply various optimizations.
+[src:riak/key-value-database] In contrast, key-value systems treat the value as opaque to the database itself, and typically support only simple operations such as storing, retrieving, updating, and deleting a value by its key.
+[src:riak/key-value-database] This offers considerable flexibility and makes such systems well suited to low-latency, high-throughput workloads dominated by direct key lookups, but less suitable for applications that require complex queries or explicit relationships among records.
+[src:riak/key-value-database] A lack of standardization, limited transaction support, and relatively simple query interfaces long restricted many key-value systems to specialized uses, but the rapid move to cloud computing after 2010 helped drive renewed interest in them as part of the broader NoSQL movement.
+[src:riak/key-value-database] Some graph databases, such as ArangoDB, are also key–value databases internally, adding the concept of relationships (*pointers*) between records as a first-class data type.
+[src:riak/key-value-database] Key–value systems span a wide consistency spectrum, from eventually consistent designs to strongly consistent or serializable ones, and some allow the consistency level to be configured as part of the trade-off against latency and availability.
+[src:riak/key-value-database] Renewed interest in key–value and other NoSQL systems was driven in part by the demands of big data, distributed, and cloud applications.
+[src:riak/key-value-database] Their scalability and availability made them attractive for cloud data management, although limited transaction support, low-level query interfaces, and the lack of standardization remained obstacles to wider adoption.
+[src:riak/key-value-database] Some maintain data in memory (RAM), while others employ solid-state drives or rotating disks.
+[src:riak/key-value-database] Some key–value systems add additional structure to their keys.
+[src:riak/key-value-database] For example, Oracle NoSQL Database organizes records using composite keys with "major" and "minor" components, an arrangement that Oracle compares to a directory-path structure in a file system.
+[src:riak/key-value-database] More generally, however, key–value stores are defined by their use of unique keys associated with opaque values and by their emphasis on simple key-based operations.
+[src:riak/key-value-database] Unix included *dbm* (database manager), a minimal database library written by Ken Thompson for managing associative arrays with a single key and hash-based access.
+[src:riak/key-value-database] Later implementations and related libraries included sdbm, GNU dbm (gdbm), and Berkeley DB.
+[src:riak/key-value-database] A more recent example is RocksDB, a persistent key–value storage engine developed at Facebook and designed for large-scale applications.
+[src:riak/key-value-database] Other examples include in-memory systems such as Memcached and Redis, and persistent systems such as Berkeley DB, Riak, and Voldemort.
+[src:riak/replication-index] Data replication is a core feature of Riak’s basic architecture.
+[src:riak/replication-index] Riak was designed to operate as a clustered system containing multiple Riak nodes, which allows data to live on multiple machines at once in case a node in the cluster goes down.
+[src:riak/replication-index] Replication is fundamental and automatic in Riak, providing security that your data will still be there if a node in your Riak cluster goes down.
+[src:riak/replication-index] All data stored in Riak will be replicated to a number of nodes in the cluster according to the N value (`n_val`) property set in a bucket’s bucket type.
+[src:riak/replication-index] By default, Riak chooses an `n_val` of 3 default.
+[src:riak/replication-index] This means that data stored in any bucket will be replicated to 3 different nodes.
+[src:riak/replication-index] For this to be effective, you need at least 3 nodes in your cluster.
+[src:riak/replication-index] The ideal value for N depends largely on your application and the shape of your data.
+[src:riak/replication-index] If your data is highly transient and can be reconstructed easily by the application, choosing a lower N value will provide greater performance.
+[src:riak/replication-index] However, if you need high assurance that data is available even after node failure, increasing the N value will help protect against loss.
+[src:riak/replication-index] How many nodes do you expect will fail at any one time?
+[src:riak/replication-index] Choose an N value larger than that and your data will still be accessible when they go down.
+[src:riak/replication-index] The N value also affects the behavior of read (GET) and write (PUT) requests.
+[src:riak/replication-index] The tunable parameters you can submit with requests are bound by the N value.
+[src:riak/replication-index] For example, if N=3, the maximum read quorum (known as “R”) you can request is also 3.
+[src:riak/replication-index] If some nodes containing the data you are requesting are down, an R value larger than the number of available nodes with the data will cause the read to fail.
+[src:riak/replication-index] To change the N value for a bucket, you need to create a bucket type with `n_val` set to your desired value and then make sure that the bucket bears that type.
+[src:riak/replication-index] Now, any bucket that bears the type `n_val_of_2` will propagate objects to 2 nodes.
+[src:riak/replication-index] While raising the value of N for a bucket or object shouldn’t cause problems, it’s important that you never lower N.
+[src:riak/replication-index] If you do so, you can wind up with dead, i.e. unreachable data.
+[src:riak/replication-index] Unreachable data is a problem because it can negatively impact coverage queries, e.g. secondary index and MapReduce queries.
+[src:riak/replication-index] Lowering an object or bucket’s `n_val` will likely mean that objects that you would expect to be returned from those queries will no longer be returned.
+[src:riak/replication-index] Riak’s active anti-entropy (AAE) subsystem is a continuous background process that compares and repairs any divergent or missing object replicas.
+[src:riak/replication-index] Read repair occurs when a successful read occurs—i.e. when the target number of nodes have responded, as determined by R—but not all replicas of the object agree on the value.
+[src:riak/replication-index] The node responded with a vector clock that is an ancestor of the vector clock of the successful read.
+[src:riak/replication-index] When this situation occurs, Riak will force the errant nodes to update the object’s value based on the value of the successful read.
+[src:riak/replication-index] When you increase the `n_val` of a bucket, you may start to see failed read operations, especially if the R value you use is larger than the number of replicas that originally stored the object.
+[src:riak/replication-index] Forcing read repair will solve this issue.
+[src:riak/replication-index] Or if you have active anti-entropy enabled, your values will eventually replicate as a background task.
+[src:riak/replication-index] For each object that fails read (or the whole bucket, if you like), read the object using an R value less than or equal to the original number of replicas.
+[src:riak/replication-index] For example, if your original `n_val` was 3 and you increased it to 5, perform your read operations with R=3 or less.
+[src:riak/replication-index] This will cause the nodes that do not have the object(s) yet to respond with `not found`, invoking read repair.
+[src:riak/replication-index] N=3 simply means that three copies of each piece of data will be stored in the cluster.
+[src:riak/replication-index] That is, three different partitions/vnodes will receive copies of the data.
+[src:riak/replication-index] **There are no guarantees that the three replicas will go to three separate physical nodes**; however, the built-in functions for determining where replicas go attempts to distribute the data evenly.
+[src:riak/replication-index] As nodes are added and removed from the cluster, the ownership of partitions changes and may result in an uneven distribution of the data.
+[src:riak/replication-index] On some rare occasions, Riak will also aggressively reshuffle ownership of the partitions to achieve a more even balance.
+[src:riak/replication-index] For cases where the number of nodes is less than the N value, data will likely be duplicated on some nodes.
+[src:riak/replication-index] For example, with N=3 and 2 nodes in the cluster, one node will likely have one replica, and the other node will have two replicas.
+[src:riak/replication-index] To better understand how data is replicated in Riak let’s take a look at a put request for the bucket/key pair `my_bucket`/`my_key`.
+[src:riak/replication-index] Specifically we’ll focus on two parts of the request: routing an object to a set of partitions and storing an object on a partition.
+[src:riak/replication-index] The node looks up the hashed key in the ring, which returns a list of *preferred* partitions for the given key.
+[src:riak/replication-index] The node chooses the first N partitions from the list.
+[src:riak/replication-index] The remaining partitions of the “preferred” list are retained as fallbacks to use if any of the target partitions are unavailable.
+[src:riak/replication-index] If any of the target partitions fail, the node sends the object to one of the fallbacks.
+[src:riak/replication-index] When the message is sent to the fallback node, the message references the object and original partition identifier.
+[src:riak/replication-index] For example, if `dev2@127.0.0.1` were unavailable, the requesting node would then try each of the fallbacks.
+[src:riak/replication-index] The next available fallback node would be `dev3@127.0.0.1`.
+[src:riak/replication-index] Note that the partition identifier in the message is the same that was originally sent to `dev2@127.0.0.1` only this time it is being sent to `dev3@127.0.0.1`.
+[src:riak/replication-index] Even though `dev3@127.0.0.1` is not the parent node of that partition, it is smart enough to hold on to the object until `dev2@127.0.0.1` returns to the cluster.
+[src:riak/replication-index] Processing requests per partition is fairly simple.
+[src:riak/replication-index] Each node runs a single process (`riak_kv_vnode_master`) that distributes requests to individual partition processes (`riak_kv_vnode`).
+[src:riak/replication-index] The `riak_kv_vnode_master` process maintains a list of partition identifiers and corresponding partition processes.
+[src:riak/replication-index] If a process does not exist for a given partition identifier a new process is spawned to manage that partition.
+[src:riak/replication-index] The `riak_kv_vnode_master` process treats all requests the same and spawns partition processes as needed even when nodes receive requests for partitions they do not own.
+[src:riak/replication-index] When a partition’s parent node is unavailable, requests are sent to fallback nodes (handoff).
+[src:riak/replication-index] The `riak_kv_vnode_master` process on the fallback node spawns a process to manage the partition even though the partition does not belong to the fallback node.
+[src:riak/replication-index] The individual partition processes perform hometests throughout the life of the process.
+[src:riak/replication-index] The hometest checks if the current node (`node/0`) matches the parent node of the partition as defined in the ring.
+[src:riak/replication-index] If the process determines that the partition it is managing belongs on another node (the parent node), it will attempt to contact that node.
+[src:riak/replication-index] If that parent node responds, the process will hand off any objects it has processed for that partition and shut down.
+[src:riak/replication-index] If that parent node does not respond, the process will continue to manage that partition and check the parent node again after a delay.
+[src:riak/replication-index] The hometest is also run by partition processes to account for changes in the ring, such as the addition or removal of nodes to the cluster.
+[src:riak/riak] Riak has a pluggable backend for its core storage, with the default storage backend being Bitcask.
+[src:riak/riak] LevelDB is also supported, with other options (such as the pure-Erlang Leveled) available depending on the version.
+[src:riak/riak] Riak was originally developed by engineers employed by Basho Technologies and maintained by them until 2017 when the rights were sold to bet365 after Basho went into receivership.
+[src:riak/riak] Riak replicates key/value stores across a cluster of nodes with a default n_val of three.
+[src:riak/riak] or hardware failures, data can still be written to a neighboring node beyond the initial three, and read-back due to its "masterless" peer-to-peer architecture.
+[src:riak/riak] for basic PUT, GET, POST, and DELETE functions.
+[src:riak/riak] Riak distributes data across nodes with hashing and can provide latency profile, even in the case of multiple node failures.
+[src:riak/riak] Keys/values can be stored in memory, disk, or both.
+[src:riak/riak] Multi-Datacenter replication (MDC) provides uni-directional and bi-direction replication of data between Riak clusters, whether locally for resilience or globally for faster regional access.
+[src:riak/riak] Uni-directional replication is useful for read-only sinks such as backups and Disaster Recovery sites.
+[src:riak/riak] Bi-directional replication allows for multiple Riak cluster to have eventually consistent data across vast distances.
+[src:riak/riak] Complex replication scenarios such as chains, hub-and-spoke and mesh networks are possible due to the Cascades feature, which allows replication of data between clusters that are not directly connected.
+[src:riak/riak] There are two primary modes of operation: fullsync and realtime.
+[src:riak/riak] Fullsync mode ensures that all data on the source cluster is replicated to the sink cluster.
+[src:riak/riak] Only the metadata and changes are transferred, making this fast and efficient.
+[src:riak/riak] Realtime mode sends updates made to a source cluster to the sink cluster in realtime.
+[src:riak/riak] These modes are designed to work together for best performance All multi-datacenter replication occurs over multiple concurrent TCP connections to maximize performance and network utilization.
+[src:riak/riak] Option to choose between eventual and strong consistency for each bucket.
+[src:riak/riak] All versions of Riak are now entirely open-source and free, and include the extra features that Basho charged license fees for.
+[src:riak/riak] Basho operated a freemium model, wherein they provided free versions of Riak in the form of Riak Core, Riak KV, Riak CS and Riak TS but made their money from licensing more advanced features and SLA-based support.
+[src:riak/riak] riak_core is the distributed systems framework that underpins Riak, forming the foundation for all Riak versions.
+[src:riak/riak] riak_core_lite is intended for general use as a base for creating distributed systems.
+[src:riak/riak] Riak KV is a distributed NoSQL database designed to deliver maximum data availability by distributing data across multiple servers, meaning that if one client can reach one server, it should be able to read and write data.
+[src:riak/riak] KV went through a few names in its lifetime, starting as Riak then Riak DS (for Data Store) and finally Riak KV (for Key-Value).
+[src:riak/riak] When Basho Technologies went into receivership in 2017 KV development was picked up by the open source community and has continued into 2021, with 2.2.6 released in 2018 being the first community release of KV.
+[src:riak/riak] This release integrated some features that were originally restricted to Basho's Enterprise versions of Riak.
+[src:riak/riak] Version 2.9.0 was the first major community release by the open source community, releasing in November 2019, with version 3.0.1 following on August 20, 2020.
+[src:riak/riak] Development has continued since then with the latest release being version 3.0.7.
+[src:riak/riak] The following features of Riak KV 2.x have been removed by default from the Riak build.
+[src:riak/riak] Specific builds including these features are available.
+[src:riak/riak] Originally known as Riak Moss(Riak Multi-tenant Object Storage System - MOSS) but named as Riak CS (Cloud Storage) when released, Riak CS was first publicly released in January 2012.
+[src:riak/riak] Riak CS (Cloud Storage) is object storage software built on top of Riak KV, Riak's distributed database.
+[src:riak/riak] Riak CS is designed to provide simple, highly-available, distributed cloud storage at any scale, and can be used to build cloud architectures or as storage infrastructure for heavy-duty applications and services.
+[src:riak/riak] Riak CS also includes an application called Stanchion which is used to manage the serialization of requests.
+[src:riak/riak] This enables Riak CS to manage globally unique entities like users and bucket names.
+[src:riak/riak] Serialization in this context means that the entire cluster agrees upon a single value for any globally unique entity at any given time; when that value is changed, the new value must be recognized throughout the entire cluster.
+[src:riak/riak] Riak CS was briefly rebranded as Riak S2 to make it more obviously compatible with Amazon S3 but the name did not catch on and it reverted to Riak CS.
+[src:riak/riak] In 2021 development for Riak CS was resumed with contributions from TI Tokyo.
+[src:riak/riak] A limited subset of SQL commands was implemented in Riak TS.
+[src:riak/riak] There is no provision for consistency guarantees between tables (no foreign indexes).
+[src:riak/riak] In `SELECT` statements, `WHERE` clause is supported but `HAVING` is not.
+[src:riak/riak] `ORDER BY` was to appear in a version that was never released.
+[src:riak/riak] Riak TS existed as a collection of branches (in separate components of Riak KV such as riak_kv, riak_pb, etc.) and not as product with a repository of its own.
+[src:riak/riak] It was developed by a dedicated team consisting of Gordon Guthrie (leader), Andy Till and Andrei Zavada, with occasional contributions from other developers.
+[src:riak/riak] Riak TS was conceived, along with Riak Data Platform project, as an attempt to diversify Basho's product line, an undertaking many insiders regard as misguided and eventually contributing to Basho's demise.
+[src:riak/riak] Riak was originally licensed using a freemium model: open source versions of Riak KV, Riak CS and Riak TS are available, but end users can pay for additional features and support.
+[src:riak/riak] However, since Basho entered receivership and bet365 (purchasers of all IP) made all Riak products fully open source, all the premium features are now available in the open source versions.
+[src:riak/riak] Since Basho's demise, community ad-hoc and paid support options have arisen.
+[src:riak/riak] Riak has official drivers for Ruby, Java, Erlang and Python.
+[src:riak/riak] There are also numerous community-supported drivers for other programming languages.
+[src:riak/riak] After bet365 purchased the Riak IP, the Riak products were made full open source and work to integrate premium features into the open source versions was completed with the 2.2.6 release.
+[src:riak/riak] Riak was originally written by Andy Gross and Justin Sheehy at Basho Technologies to power a web Sales Force Automation application by former engineers and executives from Akamai.
+[src:riak/riak] Notable users include AT&T, Comcast, GitHub, Best Buy, UK National Health Services (NHS), The Weather Channel, and Riot Games.

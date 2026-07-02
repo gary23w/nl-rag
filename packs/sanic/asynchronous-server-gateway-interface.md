@@ -1,0 +1,37 @@
+---
+title: "Asynchronous Server Gateway Interface"
+source: https://en.wikipedia.org/wiki/Asynchronous_Server_Gateway_Interface
+domain: sanic
+license: CC-BY-SA-4.0
+tags: sanic framework, sanic python, async python web, asgi server
+fetched: 2026-07-02
+---
+
+# Asynchronous Server Gateway Interface
+
+The **Asynchronous Server Gateway Interface** (**ASGI**) is a calling convention for web servers to forward requests to asynchronous-capable Python frameworks, and applications. It is built as a successor to the Web Server Gateway Interface (WSGI).
+
+Where WSGI provided a standard for synchronous Python applications, ASGI provides one for both asynchronous and synchronous applications, with a WSGI backwards-compatibility implementation and multiple servers and application frameworks.
+
+## Example
+
+An ASGI-compatible "Hello, World!" application written in Python:
+
+```mw
+async def application(scope, receive, send):
+    event = await receive()
+    ...
+    await send({"type": "websocket.send", ...})
+```
+
+Where:
+
+- Line 1 defines an asynchronous function named `application`, which takes three parameters (unlike in WSGI which takes only two), `scope`, `receive` and `send`.
+  - `scope` is a `dict` containing details about current connection, like the protocol, headers, etc.
+  - `receive` and `send` are asynchronous callables which let the application receive and send messages from/to the client.
+- Line 2 receives an incoming event, for example, HTTP request or WebSocket message. The `await` keyword is used because the operation is asynchronous.
+- Line 4 asynchronously sends a response back to the client. In this case, it is a WebSocket communication.
+
+## Web Server Gateway Interface (WSGI) compatibility
+
+ASGI is also designed to be a superset of WSGI, and there's a defined way of translating between the two, allowing WSGI applications to be run inside ASGI servers through a translation wrapper (provided in the asgiref library). A threadpool can be used to run the synchronous WSGI applications away from the async event loop.

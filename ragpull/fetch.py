@@ -61,6 +61,14 @@ def fetch(url: str, cache_dir: Path, force: bool = False, timeout: int = 40) -> 
     if cp.exists() and not force:
         return cp.read_text(encoding="utf-8", errors="replace"), True
 
+    # percent-encode any literal non-ASCII in the URL (a Wikipedia title like "Nosé–Hoover"
+    # would otherwise blow up http.client's latin-1 request-line encoding)
+    if not url.isascii():
+        from urllib.parse import quote, urlsplit, urlunsplit
+
+        sp = urlsplit(url)
+        url = urlunsplit(sp._replace(path=quote(sp.path), query=quote(sp.query, safe="=&")))
+
     host = urlparse(url).netloc
     wait = _last_hit.get(host, 0) + HOST_DELAY_S - time.monotonic()
     if wait > 0:

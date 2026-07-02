@@ -1,0 +1,97 @@
+---
+title: "Tracing (software)"
+source: https://en.wikipedia.org/wiki/Tracing_(software)
+domain: opentelemetry
+license: CC-BY-SA-4.0
+tags: opentelemetry instrumentation, distributed tracing, observability instrumentation, telemetry signals
+fetched: 2026-07-02
+---
+
+# Tracing (software)
+
+**Tracing** in software engineering refers to the process of capturing and recording information about the execution of a software program. This information is typically used by programmers for debugging purposes, and additionally, depending on the type and detail of information contained in a trace log, by experienced system administrators or technical-support personnel and by software monitoring tools to diagnose common problems with software. Tracing is a cross-cutting concern.
+
+There is not always a clear distinction between *tracing* and other forms of *logging*, except that the term *tracing* is almost never applied to logging that is a functional requirement of a program (therefore excluding logging of data from an external source, such as data acquisition in a high-energy physics experiment, and write-ahead logging). Logs that record program usage (such as a server log) or operating-system events primarily of interest to a system administrator (see for example *Event Viewer*) fall into a terminological gray area.
+
+Tracing is primarily used for anomaly detection, fault analysis, debugging or diagnostic purposes in distributed software systems, such as microservices or serverless functions.
+
+## Software tracing
+
+Software tracing is a tool for developers to gather information for debugging. This information is used both during development cycles and post-release. Unlike event logging, software tracing usually does not have the concept of a "class" of event or an "event code". Other reasons why event-logging solutions based on event codes are inappropriate for software tracing include:
+
+- Because software tracing is low-level, there are often many more types of messages that would need to be defined, many of which would only be used at one place in the code. The event-code paradigm introduces significant development overhead for these "one-shot" messages.
+- The types of messages that are logged are often less stable through the development cycle than for event logging.
+- Because the tracing output is intended to be consumed by the developer, the messages don't need to be localized. Keeping tracing messages separate from other resources that need to be localized (such as event messages) is therefore important.
+- There are messages that should never be seen.
+- Tracing messages should be kept in the code, because they can add to the readability of the code. This is not always possible or feasible with event-logging solutions.
+
+## Tools
+
+OpenTelemetry is a CNCF open source project that provides comprehensive support for distributed tracing. Some vendors including Datadog, Dynatrace, New Relic, Splunk also offer tracing SaaS services.
+
+Google and Meta have developed their own tracing frameworks, named Dapper and Canopy respectively.
+
+### Application-specific tracing
+
+- Tracing with GNU Debugger's trace command
+- Linux C/C++ application tracing with cwrap
+- Linux application tracing with UST – part of the same project as LTTng
+- Windows software trace preprocessor (a.k.a. WPP)
+- Instruction set simulation
+
+### System-specific tracing
+
+In operating systems, tracing can be used in situations (such as booting) where some of the technologies used to provide event logging may not be available.
+
+Linux offers system-level and user-level tracing capabilities with kernel markers and LTTng. ftrace also supports Linux kernel tracing. syslog is another tool in various operating systems for logging and tracing system messages.
+
+FreeBSD and SmartOS employ DTrace for tracing in both user space and kernel space.
+
+In embedded software, tracing also requires special techniques for efficient instrumentation and logging and low CPU overhead.
+
+## Techniques
+
+### Trace generation and collection
+
+Trace generation of method calls can be done with source code instrumentation, runtime information collection, or under debugger control. Tracing macros, aspect-oriented programming and related instrumentation techniques can be employed.
+
+Libraries used in source code send data to an agent or directly to the collection component.
+
+### Trace analysis
+
+To model execution trees, ISVis converts a rooted tree into a directed acyclic graph while Jinsight utilizes the call frame principle to gather and represent cumulative information about traces.
+
+The primary visualization method is the swimlane view, which is exemplified by tools like Jaeger and often includes annotations and key-value attributes. Despite its widespread use, this design lacks rigorous justification and users frequently face challenges like missing features and confusing navigation. Alternatives to swimlane views exist, like Jaeger’s service dependency view or SkyWalking’s List, Tree, and Table views. Aggregate visualizations are also used for analyzing large volumes of traces, with systems like Canopy offering queryable metrics and Jaeger providing trace comparison features.
+
+## Event logging
+
+Event logging provides system administrators with information useful for diagnostics and auditing. The different classes of events that will be logged, as well as what details will appear in the event messages, are often considered early in the development cycle. Many event logging technologies allow or even require each class of event to be assigned a unique "code", which is used by the event logging software or a separate viewer (e.g., Event Viewer) to format and output a human-readable message. This facilitates localization and allows system administrators to more easily obtain information on problems that occur.
+
+Because event logging is used to log high-level information (often failure information), performance of the logging implementation is often less important.
+
+A special concern, preventing duplicate events from being recorded "too often" is taken care of through event throttling.
+
+Difficulties in making a clear distinction between event logging and software tracing arise from the fact that some of the same technologies are used for both, and further because many of the criteria that distinguish between the two are continuous rather than discrete. The following table lists some important, but by no means precise or universal, distinctions that are used by developers to select technologies for each purpose, and that guide the separate development of new technologies in each area:
+
+| Event logging | Software tracing |
+|---|---|
+| Consumed primarily by system administrators | Consumed primarily by developers |
+| Logs "high level" information (e.g. failed installation of a program) | Logs "low level" information (e.g. a thrown exception) |
+| Must not be too "noisy" (containing many duplicate events or information that is not helpful for its intended audience) | Can be noisy |
+| A standards-based output format is often desirable, sometimes even required | Few limitations on output format |
+| Event log messages are often localized | Localization is rarely a concern |
+| Addition of new types of events, as well as new event messages, need not be agile | Addition of new tracing messages *must* be agile |
+
+## Challenges and limitations
+
+Enabling or disabling tracing during runtime often necessitates the inclusion of extra data in the binary. This can lead to performance degradation, even when tracing is not active. The overhead of tracing depends on the used framework and the activated features; in production servers, there is a trade-off between how fine-grained the tracing is and the incurred overhead.
+
+If tracing is enabled or disabled at compile-time, collecting trace data from a client's system hinges on their willingness and capability to install a version of the software specifically enabled for tracing, and subsequently replicate the issue.
+
+Tracing in software typically demands high standards of robustness, not only in the accuracy and reliability of the trace output but also in ensuring that the process being traced remains uninterrupted.
+
+Given its low-level nature, tracing can generate a large volume of messages. To mitigate performance issues, it's often necessary to have the option to deactivate software tracing, either at the time of compilation or during run-time.
+
+## Security and privacy
+
+In proprietary software, tracing data may include sensitive information about the product's source code.

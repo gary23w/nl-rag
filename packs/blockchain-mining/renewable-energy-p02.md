@@ -1,0 +1,422 @@
+---
+title: "Renewable energy (part 2/2)"
+source: https://en.wikipedia.org/wiki/Renewable_energy
+domain: blockchain-mining
+license: CC-BY-SA-4.0
+tags: crypto mining, mining pool, asic mining, mining hardware
+fetched: 2026-07-02
+part: 2/2
+---
+
+## Market and industry trends
+
+Most new renewables are solar, followed by wind then hydro then bioenergy. Investment in renewables, especially solar, tends to be more effective in creating jobs than coal, gas or oil. Worldwide, renewables employ about 12 million people as of 2020, with solar PV being the technology employing the most at almost 4 million. However, as of February 2024, the world's supply of workforce for solar energy is lagging greatly behind demand as universities worldwide still produce more workforce for fossil fuels than for renewable energy industries.
+
+In 2021, China accounted for almost half of the global increase in renewable electricity. There were 3,146 gigawatts installed in 135 countries, while 156 countries have laws regulating the renewable energy sector.
+
+The International Renewable Energy Agency reported that during 2025 renewables accounted for 85.6% of new electricity generation capacity globally, with solar photovoltaics providing nearly three-quarters of the increase. At the end of 2025, renewables constituted 49.4% of global installed electricity generating capacity.
+
+Globally in 2020 there are over 10 million jobs associated with the renewable energy industries, with solar photovoltaics being the largest renewable employer. The clean energy sectors added about 4.7 million jobs globally between 2019 and 2022, totaling 35 million jobs by 2022.
+
+### Usage by sector or application
+
+Some studies say that a global transition to 100% renewable energy across all sectors – power, heat, transport and industry – is feasible and economically viable.
+
+One of the efforts to decarbonize transportation is the increased use of electric vehicles (EVs). Despite that and the use of biofuels, such as biojet, less than 4% of transport energy is from renewables. Occasionally hydrogen fuel cells are used for heavy transport. Meanwhile, in the future electrofuels may also play a greater role in decarbonizing hard-to-abate sectors like aviation and maritime shipping.
+
+Solar water heating makes an important contribution to renewable heat in many countries, most notably in China, which now has 70% of the global total (180 GWth). Most of these systems are installed on multi-family apartment buildings and meet a portion of the hot water needs of an estimated 50–60 million households in China. Worldwide, total installed solar water heating systems meet a portion of the water heating needs of over 70 million households.
+
+Heat pumps provide both heating and cooling, and also flatten the electric demand curve and are thus an increasing priority. Renewable thermal energy is also growing rapidly. About 10% of heating and cooling energy is from renewables.
+
+### Cost comparison
+
+The International Renewable Energy Agency (IRENA) stated that ~86% (187 GW) of renewable capacity added in 2022 had lower costs than electricity generated from fossil fuels. IRENA also stated that capacity added since 2000 reduced electricity bills in 2022 by at least $520 billion, and that in non-OECD countries, the lifetime savings of 2022 capacity additions will reduce costs by up to $580 billion.
+
+Installed
+
+TWp
+
+Growth
+
+TW/yr
+
+Production
+
+per installed
+
+capacity
+
+*
+
+Energy
+
+TWh/yr
+
+*
+
+Growth
+
+TWh/yr
+
+*
+
+Levelized cost
+
+US¢/kWh
+
+Av. auction prices
+
+US¢/kWh
+
+Cost development
+
+2010–2019
+
+Solar PV
+
+0.580
+
+0.098
+
+13%
+
+549
+
+123
+
+6.8
+
+3.9
+
+−82%
+
+Solar CSP
+
+0.006
+
+0.0006
+
+13%
+
+6.3
+
+0.5
+
+18.2
+
+7.5
+
+−47%
+
+Wind Offshore
+
+0.028
+
+0.0045
+
+33%
+
+68
+
+11.5
+
+11.5
+
+8.2
+
+−30%
+
+Wind Onshore
+
+0.594
+
+0.05
+
+25%
+
+1194
+
+118
+
+5.3
+
+4.3
+
+−38%
+
+Hydro
+
+1.310
+
+0.013
+
+38%
+
+4267
+
+90
+
+4.7
+
++27%
+
+Bioenergy
+
+0.12
+
+0.006
+
+51%
+
+522
+
+27
+
+6.6
+
+−13%
+
+Geothermal
+
+0.014
+
+0.00007
+
+74%
+
+13.9
+
+0.7
+
+7.3
+
++49%
+
+* = 2018. All other values for 2019.
+
+### Growth of renewables
+
+Investment and sources
+
+Investment: Companies, governments and households have committed increasing amounts to decarbonization, including renewable energy (solar, wind), electric vehicles and associated charging infrastructure, energy storage, energy-efficient heating systems, carbon capture and storage, and hydrogen.
+
+By 2025, investment in the energy transition had grown to about twice that for
+
+fossil fuels
+
+(oil, natural gas and coal).
+
+The countries most reliant on fossil fuels for electricity vary widely on how great a portion of that electricity is generated from renewables, leaving wide variation in renewables' growth potential.
+
+Costs
+
+Levelized cost:
+
+With increasingly widespread implementation of renewable energy sources, costs have declined, most notably for energy generated by solar panels.
+
+Levelized cost of energy
+
+(LCOE) is a measure of the average net present cost of electricity generation for a generating plant over its lifetime.
+
+Costs of renewable energy, especially solar photovoltaic (solar panels), have declined significantly,
+
+with 62% of total renewable power generation added in 2020 having lower costs than the cheapest new fossil fuel option.
+
+"
+
+Learning curves
+
+": Trend of costs and deployment over time, with steeper lines showing greater cost reductions as deployment progresses.
+
+With increased deployment, renewables benefit from
+
+learning curves
+
+and
+
+economies of scale
+
+.
+
+The results of a recent review of the literature concluded that as greenhouse gas (GHG) emitters begin to be held liable for damages resulting from GHG emissions resulting in climate change, a high value for liability mitigation would provide powerful incentives for deployment of renewable energy technologies.
+
+In the decade of 2010–2019, worldwide investment in renewable energy capacity excluding large hydropower amounted to US$2.7 trillion, of which the top countries China contributed US$818 billion, the United States contributed US$392.3 billion, Japan contributed US$210.9 billion, Germany contributed US$183.4 billion, and the United Kingdom contributed US$126.5 billion. This was an increase of over three and possibly four times the equivalent amount invested in the decade of 2000–2009 (no data is available for 2000–2003).
+
+As of 2022, an estimated 28% of the world's electricity was generated by renewables. This is up from 19% in 1990. By the end of 2024, global renewable power capacity reached 4,300 gigawatts (GW), with solar photovoltaics accounting for over 60% of annual additions.
+
+UK-based think tank Ember reported that wind and solar combined generated more electricity than gas globally in a month for the first time in April 2026.
+
+#### Future projections
+
+Solar and wind power are scaling up faster than previous sources of electricity. Declining costs, modular design, and improved battery storage help the transition to renewable energy.
+
+In 2023, electricity generation from wind and solar sources was projected to exceed 30% by 2030.
+
+A December 2022 report by the IEA forecasts that over 2022–2027, renewables are seen growing by almost 2,400 GW in its main forecast, equal to the entire installed power capacity of China in 2021. This is an 85% acceleration from the previous five years, and almost 30% higher than what the IEA forecast in its 2021 report, making its largest ever upward revision. Renewables are set to account for over 90% of global electricity capacity expansion over the forecast period. To achieve net zero emissions by 2050, IEA believes that 90% of global electricity generation will need to be produced from renewable sources.
+
+In June 2022, IEA Executive Director Fatih Birol said that countries should invest more in renewables to "ease the pressure on consumers from high fossil fuel prices, make our energy systems more secure, and get the world on track to reach our climate goals."
+
+REPowerEU, the EU plan to escape dependence on fossil Russian gas, is expected to call for much more green hydrogen.
+
+After a transitional period, renewable energy production is expected to make up most of the world's energy production. In 2018, the risk management firm, DNV GL, forecasts that the world's primary energy mix will be split equally between fossil and non-fossil sources by 2050.
+
+Middle eastern nations are also planning on reducing their reliance fossil fuel. Many planned green projects will contribute in 26% of energy supply for the region by 2050 achieving emission reductions equal to 1.1 Gt CO2/year.
+
+Massive Renewable Energy Projects in the Middle East:
+
+- Mohammed bin Rashid Al Maktoum Solar Park in Dubai, UAE
+- Shuaibah Two (2) Solar Facility in Mecca Province, Saudi Arabia
+- NEOM Green Hydrogen Project in NEOM, Saudi Arabia
+- Gulf of Suez Wind Power Project in Suez, Egypt
+- Al-Ajban Solar Park in Abu Dhabi, UAE
+
+### Demand
+
+In July 2014, the WWF and the World Resources Institute convened a discussion among a number of major US companies who had declared their intention to increase their use of renewable energy. These discussions identified a number of "principles" which companies seeking greater access to renewable energy considered important market deliverables. These principles included choice (between suppliers and between products), cost competitiveness, longer term fixed price supplies, access to third-party financing vehicles, and collaboration.
+
+UK statistics released in September 2020 noted that "the proportion of demand met from renewables varies from a low of 3.4 per cent (for transport, mainly from biofuels) to highs of over 20 per cent for 'other final users', which is largely the service and commercial sectors that consume relatively large quantities of electricity, and industry".
+
+In some locations, individual households can opt to purchase renewable energy through a consumer green energy program.
+
+### Developing countries
+
+Renewable energy in developing countries is an increasingly used alternative to fossil fuel energy, as these countries scale up their energy supplies and address energy poverty. Renewable energy technology was once seen as unaffordable for developing countries. However, since 2015, investment in non-hydro renewable energy has been higher in developing countries than in developed countries, and comprised 54% of global renewable energy investment in 2019. The International Energy Agency forecasts that renewable energy will provide the majority of energy supply growth through 2030 in Africa and Central and South America, and 42% of supply growth in China.
+
+Most developing countries have abundant renewable energy resources, including solar energy, wind power, geothermal energy, and biomass, as well as the ability to manufacture the relatively labor-intensive systems that harness these. By developing such energy sources developing countries can reduce their dependence on oil and natural gas, creating energy portfolios that are less vulnerable to price rises. In many circumstances, these investments can be less expensive than fossil fuel energy systems.
+
+In Kenya, the Olkaria V Geothermal Power Station is one of the largest in the world. The Grand Ethiopia Renaissance Dam project incorporates wind turbines. Once completed, Morocco's Ouarzazate Solar Power Station is projected to provide power to over a million people.
+
+
+## Policy
+
+Policies to support renewable energy have been vital in their expansion. Where Europe dominated in establishing energy policy in the early 2000s, most countries around the world now have some form of energy policy.
+
+The International Renewable Energy Agency (IRENA) is an intergovernmental organization for promoting the adoption of renewable energy worldwide. It aims to provide concrete policy advice and facilitate capacity building and technology transfer. IRENA was formed in 2009, with 75 countries signing the charter of IRENA. As of April 2019, IRENA has 160 member states. The then United Nations Secretary-General Ban Ki-moon has said that renewable energy can lift the poorest nations to new levels of prosperity.
+
+The 2015 Paris Agreement on climate change motivated many countries to develop or improve renewable energy policies. In 2017, a total of 121 countries adopted some form of renewable energy policy. National targets that year existed in 176 countries. In addition, there is also a wide range of policies at the state/provincial, and local levels. Some public utilities help plan or install residential energy upgrades.
+
+Many national, state and local governments have created green banks. A green bank is a quasi-public financial institution that uses public capital to leverage private investment in clean energy technologies. Green banks use a variety of financial tools to bridge market gaps that hinder the deployment of clean energy.
+
+Global and national policies related to renewable energy can be divided based on sectors, such as agriculture, transport, buildings, industry:
+
+*Climate neutrality* (net zero emissions) by the year 2050 is the main goal of the European Green Deal. For the European Union to reach their target of climate neutrality, one goal is to decarbonise its energy system by aiming to achieve "net-zero greenhouse gas emissions by 2050."
+
+
+## Finance
+
+Electrified
+
+transport and renewable energy are key areas of investment for climate change mitigation via an
+
+energy transition
+
+.
+
+China's count of multi-country patent filings has surged since the mid-2010s, leading in batteries and solar, though Europe still dominates in wind energy and smart grids.
+
+China also leads in highly cited publications in global peer-reviewed journals.
+
+The International Renewable Energy Agency's (IRENA) 2023 report on renewable energy finance highlights steady investment growth since 2018: USD 348 billion in 2020 (a 5.6% increase from 2019), US$430 billion in 2021 (24% up from 2020), and US$499 billion in 2022 (16% higher). This trend is driven by increasing recognition of renewable energy's role in mitigating climate change and enhancing energy security, along with investor interest in alternatives to fossil fuels. Policies such as feed-in tariffs in China and Vietnam have significantly increased renewable adoption. Furthermore, from 2013 to 2022, installation costs for solar photovoltaic (PV), onshore wind, and offshore wind dropped by 69%, 33%, and 45%, respectively, making renewables more cost-effective.
+
+Between 2013 and 2022, the renewable energy sector underwent a significant realignment of investment priorities. Investment in solar and wind energy technologies markedly increased. In contrast, other renewable technologies such as hydropower (including pumped storage hydropower), biomass, biofuels, geothermal, and marine energy experienced a substantial decrease in financial investment. Notably, from 2017 to 2022, investment in these alternative renewable technologies declined by 45%, falling from US$35 billion to US$17 billion.
+
+In 2023, the renewable energy sector experienced a significant surge in investments, particularly in solar and wind technologies, totaling approximately US$200 billion—a 75% increase from the previous year. The increased investments in 2023 contributed between 1% and 4% to the GDP in key regions including the United States, China, the European Union, and India.
+
+The energy sector receives investments of approximately US$3 trillion each year, with US$1.9 trillion directed towards clean energy technologies and infrastructure. To meet the targets set in the Net Zero Emissions (NZE) Scenario by 2035, this investment must increase to US$5.3 trillion per year.
+
+
+## Debates
+
+### Nuclear power proposed as renewable energy
+
+Whether nuclear power should be considered a form of renewable energy is an ongoing subject of debate. Legal definitions of renewable energy usually exclude nuclear energy technologies, with the notable exception of the U.S. state of Utah. Dictionary-sourced definitions of renewable energy technologies often omit or explicitly exclude mention of nuclear energy sources, with an exception made for the natural nuclear decay heat generated within the Earth.
+
+The most common fuel used in conventional nuclear fission power stations, uranium-235 is "non-renewable" according to the United States' Energy Information Administration, the organization, however, is silent on the recycled MOX fuel. The National Renewable Energy Laboratory does not mention nuclear power in its "energy basics" definition.
+
+In 1987, the Brundtland Commission (WCED) classified fission reactors that produce more fissile nuclear fuel than they consume (breeder reactors, and if developed, fusion power) among conventional renewable energy sources, such as solar power and hydropower. The monitoring and storage of radioactive waste products is also required upon the use of other renewable energy sources, such as geothermal energy.
+
+### Geopolitics
+
+The geopolitical impact of the growing use of renewable energy is a subject of ongoing debate and research. Many countries wealthy in oil, such as Qatar, Russia, Saudi Arabia and Norway, and are able to exert diplomatic or geopolitical influence as a result of their oil. Most of these countries are expected to be among the geopolitical "losers" of the energy transition, although some, like Norway, are also significant producers and exporters of renewable energy. Fossil fuels and the infrastructure to extract them may, in the long term, become stranded assets. It has been speculated that countries dependent on fossil fuel revenue may one day find it in their interests to quickly sell off their remaining fossil fuels.
+
+Conversely, nations abundant in renewable resources, and the minerals required for renewables technology, are expected to gain influence. In particular, China has become the world's dominant manufacturer of the technology needed to produce or store renewable energy, especially solar panels, wind turbines, and lithium-ion batteries. Nations rich in solar and wind energy could become major energy exporters. Some may produce and export green hydrogen, although electricity is projected to be the dominant energy carrier in 2050, accounting for almost 50% of total energy consumption (up from 22% in 2015). Countries with large uninhabited areas such as Australia, China, and many African and Middle Eastern countries have a potential for huge installations of renewable energy. The production of renewable energy technologies requires rare-earth elements with new supply chains.
+
+Countries in Africa with already weak governments that rely on fossil fuel revenue may face even higher political instability or popular unrest. Analysts consider Nigeria, Angola, Chad, Gabon, and Sudan, all countries with a history of military coups, to be at risk of instability due to dwindling oil income.
+
+A study found that transition from fossil fuels to renewable energy systems reduces risks from mining, trade and political dependence because renewable energy systems don't need fuel – they depend on trade only for the acquisition of materials and components during construction.
+
+In October 2021, European Commissioner for Climate Action Frans Timmermans suggested "the best answer" to the 2021 global energy crisis is "to reduce our reliance on fossil fuels." He said those blaming the European Green Deal were doing so "for perhaps ideological reasons or sometimes economic reasons in protecting their vested interests." Some critics blamed the European Union Emissions Trading System (EU ETS) and closure of nuclear plants for contributing to the energy crisis. European Commission President Ursula von der Leyen said that Europe is "too reliant" on natural gas and too dependent on natural gas imports. According to Von der Leyen, "The answer has to do with diversifying our suppliers ... and, crucially, with speeding up the transition to clean energy."
+
+Energy transition can also improve a country's energy security and energy independence, mitigating impacts from fossil fuel markets or geopolitical pressure from oil producers. The proliferation of renewable energy could also weaken petrostates' trading power and their global influence. As the world becomes more electrified, renewable technologies will be embedded into the national economies of various markets, especially developing countries, removing the leverage petrostates have on the global energy structure.
+
+### Metal and mineral extraction
+
+The transition to renewable energy requires increased extraction of certain metals and minerals. Like all mining, this impacts the environment and can lead to environmental conflict. For example, lithium mining uses around 65% of the water in the Salar de Atacama desert forcing farmers and llama herders to abandon their ancestral settlements and creating environment degradation, in several African countries, the green energy transition has created a mining boom, causing deforestation, and threatening already endangered species. Wind power requires large amounts of copper and zinc, as well as smaller amounts of the rarer metal neodymium. Solar power is less resource-intensive, but still requires significant amounts of aluminum. The expansion of electrical grids requires both copper and aluminum. Batteries, which are critical to enable storage of renewable energy, use large quantities of copper, nickel, aluminum and graphite. Demand for lithium is expected to grow 42-fold from 2020 to 2040. Demand for nickel, cobalt and graphite is expected to grow by a factor of about 20–25. For each of the most relevant minerals and metals, its mining is dominated by a single country: copper in Chile, nickel in Indonesia, rare earths in China, cobalt in the Democratic Republic of the Congo (DRC), and lithium in Australia. China dominates processing of all of these.
+
+Recycling these metals after the devices they are embedded in are spent is essential to create a circular economy and ensure renewable energy is sustainable. By 2040, recycled copper, lithium, cobalt, and nickel from spent batteries could reduce combined primary supply requirements for these minerals by around 10%.
+
+A controversial approach is deep sea mining. Minerals can be collected from new sources like polymetallic nodules lying on the seabed. This would damage local biodiversity, but proponents point out that biomass on resource-rich seabeds is much scarcer than in the mining regions on land, which are often found in vulnerable habitats like rainforests.
+
+Due to co-occurrence of rare-earth and radioactive elements (thorium, uranium and radium), rare-earth mining results in production of low-level radioactive waste.
+
+### Conservation areas
+
+Installations used to produce wind, solar and hydropower are an increasing threat to key conservation areas, with facilities built in areas set aside for nature conservation and other environmentally sensitive areas. They are often much larger than fossil fuel power plants, needing areas of land up to 10 times greater than coal or gas to produce equivalent energy amounts. More than 2000 renewable energy facilities are built, and more are under construction, in areas of environmental importance and threaten the habitats of plant and animal species across the globe. The authors' team emphasized that their work should not be interpreted as anti-renewables because renewable energy is crucial for reducing carbon emissions. The key is ensuring that renewable energy facilities are built in places where they do not damage biodiversity.
+
+In 2020 scientists published a world map of areas that contain renewable energy materials as well as estimations of their overlaps with "Key Biodiversity Areas", "Remaining Wilderness" and "Protected Areas". The authors assessed that careful strategic planning is needed.
+
+### Impact of climate change on renewable energy production
+
+Climate change is making weather patterns less predictable. This can seriously hamper the use of renewable energy. For example, in the year 2023, in Sudan and Namibia, hydropower production dropped by more than half due to drastic reduction in rainfall, in China, India and some regions in Africa unusual weather phenomena reduced the amount of produced wind energy, heatwaves and clouds reduce the effectiveness of solar panels, melting glaciers create problems to hydropower. Nuclear energy is also affected as drought creates water shortage, so nuclear power plants sometimes do not have enough water for cooling.
+
+
+## Society and culture
+
+### Public support
+
+Most respondents to a climate survey conducted in 2021-2022 by the
+
+European Investment Bank
+
+say countries should back renewable energy to fight climate change.
+
+The same survey a year later shows that renewable energy is considered an investment priority in the European Union, China and the United States.
+
+Solar power plants may compete with arable land, while on-shore wind farms often face opposition due to aesthetic concerns and noise. Such opponents are often described as NIMBYs ("not in my back yard"). Some environmentalists are concerned about fatal collisions of birds and bats with wind turbines. Although protests against new wind farms occasionally occur around the world, regional and national surveys generally find broad support for both solar and wind power.
+
+Community-owned wind energy is sometimes proposed as a way to increase local support for wind farms. A 2011 UK Government document stated that "projects are generally more likely to succeed if they have broad public support and the consent of local communities. This means giving communities both a say and a stake." In the 2000s and early 2010s, many renewable projects in Germany, Sweden and Denmark were owned by local communities, particularly through cooperative structures. In the years since, more installations in Germany have been undertaken by large companies, but community ownership remains strong in Denmark.
+
+
+## History
+
+Prior to the development of coal in the mid 19th century, nearly all energy used was renewable. The oldest known use of renewable energy, in the form of traditional biomass to fuel fires, dates from more than a million years ago. The use of biomass for fire did not become commonplace until many hundreds of thousands of years later. The second oldest usage of renewable energy was probably harnessing the wind in order to drive ships over water. This practice can be traced back some 7000 years, to ships in the Persian Gulf and on the Nile. Geothermal energy from hot springs has been used for bathing since Paleolithic times and space heating since ancient Roman times. Moving into the time of recorded history, the primary sources of traditional renewable energy were human labor, animal power, water power, wind, in grain crushing windmills, and firewood, a traditional biomass.
+
+In 1885, Werner Siemens, commenting on the discovery of the photovoltaic effect in the solid state, wrote:
+
+> In conclusion, I would say that however great the scientific importance of this discovery may be, its practical value will be no less obvious when we reflect that the supply of solar energy is both without limit and without cost, and that it will continue to pour down upon us for countless ages after all the coal deposits of the earth have been exhausted and forgotten.
+
+Max Weber mentioned the end of fossil fuel in the concluding paragraphs of his Die protestantische Ethik und der Geist des Kapitalismus (The Protestant Ethic and the Spirit of Capitalism), published in 1905. Development of solar engines continued until the outbreak of World War I. The importance of solar energy was recognized in a 1911 *Scientific American* article: "in the far distant future, natural fuels having been exhausted [solar power] will remain as the only means of existence of the human race".
+
+The theory of peak oil was published in 1956. In the 1970s environmentalists promoted the development of renewable energy both as a replacement for the eventual depletion of oil, as well as for an escape from dependence on oil, and the first electricity-generating wind turbines appeared. Solar had long been used for heating and cooling, but solar panels were too costly to build solar farms until 1980.
+
+New government spending, regulation and policies helped the renewables industry weather the 2008 financial crisis and the Great Recession better than many other sectors. In 2022, renewables accounted for 30% of global electricity generation, up from 21% in 1985.
+
+### Ancient Historical Examples
+
+Among the most notable historical uses of renewable energy (in the form of ancient and traditional methods), the following examples can be highlighted:
+
+1. Windmills in Europe and Asia (such as the windmills of the Netherlands and Nashtifan in Iran). The earliest discovered verified designs of windmills date back to Iran, between 700 and 900 CE.
+2. Water mills (Ancient China and Ancient Persia).
+3. Archimedes' burning lens.
+4. Traditional cooling and ventilation systems based on windcatchers and Solar updraft tower (or Solar chimney).
+5. Traditional architecture aware of natural heat transfer and natural energy transformation processes.
+6. Gravity-based fountains.
+7. Using animal biomass in ancient fuel bricks.
+8. Solar ovens and furnaces in ancient China, India, Egypt, and Persia.
+9. Solar energy applications for traditional agricultural processing (drying), engineering material properties (solar curing of pottery and ceramics), and ancient health practices (natural disinfection by solar radiation).
+10. Long-distance gravitational water flow control in ancient qanat technology for water transport and supply.
+11. Cargo and passenger transportation using sails on rivers, seas, and oceans.
+12. Cargo and passenger transportation based on understanding water currents in rivers, seas, and oceans.
+13. Using renewable vegetation (such as desert shrubs, agricultural waste, and pruned branches) for producing light and heat.
+14. Using renewable oils (vegetable or animal-based) for producing light and heat.
+15. Maximizing use of natural sunlight during the day and moonlight at night in building architecture for purposes such as lighting, decorative applications (e.g., reflective tilework, mirror work, and surface polishing on stone or brick), timekeeping (sundials, noon markers, prayer time indicators, seasonal change markers), etc.

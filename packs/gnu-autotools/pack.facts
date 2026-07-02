@@ -1,0 +1,1202 @@
+# nl-rag distilled facts — domain: gnu-autotools
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:gnu-autotools/autoconf-p01] This manual (17 March 2026) is for GNU Autoconf (version 2.73), a package for creating scripts to configure source code packages using templates and an M4 macro package.
+[src:gnu-autotools/autoconf-p01] Autoconf is a tool for producing shell scripts that automatically configure software source code packages to adapt to many kinds of POSIX-like systems.
+[src:gnu-autotools/autoconf-p01] The configuration scripts produced by Autoconf are independent of Autoconf when they are run, so their users do not need to have Autoconf.
+[src:gnu-autotools/autoconf-p01] The configuration scripts produced by Autoconf require no manual user intervention when run; they do not normally even need an argument specifying the system type.
+[src:gnu-autotools/autoconf-p01] Instead, they individually test for the presence of each feature that the software package they are for might need.
+[src:gnu-autotools/autoconf-p01] (Before each check, they print a one-line message stating what they are checking for, so the user doesn’t get too bored while waiting for the script to finish.) As a result, they deal well with systems that are hybrids or customized from the more common POSIX variants.
+[src:gnu-autotools/autoconf-p01] There is no need to maintain files that list the features supported by each release of each variant of POSIX.
+[src:gnu-autotools/autoconf-p01] For each software package that Autoconf is used with, it creates a configuration script from a template file that lists the system features that the package needs or can use.
+[src:gnu-autotools/autoconf-p01] After the shell code to recognize and respond to a system feature has been written, Autoconf allows it to be shared by many software packages that can use (or need) that feature.
+[src:gnu-autotools/autoconf-p01] If it later turns out that the shell code needs adjustment for some reason, it needs to be changed in only one place; all of the configuration scripts can be regenerated automatically to take advantage of the updated code.
+[src:gnu-autotools/autoconf-p01] Those who do not understand Autoconf are condemned to reinvent it, poorly.
+[src:gnu-autotools/autoconf-p01] The primary goal of Autoconf is making the *user’s* life easier; making the *maintainer’s* life easier is only a secondary goal.
+[src:gnu-autotools/autoconf-p01] And to this degree, Autoconf is highly successful at its goal—most complaints to the Autoconf list are about difficulties in writing Autoconf input, and not in the behavior of the resulting configure.
+[src:gnu-autotools/autoconf-p01] The Metaconfig package is similar in purpose to Autoconf, but the scripts it produces require manual user intervention, which is quite inconvenient when configuring large source trees.
+[src:gnu-autotools/autoconf-p01] Unlike Metaconfig scripts, Autoconf scripts can support cross-compiling, if some care is taken in writing them.
+[src:gnu-autotools/autoconf-p01] Autoconf does not solve all problems related to making portable software packages—for a more complete solution, it should be used in concert with other GNU build tools like Automake and Libtool.
+[src:gnu-autotools/autoconf-p01] These other tools take on jobs like the creation of a portable, recursive makefile with all of the standard targets, linking of shared libraries, and so on.
+[src:gnu-autotools/autoconf-p01] See The GNU Build System, for more information.
+[src:gnu-autotools/autoconf-p01] Autoconf imposes some restrictions on the names of macros used with `#if` in C programs (see Preprocessor Symbol Index).
+[src:gnu-autotools/autoconf-p01] Autoconf requires GNU M4 version 1.4.8 or later in order to generate the scripts.
+[src:gnu-autotools/autoconf-p01] It uses features that some versions of M4, including GNU M4 1.3, do not have.
+[src:gnu-autotools/autoconf-p01] Autoconf works better with GNU M4 version 1.4.16 or later, though this is not required.
+[src:gnu-autotools/autoconf-p01] See Upgrading From Version 1, for information about upgrading from version 1.
+[src:gnu-autotools/autoconf-p01] See History of Autoconf, for the story of Autoconf’s development.
+[src:gnu-autotools/autoconf-p01] See Frequent Autoconf Questions, with answers, for answers to some common questions about Autoconf.
+[src:gnu-autotools/autoconf-p01] See the Autoconf web page for up-to-date information, details on the mailing lists, pointers to a list of known bugs, etc.
+[src:gnu-autotools/autoconf-p01] Mail suggestions to the Autoconf mailing list.
+[src:gnu-autotools/autoconf-p01] Mail bug reports to the Autoconf Bugs mailing list.
+[src:gnu-autotools/autoconf-p01] If possible, first check that your bug is not already solved in current development versions, and that it has not been reported yet.
+[src:gnu-autotools/autoconf-p01] Be sure to include all the needed information and a short configure.ac that demonstrates the problem.
+[src:gnu-autotools/autoconf-p01] Autoconf’s development tree is accessible via `git`; see the Autoconf Summary for details, or view the actual repository.
+[src:gnu-autotools/autoconf-p01] Patches relative to the current `git` version can be sent for review to the Autoconf Patches mailing list, with discussion on prior patches archived; and all commits are posted in the read-only Autoconf Commit mailing list, which is also archived.
+[src:gnu-autotools/autoconf-p01] Because of its mission, the Autoconf package itself includes only a set of often-used macros that have already demonstrated their usefulness.
+[src:gnu-autotools/autoconf-p01] Nevertheless, if you wish to share your macros, or find existing ones, see the Autoconf Macro Archive, which is kindly run by Peter Simons.
+[src:gnu-autotools/autoconf-p01] Autoconf solves an important problem—reliable discovery of system-specific build and runtime information—but this is only one piece of the puzzle for the development of portable software.
+[src:gnu-autotools/autoconf-p01] To this end, the GNU project has developed a suite of integrated utilities to finish the job Autoconf started: the GNU build system, whose most important components are Autoconf, Automake, and Libtool.
+[src:gnu-autotools/autoconf-p01] In this chapter, we introduce you to those tools, point you to sources of more information, and try to convince you to use the entire GNU build system for your software.
+[src:gnu-autotools/autoconf-p01] The ubiquity of `make` means that a makefile is almost the only viable way to distribute automatic build rules for software, but one quickly runs into its numerous limitations.
+[src:gnu-autotools/autoconf-p01] Its lack of support for automatic dependency tracking, recursive builds in subdirectories, reliable timestamps (e.g., for network file systems), and so on, mean that developers must painfully (and often incorrectly) reinvent the wheel for each project.
+[src:gnu-autotools/autoconf-p01] Portability is non-trivial, thanks to the quirks of `make` on many systems.
+[src:gnu-autotools/autoconf-p01] On top of all this is the manual labor required to implement the many standard targets that users have come to expect (`make install`, `make distclean`, `make uninstall`, etc.).
+[src:gnu-autotools/autoconf-p01] Since you are, of course, using Autoconf, you also have to insert repetitive code in your Makefile.in to recognize `@CC@`, `@CFLAGS@`, and other substitutions provided by `configure`.
+[src:gnu-autotools/autoconf-p01] Automake allows you to specify your build needs in a Makefile.am file with a vastly simpler and more powerful syntax than that of a plain makefile, and then generates a portable Makefile.in for use with Autoconf.
+[src:gnu-autotools/autoconf-p01] The resulting Makefile.in (~400 lines) automatically supports all the standard targets, the substitutions provided by Autoconf, automatic dependency tracking, `VPATH` building, and so on.
+[src:gnu-autotools/autoconf-p01] `make` builds the `hello` program, and `make install` installs it in /usr/local/bin (or whatever prefix was given to `configure`, if not /usr/local).
+[src:gnu-autotools/autoconf-p01] The benefits of Automake increase for larger packages (especially ones with subdirectories), but even for small programs the added convenience and portability can be substantial.
+[src:gnu-autotools/autoconf-p01] GNU software has a well-deserved reputation for running on many different types of systems.
+[src:gnu-autotools/autoconf-p01] While our primary goal is to write software for the GNU system, many users and developers have been introduced to us through the systems that they were already using.
+[src:gnu-autotools/autoconf-p01] Gnulib is a central location for common GNU code, intended to be shared among free software packages.
+[src:gnu-autotools/autoconf-p01] Its components are typically shared at the source level, rather than being a library that gets built, installed, and linked against.
+[src:gnu-autotools/autoconf-p01] The idea is to copy files from Gnulib into your own source tree.
+[src:gnu-autotools/autoconf-p01] There is no distribution tarball; developers should just grab source modules from the repository.
+[src:gnu-autotools/autoconf-p01] The source files are available online, under various licenses, mostly GNU GPL or GNU LGPL.
+[src:gnu-autotools/autoconf-p01] Gnulib modules typically contain C source code along with Autoconf macros used to configure the source code.
+[src:gnu-autotools/autoconf-p01] For example, the Gnulib `stdckdint` module implements a stdckdint.h header that nearly conforms to C23, even on older hosts that lack stdckdint.h.
+[src:gnu-autotools/autoconf-p01] This module contains a source file for the replacement header, along with an Autoconf macro that arranges to use the replacement header on older systems.
+[src:gnu-autotools/autoconf-p01] For more information, consult the Gnulib website, https://www.gnu.org/software/gnulib/.
+[src:gnu-autotools/autoconf-p01] Often, one wants to build not only programs, but libraries, so that other programs can benefit from the fruits of your labor.
+[src:gnu-autotools/autoconf-p01] Ideally, one would like to produce *shared* (dynamically linked) libraries, which can be used by multiple programs without duplication on disk or in memory and can be updated independently of the linked programs.
+[src:gnu-autotools/autoconf-p01] Producing shared libraries portably, however, is the stuff of nightmares—each system has its own incompatible tools, compiler flags, and magic incantations.
+[src:gnu-autotools/autoconf-p01] Fortunately, GNU provides a solution: *Libtool*.
+[src:gnu-autotools/autoconf-p01] Libtool handles all the requirements of building shared libraries for you, and at this time seems to be the *only* way to do so with any portability.
+[src:gnu-autotools/autoconf-p01] Although Libtool, like Autoconf, can be used without Automake, it is most simply utilized in conjunction with Automake—there, Libtool is used automatically whenever shared libraries are needed, and you need not know its syntax.
+[src:gnu-autotools/autoconf-p01] Developers who are used to the simplicity of `make` for small projects on a single system might be daunted at the prospect of learning to use Automake and Autoconf.
+[src:gnu-autotools/autoconf-p01] As your software is distributed to more and more users, however, you otherwise quickly find yourself putting lots of effort into reinventing the services that the GNU build tools provide, and making the same mistakes that they once made and overcame.
+[src:gnu-autotools/autoconf-p01] There are a number of places that you can go to for more information on the GNU build tools.
+[src:gnu-autotools/autoconf-p01] The configuration scripts that Autoconf produces are by convention called `configure`.
+[src:gnu-autotools/autoconf-p01] When run, `configure` creates several files, replacing configuration parameters in them with appropriate values.
+[src:gnu-autotools/autoconf-p01] To create a `configure` script with Autoconf, you need to write an Autoconf input file configure.ac and run `autoconf` on it.
+[src:gnu-autotools/autoconf-p01] If you write your own feature tests to supplement those that come with Autoconf, you might also write files called aclocal.m4 and acsite.m4.
+[src:gnu-autotools/autoconf-p01] If you use a C header file to contain `#define` directives, you might also run `autoheader`, and you can distribute the generated file config.h.in with the package.
+[src:gnu-autotools/autoconf-p01] Here is a diagram showing how the files that can be used in configuration are produced.
+[src:gnu-autotools/autoconf-p01] Programs that are executed are suffixed by ‘*’.
+[src:gnu-autotools/autoconf-p01] Optional files are enclosed in square brackets (‘[]’).
+[src:gnu-autotools/autoconf-p01] `autoconf` and `autoheader` also read the installed Autoconf macro files (by reading autoconf.m4).
+[src:gnu-autotools/autoconf-p01] To produce a `configure` script for a software package, create a file called configure.ac that contains invocations of the Autoconf macros that test the system features your package needs or can use.
+[src:gnu-autotools/autoconf-p01] Autoconf macros already exist to check for many features; see Existing Tests, for their descriptions.
+[src:gnu-autotools/autoconf-p01] For most other features, you can use Autoconf template macros to produce custom checks; see Writing Tests, for information about them.
+[src:gnu-autotools/autoconf-p01] For especially tricky or specialized features, configure.ac might need to contain some hand-crafted shell commands; see Portable Shell Programming.
+[src:gnu-autotools/autoconf-p01] The `autoscan` program can give you a good start in writing configure.ac (see Using `autoscan` to Create configure.ac, for more information).
+[src:gnu-autotools/autoconf-p01] Previous versions of Autoconf promoted the name configure.in, which is somewhat ambiguous (the tool needed to process this file is not described by its extension), and introduces a slight confusion with config.h.in and so on (for which ‘.in’ means “to be processed by `configure`”).
+[src:gnu-autotools/autoconf-p01] Using configure.ac is now preferred, while the use of configure.in will cause warnings from `autoconf`.
+[src:gnu-autotools/autoconf-p01] Just as for any other computer language, in order to properly program configure.ac in Autoconf you must understand *what* problem the language tries to address and *how* it does so.
+[src:gnu-autotools/autoconf-p01] The problem Autoconf addresses is that the world is a mess.
+[src:gnu-autotools/autoconf-p01] After all, you are using Autoconf in order to have your package compile easily on all sorts of different systems, some of them being extremely hostile.
+[src:gnu-autotools/autoconf-p01] Autoconf itself bears the price for these differences: `configure` must run on all those systems, and thus `configure` must limit itself to their lowest common denominator of features.
+[src:gnu-autotools/autoconf-p01] Naturally, you might then think of shell scripts; who needs `autoconf`?
+[src:gnu-autotools/autoconf-p01] A set of properly written shell functions is enough to make it easy to write `configure` scripts by hand.
+[src:gnu-autotools/autoconf-p01] Unfortunately, even in 2008, where shells without any function support are far and few between, there are pitfalls to avoid when making use of them.
+[src:gnu-autotools/autoconf-p01] Also, finding a Bourne shell that accepts shell functions is not trivial, even though there is almost always one on interesting porting targets.
+[src:gnu-autotools/autoconf-p01] So, what is really needed is some kind of compiler, `autoconf`, that takes an Autoconf program, configure.ac, and transforms it into a portable shell script, `configure`.
+[src:gnu-autotools/autoconf-p01] There are two obvious possibilities: creating a brand new language or extending an existing one.
+[src:gnu-autotools/autoconf-p01] The former option is attractive: all sorts of optimizations could easily be implemented in the compiler and many rigorous checks could be performed on the Autoconf program (e.g., rejecting any non-portable construct).
+[src:gnu-autotools/autoconf-p01] Alternatively, you can extend an existing language, such as the `sh` (Bourne shell) language.
+[src:gnu-autotools/autoconf-p01] Autoconf does the latter: it is a layer on top of `sh`.
+[src:gnu-autotools/autoconf-p01] It was therefore most convenient to implement `autoconf` as a macro expander: a program that repeatedly performs *macro expansions* on text input, replacing macro calls with macro bodies and producing a pure `sh` script in the end.
+[src:gnu-autotools/autoconf-p01] Instead of implementing a dedicated Autoconf macro expander, it is natural to use an existing general-purpose macro language, such as M4, and implement the extensions as a set of M4 macros.
+[src:gnu-autotools/autoconf-p01] The Autoconf language differs from many other computer languages because it treats actual code the same as plain text.
+[src:gnu-autotools/autoconf-p01] Whereas in C, for instance, data and instructions have different syntactic status, in Autoconf their status is rigorously the same.
+[src:gnu-autotools/autoconf-p01] Therefore, we need a means to distinguish literal strings from text to be expanded: quotation.
+[src:gnu-autotools/autoconf-p01] When calling macros that take arguments, there must not be any white space between the macro name and the open parenthesis.
+[src:gnu-autotools/autoconf-p01] Arguments should be enclosed within the quote characters ‘[’ and ‘]’, and be separated by commas.
+[src:gnu-autotools/autoconf-p01] Any leading blanks or newlines in arguments are ignored, unless they are quoted.
+[src:gnu-autotools/autoconf-p01] You should always quote an argument that might contain a macro name, comma, parenthesis, or a leading blank or newline.
+[src:gnu-autotools/autoconf-p01] This rule applies recursively for every macro call, including macros called from other macros.
+[src:gnu-autotools/autoconf-p01] For more details on quoting rules, see Programming in M4.
+[src:gnu-autotools/autoconf-p01] because ‘1’ cannot contain a macro call.
+[src:gnu-autotools/autoconf-p01] Here, the argument of `AC_MSG_ERROR` must be quoted; otherwise, its comma would be interpreted as an argument separator.
+[src:gnu-autotools/autoconf-p01] Also, the second and third arguments of ‘AC_CHECK_HEADER’ must be quoted, since they contain macro calls.
+[src:gnu-autotools/autoconf-p01] The three arguments ‘HAVE_STDIO_H’, ‘stdio.h’, and ‘Define to 1 if you have <stdio.h>.’ do not need quoting, but if you unwisely defined a macro with a name like ‘Define’ or ‘stdio’ then they would need quoting.
+[src:gnu-autotools/autoconf-p01] This is safe, so long as you adopt good naming conventions and do not define macros with names like ‘HAVE_STDIO_H’, ‘stdio’, or ‘h’.
+[src:gnu-autotools/autoconf-p01] Though it is also safe here to omit the quotes around ‘Define to 1 if you have <stdio.h>.’ this is not recommended, as message strings are more likely to inadvertently contain commas.
+[src:gnu-autotools/autoconf-p01] In other cases, you may want to use text that also resembles a macro call.
+[src:gnu-autotools/autoconf-p01] When you use the same text in a macro argument, you must therefore have an extra quotation level (since one is stripped away by the macro substitution).
+[src:gnu-autotools/autoconf-p01] You are now able to understand one of the constructs of Autoconf that has been continually misunderstood...
+[src:gnu-autotools/autoconf-p01] The rule of thumb is that *whenever you expect macro expansion, expect quote expansion*; i.e., expect one level of quotes to be lost.
+[src:gnu-autotools/autoconf-p01] is incorrect: here, the first argument of `AC_LANG_SOURCE` is ‘char b[10];’ and is expanded once, which results in ‘char b10;’; and the `AC_LANG_SOURCE` is also expanded prior to being passed to `AC_COMPILE_IFELSE`.
+[src:gnu-autotools/autoconf-p01] Voilà, you actually produce ‘char b[10];’ this time!
+[src:gnu-autotools/autoconf-p01] On the other hand, descriptions (e.g., the last parameter of `AC_DEFINE` or `AS_HELP_STRING`) are not literals—they are subject to line breaking, for example—and should not be double quoted.
+[src:gnu-autotools/autoconf-p01] Even if these descriptions are short and are not actually broken, double quoting them yields weird results.
+[src:gnu-autotools/autoconf-p01] Some macros take optional arguments, which this documentation represents as [*arg*] (not to be confused with the quote characters).
+[src:gnu-autotools/autoconf-p01] You may just leave them empty, or use ‘[]’ to make the emptiness of the argument explicit, or you may simply omit the trailing commas.
+[src:gnu-autotools/autoconf-p01] It is best to put each macro call on its own line in configure.ac.
+[src:gnu-autotools/autoconf-p01] Most of the macros don’t add extra newlines; they rely on the newline after the macro call to terminate the commands.
+[src:gnu-autotools/autoconf-p01] This approach makes the generated `configure` script a little easier to read by not inserting lots of blank lines.
+[src:gnu-autotools/autoconf-p01] It is generally safe to set shell variables on the same line as a macro call, because the shell allows assignments without intervening newlines.
+[src:gnu-autotools/autoconf-p01] You can include comments in configure.ac files by starting them with the ‘#’.
+[src:gnu-autotools/autoconf-p01] The order in which configure.ac calls the Autoconf macros is not important, with a few exceptions.
+[src:gnu-autotools/autoconf-p01] Every configure.ac must contain a call to `AC_INIT` before the checks, and a call to `AC_OUTPUT` at the end (see Outputting Files).
+[src:gnu-autotools/autoconf-p01] Additionally, some macros rely on other macros having been called first, because they check previously set values of some variables to decide what to do.
+[src:gnu-autotools/autoconf-p01] These macros are noted in the individual descriptions (see Existing Tests), and they also warn you when `configure` is created if they are called out of order.
+[src:gnu-autotools/autoconf-p01] To encourage consistency, here is a suggested order for calling the Autoconf macros.
+[src:gnu-autotools/autoconf-p01] Generally speaking, the things near the end of this list are those that could depend on things earlier in it.
+[src:gnu-autotools/autoconf-p01] For example, library functions could be affected by types and libraries.
+[src:gnu-autotools/autoconf-p01] The `autoscan` program can help you create and/or maintain a configure.ac file for a software package.
+[src:gnu-autotools/autoconf-p01] `autoscan` examines source files in the directory tree rooted at a directory given as a command line argument, or the current directory if none is given.
+[src:gnu-autotools/autoconf-p01] It searches the source files for common portability problems and creates a file configure.scan which is a preliminary configure.ac for that package, and checks a possibly existing configure.ac for completeness.
+[src:gnu-autotools/autoconf-p01] When using `autoscan` to create a configure.ac, you should manually examine configure.scan before renaming it to configure.ac; it probably needs some adjustments.
+[src:gnu-autotools/autoconf-p01] Occasionally, `autoscan` outputs a macro in the wrong order relative to another macro, so that `autoconf` produces a warning; you need to move such macros manually.
+[src:gnu-autotools/autoconf-p01] Also, if you want the package to use a configuration header file, you must add a call to `AC_CONFIG_HEADERS` (see Configuration Header Files).
+[src:gnu-autotools/autoconf-p01] You might also have to change or add some `#if` directives to your program in order to make it work with Autoconf (see Using `ifnames` to List Conditionals, for information about a program that can help with that job).
+[src:gnu-autotools/autoconf-p01] When using `autoscan` to maintain a configure.ac, simply consider adding its suggestions.
+[src:gnu-autotools/autoconf-p01] The file autoscan.log contains detailed information on why a macro is requested.
+[src:gnu-autotools/autoconf-p01] `autoscan` uses several data files (installed along with Autoconf) to determine which macros to output when it finds particular symbols in a package’s source files.
+[src:gnu-autotools/autoconf-p01] These data files all have the same format: each line consists of a symbol, one or more blanks, and the Autoconf macro to output if that symbol is encountered.
+[src:gnu-autotools/autoconf-p01] Print a summary of the command line options and exit.
+[src:gnu-autotools/autoconf-p01] Print the version number of Autoconf and exit.
+[src:gnu-autotools/autoconf-p01] Print the names of the files it examines and the potentially interesting symbols it finds in them.
+[src:gnu-autotools/autoconf-p01] `ifnames` can help you write configure.ac for a software package.
+[src:gnu-autotools/autoconf-p01] It prints the identifiers that the package already uses in C preprocessor conditionals.
+[src:gnu-autotools/autoconf-p01] If a package has already been set up to have some portability, `ifnames` can thus help you figure out what its `configure` needs to check for.
+[src:gnu-autotools/autoconf-p01] It may help fill in some gaps in a configure.ac generated by `autoscan` (see Using `autoscan` to Create configure.ac).
+[src:gnu-autotools/autoconf-p01] `ifnames` scans all of the C source files named on the command line (or the standard input, if none are given) and writes to the standard output a sorted list of all the identifiers that appear in those files in `#if`, `#ifdef`, `#ifndef`, `#elif`, `#elifdef`, or `#elifndef` directives.
+[src:gnu-autotools/autoconf-p01] It prints each identifier on a line, followed by a space-separated list of the files in which that identifier occurs.
+[src:gnu-autotools/autoconf-p01] To create `configure` from configure.ac, run the `autoconf` program with no arguments.
+[src:gnu-autotools/autoconf-p01] `autoconf` processes configure.ac with the M4 macro processor, using the Autoconf macros.
+[src:gnu-autotools/autoconf-p01] If you give `autoconf` an argument, it reads that file instead of configure.ac and writes the configuration script to the standard output instead of to `configure`.
+[src:gnu-autotools/autoconf-p01] If you give `autoconf` the argument -, it reads from the standard input instead of configure.ac and writes the configuration script to the standard output.
+[src:gnu-autotools/autoconf-p01] The Autoconf macros are defined in several files.
+[src:gnu-autotools/autoconf-p01] Some of the files are distributed with Autoconf; `autoconf` reads them first.
+[src:gnu-autotools/autoconf-p01] Then it looks for the optional file acsite.m4 in the directory that contains the distributed Autoconf macro files, and for the optional file aclocal.m4 in the current directory.
+[src:gnu-autotools/autoconf-p01] Those files can contain your site’s or the package’s own Autoconf macro definitions (see Writing Autoconf Macros, for more information).
+[src:gnu-autotools/autoconf-p01] If a macro is defined in more than one of the files that `autoconf` reads, the last definition it reads overrides the earlier ones.
+[src:gnu-autotools/autoconf-p01] Remake configure even if newer than its input files.
+[src:gnu-autotools/autoconf-p01] Save output (script or trace) to *file*.
+[src:gnu-autotools/autoconf-p01] The file - stands for the standard output.
+[src:gnu-autotools/autoconf-p01] Enable or disable warnings related to each *category*.
+[src:gnu-autotools/autoconf-p01] See m4_warn, for a comprehensive list of categories.
+[src:gnu-autotools/autoconf-p01] Disable warnings falling into *category*.
+[src:gnu-autotools/autoconf-p01] The environment variable `WARNINGS` may also be set to a comma-separated list of warning categories to enable or disable.
+[src:gnu-autotools/autoconf-p01] It is interpreted exactly the same way as the argument of --warnings, but unknown categories are silently ignored.
+[src:gnu-autotools/autoconf-p01] The command line takes precedence; for instance, if `WARNINGS` is set to `obsolete`, but -Wnone is given on the command line, no warnings will be issued.
+[src:gnu-autotools/autoconf-p01] Some categories of warnings are on by default.
+[src:gnu-autotools/autoconf-p01] Do not create the `configure` script, but list the calls to *macro* according to the *format*.
+[src:gnu-autotools/autoconf-p01] Multiple --trace arguments can be used to list several macros.
+[src:gnu-autotools/autoconf-p01] Multiple --trace arguments for a single macro are not cumulative; instead, you should just make *format* as long as needed.
+[src:gnu-autotools/autoconf-p01] The *format* is a regular string, with newlines if desired, and several special escape codes.
+[src:gnu-autotools/autoconf-p01] It defaults to ‘$f:$l:$n:$%’; see Invoking `autom4te`, for details on the *format*.
+[src:gnu-autotools/autoconf-p01] By default, --trace does not trace the initialization of the Autoconf macros (typically the `AC_DEFUN` definitions).
+[src:gnu-autotools/autoconf-p01] This results in a noticeable speedup, but can be disabled by this option.
+[src:gnu-autotools/autoconf-p01] It is often necessary to check the content of a configure.ac file, but parsing it yourself is extremely fragile and error-prone.
+[src:gnu-autotools/autoconf-p01] It is suggested that you rely upon --trace to scan configure.ac.
+[src:gnu-autotools/autoconf-p01] The example below highlights the difference between ‘$@’, ‘$*’, and ‘$%’.
+[src:gnu-autotools/autoconf-p01] Installing the various components of the GNU Build System can be tedious: running `autopoint` for Gettext, `automake` for Makefile.in etc. in each directory.
+[src:gnu-autotools/autoconf-p01] It may be needed either because some tools such as `automake` have been updated on your system, or because some of the sources such as configure.ac have been updated, or finally, simply in order to install the GNU Build System in a fresh tree.
+[src:gnu-autotools/autoconf-p01] `autoreconf` runs `autoconf`, `autoheader`, `aclocal`, `automake`, `libtoolize`, `intltoolize`, `gtkdocize`, and `autopoint` (when appropriate) repeatedly to update the GNU Build System in the specified directories and their subdirectories (see Configuring Other Packages in Subdirectories).
+[src:gnu-autotools/autoconf-p01] By default, it only remakes those files that are older than their sources.
+[src:gnu-autotools/autoconf-p01] If you install a new version of some tool, you can make `autoreconf` remake *all* of the files by giving it the --force option.
+[src:gnu-autotools/autoconf-p01] The environment variables `AUTOM4TE`, `AUTOCONF`, `AUTOHEADER`, `AUTOMAKE`, `ACLOCAL`, `AUTOPOINT`, `LIBTOOLIZE`, `INTLTOOLIZE`, `GTKDOCIZE`, `M4`, and `MAKE` may be used to override the invocation of the respective tools.
+[src:gnu-autotools/autoconf-p01] See Automatic Remaking, for Make rules to automatically rebuild `configure` scripts when their source files change.
+[src:gnu-autotools/autoconf-p01] That method handles the timestamps of configuration header templates properly, but does not pass --autoconf-dir=*dir* or --localdir=*dir*.
+[src:gnu-autotools/autoconf-p01] Gettext supplies the `autopoint` command to add translation infrastructure to a source package.
+[src:gnu-autotools/autoconf-p01] If you use `autopoint`, your configure.ac should invoke `AM_GNU_GETTEXT` and one of `AM_GNU_GETTEXT_VERSION(*gettext-version*)` or `AM_GNU_GETTEXT_REQUIRE_VERSION(*min-gettext-version*)`.
+[src:gnu-autotools/autoconf-p01] See Invoking the `autopoint` Program in *GNU `gettext` utilities*, for further details.
+[src:gnu-autotools/autoconf-p01] Print the name of each directory `autoreconf` examines and the commands it runs.
+[src:gnu-autotools/autoconf-p01] If given two or more times, pass --verbose to subordinate tools that support it.
+[src:gnu-autotools/autoconf-p01] Consider all generated and standard auxiliary files to be obsolete.
+[src:gnu-autotools/autoconf-p01] This remakes even configure scripts and configuration headers that are newer than their input files (configure.ac and, if present, aclocal.m4).
+[src:gnu-autotools/autoconf-p01] If deemed appropriate, this option triggers calls to ‘automake --force-missing’.
+[src:gnu-autotools/autoconf-p01] Passing both --force and --install to `autoreconf` will in turn undo any customizations to standard files.
+[src:gnu-autotools/autoconf-p01] Note that the macro `AM_INIT_AUTOMAKE` has some options which change the set of files considered to be standard.
+[src:gnu-autotools/autoconf-p01] Replace files that *could* be generated but appear to have been written by hand.
+[src:gnu-autotools/autoconf-p01] Currently this only affects the treatment of the primary configuration header template (usually config.h.in; see Configuration Header Templates).
+[src:gnu-autotools/autoconf-p01] In the future it may also affect aclocal.m4 and others.
+[src:gnu-autotools/autoconf-p01] Install any missing standard auxiliary files in the package.
+[src:gnu-autotools/autoconf-p01] By default, files are copied; this can be changed with --symlink.
+[src:gnu-autotools/autoconf-p01] If deemed appropriate, this option triggers calls to ‘automake --add-missing’, ‘libtoolize’, ‘autopoint’, etc.
+[src:gnu-autotools/autoconf-p01] Do not rebuild files in subdirectories to configure (see Configuring Other Packages in Subdirectories, macro `AC_CONFIG_SUBDIRS`).
+[src:gnu-autotools/autoconf-p01] When used with --install, install symbolic links to the missing auxiliary files instead of copying them.
+[src:gnu-autotools/autoconf-p01] When the directories were configured, update the configuration by running ‘./config.status --recheck && ./config.status’, and then run ‘make’.
+[src:gnu-autotools/autoconf-p01] Do not run any *cmd* in the list, even if it seems to be needed.
+[src:gnu-autotools/autoconf-p01] *cmd* can be ‘autoconf’, ‘autoheader’, ‘automake’, ‘aclocal’, ‘autopoint’, ‘libtoolize’, ‘intltoolize’, ‘gtkdocize’, or ‘make’.
+[src:gnu-autotools/autoconf-p01] ‘--exclude make’ has priority over ‘--make’.
+[src:gnu-autotools/autoconf-p01] Passed on to `aclocal`, `autoconf` and `autoheader` internally.
+[src:gnu-autotools/autoconf-p01] Passed on to `autoconf` and `autoheader` internally.
+[src:gnu-autotools/autoconf-p01] If you want `autoreconf` to pass flags that are not listed here on to `aclocal`, set `ACLOCAL_AMFLAGS` in your Makefile.am.
+[src:gnu-autotools/autoconf-p01] Due to a limitation in the Autoconf implementation these flags currently must be set on a single line in Makefile.am, without any backslash-newlines or makefile comments.
+[src:gnu-autotools/autoconf-p01] Also, be aware that future Automake releases might start flagging `ACLOCAL_AMFLAGS` as obsolescent, or even remove support for it.
+[src:gnu-autotools/autoconf-p02] Autoconf-generated `configure` scripts need some information about how to initialize, such as how to find the package’s source files and about the output files to produce.
+[src:gnu-autotools/autoconf-p02] The following sections describe the initialization and the creation of output files.
+[src:gnu-autotools/autoconf-p02] Every `configure` script must call `AC_INIT` before doing anything else that produces output.
+[src:gnu-autotools/autoconf-p02] Calls to silent macros, such as `AC_DEFUN`, may also occur prior to `AC_INIT`, although these are generally used via aclocal.m4, since that is implicitly included before the start of configure.ac.
+[src:gnu-autotools/autoconf-p02] The only other required macro is `AC_OUTPUT` (see Outputting Files).
+[src:gnu-autotools/autoconf-p02] Process any command-line arguments and perform initialization and verification.
+[src:gnu-autotools/autoconf-p02] Set the name of the *package* and its *version*.
+[src:gnu-autotools/autoconf-p02] These are typically used in --version support, including that of `configure`.
+[src:gnu-autotools/autoconf-p02] The optional argument *bug-report* should be the email to which users should send bug reports.
+[src:gnu-autotools/autoconf-p02] The package *tarname* differs from *package*: the latter designates the full package name (e.g., ‘GNU Autoconf’), while the former is meant for distribution tar ball names (e.g., ‘autoconf’).
+[src:gnu-autotools/autoconf-p02] It defaults to *package* with ‘GNU ’ stripped, lower-cased, and all characters other than alphanumerics and underscores are changed to ‘-’.
+[src:gnu-autotools/autoconf-p02] If provided, *url* should be the home page for the package.
+[src:gnu-autotools/autoconf-p02] Leading and trailing whitespace is stripped from all the arguments to `AC_INIT`, and interior whitespace is collapsed to a single space.
+[src:gnu-autotools/autoconf-p02] The arguments to `AC_INIT` may be computed by M4, when `autoconf` is run.
+[src:gnu-autotools/autoconf-p02] This uses `m4_defn` to produce the expansion of `gnomo_VERSION` *as a quoted string*, so that if there happen to be any more M4 macro names in `gnomo_VERSION`, they will not be expanded.
+[src:gnu-autotools/autoconf-p02] See Renaming Macros in *GNU m4 macro processor*.
+[src:gnu-autotools/autoconf-p02] This uses the utility script `git-version-gen` to look up the package’s version in its version control metadata.
+[src:gnu-autotools/autoconf-p02] This script is part of Gnulib (see Gnulib).
+[src:gnu-autotools/autoconf-p02] The arguments to `AC_INIT` are written into configure in several different places.
+[src:gnu-autotools/autoconf-p02] Therefore, we strongly recommend that you write any M4 logic in `AC_INIT` arguments to be evaluated *before* `AC_INIT` itself is evaluated.
+[src:gnu-autotools/autoconf-p02] For instance, in the above example, the second argument to `m4_define` is *not* quoted, so the `m4_esyscmd` is evaluated only once, and `gnomo_VERSION` is defined to the output of the command.
+[src:gnu-autotools/autoconf-p02] If the second argument to `m4_define` were quoted, `m4_esyscmd` would be evaluated each time the *version* or *tarname* arguments were written to configure, and the command would be run repeatedly.
+[src:gnu-autotools/autoconf-p02] In some of the places where the arguments to `AC_INIT` are used, within configure, shell evaluation cannot happen.
+[src:gnu-autotools/autoconf-p02] Therefore, the arguments to `AC_INIT` may *not* be computed when `configure` is run.
+[src:gnu-autotools/autoconf-p02] If they contain any construct that isn’t always treated as literal by the shell (e.g. variable expansions), `autoconf` will issue an error.
+[src:gnu-autotools/autoconf-p02] The *tarname* argument is used to construct filenames.
+[src:gnu-autotools/autoconf-p02] It should not contain wildcard characters, white space, or anything else that could be troublesome as part of a file or directory name.
+[src:gnu-autotools/autoconf-p02] Some of M4’s active characters (notably parentheses, square brackets, ‘,’ and ‘#’) commonly appear in URLs and lists of email addresses.
+[src:gnu-autotools/autoconf-p02] If any of these characters appear in an argument to AC_INIT, that argument will probably need to be double-quoted to avoid errors and mistranscriptions.
+[src:gnu-autotools/autoconf-p02] Exactly *tarname*, possibly generated from *package*.
+[src:gnu-autotools/autoconf-p02] Exactly *bug-report*, if one was provided.
+[src:gnu-autotools/autoconf-p02] Typically an email address, or URL to a bug management web page.
+[src:gnu-autotools/autoconf-p02] If *url* was empty, but *package* begins with ‘GNU ’, then this defaults to ‘https://www.gnu.org/software/*tarname*/’, otherwise, no URL is assumed.
+[src:gnu-autotools/autoconf-p02] If your `configure` script does its own option processing, it should inspect ‘$@’ or ‘$*’ immediately after calling `AC_INIT`, because other Autoconf macros liberally use the `set` command to process strings, and this has the side effect of updating ‘$@’ and ‘$*’.
+[src:gnu-autotools/autoconf-p02] However, we suggest that you use standard macros like `AC_ARG_ENABLE` instead of attempting to implement your own option processing.
+[src:gnu-autotools/autoconf-p02] The following optional macros can be used to help choose the minimum version of Autoconf that can successfully compile a given configure.ac.
+[src:gnu-autotools/autoconf-p02] Ensure that a recent enough version of Autoconf is being used.
+[src:gnu-autotools/autoconf-p02] If the version of Autoconf being used to create `configure` is earlier than *version*, print an error message to the standard error output and exit with failure (exit status is 63).
+[src:gnu-autotools/autoconf-p02] This macro may be used before `AC_INIT`.
+[src:gnu-autotools/autoconf-p02] This macro was introduced in Autoconf 2.62.
+[src:gnu-autotools/autoconf-p02] It identifies the version of Autoconf that is currently parsing the input file, in a format suitable for `m4_version_compare` (see m4_version_compare); in other words, for this release of Autoconf, its value is ‘2.73’.
+[src:gnu-autotools/autoconf-p02] One potential use of this macro is for writing conditional fallbacks based on when a feature was added to Autoconf, rather than using `AC_PREREQ` to require the newer version of Autoconf.
+[src:gnu-autotools/autoconf-p02] However, remember that the Autoconf philosophy favors feature checks over version checks.
+[src:gnu-autotools/autoconf-p02] You should not expand this macro directly; use ‘m4_defn([AC_AUTOCONF_VERSION])’ instead.
+[src:gnu-autotools/autoconf-p02] This is because some users might have a beta version of Autoconf installed, with arbitrary letters included in its version string.
+[src:gnu-autotools/autoconf-p02] This means it is possible for the version string to contain the name of a defined macro, such that expanding `AC_AUTOCONF_VERSION` would trigger the expansion of that macro during rescanning, and change the version string to be different than what you intended to check.
+[src:gnu-autotools/autoconf-p02] The following macros manage version numbers for `configure` scripts.
+[src:gnu-autotools/autoconf-p02] State that, in addition to the Free Software Foundation’s copyright on the Autoconf macros, parts of your `configure` are covered by the *copyright-notice*.
+[src:gnu-autotools/autoconf-p02] The *copyright-notice* shows up in both the head of `configure` and in ‘configure --version’.
+[src:gnu-autotools/autoconf-p02] Copy revision stamp *revision-info* into the `configure` script, with any dollar signs or double-quotes removed.
+[src:gnu-autotools/autoconf-p02] This macro lets you put a revision stamp from configure.ac into `configure` that the traditional version control systems RCS and CVS can update, without these systems changing it again when you check in the resulting `configure`.
+[src:gnu-autotools/autoconf-p02] That way, you can determine easily which revision of configure.ac a particular `configure` corresponds to.
+[src:gnu-autotools/autoconf-p02] The following macros help you manage the contents of your source tree.
+[src:gnu-autotools/autoconf-p02] Distinguish this package’s source directory from other source directories that might happen to exist in the file system.
+[src:gnu-autotools/autoconf-p02] *unique-file-in-source-dir* should name a file that is unique to this package.
+[src:gnu-autotools/autoconf-p02] `configure` will verify that this file exists in *srcdir*, before it runs any other checks.
+[src:gnu-autotools/autoconf-p02] Use of this macro is strongly recommended.
+[src:gnu-autotools/autoconf-p02] It protects against people accidentally specifying the wrong directory with --srcdir.
+[src:gnu-autotools/autoconf-p02] See `configure` Invocation, for more information.
+[src:gnu-autotools/autoconf-p02] Packages that use `aclocal` to generate aclocal.m4 should declare where local macros can be found using `AC_CONFIG_MACRO_DIRS`.
+[src:gnu-autotools/autoconf-p02] Specify the given directories as the location of additional local Autoconf macros.
+[src:gnu-autotools/autoconf-p02] These macros are intended for use by commands like `autoreconf` or `aclocal` that trace macro calls; they should be called directly from configure.ac so that tools that install macros for `aclocal` can find the macros’ declarations.
+[src:gnu-autotools/autoconf-p02] Tools that want to learn which directories have been selected should trace `AC_CONFIG_MACRO_DIR_TRACE`, which will be called once per directory.
+[src:gnu-autotools/autoconf-p02] For historical reasons, the macro AC_CONFIG_MACRO_DIR can also be used once, if it appears first, for tools such as older `libtool` that weren’t prepared to handle multiple directories.
+[src:gnu-autotools/autoconf-p02] will cause the trace of AC_CONFIG_MACRO_DIR_TRACE to appear four times, and should cause the directories to be searched in this order: ‘dir1 dir2 dir3 dir4’.
+[src:gnu-autotools/autoconf-p02] Note that if you use `aclocal` from an Automake release prior to 1.13 to generate aclocal.m4, you must also set `ACLOCAL_AMFLAGS = -I *dir1* [-I *dir2* ... -I *dirN*]` in your top-level Makefile.am.
+[src:gnu-autotools/autoconf-p02] Due to a limitation in the Autoconf implementation of `autoreconf`, these include directives currently must be set on a single line in Makefile.am, without any backslash-newlines or makefile comments.
+[src:gnu-autotools/autoconf-p02] Some Autoconf macros require auxiliary scripts.
+[src:gnu-autotools/autoconf-p02] `AC_PROG_INSTALL` (see Particular Program Checks) requires a fallback implementation of `install` called install-sh, and the `AC_CANONICAL` macros (see Manual Configuration) require the system-identification scripts config.sub and config.guess.
+[src:gnu-autotools/autoconf-p02] Third-party tools, such as Automake and Libtool, may require additional auxiliary scripts.
+[src:gnu-autotools/autoconf-p02] By default, `configure` looks for these scripts next to itself, in *srcdir*.
+[src:gnu-autotools/autoconf-p02] For convenience when working with subdirectories with their own configure scripts (see Configuring Other Packages in Subdirectories), if the scripts are not in *srcdir* it will also look in *srcdir*/.. and *srcdir*/../...
+[src:gnu-autotools/autoconf-p02] All of the scripts must be found in the same directory.
+[src:gnu-autotools/autoconf-p02] If these default locations are not adequate, or simply to reduce clutter at the top level of the source tree, packages can use `AC_CONFIG_AUX_DIR` to declare where to look for auxiliary scripts.
+[src:gnu-autotools/autoconf-p02] Normally, *dir* should be a relative path, which is taken as relative to *srcdir*.
+[src:gnu-autotools/autoconf-p02] If *dir* is an absolute path or contains shell variables, however, it is used as-is.
+[src:gnu-autotools/autoconf-p02] When the goal of using `AC_CONFIG_AUX_DIR` is to reduce clutter at the top level of the source tree, the conventional name for *dir* is build-aux.
+[src:gnu-autotools/autoconf-p02] If you need portability to DOS variants, do not name the auxiliary directory aux.
+[src:gnu-autotools/autoconf-p02] Declare that *file* is an auxiliary script needed by this configure script, and set the shell variable `ac_aux_dir` to the directory where it can be found.
+[src:gnu-autotools/autoconf-p02] The value of `ac_aux_dir` is guaranteed to end with a ‘/’.
+[src:gnu-autotools/autoconf-p02] Macros that need auxiliary scripts must use this macro to register each script they need.
+[src:gnu-autotools/autoconf-p02] `configure` checks for all the auxiliary scripts it needs on startup, and exits with an error if any are missing.
+[src:gnu-autotools/autoconf-p02] `autoreconf` also detects missing auxiliary scripts.
+[src:gnu-autotools/autoconf-p02] When used with the --install option, `autoreconf` will try to add missing scripts to the directory specified by `AC_CONFIG_AUX_DIR`, or to the top level of the source tree if `AC_CONFIG_AUX_DIR` was not used.
+[src:gnu-autotools/autoconf-p02] It can always do this for the scripts needed by Autoconf core macros: install-sh, config.sub, and config.guess.
+[src:gnu-autotools/autoconf-p02] Many other commonly-needed scripts are installed by the third-party tools that `autoreconf` knows how to run, such as missing for Automake and ltmain.sh for Libtool.
+[src:gnu-autotools/autoconf-p02] If you are using Automake, auxiliary scripts will automatically be included in the tarball created by `make dist`.
+[src:gnu-autotools/autoconf-p02] If you are not using Automake you will need to arrange for auxiliary scripts to be included in tarballs yourself.
+[src:gnu-autotools/autoconf-p02] Auxiliary scripts should normally *not* be checked into a version control system, for the same reasons that `configure` shouldn’t be.
+[src:gnu-autotools/autoconf-p02] Every Autoconf script, e.g., configure.ac, should finish by calling `AC_OUTPUT`.
+[src:gnu-autotools/autoconf-p02] That is the macro that generates and runs config.status, which in turn creates the makefiles and any other files resulting from configuration.
+[src:gnu-autotools/autoconf-p02] This is the only required macro besides `AC_INIT` (see Configure Input: Source Code, Macros, and Auxiliary Files).
+[src:gnu-autotools/autoconf-p02] Call this macro once, at the end of configure.ac.
+[src:gnu-autotools/autoconf-p02] The location of your `AC_OUTPUT` invocation is the exact point where configuration actions are taken: any code afterwards is executed by `configure` once `config.status` was run.
+[src:gnu-autotools/autoconf-p02] If you want to bind actions to `config.status` itself (independently of whether `configure` is being run), see Running Arbitrary Configuration Commands.
+[src:gnu-autotools/autoconf-p02] Historically, the usage of `AC_OUTPUT` was somewhat different.
+[src:gnu-autotools/autoconf-p02] See Obsolete Macros, for a description of the arguments that `AC_OUTPUT` used to support.
+[src:gnu-autotools/autoconf-p02] If you run `make` in subdirectories, you should run it using the `make` variable `MAKE`.
+[src:gnu-autotools/autoconf-p02] Most versions of `make` set `MAKE` to the name of the `make` program plus any options it was given.
+[src:gnu-autotools/autoconf-p02] (But many do not include in it the values of any variables set on the command line, so those are not passed on automatically.) Some old versions of `make` do not set this variable.
+[src:gnu-autotools/autoconf-p02] The following macro allows you to use it even with those versions.
+[src:gnu-autotools/autoconf-p02] If the Make command, `$MAKE` if set or else ‘make’, predefines `$(MAKE)`, define output variable `SET_MAKE` to be empty.
+[src:gnu-autotools/autoconf-p02] Otherwise, define `SET_MAKE` to a macro definition that sets `$(MAKE)`, such as ‘MAKE=make’.
+[src:gnu-autotools/autoconf-p02] configure is designed so that it appears to do everything itself, but there is actually a hidden slave: config.status. configure is in charge of examining your system, but it is config.status that actually takes the proper actions based on the results of configure.
+[src:gnu-autotools/autoconf-p02] The most typical task of config.status is to *instantiate* files.
+[src:gnu-autotools/autoconf-p02] This section describes the common behavior of the four standard instantiating macros: `AC_CONFIG_FILES`, `AC_CONFIG_HEADERS`, `AC_CONFIG_COMMANDS` and `AC_CONFIG_LINKS`.
+[src:gnu-autotools/autoconf-p02] A blank-or-newline-separated list of tags, which are typically the names of the files to instantiate.
+[src:gnu-autotools/autoconf-p02] You are encouraged to use literals as *tags*.
+[src:gnu-autotools/autoconf-p02] The macros `AC_CONFIG_FILES` and `AC_CONFIG_HEADERS` use special *tag* values: they may have the form ‘*output*’ or ‘*output*:*inputs*’.
+[src:gnu-autotools/autoconf-p02] The file *output* is instantiated from its templates, *inputs* (defaulting to ‘*output*.in’).
+[src:gnu-autotools/autoconf-p02] ‘AC_CONFIG_FILES([Makefile:boiler/top.mk:boiler/bot.mk])’, for example, asks for the creation of the file Makefile that contains the expansion of the output variables in the concatenation of boiler/top.mk and boiler/bot.mk.
+[src:gnu-autotools/autoconf-p02] The special value ‘-’ might be used to denote the standard output when used in *output*, or the standard input when used in the *inputs*.
+[src:gnu-autotools/autoconf-p02] You most probably don’t need to use this in configure.ac, but it is convenient when using the command line interface of ./config.status, see config.status Invocation, for more details.
+[src:gnu-autotools/autoconf-p02] The *inputs* may be absolute or relative file names.
+[src:gnu-autotools/autoconf-p02] In the latter case they are first looked for in the build tree, and then in the source tree.
+[src:gnu-autotools/autoconf-p02] Input files should be text files, and a line length below 2000 bytes should be safe.
+[src:gnu-autotools/autoconf-p02] Shell commands output literally into config.status, and associated with a tag that the user can use to tell config.status which commands to run.
+[src:gnu-autotools/autoconf-p02] The commands are run each time a *tag* request is given to config.status, typically each time the file *tag* is created.
+[src:gnu-autotools/autoconf-p02] The variables set during the execution of `configure` are *not* available here: you first need to set them via the *init-cmds*.
+[src:gnu-autotools/autoconf-p02] The name of the top source directory, assuming that the working directory is the top build directory.
+[src:gnu-autotools/autoconf-p02] This is what `configure`’s --srcdir option sets.
+[src:gnu-autotools/autoconf-p02] The name of the top source directory, assuming that the working directory is the current build directory.
+[src:gnu-autotools/autoconf-p02] The name of the top build directory, assuming that the working directory is the current build directory.
+[src:gnu-autotools/autoconf-p02] It can be empty, or else ends with a slash, so that you may concatenate it.
+[src:gnu-autotools/autoconf-p02] The name of the corresponding source directory, assuming that the working directory is the current build directory.
+[src:gnu-autotools/autoconf-p02] The name of a temporary directory within the build tree, which you can use if you need to create additional temporary files.
+[src:gnu-autotools/autoconf-p02] The directory is cleaned up when `config.status` is done or interrupted.
+[src:gnu-autotools/autoconf-p02] Please use package-specific file name prefixes to avoid clashing with files that `config.status` may use internally.
+[src:gnu-autotools/autoconf-p02] The *current* directory refers to the directory (or pseudo-directory) containing the input part of *tags*.
+[src:gnu-autotools/autoconf-p02] Shell commands output *unquoted* near the beginning of config.status, and executed each time config.status runs (regardless of the tag).
+[src:gnu-autotools/autoconf-p02] Because they are unquoted, for example, ‘$var’ is output as the value of `var`.
+[src:gnu-autotools/autoconf-p02] *init-cmds* is typically used by configure to give config.status some variables it needs to run the *commands*.
+[src:gnu-autotools/autoconf-p02] You should be extremely cautious in your variable names: all the *init-cmds* share the same name space and may overwrite each other in unpredictable ways.
+[src:gnu-autotools/autoconf-p02] All these macros can be called multiple times, with different *tag* values, of course!
+[src:gnu-autotools/autoconf-p02] Be sure to read the previous section, Performing Configuration Actions.
+[src:gnu-autotools/autoconf-p02] Make `AC_OUTPUT` create each *file* by copying an input file (by default *file*.in), substituting the output variable values.
+[src:gnu-autotools/autoconf-p02] This macro is one of the instantiating macros; see Performing Configuration Actions.
+[src:gnu-autotools/autoconf-p02] See Substitutions in Makefiles, for more information on using output variables.
+[src:gnu-autotools/autoconf-p02] See Setting Output Variables, for more information on creating them.
+[src:gnu-autotools/autoconf-p02] This macro creates the directory that the file is in if it doesn’t exist.
+[src:gnu-autotools/autoconf-p02] Usually, makefiles are created this way, but other files, such as .gdbinit, can be specified as well.
+[src:gnu-autotools/autoconf-p02] You can override an input file name by appending to *file* a colon-separated list of input files.
+[src:gnu-autotools/autoconf-p02] Doing this allows you to keep your file names acceptable to DOS variants, or to prepend and/or append boilerplate to the file.
+[src:gnu-autotools/autoconf-p02] The *file* names should not contain shell metacharacters.
+[src:gnu-autotools/autoconf-p02] See Special Characters in Output Variables.
+[src:gnu-autotools/autoconf-p02] Each subdirectory in a distribution that contains something to be compiled or installed should come with a file Makefile.in, from which `configure` creates a file Makefile in that directory.
+[src:gnu-autotools/autoconf-p02] To create Makefile, `configure` performs a simple variable substitution, replacing occurrences of ‘@*variable*@’ in Makefile.in with the value that `configure` has determined for that variable.
+[src:gnu-autotools/autoconf-p02] Variables that are substituted into output files in this way are called *output variables*.
+[src:gnu-autotools/autoconf-p02] They are ordinary shell variables that are set in `configure`.
+[src:gnu-autotools/autoconf-p02] To make `configure` substitute a particular variable into the output files, the macro `AC_SUBST` must be called with that variable name as an argument.
+[src:gnu-autotools/autoconf-p02] Any occurrences of ‘@*variable*@’ for other variables are left unchanged.
+[src:gnu-autotools/autoconf-p02] See Setting Output Variables, for more information on creating output variables with `AC_SUBST`.
+[src:gnu-autotools/autoconf-p02] A software package that uses a `configure` script should be distributed with a file Makefile.in, but no makefile; that way, the user has to properly configure the package for the local system before compiling it.
+[src:gnu-autotools/autoconf-p02] See Makefile Conventions in *The GNU Coding Standards*, for more information on what to put in makefiles.
+[src:gnu-autotools/autoconf-p02] Some output variables are preset by the Autoconf macros.
+[src:gnu-autotools/autoconf-p02] Some of the Autoconf macros set additional output variables, which are mentioned in the descriptions for those macros.
+[src:gnu-autotools/autoconf-p02] See Output Variable Index, for a complete list of output variables.
+[src:gnu-autotools/autoconf-p02] See Installation Directory Variables, for the list of the preset ones related to installation directories.
+[src:gnu-autotools/autoconf-p02] Below are listed the other preset ones, many of which are precious variables (see Setting Output Variables, `AC_ARG_VAR`).
+[src:gnu-autotools/autoconf-p02] The preset variables which are available during config.status (see Performing Configuration Actions) may also be used during `configure` tests.
+[src:gnu-autotools/autoconf-p02] For example, it is permissible to reference ‘$srcdir’ when constructing a list of directories to pass via the -I option during a compiler feature check.
+[src:gnu-autotools/autoconf-p02] When used in this manner, coupled with the fact that `configure` is always run from the top build directory, it is sufficient to use just ‘$srcdir’ instead of ‘$top_srcdir’.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the C compiler.
+[src:gnu-autotools/autoconf-p02] If it is not set in the environment when `configure` runs, the default value is set when you call `AC_PROG_CC` (or empty if you don’t).
+[src:gnu-autotools/autoconf-p02] `configure` uses this variable when compiling or linking programs to test for C features.
+[src:gnu-autotools/autoconf-p02] If a compiler option affects only the behavior of the preprocessor (e.g., -D*name*), it should be put into `CPPFLAGS` instead.
+[src:gnu-autotools/autoconf-p02] If it affects only the linker (e.g., -L*directory*), it should be put into `LDFLAGS` instead.
+[src:gnu-autotools/autoconf-p02] If it affects only the compiler proper, `CFLAGS` is the natural home for it.
+[src:gnu-autotools/autoconf-p02] However, remember that some Makefile variables are reserved by the GNU Coding Standards for the use of the “user”—the person building the package.
+[src:gnu-autotools/autoconf-p02] For instance, `CFLAGS` is one such variable.
+[src:gnu-autotools/autoconf-p02] Sometimes package developers are tempted to set user variables such as `CFLAGS` because it appears to make their job easier.
+[src:gnu-autotools/autoconf-p02] However, the package itself should never set a user variable, particularly not to include switches that are required for proper compilation of the package.
+[src:gnu-autotools/autoconf-p02] Since these variables are documented as being for the package builder, that person rightfully expects to be able to override any of these variables at build time.
+[src:gnu-autotools/autoconf-p02] If the package developer needs to add switches without interfering with the user, the proper way to do that is to introduce an additional variable.
+[src:gnu-autotools/autoconf-p02] Automake makes this easy by introducing `AM_CFLAGS` (see Flag Variables Ordering in *GNU Automake*), but the concept is the same even if Automake is not used.
+[src:gnu-autotools/autoconf-p02] A comment saying that the file was generated automatically by `configure` and giving the name of the input file.
+[src:gnu-autotools/autoconf-p02] `AC_OUTPUT` adds a comment line containing this variable to the top of every makefile it creates.
+[src:gnu-autotools/autoconf-p02] For other files, you should reference this variable in a comment at the top of each input file.
+[src:gnu-autotools/autoconf-p02] The presence of that line also reminds people editing the file that it needs to be processed by `configure` in order to be used.
+[src:gnu-autotools/autoconf-p02] Preprocessor options for the C, C++, Objective C, and Objective C++ preprocessors and compilers.
+[src:gnu-autotools/autoconf-p02] If it is not set in the environment when `configure` runs, the default value is empty.
+[src:gnu-autotools/autoconf-p02] `configure` uses this variable when preprocessing or compiling programs to test for C, C++, Objective C, and Objective C++ features.
+[src:gnu-autotools/autoconf-p02] This variable’s contents should contain options like -I, -D, and -U that affect only the behavior of the preprocessor.
+[src:gnu-autotools/autoconf-p02] Please see the explanation of `CFLAGS` for what you can do if an option affects other phases of the compiler as well.
+[src:gnu-autotools/autoconf-p02] Currently, `configure` always links as part of a single invocation of the compiler that also preprocesses and compiles, so it uses this variable also when linking programs.
+[src:gnu-autotools/autoconf-p02] However, it is unwise to depend on this behavior because the GNU Coding Standards do not require it and many packages do not use `CPPFLAGS` when linking programs.
+[src:gnu-autotools/autoconf-p02] See Special Characters in Output Variables, for limitations that `CPPFLAGS` might run into.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the C++ compiler.
+[src:gnu-autotools/autoconf-p02] It acts like `CFLAGS`, but for C++ instead of C.
+[src:gnu-autotools/autoconf-p02] These obsolescent variables let you suppress the trailing newline from `echo` for question-answer message pairs.
+[src:gnu-autotools/autoconf-p02] Nowadays it is better to use `AS_ECHO_N`.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the Erlang compiler.
+[src:gnu-autotools/autoconf-p02] `configure` uses this variable when compiling programs to test for Erlang features.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the Fortran compiler.
+[src:gnu-autotools/autoconf-p02] If it is not set in the environment when `configure` runs, the default value is set when you call `AC_PROG_FC` (or empty if you don’t).
+[src:gnu-autotools/autoconf-p02] `configure` uses this variable when compiling or linking programs to test for Fortran features.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the Fortran 77 compiler.
+[src:gnu-autotools/autoconf-p02] If it is not set in the environment when `configure` runs, the default value is set when you call `AC_PROG_F77` (or empty if you don’t).
+[src:gnu-autotools/autoconf-p02] `configure` uses this variable when compiling or linking programs to test for Fortran 77 features.
+[src:gnu-autotools/autoconf-p02] `configure` uses this variable when linking programs to test for features in C, C++, Objective C, Objective C++, Fortran, Go, and Algol 68.
+[src:gnu-autotools/autoconf-p02] This variable’s contents should contain options like -s and -L that affect only the behavior of the linker.
+[src:gnu-autotools/autoconf-p02] Please see the explanation of `CFLAGS` for what you can do if an option also affects other phases of the compiler.
+[src:gnu-autotools/autoconf-p02] Don’t use this variable to pass library names (-l) to the linker; use `LIBS` instead.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the Objective C compiler.
+[src:gnu-autotools/autoconf-p02] It acts like `CFLAGS`, but for Objective C instead of C.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the Objective C++ compiler.
+[src:gnu-autotools/autoconf-p02] It acts like `CXXFLAGS`, but for Objective C++ instead of C++.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the Go compiler.
+[src:gnu-autotools/autoconf-p02] It acts like `CFLAGS`, but for Go instead of C.
+[src:gnu-autotools/autoconf-p02] Debugging and optimization options for the Algol 68 compiler.
+[src:gnu-autotools/autoconf-p02] It acts like `CFLAGS`, but for Algol 68 instead of C.
+[src:gnu-autotools/autoconf-p02] The relative name of the top level of the current build tree.
+[src:gnu-autotools/autoconf-p02] In the top-level directory, this is the same as `builddir`.
+[src:gnu-autotools/autoconf-p02] The relative name of the top level of the current build tree with final slash if nonempty.
+[src:gnu-autotools/autoconf-p02] This is the same as `top_builddir`, except that it contains zero or more runs of `../`, so it should not be appended with a slash for concatenation.
+[src:gnu-autotools/autoconf-p02] This helps for `make` implementations that otherwise do not treat ./file and file as equal in the top-level build directory.
+[src:gnu-autotools/autoconf-p02] The name of the directory that contains the source code for that makefile.
+[src:gnu-autotools/autoconf-p02] The name of the top-level source code directory for the package.
+[src:gnu-autotools/autoconf-p02] In the top-level directory, this is the same as `srcdir`.
+[src:gnu-autotools/autoconf-p02] The following variables specify the directories for package installation, see Variables for Installation Directories in *The GNU Coding Standards*, for more information.
+[src:gnu-autotools/autoconf-p02] Each variable corresponds to an argument of `configure`; trailing slashes are stripped so that expressions such as ‘${prefix}/lib’ expand with only one slash between directory names.
+[src:gnu-autotools/autoconf-p02] See the end of this section for details on when and how to use these variables.
+[src:gnu-autotools/autoconf-p02] The directory for installing executables that users run.
+[src:gnu-autotools/autoconf-p02] The directory for installing idiosyncratic read-only architecture-independent data.
+[src:gnu-autotools/autoconf-p02] The root of the directory tree for read-only architecture-independent data files.
+[src:gnu-autotools/autoconf-p02] The directory for installing documentation files (other than Info and man).
+[src:gnu-autotools/autoconf-p02] The directory for installing documentation files in DVI format.
+[src:gnu-autotools/autoconf-p02] The installation prefix for architecture-dependent files.
+[src:gnu-autotools/autoconf-p02] You should avoid installing anything directly to `exec_prefix`.
+[src:gnu-autotools/autoconf-p02] However, the default value for directories containing architecture-dependent files should be relative to `exec_prefix`.
+[src:gnu-autotools/autoconf-p02] The directory for installing HTML documentation.
+[src:gnu-autotools/autoconf-p02] The directory for installing C header files.
+[src:gnu-autotools/autoconf-p02] The directory for installing documentation in Info format.
+[src:gnu-autotools/autoconf-p02] The directory for installing object code libraries.
+[src:gnu-autotools/autoconf-p02] The directory for installing executables that other programs run.
+[src:gnu-autotools/autoconf-p02] The directory for installing locale-dependent but architecture-independent data, such as message catalogs.
+[src:gnu-autotools/autoconf-p02] This directory usually has a subdirectory per locale.
+[src:gnu-autotools/autoconf-p03] The directory for installing modifiable single-machine data.
+[src:gnu-autotools/autoconf-p03] Content in this directory typically survives a reboot.
+[src:gnu-autotools/autoconf-p03] The directory for installing temporary modifiable single-machine data.
+[src:gnu-autotools/autoconf-p03] Content in this directory survives as long as the process is running (such as pid files), as contrasted with /tmp that may be periodically cleaned.
+[src:gnu-autotools/autoconf-p03] Conversely, this directory is typically cleaned on a reboot.
+[src:gnu-autotools/autoconf-p03] By default, this is a subdirectory of `localstatedir`.
+[src:gnu-autotools/autoconf-p03] The top-level directory for installing documentation in man format.
+[src:gnu-autotools/autoconf-p03] The directory for installing C header files for non-GCC compilers.
+[src:gnu-autotools/autoconf-p03] The directory for installing PDF documentation.
+[src:gnu-autotools/autoconf-p03] The common installation prefix for all files.
+[src:gnu-autotools/autoconf-p03] If `exec_prefix` is defined to a different value, `prefix` is used only for architecture-independent files.
+[src:gnu-autotools/autoconf-p03] The directory for installing PostScript documentation.
+[src:gnu-autotools/autoconf-p03] The directory for installing executables that system administrators run.
+[src:gnu-autotools/autoconf-p03] The directory for installing modifiable architecture-independent data.
+[src:gnu-autotools/autoconf-p03] The directory for installing read-only single-machine data.
+[src:gnu-autotools/autoconf-p03] Most of these variables have values that rely on `prefix` or `exec_prefix`.
+[src:gnu-autotools/autoconf-p03] It is deliberate that the directory output variables keep them unexpanded: typically ‘@datarootdir@’ is replaced by ‘${prefix}/share’, not ‘/usr/local/share’, and ‘@datadir@’ is replaced by ‘${datarootdir}’.
+[src:gnu-autotools/autoconf-p03] she can still specify a different prefix from the one specified to `configure`, in which case, if needed, the package should hard code dependencies corresponding to the make-specified prefix.
+[src:gnu-autotools/autoconf-p03] she can specify a different installation location, in which case the package *must* still depend on the location which was compiled in (i.e., never recompile when ‘make install’ is run).
+[src:gnu-autotools/autoconf-p03] This is an extremely important feature, as many people may decide to install all the files of a package grouped together, and then install links from the final locations to there.
+[src:gnu-autotools/autoconf-p03] In order to support these features, it is essential that `datarootdir` remains defined as ‘${prefix}/share’, so that its value can be expanded based on the current value of `prefix`.
+[src:gnu-autotools/autoconf-p03] A corollary is that you should not use these variables except in makefiles.
+[src:gnu-autotools/autoconf-p03] Similarly, you should not rely on `AC_CONFIG_FILES` to replace `bindir` and friends in your shell scripts and other files; instead, let `make` manage their replacement.
+[src:gnu-autotools/autoconf-p03] The brackets prevent `configure` from replacing ‘@bindir@’ in the Sed expression itself.
+[src:gnu-autotools/autoconf-p03] Brackets are preferable to a backslash here, since POSIX says ‘\@’ is not portable.
+[src:gnu-autotools/autoconf-p03] Use the matching makefile variable instead.
+[src:gnu-autotools/autoconf-p03] The example takes advantage of the variable ‘$(pkgdatadir)’ provided by Automake; it is equivalent to ‘$(datadir)/$(PACKAGE)’.
+[src:gnu-autotools/autoconf-p03] Don’t use ‘/’ in the Sed expressions that replace file names since most likely the variables you use, such as ‘$(bindir)’, contain ‘/’.
+[src:gnu-autotools/autoconf-p03] Use a shell metacharacter instead, such as ‘|’.
+[src:gnu-autotools/autoconf-p03] File names, file name components, and the value of `VPATH` should not contain shell metacharacters or white space.
+[src:gnu-autotools/autoconf-p03] Since `edit` uses values that depend on the configuration specific values (`prefix`, etc.) and not only on `VERSION` and so forth, the output depends on Makefile, not configure.ac.
+[src:gnu-autotools/autoconf-p03] The main rule is generic, and uses ‘$@’ extensively to avoid the need for multiple copies of the rule.
+[src:gnu-autotools/autoconf-p03] See Single Suffix Rules and Separated Dependencies, for details.
+[src:gnu-autotools/autoconf-p03] Be sure to specify the name of the source directory, otherwise the package won’t support separated builds.
+[src:gnu-autotools/autoconf-p03] The common parent directory of Erlang library installation directories.
+[src:gnu-autotools/autoconf-p03] This variable is set by calling the `AC_ERLANG_SUBST_INSTALL_LIB_DIR` macro in configure.ac.
+[src:gnu-autotools/autoconf-p03] The installation directory for Erlang library *library*.
+[src:gnu-autotools/autoconf-p03] This variable is set by using the ‘AC_ERLANG_SUBST_INSTALL_LIB_SUBDIR’ macro in configure.ac.
+[src:gnu-autotools/autoconf-p03] In Autoconf 2.60, the set of directory variables has changed, and the defaults of some variables have been adjusted (see Installation Directory Variables) to changes in the GNU Coding Standards.
+[src:gnu-autotools/autoconf-p03] Notably, datadir, infodir, and mandir are now expressed in terms of datarootdir.
+[src:gnu-autotools/autoconf-p03] If you are upgrading from an earlier Autoconf version, you may need to adjust your files to ensure that the directory variables are substituted correctly (see How Do I `#define` Installation Directories?), and that a definition of datarootdir is in place.
+[src:gnu-autotools/autoconf-p03] If you use Automake to create Makefile.in, it will add this for you.
+[src:gnu-autotools/autoconf-p03] To help with the transition, Autoconf warns about files that seem to use `datarootdir` without defining it.
+[src:gnu-autotools/autoconf-p03] In some cases, it then expands the value of `$datarootdir` in substitutions of the directory variables.
+[src:gnu-autotools/autoconf-p03] In some cases, however, the checks may not be able to detect that a suitable initialization of `datarootdir` is in place, or they may fail to detect that such an initialization is necessary in the output file.
+[src:gnu-autotools/autoconf-p03] to your configure.ac to disable the warnings.
+[src:gnu-autotools/autoconf-p03] This is an exception to the usual rule that you should not define a macro whose name begins with `AC_` (see Macro Names).
+[src:gnu-autotools/autoconf-p03] You can support compiling a software package for several architectures simultaneously from the same copy of the source code.
+[src:gnu-autotools/autoconf-p03] The object files for each architecture are kept in their own directory.
+[src:gnu-autotools/autoconf-p03] To support doing this, `make` uses the `VPATH` variable to find the files that are in the source directory.
+[src:gnu-autotools/autoconf-p03] Most other recent `make` programs can do this as well, though they may have difficulties and it is often simpler to recommend GNU `make` (see `VPATH` and Make).
+[src:gnu-autotools/autoconf-p03] Older `make` programs do not support `VPATH`; when using them, the source code must be in the same directory as the object files.
+[src:gnu-autotools/autoconf-p03] If you are using GNU Automake, the remaining details in this section are already covered for you, based on the contents of your Makefile.am.
+[src:gnu-autotools/autoconf-p03] Do not set `VPATH` to the value of another variable (see Variables listed in `VPATH`.
+[src:gnu-autotools/autoconf-p03] `configure` substitutes the correct value for `srcdir` when it produces Makefile.
+[src:gnu-autotools/autoconf-p03] Do not use the `make` variable `$<`, which expands to the file name of the file in the source directory (found with `VPATH`), except in implicit rules.
+[src:gnu-autotools/autoconf-p03] (An implicit rule is one such as ‘.c.o’, which tells how to create a .o file from a .c file.) Some versions of `make` do not set `$<` in explicit rules; they expand it to an empty value.
+[src:gnu-autotools/autoconf-p03] Instead, Make command lines should always refer to source files by prefixing them with ‘$(srcdir)/’.
+[src:gnu-autotools/autoconf-p03] It’s safer to quote the source directory name, in case it contains characters that are special to the shell.
+[src:gnu-autotools/autoconf-p03] Because ‘$(srcdir)’ is expanded by Make, single-quoting works and is safer than double-quoting.
+[src:gnu-autotools/autoconf-p03] You can put rules like the following in the top-level Makefile.in for a package to automatically update the configuration information when you change the configuration files.
+[src:gnu-autotools/autoconf-p03] This example includes all of the optional files, such as aclocal.m4 and those related to configuration header files.
+[src:gnu-autotools/autoconf-p03] Omit from the Makefile.in rules for any of these files that your package does not use.
+[src:gnu-autotools/autoconf-p03] The ‘$(srcdir)/’ prefix is included because of limitations in the `VPATH` mechanism.
+[src:gnu-autotools/autoconf-p03] The stamp- files are necessary because the timestamps of config.h.in and config.h are not changed if remaking them does not change their contents.
+[src:gnu-autotools/autoconf-p03] This feature avoids unnecessary recompilation.
+[src:gnu-autotools/autoconf-p03] You should include the file stamp-h.in in your package’s distribution, so that `make` considers config.h.in up to date.
+[src:gnu-autotools/autoconf-p03] Don’t use `touch` (see Limitations of Usual Tools); instead, use `echo` (using `date` would cause needless output differences).
+[src:gnu-autotools/autoconf-p03] so config.status ensures that config.h is considered up to date.
+[src:gnu-autotools/autoconf-p03] See Outputting Files, for more information about `AC_OUTPUT`.
+[src:gnu-autotools/autoconf-p03] See config.status Invocation, for more examples of handling configuration-related dependencies.
+[src:gnu-autotools/autoconf-p03] When a package contains more than a few tests that define C preprocessor symbols, the command lines to pass -D options to the compiler can get quite long.
+[src:gnu-autotools/autoconf-p03] One is that the `make` output is hard to visually scan for errors.
+[src:gnu-autotools/autoconf-p03] More seriously, the command lines can exceed the length limits of some operating systems.
+[src:gnu-autotools/autoconf-p03] As an alternative to passing -D options to the compiler, `configure` scripts can create a C header file containing ‘#define’ directives.
+[src:gnu-autotools/autoconf-p03] The `AC_CONFIG_HEADERS` macro selects this kind of output.
+[src:gnu-autotools/autoconf-p03] Though it can be called anywhere between `AC_INIT` and `AC_OUTPUT`, it is customary to call it right after `AC_INIT`.
+[src:gnu-autotools/autoconf-p03] The package should ‘#include’ the configuration header file before any other header files, to prevent inconsistencies in declarations (for example, if it redefines `const`, or if it defines a macro like `_FILE_OFFSET_BITS` that affects the behavior of system headers).
+[src:gnu-autotools/autoconf-p03] Note that it is okay to only include config.h from .c files; the project’s .h files can rely on config.h already being included first by the corresponding .c file.
+[src:gnu-autotools/autoconf-p03] To provide for VPATH builds, remember to pass the C compiler a -I. option (or -I..; whichever directory contains config.h).
+[src:gnu-autotools/autoconf-p03] Even if you use ‘#include "config.h"’, the preprocessor searches only the directory of the currently read file, i.e., the source directory, not the build directory.
+[src:gnu-autotools/autoconf-p03] With the appropriate -I option, you can use ‘#include <config.h>’.
+[src:gnu-autotools/autoconf-p03] Actually, it’s a good habit to use it, because in the rare case when the source directory contains another config.h, the build directory should be searched first.
+[src:gnu-autotools/autoconf-p03] Make `AC_OUTPUT` create the file(s) in the blank-or-newline-separated list *header* containing C preprocessor `#define` statements, and replace ‘@DEFS@’ in generated files with -DHAVE_CONFIG_H instead of the value of `DEFS`.
+[src:gnu-autotools/autoconf-p03] The usual name for *header* is config.h; *header* should not contain shell metacharacters.
+[src:gnu-autotools/autoconf-p03] If *header* already exists and its contents are identical to what `AC_OUTPUT` would put in it, it is left alone.
+[src:gnu-autotools/autoconf-p03] Doing this allows making some changes in the configuration without needlessly causing object files that depend on the header file to be recompiled.
+[src:gnu-autotools/autoconf-p03] Usually the input file is named *header*.in; however, you can override the input file name by appending to *header* a colon-separated list of input files.
+[src:gnu-autotools/autoconf-p03] This macro is defined as the name of the first declared config header and undefined if no config headers have been declared up to this point.
+[src:gnu-autotools/autoconf-p03] See Performing Configuration Actions, for more details on *header*.
+[src:gnu-autotools/autoconf-p03] Your distribution should contain a template file that looks as you want the final header file to look, including comments, with `#undef` statements which are used as hooks.
+[src:gnu-autotools/autoconf-p03] Then you could have code like the following in conf.h.in.
+[src:gnu-autotools/autoconf-p03] The conf.h created by `configure` defines ‘HAVE_UNISTD_H’ to 1, if and only if the system has unistd.h.
+[src:gnu-autotools/autoconf-p03] The format of the template file is stricter than what the C preprocessor is required to accept.
+[src:gnu-autotools/autoconf-p03] A directive line should contain only whitespace, ‘#undef’, and ‘HAVE_UNISTD_H’.
+[src:gnu-autotools/autoconf-p03] The use of ‘#define’ instead of ‘#undef’, or of comments on the same line as ‘#undef’, is strongly discouraged.
+[src:gnu-autotools/autoconf-p03] Other preprocessor lines, such as ‘#ifdef’ or ‘#include’, are copied verbatim from the template into the generated header.
+[src:gnu-autotools/autoconf-p03] Since it is a tedious task to keep a template header up to date, you may use `autoheader` to generate it, see Using `autoheader` to Create config.h.in.
+[src:gnu-autotools/autoconf-p03] During the instantiation of the header, each ‘#undef’ line in the template file for each symbol defined by ‘AC_DEFINE’ is changed to an appropriate ‘#define’.
+[src:gnu-autotools/autoconf-p03] If the corresponding ‘AC_DEFINE’ has not been executed during the `configure` run, the ‘#undef’ line is commented out.
+[src:gnu-autotools/autoconf-p03] Currently, *all* remaining ‘#undef’ lines in the header template are commented out, whether or not there was a corresponding ‘AC_DEFINE’ for the macro name; but this behavior is not guaranteed for future releases of Autoconf.
+[src:gnu-autotools/autoconf-p03] Generally speaking, since you should not use ‘#define’, and you cannot guarantee whether a ‘#undef’ directive in the header template will be converted to a ‘#define’ or commented out in the generated header file, the template file cannot be used for conditional definition effects.
+[src:gnu-autotools/autoconf-p03] you must place it outside of the template.
+[src:gnu-autotools/autoconf-p03] If you absolutely need to hook it to the config header itself, please put the directives to a separate file, and ‘#include’ that file from the config header template.
+[src:gnu-autotools/autoconf-p03] If you are using `autoheader`, you would probably use ‘AH_BOTTOM’ to append the ‘#include’ directive.
+[src:gnu-autotools/autoconf-p03] The `autoheader` program can create a template file of C ‘#define’ statements for `configure` to use.
+[src:gnu-autotools/autoconf-p03] It searches for the first invocation of `AC_CONFIG_HEADERS` in configure sources to determine the name of the template.
+[src:gnu-autotools/autoconf-p03] It is recommended that only one input file is used.
+[src:gnu-autotools/autoconf-p03] If you want to append a boilerplate code, it is preferable to use ‘AH_BOTTOM([#include <conf_post.h>])’.
+[src:gnu-autotools/autoconf-p03] File conf_post.h is not processed during the configuration then, which make things clearer.
+[src:gnu-autotools/autoconf-p03] Analogically, `AH_TOP` can be used to prepend a boilerplate code.
+[src:gnu-autotools/autoconf-p03] In order to do its job, `autoheader` needs you to document all of the symbols that you might use.
+[src:gnu-autotools/autoconf-p03] Typically this is done via an `AC_DEFINE` or `AC_DEFINE_UNQUOTED` call whose first argument is a literal symbol and whose third argument describes the symbol (see Defining C Preprocessor Symbols).
+[src:gnu-autotools/autoconf-p03] Alternatively, you can use `AH_TEMPLATE` (see Autoheader Macros), or you can supply a suitable input file for a subsequent configuration header file.
+[src:gnu-autotools/autoconf-p03] Symbols defined by Autoconf’s builtin tests are already documented properly; you need to document only those that you define yourself.
+[src:gnu-autotools/autoconf-p03] You might wonder why `autoheader` is needed: after all, why would `configure` need to “patch” a config.h.in to produce a config.h instead of just creating config.h from scratch?
+[src:gnu-autotools/autoconf-p03] Well, when everything rocks, the answer is just that we are wasting our time maintaining `autoheader`: generating config.h directly is all that is needed.
+[src:gnu-autotools/autoconf-p03] When things go wrong, however, you’ll be thankful for the existence of `autoheader`.
+[src:gnu-autotools/autoconf-p03] The fact that the symbols are documented is important in order to *check* that config.h makes sense.
+[src:gnu-autotools/autoconf-p03] The fact that there is a well-defined list of symbols that should be defined (or not) is also important for people who are porting packages to environments where `configure` cannot be run: they just have to *fill in the blanks*.
+[src:gnu-autotools/autoconf-p03] If you give `autoheader` an argument, it uses that file instead of configure.ac and writes the header file to the standard output instead of to config.h.in.
+[src:gnu-autotools/autoconf-p03] If you give `autoheader` an argument of -, it reads the standard input instead of configure.ac and writes the header file to the standard output.
+[src:gnu-autotools/autoconf-p03] Remake the template file even if newer than its input files.
+[src:gnu-autotools/autoconf-p03] Remake the template file even if it appears not to have been generated by `autoheader`.
+[src:gnu-autotools/autoconf-p03] `autoheader` scans configure.ac and figures out which C preprocessor symbols it might define.
+[src:gnu-autotools/autoconf-p03] It knows how to generate templates for symbols defined by `AC_CHECK_HEADERS`, `AC_CHECK_FUNCS` etc., but if you `AC_DEFINE` any additional symbol, you must define a template for it.
+[src:gnu-autotools/autoconf-p03] If there are missing templates, `autoheader` fails with an error message.
+[src:gnu-autotools/autoconf-p03] The template for a *symbol* is created by `autoheader` from the *description* argument to an `AC_DEFINE`; see Defining C Preprocessor Symbols.
+[src:gnu-autotools/autoconf-p03] For special needs, you can use the following macros.
+[src:gnu-autotools/autoconf-p03] Tell `autoheader` to generate a template for *key*.
+[src:gnu-autotools/autoconf-p03] This macro generates standard templates just like `AC_DEFINE` when a *description* is given.
+[src:gnu-autotools/autoconf-p03] generates the following template, with the description properly justified.
+[src:gnu-autotools/autoconf-p03] Tell `autoheader` to include the *template* as-is in the header template file.
+[src:gnu-autotools/autoconf-p03] This *template* is associated with the *key*, which is used to sort all the different templates and guarantee their uniqueness.
+[src:gnu-autotools/autoconf-p03] It should be a symbol that can be defined via `AC_DEFINE`.
+[src:gnu-autotools/autoconf-p03] Include *text* at the top of the header template file.
+[src:gnu-autotools/autoconf-p03] Include *text* at the bottom of the header template file.
+[src:gnu-autotools/autoconf-p03] Please note that *text* gets included “verbatim” to the template file, not to the resulting config header, so it can easily get mangled when the template is processed.
+[src:gnu-autotools/autoconf-p03] You can execute arbitrary commands before, during, and after config.status is run.
+[src:gnu-autotools/autoconf-p03] The three following macros accumulate the commands to run when they are called multiple times.
+[src:gnu-autotools/autoconf-p03] `AC_CONFIG_COMMANDS` replaces the obsolete macro `AC_OUTPUT_COMMANDS`; see Obsolete Macros, for details.
+[src:gnu-autotools/autoconf-p03] Specify additional shell commands to run at the end of config.status, and shell commands to initialize any variables from `configure`.
+[src:gnu-autotools/autoconf-p03] Since typically the *cmds* create a file, *tag* should naturally be the name of that file.
+[src:gnu-autotools/autoconf-p03] If needed, the directory hosting *tag* is created.
+[src:gnu-autotools/autoconf-p03] The *tag* should not contain shell metacharacters.
+[src:gnu-autotools/autoconf-p03] The following two macros look similar, but in fact they are not of the same breed: they are executed directly by configure, so you cannot use config.status to rerun them.
+[src:gnu-autotools/autoconf-p03] Execute the *cmds* right before creating config.status.
+[src:gnu-autotools/autoconf-p03] This macro presents the last opportunity to call `AC_SUBST`, `AC_DEFINE`, or `AC_CONFIG_*ITEMS*` macros.
+[src:gnu-autotools/autoconf-p03] Execute the *cmds* right after creating config.status.
+[src:gnu-autotools/autoconf-p03] You may find it convenient to create links whose destinations depend upon results of tests.
+[src:gnu-autotools/autoconf-p03] One can use `AC_CONFIG_COMMANDS` but the creation of relative symbolic links can be delicate when the package is built in a directory different from the source directory.
+[src:gnu-autotools/autoconf-p03] Make `AC_OUTPUT` link each of the existing files *source* to the corresponding link name *dest*.
+[src:gnu-autotools/autoconf-p03] Makes a symbolic link if possible, otherwise a hard link if possible, otherwise a copy.
+[src:gnu-autotools/autoconf-p03] The *dest* and *source* names should be relative to the top level source or build directory, and should not contain shell metacharacters.
+[src:gnu-autotools/autoconf-p03] creates in the current directory host.h as a link to *srcdir*/config/$machine.h, and object.h as a link to *srcdir*/config/$obj_format.h.
+[src:gnu-autotools/autoconf-p03] The tempting value ‘.’ for *dest* is invalid: it makes it impossible for ‘config.status’ to guess the links to establish.
+[src:gnu-autotools/autoconf-p03] In most situations, calling `AC_OUTPUT` is sufficient to produce makefiles in subdirectories.
+[src:gnu-autotools/autoconf-p03] However, `configure` scripts that control more than one independent package can use `AC_CONFIG_SUBDIRS` to run `configure` scripts for other packages in subdirectories.
+[src:gnu-autotools/autoconf-p03] Make `AC_OUTPUT` run `configure` in each subdirectory *dir* in the given blank-or-newline-separated list.
+[src:gnu-autotools/autoconf-p03] because this prevents ‘./configure --help=recursive’ from displaying the options of the package `foo`.
+[src:gnu-autotools/autoconf-p03] These examples use `AS_IF` instead of ordinary shell `if` to avoid problems that Autoconf has with macro calls in shell conditionals outside macro definitions.
+[src:gnu-autotools/autoconf-p03] If a given *dir* contains `configure.gnu`, it is run instead of `configure`.
+[src:gnu-autotools/autoconf-p03] This is for packages that might use a non-Autoconf script `Configure`, which can’t be called through a wrapper `configure` since it would be the same file on case-insensitive file systems.
+[src:gnu-autotools/autoconf-p03] This macro also sets the output variable `subdirs` to the list of directories ‘*dir* …’.
+[src:gnu-autotools/autoconf-p03] Make rules can use this variable to determine which subdirectories to recurse into.
+[src:gnu-autotools/autoconf-p03] This macro may be called multiple times.
+[src:gnu-autotools/autoconf-p03] By default, `configure` sets the prefix for files it installs to /usr/local.
+[src:gnu-autotools/autoconf-p03] The user of `configure` can select a different prefix using the --prefix and --exec-prefix options.
+[src:gnu-autotools/autoconf-p03] There are two ways to change the default: when creating `configure`, and when running it.
+[src:gnu-autotools/autoconf-p03] Some software packages might want to install in a directory other than /usr/local by default.
+[src:gnu-autotools/autoconf-p03] To accomplish that, use the `AC_PREFIX_DEFAULT` macro.
+[src:gnu-autotools/autoconf-p03] Set the default installation prefix to *prefix* instead of /usr/local.
+[src:gnu-autotools/autoconf-p03] It may be convenient for users to have `configure` guess the installation prefix from the location of a related program that they have already installed.
+[src:gnu-autotools/autoconf-p03] If you wish to do that, you can call `AC_PREFIX_PROGRAM`.
+[src:gnu-autotools/autoconf-p03] If the user did not specify an installation prefix (using the --prefix option), guess a value for it by looking for *program* in `PATH`, the way the shell does.
+[src:gnu-autotools/autoconf-p03] If *program* is found, set the prefix to the parent of the directory containing *program*, else default the prefix as described above (/usr/local or `AC_PREFIX_DEFAULT`).
+[src:gnu-autotools/autoconf-p03] For example, if *program* is `gcc` and the `PATH` contains /usr/local/gnu/bin/gcc, set the prefix to /usr/local/gnu.
+[src:gnu-autotools/autoconf-p04] These macros test for particular system features that packages might need or want to use.
+[src:gnu-autotools/autoconf-p04] If you need to test for a kind of feature that none of these macros check for, you can probably do it by calling primitive test macros with appropriate arguments (see Writing Tests).
+[src:gnu-autotools/autoconf-p04] These tests print messages telling the user which feature they’re checking for, and what they find.
+[src:gnu-autotools/autoconf-p04] They cache their results for future `configure` runs (see Caching Results).
+[src:gnu-autotools/autoconf-p04] Some of these macros set output variables.
+[src:gnu-autotools/autoconf-p04] See Substitutions in Makefiles, for how to get their values.
+[src:gnu-autotools/autoconf-p04] The phrase “define *name*” is used below as a shorthand to mean “define the C preprocessor symbol *name* to the value 1”.
+[src:gnu-autotools/autoconf-p04] See Defining C Preprocessor Symbols, for how to get those symbol definitions into your program.
+[src:gnu-autotools/autoconf-p04] Much effort has been expended to make Autoconf easy to learn.
+[src:gnu-autotools/autoconf-p04] The most obvious way to reach this goal is simply to enforce standard interfaces and behaviors, avoiding exceptions as much as possible.
+[src:gnu-autotools/autoconf-p04] Because of history and inertia, unfortunately, there are still too many exceptions in Autoconf; nevertheless, this section describes some of the common rules.
+[src:gnu-autotools/autoconf-p04] All the generic macros that `AC_DEFINE` a symbol as a result of their test transform their *argument* values to a standard alphabet.
+[src:gnu-autotools/autoconf-p04] First, *argument* is converted to upper case and any asterisks (‘*’) are each converted to ‘P’.
+[src:gnu-autotools/autoconf-p04] Any remaining characters that are not alphanumeric are converted to underscores.
+[src:gnu-autotools/autoconf-p04] defines the symbol ‘HAVE_STRUCT__EXPENSIVEP’ if the check succeeds.
+[src:gnu-autotools/autoconf-p04] Test programs frequently need to include headers that may or may not be available on the system whose features are being tested.
+[src:gnu-autotools/autoconf-p04] if sys/time.h has already been tested for.
+[src:gnu-autotools/autoconf-p04] Most programs can safely include these headers unconditionally.
+[src:gnu-autotools/autoconf-p04] A program not intended to be portable to C89 can also safely include the C99-specified header stdbool.h.
+[src:gnu-autotools/autoconf-p04] Other headers, including headers from C99 and later revisions of the C standard, might need to be tested for (see Header Files) or their bugs may need to be worked around (see Gnulib).
+[src:gnu-autotools/autoconf-p04] If your program needs to be portable to a *freestanding* environment, such as an embedded OS that doesn’t provide all of the facilities of the C89 standard library, you may need to test for some of the above headers as well.
+[src:gnu-autotools/autoconf-p04] Note that many Autoconf macros internally assume that the complete set of C89 headers are available.
+[src:gnu-autotools/autoconf-p04] Using this macro without *include-directives* has the side effect of checking for stdio.h, stdlib.h, string.h, inttypes.h, stdint.h, strings.h, sys/types.h, sys/stat.h, and unistd.h, as if by `AC_CHECK_HEADERS_ONCE`.
+[src:gnu-autotools/autoconf-p04] For backward compatibility, the macro `STDC_HEADERS` will be defined when both stdlib.h and string.h are available.
+[src:gnu-autotools/autoconf-p04] inttypes.h and stdint.h were added to C in the 1999 revision of the standard, and strings.h, sys/types.h, sys/stat.h, and unistd.h are POSIX extensions.
+[src:gnu-autotools/autoconf-p04] You *should* guard uses of these headers with appropriate conditionals.
+[src:gnu-autotools/autoconf-p04] Check for all the headers that `AC_INCLUDES_DEFAULT` would check for as a side-effect, if this has not already happened.
+[src:gnu-autotools/autoconf-p04] This macro mainly exists so that `autoupdate` can replace certain obsolete constructs with it.
+[src:gnu-autotools/autoconf-p04] You should not need to use it yourself; in fact, it is likely to be safe to delete it from any script in which it appears.
+[src:gnu-autotools/autoconf-p04] These macros check for the presence or behavior of particular programs.
+[src:gnu-autotools/autoconf-p04] They are used to choose between several alternative programs and to decide what to do once one has been chosen.
+[src:gnu-autotools/autoconf-p04] If there is no macro specifically defined to check for a program you need, and you don’t need to check for any special properties of it, then you can use one of the general program-check macros.
+[src:gnu-autotools/autoconf-p04] These macros check for particular programs—whether they exist, and in some cases whether they support certain features.
+[src:gnu-autotools/autoconf-p04] Set output variable `AR` to ‘ar’ if `ar` is found, and otherwise to ‘:’ (do nothing).
+[src:gnu-autotools/autoconf-p04] Check for the commands `gawk`, `mawk`, `nawk`, `awk`, and `busybox awk`, in that order, and set output variable `AWK` to the first one that is found.
+[src:gnu-autotools/autoconf-p04] Try `gawk` first because that is reported to be the best implementation.
+[src:gnu-autotools/autoconf-p04] The result can be overridden by setting the variable `AWK` or the cache variable `ac_cv_prog_AWK`.
+[src:gnu-autotools/autoconf-p04] Using this macro avoids some pitfalls of older systems that have both traditional `awk` (see Limitations of Usual Tools) and better alternatives like `gawk`.
+[src:gnu-autotools/autoconf-p04] It also can help port to stripped-down systems that have only `busybox awk`, although these systems could well have problems with other build components that use plain `awk`.
+[src:gnu-autotools/autoconf-p04] Look for the best available `grep` or `ggrep` that accepts the longest input lines possible, and that supports multiple -e options.
+[src:gnu-autotools/autoconf-p04] Set the output variable `GREP` to whatever is chosen.
+[src:gnu-autotools/autoconf-p04] See Limitations of Usual Tools, for more information about portability problems with the `grep` command family.
+[src:gnu-autotools/autoconf-p04] The result can be overridden by setting the `GREP` variable and is cached in the `ac_cv_path_GREP` variable.
+[src:gnu-autotools/autoconf-p04] Check whether `$GREP -E` works, or else look for the best available `egrep` or `gegrep` that accepts the longest input lines possible.
+[src:gnu-autotools/autoconf-p04] Set the output variable `EGREP` to whatever is chosen.
+[src:gnu-autotools/autoconf-p04] The result can be overridden by setting the `EGREP` variable and is cached in the `ac_cv_path_EGREP` variable.
+[src:gnu-autotools/autoconf-p04] Check whether `$GREP -F` works, or else look for the best available `fgrep` or `gfgrep` that accepts the longest input lines possible.
+[src:gnu-autotools/autoconf-p04] Set the output variable `FGREP` to whatever is chosen.
+[src:gnu-autotools/autoconf-p04] The result can be overridden by setting the `FGREP` variable and is cached in the `ac_cv_path_FGREP` variable.
+[src:gnu-autotools/autoconf-p04] Set output variable `INSTALL` to the name of a BSD-compatible `install` program, if one is found in the current `PATH`.
+[src:gnu-autotools/autoconf-p04] Otherwise, set `INSTALL` to ‘*dir*/install-sh -c’, checking the directories specified to `AC_CONFIG_AUX_DIR` (or its default directories) to determine *dir* (see Outputting Files).
+[src:gnu-autotools/autoconf-p04] Also set the variables `INSTALL_PROGRAM` and `INSTALL_SCRIPT` to ‘${INSTALL}’ and `INSTALL_DATA` to ‘${INSTALL} -m 644’.
+[src:gnu-autotools/autoconf-p04] ‘@INSTALL@’ is special, as its value may vary for different configuration files.
+[src:gnu-autotools/autoconf-p04] This macro screens out various instances of `install` known not to work.
+[src:gnu-autotools/autoconf-p04] It prefers to find a C program rather than a shell script, for speed.
+[src:gnu-autotools/autoconf-p04] Instead of install-sh, it can also use install.sh, but that name is obsolete because some `make` programs have a rule that creates install from it if there is no makefile.
+[src:gnu-autotools/autoconf-p04] Further, this macro requires `install` to be able to install multiple files into a target directory in a single invocation.
+[src:gnu-autotools/autoconf-p04] Autoconf comes with a copy of install-sh that you can use.
+[src:gnu-autotools/autoconf-p04] If you use `AC_PROG_INSTALL`, you must include install-sh in your distribution; otherwise `autoreconf` and `configure` will produce an error message saying they can’t find it—even if the system you’re on has a good `install` program.
+[src:gnu-autotools/autoconf-p04] This check is a safety measure to prevent you from accidentally leaving that file out, which would prevent your package from installing on systems that don’t have a BSD-compatible `install` program.
+[src:gnu-autotools/autoconf-p04] If you need to use your own installation program because it has features not found in standard `install` programs, there is no reason to use `AC_PROG_INSTALL`; just put the file name of your program into your Makefile.in files.
+[src:gnu-autotools/autoconf-p04] The result of the test can be overridden by setting the variable `INSTALL` or the cache variable `ac_cv_path_install`.
+[src:gnu-autotools/autoconf-p04] Set output variable `MKDIR_P` to a program that ensures that for each argument, a directory named by this argument exists, creating it and its parent directories if needed, and without race conditions when two instances of the program attempt to make the same directory at nearly the same time.
+[src:gnu-autotools/autoconf-p04] This macro uses the equivalent of the ‘mkdir -p’ command.
+[src:gnu-autotools/autoconf-p04] Ancient versions of `mkdir` are vulnerable to race conditions, so if you want to support parallel installs from different packages into the same directory you should use a non-ancient `mkdir`.
+[src:gnu-autotools/autoconf-p04] This macro is related to the `AS_MKDIR_P` macro (see Programming in M4sh), but it sets an output variable intended for use in other files, whereas `AS_MKDIR_P` is intended for use in scripts like `configure`.
+[src:gnu-autotools/autoconf-p04] Also, `AS_MKDIR_P` does not accept options, but `MKDIR_P` supports the -m option, e.g., a makefile might invoke `$(MKDIR_P) -m 0 dir` to create an inaccessible directory, and conversely a makefile should use `$(MKDIR_P) -- $(FOO)` if *FOO* might yield a value that begins with ‘-’.
+[src:gnu-autotools/autoconf-p04] The result of the test can be overridden by setting the variable `MKDIR_P` or the cache variable `ac_cv_path_mkdir`.
+[src:gnu-autotools/autoconf-p04] Search for a lexical analyzer generator, preferring `flex` to plain `lex`.
+[src:gnu-autotools/autoconf-p04] Output variable `LEX` is set to whichever program is available.
+[src:gnu-autotools/autoconf-p04] If neither program is available, `LEX` is set to ‘:’; for packages that ship the generated file.yy.c alongside the source file.l, this default allows users without a lexer generator to still build the package even if the timestamp for file.l is inadvertently changed.
+[src:gnu-autotools/autoconf-p04] The name of the program to use can be overridden by setting the output variable `LEX` or the cache variable `ac_cv_prog_LEX` when running `configure`.
+[src:gnu-autotools/autoconf-p04] If a lexical analyzer generator is found, this macro performs additional checks for common portability pitfalls.
+[src:gnu-autotools/autoconf-p04] If these additional checks fail, `LEX` is reset to ‘:’; otherwise the following additional macros and variables are provided.
+[src:gnu-autotools/autoconf-p04] Preprocessor macro `YYTEXT_POINTER` is defined if the lexer skeleton, by default, declares `yytext` as a ‘char *’ rather than a ‘char []’.
+[src:gnu-autotools/autoconf-p04] Output variable `LEX_OUTPUT_ROOT` is set to the base of the file name that the lexer generates; this is usually either lex.yy or lexyy.
+[src:gnu-autotools/autoconf-p04] If generated lexers need a library to work, output variable `LEXLIB` is set to a link option for that library (e.g., -ll), otherwise it is set to empty.
+[src:gnu-autotools/autoconf-p04] The *options* argument modifies the behavior of `AC_PROG_LEX`.
+[src:gnu-autotools/autoconf-p04] It should be a whitespace-separated list of options.
+[src:gnu-autotools/autoconf-p04] Indicate that the library in `LEXLIB` needs to define the function `yywrap`.
+[src:gnu-autotools/autoconf-p04] If a library that defines this function cannot be found, `LEX` will be reset to ‘:’.
+[src:gnu-autotools/autoconf-p04] Indicate that the library in `LEXLIB` does not need to define the function `yywrap`.
+[src:gnu-autotools/autoconf-p04] `configure` will not search for it at all.
+[src:gnu-autotools/autoconf-p04] Prior to Autoconf 2.70, `AC_PROG_LEX` did not take any arguments, and its behavior was different from either of the above possibilities: it would search for a library that defines `yywrap`, and would set `LEXLIB` to that library if it finds one.
+[src:gnu-autotools/autoconf-p04] However, if a library that defines this function could not be found, `LEXLIB` would be left empty and `LEX` would *not* be reset.
+[src:gnu-autotools/autoconf-p04] This behavior was due to a bug, but several packages came to depend on it, so `AC_PROG_LEX` still does this if neither the `yywrap` nor the `noyywrap` option is given.
+[src:gnu-autotools/autoconf-p04] Usage of `AC_PROG_LEX` without choosing one of the `yywrap` or `noyywrap` options is deprecated.
+[src:gnu-autotools/autoconf-p04] It is usually better to use `noyywrap` and define the `yywrap` function yourself, as this almost always renders the `LEXLIB` unnecessary.
+[src:gnu-autotools/autoconf-p04] If you use Flex to generate lex.yy.c, you can work around these limitations by defining `yywrap` and `main` yourself (rendering `-lfl` unnecessary), and by using either the --array or --pointer options to control how `yytext` is declared.
+[src:gnu-autotools/autoconf-p04] The code generated by Flex is also more portable than the code generated by historical versions of Lex.
+[src:gnu-autotools/autoconf-p04] The shell script `missing` can be found in the Automake distribution.
+[src:gnu-autotools/autoconf-p04] Remember that the user may have supplied an alternate location in `LEX`, so if Flex is required, it is better to check that the user provided something sufficient by parsing the output of ‘$LEX --version’ than by simply relying on `test "x$LEX" = xflex`.
+[src:gnu-autotools/autoconf-p04] If ‘ln -s’ works on the current file system (the operating system and file system support symbolic links), set the output variable `LN_S` to ‘ln -s’; otherwise, if ‘ln’ works, set `LN_S` to ‘ln’, and otherwise set it to ‘cp -pR’.
+[src:gnu-autotools/autoconf-p04] If you make a link in a directory other than the current directory, its meaning depends on whether ‘ln’ or ‘ln -s’ is used.
+[src:gnu-autotools/autoconf-p04] To safely create links using ‘$(LN_S)’, either find out which form is used and adjust the arguments, or always invoke `ln` in the directory where the link is to be created.
+[src:gnu-autotools/autoconf-p04] Set output variable `RANLIB` to ‘ranlib’ if `ranlib` is found, and otherwise to ‘:’ (do nothing).
+[src:gnu-autotools/autoconf-p04] Set output variable `SED` to a Sed implementation that conforms to POSIX and does not have arbitrary length limits.
+[src:gnu-autotools/autoconf-p04] Report an error if no acceptable Sed is found.
+[src:gnu-autotools/autoconf-p04] The result of this test can be overridden by setting the `SED` variable and is cached in the `ac_cv_path_SED` variable.
+[src:gnu-autotools/autoconf-p04] If `bison` is found, set output variable `YACC` to ‘bison -y’.
+[src:gnu-autotools/autoconf-p04] Otherwise, if `byacc` is found, set `YACC` to ‘byacc’.
+[src:gnu-autotools/autoconf-p04] The result of this test can be influenced by setting the variable `YACC` or the cache variable `ac_cv_prog_YACC`.
+[src:gnu-autotools/autoconf-p04] These macros are used to find programs not covered by the “particular” test macros.
+[src:gnu-autotools/autoconf-p04] If you need to check the behavior of a program as well as find out whether it is present, you have to write your own test for it (see Writing Tests).
+[src:gnu-autotools/autoconf-p04] By default, these macros use the environment variable `PATH`.
+[src:gnu-autotools/autoconf-p04] You are strongly encouraged to declare the *variable* passed to `AC_CHECK_PROG` etc. as precious.
+[src:gnu-autotools/autoconf-p04] See Setting Output Variables, `AC_ARG_VAR`, for more details.
+[src:gnu-autotools/autoconf-p04] Check whether program *prog-to-check-for* exists in *path*.
+[src:gnu-autotools/autoconf-p04] If it is found, set *variable* to *value-if-found*, otherwise to *value-if-not-found*, if given.
+[src:gnu-autotools/autoconf-p04] Always pass over *reject* (an absolute file name) even if it is the first found in the search path; in that case, set *variable* using the absolute file name of the *prog-to-check-for* found that is not *reject*.
+[src:gnu-autotools/autoconf-p04] If *variable* was already set, do nothing.
+[src:gnu-autotools/autoconf-p04] The result of this test can be overridden by setting the *variable* variable or the cache variable `ac_cv_prog_*variable*`.
+[src:gnu-autotools/autoconf-p04] Check for each program in the blank-separated list *progs-to-check-for* existing in the *path*.
+[src:gnu-autotools/autoconf-p04] If one is found, set *variable* to the name of that program.
+[src:gnu-autotools/autoconf-p04] Otherwise, continue checking the next program in the list.
+[src:gnu-autotools/autoconf-p04] If none of the programs in the list are found, set *variable* to *value-if-not-found*; if *value-if-not-found* is not specified, the value of *variable* is not changed.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_PROG`, but first looks for *prog-to-check-for* with a prefix of the target type as determined by `AC_CANONICAL_TARGET`, followed by a dash (see Getting the Canonical System Type).
+[src:gnu-autotools/autoconf-p04] If the tool cannot be found with a prefix, and if the build and target types are equal, then it is also searched for without a prefix.
+[src:gnu-autotools/autoconf-p04] As noted in Specifying target triplets, the target is rarely specified, because most of the time it is the same as the host: it is the type of system for which any compiler tool in the package produces code.
+[src:gnu-autotools/autoconf-p04] What this macro looks for is, for example, *a tool (assembler, linker, etc.) that the compiler driver (`gcc` for the GNU C Compiler) uses to produce objects, archives or executables*.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_PROG`, but first looks for *prog-to-check-for* with a prefix of the host type as specified by --host, followed by a dash.
+[src:gnu-autotools/autoconf-p04] sets `RANLIB` to aarch64-linux-gnu-ranlib if that program exists in *path*, or otherwise to ‘ranlib’ if that program exists in *path*, or to ‘:’ if neither program exists.
+[src:gnu-autotools/autoconf-p04] When cross-compiling, this macro will issue a warning if no program prefixed with the host type could be found.
+[src:gnu-autotools/autoconf-p04] For more information, see Specifying target triplets.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_TARGET_TOOL`, each of the tools in the list *progs-to-check-for* are checked with a prefix of the target type as determined by `AC_CANONICAL_TARGET`, followed by a dash (see Getting the Canonical System Type).
+[src:gnu-autotools/autoconf-p04] If none of the tools can be found with a prefix, and if the build and target types are equal, then the first one without a prefix is used.
+[src:gnu-autotools/autoconf-p04] If a tool is found, set *variable* to the name of that program.
+[src:gnu-autotools/autoconf-p04] If none of the tools in the list are found, set *variable* to *value-if-not-found*; if *value-if-not-found* is not specified, the value of *variable* is not changed.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_TOOL`, each of the tools in the list *progs-to-check-for* are checked with a prefix of the host type as determined by `AC_CANONICAL_HOST`, followed by a dash (see Getting the Canonical System Type).
+[src:gnu-autotools/autoconf-p04] If none of the tools can be found with a prefix, then the first one without a prefix is used.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_PROG`, but set *variable* to the absolute name of *prog-to-check-for* if found.
+[src:gnu-autotools/autoconf-p04] The result of this test can be overridden by setting the *variable* variable.
+[src:gnu-autotools/autoconf-p04] A positive result of this test is cached in the `ac_cv_path_*variable*` variable.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_PROGS`, but if any of *progs-to-check-for* are found, set *variable* to the absolute name of the program found.
+[src:gnu-autotools/autoconf-p04] If *variable* is not empty, then set the cache variable `ac_cv_path_*variable*` to its value.
+[src:gnu-autotools/autoconf-p04] Otherwise, check for each program in the blank-separated list *progs-to-check-for* existing in *path*.
+[src:gnu-autotools/autoconf-p04] For each program found, execute *feature-test* with `ac_path_*variable*` set to the absolute name of the candidate program.
+[src:gnu-autotools/autoconf-p04] If no invocation of *feature-test* sets the shell variable `ac_cv_path_*variable*`, then *action-if-not-found* is executed.
+[src:gnu-autotools/autoconf-p04] *feature-test* will be run even when `ac_cv_path_*variable*` is set, to provide the ability to choose a better candidate found later in *path*; to accept the current setting and bypass all further checks, *feature-test* can execute `ac_path_*variable*_found=:`.
+[src:gnu-autotools/autoconf-p04] Note that this macro has some subtle differences from `AC_CHECK_PROGS`.
+[src:gnu-autotools/autoconf-p04] It is designed to be run inside `AC_CACHE_VAL`, therefore, it should have no side effects.
+[src:gnu-autotools/autoconf-p04] In particular, *variable* is not set to the final value of `ac_cv_path_*variable*`, nor is `AC_SUBST` automatically run.
+[src:gnu-autotools/autoconf-p04] Also, on failure, any action can be performed, whereas `AC_CHECK_PROGS` only performs `*variable*=*value-if-not-found*`.
+[src:gnu-autotools/autoconf-p04] Here is an example that searches for an implementation of `m4` that supports the `indir` builtin, even if it goes by the name `gm4` or is not the first implementation on `PATH`.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_TARGET_TOOL`, but set *variable* to the absolute name of the program if it is found.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_TOOL`, but set *variable* to the absolute name of the program if it is found.
+[src:gnu-autotools/autoconf-p04] You might also need to check for the existence of files.
+[src:gnu-autotools/autoconf-p04] Before using these macros, ask yourself whether a runtime test might not be a better solution.
+[src:gnu-autotools/autoconf-p04] Be aware that, like most Autoconf macros, they test a feature of the host machine, and therefore, they die when cross-compiling.
+[src:gnu-autotools/autoconf-p04] Check whether file *file* exists on the native system.
+[src:gnu-autotools/autoconf-p04] If it is found, execute *action-if-found*, otherwise do *action-if-not-found*, if given.
+[src:gnu-autotools/autoconf-p04] Cache the result of this test in the `ac_cv_file_*file*` variable, with characters not suitable for a variable name mapped to underscores.
+[src:gnu-autotools/autoconf-p04] For each file listed in *files*, execute `AC_CHECK_FILE` and perform either *action-if-found* or *action-if-not-found*.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_FILE`, this defines ‘HAVE_*file*’ (see Standard Symbols) for each file found and caches the results of each test in the `ac_cv_file_*file*` variable, with characters not suitable for a variable name mapped to underscores.
+[src:gnu-autotools/autoconf-p04] The following macros check for the presence of certain C, C++, Fortran, or Go library archive files.
+[src:gnu-autotools/autoconf-p04] Test whether the library *library* is available by trying to link a test program that calls function *function* with the library.
+[src:gnu-autotools/autoconf-p04] *function* should be a function provided by the library.
+[src:gnu-autotools/autoconf-p04] Use the base name of the library; e.g., to check for -lmp, use ‘mp’ as the *library* argument.
+[src:gnu-autotools/autoconf-p04] If linking with *library* results in unresolved symbols that would be resolved by linking with additional libraries, give those libraries as the *other-libraries* argument, separated by spaces: e.g., -lXt -lX11.
+[src:gnu-autotools/autoconf-p04] Otherwise, this macro may fail to detect that *library* is present, because linking the test program can fail with unresolved symbols.
+[src:gnu-autotools/autoconf-p04] The *other-libraries* argument should be limited to cases where it is desirable to test for one library in the presence of another that is not already in `LIBS`.
+[src:gnu-autotools/autoconf-p04] `AC_CHECK_LIB` requires some care in usage, and should be avoided in some common cases.
+[src:gnu-autotools/autoconf-p04] Many standard functions like `gethostbyname` appear in the standard C library on some hosts, and in special libraries like `nsl` on other hosts.
+[src:gnu-autotools/autoconf-p04] On some hosts the special libraries contain variant implementations that you may not want to use.
+[src:gnu-autotools/autoconf-p04] These days it is normally better to use `AC_SEARCH_LIBS([gethostbyname], [nsl])` instead of `AC_CHECK_LIB([nsl], [gethostbyname])`.
+[src:gnu-autotools/autoconf-p04] The result of this test is cached in the `ac_cv_lib_*library*_*function*` variable.
+[src:gnu-autotools/autoconf-p04] Search for a library defining *function* if it’s not already available.
+[src:gnu-autotools/autoconf-p04] This equates to calling ‘AC_LINK_IFELSE([AC_LANG_CALL([], [*function*])])’ first with no libraries, then for each library listed in *search-libs*.
+[src:gnu-autotools/autoconf-p04] Prepend -l*library* to `LIBS` for the first library found to contain *function*, and run *action-if-found*.
+[src:gnu-autotools/autoconf-p04] If the function is not found, run *action-if-not-found*.
+[src:gnu-autotools/autoconf-p04] Otherwise, this macro fails to detect that *function* is present, because linking the test program always fails with unresolved symbols.
+[src:gnu-autotools/autoconf-p04] The result of this test is cached in the `ac_cv_search_*function*` variable as ‘none required’ if *function* is already available, as ‘no’ if no library containing *function* was found, otherwise as the -l*library* option that needs to be prepended to `LIBS`.
+[src:gnu-autotools/autoconf-p04] The following macros check for particular C library functions.
+[src:gnu-autotools/autoconf-p04] If there is no macro specifically defined to check for a function you need, and you don’t need to check for any special properties of it, then you can use one of the general function-check macros.
+[src:gnu-autotools/autoconf-p04] Most usual functions can either be missing, or be buggy, or be limited on some architectures.
+[src:gnu-autotools/autoconf-p04] This section tries to make an inventory of these portability issues.
+[src:gnu-autotools/autoconf-p04] By definition, this list always requires additions.
+[src:gnu-autotools/autoconf-p04] A much more complete list is maintained by the Gnulib project (see Gnulib), covering Current POSIX Functions in *Gnulib*, Legacy Functions in *Gnulib*, and Glibc Functions in *Gnulib*.
+[src:gnu-autotools/autoconf-p04] Please help us keep the Gnulib list as complete as possible.
+[src:gnu-autotools/autoconf-p04] On ancient hosts, `exit` returned `int`.
+[src:gnu-autotools/autoconf-p04] This is because `exit` predates `void`, and there was a long tradition of it returning `int`.
+[src:gnu-autotools/autoconf-p04] On current hosts, the problem more likely is that `exit` is not declared, due to C++ problems of some sort or another.
+[src:gnu-autotools/autoconf-p04] For this reason we suggest that test programs not invoke `exit`, but return from `main` instead.
+[src:gnu-autotools/autoconf-p04] The C standard says a successful call `malloc (0)` is implementation dependent.
+[src:gnu-autotools/autoconf-p04] It can return either `NULL` or a new non-null pointer.
+[src:gnu-autotools/autoconf-p04] The latter is more common (e.g., the GNU C Library) but is by no means universal.
+[src:gnu-autotools/autoconf-p04] `AC_FUNC_MALLOC` can be used to insist on non-`NULL` (see Particular Function Checks).
+[src:gnu-autotools/autoconf-p04] POSIX prefers `setenv` to `putenv`; among other things, `putenv` is not required of all POSIX implementations, but `setenv` is.
+[src:gnu-autotools/autoconf-p04] POSIX specifies that `putenv` puts the given string directly in `environ`, but some systems make a copy of it instead (e.g., glibc 2.0, or BSD).
+[src:gnu-autotools/autoconf-p04] And when a copy is made, `unsetenv` might not free it, causing a memory leak (e.g., FreeBSD 4).
+[src:gnu-autotools/autoconf-p04] On some systems `putenv ("FOO")` removes ‘FOO’ from the environment, but this is not standard usage and it dumps core on some systems (e.g., AIX).
+[src:gnu-autotools/autoconf-p04] On MinGW, a call `putenv ("FOO=")` removes ‘FOO’ from the environment, rather than inserting it with an empty value.
+[src:gnu-autotools/autoconf-p04] It is problematic to call `realloc` with a zero size.
+[src:gnu-autotools/autoconf-p04] The C standard says `realloc (NULL, 0)` is equivalent to `malloc (0)`, which means one cannot portably tell whether the call has succeeded if it returns a null pointer.
+[src:gnu-autotools/autoconf-p04] If `ptr` is non-null, the C standard says `realloc (ptr, 0)` has undefined behavior.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_REALLOC` macro avoids some of these portability issues.
+[src:gnu-autotools/autoconf-p04] In most cases, it is more robust to use `sigaction` when it is available, rather than `signal`.
+[src:gnu-autotools/autoconf-p04] In C99 and later, if the output array isn’t big enough and if no other errors occur, `snprintf` and `vsnprintf` truncate the output and return the number of bytes that ought to have been produced.
+[src:gnu-autotools/autoconf-p04] Some older systems, notably Microsoft Windows before Visual Studio 2015 and Windows 10, do not null-terminate the output and return −1 instead.
+[src:gnu-autotools/autoconf-p04] Portable code can check the return value of `snprintf (buf, sizeof buf, ...)`: if the value is negative or is not less than `sizeof buf`, an error occurred and the contents of `buf` can be ignored.
+[src:gnu-autotools/autoconf-p04] Alternatively, one of the Gnulib modules related to `snprintf` can be used.
+[src:gnu-autotools/autoconf-p04] POSIX specifies that `strerror_r` returns an `int`, but many systems (e.g., the GNU C Library) provide a different version returning a `char *`.
+[src:gnu-autotools/autoconf-p04] `AC_FUNC_STRERROR_R` can detect which is in use (see Particular Function Checks).
+[src:gnu-autotools/autoconf-p04] Android 5.0’s strnlen was broken, because it assumed the addressed array always had at least the specified number of bytes.
+[src:gnu-autotools/autoconf-p04] For example, `strnlen ("", SIZE_MAX)` should return 0 but on Android 5.0 it crashed.
+[src:gnu-autotools/autoconf-p04] `_SC_PAGESIZE` is standard, but some older systems (e.g., HP-UX 9) have `_SC_PAGE_SIZE` instead.
+[src:gnu-autotools/autoconf-p04] The POSIX spec says that `unlink` causes the given file to be removed only after there are no more open file handles for it.
+[src:gnu-autotools/autoconf-p04] Some non-POSIX hosts have trouble with this requirement, though, and some DOS variants even corrupt the file system.
+[src:gnu-autotools/autoconf-p04] On MinGW, `unsetenv` is not available, but a variable ‘FOO’ can be removed with a call `putenv ("FOO=")`, as described under `putenv` above.
+[src:gnu-autotools/autoconf-p04] C99 and later provide `va_copy` for copying `va_list` variables.
+[src:gnu-autotools/autoconf-p04] It may be available in older environments too, though possibly as `__va_copy` (e.g., `gcc` in strict pre-C99 mode).
+[src:gnu-autotools/autoconf-p04] A fallback to `memcpy (&dst, &src, sizeof (va_list))` gives maximum portability.
+[src:gnu-autotools/autoconf-p04] `va_list` is not necessarily just a pointer.
+[src:gnu-autotools/autoconf-p04] It can be a `struct`, which means `NULL` is not portable.
+[src:gnu-autotools/autoconf-p04] Or it can be an array, which means as a function parameter it can be effectively call-by-reference and library routines might modify the value back in the caller.
+[src:gnu-autotools/autoconf-p04] Normally the C `>>` right shift of a signed type replicates the high bit, giving a so-called “arithmetic” shift.
+[src:gnu-autotools/autoconf-p04] But care should be taken since Standard C doesn’t require that behavior.
+[src:gnu-autotools/autoconf-p04] On a few platforms (e.g., Cray C by default) zero bits are shifted in, the same as a shift of an unsigned type.
+[src:gnu-autotools/autoconf-p04] C divides signed integers by truncating their quotient toward zero, yielding the same result as Fortran.
+[src:gnu-autotools/autoconf-p04] However, before C99 the standard allowed C implementations to take the floor or ceiling of the quotient in some cases.
+[src:gnu-autotools/autoconf-p04] Hardly any implementations took advantage of this freedom, though, and it’s probably not worth worrying about this issue nowadays.
+[src:gnu-autotools/autoconf-p04] These macros check for particular C functions—whether they exist, and in some cases how they respond when given certain arguments.
+[src:gnu-autotools/autoconf-p04] Define `HAVE_ALLOCA_H` if alloca.h defines a working `alloca`.
+[src:gnu-autotools/autoconf-p04] If either method succeeds, define `HAVE_ALLOCA`.
+[src:gnu-autotools/autoconf-p04] Otherwise, set the output variable `ALLOCA` to ‘${LIBOBJDIR}alloca.o’ and define `C_ALLOCA` (so programs can periodically call ‘alloca (0)’ to garbage collect).
+[src:gnu-autotools/autoconf-p04] This variable is separate from `LIBOBJS` so multiple programs can share the value of `ALLOCA` without needing to create an actual library, in case only some of them use the code in `LIBOBJS`.
+[src:gnu-autotools/autoconf-p04] The ‘${LIBOBJDIR}’ prefix serves the same purpose as in `LIBOBJS` (see `AC_LIBOBJ` vs.
+[src:gnu-autotools/autoconf-p04] Source files that use `alloca` should start with a piece of code like the following, to declare it properly.
+[src:gnu-autotools/autoconf-p04] If you don’t want to maintain this piece of code in your package manually, you can instead use the Gnulib module `alloca-opt` or `alloca`.
+[src:gnu-autotools/autoconf-p04] If the `chown` function is available and works (in particular, it should accept -1 for `uid` and `gid`), define `HAVE_CHOWN`.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_chown_works` variable.
+[src:gnu-autotools/autoconf-p04] If you want a workaround, that is, a `chown` function that is available and works, you can use the Gnulib module `chown`.
+[src:gnu-autotools/autoconf-p04] If the `closedir` function does not return a meaningful value, define `CLOSEDIR_VOID`.
+[src:gnu-autotools/autoconf-p04] Otherwise, callers ought to check its return value for an error indicator.
+[src:gnu-autotools/autoconf-p04] Currently this test is implemented by running a test program.
+[src:gnu-autotools/autoconf-p04] When cross compiling the pessimistic assumption that `closedir` does not return a meaningful value is made.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_closedir_void` variable.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as `closedir` returns a meaningful value on current systems.
+[src:gnu-autotools/autoconf-p04] If the `error_at_line` function is not found, require an `AC_LIBOBJ` replacement of ‘error’.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_lib_error_at_line` variable.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_ERROR_AT_LINE` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `error` module.
+[src:gnu-autotools/autoconf-p04] If the `fnmatch` function conforms to POSIX, define `HAVE_FNMATCH`.
+[src:gnu-autotools/autoconf-p04] Unlike the other specific `AC_FUNC` macros, `AC_FUNC_FNMATCH` does not replace a broken/missing `fnmatch`.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_fnmatch_works` variable.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `fnmatch-posix` module.
+[src:gnu-autotools/autoconf-p04] Behave like `AC_REPLACE_FNMATCH` (*replace*) but also test whether `fnmatch` supports GNU extensions.
+[src:gnu-autotools/autoconf-p04] Detect common implementation bugs, for example, the bugs in the GNU C Library 2.1.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_fnmatch_gnu` variable.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `fnmatch-gnu` module.
+[src:gnu-autotools/autoconf-p04] This macro checks for the `fork` and `vfork` functions.
+[src:gnu-autotools/autoconf-p04] If a working `fork` is found, define `HAVE_WORKING_FORK`.
+[src:gnu-autotools/autoconf-p04] This macro checks whether `fork` is just a stub by trying to run it.
+[src:gnu-autotools/autoconf-p04] If vfork.h is found, define `HAVE_VFORK_H`.
+[src:gnu-autotools/autoconf-p04] If a working `vfork` is found, define `HAVE_WORKING_VFORK`.
+[src:gnu-autotools/autoconf-p04] Otherwise, define `vfork` to be `fork` for backward compatibility with previous versions of `autoconf`.
+[src:gnu-autotools/autoconf-p04] This macro checks for several known errors in implementations of `vfork` and considers the system to not have a working `vfork` if it detects any of them.
+[src:gnu-autotools/autoconf-p04] The results of this macro are cached in the `ac_cv_func_fork_works` and `ac_cv_func_vfork_works` variables.
+[src:gnu-autotools/autoconf-p04] In order to override the test, you also need to set the `ac_cv_func_fork` and `ac_cv_func_vfork` variables.
+[src:gnu-autotools/autoconf-p04] If the `fseeko` and `ftello` functions are available, define `HAVE_FSEEKO`.
+[src:gnu-autotools/autoconf-p04] Define `_LARGEFILE_SOURCE` if necessary to make the prototype visible.
+[src:gnu-autotools/autoconf-p04] Configure scripts that use `AC_FUNC_FSEEKO` should normally also use `AC_SYS_LARGEFILE` to ensure that `off_t` can represent all supported file sizes.
+[src:gnu-autotools/autoconf-p04] The Gnulib module `fseeko` invokes `AC_FUNC_FSEEKO` and also contains workarounds for other portability problems of `fseeko`.
+[src:gnu-autotools/autoconf-p04] Perform all the checks performed by `AC_TYPE_GETGROUPS` (see AC_TYPE_GETGROUPS).
+[src:gnu-autotools/autoconf-p04] Then, if the `getgroups` function is available and known to work correctly, define `HAVE_GETGROUPS`.
+[src:gnu-autotools/autoconf-p04] Set the output variable `GETGROUPS_LIB` to any libraries needed to get that function.
+[src:gnu-autotools/autoconf-p04] This macro relies on a list of systems with known, serious bugs in `getgroups`.
+[src:gnu-autotools/autoconf-p04] If this list mis-identifies your system’s `getgroups` as buggy, or as not buggy, you can override it by setting the cache variable `ac_cv_func_getgroups_works` in a config.site file (see Setting Site Defaults).
+[src:gnu-autotools/autoconf-p04] Please also report the error to the Autoconf Bugs mailing list.
+[src:gnu-autotools/autoconf-p04] The Gnulib module `getgroups` provides workarounds for additional, less severe portability problems with this function.
+[src:gnu-autotools/autoconf-p04] Check how to get the system load averages.
+[src:gnu-autotools/autoconf-p04] To perform its tests properly, this macro needs the file getloadavg.c; therefore, be sure to set the `AC_LIBOBJ` replacement directory properly (see Generic Function Checks, `AC_CONFIG_LIBOBJ_DIR`).
+[src:gnu-autotools/autoconf-p04] If the system has the `getloadavg` function, define `HAVE_GETLOADAVG`, and set `GETLOADAVG_LIBS` to any libraries necessary to get that function.
+[src:gnu-autotools/autoconf-p04] Define `SVR4`, `DGUX`, `UMAX`, or `UMAX4_3` if on those systems.
+[src:gnu-autotools/autoconf-p04] If nlist.h is found, define `HAVE_NLIST_H`.
+[src:gnu-autotools/autoconf-p04] If ‘struct nlist’ has an ‘n_un.n_name’ member, define `HAVE_STRUCT_NLIST_N_UN_N_NAME`.
+[src:gnu-autotools/autoconf-p04] The obsolete symbol `NLIST_NAME_UNION` is still defined, but do not depend upon it.
+[src:gnu-autotools/autoconf-p04] Programs may need to be installed set-group-ID (or set-user-ID) for `getloadavg` to work.
+[src:gnu-autotools/autoconf-p04] In this case, define `GETLOADAVG_PRIVILEGED`, set the output variable `NEED_SETGID` to ‘true’ (and otherwise to ‘false’), and set `KMEM_GROUP` to the name of the group that should own the installed program.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_GETLOADAVG` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `getloadavg` module.
+[src:gnu-autotools/autoconf-p04] Check for `getmntent` in the standard C library, and then in the sun, seq, and gen libraries.
+[src:gnu-autotools/autoconf-p04] Then, if `getmntent` is available, define `HAVE_GETMNTENT` and set `ac_cv_func_getmntent` to `yes`.
+[src:gnu-autotools/autoconf-p04] Otherwise set `ac_cv_func_getmntent` to `no`.
+[src:gnu-autotools/autoconf-p04] The result of this macro can be overridden by setting the cache variable `ac_cv_search_getmntent`.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_GETMNTENT` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `mountlist` module.
+[src:gnu-autotools/autoconf-p04] Define `GETPGRP_VOID` if it is an error to pass 0 to `getpgrp`; this is the POSIX behavior.
+[src:gnu-autotools/autoconf-p04] On older BSD systems, you must pass 0 to `getpgrp`, as it takes an argument and behaves like POSIX’s `getpgid`.
+[src:gnu-autotools/autoconf-p04] This macro does not check whether `getpgrp` exists at all; if you need to work in that situation, first call `AC_CHECK_FUNC` for `getpgrp`.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_getpgrp_void` variable.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as current systems have a `getpgrp` whose signature conforms to POSIX.
+[src:gnu-autotools/autoconf-p04] If link is a symbolic link, then `lstat` should treat link/ the same as link/..
+[src:gnu-autotools/autoconf-p04] However, many older `lstat` implementations incorrectly ignore trailing slashes.
+[src:gnu-autotools/autoconf-p04] It is safe to assume that if `lstat` incorrectly ignores trailing slashes, then other symbolic-link-aware functions like `unlink` also incorrectly ignore trailing slashes.
+[src:gnu-autotools/autoconf-p04] If `lstat` behaves properly, define `LSTAT_FOLLOWS_SLASHED_SYMLINK`, otherwise require an `AC_LIBOBJ` replacement of `lstat`.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_lstat_dereferences_slashed_symlink` variable.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `lstat` module.
+[src:gnu-autotools/autoconf-p04] If the `malloc` function is compatible with the GNU C library `malloc` (i.e., ‘malloc (0)’ returns a valid pointer), define `HAVE_MALLOC` to 1.
+[src:gnu-autotools/autoconf-p04] Otherwise define `HAVE_MALLOC` to 0, ask for an `AC_LIBOBJ` replacement for ‘malloc’, and define `malloc` to `rpl_malloc` so that the native `malloc` is not used in the main project.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_malloc_0_nonnull` variable.
+[src:gnu-autotools/autoconf-p04] The result might contain spaces, e.g., `guessing yes`.
+[src:gnu-autotools/autoconf-p04] If you don’t want to maintain a `malloc.c` file in your package manually, you can instead use the Gnulib module `malloc-gnu`.
+[src:gnu-autotools/autoconf-p04] Define `HAVE_MBRTOWC` to 1 if the function `mbrtowc` and the type `mbstate_t` are properly declared.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_mbrtowc` variable.
+[src:gnu-autotools/autoconf-p04] The Gnulib module `mbrtowc` not only ensures that the function is declared, but also works around other portability problems of this function.
+[src:gnu-autotools/autoconf-p04] If the `memcmp` function is not available or does not work, require an `AC_LIBOBJ` replacement for ‘memcmp’.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_memcmp_working` variable.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as current systems have a working `memcmp`.
+[src:gnu-autotools/autoconf-p04] If the `mktime` function is not available, or does not work correctly, require an `AC_LIBOBJ` replacement for ‘mktime’.
+[src:gnu-autotools/autoconf-p04] For the purposes of this test, `mktime` should conform to the POSIX standard and should be the inverse of `localtime`.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_working_mktime` variable.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_MKTIME` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `mktime` module.
+[src:gnu-autotools/autoconf-p04] If the `mmap` function exists and works correctly, define `HAVE_MMAP`.
+[src:gnu-autotools/autoconf-p04] This checks only private fixed mapping of already-mapped memory.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_mmap_fixed_mapped` variable.
+[src:gnu-autotools/autoconf-p04] Note: This macro asks for more than what an average program needs from `mmap`.
+[src:gnu-autotools/autoconf-p04] In particular, the use of `MAP_FIXED` fails on HP-UX 11, whereas `mmap` otherwise works fine on this platform.
+[src:gnu-autotools/autoconf-p04] If the obstacks are found, define `HAVE_OBSTACK`, else require an `AC_LIBOBJ` replacement for ‘obstack’.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_obstack` variable.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_OBSTACK` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `obstack` module.
+[src:gnu-autotools/autoconf-p04] If a successful call to ‘realloc (NULL, 0)’ returns a non-null pointer, define `HAVE_REALLOC` to 1.
+[src:gnu-autotools/autoconf-p04] Otherwise define `HAVE_REALLOC` to 0, ask for an `AC_LIBOBJ` replacement for ‘realloc’, and define `realloc` to `rpl_realloc` so that the native `realloc` is not used in the main project.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_realloc_0_nonnull` variable.
+[src:gnu-autotools/autoconf-p04] This macro does not check compatibility with glibc `realloc (*p*, 0)` when *p* is non-null, as glibc 1–2.1 behaves differently from glibc 2.1.1–2.40 (at least), and the C standard says behavior is undefined.
+[src:gnu-autotools/autoconf-p04] Determines the correct type to be passed for each of the `select` function’s arguments, and defines those types in `SELECT_TYPE_ARG1`, `SELECT_TYPE_ARG234`, and `SELECT_TYPE_ARG5` respectively.
+[src:gnu-autotools/autoconf-p04] `SELECT_TYPE_ARG1` defaults to ‘int’, `SELECT_TYPE_ARG234` defaults to ‘int *’, and `SELECT_TYPE_ARG5` defaults to ‘struct timeval *’.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as current systems have a `select` whose signature conforms to POSIX.
+[src:gnu-autotools/autoconf-p04] If `setpgrp` takes no argument (the POSIX version), define `SETPGRP_VOID`.
+[src:gnu-autotools/autoconf-p04] Otherwise, it is the BSD version, which takes two process IDs as arguments.
+[src:gnu-autotools/autoconf-p04] This macro does not check whether `setpgrp` exists at all; if you need to work in that situation, first call `AC_CHECK_FUNC` for `setpgrp`.
+[src:gnu-autotools/autoconf-p04] This macro also does not check for the Solaris variant of `setpgrp`, which returns a `pid_t` instead of an `int`; portable code should only use the return value by comparing it against `-1` to check for errors.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_setpgrp_void` variable.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as all forms of `setpgrp` are also obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use the POSIX function `setpgid`, which takes two process IDs as arguments (like the BSD `setpgrp`).
+[src:gnu-autotools/autoconf-p04] Determine whether `stat` or `lstat` have the bug that it succeeds when given the zero-length file name as argument.
+[src:gnu-autotools/autoconf-p04] If it does, then define `HAVE_STAT_EMPTY_STRING_BUG` (or `HAVE_LSTAT_EMPTY_STRING_BUG`) and ask for an `AC_LIBOBJ` replacement of it.
+[src:gnu-autotools/autoconf-p04] The results of these macros are cached in the `ac_cv_func_stat_empty_string_bug` and the `ac_cv_func_lstat_empty_string_bug` variables, respectively.
+[src:gnu-autotools/autoconf-p04] These macros are obsolescent, as no current systems have the bug.
+[src:gnu-autotools/autoconf-p04] If the `strcoll` function exists and works correctly, define `HAVE_STRCOLL`.
+[src:gnu-autotools/autoconf-p04] This does a bit more than ‘AC_CHECK_FUNCS(strcoll)’, because some systems have incorrect definitions of `strcoll` that should not be used.
+[src:gnu-autotools/autoconf-p04] But it does not check against a known bug of this function on Solaris 10.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_strcoll_works` variable.
+[src:gnu-autotools/autoconf-p04] If `strerror_r` is available, define `HAVE_STRERROR_R`, and if it is declared, define `HAVE_DECL_STRERROR_R`.
+[src:gnu-autotools/autoconf-p04] If it returns a `char *` message, define `STRERROR_R_CHAR_P`; otherwise it returns an `int` error number.
+[src:gnu-autotools/autoconf-p04] The Thread-Safe Functions option of POSIX requires `strerror_r` to return `int`, but many systems (including, for example, the GNU C Library) return a `char *` value that is not necessarily equal to the buffer argument.
+[src:gnu-autotools/autoconf-p04] The result of this macro is cached in the `ac_cv_func_strerror_r_char_p` variable.
+[src:gnu-autotools/autoconf-p04] The Gnulib module `strerror_r` not only ensures that the function has the return type specified by POSIX, but also works around other portability problems of this function.
+[src:gnu-autotools/autoconf-p04] Check for `strftime` in the intl library.
+[src:gnu-autotools/autoconf-p04] Then, if `strftime` is available, define `HAVE_STRFTIME`.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as no current systems require the intl library for `strftime`.
+[src:gnu-autotools/autoconf-p04] If the `strtod` function does not exist or doesn’t work correctly, ask for an `AC_LIBOBJ` replacement of ‘strtod’.
+[src:gnu-autotools/autoconf-p04] In this case, because strtod.c is likely to need ‘pow’, set the output variable `POW_LIB` to the extra library needed.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_func_strtod` variable and depends upon the result in the `ac_cv_func_pow` variable.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_STRTOD` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `strtod` module.
+[src:gnu-autotools/autoconf-p04] If the `strtold` function exists and conforms to C99 or later, define `HAVE_STRTOLD`.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_func_strtold` variable.
+[src:gnu-autotools/autoconf-p04] The Gnulib module `strtold` not only ensures that the function exists, but also works around other portability problems of this function.
+[src:gnu-autotools/autoconf-p04] If the `strnlen` function is not available, or is buggy (like the one from Android 5.0 or AIX 4.3), require an `AC_LIBOBJ` replacement for it.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_func_strnlen_working` variable.
+[src:gnu-autotools/autoconf-p04] The `AC_FUNC_STRNLEN` macro is obsolescent.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `strnlen` module.
+[src:gnu-autotools/autoconf-p04] If ‘utime (*file*, NULL)’ sets *file*’s timestamp to the present, define `HAVE_UTIME_NULL`.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_func_utime_null` variable.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as all current systems have a `utime` that behaves this way.
+[src:gnu-autotools/autoconf-p04] If `vprintf` is found, define `HAVE_VPRINTF`.
+[src:gnu-autotools/autoconf-p04] Otherwise, if `_doprnt` is found, define `HAVE_DOPRNT`.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as all current systems have `vprintf`.
+[src:gnu-autotools/autoconf-p04] If the `fnmatch` function does not conform to POSIX (see `AC_FUNC_FNMATCH`), ask for its `AC_LIBOBJ` replacement.
+[src:gnu-autotools/autoconf-p04] The files fnmatch.c, fnmatch_loop.c, and fnmatch_.h in the `AC_LIBOBJ` replacement directory are assumed to contain a copy of the source code of GNU `fnmatch`.
+[src:gnu-autotools/autoconf-p04] If necessary, this source code is compiled as an `AC_LIBOBJ` replacement, and the fnmatch_.h file is linked to fnmatch.h so that it can be included in place of the system `<fnmatch.h>`.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_func_fnmatch_works` variable.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as it assumes the use of particular source files.
+[src:gnu-autotools/autoconf-p04] New programs should use Gnulib’s `fnmatch-posix` module, which provides this macro along with the source files.
+[src:gnu-autotools/autoconf-p04] These macros are used to find functions not covered by the “particular” test macros.
+[src:gnu-autotools/autoconf-p04] If the functions might be in libraries other than the default C library, first call `AC_CHECK_LIB` for those libraries.
+[src:gnu-autotools/autoconf-p04] If you need to check the behavior of a function as well as find out whether it is present, you have to write your own test for it (see Writing Tests).
+[src:gnu-autotools/autoconf-p04] If C function *function* is available, run shell commands *action-if-found*, otherwise *action-if-not-found*.
+[src:gnu-autotools/autoconf-p04] If you just want to define a symbol if the function is available, consider using `AC_CHECK_FUNCS` instead.
+[src:gnu-autotools/autoconf-p04] This macro checks for functions with C linkage even when `AC_LANG(C++)` has been called, since C is more standardized than C++.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_func_*function*` variable.
+[src:gnu-autotools/autoconf-p04] For each *function* enumerated in the blank-or-newline-separated argument list, define `HAVE_*function*` (in all capitals) if it is available.
+[src:gnu-autotools/autoconf-p04] If *action-if-found* is given, it is additional shell code to execute when one of the functions is found.
+[src:gnu-autotools/autoconf-p04] You can give it a value of ‘break’ to break out of the loop on the first match.
+[src:gnu-autotools/autoconf-p04] If *action-if-not-found* is given, it is executed when one of the functions is not found.
+[src:gnu-autotools/autoconf-p04] Results are cached for each *function* as in `AC_CHECK_FUNC`.
+[src:gnu-autotools/autoconf-p04] This is a once-only variant of `AC_CHECK_FUNCS`.
+[src:gnu-autotools/autoconf-p04] It generates the checking code at most once, so that `configure` is smaller and faster; but the checks cannot be conditionalized and are always done once, early during the `configure` run.
+[src:gnu-autotools/autoconf-p04] Autoconf follows a philosophy that was formed over the years by those who have struggled for portability: isolate the portability issues in specific files, and then program as if you were in a POSIX environment.
+[src:gnu-autotools/autoconf-p04] Some functions may be missing or unfixable, and your package must be ready to replace them.
+[src:gnu-autotools/autoconf-p04] Suitable replacements for many such problem functions are available from Gnulib (see Gnulib).
+[src:gnu-autotools/autoconf-p04] Specify that ‘*function*.c’ must be included in the executables to replace a missing or broken implementation of *function*.
+[src:gnu-autotools/autoconf-p04] Technically, it adds ‘*function*.$ac_objext’ to the output variable `LIBOBJS` if it is not already in, and calls `AC_LIBSOURCE` for ‘*function*.c’.
+[src:gnu-autotools/autoconf-p04] You should not directly change `LIBOBJS`, since this is not traceable.
+[src:gnu-autotools/autoconf-p04] Specify that *file* might be needed to compile the project.
+[src:gnu-autotools/autoconf-p04] If you need to know what files might be needed by a configure.ac, you should trace `AC_LIBSOURCE`.
+[src:gnu-autotools/autoconf-p04] This macro is called automatically from `AC_LIBOBJ`, but you must call it explicitly if you pass a shell variable to `AC_LIBOBJ`.
+[src:gnu-autotools/autoconf-p04] In that case, since shell variables cannot be traced statically, you must pass to `AC_LIBSOURCE` any possible files that the shell variable might cause `AC_LIBOBJ` to need.
+[src:gnu-autotools/autoconf-p04] There is usually a way to avoid this, however, and you are encouraged to simply call `AC_LIBOBJ` with literal arguments.
+[src:gnu-autotools/autoconf-p04] Note that this macro replaces the obsolete `AC_LIBOBJ_DECL`, with slightly different semantics: the old macro took the function name, e.g., `foo`, as its argument rather than the file name.
+[src:gnu-autotools/autoconf-p04] Like `AC_LIBSOURCE`, but accepts one or more *files* in a comma-separated M4 list.
+[src:gnu-autotools/autoconf-p04] Specify that `AC_LIBOBJ` replacement files are to be found in *directory*, a name relative to the top level of the source tree.
+[src:gnu-autotools/autoconf-p04] The replacement directory defaults to ., the top level directory, and the most typical value is lib, corresponding to ‘AC_CONFIG_LIBOBJ_DIR([lib])’.
+[src:gnu-autotools/autoconf-p04] It is common to merely check for the existence of a function, and ask for its `AC_LIBOBJ` replacement if missing.
+[src:gnu-autotools/autoconf-p04] The following macro is a convenient shorthand.
+[src:gnu-autotools/autoconf-p04] Like `AC_CHECK_FUNCS`, but uses ‘AC_LIBOBJ(*function*)’ as *action-if-not-found*.
+[src:gnu-autotools/autoconf-p04] You can declare your replacement function by enclosing the prototype in ‘#ifndef HAVE_*function*’.
+[src:gnu-autotools/autoconf-p04] If the system has the function, it probably declares it in a header file you should be including, so you shouldn’t redeclare it lest your declaration conflict.
+[src:gnu-autotools/autoconf-p04] The following macros check for the presence of certain C header files.
+[src:gnu-autotools/autoconf-p04] If there is no macro specifically defined to check for a header file you need, and you don’t need to check for any special properties of it, then you can use one of the general header-file check macros.
+[src:gnu-autotools/autoconf-p04] This section documents some collected knowledge about common headers, and the problems they cause.
+[src:gnu-autotools/autoconf-p04] A much more complete list is maintained by the Gnulib project (see Gnulib), covering POSIX Headers in *Gnulib* and Glibc Headers in *Gnulib*.
+[src:gnu-autotools/autoconf-p04] When we say that a header “may require” some set of other headers, we mean that it may be necessary for you to manually include those other headers first, or the contents of the header under test will fail to compile.
+[src:gnu-autotools/autoconf-p04] When checking for these headers, you must provide the potentially-required headers in the *includes* argument to `AC_CHECK_HEADER` or `AC_CHECK_HEADERS`, or the check will fail spuriously.
+[src:gnu-autotools/autoconf-p04] `AC_INCLUDES_DEFAULT` (see Default Includes) arranges to include a number of common requirements and should normally come first in your *includes*.
+[src:gnu-autotools/autoconf-p04] Note that the example mixes single quoting (for`AC_INCLUDES_DEFAULT`, so that it gets expanded) and double quoting (to ensure that each preprocessor `#` gets treated as a literal string rather than a comment).
+[src:gnu-autotools/autoconf-p04] In C99 and later, limits.h defines `LLONG_MIN`, `LLONG_MAX`, and `ULLONG_MAX`, but many almost-C99 environments (e.g., default GCC 4.0.2 + glibc 2.4) do not define them.
+[src:gnu-autotools/autoconf-p04] This header file is obsolete; use string.h instead.
+[src:gnu-autotools/autoconf-p04] On some systems, this is the only header that declares `strcasecmp`, `strncasecmp`, and `ffs`.
+[src:gnu-autotools/autoconf-p04] This header may or may not include string.h for you.
+[src:gnu-autotools/autoconf-p04] However, on all recent systems it is safe to include both string.h and strings.h, in either order, in the same source file.
+[src:gnu-autotools/autoconf-p04] C99 specifies that inttypes.h includes stdint.h, so there’s no need to include stdint.h separately in a standard environment.
+[src:gnu-autotools/autoconf-p04] However, some implementations have stdint.h but not inttypes.h (e.g.
+[src:gnu-autotools/autoconf-p04] Therefore, it is necessary to check for each and include each only if available.
+[src:gnu-autotools/autoconf-p04] This header may require linux/types.h and/or sys/socket.h.
+[src:gnu-autotools/autoconf-p04] This header may require sys/types.h and/or sys/socket.h.
+[src:gnu-autotools/autoconf-p04] This header may require some combination of sys/types.h, sys/socket.h, netinet/in.h, and net/if.h.
+[src:gnu-autotools/autoconf-p04] Using XFree86, this header requires X11/Xlib.h, which is probably so required that you might not even consider looking for it.
+[src:gnu-autotools/autoconf-p04] These macros check for particular system header files—whether they exist, and in some cases whether they declare certain symbols.
+[src:gnu-autotools/autoconf-p04] Check whether stdbool.h exists and conforms to C99 or later, and cache the result in the `ac_cv_header_stdbool_h` variable.
+[src:gnu-autotools/autoconf-p04] If the type `_Bool` is defined, define `HAVE__BOOL` to 1.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as all current C compilers have stdbool.h, a header that is itself obsolescent as of C23.
+[src:gnu-autotools/autoconf-p04] This macro is intended for use by Gnulib (see Gnulib) and other packages that supply a substitute stdbool.h on platforms lacking a conforming one.
+[src:gnu-autotools/autoconf-p04] The `AC_HEADER_STDBOOL` macro is better for code that explicitly checks for stdbool.h.
+[src:gnu-autotools/autoconf-p04] Check whether to enable assertions in the style of assert.h.
+[src:gnu-autotools/autoconf-p04] Assertions are enabled by default, but the user can override this by invoking `configure` with the --disable-assert option.
+[src:gnu-autotools/autoconf-p04] Using the above declarations, the program would declare variables to be of type `struct dirent`, not `struct direct`, and would access the length of a directory entry name by passing a pointer to a `struct dirent` to the `NAMLEN` macro.
+[src:gnu-autotools/autoconf-p04] This macro also checks for the obsolete dir and x libraries.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as all current systems with directory libraries have `<dirent.h>`.
+[src:gnu-autotools/autoconf-p04] Also see `AC_STRUCT_DIRENT_D_INO` and `AC_STRUCT_DIRENT_D_TYPE` (see Particular Structure Checks).
+[src:gnu-autotools/autoconf-p04] Detect the headers required to use `makedev`, `major`, and `minor`.
+[src:gnu-autotools/autoconf-p04] These functions may be defined by sys/mkdev.h, `sys/sysmacros.h`, or sys/types.h.
+[src:gnu-autotools/autoconf-p04] `AC_HEADER_MAJOR` defines `MAJOR_IN_MKDEV` if they are in sys/mkdev.h, or `MAJOR_IN_SYSMACROS` if they are in sys/sysmacros.h.
+[src:gnu-autotools/autoconf-p04] If neither macro is defined, they are either in sys/types.h or unavailable.
+[src:gnu-autotools/autoconf-p04] Note: Configure scripts built with Autoconf 2.69 or earlier will not detect a problem if sys/types.h contains definitions of `major`, `minor`, and/or `makedev` that trigger compiler warnings upon use.
+[src:gnu-autotools/autoconf-p04] This is known to occur with GNU libc 2.25, where those definitions are being deprecated to reduce namespace pollution.
+[src:gnu-autotools/autoconf-p04] If it is not practical to use Autoconf 2.70 to regenerate the configure script of affected software, you can work around the problem by setting ‘ac_cv_header_sys_types_h_makedev=no’, as an argument to `configure` or as part of a config.site site default file (see Setting Site Defaults).
+[src:gnu-autotools/autoconf-p04] Checks for header resolv.h, checking for prerequisites first.
+[src:gnu-autotools/autoconf-p04] If the macros `S_ISDIR`, `S_ISREG`, etc. defined in sys/stat.h do not work properly (returning false positives), define `STAT_MACROS_BROKEN`.
+[src:gnu-autotools/autoconf-p04] This is the case on Tektronix UTekV, Amdahl UTS and Motorola System V/88.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as no current systems have the bug.
+[src:gnu-autotools/autoconf-p04] If stdbool.h exists and conforms to C99 or later, define `HAVE_STDBOOL_H` to 1; if the type `_Bool` is defined, define `HAVE__BOOL` to 1.
+[src:gnu-autotools/autoconf-p04] Nowadays programs that need `bool`, `true` and `false` can include stdbool.h unconditionally, without using `AC_HEADER_STDBOOL`, and if such a program needs to be portable only to C23 or later it need not even include stdbool.h.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_header_stdbool_h` variable.
+[src:gnu-autotools/autoconf-p04] This macro differs from `AC_CHECK_HEADER_STDBOOL` only in that it defines `HAVE_STDBOOL_H` whereas `AC_CHECK_HEADER_STDBOOL` does not.
+[src:gnu-autotools/autoconf-p04] Its sole effect is to make sure that all the headers that are included by `AC_INCLUDES_DEFAULT` (see Default Includes), but not part of C89, have been checked for.
+[src:gnu-autotools/autoconf-p04] All hosted environments that are still of interest for portable code provide all of the headers specified in C89 (as amended in 1995).
+[src:gnu-autotools/autoconf-p04] If sys/wait.h exists and is compatible with POSIX, define `HAVE_SYS_WAIT_H`.
+[src:gnu-autotools/autoconf-p04] Incompatibility can occur if sys/wait.h does not exist, or if it uses the old BSD `union wait` instead of `int` to store a status value.
+[src:gnu-autotools/autoconf-p04] If sys/wait.h is not POSIX compatible, then instead of including it, define the POSIX macros with their usual interpretations.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_header_sys_wait_h` variable.
+[src:gnu-autotools/autoconf-p04] This macro is obsolescent, as current systems are compatible with POSIX.
+[src:gnu-autotools/autoconf-p04] `_POSIX_VERSION` is defined when unistd.h is included on POSIX systems.
+[src:gnu-autotools/autoconf-p04] If there is no unistd.h, it is definitely not a POSIX system.
+[src:gnu-autotools/autoconf-p04] However, some non-POSIX systems do have unistd.h.
+[src:gnu-autotools/autoconf-p04] If the use of `TIOCGWINSZ` requires <sys/ioctl.h>, then define `GWINSZ_IN_SYS_IOCTL`.
+[src:gnu-autotools/autoconf-p04] Otherwise `TIOCGWINSZ` can be found in <termios.h>.
+[src:gnu-autotools/autoconf-p04] These macros are used to find system header files not covered by the “particular” test macros.
+[src:gnu-autotools/autoconf-p04] If you need to check the contents of a header as well as find out whether it is present, you have to write your own test for it (see Writing Tests).
+[src:gnu-autotools/autoconf-p04] If the system header file *header-file* is compilable, execute shell commands *action-if-found*, otherwise execute *action-if-not-found*.
+[src:gnu-autotools/autoconf-p04] If you just want to define a symbol if the header file is available, consider using `AC_CHECK_HEADERS` instead.
+[src:gnu-autotools/autoconf-p04] This macro used to check only for the *presence* of a header, not whether its contents were acceptable to the compiler.
+[src:gnu-autotools/autoconf-p04] Some older `configure` scripts rely on this behavior, so it is still available by specifying ‘-’ as *includes*.
+[src:gnu-autotools/autoconf-p04] This mechanism is deprecated as of Autoconf 2.70; situations where a preprocessor-only check is required should use `AC_PREPROC_IFELSE`.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_header_*header-file*` variable, with characters not suitable for a variable name mapped to underscores.
+[src:gnu-autotools/autoconf-p04] For each given system header file *header-file* in the blank-separated argument list that exists, define `HAVE_*header-file*` (in all capitals).
+[src:gnu-autotools/autoconf-p04] If *action-if-found* is given, it is additional shell code to execute when one of the header files is found.
+[src:gnu-autotools/autoconf-p04] If *action-if-not-found* is given, it is executed when one of the header files is not found.
+[src:gnu-autotools/autoconf-p04] If you do not need the full power of `AC_CHECK_HEADERS`, this variant generates smaller, faster `configure` files.
+[src:gnu-autotools/autoconf-p04] All headers passed to `AC_CHECK_HEADERS_ONCE` are checked for in one pass, early during the `configure` run.
+[src:gnu-autotools/autoconf-p04] The checks cannot be conditionalized, you cannot specify an *action-if-found* or *action-if-not-found*, and `AC_INCLUDES_DEFAULT` is always used for the prerequisites.
+[src:gnu-autotools/autoconf-p04] In previous versions of Autoconf, these macros merely checked whether the header was accepted by the preprocessor.
+[src:gnu-autotools/autoconf-p04] This was changed because the old test was inappropriate for typical uses.
+[src:gnu-autotools/autoconf-p04] Headers are typically used to compile, not merely to preprocess, and the old behavior sometimes accepted headers that clashed at compile-time (see Header Present But Cannot Be Compiled).
+[src:gnu-autotools/autoconf-p04] If for some reason it is inappropriate to check whether a header is compilable, you should use `AC_PREPROC_IFELSE` (see Running the Preprocessor) instead of these macros.
+[src:gnu-autotools/autoconf-p04] Requiring each header to compile improves the robustness of the test, but it also requires you to make sure that the *includes* are correct.
+[src:gnu-autotools/autoconf-p04] Most system headers nowadays make sure to `#include` whatever they require, or else have their dependencies satisfied by `AC_INCLUDES_DEFAULT` (see Default Includes), but see Portability of Headers, for known exceptions.
+[src:gnu-autotools/autoconf-p04] The following macros check for the declaration of variables and functions.
+[src:gnu-autotools/autoconf-p04] If there is no macro specifically defined to check for a symbol you need, then you can use the general macros (see Generic Declaration Checks) or, for more complex tests, you may use `AC_COMPILE_IFELSE` (see Running the Compiler).
+[src:gnu-autotools/autoconf-p04] There are no specific macros for declarations.
+[src:gnu-autotools/autoconf-p04] These macros are used to find declarations not covered by the “particular” test macros.
+[src:gnu-autotools/autoconf-p04] If *symbol* (a function, variable, or constant) is not declared in *includes* and a declaration is needed, run the shell commands *action-if-not-found*, otherwise *action-if-found*.
+[src:gnu-autotools/autoconf-p04] *includes* is a series of include directives, defaulting to `AC_INCLUDES_DEFAULT` (see Default Includes), which are used prior to the declaration under test.
+[src:gnu-autotools/autoconf-p04] This macro actually tests whether *symbol* is defined as a macro or can be used as an r-value, not whether it is really declared, because it is much safer to avoid introducing extra declarations when they are not needed.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_have_decl_*symbol*` variable, with characters not suitable for a variable name mapped to underscores.
+[src:gnu-autotools/autoconf-p04] For each of the *symbols* (*comma*-separated list with optional function argument types for C++ overloads), define `HAVE_DECL_*symbol*` (in all capitals) to ‘1’ if *symbol* is declared, otherwise to ‘0’.
+[src:gnu-autotools/autoconf-p04] If *action-if-not-found* is given, it is additional shell code to execute when one of the function declarations is needed, otherwise *action-if-found* is executed.
+[src:gnu-autotools/autoconf-p04] Unlike the other ‘AC_CHECK_*S’ macros, when a *symbol* is not declared, `HAVE_DECL_*symbol*` is defined to ‘0’ instead of leaving `HAVE_DECL_*symbol*` undeclared.
+[src:gnu-autotools/autoconf-p04] You fall into the second category only in extreme situations: either your files may be used without being configured, or they are used during the configuration.
+[src:gnu-autotools/autoconf-p04] In most cases the traditional approach is enough.
+[src:gnu-autotools/autoconf-p04] This macro caches its results in `ac_cv_have_decl_*symbol*` variables, with characters not suitable for a variable name mapped to underscores.
+[src:gnu-autotools/autoconf-p04] For each of the *symbols* (*comma*-separated list), define `HAVE_DECL_*symbol*` (in all capitals) to ‘1’ if *symbol* is declared in the default include files, otherwise to ‘0’.
+[src:gnu-autotools/autoconf-p04] This is a once-only variant of `AC_CHECK_DECLS`.
+[src:gnu-autotools/autoconf-p04] The following macros check for the presence of certain members in C structures.
+[src:gnu-autotools/autoconf-p04] If there is no macro specifically defined to check for a member you need, then you can use the general structure-member macros (see Generic Structure Checks) or, for more complex tests, you may use `AC_COMPILE_IFELSE` (see Running the Compiler).
+[src:gnu-autotools/autoconf-p04] The following macros check for certain structures or structure members.
+[src:gnu-autotools/autoconf-p04] Perform all the actions of `AC_HEADER_DIRENT` (see Particular Header Checks).
+[src:gnu-autotools/autoconf-p04] Then, if `struct dirent` contains a `d_ino` member, define `HAVE_STRUCT_DIRENT_D_INO`.
+[src:gnu-autotools/autoconf-p04] `HAVE_STRUCT_DIRENT_D_INO` indicates only the presence of `d_ino`, not whether its contents are always reliable.
+[src:gnu-autotools/autoconf-p04] Traditionally, a zero `d_ino` indicated a deleted directory entry, though current systems hide this detail from the user and never return zero `d_ino` values.
+[src:gnu-autotools/autoconf-p04] Many current systems report an incorrect `d_ino` for a directory entry that is a mount point.
+[src:gnu-autotools/autoconf-p04] Then, if `struct dirent` contains a `d_type` member, define `HAVE_STRUCT_DIRENT_D_TYPE`.
+[src:gnu-autotools/autoconf-p04] If `struct stat` contains an `st_blocks` member, define `HAVE_STRUCT_STAT_ST_BLOCKS`.
+[src:gnu-autotools/autoconf-p04] Otherwise, require an `AC_LIBOBJ` replacement of ‘fileblocks’.
+[src:gnu-autotools/autoconf-p04] The former name, `HAVE_ST_BLOCKS` is to be avoided, as its support will cease in the future.
+[src:gnu-autotools/autoconf-p04] This macro caches its result in the `ac_cv_member_struct_stat_st_blocks` variable.
+[src:gnu-autotools/autoconf-p04] If time.h does not define `struct tm`, define `TM_IN_SYS_TIME`, which means that including sys/time.h had better define `struct tm`.
+[src:gnu-autotools/autoconf-p05] This macro is obsolescent, as time.h defines `struct tm` in current systems.
+[src:gnu-autotools/autoconf-p05] Figure out how to get the current timezone.
+[src:gnu-autotools/autoconf-p05] If `struct tm` has a `tm_zone` member, define `HAVE_STRUCT_TM_TM_ZONE` (and the obsoleted `HAVE_TM_ZONE`).
+[src:gnu-autotools/autoconf-p05] Otherwise, if the external array `tzname` is found, define `HAVE_TZNAME`; if it is declared, define `HAVE_DECL_TZNAME`.
+[src:gnu-autotools/autoconf-p05] These macros are used to find structure members not covered by the “particular” test macros.
+[src:gnu-autotools/autoconf-p05] Check whether *member* is a member of the aggregate *aggregate*.
+[src:gnu-autotools/autoconf-p05] If no *includes* are specified, the default includes are used (see Default Includes).
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_member_*aggregate*_*member*` variable, with characters not suitable for a variable name mapped to underscores.
+[src:gnu-autotools/autoconf-p05] Check for the existence of each ‘*aggregate*.*member*’ of *members* using the previous macro.
+[src:gnu-autotools/autoconf-p05] When *member* belongs to *aggregate*, define `HAVE_*aggregate*_*member*` (in all capitals, with spaces and dots replaced by underscores).
+[src:gnu-autotools/autoconf-p05] If *action-if-found* is given, it is executed for each of the found members.
+[src:gnu-autotools/autoconf-p05] If *action-if-not-found* is given, it is executed for each of the members that could not be found.
+[src:gnu-autotools/autoconf-p05] The following macros check for C types, either builtin or typedefs.
+[src:gnu-autotools/autoconf-p05] If there is no macro specifically defined to check for a type you need, and you don’t need to check for any special properties of it, then you can use a general type-check macro.
+[src:gnu-autotools/autoconf-p05] These macros check for particular C types in sys/types.h, stdlib.h, stdint.h, inttypes.h and others, if they exist.
+[src:gnu-autotools/autoconf-p05] The Gnulib `stdint` module is an alternate way to define many of these symbols; it is useful if you prefer your code to assume a C99-or-better environment.
+[src:gnu-autotools/autoconf-p05] Define `GETGROUPS_T` to be whichever of `gid_t` or `int` is the base type of the array argument to `getgroups`.
+[src:gnu-autotools/autoconf-p05] This macro caches the base type in the `ac_cv_type_getgroups` variable.
+[src:gnu-autotools/autoconf-p05] If stdint.h or inttypes.h does not define the type `int8_t`, define `int8_t` to a signed integer type that is exactly 8 bits wide and that uses two’s complement representation, if such a type exists.
+[src:gnu-autotools/autoconf-p05] This macro caches the type in the `ac_cv_c_int8_t` variable.
+[src:gnu-autotools/autoconf-p05] This is like `AC_TYPE_INT8_T`, except for 16-bit integers.
+[src:gnu-autotools/autoconf-p05] This is like `AC_TYPE_INT8_T`, except for 32-bit integers.
+[src:gnu-autotools/autoconf-p05] This is like `AC_TYPE_INT8_T`, except for 64-bit integers.
+[src:gnu-autotools/autoconf-p05] If stdint.h or inttypes.h defines the type `intmax_t`, define `HAVE_INTMAX_T`.
+[src:gnu-autotools/autoconf-p05] Otherwise, define `intmax_t` to the widest signed integer type.
+[src:gnu-autotools/autoconf-p05] If stdint.h or inttypes.h defines the type `intptr_t`, define `HAVE_INTPTR_T`.
+[src:gnu-autotools/autoconf-p05] Otherwise, define `intptr_t` to a signed integer type wide enough to hold a pointer, if such a type exists.
+[src:gnu-autotools/autoconf-p05] If the C compiler supports a working `long double` type, define `HAVE_LONG_DOUBLE`.
+[src:gnu-autotools/autoconf-p05] The `long double` type might have the same range and precision as `double`.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_long_double` variable.
+[src:gnu-autotools/autoconf-p05] This macro is obsolescent, as current C compilers support `long double`.
+[src:gnu-autotools/autoconf-p05] If the C compiler supports a working `long double` type with more range or precision than the `double` type, define `HAVE_LONG_DOUBLE_WIDER`.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_long_double_wider` variable.
+[src:gnu-autotools/autoconf-p05] If the C compiler supports a working `long long int` type, define `HAVE_LONG_LONG_INT`.
+[src:gnu-autotools/autoconf-p05] However, this test does not test `long long int` values in preprocessor `#if` expressions, because too many compilers mishandle such expressions.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_long_long_int` variable.
+[src:gnu-autotools/autoconf-p05] Define `HAVE_MBSTATE_T` if `<wchar.h>` declares the `mbstate_t` type.
+[src:gnu-autotools/autoconf-p05] Also, define `mbstate_t` to be a type if `<wchar.h>` does not declare it.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_mbstate_t` variable.
+[src:gnu-autotools/autoconf-p05] Define `mode_t` to a suitable type, if standard headers do not define it.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_mode_t` variable.
+[src:gnu-autotools/autoconf-p05] Define `off_t` to a suitable type, if standard headers do not define it.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_off_t` variable.
+[src:gnu-autotools/autoconf-p05] Define `pid_t` to a suitable type, if standard headers do not define it.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_pid_t` variable.
+[src:gnu-autotools/autoconf-p05] Define `size_t` to a suitable type, if standard headers do not define it.
+[src:gnu-autotools/autoconf-p05] This macro caches its result in the `ac_cv_type_size_t` variable.

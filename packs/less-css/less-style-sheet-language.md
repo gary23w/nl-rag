@@ -1,0 +1,186 @@
+---
+title: "Less (style sheet language)"
+source: https://en.wikipedia.org/wiki/Less_(style_sheet_language)
+domain: less-css
+license: CC-BY-SA-4.0
+tags: less css, less style sheet, css preprocessor language, less mixin
+fetched: 2026-07-02
+---
+
+# Less (style sheet language)
+
+**Less** (**Leaner Style Sheets**; sometimes stylized as **LESS**) is a dynamic preprocessor style sheet language that can be compiled into Cascading Style Sheets (CSS) and run on the client side or server side. Designed by Alexis Sellier, Less is influenced by Sass and has influenced the newer "SCSS" syntax of Sass, which adapted its CSS-like block formatting syntax. Less is an open source project. Its first version was written in Ruby; however, in the later versions, use of Ruby has been deprecated and replaced by JavaScript. The indented syntax of Less is a nested metalanguage, as valid CSS is valid Less code with the same semantics. Less provides the following mechanisms: variables, nesting, mixins, operators and functions; the main difference between Less and other CSS precompilers is that Less allows real-time compilation via less.js by the browser.
+
+## Features
+
+### Variables
+
+**Less** allows variables to be defined. Variables in Less are defined with an at sign (@). Variable assignment is done with a colon (:).
+
+During translation, the values of the variables are inserted into the output CSS document.
+
+```mw
+@pale-green-color: #4D926F;
+
+#header {
+  color: @pale-green-color;
+}
+h2 {
+  color: @pale-green-color;
+}
+```
+
+The code above in Less would compile to the following CSS code.
+
+```mw
+#header {
+  color: #4D926F;
+}
+h2 {
+  color: #4D926F;
+}
+```
+
+### Mixins
+
+Mixins allows embedding all the properties of a class into another class by including the class name as one of its property, thus behaving as a sort of constant or variable. They can also behave like functions, and take arguments. CSS does not support Mixins: Any repeated code must be repeated in each location. Mixins allows for more efficient and clean code repetitions, as well as easier alteration of code.
+
+```mw
+.rounded-corners (@radius: 5px 10px 8px 2px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+#header {
+  .rounded-corners;
+}
+#footer {
+  .rounded-corners(10px 25px 35px 0px);
+}
+```
+
+The above code in Less would compile to the following CSS code:
+
+```mw
+#header {
+  -webkit-border-radius: 5px 10px 8px 2px;
+  -moz-border-radius: 5px 10px 8px 2px;
+  border-radius: 5px 10px 8px 2px;
+}
+#footer {
+  -webkit-border-radius: 10px 25px 35px 0px;
+  -moz-border-radius: 10px 25px 35px 0px;
+  border-radius: 10px 25px 35px 0px;
+}
+```
+
+Less has a special type of ruleset called parametric mixins which can be mixed in like classes, but accepts parameters.
+
+```mw
+#header {
+  h1 {
+    font-size: 26px;
+    font-weight: bold;
+  }
+  p {
+    font-size: 16px;
+    a {
+      text-decoration: none;
+      color: red;
+      &:hover {
+        border-width: 1px;
+        color: #fff;
+      }
+    }
+  }
+}
+```
+
+The above code in Less would compile to the following CSS code:
+
+```mw
+#header h1 {
+  font-size: 26px;
+  font-weight: bold;
+}
+#header p {
+  font-size: 16px;
+}
+#header p a {
+  text-decoration: none;
+  color: red;
+}
+#header p a:hover {
+  border-width: 1px;
+  color: #fff;
+}
+```
+
+### Functions and operations
+
+Less allows operations and functions. Operations allow addition, subtraction, division and multiplication of property values and colors, which can be used to create complex relationships between properties. Functions map one-to-one with JavaScript code, allowing manipulation of values.
+
+```mw
+@the-border: 1px;
+@base-color: #111;
+@red:        #842210;
+
+#header {
+  color: @base-color * 3;
+  border-left: @the-border;
+  border-right: @the-border * 3;
+}
+#footer {
+  color: @base-color + #003300;
+  border-color: desaturate(@red, 10%);
+}
+```
+
+The above code in Less would compile to the following CSS code:
+
+```mw
+#header {
+  color: #333;
+  border-left: 1px;
+  border-right: 3px;
+}
+#footer {
+  color: #114411;
+  border-color: #7d2717;
+}
+```
+
+## Comparison
+
+### Sass
+
+Both Sass and Less are CSS preprocessors, which allow writing clean CSS in a programming construct instead of static rules.
+
+Less is inspired by Sass. Sass was designed to both simplify and extend CSS, so things like curly braces were removed from the syntax. Less was designed to be as close to CSS as possible, and as a result existing CSS can be used as valid Less code.
+
+The newer versions of Sass also introduced a CSS-like syntax called SCSS (Sassy CSS).
+
+## Use on sites
+
+Less can be applied to sites in a number of ways. One option is to include the less.js JavaScript file to convert the code on-the-fly. The browser then renders the output CSS. Another option is to render the Less code into pure CSS and upload the CSS to a site. With this option no .less files are uploaded and the site does not need the less.js JavaScript converter.
+
+## Less software
+
+| Name | Description | Software License | Platform | Functionality |
+|---|---|---|---|---|
+| WinLess - Windows GUI for less.js | GUI Less Compiler | Apache 2.0 | Windows | Compiler |
+| Crunch | Less editor and compiler (requires Adobe AIR) | GPL | Windows, Mac OS X | Compiler Editor |
+| less.js-windows | Simple command-line utility for Windows that will compile *.less files to CSS using less.js. | MIT License | Windows | Compiler |
+| less.app | Less Compiler | Proprietary | Mac OS X | Compiler |
+| CodeKit | Less Compiler | Proprietary | Mac OS X | Compiler |
+| LessEngine | Less Compiler | Free | OpenCart Plugin | Compiler |
+| SimpLESS | Less Compiler | free but no explicit license | Windows Mac OS X Linux | Compiler |
+| Chirpy | Less Compiler | Ms-PL | Visual Studio Plugin | Compiler |
+| Mindscape Web Workbench | Syntax highlighting and IntelliSense for Less and Sass | Proprietary | Visual Studio Plugin | Compiler Syntax Highlighting |
+| Eclipse Plugin for Less | Eclipse Plugin | EPL 1.0 | Eclipse Plugin | Syntax highlighting Content assist Compiler |
+| mod_less | Apache2 module to compile Less on the fly | Open Source | Linux | Compiler |
+| grunt-contrib-less | Node.js Grunt task to convert Less to CSS | MIT | Node.js | Compiler |
+| Web Essentials | Visual Studio extension with support for Less and Sass | Apache 2.0 | Windows | Syntax highlighting, Content assist, Compiler |
+| clessc | Pure C++ compiler | MIT | at least Windows, Linux, MacOS | Compiler |
+| Less WebCompiler | Web-based compiler | MIT | at least Windows, Linux, MacOS | Compiler, Syntax highlighting, Minifier |

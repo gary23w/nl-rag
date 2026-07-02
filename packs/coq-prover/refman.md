@@ -1,0 +1,1173 @@
+---
+title: "Introduction and Contents"
+source: https://coq.inria.fr/refman/
+domain: coq-prover
+license: CC-BY-SA-4.0
+tags: coq proof assistant, coq prover, gallina coq, rocq prover
+fetched: 2026-07-02
+---
+
+# Introduction and Contents
+
+\[\begin{split}\newcommand{\as}{\kw{as}} \newcommand{\case}{\kw{case}} \newcommand{\cons}{\textsf{cons}} \newcommand{\consf}{\textsf{consf}} \newcommand{\emptyf}{\textsf{emptyf}} \newcommand{\End}{\kw{End}} \newcommand{\kwend}{\kw{end}} \newcommand{\even}{\textsf{even}} \newcommand{\evenO}{\textsf{even}_\textsf{O}} \newcommand{\evenS}{\textsf{even}_\textsf{S}} \newcommand{\Fix}{\kw{Fix}} \newcommand{\fix}{\kw{fix}} \newcommand{\for}{\textsf{for}} \newcommand{\forest}{\textsf{forest}} \newcommand{\Functor}{\kw{Functor}} \newcommand{\In}{\kw{in}} \newcommand{\ind}[3]{\kw{Ind}~[#1]\left(#2\mathrm{~:=~}#3\right)} \newcommand{\Indp}[4]{\kw{Ind}_{#4}[#1](#2:=#3)} \newcommand{\Indpstr}[5]{\kw{Ind}_{#4}[#1](#2:=#3)/{#5}} \newcommand{\injective}{\kw{injective}} \newcommand{\kw}[1]{\textsf{#1}} \newcommand{\length}{\textsf{length}} \newcommand{\letin}[3]{\kw{let}~#1:=#2~\kw{in}~#3} \newcommand{\List}{\textsf{list}} \newcommand{\lra}{\longrightarrow} \newcommand{\Match}{\kw{match}} \newcommand{\Mod}[3]{{\kw{Mod}}({#1}:{#2}\,\zeroone{:={#3}})} \newcommand{\ModImp}[3]{{\kw{Mod}}({#1}:{#2}:={#3})} \newcommand{\ModA}[2]{{\kw{ModA}}({#1}=={#2})} \newcommand{\ModS}[2]{{\kw{Mod}}({#1}:{#2})} \newcommand{\ModType}[2]{{\kw{ModType}}({#1}:={#2})} \newcommand{\mto}{.\;} \newcommand{\nat}{\textsf{nat}} \newcommand{\Nil}{\textsf{nil}} \newcommand{\nilhl}{\textsf{nil\_hl}} \newcommand{\nO}{\textsf{O}} \newcommand{\node}{\textsf{node}} \newcommand{\nS}{\textsf{S}} \newcommand{\odd}{\textsf{odd}} \newcommand{\oddS}{\textsf{odd}_\textsf{S}} \newcommand{\ovl}[1]{\overline{#1}} \newcommand{\Pair}{\textsf{pair}} \newcommand{\plus}{\mathsf{plus}} \newcommand{\SProp}{\textsf{SProp}} \newcommand{\Prop}{\textsf{Prop}} \newcommand{\return}{\kw{return}} \newcommand{\Set}{\textsf{Set}} \newcommand{\Sort}{\mathcal{S}} \newcommand{\Str}{\textsf{Stream}} \newcommand{\Struct}{\kw{Struct}} \newcommand{\subst}[3]{#1\{#2/#3\}} \newcommand{\tl}{\textsf{tl}} \newcommand{\tree}{\textsf{tree}} \newcommand{\trii}{\triangleright_\iota} \newcommand{\Type}{\textsf{Type}} \newcommand{\WEV}[3]{\mbox{$#1[] \vdash #2 \lra #3$}} \newcommand{\WEVT}[3]{\mbox{$#1[] \vdash #2 \lra$}\\ \mbox{$ #3$}} \newcommand{\WF}[2]{{\mathcal{W\!F}}(#1)[#2]} \newcommand{\WFE}[1]{\WF{E}{#1}} \newcommand{\WFT}[2]{#1[] \vdash {\mathcal{W\!F}}(#2)} \newcommand{\WFTWOLINES}[2]{{\mathcal{W\!F}}\begin{array}{l}(#1)\\\mbox{}[{#2}]\end{array}} \newcommand{\with}{\kw{with}} \newcommand{\WS}[3]{#1[] \vdash #2 <: #3} \newcommand{\WSE}[2]{\WS{E}{#1}{#2}} \newcommand{\WT}[4]{#1[#2] \vdash #3 : #4} \newcommand{\WTE}[3]{\WT{E}{#1}{#2}{#3}} \newcommand{\WTEG}[2]{\WTE{\Gamma}{#1}{#2}} \newcommand{\WTM}[3]{\WT{#1}{}{#2}{#3}} \newcommand{\zeroone}[1]{[{#1}]} \end{split}\]
+
+# Introduction and Contents
+
+This is the reference manual of the Rocq Prover. Rocq is a proof assistant or interactive theorem prover. It lets you formalize mathematical concepts and then helps you interactively generate machine-checked proofs of theorems. Machine checking gives users much more confidence that the proofs are correct compared to human-generated and -checked proofs. Rocq has been used in a number of flagship verification projects, including the CompCert verified C compiler, and has served to verify the proof of the four color theorem (among many other mathematical formalizations).
+
+Users generate proofs by entering a series of tactics that constitute steps in the proof. There are many built-in tactics, some of which are elementary, while others implement complex decision procedures (such as `lia`, a decision procedure for linear integer arithmetic). Ltac and its planned replacement, Ltac2, provide languages to define new tactics by combining existing tactics with looping and conditional constructs. These permit automation of large parts of proofs and sometimes entire proofs. Furthermore, users can add novel tactics or functionality by creating Rocq plugins using OCaml.
+
+The Rocq kernel, a small part of the Rocq Prover, does the final verification that the tactic-generated proof is valid. Usually the tactic-generated proof is indeed correct, but delegating proof verification to the kernel means that even if a tactic is buggy, it won't be able to introduce an incorrect proof into the system.
+
+Finally, Rocq also supports extraction of verified programs to programming languages such as OCaml and Haskell. This provides a way of executing Rocq code efficiently and can be used to create verified software libraries.
+
+To learn Rocq, beginners are advised to first start with a tutorial / book. Several such tutorials / books are listed at https://rocq-prover.org/docs.
+
+This manual is organized in three main parts, plus an appendix:
+
+- **The first part presents the specification language of the Rocq Prover**, that allows to define programs and state mathematical theorems. Core language presents the language that the kernel of Rocq understands. Language extensions presents the richer language, with notations, implicits, etc. that a user can use and which is translated down to the language of the kernel by means of an "elaboration process".
+- **The second part presents proof mode**, the central feature of the Rocq Prover. Proof mode introduces this interactive mode, then Basic tactics introduces the standard Rocq tactics and The SSReflect proof language presents the alternative SSReflect tactics. Automatic solvers and programmable tactics presents some more advanced tactics, while Creating new tactics is about the languages that allow a user to combine tactics together and develop new ones.
+- **The third part shows how to use the Rocq Prover in practice.** Libraries and plugins presents some of the essential reusable blocks from the ecosystem and some particularly important extensions such as the program extraction mechanism. Command-line and graphical tools documents important tools that a user needs to build a Rocq project.
+- In the appendix, History and recent changes presents the history of Rocq and changes in recent releases. This is an important reference if you upgrade the version of Rocq that you use. The various indexes are very useful to **quickly browse the manual and find what you are looking for.** They are often the main entry point to the manual.
+
+The full table of contents is presented below:
+
+## Contents
+
+- Introduction and Contents
+
+Specification language
+
+- Core language
+  - Basic notions and conventions
+    - Syntax and lexical conventions
+      - Syntax conventions
+      - Lexical conventions
+    - Essential vocabulary
+    - Settings
+      - Attributes
+        - Generic attributes
+        - Document-level attributes
+      - Flags, Options and Tables
+        - Locality attributes supported by `Set` and `Unset`
+  - Sorts
+  - Functions and assumptions
+    - Binders
+    - Functions (fun) and function types (forall)
+    - Function application
+    - Assumptions
+  - Definitions
+    - Let-in definitions
+    - Type cast
+    - Top-level definitions
+    - Assertions and proofs
+  - Conversion rules
+    - α-conversion
+    - β-reduction
+    - δ-reduction
+    - ι-reduction
+    - ζ-reduction
+    - η-expansion
+    - Examples
+    - Proof Irrelevance
+    - Convertibility
+  - Typing rules
+    - The terms
+    - Typing rules
+    - Subtyping rules
+    - The Calculus of Inductive Constructions with impredicative Set
+  - Variants and the `match` construct
+    - Variants
+      - Private (matching) inductive types
+    - Definition by cases: match
+  - Inductive types and recursive functions
+    - Inductive types
+      - Simple inductive types
+        - Automatic Prop lowering
+      - Simple indexed inductive types
+      - Parameterized inductive types
+      - Mutually defined inductive types
+    - Recursive functions: fix
+    - Top-level recursive functions
+    - Theory of inductive definitions
+      - Types of inductive objects
+      - Well-formed inductive definitions
+        - Arity of a given sort
+        - Arity
+        - Type of constructor
+        - Positivity Condition
+        - Strict positivity
+        - Nested Positivity
+        - Correctness rules
+      - Destructors
+        - The match ... with ... end construction
+      - Fixpoint definitions
+        - Typing rule
+        - Reduction rule
+  - Coinductive types and corecursive functions
+    - Coinductive types
+      - Caveat
+    - Co-recursive functions: cofix
+    - Top-level definitions of corecursive functions
+  - Record types
+    - Defining record types
+    - Constructing records
+    - Accessing fields (projections)
+    - Settings for printing records
+    - Primitive Projections
+      - Reduction
+      - Compatibility Constants for Projections
+  - Sections
+    - Using sections
+    - Summary of locality attributes in a section
+    - Typing rules used at the end of a section
+  - The Module System
+    - Modules and module types
+    - Using modules
+      - Examples
+    - Qualified names
+    - Controlling the scope of commands with locality attributes
+    - Summary of locality attributes in a module
+    - Typing Modules
+  - Primitive objects
+    - Primitive Integers
+    - Primitive Floats
+    - Primitive Arrays
+    - Primitive (Byte-Based) Strings
+  - Polymorphic Universes
+    - General Presentation
+    - Polymorphic, Monomorphic
+    - Cumulative, NonCumulative
+      - Specifying cumulativity
+      - Cumulativity Weak Constraints
+    - Global and local universes
+    - Conversion and unification
+    - Minimization
+    - Explicit Universes
+      - Printing universes
+      - Polymorphic definitions
+    - Sort polymorphism
+    - Elimination of Sort-Polymorphic Inductives
+    - Explicit Sorts
+    - Template polymorphism
+      - Template polymorphic inductive declarations
+      - Using template polymorphic inductives
+      - Controlling template polymorphism
+    - Universe polymorphism and sections
+  - SProp (proof irrelevant propositions)
+    - Basic constructs
+    - Encodings for strict propositions
+    - Definitional UIP
+      - Non Termination with UIP
+    - Debugging \(\SProp\) issues
+  - User-defined rewrite rules
+    - Symbols
+    - Rewrite rules
+    - Pattern syntax
+    - Higher-order pattern holes
+    - Universe polymorphic rules
+    - Rewrite rules, type preservation, confluence and termination
+    - Compatibility with the eta laws
+    - Level of support
+- Language extensions
+  - Command level processing
+    - Lexing
+    - Parsing
+    - Synterp
+    - Interp
+  - Term level processing
+  - Existential variables
+    - Inferable subterms
+    - e* tactics that can create existential variables
+    - Automatic resolution of existential variables
+    - Explicit display of existential instances for pretty-printing
+    - Solving existential variables using tactics
+  - Implicit arguments
+    - The different kinds of implicit arguments
+      - Implicit arguments inferable from the knowledge of other arguments of a function
+      - Implicit arguments inferable by resolution
+    - Maximal and non-maximal insertion of implicit arguments
+      - Trailing Implicit Arguments
+    - Casual use of implicit arguments
+    - Declaration of implicit arguments
+      - Implicit Argument Binders
+      - Mode for automatic declaration of implicit arguments
+      - Controlling strict implicit arguments
+      - Controlling contextual implicit arguments
+      - Controlling reversible-pattern implicit arguments
+      - Controlling the insertion of implicit arguments not followed by explicit arguments
+      - Combining manual declaration and automatic declaration
+    - Explicit applications
+    - Displaying implicit arguments
+    - Displaying implicit arguments when pretty-printing
+    - Interaction with subtyping
+    - Deactivation of implicit arguments for parsing
+    - Implicit types of variables
+    - Implicit generalization
+  - Extended pattern matching
+    - Variants and extensions of `match`
+      - Multiple and nested pattern matching
+      - Pattern-matching on boolean values: the if expression
+      - Irrefutable patterns: the destructuring let variants
+        - Let-tuple syntax
+        - Let-pattern syntax
+      - Controlling pretty-printing of match expressions
+        - Printing nested patterns
+        - Factorization of clauses with same right-hand side
+        - Use of a default clause
+        - Printing of wildcard patterns
+        - Printing of the elimination predicate
+        - Printing of hidden subterms
+        - Printing matching on irrefutable patterns
+        - Printing matching on booleans
+      - Conventions about unused pattern-matching variables
+    - Patterns
+    - Multiple patterns
+    - Aliasing subpatterns
+    - Nested patterns
+    - Disjunctive patterns
+    - About patterns of parametric types
+      - Parameters in patterns
+    - Implicit arguments in patterns
+    - Matching objects of dependent types
+    - Understanding dependencies in patterns
+    - When the elimination predicate must be provided
+      - Dependent pattern matching
+      - Multiple dependent pattern matching
+      - Patterns in `in`
+    - Using pattern matching to write proofs
+    - Pattern-matching on inductive objects involving local definitions
+    - Pattern-matching and coercions
+    - When does the expansion strategy fail?
+  - Syntax extensions and notation scopes
+    - Notations
+      - Basic notations
+      - Precedences and associativity
+      - Complex notations
+      - Simple factorization rules
+      - Use of notations for printing
+      - The Infix command
+      - Reserving notations
+      - Simultaneous definition of terms and notations
+      - Enabling and disabling notations
+      - Displaying information about notations
+      - Locating notations
+      - Inheritance of the properties of arguments of constants bound to a notation
+      - Notations and binders
+        - Binders bound in the notation and parsed as identifiers
+        - Binders bound in the notation and parsed as patterns
+        - Binders bound in the notation and parsed as terms
+        - Binders bound in the notation and parsed as general binders
+        - Binders not bound in the notation
+        - Notations with expressions used both as binder and term
+      - Notations with recursive patterns
+      - Notations with recursive patterns involving binders
+      - Predefined entries
+      - Custom entries
+      - Syntax
+    - Notation scopes
+      - Global interpretation rules for notations
+      - Local interpretation rules for notations
+        - Opening a notation scope locally
+        - Binding types or coercion classes to notation scopes
+      - The `type_scope` notation scope
+      - The `function_scope` notation scope
+      - Notation scopes used in the standard library of Rocq
+      - Displaying information about scopes
+    - Abbreviations
+    - Numbers and strings
+      - Number notations
+      - String notations
+    - Tactic Notations
+  - Setting properties of a function's arguments
+    - Manual declaration of implicit arguments
+    - Automatic declaration of implicit arguments
+    - Renaming implicit arguments
+    - Binding arguments to scopes
+    - Effects of `Arguments` on unfolding
+    - Bidirectionality hints
+  - Implicit Coercions
+    - General Presentation
+    - Coercion Classes
+    - Coercions
+    - Reversible Coercions
+    - Identity Coercions
+    - Inheritance Graph
+    - Coercion Classes
+    - Displaying Available Coercions
+    - Activating the Printing of Coercions
+    - Classes as Records
+    - Coercions and Sections
+    - Coercions and Modules
+    - Examples
+  - Typeclasses
+    - Typeclass and instance declarations
+    - Binding typeclasses
+    - Parameterized instances
+    - Sections and contexts
+    - Building hierarchies
+      - Superclasses
+      - Substructures
+    - Command summary
+      - Typeclasses Transparent, Typeclasses Opaque
+      - Settings
+      - Typeclasses eauto
+  - Canonical Structures
+    - Declaration of canonical structures
+    - Notation overloading
+      - Derived Canonical Structures
+    - Hierarchy of structures
+      - Compact declaration of Canonical Structures
+  - Program
+    - Elaborating programs
+      - Syntactic control over equalities
+      - Program Definition
+      - Program Fixpoint
+      - Program Lemma
+    - Solving obligations
+    - Frequently Asked Questions
+  - Commands
+    - Displaying
+    - Query commands
+    - Requests to the environment
+    - Printing flags
+    - Loading files
+    - Compiled files
+    - Load paths
+    - Extra Dependencies
+    - Backtracking
+    - Quitting and debugging
+    - Controlling display
+    - Printing constructions in full
+    - Controlling Typing Flags
+    - Internal registration commands
+      - Exposing constants to OCaml libraries
+      - Inlining hints for the fast reduction machines
+      - Registering primitive operations
+
+Proofs
+
+- Proof mode
+  - Proof State
+  - Entering and exiting proof mode
+    - Proof using options
+    - Name a set of section hypotheses for `Proof using`
+  - Proof modes
+  - Managing goals
+    - Focusing goals
+      - Curly braces
+      - Bullets
+      - Named goals
+      - Other focusing commands
+    - Shelving goals
+    - Reordering goals
+  - Proving a subgoal as a separate lemma: abstract
+  - Requesting information
+  - Showing differences between proof steps
+    - How to enable diffs
+    - How diffs are calculated
+    - "Show Proof" differences
+  - Delaying solving unification constraints
+  - Proof maintenance
+  - Controlling proof mode
+  - Controlling memory usage
+- Basic tactics
+  - Common elements of tactics
+    - Reserved keywords
+    - Invocation of tactics
+    - Bindings
+    - Intro patterns
+    - Occurrence clauses
+    - Automatic clearing of hypotheses
+  - Applying theorems
+  - Managing the local context
+  - Controlling the proof flow
+  - Classical tactics
+  - Performance-oriented tactic variants
+  - Reasoning with equalities
+    - Tactics for simple equalities
+    - Rewriting with Leibniz and setoid equality
+    - Rewriting with definitional equality
+    - Applying conversion rules
+      - Fast reduction tactics: vm_compute and native_compute
+      - Computing in a term: eval and Eval
+    - Controlling reduction strategies and the conversion algorithm
+  - Reasoning with inductive types
+    - Applying constructors
+    - Case analysis
+    - Induction
+    - Equality of inductive types
+      - Helper tactics
+    - Generation of induction principles with `Scheme`
+      - Eliminators for Nested Inductive Types
+      - Scheme Equality, and Rewriting
+      - Automatic declaration of schemes
+      - Combined Scheme
+    - Generation of inversion principles with `Derive` `Inversion`
+    - Examples of `dependent destruction` / `dependent induction`
+      - A larger example
+- The SSReflect proof language
+  - Introduction
+    - Acknowledgments
+  - Usage
+    - Getting started
+    - Compatibility issues
+  - Gallina extensions
+    - Pattern assignment
+    - Pattern conditional
+    - Parametric polymorphism
+    - Anonymous arguments
+    - Wildcards
+    - Definitions
+    - Abbreviations
+      - Matching
+      - Occurrence selection
+    - Basic localization
+  - Basic tactics
+    - Bookkeeping
+    - The defective tactics
+      - The move tactic.
+      - The case tactic
+      - The elim tactic
+      - The apply tactic
+    - Discharge
+      - Clear rules
+      - Matching for apply and exact
+      - The abstract tactic
+    - Introduction in the context
+      - Simplification items
+      - Views
+      - Intro patterns
+      - Clear switch
+      - Branching and destructuring
+      - Block introduction
+    - Generation of equations
+    - Type families
+  - Control flow
+    - Indentation and bullets
+    - Terminators
+    - Selectors
+    - Iteration
+    - Localization
+    - Structure
+      - The have tactic.
+      - Generating let in context entries with have
+      - The have tactic and typeclass resolution
+      - Variants: the suff and wlog tactics
+        - Advanced generalization
+  - Rewriting
+    - An extended rewrite tactic
+    - Remarks and examples
+      - Rewrite redex selection
+      - Chained rewrite steps
+      - Explicit redex switches are matched first
+      - Occurrence switches and redex switches
+      - Occurrence selection and repetition
+      - Multi-rule rewriting
+      - Wildcards vs abstractions
+      - When SSReflect rewrite fails on standard Rocq licit rewrite
+      - Existential metavariables and rewriting
+    - Rewriting under binders
+      - The under tactic
+      - Interactive mode
+        - The over tactic
+      - One-liner mode
+    - Locking, unlocking
+    - Congruence
+  - Contextual patterns
+    - Syntax
+    - Matching contextual patterns
+    - Examples
+      - Contextual pattern in set and the : tactical
+      - Contextual patterns in rewrite
+    - Patterns for recurrent contexts
+  - Views and reflection
+    - Interpreting eliminations
+    - Interpreting assumptions
+      - Specializing assumptions
+    - Interpreting goals
+    - Boolean reflection
+    - The reflect predicate
+    - General mechanism for interpreting goals and assumptions
+      - Specializing assumptions
+      - Interpreting assumptions
+      - Interpreting goals
+    - Interpreting equivalences
+    - Declaring new Hint Views
+    - Multiple views
+    - Additional view shortcuts
+  - Synopsis and Index
+    - Parameters
+    - Items and switches
+    - Tactics
+    - Tacticals
+    - Commands
+- Automatic solvers and programmable tactics
+  - Solvers for logic and equality
+  - Micromega: solvers for arithmetic goals over ordered rings
+    - Short description of the tactics
+    - *Positivstellensatz* refutations
+    - `lra`: a decision procedure for linear real and rational arithmetic
+    - `lia`: a tactic for linear integer arithmetic
+      - High level view of `lia`
+      - Cutting plane proofs
+      - Case split
+    - `nra`: a proof procedure for non-linear arithmetic
+    - `nia`: a proof procedure for non-linear integer arithmetic
+    - `psatz`: a proof procedure for non-linear arithmetic
+    - `zify`: pre-processing of arithmetic goals
+  - ring and field: solvers for polynomial and rational equations
+    - What does this tactic do?
+    - The variables map
+    - Is it automatic?
+    - Concrete usage
+    - Adding a ring structure
+    - How does it work?
+    - Dealing with fields
+    - Adding a new field structure
+    - History of ring
+    - Discussion
+  - Nsatz: a solver for equalities in integral domains
+    - What does this tactics do?
+    - Concrete usage
+  - Programmable proof search
+    - Tactics
+    - Hint databases
+      - Creating hint databases
+      - Deciding which hints to try
+      - Hint databases defined in the Rocq standard library
+    - Creating Hints
+    - Setting implicit automation tactics
+  - Generalized rewriting
+    - Introduction to generalized rewriting
+      - Relations and morphisms
+      - Adding new relations and morphisms
+      - Rewriting and nonreflexive relations
+      - Rewriting and nonsymmetric relations
+      - Rewriting in ambiguous setoid contexts
+      - Rewriting with `Type` valued relations
+    - Declaring rewrite relations
+    - Commands and tactics
+      - First class setoids and morphisms
+      - Tactics enabled on user provided relations
+      - Printing relations and morphisms
+    - Understanding and fixing failed resolutions
+      - Deprecated syntax and backward incompatibilities
+    - Extensions
+      - Rewriting under binders
+      - Subrelations
+      - Constant unfolding during rewriting
+      - Constant unfolding during `Proper`-instance search
+    - Strategies for rewriting
+      - Usage
+      - Definitions
+- Creating new tactics
+  - Ltac
+    - Defects
+    - Syntax
+    - Values
+      - Syntactic values
+      - Substitution
+      - Local definitions: let
+      - Function construction and application
+      - Tactics in terms
+    - Goal selectors
+    - Processing multiple goals
+    - Branching and backtracking
+    - Control flow
+      - Sequence: ;
+      - Do loop
+      - Repeat loop
+      - Catching errors: try
+      - Conditional branching: tryif
+    - Alternatives
+      - Branching with backtracking: +
+      - Local application of tactics: [> ... ]
+      - First tactic to succeed
+      - Solving
+      - First tactic to make progress: ||
+      - Detecting progress
+    - Success and failure
+      - Checking for success: assert_succeeds
+      - Checking for failure: assert_fails
+      - Failing
+      - Soft cut: once
+      - Checking for a single success: exactly_once
+    - Manipulating values
+      - Pattern matching on terms: match
+      - Pattern matching on goals and hypotheses: match goal
+      - Filling a term context
+      - Generating fresh hypothesis names
+      - Computing in a term: eval
+      - Getting the type of a term
+      - Manipulating untyped terms: type_term
+      - Counting goals: numgoals
+      - Testing boolean expressions: guard
+      - Checking properties of terms
+    - Timing
+      - Timeout
+      - Timing a tactic
+      - Timing a tactic that evaluates to a term: time_constr
+    - Print/identity tactic: idtac
+    - Tactic toplevel definitions
+      - Defining `L`tac symbols
+      - Printing `L`tac tactics
+    - Examples of using `L`tac
+      - Proof that the natural numbers have at least three elements
+      - Proving that a list is a permutation of a second list
+      - Deciding intuitionistic propositional logic
+      - Deciding type isomorphisms
+    - Debugging `L`tac tactics
+      - Backtraces
+      - Tracing execution
+      - Interactive debugger
+      - Profiling `L`tac tactics
+      - Run-time optimization tactic
+  - Ltac2
+    - General design
+    - ML component
+      - Overview
+      - Type Syntax
+      - Type declarations
+      - APIs
+      - Term Syntax
+      - Ltac2 Definitions
+      - Printing Ltac2 tactics
+      - Reduction
+      - Typing
+      - Effects
+        - Standard IO
+        - Fatal errors
+        - Backtracking
+        - Goals
+    - Meta-programming
+      - Overview
+      - Quotations
+        - Built-in quotations
+        - Strict vs. non-strict mode
+      - Term Antiquotations
+        - Syntax
+        - Semantics
+          - Static semantics
+          - Dynamic semantics
+      - Match over terms
+      - Match over goals
+      - Match on values
+    - Notations
+      - Abbreviations
+      - Defining tactics
+      - Syntactic classes
+    - Evaluation
+    - Debug
+    - Profiling
+    - Compatibility layer with Ltac1
+      - Ltac1 from Ltac2
+        - Simple API
+        - Low-level API
+      - Ltac2 from Ltac1
+      - Switching between Ltac languages
+    - Transition from Ltac1
+      - Syntax changes
+      - Tactic delay
+      - Variable binding
+        - In Ltac expressions
+        - In quotations
+      - Exception catching
+
+Using the Rocq Prover
+
+- Libraries and plugins
+  - The Coq libraries
+    - The prelude
+      - Notations
+      - Logic
+        - Propositional Connectives
+        - Quantifiers
+        - Equality
+        - Lemmas
+      - Datatypes
+        - Programming
+      - Specification
+      - Basic Arithmetic
+      - Well-founded recursion
+      - Tactics
+    - Opam repository
+  - Program extraction
+    - Generating ML Code
+    - Extraction Options
+      - Setting the target language
+      - Inlining and optimizations
+      - Extra elimination of useless arguments
+      - Accessing opaque proofs
+      - Realizing axioms
+      - Realizing inductive types
+      - Generating FFI Code
+      - Avoiding conflicts with existing filenames
+      - Additional settings
+    - Differences between Rocq and ML type systems
+    - Some examples
+      - A detailed example: Euclidean division
+      - Extraction's horror museum
+      - Users' Contributions
+  - Program derivation
+  - Functional induction
+    - Advanced recursive functions
+    - Tactics
+    - Generation of induction principles with `Functional` `Scheme`
+    - Flags
+  - Writing Rocq libraries and plugins
+    - Deprecating library objects, tactics or library files
+    - Triggering warning for library objects or library files
+- Command-line and graphical tools
+  - Building Rocq Projects
+    - Rocq configuration basics
+      - Installing the Rocq Prover and Rocq packages with opam
+      - Setup for working on your own projects
+      - Building a project with _CoqProject (overview)
+      - Logical paths and the load path
+      - Modifying multiple interdependent projects at the same time
+      - Installed and uninstalled packages
+      - Upgrading to a new version of Rocq
+    - Building a Rocq project with rocq makefile (details)
+      - Comments
+        - Quoting arguments to rocq c
+        - Forbidden filenames
+        - Warning: No common logical root
+        - CoqMakefile.local
+        - CoqMakefile.local-late
+        - Timing targets and performance testing
+        - Building a subset of the targets with `-j`
+        - Precompiling for `native_compute`
+        - The grammar of _CoqProject
+    - Building a Rocq project with Dune
+    - rocq dep: Computing Module dependencies
+    - Split compilation of native computation files
+    - Using Rocq as a library
+    - Embedded Rocq phrases inside LaTeX documents
+    - Man pages
+  - The Rocq Prover commands
+    - Interactive use (rocq repl)
+    - Batch compilation (rocq compile)
+    - System configuration
+    - Customization at launch time
+    - Command parameters
+      - `coqrc` start up script
+      - Environment variables
+      - Command line options
+    - Profiling
+    - Compiled interfaces (produced using `-vos`)
+    - Compiled libraries checker (rocqchk)
+  - Documenting Rocq files with rocq doc
+    - Principles
+      - Rocq material inside documentation.
+      - Pretty-printing.
+      - Sections
+      - Lists.
+      - Rules.
+      - Emphasis.
+      - Escaping to LaTeX and HTML.
+      - Verbatim
+      - Hyperlinks
+      - Hiding / Showing parts of the source
+    - Usage
+      - Command line options
+      - Custom HTML header and footer
+    - The rocq doc LaTeX style file
+  - RocqIDE
+    - Managing files and buffers, basic editing
+    - Running Coq scripts
+    - Asynchronous mode
+    - Commands and templates
+    - Queries
+    - Compilation
+    - Customizations
+      - Preferences
+      - Key bindings
+    - Using Unicode symbols
+      - Displaying Unicode symbols
+      - Bindings for input of Unicode symbols
+      - Adding custom bindings
+      - Character encoding for saved files
+    - Debugger
+      - Breakpoints
+      - Call Stack and Variables
+      - Supported use cases
+  - Asynchronous and Parallel Proof Processing
+    - Proof annotations
+      - Automatic suggestion of proof annotations
+    - Proof blocks and error resilience
+      - Caveats
+    - Interactive mode
+    - Limiting the number of parallel workers
+      - Caveats
+
+Appendix
+
+- History and recent changes
+  - Early history of Coq
+    - Historical roots
+    - Versions 1 to 5
+      - Version 1
+      - Version 2
+      - Version 3
+      - Version 4
+      - Version 5
+    - Versions 6
+      - Version 6.1
+      - Version 6.2
+      - Version 6.3
+    - Versions 7
+      - Summary of changes
+      - Details of changes in 7.0 and 7.1
+        - Main novelties
+        - Details of changes
+          - Language: new "let-in" construction
+          - Language: long names
+          - Language: miscellaneous
+          - Language: Cases
+          - Reduction
+          - New tactics
+          - Changes in existing tactics
+          - Efficiency
+          - Concrete syntax of constructions
+          - Parsing and grammar extension
+          - New commands
+          - Changes in existing commands
+          - Tools
+          - Extraction
+          - Standard library
+          - New user contributions
+      - Details of changes in 7.2
+      - Details of changes in 7.3
+        - Changes in 7.3.1
+      - Details of changes in 7.4
+  - Recent changes
+    - Version 9.2
+      - Summary of changes
+      - Changes in 9.2.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac2 language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - Corelib
+        - Infrastructure and dependencies
+        - Extraction
+        - Miscellaneous
+    - Version 9.1
+      - Summary of changes
+      - Changes in 9.1.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac language
+        - Ltac2 language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - RocqIDE
+        - Corelib
+        - Infrastructure and dependencies
+        - Extraction
+        - Miscellaneous
+      - Changes in 9.1.1
+        - Specification language, type inference
+        - Miscellaneous
+    - Version 9.0
+      - Summary of changes
+      - Porting to The Rocq Prover
+      - Renaming Advice
+      - The Rocq Prover Website
+      - Changes in 9.0.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac2 language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - RocqIDE
+        - Standard library
+        - Infrastructure and dependencies
+        - Miscellaneous
+      - Changes in 9.0.1
+        - Kernel
+        - Command-line tools
+        - Infrastructure and dependencies
+    - Version 8.20
+      - Summary of changes
+      - Changes in 8.20.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac language
+        - Ltac2 language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - CoqIDE
+        - Standard library
+        - Infrastructure and dependencies
+        - Extraction
+      - Changes in 8.20.1
+        - Kernel
+        - Notations
+        - Tactics
+    - Version 8.19
+      - Summary of changes
+      - Changes in 8.19.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac language
+        - Ltac2 language
+        - Commands and options
+        - Command-line tools
+        - Standard library
+        - Extraction
+      - Changes in 8.19.1
+        - Kernel
+        - Notations
+        - Tactics
+        - Ltac2 language
+        - Infrastructure and dependencies
+      - Changes in 8.19.2
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac2 language
+        - Commands and options
+        - CoqIDE
+        - Infrastructure and dependencies
+    - Version 8.18
+      - Summary of changes
+      - Changes in 8.18.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac2 language
+        - Commands and options
+        - Command-line tools
+        - CoqIDE
+        - Standard library
+        - Infrastructure and dependencies
+        - Extraction
+    - Version 8.17
+      - Summary of changes
+      - Changes in 8.17.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Ltac language
+        - Ltac2 language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - Standard library
+        - Infrastructure and dependencies
+        - Miscellaneous
+      - Changes in 8.17.1
+    - Version 8.16
+      - Summary of changes
+      - Changes in 8.16.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Tactic language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - CoqIDE
+        - Standard library
+        - Infrastructure and dependencies
+        - Extraction
+      - Changes in 8.16.1
+        - Kernel
+        - Commands and options
+        - CoqIDE
+    - Version 8.15
+      - Summary of changes
+      - Changes in 8.15.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Tactic language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - CoqIDE
+        - Standard library
+        - Infrastructure and dependencies
+        - Extraction
+      - Changes in 8.15.1
+        - Kernel
+        - Notations
+        - Tactics
+        - Command-line tools
+        - CoqIDE
+        - Miscellaneous
+      - Changes in 8.15.2
+        - Tactics
+        - CoqIDE
+        - Standard library
+    - Version 8.14
+      - Summary of changes
+      - Changes in 8.14.0
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Tactic language
+        - SSReflect
+        - Commands and options
+        - Command-line tools
+        - Native Compilation
+        - CoqIDE
+        - Standard library
+        - Infrastructure and dependencies
+        - Miscellaneous
+      - Changes in 8.14.1
+        - Kernel
+        - Specification language, type inference
+        - Tactics
+        - Commands and options
+    - Version 8.13
+      - Summary of changes
+      - Changes in 8.13+beta1
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Tactic language
+        - SSReflect
+        - Commands and options
+        - Tools
+        - CoqIDE
+        - Standard library
+        - Infrastructure and dependencies
+      - Changes in 8.13.0
+        - Commands and options
+      - Changes in 8.13.1
+        - Kernel
+        - CoqIDE
+      - Changes in 8.13.2
+        - Kernel
+        - Tactic language
+    - Version 8.12
+      - Summary of changes
+      - Changes in 8.12+beta1
+        - Kernel
+        - Specification language, type inference
+        - Notations
+        - Tactics
+        - Tactic language
+        - SSReflect
+        - Flags, options and attributes
+        - Commands
+        - Tools
+        - CoqIDE
+        - Standard library
+        - Reals library
+        - Extraction
+        - Reference manual
+        - Infrastructure and dependencies
+      - Changes in 8.12.0
+      - Changes in 8.12.1
+      - Changes in 8.12.2
+    - Version 8.11
+      - Summary of changes
+      - Changes in 8.11+beta1
+      - Changes in 8.11.0
+      - Changes in 8.11.1
+      - Changes in 8.11.2
+    - Version 8.10
+      - Summary of changes
+      - Other changes in 8.10+beta1
+      - Changes in 8.10+beta2
+      - Changes in 8.10+beta3
+      - Changes in 8.10.0
+      - Changes in 8.10.1
+      - Changes in 8.10.2
+    - Version 8.9
+      - Summary of changes
+      - Details of changes in 8.9+beta1
+      - Changes in 8.8.0
+      - Changes in 8.8.1
+    - Version 8.8
+      - Summary of changes
+      - Details of changes in 8.8+beta1
+      - Details of changes in 8.8.0
+      - Details of changes in 8.8.1
+      - Details of changes in 8.8.2
+    - Version 8.7
+      - Summary of changes
+      - Potential compatibility issues
+      - Details of changes in 8.7+beta1
+      - Details of changes in 8.7+beta2
+      - Details of changes in 8.7.0
+      - Details of changes in 8.7.1
+      - Details of changes in 8.7.2
+    - Version 8.6
+      - Summary of changes
+      - Potential sources of incompatibilities
+      - Details of changes in 8.6beta1
+      - Details of changes in 8.6
+      - Details of changes in 8.6.1
+    - Version 8.5
+      - Summary of changes
+      - Potential sources of incompatibilities
+      - Details of changes in 8.5beta1
+      - Details of changes in 8.5beta2
+      - Details of changes in 8.5beta3
+      - Details of changes in 8.5
+      - Details of changes in 8.5pl1
+      - Details of changes in 8.5pl2
+      - Details of changes in 8.5pl3
+    - Version 8.4
+      - Summary of changes
+      - Potential sources of incompatibilities
+      - Details of changes in 8.4beta
+      - Details of changes in 8.4beta2
+      - Details of changes in 8.4
+    - Version 8.3
+      - Summary of changes
+      - Details of changes
+    - Version 8.2
+      - Summary of changes
+      - Details of changes
+    - Version 8.1
+      - Summary of changes
+      - Details of changes in 8.1beta
+      - Details of changes in 8.1gamma
+      - Details of changes in 8.1
+    - Version 8.0
+      - Summary of changes
+      - Details of changes in 8.0beta old syntax
+      - Details of changes in 8.0beta new syntax
+      - Details of changes in 8.0
+- Indexes
+  - Glossary index
+  - Command index
+  - Tactic index
+  - Attribute index
+  - Flags, options and tables index
+  - Errors and warnings index
+  - Index
+- Bibliography
+
+Note
+
+**License**
+
+This material (the Rocq Reference Manual) may be distributed only subject to the terms and conditions set forth in the Open Publication License, v1.0 or later (the latest version is presently available at http://www.opencontent.org/openpub). Options A and B are not elected.

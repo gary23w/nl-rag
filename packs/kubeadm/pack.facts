@@ -1,0 +1,415 @@
+# nl-rag distilled facts — domain: kubeadm
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:kubeadm/create-cluster-kubeadm] Using `kubeadm`, you can create a minimum viable Kubernetes cluster that conforms to best practices.
+[src:kubeadm/create-cluster-kubeadm] In fact, you can use `kubeadm` to set up a cluster that will pass the Kubernetes Conformance tests.
+[src:kubeadm/create-cluster-kubeadm] `kubeadm` also supports other cluster lifecycle functions, such as bootstrap tokens and cluster upgrades.
+[src:kubeadm/create-cluster-kubeadm] You can install and use `kubeadm` on various machines: your laptop, a set of cloud servers, a Raspberry Pi, and more.
+[src:kubeadm/create-cluster-kubeadm] Whether you're deploying into the cloud or on-premises, you can integrate `kubeadm` into provisioning systems such as Ansible or Terraform.
+[src:kubeadm/create-cluster-kubeadm] You also need to use a version of `kubeadm` that can deploy the version of Kubernetes that you want to use in your new cluster.
+[src:kubeadm/create-cluster-kubeadm] Kubernetes' version and version skew support policy applies to `kubeadm` as well as to Kubernetes overall.
+[src:kubeadm/create-cluster-kubeadm] Check that policy to learn about what versions of Kubernetes and `kubeadm` are supported.
+[src:kubeadm/create-cluster-kubeadm] This page is written for Kubernetes v1.36.
+[src:kubeadm/create-cluster-kubeadm] The `kubeadm` tool's overall feature state is General Availability (GA).
+[src:kubeadm/create-cluster-kubeadm] Some sub-features are still under active development.
+[src:kubeadm/create-cluster-kubeadm] The implementation of creating the cluster may change slightly as the tool evolves, but the overall implementation should be pretty stable.
+[src:kubeadm/create-cluster-kubeadm] are, by definition, supported on an alpha level.
+[src:kubeadm/create-cluster-kubeadm] Install a container runtime and kubeadm on all the hosts.
+[src:kubeadm/create-cluster-kubeadm] For detailed instructions and other prerequisites, see Installing kubeadm.
+[src:kubeadm/create-cluster-kubeadm] If you have already installed kubeadm, see the first two steps of the Upgrading Linux nodes document for instructions on how to upgrade kubeadm.
+[src:kubeadm/create-cluster-kubeadm] When you upgrade, the kubelet restarts every few seconds as it waits in a crashloop for kubeadm to tell it what to do.
+[src:kubeadm/create-cluster-kubeadm] After you initialize your control-plane, the kubelet runs normally.
+[src:kubeadm/create-cluster-kubeadm] kubeadm similarly to other Kubernetes components tries to find a usable IP on the network interfaces associated with a default gateway on a host.
+[src:kubeadm/create-cluster-kubeadm] Such an IP is then used for the advertising and/or listening performed by a component.
+[src:kubeadm/create-cluster-kubeadm] If two or more default gateways are present on the host, a Kubernetes component will try to use the first one it encounters that has a suitable global unicast IP address.
+[src:kubeadm/create-cluster-kubeadm] While making this choice, the exact ordering of gateways might vary between different operating systems and kernel versions.
+[src:kubeadm/create-cluster-kubeadm] Kubernetes components do not accept custom network interface as an option, therefore a custom IP address must be passed as a flag to all components instances that need such a custom configuration.
+[src:kubeadm/create-cluster-kubeadm] If the host does not have a default gateway and if a custom IP address is not passed to a Kubernetes component, the component may exit with an error.
+[src:kubeadm/create-cluster-kubeadm] To configure the API server advertise address for control plane nodes created with both `init` and `join`, the flag `--apiserver-advertise-address` can be used.
+[src:kubeadm/create-cluster-kubeadm] Preferably, this option can be set in the kubeadm API as `InitConfiguration.localAPIEndpoint` and `JoinConfiguration.controlPlane.localAPIEndpoint`.
+[src:kubeadm/create-cluster-kubeadm] For kubelets on all nodes, the `--node-ip` option can be passed in `.nodeRegistration.kubeletExtraArgs` inside a kubeadm configuration file (`InitConfiguration` or `JoinConfiguration`).
+[src:kubeadm/create-cluster-kubeadm] For dual-stack see Dual-stack support with kubeadm.
+[src:kubeadm/create-cluster-kubeadm] The IP addresses that you assign to control plane components become part of their X.509 certificates' subject alternative name fields.
+[src:kubeadm/create-cluster-kubeadm] Changing these IP addresses would require signing new certificates and restarting the affected components, so that the change in certificate files is reflected.
+[src:kubeadm/create-cluster-kubeadm] See Manual certificate renewal for more details on this topic.
+[src:kubeadm/create-cluster-kubeadm] The Kubernetes project recommends against this approach (configuring all component instances with custom IP addresses).
+[src:kubeadm/create-cluster-kubeadm] Instead, the Kubernetes maintainers recommend to setup the host network, so that the default gateway IP is the one that Kubernetes components auto-detect and use.
+[src:kubeadm/create-cluster-kubeadm] to configure networking; your operating system might also provide higher level network management tools.
+[src:kubeadm/create-cluster-kubeadm] If your node's default gateway is a public IP address, you should configure packet filtering or other security measures that protect the nodes and your cluster.
+[src:kubeadm/create-cluster-kubeadm] This step is optional and only applies in case you wish `kubeadm init` and `kubeadm join` to not download the default container images which are hosted at `registry.k8s.io`.
+[src:kubeadm/create-cluster-kubeadm] Kubeadm has commands that can help you pre-pull the required images when creating a cluster without an internet connection on its nodes.
+[src:kubeadm/create-cluster-kubeadm] See Running kubeadm without an internet connection for more details.
+[src:kubeadm/create-cluster-kubeadm] Kubeadm allows you to use a custom image repository for the required images.
+[src:kubeadm/create-cluster-kubeadm] See Using custom images for more details.
+[src:kubeadm/create-cluster-kubeadm] The control-plane node is the machine where the control plane components run, including etcd (the cluster database) and the API Server (which the kubectl command line tool communicates with).
+[src:kubeadm/create-cluster-kubeadm] Choose a Pod network add-on, and verify whether it requires any arguments to be passed to `kubeadm init`.
+[src:kubeadm/create-cluster-kubeadm] Depending on which third-party provider you choose, you might need to set the `--pod-network-cidr` to a provider-specific value.
+[src:kubeadm/create-cluster-kubeadm] (Optional) `kubeadm` tries to detect the container runtime by using a list of well known endpoints.
+[src:kubeadm/create-cluster-kubeadm] To use different container runtime or if there are more than one installed on the provisioned node, specify the `--cri-socket` argument to `kubeadm`.
+[src:kubeadm/create-cluster-kubeadm] While `--apiserver-advertise-address` can be used to set the advertised address for this particular control-plane node's API server, `--control-plane-endpoint` can be used to set the shared endpoint for all control-plane nodes.
+[src:kubeadm/create-cluster-kubeadm] `--control-plane-endpoint` allows both IP addresses and DNS names that can map to IP addresses.
+[src:kubeadm/create-cluster-kubeadm] Please contact your network administrator to evaluate possible solutions with respect to such mapping.
+[src:kubeadm/create-cluster-kubeadm] Where `192.168.0.102` is the IP address of this node and `cluster-endpoint` is a custom DNS name that maps to this IP.
+[src:kubeadm/create-cluster-kubeadm] This will allow you to pass `--control-plane-endpoint=cluster-endpoint` to `kubeadm init` and pass the same DNS name to `kubeadm join`.
+[src:kubeadm/create-cluster-kubeadm] Later you can modify `cluster-endpoint` to point to the address of your load-balancer in a high availability scenario.
+[src:kubeadm/create-cluster-kubeadm] Turning a single control plane cluster created without `--control-plane-endpoint` into a highly available cluster is not supported by kubeadm.
+[src:kubeadm/create-cluster-kubeadm] For more information about `kubeadm init` arguments, see the kubeadm reference guide.
+[src:kubeadm/create-cluster-kubeadm] To configure `kubeadm init` with a configuration file see Using kubeadm init with a configuration file.
+[src:kubeadm/create-cluster-kubeadm] To customize control plane components, including optional IPv6 assignment to liveness probe for control plane components and etcd server, provide extra arguments to each component as documented in custom arguments.
+[src:kubeadm/create-cluster-kubeadm] To reconfigure a cluster that has already been created see Reconfiguring a kubeadm cluster.
+[src:kubeadm/create-cluster-kubeadm] To run `kubeadm init` again, you must first tear down the cluster.
+[src:kubeadm/create-cluster-kubeadm] If you join a node with a different architecture to your cluster, make sure that your deployed DaemonSets have container image support for this architecture.
+[src:kubeadm/create-cluster-kubeadm] `kubeadm init` first runs a series of prechecks to ensure that the machine is ready to run Kubernetes.
+[src:kubeadm/create-cluster-kubeadm] These prechecks expose warnings and exit on errors.
+[src:kubeadm/create-cluster-kubeadm] `kubeadm init` then downloads and installs the cluster control plane components.
+[src:kubeadm/create-cluster-kubeadm] The kubeconfig file `admin.conf` that `kubeadm init` generates contains a certificate with `Subject: O = kubeadm:cluster-admins, CN = kubernetes-admin`.
+[src:kubeadm/create-cluster-kubeadm] The group `kubeadm:cluster-admins` is bound to the built-in `cluster-admin` ClusterRole.
+[src:kubeadm/create-cluster-kubeadm] Do not share the `admin.conf` file with anyone.
+[src:kubeadm/create-cluster-kubeadm] `kubeadm init` generates another kubeconfig file `super-admin.conf` that contains a certificate with `Subject: O = system:masters, CN = kubernetes-super-admin`.
+[src:kubeadm/create-cluster-kubeadm] `system:masters` is a break-glass, super user group that bypasses the authorization layer (for example RBAC).
+[src:kubeadm/create-cluster-kubeadm] Do not share the `super-admin.conf` file with anyone.
+[src:kubeadm/create-cluster-kubeadm] It is recommended to move the file to a safe location.
+[src:kubeadm/create-cluster-kubeadm] See Generating kubeconfig files for additional users on how to use `kubeadm kubeconfig user` to generate kubeconfig files for additional users.
+[src:kubeadm/create-cluster-kubeadm] Make a record of the `kubeadm join` command that `kubeadm init` outputs.
+[src:kubeadm/create-cluster-kubeadm] You need this command to join nodes to your cluster.
+[src:kubeadm/create-cluster-kubeadm] The token is used for mutual authentication between the control-plane node and the joining nodes.
+[src:kubeadm/create-cluster-kubeadm] Keep it safe, because anyone with this token can add authenticated nodes to your cluster.
+[src:kubeadm/create-cluster-kubeadm] These tokens can be listed, created, and deleted with the `kubeadm token` command.
+[src:kubeadm/create-cluster-kubeadm] This section contains important information about networking setup and deployment order.
+[src:kubeadm/create-cluster-kubeadm] Read all of this advice carefully before proceeding.
+[src:kubeadm/create-cluster-kubeadm] Kubeadm should be CNI agnostic and the validation of CNI providers is out of the scope of our current e2e testing.
+[src:kubeadm/create-cluster-kubeadm] If you find an issue related to a CNI plugin you should log a ticket in its respective issue tracker instead of the kubeadm or kubernetes issue trackers.
+[src:kubeadm/create-cluster-kubeadm] Several external projects provide Kubernetes Pod networks using CNI, some of which also support Network Policy.
+[src:kubeadm/create-cluster-kubeadm] See a list of add-ons that implement the Kubernetes networking model.
+[src:kubeadm/create-cluster-kubeadm] Please refer to the Installing Addons page for a non-exhaustive list of networking addons supported by Kubernetes.
+[src:kubeadm/create-cluster-kubeadm] You can install only one Pod network per cluster.
+[src:kubeadm/create-cluster-kubeadm] Once a Pod network has been installed, you can confirm that it is working by checking that the CoreDNS Pod is `Running` in the output of `kubectl get pods --all-namespaces`.
+[src:kubeadm/create-cluster-kubeadm] And once the CoreDNS Pod is up and running, you can continue by joining your nodes.
+[src:kubeadm/create-cluster-kubeadm] If your network is not working or CoreDNS is not in the `Running` state, check out the troubleshooting guide for `kubeadm`.
+[src:kubeadm/create-cluster-kubeadm] By default, kubeadm enables the NodeRestriction admission controller that restricts what labels can be self-applied by kubelets on node registration.
+[src:kubeadm/create-cluster-kubeadm] The admission controller documentation covers what labels are permitted to be used with the kubelet `--node-labels` option.
+[src:kubeadm/create-cluster-kubeadm] Because of the `NodeRestriction` admission controller, you **cannot** use the kubelet `--node-labels` flag to apply restricted labels (such as `node-role.kubernetes.io/*`) during initialization.
+[src:kubeadm/create-cluster-kubeadm] If you attempt to add restricted labels by using this kubelet flag, the node will fail to register with the API server.
+[src:kubeadm/create-cluster-kubeadm] To apply these labels manually, you must use `kubectl label` after the node has joined the cluster.
+[src:kubeadm/create-cluster-kubeadm] Ensure you are using a privileged kubeconfig, such as the kubeadm-managed `/etc/kubernetes/admin.conf`.
+[src:kubeadm/create-cluster-kubeadm] By default, your cluster will not schedule Pods on the control plane nodes for security reasons.
+[src:kubeadm/create-cluster-kubeadm] This will remove the `node-role.kubernetes.io/control-plane:NoSchedule` taint from any nodes that have it, including the control plane nodes, meaning that the scheduler will then be able to schedule Pods everywhere.
+[src:kubeadm/create-cluster-kubeadm] See Creating Highly Available Clusters with kubeadm for steps on creating a high availability kubeadm cluster by adding more control plane nodes.
+[src:kubeadm/create-cluster-kubeadm] The worker nodes are where your workloads run.
+[src:kubeadm/create-cluster-kubeadm] The example above assumes SSH access is enabled for root.
+[src:kubeadm/create-cluster-kubeadm] If that is not the case, you can copy the `admin.conf` file to be accessible by some other user and `scp` using that other user instead.
+[src:kubeadm/create-cluster-kubeadm] The `admin.conf` file gives the user *superuser* privileges over the cluster.
+[src:kubeadm/create-cluster-kubeadm] For normal users, it's recommended to generate an unique credential to which you grant privileges.
+[src:kubeadm/create-cluster-kubeadm] You can do this with the `kubeadm kubeconfig user --client-name <CN>` command.
+[src:kubeadm/create-cluster-kubeadm] That command will print out a KubeConfig file to STDOUT which you should save to a file and distribute to your user.
+[src:kubeadm/create-cluster-kubeadm] After that, grant privileges by using `kubectl create (cluster)rolebinding`.
+[src:kubeadm/create-cluster-kubeadm] If you used disposable servers for your cluster, for testing, you can switch those off and do no further clean up.
+[src:kubeadm/create-cluster-kubeadm] You can use `kubectl config delete-cluster` to delete your local references to the cluster.
+[src:kubeadm/create-cluster-kubeadm] However, if you want to deprovision your cluster more cleanly, you should first drain the node and make sure that the node is empty, then deconfigure the node.
+[src:kubeadm/create-cluster-kubeadm] The reset process does not reset or clean up iptables rules or IPVS tables.
+[src:kubeadm/create-cluster-kubeadm] If you wish to start over, run `kubeadm init` or `kubeadm join` with the appropriate arguments.
+[src:kubeadm/create-cluster-kubeadm] You can use `kubeadm reset` on the control plane host to trigger a best-effort clean up.
+[src:kubeadm/create-cluster-kubeadm] See the `kubeadm reset` reference documentation for more information about this subcommand and its options.
+[src:kubeadm/create-cluster-kubeadm] While kubeadm allows version skew against some components that it manages, it is recommended that you match the kubeadm version with the versions of the control plane components, kube-proxy and kubelet.
+[src:kubeadm/create-cluster-kubeadm] kubeadm can be used with Kubernetes components that are the same version as kubeadm or one version older.
+[src:kubeadm/create-cluster-kubeadm] The Kubernetes version can be specified to kubeadm by using the `--kubernetes-version` flag of `kubeadm init` or the `ClusterConfiguration.kubernetesVersion` field when using `--config`.
+[src:kubeadm/create-cluster-kubeadm] This option will control the versions of kube-apiserver, kube-controller-manager, kube-scheduler and kube-proxy.
+[src:kubeadm/create-cluster-kubeadm] Similarly to the Kubernetes version, kubeadm can be used with a kubelet version that is the same version as kubeadm or three versions older.
+[src:kubeadm/create-cluster-kubeadm] There are certain limitations on how kubeadm commands can operate on existing nodes or whole clusters managed by kubeadm.
+[src:kubeadm/create-cluster-kubeadm] If new nodes are joined to the cluster, the kubeadm binary used for `kubeadm join` must match the last version of kubeadm used to either create the cluster with `kubeadm init` or to upgrade the same node with `kubeadm upgrade`.
+[src:kubeadm/create-cluster-kubeadm] Similar rules apply to the rest of the kubeadm commands with the exception of `kubeadm upgrade`.
+[src:kubeadm/create-cluster-kubeadm] Nodes that are being upgraded must use a version of kubeadm that is the same MINOR version or one MINOR version newer than the version of kubeadm used for managing the node.
+[src:kubeadm/create-cluster-kubeadm] To learn more about the version skew between the different Kubernetes component see the Version Skew Policy.
+[src:kubeadm/create-cluster-kubeadm] The cluster created here has a single control-plane node, with a single etcd database running on it.
+[src:kubeadm/create-cluster-kubeadm] This means that if the control-plane node fails, your cluster may lose data and may need to be recreated from scratch.
+[src:kubeadm/create-cluster-kubeadm] kubeadm deb/rpm packages and binaries are built for amd64, arm (32-bit), arm64, ppc64le, and s390x following the multi-platform proposal.
+[src:kubeadm/create-cluster-kubeadm] Multiplatform container images for the control plane and addons are also supported since v1.12.
+[src:kubeadm/create-cluster-kubeadm] Only some of the network providers offer solutions for all platforms.
+[src:kubeadm/create-cluster-kubeadm] Please consult the list of network providers above or the documentation from each provider to figure out whether the provider supports your chosen platform.
+[src:kubeadm/create-cluster-kubeadm] If you are running into difficulties with kubeadm, please consult our troubleshooting docs.
+[src:kubeadm/kubernetes] The name *Kubernetes* comes from the Ancient Greek term κυβερνήτης, *kubernḗtēs* (helmsman, pilot), which is also the origin of the words *cybernetics* and (through Latin) *governor*.
+[src:kubeadm/kubernetes] "Kubernetes" is often abbreviated with the numerical contraction "K8s", meaning "the letter K, followed by 8 letters, followed by s".
+[src:kubeadm/kubernetes] Kubernetes assembles one or more computers, either virtual machines or bare metal, into a cluster which can run workloads in containers.
+[src:kubeadm/kubernetes] It works with various container runtimes, such as containerd and CRI-O.
+[src:kubeadm/kubernetes] Its suitability for running and managing workloads of all sizes and styles has led to its widespread adoption in clouds and data centers.
+[src:kubeadm/kubernetes] There are multiple distributions of this platform—from independent software vendors (ISVs) as well as hosted-on-cloud offerings from all the major public cloud vendors.
+[src:kubeadm/kubernetes] The software consists of a control plane and nodes on which the actual applications run.
+[src:kubeadm/kubernetes] It includes tools like `kubeadm` and `kubectl` which can be used to interact with its REST-based API.
+[src:kubeadm/kubernetes] Kubernetes was announced by Google on June 6, 2014.
+[src:kubeadm/kubernetes] The project was conceived and created by Google employees Joe Beda, Brendan Burns, and Craig McLuckie.
+[src:kubeadm/kubernetes] Others at Google soon joined to help build the project including Ville Aikas, Dawn Chen, Brian Grant, Tim Hockin, and Daniel Smith.
+[src:kubeadm/kubernetes] Other companies such as Red Hat and CoreOS joined the effort soon after, with notable contributors such as Clayton Coleman and Kelsey Hightower.
+[src:kubeadm/kubernetes] The design and development of Kubernetes was inspired by Google's Borg cluster manager and based on Promise Theory.
+[src:kubeadm/kubernetes] Many of its top contributors had previously worked on Borg; they codenamed Kubernetes "Project 7" after the *Star Trek* ex-Borg character Seven of Nine and gave its logo a seven-spoked ship's wheel (designed by Tim Hockin).
+[src:kubeadm/kubernetes] Unlike Borg, which was written in C++, Kubernetes is written in the Go language.
+[src:kubeadm/kubernetes] Kubernetes was announced in June, 2014 and version 1.0 was released on July 21, 2015.
+[src:kubeadm/kubernetes] Google worked with the Linux Foundation to form the Cloud Native Computing Foundation (CNCF) and offered Kubernetes as the seed technology.
+[src:kubeadm/kubernetes] Google was already offering a managed Kubernetes service, GKE, and Red Hat was supporting Kubernetes as part of OpenShift since the inception of the Kubernetes project in 2014.
+[src:kubeadm/kubernetes] On March 6, 2018, Kubernetes Project reached ninth place in the list of GitHub projects by the number of commits, and second place in authors and issues, after the Linux kernel.
+[src:kubeadm/kubernetes] Until version 1.18, Kubernetes followed an N-2 support policy, meaning that the three most recent minor versions receive security updates and bug fixes.
+[src:kubeadm/kubernetes] Starting with version 1.19, Kubernetes follows an N-3 support policy.
+[src:kubeadm/kubernetes] Kubernetes defines a set of building blocks ("primitives") that collectively provide mechanisms that deploy, maintain, and scale applications based on CPU, memory or custom metrics.
+[src:kubeadm/kubernetes] Kubernetes is loosely coupled and extensible to meet the needs of different workloads.
+[src:kubeadm/kubernetes] The internal components as well as extensions and containers that run on Kubernetes rely on the Kubernetes API.
+[src:kubeadm/kubernetes] The platform exerts its control over compute and storage resources by defining resources as objects, which can then be managed as such.
+[src:kubeadm/kubernetes] Kubernetes follows the primary/replica architecture.
+[src:kubeadm/kubernetes] The components of Kubernetes can be divided into those that manage an individual node and those that are part of the control plane.
+[src:kubeadm/kubernetes] The Kubernetes master node handles the Kubernetes control plane of the cluster, managing its workload and directing communication across the system.
+[src:kubeadm/kubernetes] The Kubernetes control plane consists of various components such as TLS encryption, role-based access control (RBAC) and a strong authentication method, network separation, each its own process, that can run both on a single master node or on multiple masters supporting high-availability clusters.
+[src:kubeadm/kubernetes] The various components of the Kubernetes control plane are as follows.
+[src:kubeadm/kubernetes] Etcd is a persistent, lightweight, distributed, key-value data store (originally developed as part of CoreOS).
+[src:kubeadm/kubernetes] It reliably stores the configuration data of the cluster, representing the overall state of the cluster at any given point of time.
+[src:kubeadm/kubernetes] Etcd favors consistency over availability in the event of a network partition (see CAP theorem).
+[src:kubeadm/kubernetes] The consistency is crucial for correctly scheduling and operating services.
+[src:kubeadm/kubernetes] The API server serves the Kubernetes API using JSON over HTTP, which provides both the internal and external interface to Kubernetes.
+[src:kubeadm/kubernetes] The API server processes, validates REST requests, and updates the state of the API objects in etcd, thereby allowing clients to configure workloads and containers across worker nodes.
+[src:kubeadm/kubernetes] The API server uses etcd's watch API to monitor the cluster, roll out critical configuration changes, or restore any divergences of the state of the cluster back to the desired state as declared in etcd.
+[src:kubeadm/kubernetes] As an example, a human operator may specify that three instances of a particular "pod" (see below) need to be running, and etcd stores this fact.
+[src:kubeadm/kubernetes] If the Deployment controller finds that only two instances are running (conflicting with the etcd declaration), it schedules the creation of an additional instance of that pod.
+[src:kubeadm/kubernetes] The scheduler is an extensible component that selects the node that an unscheduled pod (the basic unit of workloads to be scheduled) runs on, based on resource availability and other constraints.
+[src:kubeadm/kubernetes] The scheduler tracks resource allocation on each node to ensure that workload is not scheduled in excess of available resources.
+[src:kubeadm/kubernetes] For this purpose, the scheduler must know the resource requirements, resource availability, and other user-provided constraints or policy directives such as quality-of-service, affinity/anti-affinity requirements, and data locality.
+[src:kubeadm/kubernetes] The scheduler's role is to match resource "supply" to workload "demand".
+[src:kubeadm/kubernetes] Kubernetes allows running multiple schedulers within a single cluster.
+[src:kubeadm/kubernetes] As such, scheduler plug-ins may be developed and installed as in-process extensions to the native vanilla scheduler by running it as a separate scheduler, as long as they conform to the Kubernetes scheduling framework.
+[src:kubeadm/kubernetes] This allows cluster administrators to extend or modify the behavior of the default Kubernetes scheduler according to their needs.
+[src:kubeadm/kubernetes] A controller is a reconciliation loop that drives the actual cluster state toward the desired state, communicating with the API server to create, update, and delete the resources it manages (e.g., pods or service endpoints).
+[src:kubeadm/kubernetes] An example controller is a ReplicaSet controller, which handles replication and scaling by running a specified number of copies of a pod across the cluster.
+[src:kubeadm/kubernetes] The controller also handles creating replacement pods if the underlying node fails.
+[src:kubeadm/kubernetes] Other controllers that are part of the core Kubernetes system include a DaemonSet controller for running exactly one pod on every machine (or some subset of machines), and a Job controller for running pods that run to completion (e.g. as part of a batch job).
+[src:kubeadm/kubernetes] Labels selectors often form part of the controller's definition that specify the set of pods that a controller manages.
+[src:kubeadm/kubernetes] The controller manager is a single process that manages several core Kubernetes controllers (including the examples described above), is distributed as part of the standard Kubernetes installation and responding to the loss of nodes.
+[src:kubeadm/kubernetes] Custom controllers may also be installed in the cluster, further allowing the behavior and API of Kubernetes to be extended when used in conjunction with custom resources (see custom resources, controllers and operators below).
+[src:kubeadm/kubernetes] A node, also known as a worker or a minion, is a machine where containers (workloads) are deployed.
+[src:kubeadm/kubernetes] Every node in the cluster must run a container runtime, as well as the below-mentioned components, for communication with the primary network configuration of these containers.
+[src:kubeadm/kubernetes] kubelet is responsible for the running state of each node, ensuring that all containers on the node are healthy.
+[src:kubeadm/kubernetes] It takes care of starting, stopping, and maintaining application containers organized into pods as directed by the control plane. kubelet monitors the state of a pod, and if not in the desired state, the pod re-deploys to the same node.
+[src:kubeadm/kubernetes] Node status is relayed every few seconds via heartbeat messages to the API server.
+[src:kubeadm/kubernetes] Once the control plane detects a node failure, a higher-level controller is expected to observe this state change and launch pods on another healthy node.
+[src:kubeadm/kubernetes] A container runtime is responsible for the lifecycle of containers, including launching, reconciling and killing of containers. kubelet interacts with container runtimes via the Container Runtime Interface (CRI), which decouples the maintenance of core Kubernetes from the actual CRI implementation.
+[src:kubeadm/kubernetes] Originally, kubelet interfaced exclusively with the Docker runtime through a "dockershim".
+[src:kubeadm/kubernetes] However, from November 2020 up to April 2022, Kubernetes has deprecated the shim in favor of directly interfacing with the container through containerd, or replacing Docker with a runtime that is compliant with the Container Runtime Interface (CRI).
+[src:kubeadm/kubernetes] With the release of v1.24 in May 2022, the "dockershim" has been removed entirely.
+[src:kubeadm/kubernetes] Examples of popular container runtimes that are compatible with kubelet include containerd (initially supported via Docker) and CRI-O.
+[src:kubeadm/kubernetes] kube-proxy is an implementation of a network proxy and a load balancer, and it supports the service abstraction along with the other networking operations.
+[src:kubeadm/kubernetes] It is responsible for routing traffic to the appropriate container based on IP and port number of the incoming request.
+[src:kubeadm/kubernetes] In Kubernetes, namespaces are utilized to segregate the resources it handles into distinct and non-intersecting collections.
+[src:kubeadm/kubernetes] They are intended for use in environments with many users spread across multiple teams, or projects, or even separating environments like development, test, and production.
+[src:kubeadm/kubernetes] The basic scheduling unit in Kubernetes is a pod, which consists of one or more containers that are guaranteed to be co-located on the same node.
+[src:kubeadm/kubernetes] Each pod in Kubernetes is assigned a unique IP address within the cluster, allowing applications to use ports without the risk of conflict.
+[src:kubeadm/kubernetes] Within the pod, all containers can reference each other.
+[src:kubeadm/kubernetes] The container is the lowest level of a micro-service, which holds the running application, libraries, and their dependencies.
+[src:kubeadm/kubernetes] Kubernetes supports several abstractions of workloads that are at a higher level over simple pods.
+[src:kubeadm/kubernetes] This allows users to declaratively define and manage these high-level abstractions, instead of having to manage individual pods by themselves.
+[src:kubeadm/kubernetes] Several of these abstractions, supported by a standard installation of Kubernetes, are described below.
+[src:kubeadm/kubernetes] A ReplicaSet's purpose is to maintain a stable set of replica pods running at any given time.
+[src:kubeadm/kubernetes] As such, it is often used to guarantee the availability of a specified number of identical Pods.
+[src:kubeadm/kubernetes] The ReplicaSet can also be said to be a grouping mechanism that lets Kubernetes maintain the number of instances that have been declared for a given pod.
+[src:kubeadm/kubernetes] The definition of a ReplicaSet uses a selector, whose evaluation will result in identifying all pods that are associated with it.
+[src:kubeadm/kubernetes] A ReplicationController, similar to a ReplicaSet, serves the same purpose and behaves similarly to a ReplicaSet, which is to ensure that there will always be a specified number of pod replicas as desired.
+[src:kubeadm/kubernetes] The ReplicationController workload was the predecessor of a ReplicaSet, but was eventually deprecated in favor of ReplicaSet to make use of set-based label selectors.
+[src:kubeadm/kubernetes] Deployments are a higher-level management mechanism for ReplicaSets.
+[src:kubeadm/kubernetes] While the ReplicaSet controller manages the scale of the ReplicaSet, the Deployment controller manages what happens to the ReplicaSet – whether an update has to be rolled out, or rolled back, etc.
+[src:kubeadm/kubernetes] When Deployments are scaled up or down, this results in the declaration of the ReplicaSet changing, and this change in the declared state is managed by the ReplicaSet controller.
+[src:kubeadm/kubernetes] StatefulSets are controllers that enforce the properties of uniqueness and ordering amongst instances of a pod, and can be used to run stateful applications.
+[src:kubeadm/kubernetes] While scaling stateless applications is only a matter of adding more running pods, doing so for stateful workloads is harder, because the state needs to be preserved if a pod is restarted.
+[src:kubeadm/kubernetes] If the application is scaled up or down, the state may need to be redistributed.
+[src:kubeadm/kubernetes] Databases are an example of stateful workloads.
+[src:kubeadm/kubernetes] When run in high-availability mode, many databases come with the notion of a primary instance and secondary instances.
+[src:kubeadm/kubernetes] In this case, the notion of ordering of instances is important.
+[src:kubeadm/kubernetes] Other applications like Apache Kafka distribute the data amongst their brokers; hence, one broker is not the same as another.
+[src:kubeadm/kubernetes] In this case, the notion of instance uniqueness is important.
+[src:kubeadm/kubernetes] DaemonSets are responsible for ensuring that a pod is created on every single node in the cluster.
+[src:kubeadm/kubernetes] Generally, most workloads scale in response to a desired replica count, depending on the availability and performance requirements as needed by the application.
+[src:kubeadm/kubernetes] However, in other scenarios it may be necessary to deploy a pod to every single node in the cluster, scaling up the number of total pods as nodes are added and garbage collecting them as they are removed.
+[src:kubeadm/kubernetes] This is particularly helpful for use cases where the workload has some dependency on the actual node or host machine, such as log collection, ingress controllers, and storage services.
+[src:kubeadm/kubernetes] A Kubernetes service is a set of pods that work together, such as one tier of a multi-tier application.
+[src:kubeadm/kubernetes] The set of pods that constitute a service are defined by a label selector.
+[src:kubeadm/kubernetes] Kubernetes provides two modes of service discovery, using environment variables or using Kubernetes DNS.
+[src:kubeadm/kubernetes] Service discovery assigns a stable IP address and DNS name to the service, and load balances traffic in a round-robin manner to network connections of that IP address among the pods matching the selector (even as failures cause the pods to move from machine to machine).
+[src:kubeadm/kubernetes] By default a service is exposed inside a cluster (e.g., back end pods might be grouped into a service, with requests from the front-end pods load-balanced among them), but a service can also be exposed outside a cluster (e.g., for clients to reach front-end pods).
+[src:kubeadm/kubernetes] Filesystems in the Kubernetes container provide ephemeral storage, by default.
+[src:kubeadm/kubernetes] This means that a restart of the pod will wipe out any data on such containers, and therefore, this form of storage is quite limiting in anything but trivial applications.
+[src:kubeadm/kubernetes] A Kubernetes volume provides persistent storage that exists for the lifetime of the pod itself.
+[src:kubeadm/kubernetes] This storage can also be used as shared disk space for containers within the pod.
+[src:kubeadm/kubernetes] Volumes are mounted at specific mount points within the container, which are defined by the pod configuration, and cannot mount onto other volumes or link to other volumes.
+[src:kubeadm/kubernetes] The same volume can be mounted at different points in the file system tree by different containers.
+[src:kubeadm/kubernetes] A common application challenge is deciding where to store and manage configuration information, some of which may contain sensitive data.
+[src:kubeadm/kubernetes] Configuration data can be anything as fine-grained as individual properties, or coarse-grained information like entire configuration files such as JSON or XML documents.
+[src:kubeadm/kubernetes] Kubernetes provides two closely related mechanisms to deal with this need, known as ConfigMaps and Secrets, both of which allow for configuration changes to be made without requiring an application rebuild.
+[src:kubeadm/kubernetes] The data from ConfigMaps and Secrets will be made available to every single instance of the application to which these objects have been bound via the Deployment.
+[src:kubeadm/kubernetes] A Secret and/or a ConfigMap is sent to a node only if a pod on that node requires it, which will only be stored in memory on the node.
+[src:kubeadm/kubernetes] Once the pod that depends on the Secret or ConfigMap is deleted, the in-memory copy of all bound Secrets and ConfigMaps are deleted as well.
+[src:kubeadm/kubernetes] Mounted within a volume accessible within the container's filesystem, which supports automatic reloading without restarting the container.
+[src:kubeadm/kubernetes] The biggest difference between a Secret and a ConfigMap is that Secrets are specifically designed for containing secure and confidential data, although they are not encrypted at rest by default, and requires additional setup in order to fully secure the use of Secrets within the cluster.
+[src:kubeadm/kubernetes] Secrets are often used to store confidential or sensitive data like certificates, credentials to work with image registries, passwords, and ssh keys.
+[src:kubeadm/kubernetes] Kubernetes enables clients (users or internal components) to attach keys called labels to any API object in the system, such as pods and nodes.
+[src:kubeadm/kubernetes] Correspondingly, label selectors are queries against labels that resolve to matching objects.
+[src:kubeadm/kubernetes] When a service is defined, one can define the label selectors that will be used by the service router/load balancer to select the pod instances that the traffic will be routed to.
+[src:kubeadm/kubernetes] Thus, simply changing the labels of the pods or changing the label selectors on the service can be used to control which pods get traffic and which don't, which can be used to support various deployment patterns like blue–green deployments or A/B testing.
+[src:kubeadm/kubernetes] This capability to dynamically control how services utilize implementing resources provides a loose coupling within the infrastructure.
+[src:kubeadm/kubernetes] Just like labels, field selectors also let one select Kubernetes resources.
+[src:kubeadm/kubernetes] Unlike labels, the selection is based on the attribute values inherent to the resource being selected, rather than user-defined categorization.
+[src:kubeadm/kubernetes] `metadata.name` and `metadata.namespace` are field selectors that will be present on all Kubernetes objects.
+[src:kubeadm/kubernetes] Other selectors that can be used depend on the object/resource type.
+[src:kubeadm/kubernetes] Add-ons are additional features of the Kubernetes cluster implemented as applications running within it.
+[src:kubeadm/kubernetes] The pods may be managed by Deployments, ReplicationControllers, and so on.
+[src:kubeadm/kubernetes] Cluster DNS is a DNS server, in addition to the other DNS server(s) in the environment, which serves DNS records for Kubernetes services.
+[src:kubeadm/kubernetes] Containers started by Kubernetes automatically include this DNS server in their DNS searches.
+[src:kubeadm/kubernetes] This is a general purpose, web-based UI for Kubernetes clusters.
+[src:kubeadm/kubernetes] It allows administrators to manage and troubleshoot applications running in the cluster, as well as the cluster itself.
+[src:kubeadm/kubernetes] Container Resource Monitoring records metrics about containers in a central database, and provides a UI for browsing that data.
+[src:kubeadm/kubernetes] Kubernetes cost monitoring applications allow breakdown of costs by pods, nodes, namespaces, and labels.
+[src:kubeadm/kubernetes] To prevent the loss of event data in the event of node or pod failures, container logs can be saved to a central log store with a search/browsing interface.
+[src:kubeadm/kubernetes] Kubernetes provides no native storage for log data, but one can integrate many existing logging solutions into the Kubernetes cluster.
+[src:kubeadm/kubernetes] Containers emerged as a way to make software portable.
+[src:kubeadm/kubernetes] The container contains all the packages needed to run a service.
+[src:kubeadm/kubernetes] The provided file system makes containers extremely portable and easy to use in development.
+[src:kubeadm/kubernetes] A container can be moved from development to test or production with no or relatively few configuration changes.
+[src:kubeadm/kubernetes] Historically Kubernetes was suitable only for stateless services.
+[src:kubeadm/kubernetes] However, many applications have a database, which requires persistence, leading to the creation of persistent storage for Kubernetes.
+[src:kubeadm/kubernetes] Implementing persistent storage for containers is one of the top challenges of Kubernetes administrators, DevOps and cloud engineers.
+[src:kubeadm/kubernetes] Containers may be ephemeral, but more and more of their data is not, so one needs to ensure the data's survival in case of container termination or hardware failure.
+[src:kubeadm/kubernetes] When deploying containers with Kubernetes or containerized applications, organizations often realize that they need persistent storage.
+[src:kubeadm/kubernetes] They need to provide fast and reliable storage for databases, root images and other data used by the containers.
+[src:kubeadm/kubernetes] In addition to the landscape, the Cloud Native Computing Foundation (CNCF), has published other information about Kubernetes Persistent Storage including a blog helping to define the container attached storage pattern.
+[src:kubeadm/kubernetes] This pattern can be thought of as one that uses Kubernetes itself as a component of the storage system or service.
+[src:kubeadm/kubernetes] Container Attached Storage is a type of data storage that emerged as Kubernetes gained prominence.
+[src:kubeadm/kubernetes] The Container Attached Storage approach or pattern relies on Kubernetes itself for certain capabilities while delivering primarily block, file, object and interfaces to workloads running on Kubernetes.
+[src:kubeadm/kubernetes] Common attributes of Container Attached Storage include the use of extensions to Kubernetes, such as custom resource definitions, and the use of Kubernetes itself for functions that otherwise would be separately developed and deployed for storage or data management.
+[src:kubeadm/kubernetes] Examples of functionality delivered by custom resource definitions or by Kubernetes itself include retry logic, delivered by Kubernetes itself, and the creation and maintenance of an inventory of available storage media and volumes, typically delivered via a custom resource definition.
+[src:kubeadm/kubernetes] In Kubernetes version 1.9, the initial Alpha release of Container Storage Interface (CSI) was introduced.
+[src:kubeadm/kubernetes] Previously, storage volume plug-ins were included in the Kubernetes distribution.
+[src:kubeadm/kubernetes] By creating a standardized CSI, the code required to interface with external storage systems was separated from the core Kubernetes code base.
+[src:kubeadm/kubernetes] Just one year later, the CSI feature was made Generally Available (GA) in Kubernetes.
+[src:kubeadm/kubernetes] A key component of the Kubernetes control plane is the API Server, which exposes an HTTP API that can be invoked by other parts of the cluster as well as end users and external components.
+[src:kubeadm/kubernetes] This API is a REST API and is declarative in nature, and is the same API exposed to the control plane.
+[src:kubeadm/kubernetes] The API server is backed by etcd to store all records persistently.
+[src:kubeadm/kubernetes] In Kubernetes, all objects serve as the "record of intent" of the cluster's state, and are able to define the desired state that the writer of the object wishes for the cluster to be in.
+[src:kubeadm/kubernetes] All objects in Kubernetes are subject to the same API conventions.
+[src:kubeadm/kubernetes] The Kubernetes API can be extended using *Custom Resources*, which represent objects that are not part of the standard Kubernetes installation.
+[src:kubeadm/kubernetes] These custom resources are declared using *Custom Resource Definitions* (CRDs), which is a kind of resource that can be dynamically registered and unregistered without shutting down or restarting a cluster that is currently running.
+[src:kubeadm/kubernetes] Custom controllers are another extension mechanism that interact with the Kubernetes API, similar to the default controllers in the standard pre-installed Kubernetes controller manager.
+[src:kubeadm/kubernetes] These controllers may interact with custom resources to allow for a declarative API: users may declare the desired state of the system via the custom resources, and it is the responsibility of the custom controller to observe the change and reconcile it.
+[src:kubeadm/kubernetes] The combination of custom resources and custom controllers are often referred to as a *Kubernetes* *Operator*.
+[src:kubeadm/kubernetes] The key use case for operators are to capture the aim of a human operator who is managing a service or set of services and to implement them using automation, and with a declarative API supporting this automation.
+[src:kubeadm/kubernetes] Human operators who look after specific applications and services have deep knowledge of how the system ought to behave, how to deploy it, and how to react if there are problems.
+[src:kubeadm/kubernetes] Examples of problems solved by operators include taking and restoring backups of that application's state, and handling upgrades of the application code alongside related changes such as database schemas or extra configuration settings.
+[src:kubeadm/kubernetes] Several notable projects under the Cloud Native Computing Foundation's incubation program follow the operator pattern to extend Kubernetes, including Argo, Open Policy Agent and Istio.
+[src:kubeadm/kubernetes] Kubernetes defines the following strategies for controlling access to its API.
+[src:kubeadm/kubernetes] The Kubernetes API server listens on a TCP port that serves HTTPS traffic, in order to enforce transport layer security (TLS) using CA certificates.
+[src:kubeadm/kubernetes] In older versions of Kubernetes, the API server supported listening on both HTTP and HTTPS ports (with the HTTP port number having no transport security whatsoever).
+[src:kubeadm/kubernetes] This was deprecated in v1.10 and eventually dropped support in v1.20 of Kubernetes.
+[src:kubeadm/kubernetes] Users are typically expected to indicate and define cluster URL details along with the necessary credentials in a *kubeconfig* file, which are natively supported by other Kubernetes tools like kubectl and the official Kubernetes client libraries.
+[src:kubeadm/kubernetes] *Attribute-based access control (ABAC) mode*: Grants access rights to users through the use of defined access control policies which combine attributes together.
+[src:kubeadm/kubernetes] *Role-based access control (RBAC) mode*: Grants access rights to users based on roles that are granted to the user, where each role defines a list of actions that are allowed.
+[src:kubeadm/kubernetes] *Webhook mode*: Queries a REST API service to determine if a user is authorized to perform a given action.
+[src:kubeadm/kubernetes] The same API design principles have been used to define an API to harness a program in order to create, configure, and manage Kubernetes clusters.
+[src:kubeadm/kubernetes] A key concept embodied in the API is using Infrastructure as Software, or the notion that the Kubernetes cluster infrastructure is itself a resource / object that can be managed just like any other Kubernetes resources.
+[src:kubeadm/kubernetes] Similarly, machines that make up the cluster are also treated as a Kubernetes resource.
+[src:kubeadm/kubernetes] The API has two pieces – the core API, and a provider implementation.
+[src:kubeadm/kubernetes] The provider implementation consists of cloud-provider specific functions that let Kubernetes provide the cluster API in a fashion that is well-integrated with the cloud-provider's services and resources.
+[src:kubeadm/kubernetes] Kubernetes is commonly used as a way to host a microservice-based implementation, because it and its associated ecosystem of tools provide all the capabilities needed to address key concerns of any microservice architecture.
+[src:kubeadm/kubernetes] A common criticism of Kubernetes is that it is too complex.
+[src:kubeadm/kubernetes] Various vendors offer Kubernetes-based platforms or infrastructure as a service (IaaS) that deploy Kubernetes.
+[src:kubeadm/kubernetes] These are typically categorized according to open-source, commercial or managed distributions.
+[src:kubeadm/orchestration-computing] In system administration, **orchestration** is the automated configuration, coordination, deployment, and management of computer systems and software.
+[src:kubeadm/orchestration-computing] Many tools exist for automating server configuration and management.
+[src:kubeadm/orchestration-computing] Orchestration is often discussed in the context of service-oriented architecture, virtualization, provisioning, converged infrastructure, and dynamic data center topics.
+[src:kubeadm/orchestration-computing] Orchestration in this sense is about aligning the business request with the applications, data, and infrastructure.
+[src:kubeadm/orchestration-computing] In the context of cloud computing, the main difference between workflow automation and orchestration is that workflows are processed and completed as processes within a single domain for automation purposes.
+[src:kubeadm/orchestration-computing] Orchestration, meanwhile, incorporates workflows and provides a directed action towards larger goals and objectives.
+[src:kubeadm/orchestration-computing] In the context of application programming interfaces (APIs), API orchestration refers to the process of integrating multiple APIs into a unified system to streamline workflows and enhance user experience.
+[src:kubeadm/orchestration-computing] The approach coordinates the flow of data, the execution sequence, and the dependencies among different APIs to achieve a defined business objective.
+[src:kubeadm/orchestration-computing] API orchestration is commonly applied in environments that utilize microservices architectures or legacy systems, where the interaction of several APIs is required to complete a task.
+[src:kubeadm/provisioning-technology] In telecommunications, **provisioning** involves the process of preparing and equipping a network to allow it to provide new services to its users.
+[src:kubeadm/provisioning-technology] In National Security/Emergency Preparedness telecommunications services, *"provisioning"* equates to *"initiation"* and includes altering the state of an existing priority service or capability.
+[src:kubeadm/provisioning-technology] The concept of **network provisioning** or **service mediation**, mostly used in the telecommunication industry, refers to the provisioning of the customer's services to the network elements, which are various equipment connected in that network communication system.
+[src:kubeadm/provisioning-technology] Generally in telephony provisioning this is accomplished with network management database table mappings.
+[src:kubeadm/provisioning-technology] It requires the existence of networking equipment and depends on network planning and design.
+[src:kubeadm/provisioning-technology] In a modern signal infrastructure employing information technology (IT) at all levels, there is no possible distinction between telecommunications services and "higher level" infrastructure.
+[src:kubeadm/provisioning-technology] Accordingly, provisioning configures any required systems, provides users with access to data and technology resources, and refers to all enterprise-level information-resource management involved.
+[src:kubeadm/provisioning-technology] As its core, the provisioning process monitors access rights and privileges to ensure the security of an enterprise's resources and user privacy.
+[src:kubeadm/provisioning-technology] As a secondary responsibility, it ensures compliance and minimizes the vulnerability of systems to penetration and abuse.
+[src:kubeadm/provisioning-technology] As a tertiary responsibility, it tries to reduce the amount of custom configuration using boot image control and other methods that radically reduce the number of different configurations involved.
+[src:kubeadm/provisioning-technology] Discussion of provisioning often appears in the context of virtualization, orchestration, utility computing, cloud computing, and open-configuration concepts and projects.
+[src:kubeadm/provisioning-technology] Once provisioning has taken place, the process of SysOpping ensures the maintenance of services to the expected standards.
+[src:kubeadm/provisioning-technology] Provisioning thus refers only to the setup or startup part of the service operation, and SysOpping to the ongoing support.
+[src:kubeadm/provisioning-technology] The services which are assigned to the customer in the customer relationship management (CRM) have to be provisioned on the network element which is enabling the service and allows the customer to actually use the service.
+[src:kubeadm/provisioning-technology] The relation between a service configured in the CRM and a service on the network elements is not necessarily a one-to-one relationship; for example, services like Microsoft Media Server (mms://) can be enabled by more than one network element.
+[src:kubeadm/provisioning-technology] During the provisioning, the service mediation device translates the service and the corresponding parameters of the service to one or more services/parameters on the network elements involved.
+[src:kubeadm/provisioning-technology] The algorithm used to translate a system service into network services is called **provisioning logic**.
+[src:kubeadm/provisioning-technology] Electronic invoice feeds from your carriers can be automatically downloaded directly into the core of the telecom expense management (TEM) software and it will immediately conduct an audit of each single line item charge all the way down to the User Support and Operations Center (USOC) level.
+[src:kubeadm/provisioning-technology] The provisioning software will capture each circuit number provided by all of your carriers and if billing occurs outside of the contracted rate an exception rule will trigger a red flag and notify the pre-established staff member to review the billing error.
+[src:kubeadm/provisioning-technology] Server provisioning is a set of actions to prepare a server with appropriate systems, data and software, and make it ready for network operation.
+[src:kubeadm/provisioning-technology] By auditing the system, you ensure OVAL compliance with limit vulnerability, ensure compliance, or install patches.
+[src:kubeadm/provisioning-technology] After these actions, you restart the system and load the new software.
+[src:kubeadm/provisioning-technology] This makes the system ready for operation.
+[src:kubeadm/provisioning-technology] Typically an internet service provider (ISP) or network operations center will perform these tasks to a well-defined set of parameters, for example, a boot image that the organization has approved and which uses software it has license to.
+[src:kubeadm/provisioning-technology] Many instances of such a boot image create a virtual dedicated host.
+[src:kubeadm/provisioning-technology] There are many software products available to automate the provisioning of servers, services and end-user devices.
+[src:kubeadm/provisioning-technology] Examples: BMC Bladelogic Server Automation, HP Server Automation, IBM Tivoli Provisioning Manager, Redhat Kickstart, xCAT, HP Insight CMU, etc.
+[src:kubeadm/provisioning-technology] Middleware and applications can be installed either when the operating system is installed or afterwards by using an Application Service Automation tool.
+[src:kubeadm/provisioning-technology] Further questions are addressed in academia such as when provisioning should be issued and how many servers are needed in multi-tier, or multi-service applications.
+[src:kubeadm/provisioning-technology] In cloud computing, servers may be provisioned via a web user interface or an application programming interface (API).
+[src:kubeadm/provisioning-technology] One of the unique things about cloud computing is how rapidly and easily this can be done.
+[src:kubeadm/provisioning-technology] Monitoring software can be used to trigger automatic provisioning when existing resources become too heavily stressed.
+[src:kubeadm/provisioning-technology] In short, server provisioning configures servers based on resource requirements.
+[src:kubeadm/provisioning-technology] The use of a hardware or software component (e.g. single/dual processor, RAM, HDD, RAID Controller, a number of LAN cards, applications, OS, etc.) depends on the functionality of the server, such as ISP, virtualization, NOS, or voice processing.
+[src:kubeadm/provisioning-technology] Server redundancy depends on the availability of servers in the organization.
+[src:kubeadm/provisioning-technology] Critical applications have less downtime when using cluster servers, RAID, or a mirroring system.
+[src:kubeadm/provisioning-technology] Service used by most larger-scale centers in part to avoid this.
+[src:kubeadm/provisioning-technology] Additional **resource provisioning** may be done per service.
+[src:kubeadm/provisioning-technology] There are several software on the market for server provisioning such as Cobbler or HP Intelligent Provisioning.
+[src:kubeadm/provisioning-technology] User provisioning refers to the creation, maintenance and deactivation of user objects and user attributes, as they exist in one or more systems, directories or applications, in response to automated or interactive business processes.
+[src:kubeadm/provisioning-technology] User provisioning software may include one or more of the following processes: change propagation, self-service workflow, consolidated user administration, delegated user administration, and federated change control.
+[src:kubeadm/provisioning-technology] User objects may represent employees, contractors, vendors, partners, customers or other recipients of a service.
+[src:kubeadm/provisioning-technology] Services may include electronic mail, inclusion in a published user directory, access to a database, access to a network or mainframe, etc.
+[src:kubeadm/provisioning-technology] User provisioning is a type of identity management software, particularly useful within organizations, where users may be represented by multiple objects on multiple systems and multiple instances.
+[src:kubeadm/provisioning-technology] On-demand self-service is described by the National Institute of Standards and Technology (NIST) as an essential characteristic of cloud computing.
+[src:kubeadm/provisioning-technology] The self-service nature of cloud computing lets end users obtain and remove cloud services―including applications, the infrastructure supporting the applications, and configuration― themselves without requiring the assistance of an IT staff member.
+[src:kubeadm/provisioning-technology] The automatic self-servicing may target different application goals and constraints (e.g. deadlines and cost), as well as handling different application architectures (e.g., bags-of-tasks and workflows).
+[src:kubeadm/provisioning-technology] Cloud users can obtain cloud services through a cloud service catalog or a self-service portal.
+[src:kubeadm/provisioning-technology] Because business users can obtain and configure cloud services themselves, this means IT staff can be more productive and gives them more time to manage cloud infrastructures.
+[src:kubeadm/provisioning-technology] One downside of cloud service provisioning is that it is not instantaneous.
+[src:kubeadm/provisioning-technology] A cloud virtual machine (VM) can be acquired at any time by the user, but it may take up to several minutes for the acquired VM to be ready to use.
+[src:kubeadm/provisioning-technology] The VM startup time is dependent on factors, such as image size, VM type, data center location, and number of VMs.
+[src:kubeadm/provisioning-technology] Cloud providers have different VM startup performance.
+[src:kubeadm/provisioning-technology] Mobile subscriber provisioning refers to the setting up of new services, such as GPRS, MMS and Instant Messaging for an existing subscriber of a mobile phone network, and any gateways to standard Internet chat or mail services.
+[src:kubeadm/provisioning-technology] The network operator typically sends these settings to the subscriber's handset using SMS text services or HTML, and less commonly WAP, depending on what the mobile operating systems can accept.
+[src:kubeadm/provisioning-technology] A general example of provisioning is with data services.
+[src:kubeadm/provisioning-technology] A mobile user who is using his or her device for voice calling may wish to switch to data services in order to read emails or browse the Internet.
+[src:kubeadm/provisioning-technology] The mobile device's services are "provisioned" and thus the user is able to stay connected through push emails and other features of smartphone services.
+[src:kubeadm/provisioning-technology] Device management systems can benefit end-users by incorporating plug-and-play data services, supporting whatever device the end-user is using..
+[src:kubeadm/provisioning-technology] Such a platform can automatically detect devices in the network, sending them settings for immediate and continued usability.
+[src:kubeadm/provisioning-technology] The process is fully automated, keeping the history of used devices and sending settings only to subscriber devices which were not previously set.
+[src:kubeadm/provisioning-technology] One method of managing mobile updates is to filter IMEI/IMSI pairs.
+[src:kubeadm/provisioning-technology] Some operators report activity of 50 over-the-air settings update files per second.
+[src:kubeadm/provisioning-technology] This refers to delivering mobile content, such as mobile internet to a mobile phone, agnostic of the features of said device.
+[src:kubeadm/provisioning-technology] These may include operating system type and versions, Java version, browser version, screen form factors, audio capabilities, language settings and many other characteristics.
+[src:kubeadm/provisioning-technology] As of April 2006, an estimated 5,000 permutations were relevant.
+[src:kubeadm/provisioning-technology] Mobile content provisioning facilitates a common user experience, though delivered on widely different handsets.
+[src:kubeadm/provisioning-technology] Provisioning devices involves delivering configuration data and policy settings to the mobile devices from a central point – Mobile device management system tools.
+[src:kubeadm/provisioning-technology] When getting a customer online, the client system must be configured.
+[src:kubeadm/setup-tools-kubeadm] Kubeadm is a tool built to provide `kubeadm init` and `kubeadm join` as best-practice "fast paths" for creating Kubernetes clusters.
+[src:kubeadm/setup-tools-kubeadm] kubeadm performs the actions necessary to get a minimum viable cluster up and running.
+[src:kubeadm/setup-tools-kubeadm] By design, it cares only about bootstrapping, not about provisioning machines.
+[src:kubeadm/setup-tools-kubeadm] Likewise, installing various nice-to-have addons, like the Kubernetes Dashboard, monitoring solutions, and cloud-specific addons, is not in scope.
+[src:kubeadm/setup-tools-kubeadm] Instead, we expect higher-level and more tailored tooling to be built on top of kubeadm, and ideally, using kubeadm as the basis of all deployments will make it easier to create conformant clusters.
+[src:kubeadm/setup-tools-kubeadm] To install kubeadm, see the installation guide.
+[src:kubeadm/tasks-tools] Set up Kubernetes tools on your computer.
+[src:kubeadm/tasks-tools] The Kubernetes command-line tool, kubectl, allows you to run commands against Kubernetes clusters.
+[src:kubeadm/tasks-tools] You can use kubectl to deploy applications, inspect and manage cluster resources, and view logs.
+[src:kubeadm/tasks-tools] For more information including a complete list of kubectl operations, see the `kubectl` reference documentation.
+[src:kubeadm/tasks-tools] kubectl is installable on a variety of Linux platforms, macOS and Windows.
+[src:kubeadm/tasks-tools] Find your preferred operating system below.
+[src:kubeadm/tasks-tools] `kind` lets you run Kubernetes on your local computer.
+[src:kubeadm/tasks-tools] This tool requires that you have either Docker or Podman installed.
+[src:kubeadm/tasks-tools] The kind Quick Start page shows you what you need to do to get up and running with kind.
+[src:kubeadm/tasks-tools] Like `kind`, `minikube` is a tool that lets you run Kubernetes locally.
+[src:kubeadm/tasks-tools] `minikube` runs an all-in-one or a multi-node local Kubernetes cluster on your personal computer (including Windows, macOS and Linux PCs) so that you can try out Kubernetes, or for daily development work.
+[src:kubeadm/tasks-tools] You can follow the official Get Started! guide if your focus is on getting the tool installed.
+[src:kubeadm/tasks-tools] Once you have `minikube` working, you can use it to run a sample application.
+[src:kubeadm/tasks-tools] You can use the kubeadm tool to create and manage Kubernetes clusters.
+[src:kubeadm/tasks-tools] It performs the actions necessary to get a minimum viable, secure cluster up and running in a user friendly way.
+[src:kubeadm/tasks-tools] Installing kubeadm shows you how to install kubeadm.
+[src:kubeadm/tasks-tools] Once installed, you can use it to create a cluster.

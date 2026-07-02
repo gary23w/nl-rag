@@ -7,13 +7,18 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
 
 ## What's here
 
-- `packs/<domain>/` — one directory per knowledge domain (121 domains, ~1100 upstream
-  pages): every language paradigm and problem-solving method, the full embedded/IoT stack
-  (microcontrollers, RTOS, buses, IoT protocols, electronics, control theory, DSP, FPGA,
-  PLC/SCADA, robotics), mathematics from linear algebra to category theory, CS systems
-  (OS, compilers, automata, distributed systems, formal methods), the complete GoF pattern
-  catalog plus architecture/concurrency patterns, AI/ML, graphics and game development,
-  cloud, the canonical books of the craft, and Rosetta Code polyglot tasks. Every file is:
+- `packs/<domain>/` — one directory per knowledge domain (**741 domains, ~6,300 pack files**):
+  every programming language and dialect (systems, JVM, .NET, functional, lisp family,
+  scripting, assembly, the legacy canon), every paradigm and problem-solving method, the full
+  embedded/IoT stack (microcontrollers, RTOS, buses, IoT protocols, electronics, control
+  theory, DSP, FPGA, PLC/SCADA, robotics, computer architecture), mathematics from arithmetic
+  to category theory and quantum computing, CS systems (OS internals, compilers, automata,
+  distributed systems, formal methods, networking protocols), the complete GoF pattern catalog
+  plus architecture/concurrency patterns, web frontend & backend frameworks, databases (SQL,
+  NoSQL, vector, time-series, graph), cloud platforms (AWS/Azure/GCP/Cloudflare), DevOps &
+  observability tooling, ML/AI frameworks & techniques, defensive security & compliance,
+  blockchain/Web3, developer tooling (testing/build/package/docs/editors), scientific
+  computing, the canonical books of the craft, and Rosetta Code polyglot tasks. Every file is:
   - **clean markdown** — no HTML, no nav/chrome/cookie banners, fenced code with language
     tags, GFM tables, citation markers stripped
   - **frontmattered** — `title`, `source` (upstream URL), `domain`, `license`, `tags`,
@@ -41,10 +46,19 @@ information-theory, computational-geometry, optimization) · CS systems (operati
 compilers, automata, distributed-systems, consensus, complexity, formal-methods,
 performance, compression, debugging) · patterns & practice (full GoF catalog,
 architecture-patterns, concurrency-patterns, code-quality, agile-devops,
-sre-observability, canonical-books) · data & AI (machine-learning, classic-ai,
-data-engineering, databases, caching) · web & cloud (react, vue, svelte, graphql, grpc,
-kubernetes, cloud-computing, graphics, game-dev) · security & crypto · tooling & ops ·
-rosetta-code (the same task in dozens of languages)
+sre-observability, canonical-books) · data & AI (machine-learning + 55 ML/AI framework and
+technique domains: tensorflow, keras, jax, huggingface-transformers, langchain, opencv,
+cuda, rag-systems, llm-fine-tuning, vector-search, …) · databases (50+ engines: postgres,
+oracle, cassandra, clickhouse, duckdb, elasticsearch, neo4j, and the vector DBs milvus /
+qdrant / weaviate / pgvector / faiss) · web frontend (angular, nextjs, svelte, tailwind,
+webpack, redux, browser APIs) · web backend (spring-boot, laravel, fastapi-class frameworks,
+ORMs) · cloud (AWS/Azure/GCP/Cloudflare services) · devops (helm, prometheus, grafana,
+argocd, terraform-adjacent tooling) · networking & OS internals (bgp, quic, http/3, linux
+kernel, ebpf, filesystems, virtualization) · advanced math & scientific computing (abstract
+algebra, topology, analysis, quantum computing, bioinformatics, CFD) · defensive security &
+compliance (mitre-attack, zero-trust, pki, webauthn, gdpr/hipaa/pci-dss) · blockchain/web3
+(bitcoin, ethereum, solidity, smart-contracts, defi, zk-proofs) · dev tooling
+(testing/build/package/docs/editors) · rosetta-code (the same task in dozens of languages)
 
 ## The tool
 
@@ -65,8 +79,11 @@ markdown rendering (headings, fenced code, GFM tables, lists; man pages unwrappe
 prose-ratio, sentence-count checks — a page that fails is rejected, never shipped) →
 frontmattered emit with heading-boundary splitting.
 
-To add a domain: add an entry to `ragpull/sources.py` (tags, license, curated page URLs)
-and run `python -m ragpull pull <name>`.
+To add a domain: add an entry to a module under `ragpull/sources/` (tags, license, curated
+page URLs) and run `python -m ragpull pull <name>`. The registry is split into thematic
+modules (`base`, `languages`, `ext_databases`, `ext_ml_ai`, `ext_security`, …) that the
+package auto-discovers — any module exposing a `DOMAINS` dict is picked up, with a
+cross-module duplicate-name guard and automatic dedupe of filename-slug collisions.
 
 ## Wiring into the veil
 

@@ -1,0 +1,52 @@
+---
+title: "Aria (storage engine)"
+source: https://en.wikipedia.org/wiki/Aria_(storage_engine)
+domain: mariadb
+license: CC-BY-SA-4.0
+tags: mariadb, aria storage engine, galera cluster, innodb engine
+fetched: 2026-07-02
+---
+
+# Aria (storage engine)
+
+**Aria** is a storage engine for the MariaDB and MySQL relational database management systems. Its goal is to make a crash-safe alternative to MyISAM. It is not transactional.
+
+Aria has been in development since 2007 and was first announced by Michael "Monty" Widenius on his blog. Aria is used for internal temporary tables in MariaDB, a community-developed branch of the MySQL database led by Widenius. Aria is not shipped with MySQL or Percona Server.
+
+Aria was initially named "Maria", as a reference to Monty's youngest child. It was renamed Aria in 2010 to avoid confusion with the main database it is developed for, MariaDB. Chris Tooley, who won a contest to suggest the name, wrote, "Aria is Maria without the 'M'; also it is a pleasant musical term."
+
+## Features
+
+Aria is very similar to MyISAM, but its purpose is to be a crash-safe alternative to MyISAM.
+
+Aria does not support foreign keys and, currently, transactions.
+
+Aria supports:
+
+- Fulltext indexes;
+- OpenGIS data types;
+- Virtual columns.
+
+## Files structure
+
+Non-partitioned Aria tables consist of three physical files:
+
+- table_name.frm
+- table_name.MAD
+- table_name.MAI
+
+The .frm file contains the table definition (this file exists for all storage engines which write data to disk). The .MAD file contains the data. The .MAI file contains the indexes.
+
+### Formats
+
+Three table formats are available for Aria tables:
+
+- **PAGE**;
+- **FIXED**;
+- **DYNAMIC**.
+
+PAGE is the only format available for "transactional" tables. It makes Aria tables crash-safe.
+
+FIXED and DYNAMIC are the same formats used by MyISAM, and have been mainly implemented for compatibility. However, MyISAM's COMPRESSED format is not available in Aria.
+
+In order to set the table format, one can use the ROW_FORMAT option in a CREATE TABLE or ALTER TABLE command.

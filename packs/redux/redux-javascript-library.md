@@ -1,0 +1,36 @@
+---
+title: "Redux (software)"
+source: https://en.wikipedia.org/wiki/Redux_(JavaScript_library)
+domain: redux
+license: CC-BY-SA-4.0
+tags: redux library, redux store, flux architecture, predictable state container
+fetched: 2026-07-02
+---
+
+# Redux (software)
+
+(Redirected from
+
+Redux (JavaScript library)
+
+)
+
+**Redux** is an open-source JavaScript library for managing and centralizing application state. It is most commonly used with libraries such as React or Angular for building user interfaces. It is similar to (and inspired by) Facebook's Flux architecture; the Elm Architecture is also cited as an inspiration. It was created by Dan Abramov and Andrew Clark; since mid-2016, the primary maintainers are Mark Erikson and Tim Dorr.
+
+## Description
+
+Redux is a small library with a simple, limited API designed to be a predictable container for application state. It operates in a fashion similar to a reducing function, a functional programming concept.
+
+## History
+
+Redux was created by Dan Abramov and Andrew Clark in 2015. Abramov began writing the first Redux implementation while preparing for a conference talk at React Europe on hot reloading. Abramov remarks, "I was trying to make a proof of concept of Flux where I could change the logic. And it would let me time travel. And it would let me reapply the future actions on the code change."
+
+Abramov was struck by the similarity of the Flux pattern with a reducing function. "I was thinking about Flux as a reduce operation over time... your stores, they accumulate state in response to these actions. I was thinking of taking this further. What if your Flux store was not a store but a reducer function?"
+
+Abramov reached out to Andrew Clark (author of the Flux implementation Flummox) as a collaborator. Among other things, he credits Clark with making the Redux ecosystem of tools possible, helping to come up with a coherent API, implementing extension points such as middleware and store enhancers.
+
+By mid 2016, Abramov had joined the React team and passed the primary maintainership on to Mark Erikson and Tim Dorr.
+
+In February 2019, `useReducer` was introduced as a React hook in the 16.8 release. It provides an API that is consistent with Redux, enabling developers to create Redux-like stores that are local to component states.
+
+In October 2019, Redux Toolkit was introduced to simplify writing Redux logic by providing a set of utilities (such as `configureStore` and `createSlice`) that wrap and extend the standard Redux API.

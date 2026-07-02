@@ -1,0 +1,451 @@
+# nl-rag distilled facts — domain: pytest-testing
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:pytest-testing/fixtures-p01] At a basic level, test functions request fixtures they require by declaring them as arguments.
+[src:pytest-testing/fixtures-p01] When pytest goes to run a test, it looks at the parameters in that test function’s signature, and then searches for fixtures that have the same names as those parameters.
+[src:pytest-testing/fixtures-p01] Once pytest finds them, it runs those fixtures, captures what they returned (if anything), and passes those objects into the test function as arguments.
+[src:pytest-testing/fixtures-p01] In this example, `test_fruit_salad` “**requests**” `fruit_bowl` (i.e.
+[src:pytest-testing/fixtures-p01] `def test_fruit_salad(fruit_bowl):`), and when pytest sees this, it will execute the `fruit_bowl` fixture function and pass the object it returns into `test_fruit_salad` as the `fruit_bowl` argument.
+[src:pytest-testing/fixtures-p01] One of pytest’s greatest strengths is its extremely flexible fixture system.
+[src:pytest-testing/fixtures-p01] It allows us to boil down complex requirements for tests into more simple and organized functions, where we only need to have each one describe the things they are dependent on.
+[src:pytest-testing/fixtures-p01] Notice that this is the same example from above, but very little changed.
+[src:pytest-testing/fixtures-p01] The fixtures in pytest **request** fixtures just like tests.
+[src:pytest-testing/fixtures-p01] All the same **requesting** rules apply to fixtures that do for tests.
+[src:pytest-testing/fixtures-p01] One of the things that makes pytest’s fixture system so powerful, is that it gives us the ability to define a generic setup step that can be reused over and over, just like a normal function would be used.
+[src:pytest-testing/fixtures-p01] Two different tests can request the same fixture and have pytest give each test their own result from that fixture.
+[src:pytest-testing/fixtures-p01] This is extremely useful for making sure tests aren’t affected by each other.
+[src:pytest-testing/fixtures-p01] We can use this system to make sure each test gets its own fresh batch of data and is starting from a clean state so it can provide consistent, repeatable results.
+[src:pytest-testing/fixtures-p01] Each test here is being given its own copy of that `list` object, which means the `order` fixture is getting executed twice (the same is true for the `first_entry` fixture).
+[src:pytest-testing/fixtures-p01] Tests and fixtures aren’t limited to **requesting** a single fixture at a time.
+[src:pytest-testing/fixtures-p01] Fixtures can also be **requested** more than once during the same test, and pytest won’t execute them again for that test.
+[src:pytest-testing/fixtures-p01] This means we can **request** fixtures in multiple fixtures that are dependent on them (and even again in the test itself) without those fixtures being executed more than once.
+[src:pytest-testing/fixtures-p01] If a **requested** fixture was executed once for every time it was **requested** during a test, then this test would fail because both `append_first` and `test_string_only` would see `order` as an empty list (i.e.
+[src:pytest-testing/fixtures-p01] `[]`), but since the return value of `order` was cached (along with any side effects executing it may have had) after the first time it was called, both the test and `append_first` were referencing the same object, and the test saw the effect `append_first` had on that object.
+[src:pytest-testing/fixtures-p01] Sometimes you may want to have a fixture (or even several) that you know all your tests will depend on. “Autouse” fixtures are a convenient way to make all tests automatically **request** them.
+[src:pytest-testing/fixtures-p01] This can cut out a lot of redundant **requests**, and can even provide more advanced fixture usage (more on that further down).
+[src:pytest-testing/fixtures-p01] We can make a fixture an autouse fixture by passing in `autouse=True` to the fixture’s decorator.
+[src:pytest-testing/fixtures-p01] In this example, the `append_first` fixture is an autouse fixture.
+[src:pytest-testing/fixtures-p01] Because it happens automatically, both tests are affected by it, even though neither test **requested** it.
+[src:pytest-testing/fixtures-p01] That doesn’t mean they *can’t* be **requested** though; just that it isn’t *necessary*.
+[src:pytest-testing/fixtures-p01] Fixtures requiring network access depend on connectivity and are usually time-expensive to create.
+[src:pytest-testing/fixtures-p01] Multiple test functions in a test module will thus each receive the same `smtp_connection` fixture instance, thus saving time.
+[src:pytest-testing/fixtures-p01] Possible values for `scope` are: `function`, `class`, `module`, `package` or `session`.
+[src:pytest-testing/fixtures-p01] Here, the `test_ehlo` needs the `smtp_connection` fixture value. pytest will discover and call the `@pytest.fixture` marked `smtp_connection` fixture function.
+[src:pytest-testing/fixtures-p01] You see the two `assert 0` failing and more importantly you can also see that the **exact same** `smtp_connection` object was passed into the two test functions because pytest shows the incoming argument values in the traceback.
+[src:pytest-testing/fixtures-p01] As a result, the two test functions using `smtp_connection` run as quick as a single one because they reuse the same instance.
+[src:pytest-testing/fixtures-p01] Pytest only caches one instance of a fixture at a time, which means that when using a parametrized fixture, pytest may invoke a fixture more than once in the given scope.
+[src:pytest-testing/fixtures-p01] In some cases, you might want to change the scope of the fixture without changing the code.
+[src:pytest-testing/fixtures-p01] The callable must return a string with a valid scope and will be executed only once - during the fixture definition.
+[src:pytest-testing/fixtures-p01] It will be called with two keyword arguments - `fixture_name` as a string and `config` with a configuration object.
+[src:pytest-testing/fixtures-p01] This can be especially useful when dealing with fixtures that need time for setup, like spawning a docker container.
+[src:pytest-testing/fixtures-p01] You can use the command-line argument to control the scope of the spawned containers for different environments.
+[src:pytest-testing/fixtures-p01] When we run our tests, we’ll want to make sure they clean up after themselves so they don’t mess with any other tests (and also so that we don’t leave behind a mountain of test data to bloat the system).
+[src:pytest-testing/fixtures-p01] Fixtures in pytest offer a very useful teardown system, which allows us to define the specific steps necessary for each fixture to clean up after itself.
+[src:pytest-testing/fixtures-p01] This system can be leveraged in two ways.
+[src:pytest-testing/fixtures-p01] “Yield” fixtures `yield` instead of `return`.
+[src:pytest-testing/fixtures-p01] With these fixtures, we can run some code and pass an object back to the requesting fixture/test, just like with the other fixtures.
+[src:pytest-testing/fixtures-p01] Any teardown code for that fixture is placed *after* the `yield`.
+[src:pytest-testing/fixtures-p01] Once pytest figures out a linear order for the fixtures, it will run each one up until it returns or yields, and then move on to the next fixture in the list to do the same thing.
+[src:pytest-testing/fixtures-p01] Once the test is finished, pytest will go back down the list of fixtures, but in the *reverse order*, taking each one that yielded, and running the code inside it that was *after* the `yield` statement.
+[src:pytest-testing/fixtures-p01] Let’s say we want to test sending email from one user to another.
+[src:pytest-testing/fixtures-p01] We’ll have to first make each user, then send the email from one user to the other, and finally assert that the other user received that message in their inbox.
+[src:pytest-testing/fixtures-p01] If we want to clean up after the test runs, we’ll likely have to make sure the other user’s mailbox is emptied before deleting that user, otherwise the system may complain.
+[src:pytest-testing/fixtures-p01] Because `receiving_user` is the last fixture to run during setup, it’s the first to run during teardown.
+[src:pytest-testing/fixtures-p01] There is a risk that even having the order right on the teardown side of things doesn’t guarantee a safe cleanup.
+[src:pytest-testing/fixtures-p01] That’s covered in a bit more detail in Safe teardowns.
+[src:pytest-testing/fixtures-p01] If a yield fixture raises an exception before yielding, pytest won’t try to run the teardown code after that yield fixture’s `yield` statement.
+[src:pytest-testing/fixtures-p01] But, for every fixture that has already run successfully for that test, pytest will still attempt to tear them down as it normally would.
+[src:pytest-testing/fixtures-p01] While yield fixtures are considered to be the cleaner and more straightforward option, there is another choice, and that is to add “finalizer” functions directly to the test’s request-context object.
+[src:pytest-testing/fixtures-p01] It brings a similar result as yield fixtures, but requires a bit more verbosity.
+[src:pytest-testing/fixtures-p01] In order to use this approach, we have to request the request-context object (just like we would request another fixture) in the fixture we need to add teardown code for, and then pass a callable, containing that teardown code, to its `addfinalizer` method.
+[src:pytest-testing/fixtures-p01] We have to be careful though, because pytest will run that finalizer once it’s been added, even if that fixture raises an exception after adding the finalizer.
+[src:pytest-testing/fixtures-p01] So to make sure we don’t run the finalizer code when we wouldn’t need to, we would only add the finalizer once the fixture would have done something that we’d need to teardown.
+[src:pytest-testing/fixtures-p01] It’s a bit longer than yield fixtures and a bit more complex, but it does offer some nuances for when you’re in a pinch.
+[src:pytest-testing/fixtures-p01] Finalizers are executed in a first-in-last-out order.
+[src:pytest-testing/fixtures-p01] For yield fixtures, the first teardown code to run is from the right-most fixture, i.e. the last test parameter.
+[src:pytest-testing/fixtures-p01] For finalizers, the first fixture to run is last call to `request.addfinalizer`.
+[src:pytest-testing/fixtures-p01] This is so because yield fixtures use `addfinalizer` behind the scenes: when the fixture executes, `addfinalizer` registers a function that resumes the generator, which in turn calls the teardown code.
+[src:pytest-testing/fixtures-p01] The fixture system of pytest is *very* powerful, but it’s still being run by a computer, so it isn’t able to figure out how to safely teardown everything we throw at it.
+[src:pytest-testing/fixtures-p01] If we aren’t careful, an error in the wrong spot might leave stuff from our tests behind, and that can cause further issues pretty quickly.
+[src:pytest-testing/fixtures-p01] This version is a lot more compact, but it’s also harder to read, doesn’t have a very descriptive fixture name, and none of the fixtures can be reused easily.
+[src:pytest-testing/fixtures-p01] There’s also a more serious issue, which is that if any of those steps in the setup raise an exception, none of the teardown code will run.
+[src:pytest-testing/fixtures-p01] One option might be to go with the `addfinalizer` method instead of yield fixtures, but that might get pretty complex and difficult to maintain (and it wouldn’t be compact anymore).
+[src:pytest-testing/fixtures-p01] The safest and simplest fixture structure requires limiting fixtures to only making one state-changing action each, and then bundling them together with their teardown code, as the email examples above showed.
+[src:pytest-testing/fixtures-p01] The chance that a state-changing operation can fail but still modify state is negligible, as most of these operations tend to be transaction-based (at least at the level of testing where state could be left behind).
+[src:pytest-testing/fixtures-p01] So if we make sure that any successful state-changing action gets torn down by moving it to a separate fixture function and separating it from other, potentially failing state-changing actions, then our tests will stand the best chance at leaving the test environment the way they found it.
+[src:pytest-testing/fixtures-p01] For an example, let’s say we have a website with a login page, and we have access to an admin API where we can generate users.
+[src:pytest-testing/fixtures-p01] We wouldn’t want to leave that user in the system, nor would we want to leave that browser session running, so we’ll want to make sure the fixtures that create those things clean up after themselves.
+[src:pytest-testing/fixtures-p01] For this example, certain fixtures (i.e.
+[src:pytest-testing/fixtures-p01] `base_url` and `admin_credentials`) are implied to exist elsewhere.
+[src:pytest-testing/fixtures-p01] So for now, let’s assume they exist, and we’re just not looking at them.
+[src:pytest-testing/fixtures-p01] The way the dependencies are laid out means it’s unclear if the `user` fixture would execute before the `driver` fixture.
+[src:pytest-testing/fixtures-p01] But that’s ok, because those are atomic operations, and so it doesn’t matter which one runs first because the sequence of events for the test is still linearizable.
+[src:pytest-testing/fixtures-p01] But what *does* matter is that, no matter which one runs first, if the one raises an exception while the other would not have, neither will have left anything behind.
+[src:pytest-testing/fixtures-p01] If `driver` executes before `user`, and `user` raises an exception, the driver will still quit, and the user was never made.
+[src:pytest-testing/fixtures-p01] And if `driver` was the one to raise the exception, then the driver would never have been started and the user would never have been made.
+[src:pytest-testing/fixtures-p01] Sometimes you may want to run multiple asserts after doing all that setup, which makes sense as, in more complex systems, a single action can kick off multiple behaviors. pytest has a convenient way of handling this and it combines a bunch of what we’ve gone over so far.
+[src:pytest-testing/fixtures-p01] All that’s needed is stepping up to a larger scope, then having the **act** step defined as an autouse fixture, and finally, making sure all the fixtures are targeting that higher level scope.
+[src:pytest-testing/fixtures-p01] Let’s pull an example from above, and tweak it a bit.
+[src:pytest-testing/fixtures-p01] Let’s say that in addition to checking for a welcome message in the header, we also want to check for a sign out button, and a link to the user’s profile.
+[src:pytest-testing/fixtures-p01] Let’s take a look at how we can structure that so we can run multiple asserts without having to repeat all those steps again.
+[src:pytest-testing/fixtures-p01] Notice that the methods are only referencing `self` in the signature as a formality.
+[src:pytest-testing/fixtures-p01] No state is tied to the actual test class as it might be in the `unittest.TestCase` framework.
+[src:pytest-testing/fixtures-p01] Everything is managed by the pytest fixture system.
+[src:pytest-testing/fixtures-p01] Each method only has to request the fixtures that it actually needs without worrying about order.
+[src:pytest-testing/fixtures-p01] This is because the **act** fixture is an autouse fixture, and it made sure all the other fixtures executed before it.
+[src:pytest-testing/fixtures-p01] There’s no more changes of state that need to take place, so the tests are free to make as many non-state-changing queries as they want without risking stepping on the toes of the other tests.
+[src:pytest-testing/fixtures-p01] The `login` fixture is defined inside the class as well, because not every one of the other tests in the module will be expecting a successful login, and the **act** may need to be handled a little differently for another test class.
+[src:pytest-testing/fixtures-p01] Fixture functions can accept the `request` object to introspect the “requesting” test function, class or module context.
+[src:pytest-testing/fixtures-p01] We use the `request.module` attribute to optionally obtain an `smtpserver` attribute from the test module.
+[src:pytest-testing/fixtures-p01] The `smtp_connection` fixture function picked up our mail server name from the module namespace.
+[src:pytest-testing/fixtures-p01] Using the `request` object, a fixture can also access markers which are applied to a test function.
+[src:pytest-testing/fixtures-p01] The “factory as fixture” pattern can help in situations where the result of a fixture is needed multiple times in a single test.
+[src:pytest-testing/fixtures-p01] Instead of returning data directly, the fixture instead returns a function which generates the data.
+[src:pytest-testing/fixtures-p01] This function can then be called multiple times in the test.
+[src:pytest-testing/fixtures-p01] Fixture functions can be parametrized in which case they will be called multiple times, each time executing the set of dependent tests, i.e. the tests that depend on this fixture.
+[src:pytest-testing/fixtures-p01] Test functions usually do not need to be aware of their re-running.
+[src:pytest-testing/fixtures-p01] Fixture parametrization helps to write exhaustive functional tests for components which themselves can be configured in multiple ways.
+[src:pytest-testing/fixtures-p01] Extending the previous example, we can flag the fixture to create two `smtp_connection` fixture instances which will cause all tests using the fixture to run twice.
+[src:pytest-testing/fixtures-p01] The main change is the declaration of `params` with `@pytest.fixture`, a list of values for each of which the fixture function will execute and can access a value via `request.param`.
+[src:pytest-testing/fixtures-p01] We see that our two test functions each ran twice, against the different `smtp_connection` instances.
+[src:pytest-testing/fixtures-p01] Note also, that with the `mail.python.org` connection the second test fails in `test_ehlo` because a different server string is expected than what arrived.
+[src:pytest-testing/fixtures-p01] pytest will build a string that is the test ID for each fixture value in a parametrized fixture, e.g.
+[src:pytest-testing/fixtures-p01] `test_ehlo[smtp.gmail.com]` and `test_ehlo[mail.python.org]` in the above examples.
+[src:pytest-testing/fixtures-p01] These IDs can be used with `-k` to select specific cases to run, and they will also identify the specific case when one is failing.
+[src:pytest-testing/fixtures-p01] Running pytest with `--collect-only` will show the generated IDs.
+[src:pytest-testing/fixtures-p01] Numbers, strings, booleans and `None` will have their usual string representation used in the test ID.
+[src:pytest-testing/fixtures-p01] For other objects, pytest will make a string based on the argument name.
+[src:pytest-testing/fixtures-p01] The above shows how `ids` can be either a list of strings to use or a function which will be called with the fixture value and then has to return a string to use.
+[src:pytest-testing/fixtures-p01] In the latter case if the function returns `None` then pytest’s auto-generated ID will be used.
+[src:pytest-testing/fixtures-p01] `pytest.param()` can be used to apply marks in values sets of parametrized fixtures in the same way that they can be used with @pytest.mark.parametrize.
+[src:pytest-testing/fixtures-p01] In addition to using fixtures in test functions, fixture functions can use other fixtures themselves.
+[src:pytest-testing/fixtures-p01] This contributes to a modular design of your fixtures and allows reuse of framework-specific fixtures across many projects.
+[src:pytest-testing/fixtures-p01] Here we declare an `app` fixture which receives the previously defined `smtp_connection` fixture and instantiates an `App` object with it.
+[src:pytest-testing/fixtures-p01] Due to the parametrization of `smtp_connection`, the test will run twice with two different `App` instances and respective smtp servers.
+[src:pytest-testing/fixtures-p01] There is no need for the `app` fixture to be aware of the `smtp_connection` parametrization because pytest will fully analyse the fixture dependency graph.
+[src:pytest-testing/fixtures-p01] Note that the `app` fixture has a scope of `module` and uses a module-scoped `smtp_connection` fixture.
+[src:pytest-testing/fixtures-p01] The example would still work if `smtp_connection` was cached on a `session` scope: it is fine for fixtures to use “broader” scoped fixtures but not the other way round: A session-scoped fixture could not use a module-scoped one in a meaningful way.
+[src:pytest-testing/fixtures-p01] pytest minimizes the number of active fixtures during test runs.
+[src:pytest-testing/fixtures-p01] If you have a parametrized fixture, then all the tests using it will first execute with one instance and then finalizers are called before the next fixture instance is created.
+[src:pytest-testing/fixtures-p01] Among other things, this eases testing of applications which create and use global state.
+[src:pytest-testing/fixtures-p01] You can see that the parametrized module-scoped `modarg` resource caused an ordering of test execution that led to the fewest possible “active” resources.
+[src:pytest-testing/fixtures-p01] The finalizer for the `mod1` parametrized resource was executed before the `mod2` resource was setup.
+[src:pytest-testing/fixtures-p01] In particular notice that test_0 is completely independent and finishes first.
+[src:pytest-testing/fixtures-p01] Then test_1 is executed with `mod1`, then test_2 with `mod1`, then test_1 with `mod2` and finally test_2 with `mod2`.
+[src:pytest-testing/fixtures-p01] The `otherarg` parametrized resource (having function scope) was set up before and torn down after every test that used it.
+[src:pytest-testing/fixtures-p02] Sometimes test functions do not directly need access to a fixture object.
+[src:pytest-testing/fixtures-p02] For example, tests may require to operate with an empty directory as the current working directory but otherwise do not care for the concrete directory.
+[src:pytest-testing/fixtures-p02] Here is how you can use the standard `tempfile` and pytest fixtures to achieve it.
+[src:pytest-testing/fixtures-p02] Due to the `usefixtures` marker, the `cleandir` fixture will be required for the execution of each test method, just as if you specified a “cleandir” function argument to each of them.
+[src:pytest-testing/fixtures-p02] `@pytest.mark.usefixtures` cannot be used on **fixture functions**.
+[src:pytest-testing/fixtures-p02] In a relatively large test suite, you may want to *override* a fixture, to augment or change its behavior inside of certain test modules or directories.
+[src:pytest-testing/fixtures-p02] As you can see, a fixture with the same name can be overridden for a certain test directory level.
+[src:pytest-testing/fixtures-p02] Note that the `base` or `super` fixture can be accessed from the `overriding` fixture easily - used in the example above.
+[src:pytest-testing/fixtures-p02] In the example above, a fixture with the same name can be overridden for a certain test module.
+[src:pytest-testing/fixtures-p02] In the example above, a fixture value is overridden by the test parameter value.
+[src:pytest-testing/fixtures-p02] Note that the value of the fixture can be overridden this way even if the test doesn’t use it directly (doesn’t mention it in the function prototype).
+[src:pytest-testing/fixtures-p02] In the example above, a parametrized fixture is overridden with a non-parametrized version, and a non-parametrized fixture is overridden with a parametrized version for certain test module.
+[src:pytest-testing/fixtures-p02] The same applies for the test directory level obviously.
+[src:pytest-testing/fixtures-p02] Usually projects that provide pytest support will use entry points, so just installing those projects into an environment will make those fixtures available for use.
+[src:pytest-testing/fixtures-p02] In case you want to use fixtures from a project that does not use entry points, you can define `pytest_plugins` in your top `conftest.py` file to register that module as a plugin.
+[src:pytest-testing/fixtures-p02] Suppose you have some fixtures in `mylibrary.fixtures` and you want to reuse them into your `app/tests` directory.
+[src:pytest-testing/fixtures-p02] All you need to do is to define `pytest_plugins` in `app/tests/conftest.py` pointing to that module.
+[src:pytest-testing/fixtures-p02] This effectively registers `mylibrary.fixtures` as a plugin, making all its fixtures and hooks available to tests in `app/tests`.
+[src:pytest-testing/fixtures-p02] Sometimes users will *import* fixtures from other projects for use, however this is not recommended: importing fixtures into a module will register them in pytest as *defined* in that module.
+[src:pytest-testing/fixtures-p02] This has minor consequences, such as appearing multiple times in `pytest --help`, but it is not **recommended** because this behavior might change/stop working in future versions.
+[src:pytest-testing/how-to-assert] `pytest` allows you to use the standard Python `assert` for verifying expectations and values in Python tests.
+[src:pytest-testing/how-to-assert] to assert that your function returns a certain value.
+[src:pytest-testing/how-to-assert] `pytest` has support for showing the values of the most common subexpressions including calls, attributes, comparisons, and binary and unary operators.
+[src:pytest-testing/how-to-assert] (See Demo of Python failure reports with pytest).
+[src:pytest-testing/how-to-assert] This allows you to use the idiomatic python constructs without boilerplate code while not losing introspection information.
+[src:pytest-testing/how-to-assert] it is printed alongside the assertion introspection in the traceback.
+[src:pytest-testing/how-to-assert] See Assertion introspection details for more information on assertion introspection.
+[src:pytest-testing/how-to-assert] When comparing floating point values (or arrays of floats), small rounding errors are common.
+[src:pytest-testing/how-to-assert] `pytest.approx` works with scalars, lists, dictionaries, and NumPy arrays.
+[src:pytest-testing/how-to-assert] It also supports comparisons involving NaNs.
+[src:pytest-testing/how-to-assert] `excinfo` is an `ExceptionInfo` instance, which is a wrapper around the actual exception raised.
+[src:pytest-testing/how-to-assert] The main attributes of interest are `.type`, `.value` and `.traceback`.
+[src:pytest-testing/how-to-assert] Note that `pytest.raises` will match the exception type or any subclasses (like the standard `except` statement).
+[src:pytest-testing/how-to-assert] The `pytest.raises()` call will succeed, even though the function raises `NotImplementedError`, because `NotImplementedError` is a subclass of `RuntimeError`; however the following `assert` statement will catch the problem.
+[src:pytest-testing/how-to-assert] It accepts a `match` parameter, that checks against the group message, and a `check` parameter that takes an arbitrary callable which it passes the group to, and only succeeds if the callable returns `True`.
+[src:pytest-testing/how-to-assert] It is strict about structure and unwrapped exceptions, unlike except*, so you might want to set the `flatten_subgroups` and/or `allow_unwrapped` parameters.
+[src:pytest-testing/how-to-assert] They both supply a method `pytest.RaisesGroup.matches()` `pytest.RaisesExc.matches()` if you want to do matching outside of using it as a context manager.
+[src:pytest-testing/how-to-assert] This can be helpful when checking `.__context__` or `.__cause__`.
+[src:pytest-testing/how-to-assert] Check the documentation on `pytest.RaisesGroup` and `pytest.RaisesExc` for more details and examples.
+[src:pytest-testing/how-to-assert] This helper makes it easy to check for the presence of specific exceptions, but it is very bad for checking that the group does *not* contain *any other exceptions*.
+[src:pytest-testing/how-to-assert] There is no good way of using `excinfo.group_contains()` to ensure you’re not getting *any* other exceptions than the one you expected.
+[src:pytest-testing/how-to-assert] You should instead use `pytest.RaisesGroup`, see Assertions about expected exception groups.
+[src:pytest-testing/how-to-assert] The optional `match` keyword parameter works the same way as for `pytest.raises()`.
+[src:pytest-testing/how-to-assert] By default `group_contains()` will recursively search for a matching exception at any level of nested `ExceptionGroup` instances.
+[src:pytest-testing/how-to-assert] You can specify a `depth` keyword parameter if you only want to match an exception at a specific level; exceptions contained directly in the top `ExceptionGroup` would match `depth=1`.
+[src:pytest-testing/how-to-assert] There is an alternate form of `pytest.raises()` where you pass a function that will be executed, along with `*args` and `**kwargs`.
+[src:pytest-testing/how-to-assert] This form was the original `pytest.raises()` API, developed before the `with` statement was added to the Python language.
+[src:pytest-testing/how-to-assert] Nowadays, this form is rarely used, with the context-manager form (using `with`) being considered more readable.
+[src:pytest-testing/how-to-assert] This will only “xfail” if the test fails by raising `IndexError` or subclasses.
+[src:pytest-testing/how-to-assert] You can check that code raises a particular warning using pytest.warns.
+[src:pytest-testing/how-to-assert] `pytest` has rich support for providing context-sensitive information when it encounters comparisons.
+[src:pytest-testing/how-to-assert] In string context diffs, lines prefixed with `-` come from the left-hand side of `assert left == right`, while lines prefixed with `+` come from the right-hand side.
+[src:pytest-testing/how-to-assert] See the reporting demo for many more examples.
+[src:pytest-testing/how-to-assert] It is possible to add your own detailed explanations by implementing the `pytest_assertrepr_compare` hook.
+[src:pytest-testing/how-to-assert] Return explanation for comparisons in failing assert expressions.
+[src:pytest-testing/how-to-assert] Return None for no custom explanation, otherwise return a list of strings.
+[src:pytest-testing/how-to-assert] The strings will be joined by newlines but any newlines *in* a string will be escaped.
+[src:pytest-testing/how-to-assert] Note that all but the first line will be indented slightly, the intention is for the first line to be a summary.
+[src:pytest-testing/how-to-assert] Any conftest file can implement this hook.
+[src:pytest-testing/how-to-assert] For a given item, only conftest files in the item’s directory and its parent directories are consulted.
+[src:pytest-testing/how-to-assert] A `pytest.PytestReturnNotNoneWarning` is emitted when a test function returns a value other than `None`.
+[src:pytest-testing/how-to-assert] This helps prevent a common mistake made by beginners who assume that returning a `bool` (e.g., `True` or `False`) will determine whether a test passes or fails.
+[src:pytest-testing/how-to-assert] Since pytest ignores return values, it might be surprising that the test will never fail based on the returned value.
+[src:pytest-testing/how-to-assert] Reporting details about a failing assertion is achieved by rewriting assert statements before they are run.
+[src:pytest-testing/how-to-assert] Rewritten assert statements put introspection information into the assertion failure message.
+[src:pytest-testing/how-to-assert] `pytest` only rewrites test modules directly discovered by its test collection process, so **asserts in supporting modules which are not themselves test modules will not be rewritten**.
+[src:pytest-testing/how-to-assert] You can manually enable assertion rewriting for an imported module by calling register_assert_rewrite before you import it (a good place to do that is in your root `conftest.py`).
+[src:pytest-testing/how-to-assert] For further information, Benjamin Peterson wrote up Behind the scenes of pytest’s new assertion rewriting.
+[src:pytest-testing/how-to-assert] `pytest` will write back the rewritten modules to disk for caching.
+[src:pytest-testing/how-to-assert] Note that you still get the benefits of assertion introspection, the only change is that the `.pyc` files won’t be cached on disk.
+[src:pytest-testing/how-to-assert] Additionally, rewriting will silently skip caching if it cannot write new `.pyc` files, e.g. in a read-only filesystem or a zipfile.
+[src:pytest-testing/how-to-assert] `pytest` rewrites test modules on import by using an import hook to write new `pyc` files.
+[src:pytest-testing/how-to-assert] Most of the time this works transparently.
+[src:pytest-testing/how-to-assert] However, if you are working with the import machinery yourself, the import hook may interfere.
+[src:pytest-testing/how-to-mark] By using the `pytest.mark` helper you can easily set metadata on your test functions.
+[src:pytest-testing/how-to-mark] You can find the full list of builtin markers in the API Reference.
+[src:pytest-testing/how-to-mark] Or you can list all the markers, including builtin and custom, using the CLI - `pytest --markers`.
+[src:pytest-testing/how-to-mark] It’s easy to create custom markers or to apply markers to whole test classes or modules.
+[src:pytest-testing/how-to-mark] Those markers can be used by plugins, and also are commonly used to select tests on the command-line with the `-m` option.
+[src:pytest-testing/how-to-mark] See Working with custom markers for examples which also serve as documentation.
+[src:pytest-testing/how-to-mark] Marks can only be applied to tests, having no effect on fixtures.
+[src:pytest-testing/how-to-mark] Note that everything past the `:` after the mark name is an optional description.
+[src:pytest-testing/how-to-mark] Registered marks appear in pytest’s help text and do not emit warnings (see the next section).
+[src:pytest-testing/how-to-mark] It is recommended that third-party plugins always register their markers.
+[src:pytest-testing/how-to-mark] Unregistered marks applied with the `@pytest.mark.name_of_the_mark` decorator will always emit a warning in order to avoid silently doing something surprising due to mistyped names.
+[src:pytest-testing/how-to-mark] As described in the previous section, you can disable the warning for custom marks by registering them in your configuration file or using a custom `pytest_configure` hook.
+[src:pytest-testing/how-to-mark] When the `strict_markers` configuration option is set, any unknown marks applied with the `@pytest.mark.name_of_the_mark` decorator will trigger an error.
+[src:pytest-testing/parametrize] See How to use subtests for an alternative to parametrization.
+[src:pytest-testing/parametrize] The builtin pytest.mark.parametrize decorator enables parametrization of arguments for a test function.
+[src:pytest-testing/parametrize] Parameter values are passed as-is to tests (no copy whatsoever).
+[src:pytest-testing/parametrize] For example, if you pass a list or a dict as a parameter value, and the test case code mutates it, the mutations will be reflected in subsequent test case calls.
+[src:pytest-testing/parametrize] pytest by default escapes any non-ascii characters used in unicode strings for the parametrization because it has several downsides.
+[src:pytest-testing/parametrize] Keep in mind however that this might cause unwanted side effects and even bugs depending on the OS used and plugins currently installed, so use it at your own risk.
+[src:pytest-testing/parametrize] As designed in this example, only one pair of input/output values fails the simple test function.
+[src:pytest-testing/parametrize] And as usual with test function arguments, you can see the `input` and `output` values in the traceback.
+[src:pytest-testing/parametrize] The one parameter set which caused a failure previously now shows up as an “xfailed” (expected to fail) test.
+[src:pytest-testing/parametrize] In case the values provided to `parametrize` result in an empty list - for example, if they’re dynamically generated by some function - the behaviour of pytest is defined by the `empty_parameter_set_mark` option.
+[src:pytest-testing/parametrize] This will run the test with the arguments set to `x=0/y=2`, `x=1/y=2`, `x=0/y=3`, and `x=1/y=3` exhausting parameters in the order of the decorators.
+[src:pytest-testing/parametrize] Sometimes you may want to implement your own parametrization scheme or implement some dynamism for determining the parameters or scope of a fixture.
+[src:pytest-testing/parametrize] For this, you can use the `pytest_generate_tests` hook which is called when collecting a test function.
+[src:pytest-testing/parametrize] Through the passed in `metafunc` object you can inspect the requesting test context and, most importantly, you can call `metafunc.parametrize()` to cause parametrization.
+[src:pytest-testing/parametrize] For example, let’s say we want to run a test taking string inputs which we want to set via a new `pytest` command line option.
+[src:pytest-testing/parametrize] The `pytest_generate_tests` hook can also be implemented directly in a test module or inside a test class; unlike other hooks, pytest will discover it there as well.
+[src:pytest-testing/parametrize] Other hooks must live in a conftest.py or a plugin.
+[src:pytest-testing/parametrize] Note that when calling `metafunc.parametrize` multiple times with different parameter sets, all parameter names across those sets cannot be duplicated, otherwise an error will be raised.
+[src:pytest-testing/parametrize] For further examples, you might want to look at more parametrization examples.
+[src:pytest-testing/pytest] Pytest fixtures provide the contexts for tests by passing in parameter names in test cases; its parameterization eliminates duplicate code for testing multiple sets of input and output; and its rewritten assert statements provide detailed output for causes of failures.
+[src:pytest-testing/pytest] Pytest was developed as part of an effort by third-party packages to address Python's built-in module unittest's shortcomings.
+[src:pytest-testing/pytest] It originated as part of PyPy, an alternative to Python's standard CPython codebase.
+[src:pytest-testing/pytest] Since its creation in early 2003, PyPy has had a heavy emphasis on testing.
+[src:pytest-testing/pytest] PyPy had unit tests for newly written code, regression tests for bugs, and integration tests using CPython's existing unittest suite.
+[src:pytest-testing/pytest] In mid 2004, a testing framework called utest emerged and contributors to PyPy began converting existing test cases to utest.
+[src:pytest-testing/pytest] Meanwhile, at EuroPython 2004 a complementary standard library for testing, named std, was invented.
+[src:pytest-testing/pytest] This package laid out the principles, such as assert rewriting, of what would later become pytest.
+[src:pytest-testing/pytest] In late 2004, the std project was renamed to py, std.utest became py.test, and the py library was separated from PyPy.
+[src:pytest-testing/pytest] In November 2010, pytest 2.0.0 was released as a package separate from py.
+[src:pytest-testing/pytest] It was still called py.test until August 2016, but following the release of pytest 3.0.0 the recommended command line entry point became pytest.
+[src:pytest-testing/pytest] Pytest has been classified by developer security platform Snyk as one of the key ecosystem projects in Python due to its popularity.
+[src:pytest-testing/pytest] Some well-known projects who switched to pytest from unittest and nose (another testing package) include those of Mozilla and Dropbox.
+[src:pytest-testing/pytest] It is a common pattern in software testing to send values through test functions and check for correct output.
+[src:pytest-testing/pytest] In many cases, in order to thoroughly test functionalities, one needs to test multiple sets of input/output, and writing such cases separately would cause duplicate code as most of the actions would remain the same, only differing in input/output values.
+[src:pytest-testing/pytest] Pytest's parametrized testing feature eliminates such duplicate code by combining different iterations into one test case, then running these iterations and displaying each test's result separately.
+[src:pytest-testing/pytest] Parameterized tests in pytest are marked by the `@pytest.mark.parametrize(argnames, argvalues)` decorator, where the first parameter, `argnames`, is a string of comma-separated names, and `argvalues` is a list of values to pass into `argnames`.
+[src:pytest-testing/pytest] When there are multiple names in `argnames`, `argvalues` would be a list of tuples where values in each tuple corresponds to the names in `argnames` by index.
+[src:pytest-testing/pytest] The names in `argnames` are then passed into the test function marked by the decorator as parameters.
+[src:pytest-testing/pytest] When pytest runs such decorated tests, each pair of `argnames` and `argvalues` would constitute a separate run with its own test output and unique identifier.
+[src:pytest-testing/pytest] The identifier can then be used to run individual data pairs.
+[src:pytest-testing/pytest] When writing software tests, the assert statement is a primary means for communicating test failure, where expected values are compared to actual values.
+[src:pytest-testing/pytest] While Python's built-in assert keyword would only raise AssertionError with no details in cases of failure, pytest rewrites Python's assert keyword and provides detailed output for the causes of failures, such as what expressions in the assert statement evaluate to.
+[src:pytest-testing/pytest] `unittest` adheres to a more verbose syntax because it is inspired by the Java programming language's JUnit, as are most unit testing libraries; pytest achieves the same while intercepting Python's built-in assert calls, making the approach more concise.
+[src:pytest-testing/pytest] Pytest's tests verify that computer code performs as expected using tests that are structured in an arrange, act and assert sequence known as AAA.
+[src:pytest-testing/pytest] Its fixtures provide the context for tests.
+[src:pytest-testing/pytest] They can be used to put a system into a known state and to pass data into test functions.
+[src:pytest-testing/pytest] Fixtures practically constitute the *arrange* phase in the anatomy of a test (AAA, short for *arrange*, *act*, *assert*).
+[src:pytest-testing/pytest] Pytest fixtures can run before test cases as setup or after test cases for clean up, but are different from unittest and nose (another third-party Python testing framework)'s setups and teardowns.
+[src:pytest-testing/pytest] Functions declared as pytest fixtures are marked by the `@pytest.fixture` decorator, whose names can then be passed into test functions as parameters.
+[src:pytest-testing/pytest] When pytest finds the fixtures' names in test functions' parameters, it first searches in the same module for such fixtures, and if not found, it searches for such fixtures in the conftest.py file.
+[src:pytest-testing/pytest] In the above example, pytest fixture `dataset` returns a dictionary, which is then passed into test function `test_dataset` for assertion.
+[src:pytest-testing/pytest] In addition to fixture detection within the same file as test cases, pytest fixtures can also be placed in the conftest.py file in the tests directory.
+[src:pytest-testing/pytest] There can be multiple conftest.py files, each placed within a tests directory for fixtures to be detected for each subset of tests.
+[src:pytest-testing/pytest] In pytest, fixture scopes let the user define when a fixture should be called.
+[src:pytest-testing/pytest] There are four fixture scopes: function scope, class scope, module scope, and session scope.
+[src:pytest-testing/pytest] Function-scoped fixtures are default for all pytest fixtures, which are called every time a function having the fixture as a parameter runs.
+[src:pytest-testing/pytest] The goal of specifying a broader fixture scope is to eliminate repeated fixture calls, which could slow down test execution.
+[src:pytest-testing/pytest] Class-scoped fixtures are called once per test class, regardless of the number of times they are called, and the same logic goes for all other scopes.
+[src:pytest-testing/pytest] When changing fixture scope, one need only add the scope parameter to fixture decorators, for example, `@pytest.fixture(scope="class")`.
+[src:pytest-testing/pytest] Another feature of pytest is its ability to filter through tests, where only desired tests are selected to run, or behave in a certain way as desired by the developer.
+[src:pytest-testing/pytest] With the "k" option (e.g. pytest -k some_name), pytest would only run tests whose names include `some_name`.
+[src:pytest-testing/pytest] The opposite is true, where one can run pytest -k "not some_name", and pytest will run all tests whose names do not include `some_name`.
+[src:pytest-testing/pytest] Pytest's markers can, in addition to altering test behaviour, also filter tests.
+[src:pytest-testing/pytest] Pytest's markers are Python decorators starting with the `@pytest.mark.<markername>` syntax placed on top of test functions.
+[src:pytest-testing/pytest] With different arbitrarily named markers, running pytest -m <markername> on the command line will only run those tests decorated with such markers.
+[src:pytest-testing/pytest] All available markers can be listed by the pytest --markers along with their descriptions; custom markers can also be defined by users and registered in pytest.ini, in which case pytest --markers will also list those custom markers along with builtin markers.
+[src:pytest-testing/test-automation] Automation provides many benefits over manual testing.
+[src:pytest-testing/test-automation] For API testing, tests drive the SUT via its application programming interface (API).
+[src:pytest-testing/test-automation] Compared to manual testing, automated API testing often can execute a relatively large number of cases in a relatively short time.
+[src:pytest-testing/test-automation] For GUI testing, tests drive the SUT via its graphical user interface (GUI) by generating events such as keystrokes and mouse clicks.
+[src:pytest-testing/test-automation] Automated GUI testing can be challenging to develop, but can run much faster than a human could perform the same testing.
+[src:pytest-testing/test-automation] When automated testing is in place, regression testing can be a relatively quick and easy operation.
+[src:pytest-testing/test-automation] Instead of a significant outlay of human time and effort, a regression test run could require nothing more than a push of a button and even starting the run can be automated.
+[src:pytest-testing/test-automation] The following are notable testing techniques categorized as test automation.
+[src:pytest-testing/test-automation] Continuous testing is the process of executing automated tests as part of the software delivery pipeline to assess the business risk of releasing the SUT.
+[src:pytest-testing/test-automation] The scope of testing extends from validating bottom-up requirements or user stories to assessing the system requirements associated with overarching business goals.
+[src:pytest-testing/test-automation] For model-based testing, the SUT is modeled and test cases can be generated from it to support no code test development.
+[src:pytest-testing/test-automation] Some tools support the encoding of test cases as plain English that can be used on multiple operating systems, browsers, and smart devices.
+[src:pytest-testing/test-automation] Test-driven development (TDD) inherently includes the generation of automation test code.
+[src:pytest-testing/test-automation] Unit test code is written while the SUT code is written.
+[src:pytest-testing/test-automation] When the code is complete, the tests are complete as well.
+[src:pytest-testing/test-automation] A review of 52 practitioner and 26 academic sources found that five main factors to consider in test automation decision are: system under test (SUT), scope of testing, test toolset, human and organizational topics, cross-cutting factors.
+[src:pytest-testing/test-automation] The factors most frequently identified were: need for regression testing, economic factors, and maturity of SUT.
+[src:pytest-testing/test-automation] While the reusability of automated tests is valued by software development companies, this property can also be viewed as a disadvantage as it leads to a plateau effect, where repeatedly executing the same tests stops detecting errors.
+[src:pytest-testing/test-automation] Testing tools can help automate tasks such as product installation, test data creation, GUI interaction, problem detection (consider parsing or polling agents equipped with test oracles), defect logging, etc., without necessarily automating tests in an end-to-end fashion.
+[src:pytest-testing/test-automation] To support coded automated testing, the test engineer or software quality assurance person must have software coding ability.
+[src:pytest-testing/test-automation] Some testing techniques such as table-driven and no-code can lessen or alleviate the need for programming skill.
+[src:pytest-testing/test-automation] A test automation framework provides a programming environment that integrates test logic, test data, and other resources.
+[src:pytest-testing/test-automation] The framework provides the basis of test automation and simplifies the automation effort.
+[src:pytest-testing/test-automation] Using a framework can lower the cost of test development and maintenance.
+[src:pytest-testing/test-automation] If there is change to any test case then only the test case file needs to be updated and the driver script and startup script will remain the same.
+[src:pytest-testing/test-automation] A framework is responsible for defining the format in which to express expectations, providing a mechanism to hook into or drive the SUT, executing the tests, and reporting results.
+[src:pytest-testing/test-automation] A test automation interface is a platform that provides a workspace for incorporating multiple testing tools and frameworks for system/integration testing.
+[src:pytest-testing/test-automation] A test automation interface may simplify the process of mapping tests to business criteria without coding.
+[src:pytest-testing/test-automation] A test automation interface may improve the efficiency and flexibility of maintaining tests.
+[src:pytest-testing/test-automation] The parser is present to parse the object files coming from the object repository into the test specific scripting language.
+[src:pytest-testing/test-automation] Collection of UI/Application object data recorded by the testing tool while exploring the SUT.
+[src:pytest-testing/unit-testing] Unit testing describes tests that are run at the unit-level to contrast testing at the integration or system level.
+[src:pytest-testing/unit-testing] Unit testing, as a principle for testing separately smaller parts of large software systems, dates back to the early days of software engineering.
+[src:pytest-testing/unit-testing] In June 1956 at US Navy's Symposium on Advanced Programming Methods for Digital Computers, H.D.
+[src:pytest-testing/unit-testing] It featured a specification-based approach where the coding phase was followed by "parameter testing" to validate component subprograms against their specification, followed then by an "assembly testing" for parts put together.
+[src:pytest-testing/unit-testing] In 1964, a similar approach is described for the software of the Mercury project, where individual units developed by different programmers underwent "unit tests" before being integrated together.
+[src:pytest-testing/unit-testing] In 1969, testing methodologies appear more structured, with unit tests, component tests and integration tests collectively validating individual parts written separately and their progressive assembly into larger blocks.
+[src:pytest-testing/unit-testing] Some public standards adopted in the late 1960s, such as MIL-STD-483 and MIL-STD-490, contributed further to a wide acceptance of unit testing in large projects.
+[src:pytest-testing/unit-testing] Unit testing was in those times interactive or automated, using either coded tests or capture and replay testing tools.
+[src:pytest-testing/unit-testing] In 1989, Kent Beck described a testing framework for Smalltalk (later called SUnit) in "Simple Smalltalk Testing: With Patterns".
+[src:pytest-testing/unit-testing] In 1997, Kent Beck and Erich Gamma developed and released JUnit, a unit test framework that became popular with Java developers.
+[src:pytest-testing/unit-testing] Google embraced automated testing around 2005–2006.
+[src:pytest-testing/unit-testing] A unit is defined as a single behaviour exhibited by the system under test (SUT), usually corresponding to a requirement.
+[src:pytest-testing/unit-testing] While a unit may correspond to a single function or module (in procedural programming) or a single method or class (in object-oriented programming), functions/methods and modules/classes do not necessarily correspond to units.
+[src:pytest-testing/unit-testing] From the system requirements perspective only the perimeter of the system is relevant, thus only entry points to externally visible system behaviours define units.
+[src:pytest-testing/unit-testing] Unit tests can be performed manually or via automated test execution.
+[src:pytest-testing/unit-testing] Automated tests include benefits such as: running tests often, running tests without staffing cost, and consistent and repeatable testing.
+[src:pytest-testing/unit-testing] Testing is often performed by the programmer who writes and modifies the code under test.
+[src:pytest-testing/unit-testing] Unit testing may be viewed as part of the process of writing code.
+[src:pytest-testing/unit-testing] During development, a programmer may code criteria, or results that are known to be good, into the test to verify the unit's correctness.
+[src:pytest-testing/unit-testing] During test execution, frameworks log tests that fail any criterion and report them in a summary.
+[src:pytest-testing/unit-testing] For this, the most commonly used approach is test - function - expected value.
+[src:pytest-testing/unit-testing] Test cases underlie testing that is methodical rather than haphazard.
+[src:pytest-testing/unit-testing] A battery of test cases can be built to produce the desired coverage of the software being tested.
+[src:pytest-testing/unit-testing] Formally defined test cases allow the same tests to be run repeatedly against successive versions of the software, allowing for effective and consistent regression testing.
+[src:pytest-testing/unit-testing] A test double is software used in software test automation that satisfies a dependency so that the test need not depend on production code.
+[src:pytest-testing/unit-testing] A test double provides functionality via an interface that the software under test cannot distinguish from production code.
+[src:pytest-testing/unit-testing] A parameterized test is a test that accepts a set of values that can be used to enable the test to run with multiple, different input values.
+[src:pytest-testing/unit-testing] A testing framework that supports parametrized tests supports a way to encode parameter sets and to run the test with each set.
+[src:pytest-testing/unit-testing] Use of parametrized tests can reduce test code duplication.
+[src:pytest-testing/unit-testing] Parameterized tests are supported by TestNG, JUnit, XUnit and NUnit, as well as in various JavaScript test frameworks.
+[src:pytest-testing/unit-testing] Parameters for the unit tests may be coded manually or in some cases are automatically generated by the test framework.
+[src:pytest-testing/unit-testing] In recent years support was added for writing more powerful (unit) tests, leveraging the concept of theories, test cases that execute the same steps, but using test data generated at runtime, unlike regular parameterized tests that use the same execution steps with input sets that are pre-defined.
+[src:pytest-testing/unit-testing] Test code needs access to the code it is testing, but testing should not compromise normal design goals such as information hiding, encapsulation and the separation of concerns.
+[src:pytest-testing/unit-testing] To enable access to code not exposed in the external API, unit tests can be located in the same project or module as the code being tested.
+[src:pytest-testing/unit-testing] In object oriented design this still may not provide access to private data and methods.
+[src:pytest-testing/unit-testing] Therefore, extra work may be necessary for unit tests.
+[src:pytest-testing/unit-testing] In Java and other languages, a developer can use reflection to access private fields and methods.
+[src:pytest-testing/unit-testing] Alternatively, an inner class can be used to hold the unit tests so they have visibility of the enclosing class's members and attributes.
+[src:pytest-testing/unit-testing] In the .NET Framework and some other programming languages, partial classes may be used to expose private methods and data for the tests to access.
+[src:pytest-testing/unit-testing] It is important that code solely for accommodating tests does not remain in the production code.
+[src:pytest-testing/unit-testing] In C and other languages, compiler directives such as `#if DEBUG ... #endif` can be placed around such additional classes and indeed all other test-related code to prevent them being compiled into the released code.
+[src:pytest-testing/unit-testing] This means the released code is not exactly the same as what was unit tested.
+[src:pytest-testing/unit-testing] The regular running of fewer but more comprehensive, end-to-end, integration tests on the final release build can ensure (among other things) that no production code exists that subtly relies on aspects of the test harness.
+[src:pytest-testing/unit-testing] There is some debate among developers, as to whether it is wise to test private methods and data anyway.
+[src:pytest-testing/unit-testing] Some argue that private members are a mere implementation detail that may change, and should be allowed to do so without breaking numbers of tests.
+[src:pytest-testing/unit-testing] Thus it should be sufficient to test any class through its public interface or through its subclass interface, which some languages call the "protected" interface.
+[src:pytest-testing/unit-testing] Others say that crucial aspects of functionality may be implemented in private methods and testing them directly offers advantage of smaller and more direct unit tests.
+[src:pytest-testing/unit-testing] In test-driven development (TDD), unit tests are written before the related production code is written.
+[src:pytest-testing/unit-testing] Starting with a failing test, then adds *just enough* production code to make the test pass, then refactors the code as makes sense and then repeats by adding another failing test.
+[src:pytest-testing/unit-testing] Unit testing is intended to ensure that the units meet their design and behave as intended.
+[src:pytest-testing/unit-testing] By writing tests first for the smallest testable units, then the compound behaviors between those, one can build up comprehensive tests for complex applications.
+[src:pytest-testing/unit-testing] One goal of unit testing is to isolate each part of the program and show that the individual parts are correct.
+[src:pytest-testing/unit-testing] A unit test provides a strict, written contract that the piece of code must satisfy.
+[src:pytest-testing/unit-testing] Unit testing finds problems early in the development cycle.
+[src:pytest-testing/unit-testing] This includes both bugs in the programmer's implementation and flaws or missing parts of the specification for the unit.
+[src:pytest-testing/unit-testing] The process of writing a thorough set of tests forces the author to think through inputs, outputs, and error conditions, and thus more crisply define the unit's desired behavior.
+[src:pytest-testing/unit-testing] The cost of finding a bug before coding begins or when the code is first written is considerably lower than the cost of detecting, identifying, and correcting the bug later.
+[src:pytest-testing/unit-testing] Bugs in released code may also cause costly problems for the end-users of the software.
+[src:pytest-testing/unit-testing] Code can be impossible or difficult to unit test if poorly written, thus unit testing can force developers to structure functions and objects in better ways.
+[src:pytest-testing/unit-testing] Unit testing enables more frequent releases in software development.
+[src:pytest-testing/unit-testing] By testing individual components in isolation, developers can quickly identify and address issues, leading to faster iteration and release cycles.
+[src:pytest-testing/unit-testing] Unit testing allows the programmer to refactor code or upgrade system libraries at a later date, and make sure the module still works correctly (e.g., in regression testing).
+[src:pytest-testing/unit-testing] The procedure is to write test cases for all functions and methods so that whenever a change causes a fault, it can be identified quickly.
+[src:pytest-testing/unit-testing] Unit tests detect changes which may break a design contract.
+[src:pytest-testing/unit-testing] Unit testing may reduce uncertainty in the units themselves and can be used in a bottom-up testing style approach.
+[src:pytest-testing/unit-testing] By testing the parts of a program first and then testing the sum of its parts, integration testing becomes much easier.
+[src:pytest-testing/unit-testing] Some programmers contend that unit tests provide a form of documentation of the code.
+[src:pytest-testing/unit-testing] Developers wanting to learn what functionality is provided by a unit, and how to use it, can review the unit tests to gain an understanding of it.
+[src:pytest-testing/unit-testing] Test cases can embody characteristics that are critical to the success of the unit.
+[src:pytest-testing/unit-testing] These characteristics can indicate appropriate/inappropriate use of a unit as well as negative behaviors that are to be trapped by the unit.
+[src:pytest-testing/unit-testing] A test case documents these critical characteristics, although many software development environments do not rely solely upon code to document the product in development.
+[src:pytest-testing/unit-testing] In some processes, the act of writing tests and the code under test, plus associated refactoring, may take the place of formal design.
+[src:pytest-testing/unit-testing] Each unit test can be seen as a design element specifying classes, methods, and observable behavior.
+[src:pytest-testing/unit-testing] Testing will not catch every error in the program, because it cannot evaluate every execution path in any but the most trivial programs.
+[src:pytest-testing/unit-testing] This problem is a superset of the halting problem, which is undecidable.
+[src:pytest-testing/unit-testing] Additionally, unit testing by definition only tests the functionality of the units themselves.
+[src:pytest-testing/unit-testing] Therefore, it will not catch integration errors or broader system-level errors (such as functions performed across multiple units, or non-functional test areas such as performance).
+[src:pytest-testing/unit-testing] Unit testing should be done in conjunction with other software testing activities, as they can only show the presence or absence of particular errors; they cannot prove a complete absence of errors.
+[src:pytest-testing/unit-testing] To guarantee correct behavior for every execution path and every possible input, and ensure the absence of errors, other techniques are required, namely the application of formal methods to prove that a software component has no unexpected behavior.
+[src:pytest-testing/unit-testing] An elaborate hierarchy of unit tests does not equal integration testing.
+[src:pytest-testing/unit-testing] Integration with peripheral units should be included in integration tests, but not in unit tests.
+[src:pytest-testing/unit-testing] Integration testing typically still relies heavily on humans testing manually; high-level or global-scope testing can be difficult to automate, such that manual testing often appears faster and cheaper.
+[src:pytest-testing/unit-testing] Software testing is a combinatorial problem.
+[src:pytest-testing/unit-testing] For example, every Boolean decision statement requires at least two tests: one with an outcome of "true" and one with an outcome of "false".
+[src:pytest-testing/unit-testing] As a result, for every line of code written, programmers often need 3 to 5 lines of test code.
+[src:pytest-testing/unit-testing] This obviously takes time and its investment may not be worth the effort.
+[src:pytest-testing/unit-testing] There are problems that cannot easily be tested at all – for example those that are nondeterministic or involve multiple threads.
+[src:pytest-testing/unit-testing] In addition, code for a unit test is as likely to be buggy as the code it is testing.
+[src:pytest-testing/unit-testing] Another challenge related to writing the unit tests is the difficulty of setting up realistic and useful tests.
+[src:pytest-testing/unit-testing] It is necessary to create relevant initial conditions so the part of the application being tested behaves like part of the complete system.
+[src:pytest-testing/unit-testing] If these initial conditions are not set correctly, the test will not be exercising the code in a realistic context, which diminishes the value and accuracy of unit test results.
+[src:pytest-testing/unit-testing] To obtain the intended benefits from unit testing, rigorous discipline is needed throughout the software development process.
+[src:pytest-testing/unit-testing] It is essential to keep careful records not only of the tests that have been performed, but also of all changes that have been made to the source code of this or any other unit in the software.
+[src:pytest-testing/unit-testing] Use of a version control system is essential.
+[src:pytest-testing/unit-testing] If a later version of the unit fails a particular test that it had previously passed, the version-control software can provide a list of the source code changes (if any) that have been applied to the unit since that time.
+[src:pytest-testing/unit-testing] It is also essential to implement a sustainable process for ensuring that test case failures are reviewed regularly and addressed immediately.
+[src:pytest-testing/unit-testing] If such a process is not implemented and ingrained into the team's workflow, the application will evolve out of sync with the unit test suite, increasing false positives and reducing the effectiveness of the test suite.
+[src:pytest-testing/unit-testing] Unit testing embedded system software presents challenges because the software is being developed on a different platform than the one it will eventually run on, making it difficult to run a test program in the actual deployment environment, as is possible with desktop programs.
+[src:pytest-testing/unit-testing] Unit tests tend to be easiest when a method has input parameters and some output.
+[src:pytest-testing/unit-testing] It is not as easy to create unit tests when a major function of the method is to interact with something external to the application.
+[src:pytest-testing/unit-testing] For example, a method that will work with a database might require a mock up of database interactions to be created, which probably won't be as comprehensive as the real database interactions.
+[src:pytest-testing/unit-testing] Below is an example of a JUnit test suite.
+[src:pytest-testing/unit-testing] The test suite uses assert statements to verify the expected result of various input values to the `sum` method.
+[src:pytest-testing/unit-testing] Using unit-tests as a design specification has one significant advantage over other design methods: The design document (the unit-tests themselves) can itself be used to verify the implementation.
+[src:pytest-testing/unit-testing] The tests will never pass unless the developer implements a solution according to the design.
+[src:pytest-testing/unit-testing] Unit testing lacks some of the accessibility of a diagrammatic specification such as a UML diagram, but they may be generated from the unit test using automated tools.
+[src:pytest-testing/unit-testing] Most modern languages have free tools (usually available as extensions to IDEs).
+[src:pytest-testing/unit-testing] Free tools, like those based on the xUnit framework, outsource to another system the graphical rendering of a view for human consumption.
+[src:pytest-testing/unit-testing] Unit testing is the cornerstone of extreme programming, which relies on an automated unit testing framework.
+[src:pytest-testing/unit-testing] This automated unit testing framework can be either third party, e.g., xUnit, or created within the development group.
+[src:pytest-testing/unit-testing] Extreme programming uses the creation of unit tests for test-driven development.
+[src:pytest-testing/unit-testing] The developer writes a unit test that exposes either a software requirement or a defect.
+[src:pytest-testing/unit-testing] This test will fail because either the requirement isn't implemented yet, or because it intentionally exposes a defect in the existing code.
+[src:pytest-testing/unit-testing] Then, the developer writes the simplest code to make the test, along with other tests, pass.
+[src:pytest-testing/unit-testing] Most code in a system is unit tested, but not necessarily all paths through the code.
+[src:pytest-testing/unit-testing] Extreme programming mandates a "test everything that can possibly break" strategy, over the traditional "test every execution path" method.
+[src:pytest-testing/unit-testing] This leads developers to develop fewer tests than classical methods, but this isn't really a problem, more a restatement of fact, as classical methods have rarely ever been followed methodically enough for all execution paths to have been thoroughly tested.
+[src:pytest-testing/unit-testing] Extreme programming simply recognizes that testing is rarely exhaustive (because it is often too expensive and time-consuming to be economically viable) and provides guidance on how to effectively focus limited resources.
+[src:pytest-testing/unit-testing] Crucially, the test code is considered a first class project artifact in that it is maintained at the same quality as the implementation code, with all duplication removed.
+[src:pytest-testing/unit-testing] Developers release unit testing code to the code repository in conjunction with the code it tests.
+[src:pytest-testing/unit-testing] Extreme programming's thorough unit testing allows the benefits mentioned above, such as simpler and more confident code development and refactoring, simplified code integration, accurate documentation, and more modular designs.
+[src:pytest-testing/unit-testing] These unit tests are also constantly run as a form of regression test.
+[src:pytest-testing/unit-testing] Unit testing is also critical to the concept of Emergent Design, which develops software design iteratively through short test-driven development cycles of writing a unit test, making it pass, and refactoring; unit tests provide the regression safety net that makes continuous refactoring safe.
+[src:pytest-testing/unit-testing] An automated testing framework provides features for automating test execution and can accelerate writing and running tests.
+[src:pytest-testing/unit-testing] Frameworks have been developed for a wide variety of programming languages.
+[src:pytest-testing/unit-testing] Generally, frameworks are third-party, not distributed with a compiler or integrated development environment (IDE).
+[src:pytest-testing/unit-testing] Tests can be written without using a framework to exercise the code under test using assertions, exception handling, and other control flow mechanisms to verify behavior and report failure.
+[src:pytest-testing/unit-testing] Some note that testing without a framework is valuable since there is a barrier to entry for the adoption of a framework, and that having some tests is better than none – but once a framework is in place, adding tests can be easier.
+[src:pytest-testing/unit-testing] In some frameworks advanced test features are missing and must be hand-coded.
+[src:pytest-testing/unit-testing] Some programming languages directly support unit testing.
+[src:pytest-testing/unit-testing] Their grammar allows the direct declaration of unit tests without importing a library (whether third party or standard).
+[src:pytest-testing/unit-testing] Additionally, the Boolean conditions of the unit tests can be expressed in the same syntax as Boolean expressions used in non-unit test code, such as what is used for `if` and `while` statements.
+[src:pytest-testing/unit-testing] Some languages do not have built-in unit-testing support but have established unit testing libraries or frameworks.

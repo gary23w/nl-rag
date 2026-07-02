@@ -11,6 +11,13 @@ import sys
 from datetime import date
 from pathlib import Path
 
+# Force UTF-8 stdout/stderr at IMPORT time (before any print): a redirected pipe on Windows —
+# or Git Bash — defaults to cp1252/ascii, and a single en-dash in a page title or URL crashes
+# the whole run with UnicodeEncodeError. Doing this in main() was too late for early output.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 from . import emit, verify
 from .fetch import FetchError, fetch
 from .normalize import normalize, split_markdown
@@ -54,16 +61,25 @@ def cmd_pull(args):
                 print(f"   FETCH-FAIL {slug}: {e}")
                 failed += 1
                 continue
-            cached += from_cache
-            title, body = normalize(html)
-            problems = verify.check_markdown(body)
-            if problems:
-                print(f"   REJECT {slug}: {'; '.join(problems)}")
-                rejects.append((name, url, problems))
-                rejected += 1
+            except Exception as e:  # a malformed URL (literal non-ascii, bad scheme) must not kill the chunk
+                print(f"   FETCH-FAIL {slug}: {type(e).__name__}: {e}")
+                failed += 1
                 continue
-            parts = split_markdown(body)
-            files = emit.write_page(pack_dir, slug, title, url, name, d["license"], d["tags"], parts)
+            try:
+                cached += from_cache
+                title, body = normalize(html)
+                problems = verify.check_markdown(body)
+                if problems:
+                    print(f"   REJECT {slug}: {'; '.join(problems)}")
+                    rejects.append((name, url, problems))
+                    rejected += 1
+                    continue
+                parts = split_markdown(body)
+                files = emit.write_page(pack_dir, slug, title, url, name, d["license"], d["tags"], parts)
+            except Exception as e:  # one bad page never aborts the run
+                print(f"   ERROR {slug}: {type(e).__name__}: {e}")
+                failed += 1
+                continue
             ok += 1
             note = f" ({len(files)} parts)" if len(files) > 1 else ""
             print(f"   ok {slug}{note}")
@@ -147,13 +163,9 @@ def main():
     args = ap.parse_args()
     fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index}[args.cmd]
 
-    # utf-8 stdout everywhere (redirected output on Windows defaults to cp1252 and a single
-    # page title can crash the whole run); big-stack worker thread because the normalizer
-    # recurses to DOM depth and a raised recursionlimit past the native stack is a silent
-    # process kill, not a Python exception
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    # big-stack worker thread because the normalizer recurses to DOM depth and a raised
+    # recursionlimit past the native stack is a silent process kill, not a Python exception
+    # (utf-8 stdout is already forced at module import above)
     import threading
 
     rc: list[int] = [0]

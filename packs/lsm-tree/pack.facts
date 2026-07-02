@@ -1,0 +1,455 @@
+# nl-rag distilled facts — domain: lsm-tree
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:lsm-tree/b-tree] A **B+ tree** is an m-ary tree with a variable but often large number of children per node.
+[src:lsm-tree/b-tree] A B+ tree consists of a root, internal nodes, and leaves.
+[src:lsm-tree/b-tree] The root may be either a leaf or a node with two or more children.
+[src:lsm-tree/b-tree] A B+ tree can be viewed as a B-tree in which each node contains only keys (not key–value pairs), and to which an additional level is added at the bottom with linked leaves.
+[src:lsm-tree/b-tree] The primary value of a B+ tree is in storing data for efficient retrieval in a block-oriented storage context—in particular, filesystems.
+[src:lsm-tree/b-tree] This is primarily because unlike binary search trees, B+ trees have very high fanout (number of pointers to child nodes in a node, typically on the order of 100 or more), which reduces the number of I/O operations required to find an element in the tree.
+[src:lsm-tree/b-tree] There is no single paper introducing the B+ tree concept.
+[src:lsm-tree/b-tree] Instead, the notion of maintaining all data in leaf nodes is repeatedly brought up as an interesting variant of the B-tree, which was introduced by R.
+[src:lsm-tree/b-tree] Douglas Comer notes in an early survey of B-trees (which also covers B+ trees) that the B+ tree was used in IBM's VSAM data access software, and refers to an IBM published article from 1973.
+[src:lsm-tree/b-tree] As with other trees, B+ trees can be represented as a collection of three types of nodes: *root*, *internal* (a.k.a. interior), and *leaf*.
+[src:lsm-tree/b-tree] By definition, each value contained within the B+ tree is a key contained in exactly one leaf node.
+[src:lsm-tree/b-tree] Each key is required to be directly comparable with every other key, which forms a total order.
+[src:lsm-tree/b-tree] This enables each leaf node to keep all of its keys sorted at all times, which then enables each internal node to construct an ordered collection of intervals representing the contiguous extent of values contained in a given leaf.
+[src:lsm-tree/b-tree] Internal nodes higher in the tree can then construct their own intervals, which recursively aggregate the intervals contained in their own child internal nodes.
+[src:lsm-tree/b-tree] Eventually, the root of a B+ Tree represents the whole range of values in the tree, where every internal node represents a subinterval.
+[src:lsm-tree/b-tree] For this recursive interval information to be retained, internal nodes must additionally contain $m-1$ copies of keys $l_{i}$ for $i\in [1,m-1]$ representing the least element within the interval covered by the child with index i (which may itself be an internal node, or a leaf).
+[src:lsm-tree/b-tree] Where m represents the *actual* number of children for a given internal node.
+[src:lsm-tree/b-tree] The *order* or *branching factor* b of a B+ tree measures the capacity of interior nodes, i.e. their maximum allowed number of direct child nodes.
+[src:lsm-tree/b-tree] This value is constant over the entire tree.
+[src:lsm-tree/b-tree] We are looking for a value k in the B+ Tree.
+[src:lsm-tree/b-tree] This means that starting from the root, we are looking for the leaf which may contain the value k.
+[src:lsm-tree/b-tree] At each node, we figure out which internal node we should follow.
+[src:lsm-tree/b-tree] An internal B+ Tree node has at most $m\leq b$ children, where every one of them represents a different sub-interval.
+[src:lsm-tree/b-tree] We select the corresponding child via a linear search of the m entries, then when we finally get to a leaf, we do a linear search of its n elements for the desired key.
+[src:lsm-tree/b-tree] Because we only traverse one branch of all the children at each rung of the tree, we achieve $O(\log N)$ runtime, where N is the total number of keys stored in the leaves of the B+ tree.
+[src:lsm-tree/b-tree] Note that this pseudocode uses 1-based array indexing.
+[src:lsm-tree/b-tree] B+ trees grow at the root and not at the leaves.
+[src:lsm-tree/b-tree] Given a collection of data records, we want to create a B+ tree index on some key field.
+[src:lsm-tree/b-tree] One approach is to insert each record into an empty tree.
+[src:lsm-tree/b-tree] However, it is quite expensive, because each entry requires us to start from the root and go down to the appropriate leaf page.
+[src:lsm-tree/b-tree] An efficient alternative is to use bulk-loading.
+[src:lsm-tree/b-tree] The purpose of the delete algorithm is to remove the desired entry node from the tree structure.
+[src:lsm-tree/b-tree] We recursively call the delete algorithm on the appropriate node until no node is found.
+[src:lsm-tree/b-tree] For each function call, we traverse along, using the index to navigate until we find the node, remove it, and then work back up to the root.
+[src:lsm-tree/b-tree] Note: merge could propagate to root, which means decreasing height.
+[src:lsm-tree/b-tree] The leaves (the bottom-most index blocks) of the B+ tree are often linked to one another in a linked list; this makes range queries or an (ordered) iteration through the blocks simpler and more efficient (though the aforementioned upper bound can be achieved even without this addition).
+[src:lsm-tree/b-tree] This does not substantially increase space consumption or maintenance on the tree.
+[src:lsm-tree/b-tree] This illustrates one of the significant advantages of a B+tree over a B-tree; in a B-tree, since not all keys are present in the leaves, such an ordered linked list cannot be constructed.
+[src:lsm-tree/b-tree] A B+tree is thus particularly useful as a database system index, where the data typically resides on disk, as it allows the B+tree to actually provide an efficient structure for housing the data itself (this is described in as index structure "Alternative 1").
+[src:lsm-tree/b-tree] If a storage system has a block size of B bytes, and the keys to be stored have a size of k, arguably the most efficient B+ tree is one where $b={\tfrac {B}{k}}-1$ .
+[src:lsm-tree/b-tree] Although theoretically the one-off is unnecessary, in practice there is often a little extra space taken up by the index blocks (for example, the linked list references in the leaf blocks).
+[src:lsm-tree/b-tree] Having an index block which is slightly larger than the storage system's actual block represents a significant performance decrease; therefore erring on the side of caution is preferable.
+[src:lsm-tree/b-tree] If nodes of the B+ tree are organized as arrays of elements, then it may take a considerable time to insert or delete an element as half of the array will need to be shifted on average.
+[src:lsm-tree/b-tree] To overcome this problem, elements inside a node can be organized in a binary tree or a B+ tree instead of an array.
+[src:lsm-tree/b-tree] B+ trees can also be used for data stored in RAM.
+[src:lsm-tree/b-tree] In this case a reasonable choice for block size would be the size of processor's cache line.
+[src:lsm-tree/b-tree] Space efficiency of B+ trees can be improved by using some compression techniques.
+[src:lsm-tree/b-tree] One possibility is to use delta encoding to compress keys stored into each block.
+[src:lsm-tree/b-tree] For internal blocks, space saving can be achieved by either compressing keys or pointers.
+[src:lsm-tree/b-tree] For string keys, space can be saved by using the following technique: Normally the *i*-th entry of an internal block contains the first key of block ⁠ $i+1$ ⁠.
+[src:lsm-tree/b-tree] Instead of storing the full key, we could store the shortest prefix of the first key of block ⁠ $i+1$ ⁠ that is strictly greater (in lexicographic order) than last key of block *i*.
+[src:lsm-tree/b-tree] There is also a simple way to compress pointers: if we suppose that some consecutive blocks ⁠ $i,i+1,...i+k$ ⁠ are stored contiguously, then it will suffice to store only a pointer to the first block and the count of consecutive blocks.
+[src:lsm-tree/b-tree] All the above compression techniques have some drawbacks.
+[src:lsm-tree/b-tree] First, a full block must be decompressed to extract a single element.
+[src:lsm-tree/b-tree] One technique to overcome this problem is to divide each block into sub-blocks and compress them separately.
+[src:lsm-tree/b-tree] In this case searching or inserting an element will only need to decompress or compress a sub-block instead of a full block.
+[src:lsm-tree/b-tree] Another drawback of compression techniques is that the number of stored elements may vary considerably from a block to another depending on how well the elements are compressed inside each block.
+[src:lsm-tree/b-tree] The ReiserFS, NSS, XFS, JFS, ReFS, and BFS filesystems all use this type of tree for metadata indexing; BFS also uses B+ trees for storing directories.
+[src:lsm-tree/b-tree] NTFS uses B+ trees for directory and security-related metadata indexing.
+[src:lsm-tree/b-tree] EXT4 uses extent trees (a modified B+ tree data structure) for file extent indexing.
+[src:lsm-tree/b-tree] APFS uses B+ trees to store mappings from filesystem object IDs to their locations on disk, and to store filesystem records (including directories), though these trees' leaf nodes lack sibling pointers.
+[src:lsm-tree/b-tree] Relational database management systems such as IBM Db2, Informix, Microsoft SQL Server, Oracle 8, Sybase ASE, and SQLite support this type of tree for table indices, though each such system implements the basic B+ tree structure with variations and extensions.
+[src:lsm-tree/b-tree] Many NoSQL database management systems such as CouchDB and Tokyo Cabinet also support this type of tree for data access and storage.
+[src:lsm-tree/b-tree] Finding objects in a high-dimensional database that are comparable to a particular query object is one of the most often utilized and yet expensive procedures in such systems.
+[src:lsm-tree/b-tree] In such situations, finding the closest neighbor using a B+ tree is productive.
+[src:lsm-tree/b-tree] B+ tree is efficiently used to construct an indexed search method called iDistance. iDistance searches for k nearest neighbors (kNN) in high-dimension metric spaces.
+[src:lsm-tree/b-tree] The data in those high-dimension spaces is divided based on space or partition strategies, and each partition has an index value that is close with the respect to the partition.
+[src:lsm-tree/b-tree] From here, those points can be efficiently implemented using B+ tree, thus, the queries are mapped to single dimensions ranged search.
+[src:lsm-tree/b-tree] In other words, the iDistance technique can be viewed as a way of accelerating the sequential scan.
+[src:lsm-tree/b-tree] Instead of scanning records from the beginning to the end of the data file, the iDistance starts the scan from spots where the nearest neighbors can be obtained early with a very high probability.
+[src:lsm-tree/b-tree] Nonvolatile random-access memory (NVRAM) has been using B+ tree structure as the main memory access technique for the Internet Of Things (IoT) system because of its non static power consumption and high solidity of cell memory.
+[src:lsm-tree/b-tree] B+ can regulate the trafficking of data to memory efficiently.
+[src:lsm-tree/b-tree] Moreover, with advanced strategies on frequencies of some highly used leaf or reference point, the B+ tree shows significant results in increasing the endurance of database systems.
+[src:lsm-tree/bloom-filter] In computing, a **Bloom filter** is a space-efficient probabilistic data structure, conceived by Burton Howard Bloom in 1970, that is used to test whether an element is a member of a set.
+[src:lsm-tree/bloom-filter] False positive matches are possible, but false negatives are not – in other words, a query returns either "possibly in set" or "definitely not in set".
+[src:lsm-tree/bloom-filter] Elements can be added to the set, but not removed (though this can be addressed with the counting Bloom filter variant); the more items added, the larger the probability of false positives.
+[src:lsm-tree/bloom-filter] Bloom proposed the technique for applications where the amount of source data would require an impractically large amount of memory if "conventional" error-free hashing techniques were applied.
+[src:lsm-tree/bloom-filter] He gave the example of a hyphenation algorithm for a dictionary of 500,000 words, out of which 90% follow simple hyphenation rules, but the remaining 10% require expensive disk accesses to retrieve specific hyphenation patterns.
+[src:lsm-tree/bloom-filter] With sufficient core memory, an error-free hash could be used to eliminate all unnecessary disk accesses; on the other hand, with limited core memory, Bloom's technique uses a smaller hash area but still eliminates most unnecessary accesses.
+[src:lsm-tree/bloom-filter] For example, a hash area only 18% of the size needed by an ideal error-free hash still eliminates 87% of the disk accesses.
+[src:lsm-tree/bloom-filter] More generally, fewer than 10 bits per element are required for a 1% false positive probability, independent of the size or number of elements in the set.
+[src:lsm-tree/bloom-filter] An *empty Bloom filter* is a bit array of m bits, all set to 0.
+[src:lsm-tree/bloom-filter] It is equipped with k different hash functions, which map set elements to one of the m possible array positions.
+[src:lsm-tree/bloom-filter] To be optimal, the hash functions should be uniformly distributed and independent.
+[src:lsm-tree/bloom-filter] Typically, k is a small constant which depends on the desired false error rate ε, while m is proportional to k and the number of elements to be added.
+[src:lsm-tree/bloom-filter] To *add* an element, feed it to each of the k hash functions to get k array positions.
+[src:lsm-tree/bloom-filter] Set the bits at all these positions to 1.
+[src:lsm-tree/bloom-filter] To *test* whether an element is in the set, feed it to each of the k hash functions to get k array positions.
+[src:lsm-tree/bloom-filter] If *any* of the bits at these positions is 0, the element is definitely not in the set; if it were, then all the bits would have been set to 1 when it was inserted.
+[src:lsm-tree/bloom-filter] If all are 1, then either the element is in the set, *or* the bits have by chance been set to 1 during the insertion of other elements, resulting in a false positive.
+[src:lsm-tree/bloom-filter] In a simple Bloom filter, there is no way to distinguish between the two cases, but more advanced techniques can address this problem.
+[src:lsm-tree/bloom-filter] The requirement of designing k different independent hash functions can be prohibitive for large k.
+[src:lsm-tree/bloom-filter] For a good hash function with a wide output, there should be little if any correlation between different bit-fields of such a hash, so this type of hash can be used to generate multiple "different" hash functions by slicing its output into multiple bit fields.
+[src:lsm-tree/bloom-filter] Alternatively, one can pass k different initial values (such as 0, 1, ..., k − 1) to a hash function that takes an initial value; or add (or append) these values to the key.
+[src:lsm-tree/bloom-filter] For larger m and/or k, independence among the hash functions can be relaxed with negligible increase in false positive rate.
+[src:lsm-tree/bloom-filter] Removing an element from this simple Bloom filter is impossible because there is no way to tell which of the k bits it maps to should be cleared.
+[src:lsm-tree/bloom-filter] Although setting any one of those k bits to zero suffices to remove the element, it would also remove any other elements that happen to map onto that bit.
+[src:lsm-tree/bloom-filter] Since the simple algorithm provides no way to determine whether any other elements have been added that affect the bits for the element to be removed, clearing any of the bits would introduce the possibility of false negatives.
+[src:lsm-tree/bloom-filter] One-time removal of an element from a Bloom filter can be simulated by having a second Bloom filter that contains items that have been removed.
+[src:lsm-tree/bloom-filter] However, false positives in the second filter become false negatives in the composite filter, which may be undesirable.
+[src:lsm-tree/bloom-filter] In this approach re-adding a previously removed item is not possible, as one would have to remove it from the "removed" filter.
+[src:lsm-tree/bloom-filter] It is often the case that all the keys are available but are expensive to enumerate (for example, requiring many disk reads).
+[src:lsm-tree/bloom-filter] When the false positive rate gets too high, the filter can be regenerated; this should be a relatively rare event.
+[src:lsm-tree/bloom-filter] While risking false positives, Bloom filters have a substantial space advantage over other data structures for representing sets, such as self-balancing binary search trees, tries, hash tables, or simple arrays or linked lists of the entries.
+[src:lsm-tree/bloom-filter] Most of these require storing at least the data items themselves, which can require anywhere from a small number of bits, for small integers, to an arbitrary number of bits, such as for strings (tries are an exception since they can share storage between elements with equal prefixes).
+[src:lsm-tree/bloom-filter] However, Bloom filters do not store the data items at all, and a separate solution must be provided for the actual storage.
+[src:lsm-tree/bloom-filter] Linked structures incur an additional linear space overhead for pointers.
+[src:lsm-tree/bloom-filter] A Bloom filter with a 1% error and an optimal value of k, in contrast, requires only about 9.6 bits per element, regardless of the size of the elements.
+[src:lsm-tree/bloom-filter] This advantage comes partly from its compactness, inherited from arrays, and partly from its probabilistic nature.
+[src:lsm-tree/bloom-filter] The 1% false-positive rate can be reduced by a factor of ten by adding only about 4.8 bits per element.
+[src:lsm-tree/bloom-filter] However, if the number of potential values is small and many of them can be in the set, the Bloom filter is easily surpassed by the deterministic bit array, which requires only one bit for each potential element.
+[src:lsm-tree/bloom-filter] Hash tables gain a space and time advantage if they begin ignoring collisions and store only whether each bucket contains an entry; in this case, they have effectively become Bloom filters with *k* = 1.
+[src:lsm-tree/bloom-filter] Bloom filters also have the unusual property that the time needed either to add items or to check whether an item is in the set is a fixed constant, O(*k*), completely independent of the number of items already in the set.
+[src:lsm-tree/bloom-filter] No other constant-space set data structure has this property, but the average access time of sparse hash tables can make them faster in practice than some Bloom filters.
+[src:lsm-tree/bloom-filter] In a hardware implementation, however, the Bloom filter shines because its k lookups are independent and can be parallelized.
+[src:lsm-tree/bloom-filter] To understand its space efficiency, it is instructive to compare the general Bloom filter with its special case when *k* = 1.
+[src:lsm-tree/bloom-filter] If *k* = 1, then in order to keep the false positive rate sufficiently low, a small fraction of bits should be set, which means the array must be very large and contain long runs of zeros.
+[src:lsm-tree/bloom-filter] The information content of the array relative to its size is low.
+[src:lsm-tree/bloom-filter] Assume that a hash function selects each array position with equal probability.
+[src:lsm-tree/bloom-filter] Now test membership of an element that is not in the set.
+[src:lsm-tree/bloom-filter] Each of the *k* array positions computed by the hash functions is 1 with a probability as above.
+[src:lsm-tree/bloom-filter] This is not strictly correct as it assumes independence for the probabilities of each bit being set.
+[src:lsm-tree/bloom-filter] However, assuming it is a close approximation we have that the probability of false positives decreases as *m* (the number of bits in the array) increases, and increases as *n* (the number of inserted elements) increases.
+[src:lsm-tree/bloom-filter] where the {braces} denote Stirling numbers of the second kind.
+[src:lsm-tree/bloom-filter] An alternative analysis arriving at the same approximation without the assumption of independence is given by Mitzenmacher and Upfal.
+[src:lsm-tree/bloom-filter] After all *n* items have been added to the Bloom filter, let *q* be the fraction of the *m* bits that are set to 0.
+[src:lsm-tree/bloom-filter] (That is, the number of bits still set to 0 is *qm*.) Then, when testing membership of an element not in the set, for the array position given by any of the *k* hash functions, the probability that the bit is found set to 1 is $1-q$ .
+[src:lsm-tree/bloom-filter] So the probability that all *k* hash functions find their bit set to 1 is $(1-q)^{k}$ .
+[src:lsm-tree/bloom-filter] It is possible to prove, without the independence assumption, that *q* is very strongly concentrated around its expected value.
+[src:lsm-tree/bloom-filter] The number of hash functions, *k*, must be a positive integer.
+[src:lsm-tree/bloom-filter] This means that for a given false positive probability *ε*, the length of a Bloom filter *m* is proportionate to the number of elements being filtered *n* and the required number of hash functions only depends on the target false positive probability *ε*.
+[src:lsm-tree/bloom-filter] The formula $m=-{\frac {n\ln \varepsilon }{(\ln 2)^{2}}}$ is approximate for three reasons.
+[src:lsm-tree/bloom-filter] First, and of least concern, it approximates $1-{\frac {1}{m}}$ as $e^{-{\frac {1}{m}}}$ , which is a good asymptotic approximation (i.e., which holds as *m* →∞).
+[src:lsm-tree/bloom-filter] Second, of more concern, it assumes that during the membership test the event that one tested bit is set to 1 is independent of the event that any other tested bit is set to 1.
+[src:lsm-tree/bloom-filter] Third, of most concern, it assumes that $k={\frac {m}{n}}\ln 2$ is fortuitously integral.
+[src:lsm-tree/bloom-filter] Goel and Gupta, however, give a rigorous upper bound that makes no approximations and requires no assumptions.
+[src:lsm-tree/bloom-filter] This bound can be interpreted as saying that the approximate formula $\left(1-e^{-{\frac {kn}{m}}}\right)^{k}$ can be applied at a penalty of at most half an extra element and at most one less bit.
+[src:lsm-tree/bloom-filter] where *$n^{*}$* is an estimate of the number of items in the filter, *m* is the length (size) of the filter, *k* is the number of hash functions, and *X* is the number of bits set to one.
+[src:lsm-tree/bloom-filter] Bloom filters are a way of compactly representing a set of items.
+[src:lsm-tree/bloom-filter] It is common to try to compute the size of the intersection or union between two sets.
+[src:lsm-tree/bloom-filter] Bloom filters can be used to approximate the size of the intersection and union of two sets.
+[src:lsm-tree/bloom-filter] where $n(A\cup B)$ is the number of bits set to one in either of the two Bloom filters.
+[src:lsm-tree/bloom-filter] Classic Bloom filters use $1.44\log _{2}(1/\varepsilon )$ bits of space per inserted key, where $\varepsilon$ is the false positive rate of the Bloom filter.
+[src:lsm-tree/bloom-filter] However, the space that is strictly necessary for any data structure playing the same role as a Bloom filter is only $\log _{2}(1/\varepsilon )$ per key.
+[src:lsm-tree/bloom-filter] Hence Bloom filters use 44% more space than an equivalent optimal data structure.
+[src:lsm-tree/bloom-filter] Pagh et al. provide a data structure that uses ${\textstyle (1+o(1))n\log _{2}(1/\epsilon )+O(n)}$ bits while supporting constant amortized expected-time operations.
+[src:lsm-tree/bloom-filter] Their data structure is primarily theoretical, but it is closely related to the widely-used quotient filter, which can be parameterized to use $(1+\delta )n\log \epsilon ^{-1}+3n$ bits of space, for an arbitrary parameter $\delta >0$ , while supporting $O(\delta ^{-2})$ -time operations.
+[src:lsm-tree/bloom-filter] Advantages of the quotient filter, when compared to the Bloom filter, include its locality of reference and the ability to support deletions.
+[src:lsm-tree/bloom-filter] Another alternative to classic Bloom filter is the cuckoo filter, based on space-efficient variants of cuckoo hashing.
+[src:lsm-tree/bloom-filter] In this case, a hash table is constructed, holding neither keys nor values, but short fingerprints (small hashes) of the keys.
+[src:lsm-tree/bloom-filter] If looking up the key finds a matching fingerprint, then key is probably in the set.
+[src:lsm-tree/bloom-filter] Cuckoo filters support deletions and have better locality of reference than Bloom filters.
+[src:lsm-tree/bloom-filter] Additionally, in some parameter regimes, cuckoo filters can be parameterized to offer nearly optimal space guarantees.
+[src:lsm-tree/bloom-filter] Many alternatives to Bloom filters, including quotient filters and cuckoo filters, are based on the idea of hashing keys to random $(\log n+\log \epsilon ^{-1})$ -bit fingerprints, and then storing those fingerprints in a compact hash table.
+[src:lsm-tree/bloom-filter] This technique, which was first introduced by Carter et al. in 1978, relies on the fact that compact hash tables can be implemented to use roughly $n\log n$ bits less space than their non-compact counterparts.
+[src:lsm-tree/bloom-filter] Using succinct hash tables, the space usage can be reduced to as little as $n\log _{2}(e/\epsilon )+o(n)$ bits while supporting constant-time operations in a wide variety of parameter regimes.
+[src:lsm-tree/bloom-filter] Putze, Sanders & Singler (2007) have studied some variants of Bloom filters that are either faster or use less space than classic Bloom filters.
+[src:lsm-tree/bloom-filter] The basic idea of the fast variant is to locate the k hash values associated with each key into one or two blocks having the same size as processor's memory cache blocks (usually 64 bytes).
+[src:lsm-tree/bloom-filter] This will presumably improve performance by reducing the number of potential memory cache misses.
+[src:lsm-tree/bloom-filter] The proposed variants have however the drawback of using about 32% more space than classic Bloom filters.
+[src:lsm-tree/bloom-filter] The space efficient variant relies on using a single hash function that generates for each key a value in the range $\left[0,n/\varepsilon \right]$ where $\varepsilon$ is the requested false positive rate.
+[src:lsm-tree/bloom-filter] The sequence of values is then sorted and compressed using Golomb coding (or some other compression technique) to occupy a space close to $n\log _{2}(1/\varepsilon )$ bits.
+[src:lsm-tree/bloom-filter] To query the Bloom filter for a given key, it will suffice to check if its corresponding value is stored in the Bloom filter.
+[src:lsm-tree/bloom-filter] Decompressing the whole Bloom filter for each query would make this variant totally unusable.
+[src:lsm-tree/bloom-filter] To overcome this problem the sequence of values is divided into small blocks of equal size that are compressed separately.
+[src:lsm-tree/bloom-filter] At query time only half a block will need to be decompressed on average.
+[src:lsm-tree/bloom-filter] Because of decompression overhead, this variant may be slower than classic Bloom filters but this may be compensated by the fact that a single hash function needs to be computed.
+[src:lsm-tree/bloom-filter] Graf & Lemire (2020) describes an approach called an *xor filter*, where they store fingerprints in a particular type of perfect hash table, producing a filter which is more memory efficient ( $1.23\log _{2}(1/\varepsilon )$ bits per key) and faster than Bloom or cuckoo filters.
+[src:lsm-tree/bloom-filter] (The time saving comes from the fact that a lookup requires exactly three memory accesses, which can all execute in parallel.) However, filter creation is more complex than Bloom and cuckoo filters, and it is not possible to modify the set after creation.
+[src:lsm-tree/bloom-filter] There are over 60 variants of Bloom filters, many surveys of the field, and a continuing churn of applications (see e.g., Luo, *et al* ).
+[src:lsm-tree/bloom-filter] Some of the variants differ sufficiently from the original proposal to be breaches from or forks of the original data structure and its philosophy.
+[src:lsm-tree/bloom-filter] A treatment which unifies Bloom filters with other work on random projections, compressive sensing, and locality sensitive hashing remains to be done (though see Dasgupta, *et al* for one attempt inspired by neuroscience).
+[src:lsm-tree/bloom-filter] Content delivery networks deploy web caches around the world to cache and serve web content to users with greater performance and reliability.
+[src:lsm-tree/bloom-filter] A key application of Bloom filters is their use in efficiently determining which web objects to store in these web caches.
+[src:lsm-tree/bloom-filter] Nearly three-quarters of the URLs accessed from a typical web cache are "one-hit-wonders" that are accessed by users only once and never again.
+[src:lsm-tree/bloom-filter] It is clearly wasteful of disk resources to store one-hit-wonders in a web cache, since they will never be accessed again.
+[src:lsm-tree/bloom-filter] To prevent caching one-hit-wonders, a Bloom filter is used to keep track of all URLs that are accessed by users.
+[src:lsm-tree/bloom-filter] A web object is cached only when it has been accessed at least once before, i.e., the object is cached on its second request.
+[src:lsm-tree/bloom-filter] The use of a Bloom filter in this fashion significantly reduces the disk write workload, since most one-hit-wonders are not written to the disk cache.
+[src:lsm-tree/bloom-filter] Further, filtering out the one-hit-wonders also saves cache space on disk, increasing the cache hit rates.
+[src:lsm-tree/bloom-filter] Kiss *et al* described a new construction for the Bloom filter that avoids false positives in addition to the typical non-existence of false negatives.
+[src:lsm-tree/bloom-filter] The construction applies to a finite universe from which set elements are taken.
+[src:lsm-tree/bloom-filter] It relies on existing non-adaptive combinatorial group testing scheme by Eppstein, Goodrich and Hirschberg.
+[src:lsm-tree/bloom-filter] Unlike the typical Bloom filter, elements are hashed to a bit array through deterministic, fast and simple-to-calculate functions.
+[src:lsm-tree/bloom-filter] The maximal set size for which false positives are completely avoided is a function of the universe size and is controlled by the amount of allocated memory.
+[src:lsm-tree/bloom-filter] As the universe is finite and the set of false positives strictly shrinks with each step, this procedure results in a finite *cascade* of Bloom filters that (on this closed, finite domain) will produce only true positives and true negatives.
+[src:lsm-tree/bloom-filter] To check for membership in the filter cascade, the initial filter is queried, and, if the result is positive, the second filter is then consulted, and so on.
+[src:lsm-tree/bloom-filter] This construction is used in CRLite, a proposed certificate revocation status distribution mechanism for the Web PKI, and Certificate Transparency is exploited to close the set of extant certificates.
+[src:lsm-tree/bloom-filter] Counting filters provide a way to implement a *delete* operation on a Bloom filter without recreating the filter afresh.
+[src:lsm-tree/bloom-filter] In a counting filter, the array positions (buckets) are extended from being a single bit to being a multibit counter.
+[src:lsm-tree/bloom-filter] In fact, regular Bloom filters can be considered as counting filters with a bucket size of one bit.
+[src:lsm-tree/bloom-filter] Counting filters were introduced by Fan et al.
+[src:lsm-tree/bloom-filter] The insert operation is extended to *increment* the value of the buckets, and the lookup operation checks that each of the required buckets is non-zero.
+[src:lsm-tree/bloom-filter] The delete operation then consists of decrementing the value of each of the respective buckets.
+[src:lsm-tree/bloom-filter] Arithmetic overflow of the buckets is a problem and the buckets should be sufficiently large to make this case rare.
+[src:lsm-tree/bloom-filter] If it does occur then the increment and decrement operations must leave the bucket set to the maximum possible value in order to retain the properties of a Bloom filter.
+[src:lsm-tree/bloom-filter] The size of counters is usually 3 or 4 bits.
+[src:lsm-tree/bloom-filter] Hence counting Bloom filters use 3 to 4 times more space than static Bloom filters.
+[src:lsm-tree/bloom-filter] In contrast, the data structures of Pagh, Pagh & Rao (2005) and Fan et al.
+[src:lsm-tree/bloom-filter] (2014) also allow deletions but use less space than a static Bloom filter.
+[src:lsm-tree/bloom-filter] Another issue with counting filters is limited scalability.
+[src:lsm-tree/bloom-filter] Because the counting Bloom filter table cannot be expanded, the maximal number of keys to be stored simultaneously in the filter must be known in advance.
+[src:lsm-tree/bloom-filter] Once the designed capacity of the table is exceeded, the false positive rate will grow rapidly as more keys are inserted.
+[src:lsm-tree/bloom-filter] (2006) introduced a data structure based on d-left hashing that is functionally equivalent but uses approximately half as much space as counting Bloom filters.
+[src:lsm-tree/bloom-filter] The scalability issue does not occur in this data structure.
+[src:lsm-tree/bloom-filter] Once the designed capacity is exceeded, the keys could be reinserted in a new hash table of double size.
+[src:lsm-tree/bloom-filter] The space efficient variant by Putze, Sanders & Singler (2007) could also be used to implement counting filters by supporting insertions and deletions.
+[src:lsm-tree/bloom-filter] Rottenstreich, Kanizo & Keslassy (2012) introduced a new general method based on variable increments that significantly improves the false positive probability of counting Bloom filters and their variants, while still supporting deletions.
+[src:lsm-tree/bloom-filter] Unlike counting Bloom filters, at each element insertion, the hashed counters are incremented by a hashed variable increment instead of a unit increment.
+[src:lsm-tree/bloom-filter] To query an element, the exact values of the counters are considered and not just their positiveness.
+[src:lsm-tree/bloom-filter] If a sum represented by a counter value cannot be composed of the corresponding variable increment for the queried element, a negative answer can be returned to the query.
+[src:lsm-tree/bloom-filter] (2019) shows that false positive of Counting Bloom filter decreases from k=1 to a point defined $k_{opt}$ , and increases from $k_{opt}$ to positive infinity, and finds $k_{opt}$ as a function of count threshold.
+[src:lsm-tree/bloom-filter] Bloom filters can be organized in distributed data structures to perform fully decentralized computations of aggregate functions.
+[src:lsm-tree/bloom-filter] Decentralized aggregation makes collective measurements locally available in every node of a distributed network without involving a centralized computational entity for this purpose.
+[src:lsm-tree/bloom-filter] Parallel Bloom filters can be implemented to take advantage of the multiple processing elements (PEs) present in parallel shared-nothing machines.
+[src:lsm-tree/bloom-filter] One of the main obstacles for a parallel Bloom filter is the organization and communication of the unordered data which is, in general, distributed evenly over all PEs at the initiation or at batch insertions.
+[src:lsm-tree/bloom-filter] To order the data two approaches can be used, either resulting in a Bloom filter over all data being stored on each PE, called replicating bloom filter, or the Bloom filter over all data being split into equal parts, each PE storing one part of it.
+[src:lsm-tree/bloom-filter] For both approaches a "Single Shot" Bloom filter is used which only calculates one hash, resulting in one flipped bit per element, to reduce the communication volume.
+[src:lsm-tree/bloom-filter] During the communication of the hashes the PEs search for bits that are set in more than one of the receiving packets, as this would mean that two elements had the same hash and therefore could be duplicates.
+[src:lsm-tree/bloom-filter] If this occurs a message containing the index of the bit, which is also the hash of the element that could be a duplicate, is sent to the PEs which sent a packet with the set bit.
+[src:lsm-tree/bloom-filter] If multiple indices are sent to the same PE by one sender it can be advantageous to encode the indices as well.
+[src:lsm-tree/bloom-filter] All elements that didn't have their hash sent back are now guaranteed to not be a duplicate and won't be evaluated further, for the remaining elements a Repartitioning algorithm can be used.
+[src:lsm-tree/bloom-filter] First all the elements that had their hash value sent back are sent to the PE that their hash is responsible for.
+[src:lsm-tree/bloom-filter] Any element and its duplicate is now guaranteed to be on the same PE.
+[src:lsm-tree/bloom-filter] In the second step each PE uses a sequential algorithm for duplicate detection on the receiving elements, which are only a fraction of the amount of starting elements.
+[src:lsm-tree/bloom-filter] By allowing a false positive rate for the duplicates, the communication volume can be reduced further as the PEs don't have to send elements with duplicated hashes at all and instead any element with a duplicated hash can simply be marked as a duplicate.
+[src:lsm-tree/bloom-filter] As a result, the false positive rate for duplicate detection is the same as the false positive rate of the used bloom filter.
+[src:lsm-tree/bloom-filter] The process of filtering out the most 'unique' elements can also be repeated multiple times by changing the hash function in each filtering step.
+[src:lsm-tree/bloom-filter] While using more than two repetitions can reduce the communication volume further if the number of duplicates in a set is small, the payoff for the additional complications is low.
+[src:lsm-tree/bloom-filter] Bloom filters can be used for approximate data synchronization as in Byers et al.
+[src:lsm-tree/bloom-filter] Counting Bloom filters can be used to approximate the number of differences between two sets and this approach is described in Agarwal & Trachtenberg (2006).
+[src:lsm-tree/bloom-filter] Bloom filters can be adapted to the context of streaming data.
+[src:lsm-tree/bloom-filter] Another solution is the Aging Bloom filter, that consists of two Bloom filter each occupying half the total available memory: when one filter is full, the second filter is erased and newer elements are then added to this newly empty filter.
+[src:lsm-tree/bloom-filter] This result shows that for L big enough and n going to infinity, then the lower bound converges to $FP+FN=1$ , which is the characteristic relation of a random filter.
+[src:lsm-tree/bloom-filter] Hence, after enough insertions, and if the alphabet is too big to be stored in memory (which is assumed in the context of probabilistic filters), it is impossible for a filter to perform better than randomness.
+[src:lsm-tree/bloom-filter] This result can be leveraged by only expecting a filter to operate on a sliding window rather than the whole stream.
+[src:lsm-tree/bloom-filter] In this case, the exponent n in the formula above is replaced by w, which gives a formula that might deviate from 1, if w is not too small.
+[src:lsm-tree/bloom-filter] (2004) designed a generalization of Bloom filters that could associate a value with each element that had been inserted, implementing an associative array.
+[src:lsm-tree/bloom-filter] Like Bloom filters, these structures achieve a small space overhead by accepting a small probability of false positives.
+[src:lsm-tree/bloom-filter] In the case of "Bloomier filters", a *false positive* is defined as returning a result when the key is not in the map.
+[src:lsm-tree/bloom-filter] The map will never return the wrong value for a key that *is* in the map.
+[src:lsm-tree/bloom-filter] Boldi & Vigna (2005) proposed a lattice-based generalization of Bloom filters.
+[src:lsm-tree/bloom-filter] A **compact approximator** associates to each key an element of a lattice (the standard Bloom filters being the case of the Boolean two-element lattice).
+[src:lsm-tree/bloom-filter] Instead of a bit array, they have an array of lattice elements.
+[src:lsm-tree/bloom-filter] When adding a new association between a key and an element of the lattice, they compute the maximum of the current contents of the *k* array locations associated to the key with the lattice element.
+[src:lsm-tree/bloom-filter] When reading the value associated to a key, they compute the minimum of the values found in the *k* locations associated to the key.
+[src:lsm-tree/bloom-filter] The resulting value approximates from above the original value.
+[src:lsm-tree/bloom-filter] This implementation used a separate array for each hash function.
+[src:lsm-tree/bloom-filter] This method allows for parallel hash calculations for both insertions and inquiries.
+[src:lsm-tree/bloom-filter] (2007) proposed a variant of Bloom filters that can adapt dynamically to the number of elements stored, while assuring a minimum false positive probability.
+[src:lsm-tree/bloom-filter] The technique is based on sequences of standard Bloom filters with increasing capacity and tighter false positive probabilities, so as to ensure that a maximum false positive probability can be set beforehand, regardless of the number of elements to be inserted.
+[src:lsm-tree/bloom-filter] Spatial Bloom filters (SBF) were originally proposed by Palmieri, Calderoni & Maio (2014) as a data structure designed to store location information, especially in the context of cryptographic protocols for location privacy.
+[src:lsm-tree/bloom-filter] However, the main characteristic of SBFs is their ability to store **multiple sets** in a single data structure, which makes them suitable for a number of different application scenarios.
+[src:lsm-tree/bloom-filter] Membership of an element to a specific set can be queried, and the false positive probability depends on the set: the first sets to be entered into the filter during construction have higher false positive probabilities than sets entered at the end.
+[src:lsm-tree/bloom-filter] This property allows a prioritization of the sets, where sets containing more "important" elements can be preserved.
+[src:lsm-tree/bloom-filter] A layered Bloom filter consists of multiple Bloom filter layers.
+[src:lsm-tree/bloom-filter] Layered Bloom filters allow keeping track of how many times an item was added to the Bloom filter by checking how many layers contain the item.
+[src:lsm-tree/bloom-filter] With a layered Bloom filter a check operation will normally return the deepest layer number the item was found in.
+[src:lsm-tree/bloom-filter] An attenuated Bloom filter of depth D can be viewed as an array of D normal Bloom filters.
+[src:lsm-tree/bloom-filter] In the context of service discovery in a network, each node stores regular and attenuated Bloom filters locally.
+[src:lsm-tree/bloom-filter] The regular or local Bloom filter indicates which services are offered by the node itself.
+[src:lsm-tree/bloom-filter] The attenuated filter of level i indicates which services can be found on nodes that are i-hops away from the current node.
+[src:lsm-tree/bloom-filter] The i-th value is constructed by taking a union of local Bloom filters for nodes i-hops away from the node.
+[src:lsm-tree/bloom-filter] For example, consider a small network, shown on the graph below.
+[src:lsm-tree/bloom-filter] Say we are searching for a service A whose id hashes to bits 0,1, and 3 (pattern 11010).
+[src:lsm-tree/bloom-filter] First, we check whether service A is offered by n1 by checking its local filter.
+[src:lsm-tree/bloom-filter] Since the patterns don't match, we check the attenuated Bloom filter in order to determine which node should be the next hop.
+[src:lsm-tree/bloom-filter] We see that n2 doesn't offer service A but lies on the path to nodes that do.
+[src:lsm-tree/bloom-filter] Hence, we move to n2 and repeat the same procedure.
+[src:lsm-tree/bloom-filter] We quickly find that n3 offers the service, and hence the destination is located.
+[src:lsm-tree/bloom-filter] By using attenuated Bloom filters consisting of multiple layers, services at more than one hop distance can be discovered while avoiding saturation of the Bloom filter by attenuating (shifting out) bits set by sources further away.
+[src:lsm-tree/bloom-filter] Bloom filters are often used to search large chemical structure databases (see chemical similarity).
+[src:lsm-tree/bloom-filter] In the simplest case, the elements added to the filter (called a *fingerprint* in this field) are just the atomic numbers present in the molecule, or a hash based on the atomic number of each atom and the number and type of its bonds.
+[src:lsm-tree/bloom-filter] More advanced filters also encode atom counts, larger substructure features like carboxyl groups, and graph properties like the number of rings.
+[src:lsm-tree/bloom-filter] In hash-based fingerprints, a hash function based on atom and bond properties is used to turn a subgraph into a PRNG seed, and the first output values used to set bits in the Bloom filter.
+[src:lsm-tree/bloom-filter] Molecular fingerprints started in the late 1940s as way to search for chemical structures searched on punched cards.
+[src:lsm-tree/bloom-filter] However, it wasn't until around 1990 that Daylight Chemical Information Systems, Inc. introduced a hash-based method to generate the bits, rather than use a precomputed table.
+[src:lsm-tree/bloom-filter] Unlike the dictionary approach, the hash method can assign bits for substructures which hadn't previously been seen.
+[src:lsm-tree/bloom-filter] In the early 1990s, the term "fingerprint" was considered different from "structural keys", but the term has since grown to encompass most molecular characteristics which can be used for a similarity comparison, including structural keys, sparse count fingerprints, and 3D fingerprints.
+[src:lsm-tree/bloom-filter] Unlike Bloom filters, the Daylight hash method allows the number of bits assigned per feature to be a function of the feature size, but most implementations of Daylight-like fingerprints use a fixed number of bits per feature, which makes them a Bloom filter.
+[src:lsm-tree/bloom-filter] The original Daylight fingerprints could be used for both similarity and screening purposes.
+[src:lsm-tree/bloom-filter] Many other fingerprint types, like the popular ECFP2, can be used for similarity but not for screening because they include local environmental characteristics that introduce false negatives when used as a screen.
+[src:lsm-tree/bloom-filter] Even if these are constructed with the same mechanism, these are not Bloom filters because they cannot be used to filter.
+[src:lsm-tree/copy-on-write] Copy-on-write finds its main use in operating systems, sharing the physical memory of computers running multiple processes, in the implementation of the fork() system call.
+[src:lsm-tree/copy-on-write] Typically, the new process does not modify any memory and immediately executes a new process, replacing the address space entirely.
+[src:lsm-tree/copy-on-write] It would waste processor time and memory to copy all of the old process's memory during the fork only to immediately discard the copy.
+[src:lsm-tree/copy-on-write] Copy-on-write can be implemented efficiently using the page table by marking certain pages of memory as read-only and keeping a count of the number of references to the page.
+[src:lsm-tree/copy-on-write] When data is written to these pages, the operating-system kernel intercepts the write attempt and allocates a new physical page, initialized with the copy-on-write data, although the allocation can be skipped if there is only one reference.
+[src:lsm-tree/copy-on-write] The kernel then updates the page table with the new (writable) page, decrements the number of references, and performs the write.
+[src:lsm-tree/copy-on-write] The new allocation ensures that a change in the memory of one process is not visible in another's.
+[src:lsm-tree/copy-on-write] The copy-on-write technique can be extended to support efficient memory allocation by keeping one page of physical memory filled with zeros.
+[src:lsm-tree/copy-on-write] When the memory is allocated, all the pages returned refer to the page of zeros and are all marked copy-on-write.
+[src:lsm-tree/copy-on-write] This way, physical memory is not allocated for the process until data is written, allowing processes to reserve more virtual memory than physical memory and use memory sparsely, at the risk of running out of virtual address space.
+[src:lsm-tree/copy-on-write] The combined algorithm is similar to demand paging.
+[src:lsm-tree/copy-on-write] Copy-on-write pages are also used in the Linux kernel's same-page merging feature.
+[src:lsm-tree/copy-on-write] COW is also used in library, application, and system code.
+[src:lsm-tree/copy-on-write] In the PHP programming language, all types except references are implemented as copy-on-write.
+[src:lsm-tree/copy-on-write] For example, strings and arrays are passed by reference, but when modified, they are duplicated if they have non-zero reference counts.
+[src:lsm-tree/copy-on-write] This allows them to act as value types without the performance problems of copying on assignment or making them immutable.
+[src:lsm-tree/copy-on-write] In the Qt framework, many types are copy-on-write ("implicitly shared" in Qt's terms).
+[src:lsm-tree/copy-on-write] Qt uses atomic compare-and-swap operations to increment or decrement the internal reference counter.
+[src:lsm-tree/copy-on-write] Since the copies are cheap, Qt types can often be safely used by multiple threads without the need of locking mechanisms such as mutexes.
+[src:lsm-tree/copy-on-write] The benefits of COW are thus valid in both single- and multithreaded systems.
+[src:lsm-tree/copy-on-write] In Docker, a set of software for implementing operating-system level virtualization, docker images are built in a layered format, with lower layers being read-only and the upper layer available for editing.
+[src:lsm-tree/copy-on-write] Creating a new image which shares the same base layers as another image does not copy the layers, but instead follows COW principles and allows the two images to share layers until one is edited.
+[src:lsm-tree/copy-on-write] COW is used as the underlying mechanism in file systems like ZFS, Btrfs, ReFS, and Bcachefs, as well as in logical volume management and database servers such as Microsoft SQL Server.
+[src:lsm-tree/copy-on-write] In traditional file systems, modifying a file overwrites the original data blocks in place.
+[src:lsm-tree/copy-on-write] In a copy-on-write (COW) file system, the original blocks remain unchanged.
+[src:lsm-tree/copy-on-write] When part of a file is modified, only the affected blocks are written to new locations, and metadata is updated to point to them, preserving the original version until it’s no longer needed.
+[src:lsm-tree/copy-on-write] This approach enables features like snapshots, which capture the state of a file at a specific time without consuming much additional space.
+[src:lsm-tree/copy-on-write] Snapshots typically store only the modified data and are kept close to the original.
+[src:lsm-tree/copy-on-write] However, they are considered a weak form of incremental backup and cannot replace a full backup.
+[src:lsm-tree/copy-on-write] In order to create and start new containers quickly, container engines doing OS-level virtualization often perform copy-on-write in storage, either block-level copy-on-write (as described above) or file-level copy-on-write.
+[src:lsm-tree/copy-on-write] Some but not all filesystems support file-level copy-on-write as part of union mounting, including OverlayFS, aufs, GlusterFS, and UnionFS.
+[src:lsm-tree/log-structured-merge-tree] In computer science, the **log-structured merge-tree** (also known as **LSM tree**, or **LSMT**) is a data structure with performance characteristics that make it attractive for providing indexed access to files with high insert volume, such as transactional log data.
+[src:lsm-tree/log-structured-merge-tree] LSM trees, like other search trees, maintain key-value pairs.
+[src:lsm-tree/log-structured-merge-tree] LSM trees maintain data in two or more separate structures, each of which is optimized for its respective underlying storage medium; data is synchronized between the two structures efficiently, in batches.
+[src:lsm-tree/log-structured-merge-tree] One simple version of the LSM tree is a two-level LSM tree.
+[src:lsm-tree/log-structured-merge-tree] As described by Patrick O'Neil, a two-level LSM tree comprises two tree-like structures, called C0 and C1.
+[src:lsm-tree/log-structured-merge-tree] C0 is smaller and entirely resident in memory, whereas C1 is resident on disk.
+[src:lsm-tree/log-structured-merge-tree] New records are inserted into the memory-resident C0 component.
+[src:lsm-tree/log-structured-merge-tree] If the insertion causes the C0 component to exceed a certain size threshold, a contiguous segment of entries is removed from C0 and merged into C1 on disk.
+[src:lsm-tree/log-structured-merge-tree] The performance characteristics of LSM trees stem from the fact that each component is tuned to the characteristics of its underlying storage medium, and that data is efficiently migrated across media in rolling batches, using an algorithm reminiscent of merge sort.
+[src:lsm-tree/log-structured-merge-tree] Such tuning involves writing data in a sequential manner as opposed to as a series of separate random access requests.
+[src:lsm-tree/log-structured-merge-tree] This optimization reduces total seek time in hard-disk drives (HDDs) and latency in solid-state drives (SSDs).
+[src:lsm-tree/log-structured-merge-tree] Most LSM trees used in practice employ multiple levels.
+[src:lsm-tree/log-structured-merge-tree] Level 0 is kept in main memory, and might be represented using a tree.
+[src:lsm-tree/log-structured-merge-tree] The on-disk data is organized into sorted *runs* of data.
+[src:lsm-tree/log-structured-merge-tree] Each run contains data sorted by the index key.
+[src:lsm-tree/log-structured-merge-tree] A run can be represented on disk as a single file, or alternatively as a collection of files with non-overlapping key ranges.
+[src:lsm-tree/log-structured-merge-tree] To perform a query on a particular key to get its associated value, one must search in the Level 0 tree and also each run.
+[src:lsm-tree/log-structured-merge-tree] The Stepped-Merge version of the LSM tree is a variant of the LSM tree that supports multiple levels with multiple tree structures at each level.
+[src:lsm-tree/log-structured-merge-tree] A particular key may appear in several runs, and what that means for a query depends on the application.
+[src:lsm-tree/log-structured-merge-tree] Some applications simply want the newest key-value pair with a given key.
+[src:lsm-tree/log-structured-merge-tree] Some applications must combine the values in some way to get the proper aggregate value to return.
+[src:lsm-tree/log-structured-merge-tree] For example, in Apache Cassandra, each value represents a row in a database, and different versions of the row may have different sets of columns.
+[src:lsm-tree/log-structured-merge-tree] In order to keep down the cost of queries, the system must avoid a situation where there are too many runs.
+[src:lsm-tree/log-structured-merge-tree] Extensions to the 'leveled' method to incorporate B+ tree structures have been suggested, for example bLSM and Diff-Index.
+[src:lsm-tree/log-structured-merge-tree] LSM-tree was originally designed for write-intensive workloads.
+[src:lsm-tree/log-structured-merge-tree] As increasingly more read and write workloads co-exist under an LSM-tree storage structure, read data accesses can experience high latency and low throughput due to frequent invalidations of cached data in buffer caches by LSM-tree compaction operations.
+[src:lsm-tree/log-structured-merge-tree] To re-enable effective buffer caching for fast data accesses, a Log-Structured buffered-Merged tree (LSbM-tree) is proposed and implemented.
+[src:lsm-tree/log-structured-merge-tree] In LSM-trees, write operations are designed to optimize performance by reducing random I/O and leveraging sequential disk writes.
+[src:lsm-tree/log-structured-merge-tree] When a write operation is initiated, the data is first buffered in an in-memory component, often implemented using a sorted data structure such as a Skip list or B+ tree.
+[src:lsm-tree/log-structured-merge-tree] Once the in-memory buffer becomes full, it is flushed to the disk as an immutable sorted component at the first level (C1).
+[src:lsm-tree/log-structured-merge-tree] This flush is performed sequentially, ensuring high I/O efficiency by avoiding the costly random writes typical of traditional indexing methods.
+[src:lsm-tree/log-structured-merge-tree] To maintain durability, the system may use a write-ahead log (WAL) that records all incoming writes before they are added to the memory buffer.
+[src:lsm-tree/log-structured-merge-tree] This ensures that no data is lost in the event of a crash during a write.
+[src:lsm-tree/log-structured-merge-tree] As data accumulates across levels on the disk, LSM trees employ a merge process similar to merge sort to consolidate entries and maintain a consistent sorted order across levels.
+[src:lsm-tree/log-structured-merge-tree] This process also handles updates and deletes, removing redundant or obsolete entries.
+[src:lsm-tree/log-structured-merge-tree] Updates are treated as new writes, while deletes are marked with a tombstone entry, which is a placeholder indicating that the key has been deleted.
+[src:lsm-tree/log-structured-merge-tree] These tombstones are later removed during the merging process.
+[src:lsm-tree/log-structured-merge-tree] Two common merging policies govern how data flows through the levels: levelling and tiering.
+[src:lsm-tree/log-structured-merge-tree] In levelling, only one component exists per level, and merging happens more frequently, reducing the total number of components but increasing write amplification.
+[src:lsm-tree/log-structured-merge-tree] In tiering, multiple components can coexist within a level, and merging occurs less frequently, reducing write amplification but increasing read costs because more components need to be searched.
+[src:lsm-tree/log-structured-merge-tree] This design leads to amortized write costs of $O\left({T\cdot L \over B}\right)$ for leveling merge policies, where T is the size ratio between levels, L is the number of levels, and B is the number of entries per page.
+[src:lsm-tree/log-structured-merge-tree] A point lookup operation retrieves the value associated with a specific key.
+[src:lsm-tree/log-structured-merge-tree] In LSM trees, because of the multi-level structure and the immutability of disk components, point lookups involve checking several levels to ensure the most up-to-date value for the key is returned.
+[src:lsm-tree/log-structured-merge-tree] The process begins with a search in the in-memory component (C0), which holds the latest data.
+[src:lsm-tree/log-structured-merge-tree] Since this component is organized as a sorted structure, the search is efficient.
+[src:lsm-tree/log-structured-merge-tree] If the key is found here, its value is returned right away.
+[src:lsm-tree/log-structured-merge-tree] If the key isn't found in memory, the search moves to the disk components, starting with the first level (C1) and continuing through deeper levels (C2, C3, etc.).
+[src:lsm-tree/log-structured-merge-tree] Each disk level is also sorted, allowing for efficient searches using methods like binary search or tree search.
+[src:lsm-tree/log-structured-merge-tree] Newer levels are checked first because they contain the most recent updates and deletions for the key.
+[src:lsm-tree/log-structured-merge-tree] To make the search faster, LSM trees often use a bloom filter for each on-disk component.
+[src:lsm-tree/log-structured-merge-tree] These filters are probabilistic structures that help quickly determine whether a key is definitely absent from a component.
+[src:lsm-tree/log-structured-merge-tree] Before accessing any disk component, the system checks the Bloom filter.
+[src:lsm-tree/log-structured-merge-tree] If the filter indicates the key is not present, the component is skipped, saving time.
+[src:lsm-tree/log-structured-merge-tree] If the filter suggests the key might be there, the system proceeds to search for the component.
+[src:lsm-tree/log-structured-merge-tree] The lookup operation stops as soon as the key is found, ensuring the most recent version is returned.
+[src:lsm-tree/log-structured-merge-tree] If the search reaches the final level without finding the key, the system concludes that the key doesn't exist.
+[src:lsm-tree/log-structured-merge-tree] Point lookup complexity is $O(L)$ without Bloom filters, as each level must be searched.
+[src:lsm-tree/log-structured-merge-tree] With Bloom filters, the cost for zero-result lookups is significantly reduced to $O\left(L\cdot e^{-{\frac {M}{N}}}\right)$ , where M is the total Bloom filter size and N is the number of keys.
+[src:lsm-tree/log-structured-merge-tree] For existing key lookups, the cost is $O(1)$ due to the presence of Bloom filters.
+[src:lsm-tree/log-structured-merge-tree] A range query retrieves all key-value pairs within a specified range.
+[src:lsm-tree/log-structured-merge-tree] The operation involves scanning multiple components across the LSM tree's hierarchical structure and consolidating entries to ensure accurate and complete results.
+[src:lsm-tree/log-structured-merge-tree] A range query begins by searching the in-memory component (C0).
+[src:lsm-tree/log-structured-merge-tree] Since this component is typically a sorted data structure, range queries can be done efficiently.
+[src:lsm-tree/log-structured-merge-tree] Once the in-memory component is finished, the query proceeds to the disk components, starting from the first level (C1) and continuing to deeper levels.
+[src:lsm-tree/log-structured-merge-tree] Each disk component is also stored as a sorted structure allowing efficient range scans within individual components.
+[src:lsm-tree/log-structured-merge-tree] To perform the range query, the system locates the starting point in each relevant component and scans sequentially until the end of the range is reached.
+[src:lsm-tree/log-structured-merge-tree] The results from each component are then merged into a priority queue to reconcile duplicates, updates, and deletes, ensuring the final result only includes the latest version of each key.
+[src:lsm-tree/log-structured-merge-tree] For efficiency, LSM trees often divide disk components into smaller, disjoint key ranges.
+[src:lsm-tree/log-structured-merge-tree] In this way, when processing a range query, the system can search only the partitions that have overlap ranges to reduce the number of components accessed.
+[src:lsm-tree/log-structured-merge-tree] Similar to point lookup, Bloom filters are sometimes used to quickly decide whether a disk component contains any keys within the queried range, allowing the system to skip components that are guaranteed to be irrelevant.
+[src:lsm-tree/log-structured-merge-tree] The performance of a range query in LSM-trees depends on the query's selectivity.
+[src:lsm-tree/log-structured-merge-tree] For short-range queries, which access fewer keys than twice the number of levels, the query must examine components across all levels, leading to a cost proportional to the number of levels.
+[src:lsm-tree/log-structured-merge-tree] For long-range queries, which access many keys, the price is dominated by scanning the largest level, as it contains most of the data.
+[src:lsm-tree/log-structured-merge-tree] For this reason, the runtime for short-range queries is $O(L)$ and $O\left({\frac {s}{B}}\right)$ for long-range queries, where s is the number of keys in the range.
+[src:lsm-tree/storage-engine] A **database engine** (or **storage engine**) is the underlying software component that a database management system (DBMS) uses to create, read, update and delete (CRUD) data from a database.
+[src:lsm-tree/storage-engine] Most database management systems include their own application programming interface (API) that allows the user to interact with their underlying engine without going through the user interface of the DBMS.
+[src:lsm-tree/storage-engine] The term "database engine" is frequently used interchangeably with "database server" or "database management system".
+[src:lsm-tree/storage-engine] A "database instance" refers to the processes and memory structures of the running database engine.
+[src:lsm-tree/storage-engine] Many of the modern DBMS support multiple storage engines within the same database.
+[src:lsm-tree/storage-engine] For example, MySQL supports InnoDB as well as MyISAM.
+[src:lsm-tree/storage-engine] Information in a database is stored in the form of bits, laid out into data structures on storage hardware.
+[src:lsm-tree/storage-engine] These data structures are designed for efficient reads and writes to and from the storage hardware.
+[src:lsm-tree/storage-engine] Typically the storage hardware itself is designed to meet the requirements of various systems, including databases, that extensively utilize storage.
+[src:lsm-tree/storage-engine] An operating DBMS always utilizes several storage types simultaneously.
+[src:lsm-tree/storage-engine] These different storage types, such as flash memory and external disk storage, each require different data layout methods.
+[src:lsm-tree/storage-engine] In principle, database storage can be viewed as a linear address space where every bit of data has a unique address.
+[src:lsm-tree/storage-engine] In practice, only a very small percentage of addresses are kept as initial reference points, which also require storage.
+[src:lsm-tree/storage-engine] Most data is accessed instead by indirection using displacement calculations (distance in bits from the reference points) and data structures which define access paths (using pointers) to all needed data in an effective manner, optimized for the needed data access operations.
+[src:lsm-tree/storage-engine] A database, while in operation, resides simultaneously in several types of storage, forming a storage hierarchy.
+[src:lsm-tree/storage-engine] Inside of a contemporary computer hosting a DBMS, most of the "database" part resides, partially replicated, in volatile storage.
+[src:lsm-tree/storage-engine] Data that are actively being processed and manipulated reside inside the processor, possibly in processor's caches.
+[src:lsm-tree/storage-engine] These data are read from and written to memory, typically through a computer bus, which is usually a volatile storage component.
+[src:lsm-tree/storage-engine] Computer memory communicates data to and from external storage, typically through standard storage interfaces or networks (e.g., fibre channel, iSCSI).
+[src:lsm-tree/storage-engine] A storage array, a common external storage unit, typically has storage hierarchy of its own.
+[src:lsm-tree/storage-engine] A fast cache, typically consisting of volatile and fast DRAM, is connected (via standard interfaces) to drives.
+[src:lsm-tree/storage-engine] These drives may have different speeds, like flash drives and non-volatile magnetic disk drives.
+[src:lsm-tree/storage-engine] Speed and price are generally correlated.
+[src:lsm-tree/storage-engine] The drives may be connected to magnetic tapes, on which the least active parts of a large database may reside.
+[src:lsm-tree/storage-engine] This may also be where backups are located.
+[src:lsm-tree/storage-engine] A data structure is an abstract construct that embeds data in a well defined manner.
+[src:lsm-tree/storage-engine] An efficient data structure allows manipulation of the data in efficient ways.
+[src:lsm-tree/storage-engine] The data manipulation may include data insertion, deletion, updating and retrieval in various modes.
+[src:lsm-tree/storage-engine] A certain data structure type may be very effective in certain operations, and very ineffective in others.
+[src:lsm-tree/storage-engine] A data structure type is selected upon DBMS development to best meet the operations needed for the types of data it contains.
+[src:lsm-tree/storage-engine] Type of data structure selected for a certain task typically also takes into consideration the type of storage it resides in (e.g., speed of access, minimal size of storage chunk accessed, etc.).
+[src:lsm-tree/storage-engine] In some DBMSs database administrators have the flexibility to select among options of data structures to contain user data for performance reasons.
+[src:lsm-tree/storage-engine] Sometimes the data structures have selectable parameters to tune the database performance.
+[src:lsm-tree/storage-engine] Databases may store data in many data structure types.
+[src:lsm-tree/storage-engine] In contrast to conventional row-orientation, relational databases can also be column-oriented or correlational in the way they store data in any particular structure.
+[src:lsm-tree/storage-engine] In general, substantial performance improvement is gained if different types of database objects that are usually utilized together are laid in storage in proximity, being "clustered".
+[src:lsm-tree/storage-engine] This usually allows to retrieve needed related objects from storage in minimum number of input operations (each sometimes substantially time-consuming).
+[src:lsm-tree/storage-engine] Even for in-memory databases clustering provides performance advantage due to common utilization of large caches for input-output operations in memory, with similar resulting behavior.
+[src:lsm-tree/storage-engine] For example, it may be beneficial to cluster a record of an "item" in stock with all its respective "order" records.
+[src:lsm-tree/storage-engine] The decision of whether to cluster certain objects or not depends on the objects' utilization statistics, object sizes, caches sizes, storage types, etc.
+[src:lsm-tree/storage-engine] Indexing is a technique some storage engines use for improving database performance.
+[src:lsm-tree/storage-engine] The many types of indexes share the common property that they reduce the need to examine every entry when running a query.
+[src:lsm-tree/storage-engine] In large databases, this can reduce query time/cost by orders of magnitude.
+[src:lsm-tree/storage-engine] The simplest form of index is a sorted list of values that can be searched using a binary search with an adjacent reference to the location of the entry, analogous to the index in the back of a book.
+[src:lsm-tree/storage-engine] The same data can have multiple indexes (an employee database could be indexed by last name and hire date).
+[src:lsm-tree/storage-engine] Indexes affect performance, but not results.
+[src:lsm-tree/storage-engine] Database designers can add or remove indexes without changing application logic, reducing maintenance costs as the database grows and database usage evolves.
+[src:lsm-tree/storage-engine] Indexes can speed up data access, but they consume space in the database, and must be updated each time the data is altered.
+[src:lsm-tree/storage-engine] Indexes therefore can speed data access but slow data maintenance.
+[src:lsm-tree/storage-engine] These two properties determine whether a given index is worth the cost.
+[src:lsm-tree/write-ahead-logging] In computer science, **write-ahead logging** (**WAL**) is a family of techniques for providing atomicity and durability (two of the ACID properties) in database systems.
+[src:lsm-tree/write-ahead-logging] A write ahead log is an append-only auxiliary disk-resident structure used for crash and transaction recovery.
+[src:lsm-tree/write-ahead-logging] The changes are first recorded in the log, which must be written to stable storage, before the changes are written to the database.
+[src:lsm-tree/write-ahead-logging] In a system using WAL, all modifications are written to a log before they are applied.
+[src:lsm-tree/write-ahead-logging] Usually both redo and undo information is stored in the log.
+[src:lsm-tree/write-ahead-logging] The purpose of this can be illustrated by an example.
+[src:lsm-tree/write-ahead-logging] Imagine a program that is in the middle of performing some operation when the machine it is running on loses power.
+[src:lsm-tree/write-ahead-logging] Upon restart, that program might need to know whether the operation it was performing succeeded, succeeded partially, or failed.
+[src:lsm-tree/write-ahead-logging] If a write-ahead log is used, the program can check this log and compare what it was supposed to be doing when it unexpectedly lost power to what was actually done.
+[src:lsm-tree/write-ahead-logging] On the basis of this comparison, the program could decide to undo what it had started, complete what it had started, or keep things as they are.
+[src:lsm-tree/write-ahead-logging] After a certain number of operations, the program should perform a checkpoint, writing all the changes specified in the WAL to the database and clearing the log.
+[src:lsm-tree/write-ahead-logging] WAL allows updates of a database to be done in-place.
+[src:lsm-tree/write-ahead-logging] Another way to implement atomic updates is with shadow paging, which is not in-place.
+[src:lsm-tree/write-ahead-logging] The main advantage of doing updates in-place is that it reduces the need to modify indexes and block lists.
+[src:lsm-tree/write-ahead-logging] Modern file systems typically use a variant of WAL for at least file system metadata; this is called journaling.

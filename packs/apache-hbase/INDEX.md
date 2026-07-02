@@ -1,0 +1,52 @@
+# apache-hbase — nl-rag pack
+
+Pre-normalized AI markdown. tags: apache hbase, bigtable clone, wide-column store, apache hadoop. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [Apache Hadoop](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/apache-hadoop.md) — upstream: https://en.wikipedia.org/wiki/Apache_Hadoop
+- [Apache HBase](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/apache-hbase.md) — upstream: https://en.wikipedia.org/wiki/Apache_HBase
+- [Bigtable](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/bigtable.md) — upstream: https://en.wikipedia.org/wiki/Bigtable
+- [Apache HBase® Reference Guide (part 1/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p01.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 2/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p02.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 3/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p03.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 4/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p04.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 5/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p05.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 6/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p06.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 7/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p07.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 8/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p08.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 9/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p09.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 10/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p10.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 11/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p11.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 12/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p12.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 13/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p13.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 14/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p14.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 15/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p15.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 16/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p16.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 17/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p17.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 18/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p18.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 19/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p19.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 20/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p20.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 21/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p21.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 22/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p22.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 23/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p23.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 24/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p24.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 25/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p25.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 26/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p26.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 27/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p27.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 28/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p28.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 29/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p29.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 30/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p30.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 31/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p31.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 32/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p32.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 33/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p33.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 34/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p34.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 35/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p35.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 36/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p36.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 37/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p37.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 38/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p38.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 39/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p39.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 40/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p40.md) — upstream: https://hbase.apache.org/book.html
+- [Apache HBase® Reference Guide (part 41/41)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/book-p41.md) — upstream: https://hbase.apache.org/book.html
+- [Google File System](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/google-file-system.md) — upstream: https://en.wikipedia.org/wiki/Google_File_System
+- [Wide-column store](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/wide-column-store.md) — upstream: https://en.wikipedia.org/wiki/Wide-column_store
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/apache-hbase/pack.facts) — distilled one-line facts (neuron CLI import)

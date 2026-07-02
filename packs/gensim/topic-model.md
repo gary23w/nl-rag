@@ -1,0 +1,52 @@
+---
+title: "Topic model"
+source: https://en.wikipedia.org/wiki/Topic_model
+domain: gensim
+license: CC-BY-SA-4.0
+tags: gensim library, topic modeling, word embeddings, latent semantic analysis, document similarity
+fetched: 2026-07-02
+---
+
+# Topic model
+
+In natural language processing, a **topic model** is a type of probabilistic, neural, or algebraic model for discovering the abstract topics that occur in a collection of documents. Topic modeling is a frequently used text mining tool for discovering hidden semantic features and structures in a text. The topics produced by topic models are generated through a variety of mathematical frameworks, including probabilistic generative models, matrix factorization methods based on word co-occurrence, and clustering algorithms applied to semantic embeddings.
+
+Topic models are commonly used to organize and discover latent features in large collections of unstructured text and other forms of big data. Beyond text mining, topic models have also been used to uncover latent structures in fields such as genetic information, bioinformatics, computer vision, and social networks.
+
+## History
+
+An early topic model was described by Papadimitriou, Raghavan, Tamaki and Vempala in 1998. Another one, called probabilistic latent semantic analysis (PLSA), was created by Thomas Hofmann in 1999. Latent Dirichlet allocation (LDA), perhaps the most common topic model currently in use, is a generalization of PLSA. Developed by David Blei, Andrew Ng, and Michael I. Jordan in 2002, LDA introduces sparse Dirichlet prior distributions over document-topic and topic-word distributions, encoding the intuition that documents cover a small number of topics and that topics often use a small number of words. Other topic models are generally extensions on LDA, such as Pachinko allocation, which improves on LDA by modeling correlations between topics in addition to the word correlations which constitute topics. Hierarchical latent tree analysis (HLTA) is an alternative to LDA, which models word co-occurrence using a tree of latent variables and the states of the latent variables, which correspond to soft clusters of documents, are interpreted as topics.
+
+## Topic models for context information
+
+Approaches for temporal information include Block and Newman's determination of the temporal dynamics of topics in the *Pennsylvania Gazette* during 1728–1800. Griffiths & Steyvers used topic modeling on abstracts from the journal *PNAS* to identify topics that rose or fell in popularity from 1991 to 2001 whereas Lamba & Madhusushan used topic modeling on full-text research articles retrieved from DJLIT journal from 1981 to 2018. In the field of library and information science, Lamba & Madhusudhan applied topic modeling on different Indian resources like journal articles and electronic theses and resources (ETDs). Nelson has been analyzing change in topics over time in the *Richmond Times-Dispatch* to understand social and political changes and continuities in Richmond during the American Civil War. Yang, Torget and Mihalcea applied topic modeling methods to newspapers from 1829 to 2008. Mimno used topic modelling with 24 journals on classical philology and archaeology spanning 150 years to look at how topics in the journals change over time and how the journals become more different or similar over time.
+
+Yin et al. introduced a topic model for geographically distributed documents, where document positions are explained by latent regions which are detected during inference.
+
+Chang and Blei included network information between linked documents in the relational topic model, to model the links between websites.
+
+The author-topic model by Rosen-Zvi et al. models the topics associated with authors of documents to improve the topic detection for documents with authorship information.
+
+HLTA was applied to a collection of recent research papers published at major AI and Machine Learning venues. The resulting model is called The AI Tree. The resulting topics are used to index the papers at aipano.cse.ust.hk to help researchers track research trends and identify papers to read, and help conference organizers and journal editors identify reviewers for submissions.
+
+To improve the qualitative aspects and coherency of generated topics, some researchers have explored the efficacy of "coherence scores", or otherwise how computer-extracted clusters (i.e. topics) align with a human benchmark. Coherence scores are metrics for optimising the number of topics to extract from a document corpus.
+
+## Methods
+
+In practice, researchers attempt to fit appropriate model parameters to the data corpus using one of several heuristics for maximum likelihood fit. A survey by D. Blei describes this suite of algorithms. Several groups of researchers starting with Papadimitriou et al. have attempted to design algorithms with provable guarantees. Assuming that the data were actually generated by the model in question, they try to design algorithms that probably find the model that was used to create the data. Techniques used here include singular value decomposition (SVD) and the method of moments. In 2012 an algorithm based upon non-negative matrix factorization (NMF) was introduced that also generalizes to topic models with correlations among topics.
+
+Since 2017, neural networks has been leveraged in topic modeling in order to improve the speed of inference, and leading to further advancements like vONTSS, which allows humans to incorporate domain knowledge via weakly supervised learning.
+
+In 2018, a new approach to topic models was proposed based on the stochastic block model.
+
+Topic modeling has leveraged LLMs through contextual embedding and fine tuning.
+
+## Applications of topic models
+
+### Quantitative biomedicine
+
+Topic models are also used in other contexts. For example, uses of topic models in biology and bioinformatics research have emerged. Recently, topic models have been used to extract information from a dataset of genomic samples of cancers. In this case, topics are biological latent variables to be inferred.
+
+### Music and creativity
+
+Topic models can be used for analysis of music. For instance, topic models were used to quantify how musical styles change in time, and identify the influence of specific artists on later music creation.

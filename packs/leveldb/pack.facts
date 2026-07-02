@@ -1,0 +1,373 @@
+# nl-rag distilled facts — domain: leveldb
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:leveldb/doc-index-md] The leveldb library provides a persistent key value store.
+[src:leveldb/doc-index-md] Keys and values are arbitrary byte arrays.
+[src:leveldb/doc-index-md] The keys are ordered within the key value store according to a user-specified comparator function.
+[src:leveldb/doc-index-md] A leveldb database has a name which corresponds to a file system directory.
+[src:leveldb/doc-index-md] All of the contents of database are stored in this directory.
+[src:leveldb/doc-index-md] You may have noticed the `leveldb::Status` type above.
+[src:leveldb/doc-index-md] Values of this type are returned by most functions in leveldb that may encounter an error.
+[src:leveldb/doc-index-md] When you are done with a database, just delete the database object.
+[src:leveldb/doc-index-md] The database provides Put, Delete, and Get methods to modify/query the database.
+[src:leveldb/doc-index-md] For example, the following code moves the value stored under key1 to key2.
+[src:leveldb/doc-index-md] Note that if the process dies after the Put of key2 but before the delete of key1, the same value may be left stored under multiple keys.
+[src:leveldb/doc-index-md] The `WriteBatch` holds a sequence of edits to be made to the database, and these edits within the batch are applied in order.
+[src:leveldb/doc-index-md] Note that we called Delete before Put so that if key1 is identical to key2, we do not end up erroneously dropping the value entirely.
+[src:leveldb/doc-index-md] Apart from its atomicity benefits, `WriteBatch` may also be used to speed up bulk updates by placing lots of individual mutations into the same batch.
+[src:leveldb/doc-index-md] By default, each write to leveldb is asynchronous: it returns after pushing the write from the process into the operating system.
+[src:leveldb/doc-index-md] The transfer from operating system memory to the underlying persistent storage happens asynchronously.
+[src:leveldb/doc-index-md] The sync flag can be turned on for a particular write to make the write operation not return until the data being written has been pushed all the way to persistent storage.
+[src:leveldb/doc-index-md] Asynchronous writes are often more than a thousand times as fast as synchronous writes.
+[src:leveldb/doc-index-md] The downside of asynchronous writes is that a crash of the machine may cause the last few updates to be lost.
+[src:leveldb/doc-index-md] Note that a crash of just the writing process (i.e., not a reboot) will not cause any loss since even when sync is false, an update is pushed from the process memory into the operating system before it is considered done.
+[src:leveldb/doc-index-md] Asynchronous writes can often be used safely.
+[src:leveldb/doc-index-md] For example, when loading a large amount of data into the database you can handle lost updates by restarting the bulk load after a crash.
+[src:leveldb/doc-index-md] A hybrid scheme is also possible where every Nth write is synchronous, and in the event of a crash, the bulk load is restarted just after the last synchronous write finished by the previous run.
+[src:leveldb/doc-index-md] `WriteBatch` provides an alternative to asynchronous writes.
+[src:leveldb/doc-index-md] Multiple updates may be placed in the same WriteBatch and applied together using a synchronous write (i.e., `write_options.sync` is set to true).
+[src:leveldb/doc-index-md] The extra cost of the synchronous write will be amortized across all of the writes in the batch.
+[src:leveldb/doc-index-md] A database may only be opened by one process at a time.
+[src:leveldb/doc-index-md] The leveldb implementation acquires a lock from the operating system to prevent misuse.
+[src:leveldb/doc-index-md] Within a single process, the same `leveldb::DB` object may be safely shared by multiple concurrent threads.
+[src:leveldb/doc-index-md] I.e., different threads may write into or fetch iterators or call Get on the same database without any external synchronization (the leveldb implementation will automatically do the required synchronization).
+[src:leveldb/doc-index-md] However other objects (like Iterator and `WriteBatch`) may require external synchronization.
+[src:leveldb/doc-index-md] If two threads share such an object, they must protect access to it using their own locking protocol.
+[src:leveldb/doc-index-md] More details are available in the public header files.
+[src:leveldb/doc-index-md] The following example demonstrates how to print all key,value pairs in a database.
+[src:leveldb/doc-index-md] You can also process entries in reverse order.
+[src:leveldb/doc-index-md] Snapshots provide consistent read-only views over the entire state of the key-value store.
+[src:leveldb/doc-index-md] `ReadOptions::snapshot` may be non-NULL to indicate that a read should operate on a particular version of the DB state.
+[src:leveldb/doc-index-md] If `ReadOptions::snapshot` is NULL, the read will operate on an implicit snapshot of the current state.
+[src:leveldb/doc-index-md] Note that when a snapshot is no longer needed, it should be released using the `DB::ReleaseSnapshot` interface.
+[src:leveldb/doc-index-md] This allows the implementation to get rid of state that was being maintained just to support reading as of that snapshot.
+[src:leveldb/doc-index-md] The return value of the `it->key()` and `it->value()` calls above are instances of the `leveldb::Slice` type.
+[src:leveldb/doc-index-md] Slice is a simple structure that contains a length and a pointer to an external byte array.
+[src:leveldb/doc-index-md] Returning a Slice is a cheaper alternative to returning a `std::string` since we do not need to copy potentially large keys and values.
+[src:leveldb/doc-index-md] In addition, leveldb methods do not return null-terminated C-style strings since leveldb keys and values are allowed to contain `'\0'` bytes.
+[src:leveldb/doc-index-md] Be careful when using Slices since it is up to the caller to ensure that the external byte array into which the Slice points remains live while the Slice is in use.
+[src:leveldb/doc-index-md] When the if statement goes out of scope, str will be destroyed and the backing storage for slice will disappear.
+[src:leveldb/doc-index-md] The preceding examples used the default ordering function for key, which orders bytes lexicographically.
+[src:leveldb/doc-index-md] You can however supply a custom comparator when opening a database.
+[src:leveldb/doc-index-md] For example, suppose each database key consists of two numbers and we should sort by the first number, breaking ties by the second number.
+[src:leveldb/doc-index-md] The result of the comparator's Name method is attached to the database when it is created, and is checked on every subsequent database open.
+[src:leveldb/doc-index-md] If the name changes, the `leveldb::DB::Open` call will fail.
+[src:leveldb/doc-index-md] Therefore, change the name if and only if the new key format and comparison function are incompatible with existing databases, and it is ok to discard the contents of all existing databases.
+[src:leveldb/doc-index-md] You can however still gradually evolve your key format over time with a little bit of pre-planning.
+[src:leveldb/doc-index-md] For example, you could store a version number at the end of each key (one byte should suffice for most uses).
+[src:leveldb/doc-index-md] Performance can be tuned by changing the default values of the types defined in `include/options.h`.
+[src:leveldb/doc-index-md] leveldb groups adjacent keys together into the same block and such a block is the unit of transfer to and from persistent storage.
+[src:leveldb/doc-index-md] The default block size is approximately 4096 uncompressed bytes.
+[src:leveldb/doc-index-md] Applications that mostly do bulk scans over the contents of the database may wish to increase this size.
+[src:leveldb/doc-index-md] Applications that do a lot of point reads of small values may wish to switch to a smaller block size if performance measurements indicate an improvement.
+[src:leveldb/doc-index-md] There isn't much benefit in using blocks smaller than one kilobyte, or larger than a few megabytes.
+[src:leveldb/doc-index-md] Also note that compression will be more effective with larger block sizes.
+[src:leveldb/doc-index-md] Each block is individually compressed before being written to persistent storage.
+[src:leveldb/doc-index-md] Compression is on by default since the default compression method is very fast, and is automatically disabled for uncompressible data.
+[src:leveldb/doc-index-md] The contents of the database are stored in a set of files in the filesystem and each file stores a sequence of compressed blocks.
+[src:leveldb/doc-index-md] If options.block_cache is non-NULL, it is used to cache frequently used uncompressed block contents.
+[src:leveldb/doc-index-md] Note that the cache holds uncompressed data, and therefore it should be sized according to application level data sizes, without any reduction from compression.
+[src:leveldb/doc-index-md] When performing a bulk read, the application may wish to disable caching so that the data processed by the bulk read does not end up displacing most of the cached contents.
+[src:leveldb/doc-index-md] Note that the unit of disk transfer and caching is a block.
+[src:leveldb/doc-index-md] Adjacent keys (according to the database sort order) will usually be placed in the same block.
+[src:leveldb/doc-index-md] Therefore the application can improve its performance by placing keys that are accessed together near each other and placing infrequently used keys in a separate region of the key space.
+[src:leveldb/doc-index-md] For example, suppose we are implementing a simple file system on top of leveldb.
+[src:leveldb/doc-index-md] We might want to prefix filename keys with one letter (say '/') and the `file_block_id` keys with a different letter (say '0') so that scans over just the metadata do not force us to fetch and cache bulky file contents.
+[src:leveldb/doc-index-md] Because of the way leveldb data is organized on disk, a single `Get()` call may involve multiple reads from disk.
+[src:leveldb/doc-index-md] The optional FilterPolicy mechanism can be used to reduce the number of disk reads substantially.
+[src:leveldb/doc-index-md] The preceding code associates a Bloom filter based filtering policy with the database.
+[src:leveldb/doc-index-md] Bloom filter based filtering relies on keeping some number of bits of data in memory per key (in this case 10 bits per key since that is the argument we passed to `NewBloomFilterPolicy`).
+[src:leveldb/doc-index-md] This filter will reduce the number of unnecessary disk reads needed for Get() calls by a factor of approximately a 100.
+[src:leveldb/doc-index-md] Increasing the bits per key will lead to a larger reduction at the cost of more memory usage.
+[src:leveldb/doc-index-md] We recommend that applications whose working set does not fit in memory and that do a lot of random reads set a filter policy.
+[src:leveldb/doc-index-md] If you are using a custom comparator, you should ensure that the filter policy you are using is compatible with your comparator.
+[src:leveldb/doc-index-md] For example, consider a comparator that ignores trailing spaces when comparing keys.
+[src:leveldb/doc-index-md] `NewBloomFilterPolicy` must not be used with such a comparator.
+[src:leveldb/doc-index-md] Instead, the application should provide a custom filter policy that also ignores trailing spaces.
+[src:leveldb/doc-index-md] Advanced applications may provide a filter policy that does not use a bloom filter but uses some other mechanism for summarizing a set of keys.
+[src:leveldb/doc-index-md] See `leveldb/filter_policy.h` for detail.
+[src:leveldb/doc-index-md] leveldb associates checksums with all data it stores in the file system.
+[src:leveldb/doc-index-md] `ReadOptions::verify_checksums` may be set to true to force checksum verification of all data that is read from the file system on behalf of a particular read.
+[src:leveldb/doc-index-md] By default, no such verification is done.
+[src:leveldb/doc-index-md] `Options::paranoid_checks` may be set to true before opening a database to make the database implementation raise an error as soon as it detects an internal corruption.
+[src:leveldb/doc-index-md] Depending on which portion of the database has been corrupted, the error may be raised when the database is opened, or later by another database operation.
+[src:leveldb/doc-index-md] By default, paranoid checking is off so that the database can be used even if parts of its persistent storage have been corrupted.
+[src:leveldb/doc-index-md] The `GetApproximateSizes` method can used to get the approximate number of bytes of file system space used by one or more key ranges.
+[src:leveldb/doc-index-md] The preceding call will set `sizes[0]` to the approximate number of bytes of file system space used by the key range `[a..c)` and `sizes[1]` to the approximate number of bytes used by the key range `[x..z)`.
+[src:leveldb/doc-index-md] All file operations (and other operating system calls) issued by the leveldb implementation are routed through a `leveldb::Env` object.
+[src:leveldb/doc-index-md] Sophisticated clients may wish to provide their own Env implementation to get better control.
+[src:leveldb/doc-index-md] For example, an application may introduce artificial delays in the file IO paths to limit the impact of leveldb on other activities in the system.
+[src:leveldb/doc-index-md] leveldb may be ported to a new platform by providing platform specific implementations of the types/methods/functions exported by `leveldb/port/port.h`.
+[src:leveldb/doc-index-md] See `leveldb/port/port_example.h` for more details.
+[src:leveldb/doc-index-md] In addition, the new platform may need a new default `leveldb::Env` implementation.
+[src:leveldb/doc-index-md] See `leveldb/util/env_posix.h` for an example.
+[src:leveldb/embedded-database] An **embedded database** system is a database management system (DBMS) that is tightly integrated with application software, and is embedded within the application rather than provided as a standalone system.
+[src:leveldb/embedded-database] The term “embedded” is sometimes used to refer to use on embedded devices (as opposed to the definition given above).
+[src:leveldb/embedded-database] However, only a small subset of embedded database systems are used in real-time embedded systems such as telecommunications switches and consumer electronics.
+[src:leveldb/embedded-database] Advantage Database Server (ADS) is an embedded database management system developed by Sybase.
+[src:leveldb/embedded-database] It provides both Indexed Sequential Access Method (ISAM) and relational data access and is compatible with multiple platforms, including Windows, Linux, and Netware.
+[src:leveldb/embedded-database] It is available as a royalty-free local file-server database or as a full client-server system.
+[src:leveldb/embedded-database] Apache Derby is an embeddable SQL database engine written entirely in Java.
+[src:leveldb/embedded-database] It is fully transactional and supports multi-user access, and is available under the Apache license.
+[src:leveldb/embedded-database] It is also distributed as part of Oracle's Java SE Development Kit (JDK) under the name of Java DB.
+[src:leveldb/embedded-database] Empress Embedded Database was developed by Empress Software, Inc., a privately held company founded in 1979.
+[src:leveldb/embedded-database] It is a relational database management system that has been embedded in a range of applications, including medical systems, network routers, nuclear power plant monitors, and satellite management systems.
+[src:leveldb/embedded-database] Empress is an ACID-compliant, SQL database engine with APIs for C, C++, Java, JDBC, ODBC, SQL, ADO.NET, and kernel-level APIs.
+[src:leveldb/embedded-database] Applications developed using these APIs can be run in standalone or client-server modes.
+[src:leveldb/embedded-database] Empress Embedded Database runs on Linux, Unix, Microsoft Windows, and real-time operating systems.
+[src:leveldb/embedded-database] Extensible Storage Engine (ESE) is an ISAM data storage technology developed by Microsoft.
+[src:leveldb/embedded-database] It serves as a core component of Microsoft Exchange Server and Active Directory, allowing applications to store and retrieve data using indexed and sequential access.
+[src:leveldb/embedded-database] ESE is also used by Windows Mail and Desktop Search in Windows Vista to store indexes and property information, respectively.
+[src:leveldb/embedded-database] eXtremeDB, launched by McObject LLC as an in-memory embedded database, was designed specifically for real-time embedded systems.
+[src:leveldb/embedded-database] The initial product was later joined by eXtremeDB High Availability (HA) for fault-tolerant applications.
+[src:leveldb/embedded-database] The eXtremeDB family now includes 64-bit and transaction logging editions, as well as the hybrid eXtremeDB Fusion, which combines in-memory and on-disk data storage.
+[src:leveldb/embedded-database] In 2008, McObject introduced eXtremeDB Kernel Mode, an embedded DBMS designed to run in an operating system kernel.
+[src:leveldb/embedded-database] eXtremeDB is used in real-time and embedded systems worldwide.
+[src:leveldb/embedded-database] McObject also offers Perst, an open source, object-oriented embedded database for Java, Java ME, .NET, .NET Compact Framework, and Silverlight.
+[src:leveldb/embedded-database] Firebird Embedded is a relational database engine and an open-source fork of InterBase.
+[src:leveldb/embedded-database] It is ACID-compliant, supports triggers and stored procedures, and is available on Linux, macOS, and Windows.
+[src:leveldb/embedded-database] It has the same features as the Classic and SuperServer versions of Firebird.
+[src:leveldb/embedded-database] Starting with Firebird 2.5, two or more threads or applications can access the same database simultaneously.
+[src:leveldb/embedded-database] Firebird Embedded acts as a local server for one-threaded client accessing its databases.
+[src:leveldb/embedded-database] For example, this allows ASP.NET web applications to work properly, because each user runs in a separate thread, so two users can access the same database at the same time without a conflict.
+[src:leveldb/embedded-database] Firebird Embedded exports the standard Firebird API entry points.
+[src:leveldb/embedded-database] Unlike SQLite or Access databases, Firebird Embedded databases can be moved to a full Firebird server without modification and are multi-platform, running on Linux and macOS with full ASP.NET Mono support.
+[src:leveldb/embedded-database] Although it can operate within an application process, Firebird is not truly embedded because it cannot be statically linked.
+[src:leveldb/embedded-database] H2 is an open-source database engine written in Java.
+[src:leveldb/embedded-database] It supports both embedded and server modes, as well as clustering, and can run within the Google App Engine environment.
+[src:leveldb/embedded-database] It supports encrypted database files using AES or XTEA.
+[src:leveldb/embedded-database] Development of H2 began in May 2004, and it was first published on December 14, 2005.
+[src:leveldb/embedded-database] H2 is dual-licensed and is available under a modified version of the Mozilla Public License (MPL) or the unmodified Eclipse Public License (EPL) 1.0.
+[src:leveldb/embedded-database] HailDB is a standalone, embeddable form of the InnoDB Storage Engine.
+[src:leveldb/embedded-database] Because it is based on the same codebase as InnoDB, it includes many of the same features, such as high performance and scalability, multiversion concurrency control (MVCC), row-level locking, deadlock detection, fault tolerance, and automatic crash recovery.
+[src:leveldb/embedded-database] As an embedded engine independent of MySQL, HailDB does not include server components such as networking or object-level permissions.
+[src:leveldb/embedded-database] By eliminating MySQL server overhead, it has a relatively small footprint and is well suited for embedding in applications that require high performance and concurrency.
+[src:leveldb/embedded-database] As with many embedded database systems, HailDB is designed to be accessed primarily through an ISAM-like C API rather than SQL, although a limited SQL variant is supported.
+[src:leveldb/embedded-database] The project is no longer maintained as of 2015.
+[src:leveldb/embedded-database] HSQLDB is an open-source relational database management system with a BSD-like license that runs within the same Java Virtual Machine as the embedded application.
+[src:leveldb/embedded-database] It supports a variety of in-memory and disk-based table modes, Unicode, and SQL:2016.
+[src:leveldb/embedded-database] InfinityDB is a sorted, hierarchical key-value store.
+[src:leveldb/embedded-database] It is available in encrypted and client-server editions.
+[src:leveldb/embedded-database] The database provides transactional support, data compression, and operates within a single file, enabling simplified deployment and minimal administration.
+[src:leveldb/embedded-database] APIs include the ItemSpace interface, a ConcurrentNavigableMap view, and support for JSON.
+[src:leveldb/embedded-database] The RemoteItemSpace component can redirect embedded API calls to other database instances.
+[src:leveldb/embedded-database] The client-server edition includes a lightweight servlet server, web-based administration and database browsing tools, and REST support for Python.
+[src:leveldb/embedded-database] Informix Dynamic Server (IDS) is an enterprise-class, embeddable database server that combines features such as low footprint, programmability, and autonomic capabilities with enterprise database features including high availability and flexible replication.
+[src:leveldb/embedded-database] IDS is used in embedded scenarios such as IP telephony call-processing systems, point-of-sale applications, and financial transaction processing systems.
+[src:leveldb/embedded-database] InterBase is a cross-platform, Unicode-enabled SQL database that can be embedded within turn-key applications.
+[src:leveldb/embedded-database] It supports symmetric multiprocessing (SMP), on-disk AES-256 encryption, SQL-92 compliance, and ACID properties, and is available on Windows, macOS, Linux, Solaris, iOS, and Android platforms.
+[src:leveldb/embedded-database] InterBase is used in both small- to medium-sized and large enterprise environments, supporting multi-user and mobile application development.
+[src:leveldb/embedded-database] *InterBase Light* is a free version designed for mobile devices and is suitable for mobile applications.
+[src:leveldb/embedded-database] Organizations can upgrade to a paid version as requirements for features such as change management and security increase.
+[src:leveldb/embedded-database] InterBase has been adopted in industries including defense, airspace, oil and gas, and manufacturing.
+[src:leveldb/embedded-database] Kùzu is an embeddable graph database management system that supports the Cypher query language.
+[src:leveldb/embedded-database] It implements a range of existing and novel state-of-art storage, indexing, and query processing techniques to support the management and querying of large graphs.
+[src:leveldb/embedded-database] Kùzu achieves its performance through a combination of join algorithms, including binary and worst-case optimal joins, as well as factorization and vectorized query execution on a columnar storage layer, along with compression and parallelization techniques common in modern database systems.
+[src:leveldb/embedded-database] Kùzu is developed and maintained by Kùzu Inc., a startup based in Waterloo, Ontario, Canada, and is available as open-source software under the MIT license.
+[src:leveldb/embedded-database] LevelDB is an ordered key-value store created by Google as a compact implementation of the Bigtable storage design.
+[src:leveldb/embedded-database] It is provided as a library, with a native API in C++.
+[src:leveldb/embedded-database] It also includes official C wrappers for most functionality, and third-party wrappers are available for languages such as Python, PHP, Go, Node.js, and Objective C.
+[src:leveldb/embedded-database] Google distributes LevelDB under the New BSD License.
+[src:leveldb/embedded-database] Lightning Memory-Mapped Database (LMDB) is a memory-mapped key-value database developed for the OpenLDAP Project.
+[src:leveldb/embedded-database] It is written in C, and its API is modeled after the Berkeley DB API, but simplified.
+[src:leveldb/embedded-database] The library is compact, typically compiling to under 40 KB of x86 object code.
+[src:leveldb/embedded-database] LMDB implements B+ trees with multiversion concurrency control (MVCC), a single-level store, copy-on-write, and provides full ACID transactions without deadlocks.
+[src:leveldb/embedded-database] It is optimized for high read concurrency: readers require no locks, readers do not block writers, and writers do not block readers, allowing read performance to scale linearly across multiple threads and CPUs.
+[src:leveldb/embedded-database] Third-party wrappers are available for C++, Erlang and Python.
+[src:leveldb/embedded-database] LMDB is distributed under the OpenLDAP Public License.
+[src:leveldb/embedded-database] As of 2013, the OpenLDAP Project has deprecated the use of Berkeley DB in favor of LMDB.
+[src:leveldb/embedded-database] Mimer SQL is a proprietary relational database server.
+[src:leveldb/embedded-database] An embedded, zero-maintenance version is available, featuring a small footprint due to its modular design, full support for the SQL standard, and ports to Windows, Linux, Automotive Grade Linux, Android, QNX, INTEGRITY, and other platforms.
+[src:leveldb/embedded-database] MonetDB/e is the embedded version of the open-source MonetDB SQL column store engine.
+[src:leveldb/embedded-database] It is available for C, C++, Java (JDBC), and Python, and is distributed under the MonetDB License, based on MPL 2.0.
+[src:leveldb/embedded-database] Its predecessor, MonetDBLite (for R, Python, and Java), is no longer maintained and has been replaced by MonetDB/e.
+[src:leveldb/embedded-database] The Embedded MySQL Server Library provides most of the features of the standard MySQL server as a linkable library that runs within the context of a client process.
+[src:leveldb/embedded-database] After initialization, clients can use the same C API calls as when communicating with a separate MySQL server, but with lower communication overhead and without the need for a separate database process.
+[src:leveldb/embedded-database] NexusDB is the commercial successor to the FlashFiler database, which is now open source.
+[src:leveldb/embedded-database] Both databases can be embedded in Delphi applications to create stand-alone executables with full database functionality.
+[src:leveldb/embedded-database] ObjectDB is an object database for Java that can be used in either client-server mode or embedded (in process) mode.
+[src:leveldb/embedded-database] Oracle's embedded database is Berkeley DB, which Oracle acquired from Sleepycat Software.
+[src:leveldb/embedded-database] Berkeley DB was originally developed at the University of California.
+[src:leveldb/embedded-database] It is a fast, open-source embedded database and is used in several well-known open-source products, including the Linux and BSD Unix operating systems, the Apache Web server, and the OpenOffice productivity suite.
+[src:leveldb/embedded-database] In recent years, some projects have switched to using Lightning Memory-Mapped Database (LMDB), citing better performance in key scenarios and a simpler "less is more" design, as well as changes to Berkeley DB's licensing.
+[src:leveldb/embedded-database] RocksDB was created by Facebook as a fork of LevelDB.
+[src:leveldb/embedded-database] It focuses on performance, particularly on solid-state drives (SSDs), and adds a range of features, including transactions, backups, snapshots, bloom filters, column families, expiry, custom merge operators, more tunable compaction, statistics collection, and geospatial indexing.
+[src:leveldb/embedded-database] It is used as a storage engine inside of several other databases, including ArangoDB, Ceph, CockroachDB, MyRocks, Rocksandra, TiKV, and YugabyteDB.
+[src:leveldb/embedded-database] solid DB is a hybrid on-disk/in-memory, relational database often used as an embedded system database in telecommunications equipment, network software, and similar applications.
+[src:leveldb/embedded-database] Its in-memory technology enables throughput of tens of thousands of transactions per second with response times measured in microseconds.
+[src:leveldb/embedded-database] A high-availability option maintains two synchronized copies of the data.
+[src:leveldb/embedded-database] In the event of a system failure, applications can recover access to solidDB in less than a second without data loss.
+[src:leveldb/embedded-database] SQLite is a software library that provides a self-contained, serverless, zero-configuration, transactional SQL database engine.
+[src:leveldb/embedded-database] It is the most widely deployed SQL database engine in the world.
+[src:leveldb/embedded-database] The source code, written primarily in C, is in the public domain.
+[src:leveldb/embedded-database] SQLite includes both a native C library and a simple command-line client for managing its database.
+[src:leveldb/embedded-database] It is included in several operating systems, including Android, FreeBSD, iOS, macOS, and Windows 10, and is also used by the Chromium web browser and its derivatives.
+[src:leveldb/embedded-database] SQL Server Compact is an embedded database by Microsoft with features including multi-process connections, T-SQL, ADO.NET Sync Services for synchronizing with back-end databases, Merge Replication with SQL Server, and programming APIs such as LINQ to SQL, LINQ to Entities, and ADO.NET.
+[src:leveldb/embedded-database] The product runs on both desktop and mobile Windows platforms.
+[src:leveldb/embedded-database] It has been in production software over a long period.
+[src:leveldb/embedded-database] SQL Server Compact has undergone multiple rebrandings and has been known by various names, including SQL CE, SQL Server CE, SQL Server Mobile, and SQL Mobile.
+[src:leveldb/key-value-database] A **key-value database**, or **key-value store**, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a *dictionary*.
+[src:leveldb/key-value-database] Dictionaries contain a collection of *objects*, or *records*, which in turn have many different *fields* within them.
+[src:leveldb/key-value-database] These records are stored and retrieved using a *key* that uniquely identifies the record, and is used to find the data within the database.
+[src:leveldb/key-value-database] Key-value databases differ from the better known relational databases (RDB).
+[src:leveldb/key-value-database] RDBs pre-define the data structure in the database as a series of tables containing fields with well-defined data types.
+[src:leveldb/key-value-database] Exposing the data types to the database program allows it to apply various optimizations.
+[src:leveldb/key-value-database] In contrast, key-value systems treat the value as opaque to the database itself, and typically support only simple operations such as storing, retrieving, updating, and deleting a value by its key.
+[src:leveldb/key-value-database] This offers considerable flexibility and makes such systems well suited to low-latency, high-throughput workloads dominated by direct key lookups, but less suitable for applications that require complex queries or explicit relationships among records.
+[src:leveldb/key-value-database] A lack of standardization, limited transaction support, and relatively simple query interfaces long restricted many key-value systems to specialized uses, but the rapid move to cloud computing after 2010 helped drive renewed interest in them as part of the broader NoSQL movement.
+[src:leveldb/key-value-database] Some graph databases, such as ArangoDB, are also key–value databases internally, adding the concept of relationships (*pointers*) between records as a first-class data type.
+[src:leveldb/key-value-database] Key–value systems span a wide consistency spectrum, from eventually consistent designs to strongly consistent or serializable ones, and some allow the consistency level to be configured as part of the trade-off against latency and availability.
+[src:leveldb/key-value-database] Renewed interest in key–value and other NoSQL systems was driven in part by the demands of big data, distributed, and cloud applications.
+[src:leveldb/key-value-database] Their scalability and availability made them attractive for cloud data management, although limited transaction support, low-level query interfaces, and the lack of standardization remained obstacles to wider adoption.
+[src:leveldb/key-value-database] Some maintain data in memory (RAM), while others employ solid-state drives or rotating disks.
+[src:leveldb/key-value-database] Some key–value systems add additional structure to their keys.
+[src:leveldb/key-value-database] For example, Oracle NoSQL Database organizes records using composite keys with "major" and "minor" components, an arrangement that Oracle compares to a directory-path structure in a file system.
+[src:leveldb/key-value-database] More generally, however, key–value stores are defined by their use of unique keys associated with opaque values and by their emphasis on simple key-based operations.
+[src:leveldb/key-value-database] Unix included *dbm* (database manager), a minimal database library written by Ken Thompson for managing associative arrays with a single key and hash-based access.
+[src:leveldb/key-value-database] Later implementations and related libraries included sdbm, GNU dbm (gdbm), and Berkeley DB.
+[src:leveldb/key-value-database] A more recent example is RocksDB, a persistent key–value storage engine developed at Facebook and designed for large-scale applications.
+[src:leveldb/key-value-database] Other examples include in-memory systems such as Memcached and Redis, and persistent systems such as Berkeley DB, Riak, and Voldemort.
+[src:leveldb/leveldb] LevelDB stores keys and values in arbitrary byte arrays, and data is sorted by key.
+[src:leveldb/leveldb] It supports batching writes, forward and backward iteration, and compression of the data via Google's Snappy compression library.
+[src:leveldb/leveldb] Like other NoSQL and dbm stores, it does not have a relational data model and it does not support SQL queries.
+[src:leveldb/leveldb] Applications use LevelDB as a library, as it does not provide a server or command-line interface.
+[src:leveldb/leveldb] MariaDB 10.0 comes with a storage engine which allows users to query LevelDB tables from MariaDB.
+[src:leveldb/leveldb] LevelDB is based on concepts from Google's Bigtable database system.
+[src:leveldb/leveldb] The table implementation for the Bigtable system was developed starting in about 2004, and is based on a different Google internal code base than the LevelDB code.
+[src:leveldb/leveldb] That code base relies on a number of Google code libraries that are not themselves open sourced, so directly open sourcing that code would have been difficult.
+[src:leveldb/leveldb] Jeff Dean and Sanjay Ghemawat wanted to create a system resembling the Bigtable tablet stack that had minimal dependencies and would be suitable for open sourcing, and also would be suitable for use in Chrome for the IndexedDB implementation.
+[src:leveldb/leveldb] They wrote LevelDB starting in early 2011, with the same general design as the Bigtable tablet stack, but not sharing any of the code.
+[src:leveldb/leveldb] LevelDB is used as the backend database for Google Chrome's IndexedDB and is one of the supported backends for Riak.
+[src:leveldb/leveldb] Additionally, Bitcoin Core and go-ethereum store the blockchain metadata using a LevelDB database.
+[src:leveldb/leveldb] *Minecraft Bedrock Edition* uses a modified version for chunk and entity data storage.
+[src:leveldb/leveldb] Autodesk AutoCAD 2016 also uses LevelDB.
+[src:leveldb/leveldb] Google has provided benchmarks comparing LevelDB's performance to SQLite and Kyoto Cabinet in different scenarios.
+[src:leveldb/leveldb] LevelDB outperforms both SQLite and Kyoto Cabinet in write operations and sequential-order read operations.
+[src:leveldb/leveldb] LevelDB also excels at batch writes, but is slower than SQLite when dealing with large values.
+[src:leveldb/leveldb] The currently published benchmarks were updated after SQLite configuration mistakes were noted in an earlier version of the results.
+[src:leveldb/leveldb] All the above benchmarks date back from 2011 to 2014, and may only be of historical significance as SQLite, for instance, became significantly more efficient.
+[src:leveldb/leveldb] LevelDB has a history of database corruption bugs.
+[src:leveldb/leveldb] A study from 2014 has found that, on non-checksummed file systems, the database could become corrupted after a crash or power failure.
+[src:leveldb/log-structured-merge-tree] In computer science, the **log-structured merge-tree** (also known as **LSM tree**, or **LSMT**) is a data structure with performance characteristics that make it attractive for providing indexed access to files with high insert volume, such as transactional log data.
+[src:leveldb/log-structured-merge-tree] LSM trees, like other search trees, maintain key-value pairs.
+[src:leveldb/log-structured-merge-tree] LSM trees maintain data in two or more separate structures, each of which is optimized for its respective underlying storage medium; data is synchronized between the two structures efficiently, in batches.
+[src:leveldb/log-structured-merge-tree] One simple version of the LSM tree is a two-level LSM tree.
+[src:leveldb/log-structured-merge-tree] As described by Patrick O'Neil, a two-level LSM tree comprises two tree-like structures, called C0 and C1.
+[src:leveldb/log-structured-merge-tree] C0 is smaller and entirely resident in memory, whereas C1 is resident on disk.
+[src:leveldb/log-structured-merge-tree] New records are inserted into the memory-resident C0 component.
+[src:leveldb/log-structured-merge-tree] If the insertion causes the C0 component to exceed a certain size threshold, a contiguous segment of entries is removed from C0 and merged into C1 on disk.
+[src:leveldb/log-structured-merge-tree] The performance characteristics of LSM trees stem from the fact that each component is tuned to the characteristics of its underlying storage medium, and that data is efficiently migrated across media in rolling batches, using an algorithm reminiscent of merge sort.
+[src:leveldb/log-structured-merge-tree] Such tuning involves writing data in a sequential manner as opposed to as a series of separate random access requests.
+[src:leveldb/log-structured-merge-tree] This optimization reduces total seek time in hard-disk drives (HDDs) and latency in solid-state drives (SSDs).
+[src:leveldb/log-structured-merge-tree] Most LSM trees used in practice employ multiple levels.
+[src:leveldb/log-structured-merge-tree] Level 0 is kept in main memory, and might be represented using a tree.
+[src:leveldb/log-structured-merge-tree] The on-disk data is organized into sorted *runs* of data.
+[src:leveldb/log-structured-merge-tree] Each run contains data sorted by the index key.
+[src:leveldb/log-structured-merge-tree] A run can be represented on disk as a single file, or alternatively as a collection of files with non-overlapping key ranges.
+[src:leveldb/log-structured-merge-tree] To perform a query on a particular key to get its associated value, one must search in the Level 0 tree and also each run.
+[src:leveldb/log-structured-merge-tree] The Stepped-Merge version of the LSM tree is a variant of the LSM tree that supports multiple levels with multiple tree structures at each level.
+[src:leveldb/log-structured-merge-tree] A particular key may appear in several runs, and what that means for a query depends on the application.
+[src:leveldb/log-structured-merge-tree] Some applications simply want the newest key-value pair with a given key.
+[src:leveldb/log-structured-merge-tree] Some applications must combine the values in some way to get the proper aggregate value to return.
+[src:leveldb/log-structured-merge-tree] For example, in Apache Cassandra, each value represents a row in a database, and different versions of the row may have different sets of columns.
+[src:leveldb/log-structured-merge-tree] In order to keep down the cost of queries, the system must avoid a situation where there are too many runs.
+[src:leveldb/log-structured-merge-tree] Extensions to the 'leveled' method to incorporate B+ tree structures have been suggested, for example bLSM and Diff-Index.
+[src:leveldb/log-structured-merge-tree] LSM-tree was originally designed for write-intensive workloads.
+[src:leveldb/log-structured-merge-tree] As increasingly more read and write workloads co-exist under an LSM-tree storage structure, read data accesses can experience high latency and low throughput due to frequent invalidations of cached data in buffer caches by LSM-tree compaction operations.
+[src:leveldb/log-structured-merge-tree] To re-enable effective buffer caching for fast data accesses, a Log-Structured buffered-Merged tree (LSbM-tree) is proposed and implemented.
+[src:leveldb/log-structured-merge-tree] In LSM-trees, write operations are designed to optimize performance by reducing random I/O and leveraging sequential disk writes.
+[src:leveldb/log-structured-merge-tree] When a write operation is initiated, the data is first buffered in an in-memory component, often implemented using a sorted data structure such as a Skip list or B+ tree.
+[src:leveldb/log-structured-merge-tree] Once the in-memory buffer becomes full, it is flushed to the disk as an immutable sorted component at the first level (C1).
+[src:leveldb/log-structured-merge-tree] This flush is performed sequentially, ensuring high I/O efficiency by avoiding the costly random writes typical of traditional indexing methods.
+[src:leveldb/log-structured-merge-tree] To maintain durability, the system may use a write-ahead log (WAL) that records all incoming writes before they are added to the memory buffer.
+[src:leveldb/log-structured-merge-tree] This ensures that no data is lost in the event of a crash during a write.
+[src:leveldb/log-structured-merge-tree] As data accumulates across levels on the disk, LSM trees employ a merge process similar to merge sort to consolidate entries and maintain a consistent sorted order across levels.
+[src:leveldb/log-structured-merge-tree] This process also handles updates and deletes, removing redundant or obsolete entries.
+[src:leveldb/log-structured-merge-tree] Updates are treated as new writes, while deletes are marked with a tombstone entry, which is a placeholder indicating that the key has been deleted.
+[src:leveldb/log-structured-merge-tree] These tombstones are later removed during the merging process.
+[src:leveldb/log-structured-merge-tree] Two common merging policies govern how data flows through the levels: levelling and tiering.
+[src:leveldb/log-structured-merge-tree] In levelling, only one component exists per level, and merging happens more frequently, reducing the total number of components but increasing write amplification.
+[src:leveldb/log-structured-merge-tree] In tiering, multiple components can coexist within a level, and merging occurs less frequently, reducing write amplification but increasing read costs because more components need to be searched.
+[src:leveldb/log-structured-merge-tree] This design leads to amortized write costs of $O\left({T\cdot L \over B}\right)$ for leveling merge policies, where T is the size ratio between levels, L is the number of levels, and B is the number of entries per page.
+[src:leveldb/log-structured-merge-tree] A point lookup operation retrieves the value associated with a specific key.
+[src:leveldb/log-structured-merge-tree] In LSM trees, because of the multi-level structure and the immutability of disk components, point lookups involve checking several levels to ensure the most up-to-date value for the key is returned.
+[src:leveldb/log-structured-merge-tree] The process begins with a search in the in-memory component (C0), which holds the latest data.
+[src:leveldb/log-structured-merge-tree] Since this component is organized as a sorted structure, the search is efficient.
+[src:leveldb/log-structured-merge-tree] If the key is found here, its value is returned right away.
+[src:leveldb/log-structured-merge-tree] If the key isn't found in memory, the search moves to the disk components, starting with the first level (C1) and continuing through deeper levels (C2, C3, etc.).
+[src:leveldb/log-structured-merge-tree] Each disk level is also sorted, allowing for efficient searches using methods like binary search or tree search.
+[src:leveldb/log-structured-merge-tree] Newer levels are checked first because they contain the most recent updates and deletions for the key.
+[src:leveldb/log-structured-merge-tree] To make the search faster, LSM trees often use a bloom filter for each on-disk component.
+[src:leveldb/log-structured-merge-tree] These filters are probabilistic structures that help quickly determine whether a key is definitely absent from a component.
+[src:leveldb/log-structured-merge-tree] Before accessing any disk component, the system checks the Bloom filter.
+[src:leveldb/log-structured-merge-tree] If the filter indicates the key is not present, the component is skipped, saving time.
+[src:leveldb/log-structured-merge-tree] If the filter suggests the key might be there, the system proceeds to search for the component.
+[src:leveldb/log-structured-merge-tree] The lookup operation stops as soon as the key is found, ensuring the most recent version is returned.
+[src:leveldb/log-structured-merge-tree] If the search reaches the final level without finding the key, the system concludes that the key doesn't exist.
+[src:leveldb/log-structured-merge-tree] Point lookup complexity is $O(L)$ without Bloom filters, as each level must be searched.
+[src:leveldb/log-structured-merge-tree] With Bloom filters, the cost for zero-result lookups is significantly reduced to $O\left(L\cdot e^{-{\frac {M}{N}}}\right)$ , where M is the total Bloom filter size and N is the number of keys.
+[src:leveldb/log-structured-merge-tree] For existing key lookups, the cost is $O(1)$ due to the presence of Bloom filters.
+[src:leveldb/log-structured-merge-tree] A range query retrieves all key-value pairs within a specified range.
+[src:leveldb/log-structured-merge-tree] The operation involves scanning multiple components across the LSM tree's hierarchical structure and consolidating entries to ensure accurate and complete results.
+[src:leveldb/log-structured-merge-tree] A range query begins by searching the in-memory component (C0).
+[src:leveldb/log-structured-merge-tree] Since this component is typically a sorted data structure, range queries can be done efficiently.
+[src:leveldb/log-structured-merge-tree] Once the in-memory component is finished, the query proceeds to the disk components, starting from the first level (C1) and continuing to deeper levels.
+[src:leveldb/log-structured-merge-tree] Each disk component is also stored as a sorted structure allowing efficient range scans within individual components.
+[src:leveldb/log-structured-merge-tree] To perform the range query, the system locates the starting point in each relevant component and scans sequentially until the end of the range is reached.
+[src:leveldb/log-structured-merge-tree] The results from each component are then merged into a priority queue to reconcile duplicates, updates, and deletes, ensuring the final result only includes the latest version of each key.
+[src:leveldb/log-structured-merge-tree] For efficiency, LSM trees often divide disk components into smaller, disjoint key ranges.
+[src:leveldb/log-structured-merge-tree] In this way, when processing a range query, the system can search only the partitions that have overlap ranges to reduce the number of components accessed.
+[src:leveldb/log-structured-merge-tree] Similar to point lookup, Bloom filters are sometimes used to quickly decide whether a disk component contains any keys within the queried range, allowing the system to skip components that are guaranteed to be irrelevant.
+[src:leveldb/log-structured-merge-tree] The performance of a range query in LSM-trees depends on the query's selectivity.
+[src:leveldb/log-structured-merge-tree] For short-range queries, which access fewer keys than twice the number of levels, the query must examine components across all levels, leading to a cost proportional to the number of levels.
+[src:leveldb/log-structured-merge-tree] For long-range queries, which access many keys, the price is dominated by scanning the largest level, as it contains most of the data.
+[src:leveldb/log-structured-merge-tree] For this reason, the runtime for short-range queries is $O(L)$ and $O\left({\frac {s}{B}}\right)$ for long-range queries, where s is the number of keys in the range.
+[src:leveldb/storage-engine] A **database engine** (or **storage engine**) is the underlying software component that a database management system (DBMS) uses to create, read, update and delete (CRUD) data from a database.
+[src:leveldb/storage-engine] Most database management systems include their own application programming interface (API) that allows the user to interact with their underlying engine without going through the user interface of the DBMS.
+[src:leveldb/storage-engine] The term "database engine" is frequently used interchangeably with "database server" or "database management system".
+[src:leveldb/storage-engine] A "database instance" refers to the processes and memory structures of the running database engine.
+[src:leveldb/storage-engine] Many of the modern DBMS support multiple storage engines within the same database.
+[src:leveldb/storage-engine] For example, MySQL supports InnoDB as well as MyISAM.
+[src:leveldb/storage-engine] Information in a database is stored in the form of bits, laid out into data structures on storage hardware.
+[src:leveldb/storage-engine] These data structures are designed for efficient reads and writes to and from the storage hardware.
+[src:leveldb/storage-engine] Typically the storage hardware itself is designed to meet the requirements of various systems, including databases, that extensively utilize storage.
+[src:leveldb/storage-engine] An operating DBMS always utilizes several storage types simultaneously.
+[src:leveldb/storage-engine] These different storage types, such as flash memory and external disk storage, each require different data layout methods.
+[src:leveldb/storage-engine] In principle, database storage can be viewed as a linear address space where every bit of data has a unique address.
+[src:leveldb/storage-engine] In practice, only a very small percentage of addresses are kept as initial reference points, which also require storage.
+[src:leveldb/storage-engine] Most data is accessed instead by indirection using displacement calculations (distance in bits from the reference points) and data structures which define access paths (using pointers) to all needed data in an effective manner, optimized for the needed data access operations.
+[src:leveldb/storage-engine] A database, while in operation, resides simultaneously in several types of storage, forming a storage hierarchy.
+[src:leveldb/storage-engine] Inside of a contemporary computer hosting a DBMS, most of the "database" part resides, partially replicated, in volatile storage.
+[src:leveldb/storage-engine] Data that are actively being processed and manipulated reside inside the processor, possibly in processor's caches.
+[src:leveldb/storage-engine] These data are read from and written to memory, typically through a computer bus, which is usually a volatile storage component.
+[src:leveldb/storage-engine] Computer memory communicates data to and from external storage, typically through standard storage interfaces or networks (e.g., fibre channel, iSCSI).
+[src:leveldb/storage-engine] A storage array, a common external storage unit, typically has storage hierarchy of its own.
+[src:leveldb/storage-engine] A fast cache, typically consisting of volatile and fast DRAM, is connected (via standard interfaces) to drives.
+[src:leveldb/storage-engine] These drives may have different speeds, like flash drives and non-volatile magnetic disk drives.
+[src:leveldb/storage-engine] Speed and price are generally correlated.
+[src:leveldb/storage-engine] The drives may be connected to magnetic tapes, on which the least active parts of a large database may reside.
+[src:leveldb/storage-engine] This may also be where backups are located.
+[src:leveldb/storage-engine] A data structure is an abstract construct that embeds data in a well defined manner.
+[src:leveldb/storage-engine] An efficient data structure allows manipulation of the data in efficient ways.
+[src:leveldb/storage-engine] The data manipulation may include data insertion, deletion, updating and retrieval in various modes.
+[src:leveldb/storage-engine] A certain data structure type may be very effective in certain operations, and very ineffective in others.
+[src:leveldb/storage-engine] A data structure type is selected upon DBMS development to best meet the operations needed for the types of data it contains.
+[src:leveldb/storage-engine] Type of data structure selected for a certain task typically also takes into consideration the type of storage it resides in (e.g., speed of access, minimal size of storage chunk accessed, etc.).
+[src:leveldb/storage-engine] In some DBMSs database administrators have the flexibility to select among options of data structures to contain user data for performance reasons.
+[src:leveldb/storage-engine] Sometimes the data structures have selectable parameters to tune the database performance.
+[src:leveldb/storage-engine] Databases may store data in many data structure types.
+[src:leveldb/storage-engine] In contrast to conventional row-orientation, relational databases can also be column-oriented or correlational in the way they store data in any particular structure.
+[src:leveldb/storage-engine] In general, substantial performance improvement is gained if different types of database objects that are usually utilized together are laid in storage in proximity, being "clustered".
+[src:leveldb/storage-engine] This usually allows to retrieve needed related objects from storage in minimum number of input operations (each sometimes substantially time-consuming).
+[src:leveldb/storage-engine] Even for in-memory databases clustering provides performance advantage due to common utilization of large caches for input-output operations in memory, with similar resulting behavior.
+[src:leveldb/storage-engine] For example, it may be beneficial to cluster a record of an "item" in stock with all its respective "order" records.
+[src:leveldb/storage-engine] The decision of whether to cluster certain objects or not depends on the objects' utilization statistics, object sizes, caches sizes, storage types, etc.
+[src:leveldb/storage-engine] Indexing is a technique some storage engines use for improving database performance.
+[src:leveldb/storage-engine] The many types of indexes share the common property that they reduce the need to examine every entry when running a query.
+[src:leveldb/storage-engine] In large databases, this can reduce query time/cost by orders of magnitude.
+[src:leveldb/storage-engine] The simplest form of index is a sorted list of values that can be searched using a binary search with an adjacent reference to the location of the entry, analogous to the index in the back of a book.
+[src:leveldb/storage-engine] The same data can have multiple indexes (an employee database could be indexed by last name and hire date).
+[src:leveldb/storage-engine] Indexes affect performance, but not results.
+[src:leveldb/storage-engine] Database designers can add or remove indexes without changing application logic, reducing maintenance costs as the database grows and database usage evolves.
+[src:leveldb/storage-engine] Indexes can speed up data access, but they consume space in the database, and must be updated each time the data is altered.
+[src:leveldb/storage-engine] Indexes therefore can speed data access but slow data maintenance.
+[src:leveldb/storage-engine] These two properties determine whether a given index is worth the cost.

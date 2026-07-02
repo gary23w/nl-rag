@@ -1,0 +1,81 @@
+# nl-rag distilled facts — domain: cgroups
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:cgroups/cgroups] Engineers at Google started the work on this feature in 2006 under the name "process containers".
+[src:cgroups/cgroups] In late 2007, the nomenclature changed to "control groups" to avoid confusion caused by multiple meanings of the term "container" in the Linux kernel context, and the control groups functionality was merged into the Linux kernel mainline in kernel version 2.6.24, which was released in January 2008.
+[src:cgroups/cgroups] Since then, developers have added controllers for the kernel's own memory allocation, netfilter firewalling, the OOM killer, and many other parts.
+[src:cgroups/cgroups] A major change in the history of cgroups is **cgroup v2**, which removes the ability to use multiple process hierarchies and to discriminate between threads as found in the original cgroup (now called "v1").
+[src:cgroups/cgroups] Work on the single, unified hierarchy started with the repurposing of v1's dummy hierarchy as a place for holding all controllers not yet used by others in 2014. cgroup v2 was merged in Linux kernel 4.5 (2016).
+[src:cgroups/cgroups] One of the design goals of cgroups is to provide a unified interface to many different use cases, from controlling single processes (by using nice, for example) to full operating system-level virtualization (as provided by OpenVZ, Linux-VServer or LXC, for example).
+[src:cgroups/cgroups] A control group (abbreviated as cgroup) is a collection of processes that are bound by the same criteria and associated with a set of parameters or limits.
+[src:cgroups/cgroups] These groups can be hierarchical, meaning that each group inherits limits from its parent group.
+[src:cgroups/cgroups] The kernel provides access to multiple controllers (also called subsystems) through the cgroup interface; for example, the "memory" controller limits memory use, "cpuacct" accounts CPU usage, etc.
+[src:cgroups/cgroups] The Linux kernel documentation contains some technical details of the setup and use of control groups version 1 and version 2.
+[src:cgroups/cgroups] Both versions of cgroup act through a pseudo-filesystem (`cgroup` for v1 and `cgroup2` for v2).
+[src:cgroups/cgroups] Like all filesystems they can be mounted on any path, but the general convention is to mount one of the versions (generally v2) on `/sys/fs/cgroup` under the sysfs default location of `/sys`.
+[src:cgroups/cgroups] As mentioned before the two cgroup versions can be active at the same time; this too applies to the filesystems so long as they are mounted to a different path.
+[src:cgroups/cgroups] For the description below we assume a setup where the v2 hierarchy lies in `/sys/fs/cgroup`.
+[src:cgroups/cgroups] The v1 hierarchy, if ever required, will be mounted at a different location.
+[src:cgroups/cgroups] At initialization cgroup2 should have no defined control groups except the top-level one.
+[src:cgroups/cgroups] In other words, `/sys/fs/cgroup` should have no directories, only a number of files that control the system as a whole.
+[src:cgroups/cgroups] These files are named according to the controllers that handle them.
+[src:cgroups/cgroups] For example, `cgroup.*` deal with the cgroup system itself and `memory.*` deal with the memory subsystem.
+[src:cgroups/cgroups] Example: to request the kernel to 1 gigabyte of memory from anywhere in the system, one can run `echo "1G swappiness=50" > /sys/fs/cgroup/memory.reclaim`.
+[src:cgroups/cgroups] To create a subgroup, one simply creates a new directory under an existing group (including the top-level one).
+[src:cgroups/cgroups] The files corresponding to available controls for this group are automatically created.
+[src:cgroups/cgroups] For example, running `mkdir /sys/fs/cgroup/example; ls /sys/fs/cgroup/example` would produce a list of files largely similar to the one above, but with noticeable changes.
+[src:cgroups/cgroups] These changes are not unexpected because some controls and statistics only make sense on a subset of processes (e.g. nice level being the CPU priority of processes relative to the rest of the system).
+[src:cgroups/cgroups] Processes are assigned to subgroups by writing to `/proc/<PID>/cgroup`.
+[src:cgroups/cgroups] The cgroup a process is in can be found by reading the same file.
+[src:cgroups/cgroups] On systems based on systemd, a hierarchy of subgroups is predefined to encapsulate every process directly and indirectly launched by systemd under a subgroup: the very basis of how systemd manages processes.
+[src:cgroups/cgroups] An explanation of the nomenclature of these groups can be found in the Red Hat Enterprise Linux 7 manual.
+[src:cgroups/cgroups] Red Hat also provides a guide on creating a systemd service file that causes a process to run in a separate cgroup.
+[src:cgroups/cgroups] `systemd-cgtop` command can be used to show top control groups by their resource usage.
+[src:cgroups/cgroups] On a system with v2, v1 can still be mounted and given access to controllers *not* in use by v2.
+[src:cgroups/cgroups] However, a modern system typically already places all controllers in use in v2, so there is no controller available for v1 at all even if a hierarchy is created.
+[src:cgroups/cgroups] It is possible to clear all uses of a controller from v2 and hand it to v1, but moving controllers between hierarchies after the system is up and running is cumbersome and not recommended.
+[src:cgroups/cgroups] Redesign of cgroups started in 2013, with additional changes brought by versions 3.15 and 3.16 of the Linux kernel.
+[src:cgroups/cgroups] The following changes concern the kernel before 4.5/4.6, i.e. when cgroups-v2 were added.
+[src:cgroups/cgroups] In other words they describe how cgroups-v1 had been changed, though most of them have also been inherited into v2 (after all, v1 and v2 share the same codebase).
+[src:cgroups/cgroups] While not technically part of the cgroups work, a related feature of the Linux kernel is *namespace isolation*, where groups of processes are separated such that they cannot "see" resources in other groups.
+[src:cgroups/cgroups] For example, a PID namespace provides a separate enumeration of process identifiers within each namespace.
+[src:cgroups/cgroups] Also available are mount, user, UTS (Unix Time Sharing), network and SysV IPC namespaces.
+[src:cgroups/cgroups] Namespaces are created with the "unshare" command or syscall, or as "new" flags in a "clone" syscall.
+[src:cgroups/cgroups] The "ns" subsystem was added early in cgroups development to integrate namespaces and control groups.
+[src:cgroups/cgroups] If the "ns" cgroup was mounted, each namespace would also create a new group in the cgroup hierarchy.
+[src:cgroups/cgroups] This was an experiment that was later judged to be a poor fit for the cgroups API, and removed from the kernel.
+[src:cgroups/cgroups] Linux namespaces were inspired by the more general namespace functionality used heavily throughout Plan 9 from Bell Labs.
+[src:cgroups/cgroups] Kernfs was introduced into the Linux kernel with version 3.14 in March 2014, the main author being Tejun Heo.
+[src:cgroups/cgroups] One of the main motivators for a separate kernfs is the cgroups file system.
+[src:cgroups/cgroups] Kernfs is basically created by splitting off some of the sysfs logic into an independent entity, thus easing for other kernel subsystems the implementation of their own virtual file system with handling for device connect and disconnect, dynamic creation and removal, and other attributes.
+[src:cgroups/cgroups] This does not affect how cgroups is used, but makes maintaining the code easier.
+[src:cgroups/cgroups] Support for per-group netfilter setup was added in 2014.
+[src:cgroups/cgroups] The unified hierarchy was added in 2014.
+[src:cgroups/cgroups] It repurposes of v1's dummy hierarchy to hold all controllers not yet used by others.
+[src:cgroups/cgroups] This changed dummy hierarchy would become the only available hierarchy in v2.
+[src:cgroups/cgroups] Unlike v1, cgroup v2 has only a single process hierarchy and discriminates between processes, not threads.
+[src:cgroups/cgroups] Linux Kernel 4.19 (October 2018) introduced cgroup awareness of OOM killer implementation which adds an ability to kill a cgroup as a single unit and so guarantee the integrity of the workload.
+[src:cgroups/cgroups] Various projects use cgroups as their basis, including CoreOS, Docker (in 2013), Hadoop, Jelastic, Kubernetes, lmctfy (Let Me Contain That For You), LXC (Linux Containers), systemd, Mesos and Mesosphere, HTCondor, and Flatpak.
+[src:cgroups/cgroups] Major Linux distributions also adopted it such as Red Hat Enterprise Linux (RHEL) 6.0 in November 2010, three years before adoption by the mainline Linux kernel.
+[src:cgroups/cgroups] On 29 October 2019, the Fedora Project modified Fedora 31 to use CgroupsV2 by default.
+[src:cgroups/control-groups] In the design of experiments, hypotheses are applied to experimental units in a **treatment group**.
+[src:cgroups/control-groups] In comparative experiments, members of a **control group** receive a standard treatment, a placebo, or no treatment at all.
+[src:cgroups/control-groups] There may be more than one treatment group, more than one control group, or both.
+[src:cgroups/control-groups] In such cases, a third, non-treatment control group can be used to measure the placebo effect directly, as the difference between the responses of placebo subjects and untreated subjects, perhaps paired by age group or other factors (such as being twins).
+[src:cgroups/control-groups] For the conclusions drawn from the results of an experiment to have validity, it is essential that the items or patients assigned to treatment and control groups be representative of the same population.
+[src:cgroups/control-groups] In some experiments, such as many in agriculture or psychology, this can be achieved by randomly assigning items from a common population to one of the treatment and control groups.
+[src:cgroups/control-groups] In studies of twins involving just one treatment group and a control group, it is statistically efficient to do this random assignment separately for each pair of twins, so that one is in the treatment group and one in the control group.
+[src:cgroups/control-groups] In some medical studies, where it may be unethical not to treat patients who present with symptoms, controls may be given a standard treatment, rather than no treatment at all.
+[src:cgroups/control-groups] An alternative is to select controls from a wider population, provided that this population is well-defined and that those presenting with symptoms at the clinic are representative of those in the wider population.
+[src:cgroups/control-groups] A clinical control group can be a placebo arm or it can involve an old method used to address a clinical outcome when testing a new idea.
+[src:cgroups/control-groups] For example in a study released by the British Medical Journal, in 1995 studying the effects of strict blood pressure control versus more relaxed blood pressure control in diabetic patients, the clinical control group was the diabetic patients that did not receive tight blood pressure control.
+[src:cgroups/control-groups] In order to qualify for the study, the patients had to meet the inclusion criteria and not match the exclusion criteria.
+[src:cgroups/control-groups] Once the study population was determined, the patients were placed in either the experimental group (strict blood pressure control <150/80mmHg) versus non strict blood pressure control (<180/110).
+[src:cgroups/control-groups] There were a wide variety of ending points for patients such as death, myocardial infarction, stroke, etc.
+[src:cgroups/control-groups] The study was stopped before completion because strict blood pressure control was so much superior to the clinical control group which had relaxed blood pressure control.
+[src:cgroups/control-groups] The study was no longer considered ethical because tight blood pressure control was so much more effective at preventing end points that the clinical control group had to be discontinued.
+[src:cgroups/control-groups] The clinical control group is not always a placebo group.
+[src:cgroups/control-groups] Sometimes the clinical control group can involve comparing a new drug to an older drug in a superiority trial.
+[src:cgroups/control-groups] In a superiority trial, the clinical control group is the older medication rather than the new medication.
+[src:cgroups/control-groups] For example in the ALLHAT trial, Thiazide diuretics were demonstrated to be superior to calcium channel blockers or angiotensin-converting enzyme inhibitors in reducing cardiovascular events in high risk patients with hypertension.
+[src:cgroups/control-groups] In the ALLHAT study, the clinical control group was not a placebo it was ACEI or Calcium Channel Blockers.
+[src:cgroups/control-groups] Overall, clinical control groups can either be a placebo or an old standard of therapy.

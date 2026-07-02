@@ -1,0 +1,58 @@
+---
+title: "OpenTelemetry Concepts"
+source: https://opentelemetry.io/docs/concepts/
+domain: opentelemetry
+license: CC-BY-SA-4.0
+tags: opentelemetry instrumentation, distributed tracing, observability instrumentation, telemetry signals
+fetched: 2026-07-02
+---
+
+# OpenTelemetry Concepts
+
+Key concepts in OpenTelemetry
+
+This section covers data sources and key components of the OpenTelemetry project, which can help you understand how OpenTelemetry works.
+
+##### Observability primer
+
+Core observability concepts.
+
+##### Context propagation
+
+Learn about the concept that enables Distributed Tracing.
+
+##### Signals
+
+Learn about the categories of telemetry supported by OpenTelemetry
+
+##### Instrumentation
+
+How OpenTelemetry facilitates instrumentation
+
+##### Components
+
+The main components that make up OpenTelemetry
+
+##### Semantic Conventions
+
+Common names for different kinds of operations and data.
+
+##### Resources
+
+##### Instrumentation scope
+
+##### Sampling
+
+Learn about sampling and the different sampling options available in OpenTelemetry.
+
+##### Distributions
+
+A distribution, not to be confused with a fork, is a customized version of an OpenTelemetry component.
+
+##### Glossary
+
+Definitions and conventions for telemetry terms as used in OpenTelemetry.
+
+Last modified June 3, 2024:
+
+[i18n] Docs section ordering fix (#4573) (d638c386)

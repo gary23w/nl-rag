@@ -1,0 +1,60 @@
+---
+title: "Install Tools"
+source: https://kubernetes.io/docs/tasks/tools/
+domain: kubeadm
+license: CC-BY-SA-4.0
+tags: kubeadm bootstrap, kubernetes cluster bootstrap, cluster provisioning, control plane setup
+fetched: 2026-07-02
+---
+
+# Install Tools
+
+Set up Kubernetes tools on your computer.
+
+#### Note:
+
+See the
+
+Learning environment
+
+page to set up a practice environment.
+
+## kubectl
+
+The Kubernetes command-line tool, kubectl, allows you to run commands against Kubernetes clusters. You can use kubectl to deploy applications, inspect and manage cluster resources, and view logs. For more information including a complete list of kubectl operations, see the `kubectl` reference documentation.
+
+kubectl is installable on a variety of Linux platforms, macOS and Windows. Find your preferred operating system below.
+
+- Install kubectl on Linux
+- Install kubectl on macOS
+- Install kubectl on Windows
+
+## kind
+
+`kind` lets you run Kubernetes on your local computer. This tool requires that you have either Docker or Podman installed.
+
+The kind Quick Start page shows you what you need to do to get up and running with kind.
+
+View kind Quick Start Guide
+
+## minikube
+
+Like `kind`, `minikube` is a tool that lets you run Kubernetes locally. `minikube` runs an all-in-one or a multi-node local Kubernetes cluster on your personal computer (including Windows, macOS and Linux PCs) so that you can try out Kubernetes, or for daily development work.
+
+You can follow the official Get Started! guide if your focus is on getting the tool installed.
+
+View minikube Get Started! Guide
+
+Once you have `minikube` working, you can use it to run a sample application.
+
+## kubeadm
+
+You can use the kubeadm tool to create and manage Kubernetes clusters. It performs the actions necessary to get a minimum viable, secure cluster up and running in a user friendly way.
+
+Installing kubeadm shows you how to install kubeadm. Once installed, you can use it to create a cluster.
+
+View kubeadm Install Guide
+
+Last modified January 12, 2026 at 11:29 PM PST:
+
+Add note to guide users to the Learning environment page for practice setup (39536f1ccd)

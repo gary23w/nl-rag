@@ -1,0 +1,295 @@
+# nl-rag distilled facts — domain: rethinkdb
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:rethinkdb/architecture] RethinkDB uses a range sharding algorithm parameterized on the table’s primary key to partition the data.
+[src:rethinkdb/architecture] When the user states they want a given table to use a certain number of shards, the system examines the statistics for the table and finds the optimal set of split points to break up the table evenly.
+[src:rethinkdb/architecture] All sharding is currently done based on the table’s primary key, and cannot be done based on any other attribute (in RethinkDB the primary key and the shard key are effectively the same thing).
+[src:rethinkdb/architecture] For example, if a given table contains a thousand JSON documents whose primary keys are uniformly distributed, alphabetical, upper-case strings and the user states they want two shards, RethinkDB will likely pick split point ‘M’ to partition the table.
+[src:rethinkdb/architecture] Every document with a primary key less than or equal to ‘M’ will go into the first shard, and every document with a primary key greater than ‘M’ will go into the second shard.
+[src:rethinkdb/architecture] The split point will be picked such that each shard contains close to five hundred keys, and the shards will automatically be distributed across the cluster.
+[src:rethinkdb/architecture] Split points will not automatically be changed after table creation, which means that if the primary keys are unevenly distributed, shards may become unbalanced.
+[src:rethinkdb/architecture] However, the user can manually rebalance shards when necessary, as well as reconfigure tables with new sharding and replication settings.
+[src:rethinkdb/architecture] Users cannot set split points for shards manually.
+[src:rethinkdb/architecture] Internally this approach is more difficult to implement than the more commonly used consistent hashing, but it has significant advantages because it allows for an efficient implementation of range queries.
+[src:rethinkdb/architecture] Sharding and replication is configured through *table configurations,* which let you simply specify the number of shards and replicas per table or for all tables within a database.
+[src:rethinkdb/architecture] Users do not need to manually associate servers with tables.
+[src:rethinkdb/architecture] RethinkDB uses a set of heuristics to attempt to satisfy table configurations in an optimal way.
+[src:rethinkdb/architecture] It will copy data for new replicas from an available server, evenly distribute replicas of the data across the cluster, try to distribute the load evenly, and so on.
+[src:rethinkdb/architecture] For a more fine-grained mechanism, replicas can be associated with servers using *server tags.* Every server may be assigned one or more tags, and every table may have a specified number of replicas assigned to a server tag.
+[src:rethinkdb/architecture] For instance, if you have six servers, you might assign two the tag `us_west`, two the tag `us_east`, and two the tag `london`, and further assign all four servers in the United States the tag `us`.
+[src:rethinkdb/architecture] In the second example, the two replicas in the `us` group may be on any of the four servers in the United States.
+[src:rethinkdb/architecture] Note that server tags cannot be configured through RethinkDB’s web administration dashboard.
+[src:rethinkdb/architecture] They may be created and assigned through ReQL commands and scripts.
+[src:rethinkdb/architecture] RethinkDB keeps an internal directory tracking the current state of the cluster: how many servers are accessible, what data is currently stored on each server, etc.
+[src:rethinkdb/architecture] The data structures that keep track of the directory are automatically updated when the cluster changes.
+[src:rethinkdb/architecture] For example, if a server dies due to power failure, the directory is updated to represent this change.
+[src:rethinkdb/architecture] Starting with RethinkDB 1.16, the earlier concept of “data centers” has been replaced by server tags, described above.
+[src:rethinkdb/architecture] Servers in a given data center could all be given a tag such as `us_east` or `us_west`, and a table can be configured to have replicas associated with specific server tags (e.g., 2 replicas on servers tagged with `us_east` and 3 on servers tagged with `us_west`).
+[src:rethinkdb/architecture] RethinkDB uses the same protocol for communication within a datacenter as it does across datacenters.
+[src:rethinkdb/architecture] Because the architecture is immediately consistent and does not require quorums on individual document reads and writes, the latency issues commonly associated with cross-datacenter quorums on Dynamo-style systems do not arise in RethinkDB.
+[src:rethinkdb/architecture] We felt that performing automatic maintenance operations on the cluster (such as adding shards) is a higher-level component, and that it’s crucial to have a really good implementation of the lower-level components done first.
+[src:rethinkdb/architecture] Invoking this functionality automatically without the user’s request is the next layer in this hierarchy.
+[src:rethinkdb/architecture] Currently the user can control the system via the web UI, manually via the command line, or by writing scripts to call the command line tools to perform server automation.
+[src:rethinkdb/architecture] We’re exploring best practices to determine whether it’s possible to build a really good general purpose automation layer that controls the cluster by automatically enforcing user-specified rules (such as resharding the system when the shard balance drops below a certain threshold).
+[src:rethinkdb/architecture] Every shard in RethinkDB is assigned to a single authoritative primary replica.
+[src:rethinkdb/architecture] All reads and writes to any key in a given shard always get routed to its respective primary, where they’re ordered and evaluated.
+[src:rethinkdb/architecture] Data always remains immediately consistent and conflict-free, and a read that follows an acknowledged write is always guaranteed to see the write.
+[src:rethinkdb/architecture] However, neither reads nor writes are guaranteed to succeed if the primary replica is unavailable.
+[src:rethinkdb/architecture] RethinkDB supports both up-to-date and out-of-date reads.
+[src:rethinkdb/architecture] By default, all read queries are executed up-to-date, which means that every read operation for a given shard is routed to the primary replica for that shard and executed in order with other operations on the shard.
+[src:rethinkdb/architecture] In this default mode, the client always sees the latest, consistent, artifact-free view of the data.
+[src:rethinkdb/architecture] The programmer can also mark a read query to be ok with out-of-date data.
+[src:rethinkdb/architecture] In this mode, the query isn’t necessarily routed to the shard’s primary, but is likely to be routed to its closest replica.
+[src:rethinkdb/architecture] Out-of-date queries are likely to have lower latency and have stronger availability guarantees, but don’t necessarily return the latest version of the data to the client.
+[src:rethinkdb/architecture] The essential tradeoff exposed by the CAP theorem is this: in case of network partitioning, does the system maintain availability or data consistency?
+[src:rethinkdb/architecture] (Jumping ahead, RethinkDB chooses to maintain data consistency).
+[src:rethinkdb/architecture] Dynamo-based systems such as Cassandra and Riak choose to maintain stronger availability.
+[src:rethinkdb/architecture] In these systems if there is a network partition, the clients can write to the same row on both sides of the netsplit.
+[src:rethinkdb/architecture] In exchange for the write availability, applications built on top of these systems must deal with various complexities such as clock skew, conflict resolution code, conflict repair operations, performance issues for highly contested keys, and latency issues associated with quorums.
+[src:rethinkdb/architecture] Authoritative systems such as RethinkDB and MongoDB choose to maintain data consistency.
+[src:rethinkdb/architecture] Building applications on top of authoritative primary systems is much simpler because all of the issues associated with data inconsistency do not arise.
+[src:rethinkdb/architecture] In exchange, these applications will occasionally experience availability issues.
+[src:rethinkdb/architecture] In RethinkDB, if there is a network partition, the behavior of the system from any given client’s perspective depends on which side of the netsplit that client is on.
+[src:rethinkdb/architecture] If the client is on the same side of the netsplit as the majority of voting replicas for the shard the client is trying to reach, it will continue operating without any problems.
+[src:rethinkdb/architecture] If the client is on the side of the netsplit with half or fewer of the voting replicas for the shard the client is trying to reach, the client’s up-to-date queries and write queries will encounter a failure of availability.
+[src:rethinkdb/architecture] For example, if the client is running an up-to-date range query that spans multiple shards, the primaries for all shards must be on the same side of the netsplit as the client, or the client will encounter a failure of availability.
+[src:rethinkdb/architecture] If the programmer marks a read query to be ok with out-of-date data, RethinkDB will route the query to the closest available replica instead of routing it to the primary.
+[src:rethinkdb/architecture] In this case the client will see the data as long as there are replicas of the data on its side of the netsplit.
+[src:rethinkdb/architecture] However, in this case the data has the risk of being out of date.
+[src:rethinkdb/architecture] This is usually ok for reports, analytics, cached data, or any scenario in general where having the absolute latest information isn’t imperative.
+[src:rethinkdb/architecture] Updating the state of a cluster is a surprisingly difficult problem in distributed systems.
+[src:rethinkdb/architecture] At any given point different (and potentially) conflicting configurations can be selected on different sides of a netsplit, different configurations can reach different nodes in the cluster at unpredictable times, etc.
+[src:rethinkdb/architecture] RethinkDB uses the Raft algorithm to store and propagate cluster configuration in most cases, although there are some situations it uses semilattices, versioned with internal timestamps.
+[src:rethinkdb/architecture] This architecture turns out to have sufficient mathematical properties to address all the issues mentioned above (this result has been known in distributed systems research for quite a while).
+[src:rethinkdb/architecture] When the user creates a table, they have the option of specifying the attribute that will serve as the primary key (if the primary key attribute isn’t specified, it defaults to ‘id’).
+[src:rethinkdb/architecture] When the user inserts a document into the table, if the document contains the primary key attribute, its value is used to index the document.
+[src:rethinkdb/architecture] Otherwise, a random unique ID is generated for the index automatically.
+[src:rethinkdb/architecture] The primary key of each document is used by RethinkDB to place the document into an appropriate shard, and index it within that shard using a B-Tree data structure.
+[src:rethinkdb/architecture] Querying documents by primary key is extremely efficient, because the query can immediately be routed to the right shard and the document can be looked up in the B-Tree.
+[src:rethinkdb/architecture] RethinkDB supports both secondary and compound indexes, as well as indexes that compute arbitrary expressions.
+[src:rethinkdb/architecture] You can see examples of how to use the secondary index API here.
+[src:rethinkdb/architecture] If your cluster has at least three servers, then in most cases RethinkDB will be able to perform automatic failover and maintain table availability.
+[src:rethinkdb/architecture] RethinkDB maintains availability if the user increases or decreases the number of replicas in the cluster.
+[src:rethinkdb/architecture] In most cases, the replication process should not have a strong performance impact on the real-time system.
+[src:rethinkdb/architecture] RethinkDB may or may not maintain availability if the user modifies the number of shards.
+[src:rethinkdb/architecture] In many cases availability will be maintained, but currently it cannot be guaranteed.
+[src:rethinkdb/architecture] We’re exploring different solutions to remove this limitation.
+[src:rethinkdb/architecture] When a node in the cluster receives a query from the client, it evaluates the query in the following way.
+[src:rethinkdb/architecture] First, the query is transformed into an execution plan that consists of a stack of internal logical operations.
+[src:rethinkdb/architecture] The operation stack fully describes the query in a data structure useful for efficient execution.
+[src:rethinkdb/architecture] The bottom-most node of the stack usually deals with data access— it can be a lookup of a single document, a short range scan bounded by an index, or even a full table scan.
+[src:rethinkdb/architecture] Nodes closer to the top usually perform transformations on the data – mapping the values, running reductions, grouping, etc.
+[src:rethinkdb/architecture] Nodes can be as simple as projections (i.e. returning a subset of the document), or as complex as entire stacks of stacks in case of subqueries.
+[src:rethinkdb/architecture] Each node in the stack has a number of methods defined on it.
+[src:rethinkdb/architecture] The three most important methods define how to execute a subset of the query on each server in the cluster, how to combine the data from multiple servers into a unified resultset, and how to stream data to the nodes further up in small chunks.
+[src:rethinkdb/architecture] As the client attempts to stream data from the server, these stacks are transported to every relevant server in the cluster, and each server begins evaluating the topmost node in the stack, in parallel with other servers.
+[src:rethinkdb/architecture] On each server, the topmost node in the stack grabs the first chunk of the data from the node below it, and applies its share of transformations to it.
+[src:rethinkdb/architecture] This process proceeds recursively until enough data is collected to send the first chunk to the client.
+[src:rethinkdb/architecture] The data from each server is combined into a single resultset, and forwarded to the client.
+[src:rethinkdb/architecture] This process continues as the client requests more data from the server.
+[src:rethinkdb/architecture] The two most important aspects of the execution engine is that every query is completely parallelized across the cluster, and that queries are evaluated lazily.
+[src:rethinkdb/architecture] For instance, if the client requests only one document, RethinkDB will try to do just enough work to return this document, and will not process every shard in its entirety.
+[src:rethinkdb/architecture] This allows for large, complicated queries to execute in a very efficient way.
+[src:rethinkdb/architecture] The full query execution process is fairly complex and nuanced.
+[src:rethinkdb/architecture] For example, some operations cannot be parallelized, some queries cannot be executed lazily (which has implications on runtime and RAM usage), and implementations of some operations could be significantly improved.
+[src:rethinkdb/architecture] We will be adding tools to help visualize and understand query execution in a user-friendly way, but at the moment the best way to learn more about it is to ask us or to look at the code.
+[src:rethinkdb/architecture] Write atomicity is supported on a per-document basis – updates to a single JSON document are guaranteed to be atomic.
+[src:rethinkdb/architecture] RethinkDB is different from other NoSQL systems in that atomic document updates aren’t limited to a small subset of possible operations – any combination of operations that can be performed on a single document is guaranteed to update the document atomically.
+[src:rethinkdb/architecture] For example, the user may wish to update the value of attribute A to a sum of the values of attributes B and C, increment the value of attribute D by a fixed number, and append an element to an array in attribute E.
+[src:rethinkdb/architecture] All of these operations can be applied to the document atomically in a single update operation.
+[src:rethinkdb/architecture] However, RethinkDB does come with some restrictions regarding which operations can be performed atomically.
+[src:rethinkdb/architecture] Operations that cannot be proven deterministic cannot update the document in an atomic way.
+[src:rethinkdb/architecture] Currently, values obtained by executing JavaScript code, random values, and values obtained as a result of a subquery (e.g. incrementing the value of an attribute by the value of an attribute in a different document) cannot be performed atomically.
+[src:rethinkdb/architecture] If an update or replace query cannot be executed atomically, by default RethinkDB will throw an error.
+[src:rethinkdb/architecture] The user can choose to set the flag on the update operation in the client driver to execute the query in a non-atomic way.
+[src:rethinkdb/architecture] Note that non-atomic operations can only be detected when they involve functions (including `row()`) being passed to `update` or `replace`; a non-atomic `insert` operation will not throw an error.
+[src:rethinkdb/architecture] In addition, like most NoSQL systems, RethinkDB does not support updating multiple documents atomically.
+[src:rethinkdb/architecture] To efficiently perform concurrent query execution RethinkDB implements block-level multiversion concurrency control (MVCC).
+[src:rethinkdb/architecture] Whenever a write operation occurs while there is an ongoing read, RethinkDB takes a snapshot of the B-Tree for each relevant shard and temporarily maintains different versions of the blocks in order to execute read and write operations concurrently.
+[src:rethinkdb/architecture] From the perspective of the applications written on top of RethinkDB, the system is essentially lock-free— you can run an hour-long analytics query on a live system without blocking any real-time reads or writes.
+[src:rethinkdb/architecture] RethinkDB does take exclusive block-level locks in case multiple writes are performed on documents that are close together in the B-Tree.
+[src:rethinkdb/architecture] If the contested block is cached in memory, these locks are extremely short-lived.
+[src:rethinkdb/architecture] If the blocks need to be loaded from disk, these locks take longer.
+[src:rethinkdb/architecture] Typically this does not present performance problems because the top levels of the B-Tree are all cached along with the frequently used blocks, so in most cases writes can be performed essentially lock-free.
+[src:rethinkdb/architecture] The data is organized into B-Trees, and stored on disk using a log-structured storage engine built specifically for RethinkDB and inspired by the architecture of BTRFS.
+[src:rethinkdb/architecture] The storage engine is used in conjunction with a custom, B-Tree-aware caching engine which allows file sizes many orders of magnitude greater than the amount of available memory.
+[src:rethinkdb/architecture] RethinkDB can operate on a terabyte of data with about ten gigabytes of free RAM.
+[src:rethinkdb/architecture] It relies on the underlying storage system to ensure data consistency.
+[src:rethinkdb/architecture] RethinkDB does not perform additional checksums on stored data.
+[src:rethinkdb/architecture] It is, however, compatible with file systems which do guarantee data integrity, such as ZFS.
+[src:rethinkdb/architecture] RethinkDB supports most commonly used file systems.
+[src:rethinkdb/architecture] It optionally supports direct disk I/O for greater efficiency, but this is not enabled by default.
+[src:rethinkdb/architecture] RethinkDB ships with simple tools to perform a hot backup of a running cluster.
+[src:rethinkdb/architecture] See the backup instructions for more details.
+[src:rethinkdb/data-modeling] Let’s explore the advantages and disadvantages of each approach.
+[src:rethinkdb/data-modeling] We’ll use a simple blog database that stores information about authors and their posts to demonstrate them.
+[src:rethinkdb/data-modeling] We can model the relationship between authors and posts by using embedded arrays as follows.
+[src:rethinkdb/data-modeling] The `authors` table contains a document for each author.
+[src:rethinkdb/data-modeling] Each document contains information about the relevant author and a field `posts` with an array of posts for that author.
+[src:rethinkdb/data-modeling] You can use a relational data modeling technique and create two tables to store your data.
+[src:rethinkdb/data-modeling] Every post contains an `author_id` field that links each post to its author.
+[src:rethinkdb/data-modeling] In a relational database, we’d use a `JOIN` here; in RethinkDB, we use the `eq_join` command.
+[src:rethinkdb/data-modeling] Note that the values for `author_id` correspond to the `id` field of the author, which allows us to link the documents.
+[src:rethinkdb/data-modeling] There’s a separate article, Table joins in RethinkDB, with much more information about the multiple-table approach, including how to do the ReQL equivalents of inner, outer and cross joins.
+[src:rethinkdb/data-modeling] If you aren’t sure which schema to use, ask us on Stack Overflow or join the `#rethinkdb` IRC channel on Freenode.
+[src:rethinkdb/distributed-database] A **distributed database** is a database in which data is stored across different physical locations.
+[src:rethinkdb/distributed-database] It may be stored in multiple computers located in the same physical location (e.g. a data centre); or maybe dispersed over a network of interconnected computers.
+[src:rethinkdb/distributed-database] Unlike parallel systems, in which the processors are tightly coupled and constitute a single database system, a distributed database system consists of loosely coupled sites that share no physical components.
+[src:rethinkdb/distributed-database] System administrators can distribute collections of data (e.g. in a database) across multiple physical locations.
+[src:rethinkdb/distributed-database] A distributed database can reside on organised network servers or decentralised independent computers on the Internet, on corporate intranets or extranets, or on other organisation networks.
+[src:rethinkdb/distributed-database] Because distributed databases store data across multiple computers, distributed databases may improve performance at end-user worksites by allowing transactions to be processed on many machines, instead of being limited to one.
+[src:rethinkdb/distributed-database] Two processes ensure that the distributed databases remain up-to-date and current: replication and duplication.
+[src:rethinkdb/distributed-database] Duplication, on the other hand, has less complexity.
+[src:rethinkdb/distributed-database] It identifies one database as a master and then duplicates that database.
+[src:rethinkdb/distributed-database] The duplication process is normally done at a set time after hours.
+[src:rethinkdb/distributed-database] This is to ensure that each distributed location has the same data.
+[src:rethinkdb/distributed-database] In the duplication process, users may change only the master database.
+[src:rethinkdb/distributed-database] This ensures that local data will not be overwritten.
+[src:rethinkdb/distributed-database] Both replication and duplication can keep the data current in all distributive locations.
+[src:rethinkdb/distributed-database] Besides distributed database replication and fragmentation, there are many other distributed database design technologies.
+[src:rethinkdb/distributed-database] For example, local autonomy, synchronous, and asynchronous distributed database technologies.
+[src:rethinkdb/distributed-database] The implementation of these technologies can and do depend on the needs of the business and the sensitivity/confidentiality of the data stored in the database and the price the business is willing to spend on ensuring data security, consistency and integrity.
+[src:rethinkdb/distributed-database] In the shared-memory and shared-disk architectures, the data is not partitioned, but it has to be in a shared-nothing architecture.
+[src:rethinkdb/distributed-database] Shared-disk architecture is more common for cloud databases than for on-premise.
+[src:rethinkdb/distributed-database] Historically, shared-nothing was the first architecture to be implemented on the cloud, before the advent of shared cloud storage made shared-disk possible.
+[src:rethinkdb/distributed-database] In practice, different layers of the database can have different architectures.
+[src:rethinkdb/distributed-database] It is now common to have a compute layer with a shared nothing architecture, and a storage layer with a shared disk architecture.
+[src:rethinkdb/distributed-database] This is for instance the case of Snowflake and AWS Aurora.
+[src:rethinkdb/document-oriented-database] A **document-oriented database**, or **document store**, is a computer program and data storage system designed for storing, retrieving, and managing document-oriented information, also known as semi-structured data.
+[src:rethinkdb/document-oriented-database] Document-oriented databases are one of the main categories of NoSQL databases, and the popularity of the term "document-oriented database" has grown alongside the adoption of NoSQL itself.
+[src:rethinkdb/document-oriented-database] XML databases are a subclass of document-oriented databases optimized for XML documents.
+[src:rethinkdb/document-oriented-database] Graph databases are similar, but add another layer, the *relationship*, which allows them to link documents for rapid traversal.
+[src:rethinkdb/document-oriented-database] Document-oriented databases are conceptually an extension of the key–value store, another type of NoSQL database.
+[src:rethinkdb/document-oriented-database] In key-value stores, data is treated as opaque by the database, whereas document-oriented systems exploit the internal structure of documents to extract metadata and optimize storage and queries.
+[src:rethinkdb/document-oriented-database] Although in practice the distinction can be minimal due to modern tooling, document stores are designed to provide a richer programming experience with modern programming techniques.
+[src:rethinkdb/document-oriented-database] Document databases differ significantly from traditional relational databases (RDBs).
+[src:rethinkdb/document-oriented-database] Relational databases store data in predefined tables, often requiring an object to be split across multiple tables.
+[src:rethinkdb/document-oriented-database] In contrast, document databases store all information for a given object in a single document, with each document potentially having a unique structure.
+[src:rethinkdb/document-oriented-database] This design eliminates the need for object-relational mapping when loading data into the database.
+[src:rethinkdb/document-oriented-database] The central concept of a document-oriented database is the notion of a *document*.
+[src:rethinkdb/document-oriented-database] Although implementations vary in their specific definitions, document-oriented databases generally treat documents as self-contained units that encapsulate and encode data in a standardized format.
+[src:rethinkdb/document-oriented-database] Common encoding formats include XML, YAML, JSON, as well as binary representations such as BSON.
+[src:rethinkdb/document-oriented-database] Documents in a document store are equivalent to the programming concept of an object.
+[src:rethinkdb/document-oriented-database] They are not required to adhere to a fixed schema, and documents within the same collection may contain different fields or structures.
+[src:rethinkdb/document-oriented-database] Fields may be optional, and documents of the same logical type may differ in composition.
+[src:rethinkdb/document-oriented-database] The two example documents share some structural elements but also contain unique fields.
+[src:rethinkdb/document-oriented-database] The structure, text, and other data within each document are collectively referred to as the document's content and can be accessed or modified using retrieval or editing operations.
+[src:rethinkdb/document-oriented-database] Unlike relational databases, in which each record contains the same fields and unused fields are left empty, document-oriented databases do not require uniform fields across documents.
+[src:rethinkdb/document-oriented-database] This design allows new information to be added to some documents without affecting the structure of others.
+[src:rethinkdb/document-oriented-database] Document databases often support the storage of additional metadata alongside the document content.
+[src:rethinkdb/document-oriented-database] Such metadata may relate to organizational features, security, indexing, or other implementation-specific features.
+[src:rethinkdb/document-oriented-database] The core operations supported by a document-oriented database for manipulating documents are similar to those in other databases.
+[src:rethinkdb/document-oriented-database] Although terminology is not perfectly standardized, these operations are generally recognized as Create, Read, Update, and Delete (CRUD).
+[src:rethinkdb/document-oriented-database] Documents in a document-oriented database are addressed via a unique identifier.
+[src:rethinkdb/document-oriented-database] This identifier, often a string, URI, or path, can be used to retrieve the document from the database.
+[src:rethinkdb/document-oriented-database] Most document stores maintain an index on the key to optimize retrieval, and in some implementations the key is required when creating or inserting a new document.
+[src:rethinkdb/document-oriented-database] In addition to key-based access, document-oriented databases typically provide an API or query language that enables retrieval based on document content or associated metadata.
+[src:rethinkdb/document-oriented-database] For example, a query may return all documents with a specific field matching a given value.
+[src:rethinkdb/document-oriented-database] The available query features, indexing options, and performance characteristics vary across implementations.
+[src:rethinkdb/document-oriented-database] Document stores differ from key-value stores in that they exploit the internal structure and metadata of stored documents.
+[src:rethinkdb/document-oriented-database] In many key-value stores, values are treated as opaque or "black-box" data, meaning the database system does not interpret their internal structure.
+[src:rethinkdb/document-oriented-database] By contrast, document-oriented databases can classify and interpret document content.
+[src:rethinkdb/document-oriented-database] Document databases typically provide mechanisms for updating or editing the content or metadata of a document.
+[src:rethinkdb/document-oriented-database] Updates may involve replacing the entire document or modifying individual elements or fields within the document.
+[src:rethinkdb/document-oriented-database] These organizational structures may differ between logical and physical representations (e.g. on disk or in memory).
+[src:rethinkdb/document-oriented-database] A document-oriented database can be viewed as a specialized form of key-value store, which is itself a category of NoSQL database.
+[src:rethinkdb/document-oriented-database] In a basic key-value store, the stored value is typically treated as opaque by the database system.
+[src:rethinkdb/document-oriented-database] By contrast, a document-oriented database provides APIs or a query and update language that allows queries and modifications based on the internal structure of the document.
+[src:rethinkdb/document-oriented-database] For users who do not require advanced query, retrieval, or update capabilities, the distinction between document-oriented databases and key-value stores may be minimal.
+[src:rethinkdb/document-oriented-database] Some search engine and information retrieval systems, such as Apache Solr and Elasticsearch, provide document storage and support core document operations.
+[src:rethinkdb/document-oriented-database] As a result, they may meet certain functional definitions of a document-oriented database, although their primary design goals differ.
+[src:rethinkdb/document-oriented-database] In a relational database, data is organized into predefined types represented as tables.
+[src:rethinkdb/document-oriented-database] Each table contains rows (records) with a fixed set of columns (fields), so all records in a table share the same structure.
+[src:rethinkdb/document-oriented-database] Administrators typically define indexes on selected fields to improve query performance.
+[src:rethinkdb/document-oriented-database] A central principle of relational database design is database normalization, in which data that might otherwise be repeated is stored in separate tables and linked using keys.
+[src:rethinkdb/document-oriented-database] When records in different tables are related, a foreign key is used to associate them.
+[src:rethinkdb/document-oriented-database] For example, an address book application may store a contact's name, image, phone numbers, mailing addresses, and email addresses.
+[src:rethinkdb/document-oriented-database] In a normalized relational design, separate tables might be created for contacts, phone numbers, and email addresses.
+[src:rethinkdb/document-oriented-database] The phone number table would include a foreign key referencing the associated contact.
+[src:rethinkdb/document-oriented-database] To reconstruct a complete contact record, the database retrieves related information from each table using the foreign keys and combines it into a single record.
+[src:rethinkdb/document-oriented-database] In contrast, a document-oriented database stores all data related to an object within a single document, and stored in the database as a single entry.
+[src:rethinkdb/document-oriented-database] In the address book example,the contact's name, image, and contact information may be stored together in one document.
+[src:rethinkdb/document-oriented-database] The document is retrieved using a unique key, and all related information is returned together, without needing to look up multiple tables.
+[src:rethinkdb/document-oriented-database] A key difference between the document-oriented and relational models is that the data formats are not predefined in the document case.
+[src:rethinkdb/document-oriented-database] In most cases, any sort of document can be stored in a database, and documents can change in type and form over time.
+[src:rethinkdb/document-oriented-database] For example, a new field such as COUNTRY_FLAG can be added to new documents as they are inserted without affecting existing documents.
+[src:rethinkdb/document-oriented-database] To aid retrieval, document-oriented systems generally allow the administrator to provide hints to the database for locating certain types of information.
+[src:rethinkdb/document-oriented-database] These hints work in a similar fashion to indexes in relational databases.
+[src:rethinkdb/document-oriented-database] Many systems also allow additional metadata outside the content of the document itself, such as tagging entries as part of an address book, which enables retrieval of related information, for instance, all the address book entries.
+[src:rethinkdb/document-oriented-database] This provides functionality similar to a table, but separates the concept (categories of data) from its physical implementation (tables).
+[src:rethinkdb/document-oriented-database] In the traditional normalized relational model, objects in the database are represented as separate rows of data, with no inherent structure beyond what is defined in the tables.
+[src:rethinkdb/document-oriented-database] This can create difficulties when translating programming objects to and from their corresponding database rows, a challenge known as object-relational impedance mismatch.
+[src:rethinkdb/document-oriented-database] In contrast, document stores often map programming objects directly into the database, preserving much of their internal structure.
+[src:rethinkdb/document-oriented-database] Databases using this approach are frequently described as NoSQL systems.
+[src:rethinkdb/document-oriented-database] Most XML databases are document-oriented databases.
+[src:rethinkdb/nosql] NoSQL databases are popular in big data and real-time web applications due to their simple design, ability to scale across clusters of machines (called horizontal scaling), and precise control over data availability.
+[src:rethinkdb/nosql] These structures can speed up certain tasks and are often considered more adaptable than fixed database tables.
+[src:rethinkdb/nosql] However, many NoSQL systems prioritize speed and availability over strict consistency (per the CAP theorem), using eventual consistency—where updates reach all nodes eventually, typically within milliseconds, but may cause brief delays in accessing the latest data, known as stale reads.
+[src:rethinkdb/nosql] While most lack full ACID transaction support, some, like MongoDB, include it as a key feature.
+[src:rethinkdb/nosql] Barriers to wider NoSQL adoption include their use of low-level query languages instead of SQL, inability to perform ad hoc joins across tables, lack of standardized interfaces, and significant investments already made in relational databases.
+[src:rethinkdb/nosql] Some NoSQL systems risk losing data through lost writes or other forms, though features like write-ahead logging—a method to record changes before they’re applied—can help prevent this.
+[src:rethinkdb/nosql] Limitations within the interface environment are overcome using semantic virtualization protocols, such that NoSQL services are accessible to most operating systems.
+[src:rethinkdb/nosql] The term *NoSQL* was used by Carlo Strozzi in 1998 to name his lightweight Strozzi NoSQL open-source relational database that did not expose the standard Structured Query Language (SQL) interface, but was still relational.
+[src:rethinkdb/nosql] His NoSQL RDBMS is distinct from the around-2009 general concept of NoSQL databases.
+[src:rethinkdb/nosql] Strozzi suggests that, because the current NoSQL movement "departs from the relational model altogether, it should therefore have been called more appropriately 'NoREL'", referring to "not relational".
+[src:rethinkdb/nosql] Johan Oskarsson, then a developer at Last.fm, reintroduced the term *NoSQL* in early 2009 when he organized an event to discuss "open-source distributed, non-relational databases".
+[src:rethinkdb/nosql] The name attempted to label the emergence of an increasing number of non-relational, distributed data stores, including open source clones of Google's Bigtable/MapReduce and Amazon's DynamoDB.
+[src:rethinkdb/nosql] There are various ways to classify NoSQL databases, with different categories and subcategories, some of which overlap.
+[src:rethinkdb/nosql] Key–value (KV) stores use the associative array (also called a map or dictionary) as their fundamental data model.
+[src:rethinkdb/nosql] In this model, data is represented as a collection of key–value pairs, such that each possible key appears at most once in the collection.
+[src:rethinkdb/nosql] The key–value model is one of the simplest non-trivial data models, and richer data models are often implemented as an extension of it.
+[src:rethinkdb/nosql] The key–value model can be extended to a discretely ordered model that maintains keys in lexicographic order.
+[src:rethinkdb/nosql] This extension is computationally powerful, in that it can efficiently retrieve selective key *ranges*.
+[src:rethinkdb/nosql] Key–value stores can use consistency models ranging from eventual consistency to serializability.
+[src:rethinkdb/nosql] Some databases support ordering of keys.
+[src:rethinkdb/nosql] There are various hardware implementations, and some users store data in memory (RAM), while others on solid-state drives (SSD) or rotating disks (aka hard disk drive (HDD)).
+[src:rethinkdb/nosql] The central concept of a document store is that of a "document".
+[src:rethinkdb/nosql] While the details of this definition differ among document-oriented databases, they all assume that documents encapsulate and encode data (or information) in some standard formats or encodings.
+[src:rethinkdb/nosql] Encodings in use include XML, YAML, and JSON and binary forms like BSON.
+[src:rethinkdb/nosql] Documents are addressed in the database via a unique *key* that represents that document.
+[src:rethinkdb/nosql] Another defining characteristic of a document-oriented database is an API or query language to retrieve documents based on their contents.
+[src:rethinkdb/nosql] Compared to relational databases, collections could be considered analogous to tables and documents analogous to records.
+[src:rethinkdb/nosql] But they are different – every record in a table has the same sequence of fields, while documents in a collection may have fields that are completely different.
+[src:rethinkdb/nosql] Graph databases are designed for data whose relations are well represented as a graph consisting of elements connected by a finite number of relations.
+[src:rethinkdb/nosql] Examples of data include social relations, public transport links, road maps, network topologies, etc.
+[src:rethinkdb/nosql] The performance of NoSQL databases is usually evaluated using the metric of throughput, which is measured as operations per second.
+[src:rethinkdb/nosql] Performance evaluation must pay attention to the right benchmarks such as production configurations, parameters of the databases, anticipated data volume, and concurrent user workloads.
+[src:rethinkdb/nosql] Performance and scalability comparisons are most commonly done using the YCSB benchmark.
+[src:rethinkdb/nosql] Since most NoSQL databases lack ability for joins in queries, the database schema generally needs to be designed differently.
+[src:rethinkdb/nosql] There are three main techniques for handling relational data in a NoSQL database.
+[src:rethinkdb/nosql] Instead of retrieving all the data with one query, it is common to do several queries to get the desired data.
+[src:rethinkdb/nosql] NoSQL queries are often faster than traditional SQL queries, so the cost of additional queries may be acceptable.
+[src:rethinkdb/nosql] If an excessive number of queries would be necessary, one of the other two approaches is more appropriate.
+[src:rethinkdb/nosql] Instead of only storing foreign keys, it is common to store actual foreign values along with the model's data.
+[src:rethinkdb/nosql] For example, each blog comment might include the username in addition to a user id, thus providing easy access to the username without requiring another lookup.
+[src:rethinkdb/nosql] When a username changes, however, this will now need to be changed in many places in the database.
+[src:rethinkdb/nosql] Thus this approach works better when reads are much more common than writes.
+[src:rethinkdb/nosql] With document databases like MongoDB it is common to put more data in a smaller number of collections.
+[src:rethinkdb/nosql] For example, in a blogging application, one might choose to store comments within the blog post document, so that with a single retrieval one gets all the comments.
+[src:rethinkdb/nosql] Thus in this approach a single document contains all the data needed for a specific task.
+[src:rethinkdb/nosql] A database is marked as supporting ACID properties (atomicity, consistency, isolation, durability) or join operations if the documentation for the database makes that claim.
+[src:rethinkdb/nosql] However, this doesn't necessarily mean that the capability is fully supported in a manner similar to most SQL databases.
+[src:rethinkdb/nosql] MongoDB did not support joining from a sharded collection until version 5.1.
+[src:rethinkdb/nosql] OrientDB can resolve 1:1 joins using links by storing direct links to foreign records.
+[src:rethinkdb/nosql] Different NoSQL databases, such as DynamoDB, MongoDB, Cassandra, Couchbase, HBase, and Redis, exhibit varying behaviors when querying non-indexed fields.
+[src:rethinkdb/nosql] Many perform full-table or collection scans for such queries, applying filtering operations after retrieving data.
+[src:rethinkdb/nosql] However, modern NoSQL databases often incorporate advanced features to optimize query performance.
+[src:rethinkdb/nosql] For example, MongoDB supports compound indexes and query-optimization strategies, Cassandra offers secondary indexes and materialized views, and Redis employs custom indexing mechanisms tailored to specific use cases.
+[src:rethinkdb/nosql] Systems like Elasticsearch use inverted indexes for efficient text-based searches, but they can still require full scans for non-indexed fields.
+[src:rethinkdb/nosql] This behavior reflects the design focus of many NoSQL systems on scalability and efficient key-based operations rather than optimized querying for arbitrary fields.
+[src:rethinkdb/nosql] Consequently, while these databases excel at basic CRUD operations and key-based lookups, their suitability for complex queries involving joins or non-indexed filtering varies depending on the database type—document, key–value, wide-column, or graph—and the specific implementation.
+[src:rethinkdb/page] RethinkDB makes building and scaling realtime apps dramatically easier.
+[src:rethinkdb/page] Get started by installing the server, and jump into our getting started guide to start building your first app in minutes.
+[src:rethinkdb/rethinkdb] The CNCF (Cloud Native Computing Foundation) then purchased the rights to the RethinkDB source code and contributed it to the Linux Foundation.
+[src:rethinkdb/rethinkdb] RethinkDB was founded in 2009, and open-sourced at version 1.2 in 2012.
+[src:rethinkdb/rethinkdb] In 2015, RethinkDB released version 2.0, announcing that it was production-ready.
+[src:rethinkdb/rethinkdb] On October 5, 2016, the company announced it was shutting down, transitioning members of its engineering team to Stripe, and would no longer offer production support.
+[src:rethinkdb/rethinkdb] On February 6, 2017, The Cloud Native Computing Foundation purchased the rights to the source code and relicensed it under the Apache License 2.0.
+[src:rethinkdb/rethinkdb] RethinkDB uses the ReQL query language, an internal (embedded) domain-specific language officially available for Ruby, Python, Java and JavaScript (including Node.js).
+[src:rethinkdb/rethinkdb] It has support for table joins, groupings, aggregations and functions.
+[src:rethinkdb/rethinkdb] There are also unofficial, community-supported drivers for other languages, including C#, Clojure, Erlang, Go, Haskell, Lua, and PHP.
+[src:rethinkdb/rethinkdb] According to the DB-Engines ranking, as of June 2025, it was the 105th most popular database.
+[src:rethinkdb/rethinkdb] A distinguishing feature of RethinkDB is the first class support for real-time change feeds.
+[src:rethinkdb/rethinkdb] A change query returns a cursor which allows blocking or non-blocking requests to keep track of a potentially infinite stream of real-time changes.
+[src:rethinkdb/rethinkdb] Due to seeming stagnation, RethinkDB was forked by members of the community on May 17, 2018.
+[src:rethinkdb/rethinkdb] The new project, called RebirthDB, is also hosted on GitHub.
+[src:rethinkdb/rethinkdb] The project later merged back with the original repository.

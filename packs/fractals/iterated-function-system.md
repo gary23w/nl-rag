@@ -1,0 +1,78 @@
+---
+title: "Iterated function system"
+source: https://en.wikipedia.org/wiki/Iterated_function_system
+domain: fractals
+license: CC-BY-SA-4.0
+tags: fractal geometry, mandelbrot set, julia set, fractal dimension
+fetched: 2026-07-02
+---
+
+# Iterated function system
+
+In mathematics, **iterated function systems** (**IFSs**) are a method of constructing fractals; the resulting fractals are often self-similar. IFS fractals are more related to set theory than fractal geometry. They were introduced in 1981.
+
+**IFS** fractals, as they are normally called, can be of any number of dimensions, but are commonly computed and drawn in 2D. The fractal is made up of the union of several copies of itself, each copy being transformed by a function (hence "function system"). The canonical example is the Sierpiński triangle. The functions are normally contractive, which means they bring points closer together and make shapes smaller. Hence, the shape of an IFS fractal is made up of several possibly-overlapping smaller copies of itself, each of which is also made up of copies of itself, ad infinitum. This is the source of its self-similar fractal nature.
+
+## Definition
+
+Formally, an iterated function system is a finite set of contraction mappings on a complete metric space. Symbolically,
+
+$\{f_{i}:X\to X\mid i=1,2,\dots ,N\},\ N\in \mathbb {N}$
+
+is an iterated function system if each fi is a contraction on the complete metric space X.
+
+## Properties
+
+Hutchinson showed that, for the metric space ℝ*n*, or more generally, for a complete metric space X , such a system of functions has a unique nonempty compact (closed and bounded) fixed set S. One way of constructing a fixed set is to start with an initial nonempty closed and bounded set *S*0 and iterate the actions of the *f**i*, taking *S**n*+1 to be the union of the images of *S**n* under the *f**i*; then taking S to be the closure of the limit lim*n*→∞ *Sn*. Symbolically, the unique fixed (nonempty compact) set *S* ⊆ *X* has the property
+
+$S={\overline {\bigcup _{i=1}^{N}f_{i}(S)}}.$
+
+The set S is thus the fixed set of the Hutchinson operator *F* : 2*X* → 2*X* defined for *A* ⊆ *X* via
+
+$F(A)={\overline {\bigcup _{i=1}^{N}f_{i}(A)}}.$
+
+The existence and uniqueness of S is a consequence of the contraction mapping principle, as is the fact that
+
+$\lim _{n\to \infty }F^{n}(A)=S$
+
+for any nonempty compact set A in X. (For contractive IFS this convergence takes place even for any nonempty closed bounded set A). Random elements arbitrarily close to S may be obtained by the "chaos game", described below.
+
+Recently it was shown that the IFSs of non-contractive type (i.e. composed of maps that are not contractions with respect to any topologically equivalent metric in X) can yield attractors. These arise naturally in projective spaces, though classical irrational rotation on the circle can be adapted too.
+
+The collection of functions fi generates a monoid under composition. If there are only two such functions, the monoid can be visualized as a binary tree, where, at each node of the tree, one may compose with the one or the other function (*i.e.* take the left or the right branch). In general, if there are k functions, then one may visualize the monoid as a full k-ary tree, also known as a Cayley tree.
+
+## Constructions
+
+Sometimes each function fi is required to be a linear, or more generally an affine transformation, and hence represented by a matrix. However, IFSs may also be built from non-linear functions, including projective transformations and Möbius transformations. The Fractal flame is an example of an IFS with nonlinear functions.
+
+The most common algorithm to compute IFS fractals is called the "chaos game". It consists of picking a random point in the plane, then iteratively applying one of the functions chosen at random from the function system to transform the point to get a next point. An alternative algorithm is to generate each possible sequence of functions up to a given maximum length, and then to plot the results of applying each of these sequences of functions to an initial point or shape.
+
+Each of these algorithms provides a global construction which generates points distributed across the whole fractal. If a small area of the fractal is being drawn, many of these points will fall outside of the screen boundaries. This makes zooming into an IFS construction drawn in this manner impractical.
+
+Although the theory of IFS requires each function to be contractive, in practice software that implements IFS only require that the whole system be contractive on average.
+
+## Partitioned iterated function systems
+
+PIFS (partitioned iterated function systems), also called local iterated function systems, give surprisingly good image compression, even for photographs that do not seem to have the kinds of self-similar structure shown by simple IFS fractals.
+
+## The inverse problem
+
+Very fast algorithms exist to generate an image from a set of IFS or PIFS parameters. It is faster and requires much less storage space to store a description of how it was created, transmit that description to a destination device, and regenerate that image anew on the destination device, than to store and transmit the color of each pixel in the image.
+
+The inverse problem is more difficult: given some original arbitrary digital image such as a digital photograph, try to find a set of IFS parameters which, when evaluated by iteration, produces another image visually similar to the original. In 1989, Arnaud Jacquin presented a solution to a restricted form of the inverse problem using only PIFS; the general form of the inverse problem remains unsolved.
+
+By 1995, all fractal compression software was based on Jacquin's approach.
+
+## Examples
+
+The diagram shows the construction on an IFS from two affine functions. The functions are represented by their effect on the bi-unit square (the function transforms the outlined square into the shaded square). The combination of the two functions forms the Hutchinson operator. Three iterations of the operator are shown, and then the final image is of the fixed point, the final fractal.
+
+Early examples of fractals which may be generated by an IFS include the Cantor set, first described in 1884; and de Rham curves, a type of self-similar curve described by Georges de Rham in 1957.
+
+## History
+
+IFSs were conceived in their present form by John E. Hutchinson in 1981 and popularized by Michael Barnsley's book *Fractals Everywhere*.
+
+> IFSs provide models for certain plants, leaves, and ferns, by virtue of the self-similarity which often occurs in branching structures in nature.
+
+— Michael Barnsley *et al.*

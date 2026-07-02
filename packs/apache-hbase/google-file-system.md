@@ -1,0 +1,34 @@
+---
+title: "Google File System"
+source: https://en.wikipedia.org/wiki/Google_File_System
+domain: apache-hbase
+license: CC-BY-SA-4.0
+tags: apache hbase, bigtable clone, wide-column store, apache hadoop
+fetched: 2026-07-02
+---
+
+# Google File System
+
+**Google File System** (**GFS** or **GoogleFS**, not to be confused with the GFS Linux file system) is a proprietary distributed file system developed by Google to provide efficient, reliable access to data using large clusters of commodity hardware. Google file system was replaced by Colossus in 2010.
+
+## Design
+
+GFS is enhanced for Google's core data storage and usage needs (primarily the search engine), which can generate enormous amounts of data that must be retained; Google File System grew out of an earlier Google effort, "BigFiles", developed by Larry Page and Sergey Brin in the early days of Google, while it was still located in Stanford. Files are divided into fixed-size *chunks* of 64 megabytes, similar to clusters or sectors in regular file systems, which are only extremely rarely overwritten, or shrunk; files are usually appended to or read. It is also designed and optimized to run on Google's computing clusters, dense nodes which consist of cheap "commodity" computers, which means precautions must be taken against the high failure rate of individual nodes and the subsequent data loss. Other design decisions select for high data throughputs, even when it comes at the cost of latency.
+
+A GFS cluster consists of multiple nodes. These nodes are divided into two types: one *Master* node and multiple *Chunkservers*. Each file is divided into fixed-size chunks. Chunkservers store these chunks. Each chunk is assigned a globally unique 64-bit label by the master node at the time of creation, and logical mappings of files to constituent chunks are maintained. Each chunk is replicated several times throughout the network. At default, it is replicated three times, but this is configurable. Files which are in high demand may have a higher replication factor, while files for which the application client uses strict storage optimizations may be replicated less than three times - in order to cope with quick garbage cleaning policies.
+
+The Master server does not usually store the actual chunks, but rather all the metadata associated with the chunks, such as the tables mapping the 64-bit labels to chunk locations and the files they make up (mapping from files to chunks), the locations of the copies of the chunks, what processes are reading or writing to a particular chunk, or taking a "snapshot" of the chunk pursuant to replicate it (usually at the instigation of the Master server, when, due to node failures, the number of copies of a chunk has fallen beneath the set number). All this metadata is kept current by the Master server periodically receiving updates from each chunk server ("Heart-beat messages").
+
+Permissions for modifications are handled by a system of time-limited, expiring "leases", where the Master server grants permission to a process for a finite period of time during which no other process will be granted permission by the Master server to modify the chunk. The modifying chunkserver, which is always the primary chunk holder, then propagates the changes to the chunkservers with the backup copies. The changes are not saved until all chunkservers acknowledge, thus guaranteeing the completion and atomicity of the operation.
+
+Programs access the chunks by first querying the Master server for the locations of the desired chunks; if the chunks are not being operated on (i.e. no outstanding leases exist), the Master replies with the locations, and the program then contacts and receives the data from the chunkserver directly (similar to Kazaa and its supernodes).
+
+Unlike most other file systems, GFS is not implemented in the kernel of an operating system, but is instead provided as a userspace library.
+
+## Interface
+
+The Google File System does not provide a POSIX interface. Files are organized hierarchically in directories and identified by pathnames. The file operations such as create, delete, open, close, read, write are supported. It supports Record Append which allows multiple clients to append data to the same file concurrently and atomicity is guaranteed.
+
+## Performance
+
+Deciding from benchmarking results, when used with relatively small number of servers (15), the file system achieves reading performance comparable to that of a single disk (80–100 MB/s), but has a reduced write performance (30 MB/s), and is relatively slow (5 MB/s) in appending data to existing files. The authors present no results on random seek time. As the master node is not directly involved in data reading (the data are passed from the chunk server directly to the reading client), the read rate increases significantly with the number of chunk servers, achieving 583 MB/s for 342 nodes. Aggregating multiple servers also allows big capacity, while it is somewhat reduced by storing data in three independent locations (to provide redundancy).

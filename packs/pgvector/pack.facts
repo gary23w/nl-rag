@@ -1,0 +1,506 @@
+# nl-rag distilled facts — domain: pgvector
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:pgvector/blob-readme-md] Store your vectors with the rest of your data.
+[src:pgvector/blob-readme-md] You can also install it with Docker, Homebrew, PGXN, APT, Yum, pkg, APK, or conda-forge, and it comes preinstalled with Postgres.app and many hosted providers.
+[src:pgvector/blob-readme-md] There are also instructions for GitHub Actions.
+[src:pgvector/blob-readme-md] Ensure C++ support in Visual Studio is installed and run `x64 Native Tools Command Prompt for VS [version]` as administrator.
+[src:pgvector/blob-readme-md] You can also install it with Docker or conda-forge.
+[src:pgvector/blob-readme-md] By default, pgvector performs exact nearest neighbor search, which provides perfect recall.
+[src:pgvector/blob-readme-md] You can add an index to use approximate nearest neighbor search, which trades some recall for speed.
+[src:pgvector/blob-readme-md] Unlike typical indexes, you will see different results for queries after adding an approximate index.
+[src:pgvector/blob-readme-md] An HNSW index creates a multilayer graph.
+[src:pgvector/blob-readme-md] It has better query performance than IVFFlat (in terms of speed-recall tradeoff), but has slower build times and uses more memory.
+[src:pgvector/blob-readme-md] Also, an index can be created without any data in the table since there isn’t a training step like IVFFlat.
+[src:pgvector/blob-readme-md] Add an index for each distance function you want to use.
+[src:pgvector/blob-readme-md] A higher value of `ef_construction` provides better recall at the cost of index build time / insert speed.
+[src:pgvector/blob-readme-md] A higher value provides better recall at the cost of speed.
+[src:pgvector/blob-readme-md] An IVFFlat index divides vectors into lists, and then searches a subset of those lists that are closest to the query vector.
+[src:pgvector/blob-readme-md] It has faster build times and uses less memory than HNSW, but has lower query performance (in terms of speed-recall tradeoff).
+[src:pgvector/blob-readme-md] There are a few ways to index nearest neighbor queries with a `WHERE` clause.
+[src:pgvector/blob-readme-md] A good place to start is creating an index on the filter column.
+[src:pgvector/blob-readme-md] This can provide fast, exact nearest neighbor search in many cases.
+[src:pgvector/blob-readme-md] Postgres has a number of index types for this: B-tree (default), hash, GiST, SP-GiST, GIN, and BRIN.
+[src:pgvector/blob-readme-md] For multiple columns, consider a multicolumn index.
+[src:pgvector/blob-readme-md] Exact indexes work well for conditions that match a low percentage of rows.
+[src:pgvector/blob-readme-md] Otherwise, approximate indexes can work better.
+[src:pgvector/blob-readme-md] With approximate indexes, filtering is applied *after* the index is scanned.
+[src:pgvector/blob-readme-md] If a condition matches 10% of rows, with HNSW and the default `hnsw.ef_search` of 40, only 4 rows will match on average.
+[src:pgvector/blob-readme-md] For more rows, enable iterative index scans, which will automatically scan more of the index when needed.
+[src:pgvector/blob-readme-md] If filtering by only a few distinct values, consider partial indexing.
+[src:pgvector/blob-readme-md] If filtering by many different values, consider partitioning.
+[src:pgvector/blob-readme-md] With approximate indexes, queries with filtering can return less results since filtering is applied *after* the index is scanned.
+[src:pgvector/blob-readme-md] Starting with 0.8.0, you can enable iterative index scans, which will automatically scan more of the index until enough results are found (or it reaches `hnsw.max_scan_tuples` or `ivfflat.max_probes`).
+[src:pgvector/blob-readme-md] Iterative scans can use strict or relaxed ordering.
+[src:pgvector/blob-readme-md] Since scanning a large portion of an approximate index is expensive, there are options to control when a scan ends.
+[src:pgvector/blob-readme-md] Use together with Postgres full-text search for hybrid search.
+[src:pgvector/blob-readme-md] You can use Reciprocal Rank Fusion or a cross-encoder to combine results.
+[src:pgvector/blob-readme-md] Use a tool like PgTune to set initial values for Postgres server parameters.
+[src:pgvector/blob-readme-md] For instance, `shared_buffers` should typically be 25% of the server’s memory.
+[src:pgvector/blob-readme-md] Be sure to restart Postgres for changes to take effect.
+[src:pgvector/blob-readme-md] Use the `halfvec` type instead of `vector` for a smaller working set.
+[src:pgvector/blob-readme-md] Use `COPY` for bulk loading data (example).
+[src:pgvector/blob-readme-md] Add any indexes *after* loading the initial data for best performance.
+[src:pgvector/blob-readme-md] See index build time for HNSW and IVFFlat.
+[src:pgvector/blob-readme-md] Use binary quantization for smaller indexes and faster build times at scale.
+[src:pgvector/blob-readme-md] In production environments, create indexes concurrently to avoid blocking writes.
+[src:pgvector/blob-readme-md] Use `EXPLAIN (ANALYZE, BUFFERS)` to debug performance.
+[src:pgvector/blob-readme-md] To speed up queries without an index, increase `max_parallel_workers_per_gather`.
+[src:pgvector/blob-readme-md] If vectors are normalized to length 1 (like OpenAI embeddings), use inner product for best performance.
+[src:pgvector/blob-readme-md] Use binary quantization with re-ranking to keep indexes in-memory at scale.
+[src:pgvector/blob-readme-md] To speed up queries with an IVFFlat index, increase the number of inverted lists (at the expense of recall).
+[src:pgvector/blob-readme-md] Vacuuming can take a while for HNSW indexes.
+[src:pgvector/blob-readme-md] Scale vertically by increasing memory, CPU, and storage on a single instance.
+[src:pgvector/blob-readme-md] Use existing tools to tune parameters and monitor performance.
+[src:pgvector/blob-readme-md] Scale horizontally with replicas, or use Citus, PgDog, or another approach for sharding (example).
+[src:pgvector/blob-readme-md] Use existing tools like pg_stat_statements or PgHero to monitor performance.
+[src:pgvector/blob-readme-md] Monitor recall by comparing results from approximate search with exact search.
+[src:pgvector/blob-readme-md] Use pgvector from any language with a Postgres client.
+[src:pgvector/blob-readme-md] You can even generate and store vectors in one language and query them in another.
+[src:pgvector/blob-readme-md] A non-partitioned table has a limit of 32 TB by default in Postgres.
+[src:pgvector/blob-readme-md] A partitioned table can have thousands of partitions of that size.
+[src:pgvector/blob-readme-md] Yes, pgvector uses the write-ahead log (WAL), which allows for replication and point-in-time recovery.
+[src:pgvector/blob-readme-md] You can use half-precision vectors or half-precision indexing to index up to 4,000 dimensions or binary quantization to index up to 64,000 dimensions.
+[src:pgvector/blob-readme-md] Other options are indexing subvectors (for models that support it) or dimensionality reduction.
+[src:pgvector/blob-readme-md] You can use `vector` as the type (instead of `vector(n)`).
+[src:pgvector/blob-readme-md] You can use the `double precision[]` or `numeric[]` type to store vectors with more precision.
+[src:pgvector/blob-readme-md] Optionally, add a check constraint to ensure data can be converted to the `vector` type and has the expected dimensions.
+[src:pgvector/blob-readme-md] No, but like other index types, you’ll likely see better performance if they do.
+[src:pgvector/blob-readme-md] Use half-precision indexing or binary quantization for smaller indexes.
+[src:pgvector/blob-readme-md] The query needs to have an `ORDER BY` and `LIMIT`, and the `ORDER BY` must be the result of a distance operator (not an expression) in ascending order.
+[src:pgvector/blob-readme-md] Also, if the table is small, a table scan may be faster.
+[src:pgvector/blob-readme-md] The planner doesn’t consider out-of-line storage in cost estimates, which can make a serial scan look cheaper.
+[src:pgvector/blob-readme-md] Results are limited by the size of the dynamic candidate list (`hnsw.ef_search`), which is 40 by default.
+[src:pgvector/blob-readme-md] There may be even less results due to dead tuples or filtering conditions in the query.
+[src:pgvector/blob-readme-md] Enabling iterative index scans can help address this.
+[src:pgvector/blob-readme-md] Also, note that `NULL` vectors are not indexed (as well as zero vectors for cosine distance).
+[src:pgvector/blob-readme-md] The index was likely created with too little data for the number of lists.
+[src:pgvector/blob-readme-md] Drop the index until the table has more data.
+[src:pgvector/blob-readme-md] Results can also be limited by the number of probes (`ivfflat.probes`).
+[src:pgvector/blob-readme-md] Enabling iterative index scans can address this.
+[src:pgvector/blob-readme-md] Each vector takes `4 * dimensions + 8` bytes of storage.
+[src:pgvector/blob-readme-md] Each element is a single-precision floating-point number (like the `real` type in Postgres), and all elements must be finite (no `NaN`, `Infinity` or `-Infinity`).
+[src:pgvector/blob-readme-md] Vectors can have up to 16,000 dimensions.
+[src:pgvector/blob-readme-md] Each half vector takes `2 * dimensions + 8` bytes of storage.
+[src:pgvector/blob-readme-md] Each element is a half-precision floating-point number, and all elements must be finite (no `NaN`, `Infinity` or `-Infinity`).
+[src:pgvector/blob-readme-md] Half vectors can have up to 16,000 dimensions.
+[src:pgvector/blob-readme-md] Each bit vector takes `dimensions / 8 + 8` bytes of storage.
+[src:pgvector/blob-readme-md] Each sparse vector takes `8 * non-zero elements + 16` bytes of storage.
+[src:pgvector/blob-readme-md] Each element is a single-precision floating-point number, and all elements must be finite (no `NaN`, `Infinity` or `-Infinity`).
+[src:pgvector/blob-readme-md] Sparse vectors can have up to 16,000 non-zero elements.
+[src:pgvector/blob-readme-md] Then re-run the installation instructions (run `make clean` before `make` if needed).
+[src:pgvector/blob-readme-md] If compilation fails with `fatal error: postgres.h: No such file or directory`, make sure Postgres development files are installed on the server.
+[src:pgvector/blob-readme-md] If compilation fails and the output includes `warning: no such sysroot directory` on Mac, your Postgres installation points to a path that no longer exists.
+[src:pgvector/blob-readme-md] By default, pgvector compiles with `-march=native` on some platforms for best performance.
+[src:pgvector/blob-readme-md] However, this can lead to `Illegal instruction` errors if trying to run the compiled extension on a different machine.
+[src:pgvector/blob-readme-md] If compilation fails with `Cannot open include file: 'postgres.h': No such file or directory`, make sure `PGROOT` is correct.
+[src:pgvector/blob-readme-md] If compilation fails with `error C2196: case value '4' already used`, make sure you’re using the `x64 Native Tools Command Prompt`.
+[src:pgvector/blob-readme-md] Then run `nmake /F Makefile.win clean` and re-run the installation instructions.
+[src:pgvector/blob-readme-md] If linking fails with `unresolved external symbol float_to_shortest_decimal_bufn` with Postgres 17.0-17.2, upgrade to Postgres 17.3+.
+[src:pgvector/blob-readme-md] If installation fails with `Access is denied`, re-run the installation instructions as an administrator.
+[src:pgvector/blob-readme-md] This adds pgvector to the Postgres image (replace `18` with your Postgres server version, and run it the same way).
+[src:pgvector/blob-readme-md] If you increase `maintenance_work_mem`, make sure `--shm-size` is at least that size to avoid an error with parallel HNSW index builds.
+[src:pgvector/blob-readme-md] Debian and Ubuntu packages are available from the PostgreSQL APT Repository.
+[src:pgvector/blob-readme-md] RPM packages are available from the PostgreSQL Yum Repository.
+[src:pgvector/blob-readme-md] Download the latest release with Postgres 15+.
+[src:pgvector/blob-readme-md] pgvector is available on these providers.
+[src:pgvector/blob-readme-md] Install the latest version (use the same method as the original installation).
+[src:pgvector/blob-readme-md] Everyone is encouraged to help improve this project.
+[src:pgvector/embedding] In mathematics, an **embedding** (or **imbedding**) is one instance of some mathematical structure contained within another instance, such as a group that is a subgroup.
+[src:pgvector/embedding] When some object X is said to be embedded in another object Y , the embedding is given by some injective and structure-preserving map $f:X\rightarrow Y$ .
+[src:pgvector/embedding] The precise meaning of "structure-preserving" depends on the kind of mathematical structure of which X and Y are instances.
+[src:pgvector/embedding] In the terminology of category theory, a structure-preserving map is called a morphism.
+[src:pgvector/embedding] Given X and Y , several different embeddings of X in Y may be possible.
+[src:pgvector/embedding] In many cases of interest there is a standard (or "canonical") embedding, like those of the natural numbers in the integers, the integers in the rational numbers, the rational numbers in the real numbers, and the real numbers in the complex numbers.
+[src:pgvector/embedding] In such cases it is common to identify the domain X with its image $f(X)$ contained in Y , so that $X\subseteq Y$ .
+[src:pgvector/embedding] In general topology, an embedding is a homeomorphism onto its image.
+[src:pgvector/embedding] More explicitly, an injective continuous map $f:X\to Y$ between topological spaces X and Y is a **topological embedding** if f yields a homeomorphism between X and $f(X)$ (where $f(X)$ carries the subspace topology inherited from Y ).
+[src:pgvector/embedding] Intuitively then, the embedding $f:X\to Y$ lets us treat X as a subspace of Y .
+[src:pgvector/embedding] Every embedding is injective and continuous.
+[src:pgvector/embedding] Every map that is injective, continuous and either open or closed is an embedding; however there are also embeddings that are neither open nor closed.
+[src:pgvector/embedding] The latter happens if the image $f(X)$ is neither an open set nor a closed set in Y .
+[src:pgvector/embedding] For a given space Y , the existence of an embedding $X\to Y$ is a topological invariant of X .
+[src:pgvector/embedding] This allows two spaces to be distinguished if one is able to be embedded in a space while the other is not.
+[src:pgvector/embedding] If the domain of a function $f:X\to Y$ is a topological space then the function is said to be *locally injective at a point* if there exists some neighborhood U of this point such that the restriction $f{\big \vert }_{U}:U\to Y$ is injective.
+[src:pgvector/embedding] It is called *locally injective* if it is locally injective around every point of its domain.
+[src:pgvector/embedding] Similarly, a *local (topological, resp. smooth) embedding* is a function for which every point in its domain has some neighborhood to which its restriction is a (topological, resp. smooth) embedding.
+[src:pgvector/embedding] Every injective function is locally injective but not conversely.
+[src:pgvector/embedding] Local diffeomorphisms, local homeomorphisms, and smooth immersions are all locally injective functions that are not necessarily injective.
+[src:pgvector/embedding] The inverse function theorem gives a sufficient condition for a continuously differentiable function to be (among other things) locally injective.
+[src:pgvector/embedding] In differential topology: Let M and N be smooth manifolds and $f:M\to N$ be a smooth map.
+[src:pgvector/embedding] Then f is called an immersion if its derivative is everywhere injective.
+[src:pgvector/embedding] An **embedding**, or a **smooth embedding**, is defined to be an immersion that is an embedding in the topological sense mentioned above (i.e. homeomorphism onto its image).
+[src:pgvector/embedding] In other words, the domain of an embedding is diffeomorphic to its image, and in particular the image of an embedding must be a submanifold.
+[src:pgvector/embedding] An immersion is precisely a **local embedding**, i.e. for any point $x\in M$ there is a neighborhood $x\in U\subset M$ such that $f:U\to N$ is an embedding.
+[src:pgvector/embedding] When the domain manifold is compact, the notion of a smooth embedding is equivalent to that of an injective immersion.
+[src:pgvector/embedding] An important case is $N=\mathbb {R} ^{n}$ .
+[src:pgvector/embedding] The interest here is in how large n must be for an embedding, in terms of the dimension m of M .
+[src:pgvector/embedding] The Whitney embedding theorem states that $n=2m$ is enough, and is the best possible linear bound.
+[src:pgvector/embedding] For example, the real projective space $\mathbb {R} \mathrm {P} ^{m}$ of dimension m , where m is a power of two, requires $n=2m$ for an embedding.
+[src:pgvector/embedding] However, this does not apply to immersions; for instance, $\mathbb {R} \mathrm {P} ^{2}$ can be immersed in $\mathbb {R} ^{3}$ as is explicitly shown by Boy's surface—which has self-intersections.
+[src:pgvector/embedding] The Roman surface fails to be an immersion as it contains cross-caps.
+[src:pgvector/embedding] The first condition is equivalent to having $f(\partial X)\subseteq \partial Y$ and $f(X\setminus \partial X)\subseteq Y\setminus \partial Y$ .
+[src:pgvector/embedding] The second condition, roughly speaking, says that $f(X)$ is not tangent to the boundary of Y .
+[src:pgvector/embedding] In Riemannian geometry and pseudo-Riemannian geometry: Let $(M,g)$ and $(N,h)$ be Riemannian manifolds or more generally pseudo-Riemannian manifolds.
+[src:pgvector/embedding] An **isometric embedding** is a smooth embedding $f:M\rightarrow N$ that preserves the (pseudo-)metric in the sense that g is equal to the pullback of h by f , i.e. $g=f^{*}h$ .
+[src:pgvector/embedding] Analogously, **isometric immersion** is an immersion between (pseudo)-Riemannian manifolds that preserves the (pseudo)-Riemannian metrics.
+[src:pgvector/embedding] Equivalently, in Riemannian geometry, an isometric embedding (immersion) is a smooth embedding (immersion) that preserves length of curves (cf.
+[src:pgvector/embedding] In general, for an algebraic category C , an embedding between two C -algebraic structures X and Y is a C -morphism $e:X\rightarrow Y$ that is injective.
+[src:pgvector/embedding] In field theory, an **embedding** of a field E in a field F is a ring homomorphism $\sigma :E\rightarrow F$ .
+[src:pgvector/embedding] The kernel of $\sigma$ is an ideal of E , which cannot be the whole field E , because of the condition $1=\sigma (1)=1$ .
+[src:pgvector/embedding] Furthermore, any field has as ideals only the zero ideal and the whole field itself (because if there is any non-zero field element in an ideal, it is invertible, showing the ideal is the whole field).
+[src:pgvector/embedding] Therefore, the kernel is 0 , so any embedding of fields is a monomorphism.
+[src:pgvector/embedding] Hence, E is isomorphic to the subfield $\sigma (E)$ of F .
+[src:pgvector/embedding] This justifies the name *embedding* for an arbitrary homomorphism of fields.
+[src:pgvector/embedding] In model theory there is also a stronger notion of elementary embedding.
+[src:pgvector/embedding] Injectivity of F follows quickly from this definition.
+[src:pgvector/embedding] for every $x,y\in X$ and some constant $L>0$ .
+[src:pgvector/embedding] An important special case is that of normed spaces; in this case it is natural to consider linear embeddings.
+[src:pgvector/embedding] The answer is given by Dvoretzky's theorem.
+[src:pgvector/embedding] In category theory, there is no satisfactory and generally accepted definition of embeddings that is applicable in all categories.
+[src:pgvector/embedding] One would expect that all isomorphisms and all compositions of embeddings are embeddings, and that all embeddings are monomorphisms.
+[src:pgvector/embedding] Other typical requirements are: any extremal monomorphism is an embedding and embeddings are stable under pullbacks.
+[src:pgvector/embedding] Ideally the class of all embedded subobjects of a given object, up to isomorphism, should also be small, and thus an ordered set.
+[src:pgvector/embedding] In this case, the category is said to be well powered with respect to the class of embeddings.
+[src:pgvector/embedding] This allows defining new local structures in the category (such as a closure operator).
+[src:pgvector/embedding] A factorization system for a category also gives rise to a notion of embedding.
+[src:pgvector/embedding] If $(E,M)$ is a factorization system, then the morphisms in M may be regarded as the embeddings, especially when the category is well powered with respect to M .
+[src:pgvector/embedding] Concrete theories often have a factorization system in which M consists of the embeddings in the previous sense.
+[src:pgvector/embedding] This is the case of the majority of the examples given in this article.
+[src:pgvector/embedding] As usual in category theory, there is a dual concept, known as quotient.
+[src:pgvector/embedding] All the preceding properties can be dualized.
+[src:pgvector/embedding] An embedding can also refer to an embedding functor.
+[src:pgvector/nearest-neighbor-search] Formally, the nearest neighbor (NN) search problem is defined as follows: given a set S of points in a space M and a query point $q\in M$ , find the closest point in S to q.
+[src:pgvector/nearest-neighbor-search] Donald Knuth in volume 3 of *The Art of Computer Programming* (1973) called it the **post-office problem**, referring to an application of assigning to a residence the nearest post office.
+[src:pgvector/nearest-neighbor-search] A direct generalization of this problem is a k-NN search, where we need to find the k closest points.
+[src:pgvector/nearest-neighbor-search] Most commonly M is a metric space and dissimilarity is expressed as a distance metric, which is symmetric and satisfies the triangle inequality.
+[src:pgvector/nearest-neighbor-search] Even more common, M is taken to be the d-dimensional vector space where dissimilarity is measured using the Euclidean distance, Manhattan distance or other distance metric.
+[src:pgvector/nearest-neighbor-search] However, the dissimilarity function can be arbitrary.
+[src:pgvector/nearest-neighbor-search] One example is asymmetric Bregman divergence, for which the triangle inequality does not hold.
+[src:pgvector/nearest-neighbor-search] Various solutions to the NNS problem have been proposed.
+[src:pgvector/nearest-neighbor-search] The quality and usefulness of the algorithms are determined by the time complexity of queries as well as the space complexity of any search data structures that must be maintained.
+[src:pgvector/nearest-neighbor-search] The informal observation usually referred to as the curse of dimensionality states that there is no general-purpose exact solution for NNS in high-dimensional Euclidean space using polynomial preprocessing and polylogarithmic search time.
+[src:pgvector/nearest-neighbor-search] The simplest solution to the NNS problem is to compute the distance from the query point to every other point in the database, keeping track of the "best so far".
+[src:pgvector/nearest-neighbor-search] This algorithm, sometimes referred to as the naive approach, has a running time of *O*(*dN*), where *N* is the cardinality of *S* and *d* is the dimensionality of *S*.
+[src:pgvector/nearest-neighbor-search] There are no search data structures to maintain, so the linear search has no space complexity beyond the storage of the database.
+[src:pgvector/nearest-neighbor-search] Naive search can, on average, outperform space partitioning approaches on higher dimensional spaces.
+[src:pgvector/nearest-neighbor-search] The absolute distance is not required for distance comparison, only the relative distance.
+[src:pgvector/nearest-neighbor-search] In geometric coordinate systems the distance calculation can be sped up considerably by omitting the square root calculation from the distance calculation between two coordinates.
+[src:pgvector/nearest-neighbor-search] The distance comparison will still yield identical results.
+[src:pgvector/nearest-neighbor-search] Since the 1970s, the branch and bound methodology has been applied to the problem.
+[src:pgvector/nearest-neighbor-search] In the case of Euclidean space, this approach encompasses spatial index or spatial access methods.
+[src:pgvector/nearest-neighbor-search] Several space-partitioning methods have been developed for solving the NNS problem.
+[src:pgvector/nearest-neighbor-search] Perhaps the simplest is the k-d tree, which iteratively bisects the search space into two regions containing half of the points of the parent region.
+[src:pgvector/nearest-neighbor-search] Queries are performed via traversal of the tree from the root to a leaf by evaluating the query point at each split.
+[src:pgvector/nearest-neighbor-search] Depending on the distance specified in the query, neighboring branches that might contain hits may also need to be evaluated.
+[src:pgvector/nearest-neighbor-search] R-trees can yield nearest neighbors not only for Euclidean distance, but can also be used with other distances.
+[src:pgvector/nearest-neighbor-search] In the case of general metric space, the branch-and-bound approach is known as the metric tree approach.
+[src:pgvector/nearest-neighbor-search] Particular examples include vp-tree and BK-tree methods.
+[src:pgvector/nearest-neighbor-search] Using a set of points taken from a 3-dimensional space and put into a BSP tree, and given a query point taken from the same space, a possible solution to the problem of finding the nearest point-cloud point to the query point is given in the following description of an algorithm.
+[src:pgvector/nearest-neighbor-search] (Strictly speaking, no such point may exist, because it may not be unique.
+[src:pgvector/nearest-neighbor-search] This may not be the case, but it is a good heuristic.
+[src:pgvector/nearest-neighbor-search] After having recursively gone through all the trouble of solving the problem for the guessed half-space, now compare the distance returned by this result with the shortest distance from the query point to the partitioning plane.
+[src:pgvector/nearest-neighbor-search] This latter distance is that between the query point and the closest possible point that could exist in the half-space not searched.
+[src:pgvector/nearest-neighbor-search] If this distance is greater than that returned in the earlier result, then clearly there is no need to search the other half-space.
+[src:pgvector/nearest-neighbor-search] If there is such a need, then you must go through the trouble of solving the problem for the other half space, and then compare its result to the former result, and then return the proper result.
+[src:pgvector/nearest-neighbor-search] An approximate nearest neighbor search algorithm is allowed to return points whose distance from the query is at most c times the distance from the query to its nearest points.
+[src:pgvector/nearest-neighbor-search] The appeal of this approach is that, in many cases, an approximate nearest neighbor is almost as good as the exact one.
+[src:pgvector/nearest-neighbor-search] In particular, if the distance measure accurately captures the notion of user quality, then small differences in the distance should not matter.
+[src:pgvector/nearest-neighbor-search] Proximity graph methods (such as navigable small world graphs and HNSW) are considered the current state-of-the-art for the approximate nearest neighbors search.
+[src:pgvector/nearest-neighbor-search] The methods are based on greedy traversing in proximity neighborhood graphs $G(V,E)$ in which every point $x_{i}\in S$ is uniquely associated with vertex $v_{i}\in V$ .
+[src:pgvector/nearest-neighbor-search] The search for the nearest neighbors to a query *q* in the set *S* takes the form of searching for the vertex in the graph $G(V,E)$ .
+[src:pgvector/nearest-neighbor-search] The basic algorithm – greedy search – works as follows: search starts from an enter-point vertex $v_{i}\in V$ by computing the distances from the query q to each vertex of its neighborhood $\{v_{j}:(v_{i},v_{j})\in E\}$ , and then finds a vertex with the minimal distance value.
+[src:pgvector/nearest-neighbor-search] If the distance value between the query and the selected vertex is smaller than the one between the query and the current element, then the algorithm moves to the selected vertex, and it becomes new enter-point.
+[src:pgvector/nearest-neighbor-search] The algorithm stops when it reaches a local minimum: a vertex whose neighborhood does not contain a vertex that is closer to the query than the vertex itself.
+[src:pgvector/nearest-neighbor-search] These works were preceded by a pioneering paper by Toussaint, in which he introduced the concept of a *relative neighborhood* graph.
+[src:pgvector/nearest-neighbor-search] Locality sensitive hashing (LSH) is a technique for grouping points in space into 'buckets' based on some distance metric operating on the points.
+[src:pgvector/nearest-neighbor-search] Points that are close to each other under the chosen metric are mapped to the same bucket with high probability.
+[src:pgvector/nearest-neighbor-search] The cover tree has a theoretical bound that is based on the dataset's doubling constant.
+[src:pgvector/nearest-neighbor-search] The bound on search time is *O*(*c*12 log *n*) where *c* is the expansion constant of the dataset.
+[src:pgvector/nearest-neighbor-search] In the special case where the data is a dense 3D map of geometric points, the projection geometry of the sensing technique can be used to dramatically simplify the search problem.
+[src:pgvector/nearest-neighbor-search] This approach requires that the 3D data is organized by a projection to a two-dimensional grid and assumes that the data is spatially smooth across neighboring grid cells with the exception of object boundaries.
+[src:pgvector/nearest-neighbor-search] These assumptions are valid when dealing with 3D sensor data in applications such as surveying, robotics and stereo vision but may not hold for unorganized data in general.
+[src:pgvector/nearest-neighbor-search] In practice this technique has an average search time of *O*(*1*) or *O*(*K*) for the *k*-nearest neighbor problem when applied to real world stereo vision data.
+[src:pgvector/nearest-neighbor-search] In high-dimensional spaces, tree indexing structures become useless because an increasing percentage of the nodes need to be examined anyway.
+[src:pgvector/nearest-neighbor-search] To speed up linear search, a compressed version of the feature vectors stored in RAM is used to prefilter the datasets in a first run.
+[src:pgvector/nearest-neighbor-search] The final candidates are determined in a second stage using the uncompressed data from the disk for distance calculation.
+[src:pgvector/nearest-neighbor-search] The VA-file approach is a special case of a compression based search, where each feature component is compressed uniformly and independently.
+[src:pgvector/nearest-neighbor-search] The optimal compression technique in multidimensional spaces is Vector Quantization (VQ), implemented through clustering.
+[src:pgvector/nearest-neighbor-search] The database is clustered and the most "promising" clusters are retrieved.
+[src:pgvector/nearest-neighbor-search] Huge gains over VA-File, tree-based indexes and sequential scan have been observed.
+[src:pgvector/nearest-neighbor-search] Also note the parallels between clustering and LSH.
+[src:pgvector/nearest-neighbor-search] There are numerous variants of the NNS problem and the two most well-known are the *k*-nearest neighbor search and the ε-approximate nearest neighbor search.
+[src:pgvector/nearest-neighbor-search] In some applications it may be acceptable to retrieve a "good guess" of the nearest neighbor.
+[src:pgvector/nearest-neighbor-search] In those cases, we can use an algorithm which doesn't guarantee to return the actual nearest neighbor in every case, in return for improved speed or memory savings.
+[src:pgvector/nearest-neighbor-search] Often such an algorithm will find the nearest neighbor in a majority of cases, but this depends strongly on the dataset being queried.
+[src:pgvector/nearest-neighbor-search] Algorithms that support the approximate nearest neighbor search include locality-sensitive hashing, best bin first and balanced box-decomposition tree based search.
+[src:pgvector/nearest-neighbor-search] Nearest neighbor distance ratio does not apply the threshold on the direct distance from the original point to the challenger neighbor but on a ratio of it depending on the distance to the previous neighbor.
+[src:pgvector/nearest-neighbor-search] It is used in CBIR to retrieve pictures through a "query by example" using the similarity between local features.
+[src:pgvector/nearest-neighbor-search] More generally it is involved in several matching problems.
+[src:pgvector/nearest-neighbor-search] Fixed-radius near neighbors is the problem where one wants to efficiently find all points given in Euclidean space within a given fixed distance from a specified point.
+[src:pgvector/nearest-neighbor-search] The distance is assumed to be fixed, but the query point is arbitrary.
+[src:pgvector/nearest-neighbor-search] For some applications (e.g. entropy estimation), we may have *N* data-points and wish to know which is the nearest neighbor *for every one of those N points*.
+[src:pgvector/nearest-neighbor-search] This could, of course, be achieved by running a nearest-neighbor search once for every point, but an improved strategy would be an algorithm that exploits the information redundancy between these *N* queries to produce a more efficient search.
+[src:pgvector/nearest-neighbor-search] As a simple example: when we find the distance from point *X* to point *Y*, that also tells us the distance from point *Y* to point *X*, so the same calculation can be reused in two different queries.
+[src:pgvector/nearest-neighbor-search] Given a fixed dimension, a semi-definite positive norm (thereby including every Lp norm), and *n* points in this space, the nearest neighbour of every point can be found in *O*(*n* log *n*) time and the *m* nearest neighbours of every point can be found in *O*(*mn* log *n*) time.
+[src:pgvector/postgresql] The PostgreSQL Global Development Group focuses only on developing a database engine and closely related components.
+[src:pgvector/postgresql] This core is, technically, what comprises PostgreSQL itself, but there is an extensive developer community and ecosystem that provides other important feature sets that might, traditionally, be provided by a proprietary software vendor.
+[src:pgvector/postgresql] These include special-purpose database engine features, like those needed to support a geospatial or temporal database or features which emulate other database products.
+[src:pgvector/postgresql] Also available from third parties are a wide variety of user and machine interface features, such as graphical user interfaces or load balancing and high availability toolsets.
+[src:pgvector/postgresql] The large third-party PostgreSQL support network of people, companies, products, and projects, even though not part of The PostgreSQL Development Group, are essential to the PostgreSQL database engine's adoption and use and make up the PostgreSQL ecosystem writ large.
+[src:pgvector/postgresql] PostgreSQL was originally named POSTGRES, referring to its origins as a successor to the Ingres database developed at the University of California, Berkeley.
+[src:pgvector/postgresql] In 1996, the project was renamed PostgreSQL to reflect its support for SQL.
+[src:pgvector/postgresql] After a review in 2007, the development team decided to keep the name PostgreSQL and the alias Postgres.
+[src:pgvector/postgresql] PostgreSQL evolved from the Ingres project at the University of California, Berkeley.
+[src:pgvector/postgresql] In 1982, the leader of the Ingres team, Michael Stonebraker, left Berkeley to make a proprietary version of Ingres.
+[src:pgvector/postgresql] He returned to Berkeley in 1985, and began a post-Ingres project to address the problems with contemporary database systems that had become increasingly clear during the early 1980s.
+[src:pgvector/postgresql] He won the Turing Award in 2014 for these and other projects, and techniques pioneered in them.
+[src:pgvector/postgresql] The new project, POSTGRES, aimed to add the fewest features needed to completely support data types.
+[src:pgvector/postgresql] These features included the ability to define types and to fully describe relationships – something used widely, but maintained entirely by the user.
+[src:pgvector/postgresql] In POSTGRES, the database understood relationships, and could retrieve information in related tables in a natural way using *rules*.
+[src:pgvector/postgresql] POSTGRES used many of the ideas of Ingres, but not its code.
+[src:pgvector/postgresql] Starting in 1986, published papers described the basis of the system, and a prototype version was shown at the 1988 ACM SIGMOD Conference.
+[src:pgvector/postgresql] The team released version 1 to a small number of users in June 1989, followed by version 2 with a re-written rules system in June 1990.
+[src:pgvector/postgresql] Version 3, released in 1991, again re-wrote the rules system, and added support for multiple storage managers and an improved query engine.
+[src:pgvector/postgresql] By 1993, the number of users began to overwhelm the project with requests for support and features.
+[src:pgvector/postgresql] After releasing version 4.2 on June 30, 1994 – primarily a cleanup – the project ended.
+[src:pgvector/postgresql] Berkeley released POSTGRES under an MIT License variant, which enabled other developers to use the code for any use.
+[src:pgvector/postgresql] At the time, POSTGRES used an Ingres-influenced POSTQUEL query language interpreter, which could be interactively used with a console application named monitor.
+[src:pgvector/postgresql] In 1994, Berkeley graduate students Andrew Yu and Jolly Chen replaced the POSTQUEL query language interpreter with one for the SQL query language, creating Postgres95.
+[src:pgvector/postgresql] The monitor console was also replaced by psql.
+[src:pgvector/postgresql] Yu and Chen announced the first version (0.01) to beta testers on May 5, 1995.
+[src:pgvector/postgresql] Version 1.0 of Postgres95 was announced on September 5, 1995, with a more liberal license that enabled the software to be freely modifiable.
+[src:pgvector/postgresql] On July 8, 1996, Marc Fournier at Hub.org Networking Services provided the first non-university development server for the open-source development effort.
+[src:pgvector/postgresql] With the participation of Bruce Momjian and Vadim B.
+[src:pgvector/postgresql] Mikheev, work began to stabilize the code inherited from Berkeley.
+[src:pgvector/postgresql] In 1996, the project was renamed to PostgreSQL to reflect its support for SQL.
+[src:pgvector/postgresql] The online presence at the website PostgreSQL.org began on October 22, 1996.
+[src:pgvector/postgresql] The first PostgreSQL release formed version 6.0 on January 29, 1997.
+[src:pgvector/postgresql] Since then developers and volunteers around the world have maintained the software as The PostgreSQL Global Development Group.
+[src:pgvector/postgresql] The project continues to make releases available under its free and open-source software PostgreSQL License.
+[src:pgvector/postgresql] Code comes from contributions from proprietary vendors, support companies, and open-source programmers.
+[src:pgvector/postgresql] As of 2025, PostgreSQL is on major release version 18 which is notable in implementing asynchronous I/O (AIO), enabling database users to perform concurrent I/O tasks like readahead and sequential scan.
+[src:pgvector/postgresql] PostgreSQL manages concurrency through multiversion concurrency control (MVCC), which gives each transaction a "snapshot" of the database, allowing changes to be made without affecting other transactions.
+[src:pgvector/postgresql] This largely eliminates the need for read locks, and ensures the database maintains ACID principles.
+[src:pgvector/postgresql] PostgreSQL offers four levels of transaction isolation: Read Uncommitted, Read Committed, Repeatable Read and Serializable.
+[src:pgvector/postgresql] Because PostgreSQL is immune to dirty reads, requesting a Read Uncommitted transaction isolation level provides read committed instead.
+[src:pgvector/postgresql] PostgreSQL supports full serializability via the serializable snapshot isolation (SSI) method.
+[src:pgvector/postgresql] The PostgreSQL MVCC implementation is prone to performance issues that require tuning when under a heavy write load which updates existing rows.
+[src:pgvector/postgresql] PostgreSQL includes built-in binary replication based on shipping the changes (write-ahead logs (WAL)) to replica nodes asynchronously, with the ability to run read-only queries against these replicated nodes.
+[src:pgvector/postgresql] This allows splitting read traffic among multiple nodes efficiently.
+[src:pgvector/postgresql] Earlier replication software that allowed similar read scaling normally relied on adding replication triggers to the master, increasing load.
+[src:pgvector/postgresql] PostgreSQL includes built-in synchronous replication that ensures that, for each write transaction, the master waits until at least one replica node has written the data to its transaction log.
+[src:pgvector/postgresql] Unlike other database systems, the durability of a transaction (whether it is asynchronous or synchronous) can be specified per-database, per-user, per-session or even per-transaction.
+[src:pgvector/postgresql] This can be useful for workloads that do not require such guarantees, and may not be wanted for all data as it slows down performance due to the requirement of the confirmation of the transaction reaching the synchronous standby.
+[src:pgvector/postgresql] Standby servers can be synchronous or asynchronous.
+[src:pgvector/postgresql] Synchronous standby servers can be specified in the configuration which determines which servers are candidates for synchronous replication.
+[src:pgvector/postgresql] The first in the list that is actively streaming will be used as the current synchronous server.
+[src:pgvector/postgresql] When this fails, the system fails over to the next in line.
+[src:pgvector/postgresql] PostgreSQL's replication can trigger conflicts between the primary and standby servers, particularly whenever tuples are prematurely deleted from the standby server despite ongoing queries accessing them.
+[src:pgvector/postgresql] To address this, PostgreSQL includes a feedback flag where the standby server proactively informs the primary server of any ongoing queries to mitigate this type of conflict.
+[src:pgvector/postgresql] Synchronous multi-master replication is not included in the PostgreSQL core.
+[src:pgvector/postgresql] Postgres-XC which is based on PostgreSQL provides scalable synchronous multi-master replication.
+[src:pgvector/postgresql] It is licensed under the same license as PostgreSQL.
+[src:pgvector/postgresql] A related project is called Postgres-XL.
+[src:pgvector/postgresql] Bidirectional replication (BDR) is an asynchronous multi-master replication system for PostgreSQL.
+[src:pgvector/postgresql] Tools such as repmgr make managing replication clusters easier.
+[src:pgvector/postgresql] Several asynchronous trigger-based replication packages are available.
+[src:pgvector/postgresql] PostgreSQL includes built-in support for regular B-tree and hash table indexes, and four index access methods: generalized search trees (GiST), generalized inverted indexes (GIN), Space-Partitioned GiST (SP-GiST) and Block Range Indexes (BRIN).
+[src:pgvector/postgresql] In addition, user-defined index methods can be created, although this is quite an involved process.
+[src:pgvector/postgresql] PostgreSQL schemas are namespaces, allowing objects of the same kind and name to co-exist in a single database.
+[src:pgvector/postgresql] They are not to be confused with a database schema—the abstract, structural, organizational specification which defines how every table's data relates to data within other tables.
+[src:pgvector/postgresql] All PostgreSQL database objects, except for a few global objects such as roles and tablespaces, exist within a schema.
+[src:pgvector/postgresql] They cannot be nested, schemas cannot contain schemas.
+[src:pgvector/postgresql] The permission system controls access to schemas and their content.
+[src:pgvector/postgresql] By default, newly created databases have only a single schema called *public* but other schemas can be added and the public schema isn't mandatory.
+[src:pgvector/postgresql] A `search_path` setting determines the order in which PostgreSQL checks schemas for unqualified objects (those without a prefixed schema).
+[src:pgvector/postgresql] By default, it is set to `$user, public` (`$user` refers to the currently connected database user).
+[src:pgvector/postgresql] This default can be set on a database or role level, but as it is a session parameter, it can be freely changed (even multiple times) during a client session, affecting that session only.
+[src:pgvector/postgresql] Non-existent schemas, or other schemas not accessible to the logged-in user, that are listed in search_path are silently skipped during object lookup.
+[src:pgvector/postgresql] New objects are created in whichever valid schema (one that can be accessed) appears first in the search_path.
+[src:pgvector/postgresql] In addition, users can create their own data types which can usually be made fully indexable via PostgreSQL's indexing infrastructures – GiST, GIN, SP-GiST.
+[src:pgvector/postgresql] Examples of these include the geographic information system (GIS) data types from the PostGIS project for PostgreSQL.
+[src:pgvector/postgresql] There is also a data type called a *domain*, which is the same as any other data type but with optional constraints defined by the creator of that domain.
+[src:pgvector/postgresql] This means any data entered into a column using the domain will have to conform to whichever constraints were defined as part of the domain.
+[src:pgvector/postgresql] A data type that represents a range of data can be used which are called range types.
+[src:pgvector/postgresql] These can be discrete ranges (e.g. all integer values 1 to 10) or continuous ranges (e.g., any time between 10:00 am and 11:00 am).
+[src:pgvector/postgresql] The built-in range types available include ranges of integers, big integers, decimal numbers, time stamps (with and without time zone) and dates.
+[src:pgvector/postgresql] Custom range types can be created to make new types of ranges available, such as IP address ranges using the inet type as a base, or float ranges using the float data type as a base.
+[src:pgvector/postgresql] Range types support inclusive and exclusive range boundaries using the [] and () characters respectively.
+[src:pgvector/postgresql] (e.g., `[4,9)` represents all integers starting from and including 4 up to but not including 9.) Range types are also compatible with existing operators used to check for overlap, containment, right of etc.
+[src:pgvector/postgresql] Tables can be set to inherit their characteristics from a *parent* table.
+[src:pgvector/postgresql] Data in child tables will appear to exist in the parent tables, unless data is selected from the parent table using the ONLY keyword, i.e.
+[src:pgvector/postgresql] Adding a column in the parent table will cause that column to appear in the child table.
+[src:pgvector/postgresql] Inheritance can be used to implement table partitioning, using either triggers or rules to direct inserts to the parent table into the proper child tables.
+[src:pgvector/postgresql] In particular, table constraints are not currently inheritable.
+[src:pgvector/postgresql] All check constraints and not-null constraints on a parent table are automatically inherited by its children.
+[src:pgvector/postgresql] Other types of constraints (unique, primary key, and foreign key constraints) are not inherited.
+[src:pgvector/postgresql] Inheritance provides a way to map the features of generalization hierarchies depicted in entity–relationship diagrams (ERDs) directly into the PostgreSQL database.
+[src:pgvector/postgresql] PostgreSQL can link to other systems to retrieve data via foreign data wrappers (FDWs).
+[src:pgvector/postgresql] These can take the form of any data source, such as a file system, another relational database management system (RDBMS), or a web service.
+[src:pgvector/postgresql] This means that regular database queries can use these data sources like regular tables, and even join multiple data-sources together.
+[src:pgvector/postgresql] PostgreSQL supports a binary communication protocol that allows applications to connect to the database server.
+[src:pgvector/postgresql] The protocol is versioned (currently 3.0, as of PostgreSQL 7.4) and has a detailed specification.
+[src:pgvector/postgresql] The official client implementation of this communication protocol is a C API, libpq.
+[src:pgvector/postgresql] In addition, the officially supported ECPG tool allows SQL commands to be embedded in C code.
+[src:pgvector/postgresql] Both are part of the standard PostgreSQL distribution.
+[src:pgvector/postgresql] Third-party libraries for connecting to PostgreSQL are available for many programming languages, including C++, Java, Julia, Python, Node.js, Go, and Rust.
+[src:pgvector/postgresql] Procedural languages allow developers to extend the database with custom subroutines (functions), often called *stored procedures*.
+[src:pgvector/postgresql] These functions can be used to build database triggers (functions invoked on modification of certain data) and custom data types and aggregate functions.
+[src:pgvector/postgresql] Procedural languages can also be invoked without defining a function, using a DO command at SQL level.
+[src:pgvector/postgresql] Languages are divided into two groups: Procedures written in *safe* languages are sandboxed and can be safely created and used by any user.
+[src:pgvector/postgresql] Procedures written in *unsafe* languages can only be created by superusers, because they allow bypassing a database's security restrictions, but can also access sources external to the database.
+[src:pgvector/postgresql] Some languages like Perl provide both safe and unsafe versions.
+[src:pgvector/postgresql] In addition, PostgreSQL allows procedural languages to be loaded into the database through extensions.
+[src:pgvector/postgresql] Three language extensions are included with PostgreSQL to support Perl, Tcl, and Python.
+[src:pgvector/postgresql] For Python, the current Python 3 is used, and the discontinued Python 2 is no longer supported as of PostgreSQL 15.
+[src:pgvector/postgresql] Both were supported previously, defaulting to Python 2, while old and new versions couldn't be used in the same session.
+[src:pgvector/postgresql] External projects provide support for many other languages, including PL/Java, JavaScript (PL/V8), PL/Julia, PL/R, PL/Ruby, and others.
+[src:pgvector/postgresql] Triggers are events triggered by the action of SQL data manipulation language (DML) statements.
+[src:pgvector/postgresql] For example, an INSERT statement might activate a trigger that checks if the values of the statement are valid.
+[src:pgvector/postgresql] Most triggers are only activated by either INSERT or UPDATE statements.
+[src:pgvector/postgresql] Triggers are fully supported and can be attached to tables.
+[src:pgvector/postgresql] Triggers can be per-column and conditional, in that UPDATE triggers can target specific columns of a table, and triggers can be told to execute under a set of conditions as specified in the trigger's WHERE clause.
+[src:pgvector/postgresql] Triggers can be attached to views by using the INSTEAD OF condition.
+[src:pgvector/postgresql] Multiple triggers are fired in alphabetical order.
+[src:pgvector/postgresql] In addition to calling functions written in the native PL/pgSQL, triggers can also invoke functions written in other languages like PL/Python or PL/Perl.
+[src:pgvector/postgresql] PostgreSQL provides an asynchronous messaging system that is accessed through the NOTIFY, LISTEN and UNLISTEN commands.
+[src:pgvector/postgresql] A session can issue a NOTIFY command, along with the user-specified channel and an optional payload, to mark a particular event occurring.
+[src:pgvector/postgresql] Other sessions are able to detect these events by issuing a LISTEN command, which can listen to a particular channel.
+[src:pgvector/postgresql] This functionality can be used for a wide variety of purposes, such as letting other sessions know when a table has updated or for separate applications to detect when a particular action has been performed.
+[src:pgvector/postgresql] Such a system prevents the need for continuous polling by applications to see if anything has yet changed, and reducing unnecessary overhead.
+[src:pgvector/postgresql] Notifications are fully transactional, in that messages are not sent until the transaction they were sent from is committed.
+[src:pgvector/postgresql] This eliminates the problem of messages being sent for an action being performed which is then rolled back.
+[src:pgvector/postgresql] Many connectors for PostgreSQL provide support for this notification system (including libpq, JDBC, Npgsql, psycopg and node.js) so it can be used by external applications.
+[src:pgvector/postgresql] PostgreSQL can act as an effective, persistent "pub/sub" server or job server by combining LISTEN with FOR UPDATE SKIP LOCKED.
+[src:pgvector/postgresql] Rules allow the "query tree" of an incoming query to be rewritten; they are an, automatically invoked, macro language for SQL.
+[src:pgvector/postgresql] "Query Re-Write Rules" are attached to a table/class and "Re-Write" the incoming DML (select, insert, update, and/or delete) into one or more queries that either replace the original DML statement or execute in addition to it.
+[src:pgvector/postgresql] Query Re-Write occurs after DML statement parsing and before query planning.
+[src:pgvector/postgresql] The functionality rules provide was, in almost every way, later duplicated with the introduction of newer types of triggers.
+[src:pgvector/postgresql] The use of triggers is usually preferred over rules as it is easier to reason about trigger behavior and interactions than when equivalent rules are used.
+[src:pgvector/postgresql] PostgreSQL server is process-based (not threaded), and uses one operating system process per database session.
+[src:pgvector/postgresql] Multiple sessions are automatically spread across all available CPUs by the operating system.
+[src:pgvector/postgresql] Many types of queries can also be parallelized across multiple background worker processes, taking advantage of multiple CPUs or cores.
+[src:pgvector/postgresql] Client applications can use threads and create multiple database connections from each thread.
+[src:pgvector/postgresql] PostgreSQL manages its internal security on a per-role basis.
+[src:pgvector/postgresql] A role is generally regarded to be a user (a role that can log in), or a group (a role of which other roles are members).
+[src:pgvector/postgresql] Permissions can be granted or revoked on any object down to the column level, and can allow or prevent the visibility/creation/alteration/deletion of objects at the database, schema, table, and row levels.
+[src:pgvector/postgresql] PostgreSQL's SECURITY LABEL feature (extension to SQL standards), allows for additional security; with a bundled loadable module that supports label-based mandatory access control (MAC) based on Security-Enhanced Linux (SELinux) security policy.
+[src:pgvector/postgresql] The GSSAPI, SSPI, Kerberos, peer, ident and certificate methods can also use a specified "map" file that lists which users matched by that authentication system are allowed to connect as a specific database user.
+[src:pgvector/postgresql] These methods are specified in the cluster's host-based authentication configuration file (pg_hba.conf), which determines what connections are allowed.
+[src:pgvector/postgresql] This allows control over which user can connect to which database, where they can connect from (IP address, IP address range, domain socket), which authentication system will be enforced, and whether the connection must use Transport Layer Security (TLS).
+[src:pgvector/postgresql] PostgreSQL claims high, but not complete, conformance with the latest SQL standard ("as of the version 17 release in September 2024, PostgreSQL conforms to at least 170 of the 177 mandatory features for SQL:2023 Core conformance", and no other databases fully conformed to it).
+[src:pgvector/postgresql] One exception is the handling of unquoted identifiers like table or column names.
+[src:pgvector/postgresql] In PostgreSQL they are folded, internally, to lower case characters whereas the standard says that unquoted identifiers should be folded to upper case.
+[src:pgvector/postgresql] Thus, `Foo` should be equivalent to `FOO` not `foo` according to the standard.
+[src:pgvector/postgresql] Other shortcomings concern the absence of temporal tables allowing automatic logging of row versions during transactions with the possibility of browsing in time (FOR SYSTEM TIME predicate), although relatively SQL compliant third-party extensions are available.
+[src:pgvector/postgresql] Many informal performance studies of PostgreSQL have been done.
+[src:pgvector/postgresql] Performance improvements aimed at improving scalability began heavily with version 8.1.
+[src:pgvector/postgresql] Simple benchmarks between version 8.0 and version 8.4 showed that the latter was more than ten times faster on read-only workloads and at least 7.5 times faster on both read and write workloads.
+[src:pgvector/postgresql] The first industry-standard and peer-validated benchmark was completed in June 2007, using the Sun Java System Application Server (proprietary version of GlassFish) 9.0 Platform Edition, UltraSPARC T1-based Sun Fire server and PostgreSQL 8.2.
+[src:pgvector/postgresql] This result of 778.14 SPECjAppServer2004 JOPS@Standard compares favourably with the 874 JOPS@Standard with Oracle 10 on an Itanium-based HP-UX system.
+[src:pgvector/postgresql] In August 2007, Sun submitted an improved benchmark score of 813.73 SPECjAppServer2004 JOPS@Standard.
+[src:pgvector/postgresql] With the system under test at a reduced price, the price/performance improved from $84.98/JOPS to $70.57/JOPS.
+[src:pgvector/postgresql] The default configuration of PostgreSQL uses only a small amount of dedicated memory for performance-critical purposes such as caching database blocks and sorting.
+[src:pgvector/postgresql] This limitation is primarily because older operating systems required kernel changes to allow allocating large blocks of shared memory.
+[src:pgvector/postgresql] PostgreSQL.org provides advice on basic recommended performance practice in a wiki.
+[src:pgvector/postgresql] In April 2012, Robert Haas of EnterpriseDB demonstrated PostgreSQL 9.2's linear CPU scalability using a server with 64 cores.
+[src:pgvector/postgresql] Matloob Khushi performed benchmarking between PostgreSQL 9.0 and MySQL 5.6.15 for their ability to process genomic data.
+[src:pgvector/postgresql] In his performance analysis he found that PostgreSQL extracts overlapping genomic regions eight times faster than MySQL using two datasets of 80,000 each forming random human DNA regions.
+[src:pgvector/postgresql] Insertion and data uploads in PostgreSQL were also better, although general searching ability of both databases was almost equivalent.
+[src:pgvector/postgresql] 64-bit Power ISA), SPARC (also 64-bit), MIPS and PA-RISC.
+[src:pgvector/postgresql] It was also known to work on some other platforms (while not been tested on for years, i.e. for latest versions).
+[src:pgvector/postgresql] , which can be used to enter SQL queries directly, or execute them from a file.
+[src:pgvector/postgresql] In addition, psql provides a number of meta-commands and various shell-like features to facilitate writing scripts and automating a wide variety of tasks; for example tab completion of object names and SQL syntax.
+[src:pgvector/postgresql] (GUI) administration tool for PostgreSQL, which is supported on many computer platforms.
+[src:pgvector/postgresql] The program is available in more than a dozen languages.
+[src:pgvector/postgresql] The second incarnation (named pgAdmin II) was a complete rewrite, first released on January 16, 2002.
+[src:pgvector/postgresql] and then released under the same license as PostgreSQL.
+[src:pgvector/postgresql] framework allowing it to run on most common operating systems.
+[src:pgvector/postgresql] The query tool includes a scripting language called pgScript for supporting admin and development tasks.
+[src:pgvector/postgresql] announced that with the shift towards web-based models, work has begun on pgAdmin 4 with the aim to facilitate cloud deployments.
+[src:pgvector/postgresql] PostgreSQL Studio allows users to perform essential PostgreSQL database development tasks from a web-based console.
+[src:pgvector/postgresql] PostgreSQL Studio allows users to work with cloud databases without the need to open firewalls.
+[src:pgvector/postgresql] AJAX/JavaScript-driven web interface for PostgreSQL.
+[src:pgvector/postgresql] Allows browsing, maintaining and creating data and database objects via a web browser.
+[src:pgvector/postgresql] management for commonly used scripts, among other features.
+[src:pgvector/postgresql] Installers are available for Windows, Macintosh, and Linux, and a simple cross-platform archive that runs from a script.
+[src:pgvector/postgresql] Base can be used as a front-end for PostgreSQL.
+[src:pgvector/postgresql] The pgBadger PostgreSQL log analyzer generates detailed reports from a PostgreSQL log file.
+[src:pgvector/postgresql] pgDevOps is a suite of web tools to install & manage multiple PostgreSQL versions, extensions, and community components, develop SQL queries, monitor running databases and find performance problems.
+[src:pgvector/postgresql] is a simple web-based administration tool for PostgreSQL and others, written in PHP.
+[src:pgvector/postgresql] pgBackRest is a backup and restore tool for PostgreSQL that provides support for full, differential, and incremental backups.
+[src:pgvector/postgresql] pgaudit is a PostgreSQL extension that provides detailed session and/or object audit logging via the standard logging facility provided by PostgreSQL.
+[src:pgvector/postgresql] Postgresus is an open source backup tool with GUI for scheduled backups with support of external sources (S3, NAS, FTP, Google Drive, Google Cloud, etc.) and notifications to external services (Slack, Discord, Telegram, SMTP, etc.).
+[src:pgvector/postgresql] A number of companies offer proprietary tools for PostgreSQL.
+[src:pgvector/postgresql] They often consist of a universal core that is adapted for various specific database products.
+[src:pgvector/postgresql] These tools mostly share the administration features with the open source tools but offer improvements in data modeling, importing, exporting or reporting.
+[src:pgvector/postgresql] Due to its permissive open-source license and extensible architecture, a broad ecosystem has developed around PostgreSQL.
+[src:pgvector/postgresql] This includes numerous companies offering dedicated support and hosting, as well as several forks and derivative databases that adapt PostgreSQL for specific workloads.
+[src:pgvector/vector-database] A **vector database**, **vector store** or **vector search engine** is a database that stores and retrieves embeddings of data in vector space.
+[src:pgvector/vector-database] Vector databases typically implement approximate nearest neighbor algorithms so users can search for records semantically similar to a given input, unlike traditional databases which primarily look up records by exact match.
+[src:pgvector/vector-database] Use-cases for vector databases include similarity search, semantic search, multi-modal search, recommendations engines, object detection, and retrieval-augmented generation (RAG).
+[src:pgvector/vector-database] Vector embeddings are mathematical representations of data in a high-dimensional space.
+[src:pgvector/vector-database] In this space, each dimension corresponds to a feature of the data, with the number of dimensions ranging from a few hundred to tens of thousands, depending on the complexity of the data being represented.
+[src:pgvector/vector-database] Each data item is represented by one vector in this space.
+[src:pgvector/vector-database] Words, phrases, or entire documents, as well as images, audio, and other types of data, can all be vectorized.
+[src:pgvector/vector-database] These feature vectors may be computed from the raw data using machine learning methods such as feature extraction algorithms, word embeddings or deep learning networks.
+[src:pgvector/vector-database] The goal is that semantically similar data items receive feature vectors close to each other.
+[src:pgvector/vector-database] Vector retrieval can be combined with metadata filtering or lexical search to support filtered and hybrid retrieval workflows.
+[src:pgvector/vector-database] These techniques may also be combined in vector search systems.
+[src:pgvector/vector-database] In recent benchmarks, HNSW-based implementations have been among the best performers.
+[src:pgvector/vector-database] Conferences such as the International Conference on Similarity Search and Applications (SISAP) and the Conference on Neural Information Processing Systems (NeurIPS) have hosted competitions on vector search in large databases.
+[src:pgvector/vector-database] Vector databases are used in a wide range of machine learning applications including similarity search, semantic search, multi-modal search, recommendations engines, object detection, and retrieval-augmented generation.
+[src:pgvector/vector-database] An especially common use-case for vector databases is in retrieval-augmented generation (RAG), a method to improve domain-specific responses of large language models.
+[src:pgvector/vector-database] The retrieval component of a RAG can be any search system, but is most often implemented as a vector database.
+[src:pgvector/vector-database] Text documents describing the domain of interest are collected, and for each document or document section, a feature vector (known as an "embedding") is computed, typically using a deep learning network, and stored in a vector database along with a link to the document.
+[src:pgvector/vector-database] Given a user prompt, the feature vector of the prompt is computed, and the database is queried to retrieve the most relevant documents.
+[src:pgvector/vector-database] These are then automatically added into the context window of the large language model, and the large language model proceeds to create a response to the prompt given this context.
+[src:pgvector/word-embedding] In natural language processing, a **word embedding** is a representation of a word.
+[src:pgvector/word-embedding] Typically, the representation is a real-valued vector that encodes the meaning of the word in such a way that the words that are closer in the vector space are expected to be similar in meaning.
+[src:pgvector/word-embedding] Word embeddings can be obtained using language modeling and feature learning techniques, where words or phrases from the vocabulary are mapped to vectors of real numbers.
+[src:pgvector/word-embedding] Methods to generate this mapping include neural networks, dimensionality reduction on the word co-occurrence matrix, probabilistic models, explainable knowledge base method, and explicit representation in terms of the context in which words appear.
+[src:pgvector/word-embedding] Word and phrase embeddings, when used as the underlying input representation, have been shown to boost the performance in NLP tasks such as syntactic parsing and sentiment analysis.
+[src:pgvector/word-embedding] In distributional semantics, a quantitative methodological approach for understanding meaning in observed language, word embeddings or semantic feature space models have been used as a knowledge representation for some time.
+[src:pgvector/word-embedding] Such models aim to quantify and categorize semantic similarities between linguistic items based on their distributional properties in large samples of language data.
+[src:pgvector/word-embedding] The underlying idea that "a word is characterized by the company it keeps" was proposed in a 1957 article by John Rupert Firth, but also has roots in the contemporaneous work on search systems and in cognitive psychology.
+[src:pgvector/word-embedding] The first generation of semantic space models is the vector space model for information retrieval.
+[src:pgvector/word-embedding] Such vector space models for words and their distributional data implemented in their simplest form results in a very sparse vector space of high dimensionality (cf. curse of dimensionality).
+[src:pgvector/word-embedding] Reducing the number of dimensions using linear algebraic methods such as singular value decomposition then led to the introduction of latent semantic analysis in the late 1980s and the random indexing approach for collecting word co-occurrence contexts.
+[src:pgvector/word-embedding] In 2000, Bengio et al. provided in a series of papers titled "Neural probabilistic language models" to reduce the high dimensionality of word representations in contexts by "learning a distributed representation for words".
+[src:pgvector/word-embedding] A study published in NeurIPS (NIPS) 2002 introduced the use of both word and document embeddings applying the method of kernel CCA to bilingual (and multi-lingual) corpora, also providing an early example of self-supervised learning of word embeddings.
+[src:pgvector/word-embedding] Word embeddings come in two different styles, one in which words are expressed as vectors of co-occurring words, and another in which words are expressed as vectors of linguistic contexts in which the words occur; these different styles are studied in Lavelli et al., 2004.
+[src:pgvector/word-embedding] Roweis and Saul published in *Science* how to use "locally linear embedding" (LLE) to discover representations of high dimensional data structures.
+[src:pgvector/word-embedding] Most new word embedding techniques after about 2005 rely on a neural network architecture instead of more probabilistic and algebraic models, after foundational work done by Yoshua Bengio and colleagues.
+[src:pgvector/word-embedding] The approach has been adopted by many research groups after theoretical advances in 2010 had been made on the quality of vectors and the training speed of the model, as well as after hardware advances allowed for a broader parameter space to be explored profitably.
+[src:pgvector/word-embedding] In 2013, a team at Google led by Tomas Mikolov created word2vec, a word embedding toolkit that can train vector space models faster than previous approaches.
+[src:pgvector/word-embedding] The word2vec approach has been widely used in experimentation and was instrumental in raising interest for word embeddings as a technology, moving the research strand out of specialised research into broader experimentation and eventually paving the way for practical application.
+[src:pgvector/word-embedding] Historically, one of the main limitations of static word embeddings or word vector space models is that words with multiple meanings are conflated into a single representation (a single vector in the semantic space).
+[src:pgvector/word-embedding] In other words, polysemy and homonymy are not handled properly.
+[src:pgvector/word-embedding] For example, in the sentence "The club I tried yesterday was great!", it is not clear if the term *club* is related to the word sense of a *club sandwich*, *clubhouse*, *golf club*, or any other sense that *club* might have.
+[src:pgvector/word-embedding] The necessity to accommodate multiple meanings per word in different vectors (multi-sense embeddings) is the motivation for several contributions in NLP to split single-sense embeddings into multi-sense ones.
+[src:pgvector/word-embedding] Most approaches that produce multi-sense embeddings can be divided into two main categories for their word sense representation, i.e., unsupervised and knowledge-based.
+[src:pgvector/word-embedding] Based on word2vec skip-gram, Multi-Sense Skip-Gram (MSSG) performs word-sense discrimination and embedding simultaneously, improving its training time, while assuming a specific number of senses for each word.
+[src:pgvector/word-embedding] In the Non-Parametric Multi-Sense Skip-Gram (NP-MSSG) this number can vary depending on each word.
+[src:pgvector/word-embedding] Once the words are disambiguated, they can be used in a standard word embeddings technique, so multi-sense embeddings are produced.
+[src:pgvector/word-embedding] MSSA architecture allows the disambiguation and annotation process to be performed recurrently in a self-improving manner.
+[src:pgvector/word-embedding] The use of multi-sense embeddings is known to improve performance in several NLP tasks, such as part-of-speech tagging, semantic relation identification, semantic relatedness, named entity recognition and sentiment analysis.
+[src:pgvector/word-embedding] As of the late 2010s, contextually-meaningful embeddings such as ELMo and BERT have been developed.
+[src:pgvector/word-embedding] Unlike static word embeddings, these embeddings are at the token-level, in that each occurrence of a word has its own embedding.
+[src:pgvector/word-embedding] These embeddings better reflect the multi-sense nature of words, because occurrences of a word in similar contexts are situated in similar regions of BERT's embedding space.
+[src:pgvector/word-embedding] Word embeddings for *n-*grams in biological sequences (e.g.
+[src:pgvector/word-embedding] DNA, RNA, and proteins) for bioinformatics applications have been proposed by Asgari and Mofrad.
+[src:pgvector/word-embedding] Named bio-vectors (BioVec) to refer to biological sequences in general with protein-vectors (ProtVec) for proteins (amino-acid sequences) and gene-vectors (GeneVec) for gene sequences, this representation can be widely used in applications of deep learning in proteomics and genomics.
+[src:pgvector/word-embedding] The results presented by Asgari and Mofrad suggest that BioVectors can characterize biological sequences in terms of biochemical and biophysical interpretations of the underlying patterns.
+[src:pgvector/word-embedding] Word embeddings with applications in game design have been proposed by Rabii and Cook as a way to discover emergent gameplay using logs of gameplay data.
+[src:pgvector/word-embedding] The process requires transcribing actions that occur during a game within a formal language and then using the resulting text to create word embeddings.
+[src:pgvector/word-embedding] The results presented by Rabii and Cook suggest that the resulting vectors can capture expert knowledge about games like chess that are not explicitly stated in the game's rules.
+[src:pgvector/word-embedding] The idea has been extended to embeddings of entire sentences or even documents, e.g. in the form of the thought vectors concept.
+[src:pgvector/word-embedding] In 2015, some researchers suggested "skip-thought vectors" as a means to improve the quality of machine translation.
+[src:pgvector/word-embedding] A more recent and popular approach for representing sentences is Sentence-BERT, or SentenceTransformers, which modifies pre-trained BERT with the use of siamese and triplet network structures.
+[src:pgvector/word-embedding] Software for training and using word embeddings includes Tomáš Mikolov's Word2vec, Stanford University's GloVe, GN-GloVe, Flair embeddings, AllenNLP's ELMo, BERT, fastText, Gensim, Indra, and Deeplearning4j.
+[src:pgvector/word-embedding] Principal Component Analysis (PCA), Uniform manifold approximation and projection (UMAP), and T-Distributed Stochastic Neighbour Embedding (t-SNE) are used to reduce the dimensionality of word vector spaces and visualize word embeddings and clusters.
+[src:pgvector/word-embedding] For instance, the fastText is also used to calculate word embeddings for text corpora in Sketch Engine that are available online.
+[src:pgvector/word-embedding] Word embeddings may contain the biases and stereotypes contained in the trained dataset, as Bolukbasi et al. points out in the 2016 paper "Man is to Computer Programmer as Woman is to Homemaker?
+[src:pgvector/word-embedding] For example, one of the analogies generated using the aforementioned word embedding is "man is to computer programmer as woman is to homemaker".
+[src:pgvector/word-embedding] Research done by Jieyu Zhao et al. shows that the applications of these trained word embeddings without careful oversight likely perpetuates existing bias in society, which is introduced through unaltered training data.
+[src:pgvector/word-embedding] Furthermore, word embeddings can even amplify these biases.

@@ -1,0 +1,82 @@
+---
+title: "Matrix factorization (recommender systems)"
+source: https://en.wikipedia.org/wiki/Matrix_factorization_(recommender_systems)
+domain: recommender-systems
+license: CC-BY-SA-4.0
+tags: recommender system, collaborative filtering, matrix factorization, personalization, cold start
+fetched: 2026-07-02
+---
+
+# Matrix factorization (recommender systems)
+
+**Matrix factorization** is a class of collaborative filtering algorithms used in recommender systems. Matrix factorization algorithms work by decomposing the user-item interaction matrix into the product of two lower dimensionality rectangular matrices. This family of methods became widely known during the Netflix prize challenge due to its effectiveness as reported by Simon Funk in his 2006 blog post, where he shared his findings with the research community. The prediction results can be improved by assigning different regularization weights to the latent factors based on items' popularity and users' activeness.
+
+## Techniques
+
+The idea behind matrix factorization is to represent users and items in a lower dimensional latent space. Since the initial work by Funk in 2006 a multitude of matrix factorization approaches have been proposed for recommender systems. Some of the most used and simpler ones are listed in the following sections.
+
+### Funk MF
+
+The original algorithm proposed by Simon Funk in his blog post factorized the user-item rating matrix as the product of two lower dimensional matrices, the first one has a row for each user, while the second has a column for each item. The row or column associated to a specific user or item is referred to as *latent factors*. Note that, in Funk MF no singular value decomposition is applied, it is a SVD-like machine learning model. The predicted ratings can be computed as ${\tilde {R}}=HW$ , where ${\tilde {R}}\in \mathbb {R} ^{{\text{users}}\times {\text{items}}}$ is the user-item rating matrix, $H\in \mathbb {R} ^{{\text{users}}\times {\text{latent factors}}}$ contains the user's latent factors and $W\in \mathbb {R} ^{{\text{latent factors}}\times {\text{items}}}$ the item's latent factors.
+
+Specifically, the predicted rating user *u* will give to item *i* is computed as:
+
+${\tilde {r}}_{ui}=\sum _{f=0}^{\text{n factors}}H_{u,f}W_{f,i}$
+
+It is possible to tune the expressive power of the model by changing the number of latent factors. It has been demonstrated that a matrix factorization with one latent factor is equivalent to a *most popular* or *top popular* recommender (e.g. recommends the items with the most interactions without any personalization). Increasing the number of latent factors will improve personalization, therefore recommendation quality, until the number of factors becomes too high, at which point the model starts to overfit and the recommendation quality will decrease. A common strategy to avoid overfitting is to add regularization terms to the objective function. Funk MF was developed as a *rating prediction* problem, therefore it uses explicit numerical ratings as user-item interactions.
+
+All things considered, Funk MF minimizes the following objective function:
+
+${\underset {H,W}{\operatorname {arg\,min} }}\,\|R-{\tilde {R}}\|_{\rm {F}}+\alpha \|H\|+\beta \|W\|$
+
+Where $\|.\|_{\rm {F}}$ is defined to be the frobenius norm whereas the other norms might be either frobenius or another norm depending on the specific recommending problem.
+
+### SVD++
+
+While Funk MF is able to provide very good recommendation quality, its ability to use only explicit numerical ratings as user-items interactions constitutes a limitation. Modern day recommender systems should exploit all available interactions both explicit (e.g. numerical ratings) and implicit (e.g. likes, purchases, skipped, bookmarked). To this end SVD++ was designed to take into account implicit interactions as well. Compared to Funk MF, SVD++ takes also into account user and item bias.
+
+The predicted rating user *u* will give to item *i* is computed as:
+
+${\tilde {r}}_{ui}=\mu +b_{i}+b_{u}+\sum _{f=0}^{\text{n factors}}H_{u,f}W_{f,i}$
+
+Where $\mu$ refers to the overall average rating over all items and $b_{i}$ and $b_{u}$ refers to the observed deviation of the item i and the user u respectively from the average. SVD++ has however some disadvantages, with the main drawback being that this method is not *model-based.* This means that if a new user is added, the algorithm is incapable of modeling it unless the whole model is retrained. Even though the system might have gathered some interactions for that new user, its latent factors are not available and therefore no recommendations can be computed. This is an example of a cold-start problem, that is the recommender cannot deal efficiently with new users or items and specific strategies should be put in place to handle this disadvantage.
+
+A possible way to address this cold start problem is to modify SVD++ in order for it to become a *model-based* algorithm, therefore allowing to easily manage new items and new users.
+
+As previously mentioned in SVD++ we don't have the latent factors of new users, therefore it is necessary to represent them in a different way. The user's latent factors represent the preference of that user for the corresponding item's latent factors, therefore user's latent factors can be estimated via the past user interactions. If the system is able to gather some interactions for the new user it is possible to estimate its latent factors. Note that this does not entirely solve the cold-start problem, since the recommender still requires some reliable interactions for new users, but at least there is no need to recompute the whole model every time. It has been demonstrated that this formulation is almost equivalent to a SLIM model, which is an item-item model based recommender.
+
+${\tilde {r}}_{ui}=\mu +b_{i}+b_{u}+\sum _{f=0}^{\text{n factors}}{\biggl (}\sum _{j=0}^{\text{n items}}r_{uj}W_{j,f}^{T}{\biggr )}W_{f,i}$
+
+With this formulation, the equivalent item-item recommender would be ${\tilde {R}}=RS=RW^{\rm {T}}W$ . Therefore the similarity matrix is symmetric.
+
+### Asymmetric SVD
+
+Asymmetric SVD aims at combining the advantages of SVD++ while being a model based algorithm, therefore being able to consider new users with a few ratings without needing to retrain the whole model. As opposed to the model-based SVD here the user latent factor matrix H is replaced by Q, which learns the user's preferences as function of their ratings.
+
+The predicted rating user *u* will give to item *i* is computed as:
+
+${\tilde {r}}_{ui}=\mu +b_{i}+b_{u}+\sum _{f=0}^{\text{n factors}}\sum _{j=0}^{\text{n items}}r_{uj}Q_{j,f}W_{f,i}$
+
+With this formulation, the equivalent item-item recommender would be ${\tilde {R}}=RS=RQ^{\rm {T}}W$ . Since matrices Q and W are different the similarity matrix is asymmetric, hence the name of the model.
+
+### Group-specific SVD
+
+A group-specific SVD can be an effective approach for the cold-start problem in many scenarios. It clusters users and items based on dependency information and similarities in characteristics. Then once a new user or item arrives, we can assign a group label to it, and approximates its latent factor by the group effects (of the corresponding group). Therefore, although ratings associated with the new user or item are not necessarily available, the group effects provide immediate and effective predictions.
+
+The predicted rating user *u* will give to item *i* is computed as:
+
+${\tilde {r}}_{ui}=\sum _{f=0}^{\text{n factors}}(H_{u,f}+S_{v_{u},f})(W_{f,i}+T_{f,j_{i}})$
+
+Here $v_{u}$ and $j_{i}$ represent the group label of user *u* and item *i*, respectively, which are identical across members from the same group. And S and T are matrices of group effects. For example, for a new user $u_{new}$ whose latent factor $H_{u_{new}}$ is not available, we can at least identify their group label $v_{u_{new}}$ , and predict their ratings as:
+
+${\tilde {r}}_{u_{new}i}=\sum _{f=0}^{\text{n factors}}S_{v_{u_{new}},f}(W_{f,i}+T_{f,j_{i}})$
+
+This provides a good approximation to the unobserved ratings.
+
+### Hybrid MF
+
+In recent years many other matrix factorization models have been developed to exploit the ever increasing amount and variety of available interaction data and use cases. Hybrid matrix factorization algorithms are capable of merging explicit and implicit interactions or both content and collaborative data
+
+### Deep-learning MF
+
+In recent years a number of neural and deep-learning techniques have been proposed, some of which generalize traditional Matrix factorization algorithms via a non-linear neural architecture. While deep learning has been applied to many different scenarios (context-aware, sequence-aware, social tagging, etc.), its real effectiveness when used in a simple Collaborative filtering scenario has been put into question. Systematic analysis of publications applying deep learning or neural methods to the top-k recommendation problem, published in top conferences (SIGIR, KDD, WWW, RecSys, IJCAI), has shown that on average less than 40% of articles are reproducible, with as little as 14% in some conferences. Overall the studies identify 26 articles, only 12 of them could be reproduced and 11 of them could be outperformed by much older and simpler properly tuned baselines. The articles also highlights a number of potential problems in today's research scholarship and call for improved scientific practices in that area. Similar issues have been spotted also in sequence-aware recommender systems.

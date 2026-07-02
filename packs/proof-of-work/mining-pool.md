@@ -1,0 +1,96 @@
+---
+title: "Mining pool"
+source: https://en.wikipedia.org/wiki/Mining_pool
+domain: proof-of-work
+license: CC-BY-SA-4.0 / CC-BY-4.0 (ethereum.org)
+tags: proof-of-work, hashcash, crypto mining, nakamoto consensus
+fetched: 2026-07-02
+---
+
+# Mining pool
+
+In the context of cryptocurrency mining, a **mining pool** is the pooling of resources by miners, who share their processing power over a network, to split the reward equally, according to the amount of work they contributed to the probability of finding a block. A "share" is awarded to members of the mining pool who present a valid partial proof-of-work. Mining in pools began when the difficulty for mining increased to the point where it could take centuries for slower miners to generate a block. The solution to this problem was for miners to pool their resources so they could generate blocks more quickly and therefore receive a portion of the block reward on a consistent basis, rather than randomly once every few years.
+
+## History
+
+- **November 2010:** Slush launched in 2010 and is the first mining pool.
+- **2011–2013:** The era of deepbit, which at its peak held over 50% of the network hashrate.
+- **2013–2014:** Since the introduction of ASIC, and when deepbit failed to support the newer stratum protocol, GHash.IO replaced deepbit and became the largest.
+- **2014–2015:** F2Pool, which launched in May 2013, overtook GHash.IO and became then the largest mining pool.
+- **2016–2018:** Rise of Bitmain and its AntPool. Bitmain also controls a few other smaller pools like BTC.com and ViaBTC.
+- **2019–2020:** The launch of Poolin. Poolin and F2Pool were among the largest pools during this period, with F2Pool producing approximately 17.5% of all Bitcoin blocks in 2020.
+- **2020:** Binance launched a mining pool, following Huobi and OKEx. Luxor launched a US-based mining pool.
+- **2021:** Foundry USA Pool, a subsidiary of Digital Currency Group, became one of the largest Bitcoin mining pools by hashrate.
+- **2022–2024:** Foundry USA Pool and AntPool consistently held the largest shares of Bitcoin's global hashrate.
+
+Share is the principal concept of the mining pool operation. Share is a potential block solution. So it may be a block solution, but it is not necessarily so. For example, suppose a block solution is a number that ends with 10 zeros and, a share may be a number with 5 zeros at the end. Sooner or later one of the shares will have not only 5, but 10 zeros at the end, and this will be the block solution.
+
+Mining pools need shares to estimate the miner's contribution to the work performed by the pool to find a block. There are numerous miner reward systems: PPS, PROP, PPLNS, PPLNT, and many more.
+
+## Mining pool methods
+
+Mining pools may contain hundreds or thousands of miners using specialized protocols. In all these schemes B stands for a block reward minus pool fee and p is a probability of finding a block in a share attempt ( $p=1/D$ , where D is current block difficulty). A pool can support "variable share difficulty" feature, which means that a miner can select the share target (the lower bound of share difficulty) on their own and change p accordingly.
+
+The Pay-per-Share (PPS) approach offers an instant, guaranteed payout to a miner for their contribution to the probability that the pool finds a block. Miners are paid out from the pool's existing balance and can withdraw their payout immediately. This model allows for the least possible variance in payment for miners while also transferring much of the risk to the pool's operator.
+
+Each share costs exactly the expected value of each hash attempt $R=B\cdot p$ .
+
+### Proportional
+
+Miners earn shares until the pool finds a block (the end of the mining round). After that each user gets reward $R=B\cdot {\frac {n}{N}}$ , where n is amount of their own shares, and N is amount of all shares in this round. In other words, all shares are equal, but its value is calculated only at the end of each round.
+
+### Pooled mining
+
+Pooled mining (BPM), also known as "slush's system", due to its first use on a pool called "slush's pool', uses a system where older shares from the beginning of a block round are given less weight than more recent shares. A new round starts the moment the pool solves a block and miners are rewarded **Proportional** to the shares submitted. This reduces the ability to cheat the mining pool system by switching pools during a round, to maximize profit.
+
+### Pay-per-last-N-shares
+
+Pay-per-last-N-shares (PPLNS) method is similar to **Proportional**, but the miner's reward is calculated on a basis of N last shares, instead of all shares for the last round. This means that when a block is found, the reward of each miner is calculated based on the miner contribution to the last N pool shares. Therefore, if the round was short enough all miners get more profit and vice versa.
+
+### Solo Mining Pool
+
+Solo pools operate the same way as usual pools, with the only difference being that block reward is not distributed among all miners. The entire reward in a solo pool goes to the miner who finds the block.
+
+### Peer-to-Peer Mining Pool
+
+Peer-to-peer mining pool (P2Pool) decentralizes the responsibilities of a pool server, removing the chance of the pool operator cheating or the server being a single point of failure. Miners work on a side blockchain called a share chain, mining at a lower difficulty at a rate of one share block per 30 seconds. Once a share block reaches the network target, it is transmitted and merged onto the blockchain. Miners are rewarded when this occurs proportional to the shares submitted prior to the target block. A P2Pool requires the miners to run a full node, bearing the weight of hardware expenses and network bandwidth.
+
+### Geometric method
+
+Geometric Method (GM) was invented by Meni Rosenfeld. It is based on the same "score" idea, as Slush's method: the score granted for every new share, relatively to already existing score and the score of future shares, is always the same, thus there is no advantage to mining early or late in the round.
+
+The method goes as follows:
+
+- Choose parameters f and c (fixed and variable fee).
+- At the start of every round, set $s=1$ . For every worker k , let $S_{k}$ be the worker's score for this round, and set $S_{k}=0$ .
+- Set $r=1-p+{\frac {p}{c}}$ , where $p=1/D$ . If the difficulty changes during the round, r needs to be updated.
+- When worker k submits a share, set $S_{k}=S_{k}+spB$ , and then $s=sr$ .
+- If the share is a valid block, end the round. For every worker k pay ${\frac {(1-f)(r-1)S_{k}}{sp}}$
+
+### Double Geometric method
+
+Generalized version of Geometric and PPLNS methods. It involves new parameter: o ("cross-round leakage"). When $o=0$ this becomes the Geometric method. When $o=1$ this becomes a variant of PPLNS, with exponential decay instead of a step function.
+
+- Choose parameters f , c , and o .
+- When the pool first starts running, initialize $s=1$ . For every worker k , let $S_{k}$ be the worker's score, and set $S_{k}=0$ .
+- Set $r=1+{\frac {1}{c}}p(1-c)(1-o)$ . If at any point the difficulty or the parameters change, r should be recalculated.
+- When worker k submits a share, set $S_{k}=S_{k}+(1-f)(1-c)spB$ (where B is the block reward at the time it was submitted), and then $s=sr$ .
+- If the share is a valid block, then also do the following for each worker k : Give him a payout of ${\frac {1}{c_{s}}}(1-o)S_{k}$ , and then set $S_{k}=S_{k}\cdot o$ .
+
+## Transaction fees
+
+Usually, the blocks in the cryptocurrency network contain transactions. Transaction fees are paid to the miner (mining pool). Different mining pools could share these fees between their miners or not. Pay-per-last-N-shares (PPLNS), Pay-Per-Share Plus (PPS+) or Full Pay-Per-Share (FPPS) are the most fair methods where the payouts from the pool include not only the block subsidy but also the transaction fees.
+
+### Transparency and block auditing
+
+Open-source monitoring tools allow public analysis of mining pool behavior, including hashrate distribution, block composition, and whether pools include the highest-fee transactions available in the mempool. Block audit features compare expected block templates — generated using the same transaction selection algorithm as Bitcoin Core — against actual mined blocks. Discrepancies may indicate transaction prioritization, transaction censorship, or out-of-band fee arrangements such as transaction acceleration services.
+
+## Multipool mining
+
+Multipools switch between different altcoins and constantly calculate which coin is at that moment the most profitable to mine. Two key factors are involved in the algorithm that calculates profitability, the block time, and the price on the exchanges. To avoid the need for many different wallets for all possible minable coins, multipools may automatically exchange the mined coin to a coin that is accepted in the mainstream (for example bitcoin). Using this method, because the most profitable coins are being mined and then sold for the intended coin, it is possible to receive more coins in the intended currency than by mining that currency alone. This method also increases demand on the intended coin, which has the side effect of increasing or stabilizing the value of the intended coin.
+
+Some companies that sell hash power may do so by aggregating the work of many small miners (for example, NiceHash), paying them proportionally by share like a pool would. Some such companies operate their own pools. These can be considered multipools, because they usually employ a similar method of work switching, although the work they assign is determined by customer demand rather than "raw" profitability.
+
+## PoC (Proof of Capacity) mining
+
+Similar to other mining technologies, the PoC, PoC+, PoS Proof of Space method allows the computing to be performed beforehand and all answers are stored on a miners hard drive, the heavy energy consumption for PoC is not required like it is for PoW mining and therefore PoC is almost always a more environmentally friendly blockchain choice. When mining happens the miner simply "looks" through the pre-stored answers and submits the best one found to the network, with minimal energy used to read the hard drives. Due to the low hardware specification requirements of the PoC mining process, this type of mining can be conducted on a regular PC still being used for other day-to-day tasks. The first PoC blockchain was brought online in 2014 and is known as Signum today, with other PoC chains coming out much later, examples: Chia, Flax, and BitcoinHD. The network difficulty, as well as other network and mining status information, can be viewed on any of the public mining pool dashboards, example: Mining Pool Dashboard A list of current PoC, PoS, PoC+ type mining pools are also tracked by some third party "Mining Pool Stats" pages, an example of one is Mining Pool Stats.

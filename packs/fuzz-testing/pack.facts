@@ -1,0 +1,447 @@
+# nl-rag distilled facts — domain: fuzz-testing
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Initially released in November 2013, AFL quickly became one of the most widely used fuzzers in security research.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] For many years after its release, AFL has been considered a "state of the art" fuzzer.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL is considered "a de-facto standard for fuzzing", and the release of AFL contributed significantly to the development of fuzzing as a research area.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL is widely used in academia; academic fuzzers are often forks of AFL, and AFL is commonly used as a baseline to evaluate new techniques.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] The source code of American fuzzy lop is published on GitHub.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Its name is a reference to a breed of rabbit, the American Fuzzy Lop.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL requires the user to provide a sample command that runs the tested application and at least one small example input.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] The input can be fed to the tested program either via standard input or as an input file specified in the process command line.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Fuzzing networked programs is currently not directly supported, although in some cases there are feasible solutions to this problem.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] For example, in case of an audio player, American fuzzy lop can be instructed to open a short sound file with it.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Then, the fuzzer attempts to actually execute the specified command and if that succeeds, it tries to reduce the input file to the smallest one that triggers the same behavior.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] After this initial phase, AFL begins the actual process of fuzzing by applying various modifications to the input file.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] When the tested program crashes or hangs, this usually implies the discovery of a new bug, possibly a security vulnerability.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] In this case, the modified input file is saved for further user inspection.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] In order to maximize the fuzzing performance, American fuzzy lop expects the tested program to be compiled with the aid of a utility program that instruments the code with helper functions which track control flow.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] This allows the fuzzer to detect when the target's behavior changes in response to the input.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] In cases when this is not possible, black-box testing is supported as well.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Fuzzers attempt to find unexpected behaviors (i.e., bugs) in a target program by repeatedly executing the program on various inputs.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] As described above, AFL is a gray-box fuzzer, meaning it expects instrumentation to measure code coverage to have been injected into the target program at compile time and uses the coverage metric to direct the generation of new inputs.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL's fuzzing algorithm has influenced many subsequent gray-box fuzzers.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] The inputs to AFL are an instrumented **target program** (the system under test) and **corpus**, that is, a collection of inputs to the target.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Inputs are also known as **test cases**.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] The algorithm maintains a queue of inputs, which is initialized to the input corpus.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] If any mutant results in additional code coverage, add it to the queue.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] If the mutant results in a crash or hang, save it to disk for later inspection.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] To generate new inputs, AFL applies various **mutations** to existing inputs.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] These mutations are mostly agnostic to the input format of the target program; they generally treat the input as simple blob of binary data.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] At first, AFL applies a deterministic sequence of mutations to each input.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] These are applied at various offsets in the input.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] After applying all available deterministic mutations, AFL moves on to **havoc**, a stage where between 2 and 128 mutations are applied in a row.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] If AFL cycles through the entire queue without generating any input that achieves new code coverage, it begins **splicing**.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Splicing takes two inputs from the queue, truncates them at arbitrary positions, concatenates them together, and applies the havoc stage to the result.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL pioneered the use of **binned hitcounts** for measuring code coverage.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] The author claims that this technique mitigates path explosion.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Conceptually, AFL counts the number of times a given execution of the target traverses each edge in the target's control-flow graph; the documentation refers to these edges as **tuples** and the counts as **hitcounts**.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] At the end of the execution, the hitcounts are **binned** or **bucketed** into the following eight buckets: 1, 2, 3, 4–7, 8–15, 16–31, 32–127, and 128 and greater.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL maintains a global set of (tuple, binned count) pairs that have been produced by any execution thus far.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] An input is considered "interesting" and is added to the queue if it produces a (tuple, binned count) pair that is not yet in the global set.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] In practice, the hitcounts are collected and processed using an efficient but lossy scheme.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] where `<COMPILE_TIME_RANDOM>` is a random integer and `shared_mem` is a 64 kibibyte region of memory shared between the fuzzer and the target.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] This representation is more fine-grained (distinguishes between more executions) than simple block or statement coverage, but still allows for a linear-time "interestingness" test.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] On the assumption that smaller inputs take less time to execute, AFL attempts to minimize or **trim** the test cases in the queue.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Trimming works by removing blocks from the input; if the trimmed input still results in the same coverage (see #Measuring coverage), then the original input is discarded and the trimmed input is saved in the queue.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL selects a subset of **favored** inputs from the queue; non-favored inputs are skipped with some probability.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] One of the challenges American fuzzy lop had to solve involved an efficient spawning of hundreds of processes per second.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Apart from the original engine that spawned every process from scratch, American fuzzy lop offers the default engine that relies heavily on the `fork` system call.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] This can further be sped up by leveraging LLVM deferred fork server mode or the similar persistent mode, but this comes at the cost of having to modify the tested program.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Also, American fuzzy lop supports fuzzing the same program over the network.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] American fuzzy lop features a colorful command line interface that displays real-time statistics about the fuzzing process.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Various settings may be triggered by either command line options or environment variables.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Apart from that, programs may read runtime statistics from files in a machine-readable format.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] In addition to `afl-fuzz` and tools that can be used for binary instrumentation, American fuzzy lop features utility programs meant for monitoring of the fuzzing process.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Apart from that, there is `afl-cmin` and `afl-tmin`, which can be used for test case and test corpus minimization.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] This can be useful when the test cases generated by `afl-fuzz` would be used by other fuzzers.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] AFL has been forked many times in order to examine new fuzzing techniques, or to apply fuzzing to different kinds of programs.
+[src:fuzz-testing/american-fuzzy-lop-fuzzer] Google's OSS-Fuzz initiative, which provides free fuzzing services to open source software, replaced its AFL option with AFL++ in January 2021.
+[src:fuzz-testing/buffer-overflow] In programming and information security, a **buffer overflow** or **buffer overrun** is an anomaly whereby a program writes data to a buffer beyond the buffer's allocated memory, overwriting adjacent memory locations.
+[src:fuzz-testing/buffer-overflow] Buffers are areas of memory set aside to hold data, often while moving it from one section of a program to another, or between programs.
+[src:fuzz-testing/buffer-overflow] Buffer overflows can often be triggered by malformed inputs; if one assumes all inputs will be smaller than a certain size and the buffer is created to be that size, then an anomalous transaction that produces more data could cause it to write past the end of the buffer.
+[src:fuzz-testing/buffer-overflow] If this overwrites adjacent data or executable code, this may result in erratic program behavior, including memory access errors, incorrect results, and crashes.
+[src:fuzz-testing/buffer-overflow] Exploiting the behavior of a buffer overflow is a well-known security exploit.
+[src:fuzz-testing/buffer-overflow] Files specifically created to exploit buffer overflow vulnerabilities are often called 'crafted' files.
+[src:fuzz-testing/buffer-overflow] On many systems, the memory layout of a program, or the system as a whole, is well defined.
+[src:fuzz-testing/buffer-overflow] Buffers are widespread in operating system (OS) code, so it is possible to make attacks that perform privilege escalation and gain unlimited access to the computer's resources.
+[src:fuzz-testing/buffer-overflow] The famed Morris worm in 1988 used this as one of its attack techniques.
+[src:fuzz-testing/buffer-overflow] Bounds checking can prevent buffer overflows, but requires additional code and processing time.
+[src:fuzz-testing/buffer-overflow] Modern operating systems use a variety of techniques to combat malicious buffer overflows, notably by randomizing the layout of memory, or deliberately leaving space between buffers and looking for actions that write into those areas ("canaries").
+[src:fuzz-testing/buffer-overflow] A buffer overflow occurs when data written to a buffer also corrupts data values in memory addresses adjacent to the destination buffer due to insufficient bounds checking.
+[src:fuzz-testing/buffer-overflow] This can occur when copying data from one buffer to another without first checking that the data fits within the destination buffer.
+[src:fuzz-testing/buffer-overflow] In the following example expressed in C, a program has two variables which are adjacent in memory: an 8-byte-long string buffer, `a`, and a two-byte big-endian integer, `b`.
+[src:fuzz-testing/buffer-overflow] Initially, `a` contains nothing but zero bytes, and `b` contains the number 1979.
+[src:fuzz-testing/buffer-overflow] Now, the program attempts to store the null-terminated string `"excessive"` with ASCII encoding in the A buffer.
+[src:fuzz-testing/buffer-overflow] `"excessive"` is 9 characters long and encodes to 10 bytes including the null terminator, but `a` can take only 8 bytes.
+[src:fuzz-testing/buffer-overflow] `b`'s value has now been inadvertently replaced by a number formed from part of the character string.
+[src:fuzz-testing/buffer-overflow] In this example "e" followed by a zero byte would become 25856.
+[src:fuzz-testing/buffer-overflow] Writing data past the end of allocated memory can sometimes be detected by the operating system to generate a segmentation fault error that terminates the process.
+[src:fuzz-testing/buffer-overflow] When available, the strlcpy library function is preferred over strncpy which does not null-terminate the destination buffer if the source string's length is greater than or equal to the size of the buffer (the third argument passed to the function).
+[src:fuzz-testing/buffer-overflow] Therefore a may not be null-terminated and cannot be treated as a valid C-style string.
+[src:fuzz-testing/buffer-overflow] The techniques to exploit a buffer overflow vulnerability vary by architecture, operating system, and memory region.
+[src:fuzz-testing/buffer-overflow] For example, exploitation on the heap (used for dynamically allocated memory), differs markedly from exploitation on the call stack.
+[src:fuzz-testing/buffer-overflow] In general, heap exploitation depends on the heap manager used on the target system, while stack exploitation depends on the calling convention used by the architecture and compiler.
+[src:fuzz-testing/buffer-overflow] The attacker designs data to cause one of these exploits, then places this data in a buffer supplied to users by the vulnerable code.
+[src:fuzz-testing/buffer-overflow] If the address of the user-supplied data used to affect the stack buffer overflow is unpredictable, exploiting a stack buffer overflow to cause remote code execution becomes much more difficult.
+[src:fuzz-testing/buffer-overflow] One technique that can be used to exploit such a buffer overflow is called "trampolining".
+[src:fuzz-testing/buffer-overflow] Here, an attacker will find a pointer to the vulnerable stack buffer and compute the location of their shellcode relative to that pointer.
+[src:fuzz-testing/buffer-overflow] The attacker will then use the overwrite to jump to an instruction already in memory which will make a second jump, this time relative to the pointer.
+[src:fuzz-testing/buffer-overflow] That second jump will branch execution into the shellcode.
+[src:fuzz-testing/buffer-overflow] Suitable instructions are often present in large code.
+[src:fuzz-testing/buffer-overflow] The Metasploit Project, for example, maintains a database of suitable opcodes, though it lists only those found in the Windows operating system.
+[src:fuzz-testing/buffer-overflow] A buffer overflow occurring in the heap data area is referred to as a heap overflow and is exploitable in a manner different from that of stack-based overflows.
+[src:fuzz-testing/buffer-overflow] Memory on the heap is dynamically allocated by the application at run-time and typically contains program data.
+[src:fuzz-testing/buffer-overflow] Exploitation is performed by corrupting this data in specific ways to cause the application to overwrite internal structures such as linked list pointers.
+[src:fuzz-testing/buffer-overflow] The canonical heap overflow technique overwrites dynamic memory allocation linkage (such as malloc meta data) and uses the resulting pointer exchange to overwrite a program function pointer.
+[src:fuzz-testing/buffer-overflow] Microsoft's GDI+ vulnerability in handling JPEGs is an example of the danger a heap overflow can present.
+[src:fuzz-testing/buffer-overflow] Manipulation of the buffer, which occurs before it is read or executed, may lead to the failure of an exploitation attempt.
+[src:fuzz-testing/buffer-overflow] These manipulations can mitigate the threat of exploitation, but may not make it impossible.
+[src:fuzz-testing/buffer-overflow] Manipulations could include conversion to upper or lower case, removal of metacharacters and filtering out of non-alphanumeric strings.
+[src:fuzz-testing/buffer-overflow] However, techniques exist to bypass these filters and manipulations, such as alphanumeric shellcode, polymorphic code, self-modifying code, and return-to-libc attacks.
+[src:fuzz-testing/buffer-overflow] The same methods can be used to avoid detection by intrusion detection systems.
+[src:fuzz-testing/buffer-overflow] In some cases, including where code is converted into Unicode, the threat of the vulnerability has been misrepresented by the disclosers as only Denial of Service when in fact the remote execution of arbitrary code is possible.
+[src:fuzz-testing/buffer-overflow] In real-world exploits there are a variety of challenges which need to be overcome for exploits to operate reliably.
+[src:fuzz-testing/buffer-overflow] These factors include null bytes in addresses, variability in the location of shellcode, differences between environments, and various counter-measures in operation.
+[src:fuzz-testing/buffer-overflow] A NOP-sled is the oldest and most widely known technique for exploiting stack buffer overflows.
+[src:fuzz-testing/buffer-overflow] It solves the problem of finding the exact address of the buffer by effectively increasing the size of the target area.
+[src:fuzz-testing/buffer-overflow] To do this, much larger sections of the stack are corrupted with the no-op machine instruction.
+[src:fuzz-testing/buffer-overflow] At the end of the attacker-supplied data, after the no-op instructions, the attacker places an instruction to perform a relative jump to the top of the buffer where the shellcode is located.
+[src:fuzz-testing/buffer-overflow] This collection of no-ops is referred to as the "NOP-sled" because if the return address is overwritten with any address within the no-op region of the buffer, the execution will "slide" down the no-ops until it is redirected to the actual malicious code by the jump at the end.
+[src:fuzz-testing/buffer-overflow] This technique requires the attacker to guess where on the stack the NOP-sled is instead of the comparatively small shellcode.
+[src:fuzz-testing/buffer-overflow] Because of the popularity of this technique, many vendors of intrusion prevention systems will search for this pattern of no-op machine instructions in an attempt to detect shellcode in use.
+[src:fuzz-testing/buffer-overflow] A NOP-sled does not necessarily contain only traditional no-op machine instructions.
+[src:fuzz-testing/buffer-overflow] Any instruction that does not corrupt the machine state to a point where the shellcode will not run can be used in place of the hardware assisted no-op.
+[src:fuzz-testing/buffer-overflow] As a result, it has become common practice for exploit writers to compose the no-op sled with randomly chosen instructions which will have no real effect on the shellcode execution.
+[src:fuzz-testing/buffer-overflow] While this method greatly improves the chances that an attack will be successful, it is not without problems.
+[src:fuzz-testing/buffer-overflow] Exploits using this technique still must rely on some amount of luck that they will guess offsets on the stack that are within the NOP-sled region.
+[src:fuzz-testing/buffer-overflow] An incorrect guess will usually result in the target program crashing and could alert the system administrator to the attacker's activities.
+[src:fuzz-testing/buffer-overflow] Another problem is that the NOP-sled requires a much larger amount of memory in which to hold a NOP-sled large enough to be of any use.
+[src:fuzz-testing/buffer-overflow] This can be a problem when the allocated size of the affected buffer is too small and the current depth of the stack is shallow (i.e., there is not much space from the end of the current stack frame to the start of the stack).
+[src:fuzz-testing/buffer-overflow] Despite its problems, the NOP-sled is often the only method that will work for a given platform, environment, or situation, and as such it is still an important technique.
+[src:fuzz-testing/buffer-overflow] The "jump to register" technique allows for reliable exploitation of stack buffer overflows without the need for extra room for a NOP-sled and without having to guess stack offsets.
+[src:fuzz-testing/buffer-overflow] The strategy is to overwrite the return pointer with something that will cause the program to jump to a known pointer stored within a register which points to the controlled buffer and thus the shellcode.
+[src:fuzz-testing/buffer-overflow] For example, if register A contains a pointer to the start of a buffer then any jump or call taking that register as an operand can be used to gain control of the flow of execution.
+[src:fuzz-testing/buffer-overflow] In practice a program may not intentionally contain instructions to jump to a particular register.
+[src:fuzz-testing/buffer-overflow] The traditional solution is to find an unintentional instance of a suitable opcode at a fixed location somewhere within the program memory.
+[src:fuzz-testing/buffer-overflow] Figure E on the left contains an example of such an unintentional instance of the i386 `jmp esp` instruction.
+[src:fuzz-testing/buffer-overflow] The opcode for this instruction is `FF E4`.
+[src:fuzz-testing/buffer-overflow] This two-byte sequence can be found at a one-byte offset from the start of the instruction `call DbgPrint` at address `0x7C941EED`.
+[src:fuzz-testing/buffer-overflow] If an attacker overwrites the program return address with this address the program will first jump to `0x7C941EED`, interpret the opcode `FF E4` as the `jmp esp` instruction, and will then jump to the top of the stack and execute the attacker's code.
+[src:fuzz-testing/buffer-overflow] When this technique is possible the severity of the vulnerability increases considerably.
+[src:fuzz-testing/buffer-overflow] This is because exploitation will work reliably enough to automate an attack with a virtual guarantee of success when it is run.
+[src:fuzz-testing/buffer-overflow] For this reason, this is the technique most commonly used in Internet worms that exploit stack buffer overflow vulnerabilities.
+[src:fuzz-testing/buffer-overflow] This method also allows shellcode to be placed after the overwritten return address on the Windows platform.
+[src:fuzz-testing/buffer-overflow] Since executables are mostly based at address `0x00400000` and x86 is a little endian architecture, the last byte of the return address must be a null, which terminates the buffer copy and nothing is written beyond that.
+[src:fuzz-testing/buffer-overflow] This limits the size of the shellcode to the size of the buffer, which may be overly restrictive.
+[src:fuzz-testing/buffer-overflow] DLLs are located in high memory (above `0x01000000`) and so have addresses containing no null bytes, so this method can remove null bytes (or other disallowed characters) from the overwritten return address.
+[src:fuzz-testing/buffer-overflow] Used in this way, the method is often referred to as **DLL trampolining**.
+[src:fuzz-testing/buffer-overflow] Various techniques have been used to detect or prevent buffer overflows, with various tradeoffs.
+[src:fuzz-testing/buffer-overflow] The following sections describe the choices and implementations available.
+[src:fuzz-testing/buffer-overflow] Assembly, C, and C++ are popular programming languages that are vulnerable to buffer overflow in part because they allow direct access to memory and are not strongly typed.
+[src:fuzz-testing/buffer-overflow] C provides no built-in protection against accessing or overwriting data in any part of memory.
+[src:fuzz-testing/buffer-overflow] More specifically, it does not check that data written to a buffer is within the boundaries of that buffer.
+[src:fuzz-testing/buffer-overflow] The standard C++ libraries provide many ways of safely buffering data, and C++'s Standard Template Library (STL) provides containers that can optionally perform bounds checking if the programmer explicitly calls for checks while accessing data.
+[src:fuzz-testing/buffer-overflow] For example, a `vector`'s member function `at()` performs a bounds check and throws an `out_of_range` exception if the bounds check fails.
+[src:fuzz-testing/buffer-overflow] However, C++ behaves just like C if the bounds check is not explicitly called.
+[src:fuzz-testing/buffer-overflow] Techniques to avoid buffer overflows also exist for C.
+[src:fuzz-testing/buffer-overflow] Languages that are strongly typed and do not allow direct memory access, such as COBOL, Java, Eiffel, Python, and others, prevent buffer overflow in most cases.
+[src:fuzz-testing/buffer-overflow] Examples of such languages include Ada, Eiffel, Lisp, Modula-2, Smalltalk, OCaml and some systems programming languages such as Cyclone, Rust and D.
+[src:fuzz-testing/buffer-overflow] The Java and .NET Framework bytecode environments also require bounds checking on all arrays.
+[src:fuzz-testing/buffer-overflow] Nearly every interpreted language will protect against buffer overflow, signaling a well-defined error condition.
+[src:fuzz-testing/buffer-overflow] Languages that provide enough type information to do bounds checking often provide an option to enable or disable it.
+[src:fuzz-testing/buffer-overflow] Static code analysis can remove many dynamic bound and type checks, but poor implementations and awkward cases can significantly decrease performance.
+[src:fuzz-testing/buffer-overflow] Software engineers should carefully consider the tradeoffs of safety versus performance costs when deciding which language and compiler setting to use.
+[src:fuzz-testing/buffer-overflow] The problem of buffer overflows is common in the C and C++ languages because they expose low level representational details of buffers as containers for data types.
+[src:fuzz-testing/buffer-overflow] Buffer overflows can be avoided by maintaining a high degree of correctness in code that performs buffer management.
+[src:fuzz-testing/buffer-overflow] It has also long been recommended to avoid standard library functions that are not bounds checked, such as `gets`, `scanf` and `strcpy`.
+[src:fuzz-testing/buffer-overflow] The Morris worm exploited a `gets` call in fingerd.
+[src:fuzz-testing/buffer-overflow] Well-written and tested abstract data type libraries that centralize and automatically perform buffer management, including bounds checking, can reduce the occurrence and impact of buffer overflows.
+[src:fuzz-testing/buffer-overflow] The primary data types in languages in which buffer overflows are common are strings and arrays.
+[src:fuzz-testing/buffer-overflow] Thus, libraries preventing buffer overflows in these data types can provide the vast majority of the necessary coverage.
+[src:fuzz-testing/buffer-overflow] However, failure to use these safe libraries correctly can result in buffer overflows and other vulnerabilities, and naturally any bug in the library is also a potential vulnerability.
+[src:fuzz-testing/buffer-overflow] "Safe" library implementations include "The Better String Library", Vstr and Erwin.
+[src:fuzz-testing/buffer-overflow] The OpenBSD operating system's C library provides the strlcpy and strlcat functions, but these are more limited than full safe library implementations.
+[src:fuzz-testing/buffer-overflow] In September 2007, Technical Report 24731, prepared by the C standards committee, was published.
+[src:fuzz-testing/buffer-overflow] It specifies a set of functions that are based on the standard C library's string and IO functions, with additional buffer-size parameters.
+[src:fuzz-testing/buffer-overflow] However, the efficacy of these functions for reducing buffer overflows is disputable.
+[src:fuzz-testing/buffer-overflow] They require programmer intervention on a per function call basis that is equivalent to intervention that could make the analogous older standard library functions buffer overflow safe.
+[src:fuzz-testing/buffer-overflow] Buffer overflow protection is used to detect the most common buffer overflows by checking that the stack has not been altered when a function returns.
+[src:fuzz-testing/buffer-overflow] If it has been altered, the program exits with a segmentation fault.
+[src:fuzz-testing/buffer-overflow] Three such systems are Libsafe, and the *StackGuard* and *ProPolice* gcc patches.
+[src:fuzz-testing/buffer-overflow] Microsoft's implementation of Data Execution Prevention (DEP) mode explicitly protects the pointer to the Structured Exception Handler (SEH) from being overwritten.
+[src:fuzz-testing/buffer-overflow] Stronger stack protection is possible by splitting the stack in two: one for data and one for function returns.
+[src:fuzz-testing/buffer-overflow] This split is present in the Forth language, though it was not a security-based design decision.
+[src:fuzz-testing/buffer-overflow] Regardless, this is not a complete solution to buffer overflows, as sensitive data other than the return address may still be overwritten.
+[src:fuzz-testing/buffer-overflow] This type of protection is also not entirely accurate because it does not detect all attacks.
+[src:fuzz-testing/buffer-overflow] Systems like StackGuard are more centered around the behavior of the attacks, which makes them efficient and faster in comparison to range-check systems.
+[src:fuzz-testing/buffer-overflow] Buffer overflows work by manipulating pointers, including stored addresses.
+[src:fuzz-testing/buffer-overflow] PointGuard was proposed as a compiler-extension to prevent attackers from reliably manipulating pointers and addresses.
+[src:fuzz-testing/buffer-overflow] The approach works by having the compiler add code to automatically XOR-encode pointers before and after they are used.
+[src:fuzz-testing/buffer-overflow] Theoretically, because the attacker does not know what value will be used to encode and decode the pointer, one cannot predict what the pointer will point to if it is overwritten with a new value.
+[src:fuzz-testing/buffer-overflow] PointGuard was never released, but Microsoft implemented a similar approach beginning in Windows XP SP2 and Windows Server 2003 SP1.
+[src:fuzz-testing/buffer-overflow] Rather than implement pointer protection as an automatic feature, Microsoft added an API routine that can be called.
+[src:fuzz-testing/buffer-overflow] This allows for better performance (because it is not used all of the time), but places the burden on the programmer to know when its use is necessary.
+[src:fuzz-testing/buffer-overflow] Because XOR is linear, an attacker may be able to manipulate an encoded pointer by overwriting only the lower bytes of an address.
+[src:fuzz-testing/buffer-overflow] This can allow an attack to succeed if the attacker can attempt the exploit multiple times or complete an attack by causing a pointer to point to one of several locations (such as any location within a NOP sled).
+[src:fuzz-testing/buffer-overflow] Microsoft added a random rotation to their encoding scheme to address this weakness to partial overwrites.
+[src:fuzz-testing/buffer-overflow] Executable-space protection is an approach to buffer overflow protection that prevents execution of code on the stack or the heap.
+[src:fuzz-testing/buffer-overflow] An attacker may use buffer overflows to insert arbitrary code into the memory of a program, but with executable-space protection, any attempt to execute that code will cause an exception.
+[src:fuzz-testing/buffer-overflow] Some CPUs support a feature called NX ("No eXecute") or XD ("eXecute Disabled") bit, which in conjunction with software, can be used to mark pages of data (such as those containing the stack and the heap) as readable and writable but not executable.
+[src:fuzz-testing/buffer-overflow] OpenBSD, macOS) ship with executable-space protection (e.g.
+[src:fuzz-testing/buffer-overflow] Newer variants of Microsoft Windows also support executable-space protection, called Data Execution Prevention.
+[src:fuzz-testing/buffer-overflow] Executable-space protection does not generally protect against return-to-libc attacks, or any other attack that does not rely on the execution of the attackers code.
+[src:fuzz-testing/buffer-overflow] However, on 64-bit systems using ASLR, as described below, executable-space protection makes it far more difficult to execute such attacks.
+[src:fuzz-testing/buffer-overflow] CHERI (Capability Hardware Enhanced RISC Instructions) is a computer processor technology designed to improve security.
+[src:fuzz-testing/buffer-overflow] It operates at a hardware level by providing a hardware-enforced type (a CHERI capability) that authorises access to memory.
+[src:fuzz-testing/buffer-overflow] Traditional pointers are replaced by addresses accompanied by metadata that limit what can be accessed through any given pointer.
+[src:fuzz-testing/buffer-overflow] Address space layout randomization (ASLR) is a computer security feature that involves arranging the positions of key data areas, usually including the base of the executable and position of libraries, heap, and stack, randomly in a process' address space.
+[src:fuzz-testing/buffer-overflow] Randomization of the virtual memory addresses at which functions and variables can be found can make exploitation of a buffer overflow more difficult, but not impossible.
+[src:fuzz-testing/buffer-overflow] It also forces the attacker to tailor the exploitation attempt to the individual system, which foils the attempts of internet worms.
+[src:fuzz-testing/buffer-overflow] A similar but less effective method is to rebase processes and libraries in the virtual address space.
+[src:fuzz-testing/buffer-overflow] The use of deep packet inspection (DPI) can detect, at the network perimeter, very basic remote attempts to exploit buffer overflows by use of attack signatures and heuristics.
+[src:fuzz-testing/buffer-overflow] This technique can block packets that have the signature of a known attack.
+[src:fuzz-testing/buffer-overflow] It was formerly used in situations in which a long series of No-Operation instructions (known as a NOP-sled) was detected and the location of the exploit's payload was slightly variable.
+[src:fuzz-testing/buffer-overflow] Packet scanning is not an effective method since it can only prevent known attacks and there are many ways that a NOP-sled can be encoded.
+[src:fuzz-testing/buffer-overflow] Shellcode used by attackers can be made alphanumeric, metamorphic, or self-modifying to evade detection by heuristic packet scanners and intrusion detection systems.
+[src:fuzz-testing/buffer-overflow] Checking for buffer overflows and patching the bugs that cause them helps prevent buffer overflows.
+[src:fuzz-testing/buffer-overflow] One common automated technique for discovering them is fuzzing.
+[src:fuzz-testing/buffer-overflow] Edge case testing can also uncover buffer overflows, as can static analysis.
+[src:fuzz-testing/buffer-overflow] Once a potential buffer overflow is detected it should be patched.
+[src:fuzz-testing/buffer-overflow] This makes the testing approach useful for software that is in development, but less useful for legacy software that is no longer maintained or supported.
+[src:fuzz-testing/buffer-overflow] This can be used to inject code into the monitor that will permit the user to seize control of the machine." Today, the monitor would be referred to as the kernel.
+[src:fuzz-testing/buffer-overflow] The earliest documented hostile exploitation of a buffer overflow was in 1988.
+[src:fuzz-testing/buffer-overflow] It was one of several exploits used by the Morris worm to propagate itself over the Internet.
+[src:fuzz-testing/buffer-overflow] The program exploited was a service on Unix called finger.
+[src:fuzz-testing/buffer-overflow] Later, in 1995, Thomas Lopatic independently rediscovered the buffer overflow and published his findings on the Bugtraq security mailing list.
+[src:fuzz-testing/buffer-overflow] A year later, in 1996, Elias Levy (also known as Aleph One) published in *Phrack* magazine the paper "Smashing the Stack for Fun and Profit", a step-by-step introduction to exploiting stack-based buffer overflow vulnerabilities.
+[src:fuzz-testing/buffer-overflow] Since then, at least two major internet worms have exploited buffer overflows to compromise a large number of systems.
+[src:fuzz-testing/buffer-overflow] In 2001, the Code Red worm exploited a buffer overflow in Microsoft's Internet Information Services (IIS) 5.0 and in 2003 the SQL Slammer worm compromised machines running Microsoft SQL Server 2000.
+[src:fuzz-testing/buffer-overflow] In 2003, buffer overflows present in licensed Xbox games have been exploited to allow unlicensed software, including homebrew games, to run on the console without the need for hardware modifications, known as modchips.
+[src:fuzz-testing/buffer-overflow] The PS2 Independence Exploit also used a buffer overflow to achieve the same for the PlayStation 2.
+[src:fuzz-testing/buffer-overflow] The Twilight hack accomplished the same with the Wii, using a buffer overflow in *The Legend of Zelda: Twilight Princess*.
+[src:fuzz-testing/code-coverage] In software engineering, **code coverage**, also called **test coverage**, is a percentage measure of the degree to which the source code of a program is executed when a particular test suite is run.
+[src:fuzz-testing/code-coverage] A program with high code coverage has more of its source code executed during testing, which suggests it has a lower chance of containing undetected software bugs compared to a program with low code coverage.
+[src:fuzz-testing/code-coverage] Many different metrics can be used to calculate test coverage.
+[src:fuzz-testing/code-coverage] Some of the most basic are the percentage of program subroutines and the percentage of program statements called during execution of the test suite.
+[src:fuzz-testing/code-coverage] Code coverage was among the first methods invented for systematic software testing.
+[src:fuzz-testing/code-coverage] The first published reference was by Miller and Maloney in *Communications of the ACM*, in 1963.
+[src:fuzz-testing/code-coverage] To measure what percentage of code has been executed by a test suite, one or more *coverage criteria* are used.
+[src:fuzz-testing/code-coverage] These are usually defined as rules or requirements, which a test suite must satisfy.
+[src:fuzz-testing/code-coverage] Assume this function is a part of some bigger program and this program was run with some test suite.
+[src:fuzz-testing/code-coverage] In programming languages that do not perform short-circuit evaluation, condition coverage does not necessarily imply branch coverage.
+[src:fuzz-testing/code-coverage] However, this set of tests does not satisfy branch coverage since neither case will meet the `if` condition.
+[src:fuzz-testing/code-coverage] Fault injection may be necessary to ensure that all conditions and branches of exception-handling code have adequate coverage during testing.
+[src:fuzz-testing/code-coverage] A combination of function coverage and branch coverage is sometimes also called **decision coverage**.
+[src:fuzz-testing/code-coverage] This criterion requires that every point of entry and exit in the program has been invoked at least once, and every decision in the program has taken on all possible outcomes at least once.
+[src:fuzz-testing/code-coverage] In this context, the decision is a Boolean expression comprising conditions and zero or more Boolean operators.
+[src:fuzz-testing/code-coverage] This definition is not the same as branch coverage, however, the term *decision coverage* is sometimes used as a synonym for it.
+[src:fuzz-testing/code-coverage] However, the above tests set will not satisfy modified condition/decision coverage, since in the first test, the value of 'b' and in the second test the value of 'c' would not influence the output.
+[src:fuzz-testing/code-coverage] This criterion requires that all combinations of conditions inside each decision are tested.
+[src:fuzz-testing/code-coverage] Safety-critical or dependable applications are often required to demonstrate 100% of some form of test coverage.
+[src:fuzz-testing/code-coverage] For example, the ECSS-E-ST-40C standard demands 100% statement and decision coverage for two out of four different criticality levels; for the other ones, target coverage values are up to negotiation between supplier and customer.
+[src:fuzz-testing/code-coverage] Some of the coverage criteria above are connected.
+[src:fuzz-testing/code-coverage] For instance, path coverage implies decision, statement and entry/exit coverage.
+[src:fuzz-testing/code-coverage] Decision coverage implies statement coverage, because every statement is part of a branch.
+[src:fuzz-testing/code-coverage] Full path coverage, of the type described above, is usually impractical or impossible.
+[src:fuzz-testing/code-coverage] Any module with a succession of n decisions in it can have up to $2^{n}$ paths within it; loop constructs can result in an infinite number of paths.
+[src:fuzz-testing/code-coverage] Many paths may also be infeasible, in that there is no input to the program under test that can cause that particular path to be executed.
+[src:fuzz-testing/code-coverage] However, a general-purpose algorithm for identifying infeasible paths has been proven to be impossible (such an algorithm could be used to solve the halting problem).
+[src:fuzz-testing/code-coverage] Basis path testing is for instance a method of achieving complete branch coverage without achieving complete path coverage.
+[src:fuzz-testing/code-coverage] Methods for practical path coverage testing instead attempt to identify classes of code paths that differ only in the number of loop executions, and to achieve "basis path" coverage the tester must cover all the path classes.
+[src:fuzz-testing/code-coverage] The target software is built with special options or libraries and run under a controlled environment, to map every executed function to the function points in the source code.
+[src:fuzz-testing/code-coverage] This allows testing parts of the target software that are rarely or never accessed under normal conditions, and helps reassure that the most important conditions (function points) have been tested.
+[src:fuzz-testing/code-coverage] The resulting output is then analyzed to see what areas of code have not been exercised and the tests are updated to include these areas as necessary.
+[src:fuzz-testing/code-coverage] Combined with other test coverage methods, the aim is to develop a rigorous, yet manageable, set of regression tests.
+[src:fuzz-testing/code-coverage] Software authors can look at test coverage results to devise additional tests and input or configuration sets to increase the coverage over vital functions.
+[src:fuzz-testing/code-coverage] Two common forms of test coverage are statement (or line) coverage and branch (or edge) coverage.
+[src:fuzz-testing/code-coverage] Line coverage reports on the execution footprint of testing in terms of which lines of code were executed to complete the test.
+[src:fuzz-testing/code-coverage] Edge coverage reports which branches or code decision points were executed to complete the test.
+[src:fuzz-testing/code-coverage] They both report a coverage metric, measured as a percentage.
+[src:fuzz-testing/code-coverage] The meaning of this depends on what form(s) of coverage have been used, as 67% branch coverage is more comprehensive than 67% statement coverage.
+[src:fuzz-testing/code-coverage] Generally, test coverage tools incur computation and logging in addition to the actual program thereby slowing down the application, so typically this analysis is not done in production.
+[src:fuzz-testing/code-coverage] As one might expect, there are classes of software that cannot be feasibly subjected to these coverage tests, though a degree of coverage mapping can be approximated through analysis rather than direct testing.
+[src:fuzz-testing/code-coverage] There are also some sorts of defects which are affected by such tools.
+[src:fuzz-testing/code-coverage] In particular, some race conditions or similar real time sensitive operations can be masked when run under test environments; though conversely, some of these defects may become easier to find as a result of the additional overhead of the testing code.
+[src:fuzz-testing/code-coverage] Most professional software developers use C1 and C2 coverage.
+[src:fuzz-testing/code-coverage] C1 stands for statement coverage and C2 for branch or condition coverage.
+[src:fuzz-testing/code-coverage] With a combination of C1 and C2, it is possible to cover most statements in a code base.
+[src:fuzz-testing/code-coverage] Statement coverage would also cover function coverage with entry and exit, loop, path, state flow, control flow and data flow coverage.
+[src:fuzz-testing/code-coverage] With these methods, it is possible to achieve nearly 100% code coverage in most software projects.
+[src:fuzz-testing/code-coverage] Test coverage is one consideration in the safety certification of avionics equipment.
+[src:fuzz-testing/code-coverage] The guidelines by which avionics gear is certified by the Federal Aviation Administration (FAA) is documented in DO-178B and DO-178C.
+[src:fuzz-testing/code-coverage] Test coverage is also a requirement in part 6 of the automotive safety standard ISO 26262 *Road Vehicles - Functional Safety*.
+[src:fuzz-testing/fuzzing] In programming and software development, **fuzzing** or **fuzz testing** is an automated software testing technique that involves providing invalid, unexpected, or random data as inputs to a computer program.
+[src:fuzz-testing/fuzzing] The program is then monitored for exceptions such as crashes, failing built-in code assertions, or potential memory leaks.
+[src:fuzz-testing/fuzzing] Typically, fuzzers are used to test programs that take structured inputs.
+[src:fuzz-testing/fuzzing] This structure is specified, such as in a file format or protocol and distinguishes valid from invalid input.
+[src:fuzz-testing/fuzzing] An effective fuzzer generates semi-valid inputs that are "valid enough" in that they are not directly rejected by the parser, but do create unexpected behaviors deeper in the program and are "invalid enough" to expose corner cases that have not been properly dealt with.
+[src:fuzz-testing/fuzzing] For the purpose of security, input that crosses a trust boundary is often the most useful.
+[src:fuzz-testing/fuzzing] For example, it is more important to fuzz code that handles a file uploaded by any user than it is to fuzz the code that parses a configuration file that is accessible only to a privileged user.
+[src:fuzz-testing/fuzzing] The term "fuzz" originates from a 1988 class project in the graduate Advanced Operating Systems class (CS736), taught by Prof.
+[src:fuzz-testing/fuzzing] Barton Miller at the University of Wisconsin, whose results were subsequently published in 1990.
+[src:fuzz-testing/fuzzing] To fuzz test a UNIX utility meant to automatically generate random input and command-line parameters for the utility.
+[src:fuzz-testing/fuzzing] The project was designed to test the reliability of UNIX command line programs by executing a large number of random inputs in quick succession until they crashed.
+[src:fuzz-testing/fuzzing] Miller's team was able to crash 25 to 33 percent of the utilities that they tested.
+[src:fuzz-testing/fuzzing] They then debugged each of the crashes to determine the cause and categorized each detected failure.
+[src:fuzz-testing/fuzzing] To allow other researchers to conduct similar experiments with other software, the source code of the tools, the test procedures, and the raw result data were made publicly available.
+[src:fuzz-testing/fuzzing] This early fuzzing would now be called black box, generational, unstructured (dumb or "classic") fuzzing.
+[src:fuzz-testing/fuzzing] Barton Miller, "In the process of writing the project description, I needed to give this kind of testing a name.
+[src:fuzz-testing/fuzzing] I wanted a name that would evoke the feeling of random, unstructured data.
+[src:fuzz-testing/fuzzing] A key contribution of this early work was simple (almost simplistic) oracle.
+[src:fuzz-testing/fuzzing] A program failed its test if it crashed or hung under the random input and was considered to have passed otherwise.
+[src:fuzz-testing/fuzzing] While test oracles can be challenging to construct, the oracle for this early fuzz testing was simple and universal to apply.
+[src:fuzz-testing/fuzzing] In April 2012, Google announced ClusterFuzz, a cloud-based fuzzing infrastructure for security-critical components of the Chromium web browser.
+[src:fuzz-testing/fuzzing] Security researchers can upload their own fuzzers and collect bug bounties if ClusterFuzz finds a crash with the uploaded fuzzer.
+[src:fuzz-testing/fuzzing] In September 2014, Shellshock was disclosed as a family of security bugs in the widely used UNIX Bash shell; most vulnerabilities of Shellshock were found using the fuzzer AFL.
+[src:fuzz-testing/fuzzing] (Many Internet-facing services, such as some web server deployments, use Bash to process certain requests, allowing an attacker to cause vulnerable versions of Bash to execute arbitrary commands.
+[src:fuzz-testing/fuzzing] In April 2015, Hanno Böck showed how the fuzzer AFL could have found the 2014 Heartbleed vulnerability.
+[src:fuzz-testing/fuzzing] (The Heartbleed vulnerability was disclosed in April 2014.
+[src:fuzz-testing/fuzzing] It is a serious vulnerability that allows adversaries to decipher otherwise encrypted communication.
+[src:fuzz-testing/fuzzing] The vulnerability was accidentally introduced into OpenSSL which implements TLS and is used by the majority of the servers on the internet.
+[src:fuzz-testing/fuzzing] In August 2016, the Defense Advanced Research Projects Agency (DARPA) held the finals of the first Cyber Grand Challenge, a fully automated capture-the-flag competition that lasted 11 hours.
+[src:fuzz-testing/fuzzing] The objective was to develop automatic defense systems that can discover, exploit, and correct software flaws in real-time.
+[src:fuzz-testing/fuzzing] Fuzzing was used as an effective offense strategy to discover flaws in the software of the opponents.
+[src:fuzz-testing/fuzzing] It showed tremendous potential in the automation of vulnerability detection.
+[src:fuzz-testing/fuzzing] The winner was a system called "Mayhem" developed by the team ForAllSecure led by David Brumley.
+[src:fuzz-testing/fuzzing] In September 2016, Microsoft announced Project Springfield, a cloud-based fuzz testing service for finding security critical bugs in software.
+[src:fuzz-testing/fuzzing] In December 2016, Google announced OSS-Fuzz which allows for continuous fuzzing of several security-critical open-source projects.
+[src:fuzz-testing/fuzzing] At Black Hat 2018, Christopher Domas demonstrated the use of fuzzing to expose the existence of a hidden RISC core in a processor.
+[src:fuzz-testing/fuzzing] This core was able to bypass existing security checks to execute Ring 0 commands from Ring 3.
+[src:fuzz-testing/fuzzing] In September 2020, Microsoft released OneFuzz, a self-hosted fuzzing-as-a-service platform that automates the detection of software bugs.
+[src:fuzz-testing/fuzzing] It was archived three years later on November 1, 2023.
+[src:fuzz-testing/fuzzing] Testing programs with random inputs dates back to the 1950s when data was still stored on punched cards.
+[src:fuzz-testing/fuzzing] Programmers would use punched cards that were pulled from the trash or card decks of random numbers as input to computer programs.
+[src:fuzz-testing/fuzzing] If an execution revealed undesired behavior, a bug had been detected.
+[src:fuzz-testing/fuzzing] The execution of random inputs is also called random testing, monkey testing or Monte Carlo debugging (in analogy to Monte Carlo methods).
+[src:fuzz-testing/fuzzing] In 1981, Duran and Ntafos formally investigated the effectiveness of testing a program with random inputs.
+[src:fuzz-testing/fuzzing] While random testing had been widely perceived to be the worst means of testing a program, the authors could show that it is a cost-effective alternative to more systematic testing techniques.
+[src:fuzz-testing/fuzzing] In 1983, Steve Capps at Apple developed "The Monkey", a tool that would generate random inputs for classic Mac OS applications, such as MacPaint.
+[src:fuzz-testing/fuzzing] The figurative "monkey" refers to the infinite monkey theorem which states that a monkey hitting keys at random on a typewriter keyboard for an infinite amount of time will eventually type out the entire works of Shakespeare.
+[src:fuzz-testing/fuzzing] In the case of testing, the monkey would write the particular sequence of inputs that would trigger a crash.
+[src:fuzz-testing/fuzzing] In 1991, the crashme tool was released, which was intended to test the robustness of Unix and Unix-like operating systems by randomly executing systems calls with randomly chosen parameters.
+[src:fuzz-testing/fuzzing] A fuzzer can be dumb (unstructured) or smart (structured) depending on whether it is aware of input structure.
+[src:fuzz-testing/fuzzing] A fuzzer can be white-, grey-, or black-box, depending on whether it is aware of program structure.
+[src:fuzz-testing/fuzzing] A mutation-based fuzzer leverages an existing corpus of seed inputs during fuzzing.
+[src:fuzz-testing/fuzzing] It generates inputs by modifying (or rather mutating) the provided seeds.
+[src:fuzz-testing/fuzzing] For example, when fuzzing the image library libpng, the user would provide a set of valid PNG image files as seeds while a mutation-based fuzzer would modify these seeds to produce semi-valid variants of each seed.
+[src:fuzz-testing/fuzzing] The corpus of seed files may contain thousands of potentially similar inputs.
+[src:fuzz-testing/fuzzing] Automated seed selection (or test suite reduction) allows users to pick the best seeds in order to maximize the total number of bugs found during a fuzz campaign.
+[src:fuzz-testing/fuzzing] A generation-based fuzzer generates inputs from scratch.
+[src:fuzz-testing/fuzzing] For instance, a smart generation-based fuzzer takes the input model that was provided by the user to generate new inputs.
+[src:fuzz-testing/fuzzing] Unlike mutation-based fuzzers, a generation-based fuzzer does not depend on the existence or quality of a corpus of seed inputs.
+[src:fuzz-testing/fuzzing] Some fuzzers have the capability to do both, to generate inputs from scratch and to generate inputs by mutation of existing seeds.
+[src:fuzz-testing/fuzzing] Typically, fuzzers are used to generate inputs for programs that take structured inputs, such as a file, a sequence of keyboard or mouse events, or a sequence of messages.
+[src:fuzz-testing/fuzzing] This structure distinguishes valid input that is accepted and processed by the program from invalid input that is quickly rejected by the program.
+[src:fuzz-testing/fuzzing] What constitutes a valid input may be explicitly specified in an input model.
+[src:fuzz-testing/fuzzing] Examples of input models are formal grammars, file formats, GUI-models, and network protocols.
+[src:fuzz-testing/fuzzing] Even items not normally considered as input can be fuzzed, such as the contents of databases, shared memory, environment variables or the precise interleaving of threads.
+[src:fuzz-testing/fuzzing] An effective fuzzer generates semi-valid inputs that are "valid enough" so that they are not directly rejected from the parser and "invalid enough" so that they might stress corner cases and exercise interesting program behaviours.
+[src:fuzz-testing/fuzzing] A smart (model-based, grammar-based, or protocol-based) fuzzer leverages the input model to generate a greater proportion of valid inputs.
+[src:fuzz-testing/fuzzing] For instance, if the input can be modelled as an abstract syntax tree, then a smart mutation-based fuzzer would employ random transformations to move complete subtrees from one node to another.
+[src:fuzz-testing/fuzzing] If the input can be modelled by a formal grammar, a smart generation-based fuzzer would instantiate the production rules to generate inputs that are valid with respect to the grammar.
+[src:fuzz-testing/fuzzing] However, generally the input model must be explicitly provided, which is difficult to do when the model is proprietary, unknown, or very complex.
+[src:fuzz-testing/fuzzing] If a large corpus of valid and invalid inputs is available, a grammar induction technique, such as Angluin's L* algorithm, would be able to generate an input model.
+[src:fuzz-testing/fuzzing] A dumb fuzzer does not require the input model and can thus be employed to fuzz a wider variety of programs.
+[src:fuzz-testing/fuzzing] For instance, AFL is a dumb mutation-based fuzzer that modifies a seed file by flipping random bits, by substituting random bytes with "interesting" values, and by moving or deleting blocks of data.
+[src:fuzz-testing/fuzzing] However, a dumb fuzzer might generate a lower proportion of valid inputs and stress the parser code rather than the main components of a program.
+[src:fuzz-testing/fuzzing] The disadvantage of dumb fuzzers can be illustrated by means of the construction of a valid checksum for a cyclic redundancy check (CRC).
+[src:fuzz-testing/fuzzing] A CRC is an error-detecting code that ensures that the integrity of the data contained in the input file is preserved during transmission.
+[src:fuzz-testing/fuzzing] A checksum is computed over the input data and recorded in the file.
+[src:fuzz-testing/fuzzing] When the program processes the received file and the recorded checksum does not match the re-computed checksum, then the file is rejected as invalid.
+[src:fuzz-testing/fuzzing] Now, a fuzzer that is unaware of the CRC is unlikely to generate the correct checksum.
+[src:fuzz-testing/fuzzing] However, there are attempts to identify and re-compute a potential checksum in the mutated input, once a dumb mutation-based fuzzer has modified the protected data.
+[src:fuzz-testing/fuzzing] Typically, a fuzzer is considered more effective if it achieves a higher degree of code coverage.
+[src:fuzz-testing/fuzzing] The rationale is, if a fuzzer does not exercise certain structural elements in the program, then it is also not able to reveal bugs that are hiding in these elements.
+[src:fuzz-testing/fuzzing] Some program elements are considered more critical than others.
+[src:fuzz-testing/fuzzing] For instance, a division operator might cause a division by zero error, or a system call may crash the program.
+[src:fuzz-testing/fuzzing] A black-box fuzzer treats the program as a black box and is unaware of internal program structure.
+[src:fuzz-testing/fuzzing] For instance, a random testing tool that generates inputs at random is considered a blackbox fuzzer.
+[src:fuzz-testing/fuzzing] Hence, a blackbox fuzzer can execute several hundred inputs per second, can be easily parallelized, and can scale to programs of arbitrary size.
+[src:fuzz-testing/fuzzing] However, blackbox fuzzers may only scratch the surface and expose "shallow" bugs.
+[src:fuzz-testing/fuzzing] Hence, there are attempts to develop blackbox fuzzers that can incrementally learn about the internal structure (and behavior) of a program during fuzzing by observing the program's output given an input.
+[src:fuzz-testing/fuzzing] For instance, LearnLib employs active learning to generate an automaton that represents the behavior of a web application.
+[src:fuzz-testing/fuzzing] A white-box fuzzer leverages program analysis to systematically increase code coverage or to reach certain critical program locations.
+[src:fuzz-testing/fuzzing] For instance, SAGE leverages symbolic execution to systematically explore different paths in the program (a technique known as concolic execution).
+[src:fuzz-testing/fuzzing] If the program's specification is available, a whitebox fuzzer might leverage techniques from model-based testing to generate inputs and check the program outputs against the program specification.
+[src:fuzz-testing/fuzzing] A whitebox fuzzer can be very effective at exposing bugs that hide deep in the program.
+[src:fuzz-testing/fuzzing] However, the time used for analysis (of the program or its specification) can become prohibitive.
+[src:fuzz-testing/fuzzing] If the whitebox fuzzer takes relatively too long to generate an input, a blackbox fuzzer will be more efficient.
+[src:fuzz-testing/fuzzing] Hence, there are attempts to combine the efficiency of blackbox fuzzers and the effectiveness of whitebox fuzzers.
+[src:fuzz-testing/fuzzing] A gray-box fuzzer leverages instrumentation rather than program analysis to glean information about the program.
+[src:fuzz-testing/fuzzing] For instance, AFL and libFuzzer utilize lightweight instrumentation to trace basic block transitions exercised by an input.
+[src:fuzz-testing/fuzzing] This leads to a reasonable performance overhead but informs the fuzzer about the increase in code coverage during fuzzing, which makes gray-box fuzzers extremely efficient vulnerability detection tools.
+[src:fuzz-testing/fuzzing] Fuzzing is used mostly as an automated technique to expose vulnerabilities in security-critical programs that might be exploited with malicious intent.
+[src:fuzz-testing/fuzzing] More generally, fuzzing is used to demonstrate the presence of bugs rather than their absence.
+[src:fuzz-testing/fuzzing] Running a fuzzing campaign for several weeks without finding a bug does not prove the program correct.
+[src:fuzz-testing/fuzzing] After all, the program may still fail for an input that has not been executed, yet; executing a program for all inputs is prohibitively expensive.
+[src:fuzz-testing/fuzzing] If the objective is to prove a program correct for all inputs, a formal specification must exist and techniques from formal methods must be used.
+[src:fuzz-testing/fuzzing] In order to expose bugs, a fuzzer must be able to distinguish expected (normal) from unexpected (buggy) program behavior.
+[src:fuzz-testing/fuzzing] However, a machine cannot always distinguish a bug from a feature.
+[src:fuzz-testing/fuzzing] In automated software testing, this is also called the test oracle problem.
+[src:fuzz-testing/fuzzing] Typically, a fuzzer distinguishes between crashing and non-crashing inputs in the absence of specifications and to use a simple and objective measure.
+[src:fuzz-testing/fuzzing] Crashes can be easily identified and might indicate potential vulnerabilities (e.g., denial of service or arbitrary code execution).
+[src:fuzz-testing/fuzzing] However, the absence of a crash does not indicate the absence of a vulnerability.
+[src:fuzz-testing/fuzzing] For instance, a program written in C may or may not crash when an input causes a buffer overflow.
+[src:fuzz-testing/fuzzing] Rather the program's behavior is undefined.
+[src:fuzz-testing/fuzzing] To make a fuzzer more sensitive to failures other than crashes, sanitizers can be used to inject assertions that crash the program when a failure is detected.
+[src:fuzz-testing/fuzzing] Fuzzing can also be used to detect "differential" bugs if a reference implementation is available.
+[src:fuzz-testing/fuzzing] For automated regression testing, the generated inputs are executed on two versions of the same program.
+[src:fuzz-testing/fuzzing] For automated differential testing, the generated inputs are executed on two implementations of the same program (e.g., lighttpd and httpd are both implementations of a web server).
+[src:fuzz-testing/fuzzing] If the two variants produce different output for the same input, then one may be buggy and should be examined more closely.
+[src:fuzz-testing/fuzzing] Static program analysis analyzes a program without actually executing it.
+[src:fuzz-testing/fuzzing] This might lead to false positives where the tool reports problems with the program that do not actually exist.
+[src:fuzz-testing/fuzzing] Fuzzing in combination with dynamic program analysis can be used to try to generate an input that actually witnesses the reported problem.
+[src:fuzz-testing/fuzzing] Modern web browsers undergo extensive fuzzing.
+[src:fuzz-testing/fuzzing] The Chromium code of Google Chrome is continuously fuzzed by the Chrome Security Team with 15,000 cores.
+[src:fuzz-testing/fuzzing] For Microsoft Edge [Legacy] and Internet Explorer, Microsoft performed fuzzed testing with 670 machine-years during product development, generating more than 400 billion DOM manipulations from 1 billion HTML files.
+[src:fuzz-testing/fuzzing] A fuzzer produces a large number of inputs in a relatively short time.
+[src:fuzz-testing/fuzzing] For instance, in 2016 the Google OSS-fuzz project produced around 4 trillion inputs a week.
+[src:fuzz-testing/fuzzing] Hence, many fuzzers provide a toolchain that automates otherwise manual and tedious tasks which follow the automated generation of failure-inducing inputs.
+[src:fuzz-testing/fuzzing] Automated bug triage is used to group a large number of failure-inducing inputs by root cause and to prioritize each individual bug by severity.
+[src:fuzz-testing/fuzzing] A fuzzer produces a large number of inputs, and many of the failure-inducing ones may effectively expose the same software bug.
+[src:fuzz-testing/fuzzing] Only some of these bugs are security-critical and should be patched with higher priority.
+[src:fuzz-testing/fuzzing] For instance the CERT Coordination Center provides the Linux triage tools which group crashing inputs by the produced stack trace and lists each group according to their probability to be exploitable.
+[src:fuzz-testing/fuzzing] Previously unreported, triaged bugs might be automatically reported to a bug tracking system.
+[src:fuzz-testing/fuzzing] For instance, OSS-Fuzz runs large-scale, long-running fuzzing campaigns for several security-critical software projects where each previously unreported, distinct bug is reported directly to a bug tracker.
+[src:fuzz-testing/fuzzing] The OSS-Fuzz bug tracker automatically informs the maintainer of the vulnerable software and checks in regular intervals whether the bug has been fixed in the most recent revision using the uploaded minimized failure-inducing input.
+[src:fuzz-testing/fuzzing] Automated input minimization (or test case reduction) is an automated debugging technique to isolate that part of the failure-inducing input that is actually inducing the failure.
+[src:fuzz-testing/fuzzing] If the failure-inducing input is large and mostly malformed, it might be difficult for a developer to understand what exactly is causing the bug.
+[src:fuzz-testing/fuzzing] Given the failure-inducing input, an automated minimization tool would remove as many input bytes as possible while still reproducing the original bug.
+[src:fuzz-testing/fuzzing] For instance, Delta Debugging is an automated input minimization technique that employs an extended binary search algorithm to find such a minimal input.
+[src:fuzz-testing/fuzzing] The following is a list of fuzzers described as "popular", "widely used", or similar in the academic literature.
+[src:fuzz-testing/static-program-analysis] The term is usually applied to analysis performed by an automated tool, with human analysis typically being called "program understanding", program comprehension, or code review.
+[src:fuzz-testing/static-program-analysis] In the last of these, software inspection and software walkthroughs are also used.
+[src:fuzz-testing/static-program-analysis] In most cases the analysis is performed on some version of a program's source code, and, in other cases, on some form of its object code.
+[src:fuzz-testing/static-program-analysis] The discipline of static analysis should not be confused with linting, which is the process of checking for coding style mistakes.
+[src:fuzz-testing/static-program-analysis] The sophistication of the analysis performed by tools varies from those that only consider the behaviour of individual statements and declarations, to those that include the complete source code of a program in their analysis.
+[src:fuzz-testing/static-program-analysis] The uses of the information obtained from the analysis vary from highlighting possible coding errors (e.g., the lint tool) to formal methods that mathematically prove properties about a given program (e.g., its behaviour matches that of its specification).
+[src:fuzz-testing/static-program-analysis] Software metrics and reverse engineering can be described as forms of static analysis.
+[src:fuzz-testing/static-program-analysis] Deriving software metrics and static analysis are increasingly deployed together, especially in creation of embedded systems, by defining so-called *software quality objectives*.
+[src:fuzz-testing/static-program-analysis] A growing commercial use of static analysis is in the verification of properties of software used in safety-critical computer systems and locating potentially vulnerable code.
+[src:fuzz-testing/static-program-analysis] Nuclear software: In the UK the Office for Nuclear Regulation (ONR) recommends the use of static analysis on reactor protection systems.
+[src:fuzz-testing/static-program-analysis] Aviation software (in combination with dynamic analysis).
+[src:fuzz-testing/static-program-analysis] Automotive & Machines (functional safety features form an integral part of each automotive product development phase, ISO 26262, section 8).
+[src:fuzz-testing/static-program-analysis] A study in 2012 by VDC Research reported that 28.7% of the embedded software engineers surveyed use static analysis tools and 39.7% expect to use them within 2 years.
+[src:fuzz-testing/static-program-analysis] A study from 2010 found that 60% of the interviewed developers in European research projects made at least use of their basic IDE built-in static analyzers.
+[src:fuzz-testing/static-program-analysis] However, only about 10% employed an additional other (and perhaps more advanced) analysis tool.
+[src:fuzz-testing/static-program-analysis] In the application security industry the name static application security testing (SAST) is also used.
+[src:fuzz-testing/static-program-analysis] SAST is an important part of Security Development Lifecycles (SDLs) such as the SDL defined by Microsoft and a common practice in software companies.
+[src:fuzz-testing/static-program-analysis] The OMG (Object Management Group) published a study regarding the types of software analysis required for software quality measurement and assessment.
+[src:fuzz-testing/static-program-analysis] This document on "How to Deliver Resilient, Secure, Efficient, and Easily Changed IT Systems in Line with CISQ Recommendations" describes three levels of software analysis.
+[src:fuzz-testing/static-program-analysis] Analysis that takes place within a specific program or subroutine, without connecting to the context of that program.
+[src:fuzz-testing/static-program-analysis] Analysis that takes into account the interactions between unit programs, but without being limited to one specific technology or programming language.
+[src:fuzz-testing/static-program-analysis] A further level of software analysis can be defined.
+[src:fuzz-testing/static-program-analysis] Analysis that takes into account the business/mission layer terms, rules and processes that are implemented within the software system for its operation as part of enterprise or program/mission layer activities.
+[src:fuzz-testing/static-program-analysis] These elements are implemented without being limited to one specific technology or programming language and in many cases are distributed across multiple languages, but are statically extracted and analyzed for system understanding for mission assurance.
+[src:fuzz-testing/static-program-analysis] Many static analysis tools use intermediate representations of programs to examine the structure of source code without executing the program.
+[src:fuzz-testing/static-program-analysis] For this purpose, abstract syntax trees (ASTs) are commonly used, since they provide a structured representation of a program's syntactic elements.
+[src:fuzz-testing/static-program-analysis] Formal methods is the term applied to the analysis of software (and computer hardware) whose results are obtained purely through the use of rigorous mathematical methods.
+[src:fuzz-testing/static-program-analysis] The mathematical techniques used include denotational semantics, axiomatic semantics, operational semantics, and abstract interpretation.
+[src:fuzz-testing/static-program-analysis] This result dates from the works of Church, Gödel and Turing in the 1930s (see: Halting problem and Rice's theorem).
+[src:fuzz-testing/static-program-analysis] As with many undecidable questions, one can still attempt to give useful approximate solutions.
+[src:fuzz-testing/static-program-analysis] Data-driven static analysis leverages extensive codebases to infer coding rules and improve the accuracy of the analysis.
+[src:fuzz-testing/static-program-analysis] For instance, one can use all Java open-source packages available on GitHub to learn good analysis strategies.
+[src:fuzz-testing/static-program-analysis] The rule inference can use machine learning techniques.
+[src:fuzz-testing/static-program-analysis] It is also possible to learn from a large amount of past fixes and warnings.
+[src:fuzz-testing/static-program-analysis] For certain types of warnings, it is possible to design and implement automated remediation techniques.
+[src:fuzz-testing/static-program-analysis] For example, Logozzo and Ball have proposed automated remediations for C# *cccheck*.

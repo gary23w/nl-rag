@@ -1,0 +1,677 @@
+# nl-rag distilled facts — domain: redis-cache
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:redis-cache/data-types-streams-p01] A Redis stream is a data structure that acts like an append-only log but also implements several operations to overcome some of the limits of a typical append-only log.
+[src:redis-cache/data-types-streams-p01] These include random access in O(1) time and complex consumption strategies, such as consumer groups.
+[src:redis-cache/data-types-streams-p01] You can use streams to record and simultaneously syndicate events in real time.
+[src:redis-cache/data-types-streams-p01] Redis generates a unique ID for each stream entry.
+[src:redis-cache/data-types-streams-p01] You can use these IDs to retrieve their associated entries later or to read and process all subsequent entries in the stream.
+[src:redis-cache/data-types-streams-p01] Note that because these IDs are related to time, the ones shown here may vary and will be different from the IDs you see in your own Redis instance.
+[src:redis-cache/data-types-streams-p01] Redis streams support several trimming strategies (to prevent streams from growing unbounded) and more than one consumption strategy (see `XREAD`, `XREADGROUP`, and `XRANGE`).
+[src:redis-cache/data-types-streams-p01] Starting with Redis 8.2, the `XACKDEL`, `XDELEX`, `XADD`, and `XTRIM` commands provide fine-grained control over how stream operations interact with multiple consumer groups, simplifying the coordination of message processing across different applications.
+[src:redis-cache/data-types-streams-p01] Beginning with Redis 8.6, Redis streams support idempotent message processing (at-most-once production) to prevent duplicate entries when using at-least-once delivery patterns.
+[src:redis-cache/data-types-streams-p01] This feature enables reliable message submission with automatic deduplication.
+[src:redis-cache/data-types-streams-p01] See Idempotent Message Processing for more information.
+[src:redis-cache/data-types-streams-p01] Accessing any single entry is O(n), where *n* is the length of the ID.
+[src:redis-cache/data-types-streams-p01] Since stream IDs are typically short and of a fixed length, this effectively reduces to a constant time lookup.
+[src:redis-cache/data-types-streams-p01] For details on why, note that streams are implemented as radix trees.
+[src:redis-cache/data-types-streams-p01] Simply put, Redis streams provide highly efficient inserts and reads.
+[src:redis-cache/data-types-streams-p01] See each command's time complexity for the details.
+[src:redis-cache/data-types-streams-p01] Streams are an append-only data structure.
+[src:redis-cache/data-types-streams-p01] The fundamental write command, called `XADD`, appends a new entry to the specified stream.
+[src:redis-cache/data-types-streams-p01] The above call to the `XADD` command adds an entry `rider: Castilla, speed: 29.9, position: 1, location_id: 2` to the stream at key `race:france`, using an auto-generated entry ID, which is the one returned by the command, specifically `1692632147973-0`.
+[src:redis-cache/data-types-streams-p01] It gets as its first argument the key name `race:france`, the second argument is the entry ID that identifies every entry inside a stream.
+[src:redis-cache/data-types-streams-p01] However, in this case, we passed `*` because we want the server to generate a new ID for us.
+[src:redis-cache/data-types-streams-p01] Every new ID will be monotonically increasing, so in more simple terms, every new entry added will have a higher ID compared to all the past entries.
+[src:redis-cache/data-types-streams-p01] Auto-generation of IDs by the server is almost always what you want, and the reasons for specifying an ID explicitly are very rare.
+[src:redis-cache/data-types-streams-p01] The fact that each Stream entry has an ID is another similarity with log files, where line numbers, or the byte offset inside the file, can be used in order to identify a given entry.
+[src:redis-cache/data-types-streams-p01] Returning back at our `XADD` example, after the key name and ID, the next arguments are the field-value pairs composing our stream entry.
+[src:redis-cache/data-types-streams-p01] The sequence number is used for entries created in the same millisecond.
+[src:redis-cache/data-types-streams-p01] Since the sequence number is 64 bit wide, in practical terms there is no limit to the number of entries that can be generated within the same millisecond.
+[src:redis-cache/data-types-streams-p01] The format of such IDs may look strange at first, and the gentle reader may wonder why the time is part of the ID.
+[src:redis-cache/data-types-streams-p01] The reason is that Redis streams support range queries by ID.
+[src:redis-cache/data-types-streams-p01] Because the ID is related to the time the entry is generated, this gives the ability to query for time ranges basically for free.
+[src:redis-cache/data-types-streams-p01] We will see this soon while covering the `XRANGE` command.
+[src:redis-cache/data-types-streams-p01] If you're running Redis 7 or later, you can also provide an explicit ID consisting of the milliseconds part only.
+[src:redis-cache/data-types-streams-p01] In this case, the sequence portion of the ID will be automatically generated.
+[src:redis-cache/data-types-streams-p02] Now we are finally able to append entries in our stream via `XADD`.
+[src:redis-cache/data-types-streams-p02] However, while appending data to a stream is quite obvious, the way streams can be queried in order to extract data is not so obvious.
+[src:redis-cache/data-types-streams-p02] If we continue with the analogy of the log file, one obvious way is to mimic what we normally do with the Unix command `tail -f`, that is, we may start to listen in order to get the new messages that are appended to the stream.
+[src:redis-cache/data-types-streams-p02] Using the traditional terminology we want the streams to be able to *fan out* messages to multiple clients.
+[src:redis-cache/data-types-streams-p02] However, this is just one potential access mode.
+[src:redis-cache/data-types-streams-p02] We could also see a stream in quite a different way: not as a messaging system, but as a *time series store*.
+[src:redis-cache/data-types-streams-p02] In this case, maybe it's also useful to get the new messages appended, but another natural query mode is to get messages by ranges of time, or alternatively to iterate the messages using a cursor to incrementally check all the history.
+[src:redis-cache/data-types-streams-p02] This is definitely another useful access mode.
+[src:redis-cache/data-types-streams-p02] In this way, it is possible to scale the message processing across different consumers, without single consumers having to process all the messages: each consumer will just get different messages to process.
+[src:redis-cache/data-types-streams-p02] This is basically what Kafka (TM) does with consumer groups.
+[src:redis-cache/data-types-streams-p02] Reading messages via consumer groups is yet another interesting mode of reading from a Redis Stream.
+[src:redis-cache/data-types-streams-p02] Redis Streams support all three of the query modes described above via different commands.
+[src:redis-cache/data-types-streams-p02] The next sections will show them all, starting from the simplest and most direct to use: range queries.
+[src:redis-cache/data-types-streams-p02] To query the stream by range we are only required to specify two IDs, *start* and *end*.
+[src:redis-cache/data-types-streams-p02] The range returned will include the elements having start or end as ID, so the range is inclusive.
+[src:redis-cache/data-types-streams-p02] The two special IDs `-` and `+` respectively mean the smallest and the greatest ID possible.
+[src:redis-cache/data-types-streams-p02] Each entry returned is an array of two items: the ID and the list of field-value pairs.
+[src:redis-cache/data-types-streams-p02] This means that I could query a range of time using `XRANGE`.
+[src:redis-cache/data-types-streams-p02] In order to do so, however, I may want to omit the sequence part of the ID: if omitted, in the start of the range it will be assumed to be 0, while in the end part it will be assumed to be the maximum sequence number available.
+[src:redis-cache/data-types-streams-p02] This way, querying using just two milliseconds Unix times, we get all the entries that were generated in that range of time, in an inclusive way.
+[src:redis-cache/data-types-streams-p02] I have only a single entry in this range.
+[src:redis-cache/data-types-streams-p02] However in real data sets, I could query for ranges of hours, or there could be many items in just two milliseconds, and the result returned could be huge.
+[src:redis-cache/data-types-streams-p02] For this reason, `XRANGE` supports an optional **COUNT** option at the end.
+[src:redis-cache/data-types-streams-p02] By specifying a count, I can just get the first *N* items.
+[src:redis-cache/data-types-streams-p02] If I want more, I can get the last ID returned, increment the sequence part by one, and query again.
+[src:redis-cache/data-types-streams-p02] Let's see this in the following example.
+[src:redis-cache/data-types-streams-p02] Let's assume that the stream `race:france` was populated with 4 items.
+[src:redis-cache/data-types-streams-p02] To start my iteration, getting 2 items per command, I start with the full range, but with a count of 2.
+[src:redis-cache/data-types-streams-p02] To continue the iteration with the next two items, I have to pick the last ID returned, that is `1692632094485-0`, and add the prefix `(` to it.
+[src:redis-cache/data-types-streams-p02] Since `XRANGE` complexity is *O(log(N))* to seek, and then *O(M)* to return M elements, with a small count the command has a logarithmic time complexity, which means that each step of the iteration is fast.
+[src:redis-cache/data-types-streams-p02] So `XRANGE` is also the de facto *streams iterator* and does not require an **XSCAN** command.
+[src:redis-cache/data-types-streams-p02] Note that the `XREVRANGE` command takes the *start* and *stop* arguments in reverse order.
+[src:redis-cache/data-types-streams-p02] When we do not want to access items by a range in a stream, usually what we want instead is to *subscribe* to new items arriving to the stream.
+[src:redis-cache/data-types-streams-p02] While in Pub/Sub messages are *fire and forget* and are never stored anyway, and while when using blocking lists, when a message is received by the client it is *popped* (effectively removed) from the list, streams work in a fundamentally different way.
+[src:redis-cache/data-types-streams-p02] All the messages are appended in the stream indefinitely (unless the user explicitly asks to delete entries): different consumers will know what is a new message from its point of view by remembering the ID of the last message received.
+[src:redis-cache/data-types-streams-p02] The command that provides the ability to listen for new messages arriving into a stream is called `XREAD`.
+[src:redis-cache/data-types-streams-p02] It's a bit more complex than `XRANGE`, so we'll start showing simple forms, and later the whole command layout will be provided.
+[src:redis-cache/data-types-streams-p02] The above is the non-blocking form of `XREAD`.
+[src:redis-cache/data-types-streams-p02] In the above command we wrote `STREAMS race:france 0` so we want all the messages in the Stream `race:france` having an ID greater than `0-0`.
+[src:redis-cache/data-types-streams-p02] As you can see in the example above, the command returns the key name, because actually it is possible to call this command with more than one key to read from different streams at the same time.
+[src:redis-cache/data-types-streams-p02] I could write, for instance: `STREAMS race:france race:italy 0 0`.
+[src:redis-cache/data-types-streams-p02] Note how after the **STREAMS** option we need to provide the key names, and later the IDs.
+[src:redis-cache/data-types-streams-p02] For this reason, the **STREAMS** option must always be the last option.
+[src:redis-cache/data-types-streams-p02] Any other options must come before the **STREAMS** option.
+[src:redis-cache/data-types-streams-p02] Apart from the fact that `XREAD` can access multiple streams at once, and that we are able to specify the last ID we own to just get newer messages, in this simple form the command is not doing something so different compared to `XRANGE`.
+[src:redis-cache/data-types-streams-p02] Note that in the example above, other than removing **COUNT**, I specified the new **BLOCK** option with a timeout of 0 milliseconds (that means to never timeout).
+[src:redis-cache/data-types-streams-p02] Moreover, instead of passing a normal ID for the stream `race:france` I passed the special ID `$`.
+[src:redis-cache/data-types-streams-p02] This special ID means that `XREAD` should use as last ID the maximum ID already stored in the stream `race:france`, so that we will receive only *new* messages, starting from the time we started listening.
+[src:redis-cache/data-types-streams-p02] This is similar to the `tail -f` Unix command in some way.
+[src:redis-cache/data-types-streams-p02] Note that when the **BLOCK** option is used, we do not have to use the special ID `$`.
+[src:redis-cache/data-types-streams-p02] If the command is able to serve our request immediately without blocking, it will do so, otherwise it will block.
+[src:redis-cache/data-types-streams-p02] Normally if we want to consume the stream starting from new entries, we start with the ID `$`, and after that we continue using the ID of the last message received to make the next call, and so forth.
+[src:redis-cache/data-types-streams-p02] The blocking form of `XREAD` is also able to listen to multiple Streams, just by specifying multiple key names.
+[src:redis-cache/data-types-streams-p02] If the request can be served synchronously because there is at least one stream with elements greater than the corresponding ID we specified, it returns with the results.
+[src:redis-cache/data-types-streams-p02] Otherwise, the command will block and will return the items of the first stream which gets new data (according to the specified ID).
+[src:redis-cache/data-types-streams-p02] Similarly to blocking list operations, blocking stream reads are *fair* from the point of view of clients waiting for data, since the semantics is FIFO style.
+[src:redis-cache/data-types-streams-p02] The first client that blocked for a given stream will be the first to be unblocked when new items are available.
+[src:redis-cache/data-types-streams-p02] `XREAD` has no other options than **COUNT** and **BLOCK**, so it's a pretty basic command with a specific purpose to attach consumers to one or multiple streams.
+[src:redis-cache/data-types-streams-p02] More powerful features to consume streams are available using the consumer groups API, however reading via consumer groups is implemented by a different command called `XREADGROUP`, covered in the next section of this guide.
+[src:redis-cache/data-types-streams-p03] When the task at hand is to consume the same stream from different clients, then `XREAD` already offers a way to *fan-out* to N clients, potentially also using replicas in order to provide more read scalability.
+[src:redis-cache/data-types-streams-p03] However in certain problems what we want to do is not to provide the same stream of messages to many clients, but to provide a *different subset* of messages from the same stream to many clients.
+[src:redis-cache/data-types-streams-p03] An obvious case where this is useful is that of messages which are slow to process: the ability to have N different workers that will receive different parts of the stream allows us to scale message processing, by routing different messages to different workers that are ready to do more work.
+[src:redis-cache/data-types-streams-p03] In order to achieve this, Redis uses a concept called *consumer groups*.
+[src:redis-cache/data-types-streams-p03] It is very important to understand that Redis consumer groups have nothing to do, from an implementation standpoint, with Kafka (TM) consumer groups.
+[src:redis-cache/data-types-streams-p03] Yet they are similar in functionality, so I decided to keep Kafka's (TM) terminology, as it originally popularized this idea.
+[src:redis-cache/data-types-streams-p03] Consumers are identified, within a consumer group, by a name, which is a case-sensitive string that the clients implementing consumers must choose.
+[src:redis-cache/data-types-streams-p03] This means that even after a disconnect, the stream consumer group retains all the state, since the client will claim again to be the same consumer.
+[src:redis-cache/data-types-streams-p03] However, this also means that it is up to the client to provide a unique identifier.
+[src:redis-cache/data-types-streams-p03] Each consumer group has the concept of the *first ID never consumed* so that, when a consumer asks for new messages, it can provide just messages that were not previously delivered.
+[src:redis-cache/data-types-streams-p03] Consuming a message, however, requires an explicit acknowledgment using a specific command.
+[src:redis-cache/data-types-streams-p03] Redis interprets the acknowledgment as: this message was correctly processed so it can be evicted from the consumer group.
+[src:redis-cache/data-types-streams-p03] A consumer group tracks all the messages that are currently pending, that is, messages that were delivered to some consumer of the consumer group, but are yet to be acknowledged as processed.
+[src:redis-cache/data-types-streams-p03] Thanks to this feature, when accessing the message history of a stream, each consumer *will only see messages that were delivered to it*.
+[src:redis-cache/data-types-streams-p03] If you see this from this point of view, it is very simple to understand what a consumer group can do, how it is able to just provide consumers with their history of pending messages, and how consumers asking for new messages will just be served with message IDs greater than `last_delivered_id`.
+[src:redis-cache/data-types-streams-p03] At the same time, if you look at the consumer group as an auxiliary data structure for Redis streams, it is obvious that a single stream can have multiple consumer groups, that have a different set of consumers.
+[src:redis-cache/data-types-streams-p03] Actually, it is even possible for the same stream to have clients reading without consumer groups via `XREAD`, and clients reading via `XREADGROUP` in different consumer groups.
+[src:redis-cache/data-types-streams-p03] Now it's time to zoom in to see the fundamental consumer group commands.
+[src:redis-cache/data-types-streams-p03] As you can see in the command above when creating the consumer group we have to specify an ID, which in the example is just `$`.
+[src:redis-cache/data-types-streams-p03] This is needed because the consumer group, among the other states, must have an idea about what message to serve next at the first consumer connecting, that is, what was the *last message ID* when the group was just created.
+[src:redis-cache/data-types-streams-p03] If we provide `$` as we did, then only new messages arriving in the stream from now on will be provided to the consumers in the group.
+[src:redis-cache/data-types-streams-p03] If we specify `0` instead the consumer group will consume *all* the messages in the stream history to start with.
+[src:redis-cache/data-types-streams-p03] Of course, you can specify any other valid ID.
+[src:redis-cache/data-types-streams-p03] What you know is that the consumer group will start delivering messages that are greater than the ID you specify.
+[src:redis-cache/data-types-streams-p03] Because `$` means the current greatest ID in the stream, specifying `$` will have the effect of consuming only new messages.
+[src:redis-cache/data-types-streams-p03] Now that the consumer group is created we can immediately try to read messages via the consumer group using the `XREADGROUP` command.
+[src:redis-cache/data-types-streams-p03] We'll read from consumers, that we will call Alice and Bob, to see how the system will return different messages to Alice or Bob.
+[src:redis-cache/data-types-streams-p03] `XREADGROUP` is very similar to `XREAD` and provides the same **BLOCK** option, otherwise it is a synchronous command.
+[src:redis-cache/data-types-streams-p03] However there is a *mandatory* option that must be always specified, which is **GROUP** and has two arguments: the name of the consumer group, and the name of the consumer that is attempting to read.
+[src:redis-cache/data-types-streams-p03] The option **COUNT** is also supported and is identical to the one in `XREAD`.
+[src:redis-cache/data-types-streams-p03] We'll add riders to the race:italy stream and try reading something using the consumer group: Note: *here rider is the field name, and the name is the associated value.
+[src:redis-cache/data-types-streams-p03] `XREADGROUP` replies are just like `XREAD` replies.
+[src:redis-cache/data-types-streams-p03] Note however the `GROUP <group-name> <consumer-name>` provided above.
+[src:redis-cache/data-types-streams-p03] It states that I want to read from the stream using the consumer group `mygroup` and I'm the consumer `Alice`.
+[src:redis-cache/data-types-streams-p03] Every time a consumer performs an operation with a consumer group, it must specify its name, uniquely identifying this consumer inside the group.
+[src:redis-cache/data-types-streams-p03] There is another very important detail in the command line above, after the mandatory **STREAMS** option the ID requested for the key `race:italy` is the special ID `>`.
+[src:redis-cache/data-types-streams-p03] This special ID is only valid in the context of consumer groups, and it means: **messages never delivered to other consumers so far**.
+[src:redis-cache/data-types-streams-p03] Don't worry if you yet don't know how `XACK` works, the idea is just that processed messages are no longer part of the history that we can access.
+[src:redis-cache/data-types-streams-p03] Bob asked for a maximum of two messages and is reading via the same group `mygroup`.
+[src:redis-cache/data-types-streams-p03] So what happens is that Redis reports just *new* messages.
+[src:redis-cache/data-types-streams-p03] As you can see the "Castilla" message is not delivered, since it was already delivered to Alice, so Bob gets Royce and Sam-Bodden and so forth.
+[src:redis-cache/data-types-streams-p03] This way Alice, Bob, and any other consumer in the group, are able to read different messages from the same stream, to read their history of yet to process messages, or to mark messages as processed.
+[src:redis-cache/data-types-streams-p03] This allows creating different topologies and semantics for consuming messages from a stream.
+[src:redis-cache/data-types-streams-p03] An example of a consumer implementation, using consumer groups, written in the Ruby language could be the following.
+[src:redis-cache/data-types-streams-p03] As you can see the idea here is to start by consuming the history, that is, our list of pending messages.
+[src:redis-cache/data-types-streams-p03] This is useful because the consumer may have crashed before, so in the event of a restart we want to re-read messages that were delivered to us without getting acknowledged.
+[src:redis-cache/data-types-streams-p03] Note that we might process a message multiple times or one time (at least in the case of consumer failures, but there are also the limits of Redis persistence and replication involved, see the specific section about this topic).
+[src:redis-cache/data-types-streams-p03] Once the history was consumed, and we get an empty list of messages, we can switch to using the `>` special ID in order to consume new messages.
+[src:redis-cache/data-types-streams-p04] The example above allows us to write consumers that participate in the same consumer group, each taking a subset of messages to process, and when recovering from failures re-reading the pending messages that were delivered just to them.
+[src:redis-cache/data-types-streams-p04] However in the real world consumers may permanently fail and never recover.
+[src:redis-cache/data-types-streams-p04] What happens to the pending messages of the consumer that never recovers after stopping for any reason?
+[src:redis-cache/data-types-streams-p04] Redis consumer groups offer a feature that is used in these situations in order to *claim* the pending messages of a given consumer so that such messages will change ownership and will be re-assigned to a different consumer.
+[src:redis-cache/data-types-streams-p04] A consumer has to inspect the list of pending messages, and will have to claim specific messages using a special command, otherwise the server will leave the messages pending forever and assigned to the old consumer.
+[src:redis-cache/data-types-streams-p04] In this way different applications can choose if to use such a feature or not, and exactly how to use it.
+[src:redis-cache/data-types-streams-p04] The first step of this process is just a command that provides observability of pending entries in the consumer group and is called `XPENDING`.
+[src:redis-cache/data-types-streams-p04] This is a read-only command which is always safe to call and will not change ownership of any message.
+[src:redis-cache/data-types-streams-p04] In its simplest form, the command is called with two arguments, which are the name of the stream and the name of the consumer group.
+[src:redis-cache/data-types-streams-p04] When called in this way, the command outputs the total number of pending messages in the consumer group (two in this case), the lower and higher message ID among the pending messages, and finally a list of consumers and the number of pending messages they have.
+[src:redis-cache/data-types-streams-p04] We have only Bob with two pending messages because the single message that Alice requested was acknowledged using `XACK`.
+[src:redis-cache/data-types-streams-p04] By providing a start and end ID (that can be just `-` and `+` as in `XRANGE`) and a count to control the amount of information returned by the command, we are able to know more about the pending messages.
+[src:redis-cache/data-types-streams-p04] The optional final argument, the consumer name, is used if we want to limit the output to just messages pending for a given consumer, but won't use this feature in the following example.
+[src:redis-cache/data-types-streams-p04] Now we have the details for each message: the ID, the consumer name, the *idle time* in milliseconds, which is how many milliseconds have passed since the last time the message was delivered to some consumer, and finally the number of times that a given message was delivered.
+[src:redis-cache/data-types-streams-p04] We have two messages from Bob, and they are idle for 60000+ milliseconds, about a minute.
+[src:redis-cache/data-types-streams-p04] Note that nobody prevents us from checking what the first message content was by just using `XRANGE`.
+[src:redis-cache/data-types-streams-p04] We have just to repeat the same ID twice in the arguments.
+[src:redis-cache/data-types-streams-p04] Now that we have some ideas, Alice may decide that after 1 minute of not processing messages, Bob will probably not recover quickly, and it's time to *claim* such messages and resume the processing in place of Bob.
+[src:redis-cache/data-types-streams-p04] This command is very complex and full of options in its full form, since it is used for replication of consumer groups changes, but we'll use just the arguments that we need normally.
+[src:redis-cache/data-types-streams-p04] Basically we say, for this specific key and group, I want that the message IDs specified will change ownership, and will be assigned to the specified consumer name `<consumer>`.
+[src:redis-cache/data-types-streams-p04] However, we also provide a minimum idle time, so that the operation will only work if the idle time of the mentioned messages is greater than the specified idle time.
+[src:redis-cache/data-types-streams-p04] However, as a side effect, claiming a message will reset its idle time and will increment its number of deliveries counter, so the second client will fail claiming it.
+[src:redis-cache/data-types-streams-p04] In this way we avoid trivial re-processing of messages (even if in the general case you cannot obtain exactly once processing).
+[src:redis-cache/data-types-streams-p04] The message was successfully claimed by Alice, who can now process the message and acknowledge it, and move things forward even if the original consumer is not recovering.
+[src:redis-cache/data-types-streams-p04] It is clear from the example above that as a side effect of successfully claiming a given message, the `XCLAIM` command also returns it.
+[src:redis-cache/data-types-streams-p04] The **JUSTID** option can be used in order to return just the IDs of the message successfully claimed.
+[src:redis-cache/data-types-streams-p04] This is useful if you want to reduce the bandwidth used between the client and the server (and also the performance of the command) and you are not interested in the message because your consumer is implemented in a way that it will rescan the history of pending messages from time to time.
+[src:redis-cache/data-types-streams-p04] Claiming may also be implemented by a separate process: one that just checks the list of pending messages, and assigns idle messages to consumers that appear to be active.
+[src:redis-cache/data-types-streams-p04] Active consumers can be obtained using one of the observability features of Redis streams.
+[src:redis-cache/data-types-streams-p04] The `XAUTOCLAIM` command, added in Redis 6.2, implements the claiming process that we've described above.
+[src:redis-cache/data-types-streams-p04] `XPENDING` and `XCLAIM` provide the basic building blocks for different types of recovery mechanisms.
+[src:redis-cache/data-types-streams-p04] This command optimizes the generic process by having Redis manage it and offers a simple solution for most recovery needs.
+[src:redis-cache/data-types-streams-p04] `XAUTOCLAIM` identifies idle pending messages and transfers ownership of them to a consumer.
+[src:redis-cache/data-types-streams-p04] Like `XCLAIM`, the command replies with an array of the claimed messages, but it also returns a stream ID that allows iterating the pending entries.
+[src:redis-cache/data-types-streams-p04] When `XAUTOCLAIM` returns the "0-0" stream ID as a cursor, that means that it reached the end of the consumer group pending entries list.
+[src:redis-cache/data-types-streams-p04] That doesn't mean that there are no new idle pending messages, so the process continues by calling `XAUTOCLAIM` from the beginning of the stream.
+[src:redis-cache/data-types-streams-p04] The counter that you observe in the `XPENDING` output is the number of deliveries of each message.
+[src:redis-cache/data-types-streams-p04] The counter is incremented in two ways: when a message is successfully claimed via `XCLAIM` or when an `XREADGROUP` call is used in order to access the history of pending messages.
+[src:redis-cache/data-types-streams-p04] When there are failures, it is normal that messages will be delivered multiple times, but eventually they usually get processed and acknowledged.
+[src:redis-cache/data-types-streams-p04] However there might be a problem processing some specific message, because it is corrupted or crafted in a way that triggers a bug in the processing code.
+[src:redis-cache/data-types-streams-p04] In such a case what happens is that consumers will continuously fail to process this particular message.
+[src:redis-cache/data-types-streams-p04] Because we have the counter of the delivery attempts, we can use that counter to detect messages that for some reason are not processable.
+[src:redis-cache/data-types-streams-p04] So once the deliveries counter reaches a given large number that you chose, it is probably wiser to put such messages in another stream and send a notification to the system administrator.
+[src:redis-cache/data-types-streams-p04] This is basically the way that Redis Streams implements the *dead letter* concept.
+[src:redis-cache/data-types-streams-p04] Starting with Redis 8.8, the `XNACK` command provides a way for consumers to explicitly release pending messages back to the group without acknowledging them.
+[src:redis-cache/data-types-streams-p04] This is the opposite of claiming - instead of taking ownership of messages from other consumers, a consumer can release its own messages back to the group for immediate re-delivery.
+[src:redis-cache/data-types-streams-p04] **Consumer-side failures**: When a consumer encounters consumer-side issues (like network connectivity problems or resource constraints), it can release messages it cannot process rather than letting them sit idle.
+[src:redis-cache/data-types-streams-p04] **Resource management**: A consumer under resource pressure can release complex or large messages that it cannot handle, allowing other consumers with more resources to process them.
+[src:redis-cache/data-types-streams-p04] **Poison message handling**: A consumer can mark messages as permanently failed when it detects invalid or malicious content.
+[src:redis-cache/data-types-streams-p04] Released messages are placed in a special "NACK zone" at the head of the consumer group's PEL, ensuring they are prioritized for re-delivery over other idle pending messages.
+[src:redis-cache/data-types-streams-p04] This makes recovery much faster than traditional claiming mechanisms that rely on idle timeouts.
+[src:redis-cache/data-types-streams-p04] After NACKing, the message appears with an empty consumer in `XPENDING` output and becomes immediately available for claiming or consumption via `XREADGROUP` with the CLAIM option.
+[src:redis-cache/data-types-streams-p04] Redis Streams can be associated with multiple consumer groups, where each entry is delivered to all the stream's consumer groups.
+[src:redis-cache/data-types-streams-p04] Within each consumer group, consumers handle a portion of the entries collaboratively.
+[src:redis-cache/data-types-streams-p04] This design enables different applications or services to process the same stream data independently.
+[src:redis-cache/data-types-streams-p04] Traditionally, when a consumer processesed a message, it acknowledged it using the `XACK` command, which removed the entry reference from the Pending Entries List (PEL) of that specific consumer group.
+[src:redis-cache/data-types-streams-p04] However, the entry remained in the stream and in the PELs of other consumer groups until they also acknowledge it.
+[src:redis-cache/data-types-streams-p04] Applications needed to implement complex logic to delete entries from the stream only after all consumer groups had acknowledged them.
+[src:redis-cache/data-types-streams-p04] This coordination was challenging to implement correctly and efficiently.
+[src:redis-cache/data-types-streams-p04] The `ACKED` option is particularly useful as it automates the complex logic of coordinating deletion across multiple consumer groups, ensuring entries are only removed when all groups have finished processing them.
+[src:redis-cache/data-types-streams-p04] Messaging systems that lack observability are very hard to work with.
+[src:redis-cache/data-types-streams-p04] Not knowing who is consuming messages, what messages are pending, the set of consumer groups active in a given stream, makes everything opaque.
+[src:redis-cache/data-types-streams-p04] For this reason, Redis Streams and consumer groups have different ways to observe what is happening.
+[src:redis-cache/data-types-streams-p04] We already covered `XPENDING`, which allows us to inspect the list of messages that are under processing at a given moment, together with their idle time and number of deliveries.
+[src:redis-cache/data-types-streams-p04] However we may want to do more than that, and the `XINFO` command is an observability interface that can be used with sub-commands in order to get information about streams or consumer groups.
+[src:redis-cache/data-types-streams-p04] This command uses subcommands in order to show different information about the status of the stream and its consumer groups.
+[src:redis-cache/data-types-streams-p04] For instance **XINFO STREAM** reports information about the stream itself.
+[src:redis-cache/data-types-streams-p04] The output shows information about how the stream is encoded internally, and also shows the first and last message in the stream.
+[src:redis-cache/data-types-streams-p04] Another piece of information available is the number of consumer groups associated with this stream.
+[src:redis-cache/data-types-streams-p04] We can dig further asking for more information about the consumer groups.
+[src:redis-cache/data-types-streams-p04] As you can see in this and in the previous output, the `XINFO` command outputs a sequence of field-value items.
+[src:redis-cache/data-types-streams-p04] Because it is an observability command this allows the human user to immediately understand what information is reported, and allows the command to report more information in the future by adding more fields without breaking compatibility with older clients.
+[src:redis-cache/data-types-streams-p04] Other commands that must be more bandwidth efficient, like `XPENDING`, just report the information without the field names.
+[src:redis-cache/data-types-streams-p04] The output of the example above, where the **GROUPS** subcommand is used, should be clear observing the field names.
+[src:redis-cache/data-types-streams-p04] We can check in more detail the state of a specific consumer group by checking the consumers that are registered in the group.
+[src:redis-cache/data-types-streams-p04] Consumer groups in Redis streams may resemble in some way Kafka (TM) partitioning-based consumer groups, however note that Redis streams are, in practical terms, very different.
+[src:redis-cache/data-types-streams-p04] The partitions are only *logical* and the messages are just put into a single Redis key, so the way the different clients are served is based on who is ready to process new messages, and not from which partition clients are reading.
+[src:redis-cache/data-types-streams-p04] For instance, if the consumer C3 at some point fails permanently, Redis will continue to serve C1 and C2 all the new messages arriving, as if now there are only two *logical* partitions.
+[src:redis-cache/data-types-streams-p04] Similarly, if a given consumer is much faster at processing messages than the other consumers, this consumer will receive proportionally more messages in the same unit of time.
+[src:redis-cache/data-types-streams-p04] This is possible since Redis tracks all the unacknowledged messages explicitly, and remembers who received which message and the ID of the first message never delivered to any consumer.
+[src:redis-cache/data-types-streams-p04] However, this also means that in Redis if you really want to partition messages in the same stream into multiple Redis instances, you have to use multiple keys and some sharding system such as Redis Cluster or some other application-specific sharding system.
+[src:redis-cache/data-types-streams-p04] A single Redis stream is not automatically partitioned to multiple instances.
+[src:redis-cache/data-types-streams-p04] So basically Kafka partitions are more similar to using N different Redis keys, while Redis consumer groups are a server-side load balancing system of messages from a given stream to N different consumers.
+[src:redis-cache/data-types-streams-p05] Many applications do not want to collect data into a stream forever.
+[src:redis-cache/data-types-streams-p05] Sometimes it is useful to have at maximum a given number of items inside a stream, other times once a given size is reached, it is useful to move data from Redis to a storage which is not in memory and not as fast but suited to store the history for, potentially, decades to come.
+[src:redis-cache/data-types-streams-p05] Redis streams have some support for this.
+[src:redis-cache/data-types-streams-p05] One is the **MAXLEN** option of the `XADD` command.
+[src:redis-cache/data-types-streams-p05] Using **MAXLEN** the old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size.
+[src:redis-cache/data-types-streams-p05] There is currently no option to tell the stream to just retain items that are not older than a given period, because such command, in order to run consistently, would potentially block for a long time in order to evict items.
+[src:redis-cache/data-types-streams-p05] Imagine for example what happens if there is an insertion spike, then a long pause, and another insertion, all with the same maximum time.
+[src:redis-cache/data-types-streams-p05] The stream would block to evict the data that became too old during the pause.
+[src:redis-cache/data-types-streams-p05] So it is up to the user to do some planning and understand what is the maximum stream length desired.
+[src:redis-cache/data-types-streams-p05] Moreover, while the length of the stream is proportional to the memory used, trimming by time is less simple to control and anticipate: it depends on the insertion rate which often changes over time (and when it does not change, then to just trim by size is trivial).
+[src:redis-cache/data-types-streams-p05] However trimming with **MAXLEN** can be expensive: streams are represented by macro nodes into a radix tree, in order to be very memory efficient.
+[src:redis-cache/data-types-streams-p05] Altering the single macro node, consisting of a few tens of elements, is not optimal.
+[src:redis-cache/data-types-streams-p05] The `~` argument between the **MAXLEN** option and the actual count means, I don't really need this to be exactly 1000 items.
+[src:redis-cache/data-types-streams-p05] It can be 1000 or 1010 or 1030, just make sure to save at least 1000 items.
+[src:redis-cache/data-types-streams-p05] With this argument, the trimming is performed only when we can remove a whole node.
+[src:redis-cache/data-types-streams-p05] This makes it much more efficient, and it is usually what you want.
+[src:redis-cache/data-types-streams-p05] You'll note here that the client libraries have various implementations of this.
+[src:redis-cache/data-types-streams-p05] For example, the Python client defaults to approximate and has to be explicitly set to a true length.
+[src:redis-cache/data-types-streams-p05] However, `XTRIM` is designed to accept different trimming strategies.
+[src:redis-cache/data-types-streams-p05] Another trimming strategy is **MINID**, that evicts entries with IDs lower than the one specified.
+[src:redis-cache/data-types-streams-p05] As `XTRIM` is an explicit command, the user is expected to know about the possible shortcomings of different trimming strategies.
+[src:redis-cache/data-types-streams-p05] The `ACKED` option is particularly useful for maintaining data integrity across multiple consumer groups, ensuring that entries are only removed when all groups have finished processing them.
+[src:redis-cache/data-types-streams-p05] Another useful eviction strategy that may be added to `XTRIM` in the future, is to remove by a range of IDs to ease use of `XRANGE` and `XTRIM` to move data from Redis to other storage systems if needed.
+[src:redis-cache/data-types-streams-p05] You may have noticed that there are several special IDs that can be used in the Redis API.
+[src:redis-cache/data-types-streams-p05] Here is a short recap, so that they can make more sense in the future.
+[src:redis-cache/data-types-streams-p05] The first two special IDs are `-` and `+`, and are used in range queries with the `XRANGE` command.
+[src:redis-cache/data-types-streams-p05] As you can see it is a lot cleaner to write `-` and `+` instead of those numbers.
+[src:redis-cache/data-types-streams-p05] Then there are APIs where we want to say, the ID of the item with the greatest ID inside the stream.
+[src:redis-cache/data-types-streams-p05] So for instance if I want only new entries with `XREADGROUP` I use this ID to signify I already have all the existing entries, but not the new ones that will be inserted in the future.
+[src:redis-cache/data-types-streams-p05] Similarly when I create or set the ID of a consumer group, I can set the last delivered item to `$` in order to just deliver new entries to the consumers in the group.
+[src:redis-cache/data-types-streams-p05] As you can see `$` does not mean `+`, they are two different things, as `+` is the greatest ID possible in every possible stream, while `$` is the greatest ID in a given stream containing given entries.
+[src:redis-cache/data-types-streams-p05] Moreover APIs will usually only understand `+` or `$`, yet it was useful to avoid loading a given symbol with multiple meanings.
+[src:redis-cache/data-types-streams-p05] Another special ID is `>`, that is a special meaning only related to consumer groups and only when the `XREADGROUP` command is used.
+[src:redis-cache/data-types-streams-p05] This special ID means that we want only entries that were never delivered to other consumers so far.
+[src:redis-cache/data-types-streams-p05] So basically the `>` ID is the *last delivered ID* of a consumer group.
+[src:redis-cache/data-types-streams-p05] Finally the special ID `*`, that can be used only with the `XADD` command, means to auto select an ID for us for the new entry.
+[src:redis-cache/data-types-streams-p05] So we have `-`, `+`, `$`, `>` and `*`, and all have a different meaning, and most of the time, can be used in different contexts.
+[src:redis-cache/data-types-streams-p05] A Stream, like any other Redis data structure, is asynchronously replicated to replicas and persisted into AOF and RDB files.
+[src:redis-cache/data-types-streams-p05] However what may not be so obvious is that also the consumer groups full state is propagated to AOF, RDB and replicas, so if a message is pending in the master, also the replica will have the same information.
+[src:redis-cache/data-types-streams-p05] Similarly, after a restart, the AOF will restore the consumer groups' state.
+[src:redis-cache/data-types-streams-p05] So when designing an application using Redis streams and consumer groups, make sure to understand the semantical properties your application should have during failures, and configure things accordingly, evaluating whether it is safe enough for your use case.
+[src:redis-cache/data-types-streams-p05] Streams also have a special command for removing items from the middle of a stream, just by ID.
+[src:redis-cache/data-types-streams-p05] Normally for an append only data structure this may look like an odd feature, but it is actually useful for applications involving, for instance, privacy regulations.
+[src:redis-cache/data-types-streams-p05] Starting with Redis 8.2, the `XDELEX` command provides enhanced control over entry deletion, particularly when working with consumer groups.
+[src:redis-cache/data-types-streams-p05] This allows you to delete entries only when they have been acknowledged by all consumer groups (`ACKED`), remove all consumer group references (`DELREF`), or preserve existing references (`KEEPREF`).
+[src:redis-cache/data-types-streams-p05] A difference between streams and other Redis data structures is that when the other data structures no longer have any elements, as a side effect of calling commands that remove elements, the key itself will be removed.
+[src:redis-cache/data-types-streams-p05] So for instance, a sorted set will be completely removed when a call to `ZREM` will remove the last element in the sorted set.
+[src:redis-cache/data-types-streams-p05] Streams, on the other hand, are allowed to stay at zero elements, both as a result of using a **MAXLEN** option with a count of zero (`XADD` and `XTRIM` commands), or because `XDEL` was called.
+[src:redis-cache/data-types-streams-p05] The reason why such an asymmetry exists is because Streams may have associated consumer groups, and we do not want to lose the state that the consumer groups defined just because there are no longer any items in the stream.
+[src:redis-cache/data-types-streams-p05] Currently the stream is not deleted even when it has no associated consumer groups.
+[src:redis-cache/data-types-streams-p05] It should be enough to say that stream commands are at least as fast as sorted set commands when extracting ranges, and that `XADD` is very fast and can easily insert from half a million to one million items per second in an average machine if pipelining is used.
+[src:redis-cache/data-types-streams-p05] Before providing the results of performed tests, it is interesting to understand what model Redis uses in order to route stream messages (and in general actually how any blocking operation waiting for data is managed).
+[src:redis-cache/data-types-streams-p05] This model is *push-based*, since adding data to the consumers buffers will be performed directly by the action of calling `XADD`, so the latency tends to be quite predictable.
+[src:redis-cache/data-types-streams-p05] In order to check these latency characteristics a test was performed using multiple instances of Ruby programs pushing messages having as an additional field the computer millisecond time, and Ruby programs reading the messages from the consumer group and processing them.
+[src:redis-cache/data-types-streams-p05] The message processing step consisted of comparing the current computer time with the message timestamp, in order to understand the total latency.
+[src:redis-cache/data-types-streams-p05] So 99.9% of requests have a latency <= 2 milliseconds, with the outliers that remain still very close to the average.
+[src:redis-cache/data-types-streams-p05] Adding a few million unacknowledged messages to the stream does not change the gist of the benchmark, with most queries still processed with very short latency.
+[src:redis-cache/develop-data-types] At its core, Redis provides a collection of native data types that help you solve a wide variety of problems, from caching to queuing to event processing.
+[src:redis-cache/develop-data-types] Below is a short description of each data type, with links to broader overviews and command references.
+[src:redis-cache/develop-data-types] Each overview includes a comprehensive tutorial with code samples.
+[src:redis-cache/develop-data-types] See Compare data types for advice on which of the general-purpose data types is best for common tasks.
+[src:redis-cache/develop-data-types] Redis strings are the most basic Redis data type, representing a sequence of bytes.
+[src:redis-cache/develop-data-types] Redis bitfields efficiently encode multiple counters in a string value.
+[src:redis-cache/develop-data-types] Bitfields provide atomic get, set, and increment operations and support different overflow policies.
+[src:redis-cache/develop-data-types] Redis bitmaps let you perform bitwise operations on strings.
+[src:redis-cache/develop-data-types] Redis arrays are sparse, index-addressable sequences of strings.
+[src:redis-cache/develop-data-types] Redis geospatial indexes are useful for finding locations within a given geographic radius or bounding box.
+[src:redis-cache/develop-data-types] Redis hashes are record types modeled as collections of field-value pairs.
+[src:redis-cache/develop-data-types] As such, Redis hashes resemble Python dictionaries, Java HashMaps, and Ruby hashes.
+[src:redis-cache/develop-data-types] Redis JSON provides structured, hierarchical arrays and key-value objects that match the popular JSON text file format.
+[src:redis-cache/develop-data-types] You can import JSON text into Redis objects and access, modify, and query individual data elements.
+[src:redis-cache/develop-data-types] Redis lists are lists of strings sorted by insertion order.
+[src:redis-cache/develop-data-types] These data types let you gather and calculate statistics in a way that is approximate but highly efficient.
+[src:redis-cache/develop-data-types] Redis Bloom filters let you check for the presence or absence of an element in a set.
+[src:redis-cache/develop-data-types] Redis Count-min sketch estimate the frequency of a data point within a stream of values.
+[src:redis-cache/develop-data-types] Redis Cuckoo filters let you check for the presence or absence of an element in a set.
+[src:redis-cache/develop-data-types] They are similar to Bloom filters but with slightly different trade-offs between features and performance.
+[src:redis-cache/develop-data-types] The Redis HyperLogLog data structures provide probabilistic estimates of the cardinality (i.e., number of elements) of large sets.
+[src:redis-cache/develop-data-types] Redis t-digest structures estimate percentiles from a stream of data values.
+[src:redis-cache/develop-data-types] Redis Top-K structures estimate the ranking of a data point within a stream of values.
+[src:redis-cache/develop-data-types] Redis sets are unordered collections of unique strings that act like the sets from your favorite programming language (for example, Java HashSets, Python sets, and so on).
+[src:redis-cache/develop-data-types] With a Redis set, you can add, remove, and test for existence in O(1) time (in other words, regardless of the number of set elements).
+[src:redis-cache/develop-data-types] Redis sorted sets are collections of unique strings that maintain order by each string's associated score.
+[src:redis-cache/develop-data-types] A Redis stream is a data structure that acts like an append-only log.
+[src:redis-cache/develop-data-types] Streams help record events in the order they occur and then syndicate them for processing.
+[src:redis-cache/develop-data-types] Redis time series structures let you store and query timestamped data points.
+[src:redis-cache/develop-data-types] Redis vector sets are a specialized data type designed for managing high-dimensional vector data, enabling fast and efficient vector similarity search within Redis.
+[src:redis-cache/develop-data-types] Vector sets are optimized for use cases involving machine learning, recommendation systems, and semantic search, where each vector represents a data point in multi-dimensional space.
+[src:redis-cache/develop-data-types] Vector sets supports the HNSW (hierarchical navigable small world) algorithm, allowing you to store, index, and query vectors based on the cosine similarity metric.
+[src:redis-cache/develop-data-types] With vector sets, Redis provides native support for hybrid search, combining vector similarity with structured filters.
+[src:redis-cache/develop-data-types] Write your own Redis module using the modules API or check out the community-supported modules.
+[src:redis-cache/in-memory-database] An **in-memory database** (**IMDb**, or **main memory database system** (**MMDB**) or **memory resident database**) is a database management system that primarily relies on main memory for computer data storage.
+[src:redis-cache/in-memory-database] It is contrasted with database management systems that employ a disk storage mechanism.
+[src:redis-cache/in-memory-database] In-memory databases are faster than disk-optimized databases because disk access is slower than memory access and the internal optimization algorithms are simpler and execute fewer CPU instructions.
+[src:redis-cache/in-memory-database] Accessing data in memory eliminates seek time when querying the data, which provides faster and more predictable performance than disk.
+[src:redis-cache/in-memory-database] Applications where response time is critical, such as those running telecommunications network equipment and mobile advertising networks, often use main-memory databases.
+[src:redis-cache/in-memory-database] IMDBs have gained much traction, especially in the data analytics space, starting in the mid-2000s – mainly due to multi-core processors that can address large memory and due to less expensive RAM.
+[src:redis-cache/in-memory-database] A potential technical hurdle with in-memory data storage is the volatility of RAM.
+[src:redis-cache/in-memory-database] Specifically in the event of a power loss, intentional or otherwise, data stored in volatile RAM is lost.
+[src:redis-cache/in-memory-database] With the introduction of non-volatile random-access memory technology, in-memory databases will be able to run at full speed and maintain data in the event of power failure.
+[src:redis-cache/in-memory-database] In its simplest form, main memory databases store data on volatile memory devices.
+[src:redis-cache/in-memory-database] These devices lose all stored information when the device loses power or is reset.
+[src:redis-cache/in-memory-database] In this case, IMDBs can be said to lack support for the "durability" portion of the ACID (atomicity, consistency, isolation, durability) properties.
+[src:redis-cache/in-memory-database] Volatile memory-based IMDBs can, and often do, support the other three ACID properties of atomicity, consistency and isolation.
+[src:redis-cache/in-memory-database] While storing data in-memory confers performance advantages, it is an expensive method of data storage.
+[src:redis-cache/in-memory-database] An approach to realising the benefits of in-memory storage while limiting its costs is to store the most frequently accessed data in-memory and the rest on disk.
+[src:redis-cache/in-memory-database] Since there is no hard distinction between which data should be stored in-memory and which should be stored on disk, some systems dynamically update where data is stored based on the data's usage.
+[src:redis-cache/in-memory-database] This approach is subtly different from caching, in which the most *recently accessed* data is cached, as opposed to the most *frequently accessed* data being stored in-memory.
+[src:redis-cache/in-memory-database] In the cloud computing industry the terms "data temperature", or "hot data" and "cold data" have emerged to describe how data is stored in this respect.
+[src:redis-cache/in-memory-database] Hot data is used to describe mission-critical data that needs to be accessed frequently while cold data describes data that is needed less often and less urgently, such as data kept for archiving or auditing purposes.
+[src:redis-cache/in-memory-database] Hot data should be stored in ways offering fast retrieval and modification, often accomplished by in-memory storage but not always.
+[src:redis-cache/in-memory-database] Cold data on the other hand can be stored in a more cost-effective way and is accepted that data access will likely be slower compared to hot data.
+[src:redis-cache/in-memory-database] While these descriptions are useful, "hot" and "cold" lack concrete definitions.
+[src:redis-cache/in-memory-database] Manufacturing efficiency provides another reason for selecting a combined in-memory/on-disk database system.
+[src:redis-cache/in-memory-database] Some device product lines, especially in consumer electronics, include some units with permanent storage, and others that rely on memory for storage (set-top boxes, for example).
+[src:redis-cache/in-memory-database] If such devices require a database system, a manufacturer can adopt a hybrid database system at lower and *upper* cost, and with less customization of code, rather than using separate in-memory and on-disk databases, respectively, for its disk-less and disk-based products.
+[src:redis-cache/in-memory-database] The first database engine to support both in-memory and on-disk tables in a single database, WebDNA, was released in 1995.
+[src:redis-cache/in-memory-database] Another variation involves large amounts of nonvolatile memory in the server, for example, flash memory chips as addressable memory rather than structured as disk arrays.
+[src:redis-cache/in-memory-database] A database in this form of memory combines very fast access speed with persistence over reboots and power losses.
+[src:redis-cache/key-value-database] A **key-value database**, or **key-value store**, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a *dictionary*.
+[src:redis-cache/key-value-database] Dictionaries contain a collection of *objects*, or *records*, which in turn have many different *fields* within them.
+[src:redis-cache/key-value-database] These records are stored and retrieved using a *key* that uniquely identifies the record, and is used to find the data within the database.
+[src:redis-cache/key-value-database] Key-value databases differ from the better known relational databases (RDB).
+[src:redis-cache/key-value-database] RDBs pre-define the data structure in the database as a series of tables containing fields with well-defined data types.
+[src:redis-cache/key-value-database] Exposing the data types to the database program allows it to apply various optimizations.
+[src:redis-cache/key-value-database] In contrast, key-value systems treat the value as opaque to the database itself, and typically support only simple operations such as storing, retrieving, updating, and deleting a value by its key.
+[src:redis-cache/key-value-database] This offers considerable flexibility and makes such systems well suited to low-latency, high-throughput workloads dominated by direct key lookups, but less suitable for applications that require complex queries or explicit relationships among records.
+[src:redis-cache/key-value-database] A lack of standardization, limited transaction support, and relatively simple query interfaces long restricted many key-value systems to specialized uses, but the rapid move to cloud computing after 2010 helped drive renewed interest in them as part of the broader NoSQL movement.
+[src:redis-cache/key-value-database] Some graph databases, such as ArangoDB, are also key–value databases internally, adding the concept of relationships (*pointers*) between records as a first-class data type.
+[src:redis-cache/key-value-database] Key–value systems span a wide consistency spectrum, from eventually consistent designs to strongly consistent or serializable ones, and some allow the consistency level to be configured as part of the trade-off against latency and availability.
+[src:redis-cache/key-value-database] Renewed interest in key–value and other NoSQL systems was driven in part by the demands of big data, distributed, and cloud applications.
+[src:redis-cache/key-value-database] Their scalability and availability made them attractive for cloud data management, although limited transaction support, low-level query interfaces, and the lack of standardization remained obstacles to wider adoption.
+[src:redis-cache/key-value-database] Some maintain data in memory (RAM), while others employ solid-state drives or rotating disks.
+[src:redis-cache/key-value-database] Some key–value systems add additional structure to their keys.
+[src:redis-cache/key-value-database] For example, Oracle NoSQL Database organizes records using composite keys with "major" and "minor" components, an arrangement that Oracle compares to a directory-path structure in a file system.
+[src:redis-cache/key-value-database] More generally, however, key–value stores are defined by their use of unique keys associated with opaque values and by their emphasis on simple key-based operations.
+[src:redis-cache/key-value-database] Unix included *dbm* (database manager), a minimal database library written by Ken Thompson for managing associative arrays with a single key and hash-based access.
+[src:redis-cache/key-value-database] Later implementations and related libraries included sdbm, GNU dbm (gdbm), and Berkeley DB.
+[src:redis-cache/key-value-database] A more recent example is RocksDB, a persistent key–value storage engine developed at Facebook and designed for large-scale applications.
+[src:redis-cache/key-value-database] Other examples include in-memory systems such as Memcached and Redis, and persistent systems such as Berkeley DB, Riak, and Voldemort.
+[src:redis-cache/latest] Explore CLI, GUI, VS Code, and MCP tools.
+[src:redis-cache/latest] Get started with JSON and vector queries in the Redis Sandbox.
+[src:redis-cache/management-scaling-p01] Redis scales horizontally with a deployment topology called Redis Cluster.
+[src:redis-cache/management-scaling-p01] This topic will teach you how to set up, test, and operate Redis Cluster in production.
+[src:redis-cache/management-scaling-p01] You will learn about the availability and consistency characteristics of Redis Cluster from the end user's point of view.
+[src:redis-cache/management-scaling-p01] If you plan to run a production Redis Cluster deployment or want to understand better how Redis Cluster works internally, consult the Redis Cluster specification.
+[src:redis-cache/management-scaling-p01] To learn how Redis Enterprise handles scaling, see Linear Scaling with Redis Enterprise.
+[src:redis-cache/management-scaling-p01] Redis Cluster provides a way to run a Redis installation where data is automatically sharded across multiple Redis nodes.
+[src:redis-cache/management-scaling-p01] Redis Cluster also provides some degree of availability during partitions—in practical terms, the ability to continue operations when some nodes fail or are unable to communicate.
+[src:redis-cache/management-scaling-p01] However, the cluster will become unavailable in the event of larger failures (for example, when the majority of masters are unavailable).
+[src:redis-cache/management-scaling-p01] Every Redis Cluster node requires two open TCP connections: a Redis TCP port used to serve clients, e.g., 6379, and second port known as the *cluster bus port*.
+[src:redis-cache/management-scaling-p01] By default, the cluster bus port is set by adding 10000 to the data port (e.g., 16379); however, you can override this in the `cluster-port` configuration.
+[src:redis-cache/management-scaling-p01] Cluster bus is a node-to-node communication channel that uses a binary protocol, which is more suited to exchanging information between nodes due to little bandwidth and processing time.
+[src:redis-cache/management-scaling-p01] Nodes use the cluster bus for failure detection, configuration updates, failover authorization, and so forth.
+[src:redis-cache/management-scaling-p01] Clients should never try to communicate with the cluster bus port, but rather use the Redis command port.
+[src:redis-cache/management-scaling-p01] However, make sure you open both ports in your firewall, otherwise Redis cluster nodes won't be able to communicate.
+[src:redis-cache/management-scaling-p01] The cluster bus port must be reachable from all the other cluster nodes.
+[src:redis-cache/management-scaling-p01] If you don't open both TCP ports, your cluster will not work as expected.
+[src:redis-cache/management-scaling-p01] Currently, Redis Cluster does not support NATted environments and in general environments where IP addresses or TCP ports are remapped.
+[src:redis-cache/management-scaling-p01] Docker uses a technique called *port mapping*: programs running inside Docker containers may be exposed with a different port compared to the one the program believes to be using.
+[src:redis-cache/management-scaling-p01] This is useful for running multiple containers using the same ports, at the same time, in the same server.
+[src:redis-cache/management-scaling-p01] To make Docker compatible with Redis Cluster, you need to use Docker's *host networking mode*.
+[src:redis-cache/management-scaling-p01] Please see the `--net=host` option in the Docker documentation for more information.
+[src:redis-cache/management-scaling-p01] Redis Cluster does not use consistent hashing, but a different form of sharding where every key is conceptually part of what we call a **hash slot**.
+[src:redis-cache/management-scaling-p01] There are 16384 hash slots in Redis Cluster, and to compute the hash slot for a given key, we simply take the CRC16 of the key modulo 16384.
+[src:redis-cache/management-scaling-p01] This makes it easy to add and remove cluster nodes.
+[src:redis-cache/management-scaling-p01] For example, if I want to add a new node D, I need to move some hash slots from nodes A, B, C to D.
+[src:redis-cache/management-scaling-p01] Similarly, if I want to remove node A from the cluster, I can just move the hash slots served by A to B and C.
+[src:redis-cache/management-scaling-p01] Once node A is empty, I can remove it from the cluster completely.
+[src:redis-cache/management-scaling-p01] Moving hash slots from a node to another does not require stopping any operations; therefore, adding and removing nodes, or changing the percentage of hash slots held by a node, requires no downtime.
+[src:redis-cache/management-scaling-p01] Redis Cluster supports multiple key operations as long as all of the keys involved in a single command execution (or whole transaction, or Lua script execution) belong to the same hash slot.
+[src:redis-cache/management-scaling-p01] The user can force multiple keys to be part of the same hash slot by using a feature called *hash tags*.
+[src:redis-cache/management-scaling-p01] Hash tags are documented in the Redis Cluster specification, but the gist is that if there is a substring between {} brackets in a key, only what is inside the string is hashed.
+[src:redis-cache/management-scaling-p01] For example, the keys `user:{123}:profile` and `user:{123}:account` are guaranteed to be in the same hash slot because they share the same hash tag.
+[src:redis-cache/management-scaling-p01] As a result, you can operate on these two keys in the same multi-key operation.
+[src:redis-cache/management-scaling-p01] To remain available when a subset of master nodes are failing or are not able to communicate with the majority of nodes, Redis Cluster uses a master-replica model where every hash slot has from 1 (the master itself) to N replicas (N-1 additional replica nodes).
+[src:redis-cache/management-scaling-p01] In our example cluster with nodes A, B, C, if node B fails the cluster is not able to continue, since we no longer have a way to serve hash slots in the range 5501-11000.
+[src:redis-cache/management-scaling-p01] However, when the cluster is created (or at a later time), we add a replica node to every master, so that the final cluster is composed of A, B, C that are master nodes, and A1, B1, C1 that are replica nodes.
+[src:redis-cache/management-scaling-p01] This way, the system can continue if node B fails.
+[src:redis-cache/management-scaling-p01] Node B1 replicates B, and B fails, the cluster will promote node B1 as the new master and will continue to operate correctly.
+[src:redis-cache/management-scaling-p01] However, note that if nodes B and B1 fail at the same time, Redis Cluster will not be able to continue to operate.
+[src:redis-cache/management-scaling-p01] Redis Cluster does not guarantee **strong consistency**.
+[src:redis-cache/management-scaling-p01] In practical terms this means that under certain conditions it is possible that Redis Cluster will lose writes that were acknowledged by the system to the client.
+[src:redis-cache/management-scaling-p01] The first reason why Redis Cluster can lose writes is because it uses asynchronous replication.
+[src:redis-cache/management-scaling-p01] This is very similar to what happens with most databases that are configured to flush data to disk every second, so it is a scenario you are already able to reason about because of past experiences with traditional database systems not involving distributed systems.
+[src:redis-cache/management-scaling-p01] Similarly you can improve consistency by forcing the database to flush data to disk before replying to the client, but this usually results in prohibitively low performance.
+[src:redis-cache/management-scaling-p01] That would be the equivalent of synchronous replication in the case of Redis Cluster.
+[src:redis-cache/management-scaling-p01] Basically, there is a trade-off to be made between performance and consistency.
+[src:redis-cache/management-scaling-p01] Redis Cluster has support for synchronous writes when absolutely needed, implemented via the `WAIT` command.
+[src:redis-cache/management-scaling-p01] This makes losing writes a lot less likely.
+[src:redis-cache/management-scaling-p01] However, note that Redis Cluster does not implement strong consistency even when synchronous replication is used: it is always possible, under more complex failure scenarios, that a replica that was not able to receive the write will be elected as master.
+[src:redis-cache/management-scaling-p01] There is another notable scenario where Redis Cluster will lose writes, that happens during a network partition where a client is isolated with a minority of instances including at least a master.
+[src:redis-cache/management-scaling-p01] Take as an example our 6 nodes cluster composed of A, B, C, A1, B1, C1, with 3 masters and 3 replicas.
+[src:redis-cache/management-scaling-p01] There is also a client, that we will call Z1.
+[src:redis-cache/management-scaling-p01] After a partition occurs, it is possible that in one side of the partition we have A, C, A1, B1, C1, and in the other side we have B and Z1.
+[src:redis-cache/management-scaling-p01] Z1 is still able to write to B, which will accept its writes.
+[src:redis-cache/management-scaling-p01] If the partition heals in a very short time, the cluster will continue normally.
+[src:redis-cache/management-scaling-p01] However, if the partition lasts enough time for B1 to be promoted to master on the majority side of the partition, the writes that Z1 has sent to B in the meantime will be lost.
+[src:redis-cache/management-scaling-p01] to the amount of writes Z1 will be able to send to B: if enough time has elapsed for the majority side of the partition to elect a replica as master, every master node in the minority side will have stopped accepting writes.
+[src:redis-cache/management-scaling-p01] This amount of time is a very important configuration directive of Redis Cluster, and is called the **node timeout**.
+[src:redis-cache/management-scaling-p01] After node timeout has elapsed, a master node is considered to be failing, and can be replaced by one of its replicas.
+[src:redis-cache/management-scaling-p01] Similarly, after node timeout has elapsed without a master node to be able to sense the majority of the other master nodes, it enters an error state and stops accepting writes.
+[src:redis-cache/management-scaling-p01] We are about to create an example cluster deployment.
+[src:redis-cache/management-scaling-p01] Before we continue, let's introduce the configuration parameters that Redis Cluster introduces in the `redis.conf` file.
+[src:redis-cache/management-scaling-p02] But, first, familiarize yourself with the requirements for creating a cluster.
+[src:redis-cache/management-scaling-p02] To create a cluster, the first thing you need is to have a few empty Redis instances running in *cluster mode*.
+[src:redis-cache/management-scaling-p02] To enable cluster mode, set the `cluster-enabled` directive to `yes`.
+[src:redis-cache/management-scaling-p02] Every instance also contains the path of a file where the configuration for this node is stored, which by default is `nodes.conf`.
+[src:redis-cache/management-scaling-p02] This file is never touched by humans; it is simply generated at startup by the Redis Cluster instances, and updated every time it is needed.
+[src:redis-cache/management-scaling-p02] Note that the **minimal cluster** that works as expected must contain at least three master nodes.
+[src:redis-cache/management-scaling-p02] For deployment, we strongly recommend a six-node cluster, with three masters and three replicas.
+[src:redis-cache/management-scaling-p02] You can test this locally by creating the following directories named after the port number of the instance you'll run inside any given directory.
+[src:redis-cache/management-scaling-p02] Create a `redis.conf` file inside each of the directories, from 7000 to 7005.
+[src:redis-cache/management-scaling-p02] As a template for your configuration file just use the small example above, but make sure to replace the port number `7000` with the right port number according to the directory name.
+[src:redis-cache/management-scaling-p02] This ID will be used forever by this specific instance in order for the instance to have a unique name in the context of the cluster.
+[src:redis-cache/management-scaling-p02] Every node remembers every other node using this IDs, and not by IP or port.
+[src:redis-cache/management-scaling-p02] IP addresses and ports may change, but the unique node identifier will never change for all the life of the node.
+[src:redis-cache/management-scaling-p02] We call this identifier simply **Node ID**.
+[src:redis-cache/management-scaling-p02] Now that we have a number of instances running, you need to create your cluster by writing some meaningful configuration to the nodes.
+[src:redis-cache/management-scaling-p02] You can configure and execute individual instances manually or use the create-cluster script.
+[src:redis-cache/management-scaling-p02] The command used here is **create**, since we want to create a new cluster.
+[src:redis-cache/management-scaling-p02] The option `--cluster-replicas 1` means that we want a replica for every master created.
+[src:redis-cache/management-scaling-p02] The other arguments are the list of addresses of the instances I want to use to create the new cluster.
+[src:redis-cache/management-scaling-p02] `redis-cli` will propose a configuration.
+[src:redis-cache/management-scaling-p02] Accept the proposed configuration by typing **yes**.
+[src:redis-cache/management-scaling-p02] The cluster will be configured and *joined*, which means that instances will be bootstrapped into talking with each other.
+[src:redis-cache/management-scaling-p02] This means that there is at least one master instance serving each of the 16384 available slots.
+[src:redis-cache/management-scaling-p02] If you don't want to create a Redis Cluster by configuring and executing individual instances manually as explained above, there is a much simpler system (but you'll not learn the same amount of operational details).
+[src:redis-cache/management-scaling-p02] Find the `utils/create-cluster` directory in the Redis distribution.
+[src:redis-cache/management-scaling-p02] There is a script called `create-cluster` inside (same name as the directory it is contained into), it's a simple bash script.
+[src:redis-cache/management-scaling-p02] Reply to `yes` in step 2 when the `redis-cli` utility wants you to accept the cluster layout.
+[src:redis-cache/management-scaling-p02] You can now interact with the cluster, the first node will start at port 30001 by default.
+[src:redis-cache/management-scaling-p02] Please read the `README` inside this directory for more information on how to run the script.
+[src:redis-cache/management-scaling-p02] To connect to Redis Cluster, you'll need a cluster-aware Redis client.
+[src:redis-cache/management-scaling-p02] See the documentation for your client of choice to determine its cluster support.
+[src:redis-cache/management-scaling-p02] If you created the cluster using the script, your nodes may listen on different ports, starting from 30001 by default.
+[src:redis-cache/management-scaling-p02] The `redis-cli` cluster support is very basic, so it always uses the fact that Redis Cluster nodes are able to redirect a client to the right node.
+[src:redis-cache/management-scaling-p02] A serious client is able to do better than that, and cache the map between hash slots and nodes addresses, to directly use the right connection to the right node.
+[src:redis-cache/management-scaling-p02] The map is refreshed only when something changed in the cluster configuration, for example after a failover or after the system administrator changed the cluster layout by adding or removing nodes.
+[src:redis-cache/management-scaling-p02] Before going forward showing how to operate the Redis Cluster, doing things like a failover, or a resharding, we need to create some example application or at least to be able to understand the semantics of a simple Redis Cluster client interaction.
+[src:redis-cache/management-scaling-p02] In this way we can run an example and at the same time try to make nodes failing, or start a resharding, to see how Redis Cluster behaves under real world conditions.
+[src:redis-cache/management-scaling-p02] It is not very helpful to see what happens while nobody is writing to the cluster.
+[src:redis-cache/management-scaling-p02] This section explains some basic usage of redis-rb-cluster showing two examples.
+[src:redis-cache/management-scaling-p02] The application does a very simple thing, it sets keys in the form `foo<number>` to `number`, one after the other.
+[src:redis-cache/management-scaling-p02] The program looks more complex than it should usually as it is designed to show errors on the screen instead of exiting with an exception, so every operation performed with the cluster is wrapped by `begin` `rescue` blocks.
+[src:redis-cache/management-scaling-p02] The **line 14** is the first interesting line in the program.
+[src:redis-cache/management-scaling-p02] It creates the Redis Cluster object, using as argument a list of *startup nodes*, the maximum number of connections this object is allowed to take against different nodes, and finally the timeout after a given operation is considered to be failed.
+[src:redis-cache/management-scaling-p02] The startup nodes don't need to be all the nodes of the cluster.
+[src:redis-cache/management-scaling-p02] The important thing is that at least one node is reachable.
+[src:redis-cache/management-scaling-p02] Also note that redis-rb-cluster updates this list of startup nodes as soon as it is able to connect with the first node.
+[src:redis-cache/management-scaling-p02] You should expect such a behavior with any other serious client.
+[src:redis-cache/management-scaling-p02] Now that we have the Redis Cluster object instance stored in the **rc** variable, we are ready to use the object like if it was a normal Redis object instance.
+[src:redis-cache/management-scaling-p02] This is exactly what happens in **line 18 to 26**: when we restart the example we don't want to start again with `foo0`, so we store the counter inside Redis itself.
+[src:redis-cache/management-scaling-p02] The code above is designed to read this counter, or if the counter does not exist, to assign it the value of zero.
+[src:redis-cache/management-scaling-p02] However note how it is a while loop, as we want to try again and again even if the cluster is down and is returning errors.
+[src:redis-cache/management-scaling-p02] Normal applications don't need to be so careful.
+[src:redis-cache/management-scaling-p02] Note the `sleep` call at the end of the loop.
+[src:redis-cache/management-scaling-p02] In your tests you can remove the sleep if you want to write to the cluster as fast as possible (relatively to the fact that this is a busy loop without real parallelism of course, so you'll get the usually 10k ops/second in the best of the conditions).
+[src:redis-cache/management-scaling-p02] Normally writes are slowed down in order for the example application to be easier to follow by humans.
+[src:redis-cache/management-scaling-p02] This is not a very interesting program and we'll use a better one in a moment but we can already see what happens during a resharding when the program is running.
+[src:redis-cache/management-scaling-p02] Now we are ready to try a cluster resharding.
+[src:redis-cache/management-scaling-p02] To do this, please keep the example.rb program running, so that you can see if there is some impact on the program running.
+[src:redis-cache/management-scaling-p02] Also, you may want to comment the `sleep` call to have some more serious write load during resharding.
+[src:redis-cache/management-scaling-p02] Resharding basically means to move hash slots from a set of nodes to another set of nodes.
+[src:redis-cache/management-scaling-p02] Like cluster creation, it is accomplished using the redis-cli utility.
+[src:redis-cache/management-scaling-p02] You only need to specify a single node, redis-cli will find the other nodes automatically.
+[src:redis-cache/management-scaling-p02] Currently redis-cli is only able to reshard with the administrator support, you can't just say move 5% of slots from this node to the other one (but this is pretty trivial to implement).
+[src:redis-cache/management-scaling-p02] We can try to reshard 1000 hash slots, that should already contain a non trivial amount of keys if the example is still running without the sleep call.
+[src:redis-cache/management-scaling-p02] Then redis-cli needs to know what is the target of the resharding, that is, the node that will receive the hash slots.
+[src:redis-cache/management-scaling-p02] I'll use the first master node, that is, 127.0.0.1:7000, but I need to specify the Node ID of the instance.
+[src:redis-cache/management-scaling-p02] Now you'll get asked from what nodes you want to take those keys.
+[src:redis-cache/management-scaling-p02] I'll just type `all` in order to take a bit of hash slots from all the other master nodes.
+[src:redis-cache/management-scaling-p02] After the final confirmation you'll see a message for every slot that redis-cli is going to move from a node to another, and a dot will be printed for every actual key moved from one side to the other.
+[src:redis-cache/management-scaling-p02] While the resharding is in progress you should be able to see your example program running unaffected.
+[src:redis-cache/management-scaling-p02] You can stop and restart it multiple times during the resharding if you want.
+[src:redis-cache/management-scaling-p02] All the slots will be covered as usual, but this time the master at 127.0.0.1:7000 will have more hash slots, something around 6461.
+[src:redis-cache/management-scaling-p02] Resharding can be performed automatically without the need to manually enter the parameters in an interactive way.
+[src:redis-cache/management-scaling-p02] This allows to build some automatism if you are likely to reshard often, however currently there is no way for `redis-cli` to automatically rebalance the cluster checking the distribution of keys across the cluster nodes and intelligently moving slots as needed.
+[src:redis-cache/management-scaling-p02] This feature will be added in the future.
+[src:redis-cache/management-scaling-p02] The `--cluster-yes` option instructs the cluster manager to automatically answer "yes" to the command's prompts, allowing it to run in a non-interactive mode.
+[src:redis-cache/management-scaling-p02] Note that this option can also be activated by setting the `REDISCLI_CLUSTER_YES` environment variable.
+[src:redis-cache/management-scaling-p02] The example application we wrote early is not very good.
+[src:redis-cache/management-scaling-p02] It writes to the cluster in a simple way without even checking if what was written is the right thing.
+[src:redis-cache/management-scaling-p02] From our point of view the cluster receiving the writes could just always write the key `foo` to `42` to every operation, and we would not notice at all.
+[src:redis-cache/management-scaling-p02] So in the `redis-rb-cluster` repository, there is a more interesting application that is called `consistency-test.rb`.
+[src:redis-cache/management-scaling-p02] It uses a set of counters, by default 1000, and sends `INCR` commands in order to increment the counters.
+[src:redis-cache/management-scaling-p02] What this means is that this application is a simple **consistency checker**, and is able to tell you if the cluster lost some write, or if it accepted a write that we did not receive acknowledgment for.
+[src:redis-cache/management-scaling-p02] In the first case we'll see a counter having a value that is smaller than the one we remember, while in the second case the value will be greater.
+[src:redis-cache/management-scaling-p02] The line shows the number of **R**eads and **W**rites performed, and the number of errors (query not accepted because of errors since the system was not available).
+[src:redis-cache/management-scaling-p02] If some inconsistency is found, new lines are added to the output.
+[src:redis-cache/management-scaling-p02] When I set the counter to 0 the real value was 114, so the program reports 114 lost writes (`INCR` commands that are not remembered by the cluster).
+[src:redis-cache/management-scaling-p02] This program is much more interesting as a test case, so we'll use it to test the Redis Cluster failover.
+[src:redis-cache/management-scaling-p02] To trigger the failover, the simplest thing we can do (that is also the semantically simplest failure that can occur in a distributed system) is to crash a single process, in our case a single master.
+[src:redis-cache/management-scaling-p02] During this test, you should take a tab open with the consistency test application running.
+[src:redis-cache/management-scaling-p02] Now we can look at the output of the consistency test to see what it reported.
+[src:redis-cache/management-scaling-p02] As you can see during the failover the system was not able to accept 578 reads and 577 writes, however no inconsistency was created in the database.
+[src:redis-cache/management-scaling-p02] This may sound unexpected as in the first part of this tutorial we stated that Redis Cluster can lose writes during the failover because it uses asynchronous replication.
+[src:redis-cache/management-scaling-p02] What we did not say is that this is not very likely to happen because Redis sends the reply to the client, and the commands to replicate to the replicas, about at the same time, so there is a very small window to lose data.
+[src:redis-cache/management-scaling-p02] However the fact that it is hard to trigger does not mean that it is impossible, so this does not change the consistency guarantees provided by Redis cluster.
+[src:redis-cache/management-scaling-p02] Now the masters are running on ports 7000, 7001 and 7005.
+[src:redis-cache/management-scaling-p02] What was previously a master, that is the Redis instance running on port 7002, is now a replica of 7005.
+[src:redis-cache/management-scaling-p02] Sometimes it is useful to force a failover without actually causing any problem on a master.
+[src:redis-cache/management-scaling-p02] For example, to upgrade the Redis process of one of the master nodes it is a good idea to failover it to turn it into a replica with minimal impact on availability.
+[src:redis-cache/management-scaling-p02] Manual failovers are supported by Redis Cluster using the `CLUSTER FAILOVER` command, that must be executed in one of the replicas of the master you want to failover.
+[src:redis-cache/management-scaling-p02] Manual failovers are special and are safer compared to failovers resulting from actual master failures.
+[src:redis-cache/management-scaling-p02] They occur in a way that avoids data loss in the process, by switching clients from the original master to the new master only when the system is sure that the new master processed all the replication stream from the old one.
+[src:redis-cache/management-scaling-p02] Basically clients connected to the master we are failing over are stopped.
+[src:redis-cache/management-scaling-p02] At the same time the master sends its replication offset to the replica, that waits to reach the offset on its side.
+[src:redis-cache/management-scaling-p02] When the replication offset is reached, the failover starts, and the old master is informed about the configuration switch.
+[src:redis-cache/management-scaling-p02] When the clients are unblocked on the old master, they are redirected to the new master.
+[src:redis-cache/management-scaling-p02] To promote a replica to master, it must first be known as a replica by a majority of the masters in the cluster.
+[src:redis-cache/management-scaling-p02] Otherwise, it cannot win the failover election.
+[src:redis-cache/management-scaling-p02] command, to make sure the masters in cluster are aware of the new replica.
+[src:redis-cache/management-scaling-p02] Adding a new node is basically the process of adding an empty node and then moving some data into it, in case it is a new master, or telling it to setup as a replica of a known node, in case it is a replica.
+[src:redis-cache/management-scaling-p02] We'll show both, starting with the addition of a new master instance.
+[src:redis-cache/management-scaling-p02] In both cases the first step to perform is **adding an empty node**.
+[src:redis-cache/management-scaling-p02] At this point the server should be running.
+[src:redis-cache/management-scaling-p02] Now we can use **redis-cli** as usual in order to add the node to the existing cluster.
+[src:redis-cache/management-scaling-p02] As you can see I used the **add-node** command specifying the address of the new node as first argument, and the address of a random existing node in the cluster as second argument.
+[src:redis-cache/management-scaling-p02] In practical terms redis-cli here did very little to help us, it just sent a `CLUSTER MEET` message to the node, something that is also possible to accomplish manually.
+[src:redis-cache/management-scaling-p02] However redis-cli also checks the state of the cluster before to operate, so it is a good idea to perform cluster operations always via redis-cli even when you know how the internals work.
+[src:redis-cache/management-scaling-p02] Note that since this node is already connected to the cluster it is already able to redirect client queries correctly and is generally speaking part of the cluster.
+[src:redis-cache/management-scaling-p02] Now it is possible to assign hash slots to this node using the resharding feature of `redis-cli`.
+[src:redis-cache/management-scaling-p02] It is basically useless to show this as we already did in a previous section, there is no difference, it is just a resharding having as a target the empty node.
+[src:redis-cache/management-scaling-p02] Adding a new replica can be performed in two ways.
+[src:redis-cache/management-scaling-p02] Note that the command line here is exactly like the one we used to add a new master, so we are not specifying to which master we want to add the replica.
+[src:redis-cache/management-scaling-p02] In this case, what happens is that redis-cli will add the new node as replica of a random master among the masters with fewer replicas.
+[src:redis-cache/management-scaling-p02] This way we assign the new replica to a specific master.
+[src:redis-cache/management-scaling-p02] A more manual way to add a replica to a specific master is to add the new node as an empty master, and then turn it into a replica using the `CLUSTER REPLICATE` command.
+[src:redis-cache/management-scaling-p02] This also works if the node was added as a replica but you want to move it as a replica of a different master.
+[src:redis-cache/management-scaling-p02] Now we have a new replica for this set of hash slots, and all the other nodes in the cluster already know (after a few seconds needed to update their config).
+[src:redis-cache/management-scaling-p02] The node 3c3a0c... now has two replicas, running on ports 7002 (the existing one) and 7006 (the new one).
+[src:redis-cache/management-scaling-p02] The first argument is just a random node in the cluster, the second argument is the ID of the node you want to remove.
+[src:redis-cache/management-scaling-p02] You can remove a master node in the same way as well, **however in order to remove a master node it must be empty**.
+[src:redis-cache/management-scaling-p02] If the master is not empty you need to reshard data away from it to all the other master nodes before.
+[src:redis-cache/management-scaling-p02] An alternative to remove a master node is to perform a manual failover of it over one of its replicas and remove the node after it turned into a replica of the new master.
+[src:redis-cache/management-scaling-p02] Obviously this does not help when you want to reduce the actual number of masters in your cluster, in that case, a resharding is needed.
+[src:redis-cache/management-scaling-p02] There is a special scenario where you want to remove a failed node.
+[src:redis-cache/management-scaling-p02] You should not use the `del-node` command because it tries to connect to all nodes and you will encounter a "connection refused" error.
+[src:redis-cache/management-scaling-p02] This command will execute `CLUSTER FORGET` command on every node.
+[src:redis-cache/management-scaling-p02] However there is a special scenario where you want replicas to move from one master to another one automatically, without the help of the system administrator.
+[src:redis-cache/management-scaling-p02] The automatic reconfiguration of replicas is called *replicas migration* and is able to improve the reliability of a Redis Cluster.
+[src:redis-cache/management-scaling-p02] , here we'll only provide some information about the general idea and what you should do in order to benefit from it.
+[src:redis-cache/management-scaling-p02] The reason why you may want to let your cluster replicas to move from one master to another under certain condition, is that usually the Redis Cluster is as resistant to failures as the number of replicas attached to a given master.
+[src:redis-cache/management-scaling-p02] For example a cluster where every master has a single replica can't continue operations if the master and its replica fail at the same time, simply because there is no other instance to have a copy of the hash slots the master was serving.
+[src:redis-cache/management-scaling-p02] This still will result in a cluster that can no longer operate.
+[src:redis-cache/management-scaling-p02] To improve reliability of the system we have the option to add additional replicas to every master, but this is expensive.
+[src:redis-cache/management-scaling-p02] Replica migration allows to add more replicas to just a few masters.
+[src:redis-cache/management-scaling-p02] So you have 10 masters with 1 replica each, for a total of 20 instances.
+[src:redis-cache/management-scaling-p02] However you add, for example, 3 instances more as replicas of some of your masters, so certain masters will have more than a single replica.
+[src:redis-cache/management-scaling-p02] With replicas migration what happens is that if a master is left without replicas, a replica from a master that has multiple replicas will migrate to the *orphaned* master.
+[src:redis-cache/management-scaling-p02] So after your replica goes down at 4am as in the example we made above, another replica will take its place, and when the master will fail as well at 5am, there is still a replica that can be elected so that the cluster can continue to operate.
+[src:redis-cache/management-scaling-p02] So what you should know about replicas migration in short?
+[src:redis-cache/management-scaling-p02] Upgrading replica nodes is easy since you just need to stop the node and restart it with an updated version of Redis.
+[src:redis-cache/management-scaling-p02] If there are clients scaling reads using replica nodes, they should be able to reconnect to a different replica if a given one is not available.
+[src:redis-cache/management-scaling-p02] Wait for the master to turn into a replica.
+[src:redis-cache/management-scaling-p02] Finally upgrade the node as you do for replicas.
+[src:redis-cache/management-scaling-p02] If you want the master to be the node you just upgraded, trigger a new manual failover in order to turn back the upgraded node into a master.
+[src:redis-cache/management-scaling-p02] Following this procedure you should upgrade one node after the other until all the nodes are upgraded.
+[src:redis-cache/management-scaling-p02] Users willing to migrate to Redis Cluster may have just a single master, or may already using a preexisting sharding setup, where keys are split among N nodes, using some in-house algorithm or a sharding algorithm implemented by their client library or Redis proxy.
+[src:redis-cache/management-scaling-p02] In both cases it is possible to migrate to Redis Cluster easily, however what is the most important detail is if multiple-keys operations are used by the application, and how.
+[src:redis-cache/management-scaling-p02] Multiple keys operations, or transactions, or Lua scripts involving multiple keys are used but only with keys having the same **hash tag**, which means that the keys used together all have a `{...}` sub-string that happens to be identical.
+[src:redis-cache/management-scaling-p02] For example the following multiple keys operation is defined in the context of the same hash tag: `SUNION {user:1000}.foo {user:1000}.bar`.
+[src:redis-cache/management-scaling-p02] Multiple keys operations, or transactions, or Lua scripts involving multiple keys are used with key names not having an explicit, or the same, hash tag.
+[src:redis-cache/management-scaling-p02] The third case is not handled by Redis Cluster: the application requires to be modified in order to not use multi keys operations or only use them in the context of the same hash tag.
+[src:redis-cache/management-scaling-p02] Case 1 and 2 are covered, so we'll focus on those two cases, that are handled in the same way, so no distinction will be made in the documentation.
+[src:redis-cache/management-scaling-p02] Generate an append only file for all of your N masters using the `BGREWRITEAOF` command, and waiting for the AOF file to be completely generated.
+[src:redis-cache/management-scaling-p02] Save your AOF files from aof-1 to aof-N somewhere.
+[src:redis-cache/management-scaling-p02] At this point you can stop your old instances if you wish (this is useful since in non-virtualized deployments you often need to reuse the same computers).
+[src:redis-cache/management-scaling-p02] Create a Redis Cluster composed of N masters and zero replicas.
+[src:redis-cache/management-scaling-p02] Make sure all your nodes are using the append only file for persistence.
+[src:redis-cache/management-scaling-p02] Stop all the cluster nodes, substitute their append only file with your pre-existing append only files, aof-1 for the first node, aof-2 for the second node, up to aof-N.
+[src:redis-cache/management-scaling-p02] Restart your Redis Cluster nodes with the new AOF files.
+[src:redis-cache/management-scaling-p02] They'll complain that there are keys that should not be there according to their configuration.
+[src:redis-cache/management-scaling-p02] Use `redis-cli --cluster fix` command in order to fix the cluster so that keys will be migrated according to the hash slots each node is authoritative or not.
+[src:redis-cache/management-scaling-p02] Use `redis-cli --cluster check` at the end to make sure your cluster is ok.
+[src:redis-cache/management-scaling-p02] Restart your clients modified to use a Redis Cluster aware client library.
+[src:redis-cache/management-scaling-p02] There is an alternative way to import data from external instances to a Redis Cluster, which is to use the `redis-cli --cluster import` command.
+[src:redis-cache/management-scaling-p02] The command moves all the keys of a running instance (deleting the keys from the source instance) to the specified pre-existing Redis Cluster.
+[src:redis-cache/management-scaling-p02] However note that if you use a Redis 2.8 instance as source instance the operation may be slow since 2.8 does not implement migrate connection caching, so you may want to restart your source instance with a Redis 3.x version before to perform such operation.
+[src:redis-cache/management-scaling-p02] Starting with Redis 5, if not for backward compatibility, the Redis project no longer uses the word slave.
+[src:redis-cache/management-scaling-p02] Unfortunately in this command the word slave is part of the protocol, so we'll be able to remove such occurrences only when this API will be naturally deprecated.
+[src:redis-cache/redis] The project was developed and maintained by Salvatore Sanfilippo, starting in 2009.
+[src:redis-cache/redis] From 2015 until 2020, he led a project core team sponsored by Redis Labs.
+[src:redis-cache/redis] Salvatore Sanfilippo left Redis as the maintainer in 2020.
+[src:redis-cache/redis] In 2021 Redis Labs dropped the Labs from its name and now is known simply as "Redis".
+[src:redis-cache/redis] In 2018, some modules for Redis adopted a modified Apache 2.0 license with a Commons Clause.
+[src:redis-cache/redis] In 2024, the main Redis code switched from the open-source BSD-3 license to being dual-licensed under the Redis Source Available License v2 and the Server Side Public License v1.
+[src:redis-cache/redis] On May 1, 2025, Redis became tri-licensed beginning with version 8.0, with the GNU Affero General Public License as the third option.
+[src:redis-cache/redis] The name *Redis* means Remote Dictionary Server.
+[src:redis-cache/redis] The Redis project began when Salvatore Sanfilippo (nicknamed *antirez*) was trying to improve the scalability of his Italian startup and developed a real-time web log analyzer.
+[src:redis-cache/redis] After encountering significant problems in scaling some types of workloads using traditional database systems, Sanfilippo began in 2009 to prototype a first proof of concept version of Redis in Tcl.
+[src:redis-cache/redis] Later, Sanfilippo translated that prototype to the C language and implemented the first data type, the list.
+[src:redis-cache/redis] After a few weeks of using the project internally with success, Sanfilippo decided to open source it, announcing the project on Hacker News.
+[src:redis-cache/redis] The project began to get traction, particularly among the Ruby community, with GitHub and Instagram being among the first companies adopting it.
+[src:redis-cache/redis] Sanfilippo was hired by VMware in March 2010.
+[src:redis-cache/redis] In May 2013, Redis was sponsored by Pivotal Software (a VMware spin-off).
+[src:redis-cache/redis] In June 2015, development became sponsored by Redis Ltd.
+[src:redis-cache/redis] This made the modules source-available and no longer free software.
+[src:redis-cache/redis] The core Redis software remained under a BSD license, with Redis Ltd. committing to maintaining these terms.
+[src:redis-cache/redis] In October 2018, Redis 5.0 was released, introducing Redis Stream – a new data structure that allows storage of multiple fields and string values with an automatic, time-based sequence at a single key.
+[src:redis-cache/redis] In June 2020, Salvatore Sanfilippo stepped down as Redis' sole maintainer.
+[src:redis-cache/redis] Sanfilippo was succeeded by Yossi Gottlieb and Oran Agra.
+[src:redis-cache/redis] In March 2024, Redis Ltd. announced that beginning with version 7.4, the core Redis software would be relicensed under the RSAL and Server Side Public License (SSPL), both of which are source-available and non-free.
+[src:redis-cache/redis] The Linux Foundation subsequently announced that it would fork the last BSD-licensed version of Redis as Valkey.
+[src:redis-cache/redis] In May 2025, Redis Ltd. announced that it would change the license again to the AGPL beginning on version 8.0, citing that forks had achieved their goal of creating a "level playing field" of differentiated products, and that Redis has achieved "record growth" since the change in license.
+[src:redis-cache/redis] Sanfilippo returned to Redis in December 2024.
+[src:redis-cache/redis] Redis is a system that functions as both a data store and a cache.
+[src:redis-cache/redis] Data is modified and read from the main computer memory while also being persisted to disk in a format optimized for sequential access rather than random access.
+[src:redis-cache/redis] The formatted data is only reconstructed into memory once the system restarts.
+[src:redis-cache/redis] Redis uses a data model that differs from relational database management system (RDBMS).
+[src:redis-cache/redis] Commands specify operations on abstract data types rather than queries to be executed by a database engine.
+[src:redis-cache/redis] Data is stored in structures designed for direct retrieval.
+[src:redis-cache/redis] It does not rely on secondary indexes, aggregations, or other features common in traditional RDBMS.
+[src:redis-cache/redis] The Redis implementation uses the fork system call to duplicate the process holding the data.
+[src:redis-cache/redis] This allows the parent process to continue serving clients while the child process persists the in-memory data to disk.
+[src:redis-cache/redis] Redis supports a number of data types including Strings, JavaScript Object Notation (JSON) documents, Hashes (a collection of fields, each field is a name-value string pair), lists, sets, vector sets, and more.
+[src:redis-cache/redis] The Redis Query Engine allows users to use Redis as a document database, a vector database, a secondary index, and a search engine.
+[src:redis-cache/redis] With Redis Query Engine, users can define indexes for hash and JSON documents, and use a rich query language for vector search, full-text search, geospatial queries, and aggregations.
+[src:redis-cache/redis] Redis Pub/Sub (short for publish/subscribe) is a lightweight messaging capability.
+[src:redis-cache/redis] Publishers send messages to a channel, and subscribers receive messages from that channel.
+[src:redis-cache/redis] A Redis transaction allows the execution of a group of commands in a single step.
+[src:redis-cache/redis] A request sent by another client will never be served during the execution of a transaction.
+[src:redis-cache/redis] This guarantees that the commands are executed as a single isolated operation.
+[src:redis-cache/redis] Redis users can also upload and execute Lua scripts on the server.
+[src:redis-cache/redis] As of May 1, 2025, for all version of Redis starting with 8.0, all data types are included in the same package and available under the Redis Source Available license v2.
+[src:redis-cache/redis] Previously some data types were separate and therefore available under difference licenses.
+[src:redis-cache/redis] Redis typically holds the whole dataset in memory.
+[src:redis-cache/redis] Versions up to 2.4 could be configured to use what they refer to as virtual memory in which some of the dataset is stored on disk, but this feature is deprecated.
+[src:redis-cache/redis] Redis can rewrite the append-only file in the background to avoid an indefinite growth of the journal.
+[src:redis-cache/redis] Journaling was introduced in version 1.1 and is generally considered the safer approach.
+[src:redis-cache/redis] By default, Redis writes data to a file system at least every two seconds, with more or less robust options available if needed.
+[src:redis-cache/redis] In the case of a complete system failure on default settings, only a few seconds of data will be lost.
+[src:redis-cache/redis] Redis supports master–replica replication.
+[src:redis-cache/redis] Data from any Redis server can replicate to any number of replicas.
+[src:redis-cache/redis] A replica may be a master to another replica.
+[src:redis-cache/redis] This allows Redis to implement a single-rooted replication tree.
+[src:redis-cache/redis] Redis replicas can be configured to accept writes, permitting intentional and unintentional inconsistency between instances.
+[src:redis-cache/redis] The publish–subscribe feature is fully implemented, so a client of a replica may subscribe to a channel and receive a full feed of messages published to the master, anywhere up the replication tree.
+[src:redis-cache/redis] Replication is useful for read (but not write) scalability or data redundancy.
+[src:redis-cache/redis] When the durability of data is not needed, the in-memory nature of Redis allows it to perform well compared to database systems that write every change to disk before considering a transaction committed.
+[src:redis-cache/redis] Redis operates as a single process and is single-threaded or double-threaded when it rewrites the AOF (append-only file).
+[src:redis-cache/redis] Thus, a single Redis instance cannot use parallel execution of tasks such as stored procedures.
+[src:redis-cache/redis] Redis introduced clustering in April 2015 with the release of version 3.0.
+[src:redis-cache/redis] The cluster specification implements a subset of Redis commands: all single-key commands are available, multi-key operations (commands related to unions and intersections) are restricted to keys belonging to the same node, and commands related to database selection operations are unavailable.
+[src:redis-cache/redis] A Redis cluster can scale up to 1,000 nodes, achieve "acceptable" write safety and to continue operations when some nodes fail.
+[src:redis-cache/redis] Redis has been used by Adobe, Airbnb, Amazon, Hulu, OpenAI, Salesforce, Shopify, Tinder, Twitter, and Yahoo.
+[src:redis-cache/redis] Typical use cases of Redis are session caching, full page cache, message queue applications, leaderboards and counting among others.
+[src:redis-cache/redis] The publish–subscribe messaging paradigm allows real-time communication between servers.
+[src:redis-cache/redis] Amazon Web Services offers a managed Redis service called ElastiCache for Redis, Google offers a managed Redis service called Cloud Memorystore, Microsoft offers Azure Cache for Redis in Azure, and Alibaba offers ApsaraDB for Redis in Alibaba Cloud.
+[src:redis-cache/redis] Redis is interfaced with by various libraries.
+[src:redis-cache/redis] For example, POCO C++ Libraries supports interfacing with Redis through its `Poco::Redis` library.

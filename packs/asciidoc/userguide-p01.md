@@ -1,0 +1,895 @@
+---
+title: "AsciiDoc User Guide (part 1/5)"
+source: https://asciidoc.org/userguide.html
+domain: asciidoc
+license: CC-BY-SA-4.0
+tags: asciidoc markup, lightweight markup, asciidoctor docs, text markup
+fetched: 2026-07-02
+part: 1/5
+---
+
+# AsciiDoc User Guide
+
+AsciiDoc is a text document format for writing notes, documentation, articles, books, ebooks, slideshows, web pages, blogs and UNIX man pages. AsciiDoc files can be translated to many formats including HTML, PDF, EPUB, man page. AsciiDoc is highly configurable: both the AsciiDoc source file syntax and the backend output markups (which can be almost any type of SGML/XML markup) can be customized and extended by the user.
+
+| (Warning) | This user guide is for AsciiDoc.py, which is a legacy processor for this syntax, handling an older rendition of AsciiDoc. As such, this will not properly handle the current AsciiDoc specification. It is suggested that unless you specifically require the AsciiDoc.py toolchain, you should find a processor that handles the modern AsciiDoc syntax. |
+|---|---|
+
+This document
+
+This is an overly large document, it probably needs to be refactored into a Tutorial, Quick Reference and Formal Reference.
+
+If you’re new to AsciiDoc read this section and the Getting Started section and take a look at the example AsciiDoc (`*.txt`) source files in the distribution `doc` directory.
+
+
+## 1. Introduction
+
+AsciiDoc is a plain text human readable/writable document format that can be translated to DocBook or HTML using the `asciidoc(1)` command. You can then either use `asciidoc(1)` generated HTML directly or run `asciidoc(1)` DocBook output through your favorite DocBook toolchain or use the AsciiDoc `a2x(1)` toolchain wrapper to produce PDF, EPUB, DVI, LaTeX, PostScript, man page, HTML and text formats.
+
+The AsciiDoc format is a useful presentation format in its own right: AsciiDoc markup is simple, intuitive and as such is easily proofed and edited.
+
+AsciiDoc is light weight: it consists of a single Python script and a bunch of configuration files. Apart from `asciidoc(1)` and a Python interpreter, no other programs are required to convert AsciiDoc text files to DocBook or HTML. See Example AsciiDoc Documents below.
+
+Text markup conventions tend to be a matter of (often strong) personal preference: if the default syntax is not to your liking you can define your own by editing the text based `asciidoc(1)` configuration files. You can also create configuration files to translate AsciiDoc documents to almost any SGML/XML markup.
+
+`asciidoc(1)` comes with a set of configuration files to translate AsciiDoc articles, books and man pages to HTML or DocBook backend formats.
+
+My AsciiDoc Itch
+
+DocBook has emerged as the de facto standard Open Source documentation format. But DocBook is a complex language, the markup is difficult to read and even more difficult to write directly — I found I was spending more time typing markup tags, consulting reference manuals and fixing syntax errors, than I was writing the documentation.
+
+
+## 2. Getting Started
+
+### 2.1. Installing AsciiDoc
+
+See the `README` and `INSTALL` files for install prerequisites and procedures. Packagers take a look at Packager Notes.
+
+### 2.2. Example AsciiDoc Documents
+
+The best way to quickly get a feel for AsciiDoc is to view the AsciiDoc web site and/or distributed examples:
+
+- Take a look at the linked examples on the AsciiDoc web site home page https://asciidoc.org/. Press the *Page Source* sidebar menu item to view corresponding AsciiDoc source.
+- Read the `*.txt` source files in the distribution `./doc` directory along with the corresponding HTML and DocBook XML files.
+
+
+## 3. AsciiDoc Document Types
+
+There are three types of AsciiDoc documents: article, book and manpage. All document types share the same AsciiDoc format with some minor variations. If you are familiar with DocBook you will have noticed that AsciiDoc document types correspond to the same-named DocBook document types.
+
+Use the `asciidoc(1)` `-d` (`--doctype`) option to specify the AsciiDoc document type — the default document type is *article*.
+
+By convention the `.txt` file extension is used for AsciiDoc document source files.
+
+### 3.1. article
+
+Used for short documents, articles and general documentation. See the AsciiDoc distribution `./doc/article.txt` example.
+
+AsciiDoc defines standard DocBook article frontmatter and backmatter section markup templates (appendix, abstract, bibliography, glossary, index).
+
+### 3.2. book
+
+Books share the same format as articles, with the following differences:
+
+- The part titles in multi-part books are top level titles (same level as book title).
+- Some sections are book specific e.g. preface and colophon.
+
+Book documents will normally be used to produce DocBook output since DocBook processors can automatically generate footnotes, table of contents, list of tables, list of figures, list of examples and indexes.
+
+AsciiDoc defines standard DocBook book frontmatter and backmatter section markup templates (appendix, dedication, preface, bibliography, glossary, index, colophon).
+
+Example book documents
+
+**Book**
+
+The `./doc/book.txt` file in the AsciiDoc distribution.
+
+**Multi-part book**
+
+The `./doc/book-multi.txt` file in the AsciiDoc distribution.
+
+### 3.3. manpage
+
+Used to generate roff format UNIX manual pages. AsciiDoc manpage documents observe special header title and section naming conventions — see the Manpage Documents section for details.
+
+AsciiDoc defines the *synopsis* section markup template to generate the DocBook `refsynopsisdiv` section.
+
+See also the `asciidoc(1)` man page source (`./doc/asciidoc.1.txt`) from the AsciiDoc distribution.
+
+
+## 4. AsciiDoc Backends
+
+The `asciidoc(1)` command translates an AsciiDoc formatted file to the backend format specified by the `-b` (`--backend`) command-line option. `asciidoc(1)` itself has little intrinsic knowledge of backend formats, all translation rules are contained in customizable cascading configuration files. Backend specific attributes are listed in the Backend Attributes section.
+
+**docbook45**
+
+Outputs DocBook XML 4.5 markup.
+
+**docbook5**
+
+Outputs DocBook XML 5.0 markup.
+
+**html4**
+
+This backend generates plain HTML 4.01 Transitional markup.
+
+**xhtml11**
+
+This backend generates XHTML 1.1 markup styled with CSS2. Output files have an `.html` extension.
+
+**html5**
+
+This backend generates HTML 5 markup, apart from the inclusion of audio and video block macros it is functionally identical to the *xhtml11* backend.
+
+**slidy**
+
+Use this backend to generate self-contained Slidy HTML slideshows for your web browser from AsciiDoc documents. The Slidy backend is documented in the distribution `doc/slidy.txt` file and online.
+
+**wordpress**
+
+A minor variant of the *html4* backend to support blogpost.
+
+**latex**
+
+Experimental LaTeX backend.
+
+### 4.1. Backend Aliases
+
+Backend aliases are alternative names for AsciiDoc backends. AsciiDoc comes with two backend aliases: *html* (aliased to *xhtml11*) and *docbook* (aliased to *docbook45*).
+
+You can assign (or reassign) backend aliases by setting an AsciiDoc attribute named like `backend-alias-<alias>` to an AsciiDoc backend name. For example, the following backend alias attribute definitions appear in the `[attributes]` section of the global `asciidoc.conf` configuration file:
+
+```
+backend-alias-html=xhtml11
+
+backend-alias-docbook=docbook45
+```
+
+### 4.2. Backend Plugins
+
+The `asciidoc(1)` `--backend` option is also used to install and manage backend plugins.
+
+- A backend plugin is used just like the built-in backends.
+- Backend plugins take precedence over built-in backends with the same name.
+- You can use the `{asciidoc-confdir}` intrinsic attribute to refer to the built-in backend configuration file location from backend plugin configuration files.
+- You can use the `{backend-confdir}` intrinsic attribute to refer to the backend plugin configuration file location.
+- By default backends plugins are installed in `$HOME/.asciidoc/backends/<backend>` where `<backend>` is the backend name.
+
+
+## 5. DocBook
+
+AsciiDoc generates *article*, *book* and *refentry* DocBook documents (corresponding to the AsciiDoc *article*, *book* and *manpage* document types).
+
+Most Linux distributions come with conversion tools (collectively called a toolchain) for converting DocBook files to presentation formats such as Postscript, HTML, PDF, EPUB, DVI, PostScript, LaTeX, roff (the native man page format), HTMLHelp, JavaHelp and text. There are also programs that allow you to view DocBook files directly, for example Yelp (the GNOME help viewer).
+
+### 5.1. Converting DocBook to other file formats
+
+DocBook files are validated, parsed and translated various presentation file formats using a combination of applications collectively called a DocBook *tool chain*. The function of a tool chain is to read the DocBook markup (produced by AsciiDoc) and transform it to a presentation format (for example HTML, PDF, HTML Help, EPUB, DVI, PostScript, LaTeX).
+
+A wide range of user output format requirements coupled with a choice of available tools and stylesheets results in many valid tool chain combinations.
+
+### 5.2. a2x Toolchain Wrapper
+
+One of the biggest hurdles for new users is installing, configuring and using a DocBook XML toolchain. `a2x(1)` can help — it’s a toolchain wrapper command that will generate XHTML (chunked and unchunked), PDF, EPUB, DVI, PS, LaTeX, man page, HTML Help and text file outputs from an AsciiDoc text file. `a2x(1)` does all the grunt work associated with generating and sequencing the toolchain commands and managing intermediate and output files. `a2x(1)` also optionally deploys admonition and navigation icons and a CSS stylesheet. See the `a2x(1)` man page for more details. In addition to `asciidoc(1)` you also need xsltproc(1), DocBook XSL Stylesheets and optionally: dblatex or FOP (to generate PDF); `w3m(1)` or `lynx(1)` (to generate text).
+
+The following examples generate `doc/source-highlight-filter.pdf` from the AsciiDoc `doc/source-highlight-filter.txt` source file. The first example uses `dblatex(1)` (the default PDF generator) the second example forces FOP to be used:
+
+```
+$ a2x -f pdf doc/source-highlight-filter.txt
+
+$ a2x -f pdf --fop doc/source-highlight-filter.txt
+```
+
+See the `a2x(1)` man page for details.
+
+| (Tip) | Use the `--verbose` command-line option to view executed toolchain commands. |
+|---|---|
+
+### 5.3. HTML generation
+
+AsciiDoc produces nicely styled HTML directly without requiring a DocBook toolchain but there are also advantages in going the DocBook route:
+
+- HTML from DocBook can optionally include automatically generated indexes, tables of contents, footnotes, lists of figures and tables.
+- DocBook toolchains can also (optionally) generate separate (chunked) linked HTML pages for each document section.
+- Toolchain processing performs link and document validity checks.
+- If the DocBook *lang* attribute is set then things like table of contents, figure and table captions and admonition captions will be output in the specified language (setting the AsciiDoc *lang* attribute sets the DocBook *lang* attribute).
+
+On the other hand, HTML output directly from AsciiDoc is much faster, is easily customized and can be used in situations where there is no suitable DocBook toolchain (for example, see the AsciiDoc website).
+
+### 5.4. PDF generation
+
+There are two commonly used tools to generate PDFs from DocBook, dblatex and FOP.
+
+dblatex or FOP?
+
+- *dblatex* is easier to install, there’s zero configuration required and no Java VM to install — it just works out of the box.
+- *dblatex* source code highlighting and numbering is superb.
+- *dblatex* is easier to use as it converts DocBook directly to PDF whereas before using *FOP* you have to convert DocBook to XML-FO using DocBook XSL Stylesheets.
+- *FOP* is more feature complete (for example, callouts are processed inside literal layouts) and arguably produces nicer looking output.
+
+### 5.5. HTML Help generation
+
+1. Convert DocBook XML documents to HTML Help compiler source files using DocBook XSL Stylesheets and xsltproc(1).
+2. Convert the HTML Help source (`.hhp` and `.html`) files to HTML Help (`.chm`) files using the Microsoft HTML Help Compiler.
+
+### 5.6. Toolchain components summary
+
+**AsciiDoc**
+
+Converts AsciiDoc (`.txt`) files to DocBook XML (`.xml`) files.
+
+**DocBook XSLT Stylesheets**
+
+These are a set of XSL stylesheets containing rules for converting DocBook XML documents to HTML, XSL-FO, manpage and HTML Help files. The stylesheets are used in conjunction with an XML parser such as xsltproc(1).
+
+**xsltproc**
+
+An XML parser for applying XSLT stylesheets (in our case the DocBook XSL Stylesheets) to XML documents.
+
+**dblatex**
+
+Generates PDF, DVI, PostScript and LaTeX formats directly from DocBook source via the intermediate LaTeX typesetting language —  uses DocBook XSL Stylesheets, xsltproc(1) and `latex(1)`.
+
+**FOP**
+
+The Apache Formatting Objects Processor converts XSL-FO (`.fo`) files to PDF files. The XSL-FO files are generated from DocBook source files using DocBook XSL Stylesheets and xsltproc(1).
+
+**Microsoft Help Compiler**
+
+The Microsoft HTML Help Compiler (`hhc.exe`) is a command-line tool that converts HTML Help source files to a single HTML Help (`.chm`) file. It runs on MS Windows platforms and can be downloaded from https://www.microsoft.com/.
+
+### 5.7. AsciiDoc dblatex configuration files
+
+The AsciiDoc distribution `./dblatex` directory contains `asciidoc-dblatex.xsl` (customized XSL parameter settings) and `asciidoc-dblatex.sty` (customized LaTeX settings). These are examples of optional dblatex output customization and are used by `a2x(1)`.
+
+### 5.8. AsciiDoc DocBook XSL Stylesheets drivers
+
+You will have noticed that the distributed HTML and HTML Help documentation files (for example `./doc/asciidoc.html`) are not the plain outputs produced using the default *DocBook XSL Stylesheets* configuration. This is because they have been processed using customized DocBook XSL Stylesheets along with (in the case of HTML outputs) the custom `./stylesheets/docbook-xsl.css` CSS stylesheet.
+
+You’ll find the customized DocBook XSL drivers along with additional documentation in the distribution `./docbook-xsl` directory. The examples that follow are executed from the distribution documentation (`./doc`) directory. These drivers are also used by `a2x(1)`.
+
+**`common.xsl`**
+
+Shared driver parameters. This file is not used directly but is included in all the following drivers.
+
+**`chunked.xsl`**
+
+Generate chunked XHTML (separate HTML pages for each document section) in the `./doc/chunked` directory. For example:
+
+```
+$ python ../asciidoc.py -b docbook asciidoc.txt
+
+$ xsltproc --nonet ../docbook-xsl/chunked.xsl asciidoc.xml
+```
+
+**`epub.xsl`**
+
+Used by `a2x(1)` to generate EPUB formatted documents.
+
+**`fo.xsl`**
+
+Generate XSL Formatting Object (`.fo`) files for subsequent PDF file generation using FOP. For example:
+
+```
+$ python ../asciidoc.py -b docbook article.txt
+
+$ xsltproc --nonet ../docbook-xsl/fo.xsl article.xml > article.fo
+
+$ fop article.fo article.pdf
+```
+
+**`htmlhelp.xsl`**
+
+Generate Microsoft HTML Help source files for the MS HTML Help Compiler in the `./doc/htmlhelp` directory. This example is run on MS Windows from a Cygwin shell prompt:
+
+```
+$ python ../asciidoc.py -b docbook asciidoc.txt
+
+$ xsltproc --nonet ../docbook-xsl/htmlhelp.xsl asciidoc.xml
+
+$ c:/Program\ Files/HTML\ Help\ Workshop/hhc.exe htmlhelp.hhp
+```
+
+**`manpage.xsl`**
+
+Generate a `roff(1)` format UNIX man page from a DocBook XML *refentry* document. This example generates an `asciidoc.1` man page file:
+
+```
+$ python ../asciidoc.py -d manpage -b docbook asciidoc.1.txt
+
+$ xsltproc --nonet ../docbook-xsl/manpage.xsl asciidoc.1.xml
+```
+
+**`xhtml.xsl`**
+
+Convert a DocBook XML file to a single XHTML file. For example:
+
+```
+$ python ../asciidoc.py -b docbook asciidoc.txt
+
+$ xsltproc --nonet ../docbook-xsl/xhtml.xsl asciidoc.xml > asciidoc.html
+```
+
+If you want to see how the complete documentation set is processed take a look at the A-A-P script `./doc/main.aap`.
+
+
+## 6. Generating Plain Text Files
+
+AsciiDoc does not have a text backend (for most purposes AsciiDoc source text is fine), however you can convert AsciiDoc text files to formatted text using the AsciiDoc `a2x(1)` toolchain wrapper utility.
+
+
+## 7. HTML5 and XHTML 1.1
+
+The *xhtml11* and *html5* backends embed or link CSS and JavaScript files in their outputs, there is also a themes plugin framework.
+
+- If the AsciiDoc *linkcss* attribute is defined then CSS and JavaScript files are linked to the output document, otherwise they are embedded (the default behavior).
+- The default locations for CSS and JavaScript files can be changed by setting the AsciiDoc *stylesdir* and *scriptsdir* attributes respectively.
+- The default locations for embedded and linked files differ and are calculated at different times — embedded files are loaded when `asciidoc(1)` generates the output document, linked files are loaded by the browser when the user views the output document.
+- Embedded files are automatically inserted in the output files but you need to manually copy linked CSS and Javascript files from AsciiDoc configuration directories to the correct location relative to the output document.
+
+| *stylesdir* attribute | Linked location (*linkcss* attribute defined) | Embedded location (*linkcss* attribute undefined) |
+|---|---|---|
+| Undefined (default). | Same directory as the output document. | `stylesheets` subdirectory in the AsciiDoc configuration directory (the directory containing the backend conf file). |
+| Absolute or relative directory name. | Absolute or relative to the output document. | Absolute or relative to the AsciiDoc configuration directory (the directory containing the backend conf file). |
+
+| *scriptsdir* attribute | Linked location (*linkcss* attribute defined) | Embedded location (*linkcss* attribute undefined) |
+|---|---|---|
+| Undefined (default). | Same directory as the output document. | `javascripts` subdirectory in the AsciiDoc configuration directory (the directory containing the backend conf file). |
+| Absolute or relative directory name. | Absolute or relative to the output document. | Absolute or relative to the AsciiDoc configuration directory (the directory containing the backend conf file). |
+
+### 7.1. Themes
+
+The AsciiDoc *theme* attribute is used to select an alternative CSS stylesheet and to optionally include additional JavaScript code.
+
+- Theme files reside in an AsciiDoc configuration directory named `themes/<theme>/` (where `<theme>` is the the theme name set by the *theme* attribute). `asciidoc(1)` sets the *themedir* attribute to the theme directory path name.
+- The *theme* attribute can also be set using the `asciidoc(1)` `--theme` option, the `--theme` option can also be used to manage theme plugins.
+- AsciiDoc ships with two themes: *flask* and *volnitsky*.
+- The `<theme>.css` file replaces the default `asciidoc.css` CSS file.
+- The `<theme>.js` file is included in addition to the default `asciidoc.js` JavaScript file.
+- If the data-uri attribute is defined then icons are loaded from the theme `icons` sub-directory if it exists (i.e. the *iconsdir* attribute is set to theme `icons` sub-directory path).
+- Embedded theme files are automatically inserted in the output files but you need to manually copy linked CSS and Javascript files to the location of the output documents.
+- Linked CSS and JavaScript theme files are linked to the same linked locations as other CSS and JavaScript files.
+
+For example, the command-line option `--theme foo` (or `--attribute theme=foo`) will cause `asciidoc(1)` to search configuration file locations 1 for a sub-directory called `themes/foo` containing the stylesheet `foo.css` and optionally a JavaScript file name `foo.js`.
+
+
+## 8. Document Structure
+
+An AsciiDoc document consists of a series of block elements starting with an optional document Header, followed by an optional Preamble, followed by zero or more document Sections.
+
+Almost any combination of zero or more elements constitutes a valid AsciiDoc document: documents can range from a single sentence to a multi-part book.
+
+### 8.1. Block Elements
+
+Block elements consist of one or more lines of text and may contain other block elements.
+
+The AsciiDoc block structure can be informally summarized as follows [This is a rough structural guide, not a rigorous syntax definition] :
+
+```
+Document      ::= (Header?,Preamble?,Section*)
+
+Header        ::= (Title,(AuthorInfo,RevisionInfo?)?)
+
+AuthorInfo    ::= (FirstName,(MiddleName?,LastName)?,EmailAddress?)
+
+RevisionInfo  ::= (RevisionNumber?,RevisionDate,RevisionRemark?)
+
+Preamble      ::= (SectionBody)
+
+Section       ::= (Title,SectionBody?,(Section)*)
+
+SectionBody   ::= ((BlockTitle?,Block)|BlockMacro)+
+
+Block         ::= (Paragraph|DelimitedBlock|List|Table)
+
+List          ::= (BulletedList|NumberedList|LabeledList|CalloutList)
+
+BulletedList  ::= (ListItem)+
+
+NumberedList  ::= (ListItem)+
+
+CalloutList   ::= (ListItem)+
+
+LabeledList   ::= (ListEntry)+
+
+ListEntry     ::= (ListLabel,ListItem)
+
+ListLabel     ::= (ListTerm+)
+
+ListItem      ::= (ItemText,(List|ListParagraph|ListContinuation)*)
+```
+
+Where:
+
+- *?* implies zero or one occurrence, *+* implies one or more occurrences, *** implies zero or more occurrences.
+- All block elements are separated by line boundaries.
+- `BlockId`, `AttributeEntry` and `AttributeList` block elements (not shown) can occur almost anywhere.
+- There are a number of document type and backend specific restrictions imposed on the block syntax.
+- The following elements cannot contain blank lines: Header, Title, Paragraph, ItemText.
+- A ListParagraph is a Paragraph with its *listelement* option set.
+- A ListContinuation is a list continuation element.
+
+### 8.2. Header
+
+The Header contains document meta-data, typically title plus optional authorship and revision information:
+
+- The Header is optional, but if it is used it must start with a document title.
+- Optional Author and Revision information immediately follows the header title.
+- The document header must be separated from the remainder of the document by one or more blank lines and cannot contain blank lines.
+- The header can include comments.
+- The header can include attribute entries, typically *doctype*, *lang*, *encoding*, *icons*, *data-uri*, *toc*, *numbered*.
+- Header attributes are overridden by command-line attributes.
+- If the header contains non-UTF-8 characters then the *encoding* must precede the header (either in the document or on the command-line).
+
+Here’s an example AsciiDoc document header:
+
+```
+Writing Documentation using AsciiDoc
+
+====================================
+
+Joe Bloggs <jbloggs@mymail.com>
+
+v2.0, February 2003:
+
+Rewritten for version 2 release.
+```
+
+The author information line contains the author’s name optionally followed by the author’s email address. The author’s name is formatted like:
+
+```
+firstname[ [middlename ]lastname][ <email>]]
+```
+
+i.e. a first name followed by optional middle and last names followed by an email address in that order. Multi-word first, middle and last names can be entered using the underscore as a word separator. The email address comes last and must be enclosed in angle <> brackets. Here a some examples of author information lines:
+
+```
+Joe Bloggs <jbloggs@mymail.com>
+
+Joe Bloggs
+
+Vincent Willem van_Gogh
+```
+
+If the author line does not match the above specification then the entire author line is treated as the first name.
+
+The optional revision information line follows the author information line. The revision information can be one of two formats:
+
+1. An optional document revision number followed by an optional revision date followed by an optional revision remark: If the revision number is specified it must be followed by a comma. The revision number must contain at least one numeric character. Any non-numeric characters preceding the first numeric character will be dropped. If a revision remark is specified it must be preceded by a colon. The revision remark extends from the colon up to the next blank line, attribute entry or comment and is subject to normal text substitutions. If a revision number or remark has been set but the revision date has not been set then the revision date is set to the value of the *docdate* attribute. Examples: `v2.0, February 2003 February 2003 v2.0, v2.0, February 2003: Rewritten for version 2 release. February 2003: Rewritten for version 2 release. v2.0,: Rewritten for version 2 release. :Rewritten for version 2 release.`
+2. The revision information line can also be an RCS/CVS/SVN $Id$ marker: AsciiDoc extracts the *revnumber*, *revdate*, and *author* attributes from the $Id$ revision marker and displays them in the document header. If an $Id$ revision marker is used the header author line can be omitted. Example: `$Id: mydoc.txt,v 1.5 2009/05/17 17:58:44 jbloggs Exp $`
+
+You can override or set header parameters by passing *revnumber*, *revremark*, *revdate*, *email*, *author*, *authorinitials*, *firstname* and *lastname* attributes using the `asciidoc(1)` `-a` (`--attribute`) command-line option. For example:
+
+```
+$ asciidoc -a revdate=2004/07/27 article.txt
+```
+
+Attribute entries can also be added to the header for substitution in the header template with Attribute Entry elements.
+
+The *title* element in HTML outputs is set to the AsciiDoc document title, you can set it to a different value by including a *title* attribute entry in the document header.
+
+#### 8.2.1. Additional document header information
+
+AsciiDoc has two mechanisms for optionally including additional meta-data in the header of the output document:
+
+***docinfo* configuration file sections**
+
+If a configuration file section named *docinfo* has been loaded then it will be included in the document header. Typically the *docinfo* section name will be prefixed with a *+* character so that it is appended to (rather than replace) other *docinfo* sections.
+
+***docinfo* files**
+
+Two docinfo files are recognized: one named `docinfo` and a second named like the AsciiDoc source file with a `-docinfo` suffix. For example, if the source document is called `mydoc.txt` then the document information files would be `docinfo.xml` and `mydoc-docinfo.xml` (for DocBook outputs) and `docinfo.html` and `mydoc-docinfo.html` (for HTML outputs). The docinfo attributes control which docinfo files are included in the output files.
+
+The contents docinfo templates and files is dependent on the type of output:
+
+**HTML**
+
+Valid *head* child elements. Typically *style* and *script* elements for CSS and JavaScript inclusion.
+
+**DocBook**
+
+Valid *articleinfo* or *bookinfo* child elements. DocBook defines numerous elements for document meta-data, for example: copyrights, document history and authorship information. See the DocBook `./doc/article-docinfo.xml` example that comes with the AsciiDoc distribution. The rendering of meta-data elements (or not) is DocBook processor dependent.
+
+### 8.3. Preamble
+
+The Preamble is an optional untitled section body between the document Header and the first Section title.
+
+### 8.4. Sections
+
+In addition to the document title (level 0), AsciiDoc supports four section levels: 1 (top) to 4 (bottom). Section levels are delimited by section titles. Sections are translated using configuration file section markup templates. AsciiDoc generates the following intrinsic attributes specifically for use in section markup templates:
+
+**level**
+
+The `level` attribute is the section level number, it is normally just the title level number (1..4). However, if the `leveloffset` attribute is defined it will be added to the `level` attribute. The `leveloffset` attribute is useful for combining documents.
+
+**sectnum**
+
+The `-n` (`--section-numbers`) command-line option generates the `sectnum` (section number) attribute. The `sectnum` attribute is used for section numbers in HTML outputs (DocBook section numbering are handled automatically by the DocBook toolchain commands).
+
+#### 8.4.1. Section markup templates
+
+Section markup templates specify output markup and are defined in AsciiDoc configuration files. Section markup template names are derived as follows (in order of precedence):
+
+1. From the title’s first positional attribute or *template* attribute. For example, the following three section titles are functionally equivalent: `[[terms]] [glossary] List of Terms ------------- ["glossary",id="terms"] List of Terms ------------- [template="glossary",id="terms"] List of Terms -------------`
+2. When the title text matches a configuration file `[specialsections]` entry.
+3. If neither of the above the default `sect<level>` template is used (where `<level>` is a number from 1 to 4).
+
+In addition to the normal section template names (*sect1*, *sect2*, *sect3*, *sect4*) AsciiDoc has the following templates for frontmatter, backmatter and other special sections: *abstract*, *preface*, *colophon*, *dedication*, *glossary*, *bibliography*, *synopsis*, *appendix*, *index*. These special section templates generate the corresponding Docbook elements; for HTML outputs they default to the *sect1* section template.
+
+#### 8.4.2. Section IDs
+
+If no explicit section ID is specified an ID will be synthesised from the section title. The primary purpose of this feature is to ensure persistence of table of contents links (permalinks): the missing section IDs are generated dynamically by the JavaScript TOC generator **after** the page is loaded. If you link to a dynamically generated TOC address the page will load but the browser will ignore the (as yet ungenerated) section ID.
+
+The IDs are generated by the following algorithm:
+
+- Replace all non-alphanumeric title characters with underscores.
+- Strip leading or trailing underscores.
+- Convert to lowercase.
+- Prepend the `idprefix` attribute (so there’s no possibility of name clashes with existing document IDs). Prepend an underscore if the `idprefix` attribute is not defined.
+- A numbered suffix (`_2`, `_3` …) is added if a same named auto-generated section ID exists.
+- If the `ascii-ids` attribute is defined then non-ASCII characters are replaced with ASCII equivalents. This attribute should be **should be avoided** if possible as its sole purpose is to accommodate deficient downstream applications that cannot process non-ASCII ID attributes. If available, it will use the trans python module, otherwise it will fallback to using NFKD algorithm, which cannot handle all unicode characters. For example, *Wstęp żółtej łąki* will be translated to *Wstep zoltej laki* under trans and *Wstep zotej aki* under NFKD.
+
+Example: the title *Jim’s House* would generate the ID `_jim_s_house`.
+
+Section ID synthesis can be disabled by undefining the `sectids` attribute.
+
+#### 8.4.3. Special Section Titles
+
+AsciiDoc has a mechanism for mapping predefined section titles auto-magically to specific markup templates. For example a title *Appendix A: Code Reference* will automatically use the *appendix* section markup template. The mappings from title to template name are specified in `[specialsections]` sections in the Asciidoc language configuration files (`lang-*.conf`). Section entries are formatted like:
+
+```
+<title>=<template>
+```
+
+`<title>` is a Python regular expression and `<template>` is the name of a configuration file markup template section. If the `<title>` matches an AsciiDoc document section title then the backend output is marked up using the `<template>` markup template (instead of the default `sect<level>` section template). The `{title}` attribute value is set to the value of the matched regular expression group named *title*, if there is no *title* group `{title}` defaults to the whole of the AsciiDoc section title. If `<template>` is blank then any existing entry with the same `<title>` will be deleted.
+
+Special section titles vs. explicit template names
+
+AsciiDoc has two mechanisms for specifying non-default section markup templates: you can specify the template name explicitly (using the *template* attribute) or indirectly (using *special section titles*). Specifying a section template attribute explicitly is preferred. Auto-magical *special section titles* have the following drawbacks:
+
+- They are non-obvious, you have to know the exact matching title for each special section on a language by language basis.
+- Section titles are predefined and can only be customised with a configuration change.
+- The implementation is complicated by multiple languages: every special section title has to be defined for each language (in each of the `lang-*.conf` files).
+
+Specifying special section template names explicitly does add more noise to the source document (the *template* attribute declaration), but the intention is obvious and the syntax is consistent with other AsciiDoc elements c.f. bibliographic, Q&A and glossary lists.
+
+Special section titles have been deprecated but are retained for backward compatibility.
+
+### 8.5. Inline Elements
+
+Inline document elements are used to format text and to perform various types of text substitution. Inline elements and inline element syntax is defined in the `asciidoc(1)` configuration files.
+
+Here is a list of AsciiDoc inline elements in the (default) order in which they are processed:
+
+**Special characters**
+
+These character sequences escape special characters used by the backend markup (typically `<`, `>`, and `&` characters). See `[specialcharacters]` configuration file sections.
+
+**Quotes**
+
+Elements that markup words and phrases; usually for character formatting. See `[quotes]` configuration file sections.
+
+**Special Words**
+
+Word or word phrase patterns singled out for markup without the need for further annotation. See `[specialwords]` configuration file sections.
+
+**Replacements**
+
+Each replacement defines a word or word phrase pattern to search for along with corresponding replacement text. See `[replacements]` configuration file sections.
+
+**Attribute references**
+
+Document attribute names enclosed in braces are replaced by the corresponding attribute value.
+
+**Inline Macros**
+
+Inline macros are replaced by the contents of parametrized configuration file sections.
+
+
+## 9. Document Processing
+
+The AsciiDoc source document is read and processed as follows:
+
+1. The document *Header* is parsed, header parameter values are substituted into the configuration file `[header]` template section which is then written to the output file.
+2. Each document *Section* is processed and its constituent elements translated to the output file.
+3. The configuration file `[footer]` template section is substituted and written to the output file.
+
+When a block element is encountered `asciidoc(1)` determines the type of block by checking in the following order (first to last): (section) Titles, BlockMacros, Lists, DelimitedBlocks, Tables, AttributeEntrys, AttributeLists, BlockTitles, Paragraphs.
+
+The default paragraph definition `[paradef-default]` is last element to be checked.
+
+Knowing the parsing order will help you devise unambiguous macro, list and block syntax rules.
+
+Inline substitutions within block elements are performed in the following default order:
+
+1. Special characters
+2. Quotes
+3. Special words
+4. Replacements
+5. Attributes
+6. Inline Macros
+7. Replacements2
+
+The substitutions and substitution order performed on Title, Paragraph and DelimitedBlock elements is determined by configuration file parameters.
+
+
+## 10. Text Formatting
+
+### 10.1. Quoted Text
+
+Words and phrases can be formatted by enclosing inline text with quote characters:
+
+***Emphasized text***
+
+Word phrases 'enclosed in single quote characters' (acute accents) or _underline characters_ are emphasized.
+
+****Strong text****
+
+Word phrases *enclosed in asterisk characters* are rendered in a strong font (usually bold).
+
+**`Monospaced text`**
+
+Word phrases +enclosed in plus characters+ are rendered in a monospaced font. Word phrases `enclosed in backtick characters` (grave accents) are also rendered in a monospaced font but in this case the enclosed text is rendered literally and is not subject to further expansion (see inline literal passthrough).
+
+**‘Single quoted text’**
+
+Phrases enclosed with a `single grave accent to the left and a single acute accent to the right' are rendered in single quotation marks.
+
+**“Double quoted text”**
+
+Phrases enclosed with ``two grave accents to the left and two acute accents to the right'' are rendered in quotation marks.
+
+**Unquoted text**
+
+Placing #hashes around text# does nothing, it is a mechanism to allow inline attributes to be applied to otherwise unformatted text.
+
+New quote types can be defined by editing `asciidoc(1)` configuration files. See the Configuration Files section for details.
+
+Quoted text behavior
+
+- Quoting cannot be overlapped.
+- Different quoting types can be nested.
+- To suppress quoted text formatting place a backslash character immediately in front of the leading quote character(s). In the case of ambiguity between escaped and non-escaped text you will need to escape both leading and trailing quotes, in the case of multi-character quotes you may even need to escape individual characters.
+
+#### 10.1.1. Quoted text attributes
+
+Quoted text can be prefixed with an attribute list. The first positional attribute (*role* attribute) is translated by AsciiDoc to an HTML *span* element *class* attribute or a DocBook *phrase* element *role* attribute.
+
+DocBook XSL Stylesheets translate DocBook *phrase* elements with *role* attributes to corresponding HTML *span* elements with the same *class* attributes; CSS can then be used to style the generated HTML. Thus CSS styling can be applied to both DocBook and AsciiDoc generated HTML outputs. You can also specify multiple class names separated by spaces.
+
+CSS rules for text color, text background color, text size and text decorators are included in the distributed AsciiDoc CSS files and are used in conjunction with AsciiDoc *xhtml11*, *html5* and *docbook* outputs. The CSS class names are:
+
+- *<color>* (text foreground color).
+- *<color>-background* (text background color).
+- *big* and *small* (text size).
+- *underline*, *overline* and *line-through* (strike through) text decorators.
+
+Where *<color>* can be any of the sixteen HTML color names. Examples:
+
+```
+[red]#Obvious# and [big red yellow-background]*very obvious*.
+```
+
+```
+[underline]#Underline text#, [overline]#overline text# and
+
+[blue line-through]*bold blue and line-through*.
+```
+
+is rendered as:
+
+Obvious and **very obvious**.
+
+Underline text, overline text and **bold blue and line-through**.
+
+| (Note) | Color and text decorator attributes are rendered for XHTML and HTML 5 outputs using CSS stylesheets. The mechanism to implement color and text decorator attributes is provided for DocBook toolchains via the DocBook *phrase* element *role* attribute, but the actual rendering is toolchain specific and is not part of the AsciiDoc distribution. |
+|---|---|
+
+#### 10.1.2. Constrained and Unconstrained Quotes
+
+There are actually two types of quotes:
+
+##### Constrained quotes
+
+Quoted must be bounded by white space or commonly adjoining punctuation characters. These are the most commonly used type of quote.
+
+##### Unconstrained quotes
+
+Unconstrained quotes have no boundary constraints and can be placed anywhere within inline text. For consistency and to make them easier to remember unconstrained quotes are double-ups of the `_`, `*`, `+` and `#` constrained quotes:
+
+```
+__unconstrained emphasized text__
+
+**unconstrained strong text**
+
+++unconstrained monospaced text++
+
+##unconstrained unquoted text##
+```
+
+The following example emboldens the letter F:
+
+```
+**F**ile Open...
+```
+
+### 10.2. Superscripts and Subscripts
+
+Put ^carets on either^ side of the text to be superscripted, put ~tildes on either side~ of text to be subscripted. For example, the following line:
+
+```
+e^&#960;i^+1 = 0. H~2~O and x^10^. Some ^super text^
+
+and ~some sub text~
+```
+
+Is rendered like:
+
+eπi+1 = 0. H2O and x10. Some super text and some sub text
+
+Superscripts and subscripts are implemented as unconstrained quotes and they can be escaped with a leading backslash and prefixed with with an attribute list.
+
+### 10.3. Line Breaks
+
+A plus character preceded by at least one space character at the end of a non-blank line forces a line break. It generates a line break (`br`) tag for HTML outputs and a custom XML `asciidoc-br` processing instruction for DocBook outputs. The `asciidoc-br` processing instruction is handled by `a2x(1)`.
+
+### 10.4. Page Breaks
+
+A line of three or more less-than (`<<<`) characters will generate a hard page break in DocBook and printed HTML outputs. It uses the CSS `page-break-after` property for HTML outputs and a custom XML `asciidoc-pagebreak` processing instruction for DocBook outputs. The `asciidoc-pagebreak` processing instruction is handled by `a2x(1)`. Hard page breaks are sometimes handy but as a general rule you should let your page processor generate page breaks for you.
+
+### 10.5. Rulers
+
+A line of three or more apostrophe characters will generate a ruler line. It generates a ruler (`hr`) tag for HTML outputs and a custom XML `asciidoc-hr` processing instruction for DocBook outputs. The `asciidoc-hr` processing instruction is handled by `a2x(1)`.
+
+### 10.6. Tabs
+
+By default tab characters input files will translated to 8 spaces. Tab expansion is set with the *tabsize* entry in the configuration file `[miscellaneous]` section and can be overridden in included files by setting a *tabsize* attribute in the `include` macro’s attribute list. For example:
+
+```
+include::addendum.txt[tabsize=2]
+```
+
+The tab size can also be set using the attribute command-line option, for example `--attribute tabsize=4`
+
+### 10.7. Replacements
+
+The following replacements are defined in the default AsciiDoc configuration:
+
+```
+(C) copyright, (TM) trademark, (R) registered trademark,
+
+-- em dash, ... ellipsis, -> right arrow, <- left arrow, => right
+
+double arrow, <= left double arrow.
+```
+
+Which are rendered as:
+
+© copyright, ™ trademark, ® registered trademark, — em dash, … ellipsis, → right arrow, ← left arrow, ⇒ right double arrow, ⇐ left double arrow.
+
+You can also include arbitrary entity references in the AsciiDoc source. Examples:
+
+```
+&#x278a; &#182;
+```
+
+renders:
+
+➊ ¶
+
+To render a replacement literally escape it with a leading back-slash.
+
+The Configuration Files section explains how to configure your own replacements.
+
+### 10.8. Special Words
+
+Words defined in `[specialwords]` configuration file sections are automatically marked up without having to be explicitly notated.
+
+The Configuration Files section explains how to add and replace special words.
+
+
+## 11. Titles
+
+Document and section titles can be in either of two formats:
+
+### 11.1. Two line titles
+
+A two line title consists of a title line, starting hard against the left margin, and an underline. Section underlines consist a repeated character pairs spanning the width of the preceding title (give or take up to two characters):
+
+The default title underlines for each of the document levels are:
+
+```
+Level 0 (top level):     ======================
+
+Level 1:                 ----------------------
+
+Level 2:                 ~~~~~~~~~~~~~~~~~~~~~~
+
+Level 3:                 ^^^^^^^^^^^^^^^^^^^^^^
+
+Level 4 (bottom level):  ++++++++++++++++++++++
+```
+
+Examples:
+
+```
+Level One Section Title
+
+-----------------------
+```
+
+```
+Level 2 Subsection Title
+
+~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+### 11.2. One line titles
+
+One line titles consist of a single line delimited on either side by one or more equals characters (the number of equals characters corresponds to the section level minus one). Here are some examples:
+
+```
+= Document Title (level 0) =
+
+== Section title (level 1) ==
+
+=== Section title (level 2) ===
+
+==== Section title (level 3) ====
+
+===== Section title (level 4) =====
+```
+
+| (Note) | One or more spaces must fall between the title and the delimiters. The trailing title delimiter is optional. The one-line title syntax can be changed by editing the configuration file `[titles]` section `sect0`…`sect4` entries. |
+|---|---|
+
+### 11.3. Floating titles
+
+Setting the title’s first positional attribute or *style* attribute to *float* generates a free-floating title. A free-floating title is rendered just like a normal section title but is not formally associated with a text body and is not part of the regular section hierarchy so the normal ordering rules do not apply. Floating titles can also be used in contexts where section titles are illegal: for example sidebar and admonition blocks. Example:
+
+```
+[float]
+
+The second day
+
+~~~~~~~~~~~~~~
+```
+
+Floating titles do not appear in a document’s table of contents.
+
+
+## 12. Block Titles
+
+A *BlockTitle* element is a single line beginning with a period followed by the title text. A BlockTitle is applied to the immediately following Paragraph, DelimitedBlock, List, Table or BlockMacro. For example:
+
+```
+.Notes
+
+- Note 1.
+
+- Note 2.
+```
+
+is rendered as:
+
+Notes
+
+- Note 1.
+- Note 2.
+
+
+## 13. BlockId Element
+
+A *BlockId* is a single line block element containing a unique identifier enclosed in double square brackets. It is used to assign an identifier to the ensuing block element. For example:
+
+```
+[[chapter-titles]]
+
+Chapter titles can be ...
+```
+
+The preceding example identifies the ensuing paragraph so it can be referenced from other locations, for example with `<<chapter-titles,chapter titles>>`.
+
+*BlockId* elements can be applied to Title, Paragraph, List, DelimitedBlock, Table and BlockMacro elements. The BlockId element sets the `{id}` attribute for substitution in the subsequent block’s markup template. If a second positional argument is supplied it sets the `{reftext}` attribute which is used to set the DocBook `xreflabel` attribute.
+
+The *BlockId* element has the same syntax and serves the same function to the anchor inline macro.

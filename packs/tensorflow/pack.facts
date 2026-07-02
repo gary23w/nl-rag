@@ -1,0 +1,934 @@
+# nl-rag distilled facts — domain: tensorflow
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:tensorflow/automatic-differentiation] Automatic differentiation is a subtle and central tool to automatize the simultaneous computation of the numerical values of arbitrarily complex functions and their derivatives with no need for the symbolic representation of the derivative; only the function rule or an algorithm thereof is required.
+[src:tensorflow/automatic-differentiation] Auto-differentiation is thus neither numeric nor symbolic, nor is it a combination of both.
+[src:tensorflow/automatic-differentiation] In contrast to the more traditional numerical methods based on finite differences, auto-differentiation is 'in theory' exact, and in comparison to symbolic algorithms, it is computationally inexpensive.
+[src:tensorflow/automatic-differentiation] Automatic differentiation exploits the fact that every computer calculation, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.).
+[src:tensorflow/automatic-differentiation] By applying the chain rule repeatedly to these operations, partial derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor of more arithmetic operations than the original program.
+[src:tensorflow/automatic-differentiation] Automatic differentiation is distinct from symbolic differentiation and numerical differentiation.
+[src:tensorflow/automatic-differentiation] Symbolic differentiation faces the difficulty of converting a computer program into a single mathematical expression and can lead to inefficient code.
+[src:tensorflow/automatic-differentiation] Numerical differentiation (the method of finite differences) can introduce round-off errors in the discretization process and cancellation.
+[src:tensorflow/automatic-differentiation] Both of these classical methods have problems with calculating higher derivatives, where complexity and errors increase.
+[src:tensorflow/automatic-differentiation] Finally, both of these classical methods are slow at computing partial derivatives of a function with respect to *many* inputs, as is needed for gradient-based optimization algorithms.
+[src:tensorflow/automatic-differentiation] Automatic differentiation solves all of these problems.
+[src:tensorflow/automatic-differentiation] Because of its efficiency and accuracy in computing first and higher order derivatives, auto-differentiation finds diverse applications in scientific computing and mathematics, and there are numerous computational implementations of auto-differentiation.
+[src:tensorflow/automatic-differentiation] Among these, one mentions INTLAB, Sollya, and InCLosure.
+[src:tensorflow/automatic-differentiation] In practice, there are two types (modes) of algorithmic differentiation: a forward-type and a reversed-type.
+[src:tensorflow/automatic-differentiation] Presently, the two types are highly correlated and complementary and both have a wide variety of applications in, e.g., non-linear optimization, sensitivity analysis, robotics, machine learning, computer graphics, and computer vision.
+[src:tensorflow/automatic-differentiation] Automatic differentiation is particularly important in the field of machine learning.
+[src:tensorflow/automatic-differentiation] For example, it allows one to implement backpropagation in a neural network without a manually-computed derivative.
+[src:tensorflow/automatic-differentiation] Fundamental to automatic differentiation is the decomposition of differentials provided by the chain rule of partial derivatives of composite functions.
+[src:tensorflow/automatic-differentiation] Usually, two distinct modes of automatic differentiation are presented.
+[src:tensorflow/automatic-differentiation] The value of the partial derivative, called the *seed*, is propagated forward or backward and is initially ${\textstyle {\frac {\partial x}{\partial x}}=1}$ or ${\textstyle {\frac {\partial y}{\partial y}}=1}$ .
+[src:tensorflow/automatic-differentiation] Forward accumulation evaluates the function and calculates the derivative with respect to one independent variable in one pass.
+[src:tensorflow/automatic-differentiation] In contrast, reverse accumulation requires the evaluated partial functions for the partial derivatives.
+[src:tensorflow/automatic-differentiation] Reverse accumulation therefore evaluates the function first and calculates the derivatives with respect to all independent variables in an additional pass.
+[src:tensorflow/automatic-differentiation] Which of these two types should be used depends on the sweep count.
+[src:tensorflow/automatic-differentiation] The computational complexity of one sweep is proportional to the complexity of the original code.
+[src:tensorflow/automatic-differentiation] Backpropagation of errors in multilayer perceptrons, a technique used in machine learning, is a special case of reverse accumulation.
+[src:tensorflow/automatic-differentiation] Forward accumulation was introduced by R.
+[src:tensorflow/automatic-differentiation] According to Andreas Griewank, reverse accumulation has been suggested since the late 1960s, but the inventor is unknown.
+[src:tensorflow/automatic-differentiation] Seppo Linnainmaa published reverse accumulation in 1976.
+[src:tensorflow/automatic-differentiation] In forward accumulation AD, one first fixes the *independent variable* with respect to which differentiation is performed and computes the derivative of each sub-expression recursively.
+[src:tensorflow/automatic-differentiation] Compared to reverse accumulation, forward accumulation is natural and easy to implement as the flow of derivative information coincides with the order of evaluation.
+[src:tensorflow/automatic-differentiation] Each variable $w_{i}$ is augmented with its derivative ${\dot {w}}_{i}$ (stored as a numerical value, not a symbolic expression), ${\dot {w}}_{i}={\frac {\partial w_{i}}{\partial x}}$ as denoted by the dot.
+[src:tensorflow/automatic-differentiation] The derivatives are then computed in sync with the evaluation steps and combined with other derivatives via the chain rule.
+[src:tensorflow/automatic-differentiation] The choice of the independent variable to which differentiation is performed affects the *seed* values *ẇ*1 and *ẇ*2.
+[src:tensorflow/automatic-differentiation] With the seed values set, the values propagate using the chain rule as shown.
+[src:tensorflow/automatic-differentiation] Figure 2 shows a pictorial depiction of this process as a computational graph.
+[src:tensorflow/automatic-differentiation] Forward accumulation calculates the function and the derivative (but only for one independent variable each) in one pass.
+[src:tensorflow/automatic-differentiation] The associated method call expects the expression Z to be derived with regard to a variable V.
+[src:tensorflow/automatic-differentiation] The method returns a pair of the evaluated function and its derivative.
+[src:tensorflow/automatic-differentiation] The method traverses the expression tree recursively until a variable is reached.
+[src:tensorflow/automatic-differentiation] If the derivative with respect to this variable is requested, its derivative is 1, 0 otherwise.
+[src:tensorflow/automatic-differentiation] Then the partial function as well as the partial derivative are evaluated.
+[src:tensorflow/automatic-differentiation] In reverse accumulation AD, the *dependent variable* to be differentiated is fixed and the derivative is computed *with respect to* each sub-expression recursively.
+[src:tensorflow/automatic-differentiation] Reverse accumulation traverses the chain rule from outside to inside, or in the case of the computational graph in Figure 3, from top to bottom.
+[src:tensorflow/automatic-differentiation] The example function is scalar-valued, and thus there is only one seed for the derivative computation, and only one sweep of the computational graph is needed to calculate the (two-component) gradient.
+[src:tensorflow/automatic-differentiation] This can be mitigated to some extent by storing only a subset of the intermediate variables and then reconstructing the necessary work variables by repeating the evaluations, a technique known as rematerialization.
+[src:tensorflow/automatic-differentiation] Checkpointing is also used to save intermediary states.
+[src:tensorflow/automatic-differentiation] The data flow graph of a computation can be manipulated to calculate the gradient of its original calculation.
+[src:tensorflow/automatic-differentiation] This is done by adding an adjoint node for each primal node, connected by adjoint edges which parallel the primal edges but flow in the opposite direction.
+[src:tensorflow/automatic-differentiation] The nodes in the adjoint graph represent multiplication by the derivatives of the functions calculated by the nodes in the primal.
+[src:tensorflow/automatic-differentiation] For instance, addition in the primal causes fanout in the adjoint; fanout in the primal causes addition in the adjoint; a unary function *y* = *f*(*x*) in the primal causes *x̄* = *ȳ* *f*′(*x*) in the adjoint; etc.
+[src:tensorflow/automatic-differentiation] Reverse accumulation requires two passes: In the forward pass, the function is evaluated first and the partial results are cached.
+[src:tensorflow/automatic-differentiation] In the reverse pass, the partial derivatives are calculated and the previously derived value is back-propagated.
+[src:tensorflow/automatic-differentiation] The corresponding method call expects the expression Z to be derived and *seeded* with the derived value of the parent expression.
+[src:tensorflow/automatic-differentiation] For the top expression, Z is differentiated with respect to Z, this is 1.
+[src:tensorflow/automatic-differentiation] The method traverses the expression tree recursively until a variable is reached and adds the current *seed* value to the derivative expression.
+[src:tensorflow/automatic-differentiation] Forward and reverse accumulation are just two (extreme) ways of traversing the chain rule.
+[src:tensorflow/automatic-differentiation] The problem of computing a full Jacobian of *f* : ℝ*n* → ℝ*m* with a minimum number of arithmetic operations is known as the *optimal Jacobian accumulation* (OJA) problem, which is NP-complete.
+[src:tensorflow/automatic-differentiation] Central to this proof is the idea that algebraic dependencies may exist between the local partials that label the edges of the graph.
+[src:tensorflow/automatic-differentiation] In particular, two or more edge labels may be recognized as equal.
+[src:tensorflow/automatic-differentiation] The complexity of the problem is still open if it is assumed that all edge labels are unique and algebraically independent.
+[src:tensorflow/automatic-differentiation] Forward mode automatic differentiation is accomplished by augmenting the algebra of real numbers and obtaining a new arithmetic.
+[src:tensorflow/automatic-differentiation] An additional component is added to every number to represent the derivative of a function at the number, and all arithmetic operators are extended for the augmented algebra.
+[src:tensorflow/automatic-differentiation] The augmented algebra is the algebra of dual numbers.
+[src:tensorflow/automatic-differentiation] Replace every number $\,x$ with the number $x+x'\varepsilon$ , where $x'$ is a real number, but $\varepsilon$ is an abstract number with the property $\varepsilon ^{2}=0$ (an infinitesimal; see *Smooth infinitesimal analysis*).
+[src:tensorflow/automatic-differentiation] Now, polynomials can be calculated in this augmented arithmetic.
+[src:tensorflow/automatic-differentiation] The new arithmetic consists of ordered pairs, elements written ${\textstyle \langle x,x'\rangle }$ , with ordinary arithmetics on the first component, and first order differentiation arithmetic on the second component, as described above.
+[src:tensorflow/automatic-differentiation] When a binary basic arithmetic operation is applied to mixed arguments—the pair ${\textstyle \langle u,u'\rangle }$ and the real number c —the real number is first lifted to ${\textstyle \langle c,0\rangle }$ .
+[src:tensorflow/automatic-differentiation] The derivative of a function ${\textstyle f:\mathbb {R} \to \mathbb {R} }$ at the point $x_{0}$ is now found by calculating ${\textstyle f(\langle x_{0},1\rangle )}$ using the above arithmetic, which gives ${\textstyle \langle f(x_{0}),f'(x_{0})\rangle }$ as the result.
+[src:tensorflow/automatic-differentiation] An example implementation based on the dual number approach follows.
+[src:tensorflow/automatic-differentiation] Multivariate functions can be handled with the same efficiency and mechanisms as univariate functions by adopting a directional derivative operator.
+[src:tensorflow/automatic-differentiation] If all the elements of $\nabla f$ are desired, then n function evaluations are required.
+[src:tensorflow/automatic-differentiation] Note that in many optimization applications, the directional derivative is indeed sufficient.
+[src:tensorflow/automatic-differentiation] The above arithmetic can be generalized to calculate second order and higher derivatives of multivariate functions.
+[src:tensorflow/automatic-differentiation] However, the arithmetic rules quickly grow complicated: complexity is quadratic in the highest derivative degree.
+[src:tensorflow/automatic-differentiation] Instead, truncated Taylor polynomial algebra can be used.
+[src:tensorflow/automatic-differentiation] The resulting arithmetic, defined on generalized dual numbers, allows efficient computation using functions as if they were a data type.
+[src:tensorflow/automatic-differentiation] Once the Taylor polynomial of a function is known, the derivatives are easily extracted.
+[src:tensorflow/automatic-differentiation] Forward-mode AD is implemented by a nonstandard interpretation of the program in which real numbers are replaced by dual numbers, constants are lifted to dual numbers with a zero epsilon coefficient, and the numeric primitives are lifted to operate on dual numbers.
+[src:tensorflow/automatic-differentiation] This nonstandard interpretation is generally implemented using one of two strategies: *source code transformation* or *operator overloading*.
+[src:tensorflow/automatic-differentiation] The source code for a function is replaced by an automatically generated source code that includes statements for calculating the derivatives interleaved with the original instructions.
+[src:tensorflow/automatic-differentiation] Source code transformation can be implemented for all programming languages, and it is also easier for the compiler to do compile time optimizations.
+[src:tensorflow/automatic-differentiation] However, the implementation of the AD tool itself is more difficult and the build system is more complex.
+[src:tensorflow/automatic-differentiation] Operator overloading is a possibility for source code written in a language supporting it.
+[src:tensorflow/automatic-differentiation] Objects for real numbers and elementary mathematical operations must be overloaded to cater for the augmented arithmetic depicted above.
+[src:tensorflow/automatic-differentiation] This requires no change in the form or sequence of operations in the original source code for the function to be differentiated, but often requires changes in basic data types for numbers and vectors to support overloading and often also involves the insertion of special flagging operations.
+[src:tensorflow/automatic-differentiation] Due to the inherent operator overloading overhead on each loop, this approach usually demonstrates weaker speed performance.
+[src:tensorflow/automatic-differentiation] Overloaded Operators can be used to extract the valuation graph, followed by automatic generation of the AD-version of the primal function at run-time.
+[src:tensorflow/automatic-differentiation] Unlike the classic OO AAD, such AD-function does not change from one iteration to the next one.
+[src:tensorflow/automatic-differentiation] Hence there is any OO or tape interpretation run-time overhead per Xi sample.
+[src:tensorflow/automatic-differentiation] With the AD-function being generated at runtime, it can be optimised to take into account the current state of the program and precompute certain values.
+[src:tensorflow/automatic-differentiation] In addition, it can be generated in a way to consistently utilize native CPU vectorization to process 4(8)-double chunks of user data (AVX2\AVX512 speed up x4-x8).
+[src:tensorflow/automatic-differentiation] With multithreading added into account, such approach can lead to a final acceleration of order 8 × #Cores compared to the traditional AAD tools.
+[src:tensorflow/automatic-differentiation] A reference implementation is available on GitHub.
+[src:tensorflow/dataflow-programming] In computer programming, **dataflow programming** is a programming paradigm that models a program as a directed graph of the data flowing between operations, thus implementing dataflow principles and architecture.
+[src:tensorflow/dataflow-programming] Dataflow programming languages share some features of functional languages, and were generally developed in order to bring some functional concepts to a language more suitable for numeric processing.
+[src:tensorflow/dataflow-programming] Some authors use the term *datastream* instead of *dataflow* to avoid confusion with dataflow computing or dataflow architecture, based on an indeterministic machine paradigm.
+[src:tensorflow/dataflow-programming] Dataflow programming was pioneered by Jack Dennis and his graduate students at MIT in the 1960s.
+[src:tensorflow/dataflow-programming] Traditionally, a program is modelled as a series of operations happening in a specific order; this may be referred to as sequential, procedural, control flow (indicating that the program chooses a specific path), or imperative programming.
+[src:tensorflow/dataflow-programming] The program focuses on commands, in line with the von Neumann vision of sequential programming, where data is normally "at rest".
+[src:tensorflow/dataflow-programming] In contrast, dataflow programming emphasizes the movement of data and models programs as a series of connections.
+[src:tensorflow/dataflow-programming] Explicitly defined inputs and outputs connect operations, which function like black boxes.
+[src:tensorflow/dataflow-programming] An operation runs as soon as all of its inputs become valid.
+[src:tensorflow/dataflow-programming] Thus, dataflow languages are inherently parallel and can work well in large, decentralized systems.
+[src:tensorflow/dataflow-programming] One of the key concepts in computer programming is the idea of state, essentially a snapshot of various conditions in the system.
+[src:tensorflow/dataflow-programming] Most programming languages require a considerable amount of state information, which is generally hidden from the programmer.
+[src:tensorflow/dataflow-programming] Often, the computer itself has no idea which piece of information encodes the enduring state.
+[src:tensorflow/dataflow-programming] This is a serious problem, as the state information needs to be shared across multiple processors in parallel processing machines.
+[src:tensorflow/dataflow-programming] Most languages force the programmer to add extra code to indicate which data and parts of the code are important to the state.
+[src:tensorflow/dataflow-programming] This code tends to be both expensive in terms of performance, as well as difficult to read or debug.
+[src:tensorflow/dataflow-programming] Explicit parallelism is one of the main reasons for the poor performance of Enterprise Java Beans when building data-intensive, non-OLTP applications.
+[src:tensorflow/dataflow-programming] Where a sequential program can be imagined as a single worker moving between tasks (operations), a dataflow program is more like a series of workers on an assembly line, each doing a specific task whenever materials are available.
+[src:tensorflow/dataflow-programming] Since the operations are only concerned with the availability of data inputs, they have no hidden state to track, and are all "ready" at the same time.
+[src:tensorflow/dataflow-programming] Dataflow programs are represented in different ways.
+[src:tensorflow/dataflow-programming] A traditional program is usually represented as a series of text instructions, which is reasonable for describing a serial system which pipes data between small, single-purpose tools that receive, process, and return.
+[src:tensorflow/dataflow-programming] Dataflow programs start with an input, perhaps the command line parameters, and illustrate how that data is used and modified.
+[src:tensorflow/dataflow-programming] The flow of data is explicit, often visually illustrated as a line or pipe.
+[src:tensorflow/dataflow-programming] In terms of encoding, a dataflow program might be implemented as a hash table, with uniquely identified inputs as the keys, used to look up pointers to the instructions.
+[src:tensorflow/dataflow-programming] When any operation completes, the program scans down the list of operations until it finds the first operation where all inputs are currently valid, and runs it.
+[src:tensorflow/dataflow-programming] When that operation finishes, it will typically output data, thereby making another operation become valid.
+[src:tensorflow/dataflow-programming] For parallel operation, only the list needs to be shared; it is the state of the entire program.
+[src:tensorflow/dataflow-programming] Thus the task of maintaining state is removed from the programmer and given to the language's runtime.
+[src:tensorflow/dataflow-programming] On machines with a single processor core where an implementation designed for parallel operation would simply introduce overhead, this overhead can be removed completely by using a different runtime.
+[src:tensorflow/dataflow-programming] Some recent dataflow libraries such as Differential/Timely Dataflow have used incremental computing for much more efficient data processing.
+[src:tensorflow/dataflow-programming] A pioneer dataflow language was BLOck DIagram (BLODI), published in 1961 by John Larry Kelly, Jr., Carol Lochbaum and Victor A.
+[src:tensorflow/dataflow-programming] Vyssotsky for specifying sampled data systems.
+[src:tensorflow/dataflow-programming] A BLODI specification of functional units (amplifiers, adders, delay lines, etc.) and their interconnections was compiled into a single loop that updated the entire system for one clock tick.
+[src:tensorflow/dataflow-programming] In a 1966 Ph.D. thesis, *The On-line Graphical Specification of Computer Procedures*, Bert Sutherland created one of the first graphical dataflow programming frameworks in order to make parallel programming easier.
+[src:tensorflow/dataflow-programming] Subsequent dataflow languages were often developed at the large supercomputer labs.
+[src:tensorflow/dataflow-programming] SISAL, a popular dataflow language developed at Lawrence Livermore National Laboratory, looks like most statement-driven languages, but variables should be assigned once.
+[src:tensorflow/dataflow-programming] This allows the compiler to easily identify the inputs and outputs.
+[src:tensorflow/dataflow-programming] A number of offshoots of SISAL have been developed, including SAC, *Single Assignment C*, which tries to remain as close to the popular C programming language as possible.
+[src:tensorflow/dataflow-programming] The United States Navy funded development of signal processing graph notation (SPGN) and ACOS starting in the early 1980s.
+[src:tensorflow/dataflow-programming] This is in use on a number of platforms in the field today.
+[src:tensorflow/dataflow-programming] A more radical concept is Prograph, in which programs are constructed as graphs onscreen, and variables are replaced entirely with lines linking inputs to outputs.
+[src:tensorflow/dataflow-programming] Prograph was originally written on the Macintosh, which remained single-processor until the introduction of the DayStar Genesis MP in 1996.
+[src:tensorflow/dataflow-programming] There are many hardware architectures oriented toward the efficient implementation of dataflow programming models.
+[src:tensorflow/dataflow-programming] MIT's tagged token dataflow architecture was designed by Greg Papadopoulos.
+[src:tensorflow/deep-learning-p01] In machine learning, **deep learning** (**DL**) focuses on utilizing multilayered neural networks to perform tasks such as classification, regression, and representation learning.
+[src:tensorflow/deep-learning-p01] The field takes inspiration from biological neuroscience and revolves around stacking artificial neurons into layers and "training" them to process data.
+[src:tensorflow/deep-learning-p01] The adjective "deep" refers to the use of multiple layers (ranging from three to several hundred or thousands) in the network.
+[src:tensorflow/deep-learning-p01] Methods used can be supervised, semi-supervised or unsupervised.
+[src:tensorflow/deep-learning-p01] Some common deep learning network architectures include fully connected networks, deep belief networks, recurrent neural networks, convolutional neural networks, generative adversarial networks, transformers, and neural radiance fields.
+[src:tensorflow/deep-learning-p01] Early forms of neural networks were inspired by information processing and distributed communication nodes in biological systems, particularly the human brain.
+[src:tensorflow/deep-learning-p01] However, current neural networks do not intend to model the brain function of organisms, and are generally seen as low-quality models for that purpose.
+[src:tensorflow/deep-learning-p01] Fundamentally, deep learning refers to a class of machine learning algorithms in which a hierarchy of layers is used to transform input data into a progressively more abstract and composite representation.
+[src:tensorflow/deep-learning-p01] For example, in an image recognition model, the raw input may be an image (represented as a tensor of pixels).
+[src:tensorflow/deep-learning-p01] The first representational layer may attempt to identify basic shapes such as lines and circles, the second layer may compose and encode arrangements of edges, the third layer may encode a nose and eyes, and the fourth layer may recognize that the image contains a face.
+[src:tensorflow/deep-learning-p01] Importantly, a deep learning process can learn which features to optimally place at which level *on its own*.
+[src:tensorflow/deep-learning-p01] Prior to deep learning, machine learning techniques often involved hand-crafted feature engineering to transform the data into a more suitable representation for a classification algorithm to operate on.
+[src:tensorflow/deep-learning-p01] In the deep learning approach, features are not hand-crafted and the model discovers useful feature representations from the data automatically.
+[src:tensorflow/deep-learning-p01] This does not eliminate the need for hand-tuning; for example, varying numbers of layers and layer sizes can provide different degrees of abstraction.
+[src:tensorflow/deep-learning-p01] The word "deep" in "deep learning" refers to the number of layers through which the data is transformed.
+[src:tensorflow/deep-learning-p01] More precisely, deep learning systems have a substantial *credit assignment path* (CAP) depth.
+[src:tensorflow/deep-learning-p01] The CAP is the chain of transformations from input to output.
+[src:tensorflow/deep-learning-p01] CAPs describe potentially causal connections between input and output.
+[src:tensorflow/deep-learning-p01] For a feedforward neural network, the depth of the CAPs is that of the network and is the number of hidden layers plus one (as the output layer is also parameterized).
+[src:tensorflow/deep-learning-p01] For recurrent neural networks, in which a signal may propagate through a layer more than once, the CAP depth is potentially unlimited.
+[src:tensorflow/deep-learning-p01] No universally agreed-upon threshold of depth divides shallow learning from deep learning, but most researchers agree that deep learning involves CAP depth higher than two.
+[src:tensorflow/deep-learning-p01] CAP of depth two has been shown to be a universal approximator in the sense that it can emulate any function.
+[src:tensorflow/deep-learning-p01] Beyond that, more layers do not add to the function approximator ability of the network.
+[src:tensorflow/deep-learning-p01] Deep models (CAP > two) are able to extract better features than shallow models and hence, extra layers help in learning the features effectively.
+[src:tensorflow/deep-learning-p01] Deep learning architectures can be constructed with a greedy layer-by-layer method.
+[src:tensorflow/deep-learning-p01] Deep learning helps to disentangle these abstractions and pick out which features improve performance.
+[src:tensorflow/deep-learning-p01] Deep learning algorithms can be applied to unsupervised learning tasks.
+[src:tensorflow/deep-learning-p01] This is an important benefit because unlabeled data is more abundant than labeled data.
+[src:tensorflow/deep-learning-p01] Examples of deep structures that can be trained in an unsupervised manner are deep belief networks.
+[src:tensorflow/deep-learning-p01] The term *deep learning* was introduced to the machine learning community by Rina Dechter in 1986, and to artificial neural networks by Igor Aizenberg and colleagues in 2000, in the context of Boolean threshold neurons.
+[src:tensorflow/deep-learning-p01] The etymology of the term is more complicated.
+[src:tensorflow/deep-learning-p01] Deep neural networks are generally interpreted in terms of the universal approximation theorem or probabilistic inference.
+[src:tensorflow/deep-learning-p01] The classic universal approximation theorem concerns the capacity of feedforward neural networks with a single hidden layer of finite size to approximate continuous functions.
+[src:tensorflow/deep-learning-p01] In 1989, the first proof was published by George Cybenko for sigmoid activation functions and was generalised to feed-forward multi-layer architectures in 1991 by Kurt Hornik.
+[src:tensorflow/deep-learning-p01] Recent work also showed that universal approximation also holds for non-bounded activation functions such as Kunihiko Fukushima's rectified linear unit.
+[src:tensorflow/deep-learning-p01] The universal approximation theorem for deep neural networks concerns the capacity of networks with bounded width but the depth is allowed to grow.
+[src:tensorflow/deep-learning-p01] The probabilistic interpretation derives from the field of machine learning.
+[src:tensorflow/deep-learning-p01] It features inference, as well as the optimization concepts of training and testing, related to fitting and generalization, respectively.
+[src:tensorflow/deep-learning-p01] More specifically, the probabilistic interpretation considers the activation nonlinearity as a cumulative distribution function.
+[src:tensorflow/deep-learning-p01] The probabilistic interpretation led to the introduction of dropout as regularizer in neural networks.
+[src:tensorflow/deep-learning-p01] The probabilistic interpretation was introduced by researchers including Hopfield, Widrow and Narendra and popularized in surveys such as the one by Bishop.
+[src:tensorflow/deep-learning-p01] There are two types of artificial neural network (ANN): feedforward neural network (FNN) or multilayer perceptron (MLP) and recurrent neural networks (RNN).
+[src:tensorflow/deep-learning-p01] RNNs have cycles in their connectivity structure, whereas FNNs do not.
+[src:tensorflow/deep-learning-p01] In the 1920s, Wilhelm Lenz and Ernst Ising created the Ising model which is essentially a non-learning RNN architecture consisting of neuron-like threshold elements.
+[src:tensorflow/deep-learning-p01] In 1972, Shun'ichi Amari made this architecture adaptive.
+[src:tensorflow/deep-learning-p01] His learning RNN was republished by John Hopfield in 1982.
+[src:tensorflow/deep-learning-p01] Other early recurrent neural networks were published by Kaoru Nakano in 1971.
+[src:tensorflow/deep-learning-p01] Already in 1948, Alan Turing produced work on "Intelligent Machinery" that was not published in his lifetime, containing "ideas related to artificial evolution and learning RNNs".
+[src:tensorflow/deep-learning-p01] Frank Rosenblatt (1958) proposed the perceptron, an MLP with 3 layers: an input layer, a hidden layer with randomized weights that did not learn, and an output layer.
+[src:tensorflow/deep-learning-p01] He later published a 1962 book that also introduced variants and computer experiments, including a version with four-layer perceptrons "with adaptive preterminal networks" where the last two layers have learned weights (here he credits H.
+[src:tensorflow/deep-learning-p01] Joseph (1960) "functionally equivalent to a variation of" this four-layer system (the book mentions Joseph over 30 times).
+[src:tensorflow/deep-learning-p01] Should Joseph therefore be considered the originator of proper adaptive multilayer perceptrons with learning hidden units?
+[src:tensorflow/deep-learning-p01] Unfortunately, the learning algorithm was not a functional one, and fell into oblivion.
+[src:tensorflow/deep-learning-p01] The first working deep learning algorithm was the Group method of data handling, a method to train arbitrarily deep neural networks, published by Alexey Ivakhnenko and Lapa in 1965.
+[src:tensorflow/deep-learning-p01] They regarded it as a form of polynomial regression, or a generalization of Rosenblatt's perceptron to handle more complex, nonlinear, and hierarchical relationships.
+[src:tensorflow/deep-learning-p01] A 1971 paper described a deep network with eight layers trained by this method, which is based on layer by layer training through regression analysis.
+[src:tensorflow/deep-learning-p01] Superfluous hidden units are pruned using a separate validation set.
+[src:tensorflow/deep-learning-p01] Since the activation functions of the nodes are Kolmogorov-Gabor polynomials, these were also the first deep networks with multiplicative units or "gates".
+[src:tensorflow/deep-learning-p01] The first deep learning multilayer perceptron trained by stochastic gradient descent was published in 1967 by Shun'ichi Amari.
+[src:tensorflow/deep-learning-p01] In computer experiments conducted by Amari's student Saito, a five layer MLP with two modifiable layers learned internal representations to classify non-linearily separable pattern classes.
+[src:tensorflow/deep-learning-p01] Subsequent developments in hardware and hyperparameter tunings have made end-to-end stochastic gradient descent the currently dominant training technique.
+[src:tensorflow/deep-learning-p01] In 1969, Kunihiko Fukushima introduced the ReLU (rectified linear unit) activation function.
+[src:tensorflow/deep-learning-p01] The rectifier has become the most popular activation function for deep learning.
+[src:tensorflow/deep-learning-p01] Deep learning architectures for convolutional neural networks (CNNs) with convolutional layers and downsampling layers began with the Neocognitron introduced by Kunihiko Fukushima in 1979, though not trained by backpropagation.
+[src:tensorflow/deep-learning-p01] Backpropagation is an efficient application of the chain rule derived by Gottfried Wilhelm Leibniz in 1673 to networks of differentiable nodes.
+[src:tensorflow/deep-learning-p01] The terminology "back-propagating errors" was actually introduced in 1962 by Rosenblatt, but he did not know how to implement this, although Henry J.
+[src:tensorflow/deep-learning-p01] Kelley had a continuous precursor of backpropagation in 1960 in the context of control theory.
+[src:tensorflow/deep-learning-p01] The modern form of backpropagation was first published in Seppo Linnainmaa's master thesis (1970).
+[src:tensorflow/deep-learning-p01] Ostrovski et al. republished it in 1971.
+[src:tensorflow/deep-learning-p01] Paul Werbos applied backpropagation to neural networks in 1982 (his 1974 PhD thesis, reprinted in a 1994 book, did not yet describe the algorithm).
+[src:tensorflow/deep-learning-p01] Rumelhart et al. popularised backpropagation but did not cite the original work.
+[src:tensorflow/deep-learning-p01] The time delay neural network (TDNN) was introduced in 1987 by Alex Waibel to apply CNN to phoneme recognition.
+[src:tensorflow/deep-learning-p01] It used convolutions, weight sharing, and backpropagation.
+[src:tensorflow/deep-learning-p01] In 1988, Wei Zhang applied a backpropagation-trained CNN to alphabet recognition.
+[src:tensorflow/deep-learning-p01] In 1989, Yann LeCun et al. created a CNN called LeNet for recognizing handwritten ZIP codes on mail.
+[src:tensorflow/deep-learning-p01] In 1990, Wei Zhang implemented a CNN on optical computing hardware.
+[src:tensorflow/deep-learning-p01] In 1991, a CNN was applied to medical image object segmentation and breast cancer detection in mammograms.
+[src:tensorflow/deep-learning-p01] LeNet-5 (1998), a 7-level CNN by Yann LeCun et al., that classifies digits, was applied by several banks to recognize hand-written numbers on checks digitized in 32x32 pixel images.
+[src:tensorflow/deep-learning-p01] Recurrent neural networks (RNN) were further developed in the 1980s.
+[src:tensorflow/deep-learning-p01] Recurrence is used for sequence processing, and when a recurrent network is unrolled, it mathematically resembles a deep feedforward layer.
+[src:tensorflow/deep-learning-p01] Consequently, they have similar properties and issues, and their developments had mutual influences.
+[src:tensorflow/deep-learning-p01] In RNN, two early influential works were the Jordan network (1986) and the Elman network (1990), which applied RNN to study problems in cognitive psychology.
+[src:tensorflow/deep-learning-p01] In the 1980s, backpropagation did not work well for deep learning with long credit assignment paths.
+[src:tensorflow/deep-learning-p01] To overcome this problem, in 1991, Jürgen Schmidhuber proposed a hierarchy of RNNs pre-trained one level at a time by self-supervised learning where each RNN tries to predict its own next input, which is the next unexpected input of the RNN below.
+[src:tensorflow/deep-learning-p01] This "neural history compressor" uses predictive coding to learn internal representations at multiple self-organizing time scales.
+[src:tensorflow/deep-learning-p01] This can substantially facilitate downstream deep learning.
+[src:tensorflow/deep-learning-p01] The RNN hierarchy can be *collapsed* into a single RNN, by distilling a higher level *chunker* network into a lower level *automatizer* network.
+[src:tensorflow/deep-learning-p01] In 1993, a neural history compressor solved a "Very Deep Learning" task that required more than 1000 subsequent layers in an RNN unfolded in time.
+[src:tensorflow/deep-learning-p01] The "P" in ChatGPT refers to such pre-training.
+[src:tensorflow/deep-learning-p01] Sepp Hochreiter's diploma thesis (1991) implemented the neural history compressor, and identified and analyzed the vanishing gradient problem.
+[src:tensorflow/deep-learning-p01] Hochreiter proposed recurrent residual connections to solve the vanishing gradient problem.
+[src:tensorflow/deep-learning-p01] This led to the long short-term memory (LSTM), published in 1995.
+[src:tensorflow/deep-learning-p01] LSTM can learn "very deep learning" tasks with long credit assignment paths that require memories of events that happened thousands of discrete time steps before.
+[src:tensorflow/deep-learning-p01] That LSTM was not yet the modern architecture, which required a "forget gate", introduced in 1999, which became the standard RNN architecture.
+[src:tensorflow/deep-learning-p01] In 1991, Jürgen Schmidhuber also published adversarial neural networks that contest with each other in the form of a zero-sum game, where one network's gain is the other network's loss.
+[src:tensorflow/deep-learning-p01] The first network is a generative model that models a probability distribution over output patterns.
+[src:tensorflow/deep-learning-p01] The second network learns by gradient descent to predict the reactions of the environment to these patterns.
+[src:tensorflow/deep-learning-p01] In 2014, this principle was used in generative adversarial networks (GANs).
+[src:tensorflow/deep-learning-p01] During 1985–1995, inspired by statistical mechanics, several architectures and methods were developed by Terry Sejnowski, Peter Dayan, Geoffrey Hinton, etc., including the Boltzmann machine, restricted Boltzmann machine, Helmholtz machine, and the wake-sleep algorithm.
+[src:tensorflow/deep-learning-p01] These were designed for unsupervised learning of deep generative models.
+[src:tensorflow/deep-learning-p01] However, those were more computationally expensive compared to backpropagation.
+[src:tensorflow/deep-learning-p01] Boltzmann machine learning algorithm, published in 1985, was briefly popular before being eclipsed by the backpropagation algorithm in 1986.
+[src:tensorflow/deep-learning-p01] A 1988 network became state of the art in protein structure prediction, an early application of deep learning to bioinformatics.
+[src:tensorflow/deep-learning-p01] Both shallow and deep learning (e.g., recurrent nets) of ANNs for speech recognition have been explored for many years.
+[src:tensorflow/deep-learning-p01] These methods never outperformed non-uniform internal-handcrafting Gaussian mixture model/Hidden Markov model (GMM-HMM) technology based on generative models of speech trained discriminatively.
+[src:tensorflow/deep-learning-p01] Key difficulties have been analyzed, including gradient diminishing and weak temporal correlation structure in neural predictive models.
+[src:tensorflow/deep-learning-p01] Additional difficulties were the lack of training data and limited computing power.
+[src:tensorflow/deep-learning-p01] Most speech recognition researchers moved away from neural nets to pursue generative modeling.
+[src:tensorflow/deep-learning-p01] An exception was at SRI International in the late 1990s.
+[src:tensorflow/deep-learning-p01] Funded by the US government's NSA and DARPA, SRI researched in speech and speaker recognition.
+[src:tensorflow/deep-learning-p01] The speaker recognition team led by Larry Heck reported significant success with deep neural networks in speech processing in the 1998 NIST Speaker Recognition benchmark.
+[src:tensorflow/deep-learning-p01] It was deployed in the Nuance Verifier, representing the first major industrial application of deep learning.
+[src:tensorflow/deep-learning-p01] The raw features of speech, waveforms, later produced excellent larger-scale results.
+[src:tensorflow/deep-learning-p01] In 2003, LSTM became competitive with traditional speech recognizers on certain tasks.
+[src:tensorflow/deep-learning-p01] In 2006, Alex Graves, Santiago Fernández, Faustino Gomez, and Schmidhuber combined it with connectionist temporal classification (CTC) in stacks of LSTMs.
+[src:tensorflow/deep-learning-p01] In 2009, it became the first RNN to win a pattern recognition contest, in connected handwriting recognition.
+[src:tensorflow/deep-learning-p01] In 2006, publications by Geoff Hinton, Ruslan Salakhutdinov, Osindero and Teh deep belief networks were developed for generative modeling.
+[src:tensorflow/deep-learning-p01] They are trained by training one restricted Boltzmann machine, then freezing it and training another one on top of the first one, and so on, then optionally fine-tuned using supervised backpropagation.
+[src:tensorflow/deep-learning-p01] They could model high-dimensional probability distributions, such as the distribution of MNIST images, but convergence was slow.
+[src:tensorflow/deep-learning-p01] The impact of deep learning in industry began in the early 2000s, when CNNs already processed an estimated 10% to 20% of all the checks written in the US, according to Yann LeCun.
+[src:tensorflow/deep-learning-p01] Industrial applications of deep learning to large-scale speech recognition started around 2010.
+[src:tensorflow/deep-learning-p01] The 2009 NIPS Workshop on Deep Learning for Speech Recognition was motivated by the limitations of deep generative models of speech, and the possibility that given more capable hardware and large-scale data sets that deep neural nets might become practical.
+[src:tensorflow/deep-learning-p01] It was believed that pre-training DNNs using generative models of deep belief nets (DBN) would overcome the main difficulties of neural nets.
+[src:tensorflow/deep-learning-p01] The nature of the recognition errors produced by the two types of systems was characteristically different, offering technical insights into how to integrate deep learning into the existing highly efficient, run-time speech decoding system deployed by all major speech recognition systems.
+[src:tensorflow/deep-learning-p01] Analysis around 2009–2010, contrasting the GMM (and other generative speech models) vs.
+[src:tensorflow/deep-learning-p01] DNN models, stimulated early industrial investment in deep learning for speech recognition.
+[src:tensorflow/deep-learning-p01] That analysis was done with comparable performance (less than 1.5% in error rate) between discriminative DNNs and generative models.
+[src:tensorflow/deep-learning-p01] In 2010, researchers extended deep learning from TIMIT to large vocabulary speech recognition, by adopting large output layers of the DNN based on context-dependent HMM states constructed by decision trees.
+[src:tensorflow/deep-learning-p01] The deep learning revolution started around CNN- and GPU-based computer vision.
+[src:tensorflow/deep-learning-p01] Although CNNs trained by backpropagation had been around for decades and GPU implementations of NNs for years, including CNNs, faster implementations of CNNs on GPUs were needed to progress on computer vision.
+[src:tensorflow/deep-learning-p01] Later, as deep learning becomes widespread, specialized hardware and algorithm optimizations were developed specifically for deep learning.
+[src:tensorflow/deep-learning-p01] A key advance for the deep learning revolution was hardware advances, especially GPU.
+[src:tensorflow/deep-learning-p01] In 2009, Raina, Madhavan, and Andrew Ng reported a 100M deep belief network trained on 30 Nvidia GeForce GTX 280 GPUs, an early demonstration of GPU-based deep learning.
+[src:tensorflow/deep-learning-p01] They reported up to 70 times faster training.
+[src:tensorflow/deep-learning-p01] In 2011, a CNN named *DanNet* by Dan Ciresan, Ueli Meier, Jonathan Masci, Luca Maria Gambardella, and Jürgen Schmidhuber achieved for the first time superhuman performance in a visual pattern recognition contest, outperforming traditional methods by a factor of 3.
+[src:tensorflow/deep-learning-p01] They also showed how max-pooling CNNs on GPU improved performance significantly.
+[src:tensorflow/deep-learning-p01] In 2012, Andrew Ng and Jeff Dean created an FNN that learned to recognize higher-level concepts, such as cats, only from watching unlabeled images taken from YouTube videos.
+[src:tensorflow/deep-learning-p01] In October 2012, AlexNet by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton won the large-scale ImageNet competition by a significant margin over shallow machine learning methods.
+[src:tensorflow/deep-learning-p01] Further incremental improvements included the VGG-16 network by Karen Simonyan and Andrew Zisserman and Google's Inceptionv3.
+[src:tensorflow/deep-learning-p01] The success in image classification was then extended to the more challenging task of generating descriptions (captions) for images, often as a combination of CNNs and LSTMs.
+[src:tensorflow/deep-learning-p01] In 2014, the state of the art was training "very deep neural network" with 20 to 30 layers.
+[src:tensorflow/deep-learning-p01] Stacking too many layers led to a steep reduction in training accuracy, known as the "degradation" problem.
+[src:tensorflow/deep-learning-p01] In 2015, two techniques were developed to train very deep networks: the highway network was published in May 2015, and the residual neural network (ResNet) in Dec 2015.
+[src:tensorflow/deep-learning-p01] ResNet behaves like an open-gated Highway Net.
+[src:tensorflow/deep-learning-p01] Around the same time, deep learning started impacting the field of art.
+[src:tensorflow/deep-learning-p01] Early examples included Google DeepDream (2015), and neural style transfer (2015), both of which were based on pretrained image classification neural networks, such as VGG-19.
+[src:tensorflow/deep-learning-p01] Generative adversarial network (GAN) by (Ian Goodfellow et al., 2014) (based on Jürgen Schmidhuber's principle of artificial curiosity) became state of the art in generative modeling during 2014-2018 period.
+[src:tensorflow/deep-learning-p01] Excellent image quality is achieved by Nvidia's StyleGAN (2018) based on the Progressive GAN by Tero Karras et al.
+[src:tensorflow/deep-learning-p01] Here the GAN generator is grown from small to large scale in a pyramidal fashion.
+[src:tensorflow/deep-learning-p01] Image generation by GAN reached popular success, and provoked discussions concerning deepfakes.
+[src:tensorflow/deep-learning-p01] Diffusion models (2015) eclipsed GANs in generative modeling since then, with systems such as DALL·E 2 (2022) and Stable Diffusion (2022).
+[src:tensorflow/deep-learning-p01] In 2015, Google's speech recognition improved by 49% by an LSTM-based model, which they made available through Google Voice Search on smartphone.
+[src:tensorflow/deep-learning-p01] Deep learning is part of state-of-the-art systems in various disciplines, particularly computer vision and automatic speech recognition (ASR).
+[src:tensorflow/deep-learning-p01] Results on commonly used evaluation sets such as TIMIT (ASR) and MNIST (image classification), as well as a range of large-vocabulary speech recognition tasks have steadily improved.
+[src:tensorflow/deep-learning-p01] Convolutional neural networks were superseded for ASR by LSTM. but are more successful in computer vision.
+[src:tensorflow/deep-learning-p01] Yoshua Bengio, Geoffrey Hinton and Yann LeCun were awarded the 2018 Turing Award for "conceptual and engineering breakthroughs that have made deep neural networks a critical component of computing".
+[src:tensorflow/deep-learning-p01] The starfish match with a ringed texture and a star outline, whereas most sea urchins match with a striped texture and oval shape.
+[src:tensorflow/deep-learning-p01] However, the instance of a ring textured sea urchin creates a weakly weighted association between them.
+[src:tensorflow/deep-learning-p01] The network correctly detects the starfish.
+[src:tensorflow/deep-learning-p01] However, the weakly weighted association between ringed texture and sea urchin also confers a weak signal to the latter from one of two intermediate nodes.
+[src:tensorflow/deep-learning-p01] that was not included in the training gives a weak signal for the oval shape, also resulting in a weak signal for the sea urchin output.
+[src:tensorflow/deep-learning-p01] In reality, textures and outlines would not be represented by single nodes, but rather by associated weight patterns of multiple nodes.
+[src:tensorflow/deep-learning-p01] An ANN is based on a collection of connected units called artificial neurons, (analogous to biological neurons in a biological brain).
+[src:tensorflow/deep-learning-p01] Each connection (synapse) between neurons can transmit a signal to another neuron.
+[src:tensorflow/deep-learning-p01] The receiving (postsynaptic) neuron can process the signal(s) and then signal downstream neurons connected to it.
+[src:tensorflow/deep-learning-p01] Neurons may have state, generally represented by real numbers, typically between 0 and 1.
+[src:tensorflow/deep-learning-p01] Neurons and synapses may also have a weight that varies as learning proceeds, which can increase or decrease the strength of the signal that it sends downstream.
+[src:tensorflow/deep-learning-p01] Typically, neurons are organized in layers.
+[src:tensorflow/deep-learning-p01] Different layers may perform different kinds of transformations on their inputs.
+[src:tensorflow/deep-learning-p01] Signals travel from the first (input), to the last (output) layer, possibly after traversing the layers multiple times.
+[src:tensorflow/deep-learning-p01] The original goal of the neural network approach was to solve problems in the same way that a human brain would.
+[src:tensorflow/deep-learning-p01] Over time, attention focused on matching specific mental abilities, leading to deviations from biology such as backpropagation, or passing information in the reverse direction and adjusting the network to reflect that information.
+[src:tensorflow/deep-learning-p01] Neural networks have been used on a variety of tasks, including computer vision, speech recognition, machine translation, social network filtering, playing board and video games and medical diagnosis.
+[src:tensorflow/deep-learning-p01] As of 2017, neural networks typically have a few thousand to a few million units and millions of connections.
+[src:tensorflow/deep-learning-p01] Despite this number being several order of magnitude less than the number of neurons on a human brain, these networks can perform many tasks at a level beyond that of humans (e.g., recognizing faces, or playing "Go").
+[src:tensorflow/deep-learning-p01] A **deep neural network** (**DNN**) is an artificial neural network with multiple layers between the input and output layers.
+[src:tensorflow/deep-learning-p01] There are different types of neural networks but they always consist of the same components: neurons, synapses, weights, biases, and functions.
+[src:tensorflow/deep-learning-p01] These components as a whole function in a way that mimics functions of the human brain, and can be trained like any other ML algorithm.
+[src:tensorflow/deep-learning-p01] For example, a DNN that is trained to recognize dog breeds will go over the given image and calculate the probability that the dog in the image is a certain breed.
+[src:tensorflow/deep-learning-p01] The user can review the results and select which probabilities the network should display (above a certain threshold, etc.) and return the proposed label.
+[src:tensorflow/deep-learning-p01] Each mathematical manipulation as such is considered a layer, and complex DNN have many layers, hence the name "deep" networks.
+[src:tensorflow/deep-learning-p01] DNNs can model complex non-linear relationships.
+[src:tensorflow/deep-learning-p01] DNN architectures generate compositional models where the object is expressed as a layered composition of primitives.
+[src:tensorflow/deep-learning-p01] The extra layers enable composition of features from lower layers, potentially modeling complex data with fewer units than a similarly performing shallow network.
+[src:tensorflow/deep-learning-p01] For instance, it was proved that sparse multivariate polynomials are exponentially easier to approximate with DNNs than with shallow networks.
+[src:tensorflow/deep-learning-p01] Deep architectures include many variants of a few basic approaches.
+[src:tensorflow/deep-learning-p01] Each architecture has found success in specific domains.
+[src:tensorflow/deep-learning-p01] It is not always possible to compare the performance of multiple architectures, unless they have been evaluated on the same data sets.
+[src:tensorflow/deep-learning-p01] DNNs are typically feedforward networks in which data flows from the input layer to the output layer without looping back.
+[src:tensorflow/deep-learning-p01] At first, the DNN creates a map of virtual neurons and assigns random numerical values, or "weights", to connections between them.
+[src:tensorflow/deep-learning-p01] The weights and inputs are multiplied and return an output between 0 and 1.
+[src:tensorflow/deep-learning-p01] If the network did not accurately recognize a particular pattern, an algorithm would adjust the weights.
+[src:tensorflow/deep-learning-p01] That way the algorithm can make certain parameters more influential, until it determines the correct mathematical manipulation to fully process the data.
+[src:tensorflow/deep-learning-p01] Recurrent neural networks, in which data can flow in any direction, are used for applications such as language modeling.
+[src:tensorflow/deep-learning-p01] Long short-term memory is particularly effective for this use.
+[src:tensorflow/deep-learning-p01] Convolutional neural networks (CNNs) are used in computer vision.
+[src:tensorflow/deep-learning-p01] CNNs also have been applied to acoustic modeling for automatic speech recognition (ASR).
+[src:tensorflow/deep-learning-p01] As with ANNs, many issues can arise with naively trained DNNs.
+[src:tensorflow/deep-learning-p01] Two common issues are overfitting and computation time.
+[src:tensorflow/deep-learning-p01] DNNs are prone to overfitting because of the added layers of abstraction, which allow them to model rare dependencies in the training data.
+[src:tensorflow/deep-learning-p01] Regularization methods such as Ivakhnenko's unit pruning or weight decay ( $\ell _{2}$ -regularization) or sparsity ( $\ell _{1}$ -regularization) can be applied during training to combat overfitting.
+[src:tensorflow/deep-learning-p01] Alternatively dropout regularization randomly omits units from the hidden layers during training.
+[src:tensorflow/deep-learning-p01] This helps to exclude rare dependencies.
+[src:tensorflow/deep-learning-p01] Another interesting recent development is research into models of just enough complexity through an estimation of the intrinsic complexity of the task being modelled.
+[src:tensorflow/deep-learning-p01] This approach has been successfully applied for multivariate time series prediction tasks such as traffic prediction.
+[src:tensorflow/deep-learning-p01] Finally, data can be augmented via methods such as cropping and rotating such that smaller training sets can be increased in size to reduce the chances of overfitting.
+[src:tensorflow/deep-learning-p01] DNNs must consider many training parameters, such as the size (number of layers and number of units per layer), the learning rate, and initial weights.
+[src:tensorflow/deep-learning-p01] Sweeping through the parameter space for optimal parameters may not be feasible due to the cost in time and computational resources.
+[src:tensorflow/deep-learning-p01] Various tricks, such as batching (computing the gradient on several training examples at once rather than individual examples) speed up computation.
+[src:tensorflow/deep-learning-p01] Large processing capabilities of many-core architectures (such as GPUs or the Intel Xeon Phi) have produced significant speedups in training, because of the suitability of such processing architectures for the matrix and vector computations.
+[src:tensorflow/deep-learning-p01] Alternatively, engineers may look for other types of neural networks with more straightforward and convergent training algorithms.
+[src:tensorflow/deep-learning-p01] CMAC (cerebellar model articulation controller) is one such kind of neural network.
+[src:tensorflow/deep-learning-p01] It doesn't require learning rates or randomized initial weights.
+[src:tensorflow/deep-learning-p01] The training process can be guaranteed to converge in one step with a new batch of data, and the computational complexity of the training algorithm is linear with respect to the number of neurons involved.
+[src:tensorflow/deep-learning-p01] Since the 2010s, advances in both machine learning algorithms and computer hardware have led to more efficient methods for training deep neural networks that contain many layers of non-linear hidden units and a very large output layer.
+[src:tensorflow/deep-learning-p01] By 2019, graphics processing units (GPUs), often with AI-specific enhancements, had displaced CPUs as the dominant method for training large-scale commercial cloud AI .
+[src:tensorflow/deep-learning-p01] OpenAI estimated the hardware computation used in the largest deep learning projects from AlexNet (2012) to AlphaZero (2017) and found a 300,000-fold increase in the amount of computation required, with a doubling-time trendline of 3.4 months.
+[src:tensorflow/deep-learning-p01] Special electronic circuits called deep learning processors were designed to speed up deep learning algorithms.
+[src:tensorflow/deep-learning-p01] Deep learning processors include neural processing units (NPUs) in Huawei cellphones and cloud computing servers such as tensor processing units (TPU) in the Google Cloud Platform.
+[src:tensorflow/deep-learning-p01] Cerebras Systems has also built a dedicated system to handle large deep learning models, the CS-2, based on the largest processor in the industry, the second-generation Wafer Scale Engine (WSE-2).
+[src:tensorflow/deep-learning-p01] Atomically thin semiconductors are considered promising for energy-efficient deep learning hardware where the same basic device structure is used for both logic operations and data storage.
+[src:tensorflow/deep-learning-p01] In 2020, Marega et al. published experiments with a large-area active channel material for developing logic-in-memory devices and circuits based on floating-gate field-effect transistors (FGFETs).
+[src:tensorflow/deep-learning-p01] Feldmann et al. proposed an integrated photonic hardware accelerator for parallel convolutional processing.
+[src:tensorflow/deep-learning-p01] The authors identify two key advantages of integrated photonics over its electronic counterparts: (1) massively parallel data transfer through wavelength division multiplexing in conjunction with frequency combs, and (2) extremely high data modulation speeds.
+[src:tensorflow/deep-learning-p01] Their system can execute trillions of multiply-accumulate operations per second, indicating the potential of integrated photonics in data-heavy AI applications.
+[src:tensorflow/deep-learning-p02] Large-scale automatic speech recognition is the first and most convincing successful case of deep learning.
+[src:tensorflow/deep-learning-p02] LSTM RNNs can learn "Very Deep Learning" tasks that involve multi-second intervals containing speech events separated by thousands of discrete time steps, where one time step corresponds to about 10 ms.
+[src:tensorflow/deep-learning-p02] LSTM with forget gates is competitive with traditional speech recognizers on certain tasks.
+[src:tensorflow/deep-learning-p02] The initial success in speech recognition was based on small-scale recognition tasks based on TIMIT.
+[src:tensorflow/deep-learning-p02] The data set contains 630 speakers from eight major dialects of American English, where each speaker reads 10 sentences.
+[src:tensorflow/deep-learning-p02] Its small size lets many configurations be tried.
+[src:tensorflow/deep-learning-p02] More importantly, the TIMIT task concerns phone-sequence recognition, which, unlike word-sequence recognition, allows weak phone bigram language models.
+[src:tensorflow/deep-learning-p02] This lets the strength of the acoustic modeling aspects of speech recognition be more easily analyzed.
+[src:tensorflow/deep-learning-p02] The error rates listed below, including these early results and measured as percent phone error rates (PER), have been summarized since 1991.
+[src:tensorflow/deep-learning-p02] More recent speech recognition models use Transformers or Temporal Convolution Networks with significant success and widespread applications.
+[src:tensorflow/deep-learning-p02] All major commercial speech recognition systems (e.g., Microsoft Cortana, Xbox, Skype Translator, Amazon Alexa, Google Now, Apple Siri, Baidu and iFlyTek voice search, and a range of Nuance speech products, etc.) are based on deep learning.
+[src:tensorflow/deep-learning-p02] A common evaluation set for image classification is the MNIST database data set.
+[src:tensorflow/deep-learning-p02] MNIST is composed of handwritten digits and includes 60,000 training examples and 10,000 test examples.
+[src:tensorflow/deep-learning-p02] As with TIMIT, its small size lets users test multiple configurations.
+[src:tensorflow/deep-learning-p02] A comprehensive list of results on this set is available.
+[src:tensorflow/deep-learning-p02] Deep learning-based image recognition has become "superhuman", producing more accurate results than human contestants.
+[src:tensorflow/deep-learning-p02] This first occurred in 2011 in recognition of traffic signs, and in 2014, with recognition of human faces.
+[src:tensorflow/deep-learning-p02] Deep learning-trained vehicles now interpret 360° camera views.
+[src:tensorflow/deep-learning-p02] Another example is Facial Dysmorphology Novel Analysis (FDNA) used to analyze cases of human malformation connected to a large database of genetic syndromes.
+[src:tensorflow/deep-learning-p02] Closely related to the progress that has been made in image recognition is the increasing application of deep learning techniques to various visual art tasks.
+[src:tensorflow/deep-learning-p02] Neural networks have been used for implementing language models since the early 2000s.
+[src:tensorflow/deep-learning-p02] LSTM helped to improve machine translation and language modeling.
+[src:tensorflow/deep-learning-p02] Other key techniques in this field are negative sampling and word embedding.
+[src:tensorflow/deep-learning-p02] Word embedding, such as *word2vec*, can be thought of as a representational layer in a deep learning architecture that transforms an atomic word into a positional representation of the word relative to other words in the dataset; the position is represented as a point in a vector space.
+[src:tensorflow/deep-learning-p02] Using word embedding as an RNN input layer allows the network to parse sentences and phrases using an effective compositional vector grammar.
+[src:tensorflow/deep-learning-p02] A compositional vector grammar can be thought of as probabilistic context free grammar (PCFG) implemented by an RNN.
+[src:tensorflow/deep-learning-p02] Recursive auto-encoders built atop word embeddings can assess sentence similarity and detect paraphrasing.
+[src:tensorflow/deep-learning-p02] Recent developments generalize word embedding to sentence embedding.
+[src:tensorflow/deep-learning-p02] Google Translate (GT) uses a large end-to-end long short-term memory (LSTM) network.
+[src:tensorflow/deep-learning-p02] Google Neural Machine Translation (GNMT) uses an example-based machine translation method in which the system "learns from millions of examples".
+[src:tensorflow/deep-learning-p02] It translates "whole sentences at a time, rather than pieces".
+[src:tensorflow/deep-learning-p02] Google Translate supports over one hundred languages.
+[src:tensorflow/deep-learning-p02] The network encodes the "semantics of the sentence rather than simply memorizing phrase-to-phrase translations".
+[src:tensorflow/deep-learning-p02] GT uses English as an intermediate between most language pairs.
+[src:tensorflow/deep-learning-p02] A large percentage of candidate drugs fail to win regulatory approval.
+[src:tensorflow/deep-learning-p02] These failures are caused by insufficient efficacy (on-target effect), undesired interactions (off-target effects), or unanticipated toxic effects.
+[src:tensorflow/deep-learning-p02] Research has explored use of deep learning to predict the biomolecular targets, off-targets, and toxic effects of environmental chemicals in nutrients, household products and drugs.
+[src:tensorflow/deep-learning-p02] AtomNet is a deep learning system for structure-based rational drug design.
+[src:tensorflow/deep-learning-p02] AtomNet was used to predict novel candidate biomolecules for disease targets such as the Ebola virus and multiple sclerosis.
+[src:tensorflow/deep-learning-p02] In 2017 graph neural networks were used for the first time to predict various properties of molecules in a large toxicology data set.
+[src:tensorflow/deep-learning-p02] In 2019, generative neural networks were used to produce molecules that were validated experimentally all the way into mice.
+[src:tensorflow/deep-learning-p02] Recommendation systems have used deep learning to extract meaningful features for a latent factor model for content-based music and journal recommendations.
+[src:tensorflow/deep-learning-p02] Multi-view deep learning has been applied for learning user preferences from multiple domains.
+[src:tensorflow/deep-learning-p02] The model uses a hybrid collaborative and content-based approach and enhances recommendations in multiple tasks.
+[src:tensorflow/deep-learning-p02] An autoencoder ANN was used in bioinformatics, to predict gene ontology annotations and gene-function relationships.
+[src:tensorflow/deep-learning-p02] In medical informatics, deep learning was used to predict sleep quality based on data from wearables and predictions of health complications from electronic health record data.
+[src:tensorflow/deep-learning-p02] Deep neural networks have shown unparalleled performance in predicting protein structure, according to the sequence of the amino acids that make it up.
+[src:tensorflow/deep-learning-p02] In 2020, AlphaFold, a deep-learning based system, achieved a level of accuracy significantly higher than all previous computational methods.
+[src:tensorflow/deep-learning-p02] Deep neural networks can be used to estimate the entropy of a stochastic process through an arrangement called a Neural Joint Entropy Estimator (NJEE).
+[src:tensorflow/deep-learning-p02] Such an estimation provides insights on the effects of input random variables on an independent random variable.
+[src:tensorflow/deep-learning-p02] Practically, the DNN is trained as a classifier that maps an input vector or matrix X to an output probability distribution over the possible classes of random variable Y, given input X.
+[src:tensorflow/deep-learning-p02] For example, in image classification tasks, the NJEE maps a vector of pixels' color values to probabilities over possible image classes.
+[src:tensorflow/deep-learning-p02] In practice, the probability distribution of Y is obtained by a Softmax layer with number of nodes that is equal to the alphabet size of Y.
+[src:tensorflow/deep-learning-p02] NJEE uses continuously differentiable activation functions, such that the conditions for the universal approximation theorem holds.
+[src:tensorflow/deep-learning-p02] It is shown that this method provides a strongly consistent estimator and outperforms other methods in cases of large alphabet sizes.
+[src:tensorflow/deep-learning-p02] Deep learning has been shown to produce competitive results in medical applications such as cancer cell classification, lesion detection, organ segmentation and image enhancement.
+[src:tensorflow/deep-learning-p02] Modern deep learning tools demonstrate the high accuracy of detecting various diseases and the helpfulness of their use by specialists to improve the diagnosis efficiency.
+[src:tensorflow/deep-learning-p02] Finding the appropriate mobile audience for mobile advertising is always challenging, since many data points must be considered and analyzed before a target segment can be created and used in ad serving by any ad server.
+[src:tensorflow/deep-learning-p02] Deep learning has been used to interpret large, many-dimensioned advertising datasets.
+[src:tensorflow/deep-learning-p02] Many data points are collected during the request/serve/click internet advertising cycle.
+[src:tensorflow/deep-learning-p02] This information can form the basis of machine learning to improve ad selection.
+[src:tensorflow/deep-learning-p02] Deep learning has been successfully applied to inverse problems such as denoising, super-resolution, inpainting, and film colorization.
+[src:tensorflow/deep-learning-p02] These applications include learning methods such as "Shrinkage Fields for Effective Image Restoration" which trains on an image dataset, and Deep Image Prior, which trains on the image that needs restoration.
+[src:tensorflow/deep-learning-p02] Deep learning is being applied to financial fraud detection, tax evasion detection, and anti-money laundering.
+[src:tensorflow/deep-learning-p02] In November 2023, researchers at Google DeepMind and Lawrence Berkeley National Laboratory announced that they had developed an AI system known as GNoME.
+[src:tensorflow/deep-learning-p02] This system has contributed to materials science by discovering over 2 million new materials within a relatively short timeframe.
+[src:tensorflow/deep-learning-p02] GNoME employs deep learning techniques to efficiently explore potential material structures, achieving a significant increase in the identification of stable inorganic crystal structures.
+[src:tensorflow/deep-learning-p02] The system's predictions were validated through autonomous robotic experiments, demonstrating a noteworthy success rate of 71%.
+[src:tensorflow/deep-learning-p02] The data of newly discovered materials is publicly available through the Materials Project database, offering researchers the opportunity to identify materials with desired properties for various applications.
+[src:tensorflow/deep-learning-p02] This development has implications for the future of scientific discovery and the integration of AI in material science research, potentially expediting material innovation and reducing costs in product development.
+[src:tensorflow/deep-learning-p02] The use of AI and deep learning suggests the possibility of minimizing or eliminating manual lab experiments and allowing scientists to focus more on the design and analysis of unique compounds.
+[src:tensorflow/deep-learning-p02] The United States Department of Defense applied deep learning to train robots in new tasks through observation.
+[src:tensorflow/deep-learning-p02] Physics-informed neural networks have been used to solve partial differential equations in both forward and inverse problems in a data driven manner.
+[src:tensorflow/deep-learning-p02] One example is the reconstructing fluid flow governed by the Navier-Stokes equations.
+[src:tensorflow/deep-learning-p02] Using physics informed neural networks does not require the often expensive mesh generation that conventional CFD methods rely on.
+[src:tensorflow/deep-learning-p02] It is evident that geometric and physical constraints have a synergistic effect on neural PDE surrogates, thereby enhancing their efficacy in predicting stable and super long rollouts.
+[src:tensorflow/deep-learning-p02] Deep backward stochastic differential equation method is a numerical method that combines deep learning with Backward stochastic differential equation (BSDE).
+[src:tensorflow/deep-learning-p02] This method is particularly useful for solving high-dimensional problems in financial mathematics.
+[src:tensorflow/deep-learning-p02] By leveraging the powerful function approximation capabilities of deep neural networks, deep BSDE addresses the computational challenges faced by traditional numerical methods in high-dimensional settings.
+[src:tensorflow/deep-learning-p02] Specifically, traditional methods like finite difference methods or Monte Carlo simulations often struggle with the curse of dimensionality, where computational cost increases exponentially with the number of dimensions.
+[src:tensorflow/deep-learning-p02] Deep BSDE methods, however, employ deep neural networks to approximate solutions of high-dimensional partial differential equations (PDEs), effectively reducing the computational burden.
+[src:tensorflow/deep-learning-p02] In addition, the integration of Physics-informed neural networks (PINNs) into the deep BSDE framework enhances its capability by embedding the underlying physical laws directly into the neural network architecture.
+[src:tensorflow/deep-learning-p02] This ensures that the solutions not only fit the data but also adhere to the governing stochastic differential equations.
+[src:tensorflow/deep-learning-p02] PINNs leverage the power of deep learning while respecting the constraints imposed by the physical models, resulting in more accurate and reliable solutions for financial mathematics problems.
+[src:tensorflow/deep-learning-p02] Image reconstruction is the reconstruction of the underlying images from the image-related measurements.
+[src:tensorflow/deep-learning-p02] Several works showed the better and superior performance of the deep learning methods compared to analytical methods for various applications, e.g., spectral imaging and ultrasound imaging.
+[src:tensorflow/deep-learning-p02] Traditional weather prediction systems solve a very complex system of partial differential equations.
+[src:tensorflow/deep-learning-p02] GraphCast is a deep learning based model, trained on a long history of weather data to predict how weather patterns change over time.
+[src:tensorflow/deep-learning-p02] It is able to predict weather conditions for up to 10 days globally, at a very detailed level, and in under a minute, with precision similar to state of the art systems.
+[src:tensorflow/deep-learning-p02] An epigenetic clock is a biochemical test that can be used to measure age.
+[src:tensorflow/deep-learning-p02] Galkin et al. used deep neural networks to train an epigenetic aging clock of unprecedented accuracy using >6,000 blood samples.
+[src:tensorflow/deep-learning-p02] The clock uses information from 1000 CpG sites and predicts people with certain conditions older than healthy controls: IBD, frontotemporal dementia, ovarian cancer, obesity.
+[src:tensorflow/deep-learning-p02] The aging clock was planned to be released for public use in 2021 by an Insilico Medicine spinoff company Deep Longevity.
+[src:tensorflow/deep-learning-p02] Deep learning is closely related to a class of theories of brain development (specifically, neocortical development) proposed by cognitive neuroscientists in the early 1990s.
+[src:tensorflow/deep-learning-p02] These developmental theories were instantiated in computational models, making them predecessors of deep learning systems.
+[src:tensorflow/deep-learning-p02] These developmental models share the property that various proposed learning dynamics in the brain (e.g., a wave of nerve growth factor) support the self-organization somewhat analogous to the neural networks utilized in deep learning models.
+[src:tensorflow/deep-learning-p02] Like the neocortex, neural networks employ a hierarchy of layered filters in which each layer considers information from a prior layer (or the operating environment), and then passes its output (and possibly the original input), to other layers.
+[src:tensorflow/deep-learning-p02] This process yields a self-organizing stack of transducers, well-tuned to their operating environment.
+[src:tensorflow/deep-learning-p02] A 1995 description stated, "...the infant's brain seems to organize itself under the influence of waves of so-called trophic-factors ... different regions of the brain become connected sequentially, with one layer of tissue maturing before another and so on until the whole brain is mature".
+[src:tensorflow/deep-learning-p02] A variety of approaches have been used to investigate the plausibility of deep learning models from a neurobiological perspective.
+[src:tensorflow/deep-learning-p02] On the one hand, several variants of the backpropagation algorithm have been proposed in order to increase its processing realism.
+[src:tensorflow/deep-learning-p02] Other researchers have argued that unsupervised forms of deep learning, such as those based on hierarchical generative models and deep belief networks, may be closer to biological reality.
+[src:tensorflow/deep-learning-p02] In this respect, generative neural network models have been related to neurobiological evidence about sampling-based processing in the cerebral cortex.
+[src:tensorflow/deep-learning-p02] Although a systematic comparison between the human brain organization and the neuronal encoding in deep networks has not yet been established, several analogies have been reported.
+[src:tensorflow/deep-learning-p02] For example, the computations performed by deep learning units could be similar to those of actual neurons and neural populations.
+[src:tensorflow/deep-learning-p02] Similarly, the representations developed by deep learning models are similar to those measured in the primate visual system both at the single-unit and at the population levels.
+[src:tensorflow/deep-learning-p02] Facebook's AI lab performs tasks such as automatically tagging uploaded pictures with the names of the people in them.
+[src:tensorflow/deep-learning-p02] Google's DeepMind Technologies developed a system capable of learning how to play Atari video games using only pixels as data input.
+[src:tensorflow/deep-learning-p02] In 2015 they demonstrated their AlphaGo system, which learned the game of Go well enough to beat a professional Go player.
+[src:tensorflow/deep-learning-p02] Google Translate uses a neural network to translate between more than 100 languages.
+[src:tensorflow/deep-learning-p02] In 2017, Covariant.ai was launched, which focuses on integrating deep learning into factories.
+[src:tensorflow/deep-learning-p02] First developed as TAMER, a new algorithm called Deep TAMER was later introduced in 2018 during a collaboration between U.S.
+[src:tensorflow/deep-learning-p02] Army Research Laboratory (ARL) and UT researchers.
+[src:tensorflow/deep-learning-p02] Deep TAMER used deep learning to provide a robot with the ability to learn new tasks through observation.
+[src:tensorflow/deep-learning-p02] Using Deep TAMER, a robot learned a task with a human trainer, watching video streams or observing a human perform a task in-person.
+[src:tensorflow/deep-learning-p02] The robot later practiced the task with the help of some coaching from the trainer, who provided feedback such as "good job" and "bad job".
+[src:tensorflow/deep-learning-p02] Deep learning has attracted both criticism and comment, in some cases from outside the field of computer science.
+[src:tensorflow/deep-learning-p02] A main criticism concerns the lack of theory surrounding some methods.
+[src:tensorflow/deep-learning-p02] Learning in the most common deep architectures is implemented using well-understood gradient descent.
+[src:tensorflow/deep-learning-p02] However, the theory surrounding other algorithms, such as contrastive divergence is less clear.
+[src:tensorflow/deep-learning-p02] What is it approximating?) Deep learning methods are often looked at as a black box, with most confirmations done empirically, rather than theoretically.
+[src:tensorflow/deep-learning-p02] With the support of Innovation Diffusion Theory (IDT), a study analyzed the diffusion of deep learning in BRICS and OECD countries using data from Google Trends.
+[src:tensorflow/deep-learning-p02] Some deep learning architectures display problematic behaviors, such as confidently classifying unrecognizable images as belonging to a familiar category of ordinary images (2014) and misclassifying minuscule perturbations of correctly classified images (2013).
+[src:tensorflow/deep-learning-p02] Goertzel hypothesized that these behaviors are due to limitations in their internal representations and that these limitations would inhibit integration into heterogeneous multi-component artificial general intelligence (AGI) architectures.
+[src:tensorflow/deep-learning-p02] These issues may possibly be addressed by deep learning architectures that internally form states homologous to image-grammar decompositions of observed entities and events.
+[src:tensorflow/deep-learning-p02] Learning a grammar (visual or linguistic) from training data would be equivalent to restricting the system to commonsense reasoning that operates on concepts in terms of grammatical production rules and is a basic goal of both human language acquisition and artificial intelligence (AI).
+[src:tensorflow/deep-learning-p02] As deep learning moves from the lab into the world, research and experience show that artificial neural networks are vulnerable to hacks and deception.
+[src:tensorflow/deep-learning-p02] By identifying patterns that these systems use to function, attackers can modify inputs to ANNs in such a way that the ANN finds a match that human observers would not recognize.
+[src:tensorflow/deep-learning-p02] For example, an attacker can make subtle changes to an image such that the ANN finds a match even though the image looks to a human nothing like the search target.
+[src:tensorflow/deep-learning-p02] Such manipulation is termed an "adversarial attack".
+[src:tensorflow/deep-learning-p02] In 2016 researchers used one ANN to doctor images in trial and error fashion, identify another's focal points, and thereby generate images that deceived it.
+[src:tensorflow/deep-learning-p02] The modified images looked no different to human eyes.
+[src:tensorflow/deep-learning-p02] Another group showed that printouts of doctored images then photographed successfully tricked an image classification system.
+[src:tensorflow/deep-learning-p02] One defense is reverse image search, in which a possible fake image is submitted to a site such as TinEye that can then find other instances of it.
+[src:tensorflow/deep-learning-p02] Another group showed that certain psychedelic spectacles could fool a facial recognition system into thinking ordinary people were celebrities, potentially allowing one person to impersonate another.
+[src:tensorflow/deep-learning-p02] In 2017 researchers added stickers to stop signs and caused an ANN to misclassify them.
+[src:tensorflow/deep-learning-p02] ANNs can however be further trained to detect attempts at deception, potentially leading attackers and defenders into an arms race similar to the kind that already defines the malware defense industry.
+[src:tensorflow/deep-learning-p02] ANNs have been trained to defeat ANN-based anti-malware software by repeatedly attacking a defense with malware that was continually altered by a genetic algorithm until it tricked the anti-malware while retaining its ability to damage the target.
+[src:tensorflow/deep-learning-p02] In 2016, another group demonstrated that certain sounds could make the Google Now voice command system open a particular web address, and hypothesized that this could "serve as a stepping stone for further attacks (e.g., opening a web page hosting drive-by malware)".
+[src:tensorflow/deep-learning-p02] In "data poisoning", false data is continually smuggled into a machine learning system's training set to prevent it from achieving mastery.
+[src:tensorflow/deep-learning-p02] The deep learning systems that are trained using supervised learning often rely on data that is created or annotated by humans, or both.
+[src:tensorflow/deep-learning-p02] It has been argued that not only low-paid clickwork (such as on Amazon Mechanical Turk) is regularly deployed for this purpose, but also implicit forms of human microwork that are often not recognized as such.
+[src:tensorflow/deep-learning-p02] The philosopher Rainer Mühlhoff distinguishes five types of "machinic capture" of human microwork to generate training data: (1) gamification (the embedding of annotation or computation tasks in the flow of a game), (2) "trapping and tracking" (e.g.
+[src:tensorflow/deep-learning-p02] CAPTCHAs for image recognition or click-tracking on Google search results pages), (3) exploitation of social motivations (e.g. tagging faces on Facebook to obtain labeled facial images), (4) information mining (e.g. by leveraging quantified-self devices such as activity trackers) and (5) clickwork.
+[src:tensorflow/google-brain] The Google Brain project began in 2011 as a part-time research collaboration between Google fellow Jeff Dean and Google Researcher Greg Corrado.
+[src:tensorflow/google-brain] Google Brain started as a Google X project and became so successful that it was graduated back to Google: Astro Teller has said that Google Brain paid for the entire cost of Google X.
+[src:tensorflow/google-brain] In June 2012, *The New York Times* reported that a cluster of 16,000 processors in 1,000 computers dedicated to mimicking some aspects of human brain activity had successfully trained itself to recognize a cat based on 10 million digital images taken from YouTube videos.
+[src:tensorflow/google-brain] The story was also covered by National Public Radio (NPR).
+[src:tensorflow/google-brain] In March 2013, Google hired Geoffrey Hinton, a leading researcher in the deep learning field, and acquired the company DNNResearch Inc. headed by Hinton.
+[src:tensorflow/google-brain] Hinton said that he would be dividing his future time between his university research and his work at Google.
+[src:tensorflow/google-brain] In April 2023, Google Brain merged with Google sister company DeepMind to form Google DeepMind, as part of the company's continued efforts to accelerate work on AI.
+[src:tensorflow/google-brain] Google Brain was initially established by Google Fellow Jeff Dean and visiting Stanford professor Andrew Ng.
+[src:tensorflow/google-brain] In 2014, the team included Jeff Dean, Quoc V.
+[src:tensorflow/google-brain] Le, Ilya Sutskever, Alex Krizhevsky, Samy Bengio, and Vincent Vanhoucke.
+[src:tensorflow/google-brain] In 2017, team members included Anelia Angelova, Samy Bengio, Greg Corrado, George Dahl, Michael Isard, Anjuli Kannan, Hugo Larochelle, Chris Olah, Benoit Steiner, Vincent Vanhoucke, Vijay Vasudevan, and Fernanda Viegas.
+[src:tensorflow/google-brain] Chris Lattner, who created Apple's programming language Swift and then ran Tesla's autonomy team for six months, joined Google Brain's team in August 2017.
+[src:tensorflow/google-brain] Lattner left the team in January 2020 and joined SiFive.
+[src:tensorflow/google-brain] As of 2021, Google Brain was led by Jeff Dean, Geoffrey Hinton, and Zoubin Ghahramani.
+[src:tensorflow/google-brain] Other members include Katherine Heller, Pi-Chuan Chang, Ian Simon, Jean-Philippe Vert, Nevena Lazic, Anelia Angelova, Lukasz Kaiser, Carrie Jun Cai, Eric Breck, Ruoming Pang, Carlos Riquelme, Hugo Larochelle, and David Ha.
+[src:tensorflow/google-brain] Samy Bengio left the team in April 2021, and Zoubin Ghahramani took on his responsibilities.
+[src:tensorflow/google-brain] Google Research includes Google Brain and is based in Mountain View.
+[src:tensorflow/google-brain] It also has satellite groups in Accra, Amsterdam, Atlanta, Beijing, Berlin, Cambridge, Israel, Los Angeles, London, Montreal, Munich, New York City, Paris, Pittsburgh, Princeton, San Francisco, Seattle, Tokyo, Toronto, and Zurich.
+[src:tensorflow/google-brain] In October 2016, Google Brain designed an experiment to determine that neural networks are capable of learning secure symmetric encryption.
+[src:tensorflow/google-brain] In this experiment, three neural networks were created: Alice, Bob and Eve.
+[src:tensorflow/google-brain] Adhering to the idea of a generative adversarial network (GAN), the goal of the experiment was for Alice to send an encrypted message to Bob that Bob could decrypt, but the adversary, Eve, could not.
+[src:tensorflow/google-brain] Alice and Bob maintained an advantage over Eve, in that they shared a key used for encryption and decryption.
+[src:tensorflow/google-brain] In doing so, Google Brain demonstrated the capability of neural networks to learn secure encryption.
+[src:tensorflow/google-brain] In February 2017, Google Brain determined a probabilistic method for converting pictures with 8x8 resolution to a resolution of 32x32.
+[src:tensorflow/google-brain] The method built upon an already existing probabilistic model called pixelCNN to generate pixel translations.
+[src:tensorflow/google-brain] The proposed software utilizes two neural networks to make approximations for the pixel makeup of translated images.
+[src:tensorflow/google-brain] The first network, known as the "conditioning network," downsizes high-resolution images to 8x8 and attempts to create mappings from the original 8x8 image to these higher-resolution ones.
+[src:tensorflow/google-brain] The other network, known as the "prior network," uses the mappings from the previous network to add more detail to the original image.
+[src:tensorflow/google-brain] The resulting translated image is not the same image in higher resolution, but rather a 32x32 resolution estimation based on other existing high-resolution images.
+[src:tensorflow/google-brain] Google Brain's results indicate the possibility for neural networks to enhance images.
+[src:tensorflow/google-brain] The Google Brain contributed to the Google Translate project by employing a new deep learning system that combines artificial neural networks with vast databases of multilingual texts.
+[src:tensorflow/google-brain] In September 2016, Google Neural Machine Translation (GNMT) was launched, an end-to-end learning framework, able to learn from a large number of examples.
+[src:tensorflow/google-brain] Previously, Google Translate's Phrase-Based Machine Translation (PBMT) approach would statistically analyze word by word and try to match corresponding words in other languages without considering the surrounding phrases in the sentence.
+[src:tensorflow/google-brain] But rather than choosing a replacement for each individual word in the desired language, GNMT evaluates word segments in the context of the rest of the sentence to choose more accurate replacements.
+[src:tensorflow/google-brain] Compared to older PBMT models, the GNMT model scored a 24% improvement in similarity to human translation, with a 60% reduction in errors.
+[src:tensorflow/google-brain] The GNMT has also shown significant improvement for notoriously difficult translations, like Chinese to English.
+[src:tensorflow/google-brain] While the introduction of the GNMT has increased the quality of Google Translate's translations for the pilot languages, it was very difficult to create such improvements for all of its 103 languages.
+[src:tensorflow/google-brain] Addressing this problem, the Google Brain Team was able to develop a Multilingual GNMT system, which extended the previous one by enabling translations between multiple languages.
+[src:tensorflow/google-brain] Furthermore, it allows for Zero-Shot Translations, which are translations between two languages that the system has never explicitly seen before.
+[src:tensorflow/google-brain] Google announced that Google Translate can now also translate without transcribing, using neural networks.
+[src:tensorflow/google-brain] This means that it is possible to translate speech in one language directly into text in another language, without first transcribing it to text.
+[src:tensorflow/google-brain] According to the Researchers at Google Brain, this intermediate step can be avoided using neural networks.
+[src:tensorflow/google-brain] In order for the system to learn this, they exposed it to many hours of Spanish audio together with the corresponding English text.
+[src:tensorflow/google-brain] The different layers of neural networks, replicating the human brain, were able to link the corresponding parts and subsequently manipulate the audio waveform until it was transformed to English text.
+[src:tensorflow/google-brain] Another drawback of the GNMT model is that it causes the time of translation to increase exponentially with the number of words in the sentence.
+[src:tensorflow/google-brain] This caused the Google Brain Team to add 2000 more processors to ensure the new translation process would still be fast and reliable.
+[src:tensorflow/google-brain] Aiming to improve traditional robotics control algorithms where new skills of a robot need to be hand-programmed, robotics researchers at Google Brain are developing machine learning techniques to allow robots to learn new skills on their own.
+[src:tensorflow/google-brain] They also attempt to develop ways for information sharing between robots so that robots can learn from each other during their learning process, also known as cloud robotics.
+[src:tensorflow/google-brain] As a result, Google has launched the Google Cloud Robotics Platform for developers in 2019, an effort to combine robotics, AI, and the cloud to enable efficient robotic automation through cloud-connected collaborative robots.
+[src:tensorflow/google-brain] Robotics research at Google Brain has focused mostly on improving and applying deep learning algorithms to enable robots to complete tasks by learning from experience, simulation, human demonstrations, and/or visual representations.
+[src:tensorflow/google-brain] For example, Google Brain researchers showed that robots can learn to pick and throw rigid objects into selected boxes by experimenting in an environment without being pre-programmed to do so.
+[src:tensorflow/google-brain] In another research, researchers trained robots to learn behaviors such as pouring liquid from a cup; robots learned from videos of human demonstrations recorded from multiple viewpoints.
+[src:tensorflow/google-brain] Google Brain researchers have collaborated with other companies and academic institutions on robotics research.
+[src:tensorflow/google-brain] In 2016, the Google Brain Team collaborated with researchers at X in a research on learning hand-eye coordination for robotic grasping.
+[src:tensorflow/google-brain] Their method allowed real-time robot control for grasping novel objects with self-correction.
+[src:tensorflow/google-brain] In 2020, researchers from Google Brain, Intel AI Lab, and UC Berkeley created an AI model for robots to learn surgery-related tasks such as suturing from training with surgery videos.
+[src:tensorflow/google-brain] In 2020, Google Brain Team and University of Lille presented a model for automatic speaker recognition which they called Interactive Speaker Recognition.
+[src:tensorflow/google-brain] The ISR module recognizes a speaker from a given list of speakers only by requesting a few user specific words.
+[src:tensorflow/google-brain] The model can be altered to choose speech segments in the context of Text-To-Speech Training.
+[src:tensorflow/google-brain] It can also prevent malicious voice generators from accessing the data.
+[src:tensorflow/google-brain] TensorFlow is an open source software library powered by Google Brain that allows anyone to utilize machine learning by providing the tools to train one's own neural network.
+[src:tensorflow/google-brain] The tool has been used to develop software using deep learning models that farmers use to reduce the amount of manual labor required to sort their yield, by training it with a data set of human-sorted images.
+[src:tensorflow/google-brain] Magenta is a project that uses Google Brain to create new information in the form of art and music rather than classify and sort existing data.
+[src:tensorflow/google-brain] TensorFlow was updated with a suite of tools for users to guide the neural network to create images and music.
+[src:tensorflow/google-brain] However, the team from Valdosta State University found that the AI struggles to perfectly replicate human intention in artistry, similar to the issues faced in translation.
+[src:tensorflow/google-brain] The image sorting capabilities of Google Brain have been used to help detect certain medical conditions by seeking out patterns that human doctors may not notice to provide an earlier diagnosis.
+[src:tensorflow/google-brain] During screening for breast cancer, this method was found to have one quarter the false positive rate of human pathologists, who require more time to look over each photo and cannot spend their entire focus on this one task.
+[src:tensorflow/google-brain] Due to the neural network's very specific training for a single task, it cannot identify other afflictions present in a photo that a human could easily spot.
+[src:tensorflow/google-brain] The transformer deep learning architecture was invented by Google Brain researchers in 2017, and explained in the scientific paper *Attention Is All You Need*.
+[src:tensorflow/google-brain] Google owns a patent on this widely used architecture, but hasn't enforced it.
+[src:tensorflow/google-brain] Google Brain announced in 2022 that it created two different types of text-to-image models called Imagen and Parti that compete with OpenAI's DALL-E.
+[src:tensorflow/google-brain] Later in 2022, the project was extended to text-to-video.
+[src:tensorflow/google-brain] Imagen development was transferred to Google Deepmind after the merger with Deepmind.
+[src:tensorflow/google-brain] The Google Brain projects' technology is currently used in various other Google products such as the Android Operating System's speech recognition system, photo search for Google Photos, smart reply in Gmail, and video recommendations in YouTube.
+[src:tensorflow/google-brain] Google Brain has received coverage in *Wired*, NPR, and Big Think.
+[src:tensorflow/google-brain] These articles have contained interviews with key team members Ray Kurzweil and Andrew Ng, and focus on explanations of the project's goals and applications.
+[src:tensorflow/google-brain] In December 2020, AI ethicist Timnit Gebru left Google.
+[src:tensorflow/google-brain] While the exact nature of her quitting or being fired is disputed, the cause of the departure was her refusal to retract a paper entitled "On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?" and a related ultimatum she made, setting conditions to be met otherwise she would leave.
+[src:tensorflow/google-brain] This paper explored potential risks of the growth of AI such as Google Brain, including environmental impact, biases in training data, and the ability to deceive the public.
+[src:tensorflow/google-brain] The request to retract the paper was made by Megan Kacholia, vice president of Google Brain.
+[src:tensorflow/google-brain] As of April 2021, nearly 7000 current or former Google employees and industry supporters have signed an open letter accusing Google of "research censorship" and condemning Gebru's treatment at the company.
+[src:tensorflow/google-brain] In February 2021, Google fired one of the leaders of the company's AI ethics team, Margaret Mitchell.
+[src:tensorflow/google-brain] The company's statement alleged that Mitchell had broken company policy by using automated tools to find support for Gebru.
+[src:tensorflow/google-brain] In the same month, engineers outside the ethics team began to quit, citing the termination of Gebru as their reason for leaving.
+[src:tensorflow/google-brain] In April 2021, Google Brain co-founder Samy Bengio announced his resignation from the company.
+[src:tensorflow/google-brain] Despite being Gebru's manager, Bengio was not notified before her termination, and he posted online in support of both her and Mitchell.
+[src:tensorflow/google-brain] While Bengio's announcement focused on personal growth as his reason for leaving, anonymous sources indicated to Reuters that the turmoil within the AI ethics team played a role in his considerations.
+[src:tensorflow/google-brain] In March 2022, Google fired AI researcher Satrajit Chatterjee after he questioned the findings of a paper published in *Nature* by Google AI, claiming that their AI techniques (in particular reinforcement learning) for the placement problem for integrated circuits were superior to prior methods.
+[src:tensorflow/google-brain] However, this claim is contested because claimed results, especially *fast chip design*, were not properly supported by specific empirical data and found inconsistent with subsequent published research.
+[src:tensorflow/google-brain] The paper didn't report run times of prior and proposed methods on specific inputs, lacked head-to-head comparisons to sufficiently advanced implementations of prior methods, and was difficult to replicate due to proprietary training and test data.
+[src:tensorflow/google-brain] At least one initially favorable commentary had been retracted upon further review, and the paper was reportedly under investigation by *Nature* editors.
+[src:tensorflow/google-brain] In a lawsuit contesting his firing, Chatterjee claimed the *Nature* paper overhyped Google's technology.
+[src:tensorflow/graphics-processing-unit] GPUs are also increasingly being used for artificial intelligence (AI) processing due to linear algebra acceleration, which is also used extensively in graphics processing.
+[src:tensorflow/graphics-processing-unit] This contrasts with earlier graphics controllers known as video display controllers which had no internal calculation capabilities, or blitters, which performed only basic memory movement operations.
+[src:tensorflow/graphics-processing-unit] The modern GPU emerged during the 1990s, adding the ability to perform operations like drawing lines and text without CPU help, and later adding 3D functionality.
+[src:tensorflow/graphics-processing-unit] Graphics functions are generally independent and this lends these tasks to being implemented on separate calculation engines.
+[src:tensorflow/graphics-processing-unit] Modern GPUs include hundreds, or thousands, of calculation units.
+[src:tensorflow/graphics-processing-unit] This made them useful for non-graphic calculations involving embarrassingly parallel problems due to their parallel structure.
+[src:tensorflow/graphics-processing-unit] The ability of GPUs to rapidly perform vast numbers of calculations has led to their adoption in diverse fields including artificial intelligence (AI) where they excel at handling data-intensive and computationally demanding tasks.
+[src:tensorflow/graphics-processing-unit] Other non-graphical uses include the training of neural networks and cryptocurrency mining.
+[src:tensorflow/graphics-processing-unit] Many companies have produced GPUs under a number of brand names.
+[src:tensorflow/graphics-processing-unit] In 2009, Intel, Nvidia, and AMD/ATI were the market share leaders, with 49.4%, 27.8%, and 20.6% market share respectively.
+[src:tensorflow/graphics-processing-unit] In addition, Matrox while originally producing custom solutions, now customizes GPUs from Intel and AMD for workstation usage.
+[src:tensorflow/graphics-processing-unit] Chinese companies such as Jingjia Micro have also produced GPUs for the domestic market although in terms of worldwide sales, they lag behind market leaders.
+[src:tensorflow/graphics-processing-unit] Several factors of GPU construction affect the performance of the card for real-time rendering, such as the size of the connector pathways in the semiconductor device fabrication, the clock signal frequency, and the number and size of various on-chip memory caches.
+[src:tensorflow/graphics-processing-unit] GPU performance is typically measured in floating point operations per second (FLOPS); Modern GPUs typically deliver performance measured in teraflops (TFLOPS).
+[src:tensorflow/graphics-processing-unit] This is an estimated performance measure, and should not be treated as fact, as other factors can affect actual performance.
+[src:tensorflow/graphics-processing-unit] Modern GPUs also include dedicated hardware blocks for ray tracing, video encoding, and AI acceleration.
+[src:tensorflow/graphics-processing-unit] In personal computers, there are two main forms of GPUs: dedicated graphics (also called discrete graphics) and integrated graphics (also called shared graphics solutions, integrated graphics processors (IGP), or unified memory architecture (UMA).
+[src:tensorflow/graphics-processing-unit] Technologies such as Scalable Link Interface (SLI), NVLink, and CrossFire allow multiple GPUs to draw images simultaneously for a single screen, increasing the processing power available for graphics.
+[src:tensorflow/graphics-processing-unit] These technologies, however, are increasingly uncommon; most games do not fully use multiple GPUs, as most users cannot afford them.
+[src:tensorflow/graphics-processing-unit] Because GPU computations are memory-intensive, integrated processing may compete with the CPU for relatively slow system RAM, as it has minimal or no dedicated video memory.
+[src:tensorflow/graphics-processing-unit] IGPUs use system memory with bandwidth up to a current maximum of 128 gigabytes per second, whereas a discrete graphics card may have a bandwidth of more than 1000 gigabytes per second between its video random access memory (VRAM) and GPU core.
+[src:tensorflow/graphics-processing-unit] This memory bus bandwidth can limit the performance of the IGPU, though multi-channel memory can mitigate this deficiency.
+[src:tensorflow/graphics-processing-unit] On systems with "Unified Memory Architecture" (UMA), including modern AMD processors with integrated graphics, modern Intel processors with integrated graphics, Apple processors, and modern consoles, the CPU cores and the GPU block share the same pool of RAM and memory address space.
+[src:tensorflow/graphics-processing-unit] It is common to use a general purpose graphics processing unit (GPGPU) as a modified form of stream processor or a vector processor, running compute kernels.
+[src:tensorflow/graphics-processing-unit] This turns the massive computational power of a modern graphics accelerator's shader pipeline into general-purpose computing power.
+[src:tensorflow/graphics-processing-unit] In certain applications requiring massive vector operations, this can yield several orders of magnitude higher performance than a conventional CPU.
+[src:tensorflow/graphics-processing-unit] The two largest discrete GPU designers, AMD and Nvidia, are pursuing this approach with an array of applications.
+[src:tensorflow/graphics-processing-unit] Nvidia and AMD collaborated with Stanford University to create a GPU-based client for the Folding@home distributed computing project for protein folding calculations.
+[src:tensorflow/graphics-processing-unit] In certain circumstances, the GPU calculates forty times faster than the CPUs traditionally used by such applications.
+[src:tensorflow/graphics-processing-unit] GPU-based high performance computers play a significant role in large-scale modelling.
+[src:tensorflow/graphics-processing-unit] Three of the ten most powerful supercomputers in the world take advantage of GPU acceleration.
+[src:tensorflow/graphics-processing-unit] Since 2005 there has been interest in using the performance offered by GPUs for evolutionary computation in general, and for accelerating the fitness evaluation in genetic programming in particular.
+[src:tensorflow/graphics-processing-unit] Most approaches compile linear or tree programs on the host PC and transfer the executable to the GPU to be run.
+[src:tensorflow/graphics-processing-unit] Typically a performance advantage is only obtained by running the single active program simultaneously on many example problems in parallel, using the GPU's single instruction, multiple data (SIMD) architecture.
+[src:tensorflow/graphics-processing-unit] Substantial acceleration can also be obtained by not compiling the programs, and instead transferring them to the GPU, to be interpreted there.
+[src:tensorflow/graphics-processing-unit] A GPU can be attached to some external bus of a notebook.
+[src:tensorflow/graphics-processing-unit] PCI Express is the only bus used for this purpose.
+[src:tensorflow/graphics-processing-unit] The port may be, for example, an ExpressCard or mPCIe port (PCIe ×1, up to 5 or 2.5 gigabits per second respectively), a Thunderbolt 1, 2, or 3 port (PCIe ×4, up to 10, 20, or 40 gigabits per second respectively), a USB4 port with Thunderbolt compatibility, or an OCuLink port.
+[src:tensorflow/graphics-processing-unit] Those ports are only available on certain notebook systems. eGPU enclosures include their own power supply (PSU), because powerful GPUs can consume hundreds of watts.
+[src:tensorflow/graphics-processing-unit] Dedicated 3D graphics hardware dates back to graphic terminals such as the Adage AGT-30 from 1967 with analog matrix processors.
+[src:tensorflow/graphics-processing-unit] In 1969 Evans & Sutherland (E&S) introduced the Line Drawing System-1 (LDS-1), which was the first all-digital system to provide matrix multiplication.
+[src:tensorflow/graphics-processing-unit] Also in 1969, the low-cost graphics terminal IMLAC PDS-1 was introduced.
+[src:tensorflow/graphics-processing-unit] It later saw use as an early 3D gaming machine with the likes of Maze War.
+[src:tensorflow/graphics-processing-unit] In the 1970s, the term "GPU" originally stood for graphics processor unit and described a programmable processing unit working independently from the CPU that was responsible for graphics manipulation and output.
+[src:tensorflow/graphics-processing-unit] In professional hardware, in 1972 PLATO IV system becomes operational at the University of Illinois Urbana-Champaign.
+[src:tensorflow/graphics-processing-unit] Between around 1973 and 1978, several networked multiplayer wireframe 3D games are implemented and popularized by users of the system.
+[src:tensorflow/graphics-processing-unit] Also in 1972, the E&S Continuous Tone 1 (CT1) "Watkins box" system (consisting of an E&S LDS-2 and Shaded Picture System) is delivered to Case Western Reserve University.
+[src:tensorflow/graphics-processing-unit] It offered the first real-time Gouraud shading.
+[src:tensorflow/graphics-processing-unit] In 1975, a joint effort between Evans & Sutherland Computer Corporation and the University of Utah's computer graphics department results in the first ever MOSFET video framebuffer, capable of color and smooth shading.
+[src:tensorflow/graphics-processing-unit] E&S Continuous Tone 3 (CT3) system was delivered in 1977 to Lufthansa for pilot training using computer simulation.
+[src:tensorflow/graphics-processing-unit] It was the first graphics system capable of real-time texture mapping.
+[src:tensorflow/graphics-processing-unit] Ikonas made graphics systems with 8- and 24-bit graphics and 3D acceleration in the late 70s.
+[src:tensorflow/graphics-processing-unit] Arcade system boards have used specialized 2D graphics circuits since the 1970s.
+[src:tensorflow/graphics-processing-unit] In early video game hardware, RAM for frame buffers was expensive, so video chips composited data together as the display was being scanned out on the monitor.
+[src:tensorflow/graphics-processing-unit] A specialized barrel shifter circuit helped the CPU animate the framebuffer graphics for various 1970s arcade video games from Midway and Taito, such as *Gun Fight* (1975), *Sea Wolf* (1976), and *Space Invaders* (1978).
+[src:tensorflow/graphics-processing-unit] The Namco Galaxian arcade system in 1979 used specialized graphics hardware that supported RGB color, multi-colored sprites, and tilemap backgrounds.
+[src:tensorflow/graphics-processing-unit] The Galaxian hardware was widely used during the golden age of arcade video games, by game companies such as Namco, Centuri, Gremlin, Irem, Konami, Midway, Nichibutsu, Sega, and Taito.
+[src:tensorflow/graphics-processing-unit] The Atari 2600 in 1977 used a video shifter called the Television Interface Adaptor.
+[src:tensorflow/graphics-processing-unit] Atari 8-bit computers (1979) had ANTIC, a video processor which interpreted instructions describing a "display list"—the way the scan lines map to specific bitmapped or character modes and where the memory is stored (so there did not need to be a contiguous frame buffer).
+[src:tensorflow/graphics-processing-unit] 6502 machine code subroutines could be triggered on scan lines by setting a bit on a display list instruction.
+[src:tensorflow/graphics-processing-unit] ANTIC also supported smooth vertical and horizontal scrolling independent of the CPU.
+[src:tensorflow/graphics-processing-unit] In the 1980s significant advancements were made in professional 3D graphics hardware.
+[src:tensorflow/graphics-processing-unit] Perhaps most impactful was the 1981 development of the Geometry Engine, a VLSI vector processor ASIC designed by Jim Clark and Marc Hannah at Stanford University.
+[src:tensorflow/graphics-processing-unit] This processor is the forerunner of modern tensor cores and other similar processors marketed for graphics and AI.
+[src:tensorflow/graphics-processing-unit] The Geometry Engine went on to be used in Silicon Graphics workstations for many years.
+[src:tensorflow/graphics-processing-unit] Silicon Graphics's first product, shipped in November 1983, was the IRIS 1000, a terminal with hardware-accelerated 3D graphics based on the Geometry Engine.
+[src:tensorflow/graphics-processing-unit] The Geometry Engine was capable of approximately 6 million operations per second.
+[src:tensorflow/graphics-processing-unit] The 1981 NEC μPD7220 was the first implementation of a personal computer graphics display processor as a single large-scale integration (LSI) integrated circuit chip.
+[src:tensorflow/graphics-processing-unit] This enabled the design of low-cost, high-performance video graphics cards such as those from Number Nine Visual Technology.
+[src:tensorflow/graphics-processing-unit] It became the best-known GPU until the mid-1980s.
+[src:tensorflow/graphics-processing-unit] It was the first fully integrated VLSI (very large-scale integration) metal–oxide–semiconductor (NMOS) graphics display processor for PCs, supported up to 1024×1024 resolution, and laid the foundations for the PC graphics market.
+[src:tensorflow/graphics-processing-unit] It was used in a number of graphics cards and was licensed for clones such as the Intel 82720, the first of Intel's graphics processing units.
+[src:tensorflow/graphics-processing-unit] The Williams Electronics arcade games *Robotron: 2084*, *Joust*, *Sinistar*, and *Bubbles*, all released in 1982, contain custom blitter chips for operating on 16-color bitmaps.
+[src:tensorflow/graphics-processing-unit] In 1984, Hitachi released the ARTC HD63484, the first major CMOS graphics processor for personal computers.
+[src:tensorflow/graphics-processing-unit] The ARTC could display up to 4K resolution when in monochrome mode.
+[src:tensorflow/graphics-processing-unit] It was used in a number of graphics cards and terminals during the late 1980s.
+[src:tensorflow/graphics-processing-unit] In 1985, the Amiga was released with a custom graphics chip called Agnus including a blitter for bitmap manipulation, line drawing, and area fill.
+[src:tensorflow/graphics-processing-unit] It also included a coprocessor with its own simple instruction set, that was capable of manipulating graphics hardware registers in sync with the video beam (e.g. for per-scanline palette switches, sprite multiplexing, and hardware windowing), or driving the blitter.
+[src:tensorflow/graphics-processing-unit] Also in 1985, IBM released the Professional Graphics Controller, designed by later to be Nvidia co-founder Curtis Priem, which was a rudimentary 3D card with 640 × 480 256-color graphics which used a dedicated CPU to draw graphics independently of the main system.
+[src:tensorflow/graphics-processing-unit] It was used as the basis of cards by a number of makers (including Matrox) and its analog RGB signaling led directly to the VGA video standard.
+[src:tensorflow/graphics-processing-unit] Priem later in the 80s worked on the influential Sun Microsystems GX (also known as cgsix) accelerated 2D graphics card.
+[src:tensorflow/graphics-processing-unit] In 1986, Texas Instruments released the TMS34010, the first fully programmable graphics processor.
+[src:tensorflow/graphics-processing-unit] It could run general-purpose code but also had a graphics-oriented instruction set.
+[src:tensorflow/graphics-processing-unit] During 1990–1992, this chip became the basis of the Texas Instruments Graphics Architecture ("TIGA") Windows accelerator cards.
+[src:tensorflow/graphics-processing-unit] Following in 1987, the IBM 8514 graphics system was released.
+[src:tensorflow/graphics-processing-unit] It was one of the first video cards for IBM PC compatibles that implemented fixed-function 2D primitives in electronic hardware.
+[src:tensorflow/graphics-processing-unit] Sharp's X68000, released in 1987, used a custom graphics chipset with a 65,536 color palette and hardware support for sprites, scrolling, and multiple playfields.
+[src:tensorflow/graphics-processing-unit] It served as a development machine for Capcom's CP System arcade board.
+[src:tensorflow/graphics-processing-unit] Fujitsu's FM Towns computer, released in 1989, had support for a 16,777,216 color palette.
+[src:tensorflow/graphics-processing-unit] For context, IBM also introduced its Video Graphics Array (VGA) display system in 1987, with a maximum resolution of 640 × 480 pixels.
+[src:tensorflow/graphics-processing-unit] Unlike 8514/A, VGA had no hardware acceleration features.
+[src:tensorflow/graphics-processing-unit] In November 1988, NEC Home Electronics announced its creation of the Video Electronics Standards Association (VESA) to develop and promote a Super VGA (SVGA) computer display standard as a successor to VGA.
+[src:tensorflow/graphics-processing-unit] Super VGA enabled graphics display resolutions up to 800 × 600 pixels, a 56% increase.
+[src:tensorflow/graphics-processing-unit] In 1988 SGI sold IRIS workstation graphics with 10-12 Geometry Engines and introduced the IrisVision add-in board for IBM MicroChannel bus (RS/6000) based on the Geometry Engine as well.
+[src:tensorflow/graphics-processing-unit] In 1988 as well, the first dedicated polygonal 3D graphics boards in arcade machines were introduced with the Namco System 21 and Taito Air System.
+[src:tensorflow/graphics-processing-unit] The 1990s again saw considerable advancements in professional workstation 3D graphics hardware from Sun Microsystems, SGI, and others.
+[src:tensorflow/graphics-processing-unit] The introduction of OpenGL by SGI in 1992 paved the way for standard hardware-independent 3D programming interfaces.
+[src:tensorflow/graphics-processing-unit] However, by the mid and late 90s, professional hardware was being slowly eclipsed by consumer products which offered similar or even better performance, especially in regards to texture mapping, at a lower cost and on platforms familiar to end users.
+[src:tensorflow/graphics-processing-unit] In 1991, S3 Graphics introduced the *S3 86C911*, which its designers named after the Porsche 911 as an indication of the performance increase it promised.
+[src:tensorflow/graphics-processing-unit] The 86C911 spawned a variety of imitators: by 1995, all major PC graphics chip makers had added 2D acceleration support to their chips.
+[src:tensorflow/graphics-processing-unit] Fixed-function *Windows accelerators* surpassed expensive general-purpose graphics coprocessors in Windows performance, and such coprocessors faded from the PC market.
+[src:tensorflow/graphics-processing-unit] In the early- and mid-1990s, real-time 3D graphics became increasingly common in arcade, computer, and console games, which led to increasing public demand for hardware-accelerated 3D graphics.
+[src:tensorflow/graphics-processing-unit] Early examples of mass-market 3D graphics hardware can be found in arcade system boards such as the Sega Model 1, Namco System 22, and Sega Model 2, and the fifth-generation video game consoles such as the Saturn, PlayStation, and Nintendo 64.
+[src:tensorflow/graphics-processing-unit] Arcade systems such as the Sega Model 2 and SGI Onyx-based Namco Magic Edge Hornet Simulator in 1993 were capable of hardware T&L (transform, clipping, and lighting) years before appearing in consumer graphics cards.
+[src:tensorflow/graphics-processing-unit] In 1994, Sony used the term GPU (with the meaning graphics processing unit) in reference to the PlayStation console's Toshiba-designed Sony GPU.
+[src:tensorflow/graphics-processing-unit] Another early example is the Super FX chip, a RISC-based on-cartridge graphics chip used in some SNES games, notably *Doom* and *Star Fox*.
+[src:tensorflow/graphics-processing-unit] Some systems used DSPs to accelerate transformations.
+[src:tensorflow/graphics-processing-unit] Fujitsu, which worked on the Sega Model 2 arcade system, began working on integrating T&L into a single LSI solution for use in home computers in 1995; the Fujitsu Pinolite, the first 3D geometry processor for personal computers, announced in 1997.
+[src:tensorflow/graphics-processing-unit] The first hardware T&L GPU on home video game consoles was the Nintendo 64's Reality Coprocessor, released in 1996.
+[src:tensorflow/graphics-processing-unit] In 1997, Mitsubishi released the 3Dpro/2MP, a GPU capable of transformation and lighting, for workstations and Windows NT desktops; ATi used it for its FireGL 4000 graphics card, released in 1997.
+[src:tensorflow/graphics-processing-unit] The term "GPU" was coined by Sony in reference to the 32-bit Sony GPU (designed by Toshiba) in the PlayStation video game console, released in 1994.
+[src:tensorflow/graphics-processing-unit] Pixel shading is often used for bump mapping, which adds texture to make an object look shiny, dull, rough, or even round or extruded.
+[src:tensorflow/graphics-processing-unit] With the introduction of the Nvidia GeForce 8 series and new generic stream processing units, GPUs became more generalized computing devices.
+[src:tensorflow/graphics-processing-unit] GPGPUs were the precursors to what is now called a compute shader (e.g.
+[src:tensorflow/graphics-processing-unit] CUDA, OpenCL, DirectCompute) and actually abused the hardware to a degree by treating the data passed to algorithms as texture maps and executing algorithms by drawing a triangle or quad with an appropriate pixel shader.
+[src:tensorflow/graphics-processing-unit] This entails some overheads since units like the scan converter are involved where they are not needed (nor are triangle manipulations even a concern—except to invoke the pixel shader).
+[src:tensorflow/graphics-processing-unit] Nvidia's CUDA platform, first introduced in 2007, was the earliest widely adopted programming model for GPU computing.
+[src:tensorflow/graphics-processing-unit] OpenCL is an open standard defined by the Khronos Group that allows for the development of code for both GPUs and CPUs with an emphasis on portability.
+[src:tensorflow/graphics-processing-unit] OpenCL solutions are supported by Intel, AMD, Nvidia, and ARM, and according to a report in 2011 by Evans Data, OpenCL had become the second most popular HPC tool.
+[src:tensorflow/graphics-processing-unit] In 2010, Nvidia partnered with Audi to power their cars' dashboards, using the Tegra GPU to provide increased functionality to cars' navigation and entertainment systems.
+[src:tensorflow/graphics-processing-unit] Advances in GPU technology in cars helped advance self-driving technology.
+[src:tensorflow/graphics-processing-unit] AMD's Radeon HD 6000 series cards were released in 2010, and in 2011 AMD released its 6000M Series discrete GPUs for mobile devices.
+[src:tensorflow/graphics-processing-unit] The Kepler line of graphics cards by Nvidia were released in 2012 and were used in the Nvidia 600 and 700 series cards.
+[src:tensorflow/graphics-processing-unit] A feature in this GPU microarchitecture included GPU boost, a technology that adjusts the clock-speed of a video card to increase or decrease according to its power draw.
+[src:tensorflow/graphics-processing-unit] Kepler also introduced NVENC video encoding acceleration technology.
+[src:tensorflow/graphics-processing-unit] The PS4 and Xbox One were released in 2013; they both used GPUs based on AMD's Radeon HD 7850 and 7790.
+[src:tensorflow/graphics-processing-unit] Nvidia's Kepler line of GPUs was followed by the Maxwell line, manufactured on the same process.
+[src:tensorflow/graphics-processing-unit] Nvidia's 28 nm chips were manufactured by TSMC in Taiwan using the 28 nm process.
+[src:tensorflow/graphics-processing-unit] Compared to the 40 nm technology from the past, this manufacturing process allowed a 20 percent boost in performance while drawing less power.
+[src:tensorflow/graphics-processing-unit] Virtual reality headsets have high system requirements; manufacturers recommended the GTX 970 and the R9 290X or better at the time of their release.
+[src:tensorflow/graphics-processing-unit] Cards based on the Pascal microarchitecture were released in 2016.
+[src:tensorflow/graphics-processing-unit] The GeForce 10 series of cards are of this generation of graphics cards.
+[src:tensorflow/graphics-processing-unit] They are made using the 16 nm manufacturing process which improves upon previous microarchitectures.
+[src:tensorflow/graphics-processing-unit] In 2018, Nvidia launched the RTX 20 series GPUs that added ray tracing cores to GPUs, allowing real time ray tracing to be performant on mass market hardware.
+[src:tensorflow/graphics-processing-unit] Polaris 11 and Polaris 10 GPUs from AMD are fabricated by a 14 nm process.
+[src:tensorflow/graphics-processing-unit] Their release resulted in a substantial increase in the performance per watt of AMD video cards.
+[src:tensorflow/graphics-processing-unit] AMD also released the Vega GPU series for the high end market as a competitor to Nvidia's high end Pascal cards, also featuring HBM2 like the Titan V.
+[src:tensorflow/graphics-processing-unit] In 2019, AMD released the successor to their Graphics Core Next (GCN) microarchitecture/instruction set.
+[src:tensorflow/graphics-processing-unit] Dubbed RDNA, the first product featuring it was the Radeon RX 5000 series of video cards.
+[src:tensorflow/graphics-processing-unit] The company announced that the successor to the RDNA microarchitecture would be incremental (a "refresh").
+[src:tensorflow/graphics-processing-unit] AMD unveiled the Radeon RX 6000 series, its RDNA 2 graphics cards with support for hardware-accelerated ray tracing.
+[src:tensorflow/graphics-processing-unit] The product series, launched in late 2020, consisted of the RX 6800, RX 6800 XT, and RX 6900 XT.
+[src:tensorflow/graphics-processing-unit] The RX 6700 XT, which is based on Navi 22, was launched in early 2021.
+[src:tensorflow/graphics-processing-unit] The PlayStation 5 and Xbox Series X and Series S were released in 2020; they both use GPUs based on the RDNA 2 microarchitecture with incremental improvements and different GPU configurations in each system's implementation.
+[src:tensorflow/graphics-processing-unit] In the 2020s, GPUs have been increasingly used for calculations involving embarrassingly parallel problems, such as training of neural networks on enormous datasets that are needed for artificial intelligence large language models.
+[src:tensorflow/graphics-processing-unit] Specialized processing cores on most modern GPUs that are dedicated to deep learning provide significant FLOPS performance increases, using 4×4 matrix multiplication and division.
+[src:tensorflow/graphics-processing-unit] Early implementations, such as Nvidia's Volta microarchitecture, released in 2017, saw results of up to 128 TFLOPS in some applications.
+[src:tensorflow/graphics-processing-unit] Since then, AI acceleration cores have been a widely adopted feature in consumer and workstation microarchitectures starting with Nvidia's Turing microarchitecture in 2018, named Tensor cores.
+[src:tensorflow/graphics-processing-unit] AMD originally implemented their equivalent "Matrix" Cores for consumers in their RDNA 3 architecture - however RDNA 4's Matrix Cores were the first to introduce FP8 acceleration - which is required to run the full FSR Redstone feature set such as Machine Learning Upscaling and Frame Generation.
+[src:tensorflow/graphics-processing-unit] However, community made hacks on both Linux and Windows have allowed RDNA 2, 3, and competitor GPUs to run a weaker version of FSR 4 known as FSR 4 INT8.
+[src:tensorflow/graphics-processing-unit] The PlayStation 5 Pro, launched in 2024, has customized Machine Learning cores - which focus solely on INT8 acceleration - based on RDNA 4's for PlayStation Spectral Super Resolution to enhance framerates and image quality.
+[src:tensorflow/graphics-processing-unit] Intel has implemented their equivalent "XMX" Cores in all of their Arc GPUs, starting with the Alchemist microarchitecture.
+[src:tensorflow/graphics-processing-unit] This is used for XeSS (Xe Super Sampling), XeFG (Xe Frame Generation), and more.
+[src:tensorflow/graphics-processing-unit] Ray tracing has also been incredibly prevalent in the 2020s with some games, such as DOOM: The Dark Ages, requiring a hardware ray tracing capable GPU to even start.
+[src:tensorflow/graphics-processing-unit] While it does lead to worse performance and less overall accessibility, id software claimed this saved several man hours and shrinked the game by over 100 gigabytes due to the game being entirely built around ray tracing .
+[src:tensorflow/graphics-processing-unit] In 2013, 438.3 million GPUs were shipped globally and the forecast for 2014 was 414.2 million.
+[src:tensorflow/graphics-processing-unit] However, by the third quarter of 2022, shipments of PC GPUs totaled around 75.5 million units, down 19% year-over-year.
+[src:tensorflow/tensor-processing-unit] Compared to a graphics processing unit, TPUs are designed for a high volume of low precision computation (e.g. as little as 8-bit precision) with more input/output operations per joule, without hardware for rasterisation or texture mapping.
+[src:tensorflow/tensor-processing-unit] The TPU ASICs are mounted in a heatsink assembly, which can fit in a hard drive slot within a data center rack, according to Norman Jouppi.
+[src:tensorflow/tensor-processing-unit] Different types of processors are suited for different types of machine learning models.
+[src:tensorflow/tensor-processing-unit] TPUs are well suited for convolutional neural networks (CNNs), while GPUs have benefits for some fully connected neural networks, and CPUs can have advantages for recurrent neural networks (RNNs).
+[src:tensorflow/tensor-processing-unit] In 2013, Google recruited Amir Salek to establish custom silicon development capabilities for the company's datacenters.
+[src:tensorflow/tensor-processing-unit] According to Jonathan Ross, one of the original TPU engineers, and later the founder of Groq, three separate groups at Google were developing AI accelerators, with the TPU, a systolic array, being the design that was ultimately selected.
+[src:tensorflow/tensor-processing-unit] Jouppi served as the tech lead and principal architect for Google's Tensor Processing Unit development, leading the rapid design, verification, and deployment of the first TPU to production in just 15 months.
+[src:tensorflow/tensor-processing-unit] The tensor processing unit was announced in May 2016 at the Google I/O conference, when the company said that the TPU had been used inside their data centers for over a year.
+[src:tensorflow/tensor-processing-unit] Google's 2017 paper describing its creation cites previous systolic matrix multipliers of similar architecture built in the 1990s.
+[src:tensorflow/tensor-processing-unit] The chip was specifically designed for Google's TensorFlow framework, a symbolic math library used for machine learning applications such as neural networks.
+[src:tensorflow/tensor-processing-unit] However, as of 2017 Google still used CPUs and GPUs for other types of machine learning.
+[src:tensorflow/tensor-processing-unit] Other AI accelerator designs are appearing from other vendors also and are aimed at embedded and robotics markets.
+[src:tensorflow/tensor-processing-unit] Google has also used TPUs for Google Street View text processing and was able to find all the text in the Street View database in less than five days.
+[src:tensorflow/tensor-processing-unit] In Google Photos, an individual TPU can process over 100 million photos a day.
+[src:tensorflow/tensor-processing-unit] It is also used in RankBrain which Google uses to provide search results.
+[src:tensorflow/tensor-processing-unit] Google provides third parties access to TPUs through its *Cloud TPU* service as part of the Google Cloud Platform and through its notebook-based services Kaggle and Colaboratory.
+[src:tensorflow/tensor-processing-unit] Broadcom is a co-developer of TPUs, translating Google's architecture and specifications into manufacturable silicon.
+[src:tensorflow/tensor-processing-unit] It provides proprietary technologies such as SerDes high-speed interfaces, overseeing ASIC design, and managing chip fabrication and packaging through third-party foundries like Taiwan Semiconductor Manufacturing Company (TSMC), covering all generations since the program's inception.
+[src:tensorflow/tensor-processing-unit] In September 2025, Google is in talks with several "neoclouds," including Crusoe and CoreWeave, about deploying TPU in their datacenter.
+[src:tensorflow/tensor-processing-unit] In November 2025, Meta is in talks with Google to deploy TPUs in its AI datacenters.
+[src:tensorflow/tensor-processing-unit] The first-generation TPU is an 8-bit matrix multiplication engine, driven with CISC instructions by the host processor across a PCIe 3.0 bus.
+[src:tensorflow/tensor-processing-unit] It is manufactured on a 28 nm process with a die size ≤ 331 mm2.
+[src:tensorflow/tensor-processing-unit] The clock speed is 700 MHz and it has a thermal design power of 28–40 W.
+[src:tensorflow/tensor-processing-unit] It has 28 MiB of on chip memory, and 4 MiB of 32-bit accumulators taking the results of a 256×256 systolic array of 8-bit multipliers.
+[src:tensorflow/tensor-processing-unit] Within the TPU package is 8 GiB of dual-channel 2133 MHz DDR3 SDRAM offering 34 GB/s of bandwidth.
+[src:tensorflow/tensor-processing-unit] Instructions transfer data to or from the host, perform matrix multiplications or convolutions, and apply activation functions.
+[src:tensorflow/tensor-processing-unit] The second-generation TPU was announced in May 2017.
+[src:tensorflow/tensor-processing-unit] Google stated the first-generation TPU design was limited by memory bandwidth and using 16 GB of High Bandwidth Memory in the second-generation design increased bandwidth to 600 GB/s and performance to 45 teraFLOPS.
+[src:tensorflow/tensor-processing-unit] The TPUs are then arranged into four-chip modules with a performance of 180 teraFLOPS.
+[src:tensorflow/tensor-processing-unit] Then 64 of these modules are assembled into 256-chip pods with 11.5 petaFLOPS of performance.
+[src:tensorflow/tensor-processing-unit] Notably, while the first-generation TPUs were limited to integers, the second-generation TPUs can also calculate in floating point, introducing the bfloat16 format invented by Google Brain.
+[src:tensorflow/tensor-processing-unit] This makes the second-generation TPUs useful for both training and inference of machine learning models.
+[src:tensorflow/tensor-processing-unit] Google has stated these second-generation TPUs will be available on the Google Compute Engine for use in TensorFlow applications.
+[src:tensorflow/tensor-processing-unit] The third-generation TPU was announced on May 8, 2018.
+[src:tensorflow/tensor-processing-unit] Google announced that processors themselves are twice as powerful as the second-generation TPUs, and would be deployed in pods with four times as many chips as the preceding generation.
+[src:tensorflow/tensor-processing-unit] This results in an 8-fold increase in performance per pod (with up to 1,024 chips per pod) compared to the second-generation TPU deployment.
+[src:tensorflow/tensor-processing-unit] On May 18, 2021, Google CEO Sundar Pichai spoke about TPU v4 Tensor Processing Units during his keynote at the Google I/O virtual conference.
+[src:tensorflow/tensor-processing-unit] TPU v4 improved performance by more than 2x over TPU v3 chips.
+[src:tensorflow/tensor-processing-unit] Pichai said "A single v4 pod contains 4,096 v4 chips, and each pod has 10x the interconnect bandwidth per chip at scale, compared to any other networking technology.” An April 2023 paper by Google claims TPU v4 is 5–87% faster than a Nvidia A100 at machine learning benchmarks.
+[src:tensorflow/tensor-processing-unit] There is also an "inference" version, called v4i, that does not require liquid cooling.
+[src:tensorflow/tensor-processing-unit] In 2021, Google revealed the physical layout of TPU v5 is being designed with the assistance of a novel application of deep reinforcement learning.
+[src:tensorflow/tensor-processing-unit] Google claims TPU v5 is nearly twice as fast as TPU v4, and based on that and the relative performance of TPU v4 over A100, some speculate TPU v5 as being as fast as or faster than an H100.
+[src:tensorflow/tensor-processing-unit] Similar to the v4i being a lighter-weight version of the v4, the fifth generation has a "cost-efficient" version called v5e.
+[src:tensorflow/tensor-processing-unit] In December 2023, Google announced TPU v5p which is claimed to be competitive with the Nvidia H100.
+[src:tensorflow/tensor-processing-unit] In May 2024, at the Google I/O conference, Google announced Trillium, which became available in preview in October 2024.
+[src:tensorflow/tensor-processing-unit] Google claimed a 4.7 times performance increase relative to TPU v5e, via larger matrix multiplication units and an increased clock speed.
+[src:tensorflow/tensor-processing-unit] High bandwidth memory (HBM) capacity and bandwidth have also doubled.
+[src:tensorflow/tensor-processing-unit] A pod can contain up to 256 Trillium units.
+[src:tensorflow/tensor-processing-unit] In April 2025, at Google Cloud Next conference, Google unveiled TPU v7.
+[src:tensorflow/tensor-processing-unit] This new chip, called Ironwood, will come in two configurations: a 256-chip cluster and a 9,216-chip cluster.
+[src:tensorflow/tensor-processing-unit] Ironwood will have a peak computational performance rate of 4,614 TFLOP/s.
+[src:tensorflow/tensor-processing-unit] On April 22, 2026, Google announced the eighth generation of its Tensor Processing Units, consisting of two specialized chips: the **TPU 8t** and the **TPU 8i**.
+[src:tensorflow/tensor-processing-unit] This marks the first time Google has bifurcated its TPU architecture into separate training and inference-optimized designs.
+[src:tensorflow/tensor-processing-unit] Both chips are hosted on Google's custom Arm-based **Axion** CPUs and utilize 4th-generation liquid cooling.
+[src:tensorflow/tensor-processing-unit] The TPU 8t ("Training") is optimized for large-scale pre-training of frontier models and embedding-heavy workloads.
+[src:tensorflow/tensor-processing-unit] It delivers 12.6 FP4 PFLOPs of peak performance and features 216 GB of HBM3e memory with 6,528 GB/s bandwidth.
+[src:tensorflow/tensor-processing-unit] It uses the Virgo Network fabric, allowing it to scale up to 9,600 chips per "superpod," delivering 121 FP4 ExaFLOPs of compute performance.
+[src:tensorflow/tensor-processing-unit] The TPU 8i ("Inference") is designed for high-speed serving, AI agents, and long-context reasoning.
+[src:tensorflow/tensor-processing-unit] It delivers 10.1 FP4 PFLOPs of peak performance and features 288 GB of HBM3e memory with 8,601 GB/s bandwidth.
+[src:tensorflow/tensor-processing-unit] It includes 384 MB of on-chip SRAM, a three-fold increase over the previous generation.
+[src:tensorflow/tensor-processing-unit] The TPU 8i introduces a "Boardfly" network topology and a Collectives Acceleration Engine (CAE) which reduces synchronization latency by five times.
+[src:tensorflow/tensor-processing-unit] In July 2018, Google announced the Edge TPU.
+[src:tensorflow/tensor-processing-unit] The Edge TPU is Google's purpose-built ASIC chip designed to run machine learning (ML) models for edge computing, meaning it is much smaller and consumes far less power compared to the TPUs hosted in Google datacenters (also known as Cloud TPUs).
+[src:tensorflow/tensor-processing-unit] In January 2019, Google made the Edge TPU available to developers with a line of products under the Coral brand.
+[src:tensorflow/tensor-processing-unit] The Edge TPU is capable of 4 trillion operations per second with 2 W of electrical power.
+[src:tensorflow/tensor-processing-unit] The product offerings include a single-board computer (SBC), a system on module (SoM), a USB accessory, a mini PCI-e card, and an M.2 card.
+[src:tensorflow/tensor-processing-unit] The SBC Coral Dev Board and Coral SoM both run Mendel Linux OS – a derivative of Debian.
+[src:tensorflow/tensor-processing-unit] The USB, PCI-e, and M.2 products function as add-ons to existing computer systems, and support Debian-based Linux systems on x86-64 and ARM64 hosts (including Raspberry Pi).
+[src:tensorflow/tensor-processing-unit] The machine learning runtime used to execute models on the Edge TPU is based on TensorFlow Lite.
+[src:tensorflow/tensor-processing-unit] The Edge TPU is only capable of accelerating forward-pass operations, which means it's primarily useful for performing inferences (although it is possible to perform lightweight transfer learning on the Edge TPU).
+[src:tensorflow/tensor-processing-unit] The Edge TPU also only supports 8-bit math, meaning that for a network to be compatible with the Edge TPU, it needs to either be trained using the TensorFlow quantization-aware training technique, or since late 2019 it's also possible to use post-training quantization.
+[src:tensorflow/tensor-processing-unit] On November 12, 2019, Asus announced a pair of single-board computer (SBCs) featuring the Edge TPU.
+[src:tensorflow/tensor-processing-unit] The Asus Tinker Edge T and Tinker Edge R Board designed for IoT and edge AI.
+[src:tensorflow/tensor-processing-unit] The SBCs officially support Android and Debian operating systems.
+[src:tensorflow/tensor-processing-unit] ASUS has also demonstrated a mini PC called Asus PN60T featuring the Edge TPU.
+[src:tensorflow/tensor-processing-unit] On January 2, 2020, Google announced the Coral Accelerator Module and Coral Dev Board Mini, to be demonstrated at CES 2020 later the same month.
+[src:tensorflow/tensor-processing-unit] The Coral Accelerator Module is a multi-chip module featuring the Edge TPU, PCIe and USB interfaces for easier integration.
+[src:tensorflow/tensor-processing-unit] The Coral Dev Board Mini is a smaller single-board computer (SBC) featuring the Coral Accelerator Module and MediaTek 8167s SoC.
+[src:tensorflow/tensor-processing-unit] On October 15, 2019, Google announced the Pixel 4 smartphone, which contains an Edge TPU called the Pixel Neural Core.
+[src:tensorflow/tensor-processing-unit] Google described it as "customized to meet the requirements of key camera features in Pixel 4", using a neural network search that sacrifices some accuracy in favor of minimizing latency and power use.
+[src:tensorflow/tensor-processing-unit] Google followed the Pixel Neural Core by integrating an Edge TPU into a custom system-on-chip named Google Tensor, which was released in 2021 with the Pixel 6 line of smartphones.
+[src:tensorflow/tensor-processing-unit] In 2019, Singular Computing, founded in 2009 by Joseph Bates, a visiting professor at MIT, filed suit against Google alleging patent infringement in TPU chips.
+[src:tensorflow/tensor-processing-unit] In a 2023 court filing, Singular Computing specifically called out Google's use of bfloat16, as that exceeds the dynamic range of float16.
+[src:tensorflow/tensor-processing-unit] Singular Computing claims non-standard floating point formats were non-obvious in 2009, but Google retorts that the VFLOAT format, with a configurable number of exponent bits, existed as prior art in 2002.
+[src:tensorflow/tensor-processing-unit] By January 2024, subsequent lawsuits by Singular Computing had brought the number of patents being litigated up to eight.
+[src:tensorflow/tensor-processing-unit] Towards the end of the trial later that month, Google agreed to a settlement with undisclosed terms.
+[src:tensorflow/tensorflow] It was developed by the Google Brain team for Google's internal use in research and production.
+[src:tensorflow/tensorflow] The initial version was released under the Apache License 2.0 in 2015.
+[src:tensorflow/tensorflow] Google released an updated version, TensorFlow 2.0, in September 2019.
+[src:tensorflow/tensorflow] TensorFlow can be used in a wide variety of programming languages, including Python, JavaScript, C++, and Java, facilitating its use in a range of applications in many sectors.
+[src:tensorflow/tensorflow] Starting in 2011, Google Brain built DistBelief as a proprietary machine learning system based on deep learning neural networks.
+[src:tensorflow/tensorflow] Its use grew rapidly across diverse Alphabet companies in both research and commercial applications.
+[src:tensorflow/tensorflow] Google assigned multiple computer scientists, including Jeff Dean, to simplify and refactor the codebase of DistBelief into a faster, more robust application-grade library, which became TensorFlow.
+[src:tensorflow/tensorflow] In 2009, the team, led by Geoffrey Hinton, had implemented generalized backpropagation and other improvements, which allowed generation of neural networks with substantially higher accuracy, for instance a 25% reduction in errors in speech recognition.
+[src:tensorflow/tensorflow] TensorFlow is Google Brain's second-generation system.
+[src:tensorflow/tensorflow] Version 1.0.0 was released on February 11, 2017.
+[src:tensorflow/tensorflow] While the reference implementation runs on single devices, TensorFlow can run on multiple CPUs and GPUs (with optional CUDA and SYCL extensions for general-purpose computing on graphics processing units).
+[src:tensorflow/tensorflow] TensorFlow is available on 64-bit Linux, macOS, Windows, and mobile computing platforms including Android and iOS.
+[src:tensorflow/tensorflow] Its flexible architecture allows for easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices.
+[src:tensorflow/tensorflow] TensorFlow computations are expressed as stateful dataflow graphs.
+[src:tensorflow/tensorflow] The name TensorFlow derives from the operations that such neural networks perform on multidimensional data arrays, which are referred to as *tensors*.
+[src:tensorflow/tensorflow] During the Google I/O Conference in June 2016, Jeff Dean stated that 1,500 repositories on GitHub mentioned TensorFlow, of which only 5 were from Google.
+[src:tensorflow/tensorflow] In March 2018, Google announced TensorFlow.js version 1.0 for machine learning in JavaScript.
+[src:tensorflow/tensorflow] In Jan 2019, Google announced TensorFlow 2.0.
+[src:tensorflow/tensorflow] It became officially available in September 2019.
+[src:tensorflow/tensorflow] In May 2019, Google announced TensorFlow Graphics for deep learning in computer graphics.
+[src:tensorflow/tensorflow] In May 2016, Google announced its Tensor processing unit (TPU), an application-specific integrated circuit (ASIC, a hardware chip) built specifically for machine learning and tailored for TensorFlow.
+[src:tensorflow/tensorflow] A TPU is a programmable AI accelerator designed to provide high throughput of low-precision arithmetic (e.g., 8-bit), and oriented toward using or running models rather than training them.
+[src:tensorflow/tensorflow] Google announced they had been running TPUs inside their data centers for more than a year, and had found them to deliver an order of magnitude better-optimized performance per watt for machine learning.
+[src:tensorflow/tensorflow] In May 2017, Google announced the second-generation, as well as the availability of the TPUs in Google Compute Engine.
+[src:tensorflow/tensorflow] The second-generation TPUs deliver up to 180 teraflops of performance, and when organized into clusters of 64 TPUs, provide up to 11.5 petaflops.
+[src:tensorflow/tensorflow] In May 2018, Google announced the third-generation TPUs delivering up to 420 teraflops of performance and 128 GB high bandwidth memory (HBM).
+[src:tensorflow/tensorflow] Cloud TPU v3 Pods offer 100+ petaflops of performance and 32 TB HBM.
+[src:tensorflow/tensorflow] In February 2018, Google announced that they were making TPUs available in beta on the Google Cloud Platform.
+[src:tensorflow/tensorflow] In July 2018, the Edge TPU was announced.
+[src:tensorflow/tensorflow] Edge TPU is Google's purpose-built ASIC chip designed to run TensorFlow Lite machine learning (ML) models on small client computing devices such as smartphones known as edge computing.
+[src:tensorflow/tensorflow] In May 2017, Google announced TensorFlow Lite as a software stack to support machine learning models for mobile and embedded devices, and in November 2017, provided the developer preview.
+[src:tensorflow/tensorflow] In January 2019, the TensorFlow team released a developer preview of the mobile GPU inference engine with OpenGL ES 3.1 Compute Shaders on Android devices and Metal Compute Shaders on iOS devices.
+[src:tensorflow/tensorflow] In May 2019, Google announced that their TensorFlow Lite Micro (also known as TensorFlow Lite for Microcontrollers) and ARM's uTensor would be merging.
+[src:tensorflow/tensorflow] As TensorFlow's market share among research papers was declining to the advantage of PyTorch, the TensorFlow Team announced a release of a new major version of the library in September 2019.
+[src:tensorflow/tensorflow] TensorFlow 2.0 introduced many changes, the most significant being TensorFlow eager, which changed the automatic differentiation scheme from the static computational graph to the "Define-by-Run" scheme originally made popular by Chainer and later PyTorch.
+[src:tensorflow/tensorflow] Other major changes included removal of old libraries, cross-compatibility between trained models on different versions of TensorFlow, and significant improvements to the performance on GPU.
+[src:tensorflow/tensorflow] AutoDifferentiation is the process of automatically calculating the gradient vector of a model with respect to each of its parameters.
+[src:tensorflow/tensorflow] With this feature, TensorFlow can automatically compute the gradients for the parameters in a model, which is useful to algorithms such as backpropagation which require gradients to optimize performance.
+[src:tensorflow/tensorflow] To do so, the framework must keep track of the order of operations done to the input Tensors in a model, and then compute the gradients with respect to the appropriate parameters.
+[src:tensorflow/tensorflow] TensorFlow includes an "eager execution" mode, which means that operations are evaluated immediately as opposed to being added to a computational graph which is executed later.
+[src:tensorflow/tensorflow] Code executed eagerly can be examined step-by step-through a debugger, since data is augmented at each line of code rather than later in a computational graph.
+[src:tensorflow/tensorflow] This execution paradigm is considered to be easier to debug because of its step by step transparency.
+[src:tensorflow/tensorflow] In both eager and graph executions, TensorFlow provides an API for distributing computation across multiple devices with various distribution strategies.
+[src:tensorflow/tensorflow] This distributed computing can often speed up the execution of training and evaluating of TensorFlow models and is a common practice in the field of AI.
+[src:tensorflow/tensorflow] To train and assess models, TensorFlow provides a set of loss functions (also known as cost functions).
+[src:tensorflow/tensorflow] Some popular examples include mean squared error (MSE) and binary cross entropy (BCE).
+[src:tensorflow/tensorflow] In order to assess the performance of machine learning models, TensorFlow gives API access to commonly used metrics.
+[src:tensorflow/tensorflow] Examples include various accuracy metrics (binary, categorical, sparse categorical) along with other metrics such as Precision, Recall, and Intersection-over-Union (IoU).
+[src:tensorflow/tensorflow] TensorFlow.nn is a module for executing primitive neural network operations on models.
+[src:tensorflow/tensorflow] Some of these operations include variations of convolutions (1/2/3D, Atrous, depthwise), activation functions (Softmax, RELU, GELU, Sigmoid, etc.) and their variations, and other operations (max-pooling, bias-add, etc.).
+[src:tensorflow/tensorflow] TensorFlow offers a set of optimizers for training neural networks, including ADAM, ADAGRAD, and Stochastic Gradient Descent (SGD).
+[src:tensorflow/tensorflow] When training a model, different optimizers offer different modes of parameter tuning, often affecting a model's convergence and performance.
+[src:tensorflow/tensorflow] TensorFlow serves as a core platform and library for machine learning.
+[src:tensorflow/tensorflow] TensorFlow's APIs use Keras to allow users to make their own machine-learning models.
+[src:tensorflow/tensorflow] In addition to building and training their model, TensorFlow can also help load the data to train the model, and deploy it using TensorFlow Serving.
+[src:tensorflow/tensorflow] TensorFlow provides a stable Python Application Program Interface (API), as well as APIs without backwards compatibility guarantee for JavaScript, C++, and Java.
+[src:tensorflow/tensorflow] Third-party language binding packages are also available for C#, Haskell, Julia, MATLAB, Object Pascal, R, Scala, Rust, OCaml, and Crystal.
+[src:tensorflow/tensorflow] Bindings that are now archived and unsupported include Go and Swift.
+[src:tensorflow/tensorflow] TensorFlow also has a library for machine learning in JavaScript.
+[src:tensorflow/tensorflow] Using the provided JavaScript APIs, TensorFlow.js allows users to use either Tensorflow.js models or converted models from TensorFlow or TFLite, retrain the given models, and run on the web.
+[src:tensorflow/tensorflow] LiteRT, formerly known as TensorFlow Lite, has APIs for mobile apps or embedded devices to generate and deploy TensorFlow models.
+[src:tensorflow/tensorflow] These models are compressed and optimized in order to be more efficient and have a higher performance on smaller capacity devices.
+[src:tensorflow/tensorflow] LiteRT uses FlatBuffers as the data serialization format for network models, eschewing the Protocol Buffers format used by standard TensorFlow models.
+[src:tensorflow/tensorflow] TFX) provides numerous components to perform all the operations needed for end-to-end production.
+[src:tensorflow/tensorflow] Components include loading, validating, and transforming data, tuning, training, and evaluating the machine learning model, and pushing the model itself into production.
+[src:tensorflow/tensorflow] Numpy is one of the most popular Python data libraries, and TensorFlow offers integration and compatibility with its data structures.
+[src:tensorflow/tensorflow] Numpy NDarrays, the library's native datatype, are automatically converted to TensorFlow Tensors in TF operations; the same is also true vice versa.
+[src:tensorflow/tensorflow] This allows for the two libraries to work in unison without requiring the user to write explicit data conversions.
+[src:tensorflow/tensorflow] Moreover, the integration extends to memory optimization by having TF Tensors share the underlying memory representations of Numpy NDarrays whenever possible.
+[src:tensorflow/tensorflow] TensorFlow also offers a variety of libraries and extensions to advance and extend the models and methods used.
+[src:tensorflow/tensorflow] For example, TensorFlow Recommenders and TensorFlow Graphics are libraries for their respective functional.
+[src:tensorflow/tensorflow] Other add-ons, libraries, and frameworks include TensorFlow Model Optimization, TensorFlow Probability, TensorFlow Quantum, and TensorFlow Decision Forests.
+[src:tensorflow/tensorflow] Google also released Collaboratory, a TensorFlow Jupyter notebook environment that does not require any setup.
+[src:tensorflow/tensorflow] It runs on Google Cloud and allows users free access to GPUs and the ability to store and share notebooks on Google Drive.
+[src:tensorflow/tensorflow] Google JAX is a machine learning framework for transforming numerical functions.
+[src:tensorflow/tensorflow] It is described as bringing together a modified version of autograd (automatic obtaining of the gradient function through differentiation of a function) and TensorFlow's XLA (Accelerated Linear Algebra).
+[src:tensorflow/tensorflow] It is designed to follow the structure and workflow of NumPy as closely as possible and works with TensorFlow as well as other frameworks such as PyTorch.
+[src:tensorflow/tensorflow] GE Healthcare used TensorFlow to increase the speed and accuracy of MRIs in identifying specific body parts.
+[src:tensorflow/tensorflow] Google used TensorFlow to create DermAssist, a free mobile application that allows users to take pictures of their skin and identify potential health complications.
+[src:tensorflow/tensorflow] Sinovation Ventures used TensorFlow to identify and classify eye diseases from optical coherence tomography (OCT) scans.
+[src:tensorflow/tensorflow] Twitter implemented TensorFlow to rank tweets by importance for a given user, and changed their platform to show tweets in order of this ranking.
+[src:tensorflow/tensorflow] Previously, tweets were simply shown in reverse chronological order.
+[src:tensorflow/tensorflow] The photo sharing app VSCO used TensorFlow to help suggest custom filters for photos.
+[src:tensorflow/tensorflow] Google officially released RankBrain on October 26, 2015, backed by TensorFlow.
+[src:tensorflow/tensorflow] InSpace, a virtual learning platform, used TensorFlow to filter out toxic chat messages in classrooms.
+[src:tensorflow/tensorflow] Liulishuo, an online English learning platform, utilized TensorFlow to create an adaptive curriculum for each student.
+[src:tensorflow/tensorflow] TensorFlow was used to assess the current abilities of students and also helped decide which content to show based on those capabilities.
+[src:tensorflow/tensorflow] The e-commerce platform Carousell used TensorFlow to provide personalized recommendations for customers.
+[src:tensorflow/tensorflow] The cosmetics company ModiFace used TensorFlow to create an augmented reality experience for customers to test various shades of make-up on their face.
+[src:tensorflow/tensorflow] TensorFlow is the foundation for the automated image-captioning software DeepDream.

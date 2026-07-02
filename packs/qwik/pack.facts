@@ -1,0 +1,325 @@
+# nl-rag distilled facts — domain: qwik
+# one declarative sentence per line; load with:  neuron --db app.db import pack.facts --scope knowledge
+[src:qwik/concepts-resumable] A key concept of Qwik applications is that they are resumable from a server-side-rendered state.
+[src:qwik/concepts-resumable] The best way to explain resumability is to understand how the current generation of frameworks are replayable (hydration).
+[src:qwik/concepts-resumable] Component tree - build up an internal data structure representing the application component tree.
+[src:qwik/concepts-resumable] Application state - restore any data that was fetched or saved in a `store` on the server.
+[src:qwik/concepts-resumable] Collectively, this is known as hydration.
+[src:qwik/concepts-resumable] All current generations of frameworks require this step to make the application interactive.
+[src:qwik/concepts-resumable] The frameworks have to execute the templates associated with the components on the page to rebuild the listener location and the internal component tree.
+[src:qwik/concepts-resumable] Qwik is different because it does not require hydration to resume an application on the client.
+[src:qwik/concepts-resumable] Not requiring hydration is what makes the Qwik application startup instantaneous.
+[src:qwik/concepts-resumable] All other frameworks' hydration **replays** all the application logic on the client.
+[src:qwik/concepts-resumable] Qwik instead pauses execution on the server, and resumes execution on the client.
+[src:qwik/concepts-resumable] Resumability is about pausing execution on the server and resuming execution on the client without having to replay and download all of the application logic.
+[src:qwik/concepts-resumable] A good mental model is that Qwik applications at any point of their lifecycle can be serialized and moved to a different VM instance (server to browser).
+[src:qwik/concepts-resumable] There, the application simply resumes where the serialization stopped.
+[src:qwik/concepts-resumable] Hence, Qwik applications don't hydrate; they resume.
+[src:qwik/concepts-resumable] In order to achieve this, Qwik needs to solve the 3 problems (listeners, component tree, application state) in a way that is compatible with a no-code startup.
+[src:qwik/concepts-resumable] DOM without event listeners is just a static page; it is not an application.
+[src:qwik/concepts-resumable] Today's standard for all sites is quite a high level of interactivity, so even the most static-looking sites are full of event listeners.
+[src:qwik/concepts-resumable] These include menus, hovers, expanding details, or even full-on interactive apps.
+[src:qwik/concepts-resumable] Existing frameworks solve the event listener by downloading the components and executing their templates to collect event listeners that are then attached to the DOM.
+[src:qwik/concepts-resumable] Requires template code to be eagerly executed.
+[src:qwik/concepts-resumable] Requires the event handler code to be downloaded eagerly (to be attached).
+[src:qwik/concepts-resumable] As the application becomes more complicated, the amount of code needed to download eagerly and execute grows proportionally with the size of the application.
+[src:qwik/concepts-resumable] This negatively impacts the application startup performance and hence the user experience.
+[src:qwik/concepts-resumable] In other frameworks, lazy-loading chunks of the application becomes a development task in itself that consumes time and effort.
+[src:qwik/concepts-resumable] In Qwik, lazy-loading is a natural consequence of the resumable architecture.
+[src:qwik/concepts-resumable] Qwik still needs to collect the listener information, but this step is done as part of the SSR/SSG.
+[src:qwik/concepts-resumable] The results of SSR/SSG are then serialized into HTML so that the browser does not need to do anything to resume the execution.
+[src:qwik/concepts-resumable] Notice that the `on:click` attribute contains all of the information to resume the application without doing anything eagerly.
+[src:qwik/concepts-resumable] The HTML contains a URL to the chunk and symbol name.
+[src:qwik/concepts-resumable] The attribute tells Qwikloader which code chunk to download and which symbol to retrieve from the chunk and then to be executed.
+[src:qwik/concepts-resumable] Finally, to make all of the above possible, Qwik's event processing implementation understands asynchronicity which allows it to lazy load closures automatically.
+[src:qwik/concepts-resumable] To that end, frameworks need a complete understanding of the component trees to know which components need to be rerendered and when.
+[src:qwik/concepts-resumable] If you look into the existing framework SSR/SSG output, the component boundary information has been destroyed.
+[src:qwik/concepts-resumable] There is no way of knowing where component boundaries are by looking at the resulting HTML.
+[src:qwik/concepts-resumable] To recreate this information, frameworks re-execute the component templates and memoize the component boundary location.
+[src:qwik/concepts-resumable] Hydration is expensive as it requires both the download of component templates and their execution.
+[src:qwik/concepts-resumable] Qwik collects component boundary information as part of the SSR/SSG and then serializes that information into HTML.
+[src:qwik/concepts-resumable] Qwik can do this lazily only for the components which need to be re-rendered rather than all upfront.
+[src:qwik/concepts-resumable] Qwik collects relationship information between stores and components.
+[src:qwik/concepts-resumable] This creates a subscription model that informs Qwik which components need to be re-rendered as a result of state change.
+[src:qwik/concepts-resumable] The subscription information also gets serialized into HTML.
+[src:qwik/concepts-resumable] Existing frameworks usually have a way of serializing the application state into HTML so that the state can be restored as part of hydration.
+[src:qwik/concepts-resumable] In this way, they are very similar to Qwik.
+[src:qwik/concepts-resumable] However, Qwik has state management more tightly integrated into the lifecycle of the components.
+[src:qwik/concepts-resumable] In practice, this means that component can be delay-loaded independently from the state of the component.
+[src:qwik/concepts-resumable] This is not easily achievable in existing frameworks because component props are usually created by the parent component.
+[src:qwik/concepts-resumable] In order to restore component X, its parents need to be restored as well.
+[src:qwik/concepts-resumable] Qwik allows any component to be resumed without the parent component code being present.
+[src:qwik/concepts-resumable] The simplest way to think about serialization is through `JSON.stringify`.
+[src:qwik/concepts-resumable] Qwik can overcome some limitations, but some can't be overcome, and they place limitations on what the developer can do.
+[src:qwik/concepts-resumable] Understanding these limitations is important when building Qwik applications.
+[src:qwik/concepts-resumable] For cases where serialization is not possible, code should run on client only.
+[src:qwik/concepts-resumable] The resumability capability of the framework must extend to resumability of the application as well.
+[src:qwik/concepts-resumable] This means that the framework must provide mechanisms for the developer to express *components* and *entities* of the application in a way which can be serialized and then resumed (without re-bootstrapping).
+[src:qwik/concepts-resumable] This necessitates that the application is written with resumability constraints in mind.
+[src:qwik/concepts-resumable] It is simply not possible for developers to continue to write applications in a heap-centric way and expect that a better framework can somehow make up for this sub-optimal approach.
+[src:qwik/concepts-resumable] Developers must write their applications in a DOM-centric way.
+[src:qwik/concepts-resumable] This will require a change of behavior and retooling of web developers' skills.
+[src:qwik/concepts-resumable] Frameworks need to provide guidance and APIs to make it easy for developers to write the applications in this way.
+[src:qwik/concepts-resumable] The most obvious benefit of using resumability is for server-side-rendering.
+[src:qwik/concepts-resumable] Thanks to all the contributors who have helped make this documentation better!
+[src:qwik/concepts-think-qwik] Qwik is very similar to other web frameworks at a high level.
+[src:qwik/concepts-think-qwik] Qwik is a framework that renders a tree of components resulting in an interactive application.
+[src:qwik/concepts-think-qwik] The unique part of Qwik is not in what it does but in how it achieves its goals.
+[src:qwik/concepts-think-qwik] Qwik's goal is to have instant-on applications, even on mobile devices.
+[src:qwik/concepts-think-qwik] Serialize the execution state of the application and the framework on the server and resume it on the client.
+[src:qwik/concepts-think-qwik] The goal of Qwik is having only to download and execute the bare minimum of the application.
+[src:qwik/concepts-think-qwik] Qwik applications startup fast because there is a minimal amount of JavaScript code to execute.
+[src:qwik/concepts-think-qwik] By aggressively delaying the application download and execution, Qwik can provide near-instant startup performance.
+[src:qwik/concepts-think-qwik] No current generation of web frameworks can match this implementation.
+[src:qwik/concepts-think-qwik] Qwik is fast not because it uses clever algorithms but because it is designed in a way where most of the JavaScript never needs to be downloaded or executed.
+[src:qwik/concepts-think-qwik] Its speed comes from not doing things (such as hydration) that other frameworks have to do.
+[src:qwik/concepts-think-qwik] Resumability is discussed in detail here.
+[src:qwik/concepts-think-qwik] Resumability allows Qwik applications to continue execution where the server left off.
+[src:qwik/concepts-think-qwik] All frameworks need to keep track of internal data structures about the application's state.
+[src:qwik/concepts-think-qwik] The current generation of frameworks does not preserve this information when transitioning from the server to the browser.
+[src:qwik/concepts-think-qwik] As a result, the framework's data structures need to be rebuilt in the browser, duplicating the work that was done on the server.
+[src:qwik/concepts-think-qwik] The rebuilding of data structures and attaching of listeners is called hydration.
+[src:qwik/concepts-think-qwik] Qwik serializes listeners, internal data structures, and application state into the HTML during the server-browser handoff.
+[src:qwik/concepts-think-qwik] Because all of the information is serialized in HTML, the client can just resume execution where the server left off.
+[src:qwik/concepts-think-qwik] Modern websites require vast amounts of JavaScript to become interactive.
+[src:qwik/concepts-think-qwik] **Startup time**: Once on the client, the code needs to be executed (as part of hydration) to get the site interactive.
+[src:qwik/concepts-think-qwik] As applications get more complex with a higher fidelity of interactivity, the amount of code being shipped has steadily increased over the years, with no sign of stopping.
+[src:qwik/concepts-think-qwik] Simply put, websites are getting more complicated.
+[src:qwik/concepts-think-qwik] An increase in site complexity, in turn, requires more code.
+[src:qwik/concepts-think-qwik] All of this code negatively impacts site startup performance.
+[src:qwik/concepts-think-qwik] To make matters worse, JavaScript is single-threaded; therefore, complex sites can't take advantage of modern multi-core CPUs.
+[src:qwik/concepts-think-qwik] The solution to the above problem is both obvious and hard: Ship less JavaScript.
+[src:qwik/concepts-think-qwik] The obvious part is that sites with less JavaScript will perform better.
+[src:qwik/concepts-think-qwik] The hard part is that our tools don't help us achieve this.
+[src:qwik/concepts-think-qwik] Most of them solve problems in a way that makes shipping less JavaScript hard.
+[src:qwik/concepts-think-qwik] These tools are designed to address specific issues without considering how much JavaScript they produce.
+[src:qwik/concepts-think-qwik] Do you need to solve rendering, styling, animation, A/B testing, analytics, etc.?
+[src:qwik/concepts-think-qwik] Just import or add a `<script>` tag, and these tools will solve your problems, but at the expense of making the initial bundle bigger.
+[src:qwik/concepts-think-qwik] As an industry, the implication of bundle size has often been overlooked.
+[src:qwik/concepts-think-qwik] Each tool solves a specific problem individually, but size is not part of the equation.
+[src:qwik/concepts-think-qwik] Size becomes a problem when all the tools are combined, and by that point, there is very little the developer can do about it.
+[src:qwik/concepts-think-qwik] Qwik is designed from the ground up to address the size problem.
+[src:qwik/concepts-think-qwik] Small bundle size is its initial goal, and all other design decisions are subservient to that goal.
+[src:qwik/concepts-think-qwik] Qwik is not about creating less JavaScript.
+[src:qwik/concepts-think-qwik] Qwik is about not having to ship all of that JavaScript to the client at once on application startup.
+[src:qwik/concepts-think-qwik] Qwik is what you end up with when you take the idea of "delay loading of JavaScript" to the extreme.
+[src:qwik/concepts-think-qwik] Yes, Qwik requires a different way of thinking and designing your application, but the result is near zero initial JavaScript with progressive JavaScript download based on user interactions.
+[src:qwik/concepts-think-qwik] If you follow best practices for each of the frameworks, tools, etc., you will have a large bundle size.
+[src:qwik/concepts-think-qwik] It is at that time when developers start to mitigate the problem with some sort of lazy loading boundaries etc.
+[src:qwik/concepts-think-qwik] Industry best practices lead to large bundles, and the web is full of examples.
+[src:qwik/concepts-think-qwik] The mantra of Qwik is that bundle size should not be something that developers should think about.
+[src:qwik/concepts-think-qwik] It should just naturally emerge as part of how the framework is designed.
+[src:qwik/concepts-think-qwik] Qwik is designed from the ground up to produce lots of lazy loadable boundaries.
+[src:qwik/concepts-think-qwik] Tooling can break up your application into many lazy-loadable chunks, and the runtime can download them only when needed.
+[src:qwik/concepts-think-qwik] In short, the lazy loading philosophy must be done at a low level and can not be retroactively added to the existing frameworks/tools without changing them fundamentally.
+[src:qwik/concepts-think-qwik] Such fundamental change would be incompatible with the framework/tools and their respective ecosystems, rendering them useless.
+[src:qwik/concepts-think-qwik] When a framework makes certain assumptions, such as that all rendering is synchronous, adding asynchronous lazy loading becomes pretty close to impossible.
+[src:qwik/concepts-think-qwik] Or, if a framework recovers the listener location from templates, then download and execution of those templates is a must before the site can be interactive.
+[src:qwik/concepts-think-qwik] These are just some of the more obvious examples, but in practice, there is a long tail of endless reasons why the current mental model does not fit the requirements of resumability.
+[src:qwik/concepts-think-qwik] The above also means that it is not feasible for existing frameworks to add resumability as a feature.
+[src:qwik/concepts-think-qwik] Existing frameworks will never be able to do what Qwik can (without breaking backward compatibility).
+[src:qwik/concepts-think-qwik] Because we believe there is a better way to build sites.
+[src:qwik/concepts-think-qwik] A way that does not involve massive amounts of JavaScript that must be downloaded eagerly on startup before your site becomes interactive.
+[src:qwik/concepts-think-qwik] A way that allows the developer to think about adding features rather than how to break up the huge codebase into smaller chunks.
+[src:qwik/concepts-think-qwik] A way to have instant-on sites for a better user experience.
+[src:qwik/concepts-think-qwik] And all of that, in a way that is independent of the size of the application codebase.
+[src:qwik/concepts-think-qwik] Put simply: slow sites deter visitors, costing businesses millions.
+[src:qwik/concepts-think-qwik] Fast sites have better SEO, better UX, and are more profitable.
+[src:qwik/javascript-framework] A **web framework** (**WF**), **web application framework** (**WAF**), or **web development framework** is a software framework that is designed to support the development of web applications including web services, web resources, and web APIs.
+[src:qwik/javascript-framework] Web frameworks provide a standard way to build and deploy web applications on the World Wide Web.
+[src:qwik/javascript-framework] Web frameworks aim to automate the overhead associated with common activities performed in web development.
+[src:qwik/javascript-framework] For example, many web frameworks provide libraries for database access, templating frameworks, and session management, and they often promote code reuse.
+[src:qwik/javascript-framework] Although they often target development of dynamic web sites, they are also applicable to static websites.
+[src:qwik/javascript-framework] As the design of the World Wide Web was not inherently dynamic, early hypertext consisted of hand-coded HTML text files that were published on web servers.
+[src:qwik/javascript-framework] Any modifications to published pages needed to be performed by the pages' author.
+[src:qwik/javascript-framework] In 1993, the Common Gateway Interface (CGI) standard was introduced for interfacing external applications with web servers, to provide a dynamic web page that reflected user inputs.
+[src:qwik/javascript-framework] Original implementations of the CGI interface typically had adverse effects on the server load however, because each request started a separate process.
+[src:qwik/javascript-framework] More recent implementations utilize persistent processes amongst other techniques to reduce the footprint in the server's resources and offer a general performance boost.
+[src:qwik/javascript-framework] In 1995, fully integrated server/language development environments first emerged and new web-specific languages were introduced, such as ColdFusion, PHP, and Active Server Pages.
+[src:qwik/javascript-framework] Although the vast majority of languages for creating dynamic web pages have libraries to help with common tasks, web applications often require specific libraries for particular tasks, such as creating HTML (for example, Jakarta Faces).
+[src:qwik/javascript-framework] In the late 1990s, mature, "full stack" frameworks began to appear, that often gathered multiple libraries useful for web development into a single cohesive software stack for web developers to use.
+[src:qwik/javascript-framework] Most web frameworks are based on the model–view–controller (MVC) pattern.
+[src:qwik/javascript-framework] Many frameworks follow the MVC architectural pattern to separate the data model into business rules (the "controller") and the user interface (the "view").
+[src:qwik/javascript-framework] This is generally considered a good practice as it modularizes code, promotes code reuse, and allows multiple interfaces to be applied.
+[src:qwik/javascript-framework] In web applications, this permits different views to be presented, for example serving different web pages for mobile vs. desktop browsers, or providing machine-readable web service interfaces.
+[src:qwik/javascript-framework] Most MVC frameworks follow a push-based architecture also called "action-based".
+[src:qwik/javascript-framework] These frameworks use actions that do the required processing, and then "push" the data to the view layer to render the results.
+[src:qwik/javascript-framework] An alternative to this is pull-based architecture, sometimes also called "component-based".
+[src:qwik/javascript-framework] These frameworks start with the view layer, which can then "pull" results from multiple controllers as needed.
+[src:qwik/javascript-framework] In this architecture, multiple controllers can be involved with a single view.
+[src:qwik/javascript-framework] In three-tier organization, applications are structured around three physical tiers: client, application, and database.
+[src:qwik/javascript-framework] The application contains the business logic, running on a server and communicates with the client using HTTP.
+[src:qwik/javascript-framework] The client on web applications is a web browser that runs HTML generated by the application layer.
+[src:qwik/javascript-framework] The term should not be confused with MVC, where, unlike in three-tier architecture, it is considered a good practice to keep business logic away from the controller, the "middle layer".
+[src:qwik/javascript-framework] Web frameworks must function according to the architectural rules of browsers and protocols such as HTTP, which is stateless.
+[src:qwik/javascript-framework] Webpages are served up by a server and can then be modified by the browser using JavaScript.
+[src:qwik/javascript-framework] Either approach has its advantages and disadvantages.
+[src:qwik/javascript-framework] Server-side page changes typically require that the page be refreshed, but allow any language to be used and more computing power to be utilized.
+[src:qwik/javascript-framework] Client-side changes allow the page to be updated in small chunks which feels like a desktop application, but are limited to JavaScript and run in the user's browser, which may have limited computing power.
+[src:qwik/javascript-framework] Applications which make heavy use of JavaScript and only refresh parts of the page, are called single-page applications and typically make use of a client-side JavaScript web framework to organize the code.
+[src:qwik/javascript-framework] Examples include Backbone.js, AngularJS, Angular, Ember.js, ReactJS, jQuery UI, Svelte, and Vue.js.
+[src:qwik/javascript-framework] JavaScript-based web application frameworks, such as React and Vue, provide extensive capabilities but come with associated trade-offs.
+[src:qwik/javascript-framework] These frameworks often extend or enhance features available through native web technologies, such as routing, component-based development, and state management.
+[src:qwik/javascript-framework] Frameworks can introduce abstraction layers that may contribute to performance overhead, larger bundle sizes, and increased complexity.
+[src:qwik/javascript-framework] Modern frameworks, such as React 18 and Vue 3, address these challenges with features like concurrent rendering, tree-shaking, and selective hydration.
+[src:qwik/javascript-framework] While these advancements improve rendering efficiency and resource management, their benefits depend on the specific application and implementation context.
+[src:qwik/javascript-framework] Lightweight frameworks, such as Svelte and Preact, take different architectural approaches, with Svelte eliminating the virtual DOM entirely in favor of compiling components to efficient JavaScript code, and Preact offering a minimal, compatible alternative to React.
+[src:qwik/javascript-framework] Framework choice depends on an application’s requirements, including the team’s expertise, performance goals, and development priorities.
+[src:qwik/javascript-framework] A newer category of web frameworks, including enhance.dev, Astro, and Fresh, leverages native web standards while minimizing abstractions and development tooling.
+[src:qwik/javascript-framework] These solutions emphasize progressive enhancement, server-side rendering, and optimizing performance.
+[src:qwik/javascript-framework] Astro renders static HTML by default while hydrating only interactive parts.
+[src:qwik/javascript-framework] Fresh focuses on server-side rendering with zero runtime overhead.
+[src:qwik/javascript-framework] Enhance.dev prioritizes progressive enhancement patterns using Web Components.
+[src:qwik/javascript-framework] While these tools reduce reliance on client-side JavaScript by shifting logic to build-time or server-side execution, they still use JavaScript where necessary for interactivity.
+[src:qwik/javascript-framework] This approach makes them particularly suitable for performance-critical and content-focused applications.
+[src:qwik/javascript-framework] Frameworks typically set the control flow of a program and allow the user of the framework to "hook into" that flow by exposing various events.
+[src:qwik/javascript-framework] This "inversion of control" design pattern is considered to be a defining principle of a framework, and benefits the code by enforcing a common flow for a team which everyone can customize in similar ways.
+[src:qwik/javascript-framework] For example, some popular "microframeworks" such as Ruby's Sinatra (which inspired Express.js) allow for "middleware" hooks prior to and after HTTP requests.
+[src:qwik/javascript-framework] These middleware functions can be anything, and allow the user to define logging, authentication and session management, and redirecting.
+[src:qwik/javascript-framework] Web caching is the caching of web documents in order to reduce bandwidth usage, server load, and perceived "lag".
+[src:qwik/javascript-framework] A web cache stores copies of documents passing through it; subsequent requests may be satisfied from the cache if certain conditions are met.
+[src:qwik/javascript-framework] Some application frameworks provide mechanisms for caching documents and bypassing various stages of the page's preparation, such as database access or template interpretation.
+[src:qwik/javascript-framework] Some web frameworks come with authentication and authorization frameworks, that enable the web server to identify the users of the application, and restrict access to functions based on some defined criteria.
+[src:qwik/javascript-framework] Drupal is one example that provides role-based access to pages, and provides a web-based interface for creating users and assigning them roles.
+[src:qwik/javascript-framework] Many web frameworks create a unified API to a database backend, enabling web applications to work with a variety of databases with no code changes, and allowing programmers to work with higher-level concepts.
+[src:qwik/javascript-framework] Additionally, some object-oriented frameworks contain mapping tools to provide object-relational mapping, which maps objects to tuples.
+[src:qwik/javascript-framework] Some frameworks minimize web application configuration through the use of introspection and/or following well-known conventions.
+[src:qwik/javascript-framework] For example, many Java frameworks use Hibernate as a persistence layer, which can generate a database schema at runtime capable of persisting the necessary information.
+[src:qwik/javascript-framework] This allows the application designer to design business objects without needing to explicitly define a database schema.
+[src:qwik/javascript-framework] Frameworks such as Ruby on Rails can also work in reverse, that is, define properties of model objects at runtime based on a database schema.
+[src:qwik/javascript-framework] Other features web frameworks may provide include transactional support and database migration tools.
+[src:qwik/javascript-framework] A framework's URL mapping or routing facility is the mechanism by which the framework interprets URLs.
+[src:qwik/javascript-framework] Some frameworks, such as Drupal and Django, match the provided URL against pre-determined patterns using regular expressions, while some others use rewriting techniques to translate the provided URL into one that the underlying engine will recognize.
+[src:qwik/javascript-framework] Another technique is that of graph traversal such as used by Zope, where a URL is decomposed in steps that traverse an object graph (of models and views).
+[src:qwik/javascript-framework] A URL mapping system that uses pattern matching or rewriting to route and handle requests allows for shorter more "friendly URLs" to be used, increasing the simplicity of the site and allowing for better indexing by search engines.
+[src:qwik/javascript-framework] For example, a URL that ends with "/page.cgi?cat=science&topic=physics" could be changed to simply "/page/science/physics".
+[src:qwik/javascript-framework] This makes the URL easier for people to remember, read and write, and provides search engines with better information about the structural layout of the site.
+[src:qwik/javascript-framework] A graph traversal approach also tends to result in the creation of friendly URLs.
+[src:qwik/javascript-framework] A shorter URL such as "/page/science" tends to exist by default as that is simply a shorter form of the longer traversal to "/page/science/physics".
+[src:qwik/javascript-framework] Ajax, shorthand for "*Asynchronous JavaScript and XML*", is a web development technique for creating web applications.
+[src:qwik/javascript-framework] The intent is to make web pages feel more responsive by exchanging small amounts of data with the server behind the scenes, so that the entire web page does not have to be reloaded each time the user requests a change.
+[src:qwik/javascript-framework] This is intended to increase a web page's interactivity, speed, maintainability, and usability.
+[src:qwik/javascript-framework] Due to the complexity of Ajax programming in JavaScript, there are numerous Ajax frameworks that exclusively deal with Ajax support.
+[src:qwik/javascript-framework] Some Ajax frameworks are even embedded as a part of larger frameworks.
+[src:qwik/javascript-framework] For example, the jQuery JavaScript library is included in Ruby on Rails.
+[src:qwik/javascript-framework] With the increased interest in developing "Web 2.0" rich web applications, the complexity of programming directly in Ajax and JavaScript has become so apparent that compiler technology has stepped in, to allow developers to code in high-level languages such as Java, Python and Ruby.
+[src:qwik/javascript-framework] The first of these compilers was Morfik followed by Google Web Toolkit, with ports to Python and Ruby in the form of Pyjs and RubyJS following some time after.
+[src:qwik/javascript-framework] These compilers and their associated widget set libraries make the development of rich media Ajax applications much more akin to that of developing desktop applications.
+[src:qwik/javascript-framework] Some frameworks provide tools for creating and providing web services.
+[src:qwik/javascript-framework] These utilities may offer similar tools as the rest of the web application.
+[src:qwik/javascript-framework] A number of newer Web 2.0 RESTful frameworks are now providing resource-oriented architecture (ROA) infrastructure for building collections of resources in a sort of Semantic Web ontology, based on concepts from Resource Description Framework (RDF).
+[src:qwik/server-side-rendering] Server-side scripting is often used to provide a customized interface for the user.
+[src:qwik/server-side-rendering] These scripts may assemble client characteristics for use in customizing the response based on those characteristics, the user's requirements, access rights, etc.
+[src:qwik/server-side-rendering] Server-side scripting also enables the website owner to hide the source code that generates the interface, whereas, with client-side scripting, the user has access to all the code received by the client.
+[src:qwik/server-side-rendering] A downside to the use of server-side scripting is that the client needs to make further requests over the network to the server in order to show new information to the user via the web browser.
+[src:qwik/server-side-rendering] These requests can slow down the experience for the user, place more load on the server, and prevent the use of the application when the user is disconnected from the server.
+[src:qwik/server-side-rendering] When the server serves data in a commonly used manner, for example, according to the HTTP or FTP protocols, users may have their choice of a number of client programs (most modern web browsers can request and receive data using both of those protocols).
+[src:qwik/server-side-rendering] In the case of more specialized applications, programmers may write their own server, client, and communications protocol, that can only be used with one another.
+[src:qwik/server-side-rendering] Programs that run on a user's local computer without ever sending or receiving data over a network are not considered clients, and so the operations of such programs would not be considered client-side operations.
+[src:qwik/server-side-rendering] Netscape introduced an implementation of JavaScript for server-side scripting with Netscape Enterprise Server, first released in December, 1994 (soon after releasing JavaScript for browsers).
+[src:qwik/server-side-rendering] Server-side scripting was later used in early 1996 by Fred Dufresne while developing the first website for Boston, MA television station WCVB.
+[src:qwik/server-side-rendering] The technology is described in US patent 5835712 Archived 2020-02-25 at the Wayback Machine.
+[src:qwik/server-side-rendering] The patent was issued in 1998 and is now owned by Open Invention Network (OIN).
+[src:qwik/server-side-rendering] In 2010, OIN named Fred DuFresne a "Distinguished Inventor" for his work on server-side scripting.
+[src:qwik/server-side-rendering] In the earlier days of the web, server-side scripting was almost exclusively performed by using a combination of C programs, Perl scripts, and shell scripts using the Common Gateway Interface (CGI).
+[src:qwik/server-side-rendering] Those scripts were executed by the operating system, and the results were served back by the web server.
+[src:qwik/server-side-rendering] Many modern web servers can directly execute on-line scripting languages such as ASP, JSP, Perl, PHP and Ruby either by the web server itself or via extension modules (e.g. mod_perl or mod_php) to the webserver.
+[src:qwik/server-side-rendering] For example, WebDNA includes its own embedded database system.
+[src:qwik/server-side-rendering] Either form of scripting (i.e., CGI or direct execution) can be used to build up complex multi-page sites, but direct execution usually results in less overhead because of the lower number of calls to external interpreters.
+[src:qwik/server-side-rendering] Dynamic websites sometimes use custom web application servers, such as Glassfish, Plack and Python's "Base HTTP Server" library, although some may not consider this to be server-side scripting.
+[src:qwik/server-side-rendering] When using dynamic web-based scripting techniques, developers must have a keen understanding of the logical, temporal, and physical separation between the client and the server.
+[src:qwik/server-side-rendering] For a user's action to trigger the execution of server-side code, for example, a developer working with classic ASP must explicitly cause the user's browser to make a request back to the webserver.
+[src:qwik/server-side-rendering] Server-side scripts are completely processed by the servers instead of clients.
+[src:qwik/server-side-rendering] When clients request a page containing server-side scripts, the application server processes the scripts and returns an HTML page to the client.
+[src:qwik/server-side-rendering] With the advent of single-page applications, an updated approach to server-side scripting was introduced, known as server-side rendering.
+[src:qwik/server-side-rendering] With server-side rendering, static HTML can be sent from the server to the client, and client-side JavaScript then makes the web page dynamic by attaching event handlers to the HTML elements in a process called hydration.
+[src:qwik/server-side-rendering] Examples of frameworks that support server-side rendering are Next.js, Nuxt.js, Angular.
+[src:qwik/server-side-rendering] An alternative to server-side rendering is static site generation.
+[src:qwik/server-side-rendering] With server-side rendering, the page is generally assembled on the server once per each request.
+[src:qwik/server-side-rendering] By contrast, with static site generation, the application generates all the static HTML pages at build time.
+[src:qwik/server-side-rendering] These pre-built pages are then sent to the client at each request, without having to build them again.
+[src:qwik/server-side-rendering] This leads to faster rendering times, since a new page doesn't have to be generated on every request; the server simply hands over a file it already generated in the past.
+[src:qwik/server-side-rendering] The downside is that when some data on the page changes, it needs to be rebuilt.
+[src:qwik/server-side-rendering] Examples of static site generation tools are Jekyll and Gatsby.
+[src:qwik/server-side-rendering] Sites generated by static site generation tools are often hosted on Netlify, Vercel or GitHub pages.
+[src:qwik/web-performance] Web performance is the objective measurements and the perceived user experience of load time and runtime.
+[src:qwik/web-performance] Web performance is how long a site takes to load, become interactive and responsive, and how smooth the content is during user interactions.
+[src:qwik/web-performance] Performance concerns questions like: Is scrolling smooth?
+[src:qwik/web-performance] Do pop-ups load quickly and animate fluidly?
+[src:qwik/web-performance] The objective measurements include time to load, frames per second, and time to become interactive, and subjective experience means how long it feels like it takes for content to load.
+[src:qwik/web-performance] The longer it takes for a site to respond, the more users will abandon the site.
+[src:qwik/web-performance] It is important to minimize the loading and response times and add additional features to conceal latency by making the experience as available and interactive as possible, as soon as possible, while asynchronously loading in the longer tail parts of the experience.
+[src:qwik/web-performance] There are tools, APIs, and best practices that help us measure and improve web performance.
+[src:qwik/web-performance] The Performance guides are resources that describe how browsers work, what affects performance, and how to measure, optimize, and monitor performance across various aspects of your application.
+[src:qwik/web-performance] In the context of Open Web Apps, this document explains in general what performance is, how the browser platform helps improve it, and what tools and processes you can use to test and improve it.
+[src:qwik/web-performance] Users want web experiences with content that is fast to load and smooth to interact with.
+[src:qwik/web-performance] Therefore, a developer should strive to achieve these two goals.
+[src:qwik/web-performance] To understand how to improve performance and perceived performance, it helps to understand how the browser works.
+[src:qwik/web-performance] There are no clear set rules as to what constitutes a slow pace when loading pages, but there are specific guidelines for indicating content will load (1 second), idling (50ms), animating (16.7ms) and responding to user input (50 to 200ms).
+[src:qwik/web-performance] Improving your startup performance is often one of the highest value performance optimizations that can be made.
+[src:qwik/web-performance] Good user experience includes ensuring your app loads quickly.
+[src:qwik/web-performance] This article provides performance tips and suggestions for both writing new applications and porting applications to the web from other platforms.
+[src:qwik/web-performance] The Critical Rendering Path is the sequence of steps the browser goes through to convert the HTML, CSS, and JavaScript into pixels on the screen.
+[src:qwik/web-performance] Optimizing the critical render path improves render performance.
+[src:qwik/web-performance] The critical rendering path includes the Document Object Model (DOM), CSS Object Model (CSSOM), render tree and layout.
+[src:qwik/web-performance] A performance budget is a limit to prevent regressions.
+[src:qwik/web-performance] It can apply to a file, a file type, all files loaded on a page, a specific metric (e.g., Time to Interactive), a custom metric (e.g., Time to Hero Element), or a threshold over a period of time.
+[src:qwik/web-performance] Animations are critical for a pleasurable user experience on many applications.
+[src:qwik/web-performance] There are many ways to implement web animations, such as CSS `transitions`/`animations` or JavaScript-based animations (using `requestAnimationFrame()`).
+[src:qwik/web-performance] In this article, we analyze the performance differences between CSS-based and JavaScript-based animation.
+[src:qwik/web-performance] Animation on the web can be done via `SVG`, `JavaScript`, including `<canvas>` and `WebGL`, CSS `animation`, `<video>`, animated GIFs and even animated PNGs and other image types.
+[src:qwik/web-performance] The performance cost of animating a CSS property can vary from one property to another, and animating expensive CSS properties can result in Jank as the browser struggles to hit a smooth frame rate.
+[src:qwik/web-performance] The MDN Web Performance Learning Area contains modern, up-to-date tutorials covering Performance essentials.
+[src:qwik/web-performance] This article discusses why web performance is important for accessibility, user experience and your business goals.
+[src:qwik/web-performance] You know web performance is important, but what factors affect web performance and how is it measured?
+[src:qwik/web-performance] This article introduces the components of performance, from web page loading and rendering, including how your content makes it into your users' browser to be viewed, to what groups of people we need to consider when thinking about performance.
+[src:qwik/web-performance] More important than how fast your website is in milliseconds, is how fast your users perceive your site to be.
+[src:qwik/web-performance] These perceptions are impacted by actual page load time, idling, responsiveness to user interaction, and the smoothness of scrolling and other animations.
+[src:qwik/web-performance] In this article, we discuss the various loading metrics, animation, and responsiveness metrics, along with best practices to improve user perception, if not the actual timings.
+[src:qwik/web-performance] Now that you understand a few performance metrics, we take a deeper dive into performance tools, metrics, and APIs and how we can make performance part of the web development workflow.
+[src:qwik/web-performance] The lowest hanging fruit of web performance is often media optimization.
+[src:qwik/web-performance] Serving different media files based on each user agent's capability, size, and pixel density is possible.
+[src:qwik/web-performance] In this article we discuss the impact images have on performance, and the methods to reduce the number of bytes sent per image.
+[src:qwik/web-performance] In this article we discuss the impact video content has on performance, and cover tips like removing audio tracks from background videos can improve performance.
+[src:qwik/web-performance] JavaScript, when used properly, can allow for interactive and immersive web experiences — or it can significantly harm download time, render time, in-app performance, battery life, and user experience.
+[src:qwik/web-performance] This article outlines some JavaScript best practices that should be considered to ensure even complex content is as performant as possible.
+[src:qwik/web-performance] Some attributes and the source order of your markup can impact the performance or your website.
+[src:qwik/web-performance] By minimizing the number of DOM nodes, making sure the best order and attributes are used for including content such as styles, scripts, media, and third-party scripts, you can drastically improve the user experience.
+[src:qwik/web-performance] This article looks in detail at how HTML can be used to ensure maximum performance.
+[src:qwik/web-performance] CSS may be a less important optimization focus for improved performance, but there are some CSS features that impact performance more than others.
+[src:qwik/web-performance] In this article we look at some CSS properties that impact performance and suggested ways of handling styles to ensure performance is not negatively impacted.
+[src:qwik/web-performance] There are many things a developer can do to improve performance, but how fast is fast enough?
+[src:qwik/web-performance] How can you convince powers that be of the importance of these efforts?
+[src:qwik/web-performance] Once optimized, how can you ensure bloat doesn't come back?
+[src:qwik/web-performance] In this article we look at convincing management, developing a performance culture and performance budget, and introduce ways to ensure regressions don't sneak into your code base.
+[src:qwik/web-performance] This article covers several topics at a basic level and provides links to deeper dives to improve performance for each topic.
+[src:qwik/web-performance] In addition to front-end topics such as HTML, CSS, JavaScript, and media files, it also covers APIs, developer tools, best practices, and bad practices relating to web performance.
+[src:qwik/web-performance] The Performance API is a group of standards used to measure the performance of web applications.
+[src:qwik/web-performance] The Performance API allows high precision measurements that are based on time in potential sub-millisecond resolution and a stable monotonic clock that is not subject to system clock skew or adjustments.
+[src:qwik/web-performance] The high resolution timers are needed for accurate benchmarking instead of the less precise and non-monotonic `Date` timestamps.
+[src:qwik/web-performance] The `PerformanceNavigationTiming.notRestoredReasons` property reports information on why the current document was blocked from using the bfcache on navigation.
+[src:qwik/web-performance] Developers can use this information to identify pages that need updates to make them bfcache-compatible, thereby improving site performance.
+[src:qwik/web-performance] Navigation Timing provides metrics associated with navigating from one page to another via the PerformanceNavigationTiming API.
+[src:qwik/web-performance] For example, you can determine how much time it takes to load or unload a document, or log the time it took until DOM construction has finished and interaction with the DOM is possible.
+[src:qwik/web-performance] The Performance API doesn't provide performance data analysis, or visualizations.
+[src:qwik/web-performance] However, the Performance API is integrated well with developer tools and its data is often sent to analytics end points and libraries to record performance metrics which help you to evaluate the data to find performance bottlenecks affecting your users.
+[src:qwik/web-performance] This page provides an overview about what sorts of Performance API data exists, how it is collected, and how it can be accessed.
+[src:qwik/web-performance] Resource Timing enables retrieving and analyzing detailed network timing data for the loading of an application's resources.
+[src:qwik/web-performance] An application can use the timing metrics to determine, for example, the length of time it takes to load a specific resource (such as an image or a script) either implicitly as part of page load or explicitly from JavaScript, for example using the `fetch()` API.
+[src:qwik/web-performance] Server-Timing allows servers to communicate metrics about the request-response cycle to the user agent.
+[src:qwik/web-performance] You can collect this information and act on server-side metrics in the same way as all the other metrics processed with the Performance API.
+[src:qwik/web-performance] Create application specific timestamps using the user timing API's "mark" and "measure" entry types using high-precision timestamps that are part of the browser's performance timeline.
+[src:qwik/web-performance] Provides events you can watch for to know when a document becomes visible or hidden, as well as features to look at the current visibility state of the page.
+[src:qwik/web-performance] The **Cooperative Scheduling of Background Tasks API** (also referred to as the Background Tasks API or the `requestIdleCallback()` API) provides the ability to queue tasks to be executed automatically by the user agent when it determines that there is free time to do so.
+[src:qwik/web-performance] The Beacon interface schedules an asynchronous and non-blocking request to a web server.
+[src:qwik/web-performance] The Intersection Observer API provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document's Viewport.
+[src:qwik/web-performance] This enabled use cases such as Timing element visibility to get asynchronously notified when elements of interest become visible.
+[src:qwik/web-performance] Exposes decoding and encoding abilities of a client device, such as whether media is supported and whether playback should be smooth and power efficient, with real time feedback about playback to better enable adaptive streaming, and access to display property information.
+[src:qwik/web-performance] Information about the system's connection in terms of general connection type (e.g., 'wifi, 'cellular', etc.).
+[src:qwik/web-performance] This can be used to select high definition content or low definition content based on the user's connection.
+[src:qwik/web-performance] The **Battery API**, provides information about the system's battery charge level and lets you be notified by events that are sent when the battery level or charging status change.
+[src:qwik/web-performance] This can be used to adjust your app's resource usage to reduce battery drain when the battery is low, or to save changes before the battery runs out in order to prevent data loss.
+[src:qwik/web-performance] The **`deviceMemory`** read-only property of the `Navigator` interface returns the approximate amount of device memory in gigabytes.
+[src:qwik/web-performance] The **`preloadResponse`** read-only property of the `FetchEvent` interface returns a `Promise` that resolves to the navigation preload `Response` if navigation preload was triggered, or `undefined` otherwise.
+[src:qwik/web-performance] This website provides information on how to use and understand the performance features in your developer tools, including Call Tree, Flame Graph, Stack Chart, Marker Chart and Network Chart.
+[src:qwik/web-performance] Learn how to profile app performance with Firefox's built-in profiler.
