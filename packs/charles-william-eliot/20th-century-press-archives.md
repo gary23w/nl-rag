@@ -1,0 +1,79 @@
+---
+title: "20th Century Press Archives"
+source: https://en.wikipedia.org/wiki/20th_Century_Press_Archives
+domain: charles-william-eliot
+license: CC-BY-SA-4.0
+tags: charles william eliot
+fetched: 2026-07-03
+---
+
+# 20th Century Press Archives
+
+Coordinates
+
+:
+
+53°33′26″N
+
+9°59′33″E
+
+﻿
+
+/
+
+﻿
+
+53.557102°N 9.9924345°E
+
+﻿
+
+/
+
+53.557102; 9.9924345
+
+The **20th Century Press Archives** (German: *Pressearchiv 20. Jahrhundert*) comprises about 19 million newspaper clippings, organized in folders about persons, companies, wares, events and topics.
+
+It originates from the Hamburg Kolonialinstitut (colonial institute) founded in 1908. Within the Hamburg Institute of International Economics (HWWA) it turned into a unique public press archive. In 2007 it was absorbed by the German National Library of Economics (ZBW) and merged with the Wirtschaftsarchiv (economics archive) of the Kiel Institute for the World Economy (IfW), founded in 1914. Article collection was discontinued at the end of 2005, but the archive is still open to the public.
+
+## History
+
+The archive has its origins in two institutions in the German cities of Hamburg and Kiel.
+
+In Hamburg, after a few years, the "Zentralstelle" (central office) of the Kolonialinstitut was transformed from a free information center for colonial issues into a comprehensive archive of global political and economic topics, which primarily supported the city's merchants. After the breakdown of the German colonial empire in World War I, the renaming to "Hamburgisches Welt-Wirtschafts-Archiv" in 1919 sealed this reorientation. The staff of HWWA reflected its importance and grew from 54 in 1919 to 183 permanent or temporary employees in 1958 – a number that seems to have remained largely stable until the late 1990s.
+
+Founded shortly before the outbreak of the First World War, the Kiel Economic Archive and its library were closely linked to the scientific work of the IfW, which focused on global economic contexts and their practical use. In 1966, the library of the IfW was given the function of a central library for economics by the German Research Foundation (DFG) in the Federal Republic of Germany, and in 1993, the department was renamed accordingly.
+
+During the first and second world wars, both archives were intensively involved in the foreign and wartime planning of the empire and the Nazi state. Starting in 1936, "Confidential Reports from the Foreign Press" provided selected economic leaders and Nazi departments with "largely unfiltered information and comments on economic issues from foreign media and represented a unique feature in Nazi media policy". Acting with the informal means of a foreign cultural and information policy supplementing the military expansion policy, HWWA and IfW dedicated their services to the Nazi regime.
+
+In 1996, a closer cooperation between HWWA and ZBW / Wirtschaftsarchiv began, with the aim of merging the two archives. From the beginning of 2001, the articles were indexed according to a new common classification system and made retrievable via a reference database, "EconPress". Following a recommendation from an evaluation within the Leibniz Association in 2003, the current press documentation was finished at the end of 2005 and the materials were frozen at that point. The separate existence of the HWWA ended in 2007 with the integration of its press documentation and library into the ZBW as a newly formed foundation under public law. Today, the press archive belongs to the (research) organisations of the Leibniz Association.
+
+## Areas of collection and extent
+
+By 1919 at the latest, the Hamburg archive collected "press clippings on a global scale". The archive was subdivided in four sections:
+
+- The *Sacharchiv* (topics archive) holds subject matter "from all countries, subcontinents and the whole world". For the individual countries and regions, which constituted the primary order criterion, up to 1200 individual topics were recorded. Further special folders were created for individual events or questions "such as the Boer War, the issue of slavery or the Suez Canal". Since the late 1990s, collecting had focused on "domestic and international economic issues (business, economics, economic policy, markets, industries, innovations)".
+- The *Warenarchiv* (wares archive) covers national and international raw materials, semi-finished and finished products. The product names are subdivided into approximately 980 upper and 3400 sub-terms. Here, countries and regions represent the secondary order criterion.
+- The *Firmenarchiv* (companies archive) holds business reports, annual publications and press clippings of c. 36,000 (according to other figures: c. 70,000 ) domestic and foreign companies. In addition, material on several hundred institutions and international organizations, universities and research institutes has been collected.
+- The *Personenarchiv* (persons archive) has dossiers of about 16,000 people from business, politics, science, culture and society.
+
+More than 1400 sources were monitored for the press archives. Their broad international distribution provides access to the history of political thought and receptive history of the covered topics. Occasionally, the collected publications go back as far as 1826. While the persons archive was only available in paper form until its partial digitization, the holdings of the topics, wares and companies archives were saved every ten years on roll film or microfiche since the 1960s and then the paper clippings were pulped.
+
+The holdings of the Kiel Wirtschaftsarchiv are less comprehensively documented. They are subdivided into a topics archive, which mainly served the research and teaching of the IfW and which is microfilmed up to 1945; a personnel archive, only in paper form, which also contains publications of these persons; and a home archive with publications about the IfW itself, also on paper. The archive on corporate bodies –which in 1958 comprised 4800 companies and more than 5600 German and international scientific and cultural societies and institutions, political parties and trade associations, and represented "one of the most complete collections for twentieth-century business history" – is not mentioned any more in the archive's profile. The "war archive" of 1914–1918, which amounted to one million clippings, was destroyed by a bomb strike in 1942. In 1958, when six scientific experts and more than 30 employees in total were collecting and organizing the material, the total extent of the archive was estimated as more than three million, and in 1993 as more than ten million.
+
+Through the *Pressemappe 20. Jahrhundert* application, parts of the holdings of both archives are now accessible on the web.
+
+## Partial digitization and the *Pressemappe 20. Jahrhundert* application
+
+From 2004 to 2007, the German Research Foundation funded a project to digitize parts of the archives, namely the materials from the beginning up to 1949 (the formation of the Federal Republic of Germany).
+
+The paper clippings from the folders of the persons archive were scanned, and metadata (folder and document ID as well as page number, occasionally also source, publication date, author and title) were recorded by project staff. Optical character recognition could not be applied due to the partially used Fraktur scripts, the constantly changing fonts (as well as languages) in the sequence of the articles, and the sometimes poor quality of the clippings. However, the approximately 5,500 person folders created before 1949 are fully accessible online.
+
+The roll film parts of the archive (up to 1960) have also been digitized. As neither the folders nor the documents on these films were separated in a machine-readable fashion, such formal elements could not be automatically derived. Instead, the pages had to be "sliced" with specially developed "Slider" software, assembled into documents and folders, and given metadata. Only a small part of this labor-intensive process was finished at the end of the project in 2007. It is continued today, so that new folders are continually made available via the web application "Pressemappe 20. Jahrhundert", which was created within the framework of the project. Of the c. 11,000 company folders on digitized roll film, by 2018 about 7,500 were accessible online. For the topics and wares archives, the proportion of online folders seems to be significantly lower. The persons are alphabetically indexed by name, while the companies are accessible by name, geographically by their headquarters and via industry lists. The topics can be accessed via the topics hierarchy and country system as well as through a search for subject and geographical GND keywords, and via a world map with geolocations.
+
+The limitation to 1949 was made for capacity reasons, and due to intellectual property rights restrictions. Numerous individual articles within the dossiers are subject to blocking notices if the death of the author (or in the case of anonymous or pseudonymous works, the date of publication) is less than 70 years ago. With a moving wall more and more documents should be released over time. How many of the about 5.7 million documents digitized in the context of the project are accessible to the scientific and general public on the web is not known.
+
+## Collaboration with Wikidata
+
+In 2019, the German National Library of Economics (ZBW) placed all the metadata of the archives under a CC0 licence, and began a cooperation and "data donation" with Wikimedia Deutschland. This led to the creation of many new Wikidata items and the enrichment of many existing items; by the end of 2022, every folder in the archive was connected to items in Wikidata.
+
+In 2024, changes to intellectual property rights in Europe made it possible to provide complete digitized images from the archive – some 3.8 million pages – for online viewing within the European Union. A volunteer project is working on adding links to the archive's folders in Wikidata, so that Wikidata provides an index to the material.
