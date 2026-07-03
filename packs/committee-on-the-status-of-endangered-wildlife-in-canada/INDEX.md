@@ -1,0 +1,18 @@
+# committee-on-the-status-of-endangered-wildlife-in-canada — nl-rag pack
+
+Pre-normalized AI markdown. tags: committee on the status of endangered wildlife in canada. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [Blue-listed](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/blue-listed.md) — upstream: https://en.wikipedia.org/wiki/Blue-listed
+- [Committee on the Status of Endangered Wildlife in Canada](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/committee-on-the-status-of-endangered-wildlife-in-canada.md) — upstream: https://en.wikipedia.org/wiki/Committee_on_the_Status_of_Endangered_Wildlife_in_Canada
+- [Conservation status](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/conservation-status.md) — upstream: https://en.wikipedia.org/wiki/Conservation_status
+- [Fisheries and Oceans Canada](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/department-of-fisheries-and-oceans.md) — upstream: https://en.wikipedia.org/wiki/Department_of_Fisheries_and_Oceans
+- [Distinct population segment](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/distinct-population-segment.md) — upstream: https://en.wikipedia.org/wiki/Distinct_population_segment
+- [EAZA Ex-situ Programme](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/eaza-ex-situ-programme.md) — upstream: https://en.wikipedia.org/wiki/EAZA_Ex-situ_Programme
+- [Endangered Species Act Amendments of 1978](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/endangered-species-act-amendments-of-1978.md) — upstream: https://en.wikipedia.org/wiki/Endangered_Species_Act_Amendments_of_1978
+- [Endangered Species Act of 1973 (part 1/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/endangered-species-act-of-1973-p01.md) — upstream: https://en.wikipedia.org/wiki/Endangered_Species_Act_of_1973
+- [Endangered Species Act of 1973 (part 2/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/endangered-species-act-of-1973-p02.md) — upstream: https://en.wikipedia.org/wiki/Endangered_Species_Act_of_1973
+- [Endangered Species Act of 1973 (part 3/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/endangered-species-act-of-1973-p03.md) — upstream: https://en.wikipedia.org/wiki/Endangered_Species_Act_of_1973
+- [Endangered Species Act of 1973 (part 4/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/endangered-species-act-of-1973-p04.md) — upstream: https://en.wikipedia.org/wiki/Endangered_Species_Act_of_1973
+- [Endangered Species Act of 1973 (part 5/5)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/endangered-species-act-of-1973-p05.md) — upstream: https://en.wikipedia.org/wiki/Endangered_Species_Act_of_1973
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/committee-on-the-status-of-endangered-wildlife-in-canada/pack.facts) — distilled one-line facts (neuron CLI import)
