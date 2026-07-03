@@ -1,0 +1,38 @@
+---
+title: "1321 lepers' plot"
+source: https://en.wikipedia.org/wiki/1321_lepers'_plot
+domain: alaska-payment-conspiracy
+license: CC-BY-SA-4.0
+tags: alaska payment conspiracy
+fetched: 2026-07-03
+---
+
+# 1321 lepers' plot
+
+The **lepers' plot** was an alleged conspiracy of French lepers in 1321 to spread their disease by contaminating water supplies, including well water, with their powders and poisons. According to the American historian Solomon Grayzel, lepers were the most abused group of people during the Middle Ages: they were thrown out of settlements and treated as wild animals due to the widespread belief that their disease was highly contagious. However, other historians have contested such a view, pointing out that lepers often lived within communities in leper houses (*leprosaria*) and were supported by charitable donations.
+
+As the alleged conspiracy progressed, Jews and Muslims were also said to be implicated, providing an excuse for local authorities to attack both Jewish and leper communities. The hysteria quickly spread to the neighbouring realms, most notably to the Crown of Aragon.
+
+## France
+
+Rumours of a plot broke out in the spring of 1321 and terrified the people of southern France. Torture of lepers ensued, and eventually, confessions were forced out. These initially blamed lepers only, but later, in June 1321, stated that the lepers were acting on the orders of Jews, who in turn had been bribed by the Muslims of Spain, in an attempt to "poison the Christian population of Europe". In the confession of the leper Johan de Bosco on 16 May 1321 to the officials of Regale Ville, he says that Geraldus, leper and proctor of the leprosarium of Alterque, had brought bags of powder and ordered him to put them in fountains and rivers so that anyone who drank from them would die or become leprous.
+
+The records of Jacques Fournier, Bishop of Pamiers (who will later be elected as Pope Benedict XII), contain the 9 June 1321 deposition of Guillaume Agasse, the head of the leper house in Pamiers. Agasse said that "50 or 60" representatives, leaders, and ministers of leper houses from across France met in one place and conspired to poison the populace with the aid of the Muslim King of Granada. The heads of the houses, it was claimed, were required to deny 'Christ's faith and his law' and in return were to become the masters of the localities their houses served.
+
+The alleged plot flourished in the wake of the previous year's Shepherds' Crusade, which saw young rural men and women form a mob and attack Jews in France and the neighbouring Crown of Aragon, despite being ordered to stop by Pope John XXII, King Philip V of France and King James II of Aragon. Already in 1320, some of the apprehended and later hanged "crusaders" claimed to have found barrels filled with rotten bread while pillaging a leper colony (possibly near Le Mas-d'Agenais), and made a strikingly uncommon accusation, alleging that the lepers had intended to use the bread to prepare poisons for contaminating well water. The rumours that sparked the violence in 1321 may have started here. While the Shepherds' Crusade was led by rioters, the persecution of lepers was orchestrated by municipal authorities, making it judicial though extralegal (judicial power being royal prerogative).
+
+King Philip was on a regional tour when the stories started circulating. He found himself in a difficult position‍—‍he could openly neither condone nor condemn the unstoppable persecution, as the former would have led to more violence, while the latter would have undermined his authority. The Dominican inquisitor Bernard Gui was instructed to conduct extensive investigation. On 21 June, Philip ordered by edict that all lepers be imprisoned and examined under torture. Those found guilty were to be burnt at the stake. Since their crimes were declared lèse-majesté, the lepers' property was to be confiscated by the Crown. Unfortunately for Philip, many local lords had already executed lepers and confiscated their goods. He was persuaded by the barons, prelates, and nobles, who said they had by ancient custom the right to administer leproseries and take immediate steps against the plotters, to give way and accept their actions through a second ordinance on August 18.
+
+## Aragon
+
+| "Know also, lord, that lepers have been captured in Avignon and subjected to torture, and it is said that they have confessed that they were to poison all the waters of wells and fountains that were outside of houses, and that this is to be presumed. It has already been decreed in Avignon that no one should use water from outside fountains. And it is said that Jews consented to all this. We are notifying Your Serenity of this so that you may take precautions that from this or similar deeds no harm come to your people." |
+|---|
+| Excerpt from Sancho's letter to James |
+
+News of the uncovered plot spread rapidly to the neighbouring countries. King James of Aragon learned of the supposed conspiracy and associated violence almost immediately. James's cousin, King Sancho of Majorca, informed him of the situation in France by a letter dated 2 June, but James deliberated for nearly a week. The French lepers fleeing the "lash of justice", as James put it in a letter to his officials, were already seeking shelter in his realm. He cautiously commanded the arrest and expulsion of all leprous foreigners, while Jews were not mentioned. By 27 June, James had changed his mind in favour of a harsher approach. He ordered not only the seizure of the diseased, destruction of their powders, and questioning under torture, but also the arrest and expulsion of non-leprous foreigners, "since it is difficult, truly even impossible, to recognize such and identify them". Local inquisitions were set up in Manresa, Ejea de los Caballeros, Huesca, Montblanc, Tarazona and Barcelona. Those who confessed were burned. Leper colonies were attacked and their goods seized, including the ancient leprosarium attached to the church of Santa Maria de Cervera.
+
+A suspected leper was most likely examined and diagnosed with the disease by frightened lay people rather than experienced physicians. A year after the scare, a physician called Amonant decided to move from Gascony to Aragon, only to be apprehended in Huesca and accused of being a leper intending to poison the water. The physician appealed to King James's son Alfons and was granted examination by local physicians, who confirmed that he was not infected. Frightened, he chose to leave Aragon. The incident was probably one of many that helped promote the medical diagnosis of leprosy.
+
+## Aftermath
+
+Doubts about whether the lepers' plot was real or not emerged soon after the persecution of lepers in France in June, July, and August 1321. Those lepers of Limoges who were branded and locked up on 27 August in response to the royal edict were released only a month later, despite the original intention that confinement should be permanent. The original accusations were already being questioned. Jews continued to be persecuted, but references to poisoning of the water supply by lepers were progressively treated with more scepticism, and the phrase 'it is said that' appears more often in official records. In 1338, Pope Benedict XII issued a Bull in response to pleas from the lepers of Toulouse for support in recovering goods, including property and lands, confiscated during the plot. The Pope said that the lepers had already been recognised in court as 'innocent and guiltless' of the crimes of which they had been accused and were therefore due formal restitution. The Pope was the same Jacques Fournier who twenty years before had been one of the interrogators of Agassa.
