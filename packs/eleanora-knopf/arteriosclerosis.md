@@ -1,0 +1,53 @@
+---
+title: "Arteriosclerosis"
+source: https://en.wikipedia.org/wiki/Arteriosclerosis
+domain: eleanora-knopf
+license: CC-BY-SA-4.0
+tags: eleanora knopf
+fetched: 2026-07-03
+---
+
+# Arteriosclerosis
+
+**Arteriosclerosis**, literally meaning "hardening of the arteries", is an umbrella term for a set of vascular disorders characterized by abnormal thickening, hardening, and loss of elasticity of the walls of arteries. This process gradually restricts the blood flow to one's organs and tissues and can lead to severe health risks brought on by atherosclerosis, which is a specific form of arteriosclerosis caused by the buildup of fatty plaques, cholesterol, and other substances in and on the arterial walls. Risk factors include family history, smoking, and obesity.
+
+Atherosclerosis is the primary cause of coronary artery disease (CAD) and stroke, with multiple genetic and environmental contributions. Genetic-epidemiologic studies have identified many genetic and non-genetic risk factors for CAD. However, such studies indicate that family history is the most significant independent risk factor.
+
+## Signs and symptoms
+
+The signs and symptoms of arteriosclerosis depend on the vessel affected by the disease. If affecting cerebral or ophthalmic vessels, as in cerebrovascular accidents or transient ischemic attacks, signs and symptoms may include sudden weakness, facial or lower limb numbness, confusion, difficulty understanding speech, and problems seeing. If affecting coronary vessels, as in coronary artery disease (including acute coronary syndrome), signs and symptoms may include chest pain.
+
+## Pathophysiology
+
+The lesions of arteriosclerosis begin when the intima (the innermost layer of a blood vessel wall) of an artery starts to fill up with the deposition of cellular wastes. As these develop, they can take different forms of arteriosclerosis. All are linked through common features such as the stiffening of arterial vessels, thickening of arterial walls and the degenerative nature of the disease.
+
+- Arteriolosclerosis, unlike atherosclerosis, is a sclerosis that only affects small arteries and arterioles, which carry nutrients and blood to the cells.
+- Atherosclerosis is the narrowing of arteries from a buildup of plaque, usually made up of cholesterol, fatty substances, cellular waste products, calcium, and fibrin, inside the arteries. This affects large and medium-sized arteries; however, its positioning varies person to person.
+- Monckeberg's arteriosclerosis or medial calcific sclerosis is seen mostly in the elderly, commonly in arteries of the extremities.
+- Hyperplastic: Hyperplastic arteriosclerosis refers to the type of arteriosclerosis that affects large and medium-sized arteries.
+- Hyaline type: Hyaline arteriosclerosis, also referred to as arterial hyalinosis and arteriolar hyalinosis, refers to lesions that are caused by the deposition of homogenous hyaline in the small arteries and arterioles.
+
+## Diagnosis
+
+Diagnosis of an individual suspected of having arteriosclerosis can be based on a physical exam, blood test, EKG and the results of these tests (among other exams).
+
+## Treatment
+
+Treatment is often in the form of preventive measures or prophylaxis. Medical therapy is often prescribed to help prevent arteriosclerosis for underlying conditions, such as medications for the treatment of high cholesterol (e.g., statins, cholesterol absorption inhibitors), medications to treat high blood pressure (e.g., ACE inhibitors, angiotensin II receptor blockers), and antiplatelet medications. Lifestyle changes are also advised, such as increasing exercise, stopping smoking, and moderating alcohol intake.
+
+There are a variety of types of surgery:
+
+- Angioplasty and stent placement: A catheter is first inserted into the blocked or narrowed part of the artery, followed by a second one with a deflated balloon that is passed through the catheter into the narrowed area. The balloon is then inflated, pushing the deposits back against the arterial walls, and then a mesh tube is usually left behind to prevent the artery from retightening.
+- Coronary artery bypass surgery: This surgery creates a new pathway for blood to flow to the heart. The surgeon attaches a healthy piece of vein to the coronary artery, just above and below the blockage to allow bypass.
+- Endarterectomy: This is the general procedure for the surgical removal of plaque from the artery that has become narrowed or blocked.
+- Thrombolytic therapy: This is a treatment used to break up masses of plaque inside the arteries via intravenous clot-dissolving medicine.
+
+## Epidemiology
+
+In 2008, the US had an estimate of 16 million cases of atherosclerotic heart disease and 5.8 million strokes. Cardiovascular diseases that were caused by arteriosclerosis also caused almost 812,000 deaths in 2008, more than any other cause, including cancer. About 1.2 million Americans are predicted to have a heart attack each year.
+
+## History
+
+The diagnostics and clinical implications of this disease were not recognized until the 20th century. Many cases have been observed and recorded, and Jean Lobstein coined the term *arteriosclerosis* while he was analyzing the composition of calcified arterial lesions.
+
+The name "arteriosclerosis" is derived the Greek words ἀρτηρία (*artēría*, artery) and σκληρωτικός (*sklērōtikós*, hardened).
