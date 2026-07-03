@@ -1,0 +1,88 @@
+---
+title: "Alfred P. Sloan"
+source: https://en.wikipedia.org/wiki/Alfred_P._Sloan
+domain: euclid-trucks
+license: CC-BY-SA-4.0
+tags: euclid trucks
+fetched: 2026-07-03
+---
+
+# Alfred P. Sloan
+
+**Alfred Pritchard Sloan Jr.** (/sloʊn/ *SLOHN*; May 23, 1875 – February 17, 1966) was an American business executive in the automotive industry. He was a longtime president, chairman and chief executive officer (CEO) of General Motors (GM). First as a senior executive and later as the head of the company, Sloan presided over the growth of General Motors into one of the largest corporations in the world. During this period, GM spearheaded the adoption of the annual model change, brand architecture, industrial engineering, automotive design (styling), and planned obsolescence within the automobile industry. Such developments forever changed lifestyles as well as the built environment in America and throughout the globe.
+
+Sloan wrote his memoir, *My Years with General Motors*, in the 1950s. Like Henry Ford, Sloan is remembered with a complex mixture of admiration for his accomplishments, appreciation for his philanthropy, and unease or reproach regarding his attitudes during the interwar period and World War II.
+
+## Life and career
+
+Born in New Haven, Connecticut, Sloan studied electrical engineering initially at Brooklyn Polytechnic Institute, then transferred to and graduated from the Massachusetts Institute of Technology (MIT) in 1895. In 1898, Sloan married Irene Jackson of Roxbury, Massachusetts. The couple not having children is speculation.
+
+Sloan became president and owner of Hyatt Roller Bearing, a company that made roller- and ball-bearings, in 1899 when his father and another investor bought out the company from the previous owner. An account stated that Sloan persuaded his father to buy a controlling interest in the company for $5,000 and let him manage it. Oldsmobile was Hyatt's first automotive customer, with many other companies soon following suit. Henry Leland was among his clients. By 1903, he was said to have summoned the young Sloan and castigated him for delivering inconsistent quality of his bearings' tolerances. According to Sloan, this conversation allowed him to gain "a genuine conception of what mass production should really mean." The Ford Model T also used Hyatt bearings and for a time, over half of the company's bearings went to Ford.
+
+In 1916, Hyatt merged with other companies into United Motors Company, which soon became part of General Motors. Sloan became vice-president of GM, then president (1923), and finally chairman of the board (1937). In 1934, he established the philanthropic, nonprofit Alfred P. Sloan Foundation. GM under Sloan became famous for managing diverse operations with financial statistics such as return on investment; these measures were introduced to GM by Donaldson Brown, a protege of GM vice-president John J. Raskob. Raskob came to GM as an advisor to Pierre S. du Pont and the du Pont corporation; the latter was a principal investor in GM whose executives largely ran GM in the 1920s.
+
+Sloan is credited with establishing annual styling changes, from which came the concept of planned obsolescence. He also established a pricing structure in which (from lowest to highest priced) Chevrolet, Pontiac, Oldsmobile, Buick, and Cadillac, referred to as the ladder of success, did not compete with each other, and buyers could be kept in the GM "family" as their buying power and preferences changed as they aged. In 1919, he and his corporate deputies created the General Motors Acceptance Corporation, a financing arm that practically invented the auto loan credit system, that allowed car buyers to bypass having to save for years to buy Ford's affordable car. These concepts, along with Ford's resistance to the change in the 1920s, propelled GM to industry-sales leadership by the early 1930s, a position it retained for over 70 years. Under Sloan's direction, GM became the largest industrial enterprise the world had ever known.
+
+In the 1930s GM, long hostile to unionization, confronted its workforce—newly organized and ready for labor rights—in an extended contest for control. Sloan was averse to violence of the sort associated with Henry Ford. He preferred spying, investing in an internal undercover apparatus to gather information and monitor labor union activity. When workers organized the massive Flint sit-down strike in 1936, Sloan found that espionage had little value in the face of such open tactics, and instead the successful strike legitimized the United Auto Workers as the exclusive bargaining representative for GM workers.
+
+The Alfred P. Sloan Museum, showcasing the evolution of the automobile industry and traveling galleries, is in Flint, Michigan.
+
+Sloan maintained an office in 30 Rockefeller Plaza in Rockefeller Center, now known as the Comcast Building. He retired as GM chairman on April 2, 1956. His memoir and management treatise, *My Years with General Motors*, was more or less finished around this time; but GM's legal staff, who feared that it would be used to support an antitrust case against GM, held up its publication for nearly a decade. It was finally published in 1964. Sloan died in 1966.
+
+Sloan was inducted into the Junior Achievement U.S. Business Hall of Fame in 1975.
+
+## Philanthropy
+
+### Sloan Foundation
+
+In 1934, Sloan organized the Alfred P. Sloan Foundation, a philanthropic nonprofit organization.
+
+Sloan gave extensively to programs in business management. The world's first university-based executive education program, the Sloan Fellows, started in 1931 at MIT under the sponsorship of a Sloan Foundation grant. MIT opened a School of Industrial Management in 1952 with the charge of educating the "ideal manager", and the school was renamed the Alfred P. Sloan School of Management. Additional grants established a Sloan Institute of Hospital Administration in 1955 at Cornell University, a Sloan Fellows Program at Stanford Graduate School of Business in 1957, and at London Business School in 1965. They became degree programs in 1976, awarding the degree of Master of Science in Management.
+
+Sloan's name also lives on in the Sloan-Kettering Institute and Cancer Center in New York. In 1951, Sloan received the Hundred Year Association of New York's Gold Medal Award "in recognition of outstanding contributions to the City of New York".
+
+The Sloan Foundation bankrolled the 1956 Warner Bros. cartoon *Yankee Dood It*, which promotes mass production. In the late 1940s, the foundation made a grant to Harding College (now Harding University) in Searcy, Arkansas. The foundation wanted to fund the production of a series of short films extolling the virtues of capitalism and the American way of life. This resulted in the production of a series of animated cartoons by John Sutherland that were released on the 16mm non-theatrical market, and also distributed theatrically in 35mm by Metro-Goldwyn-Mayer.
+
+The Sloan Foundation's programs and interests are in the areas of science and technology, standard of living, economic performance, and education and careers in science and technology. For the year ending December 31, 2023, the total assets of the Sloan Foundation had a market value of about $2.38 billion.
+
+As of 2017, the Sloan Foundation has made three grants, of $3 million each, to the Wikimedia Foundation (WMF). These are some of the largest grants WMF has received.
+
+### Political causes
+
+According to Edwin Black, Sloan was one of the central, behind-the-scenes 1934 founders of the American Liberty League, a political organization whose stated goal was to defend the Constitution, and which opposed Franklin D. Roosevelt's New Deal. In turn, the league financed other groups with openly more extreme agendas. One such group was the Sentinels of the Republic, to which Sloan himself donated $1,000. After a Congressional investigation into this group went public in 1936, Sloan issued a statement pledging not to further support the Sentinels.
+
+Also according to Black, Sloan continued to personally fund and organize fund-raising for the National Association of Manufacturers, which was critical of the New Deal.
+
+## Criticism
+
+### Overly rational and profit-driven orientation
+
+According to O'Toole (1995), Sloan built a very objective organization, one that paid significant attention to "policies, systems, and structures and not enough to people, principles, and values. Sloan, the quintessential engineer, had worked out all the intricacies and contingencies of a foolproof system." But this system left out employees and society. One consequence of this management philosophy was a culture that resisted change. Proof that the system did not remain foolproof forever was seen in GM's problems of the 1980s, 1990s, and 2000s.
+
+In fact, Sloan's memoir and management treatise, *My Years With General Motors*, foresaw some of these problems. Sloan implied that only vigilant, intelligent management could meet them successfully. He predicted that *remaining* at the top of its industry and the economy would prove a bigger challenge for GM than getting there, and he was right. But he also seemed confident that GM's management style under his leadership, if continued and adapted, could meet these challenges. He said, "There have been and always will be many opportunities to fail in the automobile industry. The circumstances of the ever-changing market and ever-changing product are capable of breaking any business organization if that organization is unprepared for change—indeed, in my opinion, if it has not provided procedures for anticipating change. In General Motors these procedures are provided by the central management, which is in a position to appraise the broad long-term trends of the market. ... As the industry has grown and evolved, we have adhered to this policy and have demonstrated an ability to meet competition and the shifts of customer demand."
+
+As these words of Sloan (1964) show in juxtaposition with the words of Peter F. Drucker (1946), Sloan (and his fellow GM executives) never agreed with the lessons Drucker drew from his study of GM management during the war. But unlike many GM executives, Sloan did not put Drucker on his blacklist for writing the 1946 book; Drucker, in his new introduction to the 1990 republishing of Sloan's memoir, said, "When his associates attacked me in a meeting called to discuss the book, Sloan immediately rose to my defense. 'I fully agree with you,' he said to his colleagues. 'Mr. Drucker is dead wrong. But he did precisely what he told us he would do when we asked him in. And he is as entitled to his opinions, wrong though they are, as you or I.'" Drucker related that for 20 years after that meeting, Sloan and Drucker had a good relationship, in which Sloan invited Drucker to lunch once or twice a year to discuss Sloan's philanthropic plans and the memoir Sloan was working on (what became *My Years*). Drucker said, "He asked for my opinions and carefully listened—and he never once took my advice." History seems to have vindicated Drucker in his belief that Sloan's faith in rationality alone—and in the ability of other white-collar managers to be as astute as he was—was over-ardent. 40 years later, the management and board of directors that ran the original General Motors Corporation into the ground by 2009 were *not* "in a position to appraise the broad long-term trends of the market"—or were in that position, but not doing the job successfully therein.
+
+O'Toole described Sloan's style as follows: "[W]hereas Taylor occasionally backs off to justify his ardor for efficiency in human terms, not once does Sloan make reference to any other values. Freedom, equality, humanism, stability, community, tradition, religion, patriotism, family, love, virtue, nature—all are ignored. In the one personal element in the book, he makes passing reference to his wife: he abandons her on the first day of a European vacation to return to business in Detroit. His language is as calculating as that of the engineer-of-old working with calipers and slide rule, as cold as the steel he caused to be bent to form cars: economizing, utility, facts, objectivity, systems, rationality, maximizing—that is the stuff of his vocabulary."
+
+### Accounting system drawbacks
+
+In 2005, Sloan's work at GM came under criticism for creating a complicated accounting system that prevents the implementation of lean manufacturing methods. Essentially, the criticism is that by using Sloan's methods a company will value inventory just the same as cash, and thus there is no penalty for building up inventory. Carrying excessive inventory is detrimental to a company's operation and induces significant hidden costs. This criticism must be viewed in the context that it is provided in hindsight. During the period in which Sloan advocated carrying what would now be considered excess inventory, the industrial and transportation infrastructure would not support what is now known as just-in-time inventory. During this period, the auto industry experienced incredible growth as the public eagerly sought to purchase this life-changing utility known as the automobile. The cost of lost sales due to lack of inventory was likely greater than the cost of carrying excess inventory. Sloan's system seems to have been widely adopted because of its advance over previous methods.
+
+In his memoir, Sloan (who acknowledged that he was not a trained accountant) said the system that he implemented in the early 1920s was far better than what it replaced. He said that years later, a professional accountant (Albert Bradley, longtime CFO of GM) "was kind enough to say [that it] was pretty good for a layman." Sloan was far from the sole author of GM's financial and accounting systems, as GM later had many trained minds in accounting and finance; but regardless of authorship, GM's financial controls, at one time considered top-notch, eventually proved to have latent drawbacks. Systems similar to GM's were implemented by other major companies, especially in the United States, and they eventually undermined the ability to compete with companies that used different accounting, according to Waddell & Bodek's 2005 analysis.
+
+Sloan's memoir, particularly Chapter 8, "The development of financial controls", indicates that Sloan and GM appreciated the financial dangers of excess inventory even as early as the 1920s. But Waddell & Bodek's 2005 analysis indicates that this theory was not successfully implemented in GM's practice. For all the intellectual understanding, the reality remained slow inventory turnover and an accounting system that functionally treated inventory similarly to cash.
+
+### Nazi collaboration
+
+In August 1938, a senior executive for General Motors, James D. Mooney, received the Grand Cross of the German Eagle for his distinguished service to the Reich. "Nazi armaments chief Albert Speer told a congressional investigator that Germany could not have attempted its September 1939 blitzkrieg of Poland without the performance-boosting additive technology provided by Alfred P. Sloan and General Motors". During the war, GM's Opel Brandenburg facilities produced Ju 88 bombers, trucks, land mines and torpedo detonators for Nazi Germany. Charles Levinson, formerly deputy director of the European office of the CIO, alleged that Sloan remained on the board of Opel.
+
+Sloan's memoir presents a different picture of Opel's wartime role. According to Sloan, Opel was nationalized, along with most other industrial activity owned or co-owned by foreign interests, by the German state soon after the outbreak of war. But Opel was never factually nationalized and the GM-appointed directors and management remained unchanged throughout the Nazi period including the war, dealing with other GM companies in Axis and Allied countries including the United States. Sloan presents Opel at the end of the war as a black box to GM's American management, an organization with which the Americans had had no contact for five years. According to Sloan, GM in Detroit debated whether to even try to run Opel in the postwar era, or to leave to the interim West German government the question of who would pick up the pieces.
+
+Defending the German investment strategy as "highly profitable", Sloan told shareholders in 1939 that GM's continued industrial production for the Nazi government was merely sound business practice. In a letter to a concerned shareholder, Sloan said that the manner in which the Nazi government ran Germany "should not be considered the business of the management of General Motors. ... We must conduct ourselves as a German organization. ... We have no right to shut down the plant."
+
+## Postwar
+
+As the war drew to an end, most economists and New Deal policy makers assumed that without continued massive government spending, the prewar Great Depression and its huge unemployment would return. The economist Paul Samuelson warned that unless government took immediate action, "there would be ushered in the greatest period of unemployment and industrial dislocation which any economy has faced." Many adhering to the prevailing Keynesian economic wisdom predicted economic disaster when the war ended.
+
+Sloan felt otherwise and predicted a postwar boom. He pointed to workers' savings and pent-up demand, and predicted a huge jump in national income and a rise in standard of living. In line with his predictions, and despite a precipitous cutback in government spending and the wholesale closure of defense plants, the economy boomed. One of the greatest periods of economic expansion in US history resulted.
