@@ -1,0 +1,140 @@
+---
+title: "Adverbial"
+source: https://en.wikipedia.org/wiki/Adverbial
+domain: adverb
+license: CC-BY-SA-4.0
+tags: adverb
+fetched: 2026-07-03
+---
+
+# Adverbial
+
+In English grammar, an **adverbial** (abbreviated **adv**) is a word (an adverb) or a group of words (an adverbial clause or adverbial phrase) that modifies or more closely defines the sentence or the verb. (The word *adverbial* itself is also used as an adjective, meaning "having the same function as an adverb".) Look at the examples below:
+
+Danny speaks
+
+fluently
+
+.
+
+(telling more about the verb)
+
+Lorna ate breakfast
+
+yesterday morning
+
+. (telling when the verb's action occurred)
+
+## The form of adverbials
+
+Adverbials most commonly take the form of adverbs, adverb phrases, temporal noun phrases or prepositional phrases. Many types of adverbials (for instance: reason and condition) are often expressed by clauses.
+
+James answered
+
+immediately
+
+. (adverb)
+
+James answered
+
+in English
+
+.
+
+(prepositional phrase)
+
+James answered
+
+this morning
+
+.
+
+(noun phrase)
+
+James answered in English
+
+because he had a foreign visitor
+
+. (
+
+adverbial clause
+
+)
+
+An adverbial is a construction which modifies or describes verbs. When an adverbial modifies a verb, it changes the meaning of that verb. This may be performed by an adverb or a word group, either considered an adverbial: for example, a prepositional phrase, a noun phrase, a finite clause or a non-finite clause.
+
+## Types of adverbials that form sentence elements
+
+Adverbials are typically divided into four classes:
+
+Adverbial complements (i.e. obligatory adverbial) are adverbials that render a sentence ungrammatical and meaningless if removed.
+
+John put the flowers
+
+in the water
+
+.
+
+Adjuncts: These are part of the core meaning of the sentence, but if omitted still leave a meaningful sentence.
+
+John and Sophia helped me
+
+with my homework
+
+.
+
+Conjuncts: These link two sentences together.
+
+John helped;
+
+therefore,
+
+I was able to do my homework.
+
+Disjuncts: These make comments on the meaning of the rest of the sentence.
+
+Surprisingly
+
+, he passed all of his exams
+
+.
+
+## Distinguishing an adverbial from an adjunct
+
+All verb- or sentence-modifying adjuncts are adverbials, but some adverbials are not adjuncts.
+
+- If the removal of an adverbial does not leave a well-formed sentence, then it is not an adjunct
+- If the adverbial modifies within a sentence element, and is not a sentence element in its own right, it is not an adjunct.
+- If the adverbial is not grammatically tied to the sentence it is not an adjunct, e.g.
+
+Mr Reninson,
+
+however,
+
+voted against the proposal
+
+. (adverbial conjunct not adjunct)
+
+## Other types of adverbials
+
+### Directional and locative particles
+
+Prepositions (*in*, *out*, etc.) may be used adverbially to indicate direction or location.
+
+- Superman flew **in**. (directional)
+- Are you **in**? (locative)
+- The car drove **out**. (directional)
+- The ball is **out**. (locative)
+
+### Negators
+
+In some grammar models, negators such as "not" and "never" are considered adverbs with the function of negating adverbial clauses.
+
+### Expletives
+
+Often ignored, expletives may take up many adverbial syntactic functions. Pragmatically and semantically, they often serve as intensifiers, boosting the content of the clause they appear in.
+
+- What **the hell** are you talking about?
+- You're **freaking** lying!
+- You **bloody well** know that smoking's not allowed here!
+- He got **sodding** killed.

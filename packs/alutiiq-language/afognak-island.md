@@ -1,0 +1,44 @@
+---
+title: "Afognak Island"
+source: https://en.wikipedia.org/wiki/Afognak_Island
+domain: alutiiq-language
+license: CC-BY-SA-4.0
+tags: alutiiq language
+fetched: 2026-07-03
+---
+
+# Afognak Island
+
+Coordinates
+
+:
+
+58°15′00″N
+
+152°30′00″W
+
+﻿
+
+/
+
+﻿
+
+58.25000°N 152.50000°W
+
+﻿
+
+/
+
+58.25000; -152.50000
+
+**Afognak Island** (Alutiiq: *Agw’aneq*; Russian: Афогнак) is an island in the Kodiak Archipelago 5 km (3.1 mi) north of Kodiak Island in the U.S. state of Alaska. It is 43 miles (69 km) long from east to west and 23 miles (37 km) wide from north to south and has a land area of 1,812.58 km2 (699.84 sq mi), making it the 18th largest island in the United States. The coast is split by many long, narrow bays. The highest point is 2,546 feet (776 m).
+
+The dense spruce forests of Afognak Island are home to Kodiak bears, Roosevelt elk, and Sitka black-tailed deer. Many people visit the island recreationally for hunting and fishing.
+
+## History
+
+The United States Census of 1890 noted a series of settlements along the beachline near the Alutiiq village of *Ag’waneq*, including Rutkovsky village, inhabited by a group of retired employees of the Russian-American Company.
+
+Ag’waneq was abandoned after the 1964 Good Friday earthquake devastated the island. The descendants of the Alaska Native inhabitants of the island are officially recognized as the Native Village of Afognak. Most of them now live in Port Lions or Kodiak.
+
+In the early 21st century, there are a few small logging camps and fishing lodges on the island. A community of Russian Old Believers live at Aleneva. The economy is based on subsistence and logging. Transportation is provided by float plane from Kodiak to various areas around the island. The 2000 census reported a population of 169 persons.
