@@ -1,0 +1,31 @@
+---
+title: "Andy Warhol Foundation for the Visual Arts, Inc. v. Goldsmith (part 2/2)"
+source: https://en.wikipedia.org/wiki/Andy_Warhol_Foundation_for_the_Visual_Arts,_Inc._v._Goldsmith
+domain: copyright-status-of-works-by-the-federal-government-of-the-united-states
+license: CC-BY-SA-4.0
+tags: copyright status of works by the federal government of the united states
+fetched: 2026-07-03
+part: 2/2
+---
+
+## Reaction
+
+Goldsmith, who had sold her home in Aspen, Colorado, moved to a Nashville home she mortgaged and set up a GoFundMe page to pay the $2.5 million in legal fees she incurred, said that although she had been "incredibly hopeful", she knew victory was not guaranteed. "[I]f you don't stand up for your rights, you lose them ... I still can't really breathe the sigh of relief that I would like to." Goldsmith was particularly disappointed by Kagan's dissent: "This would be a blow to artists? No." Later in 2023 she said her lawyers had agreed that beyond a certain point they would be handling the case *pro bono*. At that point she had raised merely $68,000 through her GoFundMe page. "When I started out as the Joan of Arc of copyright, I did not think my dress was going to be burning all the way up to my waist, you know?"
+
+Adam Gopnik wrote in *The New Yorker* that he found the combativeness between Sotomayor and Kagan refreshing. "We live in an era of such ideological solidarity, for reasons good and bad, among people who are perceived to be on the same 'side,' that any little peek of serious debate between them seems wholesome, not to mention welcome." He suggested the two might agree that "the quality we think of as added artfulness in a borrowed image is almost always much closer to parody than to piety." While Kagan's defense of transformation in art was admirable on its face, Gopnik found it:
+
+> ... perhaps a bit needlessly anodyne. The image of virtuous artists happily passing around pictures for general improvement belongs more to a progressive kindergarten than to the actual processes of art, which are more often moved by rancor, Oedipal drama, and competitive put-downs. The point of vital recycling is most often not to encourage communal creativity but to give a kick in the pants to the past.
+
+Commentators focused on the art world expressed concern that appropriation art, exemplified by the Prince Series, could suffer as a result of the decision. "[It] took this already complex area of law and made it even more complicated", wrote NYU law professor Amy Adler in *Art in America*. "But one thing is clear: it is now far riskier for an artist to borrow from previous work ... Any artist who works with existing imagery should now reconsider her practice. Hire a lawyer, maybe try to negotiate a license and be ready to move on if you get turned away or can't afford the fee."
+
+At *Artnet*, Marjorie Heins, director of the American Civil Liberties Union's Arts Censorship Project, said the Court had held for Goldsmith out of "sympathy for Goldsmith, the working journalist, and a resentment of the Warhol Foundation, with its aura of art world glamor and privilege." The decision was "disastrously wrong", as under the distinction between commercial and non-commercial use it applied "artists, dealers, curators, collectors, and everyone else in the art world must make a case-by-case guess whether a creative work that started out as fair use will lose that defense under copyright law depending on how it's shown, sold, or marketed." Peter Karol in *Artforum* echoed those concerns, but ultimately interpreted the Court's goal as "a reenergized licensing market for source works used in follow-on art practices."
+
+Adler later allowed to Gopnik's brother Blake, a Warhol biographer, writing for *The New York Times*, that Warhol was a "unicorn" in the art world due to the large market for licensing his works. As a result, the ruling was "irrelevant to most artists". She nevertheless saw problems if future creators in Goldsmith's situation sought to charge exorbitant sums for licensing.
+
+Others Gopnik talked to criticized the scope of the decision. "If it's fair use, it should be fair use to do whatever you want with it", Eric Doeringer, another appropriation artist, told him. Virginia Rutledge, a former curator who became a lawyer and co-wrote a brief in *Cariou*, feared that artists like Doeringer might "slide down the fear hill" and limit themselves only to creating art from works they could license.
+
+Another Artnet commentator, Ben Davis, said later that this apprehension missed the point. "I think the interesting question ... is this: Do we actually believe, when it comes to 'fair use,' in a 'celebrity-artist exception?'" The art world's "defensively maximalist" stance on appropriation had led to it giving too much credence to Kagan's dissent, he said.
+
+*Orange Prince* and the series it came from are widely accepted as not among Warhol's best works, Davis wrote. "The Prince image is hack work. That is *not* an opinion of the '"I could paint that" school of art criticism'; it's a common critical take on the late Warhol". The artist, says Davis, was more preoccupied with funding his lifestyle and side projects like *Interview* magazine than further testing the limits of his art. "Kagan is appalled that the majority acts as if Warhol was just applying a Warhol 'Instagram filter'—but that's not too far from what he was doing in this case."
+
+A decade earlier, Davis recalled, the art world had been less sympathetic when Los Angeles street artist Mr. Brainwash lost an infringement suit brought by British photographer Dennis Morris over the former's takes on a famous photo of Sid Vicious, takes that involved more alteration than Warhol's work made to Goldsmith. Sotomayor's emphasis on the use of the image seemed to Davis more useful than Kagan's expansive embrace of transformativeness, especially with the unknown effects artificial intelligence might turn out to have. "[I]t's not going to help the creative industries in navigating this perilous terrain if they remain completely attached to an automatic romanticization of Warhol-ian appropriation. It might actually be useful to think in a nuanced way about how the Warhol of 1964 is different than the Warhol of 1984 if we are going to find a way through the world of 2024."

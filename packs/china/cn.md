@@ -1,0 +1,84 @@
+---
+title: ".cn - Wikipedia"
+source: https://en.wikipedia.org/wiki/.cn
+domain: china
+license: CC-BY-SA-4.0
+tags: china
+fetched: 2026-07-03
+---
+
+# .cn
+
+**.cn** is the country code top-level domain (ccTLD) for the People's Republic of China. Introduced on 28 November 1990, the domain is administered by China Internet Network Information Center, a public institution affiliated with the Ministry of Industry and Information Technology. The domain is the largest ccTLD in the world.
+
+The Chinese script internationalized country codes are ".中国" ("China" in Simplified Chinese) and ".中國" ("China" in Traditional Chinese). Entities connected to Hong Kong, Macau, and Taiwan typically use .hk, .mo, and .tw, respectively, despite the availability of corresponding second-level domains under .cn for those regions.
+
+## Second-level domains
+
+Domain names can be registered either at the second level, or at the third level under the generic or provincial-level administrative divisions second-level domains.
+
+### Generic second-level domains
+
+According to the "China Internet Domain Name System" published by the Ministry of Industry and Information Technology, there are 9 generic second-level domains, two of which are internationalized:
+
+#### Open registration
+
+- *ac*.cn : Scientific research institutions
+- *com*.cn : Industrial, commercial, financial, and other enterprises
+- *net*.cn : Organizations providing Internet services
+- *org*.cn : Not-for-profit organizations
+
+#### Registration restricted
+
+- *edu*.cn : Educational institutions in China
+- *gov*.cn : Chinese government organizations
+- *mil*.cn : Chinese military-affiliated organizations
+
+### Provincial-level administrative divisions second-level domains
+
+The two-letter abbreviations correlate with ISO 3166-2 "Codes for the representation of names of countries and their subdivisions—Part 2: Country subdivision code" (adapted locally as National Standard GB/T 2659.2). The provincial-level administrative divisions second-level domains are with the open-registration policy. According to the "China Internet Domain Name System" published by the Ministry of Industry and Information Technology, there are 34 administrative division second-level domains:
+
+- *ah*.cn : Anhui Province
+- *bj*.cn : Beijing Municipality
+- *cq*.cn : Chongqing Municipality
+- *fj*.cn : Fujian Province
+- *gd*.cn : Guangdong Province
+- *gs*.cn : Gansu Province
+- *gz*.cn : Guizhou Province
+- *gx*.cn : Guangxi Province
+- *ha*.cn : Henan Province
+- *hb*.cn : Hubei Province
+- *he*.cn : Hebei Province
+- *hi*.cn : Hainan Province
+- *hk*.cn : Hong Kong Special Administrative Region
+- *hl*.cn : Heilongjiang Province
+- *hn*.cn : Hunan Province
+- *jl*.cn : Jilin Province
+- *js*.cn : Jiangsu Province
+- *jx*.cn : Jiangxi Province
+- *ln*.cn : Liaoning Province
+- *mo*.cn : Macao Special Administrative Region
+- *nm*.cn : Nei Mongol Autonomous Region
+- *nx*.cn : Ningxia Hui Autonomous Region
+- *qh*.cn : Qinghai Province
+- *sc*.cn : Sichuan Province
+- *sd*.cn : Shandong Province
+- *sh*.cn : Shanghai Municipality
+- *sn*.cn : Shaanxi Province
+- *sx*.cn : Shanxi Province
+- *tj*.cn : Tianjin Municipality
+- *tw*.cn : Taiwan Province
+- *xj*.cn : Xinjiang Uygur Autonomous Region
+- *xz*.cn : Xizang Autonomous Region
+- *yn*.cn : Yunnan Province
+- *zj*.cn : Zhejiang Province
+
+## Internationalized domains
+
+Internationalized domain names with Chinese characters may be registered at the second level under the .cn top-level domain.
+
+On 25 June 2010, ICANN approved the use of the internationalized country code top-level domains ".中国" (*China* in simplified Chinese characters, DNS name *xn--fiqs8s*) and ".中國" (*China* in traditional Chinese characters, DNS name *xn--fiqz9s*) by CNNIC. These two TLDs were added to the DNS in July 2010.
+
+Around this time, CNNIC also proposed Chinese domain names ".公司" ("company" in Chinese, equivalent of ".com") and ".网络" (".net"). Both were delegated in January 2014 and have been active since.
+
+Around 15 other generic domain names with Chinese characters have later been registered. See List of Internet top-level domains#Chinese characters.
