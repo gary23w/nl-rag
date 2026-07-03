@@ -1,0 +1,20 @@
+# affirmative-action-in-the-united-states — nl-rag pack
+
+Pre-normalized AI markdown. tags: affirmative action in the united states. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1960 United States presidential election (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/1960-united-states-presidential-election-p01.md) — upstream: https://en.wikipedia.org/wiki/1960_United_States_presidential_election
+- [1960 United States presidential election (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/1960-united-states-presidential-election-p02.md) — upstream: https://en.wikipedia.org/wiki/1960_United_States_presidential_election
+- [1996 California Proposition 209](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/1996-california-proposition-209.md) — upstream: https://en.wikipedia.org/wiki/1996_California_Proposition_209
+- [Students for Fair Admissions v. Harvard](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/2015-federal-complaints-against-harvard-university-s-alleged-discriminatory-admi.md) — upstream: https://en.wikipedia.org/wiki/2015_Federal_Complaints_Against_Harvard_University's_Alleged_Discriminatory_Admission_Practice
+- [2020 California Proposition 16](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/2020-california-proposition-16.md) — upstream: https://en.wikipedia.org/wiki/2020_California_Proposition_16
+- [60 Minutes (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/60-minutes-p01.md) — upstream: https://en.wikipedia.org/wiki/60_Minutes
+- [60 Minutes (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/60-minutes-p02.md) — upstream: https://en.wikipedia.org/wiki/60_Minutes
+- [ABC News (United States)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/abc-news-united-states.md) — upstream: https://en.wikipedia.org/wiki/ABC_News_(United_States)
+- [Abortion in the United States (part 1/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/abortion-in-the-united-states-p01.md) — upstream: https://en.wikipedia.org/wiki/Abortion_in_the_United_States
+- [Abortion in the United States (part 2/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/abortion-in-the-united-states-p02.md) — upstream: https://en.wikipedia.org/wiki/Abortion_in_the_United_States
+- [Abortion in the United States (part 3/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/abortion-in-the-united-states-p03.md) — upstream: https://en.wikipedia.org/wiki/Abortion_in_the_United_States
+- [Affirmative action in the United States (part 1/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/affirmative-action-in-the-united-states-p01.md) — upstream: https://en.wikipedia.org/wiki/Affirmative_action_in_the_United_States
+- [Affirmative action in the United States (part 2/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/affirmative-action-in-the-united-states-p02.md) — upstream: https://en.wikipedia.org/wiki/Affirmative_action_in_the_United_States
+- [Affirmative action in the United States (part 3/3)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/affirmative-action-in-the-united-states-p03.md) — upstream: https://en.wikipedia.org/wiki/Affirmative_action_in_the_United_States
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/affirmative-action-in-the-united-states/pack.facts) — distilled one-line facts (neuron CLI import)

@@ -1,0 +1,42 @@
+---
+title: "Abraham Walkowitz"
+source: https://en.wikipedia.org/wiki/Abraham_Walkowitz
+domain: alfred-stieglitz
+license: CC-BY-SA-4.0
+tags: alfred stieglitz
+fetched: 2026-07-03
+---
+
+# Abraham Walkowitz
+
+**Abraham Walkowitz** (March 28, 1878 – January 27, 1965) was a Russian–American painter who was among the first generation of American modernists. While not having attained the same level of fame as his contemporaries, Walkowitz' close relationship with the 291 Gallery and Alfred Stieglitz placed him at the center of the modernist movement. His early abstract cityscapes and collection of over 5,000 drawings of Isadora Duncan also remain significant art historical records.
+
+## Birth and education
+
+Walkowitz was born in Tyumen, Siberia, to Jewish parents. He emigrated with his mother to the United States in his early childhood. He studied at the National Academy of Design in New York City and the Académie Julian in Paris under Jean-Paul Laurens. Walkowitz and his contemporaries later gravitated around photographer Alfred Stieglitz's 291 Gallery, originally titled the Little Galleries of the Photo-Secession, where the forerunners of modern art in America gathered and where many European artists were first exhibited in the United States. During the 291 years, Walkowitz worked closely with Stieglitz as well as Arthur Dove, Marsden Hartley, and John Marin (often referred to as "The Stieglitz Quartet").
+
+## Early Career and Training
+
+Walkowitz was drawn to art from childhood. In a 1958 oral interview with Abram Lerner, he recalled: "When I was a kid, about five years old, I used to draw with chalk, all over the floors and everything... I suppose it's in me. I remember myself as a little boy, of three or four, taking chalk and made drawings." In early adulthood, he worked as a sign painter and began making sketches of immigrants in New York's Jewish ghetto where he lived with his mother. He continued to pursue his formal training, and with funds from a friend traveled to Europe in 1906 to attend the Académie Julian. Through introductions made by Max Weber, it was here that he met Isadora Duncan in Auguste Rodin's studio, the modern American dancer who had captured the attention of the avant-garde. Walkowitz went on to produce more than 5,000 drawings of Duncan.
+
+Walkowitz' approach to art during these years stemmed from European modernist ideas of abstraction, which were slowly infiltrating the American art psyche at the turn of the century. Like so many artists of the time, Walkowitz was profoundly influenced by the 1907 memorial exhibition of Cézanne's work in Paris at the Salon d'Automne. Artist Alfred Werner recalled that Walkowitz found Cézanne's pictures to be "simple and intensely human experiences." Working alongside other Stieglitz-supported American modernists, Walkowitz refined his style as an artist and produced various abstract works.
+
+Although Walkowitz drew influences from modern European masters, he was cautious not to be imitative. Artist and critic Oscar Bluemner recognized this quality in Walkowitz's work, citing the differences between the highly influential writings of Kandinsky and Walkowitz' style. He wrote: "Walkowitz is impelled by the ‘inner necessity’: Kandinsky, however, like the other radicals, appears not to proceed gradually and inwardly, but with a mind made up to commit an intellectual feat—which is not art."
+
+Walkowitz first exhibited at the 291 in 1911 after being introduced to Stieglitz through Hartley, and stayed with the gallery until 1917. During the 291 years, the climate for modern art in America was harsh. Until the pivotal Armory Show of 1913 had occurred which Walkowitz was involved with and exhibited in, modern artists importing radical ideas from Europe were received with hostile criticism and a lack of patronage.
+
+## Isadora Duncan Drawings
+
+In 1927, Isadora Duncan echoed the lines of Walt Whitman in her essay *I See America Dancing,* writing, "When I read this poem of Whitman’s *I Hear America Singing* I, too, had a Vision: the Vision of America dancing a dance that would be the worthy expression of the song Walt heard when he heard America singing." Duncan was the quintessence of modernism, shedding the rigid shackles of the balletic form and exploring movement through a combination of classical sculpture and her own inner sources. She described this search: "I spent long days and nights in the studio seeking that dance which might be the divine expression of the human spirit through the body’s movement." For Duncan, dance was a distinctly personal expression of beauty through movement, and she maintained that the ability to produce such movement was inherently contained within the body.
+
+Abraham Walkowitz was one of many artists captivated by this new form of movement. The Duncan drawings can be interpreted as representations of Walkowitz's loftiest goals. Composing thousands of these drawings would prove to be one of the most effective outlets for his artistic agenda due to the similarities between the artistic ideals and preferred aesthetic shared by Walkowitz and Duncan. He was also able to draw from the same subject repeatedly and extract a different experience with each observation. Sculptors most readily recognized this trait in Duncan; there was a particular quality of her dance which appeared readily artistic, yet not static. Dance critic Walter Terry described it in 1963 as, "Although her dance inarguably sprang from her inner sources and resources of motor power and emotional drive, the overt aspects of her dance were clearly colored by Greek art and the sculptor’s concept of the body in arrested gesture promising further action. These influences may be seen clearly in photographs of her and in the art works she inspired."
+
+In each drawing, a new observation is recorded from the same subject. In the *Foreword to A Demonstration of Objective, Abstract, and Non-Objective Art*, Walkowitz wrote in 1913, "I do not avoid objectivity nor seek subjectivity, but try to find an equivalent for whatever is the effect of my relation to a thing, or to a part of a thing, or to an afterthought of it. I am seeking to attune my art to what I feel to be the keynote of an experience." The relaxed fluidity of his action drawings represent Duncan as subject, but ultimately reconceive the unbound movement of her dance and translates the ideas into line and shape, ending with a completely new composition.
+
+His interest in recording the "keynote" of experience rather than producing an objective representation of a subject is central to the composition of the Duncan drawings. The fluidity of the lines function simultaneously as recognizable shapes of the human body, but also trace the pathways of the dancer's movements. Duncan herself wrote in 1920, "...there are those who convert the body into a luminous fluidity, surrendering it to the inspiration of the soul." Placed into a different context, this passage could function as a description of Walkowitz's art; it is in fact taken from her essay *The Philosopher’s Stone of Dancing* wherein she discusses techniques to most effectively express the purest form of movement.
+
+Walkowitz's dedication to Duncan as a subject extended well past her untimely death in 1927. The works reveal shared convictions toward modernism and breaking links with the past. In 1958, Walkowitz told Lerner, "She (Duncan) had no laws. She did not dance according to the rules. She created. Her body was music. It was a body electric, like Walt Whitman. His body electrics. One of our greatest men, America's greatest, is Walt Whitman. *Leaves of Grass* is to me the Bible."
+
+## Death
+
+Walkowitz died at the age of 84 at his home in Brooklyn, New York, on January 27, 1965. He was buried in Mount Lebanon Cemetery in Glendale, Queens.
