@@ -1,0 +1,769 @@
+---
+title: "Algeria (part 2/2)"
+source: https://en.wikipedia.org/wiki/Algeria
+domain: international-electrotechnical-commission
+license: CC-BY-SA-4.0
+tags: international electrotechnical commission
+fetched: 2026-07-03
+part: 2/2
+---
+
+## Government and politics
+
+Algeria's government has been described as authoritarian, and elected politicians have relatively little sway over affairs in the country. Instead, a group of unelected civilian and military "décideurs" ("deciders") known as "le pouvoir" ("the power") exercise *de facto* rule over the country, even deciding who should be president. The most powerful man might have been Mohamed Mediène, the head of military intelligence, before he was brought down during the 2019 protests. In recent years, many of these generals have died, retired, or been imprisoned. After the death of General Larbi Belkheir, previous president Bouteflika put loyalists in key posts, notably at Sonatrach, and secured constitutional amendments that made him re-electable indefinitely, until he was brought down in 2019 during protests.
+
+The head of state is the President of Algeria, who is elected for a five-year term. The president is limited to two five-year terms. The most recent presidential election was planned to be in April 2019, but widespread protests erupted on 22 February against the president's decision to participate in the election, which resulted in President Bouteflika announcing his resignation on 3 April. Abdelmadjid Tebboune, an independent candidate, was elected as president after the election eventually took place on 12 December 2019. Protestors refused to recognise Tebboune as president, citing demands for comprehensive reform of the political system. Algeria has universal suffrage at 18 years of age. The President is the head of the army, the Council of Ministers and the High Security Council. He appoints the Prime Minister who is also the head of government.
+
+The Algerian parliament is bicameral; the lower house, the People's National Assembly, has 462 members who are directly elected for five-year terms, while the upper house, the Council of the Nation, has 144 members serving six-year terms, of which 96 members are chosen by local assemblies and 48 are appointed by the president. According to the constitution, no political association may be formed if it is "based on differences in religion, language, race, gender, profession, or region". In addition, political campaigns must be exempt from the aforementioned subjects.
+
+Parliamentary elections were last held in June 2021. In the elections, the FLN lost 66 of its seats, but remained the largest party with 98 seats. Other parties included the Movement of the Society for Peace which won 65 seats, the National Rally for Democracy which won 58 seats, the Future Front which won 48 seats, and the National Construction Movement which won 39 seats.
+
+### Foreign relations
+
+Algeria is included in the European Union's European Neighbourhood Policy (ENP) which aims at bringing the EU and its neighbours closer. Giving incentives and rewarding best performers, as well as offering funds in a faster and more flexible manner, are the two main principles underlying the European Neighbourhood Instrument (ENI) that came into force in 2014. It has a budget of €15.4 billion and provides the bulk of funding through a number of programmes.
+
+In 2009, the French government agreed to compensate victims of nuclear tests in Algeria. Defence Minister Hervé Morin stated that "It's time for our country to be at peace with itself, at peace thanks to a system of compensation and reparations", when presenting the draft law on the payouts. Algerian officials and activists believe that this is a good first step and hope that this move would encourage broader reparation.
+
+Tensions between Algeria and Morocco in relation to the Western Sahara have been an obstacle to tightening the Arab Maghreb Union, nominally established in 1989, but which has carried little practical weight. On 24 August 2021, Algeria announced the break of diplomatic relations with Morocco.
+
+Algeria's current foreign minister is Ahmed Attaf. Their representative to the United Nations is Amar Bendjama.
+
+### Military
+
+The military of Algeria consists of the People's National Army (ANP), the Algerian National Navy (MRA), and the Algerian Air Force (QJJ), plus the Territorial Air Defence Forces. It is the direct successor of the National Liberation Army (Armée de Libération Nationale or ALN), the armed wing of the nationalist National Liberation Front which fought French colonial occupation during the Algerian War of Independence (1954–62).
+
+Total military personnel include 147,000 active, 150,000 reserve, and 187,000 paramilitary staff (2008 estimate). Service in the military is compulsory for men aged 19–30, for a total of 12 months. The military expenditure was 4.3% of the gross domestic product (GDP) in 2012. Algeria has the second-largest military in North Africa with the largest defence budget in Africa ($10 billion). Most of Algeria's weapons are imported from Russia, with whom they are a close ally.
+
+In 2007, the Algerian Air Force signed a deal with Russia to purchase 49 MiG-29SMT and 6 MiG-29UBT at an estimated cost of $1.9 billion. Russia is also building two 636-type diesel submarines for Algeria.
+
+### Human rights
+
+Algeria has been categorised by the US government funded Freedom House as "not free" since it began publishing such ratings in 1972, with the exception of 1989, 1990, and 1991, when the country was labelled "partly free". In December 2016, the *Euro-Mediterranean Human Rights Monitor* issued a report regarding violation of media freedom in Algeria. It clarified that the Algerian government imposed restrictions on freedom of the press; expression; and right to peaceful demonstration, protest and assembly as well as intensified censorship of the media and websites. Due to the fact that the journalists and activists criticise the ruling government, some media organisations' licenses are cancelled.
+
+Independent and autonomous trade unions face routine harassment from the government, with many leaders imprisoned and protests suppressed. In 2016, a number of unions, many of which were involved in the 2010–2012 Algerian Protests, have been deregistered by the government.
+
+Homosexuality is illegal in Algeria. Public homosexual behavior is punishable by up to two years in prison. Despite this, about 26% of Algerians think that homosexuality should be accepted, according to the survey conducted by the BBC News Arabic-Arab Barometer in 2019. Algeria showed the highest LGBT acceptance compared to other Arab countries where the survey was conducted.
+
+Human Rights Watch has accused the Algerian authorities of using the COVID-19 pandemic as an excuse to prevent pro-democracy movements and protests in the country, leading to the arrest of youths as part of social distancing.
+
+### Administrative divisions
+
+Algeria is divided into 69 provinces (*wilayas*), 553 districts (*daïras*) and 1,541 municipalities (*baladiyahs*). Each province, district, and municipality is named after its seat, which is usually the largest city.
+
+The administrative divisions have changed several times since independence. When introducing new provinces, the numbers of old provinces are kept, hence the non-alphabetical order. With their official numbers, currently (since 1983) they are:
+
+The current 69
+
+provinces
+
+(
+
+wilayas
+
+) of
+
+Algeria
+
+#
+
+Wilaya
+
+Area (km
+
+2
+
+)
+
+Population
+
+map
+
+#
+
+Wilaya
+
+Area (km
+
+2
+
+)
+
+Population
+
+1
+
+Adrar
+
+402,197
+
+439,700
+
+36
+
+El Taref
+
+3,339
+
+411,783
+
+2
+
+Chlef
+
+4,975
+
+1,013,718
+
+37
+
+Tindouf
+
+58,193
+
+159,000
+
+3
+
+Laghouat
+
+25,057
+
+477,328
+
+38
+
+Tissemsilt
+
+3,152
+
+296,366
+
+4
+
+Oum El Bouaghi
+
+6,768
+
+644,364
+
+39
+
+El Oued
+
+54,573
+
+673,934
+
+5
+
+Batna
+
+12,192
+
+1,128,030
+
+40
+
+Khenchela
+
+9,811
+
+384,268
+
+6
+
+Béjaïa
+
+3,268
+
+915,835
+
+41
+
+Souk Ahras
+
+4,541
+
+440,299
+
+7
+
+Biskra
+
+20,986
+
+730,262
+
+42
+
+Tipaza
+
+2,166
+
+617,661
+
+8
+
+Béchar
+
+161,400
+
+274,866
+
+43
+
+Mila
+
+9,375
+
+768,419
+
+9
+
+Blida
+
+1,696
+
+1,009,892
+
+44
+
+Ain Defla
+
+4,897
+
+771,890
+
+10
+
+Bouïra
+
+4,439
+
+694,750
+
+45
+
+Naâma
+
+29,950
+
+209,470
+
+11
+
+Tamanrasset
+
+556,200
+
+198,691
+
+46
+
+Ain Timouchent
+
+2,376
+
+384,565
+
+12
+
+Tébessa
+
+14,227
+
+657,227
+
+47
+
+Ghardaia
+
+86,105
+
+375,988
+
+13
+
+Tlemcen
+
+9,061
+
+945,525
+
+48
+
+Relizane
+
+4,870
+
+733,060
+
+14
+
+Tiaret
+
+20,673
+
+842,060
+
+49
+
+Timimoun
+
+8,835
+
+162,267
+
+15
+
+Tizi Ouzou
+
+3,568
+
+1,119,646
+
+50
+
+Bordj Baji Mokhtar
+
+62,215
+
+57,276
+
+16
+
+Algiers
+
+273
+
+2,947,461
+
+51
+
+Ouled Djellal
+
+11,410
+
+174,219
+
+17
+
+Djelfa
+
+66,415
+
+1,223,223
+
+52
+
+Béni Abbès
+
+120,026
+
+16,437
+
+18
+
+Jijel
+
+2,577
+
+634,412
+
+53
+
+In Salah
+
+101,350
+
+50,163
+
+19
+
+Sétif
+
+6,504
+
+1,496,150
+
+54
+
+In Guezzam
+
+65,203
+
+122,019
+
+20
+
+Saïda
+
+6,764
+
+328,685
+
+55
+
+Touggourt
+
+17,428
+
+247,221
+
+21
+
+Skikda
+
+4,026
+
+904,195
+
+56
+
+Djanet
+
+86,185
+
+17,618
+
+22
+
+Sidi Bel Abbès
+
+9,150
+
+603,369
+
+57
+
+El M'Ghair
+
+131,220
+
+50,392
+
+23
+
+Annaba
+
+1,439
+
+640,050
+
+58
+
+El Menia
+
+88,126
+
+11,202
+
+24
+
+Guelma
+
+4,101
+
+482,261
+
+59
+
+Aflou
+
+25
+
+Constantine
+
+2,187
+
+943,112
+
+60
+
+El Abiodh Sidi Cheikh
+
+26
+
+Médéa
+
+8,866
+
+830,943
+
+61
+
+El Aricha
+
+27
+
+Mostaganem
+
+2,269
+
+746,947
+
+62
+
+El Kantara
+
+28
+
+M'Sila
+
+18,718
+
+991,846
+
+63
+
+Barika
+
+29
+
+Mascara
+
+5,941
+
+780,959
+
+64
+
+Bousaâda
+
+30
+
+Ouargla
+
+211,980
+
+552,539
+
+65
+
+Bir El Ater
+
+31
+
+Oran
+
+2,114
+
+1,584,607
+
+66
+
+Ksar El Boukhari
+
+32
+
+El Bayadh
+
+78,870
+
+262,187
+
+67
+
+Ksar Chellala
+
+33
+
+Illizi
+
+285,000
+
+54,490
+
+68
+
+Aïn Oussera
+
+34
+
+Bordj Bou Arréridj
+
+4,115
+
+634,396
+
+69
+
+Messaad
+
+35
+
+Boumerdes
+
+1,591
+
+795,019
+
+
+## Economy
+
+Algeria's currency is the dinar (DZD). The economy remains dominated by the state, a legacy of the country's socialist post-independence development model. In June 2024 The World Bank's 2024 report marks a turning point for Algeria, which joins the select club of upper-middle-income countries. This economic rise, the result of an ambitious development strategy, places the country in the same category as emerging powers such as China, Brazil and Turkey In recent years, the Algerian government has halted the privatisation of state-owned industries and imposed restrictions on imports and foreign involvement in its economy. These restrictions are just starting to be lifted off recently although questions about Algeria's slowly-diversifying economy remain.
+
+Algeria has struggled to develop industries outside hydrocarbons in part because of high costs and an inert state bureaucracy. The government's efforts to diversify the economy by attracting foreign and domestic investment outside the energy sector have done little to reduce high youth unemployment rates or to address housing shortages. The country is facing a number of short-term and medium-term problems, including the need to diversify the economy, strengthen political, economic and financial reforms, improve the business climate and reduce inequalities among regions.
+
+A wave of economic protests in February and March 2011 prompted the Algerian government to offer more than $23 billion in public grants and retroactive salary and benefit increases. Public spending has increased by 27% annually during the past five years. The 2010–14 public-investment programme will cost US$286 billion, 40% of which will go to human development.
+
+Thanks to strong hydrocarbon revenues, Algeria has a cushion of $173 billion in foreign currency reserves and a large hydrocarbon stabilization fund. In addition, Algeria's external debt is low at about 2% of GDP. The economy remains very dependent on hydrocarbon wealth, and, despite high foreign exchange reserves (US$178 billion, equivalent to three years of imports), current expenditure growth makes Algeria's budget more vulnerable to the risk of prolonged lower hydrocarbon revenues.
+
+Algeria has not joined the WTO, despite several years of negotiations but is a member of the Greater Arab Free Trade Area, the African Continental Free Trade Area, and has an association agreement with the European Union.
+
+Turkish direct investments have accelerated in Algeria, with total value reaching $5 billion. As of 2022, the number of Turkish companies present in Algeria has reached 1,400. In 2020, despite the pandemic, more than 130 Turkish companies were created in Algeria.
+
+### Oil and natural resources
+
+Algeria, whose economy is reliant on petroleum, has been an member of the OPEC cartel since 1969. Its crude oil production stands at around 1.1 million barrels/day, but it is also a major gas producer and exporter, with important links to Europe. Hydrocarbons have long been the backbone of the economy, accounting for roughly 60% of budget revenues, 30% of GDP, and 87.7% of export earnings. Algeria has the 10th-largest reserves of natural gas in the world and is the sixth-largest gas exporter. The U.S. Energy Information Administration reported that in 2005, Algeria had 4.5 trillion cubic metres (160×10^12 cu ft) of proven natural gas reserves. It also ranks 16th in oil reserves.
+
+Non-hydrocarbon growth for 2011 was projected at 5%. To cope with social demands, the authorities raised expenditure, especially on basic food support, employment creation, support for SMEs, and higher salaries. High hydrocarbon prices have improved the current account and the already large international reserves position.
+
+Income from oil and gas rose in 2011 as a result of continuing high oil prices, though the trend in production volume is downward. Production from the oil and gas sector in terms of volume continues to decline, dropping from 43.2 million tonnes to 32 million tonnes between 2007 and 2011. Nevertheless, the sector accounted for 98% of the total volume of exports in 2011, against 48% in 1962, and 70% of budgetary receipts, or US$71.4 billion.
+
+The Algerian national oil company is Sonatrach, which plays a key role in all aspects of the oil and natural gas sectors in Algeria. All foreign operators must work in partnership with Sonatrach, which usually has majority ownership in production-sharing agreements.
+
+Access to biocapacity in Algeria is lower than world average. In 2016, Algeria had 0.53 global hectares of biocapacity per person within its territory, much less than the world average of 1.6 global hectares per person. In 2016, Algeria used 2.4 global hectares of biocapacity per person – their ecological footprint of consumption. This means they use just under 4.5 times as much biocapacity as Algeria contains. As a result, Algeria is running a biocapacity deficit. In April 2022, diplomats from Italy and Spain held talks after Rome's move to secure large volume of Algerian gas stoked concerns in Madrid. Under the deal between Algeria's Sonatrach and Italy's Eni, Algeria will send an additional 9 billion cubic metres of gas to Italy by next year and in 2024.
+
+### Research and alternative energy sources
+
+Algeria has invested an estimated 100 billion dinars towards developing research facilities and paying researchers. This development programme is meant to advance alternative energy production, especially solar and wind power. Algeria is estimated to have the largest solar energy potential in the Mediterranean, so the government has funded the creation of a solar science park in Hassi R'Mel. Currently, Algeria has 20,000 research professors at various universities and over 780 research labs, with state-set goals to expand to 1,000. Besides solar energy, areas of research in Algeria include space and satellite telecommunications, nuclear power and medical research.
+
+### Labour market
+
+The overall rate of unemployment was 11.8% in 2023. The government strengthened in 2011 the job programmes introduced in 1988, in particular in the framework of the programme to aid those seeking work (Dispositif d'Aide à l'Insertion Professionnelle). Youth unemployment was 29.4% in 2025.
+
+### Tourism
+
+The development of the tourism sector in Algeria had previously been hampered by a lack of facilities, but since 2004 a broad tourism development strategy has been implemented resulting in many hotels of a high modern standard being built.
+
+There are several UNESCO World Heritage Sites in Algeria which includes Al Qal'a of Beni Hammad, the first capital of the Hammadid empire; Tipasa, a Phoenician and later Roman town; Djémila and Timgad, both Roman ruins; M'Zab Valley, a limestone valley containing a large urbanised oasis; and the Casbah of Algiers, an important citadel. The only natural World Heritage Site in Algeria is the Tassili n'Ajjer, a mountain range.
+
+### Transport
+
+Two trans-African automobile routes pass through Algeria:
+
+- Cairo-Dakar Highway
+- Algiers-Lagos Highway
+
+The Algerian road network is the densest in Africa; its length is estimated at 180,000 km (110,000 mi) of highways, with more than 3,756 structures and a paving rate of 85%. This network has been complemented by the East-West Highway, a major infrastructure project completed in 2023. It is a three-way, 1,216-kilometre-long (756 mi) highway, linking Annaba in the extreme east to the Tlemcen in the far west. Algeria is also crossed by the Trans-Sahara Highway, which is now completely paved. This road is supported by the Algerian government to increase trade between the six countries crossed: Algeria, Mali, Niger, Nigeria, Chad, and Tunisia.
+
+
+## Demographics
+
+Algeria has a population of an estimated 47.4 million, of which 75% to 85% are Arabs and Arabized Berbers. The majority of the population is of Berber ancestry, though only around 20%–30% identify as Berber. At the outset of the 20th century, its population was approximately 4 million. About 90% of Algerians live in the northern, coastal area; the inhabitants of the Sahara desert are mainly concentrated in oases, although some 1.5 million remain nomadic or partly nomadic. 28.1% of Algerians are under the age of 15.
+
+Between 90,000 and 165,000 Sahrawis from Western Sahara live in the Sahrawi refugee camps, in the western Algerian Sahara desert. There are also more than 4,000 Palestinian refugees, who are well integrated and have not asked for assistance from the United Nations High Commissioner for Refugees (UNHCR). In 2009, 35,000 Chinese migrant workers lived in Algeria.
+
+The largest concentration of Algerian migrants outside Algeria is in France, which has reportedly over 1.7 million Algerians of up to the second generation.
+
+There are also many foreign communities in Algeria, though these do not make up a significant portion of the population.
+
+| Largest cities or towns in Algeria According to the 2008 Census |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+| Rank | Name | Province | Pop. | Rank | Name | Province | Pop. |
+| 1 | Algiers | Algiers Province | 2,364,230 | 11 | Tébessa | Tébessa Province | 194,461 |
+| 2 | Oran | Oran Province | 803,329 | 12 | El Oued | El Oued Province | 186,525 |
+| 3 | Constantine | Constantine Province | 448,028 | 13 | Skikda | Skikda Province | 182,903 |
+| 4 | Annaba | Annaba Province | 342,703 | 14 | Tiaret | Tiaret Province | 178,915 |
+| 5 | Blida | Blida Province | 331,779 | 15 | Béjaïa | Béjaïa Province | 176,139 |
+| 6 | Batna | Batna Province | 289,504 | 16 | Tlemcen | Tlemcen Province | 173,531 |
+| 7 | Djelfa | Djelfa Province | 265,833 | 17 | Ouargla | Ouargla Province | 169,928 |
+| 8 | Sétif | Sétif Province | 252,127 | 18 | Béchar | Béchar Province | 165,241 |
+| 9 | Sidi Bel Abbès | Sidi Bel Abbès Province | 210,146 | 19 | Mostaganem | Mostaganem Province | 162,885 |
+| 10 | Biskra | Biskra Province | 204,661 | 20 | Bordj Bou Arréridj | Bordj Bou Arréridj Province | 158,812 |
+
+### Ethnic groups
+
+Arabs and indigenous Berbers as well as Phoenicians, Romans, Vandals, Byzantine Greeks, Turks, various Sub-Saharan Africans, and French have contributed to the history and culture of Algeria. Descendants of Andalusi refugees are also present in the population of Algiers and other cities. Moreover, Spanish was spoken by these Aragonese and Castillian Morisco descendants deep into the 18th century, and even Catalan was spoken at the same time by Catalan Morisco descendants in the small town of Grish El-Oued.
+
+Centuries of Arab migrations to the Maghreb since the seventh century shifted the demographic scope in Algeria. Estimates vary based on different sources. The majority of the population of Algeria is ethnically Arab, constituting between 75% and 80% to 85% of the population. Berbers who make up between 15% and 20% to 24% of the population are divided into many groups with varying languages. The largest of these are the Kabyles, who live in the Kabylie region east of Algiers, the Chaoui of Northeast Algeria, the Tuaregs in the southern desert and the Shenwa people of North Algeria. During the colonial period, there was a large (10% in 1960) European population who became known as *Pied-Noirs*. They were primarily of French, Spanish and Italian origin. Almost all of this population left during the war of independence or immediately after its end.
+
+### Languages
+
+Modern Standard Arabic and Standard Amazigh are the official languages. Algerian Arabic (Dziria) is the language used by the majority of the population. Colloquial Algerian Arabic has some Berber loanwords which represent 8% to 9% of its vocabulary.
+
+Standard Amazigh has been recognised as a "national language" by the constitutional amendment of 8 May 2002. Kabyle, the predominant Berber language, is taught and is partially co-official (with a few restrictions) in parts of Kabylie. Kabyle has a significant Arabic, French, Latin, Greek, Phoenician and Punic substratum, and Arabic loanwords represent 35% of the total Kabyle vocabulary. In February 2016, the Algerian constitution passed a resolution that made Berber an official language alongside Arabic. Algeria emerged as a bilingual state after 1962. Colloquial Algerian Arabic is spoken by about 83% of the population and Berber by 27%.
+
+Although French has no official status in Algeria, it has one of the largest Francophone populations in the world, and French is widely used in government, media (newspapers, radio, local television), and both the education system (from primary school onwards) and academia due to Algeria's colonial history. It can be regarded as a *lingua franca* of Algeria. In 2008, 11.2 million Algerians could read and write in French. In 2013, it was estimated that 60% of the population could speak or understand French. In 2022, it was estimated that 33% of the population was Francophone.
+
+The use of English in Algeria, though limited in comparison to the previously mentioned languages, has increased due to globalisation. In 2022 it was announced that English would be taught in elementary schools.
+
+### Religion
+
+Islam is the predominant religion in Algeria, with its adherents, mostly Sunnis, accounting for 99% of the population according to a 2021 CIA *World Factbook* estimate, and 98.4% according to Pew Research in 2020. There are about 290,000 Ibadis in the M'zab Valley in the region of Ghardaia.
+
+Prior to independence, Algeria was home to more than 1.3 million Christians (mostly of European ancestry). Most of the Christian settlers left to France after the country's independence. Today, estimates of the Christian population range from 100,000 to 200,000. Algerian citizens who are Christians predominantly belong to Protestant denominations, which have seen increased pressure from the government in recent years including many forced closures.
+
+According to the Arab Barometer in 2018–2019, the vast majority of Algerians (99.1%) continue to identify as Muslim. The June 2019 Arab Barometer-BBC News report found that the percentage of Algerians identifying as non-religious has grown from around 8% in 2013 to around 15% in 2018. The Arab Barometer December 2019, found that the growth in the percentage of Algerians identifying as non-religious is largely driven by young Algerians, with roughly 25% describing themselves as non-religious. However, the 2021 Arab Barometer report found that those who said they were not religious among Algerians has decreased, with just 2.6% identifying as non-religious. In that same report, 69.5% of Algerians identified as religious and another 27.8% identifying as somewhat religious.
+
+Algeria has given the Muslim world a number of prominent thinkers, including Emir Abdelkader, Abdelhamid Ben Badis, Mouloud Kacem Naît Belkacem, Malek Bennabi and Mohamed Arkoun.
+
+### Health
+
+In 2018, Algeria had the highest numbers of physicians in the Maghreb region (1.72 per 1,000 people), nurses (2.23 per 1,000 people), and dentists (0.31 per 1,000 people). Access to "improved water sources" was around 97.4% of the population in urban areas and 98.7% of the population in the rural areas. Some 99% of Algerians living in urban areas, and around 93.4% of those living in rural areas, had access to "improved sanitation". According to the World Bank, Algeria is making progress towards its goal of "reducing by half the number of people without sustainable access to improved drinking water and basic sanitation by 2015". Given Algeria's young population, policy favours preventive health care and clinics over hospitals. In keeping with this policy, the government maintains an immunisation programme. However, poor sanitation and unclean water still cause tuberculosis, hepatitis, measles, typhoid fever, cholera and dysentery. The poor generally receive healthcare free of charge.
+
+Health records have been maintained in Algeria since 1882 and began adding Muslims living in the south to their vital record database in 1905 during French rule.
+
+### Education
+
+Since the 1970s, in a centralised system that was designed to significantly reduce the rate of illiteracy, the Algerian government introduced a decree by which school attendance became compulsory for all children aged between 6 and 15 years who have the ability to track their learning through the 20 facilities built since independence, now the literacy rate is around 92.6%. Since 1972, Arabic is used as the language of instruction during the first nine years of schooling. From the third year, French is taught and it is also the language of instruction for science classes. The students can also learn English, Italian, Spanish and German. In 2008, new programmes at the elementary appeared, therefore the compulsory schooling does not start at the age of six anymore, but at the age of five. Apart from the 122 private schools, the Universities of the State are free of charge. After nine years of primary school, students can go to a high school or to an educational institution. The school offers two programmes: general or technical. At the end of the third year of secondary school, students pass the exam of the baccalaureate, which allows once it is successful to pursue graduate studies in universities and institutes.
+
+Education is officially compulsory for children between the ages of six and 15. In 2008, the illiteracy rate for people over 10 was 22.3%, 15.6% for men and 29.0% for women. The province with the lowest rate of illiteracy was Algiers Province at 11.6%, while the province with the highest rate was Djelfa Province at 35.5%.
+
+Algeria has 26 universities and 67 institutions of higher education, which must accommodate a million Algerians and 80,000 foreign students in 2008. The University of Algiers, founded in 1879, is the oldest, it offers education in various disciplines (law, medicine, science and letters). Twenty-five of these universities and almost all of the institutions of higher education were founded after the independence of the country.
+
+Even if some of them offer instruction in Arabic like areas of law and the economy, most of the other sectors such as science and medicine continue to be provided in French and English. Among the most important universities, there are the University of Sciences and Technology Houari Boumediene, the University of Mentouri Constantine, and University of Oran Es-Senia. The University of Abou Bekr Belkaïd in Tlemcen and University of Batna Hadj Lakhdar occupy the 26th and 45th row in Africa. Algeria was ranked 115th in the Global Innovation Index in 2024, and kept the same rank in the index of 2025.
+
+
+## Culture
+
+Modern Algerian literature, split between Arabic, Tamazight and French, has been strongly influenced by the country's recent history. Famous novelists of the 20th century include Mohammed Dib, Albert Camus, Kateb Yacine and Ahlam Mosteghanemi while Assia Djebar is widely translated. Among the important novelists of the 1980s were Rachid Mimouni, later vice-president of Amnesty International, and Tahar Djaout, murdered by an Islamist group in 1993 for his secularist views.
+
+Malek Bennabi and Frantz Fanon are noted for their thoughts on decolonisation; Augustine of Hippo was born in Tagaste (modern-day Souk Ahras); and Ibn Khaldun, though born in Tunis, wrote the Muqaddima while staying in Algeria. The works of the Sanusi family in pre-colonial times, and of Emir Abdelkader and Sheikh Ben Badis in colonial times, are widely noted. The Latin author Apuleius was born in Madaurus (Mdaourouch), in what later became Algeria.
+
+Contemporary Algerian cinema is varied in terms of genre, exploring a wider range of themes and issues. There has been a transition from cinema which focused on the war of independence to films more concerned with the everyday lives of Algerians.
+
+### Media
+
+### Art
+
+Algerian painters, like Mohammed Racim and Baya, attempted to revive the prestigious Algerian past prior to French colonisation, at the same time that they have contributed to the preservation of the authentic values of Algeria. In this line, Mohamed Temam, Abdelkhader Houamel have also returned through this art, scenes from the history of the country, the habits and customs of the past and the country life. Other new artistic currents including the one of M'hamed Issiakhem, Mohammed Khadda and Bachir Yelles, appeared on the scene of Algerian painting, abandoning figurative classical painting to find new pictorial ways, to adapt Algerian paintings to the new realities of the country through its struggle and its aspirations. Mohammed Khadda and M'hamed Issiakhem have been notable in recent years.
+
+### Literature
+
+Apuleius
+
+Kateb Yacine
+
+The roots of Algerian literature go back to the Numidian and Roman African era, when Apuleius wrote *The Golden Ass*, the only Latin novel to survive in its entirety. This period also saw Augustine of Hippo, Nonius Marcellus and Martianus Capella. The Middle Ages also saw several Arabic writers who contributed to Arab literature, with authors like Ahmad al-Buni, Ibn Manzur and Ibn Khaldun, who wrote the Muqaddimah while staying in Algeria. Albert Camus was an Algerian-born French Pied-Noir author. In 1957, he was awarded the Nobel Prize in Literature.
+
+Algerian literature contains works whose main concern is the assertion of Algerian national entity. Examples include novels such as the *Algerian trilogy* by Mohammed Dib, and *Nedjma* by Kateb Yacine. Other writers in Algerian literature include Mouloud Feraoun, Malek Bennabi, Malek Haddad, Moufdi Zakaria, Abdelhamid Ben Badis, Mohamed Laïd Al-Khalifa, Mouloud Mammeri, Frantz Fanon, and Assia Djebar.
+
+In the aftermath of Independence, new authors emerged on the Algerian literary scene, they attempted to expose social problems, among them there are Rachid Boudjedra, Rachid Mimouni, Leila Sebbar, Tahar Djaout and Tahar Ouettar.
+
+Algerian literature includes shocking expression, due to the terrorism that occurred during the 1990s. Other styles have an individualistic conception of the human condition. Among noted more recent work is *The Swallows of Kabul* and *The Attack* by Yasmina Khadra, *The Oath of Barbarians* by Boualem Sansal, *Memory of the Flesh* by Ahlam Mosteghanemi and the last novel of Assia Djebar *Nowhere in My Father's House*.
+
+### Cinema
+
+The Algerian state's interest in film-industry activities can be seen in the annual budget of DZD 200 million (EUR 1.3 million) allocated to production, specific measures and an ambitious programme plan implemented by the Ministry of Culture to promote national production, renovate the cinema stock and remedy the weak links in distribution and exploitation.
+
+The financial support provided by the state, through the Fund for the Development of the Arts, Techniques and the Film Industry (FDATIC) and the Algerian Agency for Cultural Influence (AARC), plays a key role in the promotion of national production. Between 2007 and 2013, FDATIC subsidised 98 films (feature films, documentaries and short films). In mid-2013, AARC had already supported a total of 78 films, including 42 feature films, 6 short films and 30 documentaries.
+
+According to the European Audiovisual Observatory's LUMIERE database, 41 Algerian films were distributed in Europe between 1996 and 2013; 21 films in this repertoire were Algerian-French co-productions. *Days of Glory* (2006) and *Outside the Law* (2010) recorded the highest number of admissions in the European Union, 3,172,612 and 474,722, respectively.
+
+Algeria won the Palme d'Or for *Chronicle of the Years of Fire* (1975), two Oscars for *Z* (1969), and other awards for the Italian-Algerian movie *The Battle of Algiers*.
+
+### Cuisine
+
+Algerian cuisine is rich and diverse as a result of interactions and exchanges with other cultures and nations over the centuries. It is based on both land and sea products. Conquests or demographic movement towards the Algerian territory were two of the main factors of exchanges between the different peoples and cultures. The Algerian cuisine is a mix of Arab, Berber, Turkish and French roots.
+
+Algerian cuisine offers a variety of dishes depending on the region and the season, but vegetables and cereals remain at its core. Most of the Algerian dishes are centred around bread, meats (lamb, beef or poultry), olive oil, vegetables, and fresh herbs. Vegetables are often used for salads, soups, tajines, couscous, and sauce-based dishes. Of all the Algerian traditional dishes available, the most famous one is couscous, recognised as a national dish.
+
+### Sports
+
+Various games have existed in Algeria since antiquity. In the Aures, people played several games such as El Kherba or El Khergueba (chess variant). Playing cards, checkers and chess games are part of Algerian culture. Racing (fantasia) and rifle shooting are part of cultural recreation of the Algerians.
+
+Football is the most popular sport in the country. The Algerian national football team, known as the Desert Foxes, has a strong fan base and has achieved success both domestically and internationally.
+
+Algeria has a long history in other sports such as athletics, boxing, volleyball, handball and the study of martial arts. Algerian athletes have competed in the Olympic Games and have won medals in various events. Many sports clubs and organisations exist in Algeria to promote and develop sports among young people. The Ministry of Youth and Sports in Algeria manages sport-related activities.

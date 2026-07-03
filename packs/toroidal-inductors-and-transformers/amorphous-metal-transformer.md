@@ -1,0 +1,33 @@
+---
+title: "Amorphous metal transformer"
+source: https://en.wikipedia.org/wiki/Amorphous_metal_transformer
+domain: toroidal-inductors-and-transformers
+license: CC-BY-SA-4.0
+tags: toroidal inductors and transformers
+fetched: 2026-07-03
+---
+
+# Amorphous metal transformer
+
+An **amorphous metal transformer** (**AMT**) is a type of energy efficient transformer found on electric grids. The magnetic core of this transformer is made with a ferromagnetic amorphous metal. The typical material (Metglas) is an alloy of iron with boron, silicon, and phosphorus in the form of thin (e.g. 25 μm) foils rapidly cooled from melt. These materials have high magnetic susceptibility, very low coercivity and high electrical resistance. The high resistance and thin foils lead to low losses by eddy currents when subjected to alternating magnetic fields. On the downside amorphous alloys have a lower saturation induction and often a higher magnetostriction compared to conventional crystalline iron-silicon electrical steel.
+
+## Core loss and copper loss
+
+In a transformer the no-load loss is dominated by the core loss. With an amorphous core, this can be 70–80% lower than with traditional crystalline materials. The loss under heavy load is dominated by the resistance of the copper windings and thus called copper loss. Here the lower saturation magnetization of amorphous cores tends to result in a lower efficiency at full load. Using more copper and core material it is possible to compensate for this. So high efficiency AMTs can be more efficient at low and high load, though at a larger size. The more expensive amorphous core material, the more difficult handling and the need for more copper windings make an AMT more expensive than a traditional transformer.
+
+## Applications
+
+The main application of AMTs are the grid distribution transformers rated at about 50–1000 kVA. These transformers typically run 24 hours a day and at a low load factor (average load divided by nominal load). The no load loss of these transformers makes up a significant part of the loss of the whole distribution net. Amorphous iron is also used in specialized electric motors that operate at high frequencies of perhaps 350 Hz or more.
+
+## Advantages and disadvantages
+
+More efficient transformers lead to a reduction of generation requirement and, when using electric power generated from fossil fuels, less CO2 emissions. This technology has been widely adopted by large developing countries such as China and India where labour cost is low. AMT are in fact more labour-intensive than conventional distribution transformers, a reason that explains a very low adoption in the comparable (by size) European market. These two countries can potentially save 25–30 TWh electricity annually, eliminate 6-8 GW generation investment, and reduce 20–30 million tons of CO2 emission by fully utilizing this technology.
+
+## Notes and references
+
+1. Kennedy, Barry (1998), Energy Efficient Transformers, McGraw-Hill
+2. K.Inagaki, M. Kuwabara et al., Hitachi Review 60(2011) no. 5 pp250, http://www.hitachi.com/rev/archive/2011/__icsFiles/afieldfile/2011/09/06/2011_05_113.pdf
+3. *"Understanding the basics of amorphous-iron motors". machinedesign.com.*
+4. "SPC Note on T&D network loss reduction and energy saving plan" SPC Transportation and Energy Section, Document #123, 1997 (in Chinese).
+5. B.S.K. Naidu, "Amorphous Metal Transformers—New Technology Developments", Keynote Speech, CBIP-AlliedSignal Seminar (India), April 1999.
+6. Li, Jerry (2011), Review and The Future of Amorphous Metal Transformers in Asia - a brief industry update, AEPN. Available at Researchgate or the author's personal page
