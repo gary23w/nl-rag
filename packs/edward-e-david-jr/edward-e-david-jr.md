@@ -1,0 +1,32 @@
+---
+title: "Edward E. David Jr."
+source: https://en.wikipedia.org/wiki/Edward_E._David_Jr.
+domain: edward-e-david-jr
+license: CC-BY-SA-4.0
+tags: edward e. david jr.
+fetched: 2026-07-03
+---
+
+# Edward E. David Jr.
+
+**Edward Emil "Ed" David Jr.** (January 25, 1925 – February 13, 2017) was an American electrical engineer who served as science advisor to President Richard M. Nixon and director of the White House Office of Science and Technology from 1970 to 1973.
+
+## Early life and education
+
+David was born in Wilmington, North Carolina, on January 25, 1925. He earned a Bachelor of Science from the Georgia Tech, followed by a Master of Science and Doctor of Science in electrical engineering from the Massachusetts Institute of Technology in 1947.
+
+## Career
+
+He took a job with Bell Telephone Laboratories and worked there from 1950 to 1970, eventually becoming executive director for communications research. Following the resignation of Lee A. DuBridge, David was appointed as Richard Nixon's science advisor. David resigned in 1973, citing "disappointment that his advice had not been heeded." He then took a position as executive vice president of R&D and planning at Gould Electronics from 1973 to 1977.
+
+He founded consulting group EED, Inc. in 1977, advising industry, government, and universities on technology, research, and innovation management. He was the president of research and engineering at Exxon from 1977 to 1986. In 1983, he was awarded the IRI Medal from the Industrial Research Institute in recognition for his leadership contributions. He joined the Washington Advisory Group in 1997, serving as treasurer until 2004. He also served as director of Ronson.
+
+David was elected to both the National Academy of Engineering and the American Academy of Arts and Sciences in 1966. In 1970 he was elected to the United States National Academy of Sciences. In 1974, he was elected to the MIT Corporation and as a life member. He was elected to the American Philosophical Society in 1979. He was awarded The Delmer S. Fahrney Medal in 1985.
+
+David was also active in public service to his adopted state, serving on the board of the New Jersey Commission on Science and Technology (NJCST) alongside William O. Baker, his former vice president at Bell Labs. In 1982, while still at Exxon, David was appointed by Governor Thomas Kean to the governor's study commission that led to formation of the NJCST. Once the NJCST became a statutory agency with responsibility for the state's programs in science & technology-based economic development in 1985, David was re-appointed to its board and served as chair of its budget committee. During this period, he also chaired the Governor's Roundtable on (High-Temperature) Superconductivity, which was staffed by the NJCST. He left the NJCST board in 1990.
+
+In 2012, David was a co-signatory of an op-ed in *The Wall Street Journal* questioning the scientific consensus on global warming.
+
+## Death
+
+David died at his home in Bedminster, New Jersey on February 13, 2017, aged 92.
