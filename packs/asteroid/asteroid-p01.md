@@ -1,0 +1,525 @@
+---
+title: "Asteroid (part 1/2)"
+source: https://en.wikipedia.org/wiki/Asteroid
+domain: asteroid
+license: CC-BY-SA-4.0
+tags: asteroid
+fetched: 2026-07-03
+part: 1/2
+---
+
+# Asteroid
+
+Images of
+
+visited asteroids
+
+illustrating their differences: (top row)
+
+433 Eros
+
+and
+
+243 Ida
+
+with its moon
+
+Dactyl
+
+, (bottom row)
+
+1 Ceres
+
+and
+
+101955 Bennu
+
+.
+
+Sizes are not to scale.
+
+An **asteroid** is a minor planet—an object larger than a meteoroid (thus 1 meter or larger) that is neither a planet nor an identified comet—that orbits within the inner Solar System or is co-orbital with Jupiter (Trojan asteroids). Asteroids are rocky, metallic, or icy bodies with no atmosphere, and are broadly classified into C-type (carbonaceous), M-type (metallic), or S-type (silicaceous). The size and shape of asteroids vary significantly, ranging from small rubble piles under a kilometer across to Ceres, a dwarf planet almost 1000 km in diameter. A body is classified as a comet, not an asteroid, if it shows a coma (tail) when warmed by solar radiation, although recent observations suggest a continuum between these types of bodies.
+
+Of the roughly one million known asteroids, the greatest number are located between the orbits of Mars and Jupiter, approximately 2 to 4 astronomical units (AU) from the Sun, in a region known as the main asteroid belt. The total mass of all the asteroids combined is only 3% that of Earth's Moon. The majority of main belt asteroids follow slightly elliptical, stable orbits, revolving in the same direction as the Earth and taking from three to six years to complete a full orbit around the Sun.
+
+Asteroids have been observed from Earth since their discovery in 1801. The first close-up observation of an asteroid was made by the Galileo spacecraft. Several dedicated missions to asteroids were subsequently launched by NASA and JAXA, with plans for other missions in progress. NASA's *NEAR Shoemaker* studied Eros, and *Dawn* observed Vesta and Ceres. JAXA's missions *Hayabusa* and *Hayabusa2* studied and returned samples of Itokawa and Ryugu, respectively. OSIRIS-REx studied Bennu, collecting a sample in 2020 which was delivered back to Earth in 2023. NASA's *Lucy*, launched in 2021, is tasked with studying ten different asteroids, two from the main belt and eight Jupiter trojans. NASA's Double Asteroid Redirection Test (DART), launched in 2021, was intentionally crashed into the non-threatening asteroid Dimorphos in September 2022 as a test of planetary defense technology. NASA's *Psyche*, launched October 2023, aims to study the metallic asteroid Psyche. ESA's *Hera*, launched in October 2024, is intended to study the results of the DART impact. CNSA's *Tianwen-2* was launched in May 2025, to explore the co-orbital near-Earth asteroid 469219 Kamoʻoalewa and the active asteroid 311P/PanSTARRS and collecting samples of the regolith of Kamo'oalewa.
+
+Near-Earth asteroids have the potential for catastrophic consequences if they strike Earth, with a notable example being the Chicxulub impact, widely thought to have induced the Cretaceous–Paleogene mass extinction.
+
+
+## Terminology
+
+A composite image, to the same scale, of the asteroids imaged at high resolution prior to 2012. They are, from largest to smallest:
+
+4 Vesta
+
+,
+
+21 Lutetia
+
+,
+
+253 Mathilde
+
+,
+
+243 Ida
+
+and its moon
+
+Dactyl
+
+,
+
+433 Eros
+
+,
+
+951 Gaspra
+
+,
+
+2867 Šteins
+
+,
+
+25143 Itokawa
+
+.
+
+Vesta
+
+(left), with
+
+Ceres
+
+(center) and the
+
+Moon
+
+(right) shown to scale
+
+In 2006, the International Astronomical Union (IAU) introduced the currently preferred broad term small Solar System body, defined as an object in the Solar System that is neither a planet, a dwarf planet, nor a natural satellite; this includes asteroids, comets, centaurs, trojans, and trans-Neptunian objects. According to IAU, "the term 'minor planet' may still be used, but generally, 'Small Solar System Body' will be preferred."
+
+Historically, the first discovered asteroid, Ceres, was at first considered a new planet. It was followed by the discovery of other similar bodies, which with the equipment of the time appeared to be points of light like stars, showing little or no planetary disc, though readily distinguishable from stars due to their apparent motions. This prompted the astronomer Sir William Herschel to propose the term *asteroid*, coined in Greek as ἀστεροειδής, or *asteroeidēs*, meaning 'star-like, star-shaped', and derived from the Ancient Greek ἀστήρ *astēr* 'star, planet'. In the early second half of the 19th century, the terms *asteroid* and *planet* (not always qualified as "minor") were still used interchangeably.
+
+Traditionally, small bodies orbiting the Sun were classified as comets, asteroids, or meteoroids, with anything smaller than one meter across being called a meteoroid. The term *asteroid,* never officially defined, can be informally used to mean "an irregularly shaped rocky body orbiting the Sun that does not qualify as a planet or a dwarf planet under the IAU definitions". The main difference between an asteroid and a comet is that a comet shows a coma (tail) due to sublimation of its near-surface ices by solar radiation. A few objects were first classified as minor planets but later showed evidence of cometary activity. Conversely, some (perhaps all) comets are eventually depleted of their surface volatile ices and become asteroid-like. A further distinction is that comets typically have more eccentric orbits than most asteroids; highly eccentric asteroids are probably dormant or extinct comets.
+
+The minor planets beyond Jupiter's orbit are sometimes also called "asteroids", especially in popular presentations. However, it is becoming increasingly common for the term *asteroid* to be restricted to minor planets of the inner Solar System. Therefore, this article will restrict itself for the most part to the classical asteroids: objects of the asteroid belt, Jupiter trojans, and near-Earth objects.
+
+For almost two centuries after the discovery of Ceres in 1801, all known asteroids spent most of their time at or within the orbit of Jupiter, though a few, such as 944 Hidalgo, ventured farther for part of their orbit. Starting in 1977 with 2060 Chiron, astronomers discovered small bodies that permanently resided further out than Jupiter, now called centaurs. In 1992, 15760 Albion was discovered, the first object beyond the orbit of Neptune (other than Pluto); soon large numbers of similar objects were observed, now called trans-Neptunian objects. Further out are Kuiper-belt objects, scattered-disc objects, and the much more distant Oort cloud, hypothesized to be the main reservoir of dormant comets. They inhabit the cold outer reaches of the Solar System where ices remain solid and comet-like bodies exhibit little cometary activity; if centaurs or trans-Neptunian objects were to venture close to the Sun, their volatile ices would sublimate, and traditional approaches would classify them as comets.
+
+The Kuiper-belt bodies are called "objects" partly to avoid the need to classify them as asteroids or comets. They are thought to be predominantly comet-like in composition, though some may be more akin to asteroids. Most do not have the highly eccentric orbits associated with comets, and the ones so far discovered are larger than traditional comet nuclei. Other recent observations, such as the analysis of the cometary dust collected by the *Stardust* probe, are increasingly blurring the distinction between comets and asteroids, suggesting "a continuum between asteroids and comets" rather than a sharp dividing line.
+
+In 2006, the IAU created the class of dwarf planets for the largest minor planets—those massive enough to have become ellipsoidal under their own gravity. Only the largest object in the asteroid belt has been placed in this category: Ceres, at about 975 km (606 mi) across. Asteroids have been distinguished from the concept of planetoid by describing them respectively as undifferentiated and differentiated, like dwarf planets.
+
+
+## History of observations
+
+Despite their large numbers, asteroids are a relatively recent discovery, with the first one—Ceres—only being identified in 1801. Only one asteroid, 4 Vesta, which has a relatively reflective surface, is normally visible to the naked eye in dark skies when it is favorably positioned. Rarely, small asteroids passing close to Earth may be briefly visible to the naked eye. As of May 2025, the Minor Planet Center had data on 1,460,356 minor planets in the inner and outer Solar System, of which about 826,864 had enough information to be given numbered designations.
+
+### Discovery of Ceres
+
+In 1772, German astronomer Johann Elert Bode, citing Johann Daniel Titius, published a numerical procession known as the Titius–Bode law (now discredited). Except for an unexplained gap between Mars and Jupiter, Bode's formula seemed to predict the orbits of the known planets. He wrote the following explanation for the existence of a "missing planet":
+
+> This latter point seems in particular to follow from the astonishing relation which the known six planets observe in their distances from the Sun. Let the distance from the Sun to Saturn be taken as 100, then Mercury is separated by 4 such parts from the Sun. Venus is 4 + 3 = 7. The Earth 4 + 6 = 10. Mars 4 + 12 = 16. Now comes a gap in this so orderly progression. After Mars there follows a space of 4 + 24 = 28 parts, in which no planet has yet been seen. Can one believe that the Founder of the universe had left this space empty? Certainly not. From here we come to the distance of Jupiter by 4 + 48 = 52 parts, and finally to that of Saturn by 4 + 96 = 100 parts.
+
+Bode's formula predicted another planet would be found with an orbital radius near 2.8 astronomical units (AU), or 420 million km, from the Sun. The Titius–Bode law got a boost with William Herschel's discovery of Uranus near the predicted distance for a planet beyond Saturn. In 1800, a group headed by Franz Xaver von Zach, editor of the German astronomical journal *Monatliche Correspondenz* (Monthly Correspondence), sent requests to 24 experienced astronomers (whom he dubbed the "celestial police"), asking that they combine their efforts and begin a methodical search for the expected planet. Although they did not discover Ceres, they later found the asteroids 2 Pallas, 3 Juno and 4 Vesta.
+
+One of the astronomers selected for the search was Giuseppe Piazzi, a Catholic priest at the Academy of Palermo, Sicily. Before receiving his invitation to join the group, Piazzi discovered Ceres on 1 January 1801. He was searching for "the 87th [star] of the Catalogue of the Zodiacal stars of Mr la Caille", but found that "it was preceded by another". Instead of a star, Piazzi had found a moving star-like object, which he first thought was a comet:
+
+> The light was a little faint, and of the colour of Jupiter, but similar to many others which generally are reckoned of the eighth magnitude. Therefore I had no doubt of its being any other than a fixed star. [...] The evening of the third, my suspicion was converted into certainty, being assured it was not a fixed star. Nevertheless before I made it known, I waited till the evening of the fourth, when I had the satisfaction to see it had moved at the same rate as on the preceding days.
+
+Piazzi observed Ceres a total of 24 times, the final time on 11 February 1801, when illness interrupted his work. He announced his discovery on 24 January 1801 in letters to only two fellow astronomers, his compatriot Barnaba Oriani of Milan and Bode in Berlin. He reported it as a comet but "since its movement is so slow and rather uniform, it has occurred to me several times that it might be something better than a comet". In April, Piazzi sent his complete observations to Oriani, Bode, and French astronomer Jérôme Lalande. The information was published in the September 1801 issue of the *Monatliche Correspondenz*.
+
+By this time, the apparent position of Ceres had changed (mostly due to Earth's motion around the Sun), and was too close to the Sun's glare for other astronomers to confirm Piazzi's observations. Toward the end of the year, Ceres should have been visible again, but after such a long time it was difficult to predict its exact position. To recover Ceres, mathematician Carl Friedrich Gauss, then 24 years old, developed an efficient method of orbit determination. In a few weeks, he predicted the path of Ceres and sent his results to von Zach. On 31 December 1801, von Zach and fellow celestial policeman Heinrich W. M. Olbers found Ceres near the predicted position and thus recovered it. At 2.8 AU from the Sun, Ceres appeared to fit the Titius–Bode law almost perfectly; however, Neptune, once discovered in 1846, was 8 AU closer than predicted, leading most astronomers to conclude that the law was a coincidence. Piazzi named the newly discovered object *Ceres Ferdinandea,* "in honor of the patron goddess of Sicily and of King Ferdinand of Bourbon".
+
+Three other asteroids (2 Pallas, 3 Juno, and 4 Vesta) were discovered by von Zach's group over the next few years, with Vesta found in 1807. No new asteroids were discovered until 1845. Amateur astronomer Karl Ludwig Hencke started his searches of new asteroids in 1830, and fifteen years later, while looking for Vesta, he found the asteroid later named 5 Astraea. It was the first new asteroid discovery in 38 years. Carl Friedrich Gauss was given the honor of naming the asteroid. After this, other astronomers joined; 15 asteroids were found by the end of 1851. In 1868, when James Craig Watson discovered the 100th asteroid, the French Academy of Sciences engraved the faces of Karl Theodor Robert Luther, John Russell Hind, and Hermann Goldschmidt, the three most successful asteroid-hunters at that time, on a commemorative medallion marking the event.
+
+In 1891, Max Wolf pioneered the use of astrophotography to detect asteroids, which appeared as short streaks on long-exposure photographic plates. This dramatically increased the rate of detection compared with earlier visual methods: Wolf alone discovered 248 asteroids, beginning with 323 Brucia, whereas only slightly more than 300 had been discovered up to that point. It was known that there were many more, but most astronomers did not bother with them, some calling them "vermin of the skies", a phrase variously attributed to Eduard Suess and Edmund Weiss. Even a century later, only a few thousand asteroids were identified, numbered and named.
+
+### 19th and 20th centuries
+
+In the past, asteroids were discovered by a four-step process. First, a region of the sky was photographed by a wide-field telescope or astrograph. Pairs of photographs were taken, typically one hour apart. Multiple pairs could be taken over a series of days. Second, the two films or plates of the same region were viewed under a stereoscope. A body in orbit around the Sun would move slightly between the pair of films. Under the stereoscope, the image of the body would seem to float slightly above the background of stars. Third, once a moving body was identified, its location would be measured precisely using a digitizing microscope. The location would be measured relative to known star locations.
+
+These first three steps do not constitute asteroid discovery: the observer has only found an apparition, which gets a provisional designation, made up of the year of discovery, a letter representing the half-month of discovery, and finally a letter and a number indicating the discovery's sequential number (example: 1998 FJ74). The last step is sending the locations and time of observations to the Minor Planet Center, where computer programs determine whether an apparition ties together earlier apparitions into a single orbit. If so, the object receives a catalogue number and the observer of the first apparition with a calculated orbit is declared the discoverer, and granted the honor of naming the object subject to the approval of the International Astronomical Union.
+
+
+## Naming
+
+By 1851, the Royal Astronomical Society decided that asteroids were being discovered at such a rapid rate that a different system was needed to categorize or name asteroids. In 1852, when de Gasparis discovered the twentieth asteroid, Benjamin Valz gave it a name and a number designating its rank among asteroid discoveries, 20 Massalia. Sometimes asteroids were discovered and not seen again. So, starting in 1892, new asteroids were listed by the year and a capital letter indicating the order in which the asteroid's orbit was calculated and registered within that specific year. For example, the first two asteroids discovered in 1892 were labeled 1892A and 1892B. However, there were not enough letters in the alphabet for all of the asteroids discovered in 1893, so 1893Z was followed by 1893AA. A number of variations of these methods were tried, including designations that included year plus a Greek letter in 1914. A simple chronological numbering system was established in 1925.
+
+Currently all newly discovered asteroids receive a provisional designation (such as 2002 AT4) consisting of the year of discovery and an alphanumeric code indicating the half-month of discovery and the sequence within that half-month. Once an asteroid's orbit has been confirmed, it is given a number, and later may also be given a name (e.g. 433 Eros). The formal naming convention uses parentheses around the number—e.g. (433) Eros—but dropping the parentheses is quite common. Informally, it is also common to drop the number altogether, or to drop it after the first mention when a name is repeated in running text. In addition, names can be proposed by the asteroid's discoverer, within guidelines established by the International Astronomical Union.
+
+### Symbols
+
+The first asteroids to be discovered were assigned iconic symbols like the ones traditionally used to designate the planets. By 1852 there were two dozen asteroid symbols, which often occurred in multiple variants.
+
+In 1851, after the fifteenth asteroid, Eunomia, had been discovered, Johann Franz Encke made a major change in the upcoming 1854 edition of the *Berliner Astronomisches Jahrbuch* (BAJ, *Berlin Astronomical Yearbook*). He introduced a disk (circle), a traditional symbol for a star, as the generic symbol for an asteroid. The circle was then numbered in order of discovery to indicate a specific asteroid. The numbered-circle convention was quickly adopted by astronomers, and the next asteroid to be discovered (16 Psyche, in 1852) was the first to be designated in that way at the time of its discovery. However, Psyche was given an iconic symbol as well, as were a few other asteroids discovered over the next few years. 20 Massalia was the first asteroid that was not assigned an iconic symbol, and no iconic symbols were created after the 1855 discovery of 37 Fides.
+
+
+## Formation
+
+Many asteroids are the shattered remnants of planetesimals, bodies within the young Sun's solar nebula that never grew large enough to become planets. It is thought that planetesimals in the asteroid belt evolved much like the rest of objects in the solar nebula until Jupiter neared its current mass, at which point excitation from orbital resonances with Jupiter ejected over 99% of planetesimals in the belt. Simulations and a discontinuity in spin rate and spectral properties suggest that asteroids larger than approximately 120 km (75 mi) in diameter accreted during that early era, whereas smaller bodies are fragments from collisions between asteroids during or after the Jovian disruption. Ceres and Vesta grew large enough to melt and differentiate, with heavy metallic elements sinking to the core, leaving rocky minerals in the crust.
+
+In the Nice model, many Kuiper-belt objects are captured in the outer asteroid belt, at distances greater than 2.6 AU. Most were later ejected by Jupiter, but those that remained may be the D-type asteroids, and possibly include Ceres.
+
+
+## Distribution within the Solar System
+
+Various dynamical groups of asteroids have been discovered orbiting in the inner Solar System. Their orbits are perturbed by the gravity of other bodies in the Solar System and by the Yarkovsky effect. Significant populations include:
+
+### Asteroid belt
+
+The majority of known asteroids orbit within the asteroid belt between the orbits of Mars and Jupiter, generally in relatively low-eccentricity (i.e. not very elongated) orbits. This belt is estimated to contain between 1.1 and 1.9 million asteroids larger than 1 km (0.6 mi) in diameter, and millions of smaller ones. These asteroids may be remnants of the protoplanetary disk, and in this region the accretion of planetesimals into planets during the formative period of the Solar System was prevented by large gravitational perturbations by Jupiter.
+
+Contrary to popular imagery, the asteroid belt is mostly empty. The asteroids are spread over such a large volume that reaching an asteroid without aiming carefully would be improbable. Nonetheless, hundreds of thousands of asteroids are currently known, and the total number ranges in the millions or more, depending on the lower size cutoff. Over 200 asteroids are known to be larger than 100 km, and a survey in the infrared wavelengths has shown that the asteroid belt has between 700,000 and 1.7 million asteroids with a diameter of 1 km or more. The absolute magnitudes of most of the known asteroids are between 11 and 19, with the median at about 16.
+
+The total mass of the asteroid belt is estimated to be 2.39×1021 kg, which is just 3% of the mass of the Moon; the mass of the Kuiper Belt and Scattered Disk is over 100 times as large. The four largest objects, Ceres, Vesta, Pallas, and Hygiea, account for maybe 62% of the belt's total mass, with 39% accounted for by Ceres alone.
+
+### Trojans
+
+Trojans are populations that share an orbit with a larger planet or moon, but do not collide with it because they orbit in one of the two Lagrangian points of stability, L4 and L5, which lie 60° ahead of and behind the larger body.
+
+In the Solar System, most known trojans share the orbit of Jupiter. They are divided into the Greek camp at L4 (ahead of Jupiter) and the Trojan camp at L5 (trailing Jupiter). More than a million Jupiter trojans larger than one kilometer are thought to exist, of which more than 7,000 are currently catalogued. In other planetary orbits only nine Mars trojans, 28 Neptune trojans, two Uranus trojans, and two Earth trojans, have been found to date. A temporary Venus trojan is also known. Numerical orbital dynamics stability simulations indicate that Saturn and Uranus probably do not have any primordial trojans.
+
+### Near-Earth asteroids
+
+Near-Earth asteroids, or NEAs, are asteroids that have orbits that pass close to that of Earth. Asteroids that actually cross Earth's orbital path are known as *Earth-crossers*. As of April 2022, a total of 28,772 near-Earth asteroids were known; 878 have a diameter of one kilometer or larger.
+
+A small number of NEAs are extinct comets that have lost their volatile surface materials, although having a faint or intermittent comet-like tail does not necessarily result in a classification as a near-Earth comet, making the boundaries somewhat fuzzy. The rest of the near-Earth asteroids are driven out of the asteroid belt by gravitational interactions with Jupiter.
+
+Many asteroids have natural satellites (minor-planet moons). As of October 2021, there were 85 NEAs known to have at least one moon, including three known to have two moons. The asteroid 3122 Florence, one of the largest potentially hazardous asteroids with a diameter of 4.5 km (2.8 mi), has two moons measuring 100–300 m (330–980 ft) across, which were discovered by radar imaging during the asteroid's 2017 approach to Earth.
+
+Near-Earth asteroids are divided into groups based on their semi-major axis (a), perihelion distance (q), and aphelion distance (Q):
+
+- The *Atiras* or *Apoheles* have orbits strictly inside Earth's orbit: an Atira asteroid's aphelion distance (Q) is smaller than Earth's perihelion distance (0.983 AU). That is, Q < 0.983 AU, which implies that the asteroid's semi-major axis is also less than 0.983 AU.
+- The *Atens* have a semi-major axis of less than 1 AU and cross Earth's orbit. Mathematically, a < 1.0 AU and Q > 0.983 AU. (0.983 AU is Earth's perihelion distance.)
+- The *Apollos* have a semi-major axis of more than 1 AU and cross Earth's orbit. Mathematically, a > 1.0 AU and q < 1.017 AU. (1.017 AU is Earth's aphelion distance.)
+- The *Amors* have orbits strictly outside Earth's orbit: an Amor asteroid's perihelion distance (q) is greater than Earth's aphelion distance (1.017 AU). Amor asteroids are also near-earth objects so q < 1.3 AU. In summary, 1.017 AU < q < 1.3 AU. (This implies that the asteroid's semi-major axis (a) is also larger than 1.017 AU.) Some Amor asteroid orbits cross the orbit of Mars.
+
+### Martian moons
+
+Phobos
+
+Deimos
+
+It is unclear whether Martian moons Phobos and Deimos are captured asteroids or were formed due to impact event on Mars. Phobos and Deimos both have much in common with carbonaceous C-type asteroids, with spectra, albedo, and density very similar to those of C- or D-type asteroids. Based on their similarity, one hypothesis is that both moons may be captured main-belt asteroids. Both moons have very circular orbits which lie almost exactly in Mars's equatorial plane, and hence a capture origin requires a mechanism for circularizing the initially highly eccentric orbit, and adjusting its inclination into the equatorial plane, most probably by a combination of atmospheric drag and tidal forces, although it is not clear whether sufficient time was available for this to occur for Deimos. Capture also requires dissipation of energy. The current Martian atmosphere is too thin to capture a Phobos-sized object by atmospheric braking. Geoffrey A. Landis has pointed out that the capture could have occurred if the original body was a binary asteroid that separated under tidal forces.
+
+Phobos could be a second-generation Solar System object that coalesced in orbit after Mars formed, rather than forming concurrently out of the same birth cloud as Mars.
+
+Another hypothesis is that Mars was once surrounded by many Phobos- and Deimos-sized bodies, perhaps ejected into orbit around it by a collision with a large planetesimal. The high porosity of the interior of Phobos (based on the density of 1.88 g/cm3, voids are estimated to comprise 25 to 35 percent of Phobos's volume) is inconsistent with an asteroidal origin. Observations of Phobos in the thermal infrared suggest a composition containing mainly phyllosilicates, which are well known from the surface of Mars. The spectra are distinct from those of all classes of chondrite meteorites, again pointing away from an asteroidal origin. Both sets of findings support an origin of Phobos from material ejected by an impact on Mars that reaccreted in Martian orbit, similar to the prevailing theory for the origin of Earth's moon.
+
+
+## Characteristics
+
+### Size distribution
+
+The masses of the largest asteroids in the main belt:
+
+1 Ceres
+
+(blue),
+
+4 Vesta
+
+,
+
+2 Pallas
+
+,
+
+10 Hygiea
+
+,
+
+704 Interamnia
+
+,
+
+15 Eunomia
+
+and the remainder of the Main Belt (pink). The unit of mass is
+
+×
+
+10
+
+18
+
+kg.
+
+Asteroids vary greatly in size, from almost 1,000 km (620 mi) for the largest down to rocks just 1 m (3.3 ft) across, below which an object is classified as a meteoroid. The three largest are very much like miniature planets: they are roughly spherical, have at least partly differentiated interiors, and are thought to be surviving protoplanets. The vast majority, however, are much smaller and are irregularly shaped; they are thought to be either battered planetesimals or fragments of larger bodies.
+
+The dwarf planet Ceres is by far the largest asteroid, with a diameter of 940 km (580 mi). The next largest are 4 Vesta and 2 Pallas, both with diameters of just over 500 km (300 mi). Vesta is the brightest of the four main-belt asteroids that can, on occasion, be visible to the naked eye. On some rare occasions, a near-Earth asteroid may briefly become visible without technical aid; see 99942 Apophis.
+
+The mass of all the objects of the asteroid belt, lying between the orbits of Mars and Jupiter, is estimated to be (2394±6)×1018 kg, ≈3.25% of the mass of the Moon. Of this, Ceres comprises 938×1018 kg, about 40% of the total. Adding in the next three most massive objects, Vesta (11%), Pallas (8.5%), and Hygiea (3–4%), brings this figure up to a bit over 60%, whereas the next seven most-massive asteroids bring the total up to 70%. The number of asteroids increases rapidly as their individual masses decrease.
+
+The number of asteroids decreases markedly with increasing size. Although the size distribution generally follows a power law, there are 'bumps' at about 5 km and 100 km, where more asteroids than expected from such a curve are found. Most asteroids larger than approximately 120 kilometres (75 mi) in diameter are primordial (surviving from the accretion epoch), whereas most smaller asteroids are products of fragmentation of primordial asteroids. The primordial population of the main belt was probably 200 times what it is today.
+
+#### Largest asteroids
+
+42 of the largest objects in the asteroid belt captured by
+
+ESO
+
+'s
+
+Very Large Telescope
+
+Eros, Vesta and Ceres size comparison
+
+Three largest objects in the asteroid belt, Ceres, Vesta, and Pallas, are intact protoplanets that share many characteristics common to planets, and are atypical compared to the majority of irregularly shaped asteroids. The fourth-largest asteroid, Hygiea, appears nearly spherical although it may have an undifferentiated interior, like the majority of asteroids. The four largest asteroids constitute about five-eighths of the mass of the asteroid belt; Ceres and Vesta alone constitute half.
+
+Ceres is the only asteroid that appears to have a plastic shape under its own gravity and hence the only one that is a dwarf planet. It has a much higher absolute magnitude than the other asteroids, of around 3.32, and may possess a surface layer of ice. Like the planets, Ceres is differentiated: it has a crust, a mantle and a core. No meteorites from Ceres have been found on Earth.
+
+Vesta, too, has a differentiated interior, though it formed inside the Solar System's frost line, and so is devoid of water; its composition is mainly of basaltic rock with minerals such as olivine. Aside from the large crater at its southern pole, Rheasilvia, Vesta also has an ellipsoidal shape. Vesta is the parent body of the Vestian family and other V-type asteroids, and is the source of the HED meteorites, which constitute 5% of all meteorites on Earth.
+
+Pallas is unusual in that, like Uranus, it rotates on its side, with its axis of rotation tilted at high angles to its orbital plane. Its composition is similar to that of Ceres: high in carbon and silicon, and perhaps partially differentiated. Pallas is the parent body of the Palladian family of asteroids.
+
+Hygiea is the largest carbonaceous asteroid and, unlike the other largest asteroids, lies relatively close to the plane of the ecliptic. It is the largest member and presumed parent body of the Hygiean family of asteroids. Because there is no sufficiently large crater on the surface to be the source of that family, as there is on Vesta, it is thought that Hygiea may have been completely disrupted in the collision that formed the Hygiean family and recoalesced after losing a bit less than 2% of its mass. Observations taken with the Very Large Telescope's SPHERE imager in 2017 and 2018, revealed that Hygiea has a nearly spherical shape, which is consistent both with it being in hydrostatic equilibrium, or formerly being in hydrostatic equilibrium, or with being disrupted and recoalescing.
+
+Internal differentiation of large asteroids is possibly related to their lack of natural satellites, as satellites of main belt asteroids are mostly believed to form from collisional disruption, creating a rubble pile structure.
+
+Attributes of largest asteroids
+
+Name
+
+Orbital
+
+radius
+
+(
+
+AU
+
+)
+
+Orbital
+
+period
+
+(years)
+
+Inclination
+
+to ecliptic
+
+Orbital
+
+eccentricity
+
+Diameter
+
+(km)
+
+Diameter
+
+(% of
+
+Moon
+
+)
+
+Mass
+
+(
+
+×
+
+10
+
+18
+
+kg)
+
+Mass
+
+(% of Ceres)
+
+Density
+
+(g/cm
+
+3
+
+)
+
+Rotation
+
+period
+
+(hr)
+
+Ceres
+
+2.77
+
+4.60
+
+10.6°
+
+0.079
+
+964×964×892
+
+(mean 939.4)
+
+27%
+
+938
+
+100%
+
+2.16±0.01
+
+9.07
+
+Vesta
+
+2.36
+
+3.63
+
+7.1°
+
+0.089
+
+573×557×446
+
+(mean 525.4)
+
+15%
+
+259
+
+28%
+
+3.46 ± 0.04
+
+5.34
+
+Pallas
+
+2.77
+
+4.62
+
+34.8°
+
+0.231
+
+550×516×476
+
+(mean 511±4)
+
+15%
+
+204±3
+
+21%
+
+2.92±0.08
+
+7.81
+
+Hygiea
+
+3.14
+
+5.56
+
+3.8°
+
+0.117
+
+450×430×424
+
+(mean 433±8)
+
+12%
+
+87±7
+
+9%
+
+2.06±0.20
+
+13.8
+
+### Rotation
+
+Measurements of the rotation rates of large asteroids in the asteroid belt show that there is an upper limit. Very few asteroids with a diameter larger than 100 meters have a rotation period less than 2.2 hours. For asteroids rotating faster than approximately this rate, the inertial force at the surface is greater than the gravitational force, so any loose surface material would be flung out. However, a solid object should be able to rotate much more rapidly. This suggests that most asteroids with a diameter over 100 meters are rubble piles formed through the accumulation of debris after collisions between asteroids.
+
+### Color
+
+Asteroids become darker and redder with age due to space weathering. However evidence suggests most of the color change occurs rapidly, in the first hundred thousand years, limiting the usefulness of spectral measurement for determining the age of asteroids.
+
+### Surface features
+
+Except for the "big four" (Ceres, Pallas, Vesta, and Hygiea), asteroids are likely to be broadly similar in appearance, if irregular in shape. 50 km (31 mi) 253 Mathilde is a rubble pile saturated with craters with diameters the size of the asteroid's radius. Earth-based observations of 300 km (190 mi) 511 Davida, one of the largest asteroids after the big four, reveal a similarly angular profile, suggesting it is also saturated with radius-size craters. Medium-sized asteroids such as Mathilde and 243 Ida, that have been observed up close, also reveal a deep regolith covering the surface. Of the big four, Pallas and Hygiea are practically unknown. Vesta has compression fractures encircling a radius-size crater at its south pole but is otherwise a spheroid.
+
+*Dawn spacecraft* revealed that Ceres has a heavily cratered surface, but with fewer large craters than expected. Models based on the formation of the current asteroid belt had suggested Ceres should possess 10 to 15 craters larger than 400 km (250 mi) in diameter. The largest confirmed crater on Ceres, Kerwan Basin, is 284 km (176 mi) across. The most likely reason for this is viscous relaxation of the crust slowly flattening out larger impacts.
+
+### Composition
+
+Asteroids are classified by their characteristic emission spectra, with the majority falling into three main groups: C-type, M-type, and S-type. These describe carbonaceous (carbon-rich), metallic, and silicaceous (stony) compositions, respectively. The physical composition of asteroids is varied and in most cases poorly understood. Ceres appears to be composed of a rocky core covered by an icy mantle; Vesta is thought to have a nickel-iron core, olivine mantle, and basaltic crust. Thought to be the largest undifferentiated asteroid, 10 Hygiea seems to have a uniformly primitive composition of carbonaceous chondrite, but it may actually be a differentiated asteroid that was globally disrupted by an impact and then reassembled. Other asteroids appear to be the remnant cores or mantles of proto-planets, high in rock and metal. Most small asteroids are believed to be piles of rubble held together loosely by gravity, although the largest are probably solid. Some asteroids have moons or are co-orbiting binaries: rubble piles, moons, binaries, and scattered asteroid families are thought to be the results of collisions that disrupted a parent asteroid, or possibly a planet.
+
+In the main asteroid belt, there appear to be two primary populations of asteroid: a dark, volatile-rich population, consisting of the C-type and P-type asteroids, with albedos less than 0.10 and densities under 2.2 g/cm3, and a dense, volatile-poor population, consisting of the S-type and M-type asteroids, with albedos over 0.15 and densities greater than 2.7. Within these populations, larger asteroids are denser, presumably due to compression. There appears to be minimal macro-porosity (interstitial vacuum) in the score of asteroids with masses greater than 10×1018 kg.
+
+Composition is calculated from three primary sources: albedo, surface spectrum, and density. The last can only be determined accurately by observing the orbits of moons the asteroid might have. So far, every asteroid with moons has turned out to be a rubble pile, a loose conglomeration of rock and metal that may be half empty space by volume. The investigated asteroids are as large as 280 km in diameter, and include 121 Hermione (268×186×183 km), and 87 Sylvia (384×262×232 km). Few asteroids are larger than 87 Sylvia, none of them have moons. The fact that such large asteroids as Sylvia may be rubble piles, presumably due to disruptive impacts, has important consequences for the formation of the Solar System: computer simulations of collisions involving solid bodies show them destroying each other as often as merging, but colliding rubble piles are more likely to merge. This means that the cores of the planets could have formed relatively quickly.
+
+#### Water
+
+Scientists hypothesize that some of the first water brought to Earth was delivered by asteroid impacts after the collision that produced the Moon. In 2009, the presence of water ice was confirmed on the surface of 24 Themis using NASA's Infrared Telescope Facility. The surface of the asteroid appears completely covered in ice. As this ice layer is sublimating, it may be getting replenished by a reservoir of ice under the surface. Organic compounds were also detected on the surface. The presence of ice on 24 Themis makes the initial theory plausible.
+
+In October 2013, water was detected on an extrasolar body for the first time, on an asteroid orbiting the white dwarf GD 61. On 22 January 2014, European Space Agency (ESA) scientists reported the detection, for the first definitive time, of water vapor on Ceres, the largest object in the asteroid belt. The detection was made by using the far-infrared abilities of the Herschel Space Observatory. The finding is unexpected because comets, not asteroids, are typically considered to "sprout jets and plumes". According to one of the scientists, "The lines are becoming more and more blurred between comets and asteroids."
+
+Findings have shown that solar winds can react with the oxygen in the upper layer of the asteroids and create water. It has been estimated that "every cubic metre of irradiated rock could contain up to 20 litres"; study was conducted using an atom probe tomography, numbers are given for the Itokawa S-type asteroid.
+
+Acfer 049, a meteorite discovered in Algeria in 1990, was shown in 2019 to have an ultraporous lithology (UPL): porous texture that could be formed by removal of ice that filled these pores, this suggests that UPL "represent fossils of primordial ice".
+
+#### Organic compounds
+
+Asteroids contain traces of amino acids and other organic compounds, and some speculate that asteroid impacts may have seeded the early Earth with the chemicals necessary to initiate life, or may have even brought life itself to Earth (an event called "panspermia"). In August 2011, a report, based on NASA studies with meteorites found on Earth, was published suggesting DNA and RNA components (adenine, guanine and related organic molecules) may have been formed on asteroids and comets in outer space.
+
+In November 2019, scientists reported detecting, for the first time, sugar molecules, including ribose, in meteorites, suggesting that chemical processes on asteroids can produce some fundamentally essential bio-ingredients important to life, and supporting the notion of an RNA world prior to a DNA-based origin of life on Earth, and possibly, as well, the notion of panspermia.
+
+
+## Classification
+
+Asteroids are commonly categorized according to two criteria: the characteristics of their orbits, and features of their reflectance spectrum.
+
+### Orbital classification
+
+Many asteroids have been placed in groups and families based on their orbital characteristics. Apart from the broadest divisions, it is customary to name a group of asteroids after the first member of that group to be discovered. Groups are relatively loose dynamical associations, whereas families are tighter and result from the catastrophic break-up of a large parent asteroid sometime in the past. Families are more common and easier to identify within the main asteroid belt, but several small families have been reported among the Jupiter trojans. Main belt families were first recognized by Kiyotsugu Hirayama in 1918 and are often called Hirayama families in his honor.
+
+About 30–35% of the bodies in the asteroid belt belong to dynamical families, each thought to have a common origin in a past collision between asteroids. A family has also been associated with the plutoid dwarf planet Haumea.
+
+Some asteroids have unusual horseshoe orbits that are co-orbital with Earth or another planet. Examples are 3753 Cruithne and 2002 AA29. The first instance of this type of orbital arrangement was discovered between Saturn's moons Epimetheus and Janus. Sometimes these horseshoe objects temporarily become quasi-satellites for a few decades or a few hundred years, before returning to their earlier status. Both Earth and Venus are known to have quasi-satellites.
+
+Such objects, if associated with Earth or Venus or even hypothetically Mercury, are a special class of Aten asteroids. However, such objects could be associated with the outer planets as well.
+
+### Spectral classification
+
+In 1975, an asteroid taxonomic system based on color, albedo, and spectral shape was developed by Chapman, Morrison, and Zellner. These properties are thought to correspond to the composition of the asteroid's surface material. The original classification system had three categories: C-types for dark carbonaceous objects (75% of known asteroids), S-types for stony (silicaceous) objects (17% of known asteroids) and U for those that did not fit into either C or S. This classification has since been expanded to include many other asteroid types. The number of types continues to grow as more asteroids are studied.
+
+The two most widely used taxonomies now used are the Tholen classification and SMASS classification. The former was proposed in 1984 by David J. Tholen, and was based on data collected from an eight-color asteroid survey performed in the 1980s. This resulted in 14 asteroid categories. In 2002, the Small Main-Belt Asteroid Spectroscopic Survey resulted in a modified version of the Tholen taxonomy with 24 different types. Both systems have three broad categories of C, S, and X asteroids, where X consists of mostly metallic asteroids, such as the M-type. There are also several smaller classes.
+
+The proportion of known asteroids falling into the various spectral types does not necessarily reflect the proportion of all asteroids that are of that type; some types are easier to detect than others, biasing the totals.
+
+#### Problems
+
+Originally, spectral designations were based on inferences of an asteroid's composition. However, the correspondence between spectral class and composition is not always very good, and a variety of classifications are in use. This has led to significant confusion. Although asteroids of different spectral classifications are likely to be composed of different materials, there are no assurances that asteroids within the same taxonomic class are composed of the same (or similar) materials.
+
+### Active asteroids
+
+Active asteroids are objects that have asteroid-like orbits but show comet-like visual characteristics. That is, they show comae, tails, or other visual evidence of mass-loss (like a comet), but their orbit remains within Jupiter's orbit (like an asteroid). These bodies were originally designated **main-belt comets** (MBCs) in 2006 by astronomers David C. Jewitt and Henry Hsieh, but this name implies they are necessarily icy in composition like a comet and that they only exist within the main-belt, whereas the growing population of active asteroids shows that this is not always the case.
+
+The first active asteroid discovered is 7968 Elst–Pizarro. It was discovered (as an asteroid) in 1979 but then was found to have a tail by Eric Elst and Guido Pizarro in 1996 and given the cometary designation 133P/Elst-Pizarro. Another notable object is 311P/PanSTARRS: observations made by the Hubble Space Telescope revealed that it had six comet-like tails. The tails are suspected to be streams of material ejected by the asteroid as a result of a rubble pile asteroid spinning fast enough to remove material from it.
+
+By smashing into the asteroid Dimorphos, NASA's Double Asteroid Redirection Test spacecraft made it an active asteroid. Scientists had proposed that some active asteroids are the result of impact events, but no one had ever observed the activation of an asteroid. The DART mission activated Dimorphos under precisely known and carefully observed impact conditions, enabling the detailed study of the formation of an active asteroid for the first time. Observations show that Dimorphos lost approximately 1 million kilograms after the collision. Impact produced a dust plume that temporarily brightened the Didymos system and developed a 10,000-kilometer (6,200 mi)-long dust tail that persisted for several months.
+
+### Dark comets
+
+First identified in 2024, dark comets are asteroids that show non-gravitational acceleration, a behavior normally seen in comets but not asteroids, but have no coma or tail, appearing visually as asteroids. Two families have been identified. The Outer Family consists of objects larger than 100 meters, and have orbits that reach out nearly to Jupiter, resembling Jupiter family comets. The Inner Family dark comets were smaller than 50 meters, darker, and had roughly circular orbits. All dark comets orbit in the main asteroid belt except for ʻOumuamua, an interstellar object, which was the first asteroid-like object to show non-gravitation acceleration, while appearing visually as an asteroid.
