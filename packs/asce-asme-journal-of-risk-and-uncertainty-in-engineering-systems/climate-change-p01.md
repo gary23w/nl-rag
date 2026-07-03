@@ -1,0 +1,263 @@
+---
+title: "Climate change (part 1/2)"
+source: https://en.wikipedia.org/wiki/Climate_change
+domain: asce-asme-journal-of-risk-and-uncertainty-in-engineering-systems
+license: CC-BY-SA-4.0
+tags: asce-asme journal of risk and uncertainty in engineering systems
+fetched: 2026-07-03
+part: 1/2
+---
+
+# Climate change
+
+Changes in
+
+surface air temperature
+
+over the past 50 years.
+
+The
+
+Arctic
+
+has warmed the most, and temperatures on land have generally increased more than
+
+sea surface temperatures
+
+.
+
+Earth's average surface air temperature has increased about 1.5
+
+°C (2.7
+
+°F) since the
+
+Industrial Revolution
+
+. Natural forces cause some variability, but the persistent temperature increase shows the progressive influence of human activity.
+
+Present-day **climate change** includes both **global warming**—the ongoing increase in global average temperature—and its wider effects on Earth's climate system. Climate change in a broader sense also includes previous long-term changes to Earth's climate. The modern-day rise in global temperatures is driven by human activities, especially fossil fuel (coal, oil and natural gas) burning since the Industrial Revolution. Fossil fuel use, deforestation, and some agricultural and industrial practices release greenhouse gases. These gases absorb some of the heat that the Earth radiates after it warms from sunlight, warming the lower atmosphere. Earth's atmosphere now has roughly 50% more carbon dioxide, the main gas driving global warming, than it did at the end of the pre-industrial era, reaching levels not seen for millions of years.
+
+Climate change has an increasingly large impact on the environment. Heat waves and wildfires are becoming more common. Amplified warming in the Arctic has contributed to thawing permafrost, retreat of glaciers and sea ice decline. Higher temperatures are also causing more intense storms, droughts, and other weather extremes. Rapid environmental change in mountains, coral reefs, and the Arctic is forcing many species to relocate or become extinct. Even if efforts to minimize future warming are successful, some effects will continue for centuries. These include ocean heating, ocean acidification and sea level rise.
+
+Climate change threatens people with increased flooding, extreme heat, increased food and water scarcity, more disease, and economic loss. Human migration and conflict can also be a result. The World Health Organization calls climate change one of the biggest threats to global health in the 21st century. Societies and ecosystems will experience more severe risks without action to limit warming. Adapting to climate change through efforts like flood control measures or drought-resistant crops partially reduces climate change risks, although some limits to adaptation have already been reached. Poorer communities are responsible for a small share of global emissions, yet have the least ability to adapt and are most vulnerable to climate change.
+
+Examples of some
+
+effects of climate change
+
+:
+
+Wildfire
+
+intensified by heat and drought,
+
+bleaching of corals
+
+occurring more often due to
+
+marine heatwaves
+
+, and worsening droughts compromising water supplies.
+
+Many climate change impacts have been observed in the first decades of the 21st century, with 2024 the warmest on record at +1.60 °C (2.88 °F) since regular tracking began in 1850. Additional warming will increase these impacts and can trigger tipping points, such as melting all of the Greenland ice sheet. Under the 2015 Paris Agreement, nations collectively agreed to keep warming "well under 2 °C". However, with pledges made under the Agreement, global warming would still reach about 2.8 °C (5.0 °F) by the end of the century.
+
+There is widespread support for climate action worldwide, and most countries aim to stop emitting carbon dioxide. Fossil fuels can be phased out by ending their subsidies, conserving energy and switching to energy sources that do not produce significant carbon pollution. These energy sources include wind, solar, hydro, and nuclear power. Cleanly generated electricity can replace fossil fuels for powering transportation, heating buildings, and running industrial processes. Carbon can also be removed from the atmosphere, for instance by increasing forest cover and farming with methods that store carbon in soil.
+
+
+## Terminology
+
+Before the 1980s, it was unclear whether the warming effect of increased greenhouse gases was stronger than the cooling effect of airborne particulates in air pollution. Scientists used the term *inadvertent climate modification* to refer to human impacts on the climate at this time. In the 1980s, the terms *global warming* and *climate change* became more common, often being used interchangeably. Scientifically, *global warming* refers only to increased global average surface temperature, while *climate change* describes both global warming and its effects on Earth's climate system, such as precipitation changes.
+
+*Climate change* can also be used more broadly to include changes to the climate that have happened throughout Earth's history as result of natural processes. The term *anthropogenic climate change* is sometimes used to describe climate change resulting from human activities.
+
+*Global warming*—used as early as 1975—became the more popular term after NASA climate scientist James Hansen used it in his 1988 testimony in the U.S. Senate. Since the 2000s, usage of *climate change* has increased. Various scientists, politicians and media may use the terms *climate crisis* or *climate emergency* to talk about climate change, and may use the term *global heating* instead of *global warming*.
+
+
+## Global temperature rise
+
+### Temperatures prior to present-day global warming
+
+Over the last few million years the climate cycled through ice ages. One of the hotter periods was the Last Interglacial, around 125,000 years ago, where temperatures were between 0.5 °C and 1.5 °C warmer than before the start of global warming. This period saw sea levels 5 to 10 metres higher than today. The most recent glacial maximum 20,000 years ago was some 5–7 °C colder. This period has sea levels that were over 125 metres (410 ft) lower than today.
+
+Temperatures stabilized in the current interglacial period beginning 11,700 years ago. This period also saw the start of agriculture. Historical patterns of warming and cooling, like the Medieval Warm Period and the Little Ice Age, did not occur at the same time across different regions. Temperatures may have reached as high as those of the late 20th century in a limited set of regions. Climate information for that period comes from climate proxies, such as trees and ice cores.
+
+### Warming since the Industrial Revolution
+
+Around 1850 thermometer records began to provide global coverage. Between the 18th century and 1970 there was little net warming, as the warming impact of greenhouse gas emissions was offset by cooling from sulfur dioxide emissions. Sulfur dioxide causes acid rain, but it also produces sulfate aerosols in the atmosphere, which reflect sunlight and cause global dimming. After 1970, the increasing accumulation of greenhouse gases and controls on sulfur pollution led to a marked increase in temperature.
+
+Ongoing changes in climate have had no precedent for several thousand years. Multiple datasets all show worldwide increases in surface temperature, at a rate of around 0.2 °C per decade. The 2014–2023 decade warmed to an average 1.19 °C [1.06–1.30 °C] compared to the pre-industrial baseline (1850–1900). Not every single year was warmer than the last: internal climate variability processes can make any year 0.2 °C warmer or colder than the average. From 1998 to 2013, negative phases of two such processes, Pacific Decadal Oscillation (PDO) and Atlantic Multidecadal Oscillation (AMO) caused a short slower period of warming called the "global warming hiatus". After the "hiatus", the opposite occurred, with 2024 well above the recent average at more than +1.5 °C. This is why the temperature change is defined in terms of a 20-year average, which reduces the noise of hot and cold years and decadal climate patterns, and detects the long-term signal.
+
+A wide range of other observations reinforce the evidence of warming. The upper atmosphere is cooling, because greenhouse gases are trapping heat near the Earth's surface, and so less heat is radiating into space. Warming reduces average snow cover and forces the retreat of glaciers. At the same time, warming also causes greater evaporation from the oceans, leading to more atmospheric humidity, and more and heavier precipitation. Plants are flowering earlier in spring, and thousands of animal species have been permanently moving to cooler areas.
+
+#### Differences by region
+
+Different regions of the world warm at different rates. The pattern is independent of where greenhouse gases are emitted, because the gases persist long enough to diffuse across the planet. Since the pre-industrial period, the average surface temperature over land regions has increased almost twice as fast as the global average surface temperature. This is because oceans lose more heat by evaporation and oceans can store a lot of heat. The thermal energy in the global climate system has grown with only brief pauses since at least 1970, and over 90% of this extra energy has been stored in the ocean. The rest has heated the atmosphere, melted ice, and warmed the continents.
+
+The Northern Hemisphere and the North Pole have warmed much faster than the South Pole and Southern Hemisphere. The Northern Hemisphere not only has much more land, but also more seasonal snow cover and sea ice. As these surfaces flip from reflecting a lot of light to being dark after the ice has melted, they start absorbing more heat. Local black carbon deposits on snow and ice also contribute to Arctic warming. Arctic surface temperatures are increasing between three and four times faster than in the rest of the world. Melting of ice sheets near the poles weakens both the Atlantic and the Antarctic limb of thermohaline circulation, which further changes the distribution of heat and precipitation around the globe.
+
+### Future global temperatures
+
+The World Meteorological Organization estimates there is almost a 50% chance of the five-year average global temperature exceeding +1.5 °C between 2024 and 2028. The IPCC expects the 20-year average to exceed +1.5 °C in the early 2030s.
+
+The IPCC Sixth Assessment Report (2021) included projections that by 2100 global warming is very likely to reach 1.0–1.8 °C under a scenario with very low emissions of greenhouse gases, 2.1–3.5 °C under an intermediate emissions scenario, or 3.3–5.7 °C under a very high emissions scenario. The warming will continue past 2100 in the intermediate and high emission scenarios, with future projections of global surface temperatures by year 2300 being similar to millions of years ago.
+
+The remaining carbon budget for staying beneath certain temperature increases is determined by modelling the carbon cycle and climate sensitivity to greenhouse gases. According to UNEP, global warming can be kept below 2.0 °C with a 50% chance if emissions after 2023 do not exceed 900 gigatonnes of CO2. This carbon budget corresponds to around 16 years of current emissions.
+
+
+## Causes of recent global temperature rise
+
+The climate system experiences various cycles on its own which can last for years, decades or even centuries. For example, El Niño events cause short-term spikes in surface temperature while La Niña events cause short term cooling. Their relative frequency can affect global temperature trends on a decadal timescale. Other changes are caused by an imbalance of energy from external forcings. Examples of these include changes in the concentrations of greenhouse gases, solar luminosity, volcanic eruptions, and variations in the Earth's orbit around the Sun.
+
+To determine the human contribution to climate change, unique "fingerprints" for all potential causes are developed and compared with both observed patterns and known internal climate variability. For example, solar forcing—whose fingerprint involves warming the entire atmosphere—is ruled out because only the lower atmosphere has warmed. Atmospheric aerosols produce a smaller, cooling effect. Other drivers, such as changes in albedo, are less impactful.
+
+### Greenhouse gases
+
+Greenhouse gases are transparent to sunlight, and thus allow it to pass through the atmosphere to heat the Earth's surface. The Earth radiates it as heat, and greenhouse gases absorb a portion of it. This absorption slows the rate at which heat escapes into space, trapping heat near the Earth's surface and warming it over time.
+
+While water vapour (≈50%) and clouds (≈25%) are the biggest contributors to the greenhouse effect, they primarily change as a function of temperature and are therefore mostly considered to be feedbacks that change climate sensitivity. On the other hand, concentrations of gases such as CO2 (≈20%), tropospheric ozone, CFCs and nitrous oxide are added or removed independently from temperature, and are therefore considered to be external forcings that change global temperatures.
+
+Before the Industrial Revolution, naturally occurring amounts of greenhouse gases caused the air near the surface to be about 33 °C warmer than it would have been in their absence. Human activity since the Industrial Revolution, mainly extracting and burning fossil fuels (coal, oil, and natural gas), has increased the amount of greenhouse gases in the atmosphere. In 2022, the concentrations of CO2 and methane had increased by about 50% and 164%, respectively, since 1750. These CO2 levels are higher than they have been at any time during the last 14 million years. Concentrations of methane are far higher than they were over the last 800,000 years.
+
+Global human-caused greenhouse gas emissions in 2019 were equivalent to 59 billion tonnes of CO2. Of these emissions, 75% was CO2, 18% was methane, 4% was nitrous oxide, and 2% was fluorinated gases. CO2 emissions primarily come from burning fossil fuels to provide energy for transport, manufacturing, heating, and electricity. Additional CO2 emissions come from deforestation and industrial processes, which include the CO2 released by the chemical reactions for making cement, steel, aluminium, and fertilizer. Methane emissions come from livestock, manure, rice cultivation, landfills, wastewater, and coal mining, as well as oil and gas extraction. Nitrous oxide emissions largely come from the microbial decomposition of fertilizer.
+
+While methane only lasts in the atmosphere for an average of 12 years, CO2 lasts much longer. The Earth's surface absorbs CO2 as part of the carbon cycle. While plants on land and in the ocean absorb most excess emissions of CO2 every year, that CO2 is returned to the atmosphere when biological matter is digested, burns, or decays. Land-surface carbon sink processes, such as carbon fixation in the soil and photosynthesis, remove about 29% of annual global CO2 emissions. The ocean has absorbed 20 to 30% of emitted CO2 over the last two decades. CO2 is only removed from the atmosphere for the long term when it is stored in the Earth's crust, which is a process that can take millions of years to complete.
+
+### Land surface changes
+
+Around 30% of Earth's land area is largely unusable for humans (glaciers, deserts, etc.), 26% is forests, 10% is shrubland and 34% is agricultural land. Deforestation is the main land use change contributor to global warming, as the destroyed trees release CO2, and are not replaced by new trees, removing that carbon sink. Between 2001 and 2018, 27% of deforestation was from permanent clearing to enable agricultural expansion for crops and livestock. Another 24% has been lost to temporary clearing under the shifting cultivation agricultural systems. 26% was due to logging for wood and derived products, and wildfires have accounted for the remaining 23%. Some forests have not been fully cleared, but were already degraded by these impacts. Restoring these forests also recovers their potential as a carbon sink.
+
+Local vegetation cover impacts how much of the sunlight gets reflected back into space (albedo), and how much heat is lost by evaporation. For instance, the change from a dark forest to grassland makes the surface lighter, causing it to reflect more sunlight. Deforestation can also modify the release of chemical compounds that influence clouds, and can change the roughness of Earth’s surface in a way affecting wind speed. In tropic and temperate areas the net effect is to produce significant warming, and forest restoration can make local temperatures cooler. At latitudes closer to the poles, there is a cooling effect as forest is replaced by snow-covered (and more reflective) plains. Globally, these increases in surface albedo have been the dominant direct influence on temperature from land use change. Thus, land use change to date is estimated to have a slight cooling effect.
+
+### Other factors
+
+#### Aerosols and clouds
+
+Air pollution, in the form of aerosols, affects the climate on a large scale. Aerosols scatter and absorb solar radiation. From 1961 to 1990, a gradual reduction in the amount of sunlight reaching the Earth's surface was observed. This phenomenon is popularly known as *global dimming*, and is primarily attributed to sulfate aerosols produced by the combustion of fossil fuels with heavy sulfur concentrations like coal and bunker fuel. Smaller contributions come from black carbon (from combustion of fossil fuels and biomass), and from dust. Globally, aerosols have been declining since 1990 due to pollution controls, meaning that they no longer mask greenhouse gas warming as much.
+
+Aerosols also have indirect effects on the Earth's energy budget. Sulfate aerosols act as cloud condensation nuclei and lead to clouds that have more and smaller cloud droplets. These clouds reflect solar radiation more efficiently than clouds with fewer and larger droplets. They also reduce the growth of raindrops, which makes clouds more reflective to incoming sunlight. Indirect effects of aerosols are the largest uncertainty in radiative forcing.
+
+While aerosols typically limit global warming by reflecting sunlight, black carbon in soot that falls on snow or ice can contribute to global warming. The resulting excess heat accelerates the melting of ice sheets and glaciers, which in turn contributes significantly to global sea-level rise. Limiting new black carbon deposits in the Arctic could reduce global warming by 0.2 °C by 2050. The effect of decreasing sulfur content of fuel oil for ships since 2020 is estimated to cause an additional 0.05 °C increase in global mean temperature by 2050.
+
+#### Solar and volcanic activity
+
+As the Sun is the Earth's primary energy source, changes in incoming sunlight directly affect the climate system. Solar irradiance has been measured directly by satellites, and indirect measurements are available from the early 1600s onwards. Since 1880, there has been no upward trend in the amount of the Sun's energy reaching the Earth, in contrast to the warming of the lower atmosphere (the troposphere). The upper atmosphere (the stratosphere) would also be warming if the Sun was sending more energy to Earth, but instead, it has been cooling. This is consistent with greenhouse gases preventing heat from leaving the Earth's atmosphere.
+
+Explosive volcanic eruptions can release gases, dust and ash that partially block sunlight and reduce temperatures, or they can send water vapour into the atmosphere, which adds to greenhouse gases and increases temperatures. These impacts on temperature only last for several years, because both water vapour and volcanic material have low persistence in the atmosphere. Volcanic CO2 emissions are more persistent, but they are equivalent to less than 1% of current human-caused CO2 emissions. Volcanic activity still represents the single largest natural impact (forcing) on temperature in the industrial era. Yet, like the other natural forcings, it has had negligible impacts on global temperature trends since the Industrial Revolution.
+
+#### Climate change feedbacks
+
+The climate system's response to an initial forcing is shaped by feedbacks, which either amplify or dampen the change. *Self-reinforcing* or *positive* feedbacks increase the response, while *balancing* or *negative* feedbacks reduce it. The main reinforcing feedbacks are the water-vapour feedback, the ice–albedo feedback, and the net cloud feedback. The primary balancing mechanism is radiative cooling, as Earth's surface gives off more heat to space in response to rising temperature. In addition to temperature feedbacks, there are feedbacks in the carbon cycle, such as the fertilizing effect of CO2 on plant growth. Feedbacks are expected to trend in a positive direction as greenhouse gas emissions continue, raising climate sensitivity.
+
+These feedback processes alter the pace of global warming. For instance, warmer air can hold more moisture in the form of water vapour, which is itself a potent greenhouse gas. Warmer air can also make clouds higher and thinner, and therefore more insulating, increasing climate warming. The reduction of snow cover and sea ice in the Arctic is another major feedback, this reduces the reflectivity of the Earth's surface in the region and accelerates Arctic warming. This additional warming also contributes to permafrost thawing, which releases methane and CO2 into the atmosphere.
+
+Around half of human-caused CO2 emissions have been absorbed by land plants and by the oceans. This fraction is not static and if future CO2 emissions decrease, the Earth will be able to absorb up to around 70%. If they increase substantially, it'll still absorb more carbon than now, but the overall fraction will decrease to below 40%. This is because climate change increases droughts and heat waves that eventually inhibit plant growth on land, and soils will release more carbon from dead plants when they are warmer. The rate at which oceans absorb atmospheric carbon will be lowered as they become more acidic and experience changes in thermohaline circulation and phytoplankton distribution. Uncertainty over feedbacks, particularly cloud cover, is the major reason why different climate models project different magnitudes of warming for a given amount of emissions.
+
+
+## Modelling
+
+A climate model is a representation of the physical, chemical and biological processes that affect the climate system. Models include natural processes like changes in the Earth's orbit, historical changes in the Sun's activity, and volcanic forcing. Models are used to estimate the degree of warming future emissions will cause when accounting for the strength of climate feedbacks. Models also predict the circulation of the oceans, the annual cycle of the seasons, and the flows of carbon between the land surface and the atmosphere.
+
+The physical realism of models is tested by examining their ability to simulate current or past climates. Past models have underestimated the rate of Arctic shrinkage and underestimated the rate of precipitation increase. Sea level rise since 1990 was underestimated in older models, but more recent models agree well with observations. The 2017 United States-published National Climate Assessment notes that "climate models may still be underestimating or missing relevant feedback processes". Additionally, climate models may be unable to adequately predict short-term regional climatic shifts.
+
+A subset of climate models add societal factors to a physical climate model. These models simulate how population, economic growth, and energy use affect—and interact with—the physical climate. With this information, these models can produce scenarios of future greenhouse gas emissions. This is then used as input for physical climate models and carbon cycle models to predict how atmospheric concentrations of greenhouse gases might change. Depending on the socioeconomic scenario and the mitigation scenario, models produce atmospheric CO2 concentrations that range widely between 380 and 1400 ppm.
+
+
+## Impacts
+
+### Environmental effects
+
+The environmental effects of climate change are broad and far-reaching, affecting oceans, ice, and weather. Changes may occur gradually or rapidly. Evidence for these effects comes from studying climate change in the past, from modelling, and from modern observations. Since the 1950s, droughts and heat waves have appeared simultaneously with increasing frequency. Extremely wet or dry events within the monsoon period have increased in India and East Asia. Monsoonal precipitation over the Northern Hemisphere has increased since 1980. The rainfall rate and intensity of hurricanes and typhoons is likely increasing, and the geographic range likely expanding poleward in response to climate warming. The frequency of tropical cyclones has not increased as a result of climate change.
+
+Global sea level is rising as a consequence of thermal expansion and the melting of glaciers and ice sheets. Sea level rise has increased over time, reaching 4.8 cm per decade between 2014 and 2023. Over the 21st century, the IPCC projects 32–62 cm of sea level rise under a low emission scenario, 44–76 cm under an intermediate one and 65–101 cm under a very high emission scenario. Marine ice sheet instability processes in Antarctica may add substantially to these values, including the possibility of a 2-meter sea level rise by 2100 under high emissions.
+
+Climate change has led to decades of shrinking and thinning of the Arctic sea ice. While ice-free summers are expected to be rare at 1.5 °C degrees of warming, they are set to occur once every three to ten years at a warming level of 2 °C. Higher atmospheric CO2 concentrations cause more CO2 to dissolve in the oceans, which is making them more acidic. Because oxygen is less soluble in warmer water, its concentrations in the ocean are decreasing, and dead zones are expanding.
+
+### Tipping points and long-term impacts
+
+Greater degrees of global warming increase the risk of passing through 'tipping points'—thresholds beyond which certain major impacts can no longer be avoided even if temperatures return to their previous state. For instance, the Greenland ice sheet is already melting, but if global warming reaches levels between 1.7 °C and 2.3 °C, its melting will continue until it fully disappears. If the warming is later reduced to 1.5 °C or less, it will still lose a lot more ice than if the warming was never allowed to reach the threshold in the first place. While the ice sheets would melt over millennia, other tipping points would occur faster and give societies less time to respond. The collapse of major ocean currents like the Atlantic meridional overturning circulation (AMOC), and irreversible damage to key ecosystems like the Amazon rainforest and coral reefs can unfold in a matter of decades. The collapse of the AMOC would be a severe climate catastrophe, resulting in a cooling of the Northern Hemisphere.
+
+The long-term effects of climate change on oceans include further ice melt, ocean warming, sea level rise, ocean acidification and ocean deoxygenation. The timescale of long-term impacts are centuries to millennia due to CO2's long atmospheric lifetime. The result is an estimated total sea level rise of 2.3 metres per degree Celsius (4.2 ft/°F) after 2000 years. Oceanic CO2 uptake is slow enough that ocean acidification will also continue for hundreds to thousands of years. Deep oceans (below 2,000 metres (6,600 ft)) are also already committed to losing over 10% of their dissolved oxygen by the warming which occurred to date. Further, the West Antarctic ice sheet appears committed to practically irreversible melting, which would increase the sea levels by at least 3.3 m (10 ft 10 in) over approximately 2000 years.
+
+### Nature and wildlife
+
+Recent warming has driven many terrestrial and freshwater species poleward and towards higher altitudes. For instance, the range of hundreds of North American birds has shifted northward at an average rate of 1.5 km/year over the past 55 years. Higher atmospheric CO2 levels and an extended growing season have resulted in global greening. However, heatwaves and drought have reduced ecosystem productivity in some regions. The future balance of these opposing effects is unclear. A related phenomenon driven by climate change is woody plant encroachment, affecting up to 500 million hectares globally. Climate change has contributed to the expansion of drier climate zones, such as the expansion of deserts in the subtropics. The size and speed of global warming is making abrupt changes in ecosystems more likely. Overall, it is expected that climate change will result in the extinction of many species.
+
+The oceans have heated more slowly than the land, but plants and animals in the ocean have migrated towards the colder poles faster than species on land. Just as on land, heat waves in the ocean occur more frequently due to climate change, harming a wide range of organisms such as corals, kelp, and seabirds. Ocean acidification makes it harder for marine calcifying organisms such as mussels, barnacles and corals to produce shells and skeletons; and heatwaves have bleached coral reefs. Harmful algal blooms enhanced by climate change and eutrophication lower oxygen levels, disrupt food webs and cause great loss of marine life. Coastal ecosystems are under particular stress. Almost half of global wetlands have disappeared due to climate change and other human impacts. Plants have come under increased stress from damage by insects.
+
+| (Underwater photograph of branching coral that is bleached white)Ecological collapse. Coral bleaching from thermal stress has damaged the Great Barrier Reef and threatens coral reefs worldwide. (Photograph of evening in a valley settlement. The skyline in the hills beyond is lit up red from the fires.)Extreme weather. Drought and high temperatures worsened the 2020 bushfires in Australia. (The green landscape is interrupted by a huge muddy scar where the ground has subsided.)Arctic warming. Permafrost thaws undermine infrastructure and release methane, a greenhouse gas. (An emaciated polar bear stands atop the remains of a melting ice floe.)Habitat destruction. Many arctic animals rely on sea ice, which has been disappearing in a warming Arctic. (Photograph of a large area of forest. The green trees are interspersed with large patches of damaged or dead trees turning purple-brown and light red.)Pest propagation. Mild winters allow more pine beetles to survive to kill large swaths of forest. |
+|---|
+
+### Humans
+
+The effects of climate change are impacting humans everywhere in the world. Impacts can be observed on all continents and ocean regions, with low-latitude, less developed areas facing the greatest risk. Continued warming has potentially "severe, pervasive and irreversible impacts" for people and ecosystems. The risks are unevenly distributed, but are generally greater for disadvantaged people in developing and developed countries.
+
+#### Health and food
+
+The World Health Organization calls climate change one of the biggest threats to global health in the 21st century. Scientists have warned about the irreversible harms it poses. Extreme weather events affect public health, and food and water security. Temperature extremes lead to increased illness and death. Climate change increases the intensity and frequency of extreme weather events. It can affect transmission of infectious diseases, such as dengue fever and malaria. According to the World Economic Forum, 14.5 million more deaths are expected due to climate change by 2050. 30% of the global population currently live in areas where extreme heat and humidity are already associated with excess deaths. By 2100, 50% to 75% of the global population would live in such areas.
+
+While total crop yields have been increasing in the past 50 years due to agricultural improvements, climate change has already decreased the rate of yield growth. Fisheries have been negatively affected in multiple regions. While agricultural productivity has been positively affected in some high latitude areas, mid- and low-latitude areas have been negatively affected. Climate change affects land suitability for many crops, with suitable areas for given crops usually moving to higher latitudes and altitudes. According to the World Economic Forum, an increase in drought in certain regions could cause 3.2 million deaths from malnutrition by 2050 and stunting in children. With 2 °C warming, global livestock headcounts could decline by 7–10% by 2050, as less animal feed will be available. If the emissions continue to increase for the rest of century, then over 9 million climate-related deaths would occur annually by 2100.
+
+#### Economics, livelihoods and inequality
+
+Economic damages due to climate change may be severe and there is a chance of disastrous consequences. Severe impacts are expected in South-East Asia and sub-Saharan Africa, where most of the local inhabitants are dependent upon natural and agricultural resources. Heat stress can prevent outdoor labourers from working. If warming reaches 4 °C then labour capacity in those regions could be reduced by 30 to 50%. The World Bank estimates that between 2016 and 2030, climate change could drive over 120 million people into extreme poverty without adaptation.
+
+Inequalities based on wealth and social status have worsened due to climate change. Major difficulties in mitigating, adapting to, and recovering from climate shocks are faced by marginalized people who have less control over resources. Indigenous people, who are subsistent on their land and ecosystems, will face endangerment to their wellness and lifestyles due to climate change. An expert elicitation concluded that the role of climate change in armed conflict has been small compared to factors such as socio-economic inequality and state capabilities.
+
+While women are not inherently more at risk from climate change and shocks, limits on women's resources and discriminatory gender norms constrain their adaptive capacity and resilience. For example, women's work burdens, including hours worked in agriculture, tend to decline less than men's during climate shocks such as heat stress.
+
+Climate change threatens the sports economy by disrupting seasons, damaging infrastructure and reducing fan engagement, with the most immediate risks seen in football, winter sports and outdoor events.
+
+#### Climate migration
+
+Low-lying islands and coastal communities are threatened by sea level rise, which makes urban flooding more common. Sometimes, land is permanently lost to the sea. This could lead to statelessness for people in island nations, such as the Maldives and Tuvalu. In some regions, the rise in temperature and humidity may be too severe for humans to adapt to. With worst-case climate change, models project that areas almost one-third of humanity live in might become Sahara-like uninhabitable and extremely hot climates.
+
+These factors can drive climate or environmental migration, within and between countries. More people are expected to be displaced because of sea level rise, extreme weather and conflict from increased competition over natural resources. Climate change may also increase vulnerability, leading to "trapped populations" who are not able to move due to a lack of resources.
+
+| (Environmental migration. Sparser rainfall leads to desertification that harms agriculture and can displace populations. Shown: Telly, Mali (2008).)Environmental migration. Sparser rainfall leads to desertification that harms agriculture and can displace populations. Shown: Telly, Mali (2008). (Agricultural changes. Droughts, rising temperatures, and extreme weather negatively impact agriculture. Shown: Texas, US (2013).)Agricultural changes. Droughts, rising temperatures, and extreme weather negatively impact agriculture. Shown: Texas, US (2013). (Tidal flooding. Sea-level rise increases flooding in low-lying coastal regions. Shown: Venice, Italy (2004).)Tidal flooding. Sea-level rise increases flooding in low-lying coastal regions. Shown: Venice, Italy (2004). (Storm intensification. Bangladesh after Cyclone Sidr (2007) is an example of catastrophic flooding from increased rainfall.)Storm intensification. Bangladesh after Cyclone Sidr (2007) is an example of catastrophic flooding from increased rainfall. (Heat wave intensification. Events like the 2022 Southern Cone heat wave are becoming more common.)Heat wave intensification. Events like the 2022 Southern Cone heat wave are becoming more common. |
+|---|
+
+
+## Reducing and recapturing emissions
+
+Climate change can be mitigated by reducing the rate at which greenhouse gases are emitted into the atmosphere, and by increasing the rate at which carbon dioxide is removed from the atmosphere. To limit global warming to less than 2 °C global greenhouse gas emissions need to be net-zero by 2070. This requires far-reaching, systemic changes on an unprecedented scale in energy, land, cities, transport, buildings, and industry.
+
+The United Nations Environment Programme estimates that countries need to triple their pledges under the Paris Agreement within the next decade to limit global warming to 2 °C. With pledges made under the Paris Agreement as of 2024, there would be a 66% chance that global warming is kept under 2.8 °C by the end of the century (range: 1.9–3.7 °C, depending on exact implementation and technological progress). When only considering current policies, this raises to 3.1 °C. Globally, limiting warming to 2 °C may result in higher economic benefits than economic costs.
+
+Although there is no single pathway to limit global warming to 2 °C, most scenarios and strategies see a major increase in the use of renewable energy in combination with increased energy efficiency measures to generate the needed greenhouse gas reductions. To reduce pressures on ecosystems and enhance their carbon sequestration capabilities, changes would also be necessary in agriculture and forestry, such as preventing deforestation and restoring natural ecosystems by reforestation.
+
+Other approaches to mitigating climate change have a higher level of risk. Scenarios that limit global warming to 1.5 °C typically project the large-scale use of carbon dioxide removal methods over the 21st century. There are concerns, though, about over-reliance on these technologies, and environmental impacts.
+
+Solar radiation modification (SRM) is a proposal for reducing global warming by reflecting some sunlight away from Earth and back into space. Because it does not reduce greenhouse gas concentrations, it would not address ocean acidification and is not considered mitigation. SRM should be considered only as a supplement to mitigation, not a replacement for it, due to risks such as rapid warming if it were abruptly stopped and not restarted. The most-studied approach is stratospheric aerosol injection. SRM could reduce global warming and some of its impacts, though imperfectly. It poses environmental risks, such as changes to rainfall patterns, as well as political challenges, such as who would decide whether to use it.
+
+### Clean energy
+
+Renewable energy is key to limiting climate change. For decades, fossil fuels have accounted for roughly 80% of the world's energy use. The remaining share has been split between nuclear power and renewables (including hydropower, bioenergy, wind and solar power and geothermal energy). Fossil fuel use is expected to peak in absolute terms prior to 2030 and then to decline, with coal use experiencing the sharpest reductions. Renewables represented 86% of all new electricity generation installed in 2023. Other forms of clean energy, such as nuclear and hydropower, currently have a larger share of the energy supply. However, their future growth forecasts appear limited in comparison.
+
+While solar panels and onshore wind are now among the cheapest forms of adding new power generation capacity in many locations, green energy policies are needed to achieve a rapid transition from fossil fuels to renewables. To achieve carbon neutrality by 2050, renewable energy would become the dominant form of electricity generation, rising to 85% or more by 2050 in some scenarios. Investment in coal would be eliminated and coal use nearly phased out by 2050.
+
+Electricity generated from renewable sources would also need to become the main energy source for heating and transport. Transport can switch away from internal combustion engine vehicles and towards electric vehicles, public transit, and active transport (cycling and walking). For shipping and flying, low-carbon fuels would reduce emissions. Heating could be increasingly decarbonized with technologies like heat pumps.
+
+There are obstacles to the continued rapid growth of clean energy, including renewables. Wind and solar produce energy intermittently and with seasonal variability. Traditionally, hydro dams with reservoirs and fossil fuel power plants have been used when variable energy production is low. Going forward, battery storage can be expanded, energy demand and supply can be matched, and long-distance transmission can smooth variability of renewable outputs. Bioenergy is often not carbon-neutral and may have negative consequences for food security. The growth of nuclear power is constrained by controversy around radioactive waste, nuclear weapon proliferation, and accidents. Hydropower growth is limited by the fact that the best sites have been developed, and new projects are confronting increased social and environmental concerns.
+
+Low-carbon energy improves human health by minimizing climate change as well as reducing air pollution deaths, which were estimated at 7 million annually in 2016. Meeting the Paris Agreement goals that limit warming to a 2 °C increase could save about a million of those lives per year by 2050, whereas limiting global warming to 1.5 °C could save millions and simultaneously increase energy security and reduce poverty. Improving air quality also has economic benefits which may be larger than mitigation costs.
+
+### Energy conservation
+
+Reducing energy demand is another major aspect of reducing emissions. If less energy is needed, there is more flexibility for clean energy development. It also makes it easier to manage the electricity grid, and minimizes carbon-intensive infrastructure development. Major increases in energy efficiency investment will be required to achieve climate goals, comparable to the level of investment in renewable energy. Several COVID-19 related changes in energy use patterns, energy efficiency investments, and funding have made forecasts for this decade more difficult and uncertain.
+
+Strategies to reduce energy demand vary by sector. In the transport sector, passengers and freight can switch to more efficient travel modes, such as buses and trains, or use electric vehicles. Industrial strategies to reduce energy demand include improving heating systems and motors, designing less energy-intensive products, and increasing product lifetimes. In the building sector the focus is on better design of new buildings, and higher levels of energy efficiency in retrofitting. The use of technologies like heat pumps can also increase building energy efficiency.
+
+### Agriculture and industry
+
+Agriculture and forestry face a triple challenge of limiting greenhouse gas emissions, preventing the further conversion of forests to agricultural land, and meeting increases in world food demand. A set of actions could reduce agriculture and forestry-based emissions by two-thirds from 2010 levels. These include reducing growth in demand for food and other agricultural products, increasing land productivity, protecting and restoring forests, and reducing greenhouse gas emissions from agricultural production.
+
+On the demand side, a key component of reducing emissions is shifting people towards plant-based diets. Eliminating the production of livestock for meat and dairy would eliminate about three-quarters of all emissions from agriculture and other land use. Livestock also occupy 37% of ice-free land area on Earth and consume feed from the 12% of land area used for crops, driving deforestation and land degradation.
+
+Steel and cement production are responsible for about 13% of industrial CO2 emissions. In these industries, carbon-intensive materials such as coke and lime play an integral role in the production, so that reducing CO2 emissions requires research into alternative chemistries. Where energy production or CO2-intensive heavy industries continue to produce waste CO2, technology can sometimes be used to capture and store most of the gas instead of releasing it to the atmosphere. This technology, carbon capture and storage (CCS), could have a critical but limited role in reducing emissions. It is relatively expensive and has been deployed only to an extent that removes around 0.1% of annual greenhouse gas emissions.
+
+### Carbon dioxide removal
+
+Natural carbon sinks can be enhanced to sequester significantly larger amounts of CO2 beyond naturally occurring levels. Reforestation and afforestation (planting forests where there were none before) are among the most mature sequestration techniques, although the latter raises food security concerns. Farmers can promote sequestration of carbon in soils through practices such as use of winter cover crops, reducing the intensity and frequency of tillage, and using compost and manure as soil amendments. Forest and landscape restoration yields many benefits for the climate, including greenhouse gas emissions sequestration and reduction. Restoration/recreation of coastal wetlands, prairie plots and seagrass meadows increases the uptake of carbon into organic matter. When carbon is sequestered in soils and in organic matter such as trees, there is a risk of the carbon being re-released into the atmosphere later through changes in land use, fire, or other changes in ecosystems.
+
+The use of bioenergy in conjunction with carbon capture and storage (BECCS) can result in net negative emissions as CO2 is drawn from the atmosphere. It remains highly uncertain whether carbon dioxide removal techniques will be able to play a large role in limiting warming to 1.5 °C. Policy decisions that rely on carbon dioxide removal increase the risk of global warming rising beyond international goals.

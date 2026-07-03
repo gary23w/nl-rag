@@ -1,0 +1,44 @@
+---
+title: "Arthur Dehon Little"
+source: https://en.wikipedia.org/wiki/Arthur_Dehon_Little
+domain: american-institute-of-chemical-engineers
+license: CC-BY-SA-4.0
+tags: american institute of chemical engineers
+fetched: 2026-07-03
+---
+
+# Arthur Dehon Little
+
+**Arthur Dehon Little** (December 15, 1863 – August 1, 1935) was an American chemist and chemical engineer. He founded the consulting company Arthur D. Little and was instrumental in developing chemical engineering at the Massachusetts Institute of Technology (MIT). Little is credited with introducing the term unit operations to chemical engineering and promoting the concept of industrial research.
+
+## Life
+
+Little was born in Boston, Massachusetts, in 1863 and studied chemistry at MIT from 1881 to 1884.
+
+In 1901, he married Henrietta Rogers Anthony. He died August 1, 1935, in Northeast Harbor, Maine. He was the uncle of Royal Little (1896–1989), founder and chair of Textron, and considered to be the father of conglomerates.
+
+## Career
+
+In 1886, he joined Richmond Paper Company in East Providence, Rhode Island, as a chemist, later becoming superintendent of a paper mill, and effectively recognised that the chemical engineering design was wrong: by correcting this, he came to his first patent. Further research and patents followed, mainly related to paper processing technology.
+
+Little left and formed his own company. He was joined by a colleague from Richmond Paper, Roger Griffin forming a new company in 1886, Little & Griffin, which was located in Boston where MIT was also located. Griffin and Little prepared a manuscript for *The Chemistry of Paper-making*, which was, for many years, an authoritative text in the field. The book had not been entirely finished when Griffin was killed in a laboratory accident in 1893.
+
+After this tragedy, Little carried on in the business alone for several years. During these years, he founded the Cellulose Products Company, demonstrating that cellulose acetate could be used in producing nonflammable wire insulation and artificial silk. The company didn't do well financially, and when it was dissolved, Eastman Kodak purchased the company's patents for the first nonflammable motion picture film and the Lustron Company bought the artificial silk patents becoming the only American manufacturer of acetate silk.
+
+He collaborated with MIT and William Hultz Walker of the MIT Chemistry department, forming a partnership, Little & Walker, which lasted from 1900 to 1905, while both MIT and Little's company were still located in Boston. The partnership dissolved in 1905 when Walker dedicated his full-time to being in charge of the new Research Laboratory of Applied Chemistry at MIT.
+
+Little continued on his own and formally incorporated the company, Arthur D. Little (ADL), in 1909. He conducted analytical studies, the precursor of the consulting studies for which the firm would later become famous.
+
+As chairman of the visiting committee of the department of chemistry and chemical engineering at MIT, he was responsible for the introduction of the Chemical Engineering Practice School. He also taught papermaking at MIT from 1893 to 1916.
+
+## Honors
+
+Little was president of the American Chemical Society for 1912–1914, and president of the American Institute of Chemical Engineers for 1919, and president of the Society of Chemical Industry 1928–29. In 1931, he was awarded the Perkin Medal.
+
+## Selected works
+
+- Little, A.D.; Griffin, R.B., "The Chemistry of Paper-Making, together with the principles of general chemistry; a handbook for the student and manufacturer", New York: Howard Lockwood & Co., 1894.
+- Little, A.D., "The Paper-Makers's Trouble Book", 1910.
+- Little, A.D., "Industrial Research in America", *Journal of Industrial and Engineering Chemistry*, v.5, 1913, p. 793
+- Little, A.D., "Industrial Research in America", *Science* 7, November 1913: 643–656. (presidential address at the forty-eighth meeting of the American Chemical Society, Rochester, New York)
+- Little, A.D., "The Handwriting on the Wall: A Chemist's Interpretation (Essays)". Little, Brown, 1928.
