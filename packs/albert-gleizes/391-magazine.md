@@ -1,0 +1,20 @@
+---
+title: "391 (magazine)"
+source: https://en.wikipedia.org/wiki/391_(magazine)
+domain: albert-gleizes
+license: CC-BY-SA-4.0
+tags: albert gleizes
+fetched: 2026-07-03
+---
+
+# *391* (magazine)
+
+***391*** was a Dada-affiliated arts and literary magazine created by Francis Picabia, published between 1917 and 1924 in Barcelona, Zürich and New York City.
+
+## History and profile
+
+*391* first appeared in January 1917 in Barcelona, published by Josep Dalmau i Rafel, founder of Les Galeries Dalmau, and continued to be published until 1924. The magazine was created by the Dadaist Francis Picabia. Picabia produced the first four issues, which Dalmau published. He was assisted in assembling the magazine by Olga Sacharoff, a Georgian emigre residing in Barcelona.
+
+The title of the magazine derives from Alfred Stieglitz's New York periodical *291* (to which Picabia had contributed), and bore no relation to its contents. Despite Picabia's renown as an artist, it was mostly literary in content, with a wide-ranging aggressive tone, possibly influenced by Alfred Jarry and Guillaume Apollinaire. There were contributions by Marie Laurencin, Man Ray, Georges Ribemont-Dessaignes and Marcel Duchamp. However *391* remained essentially the expression of the inventive, energetic and wealthy Picabia, who stated of it: "Every page must explode, whether through seriousness, profundity, turbulence, nausea, the new, the eternal, annihilating nonsense, enthusiasm for principles, or the way it is printed. Art must be unaesthetic in the extreme, useless and impossible to justify."
+
+Starting from its fifth issue the magazine was published in New York City. Its eighth issue was published in Zurich. Then the magazine was published in Paris until 1924 when its last issue, number 19, was distributed.
