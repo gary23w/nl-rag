@@ -1,0 +1,34 @@
+---
+title: "Acorn tube"
+source: https://en.wikipedia.org/wiki/Acorn_tube
+domain: ac-power-plugs-and-sockets
+license: CC-BY-SA-4.0
+tags: ac power plugs and sockets
+fetched: 2026-07-03
+---
+
+# Acorn tube
+
+An **acorn tube**, or **acorn valve**, is any member of a family of VHF/UHF vacuum tubes starting just before World War II. They were named after their resemblance to the acorn, specifically due to the glass cap at one end of the tube that looked similar to the cap on an acorn. The acorn tubes found widespread use in radios and radar systems.
+
+High-frequency performance is limited by (1) parasitic lead inductance and capacitance and skin effect, and (2) electron transit time (the time required to travel from cathode to anode). Transit time effects are complicated, but one simple effect is the phase margin; another one is input conductance, also known as grid loading. At extremely high frequencies, electrons arriving at the grid may become out of phase with those departing towards the anode. This imbalance of charge causes the grid to exhibit a reactance that is much less than its low-frequency "open circuit" characteristic. Acorn- as well as Lighthouse tubes and Nuvistors attempt to minimize this effect by arranging cathode, grid(s) and anode as closely spaced together as possible.
+
+The original range included about half a dozen tubes, designed to work in the VHF range. The 955 is a triode. The 954 and 956 types are sharp and remote cut-off pentodes, respectively, all with indirect 6.3 V, 150 mA heaters. Types 957, 958 and 959 are for portable equipment and have 1.25 V NiCd battery heaters. The 957 is a medium-μ signal triode, the 958 is a transmitting triode with dual, paralleled filaments for increased emission, and the 959 is a sharp cut-off pentode like the 954. The 957 and 959 draw 50 mA heater current, the 958 twice as much. In 1942, the 958A with tightened emission specifications was introduced after it turned out that 958s with excessively high emission kept working after the filament power was turned off, the filament still sufficiently heating on the anode current alone. After the introduction of the miniature 7-pin base, the 954, 955 and 956 were made available with this base as 9001, 9002 and 9003. Other acorn tubes include:
+
+- American:
+
+- EIA: 5731
+- RETMA: 6F4, 6L4
+
+- European:
+
+- British: A40, A41, AP4, AT4, HA1, ZA1, ZA2
+- Continental: 4671, 4672, 4674, 4675, 4676, 4695
+- Mullard-Philips: D1C, D2C, D1F, D2F, D3F, D11F, D12F, E1C, E1F, E2F
+
+- Russian: 6С1Ж, 6Ж1Ж, 6К1Ж
+- Japanese: UN954, UN955
+
+Larger, higher-power types such as the 316A, 368A, 388A, and 703A triodes and the 713A and 717A pentodes were referred to as *Doorknob* tubes.
+
+The introduction of the EF50 was the first serious competition for the acorn design, and replaced the acorns in many roles, especially post-war when millions of surplus EF50s were dumped on the market.

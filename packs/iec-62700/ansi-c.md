@@ -1,0 +1,152 @@
+---
+title: "ANSI C"
+source: https://en.wikipedia.org/wiki/ANSI_C
+domain: iec-62700
+license: CC-BY-SA-4.0
+tags: iec 62700
+fetched: 2026-07-03
+---
+
+# ANSI C
+
+**ANSI C**, **ISO C**, and **Standard C** are successive standards for the C programming language published by the American National Standards Institute (ANSI) and ISO/IEC JTC 1/SC 22/WG 14 of the International Organization for Standardization (ISO) and the International Electrotechnical Commission (IEC). Historically, the names referred specifically to the original and best-supported version of the standard (known as **C89** or **C90**). Software developers writing in C are encouraged to conform to the standards, as doing so helps portability between compilers.
+
+## History and outlook
+
+The first standard for C was published by ANSI. Although this document was subsequently adopted by ISO/IEC and subsequent revisions published by ISO/IEC have been adopted by ANSI, "ANSI C" is still used to refer to the standard. While some software developers use the term ISO C, others are standards-body neutral and use Standard C.
+
+### Informal specification: K&R C (*C78*)
+
+Informal specification in 1978 (Brian Kernighan and Dennis Ritchie book *The C Programming Language*).
+
+### Standardizing C
+
+In 1983, the American National Standards Institute formed a committee, X3J11, to establish a standard specification of C. In 1985, the first Standard Draft was released, sometimes referred to as *C85*. In 1986, another Draft Standard was released, sometimes referred to as *C86*. The prerelease Standard C was published in 1988, and sometimes referred to as *C88*.
+
+### C89
+
+The ANSI standard was completed in 1989 and ratified as ANSI X3.159-1989 "Programming Language C." This version of the language is often referred to as "ANSI C". Later on sometimes the label "C89" is used to distinguish it from C90 but using the same labeling method.
+
+### C90
+
+The same standard as C89 was ratified by ISO/IEC as ISO/IEC 9899:1990, with only formatting changes, which is sometimes referred to as C90. Therefore, the terms "C89" and "C90" refer to a language that is virtually identical.
+
+This standard has been withdrawn by both ANSI/INCITS and ISO/IEC.
+
+### C94/C95
+
+In 1995, the ISO/IEC published an extension, called Amendment 1, for the C standard. Its full name finally was *ISO/IEC 9899:1990/AMD1:1995*, nicknamed *C94* or *C95*. Aside from error correction there were further changes to the language capabilities, such as:
+
+- Improved *multi-byte* and *wide character* support in the standard library, introducing `<wchar.h>` and `<wctype.h>` as well as multi-byte I/O
+- Addition of digraphs to the language
+- Specification of standard macros for the alternative specification of operators, e.g. `and` for `&&`
+- Specification of the standard macro `__STDC_VERSION__`.
+
+This was both the first standard with a __STDC_VERSION__ value (199409L) and the first version in which the year in that value did not match the year of publication (1995), leading to common names of both *C94* and *C95*. This would happen again in C17 (2018) and C23 (2024), but they are more commonly known by their earlier years, while this standard is often referred to by its later year.
+
+In addition to the amendment, two technical corrigenda were published by ISO for C90:
+
+- ISO/IEC 9899:1990/Cor 1:1994 TCOR1 in 1994
+- ISO/IEC 9899:1990/Cor 2:1996 in 1996
+
+#### Preprocessor test for C95 compatibility
+
+```mw
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199409L
+/* C95 compatible source code. */
+#elif defined(__STDC__)
+/* C89 compatible source code. */
+#endif
+```
+
+### C99
+
+In March 2000, ANSI adopted the ISO/IEC 9899:1999 standard. This standard is commonly referred to as C99. Some notable additions to the previous standard include:
+
+- New built-in data types: `long long`, `_Bool`, `_Complex`, and `_Imaginary`
+- Several new core language features, including static array indices, designated initializers, compound literals, variable-length arrays, flexible array members, variadic macros, and `restrict` keyword
+- Several new library headers, including `stdint.h`, `<tgmath.h>`, `fenv.h`, `<complex.h>`
+- Improved compatibility with several C++ features, including inline functions, single-line comments with `//`, mixing declarations and code, and universal character names in identifiers
+- Removed several dangerous C89 language features such as implicit function declarations and implicit `int`
+
+Three technical corrigenda were published by ISO for C99:
+
+- ISO/IEC 9899:1999/Cor 1:2001(E)
+- ISO/IEC 9899:1999/Cor 2:2004(E)
+- ISO/IEC 9899:1999/Cor 3:2007(E), notable for deprecating the standard library function gets
+
+This standard has been withdrawn by both ANSI/INCITS and ISO/IEC in favour of C11.
+
+### C11
+
+C11 was officially ratified and published on December 8, 2011. Notable features include improved Unicode support, type-generic expressions using the new `_Generic` keyword, a cross-platform multi-threading API (`threads.h`), and atomic types support in both core language and the library (`stdatomic.h`).
+
+One technical corrigendum has been published by ISO for C11:
+
+- ISO/IEC 9899:2011/Cor 1:2012
+
+### C17
+
+C17 was published in June 2018. Rather than introducing new language features, it only addresses defects in C11.
+
+### C23
+
+C23 was published in October 2024, and is the current standard for the C programming language.
+
+### C2Y
+
+C2Y is an informal name for the next revision of the C programming language that is hoped to be released in the later 2020s.
+
+As part of the standardization process, ISO/IEC also publishes technical reports and specifications related to the C language:
+
+- ISO/IEC TR 19769:2004, on library extensions to support Unicode transformation formats, integrated into C11
+- ISO/IEC TR 24731-1:2007, on library extensions to support bounds-checked interfaces, integrated into C11
+- ISO/IEC TR 18037:2008, on embedded C extensions
+- ISO/IEC TR 24732:2009, on decimal floating point arithmetic, superseded by ISO/IEC TS 18661-2:2015
+- ISO/IEC TR 24747:2009, on special mathematical functions,
+- ISO/IEC TR 24731-2:2010, on library extensions to support dynamic allocation functions
+- ISO/IEC TS 17961:2013, on secure coding in C
+- ISO/IEC TS 18661-1:2014, on IEC 60559:2011-compatible binary floating-point arithmetic
+- ISO/IEC TS 18661-2:2015, on IEC 60559:2011-compatible decimal floating point arithmetic
+- ISO/IEC TS 18661-3:2015, on IEC 60559:2011-compatible interchange and extended floating-point types
+- ISO/IEC TS 18661-4:2015, on IEC 60559:2011-compatible supplementary functions
+
+More technical specifications are in development and pending approval, including the fifth and final part of TS 18661, a software transactional memory specification, and parallel library extensions.
+
+## Support from major compilers
+
+ANSI C is supported by almost all the widely used compilers. GCC and Clang are two major C compilers popular today, both based on the C11 with updates including changes from later specifications such as C17. Any source code written *only* in standard C and without any hardware dependent assumptions is virtually guaranteed to compile correctly on any platform with a conforming C implementation. Without such precautions, most programs may compile only on a certain platform or with a particular compiler, due, for example, to the use of non-standard libraries, such as GUI libraries, or to the reliance on compiler- or platform-specific attributes such as the exact size of certain data types and byte endianness.
+
+### Compliance detectability
+
+To mitigate the differences between K&R C and the ANSI C standard, the `__STDC__` ("standard c") macro can be used to split code into ANSI and K&R sections.
+
+```mw
+#if defined(__STDC__) && __STDC__
+extern int getopt(int, char* const*, const char*);
+#else
+extern int getopt();
+#endif
+```
+
+In the above example, a prototype is used in a function declaration for ANSI compliant implementations, while an obsolescent non-prototype declaration is used otherwise. Those are still ANSI-compliant as of C99. Note how this code checks both definition and evaluation: this is because some implementations may set `__STDC__` to zero to indicate non-ANSI compliance.
+
+## Compiler support
+
+List of compilers supporting ANSI C:
+
+- Acornsoft ANSI C (first version in 1988, revised in 1989)
+- Amsterdam Compiler Kit (C K&R and C89/90)
+- ARM RealView
+- Clang (full C89/C90 and C99, partial C11, C17, C23 and C2y), using LLVM backend
+- GCC (full C89/90, C99, C11, C17, C23 and some of experimental/incomplete C2y)
+- HP C/ANSI C compiler (C89 and C99)
+- IBM XL C/C++ (C11, starting with version 12.1)
+- Intel's ICC (later versions are based on clang, and have its support)
+- LabWindows/CVI
+- LCC
+- Oracle Developer Studio
+- OpenWatcom (C89/90 and some C99)
+- Pelles C (C99 and C11. Windows only.)
+- vbcc (C89/90 and C99)
+- Tiny C Compiler (C89/90 and some C99)
