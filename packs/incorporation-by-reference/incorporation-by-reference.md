@@ -1,0 +1,36 @@
+---
+title: "Incorporation by reference"
+source: https://en.wikipedia.org/wiki/Incorporation_by_reference
+domain: incorporation-by-reference
+license: CC-BY-SA-4.0
+tags: incorporation by reference
+fetched: 2026-07-03
+---
+
+# Incorporation by reference
+
+In law, **incorporation by reference** is the act of including a second document within another document by only mentioning the second document. This act, if completed properly, makes the entire second document a part of the main document. Incorporation by reference is often found in laws, regulations, contracts, legal and regulated documentation.
+
+## Administrative law in the United States
+
+In American administrative law, incorporation by reference is a drafting tool that enables federal agencies to give legal effect to materials that are already published elsewhere. This is allowed under a provision of the Freedom of Information Act, 5 U.S.C. § 552(a)(1). Section 552(a) requires agencies to publish regulations in the Federal Register in order to enforce them. Section 552(a)(1) provides that if material published elsewhere is "reasonably available to the class of persons affected" and the Director of the Federal Register approves its incorporation by reference, that material will be "deemed published" in the Federal Register. It is most controversially used to incorporate privately authored voluntary consensus standards into health and safety regulations without infringing the standards developers' copyright. Federal law and policy, embodied in the National Technology Transfer and Advancement Act of 1995 and Office of Management and Budget (OMB) Circular A-119, requires federal agencies to use these standards instead of creating "government-unique" technical standards purely to serve regulatory purposes.
+
+## Contracts
+
+Commercial contracts may refer to separate documents which are incorporated into the primary contract by reference to them. Examples include documents containing standard terms and conditions, or references to previous contracts between the two parties, whose terms are to apply to a further transaction.
+
+## Patents
+
+In some countries, a specification of a patent application may incorporate by reference the content of a previous patent, patent application, or non-patent publication. The information incorporated by reference is treated as part of the text of the application as filed.
+
+## Wills
+
+In law regarding wills, it is a doctrine at common law which allows a testator, or a creator of a will, to dispose of assets in his estate in accordance with a separate document. To be valid, such a document must comply with the following requirements:
+
+1. it must have existed at the time the will was executed;
+2. the will must describe the document with particularity, so that it may be identified; and
+3. the will must clearly manifest the intent that the document be incorporated.
+
+An exception to the first requirement is made for small gifts of tangible personal property, such as household furniture and items of sentimental value.
+
+Oral instructions cannot be subject to incorporation by reference. For example, if a testator states in the will that he has recited to a third party the intended disposition of testamentary assets, such attempt to circumvent the requirements of a written will is void.
