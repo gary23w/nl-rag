@@ -1,0 +1,14 @@
+# 1984-united-states-presidential-election-in-colorado — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1984 united states presidential election in colorado. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1876 Colorado gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1876-colorado-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1876_Colorado_gubernatorial_election
+- [1876 United States presidential election in Colorado](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1876-united-states-presidential-election-in-colorado.md) — upstream: https://en.wikipedia.org/wiki/1876_United_States_presidential_election_in_Colorado
+- [1880 United States presidential election in Colorado](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1880-united-states-presidential-election-in-colorado.md) — upstream: https://en.wikipedia.org/wiki/1880_United_States_presidential_election_in_Colorado
+- [1884 United States presidential election in Colorado](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1884-united-states-presidential-election-in-colorado.md) — upstream: https://en.wikipedia.org/wiki/1884_United_States_presidential_election_in_Colorado
+- [1888 Colorado gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1888-colorado-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1888_Colorado_gubernatorial_election
+- [1888 United States presidential election in Colorado](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1888-united-states-presidential-election-in-colorado.md) — upstream: https://en.wikipedia.org/wiki/1888_United_States_presidential_election_in_Colorado
+- [1892 United States presidential election in Colorado](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1892-united-states-presidential-election-in-colorado.md) — upstream: https://en.wikipedia.org/wiki/1892_United_States_presidential_election_in_Colorado
+- [1984 United States presidential election in Colorado](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/1984-united-states-presidential-election-in-colorado.md) — upstream: https://en.wikipedia.org/wiki/1984_United_States_presidential_election_in_Colorado
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1984-united-states-presidential-election-in-colorado/pack.facts) — distilled one-line facts (neuron CLI import)
