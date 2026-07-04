@@ -1,0 +1,218 @@
+---
+title: "Avgas"
+source: https://en.wikipedia.org/wiki/Avgas
+domain: antiknock-agent
+license: CC-BY-SA-4.0
+tags: antiknock agent
+fetched: 2026-07-04
+---
+
+# Avgas
+
+**Avgas** (**aviation gasoline**, also known as **aviation spirit** in British English) is an aviation fuel used in aircraft with spark-ignited internal combustion engines. *Avgas* is distinguished from conventional gasoline (petrol) used in motor vehicles, which is termed *mogas* (motor gasoline) in an aviation context. Unlike motor gasoline, which has been formulated without lead since the 1970s to allow the use of catalytic converters for pollution reduction, the most commonly used grades of avgas still contain tetraethyl lead, a toxic lead-containing additive used to aid in lubrication of the engine, increase octane rating, and prevent engine knocking (spark-knock). There are ongoing efforts to reduce or eliminate the use of lead in aviation gasoline.
+
+Kerosene-based jet fuel is formulated to suit the requirements of turbine engines which have no octane requirement and operate over a much wider flight envelope than piston engines. Kerosene is also used by most diesel piston engines developed for aviation use, such as those by SMA Engines, Austro Engine, and Thielert.
+
+## Properties
+
+The main petroleum component used in blending avgas is alkylate, which is a mixture of various isooctanes. Some refineries also use reformate. All grades of avgas that meet CAN 2–3, 25-M82 have a density of 6.01 pounds per US gallon (720 g/L) at 15 °C (59 °F). (6 lb/U.S. gal is commonly used in America for weight and balance computation.) Density increases to 6.41 pounds per US gallon (768 g/L) at −40 °C (−40 °F), and decreases by about 0.1% per 1 °C (1.8 °F) increase in temperature. Avgas has an emission coefficient (or factor) of 18.355 pounds per US gallon (2.1994 kg/L) of CO2 or about 3.07 units of weight CO2 produced per unit weight of fuel used. Avgas is less volatile, with a Reid vapor pressure range of 5.5 to 7 psi, than automotive gasoline, with a range of 8 to 14 psi. A minimum limit ensures adequate volatility for engine starting. The upper limits are related to atmospheric pressure at sea level, 14.7 psi, for motor vehicles and ambient pressure at 22,000 ft, 6.25 psi, for aircraft. The lower avgas volatility reduces the chance of vapor lock in fuel lines at altitudes up to 22,000 ft.
+
+The particular mixtures in use today are the same as when they were first developed in the 1940s, and were used in airline and military aero engines with high levels of supercharging; notably the Rolls-Royce Merlin engine used in the Spitfire and Hurricane fighters, Mosquito fighter-bomber and Lancaster heavy bomber (the Merlin II and later versions required 100-octane fuel), as well as the liquid-cooled Allison V-1710 engine, and air-cooled radial engines from Pratt & Whitney, Wright, and other manufacturers on both sides of the Atlantic. The high octane ratings were traditionally achieved by the addition of tetraethyllead, a highly toxic substance that was phased out of automotive use in most countries in the late 20th century.
+
+Historically, many post-WWII developed, low-powered 4- and 6-cylinder piston aircraft engines were designed to use leaded fuels; an unleaded replacement fuel is being developed and certified for these engines. Some reciprocating-engine aircraft still require leaded fuels, but some do not, and some can burn unleaded gasoline if a special oil additive is used.
+
+## Consumption
+
+The annual US usage of avgas was 186 million US gallons (700,000 m3) in 2008, and was approximately 0.14% of the motor gasoline consumption. From 1983 through 2008, US usage of avgas declined consistently by approximately 7.5 million US gallons (28,000 m3) each year. As of 2024, the annual US usage of avgas was 180 million US gallons (680,000 m3), most of which contained lead, and 170,000 aircraft in the US used leaded avgas.
+
+In Europe, avgas remains the most common piston-engine fuel. High prices have encouraged efforts to convert to diesel engines burning jet fuel, which is more readily available, less expensive, and has advantages for aviation use.
+
+## Grades
+
+Grades of avgas are identified by two numbers associated with its Motor Octane Number (MON). The first number indicates the octane rating of the fuel tested to "aviation lean" standards, which is similar to the anti-knock index or "pump rating" given to automotive gasoline in the US. The second number indicates the octane rating of the fuel tested to the "aviation rich" standard, which tries to simulate a supercharged condition with a rich mixture, elevated temperatures, and a high manifold pressure. For example, **100/130** avgas has an octane rating of 100 at the lean settings usually used for cruising and 130 at the rich settings used for take-off and other full-power conditions.
+
+Antiknock agents such as tetraethyl lead (TEL) help to control detonation and provide lubrication. One gram of TEL contains 640.6 milligrams of lead.
+
+| Grade | Colour (Dye) | Lead (Pb) content maximum (g/L) | Additives | Uses | Availability |
+|---|---|---|---|---|---|
+| 80/87 ("avgas 80") | red + a little blue | 0.14 | TEL | It was used in engines with low compression ratio. | Phased out in late 20th century. |
+| 82UL | purple (red + blue) | 0 | ASTM D6227; similar to automobile gasoline |   | As of 2008, 82UL is not being produced. |
+| 85UL | none | 0 | oxygenate-free | piston-engine ultralight aircraft. Motor Octane Number min 85. Research Octane Number min 95. |   |
+| 91/96 | brown | 0.15 | TEL | Made particularly for military use. | phased out in 1960s |
+| 91/96UL | none | 0 | ethanol-free, antioxidant and antistatic additives; ASTM D7547 | In 1991, Hjelmco Oil introduced 91/96UL (also meeting leaded grade 91/98 standard ASTM D910) in Sweden. The fuel can be used in more than 90% of the piston aircraft fleet worldwide. | In 2010, the European Aviation Safety Agency (EASA) cleared this fuel for aircraft engines whose manufacturer has approved it, based on 20 years of trouble-free operations. |
+| B91/115 | green (yellow + blue) | 1.60 | TEL; see standard GOST 1012–72. | Formulated for Shvetsov ASh-62 and Ivchenko AI-14 – nine-cylinder, air-cooled, radial engines. | The Commonwealth of Independent States, produced exclusively by Warter (Poland) |
+| UL94 | purple | 0 | n/a |   | American unleaded fuel developed by Swift Fuels LLC. |
+| 100/130 ("avgas 100") | green (yellow + blue) | 1.12 | TEL | Mostly replaced by 100LL. | Southern Australia, Chile |
+| 100LL ("avgas 100LL") | blue | 0.56 | TEL; 0.56 g/L (2.1 g/US gal) | Most commonly used aviation gasoline. | Common in North America and western Europe |
+| 100VLL | blue | 0.45 | TEL; max 0.45 g/L (1.7 g/US gal) | "Very low lead" substitute for 100LL |   |
+| G100UL | green | 0 | Aromatic compounds such as xylene or mesitylene | Composed primarily of aviation alkylate. | American unleaded fuel developed by General Aviation Modifications, Inc. Fleet-wide STC approved in 2022. Not certified by ASTM. |
+| 100R |   | 0 | n/a |   | American unleaded fuel developed by Swift Fuels LLC. Received STC in 2024 for Cessna 172 Skyhawk R and S. |
+| UL102 | none | 0 | n/a | Blend of 83% mesitylene, 17% isopentane | American unleaded fuel developed by Swift Fuels LLC. Limited quantities produced for testing. |
+| 115/145 ("avgas 115") | purple (red + blue) | 1.29 | TEL, historically xylidine | The largest, boost-supercharged radial engines needing this fuel's anti-detonation properties. | Limited batches are produced for special events such as air races. Reintroduced by Warter Aviation 2015. |
+
+### 100LL (blue)
+
+100LL (pronounced "one hundred low lead") may contain a maximum of one-half the tetraethyllead allowed in 100/130 (green) avgas.
+
+Some of the lower-powered (100–150 horsepower or 75–112 kilowatts) aviation engines that were developed in the late 1990s are designed to run on unleaded fuel and on 100LL, an example being the Rotax 912.
+
+### Automotive gasoline
+
+Automotive gasoline—known as mogas or autogas among aviators—that does not contain ethanol may be used in certified aircraft that have a Supplemental Type Certificate (STC) for automotive gasoline, as well as in experimental aircraft and ultralight aircraft. Some oxygenates other than ethanol are approved, but these STC's prohibit ethanol-laced gasolines. Ethanol-treated gasoline is susceptible to phase-separation which is very possible due to the altitude/temperature changes light airplanes undergo in ordinary flight. This ethanol-treated fuel can flood the fuel system with water which can cause in-flight engine failure. Additionally, the phase-separated fuel can leave remaining portions that do not meet octane requirements due to the loss of the ethanol in the water-absorption process. Further, the ethanol can attack materials in aircraft construction which pre-date "gasohol" fuels. Most of these applicable aircraft have low-compression engines which were originally certified to run on 80/87 avgas and require only "regular" 87 anti-knock index automotive gasoline. Examples include the popular Cessna 172 Skyhawk or Piper Cherokee with the 150 hp (110 kW) variant of the Lycoming O-320.
+
+Some aircraft engines were originally certified using a 91/96 avgas and have STC's available to run "premium" 91 anti-knock index (AKI) automotive gasoline. Examples include some Cherokees with the 160 hp (120 kW) Lycoming O-320 or 180 hp (130 kW) O-360, or the Cessna 152 with the O-235. The AKI rating of typical automotive fuel might not directly correspond to the 91/96 avgas used to certify engines, as motor vehicle pumps in the US use the so-called "(R + M)/2" averaged motor vehicle octane rating system as posted on gas station pumps. Sensitivity is roughly 8–10 points, meaning that a 91 AKI fuel might have a MON of as low as 86. The extensive testing process required to obtain an STC for the engine/airframe combination helps ensure that, for those eligible aircraft, 91 AKI fuel provides sufficient detonation margin under normal conditions.
+
+Automotive gasoline is not a fully viable replacement for avgas in many aircraft, because many high-performance and/or turbocharged airplane engines have been designed to use 100 octane fuel and modifications are necessary in order to use lower-octane fuel.
+
+Many general aviation aircraft engines were designed to run on 80/87 octane, roughly the standard (as unleaded fuel only, with the "{R+M}/2" 87 octane rating) for North American automobiles today. Direct conversions to run on automotive fuel are fairly common, by supplemental type certificate (STC). However, the alloys used in aviation engine construction are chosen for their durability and synergistic relationship with the protective features of lead, and engine wear in the valves is a potential problem on automotive gasoline conversions.
+
+Fortunately, significant history of engines converted to mogas has shown that very few engine problems are caused by automotive gasoline. A larger problem stems from the higher and wider range of allowable vapor pressures found in automotive gasoline; this can pose some risk to aviation users if fuel system design considerations are not taken into account. Automotive gasoline can vaporize in fuel lines, causing a vapor lock (a bubble in the line) or fuel pump cavitation, thereby starving the engine of fuel. This does not constitute an insurmountable obstacle, but merely requires examination of the fuel system, ensuring adequate shielding from high temperatures and maintaining sufficient pressure in the fuel lines. This is the main reason why both the specific engine model as well as the aircraft in which it is installed must be supplementally certified for the conversion. A good example of this is the Piper Cherokee with high-compression 160 or 180 hp (120 or 130 kW) engines. Only later versions of the airframe with different engine cowling and exhaust arrangements are applicable for the automotive fuel STC, and even then require fuel-system modifications.
+
+Vapor lock typically occurs in fuel systems where a mechanically-driven fuel pump mounted on the engine draws fuel from a tank mounted lower than the pump. The reduced pressure in the line can cause the more volatile components in automotive gasoline to flash into vapor, forming bubbles in the fuel line and interrupting fuel flow. If an electric boost pump is mounted in the fuel tank to push fuel toward the engine, as is common practice in fuel-injected automobiles, the fuel pressure in the lines is maintained above ambient pressure, preventing bubble formation. Likewise, if the fuel tank is mounted above the engine and fuel flows primarily due to gravity, as in a high-wing airplane, vapor lock cannot occur, using either aviation or automotive fuels. Fuel-injected engines in automobiles also usually have a "fuel return" line to send unused fuel back to the tank, which has the benefit of equalizing the fuel's temperature throughout the system, further reducing the chance of vapor lock developing.
+
+In addition to vapor locking potential, automotive gasoline does not have the same quality tracking as aviation gasoline. To help solve this problem, the specification for an aviation fuel known as 82UL was developed as essentially automotive gasoline with additional quality tracking and restrictions on permissible additives. This fuel is not currently in production and no refiners have committed to producing it.
+
+### Gasohol
+
+Rotax allows up to 10% ethanol (similar to E10 fuel for cars) in the fuel for Rotax 912 engines. Light sport aircraft that are specified by the manufacturer to tolerate alcohol in the fuel system can use up to 10% ethanol.
+
+### Fuel dyes
+
+Fuel dyes aid ground crew and pilots in identifying and distinguishing the fuel grades and most are specified by ASTM D910 or other standards. Dyes for the fuel are required in some countries.
+
+| Dye (nominal colour) | chemical |
+|---|---|
+| blue | alkyl derivatives of 1,4-diaminoanthraquinone, like Oil Blue A and Oil Blue 35 |
+| yellow | p-diethylaminoazobenzene or 1,3-benzenediol, 2,4-bis [(alkylphenyl)azo-] |
+| red | alkyl derivatives of azobenzene-4-azo-2-naphthol |
+| orange | benzene-azo-2-napthol |
+
+## Phase-out of leaded aviation gasoline
+
+The 100LL phase-out has been called "one of modern GA's most pressing problems", because 70% of 100LL aviation fuel is used by the 30% of the aircraft in the general aviation fleet that cannot use any of the existing alternatives.
+
+There are three fundamental issues in using unleaded fuels without serious modification of the airframe/engine:
+
+1. The fuel must have a high enough octane rating (and meet other specifications) to replace leaded fuels,
+2. The engine must be certified to use the fuel, and
+3. The airframe must also be certified to use the fuel.
+
+In February 2008, Teledyne Continental Motors (TCM) announced that the company is very concerned about future availability of 100LL, and as a result, they would develop a line of diesel engines. In a February 2008 interview, TCM president Rhett Ross indicated belief that the aviation industry will be "forced out" of using 100LL in the near future, leaving automotive fuel and jet fuel as the only alternatives. In May 2010, TCM announced that they had licensed development of the SMA SR305 diesel engine.
+
+In November 2008, National Air Transportation Association's president Jim Coyne indicated that the environmental impact of aviation is expected to be a big issue over the next few years and will result in the phasing out of 100LL because of its lead content.
+
+By May 2012, the US Federal Aviation Administration (FAA Unleaded Avgas Transition rulemaking committee) had put together a plan in conjunction with industry to replace leaded avgas with an unleaded alternative within 11 years. Given the progress already made on 100SF and G100UL, the replacement time might be shorter than that 2023 estimate. Each candidate fuel must meet a checklist of 12 fuel specification parameters and 4 distribution and storage parameters. The FAA has requested a maximum of US$60M to fund the administration of the changeover. In July 2014, nine companies and consortiums submitted proposals to the *Piston Aviation Fuels Initiative* (PAFI) to assess fuels without tetraethyl lead. Phase one testing is performed at the William J. Hughes Technical Center for a FAA approved industry replacement by 2018.
+
+In July 2021, the first commercially-produced unleaded avgas, GAMI's G100UL, was approved by the Federal Aviation Administration through a Supplemental Type Certificate.
+
+Lycoming Engines provides a list of engines and fuels that are compatible with unleaded fuel. However, all of their engines require that an oil additive be used when unleaded fuel is used: "When using the unleaded fuels identified in Table 1, Lycoming oil additive P/N LW-16702, or an equivalent finished product such as Aeroshell 15W-50, must be used." Lycoming also notes that the octane rating of the fuel used must also meet the requirements stated in the fuel specification, otherwise engine damage may occur due to detonation.
+
+Prior to 2022, Teledyne Continental Motors (TCM) indicated that leaded avgas is required in their engines, and not unleaded auto fuels: "Current aircraft engines feature valve gear components which are designed for compatibility with the leaded ASTM D910 fuels. In such fuels, the lead acts as a lubricant, coating the contact areas between the valve, guide, and seat. The use of unleaded auto fuels with engines designed for leaded fuels can result in excessive exhaust valve seat wear due to the lack of lead with cylinder performance deteriorating to unacceptable levels in under 10 hours."
+
+In 2022, TCM changed its policy. They have announced a formal application to the FAA to approve the use of UL91 and UL94 in selected engines, stating that "Continental considers 91UL and 94UL fuel as a transitional step in a long-term strategy to reach a more sustainable aviation".
+
+## New unleaded fuel grades
+
+### 91UL (or UL91)
+
+Hjelmco Oil first introduced unleaded Avgas grades in Europe in 2003, after its success with 80UL. This grade of Avgas is manufactured to meet ASTM D7547. Many common Lycoming engines are certified to run on this particular grade of Avgas, and Cessna has approved the use of this fuel in a large number of their piston fleet. This fuel is also usable in any aircraft in Europe or the United Kingdom where the engine is certified to use it, whether or not the airframe is certified to do so, too.
+
+### 93UL (Ethanol-free 93AKI automotive gasoline)
+
+The firm Airworthy AutoGas tested an ethanol-free 93 anti-knock index (AKI) premium auto gas on a Lycoming O-360-A4M in 2013. The fuel is certified under Lycoming Service Instruction 1070 and ASTM D4814.
+
+### UL94 (formerly 94UL)
+
+Unleaded 94 Motor octane fuel (*UL94*) is essentially 100LL without the lead. In March 2009, Teledyne Continental Motors (TCM) announced they had tested a 94UL fuel that might be the best replacement for 100LL. This 94UL meets the avgas specification including vapor pressure but has not been completely tested for detonation qualities in all Continental engines or under all conditions. Flight testing has been conducted in an IO-550-B powering a Beechcraft Bonanza and ground testing in Continental O-200, 240, O-470, and O-520 engines. In May 2010, TCM indicated that despite industry skepticism, they are proceeding with 94UL and that certification was expected in mid-2013.
+
+In June 2010, Lycoming Engines indicated their opposition to 94UL. Company general manager Michael Kraft stated that aircraft owners do not realize how much performance would be lost with 94UL and characterized the decision to pursue 94UL as a mistake that could cost the aviation industry billions in lost business. Lycoming believes the industry should be pursuing 100UL instead. The Lycoming position is supported by aircraft type clubs representing owners of aircraft that would be unable to run on lower octane fuel. In June 2010, clubs such as the American Bonanza Society, the Malibu Mirage Owners and Pilots Association, and the Cirrus Owners and Pilots Association collectively formed the *Clean 100 Octane Coalition* to represent them on this issue and push for unleaded 100 octane avgas.
+
+In November 2015, UL94 was added as a secondary grade of unleaded aviation gasoline to ASTM D7547, which is the specification that governs UL91 unleaded avgas. UL91 is currently being sold in Europe. UL94 meets all of the same specification property limits as 100LL with the exception of a lower motor octane number (94.0 minimum for UL94 vs. 99.6 minimum for 100LL) and a decreased maximum lead content. UL94 is an unleaded fuel, but as with all ASTM International unleaded gasoline specifications, a *de minimis* amount of unintentionally added lead is permitted.
+
+Since May 2016, UL94, now a product of Swift Fuels, is available for sale at dozens of airports in the United States. Swift Fuels has an agreement for distribution in Europe.
+
+UL94 is not intended to be a full replacement for 100LL, but rather is designed to be a drop-in replacement for aircraft with lower-octane-rated engines, such as those that are approved for operation on Grade 80 avgas (or lower), UL91, or mogas. It is estimated that up to 65% of the fleet of current general aviation piston-engine-powered aircraft can operate on UL94 with no modifications to either the engine or airframe. Some aircraft, however, do require a FAA-approved Supplemental Type Certificate (STC) to be purchased to allow for operation on UL94.
+
+UL94 has a minimum Motor octane number (MON, which is the octane rating employed for grading aviation gasoline) of 94.0. 100LL has a minimum MON of 99.6.
+
+AKI is the octane rating used to grade all U.S. automotive gasoline (typical values at the pump can include 87, 89, 91, and 93), and also the 93UL fuel from Airworthy AutoGas.
+
+The minimum AKI of UL94, as sold by Swift Fuels, is 98.0.
+
+Concurrent with the addition of UL94 to ASTM D7547, the FAA published Special Airworthiness Information Bulletin (SAIB) HQ-16-05, which states that "UL94 meets the operating limitations or aircraft and engines approved to operate with grade UL91 avgas," meaning that "Grade UL94 avgas that meets specification D7547 is acceptable to use on those aircraft and engines that are approved to operate with ... grade UL91 avgas that meets specification D7547." In August 2016, the FAA revised SAIB HQ-16-05 to include similar wording regarding the acceptability of using UL94 in aircraft and engines that are approved to operate with avgas that has a minimum Motor octane rating of 80 or lower, including Grade 80/87.
+
+The publication of the SAIB, especially the August 2016 revision, eliminated the need for many of the UL94 STCs being sold by Swift Fuels, as the majority of the aircraft on the STC's Approved Model List are type-certified to use 80-octane or lower avgas.
+
+On April 6, 2017, Lycoming Engines published Service Instruction 1070V, which adds UL94 as an approved grade of fuel for dozens of engine models, 60% of which are carbureted engines. Engines with displacements of 235, 320, 360, and 540 cubic inches make up almost 90% of the models approved for UL94.
+
+### UL102 (formerly 100SF Swift Fuel)
+
+Swift Fuels, LLC, has attained approval to produce fuel for testing at its pilot plant in Indiana. Composed of approximately 85% mesitylene and 15% isopentane, the fuel is reportedly scheduled for extensive testing by the FAA to receive certification under the new ASTM D7719 guideline for unleaded 100LL replacement fuels. The company eventually intends to produce the fuel from renewable biomass feedstocks, and aims to produce something competitive in price with 100LL and currently available alternative fuels. Swift Fuels has suggested that the fuel, formerly referred to as 100SF, will be available for "high performance piston-powered aircraft" before 2020.
+
+John and Mary-Louise Rusek founded Swift Enterprises in 2001 to develop renewable fuels and hydrogen fuel cells. They began testing "Swift 142" in 2006 and patented several alternatives for non-alcohol based fuels which can be derived from biomass fermentation. Over the next several years, the company sought to build a pilot plant to produce enough fuel for larger-scale testing and submitted fuel to the FAA for testing.
+
+In 2008, an article by technology writer and aviation enthusiast Robert X. Cringely attracted popular attention to the fuel, as also did a cross-country Swift-Fueled flight by the AOPA's Dave Hirschman. Swift Enterprises' claims that the fuel could eventually be manufactured much more cheaply than 100LL have been debated in the aviation press.
+
+The FAA found Swift Fuel to have a motor octane number of 104.4, 96.3% of the energy per unit of mass, and 113% of the energy per unit of volume as 100LL, and to meet most of the ASTM D910 standard for leaded aviation fuel. Following tests in two Lycoming engines, the FAA concluded it performs better than 100LL in detonation testing and will provide a fuel saving of 8% per unit of volume, though it weighs 1 pound per US gallon (120 g/L) more than 100LL. GC–FID testing showed the fuel to be made primarily of two components — one about 85% by weight and the other about 14% by weight. Soon afterward, AVweb reported that Continental had begun the process of certifying several of its engines to use the new fuel.
+
+From 2009 through 2011, 100SF was approved as a test fuel by ASTM International, allowing the company to pursue certification testing. satisfactorily tested by the FAA, tested by Purdue University, and approved under ASTM specification D7719 for high-octane Grade UL102, allowing the company to test more economically in non-experimental aircraft.
+
+In 2012, Swift Fuels LLC was formed to bring in oil and gas industry experience, scale up production and bring the fuel to market. By November 2013, the company had built its pilot plant and received approval to produce fuel in it. Its most recent patent, approved in 2013, describes methods by which the fuel can be produced from fermentable biomass.
+
+The FAA scheduled UL102 for 2 years of phase 2 testing in its PAFI initiative beginning in the summer of 2016.
+
+### G100UL
+
+In February 2010, General Aviation Modifications Inc. (GAMI) announced that it was in the process of developing a 100LL replacement to be called G100UL ("unleaded"). This fuel is made by blending existing refinery products and yields detonation margins comparable to 100LL. The new fuel is slightly more dense than 100LL, but has a 3.5% higher thermodynamic output. G100UL is compatible with 100LL and can be mixed with it in aircraft tanks for use.
+
+In demonstrations held in July 2010, G100UL performed better than 100LL that just meets the minimum specification and performed as well as average production 100LL.
+
+G100UL was approved by the Federal Aviation Administration by the issuance of a Supplemental Type Certificate at AirVenture in July 2021. The STC was initially only applicable to Lycoming-powered models of the Cessna 172. The company indicated that the retail cost was expected to be 0.60–0.85 US dollars per US gallon higher than 100LL. This was later revised to 1.00 US dollar per US gallon.
+
+In 2022, Paul Bertorelli of AVweb reported that the FAA was dragging its feet on broadly certifying G100UL, delaying approval of the fuel for more engines and spending over $80 million on EAGLE to re-start a search for an unleaded fuel when G100UL had been under evaluation for over 10 years.
+
+In September 2022, in a surprise announcement, the FAA approved an STC for the use of the fuel for all piston-engined aircraft and engine combinations. In February 2023, GAMI began selling supplemental type certificates to allow aircraft owners to use the fuel when it becomes available. In April 2024, GAMI announced that 1 million gallons of G100UL had been produced. Fuel availability in the US was forecast for airports in California, Washington and Oregon by the middle of 2024 and the rest of the country by 2026.
+
+In December 2024, shortly after G100UL was made available at selected airports in California, several concerns regarding material compatibility arose, as users reported fuel leaks, paint staining, and paint stripping.
+
+### Shell Unleaded 100-Octane Fuel
+
+In December 2013, Shell Oil announced that they had developed an unleaded 100 octane fuel and will submit it for FAA testing with certification expected within two to three years. The fuel is alkylate-based with an additive package of aromatics. No information has yet been published with regard to its performance, producibility or price. Industry analysts have indicated that it will likely cost as much as or more than existing 100LL.
+
+### UL100E
+
+In 2018, LyondellBasell and VP Racing Fuels, an established motorsport fuel manufacturer, announced its intention to participate in developing an unleaded fuel for piston-powered aircraft. As of December 2024, it has reached Phase 4 of testing, according to the FAA.
+
+## Environmental regulation
+
+TEL found in leaded avgas and its combustion products are potent neurotoxins that have been shown in scientific research to interfere with brain development in children. Children in residences or childcare facilities in close proximity to airports with moderate to high piston engine aircraft traffic are at especially high risk of high blood lead levels. The United States Environmental Protection Agency (EPA) has noted that exposure to even very low levels of lead contamination has been conclusively linked to loss of IQ in children's brain function tests, thus providing a high degree of motivation to eliminate lead and its compounds from the environment.
+
+> While lead concentrations in the air have declined, scientific studies have demonstrated that children's neurological development is harmed by much lower levels of lead exposure than previously understood. Low level lead exposure has been clearly linked to loss of IQ in performance testing. Even an average IQ loss of 1–2 points in children has a meaningful impact for the nation as a whole, as it would result in an increase in children classified as mentally challenged, as well as a proportional decrease in the number of children considered "gifted".
+
+On November 16, 2007, the environmental group Friends of the Earth formally petitioned the EPA, asking them to regulate leaded avgas. The EPA responded with a notice of petition for rulemaking.
+
+The notice of petition stated:
+
+> Friends of the Earth has filed a petition with EPA, requesting that EPA find pursuant to section 231 of the Clean Air Act that lead emissions from general aviation aircraft cause or contribute to air pollution that may reasonably be anticipated to endanger public health or welfare and that EPA propose emissions standards for lead from general aviation aircraft. Alternatively, Friends of the Earth requests that EPA commence a study and investigation of the health and environmental impacts of lead emissions from general aviation aircraft, if EPA believes that insufficient information exists to make such a finding. The petition submitted by Friends of the Earth explains their view that lead emissions from general aviation aircraft endanger the public health and welfare, creating a duty for the EPA to propose emission standards.
+
+The public comment period on this petition closed on March 17, 2008.
+
+Under a federal court order to set a new standard by October 15, 2008, the EPA cut the acceptable limits for atmospheric lead from the previous standard of 1.5 μg/m3 to 0.15 μg/m3. This was the first change to the standard since 1978 and represents an order of magnitude reduction over previous levels. The new standard requires the 16,000 remaining USA sources of lead, which include lead smelting, airplane fuels, military installations, mining and metal smelting, iron and steel manufacturing, industrial boilers and process heaters, hazardous waste incineration, and production of batteries, to reduce their emissions by October 2011.
+
+The EPA's own studies have shown that to prevent a measurable decrease in IQ for children deemed most vulnerable, the standard needs to be set much lower, to 0.02 μg/m3. The EPA identified avgas as one of the most "significant sources of lead".
+
+At an EPA public consultation held in June 2008 on the new standards, Andy Cebula, the Aircraft Owners and Pilots Association's executive vice president of government affairs, stated that general aviation plays a valuable role in the USA economy and any changes in lead standards that would change the current composition of avgas would have a "direct impact on the safety of flight and the very future of light aircraft in this country".
+
+In December 2008, AOPA filed formal comments to the new EPA regulations. AOPA has asked the EPA to account for the cost and the safety issues involved with removing lead from avgas. They cited that the aviation sector employs more than 1.3 million people in the US and has an economic direct and indirect effect that "exceeds $150 billion annually". AOPA interprets the new regulations as not affecting general aviation as they are currently written.
+
+Publication in the USA Federal Register of an Advance Notice of Proposed Rulemaking by the USA EPA occurred in April 2010. The EPA indicated: "This action will describe the lead inventory related to use of leaded avgas, air quality and exposure information, additional information the Agency is collecting related to the impact of lead emissions from piston-engine aircraft on air quality and will request comments on this information."
+
+Despite assertions in the media that leaded avgas will be eliminated in the US by 2017 at the latest date, the EPA confirmed in July 2010 that there is no phase-out date and that setting one would be an FAA responsibility as the EPA has no authority over avgas. The FAA administrator stated that regulating lead in avgas is an EPA responsibility, resulting in widespread criticism of both organizations for causing confusion and delaying solutions.
+
+In April 2011 at Sun 'n Fun, Pete Bunce, head of the General Aviation Manufacturers Association (GAMA), and Craig Fuller, president and CEO of the Aircraft Owners and Pilots Association, indicated that they both are confident that leaded avgas will not be eliminated until a suitable replacement is in place. "There is no reason to believe 100 low-lead will become unavailable in the foreseeable future," Fuller stated.
+
+Final results from EPA's lead modeling study at the Santa Monica Airport shows off-airport levels below current 150 ng/m3 and possible future 20 ng/m3 levels. Fifteen of 17 airports monitored during a year-long study in the US by the EPA have lead emissions well below the current National Ambient Air Quality Standard (NAAQS) for lead.
+
+## Other uses
+
+Avgas is occasionally used in amateur auto racing cars as its octane rating is higher than automotive gasoline thus allowing the engines to run at higher compression ratios.
