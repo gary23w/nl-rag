@@ -1,0 +1,14 @@
+# 1808-rhode-island-gubernatorial-election — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1808 rhode island gubernatorial election. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1787 Rhode Island gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1787-rhode-island-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1787_Rhode_Island_gubernatorial_election
+- [1790–91 United States Senate elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1790-united-states-senate-elections-in-rhode-island.md) — upstream: https://en.wikipedia.org/wiki/1790_United_States_Senate_elections_in_Rhode_Island
+- [1790–91 United States Senate elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1791-united-states-senate-election-in-rhode-island.md) — upstream: https://en.wikipedia.org/wiki/1791_United_States_Senate_election_in_Rhode_Island
+- [1792–93 United States House of Representatives elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1792-united-states-house-of-representatives-election-in-rhode-island.md) — upstream: https://en.wikipedia.org/wiki/1792_United_States_House_of_Representatives_election_in_Rhode_Island
+- [1792 United States presidential election in Rhode Island](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1792-united-states-presidential-election-in-rhode-island.md) — upstream: https://en.wikipedia.org/wiki/1792_United_States_presidential_election_in_Rhode_Island
+- [1792–93 United States Senate elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1792-united-states-senate-election-in-rhode-island.md) — upstream: https://en.wikipedia.org/wiki/1792_United_States_Senate_election_in_Rhode_Island
+- [1792–93 United States Senate elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1793-united-states-senate-election-in-rhode-island.md) — upstream: https://en.wikipedia.org/wiki/1793_United_States_Senate_election_in_Rhode_Island
+- [1808 Rhode Island gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/1808-rhode-island-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1808_Rhode_Island_gubernatorial_election
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-rhode-island-gubernatorial-election/pack.facts) — distilled one-line facts (neuron CLI import)

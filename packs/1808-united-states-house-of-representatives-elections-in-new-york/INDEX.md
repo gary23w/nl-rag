@@ -1,0 +1,14 @@
+# 1808-united-states-house-of-representatives-elections-in-new-york — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1808 united states house of representatives elections in new york. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [10th United States Congress](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/10th-united-states-congress.md) — upstream: https://en.wikipedia.org/wiki/10th_United_States_Congress
+- [11th United States Congress](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/11th-united-states-congress.md) — upstream: https://en.wikipedia.org/wiki/11th_United_States_Congress
+- [1777 New York gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/1777-new-york-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1777_New_York_gubernatorial_election
+- [1783 New York gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/1783-new-york-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1783_New_York_gubernatorial_election
+- [1789 New York gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/1789-new-york-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1789_New_York_gubernatorial_election
+- [1789 United States House of Representatives elections in New York](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/1789-united-states-house-of-representatives-elections-in-new-york.md) — upstream: https://en.wikipedia.org/wiki/1789_United_States_House_of_Representatives_elections_in_New_York
+- [1789 United States Senate elections in New York](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/1789-united-states-senate-elections-in-new-york.md) — upstream: https://en.wikipedia.org/wiki/1789_United_States_Senate_elections_in_New_York
+- [1808 United States House of Representatives elections in New York](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/1808-united-states-house-of-representatives-elections-in-new-york.md) — upstream: https://en.wikipedia.org/wiki/1808_United_States_House_of_Representatives_elections_in_New_York
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1808-united-states-house-of-representatives-elections-in-new-york/pack.facts) — distilled one-line facts (neuron CLI import)

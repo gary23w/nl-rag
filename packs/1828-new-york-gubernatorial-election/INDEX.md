@@ -1,0 +1,14 @@
+# 1828-new-york-gubernatorial-election — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1828 new york gubernatorial election. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1777 New York gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1777-new-york-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1777_New_York_gubernatorial_election
+- [1783 New York gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1783-new-york-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1783_New_York_gubernatorial_election
+- [1789 New York gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1789-new-york-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1789_New_York_gubernatorial_election
+- [1789 United States House of Representatives elections in New York](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1789-united-states-house-of-representatives-elections-in-new-york.md) — upstream: https://en.wikipedia.org/wiki/1789_United_States_House_of_Representatives_elections_in_New_York
+- [1789 United States Senate elections in New York](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1789-united-states-senate-elections-in-new-york.md) — upstream: https://en.wikipedia.org/wiki/1789_United_States_Senate_elections_in_New_York
+- [1790 United States House of Representatives elections in New York](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1790-united-states-house-of-representatives-elections-in-new-york.md) — upstream: https://en.wikipedia.org/wiki/1790_United_States_House_of_Representatives_elections_in_New_York
+- [1791 United States Senate election in New York](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1791-united-states-senate-election-in-new-york.md) — upstream: https://en.wikipedia.org/wiki/1791_United_States_Senate_election_in_New_York
+- [1828 New York gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/1828-new-york-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1828_New_York_gubernatorial_election
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-new-york-gubernatorial-election/pack.facts) — distilled one-line facts (neuron CLI import)

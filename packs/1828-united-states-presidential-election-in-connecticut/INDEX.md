@@ -1,0 +1,14 @@
+# 1828-united-states-presidential-election-in-connecticut — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1828 united states presidential election in connecticut. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1776 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1776-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1776_Connecticut_gubernatorial_election
+- [1777 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1777-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1777_Connecticut_gubernatorial_election
+- [1778 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1778-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1778_Connecticut_gubernatorial_election
+- [1779 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1779-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1779_Connecticut_gubernatorial_election
+- [1780 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1780-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1780_Connecticut_gubernatorial_election
+- [1781 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1781-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1781_Connecticut_gubernatorial_election
+- [1782 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1782-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1782_Connecticut_gubernatorial_election
+- [1828 United States presidential election in Connecticut](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/1828-united-states-presidential-election-in-connecticut.md) — upstream: https://en.wikipedia.org/wiki/1828_United_States_presidential_election_in_Connecticut
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1828-united-states-presidential-election-in-connecticut/pack.facts) — distilled one-line facts (neuron CLI import)
