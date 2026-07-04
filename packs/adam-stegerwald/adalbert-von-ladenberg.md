@@ -1,0 +1,33 @@
+---
+title: "Adalbert von Ladenberg"
+source: https://en.wikipedia.org/wiki/Adalbert_von_Ladenberg
+domain: adam-stegerwald
+license: CC-BY-SA-4.0
+tags: adam stegerwald
+fetched: 2026-07-04
+---
+
+# Adalbert von Ladenberg
+
+**Adalbert von Ladenberg** (18 February 1798 – 15 February 1855) was a Prussian politician.
+
+## Early life
+
+Ladenberg was the son of the Prussian Minister of State Philipp von Ladenberg. After initially receiving his education from tutors, he attended the Friedrich-Wilhelms-Gymnasium in Berlin and at age 17 joined the Dragoon Guards Regiment for a year. In 1816 he left the military as a Lieutenant and studied Law and cameralism in Berlin, Heidelberg und Göttingen.
+
+## Career
+
+After successfully completing his studies he received a place as a law clerk in 1818 in the Prussian civil service. From 1824, his career led him from the post of *Regierungsrat* and legal advisor in Cologne to that of *Oberregierungsrat* 1829 in Königsberg und Merseburg. He was then made "regional president" (*Regierungspräsident*) in Trier in 1834, and six years later Karl vom Stein zum Altenstein appointed him to the ministry for education and cultural affairs and as member of the Prussian Council of State in Berlin.
+
+When Altenstein died on 14 May 1840, Ladenberg was entrusted with the latter's political responsibilities in a provisional capacity until 8 October. From the 22 October he took up this position permanently and from that day onwards led the department for religious Protestant, education and health affairs in the ministry of Johann Albrecht Friedrich von Eichhorn. In 1841 he also received the role of extraordinary government commissioner at the Humboldt University of Berlin.
+
+When Eichhorn resigned all his posts due to the political consequences of the Revolutions of 1848, Ladenberg led the ministry, also under the ministers Maximilian von Schwerin-Putzar and Johann Karl Rodbertus, who held office very briefly. From July to November 1848 this was an interim appointment, which was then made permanent.
+
+Amongst other things, Ladenberg was significantly involved with various reforms: establishment of the Protestant *Oberkirchenrat* (a senior administrative body of the church), preparation of an education law and a health law as well as managing a reorganisation of the art establishment.
+
+Through the Punctation of Olmütz of 29 November 1850, Ladenberg felt compelled to resign, but neglected to do so in order to see through certain legislation. From 9 November to 12 December 1850, Ladenberg was made interim Prime Minister. He was later made a *Wirklicher Geheimer Rat* and as such took over the management of the financial authority.
+
+## Writings
+
+- *Übersicht der französischen und preußischen Hypothekenverfassung*. Köln 1829
+- *Preußens gerichtliches Verfahren in Zivil- und Kriminalsachen*. Köln 1842

@@ -1,0 +1,119 @@
+---
+title: "Alcide De Gasperi"
+source: https://en.wikipedia.org/wiki/Alcide_De_Gasperi
+domain: alcide-de-gasperi
+license: CC-BY-SA-4.0
+tags: alcide de gasperi
+fetched: 2026-07-04
+---
+
+# Alcide De Gasperi
+
+**Alcide Amedeo Francesco De Gasperi** (Italian: [alˈtʃiːde de ˈɡasperi]; 3 April 1881 – 19 August 1954) was an Italian politician and statesman who founded the Christian Democracy party and served as prime minister of Italy in eight successive coalition governments from 1945 to 1953.
+
+De Gasperi was the last prime minister of the Kingdom of Italy, serving under both Victor Emmanuel III and Umberto II. He was also the first prime minister of the Italian Republic, and also briefly served as provisional head of state after the Italian people voted to end the monarchy and establish a republic. His eight-year term in office remains a landmark of political longevity for a leader in modern Italian politics. De Gasperi is the fifth longest-serving prime minister since the unification of Italy.
+
+A devout Catholic, De Gasperi was one of the founding fathers of the European Union along with fellow Italian Altiero Spinelli.
+
+## Early life
+
+De Gasperi was born in 1881 in Pieve Tesino in Tyrol, now part of the Italian region of Trentino-Alto Adige, which had been part of Austria-Hungary for more than 500 years. His father was a local police officer of limited financial means. From 1896, De Gasperi was active in the Social Christian movement. In 1900 he joined the Faculty of Literature and Philosophy in Vienna, where he played an important role in the inception of the Christian student movement. He was very much inspired by the *Rerum novarum* encyclical issued by Pope Leo XIII in 1891. In 1904, he took an active part in student demonstrations in favour of an Italian-language university. During the inauguration of the Italian Faculty of Law in Innsbruck, he was imprisoned with a number of other protesting students, but was released after twenty days. In 1905, De Gasperi obtained a degree in philology.
+
+In 1905, he began to work as editor of the newspaper *La Voce Cattolica* (The Catholic Voice) which was replaced in September 1906 by *Il Trentino* and he soon became its editor. In his newspaper, he often took positions in favour of cultural autonomy for Trentino and in defence of Italian culture in Trentino, in contrast to the Germanisation planned by the German nationalists in Tyrol. At the time, in disagreement with other politicians like Cesare Battisti, he did not seek unification with Italy. From 1908 to 1912, he was vice-president and one of the three executive board members of the Banca Industriale di Trento, a local investment bank supported by the Catholic movement.
+
+In 1911, he became a member of Parliament for the Popular Political Union of Trentino (UPPT) in the Austrian Reichsrat, a post he held for six years. At the beginning of World War I, he was politically neutral, sympathizing with the ultimately unsuccessful efforts of Pope Benedict XV and Karl I of Austria to obtain an honourable peace and stop the war. Ultimately, he sided with Italy.
+
+### Opposition to Fascism
+
+In 1919, he was among the founders of the Italian People's Party (PPI), with Luigi Sturzo. He served as a deputy in the Italian Parliament from 1921 to 1924, a period marked by the rise of Fascism. He initially supported the participation of the PPI in Benito Mussolini's first government in October 1922.
+
+As Mussolini's hold on the Italian government grew stronger, he soon diverged with the Fascists over constitutional changes to the powers of the executive and to the election system (the Acerbo Law), and over Fascist violence against the constitutional parties, culminating in the murder of Giacomo Matteotti. The PPI split, and De Gasperi became secretary of the remaining anti-Fascist group in May 1924. In November 1926, in a climate of overt violence and intimidation by the Fascists, the PPI was dissolved.
+
+De Gasperi was arrested in March 1927 and sentenced to four years in prison. The Vatican negotiated his release. A year and a half in prison nearly broke De Gasperi's health. After his release in July 1928, he was unemployed and in serious financial hardship, until in 1929 his ecclesiastical contacts secured him a job as a cataloger in the Vatican Library, where he spent the next fourteen years until the collapse of Fascism in July 1943.
+
+During the 1930s, De Gasperi wrote a regular international column for the review *L'Illustrazione Vaticana* in which he depicted the chief political battle as one between communism and Christianity. In 1934, he rejoiced in the defeat of the Austrian Social Democrats, whom he condemned for "de-Christianizing" the country, and in 1937 he declared that the German Church was correct in preferring Nazism to Bolshevism.
+
+### Founding Christian Democracy
+
+During World War II, he organized the establishment of the first (and at the time, illegal) Christian Democracy (DC) party, drawing upon the ideology of the PPI. In January 1943, he published "Ideas for Reconstruction" (Italian: *Idee per la Ricostruzione*), which amounted to a program for the party. He became the first general secretary of the new party in 1944.
+
+De Gasperi was the undisputed head of the Christian Democrats, the party that dominated Parliament for decades. Although his control of the DC appeared almost complete, he had to carefully balance different factions and interests, especially with regard to relations with the Vatican, social reform, and foreign policy.
+
+When Southern Italy was liberated by the Allies, he became one of the main representatives of DC in the National Liberation Committee. During the government led by Ivanoe Bonomi, De Gasperi was appointed minister without portfolio and, in Ferruccio Parri's cabinet, he became minister of foreign affairs.
+
+## Prime Minister of Italy, 1945–1953
+
+From 1945 to 1953, he was the prime minister of eight successive DC-led governments. His eight-year rule remains a landmark of political longevity for one leader in modern Italian politics. During his successive governments, Italy became a republic (1946), signed a peace treaty with the Allies (1947), joined NATO in 1949 and became an ally of the United States, which helped to revive the Italian economy through the Marshall Plan. During that time, Italy became a member of the European Coal and Steel Community (ECSC), which later evolved into the European Union (EU). Crucial in this regard was the contribution of Defense Minister Randolfo Pacciardi, a 30th degree Mason of the Scottish Rite, who had been personally chosen by De Gasperi.
+
+In December 1945, he became prime minister for the first time, succeeding Ferruccio Parri and leading a coalition government that included both Italian Communist Party (PCI) and Italian Socialist Party (PSI), along with other minor parties like Italian Republican Party (PRI), Italian Liberal Party (PLI) and Action Party (PdA). Communist leader Palmiro Togliatti acted as deputy prime minister. He tried to soften the terms of the pending Allied peace treaty with Italy and secured financial and economic aid through the European Recovery Program (Marshall Plan) – which was opposed by the Communists.
+
+In June 1946, a constitutional referendum to decide whether Italy would remain a monarchy or become a republic resulted in 54% of the vote favouring a republic. De Gasperi served as provisional head of state from 12 June 1946 until the Constituent Assembly elected Liberal politician Enrico De Nicola provisional head of state on 28 June 1946.
+
+As chief of the Italian delegation at the World War II peace conference in Paris, De Gasperi harshly criticized the sanctions imposed on Italy, but obtained concessions from the Allies that guaranteed Italian sovereignty. Under the Treaty of Peace with Italy, 1947, the eastern border area was lost to Yugoslavia and the free territory of Trieste was divided between the two states.
+
+One of his most striking achievements in foreign policy was the Gruber-De Gasperi Agreement with Austria in September 1946, which established his home region, South Tyrol, as an autonomous region.
+
+### American support
+
+De Gasperi had considerable support in the US, where he was considered able to oppose the rising tide of communism – in particular the PCI, which was the biggest communist party in a Western European democracy. In January 1947 he visited the US. The chief goals of the trip were to soften the terms of the pending peace treaty with Italy and to obtain immediate economic assistance. His ten-day tour, engineered by media mogul Henry Luce – the owner of *Time* magazine – and his wife, Clare Boothe Luce – the future ambassador to Rome – was viewed as a media "triumph", prompting positive comments by a wide section of the American press.
+
+During his meetings in the United States, De Gasperi managed to secure a financially modest but politically significant US$100 million Eximbank loan to Italy. According to De Gasperi, public opinion would view the loan as a vote of confidence in the Italian Government and strengthen his position versus the PCI in the context of the emerging Cold War. The positive results strengthened De Gasperi's reputation in Italy. He also came back with useful information on the incipient change in American foreign policy that would lead to the Cold War and in Italy the break with the PCI and left-wing PSI and their removal from the government in the May 1947 crisis.
+
+In May 1947, United States President Harry Truman ordered De Gasperi to create a new government without the support of communists and socialists; he refused and a new cabinet was formed with the (centrist) Italian Democratic Socialist Party (PSDI) of Giuseppe Saragat, the PLI of Luigi Einaudi and the PRI of Randolfo Pacciardi; the three leaders of the minor parties were appointed deputy prime ministers.
+
+### General election in 1948
+
+The general elections in April 1948 were heavily influenced by the Cold War era confrontation between the Soviet Union and the United States. After the Soviet-orchestrated February 1948 Communist coup in Czechoslovakia, the US became alarmed about Soviet intentions and feared that, if the left-wing coalition were to win the elections, the Soviet-funded PCI would draw Italy into the Soviet Union's sphere of influence.
+
+In the United States, a campaign was launched to prevent a victory of the Communist-dominated Popular Democratic Front (FDP). Italian Americans were encouraged to write letters to their relatives in Italy. The popular Italian-American singer Frank Sinatra made a Voice of America radio broadcast. The Central Intelligence Agency (CIA) funnelled "black bag" contributions to anti-communist candidates with the approval of the National Security Council and President Harry S. Truman. Joseph P. Kennedy and Clare Booth Luce helped to raise US$2 million for the Christian Democracy party. *Time* magazine backed the campaign and featured De Gasperi on its 19 April 1948 issue's cover and in its lead story. He would appear on a *Time* cover again on 25 May 1953, during the campaign for that year's election, with an extensive biography.
+
+The election campaign remains unmatched in verbal aggression and fanaticism in Italy's history on both sides. The election was between two competing visions of the future of Italian society. On the one hand, a Roman Catholic, conservative and capitalist Italy, represented by the governing Christian Democrats of De Gasperi; on the other, a secular, revolutionary and socialist society, represented by the Popular Democratic Front. The Christian Democrat campaign claimed that in Communist countries "children send parents to jail", "children are owned by the state", "people eat their own children", and assured voters that disaster would strike Italy if the Left were to take power. Another slogan was, "In the secrecy of the polling booth, God sees you – Stalin doesn't."
+
+The PCI were *de facto* leading the Popular Democratic Front, and had effectively marginalized the PSI, which eventually suffered because of this in these elections, in terms of parliamentary seats and political power. The Socialists also had been hurt by the secession of a social-democratic faction led by Giuseppe Saragat, which contested the election with the concurrent list of Socialist Unity.
+
+The PCI had difficulties in restraining its more militant members, who, in the period immediately after the war, had engaged in violent acts of reprisals. The areas affected by the violence (the so-called "Red Triangle" of Emilia, or parts of Liguria around Genoa and Savona, for instance) had previously seen episodes of brutality committed by the Fascists during Benito Mussolini's regime and the Italian Resistance during the Allies' gradual advance through Italy.
+
+The Christian Democrats won a resounding victory with 48.5% of the vote (their best result ever) and strong majorities in both the Chamber of Deputies and Senate. The Communists received only half of the votes they had in 1946. With absolute majorities in both chambers, De Gasperi could have formed an exclusively Christian Democratic government. Instead, he formed a "centrist" coalition with the Liberals, Republicans and Social Democrats. De Gasperi formed three ministries, the second in 1950 after the defection of the Liberals, who hoped for more rightist policies, and the third in 1951 after the defection of the Social Democrats, who hoped for more left-wing policies. He ruled for five more years, helming four additional coalitions. "De Gasperi's policy is patience", according to the foreign news correspondent for *The New York Times*, Anne O'Hare McCormick. "He seems to be feeling his way among the explosive problems he has to deal with, but perhaps this wary mine-detecting method is the stabilising force that holds the country in balance."
+
+In domestic policy, various ministers of De Gasperi's cabinets carried out a number of social security reforms in the areas of rents and social housing, unemployment insurance, and pensions.
+
+In 1952, the party overwhelmingly endorsed his authority over the government and over the party. However, it was also the start of his decline. He came under increasing criticism from the emerging left wing in the party. Their main accusations were that he was too cautious in social and economic reform, that he stifled debate and that he subordinated the party to the interests of government.
+
+### 1953 general election and decline
+
+The 1953 general election was characterised by changes in the electoral law. Even if the general structure remained uncorrupted, the government introduced a superbonus of two-thirds of seats in the House for the coalition which would obtain at-large the absolute majority of votes. The change was strongly opposed by the opposition parties as well as DC's smaller coalition partners, who had no realistic chance of success under this system. The new law was called the *Scam Law* by its detractors, including some dissidents of minor government parties who founded special opposition groups to deny the artificial landslide to Christian Democracy.
+
+The Holy See actively supported Christian Democracy, declaring that it would be a mortal sin for a Catholic to vote for the PCI and excommunicating all its supporters. In practice, however, many Communists remained religious: Emilia was known to be an area where people were both religious and communists. Giovannino Guareschi wrote his novels about Don Camillo describing a village, Brescello, whose inhabitants are at the same time loyal to priest Camillo and Communist mayor Peppone, who are fierce rivals.
+
+The campaign of the opposition to the "Scam Law" achieved its goal. The government coalition (DC, PSDI, PLI, PRI, South Tyrolean People's Party and Sardinian Action Party) won 49.9% of the national vote, just a few thousand votes from the threshold for a supermajority, resulting in an ordinary proportional distribution of the seats. Minor dissident parties determined the final result, especially the short-lived National Democratic Alliance. The leading party Christian Democracy did not repeat the extraordinary result of five years earlier, which had been obtained under special conditions linked to the Cold War, and lost a lot of votes to the right, including resurgent fascist politicians, particularly in Southern Italy.
+
+Technically, the government won the election, winning a clear working majority of seats in both houses. However, frustration with the failure to win a supermajority caused significant tensions in the leading coalition. De Gasperi was forced to resign by the Parliament on 2 August: he consequently retired and died twelve months later. The legislature continued with weak governments, with minor parties refusing institutional responsibilities. Giuseppe Pella rose to power, but fell after only five months, following heated disputes about the status of the Free Territory of Trieste which Pella was claiming. Amintore Fanfani's succeeding first ministry failed to receive a vote of confidence in Parliament, whilst Mario Scelba and Antonio Segni followed with more traditional centrist coalitions supported by Social Democrats and Liberals: under the administration of Scelba, the problem of Trieste was settled by ceding Koper/Capodistria to Yugoslavia. The parliamentary term was seen out by the minority government chaired by Adone Zoli, finishing a legislature which hugely weakened the office of the Prime Minister, held by six different leaders.
+
+In 1954, De Gasperi also had to give up the leadership of the party, when Amintore Fanfani was appointed new Secretary of the Christian Democracy in June.
+
+## Death and legacy
+
+On 19 August 1954, De Gasperi died in Sella di Valsugana, in his beloved Trentino. It is said that he had to be given a State funeral as he had died with almost no means of his own. He is buried in the Basilica di San Lorenzo fuori le Mura, a basilica in Rome. The process for his beatification was opened in 1993.
+
+"De Gasperi was against exacerbating conflict", according to his former secretary and former Prime Minister Giulio Andreotti. "He taught us to search for compromise, to mediate."
+
+He is considered one of the founding fathers of the European Union. From the very beginning of European integration, De Gasperi, Robert Schuman and Konrad Adenauer met regularly. He helped to organize the Council of Europe and supported the Schuman Declaration, which in 1951 led to the foundation of the European Coal and Steel Community – a forerunner in the process of European integration. In 1954 he was elected president of the forerunner of the European Parliament, the Community's Common Assembly. Although eventually transformed into the current project of the European Union, De Gasperi helped to develop the idea of a common European defence policy. In 1952, he received the Karlspreis (International Charlemagne Prize of the City of Aachen), an award by the German city of Aachen to people who contributed to the European idea and European peace. The 1954–1955 academic year at the College of Europe was named in his honour.
+
+In 2024, a 515-page revisionist account of De Gasperi by Mark Gilbert, *"Italy Reborn; from Fascism to Democracy"*, was published by Allen Lane.
+
+## Personal life
+
+On 14 June 1922, De Gasperi married Francesca Romani (30 August 1894 – 20 August 1998) and had four daughters, Maria Romana, Lucia, Cecilia and Paola.
+
+In Florestano Vancini's film *The Assassination of Matteotti* (1973), De Gasperi is played by Ezio Marano.
+
+## Electoral history
+
+| Election | House | Constituency | Party | Votes | Result |   |
+|---|---|---|---|---|---|---|
+| 1911 | Imperial Council | Tyrol |   | UPPT | —N/a | (check)Y **Elected** |
+| 1921 | Chamber of Deputies | Trento |   | PPI | —N/a | (check)Y **Elected** |
+| 1924 | Chamber of Deputies | Trento |   | PPI | —N/a | (check)Y **Elected** |
+| 1946 | Constituent Assembly | Trento–Bolzano |   | DC | 17,206 | (check)Y **Elected** |
+| 1948 | Chamber of Deputies | Trento–Bolzano |   | DC | 49,666 | (check)Y **Elected** |
+| 1953 | Chamber of Deputies | Trento–Bolzano |   | DC | 63,762 | (check)Y **Elected** |

@@ -1,0 +1,60 @@
+---
+title: "Adam Stegerwald"
+source: https://en.wikipedia.org/wiki/Adam_Stegerwald
+domain: alceu-amoroso-lima
+license: CC-BY-SA-4.0
+tags: alceu amoroso lima
+fetched: 2026-07-04
+---
+
+# Adam Stegerwald
+
+**Adam Stegerwald** (14 December 1874 – 3 December 1945) was a German politician and union leader who served as chairman of the German Trade Union Federation (DGB), the Catholic trade union association, during the Weimar Republic. He was also a prominent member of the Catholic Centre Party and served briefly as Minister-President of Prussia in 1921. After the Second World War, he was a co-founder of the Christian Social Union in Bavaria.
+
+## Early life and Imperial period
+
+Stegerwald was born the son of a farmer in Greußenheim in Lower Franconia and attended primary school there between 1881 and 1888 before completing an apprenticeship as a carpenter in Würzburg. From 1900 to 1902, Stegerwald studied economics under Lujo Brentano at the Ludwig-Maximilians-Universität München. He began his engagement with the labour movement in 1893, when he joined the Catholic *Gesellenverein*, a non-union Catholic labour society, in Günzburg. From 1896, he was part of the workers' electoral association of the Centre Party in Munich, where he was committed to building the burgeoning Catholic trade union movement. He advanced quickly, becoming honorary chairman of the Central Union of Christian Woodworkers in 1899 and, in 1903, general-secretary of the General Association of German Christian Trade Unions, a position he retained until 1929.
+
+In his political role, he steered a conservative course, supporting the Empire and its colonial ambitions. He attempted to unify the non-socialist unions, such as the Protestant DHV and the Catholic *Gesellvereine*, into a unified organisation to create a counterweight to the socialist free trade unions, though he was unsuccessful. He supported the German war effort in the First World War and served on the board of the Wartime Food Office from 1916 to 1919, as well as in the Prussian House of Lords during the final year of the war.
+
+## Weimar Republic
+
+### Union leader
+
+In the aftermath of the November Revolution, Stegerwald represented the Catholic trade unions in co-signing the 15 November working agreement between the unions and employers' associations. The working agreement set out a common understanding between labour and capital, acknowledging unions as the legitimate representatives of the workers and setting out the basis for collective bargaining agreements and the eight-hour day.
+
+Throughout the following year Stegerwald called for the end to the workers' council movement which was popular among many radical workers, mostly in the socialist unions. In 1919, he became head of the German Trade Union Federation (DGB), the reorganised Christian trade union federation. Initially, it bore a close resemblance to Stegerwald's prewar proposal of a broad non-socialist union federation, including the Catholic unions as well as the liberal Hirsch-Duncker unions and the Protestant white-collar associations. However, the more secular Hirsch-Duncker unions departed in November, leaving the DGB largely dominated by the Catholic unions with a deeply conservative Protestant minority in the German National Association of Commercial Employees (DHV).
+
+As leader of the DGB, Stegerwald struggled to maintain the unity of the federation's conflicting parts. Left-wing elements such as the Catholic miners' and industrial unions resented Stegerwald's conservative orientation and his continuous attempts to find common cause with conservative Protestants rather than seek better conditions for workers. At the same time, he sought constantly to appease the ultraconservative white-collar DHV. In 1927, he sided with the DGB's industrial unions in opposing a widely-agreed wage increase for civil servants. This effort failed and alienated him from the white-collar elements of the DGB, to whom he had previously been a stalwart ally.
+
+After becoming chair of the Centre's Reichstag delegation in January 1929, he resigned from his union positions. He was succeeded as chair of the DGB by Heinrich Imbusch, leader of the miners' union.
+
+### National politics
+
+Stegerwald was elected to both the national and Prussian constituent assembles early in 1919, and became minister for public welfare in Prussia under Social Democratic minister-president Paul Hirsch. At the DGB congress in 1920, Stegerwald proposed the formation of an inter-denominational "People's Party", through which he hoped to unite both Catholics and Protestants in a conservative project opposed to socialism, liberalism, and materialism. The idea was roundly rejected: the right wing of the Centre opposed abandoning their Catholic orientation while the left-wing feared the conservative, anti-labour orientation of such a party. Nonetheless, Stegerwald remained a convinced advocate of a pan-Christian party for the rest of his life.
+
+During the government impasse following the 1921 Prussian state election, the state Centre Party drafted Stegerwald to serve as interim Minister-President. He was tasked with putting together a cabinet including Social Democrats, the Centre, the left-liberal Democrats, and the conservative German People's Party. He was invested by the Landtag with a large majority in April, but soon came to blows with the Social Democrats, who withdrew their support. His cabinet consisted of a minority government of the Centre and Democrats, and negotiations to expand it stalled out toward the end of the year. It finally collapsed in October when the Democrats quit in protest against Stegerwald's proposal to hand the interior ministry to the Social Democrats. He resigned, and in short order a new centre-left government was formed under Social Democrat Otto Braun. This proved to be the end of Stegerwald's involvement in Prussian state politics.
+
+Stegerwald strongly advocated for the Centre to form part of a conservative government in the Reich under Hans Luther, using his role as head of the DGB to claim widespread union support. For this he received a cold reception at the October 1924 congress of the DGB's industrial unions and was attacked by Heinrich Imbusch, head of the miners' union. Ultimately the unions passed a resolution declaring neutrality in political affairs and Stegerwald was forced to walk back his previous statements. When the first Luther cabinet was invested the following January, the majority of the labour representatives among the Centre's Reichstag delegation did not support it. At the Centre Party congress in November 1925 Stegerwald was heckled by Joseph Wirth, outspoken leader of the Centre left, who accused him of giving a pass to nationalist extremism.
+
+After the collapse of the Luther cabinet the following year, Stegerwald's perspective on cooperation with the conservative right changed. He no longer considered the German National People's Party "worthy of carrying Christian spirit in public life", finding the party both anti-Catholic and uninterested in serious advocacy for the Protestant churches or Christian values.
+
+In December 1928, the Centre Party congress was tasked with electing a new party chairman. The executive unanimously recommended Stegerwald. This choice was intended to be a fig leaf to the unions and facilitate Stegerwald's movement out of the DGB leadership into full-time politics, which he had long sought. However, the party national committee rejected Stegerwald: this was at least in part due to the predominance of civil servants on the committee, whose interests Stegerwald had unexpectedly opposed the previous year. He was also opposed for reasons of personality as well as his opposition to church interference in the party. The party hierarchy considered several alternatives and ultimately put forward three names to a floor vote: Stegerwald, his rival in the unions Joseph Joos, and prelate Ludwig Kaas. Stegerwald received 42 votes, Joos 92, and Kaas 182.
+
+Despite this defeat, in January 1929, Stegerwald was elected head of the Centre Reichstag faction. He resigned his position as head of the DGB and in the unions, finally completing his move to full-time politics. In April he became Minister for Transport in the new Great Coalition under Hermann Müller. When the government fell in March 1930, Stegerwald was promoted to Labour Minister by new Chancellor Heinrich Brüning, who had been Stegerwald's assistant and protege earlier in the 1920s.
+
+In this role he was both tasked with implementing the government's harsh austerity response to the Great Depression in Germany, which entailed reductions in wages and rolling back labour rights, while also seeking to maintain the welfare state for the millions of unemployed despite harsh cutbacks. It was also in this time that he achieved the long-sought for cooperation with the moderate and religious elements of the Protestant right following the secession from the DNVP of the Conservative People's Party and CSVD, who collaborated in the Brüning government. Stegerwald remained Labour Minister until the cabinet's dismissal in May 1932.
+
+## Nazi Regime
+
+Following Hitler's appointment as Chancellor in January 1933, Stegerwald was attacked by SA storm troopers at an election rally in Krefeld on 21 February. Police declined to interfere. The following month, he helped lead negotiations with the Nazi Party to secure the Centre's support for the Enabling Act of 1933 which handed *de facto* dictatorial power to Hitler.
+
+From 1933 to 1934 he was indicted, along with Wilhelm Marx and Heinrich Brauns, in the trial of the Cologne *Volksverein Verlag* in his capacity as board member of the National Association for Catholic Germany. He was on the list of politicians to be purged during the Night of the Long Knives, but received warning and disappeared into exile for three months. He retired to Franconia during the regime, and in letters to former colleagues urged church leaders to appease the government for fear of the churches' dissolution.
+
+Following the 20 July plot, he was temporarily arrested under the *Aktion Gitter*. From August to October 1944 he was detained by the Gestapo in Würzburg prison before being released.
+
+## Post-war
+
+Following the end of the Second World War, the American occupation authority appointed the 71-year-old Stegerwald administrator of the Lower Franconia district. He became leader of the "Würzburg group" which proved instrumental in the foundation of the Christian Social Union in Bavaria in the late summer and autumn of 1945. In Stegerwald's speeches and writing it was clear he considered the new party the fulfillment of his "People's Party" concept of 1920, serving as a "bridge" between denominations, classes, and generations; he coined the name "Christian Social Union". Despite the desire of some Catholic labour leaders to found a united labour party with the socialist unions, and of other Catholic leaders to re-found the Centre Party, Stegerwald's model was ultimately taken up nationwide in the form of the Christian Democratic Union of Germany.
+
+Adam Stegerwald died of pneumonia in December 1945. He has been honoured extensively, with streets named after him in numerous towns and cities across Germany. Two political education foundations, the Adam Stegerwald Circle and Stegerwald Foundation, are named in his honour. A neighbourhood in Cologne, *Stegerwaldsiedlung*, is also named for him. Two buildings in Würzburg are named *Adam-Stegerwald-Haus*: the office of the regional CSU branch as well as a student accommodation building. Another building in Königswinter, originally acquired by Jakob Kaiser and used by Catholic welfare and political associations in the Weimar period, was renamed *Adam-Stegerwald-Haus* in 1948 after its acquisition by the new German Trade Union Confederation. After housing a number of different organisations over the decades, the building was sold in 2015 and converted into a nursing home, retaining its name.
