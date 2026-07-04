@@ -1,0 +1,28 @@
+---
+title: "1798 State of the Union Address"
+source: https://en.wikipedia.org/wiki/1798_State_of_the_Union_Address
+domain: 1798-state-of-the-union-address
+license: CC-BY-SA-4.0
+tags: 1798 state of the union address
+fetched: 2026-07-04
+---
+
+# 1798 State of the Union Address
+
+The **1798 State of the Union Address** was delivered by John Adams, second president of the United States, on Saturday, December 8, 1798, in the Congress Hall of Philadelphia, Pennsylvania. Adams compares the sickness affecting various coastal cities in 1797 to the dispensations of the Tribulation. He called upon the Congress to pass public health laws to prevent the spread of disease through interstate commerce. He also suggests the establishment of "a system which, while it may tend to preserve the general health, may be compatible with the interests of commerce and the safety of the revenue."
+
+Adams attributes the subsidence of disease to the Divine Providence of the Supreme Being. He notes the enthusiasm and nationalism of Americans in dealing with foreign aggression; notably from France by sea and Spain by land through illegal garrisons in the southern U.S. frontiers.
+
+## French aggression
+
+Adams begins his address by solemnly expressing his doubts concerning negotiations in Paris, accusing France of insincerity. In 1796 the French Directory rejected Charles Cotesworth Pinckney as the United States Minister Plenipotentiary to France. The Directory passed a decree in January 1797 allowing the "capture and condemnation neutral vessels and their cargoes if any portion of the latter are of British fabric or produce," essentially justifying the already institutionalized impressment of American sailors by the French Navy in international waters. Adams refers to the decree as an, "unequivocal act of war on the commerce of the nations it attacks," and states that if the U.S. has the means it can "reconcile nothing with their interest and honor but a firm resistance."
+
+Adams expresses a need to invigorate and extend the U.S. *measure of defense*, alluding to the United States Navy, in light of French conduct. Adams parallels his pugnacious comments by confirming his desire for an amicable end to hostilities and insistence that preparation for war is the only way to insure peace. Another ambassador will not be sent to France without, "more determinate assurances that he would be received," because his rejection would be an, "act of humiliation." Before Adams is willing to restore formal relations, France must end depredations and pay reparations for past grievances, "heretofore inflicted on our commerce."
+
+The necessity of maritime protection through a navy is formally expressed and exalted through the statements, "no country ever experienced more sudden and remarkable advantages from any measure of policy than we have derived from the arming for our maritime protection and defense," and "We ought...to...increase of our Navy to a size sufficient to guard our coast and protect our trade."
+
+## Demarcation of Spanish–American border
+
+The illegal Spanish garrisons in the Natchez and Walnut Hills, mentioned in Adams' previous address, have been evacuated. Two commissioners, one from the United States and one from Spain, outline the 31st degree of north latitude, the border between the United States and Spain.
+
+Southern Indians, most likely Natchez, are preventing official demarcation of the border, either for personal reasons or through clandestine Spanish encouragement. Adams decides that maintaining a commissioner in remote areas of the nation is not worth the cost and states that the commissioner should be recalled.

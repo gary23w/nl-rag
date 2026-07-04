@@ -1,0 +1,782 @@
+---
+title: "1792 United States presidential election"
+source: https://en.wikipedia.org/wiki/1792_United_States_presidential_election
+domain: 1804-united-states-presidential-election
+license: CC-BY-SA-4.0
+tags: 1804 united states presidential election
+fetched: 2026-07-04
+---
+
+# 1792 United States presidential election
+
+Presidential elections were held in the United States from November 2 to December 5, 1792. Incumbent President George Washington was elected to a second term by a unanimous vote in the electoral college, while John Adams was reelected as vice president. Washington was essentially unopposed, but Adams faced a competitive re-election against Governor George Clinton of New York.
+
+Electoral rules of the time required each presidential elector to cast two votes without distinguishing which was for president and which for vice president. The recipient of the most votes would then become president, and the runner-up vice president. The Democratic-Republican Party, which had organized in opposition to the policies of Secretary of the Treasury Alexander Hamilton, supported Clinton for the position of vice president. Adams, meanwhile, was backed by the Federalist Party in his bid for another term. Neither party had fully organized, and partisan divisions had not yet solidified.
+
+Washington received 132 electoral votes, one from each elector. Adams won 77 electoral votes, enough to win re-election. Clinton finished in third place with 50 electoral votes, taking his home state of New York as well as three Southern states. Two other candidates won the five remaining electoral votes. This election was the first in which each of the original 13 states appointed electors, as did the newly added states of Kentucky and Vermont.
+
+## Candidates
+
+In 1792, presidential elections were still conducted according to the original method established under the U.S. Constitution. Under this system, each elector cast two votes: the candidate who received the greatest number of votes (so long as they won a majority) became president, while the runner-up became vice president. The Twelfth Amendment would eventually replace this system, requiring electors to cast one vote for president and one vote for vice president, but this change did not take effect until 1804. Because of this, it is difficult to use modern-day terminology to describe the relationship among the candidates in this election.
+
+Washington is generally held by historians to have run unopposed. Indeed, the incumbent president enjoyed bipartisan support and received one vote from every elector. The choice for vice president was more divisive. The Federalist Party threw its support behind the incumbent vice president, John Adams of Massachusetts, while the Democratic-Republican Party backed the candidacy of New York Governor George Clinton. Because few doubted that Washington would receive the greatest number of votes, Adams and Clinton were effectively competing for the vice presidency; under the letter of the law, however, they were technically candidates for president competing against Washington.
+
+### Federalist nomination
+
+- George Washington, President of the United States (1789–1797)
+- John Adams, Vice President of the United States (1789–1797)
+
+- (Vice PresidentJohn Adamsfrom Massachusetts)Vice President **John Adams** from Massachusetts
+- (PresidentGeorge Washingtonfrom Virginia)President **George Washington** from Virginia
+
+### Democratic-Republican nomination
+
+- George Clinton, Governor of New York (1777–1795, 1801–1804)
+- George Washington, President of the United States (1789–1797)
+
+Born out of the Anti-Federalist faction that had opposed the Constitution in 1788, the Democratic-Republican Party was the main opposition to the agenda of Treasury Secretary Alexander Hamilton. They had no chance of unseating Washington, but hoped to win the vice presidency by defeating the incumbent, Adams. Many Democratic-Republicans would have preferred to nominate Thomas Jefferson, their ideological leader and Washington's Secretary of State. However, this would have cost them the state of Virginia, as electors were not permitted to vote for two candidates from their home state and Washington was also a Virginian. Clinton, the Governor of New York and a former anti-Federalist leader, became the party's nominee after he won the backing of Jefferson and James Madison. Clinton was from an electorally important swing state, and he convinced party leaders that he would be a stronger candidate than another New Yorker, Senator Aaron Burr. A group of Democratic-Republican leaders met in Philadelphia in October 1792 and selected Clinton as the party's vice presidential candidate.
+
+- (GovernorGeorge Clintonof New York)Governor **George Clinton** of New York
+- (PresidentGeorge Washingtonfrom Virginia)President **George Washington** from Virginia
+
+## Campaign
+
+By 1792, a party division had emerged between Federalists led by Treasury Secretary Alexander Hamilton, who desired a stronger federal government with a leading role in the economy, and the Democratic-Republicans led by Secretary of State Thomas Jefferson and Representative James Madison of Virginia, who favored states' rights and opposed Hamilton's economic program. Madison was at first a Federalist until he opposed the establishment of Hamilton's First Bank of the United States in 1791. He formed the Democratic-Republican Party along with Anti-Federalist Thomas Jefferson in 1792.
+
+The elections of 1792 were the first ones in the United States to be contested on anything resembling a partisan basis. In most states, the congressional elections were recognized in some sense as a "struggle between the Treasury department and the republican interest," to use the words of Jefferson strategist John Beckley. In New York, the race for governor was fought along these lines. The candidates were Chief Justice John Jay, a Hamiltonian, and incumbent George Clinton, the party's vice presidential nominee.
+
+Although Washington had been considering retiring, both sides encouraged him to remain in office to bridge factional differences. Washington was supported by practically all sides throughout his presidency and gained more popularity with the passage of the Bill of Rights. However, the Democratic-Republicans and the Federalists contested the vice-presidency, with incumbent John Adams as the Federalist nominee and George Clinton as the Democratic-Republican nominee. Federalists attacked Clinton for his past association with the anti-Federalists. Adams easily secured re-election.
+
+## Results
+
+Congress counted the electoral results on February 13, 1793, with John Adams opening and reading the votes in his role as President of the Senate. Washington was re-elected unanimously, receiving one vote from each of the 132 participating electors. Adams received votes from 77 electors and Clinton 50; the four electors from Kentucky voted for Thomas Jefferson, and one South Carolina elector voted for Aaron Burr. The distribution of the electoral vote between the four runners-up showed a high degree of party discipline, with only two electors voting contrary to the majority in their state. Adams received the support of New England, South Carolina, and the Mid-Atlantic states (excepting New York), while Clinton carried New York and most of the South. Adams as the second-place finisher was elected vice president, serving until his election to the presidency in 1797; each of his three rivals would go on to serve as vice president in turn, Jefferson from 1797 to 1801 (when he alike succeeded to the presidency), Burr from 1801 to 1805, and Clinton from 1805 until his death in 1812.
+
+Nine of the 15 states eligible to choose representatives to the electoral college did so by a vote of the state legislature; the remaining six employed some form of popular vote. Of these, complete returns from Maryland, Massachusetts, New Hampshire, and Pennsylvania survive; surviving returns from Virginia are incomplete, and popular vote records from Kentucky are not known to exist. Of the states with complete returns, only Pennsylvania saw real partisan competition; a Federalist electoral slate pledged to Washington and Adams was selected, although one elector voted for Washington and Clinton. At the time, party organizations were still in their infancy, and the partisan allegiance of the candidates was not always evident: it is therefore difficult to say whether the Pennsylvania vote for Clinton was an instance of a faithless elector, or an elector voting as pledged.
+
+### Electoral vote
+
+| Presidential candidate | Party | Home state | Popular vote(a) | Electoral vote(b) |   |
+|---|---|---|---|---|---|
+| Count | Percentage |   |   |   |   |
+| George Washington (incumbent) | Independent | Virginia | 11,176 | 100% | 132 |
+| John Adams | Federalist | Massachusetts | — | — | 77 |
+| George Clinton | Democratic-Republican | New York | — | — | 50 |
+| Thomas Jefferson | Democratic-Republican | Virginia | — | — | 4 |
+| Aaron Burr | Democratic-Republican | New York | — | — | 1 |
+| Total | 11,176 | 100.0% | 132 |   |   |
+| Needed to win | 67 |   |   |   |   |
+
+(a) *Only 6 of the 15 states chose electors by any form of popular vote, while pre-Twelfth Amendment electoral vote rules obscure the intentions of the voters, and those states that did choose electors by popular vote restricted the vote via property requirements.* (b) *Two electors from Maryland and one elector from Vermont did not cast votes.*
+
+### Popular vote
+
+| Slate | Popular Vote(a), (b), (c), (d) |   |
+|---|---|---|
+| Count | Percentage |   |
+| **Federalist** | 6,818 | 87.6% |
+| **Democratic-Republican** | 962 | 12.4% |
+| **Total** | 7,780 | 100% |
+
+**Source (Popular Vote):** *A New Nation Votes: American Election Returns 1787-1825*
+
+(a) *Only 6 of the 15 states chose electors by any form of popular vote.* (b) *Pre-Twelfth Amendment electoral vote rules obscure the intentions of the voters* (c) *Those states that did choose electors by popular vote had widely varying restrictions on suffrage via property requirements.* (d) *Returns for several states are incomplete.*
+
+### Popular vote by state
+
+Elections in this period were vastly different from modern day presidential elections. The actual presidential candidates were rarely mentioned on tickets and voters were voting for particular electors who were pledged to a particular candidate. There was sometimes confusion as to who the particular elector was actually pledged to. Results are reported as the highest result for an elector for any given faction. For example, if three Federalist electors received 100, 50, and 25 votes, Federalist electors would be recorded as having 100 votes. Confusion surrounding the way results are reported may lead to discrepancies between the sum of all state results and national results.
+
+In Massachusetts, the best performing elector candidate for the Eastern District, Thomas Rice, was not selected by the Massachusetts General Court to be an elector. Rice was a Federalist and his returns have been included into the state total below instead of the second best performing elector candidate.
+
+The totals for Kentucky, Pennsylvania, and Virginia appear to be incomplete. In several states candidates of unknown affiliation received votes.
+
+George Washington
+
+Federalist
+
+George Washington
+
+Democratic-Republican
+
+Margin
+
+Not cast
+
+Citation
+
+State
+
+Electoral
+
+votes
+
+#
+
+%
+
+Electoral
+
+votes
+
+#
+
+%
+
+Electoral
+
+votes
+
+#
+
+%
+
+Connecticut
+
+9
+
+No popular vote
+
+9
+
+No popular vote
+
+-
+
+-
+
+-
+
+-
+
+Delaware
+
+3
+
+No popular vote
+
+3
+
+No popular vote
+
+-
+
+-
+
+-
+
+-
+
+Georgia
+
+4
+
+No popular vote
+
+4
+
+No popular vote
+
+-
+
+-
+
+-
+
+-
+
+Kentucky
+
+4
+
+No data
+
+-
+
+No data
+
+4
+
+-
+
+-
+
+Maryland
+
+8 (10)
+
+898
+
+100
+
+8
+
+No data
+
+-
+
+898
+
+100
+
+2
+
+Massachusetts
+
+16
+
+4,138
+
+100
+
+16
+
+No ballots
+
+-
+
+4,138
+
+100
+
+-
+
+New Hampshire
+
+6
+
+1,782
+
+100
+
+6
+
+No ballots
+
+-
+
+1,782
+
+100
+
+-
+
+New Jersey
+
+7
+
+No popular vote
+
+7
+
+No popular vote
+
+-
+
+-
+
+-
+
+-
+
+New York
+
+12
+
+No popular vote
+
+-
+
+No popular vote
+
+12
+
+-
+
+-
+
+-
+
+North Carolina
+
+12
+
+No popular vote
+
+-
+
+No popular vote
+
+12
+
+-
+
+-
+
+-
+
+Pennsylvania
+
+15
+
+The two best performing electors were supported by both groups
+
+-
+
+-
+
+Rhode Island
+
+4
+
+No popular vote
+
+4
+
+No popular vote
+
+-
+
+-
+
+-
+
+-
+
+South Carolina
+
+8
+
+No popular vote
+
+7
+
+No popular vote
+
+1
+
+-
+
+-
+
+-
+
+Vermont
+
+3 (4)
+
+No popular vote
+
+3
+
+No popular vote
+
+-
+
+-
+
+1
+
+-
+
+Virginia
+
+21
+
+No data
+
+-
+
+962
+
+21
+
+-
+
+-
+
+TOTALS:
+
+135
+
+6,818
+
+96.16
+
+67
+
+962
+
+3.84
+
+50
+
+26,385
+
+92.32
+
+3
+
+TO WIN:
+
+68
+
+### Electoral votes by state
+
+The states chose 135 electors, out of whom 132 cast ballots. (Two electors from Maryland and one from Vermont were absent and did not vote.) As per the terms of the unamended constitution, each elector was permitted two votes for president, with a majority of "the whole number of electors appointed" necessary to elect a president. Each of the participating electors cast one vote for Washington, who was elected president. The electors were split on their second choice: Adams received 77 votes to Clinton's 50, enough to secure a second-place finish behind Washington and the vice presidency.
+
+State
+
+Electors
+
+Electoral
+
+votes
+
+GW
+
+Tooltip George Washington
+
+JA
+
+Tooltip John Adams
+
+GC
+
+Tooltip George Clinton (vice president)
+
+TJ
+
+Tooltip Thomas Jefferson
+
+AB
+
+Tooltip Aaron Burr
+
+Blank
+
+Connecticut
+
+9
+
+18
+
+9
+
+9
+
+—
+
+—
+
+—
+
+—
+
+Delaware
+
+3
+
+6
+
+3
+
+3
+
+—
+
+—
+
+—
+
+—
+
+Georgia
+
+4
+
+8
+
+4
+
+—
+
+4
+
+—
+
+—
+
+—
+
+Kentucky
+
+4
+
+8
+
+4
+
+—
+
+—
+
+4
+
+—
+
+—
+
+Maryland
+
+10
+
+20
+
+8
+
+8
+
+—
+
+—
+
+—
+
+4
+
+Massachusetts
+
+16
+
+32
+
+16
+
+16
+
+—
+
+—
+
+—
+
+—
+
+New Hampshire
+
+6
+
+12
+
+6
+
+6
+
+—
+
+—
+
+—
+
+—
+
+New Jersey
+
+7
+
+14
+
+7
+
+7
+
+—
+
+—
+
+—
+
+—
+
+New York
+
+12
+
+24
+
+12
+
+—
+
+12
+
+—
+
+—
+
+—
+
+North Carolina
+
+12
+
+24
+
+12
+
+—
+
+12
+
+—
+
+—
+
+—
+
+Pennsylvania
+
+15
+
+30
+
+15
+
+14
+
+1
+
+—
+
+—
+
+—
+
+Rhode Island
+
+4
+
+8
+
+4
+
+4
+
+—
+
+—
+
+—
+
+—
+
+South Carolina
+
+8
+
+16
+
+8
+
+7
+
+—
+
+—
+
+1
+
+—
+
+Vermont
+
+4
+
+8
+
+3
+
+3
+
+—
+
+—
+
+—
+
+2
+
+Virginia
+
+21
+
+42
+
+21
+
+—
+
+21
+
+—
+
+—
+
+—
+
+TOTAL
+
+135
+
+270
+
+132
+
+77
+
+50
+
+4
+
+1
+
+6
+
+TO WIN
+
+67
+
+67
+
+**Source:** *A New Nation Votes: American Election Returns 1787-1825*
+
+|   |   |   |
+|---|---|---|
+| **Washington** |   | 100% |
+| Others |   | 0.0% |
+
+|   |   |   |
+|---|---|---|
+| **Washington** |   | 100% |
+| Adams |   | 58.3% |
+| Clinton |   | 37.9% |
+| Jefferson |   | 3.0% |
+| Burr |   | 0.8% |
+
+### Maps
+
+- (Electoral College result (first vote))Electoral College result (first vote)
+- (Electoral College result (second vote))Electoral College result (second vote)
+- (Map of presidential election results by county, shaded according to the vote share of the highest result for an elector of any given party)Map of presidential election results by county, shaded according to the vote share of the highest result for an elector of any given party
+- (Map of presidential election results by electoral district, shaded according to the vote share of the highest result for an elector of any given party. Electoral boundaries for Kentucky, North Carolina, and data for Massachusetts could not be found)Map of presidential election results by electoral district, shaded according to the vote share of the highest result for an elector of any given party. Electoral boundaries for Kentucky, North Carolina, and data for Massachusetts could not be found
+
+## Electoral college selection
+
+The Constitution, in Article II, Section 1, provided that the state legislatures should decide the manner in which their Electors were chosen. Different state legislatures chose different methods:
+
+| Method of choosing electors | State(s) |
+|---|---|
+| state is divided into electoral districts, with one elector chosen per district by the voters of that district | Kentucky Virginia |
+| each elector chosen by voters statewide | Maryland Pennsylvania |
+| two congressional districts chose five electors each; the remaining two districts chose three electorseach elector chosen by majority vote of voters in congressional districtif an insufficient number of electors are chosen by majority vote from a congressional district, remaining electors would be appointed by the state legislature | Massachusetts |
+| each elector chosen by majority vote of voters statewideif an insufficient number of electors are chosen by majority vote, runoff is held between the top 2*n* vote-getters, where *n* is the number of vacancies remaining | New Hampshire |
+| each elector appointed by the state legislature | Connecticut Delaware Georgia New Jersey New York North Carolina Rhode Island South Carolina Vermont |
