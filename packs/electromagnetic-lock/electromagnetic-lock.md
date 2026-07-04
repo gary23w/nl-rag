@@ -1,0 +1,98 @@
+---
+title: "Electromagnetic lock"
+source: https://en.wikipedia.org/wiki/Electromagnetic_lock
+domain: electromagnetic-lock
+license: CC-BY-SA-4.0
+tags: electromagnetic lock
+fetched: 2026-07-04
+---
+
+# Electromagnetic lock
+
+An **electromagnetic lock**, **magnetic lock**, or **maglock** is a locking device that consists of an electromagnet and an armature plate.
+
+## Operation
+
+The principle behind an electromagnetic lock is the use of electromagnetism to lock a door when energized. The holding force should be collinear with the load, and the lock and armature plate should be face-to-face to achieve optimal operation.
+
+The magnetic lock relies upon some of the basic concepts of electromagnetism. Essentially it consists of an electromagnet attracting a conductor with a force large enough to prevent the door from being opened. In a more detailed examination, the device makes use of the fact that a current through one or more loops of wire (known as a solenoid) produces a magnetic field. This works in free space, but if the solenoid is wrapped around a ferromagnetic core such as soft iron the effect of the field is greatly amplified. This is because the internal magnetic domains of the material align with each other to greatly enhance the magnetic flux density.
+
+## Theory
+
+Using Ampère's circuital law, it can be shown that the magnetic flux density B induced by a solenoid of effective length L with a current I through N loops is given by the equation:
+
+$B={\frac {\mu _{0}\mu _{r}IN}{L}}$
+
+The force **F** between the electromagnet and the armature plate with surface area **S** exposed to the electromagnet is given by the equation:
+
+$F={\frac {B^{2}S}{2\mu _{0}}}$
+
+In both equations, $\mu _{0}$ represents the permeability of free space and $\mu _{r}$ the relative permeability of the core.
+
+Although the actual performance of a magnetic lock may differ substantially due to various losses (such as flux leakage between the electromagnet and the conductor), the equations give a good insight into what is necessary to produce a strong magnetic lock. For example, the force of the lock is proportional to the square of the relative permeability of the magnetic core. Given the relative permeability of a material can vary from around 250 for cobalt to around 5000 for soft iron and 7000 for silicon–iron, the choice of magnetic core can therefore have an important impact upon the strength of a magnetic lock. Also relevant is the choice of current, number of loops and effective length of the electromagnet.
+
+## Technical comparison
+
+Magnetic locks possess a number of advantages over conventional locks and electric strikes. For example, their durability and quick operation can make them valuable in a high-traffic office environment where electronic authentication is necessary.
+
+### Advantages
+
+- Remote operation: Magnetic locks can be turned on and off remotely by adjusting the power source
+- Easy to install: Magnetic locks are generally easier to install than other locks since there are no interconnecting parts
+- Quick to operate: Magnetic locks unlock instantly when the power is cut, allowing for quick release in comparison to other locks
+- Sturdy: Magnetic locks may also suffer less damage from multiple blows than do conventional locks. If a magnetic lock is forced open with a crowbar, it will often do little or no damage to the door or lock. There are no moving parts in an electromagnetic lock to break.
+
+### Disadvantages
+
+- Requires a constant power source in order to be secure
+- Can de-energize in the event of a power outage, disabling security
+- Expensive in comparison to mechanical locks
+- Requires additional hardware for safe operation
+
+## Installation
+
+The magnetic lock is suitable for both in-swinging and out-swinging doors. Brackets (L bracket, LZ bracket, U bracket) are used to orient the armature for use with both applications. Filler plates are also used to provide a large, flat mounting area on the door frame when the electromagnet is larger than the available mounting space on the door frame due to the frame's geometry.
+
+The magnetic lock should always be installed on the secure side of the door. Most installations are surface mounted. For safety, magnetic lock, cables, and wires should be routed through the door frame or flush mount with wire moulding.
+
+Installation is straightforward. With in-swinging applications, the electromagnet is typically installed in the opening corner of the door at the door's header. Maglocks can also be installed vertically in the door opening when they are furnished with a full length housing. With this configuration the armature is through-bolted through the door and oriented to mate with the face of the electromagnet. The armature plate and electromagnet must touch in order to provide locking holding force.
+
+With out-swinging applications, the electromagnet is typically installed on the side of the door header. In this configuration, the armature is mounted on a Z-shaped bracket that orients the armature to mate with the electromagnet.
+
+Magnetic locks are almost always part of a complete electronic security system. Such a system may simply consist of an attached keycard reader or may be more complex, involving connection to a central computer that monitors the building's security. Whatever the choice of locking system, fire safety is an important consideration.
+
+Other variations and improvements on the electromagnetic locks have been developed. The most remarkable is the shear lock, where the armature does not directly pull off the face, but the load is instead in shear, like a mechanical stop. The shear magnetic lock allows a door to swing in both directions, as opposed to the original (and now ubiquitous) direct pull type, which normally works either in an in-swing or out-swing configuration. In order to provide the shear magnetic lock with the appropriate holding force, then two pins lock the armature onto the magnet itself, and ensure that the magnet locks into place.
+
+An improved "shear" electromagnetic lock was patented on May 2, 1989, by Arthur, Richard and David Geringer of Security Door Controls, an access control hardware manufacturing firm. The device outlined in their designs was the same in principle as the modern magnetic lock consisting of an electromagnet and an armature plate. The patent did not make any reference to the manufacturing methods of the electromagnet and detailed several variations on the design, including one that used a spring-loaded armature plate to bring the armature plate closer to the electromagnet. The patent expired on May 2, 2009.
+
+## Holding force
+
+A magnetic lock has a metal plate surrounded by a coil of wire that can be magnetized. The number of coils determines the holding force which characterizes the lock:
+
+- Micro Size: 275 lbf (1,220 N) holding force.
+- Mini Size: 650 lbf (2,900 N) holding force
+- Midi Size: 800 lbf (3,600 N) holding force
+- Standard Size: 1,200 lbf (5,300 N) holding force.
+- Shear Lock: 2,000 lbf (8,900 N) holding force
+
+The standard size electromagnetic lock is used as a gate lock.
+
+## Electrical requirements
+
+The power for an electromagnet lock is DC (direct current), around 5–6 W. The current is around 0.5 A when the voltage supply is 12 VDC and 0.25 A when using 24 VDC (varies between manufacturers and if there are one or two coils in the block). It is also recommended to verify that the magnetic lock carries the UL mark. Generally, the specification of the electromagnet lock is dual voltage of 12/24 VDC. If using a rectifier to convert AC power, a full wave bridge rectifier should be used.
+
+## Fail-safe vs fail-secure
+
+Electric locking devices can be either "fail safe" or "fail secure". A fail-secure locking device remains locked when power is lost. Fail-safe locking devices are unlocked when de-energized. Direct pull electromagnetic locks are inherently fail-safe. Typically the electromagnet portion of the lock is attached to the door frame and a mating armature plate is attached to the door. The two components are in contact when the door is closed. When the electromagnet is energized, a current passing through the electromagnet creates a magnetic flux that causes the armature plate to attract to the electromagnet, creating a locking action. Because the mating area of the electromagnet and armature is relatively large, the force created by the magnetic flux is strong enough to keep the door locked even under stress.
+
+Typical single door electromagnetic locks are offered in both 600 lbf (2,700 N) and 1,200 lbf (5,300 N) dynamic holding force capacities. A "fail safe" magnetic lock requires power to remain locked and typically is not suitable for high security applications, because it is possible to disable the lock by disrupting the power supply. Despite this, by adding a magnetic bond sensor to the lock and by using a power supply that includes a battery backup capability, some specialized higher security applications can be implemented. Electromagnetic locks are well suited for use on emergency exit doors that have fire safety applications because they have no moving parts and are therefore less likely to fail than other types of electric locks, such as electric strikes.
+
+The strength of today's magnetic locks compares well with that of conventional door locks and they cost less than conventional light bulbs to operate. There are additional pieces of release hardware installed in a typical electromagnetic locking system. Since electromagnetic locks do not interact with levers or door knobs on a door, typically a separate release button that cuts the lock power supply is mounted near the door. This button usually has a timer that, once the button is pressed, keeps the lock unlocked for either 15 or 30 seconds in accordance with NFPA fire codes. Additionally a second release is required by fire code. Either a motion sensor or crash bar with internal switch is used to unlock the door on the egress side of the door automatically.
+
+## History
+
+The first modern direct-pull electromagnetic lock was designed by Sumner "Irving" Saphirstein in 1969 for initial installation on doors at the Montreal Forum. Fire concerns by local authorities in locking the doors at the Forum prompted management to find a locking solution that would be safe during a fire incident. Saphirstein initially proposed to use a linear stack of door holders to work as an electromagnetic lock. These door holders were traditionally used to hold doors open, but in this application Saphirstein believed that they could be packaged and adapted to work as a fail-safe lock. After a successful prototype and installation at the Forum, Saphirstein continued evolving and improving the design and established the Locknetics company to develop accessories and control circuits for electromagnetic locks.
+
+Under difficult business conditions, Locknetics was later sold to the Ives Door Hardware company and later, resold to the Harrow company. Much later this division was then again sold to Ingersoll Rand Security Technologies in 1999. The division was recently closed in 2007 and transferred to other divisions within Ingersoll Rand Security. Employees that were associated with activities at Locknetics, went on to form other electromagnetic lock companies including the Dynalock Corporation.
+
+Saphirstein continued developing electromagnetic locking technologies at other companies he initiated including Dortronics (later purchased by Sag Harbor Industries), Delta Controls (first purchased by the Lori Lock Company and then later purchased by Hanchett Entry Systems) and Delt-Rex Door Controls, all of which were located in Connecticut. Other engineers also left these companies to form their own manufacturing firms in electronic locking, including Highpower Security Products LLC in Meriden, Connecticut. Many other firms in both the US, Canada, and throughout Asia were later established to create additional product offerings for the direct-pull electromagnetic lock.

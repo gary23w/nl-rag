@@ -1,0 +1,74 @@
+---
+title: "Alarm device"
+source: https://en.wikipedia.org/wiki/Alarm_device
+domain: electromagnetic-lock
+license: CC-BY-SA-4.0
+tags: electromagnetic lock
+fetched: 2026-07-04
+---
+
+# Alarm device
+
+An **alarm device** is a mechanism that gives an audible, visual, combination, or other kind of alarm signal to alert someone to a problem or condition that requires urgent attention.
+
+## Etymology
+
+The word *alarm* comes from the Old French *a l'arme* meaning "to the arms", or "to the weapons", telling armed men to pick up their weapons and get ready for action because an enemy may have suddenly appeared.
+
+The word *alarum* is an archaic form of *alarm*. It was sometimes used as a call to arms in the stage directions of Elizabethan dramas. The term comes from the Italian *all'armi* and appears 89 times in Shakespeare's First Folio. Often explained as the off-stage sounds of conflict or disturbance, recent research suggests a bell or drum may have been used to rouse soldiers from sleep.
+
+## History and development
+
+Early alarm devices were often bells, drums, other musical instruments, or any items which made unusual loud noises that attracted the attention of the surrounding population.
+
+Whistles were used by police in the 19th century. Steam whistles have been used on locomotives, ships, and in factories as alarm devices.
+
+With the advent of electricity, a variety of other alerting devices have been invented, such as buzzers, klaxons, sirens, horns, flashing and coloured lights, and other all-purpose alarms.
+
+Alarm devices can be fitted to buildings as well as vehicles. Many buildings are fitted with fire alarms, ranging from a self-contained domestic smoke detector to a sophisticated alarm system that can operate building fire fighting systems automatically to extinguish fires with water or inert gases.
+
+Many industries have developed standards for alarm devices, and the colours red, blue and amber are generally recognized as alarm device-related colours, with flashing lights often indicating urgent conditions.
+
+## Responses to an alarm
+
+Human reactions to an alarm will often depend on upbringing, psychological training, or the behavior of others in the environment. Consequently, the ability to test an alarm and hold regular drills to practice an appropriate response may be provided as part of an alarm system.
+
+Alarm devices that are intended to cause the evacuation of an occupied building, such as fire alarms, may be deliberately designed to make remaining in the space difficult or even painful in order to encourage occupants to leave.
+
+Some alarms may startle and cause a fight-or-flight response in humans; a person under this mindset will panic and either flee the perceived danger or attempt to eliminate it, often ignoring rational thought in either case. A person in such a state can be characterized as "alarmed".
+
+## False alarms
+
+With any kind of alarm, people must balance between the danger of false alarms (called "false positives") — the signal going off in the absence of a problem — or an alarm failing to signal an actual problem (called a "false negative"). False alarms can waste resources expensively and can even be dangerous. For example, false alarms of a fire can waste firefighter manpower, making them unavailable for a real fire, and risk injury to firefighters and others as the fire engines race to the alleged fire's location. In addition, false alarms may acclimatise people to ignore alarm signals, and thus possibly to ignore an actual emergency: Aesop's fable of *The Boy Who Cried Wolf* exemplifies this problem.
+
+A false alarm is one of the most significant issues with conventional alarm systems. They can be triggered for several reasons, such as the movement of pets, typing in the wrong security codes, or loud sounds from windows or doors. In the case of fire alarms, aerosol sprays, smoking, or burning food can all lead to a false alarm.
+
+Many avoid the risk of false alarms by ensuring their alarms are secured in an appropriate location, such as placing a smoke detector or fire alarm away from the kitchen where smoke from burned food or large quantities of steam which may trigger a false alarm are common occurrences. In the case of a security alarm, an additional monitoring station which assesses whether there is a legitimate need for help can reduce false alarms.
+
+## Devices
+
+There are many kinds of alarm devices. The most common types include:
+
+- an alarm clock that sounds an alarm at a pre-set time, often used to wake a person up or remind them of an event.
+- a fire alarm which is used to give occupants of a building early warning of a potential fire and give them time to evacuate.
+- warning devices on a vehicle that sound when it is moving in an unexpected direction, such as reversing,
+- a siren, often accompanied by flashing coloured lights, on emergency vehicles responding to an emergency
+
+Alarm devices, by category, include:
+
+- burglar alarms, designed to warn of burglaries. This is often a silent alarm; law enforcement or guards are warned without alerting the burglar, which increases the chances of stopping the theft while in progress.
+- alarm clocks can beep, buzz or ring at a set time to wake a person up or for other reminders
+- distributed control systems (DCS), found in nuclear power plants, refineries and chemical facilities, also generate alarms to direct the operator's attention to an important event that they need to address.
+- alarms in an operation and maintenance (O&M) monitoring system, which alerts an operator to a malfunction of a particular part of the system under monitoring.
+  - first-out alarm
+- safety alarms, which go off if a dangerous condition occurs. Common public safety alarms include:
+  - civil defense siren, also known as *tornado sirens* or *air raid sirens*
+  - fire alarm systems
+    - fire alarm notification appliance
+    - "Multiple-alarm fire", a locally specific measure of the severity of a fire and the fire-department reaction required.
+    - smoke detector
+  - car alarms
+  - autodialer alarm, also known as *community alarm*
+  - personal alarm
+  - Video alarm verification systems provides instant notifications upon the detection of a possible threat verified through a video feed.
+  - tocsin – a historical alarm mechanism

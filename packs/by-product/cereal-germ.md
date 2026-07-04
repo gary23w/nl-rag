@@ -1,0 +1,22 @@
+---
+title: "Cereal germ"
+source: https://en.wikipedia.org/wiki/Cereal_germ
+domain: by-product
+license: CC-BY-SA-4.0
+tags: by-product
+fetched: 2026-07-04
+---
+
+# Cereal germ
+
+The **germ** of a cereal grain is the part that develops into a plant; it is the seed embryo. Along with bran, germ is often a by-product of the milling that produces refined grain products. Cereal grains and their components, such as wheat germ oil, rice bran oil, and maize bran, may be used as a source from which vegetable oil is extracted, or used directly as a food ingredient. The germ is retained as an integral part of whole-grain foods. Non-whole grain methods of milling are intended to isolate the endosperm, which is ground into flour, with removal of both the husk (bran) and the germ. Removal of bran produces a flour with a white rather than a brown color and eliminates fiber. The germ is rich in polyunsaturated fats (which have a tendency to oxidize and become rancid on storage) and so germ removal improves the storage qualities of flour.
+
+## Wheat germ
+
+Wheat germ or wheatgerm is a concentrated source of several essential nutrients, including vitamin E, folate (folic acid), phosphorus, thiamin, zinc, and magnesium, as well as essential fatty acids and fatty alcohols. It is a good source of fiber. White bread is made using flour that has had the germ and bran removed. Wheat germ can be added to protein shakes, casseroles, muffins, pancakes, cereals, yogurt, smoothies, cookies, and other goods. Wheat germ can become rancid if not properly stored in a refrigerator or freezer and away from sunlight. Some manufacturers prevent rancidity by storing wheat germ in vacuum-sealed glass containers, or by placing an oxygen-absorbing sachet inside air-tight packaging.
+
+## Other uses
+
+In molecular biology, wheat germ extract is used to carry out cell-free *in vitro* translation experiments: the plant embryo contains all the macromolecular components necessary for translating mRNA into proteins, but relatively low levels of its own mRNA.
+
+Wheat germ is also useful in biochemistry since it contains lectins that bind strongly to certain glycoproteins; therefore, it can be used to isolate such proteins.
