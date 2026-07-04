@@ -1,0 +1,22 @@
+---
+title: "Adolf Bieringer"
+source: https://en.wikipedia.org/wiki/Adolf_Bieringer
+domain: adolf-müller-politician-born-1916
+license: CC-BY-SA-4.0
+tags: adolf müller politician, born 1916
+fetched: 2026-07-04
+---
+
+# Adolf Bieringer
+
+**Adolf Bieringer** (29 August 1928 – 12 February 1988) was a German politician, representative of the German Christian Democratic Union.
+
+In March 1945 Bieringer was Luftwaffenhelfer in Rastatt. After he finished Abitur in 1948 he studied jurisprudence until 1956. He was delegate to the Kreistag of Bruchsal from 1959 to 1973 and afterwards delegate to the Kreistag of Karlsruhe. In addition, he was a member of the Bundestag in 1961.
+
+In 1964, he was elected mayor of Bruchsal. His main achievements were the reconstruction of the chateau of Bruchsal (which had been destroyed in 1945), the merge of 5 smaller towns surrounding Bruchsal, and the redesign of the City-Centre of Bruchsal in the 1980s (which had started in the 1970s and was completed by his successor Bernd Doll).
+
+In 1985 he became President of the Regierungsbezirk Karlsruhe.
+
+He became an Honorary citizen of Bruchsal in November 1987.
+
+Bieringer started to engage for environment protection which was one of his last topics before he had to stop work due to serious illness at the end of 1987. He died in February 1988.

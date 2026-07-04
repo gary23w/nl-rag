@@ -1,0 +1,26 @@
+---
+title: "1797 French legislative election"
+source: https://en.wikipedia.org/wiki/1797_French_legislative_election
+domain: 1984-european-parliament-election-in-france
+license: CC-BY-SA-4.0
+tags: 1984 european parliament election in france
+fetched: 2026-07-04
+---
+
+# 1797 French legislative election
+
+Legislative elections were held in France between 21 March and 2 April 1797 to elect one-third of the members of the Council of Five Hundred and the Council of Ancients, the lower and upper houses of the legislature, which were under the Directory.
+
+## Background
+
+Following the events of the Conspiracy of Equals, the Jacobins and Montagnards lost their majority in the house, due to their support of François-Noël Babeuf. This led to a massive pro-Royalist push in the country, which increased with the impending end to the War of the First Coalition.
+
+Though the Royalists disagreed on who they would want to see as the proper pretender to the throne, they did in-fact agree that legally being elected would be the only means which they would re-establish the monarchy. Then, they would call for the dissolution of the Directory, but see the recreation of the Constitution of 1791 with a new National Assembly. The Royalists were also divided on the future however, with the Absolutists (later known as the Ultra Royalists) preferring a return to the absolute *Ancien Régime* under Louis, Count of Provence (future Louis XVIII) and supported the now two-year old Quiberon Expedition. The 'Constitutionalists' (later known as the Liberals or Doctrinaires) favoured a constitutional monarchy in addition to supporting individual rights and property in addition to freedoms and fair elections. The constitutionalists later began meeting at the 'Clichy Club', hence the new name, in addition to their nickname, the 'Clichyens'.
+
+## Results
+
+The elections saw royalists gain a supermajority, beyond what had been expected. The 260 newly elected members consisted of 182 constitutional monarchists, 34 republicans (of which 16 were left-wing republicans) and 44 whose position was unclear. Only 11 of the 216 outgoing members who stood for re-election were re-elected. The republicans included two new Jacobins, Joseph Bonaparte and Jean-Baptiste Jourdan. In addition to the nearly 200 new seats taken by the pro-royalists, there were around 100 other royalist deputies already present and more than 130 other deputies likely to accept a constitutional monarchy.
+
+## Aftermath
+
+Less than six months after the election, fearing a return to the monarchy, the Coup of 18 Fructidor removed all those accused of being "pro-Monarchist" or those who had supported those deputies. According to most historians, the coup marked the beginning of the "Second Directory period" which is described as the "Authoritarian Directory".
