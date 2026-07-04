@@ -1,0 +1,267 @@
+---
+title: "Time (magazine)"
+source: https://en.wikipedia.org/wiki/Time_(magazine)
+domain: compound-interest-website
+license: CC-BY-SA-4.0
+tags: compound interest website
+fetched: 2026-07-04
+---
+
+# *Time* (magazine)
+
+***Time*** is an American news magazine based in New York City. It was published weekly for nearly a century. Starting in March 2020, it was published every other week. It was first published in New York City on March 3, 1923, and for many years it was run by its co-founder, Henry Luce.
+
+A European edition, *Time Europe*, is published in London and also covers the Middle East, Africa, and, Latin America. An Asian edition, *Time Asia*, is based in Hong Kong. The South Pacific edition, which covers Australia, New Zealand, and the Pacific Islands, is based in Sydney. *Time France* began publication in 2025.
+
+Since 2018, *Time* has been owned by Salesforce founder Marc Benioff, who acquired it from Meredith Corporation. Benioff currently publishes the magazine through the company Time USA, LLC.
+
+## History
+
+### 20th century
+
+*Time* has been based in New York City since its first issue published on March 3, 1923, by Briton Hadden (1898–1929) and Henry Luce (1898–1967). It was the first weekly news magazine in the United States. The two had previously worked together as chairman and managing editor, respectively, of the *Yale Daily News*. They first called the proposed magazine *Facts* to emphasize brevity so a busy man could read it in an hour. They changed the name to *Time* and used the slogan "Take Time – It's Brief". Hadden was considered carefree and liked to tease Luce. He saw *Time* as important but also fun, which accounted for its heavy coverage of celebrities and politicians, the entertainment industry, and pop culture, criticizing it as too light for serious news.
+
+*Time* set out to tell the news through people, and until the late 1960s, the magazine's cover depicted a single person. More recently, *Time* has incorporated "People of the Year" issues, which have grown in popularity over the years. The first issue of *Time* featured Joseph G. Cannon, the retired Speaker of the House of Representatives, on its cover. A facsimile reprint of Issue No. 1, including all of the articles and advertisements contained in the original, was included with copies of the magazine's issue from February 28, 1938, in commemoration of its 15th anniversary. The cover price was 15¢, equivalent to $2.83 in 2025.
+
+Following Hadden's death in 1929, Luce became the dominant man at *Time* and a significant figure in the history of 20th-century media. According to *Time Inc.: The Intimate History of a Publishing Enterprise 1923–1941* by Robert Elson, "Roy Edward Larsen ... was to play a role second only to Luce's in the development of Time Inc". In his book *The March of Time, 1935–1951*, Raymond Fielding noted that Larsen was "originally circulation manager and then general manager of *Time*, later publisher of *Life*, for many years president of Time Inc., and in the long history of the corporation the most influential and important figure after Luce".
+
+Around that time, they were raising $100,000 from wealthy Yale University alumni, including Henry P. Davison, partner of J.P. Morgan & Co., publicity man Martin Egan and J.P. Morgan & Co. banker Dwight Morrow. Henry Luce and Briton Hadden hired Larsen in 1922. Larsen was a Harvard University graduate, and Luce and Hadden were Yale graduates. After Hadden died in 1929, Larsen purchased 550 shares of Time Inc., using money he obtained from selling RKO stock he had inherited from his father, who was the head of the Benjamin Franklin Keith theater chain in New England.
+
+After Briton Hadden's death, the largest Time, Inc. stockholder was Henry Luce, who ruled the media conglomerate in an autocratic fashion. "At his right hand was Larsen", Time Inc.'s second-largest stockholder, according to *Time Inc.: The Intimate History of a Publishing Enterprise 1923–1941*. In 1929, Roy Larsen was named a Time Inc. director and vice president. J. P. Morgan retained a certain control through two directorates and a share of stocks, both over *Time* and *Fortune*. Other shareholders were Brown Brothers Harriman & Co., and the New York Trust Company (Standard Oil).
+
+After *Time* began publishing weekly in March 1923, Roy Larsen increased its circulation by using U.S. radio and movie theaters worldwide. It often promoted both *Time* magazine and U.S. political and corporate interests. According to *The March of Time*, in 1924 Larsen brought *Time* into the infant radio business by broadcasting a 15-minute quiz show called *Pop Question*, which survived until 1925. In 1928, Larsen "undertook the weekly broadcast of a 10-minute programme series of brief news summaries, drawn from current issues of *Time* magazine ... which was originally broadcast over 33 stations throughout the United States".
+
+In March 1931, Larsen introduced a 30-minute radio program, *The March of Time*, to be broadcast over CBS. Each week, the program presented a dramatization of the week's news for its listeners. Thus *Time* magazine was brought "to the attention of millions previously unaware of its existence", according to *Time Inc.: The Intimate History of a Publishing Enterprise 1923–1941*, leading to increased circulation during the 1930s. Between 1931 and 1937, Larsen's *The March of Time* radio program was broadcast over CBS radio. Between 1937 and 1945, it was broadcast over NBC radio – except between 1939 and 1941, when it was not aired. *People* magazine was based on *Time*'s "People" page.
+
+Time Inc. stock owned by Luce at the time of his death was worth about $109 million ($1.05 billion in 2025), and it had been yielding him a yearly dividend of more than $2.4 million ($23.2 million in 2025), according to Curtis Prendergast's *The World of Time Inc.: The Intimate History of a Changing Enterprise 1960–1980*. The Larsen family's Time Inc. stock was worth around $80 million during the 1960s. Roy Larsen was both a Time Inc. director and the chairman of its executive committee, later serving as Time Inc.'s board's vice chairman until the middle of 1979. On September 10, 1979, *The New York Times* wrote, "Mr. Larsen was the only employee in the company's history given an exemption from its policy of mandatory retirement at age 65."
+
+In 1987, Jason McManus succeeded Henry Grunwald as editor-in-chief, and oversaw the transition before Norman Pearlstine succeeded him in 1995.
+
+In 1989, when Time, Inc. and Warner Communications merged, *Time* became part of Time Warner, along with Warner Bros. Entertainment.
+
+### 21st century
+
+In 2000, *Time* became part of AOL Time Warner, which reverted to the name Time Warner in 2003.
+
+In 2007, *Time* moved from a Monday subscription/newsstand delivery to a schedule where the magazine goes on sale Fridays and is delivered to subscribers on Saturday. The magazine was published on Fridays when it began in 1923.
+
+In early 2007, the year's first issue was delayed roughly a week due to "editorial changes", including the layoff of 49 employees.
+
+In 2009, Time announced it was introducing *Mine*, a personalized print magazine mixing content from various Time Warner publications based on the reader's preferences. The new magazine was met with a poor reception, with criticism that its focus needed to be more broad to be truly personal.
+
+The magazine has an online archive with the unformatted text for every article published. The articles were indexed and converted from scanned images using optical character recognition technology. The minor errors in the text are remnants of the conversion to the digital format.
+
+In January 2013, Time Inc. announced that it would cut nearly 500 jobs – roughly 6% of its 8,000 staff worldwide.
+
+Although *Time* magazine has maintained high sales, its ad pages have declined significantly.
+
+Also in January 2013, Time Inc. named Martha Nelson as the first female editor-in-chief of its magazine division. In September 2013, Nancy Gibbs was named as the first female managing editor of *Time* magazine.
+
+In November 2017, Meredith Corporation announced its acquisition of Time, Inc., backed by Koch Equity Development.
+
+In 2017, editor and journalist Catherine Mayer, who also founded the Women's Equality Party in the UK, sued *Time* through attorney Ann Olivarius for sex and age discrimination. The suit was resolved in 2018.
+
+In March 2018, only six weeks after the closure of the sale, Meredith announced that it would explore the sale of *Time* and sister magazines *Fortune*, *Money* and *Sports Illustrated*, since they did not align with the company's lifestyle brands.
+
+In October 2018, Meredith Corporation sold *Time* to Marc Benioff and his wife Lynne for $190 million. Benioff is the chairman and co-CEO of Salesforce.com. *Time* is to remain separate from that company, with Benioff not involved in the magazine's daily operations.
+
+Forbes COO Jessica Sibley was appointed CEO of Time in November 2022. Stating that she intended for the company to be "cash flow positive" by 2025, Sibley oversaw a number of immediate changes. According to Sibley, her first focus was pivoting the company away from business-to-consumer revenues to business-to-business revenues, resulting in *Time* dropping its online paywall in June 2023. She also hired new executives, including new chief revenue officers, a new editor-in-chief, and a new chief strategy officer. She oversaw layoffs at *Time* in 2024, calling them necessary to improve the company's financial position. The layoffs were criticized by The NewsGuild of New York and the Time Union. The layoffs were part of a broader strategy to focus on covering leadership (*Time*'s most commercially successful area) and to "provide journalism that serves these present and future leaders", including leaders in climate, AI, and health coverage.
+
+## Circulation
+
+As of 2025, *Time*'s circulation has been steadily declining. During the second half of 2009, the magazine had a 34.9% decline in newsstand sales. During the first half of 2010, there was another decline of 30%.
+
+In 2012, *Time* had a circulation of 3.3 million, making it the 11th-most circulated magazine in the United States, and the second-most circulated weekly behind *People*. In July 2017, its circulation was 3,028,013. In October 2017, *Time* circulation dropped to two million. In early 2023 Time had 1.3 million print subscribers and 250,000 digital subscribers. Combined print and digital circulation was 1 million for the six months to 31 December 2024, down 7.1% year-on-year.
+
+## Style
+
+### Writing
+
+*Time* initially possessed a distinctively "acerbic, irreverent style", largely created by Haddon and sometimes called "Timestyle". Timestyle made regular use of inverted sentences, as famously parodied in 1936 by Wolcott Gibbs in *The New Yorker*: "Backward ran sentences until reeled the mind ... Where it all will end, knows God!" *Time* also coined or popularized many neologisms which became widespread, including "socialite", "guesstimate", "televangelist", "pundit", and "tycoon", and some less successful ones such as "cinemactress" and "radiorator". *Time* introduced the names "World War I" and "World War II" in 1939, as opposed to older forms like "First World War" and "World War No. 2". The false title construction was popularized by *Time* and indeed is sometimes called a "*Time*-style adjective".
+
+### Sections
+
+#### Milestones
+
+Since its first issue, *Time* has had a "Milestones" section about significant events in the lives of famous people, including births, marriages, divorces, and deaths. Until 1967, entries in Milestones were short and formulaic. A typical example from 1956:
+
+> **Died**. Lieut, (j.g.) David Greig ("Skippy") Browning Jr., 24, star of the 1952 Olympics as the U.S.'s dazzling three-meter diving champion, national collegiate one-and three-meter diving champ (1951–52); in the crash of a North American FJ-3 Fury jet fighter while on a training flight; near Rantoul, Kans.
+
+A reader wrote a parody of the older form to announce the change:
+
+> **Died**. Time's delightful but confusing habit of listing names, ages, claims to fame, and other interesting tidbits about the famous newly deceased in its Milestones notices; then the circumstances of, and places where, the deaths occurred; of apparent good sentence structure; in New York.
+
+#### Listings
+
+Until the mid-1970s, *Time* had a weekly "Listings" section with capsule summaries or reviews of current significant films, plays, musicals, television programs, and literary bestsellers similar to *The New Yorker*'s "Current Events" section.
+
+### Cover
+
+*Time* is also known for the red border on its cover, introduced in 1927. The iconic red border was homaged or satirized by Seattle's *The Stranger* newspaper in 2010. The border has only been changed eight times since 1927:
+
+- The special issue released shortly after the September 11 attacks on the United States had a black border to symbolize mourning. The next regularly scheduled issue returned to the red border.
+- The Earth Day issue from April 28, 2008, dedicated to environmental issues, had a green border.
+- The issue from September 19, 2011, commemorating the 10th anniversary of September 11 attacks, had a metallic silver border.
+- On December 31, 2012, the cover had a silver border, celebrating Barack Obama's selection as Person of the Year.
+- On November 28 and December 5, 2016, the magazine had a silver border covering the "Most Influential Photos of All Time".
+- The issue from June 15, 2020, covering the protests surrounding the murder of George Floyd, was the first time that the cover's border included names of people. The cover, by artist Titus Kaphar, depicts an African-American mother holding her child.
+- The issues from September 21 and 28, 2020, covering the American response to the coronavirus pandemic, had a black border.
+- The issues from September 26 and October 3, 2022, covering the death of Queen Elizabeth II, had a silver border.
+
+Former president Richard Nixon has been among the most frequently featured on the cover of *Time*, having appeared 55 times from August 25, 1952, to May 2, 1994.
+
+In October 2020, the magazine replaced its logo with the word "Vote", explaining that "Few events will shape the world to come more than the result of the upcoming US presidential election".
+
+### 2007 redesign
+
+In 2007, *Time* redesigned the magazine to update and modernize the format. Among other changes, the magazine reduced the red cover border to promote featured stories, enlarged column titles, reduced the number of featured stories, increased white space around articles, and accompanied opinion pieces with photographs of the writers. The changes were met with both criticism and praise.
+
+## Special editions
+
+### Person of the Year
+
+*Time*'s most famous feature throughout its history has been the annual "Person of the Year" (formerly "Man of the Year") cover story, in which *Time* recognizes the individual or group of individuals who have had the biggest impact on news headlines over the past 12 months. The distinction is supposed to go to the person who, "for good or ill", has most affected the course of the year; it is, therefore, not necessarily an honor or a reward. In the past, such figures as Adolf Hitler and Joseph Stalin have been Man of the Year.
+
+In 2006, Person of the Year was "You", and was met with split reviews. Some thought the concept was creative; others wanted an actual person of the year. Editors Pepper and Timmer reflected that, if it had been a mistake, "we're only going to make it once".
+
+In 2017, *Time* named the "Silence Breakers", people who came forward with personal stories of sexual harassment, as Person of the Year.
+
+### *Time* 100
+
+In recent years, *Time* has assembled an annual list of the 100 most influential people of the year. Originally, they had made a list of the 100 most influential people of the 20th century. These issues usually have the front cover filled with pictures of people from the list and devote a substantial amount of space within the magazine to the 100 articles about each person on the list. In some cases, over 100 people have been included, as when two people have made the list together, sharing one spot.
+
+The magazine also compiled "All-Time 100 best novels" and "All-Time 100 Movies" lists in 2005, "The 100 Best TV Shows of All-Time" in 2007, and "All-Time 100 Fashion Icons" in 2012.
+
+In February 2016, *Time* mistakenly included the male author Evelyn Waugh on its "100 Most Read Female Writers in College Classes" list (he was 97th on the list). The error created much media attention and concerns about the level of basic education among the magazine's staff. *Time* later issued a retraction. In a BBC interview with Justin Webb, Professor Valentine Cunningham of Corpus Christi College, Oxford, described the mistake as "a piece of profound ignorance on the part of *Time* magazine".
+
+### X covers
+
+During its history, on seven occasions, *Time* has released a special issue with a cover showing an X scrawled over the face of a man, a year, or a national symbol. The first *Time* magazine with an X cover was released on May 7, 1945, showing a red X over Adolf Hitler's face which was published the week following his death. The second X cover was released on August 20, 1945, with a black X (to date, the magazine's only such use of a black X) covering the flag of Japan, representing the recent surrender of Japan and which signaled the end of World War II.
+
+Fifty-eight years later, on April 21, 2003, *Time* released another issue with a red X over Saddam Hussein's face, two weeks after the start of the Invasion of Iraq. A third red X issue was on June 19, 2006, after Abu Musab al-Zarqawi was killed. A fourth red X cover issue was published on May 20, 2011, after the death of Osama bin Laden.
+
+A fifth red X cover issue on December 14, 2020, had a red X scrawled over the pandemic-hit year 2020 and the declaration "the worst year ever". As of 2024, the most recent and seventh X cover issue of *Time*, that of Nov. 11, 2024, features a red X over the face of Yahya Sinwar following his killing by the Israel Defense Forces.
+
+## Spin-offs
+
+### *Time for Kids*
+
+*Time for Kids* is a division magazine of *Time* that is specially published for children and is mainly distributed in classrooms. *TFK* contains some national news, a "Cartoon of the Week", and a variety of articles concerning popular culture. An annual issue concerning the environment is distributed near the end of the U.S. school term. The publication rarely exceeds ten pages front and back.
+
+### *Time* Canada
+
+From 1942 until 1979, *Time* had a Canadian edition that included an insert of five pages of locally produced content and occasional Canadian covers. Following changes in the tax status of Canadian editions of American magazines, *Time* closed Canadian bureaus, except for Ottawa, and published identical content to the US edition but with Canadian advertising.
+
+In December 2008, *Time* discontinued publishing a Canadian edition.
+
+### *Time* France
+
+In December 2025, *Time France* became the first ever foreign licensed edition of *Time* magazine. It is published quarterly by 360BusinessMedia and 100,000 copies are printed of each issue. The magazine is distributed across France, Belgium, Luxembourg, Switzerland and Monaco.
+
+The cover of the first issue featured American actress Angelina Jolie.
+
+### Time LightBox
+
+Time LightBox is a photography blog created and curated by the magazine's photo department that was launched in 2011. In 2011, *Life* picked LightBox for its Photo Blog Awards.
+
+### TimePieces NFTs
+
+TimePieces is a Web3 community NFT initiative from *Time*. It included works from over 40 artists from multiple disciplines.
+
+## Staff
+
+Richard Stengel was the managing editor from May 2006 to October 2013, when he joined the U.S. State Department. Nancy Gibbs was the managing editor from September 2013 until September 2017. She was succeeded by Edward Felsenthal, who had been *Time*'s digital editor.
+
+### Editors
+
+- Briton Hadden (1923–1929)
+- Henry Luce (1929–1949)
+- T. S. Matthews (1949–1953)
+- Roy Alexander (1960–1966)
+
+### Managing editors
+
+| Managing editor | Editor from | Editor to |
+|---|---|---|
+| John S. Martin | 1929 | 1937 |
+| Manfred Gottfried | 1937 | 1943 |
+| T. S. Matthews | 1943 | 1949 |
+| Roy Alexander | 1949 | 1960 |
+| Otto Fuerbringer | 1960 | 1968 |
+| Henry Grunwald | 1968 | 1977 |
+| Ray Cave | 1979 | 1985 |
+| Jason McManus | 1985 | 1987 |
+| Henry Muller | 1987 | 1993 |
+| James R. Gaines | 1993 | 1995 |
+| Walter Isaacson | 1996 | 2001 |
+| Jim Kelly | 2001 | 2005 |
+| Richard Stengel | 2006 | 2013 |
+| Nancy Gibbs | 2013 | 2017 |
+| Edward Felsenthal | 2017 | 2023 |
+| Sam Jacobs | 2023 | *present* |
+
+### Notable contributors
+
+- Aravind Adiga, correspondent for three years, winner of the 2008 Man Booker Prize for fiction
+- James Agee, book and movie editor
+- Curt Anderson, member of the Maryland House of Delegates
+- Donald L. Barlett and James B. Steele, investigative reporters who won two National Magazine Awards
+- Ann Blackman, deputy news chief in Washington
+- Ian Bremmer, current editor-at-large
+- Robert Cantwell, writer, editor 1936–1941
+- Margaret Carlson, the first female columnist
+- Whittaker Chambers, writer, senior editor 1939–1948
+- Richard Corliss, film critic since 1980
+- Brad Darrach, film critic
+- Nigel Dennis, drama critic
+- John Gregory Dunne, reporter; later author and screenwriter
+- Peter Economy, author and editor
+- Alexander Eliot, art editor 1945–1961, author of 18 books on art, mythology, and history
+- John T. Elson, religion editor who wrote famous 1966 "Is God Dead?" cover story
+- Dean E. Fischer, reporter and editor, 1964–1981
+- Nancy Gibbs, essayist and editor-at-large; has written more than 100 cover stories
+- Lev Grossman, wrote primarily about books and technology
+- Deena Guzder, human rights journalist and author
+- Wilder Hobson, reporter in the 1930s and '40s
+- Robert Hughes, long-tenured art critic
+- Pico Iyer, essayist and novelist, essayist since 1986
+- Alvin M. Josephy Jr., photo editor 1952–1960; also a historian and Hollywood screenwriter
+- Stanley Karnow, reporter, later author
+- Weldon Kees, critic
+- Joe Klein, author (*Primary Colors*) and columnist who wrote the "In the Arena" column
+- Louis Kronenberger, drama critic 1938–1961
+- Andre Laguerre, Paris bureau chief 1948–1956, London bureau chief 1951–1956, also wrote about sports; later managing editor of *Sports Illustrated*
+- Nathaniel Lande, author, filmmaker, and former creative director
+- Will Lang Jr. 1936–1968, Time Life International
+- Marshall Loeb, writer and editor 1956–1980
+- John McPhee, author of some 31 books of nonfiction, winner of Pulitzer Prize, recipient of several honorary degrees
+- John Moody, Vatican and Rome correspondent 1986–1996
+- Lance Morrow, backpage essayist from 1976 to 2000
+- Jim Murray, West Coast correspondent 1948–1955
+- Phạm Xuân Ẩn, Saigon correspondent and Viet Cong spy 1966–1975
+- Roger Rosenblatt, essayist 1979–2006
+- Richard Schickel, film critic 1965–2010
+- Hugh Sidey, political reporter and columnist, beginning in 1957
+- Joel Stein, columnist who wrote the "Joel 100" just after the 2006 "Most Influential" issue
+- Calvin Trillin, food writer and reporter 1960–1963
+- David Von Drehle, current editor-at-large
+- Samuel Gardner Welles, journalist
+- Lasantha Wickrematunge, journalist
+- Robert Wright, contributing editor
+- Fareed Zakaria, current editor-at-large
+
+Writer William Saroyan (1908–1981) lists the complete *Time* editorial department in his 1940 play *Love's Old Sweet Song*.
+
+## Competitors in the U.S.
+
+Other major American news magazines include:
+
+- *The Atlantic* (1857)
+- *Bloomberg Businessweek* (1929)
+- *Mother Jones* (1976)
+- *The Nation* (1865)
+- *National Review* (1955)
+- *The New Republic* (1914)
+- *The New Yorker* (1925)
+- *Newsweek* (1933)
+- *U.S. News & World Report* (1923)

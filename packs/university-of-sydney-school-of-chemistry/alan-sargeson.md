@@ -1,0 +1,26 @@
+---
+title: "Alan Sargeson"
+source: https://en.wikipedia.org/wiki/Alan_Sargeson
+domain: university-of-sydney-school-of-chemistry
+license: CC-BY-SA-4.0
+tags: university of sydney school of chemistry
+fetched: 2026-07-04
+---
+
+# Alan Sargeson
+
+**Alan McLeod Sargeson** FAA FRS (30 October 1930 – 29 December 2008) was an Australian inorganic chemist.
+
+## Education and early life
+
+Sargeson was born at Armidale, New South Wales, Australia. He was educated at the University of Sydney and received his Ph.D. supervised by Francis Patrick Dwyer also at Sydney in 1956.
+
+## Career and research
+
+His first academic appointment was at the University of Adelaide and then in 1958 he rejoined Dwyer at the Australian National University.
+
+Sargeson was best known as a coordination chemist with an interest in bioinorganic chemistry. In early work with Dwyer and throughout his career, he studied stereochemistry. His research group investigated the reactions of amine ligands, culminating in the synthesis of the clathrochelates called "sepulchrates".
+
+## Awards and honours
+
+He was elected a Fellow of the Royal Society (FRS) in 1983 and of the Australian Academy of Science in 1976. Also in 1976, he became a foreign member of the Royal Danish Academy of Science and a corresponding member of the U.S. National Academy of Sciences in 1996.
