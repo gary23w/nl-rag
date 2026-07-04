@@ -1,0 +1,16 @@
+# 1863-west-virginia-gubernatorial-election — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1863 west virginia gubernatorial election. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1859 Virginia gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1859-virginia-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1859_Virginia_gubernatorial_election
+- [1860 United States census](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1860-united-states-census.md) — upstream: https://en.wikipedia.org/wiki/1860_United_States_census
+- [1860 United States presidential election (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1860-united-states-presidential-election-p01.md) — upstream: https://en.wikipedia.org/wiki/1860_United_States_presidential_election
+- [1860 United States presidential election (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1860-united-states-presidential-election-p02.md) — upstream: https://en.wikipedia.org/wiki/1860_United_States_presidential_election
+- [1862–63 United States House of Representatives elections (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1862-63-united-states-house-of-representatives-elections-p01.md) — upstream: https://en.wikipedia.org/wiki/1862%E2%80%9363_United_States_House_of_Representatives_elections
+- [1862–63 United States House of Representatives elections (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1862-63-united-states-house-of-representatives-elections-p02.md) — upstream: https://en.wikipedia.org/wiki/1862%E2%80%9363_United_States_House_of_Representatives_elections
+- [1862–63 United States Senate elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1862-63-united-states-senate-elections.md) — upstream: https://en.wikipedia.org/wiki/1862%E2%80%9363_United_States_Senate_elections
+- [1862 United States elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1862-united-states-elections.md) — upstream: https://en.wikipedia.org/wiki/1862_United_States_elections
+- [1863 Alabama gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1863-alabama-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1863_Alabama_gubernatorial_election
+- [1863 West Virginia gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/1863-west-virginia-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1863_West_Virginia_gubernatorial_election
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1863-west-virginia-gubernatorial-election/pack.facts) — distilled one-line facts (neuron CLI import)
