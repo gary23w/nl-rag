@@ -1,0 +1,14 @@
+---
+title: "1812 United States presidential election in South Carolina"
+source: https://en.wikipedia.org/wiki/1812_United_States_presidential_election_in_South_Carolina
+domain: 1812-united-states-presidential-election-in-south-carolina
+license: CC-BY-SA-4.0
+tags: 1812 united states presidential election in south carolina
+fetched: 2026-07-04
+---
+
+# 1812 United States presidential election in South Carolina
+
+The **1812 United States presidential election in South Carolina** took place between October 30 and December 2, 1812, as part of the 1812 United States presidential election. The state legislature chose 11 representatives, or electors to the Electoral College, who voted for President and Vice President.
+
+During this election, South Carolina cast its 11 electoral votes to Democratic Republican candidate and incumbent President James Madison.

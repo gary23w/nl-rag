@@ -1,0 +1,14 @@
+# 1788-89-united-states-elections — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1788–89 united states elections. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1788–89 United States House of Representatives elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-1789-united-states-house-of-representatives-election-in-new-hampshire.md) — upstream: https://en.wikipedia.org/wiki/1788%E2%80%931789_United_States_House_of_Representatives_election_in_New_Hampshire
+- [1788–89 United States House of Representatives elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-1789-united-states-house-of-representatives-elections-in-massachusetts.md) — upstream: https://en.wikipedia.org/wiki/1788%E2%80%931789_United_States_House_of_Representatives_elections_in_Massachusetts
+- [1788–89 United States presidential election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-1789-united-states-presidential-election.md) — upstream: https://en.wikipedia.org/wiki/1788%E2%80%931789_United_States_presidential_election
+- [1788–89 United States elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-89-united-states-elections.md) — upstream: https://en.wikipedia.org/wiki/1788%E2%80%9389_United_States_elections
+- [1788–89 United States House of Representatives elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-89-united-states-house-of-representatives-elections.md) — upstream: https://en.wikipedia.org/wiki/1788%E2%80%9389_United_States_House_of_Representatives_elections
+- [1788–89 United States Senate elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-89-united-states-senate-elections.md) — upstream: https://en.wikipedia.org/wiki/1788%E2%80%9389_United_States_Senate_elections
+- [1788–89 United States House of Representatives elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-and-1789-united-states-house-of-representatives-elections.md) — upstream: https://en.wikipedia.org/wiki/1788_and_1789_United_States_House_of_Representatives_elections
+- [1788–89 United States Senate elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/1788-and-1789-united-states-senate-elections.md) — upstream: https://en.wikipedia.org/wiki/1788_and_1789_United_States_Senate_elections
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1788-89-united-states-elections/pack.facts) — distilled one-line facts (neuron CLI import)
