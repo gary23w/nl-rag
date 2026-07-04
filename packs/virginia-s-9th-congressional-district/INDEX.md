@@ -1,0 +1,18 @@
+# virginia-s-9th-congressional-district — nl-rag pack
+
+Pre-normalized AI markdown. tags: virginia's 9th congressional district. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [100th United States Congress (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/100th-united-states-congress-p01.md) — upstream: https://en.wikipedia.org/wiki/100th_United_States_Congress
+- [100th United States Congress (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/100th-united-states-congress-p02.md) — upstream: https://en.wikipedia.org/wiki/100th_United_States_Congress
+- [101st United States Congress (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/101st-united-states-congress-p01.md) — upstream: https://en.wikipedia.org/wiki/101st_United_States_Congress
+- [101st United States Congress (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/101st-united-states-congress-p02.md) — upstream: https://en.wikipedia.org/wiki/101st_United_States_Congress
+- [102nd United States Congress (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/102nd-united-states-congress-p01.md) — upstream: https://en.wikipedia.org/wiki/102nd_United_States_Congress
+- [102nd United States Congress (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/102nd-united-states-congress-p02.md) — upstream: https://en.wikipedia.org/wiki/102nd_United_States_Congress
+- [103rd United States Congress (part 1/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/103rd-united-states-congress-p01.md) — upstream: https://en.wikipedia.org/wiki/103rd_United_States_Congress
+- [103rd United States Congress (part 2/2)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/103rd-united-states-congress-p02.md) — upstream: https://en.wikipedia.org/wiki/103rd_United_States_Congress
+- [104th United States Congress](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/104th-united-states-congress.md) — upstream: https://en.wikipedia.org/wiki/104th_United_States_Congress
+- [105th United States Congress](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/105th-united-states-congress.md) — upstream: https://en.wikipedia.org/wiki/105th_United_States_Congress
+- [106th United States Congress](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/106th-united-states-congress.md) — upstream: https://en.wikipedia.org/wiki/106th_United_States_Congress
+- [Virginia's 9th congressional district](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/virginia-s-9th-congressional-district.md) — upstream: https://en.wikipedia.org/wiki/Virginia's_9th_congressional_district
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/virginia-s-9th-congressional-district/pack.facts) — distilled one-line facts (neuron CLI import)

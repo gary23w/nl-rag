@@ -1,0 +1,14 @@
+# 1790-pennsylvania-gubernatorial-election — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1790 pennsylvania gubernatorial election. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1788–89 United States presidential election in Pennsylvania](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1788-89-united-states-presidential-election-in-pennsylvania.md) — upstream: https://en.wikipedia.org/wiki/1788%E2%80%9389_United_States_presidential_election_in_Pennsylvania
+- [1788 United States House of Representatives election in Pennsylvania](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1788-united-states-house-of-representatives-election-in-pennsylvania.md) — upstream: https://en.wikipedia.org/wiki/1788_United_States_House_of_Representatives_election_in_Pennsylvania
+- [1788 United States Senate elections in Pennsylvania](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1788-united-states-senate-elections-in-pennsylvania.md) — upstream: https://en.wikipedia.org/wiki/1788_United_States_Senate_elections_in_Pennsylvania
+- [1788–89 United States elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1789-united-states-elections.md) — upstream: https://en.wikipedia.org/wiki/1789_United_States_elections
+- [1790 Connecticut gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1790-connecticut-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1790_Connecticut_gubernatorial_election
+- [1790 Connecticut lieutenant gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1790-connecticut-lieutenant-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1790_Connecticut_lieutenant_gubernatorial_election
+- [1790 Pennsylvania gubernatorial election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1790-pennsylvania-gubernatorial-election.md) — upstream: https://en.wikipedia.org/wiki/1790_Pennsylvania_gubernatorial_election
+- [1790–91 United States House of Representatives elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/1790-united-states-house-of-representatives-election-in-connecticut.md) — upstream: https://en.wikipedia.org/wiki/1790_United_States_House_of_Representatives_election_in_Connecticut
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1790-pennsylvania-gubernatorial-election/pack.facts) — distilled one-line facts (neuron CLI import)
