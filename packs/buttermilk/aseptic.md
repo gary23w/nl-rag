@@ -1,0 +1,42 @@
+---
+title: "Asepsis"
+source: https://en.wikipedia.org/wiki/Aseptic
+domain: buttermilk
+license: CC-BY-SA-4.0
+tags: buttermilk
+fetched: 2026-07-04
+---
+
+# Asepsis
+
+(Redirected from
+
+Aseptic
+
+)
+
+**Asepsis** is the state of being free from disease-causing micro-organisms (such as pathogenic bacteria, viruses, pathogenic fungi, and parasites). There are two categories of asepsis: medical and surgical. The modern day notion of asepsis is derived from the older antiseptic techniques, a shift initiated by different individuals in the 19th century who introduced practices such as the sterilizing of surgical tools and the wearing of surgical gloves during operations. The goal of asepsis is to eliminate infection, not to achieve sterility. Ideally, an operating field is sterile, meaning it is free of all biological contaminants (e.g. fungi, bacteria, viruses), not just those that can cause disease, putrefaction, or fermentation. Even in an aseptic state, a condition of sterile inflammation may develop. The term often refers to those practices used to promote or induce asepsis in an operative field of surgery or medicine to prevent infection.
+
+## History
+
+The modern concept of asepsis evolved in the 19th century through multiple individuals. Ignaz Semmelweis showed already in 1847–1848 that hand washing prior to delivery reduced puerperal fever. Despite this, many hospitals continued to practice surgery in unsanitary conditions, with some surgeons taking pride in their bloodstained operating gowns.
+
+Only a decade later the situation started to change, when some French surgeons started to adopt carbolic acid as an antiseptic, reducing surgical infection rates, followed by their Italian colleagues in the 1860s. In 1867 Joseph Lister explained this reduction by Louis Pasteur's germ theory and popularized the disinfectant in the English-speaking world.
+
+Giuseppe Ruggi shifted the movement then from antisepsis to asepsis in the 1870s, publishing his findings in 1879. Gustav Adolf Neuber introduced sterile gowns and capes in 1883, and in 1891, Ernst von Bergmann introduced the autoclave, a device used for the practice of the sterilization of surgical instruments.
+
+Rubber gloves were pioneered by William Halsted, who also implemented a no street clothes policy in his operating room, opting to wear a completely white, sterile uniform consisting of a duck suit, tennis shoes, and skullcap. This helped to prevent the introduction of infections into open wounds. Additionally, Halsted would sterilize the operation site with disinfectants and use drapes to cover all areas except for the site. In his department at Johns Hopkins Hospital, he enforced an extreme hand washing ritual consisting of soaking in harmfully strong chemicals like permanganate and mercury bichloride solution as well as scrubbing with stiff brushes. The damage to a surgical nurse's hands compelled him to create the earliest form of the surgical gloves with the Goodyear Rubber Company. These gloves became a part of the aseptic surgery standard when Dr. Joseph Colt Bloodgood and several others began wearing them for that particular purpose.
+
+### Antisepsis vs. asepsis
+
+The line between antisepsis and asepsis is interpreted differently, depending on context and time. In the past, antiseptic operations occurred in people's homes or in operating theaters before a large crowd. Procedures for implementing antisepsis varied among physicians and experienced constant changes. Until the late 19th century, physicians rejected the connection between Louis Pasteur's germ theory that bacteria caused diseases and antiseptic techniques. At the end of the 19th century, Joseph Lister and his followers expanded the term "antisepsis" and coined "asepsis", with the justification that Lister had initially "suggested excluding septic agents from the wound from the start." Generally, however, asepsis is seen as a continuation of antisepsis since many of the values are the same, such as a "germ-free environment around the wound or patient", and techniques pioneered under both names are used in conjunction today.
+
+## Method
+
+Asepsis refers to any procedure that is performed under sterile conditions. This includes medical and laboratory techniques (such as with bacterial cultures). There are two types of asepsis — medical and surgical. Medical or clean asepsis reduces the number of organisms and prevents their spread; surgical or sterile asepsis includes procedures to eliminate micro-organisms from an area and is practiced by surgical technologists and nurses. Ultimately, though, successful usage of aseptic operations depends on a combination of preparatory actions. For example, sterile equipment and fluids are used during invasive medical and nursing procedures. The largest manifestation of such aseptic techniques is in hospital operating theaters, where the aim is to keep patients free from hospital micro-organisms.
+
+While all members of the surgical team should demonstrate good aseptic technique, it is the role of the scrub nurse or surgical technologist to set up and maintain the sterile field. To prevent cross-contamination of patients, instruments are sterilized through autoclaving or by using disposable equipment; suture material or xenografts also need to be sterilized beforehand. Basic aseptic procedures includes hand washing, donning protective gloves, masks and gowns, and sterilizing equipment and linens. Medical aseptic techniques also includes curbing the spread of infectious diseases through quarantine, specifically isolation procedures based on the mode of disease transmission. Within contact, droplet and airborne isolation methods, two different procedures emerge: strict isolation vs. reverse isolation. Strict isolation quarantines patients to prevent them from infecting others, while reverse isolation prevents vulnerable patients from becoming infected.
+
+In aseptic conditions, a "chronic low-level inflammation" known as sterile inflammation may develop as a result of trauma, stress, or environmental factors. As in infections caused by pathogens or microbes, the immune response is regulated by host receptors. Tissue damage resulting from non-infectious means are caused by DAMPs molecules released after injury or cell death has occurred, which are able to stimulate inflammation response. Diseases associated with sterile inflammation include Alzheimer's disease, atherosclerosis, as well as cancer tumor growth due to "immune cell infiltration." Additionally, aseptic tissue damage may arise from corticosteroid injections, which are drugs used to treat musculoskeletal conditions such as carpal tunnel and osteoarthritis, though this tends to result from improper aseptic technique.
+
+Despite efforts to preserve asepsis during surgery, there still persists a 1-3% chance of a surgical site infection (SSI). Infections are categorized as superficial incisional, deep incisional, or organ; the first type are confined to the skin, the second to muscles and nearby tissues, and the third to organs not anatomically close to the operation site. The exact modes of infection depend on the types of surgery, but the most common bacteria that are responsible for SSIs are Staphylococcus aureus, coagulase-negative staphylococci, Escherichia coli, and Enterococcus spp. The CDC emphasizes the importance of both antiseptic and aseptic approaches in avoiding SSIs, especially since Staphylococcus aureus, among other bacteria, are able to evolve drug-resistant strains that can be difficult to treat. In 2017, nearly 20,000 patients in the United States died from Staphylococcus aureus in comparison to the 16,350 from diagnosed HIV.
