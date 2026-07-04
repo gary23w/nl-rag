@@ -1,0 +1,68 @@
+---
+title: "Binding selectivity"
+source: https://en.wikipedia.org/wiki/Binding_selectivity
+domain: dynamic-equilibrium
+license: CC-BY-SA-4.0
+tags: dynamic equilibrium
+fetched: 2026-07-04
+---
+
+# Binding selectivity
+
+In chemistry, **binding selectivity** is defined with respect to the binding of ligands to a substrate forming a complex. Binding selectivity describes how a ligand may bind more preferentially to one receptor than another. A selectivity coefficient is the equilibrium constant for the reaction of displacement by one ligand of another ligand in a complex with the substrate. Binding selectivity is of major importance in biochemistry and in chemical separation processes.
+
+## Selectivity coefficient
+
+The concept of selectivity is used to quantify the extent to which one chemical substance, A, binds each of two other chemical substances, B and C. The simplest case is where the complexes formed have 1:1 stoichiometry. Then, the two interactions may be characterized by equilibrium constants *K*AB and *K*AC. ${\begin{aligned}{\ce {A + B <=> AB}};&\quad K_{\rm {AB}}={\frac {[{\ce {AB}}]}{{\ce {[A][B]}}}}\\{\ce {A + C <=> AC}};&\quad K_{\rm {AC}}={\frac {{\ce {[AC]}}}{{\ce {[A][C]}}}}\end{aligned}}$ where [X] represents the concentration of substance X (A, B, C, …).
+
+A **selectivity coefficient** is defined as the ratio of the two equilibrium constants. $K_{\rm {B,C}}={\frac {K_{\rm {AC}}}{K_{\rm {AB}}}}$ This selectivity coefficient is in fact the equilibrium constant for the displacement reaction
+
+${\ce {AB + C <=> AC + B}};\quad K_{\rm {B,C}}={\frac {{\ce {[AC][B]}}}{{\ce {[AB][C]}}}}={\frac {K_{\rm {AC}}{\ce {[A][B][C]}}}{K_{\rm {AB}}{\ce {[A][B][C]}}}}={\frac {K_{\rm {AC}}}{K_{\rm {AB}}}}$
+
+It is easy to show that the same definition applies to complexes of a different stoichiometry, A*p*B*q* and A*p*C*q*. The greater the selectivity coefficient, the more the ligand C will displace the ligand B from the complex formed with the substrate A. An alternative interpretation is that the greater the selectivity coefficient, the lower the concentration of C that is needed to displace B from AB. Selectivity coefficients are determined experimentally by measuring the two equilibrium constants, *K*AB and *K*AC.
+
+## Applications
+
+### Biochemistry
+
+In biochemistry the substrate is known as a receptor. A receptor is a protein molecule, embedded in either the plasma membrane or the cytoplasm of a cell, to which one or more specific kinds of signalling molecules may bind. A ligand may be a peptide or another small molecule, such as a neurotransmitter, a hormone, a pharmaceutical drug, or a toxin. The specificity of a receptor is determined by its spatial geometry and the way it binds to the ligand through non-covalent interactions, such as hydrogen bonding or Van der Waals forces.
+
+If a receptor can be isolated a synthetic drug can be developed either to stimulate the receptor, an agonist or to block it, an antagonist. The stomach ulcer drug cimetidine was developed as an H2 antagonist by chemically engineering the molecule for maximum specificity to an isolated tissue containing the receptor. The further use of quantitative structure-activity relationships (QSAR) led to the development of other agents such as ranitidine.
+
+"Selectivity" when referring to a drug is relative. For example, in a higher dose, a specific drug molecule may also bind to other receptors than those said to be "selective".
+
+### Chelation therapy
+
+Deferiprone
+
+Penicillamine
+
+Chelation therapy is a form of medical treatment in which a chelating ligand is used to selectively remove a metal from the body. When the metal exists as a divalent ion, such as with lead, Pb2+ or mercury, Hg2+ selectivity against calcium, Ca2+ and magnesium, Mg2+, is essential in order that the treatment does not remove essential metals.
+
+Selectivity is determined by various factors. In the case of iron overload, which may occur in individuals with β-thalessemia who have received blood transfusions, the target metal ion is in the +3 oxidation state and so forms stronger complexes than the divalent ions. It also forms stronger complexes with oxygen-donor ligands than with nitrogen-donor ligands. deferoxamine, a naturally occurring siderophore produced by the actinobacter *Streptomyces pilosus* and was used initially as a chelation therapy agent. Synthetic siderophores such as deferiprone and deferasirox have been developed, using the known structure of deferoxamine as a starting point. Chelation occurs with the two oxygen atoms.
+
+Wilson's disease is caused by a defect in copper metabolism which results in accumulation of copper metal in various organs of the body. The target ion in this case is divalent, Cu2+. This ion is classified as borderline in the scheme of Ahrland, Chatt and Davies. This means that it forms roughly equally strong complexes with ligands whose donor atoms are N, O or F as with ligands whose donor atoms are P, S or Cl. Penicillamine, which contains nitrogen and sulphur donor atoms, is used as this type of ligand binds more strongly to copper ions than to calcium and magnesium ions.
+
+Treatment of poisoning by heavy metals such as lead and mercury is more problematical, because the ligands used do not have high specificity relative to calcium. For example, EDTA may be administered as a calcium salt to reduce the removal of calcium from bone together with the heavy metal. Factors determining selectivity for lead against zinc, cadmium and calcium have been reviewed.
+
+### Chromatography
+
+In column chromatography a mixture of substances is dissolved in a mobile phase and passed over a stationary phase in a column. A selectivity factor is defined as the ratio of distribution coefficients, which describe the equilibrium distribution of an analyte between the stationary phase and the mobile phase. The selectivity factor is equal to the selectivity coefficient with the added assumption that the activity of the stationary phase, the substrate in this case, is equal to 1, the standard assumption for a pure phase. The resolution of a chromatographic column, *R*S is related to the selectivity factor by:
+
+$R_{S}={\frac {\sqrt {N}}{4}}\left({\frac {\alpha -1}{\alpha }}\right)\left({\frac {k_{B}}{1+k_{B}}}\right)$
+
+where α is selectivity factor, *N* is the number of theoretical plates *k*A and *k*B are the retention factors of the two analytes. Retention factors are proportional to distribution coefficients. In practice substances with a selectivity factor very close to 1 can be separated. This is particularly true in gas-liquid chromatography where column lengths up to 60 m are possible, providing a very large number of theoretical plates.
+
+In ion-exchange chromatography the selectivity coefficient is defined in a slightly different way
+
+### Solvent extraction
+
+Solvent extraction is used to extract individual lanthanoid elements from the mixtures found in nature in ores such as monazite. In one process, the metal ions in aqueous solution are made to form complexes with tributylphosphate (TBP), which are extracted into an organic solvent such as kerosene. Complete separation is effected by using a countercurrent exchange method. A number of cells are arranged as a cascade. After equilibration, the aqueous component of each cell is transferred to the previous cell and the organic component is transferred to the next cell, which initially contains only water. In this way the metal ion with the most stable complex passes down the cascade in the organic phase and the metal with the least stable complex passes up the cascade in the aqueous phase.
+
+If solubility in the organic phase is not an issue, a selectivity coefficient is equal to the ratio of the stability constants of the TBP complexes of two metal ions. For lanthanoid elements which are adjacent in the periodic table this ratio is not much greater than 1, so many cells are needed in the cascade.
+
+### Chemical sensors
+
+A potentiometric selectivity coefficient defines the ability of an ion-selective electrode to distinguish one particular ion from others. The selectivity coefficient, KB,C is evaluated by means of the emf response of the ion-selective electrode in mixed solutions of the primary ion, B, and interfering ion, C (fixed interference method) or less desirably, in separate solutions of B and C (separate solution method). For example, a potassium ion-selective membrane electrode utilizes the naturally occurring macrocyclic antibiotic valinomycin. In this case the cavity in the macrocyclic ring is just the right size to encapsulate the potassium ion, but too large to bind the sodium ion, the most likely interference, strongly.
+
+Chemical sensors, are being developed for specific target molecules and ions in which the target (guest) form a complex with a sensor (host). The sensor is designed to be an excellent match in terms of the size and shape of the target in order to provide for the maximum binding selectivity. An indicator is associated with the sensor which undergoes a change when the target forms a complex with the sensor . The indicator change is usually a colour change (gray to yellow in the illustration) seen in absorbance or, with greater sensitivity, luminescence. The indicator may be attached to the sensor via a spacer, in the ISR arrangement, or it may be displaced from the sensor, IDA arrangement.

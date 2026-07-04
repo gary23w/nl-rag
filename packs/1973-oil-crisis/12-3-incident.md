@@ -1,0 +1,60 @@
+---
+title: "12-3 incident"
+source: https://en.wikipedia.org/wiki/12-3_incident
+domain: 1973-oil-crisis
+license: CC-BY-SA-4.0
+tags: 1973 oil crisis
+fetched: 2026-07-04
+---
+
+# 12-3 incident
+
+The **12-3 incident** (Chinese: 一二·三事件; Portuguese: *Motim 1-2-3*) was a series of political demonstrations and riots against Portuguese colonial rule in Macau which occurred on December 3, 1966. The incident, inspired by the Cultural Revolution in the People's Republic of China (mainland China), occurred as a direct response to a violent police crackdown by colonial authorities against local Chinese protesters demonstrating against corruption and colonialism in Macau. Eight protesters were killed by the Macau Police.
+
+Pressured by business leaders in Macau and the Chinese government, the colonial government agreed to meet the demands of the protesters and apologized for the police crackdown. Portuguese sovereignty over Macau severely diminished after the incident, leading to *de facto* Chinese suzerainty over the territory 33 years prior to the eventual handover of Macau.
+
+## Origins
+
+The Portuguese foundation of Macau is broadly divided into three different political periods. The first began with the establishment of the first Portuguese settlement in Macau in 1557 and lasted until 1849. During this period, the settlement administrators had jurisdiction only over the Portuguese community. The second period, known as the "colonial period", scholars generally place from 1849 to 1974. It was in this period that the Portuguese colonial administration began to take an active role in the lives of both the Portuguese and Chinese communities in Macau.
+
+On March 26, 1887, the Lisbon Protocol was signed, in which China recognized the "perpetual occupation and government of Macau" by Portugal, who, in turn, agreed never to surrender Macau to a third party without the consent of the Chinese government. This was reaffirmed in the Treaty of Peking on December 1, 1887. Throughout the colonial administration of Macau, the development of Portuguese Macau stagnated due to a complex colonial bureaucracy and corruption. Racial segregation and division also existed throughout society. Within the governance of Macau, almost all government officers and civil service positions were held by Portuguese residents.
+
+In September 1945, the Republic of China's (ROC) Ministry of Foreign Affairs expressed to the Portuguese government its desire to hand over Macau back to Chinese control. However, due to the Chinese Civil War, discussions between the Kuomintang and the Portuguese were postponed indefinitely. The founding of the People's Republic of China (PRC) in 1949 caused a large number of refugees and Kuomintang supporters to flee from China to Macau.
+
+Before the 12-3 incident, the Kuomintang and the Chinese Communist Party both maintained a presence in Macau. With the founding of the PRC, the Portuguese colonial government opened unofficial relations with the PRC instead of the ROC, primarily due to the proximity of Macau to mainland China via their land border. Following the founding of the PRC, the influence of the communists grew substantially in Macau, especially among business leaders throughout the colony, while the influence of the nationalists decreased.
+
+## The incident
+
+Schools and education in Macau were divided along racial lines, with the Portuguese and Macanese sending their children to fully subsidized private schools while the Chinese had to send their children to either Catholic or communist schools. The segregation of education in Macau was an area of great contention for the local populations. In 1966, residents of Taipa Island, sponsored by the Chinese communists, tried to obtain permission to build a private school. Despite being granted a plot of land by the Portuguese authorities, Portuguese officials delayed the processing of the building permits, as they had not received any bribes from the residents of Taipa Island. Despite receiving no building permits from the local administration, local residents began constructing the private school.
+
+On November 15, 1966, Urban Services Officers on Taipa blocked further construction of the school, leading to a confrontation between Chinese protesters and Macau Police. The police, including plain-clothes officers, injured over 40 people, of whom 14 were later detained.
+
+In response, a group of around 60 Chinese students and workers demonstrated outside the Governor's Palace in support of the residents of Taipa Island. The demonstrators shouted revolutionary slogans and read aloud from Mao Zedong's *Little Red Book*. On December 3, 1966, demonstrators began to riot and denounced Portuguese authorities for "fascist atrocities". Protesters, instigated by local communists and pro-Beijing business owners, ransacked Portuguese institutions throughout Macau such as Macau City Hall and the Public Notary's Office. Violence was also directed towards local Chinese businesses and organizations loyal to the ROC government now located in Taipei. Unlike in neighboring Hong Kong – which faced similar leftist riots – the business community largely did not back the colonial government. In mainland China, specifically in the province of Guangdong, Red Guards, inspired by the Cultural Revolution and angered by the violence towards Chinese in Macau, began to protest in large numbers at the mainland China–Macau border.
+
+The colonial government subsequently ordered the rioters and demonstrators to be arrested, leading to even more mass discontent and popular support for opposition to the Portuguese administration. In response, demonstrators toppled the statue of Colonel Vicente Nicolau de Mesquita at Largo do Senado, the city center, and also tore off the right arm of a statue of Jorge Álvares located on the former outer harbor ferry port. At the Leal Senado or city hall, portraits of former governors were torn off the walls, and books and city records were tossed into the street and set on fire. Consequently, martial law was declared, authorizing a Portuguese military garrison and police to crack down on the protests. Eight protesters were killed by police in the subsequent clashes, while 212 people were injured in total. Police also arrested 62 people in connection to the protests.
+
+## Resolution
+
+In response to the crackdown, the Portuguese government immediately implemented a news blockade; Portuguese-language newspapers and magazines were banned, and newspapers in Portugal and overseas provinces were ordered to censor reports about the incident. In response to the incident, the Chinese government deployed the People's Liberation Army to the Chinese-Portuguese Macau border to prevent Red Guards from invading Macau. Four Chinese warships also entered the waters of Macau in response to the crackdown.
+
+The security ring set around Macau by the Chinese would be involved in multiple casualty-causing conflicts with Red Guards attempting to invade Macau by both land and sea. The pro-Beijing community in Macau adopted a "Three No's" approach as a means to continue their struggle with the Government: no taxes, no service, and no selling to the Portuguese. Representing the Chinese community of Macau was the pro-Beijing Committee of Thirteen, chaired by Leong Pui, the leader of the pro-Beijing Macau General Association of Labour.
+
+Negotiations to resolve and prevent further escalation between the PRC, Committee of Thirteen, and the Portuguese government took place in Guangdong. The chief negotiator for the Chinese was Ho Yin, whose involvement and commitment to resolve the crisis caused by the riot was crucial, because at that time he was the only one who could contact directly both the Portuguese colonial administration and Chinese officials in Guangzhou and Beijing, as he was the representative of Macau in the Legislative Council.
+
+The colonial government, due to increasing pressures from both Beijing and Lisbon, agreed to sign agreements with the Committee of Thirteen and the Guangdong Government Foreign Affairs Bureau, along with an official statement of apology, and accepted responsibility for the events on December 3, 1966. On January 29, 1967, Governor of Macau José Manuel de Sousa e Faro Nobre de Carvalho, with the endorsement of Portuguese Prime Minister António de Oliveira Salazar, signed a statement of apology at the Chinese Chamber of Commerce, under a portrait of Mao Zedong, with Ho presiding as the chamber's president.
+
+Alongside the apology, the Portuguese agreed to reinforce the role of the Macau Chinese business elite in running the governmental affairs of Macau, promised to never again use force against the Chinese community of Macau, and agreed to pay reparations to the Chinese community in Macau to the sum of 2 million Macanese pataca as compensation for the eight dead and 212 injured. In contrast, the agreement signed with the Guangdong government was more favorable to the Portuguese; per the agreement, the Chinese government would take back all refugees who arrived in Macau from January 30, 1967, onwards, a promise China would keep until 1978.
+
+This marked the beginning of equal treatment and recognition of Chinese identity in Macau and the beginning of *de facto* Chinese control over the territory, with Ho becoming the *de facto* governor of Macau. The Portuguese Foreign Minister Alberto Franco Nogueira described Portugal's role in Macau after 1967 as "a caretaker of a condominium under foreign supervision". Chinese media described Macau as a "half liberated zone". Shortly after the agreements were signed, the Chinese military forces around Macau and Red Guards at the border withdrew.
+
+## Aftermath
+
+With the Portuguese now only nominally in control of Macau, political power would increasingly rest with the pro-Beijing trade unions and business leaders. The official Portuguese and Chinese positions regarding the political status of Macau did not differ, as both now described the region as a Chinese territory under Portuguese administration, and not as a colony or overseas territory.
+
+As a consequence of Beijing's increasing influence, pro-Kuomintang activities in Macau were suppressed; the Republic of China's diplomatic mission was closed, the flying of the flag of the Republic of China was banned, and Kuomintang-run schools were shut down. In addition, refugees from mainland China were either barred from entering Macau or forcibly returned to China.
+
+Emboldened by their success against the Portuguese, the Committee of Thirteen encouraged demonstrations against other institutions in Macau that were perceived to be antagonistic towards the PRC. Specifically, the British Consulate and the Macau Branch of the Hong Kong Immigration department were once again targeted by protesters. British consular staff in Macau were under constant threat and harassment by Red Guards, leading to the closure of the British consulate in 1967.
+
+On April 25, 1974, a group of left-wing officers organized a coup d'état in Portugal, overthrowing the ruling right-wing government that had been in power for 48 years. The new government began to transition Portugal to a democratic system and was committed to decolonization. It carried out decolonization policies and proposed that Macau be given back to China in 1978. The Chinese government rejected this proposal, believing that an early handover of Macau would impact relations with Hong Kong.
+
+On December 31, 1975, the Portuguese government withdrew its remaining troops from Macau. On February 8, 1979, the Portuguese government decided to break off diplomatic relations with the ROC, and established diplomatic relations with the PRC the next day. Both Portugal and the PRC recognized Macau as Chinese territory. The colony remained under Portuguese rule until December 20, 1999, when it was handed over to the PRC. Ho Yin's son, Edmund Ho Hau Wah, would become the first Chief Executive of the Macau Special Administrative Region following the handover of Macau in 1999.
