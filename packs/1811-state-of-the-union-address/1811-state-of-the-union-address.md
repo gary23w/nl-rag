@@ -1,0 +1,46 @@
+---
+title: "1811 State of the Union Address"
+source: https://en.wikipedia.org/wiki/1811_State_of_the_Union_Address
+domain: 1811-state-of-the-union-address
+license: CC-BY-SA-4.0
+tags: 1811 state of the union address
+fetched: 2026-07-04
+---
+
+# 1811 State of the Union Address
+
+Coordinates
+
+:
+
+38°53′23″N
+
+77°00′32″W
+
+﻿
+
+/
+
+﻿
+
+38.88972°N 77.00889°W
+
+﻿
+
+/
+
+38.88972; -77.00889
+
+The **1811 State of the Union Address** was delivered by the fourth president, James Madison, on November 5, 1811. Addressing the 12th United States Congress, Madison emphasized the ongoing diplomatic and economic challenges posed by Great Britain and France, both of which were violating U.S. neutral trading rights amidst the Napoleonic Wars.
+
+## Description
+
+Madison began by expressing disappointment that despite efforts to negotiate with Britain, its Orders in Council—which restricted American trade—remained in force. Furthermore, Britain had intensified the enforcement of these restrictions, heightening tensions. He criticized the British envoy for delaying substantive discussions and reiterated his frustration over unresolved issues, including the lack of indemnity for past wrongs, the attacks on U.S. shipping, and the unresolved aftermath of the Chesapeake–Leopard affair.
+
+Madison also reported that relations with France had not improved, despite the revocation of the Berlin and Milan Decrees, which had targeted neutral shipping. He noted that France had failed to offer compensation for the seizure of American property and had imposed restrictive measures on U.S. trade with French territories, potentially leading to further retaliatory actions by the U.S. government.
+
+Regarding national defense, Madison highlighted efforts to strengthen the military and naval forces, including fortifications along the coast and the deployment of gunboats. He mentioned the presence of U.S. forces on the northwestern frontier in response to rising tensions with Native American tribes, particularly under the influence of the Shawnee leader Tecumseh. Madison urged Congress to bolster the nation's defenses, recommending an increase in the regular army and militia to prepare for potential conflicts.
+
+Madison also addressed domestic concerns, including the continued progress in U.S. manufacturing and efforts to protect American industries from foreign competition. He called for further measures to prevent smuggling and the misuse of the American flag by foreign ships. In addition, Madison emphasized the importance of improving the militia system to ensure national security.
+
+In closing, Madison expressed his confidence in Congress's ability to navigate the challenges facing the nation and to safeguard its rights and interests.
