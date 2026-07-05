@@ -1,0 +1,22 @@
+---
+title: "Jacking gear"
+source: https://en.wikipedia.org/wiki/Jacking_gear
+domain: barring-engine
+license: CC-BY-SA-4.0
+tags: barring engine
+fetched: 2026-07-05
+---
+
+# Jacking gear
+
+A **jacking gear** (also known as a **turning gear** or **barring gear**) is a device placed on the main shaft of an engine or the rotor of a turbine. The jacking gear rotates the shaft or rotor and associated machinery (such as reduction gears and main steam or gas turbines), to ensure uniform cool-down. Without turning, hogging or sagging can occur. Additionally, the jacking gear's assistance in rotation can be used when inspecting the shaft, reduction gears, bearings, and turbines. As an auxiliary function, the jacking gear also helps to maintain a protective oil membrane at all shaft journal bearings.
+
+Hogging is when the shaft bows upwards due to thermal stratification.
+
+On the engine shaft of a marine vessel, this process also prevents the shaft from warping when a ship is preparing to achieve maneuvering status.
+
+## Motor and drivetrain
+
+The jacking gear motor is generally designed to rotate the shaft at approximately 1/10 rpm. Most jacking gear motors are rated at 5 hp. The jacking gear motor assembly applies power and torque to the reduction gear by a flexible coupling or clutch that can freely engage and disengage to the high-pressure pinion (driving gear). Engaging is accomplished by means of a simple lever. Some newer propulsion arrangements utilize an automatic control system located in the engine room. Jacking gears often feature a lock to prevent the shaft from turning during current or tide changes or when being towed.
+
+But some industrial gas turbines (GE Frame 5 and Frame 6 types) use a jacking system in which two hydraulic cylinders rotates the shaft about 1/4 turn in one or two seconds every 30 seconds. GE Frame 9B gas turbines, in which accessories were designed in beginning of 1970's by Alstom Belfort engineering, use a high pressure hydraulic motor which connects to the main shaft through an automatic SSS Clutch. Turning speed was chosen about 6 RPM, because the resisting torque is the smallest at this speed, then requiring a very low power.

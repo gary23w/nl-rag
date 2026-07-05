@@ -1,0 +1,18 @@
+---
+title: "C. Robert Kidder"
+source: https://en.wikipedia.org/wiki/C._Robert_Kidder
+domain: chrysler-proving-grounds
+license: CC-BY-SA-4.0
+tags: chrysler proving grounds
+fetched: 2026-07-05
+---
+
+# C. Robert Kidder
+
+**Charles Robert Kidder** (born 1945), was chairman and CEO of 3Stone Advisors LLC, and later chairman of Chrysler Group LLC and was previously CEO of Duracell, CEO of Borden, Inc., and is on the board of Merck and Morgan Stanley.
+
+## Career
+
+At the time of his appointment, Kidder was chairman and CEO of 3Stone Advisors LLC, an investment firm that focuses on clean-tech companies. He holds an M.S. Industrial Economics from Iowa State University and a B.S. Industrial Engineering from the University of Michigan. Kidder is an alumnus of Lambda Chi Alpha fraternity, having been initiated at its Michigan chapter as an undergraduate.
+
+He resides with his family in Columbus, Ohio.

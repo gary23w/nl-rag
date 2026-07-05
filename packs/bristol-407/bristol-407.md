@@ -1,0 +1,44 @@
+---
+title: "Bristol 407"
+source: https://en.wikipedia.org/wiki/Bristol_407
+domain: bristol-407
+license: CC-BY-SA-4.0
+tags: bristol 407
+fetched: 2026-07-05
+---
+
+# Bristol 407
+
+The **Bristol 407** is a sports tourer car produced by British manufacturer Bristol Cars between 1961 and 1963. It was the first Bristol model to be made by the company after separating from the Bristol Aeroplane Company, which had built all previous Bristol models. Outwardly it resembled the 406, on which it was based, and which had been produced between 1958 and 1961.
+
+## Background
+
+Unlike its predecessors, the Bristol 406 suffered from a lack of power: Bristol's BMW-derived 105 bhp (78 kW) inline six-cylinder engine (type 110) no longer enabled the 1.5-ton car to achieve the sporty driving performance that distinguished earlier Bristol models. A further increase in performance of the engine, the concept of which dated back to before the Second World War, could no longer be achieved.
+
+Bristol was therefore looking for a new engine in the second half of the 1950s. First, the company started to develop its own, new engine, designated type 160. The key requirement was a six-cylinder configuration and a displacement of 3.0 to 3.5 litres, similar to that of contemporary Alvis engines. However, the performance of the first prototypes was not convincing; in any case, the parent company was of the opinion that the financial expense of the new construction was not commensurate with its benefits. In 1959, Bristol tested another in-line Armstrong Siddeley six-cylinder engine. The 4.0 litre engine was standard in the Armstrong Siddeley Star Sapphire and produced 165 bhp. Bristol equipped a 406 with this engine and carried out some test runs at the factory. However, there was no takeup into series production. The prototype went on sale and was in regular use until 1975. In 2015 it was rediscovered in an unrestored condition.
+
+In the end, Bristol decided to use Chrysler's US eight-cylinder engine. It is not clear from whom the initiative to use American engines came. Bristol owner Tony Crook repeatedly told the following story: Actually, Bristol only wanted to order a Torque-Flite automatic transmission for test purposes. To the surprise of the Bristol employees, Chrysler would have included an in-house eight-cylinder in addition to the ordered gearbox. Bristol then subjected the engine to in-depth tests and decided in favour of using the American engine in view of the high performance and cost-effectiveness of the concept – which meant saving its own development costs. To further cost saving, Bristol did not source the engines directly from the US but from Canada, a member of the Commonwealth. This meant that there were no import duties when the engines were transferred to the UK.
+
+The Bristol engine was based on an older American engine, which had made its debut at Chrysler's Plymouth brand in 1956 and originally had a displacement of 260 CID (4.2 litres). Bristol obtained the engine blocks from the USA and had them completed by hand in a Canadian Chrysler workshop. At the same time, a series of far-reaching modifications were carried out to distinguish the Bristol engines from their large-series counterparts: The engine bore was increased from 3.56 inches to 3.87 inches. This resulted in a displacement of 5.2 litres – with only a marginally changed stroke – as Chrysler did not have an engine of the appropriate size in its series portfolio. The engines were also given a new cylinder head of Bristol's own design, replacing the original "polyspherical" Plymouth head.
+
+Finally, the intake ducts were revised. The engine delivered an output of 250 bhp (186 kW) after the manual modifications, which more than doubled the performance potential compared to the previous model. Bristol was again on the way to becoming a sports car manufacturer. The switch to American engines was not without problems, although this step was not without a model: Facel Vega from France had already taken this route a few years earlier, and the British competitor Jensen was about to do the same. The conservative British clientele was nevertheless sceptical and, according to Tony Crook, quite a few are said to have seen it as a sin. Most critics, however, were reconciled by the outstanding driving performance of the car.
+
+Bristol's long-serving 2.0 litre six-cylinder engine continued to be built for some time after the introduction of the 407. It was primarily supplied to AC Cars, where it was installed in the Ace, Aceca, and Greyhound models until the end of 1962. The new V8 engine was mated to a TorqueFlite automatic gearbox as the only transmission option. The transmission had three forward speeds and a torque converter.
+
+## The car
+
+The only changes were very subtle, comprising a single horizontal bar on the somewhat enlarged radiator grille, which had been steadily increased in size from the 405 to the 406 through to the 407, plus two exhaust pipes instead of one at the rear. However, under the bonnet of the 407 was not the old BMW-derived six-cylinder engine that was now inadequate for Bristols to be able to compete in performance with other British makes of luxury car. Replacing the old six-cylinder engine was a 5,130 cc (313 cu in) Chrysler V8, built in Canada, fitted with a new camshaft and mechanical tappets (lifters) of Bristol design. It re-established Bristol's credentials in the field of performance cars. The engine gave the 407 a maximum speed of over 125 mph (201 km/h) and established a tradition that continued until the manufacturer's bankruptcy in 2011. The other major change vis-à-vis the 406 lay in the front suspension. Gone were the transverse leaf springs that were inadequate to provide effective handling given a higher weight and also the higher speeds which the 407 was capable of; in its place were coil springs. This basic suspension design was to be used on all future eight-cylinder Bristols, though there were to be major refinements from the 603 onwards. Gone also was rack and pinion steering, which inhibited the 407's handling. The bodywork on the 407 and subsequent models was built by bus body builder Park Royal Vehicles who also did trimming and finishing on some of those produced. The Bristol 407 remained in production until the summer of 1963. Around 300 vehicles are said to have been produced during this period. A handful of cars received bespoke bodywork, by Viotti and Zagato.
+
+## Special models
+
+### Bristol 407 GTZ Zagato
+
+As in the case of the Bristol 406, Bristol also had a special body designed by Zagato for the 407. The result, the Bristol 407 GTZ Zagato, had nothing to do with the 406 Zagato. The new design had an elongated, rounded body with a very low belt line, a "hip swing" over the rear wheels and a lush glazed hatchback. The car was significantly lighter than the factory 407 and reached top speeds of over 200 km/ h. The Bristol 407 GTZ Zagato was first exhibited at the Earls Court Motorshow in October 1961. However, the car was not at the Bristol booth, but at the nondescript Zagato booth. The author of the project was again Anthony Crook (and not Bristol Cars Ltd.). It only took 10 weeks from the idea to the finished product. You could tell that from the car. Much was improvised. That wasn't just true for the radiator grille with a crest-shaped shield, which was borrowed from a Lancia Flaminia Supersport. The car was welcomed in a friendly manner, but the few journalists who were allowed to drive the car criticised the front-heavy construction. The extremely light Zagato body combined with the heavy weight of the American engine led to an unfavourable weight distribution. Tony Crook, who had initially hoped for a few orders, abandoned the project in the summer of 1962 because the plant could not resolve the weight distribution problems. The 407 GTZ was unique and still exists today.
+
+### Bristol 407 Viotti
+
+Another special model was a four-seater convertible that the Carrozzeria Viotti from Turin produced on a bare chassis of the 407. The body was relatively simple and took out some perspective, anticipating the design of the Fiat 1500 Spider. The car was first presented at the Viotti booth at the 1960 Turin Motor Show. This was followed by another showing in the UK, this time at the Bristol Cars stand. The actor Peter Sellers, who valued Bristol vehicles, owned the car for a short while. It has a steel body, a unique feature for a Bristol and still exists today.
+
+## Performance
+
+The British "Motor" magazine tested a 407 in 1961 and recorded a top speed of 125.2 mph (201.5 km/h) and acceleration from 0-60 mph (97 km/h) in 9.2 seconds. A "touring" fuel consumption of 17.5 miles per imperial gallon (16.1 L/100 km; 14.6 mpg‑US) was recorded. On the home market, as tested, it cost £5141 including taxes of £1616.
