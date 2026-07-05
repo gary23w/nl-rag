@@ -1,0 +1,68 @@
+---
+title: "Adena culture"
+source: https://en.wikipedia.org/wiki/Adena_culture
+domain: ancient-history
+license: CC-BY-SA-4.0
+tags: ancient history
+fetched: 2026-07-05
+---
+
+# Adena culture
+
+The **Adena culture** was a pre-Columbian Native American culture that existed from 500 BC to 100 AD, in a time known as the Early Woodland period. The Adena culture refers to what were probably a number of related Native American societies sharing a burial complex and ceremonial system. The Adena culture was centered on the location of the modern state of Ohio, but also extended into contiguous areas of Kentucky, West Virginia, Indiana, Illinois, Southern Wisconsin and parts of extreme western Pennsylvania.
+
+## Importance
+
+The Adena culture was named for the large mound on Thomas Worthington's early 19th-century estate located near Chillicothe, Ohio, which he named "Adena".
+
+The culture is the most prominently known of a number of similar cultures in eastern North America that began mound building ceremonialism at the end of the Archaic period. The geographic range of the Adena sites is centered on central and southern Ohio, with further sites in contiguous areas of the surrounding states of Indiana, Kentucky, West Virginia and Pennsylvania. The importance of the Adena complex comes from its considerable influence on other contemporary cultures and cultures that came after it. The Adena culture is seen as the precursor to the traditions of the Hopewell tradition, which are sometimes thought as an elaboration, or zenith, of Adena traditions.
+
+The Adena were notable for their agricultural practices, pottery, artistic works, and extensive trading network, which supplied them with a variety of raw materials, ranging from copper from the Great Lakes to shells from the Gulf Coast.
+
+## Art and religion
+
+### Mounds
+
+Lasting traces of Adena culture are still seen in the remains of their substantial earthworks. At one point, larger Adena mounds numbered in the hundreds, but only a small number of the remains of the larger Adena earthen monuments still survive today. These mounds generally ranged in size from 20 feet (6.1 m) to 300 feet (91 m) in diameter and served as burial structures, ceremonial sites, historical markers, and possibly gathering places. These earthen monuments were built using hundreds of thousands of baskets full of specially selected and graded earth. According to archaeological investigations, Adena earthworks were often built as part of their burial rituals, in which the earth of the earthwork was piled immediately atop a burned mortuary building. These mortuary buildings were intended to keep and maintain the dead until their final burial was performed. Before the construction of the earthworks, some utilitarian and grave goods would be placed on the floor of the structure, which was burned with the goods and honored dead within. The earthwork would then be constructed, and often a new mortuary structure would be placed atop the new earthwork. After a series of repetitions, mortuary/earthwork/mortuary/earthwork, a quite prominent earthwork would remain. In the later Adena period, circular ridges of unknown function were sometimes constructed around the burial earthworks. The Great Serpent Mound in Ohio has been attributed to this culture, however, without conclusive evidence. Their mounds are similar to mounds built in Sweden during the end of the Bronze age.
+
+### Prominent mounds
+
+| Site | Image | Description |
+|---|---|---|
+| Adena mound | (Adena mound (Ross County, Ohio)) | The Adena mound, the type site for the culture, is a registered historic structure near Chillicothe, Ohio. |
+| Biggs site | (Biggs site) | Also known as Portsmouth Group D, the site is located next to the Ohio River in Greenup County, Kentucky. It is a concentric circular embankment and ditch surrounding a central conical burial mound with a causeway crossing the ring and ditch. It is connected to the Portsmouth Earthworks directly across the Ohio River in Portsmouth, Ohio. |
+| Criel Mound | (Criel Mound) | A 35-foot (11 m) high and 175-foot (53 m)-diameter conical mound, it is the second largest of its type in West Virginia. It is located in South Charleston, West Virginia. P. W. Norris of the Smithsonian Institution oversaw the excavation. His team discovered numerous skeletons along with weapons and jewelry. |
+| Enon Mound | (Enon Mound) | Ohio's second largest conical burial mound, it is believed to have been built by the Adena. |
+| Grave Creek Mound | (Grave Creek Mound) | At 62 feet (19 m) high and 240 feet (73 m) in diameter, it is one of the largest conical-type burial mounds in the United States. It is located in Moundsville, West Virginia. In 1838, much of the archaeological evidence in this mound was destroyed when several non-archaeologists tunneled into the mound. |
+| Miamisburg Mound | (Miamisburg Mound) | Once serving as an ancient burial site, the Miamisburg Mound is the most recognizable landmark in Miamisburg. It is the largest conical burial mound in Ohio, and remains virtually intact. Located in a city park at 900 Mound Avenue, it is an Ohio historical site and serves as a popular attraction and picnic destination for area families. Visitors can climb to the top of the mound via stone-masonry steps. |
+| Wolf Plains Group | (Wolf Plains Group) | A Late Adena group of 30 earthworks including 22 conical mounds and nine circular enclosures. It is located a few miles to the northwest of Athens, Ohio. |
+
+### Stone tablets
+
+The Adena also carved small stone tablets, usually 4 or 5 inches by 3 or 4 inches by .5 inches thick. On one or both flat sides were gracefully composed stylized zoomorphs or curvilinear geometric designs in deep relief. Paint has been found on some Adena tablets, leading archaeologists to propose that these stone tablets were probably used to stamp designs on cloth or animal hides, or onto their own bodies. It is possible that they were used to outline designs for tattooing.
+
+### Timber circles
+
+Postholes from a number of timber circles have been found during excavations of Adena culture causewayed ring ditch sites in the Bluegrass region of Kentucky and adjacent regions of Ohio and West Virginia. A notable example was found by archaeologist William S. Webb during the excavations of the Mount Horeb Site 1 in Fayette County, Kentucky in 1939. Webb discovered a circle of "paired-posts" inside of the embankment ring and ditch. The 48.5 feet (14.8 m) circle was made up of sixty two "paired" post sets and eight single posts.
+
+### Pottery
+
+Unlike in other cultures, Adena pottery was not buried with the dead or the remains of the cremated, as were other artifacts. Usually Adena pottery was tempered with grit or crushed limestone and was very thick; its decoration was largely plain, cord-marked or fabric marked, although one type bore a nested-diamond design incised into its surface. The vessel shapes were sub-conoidal or flat-bottomed jars, sometimes with small foot-like supports.
+
+## Domestic life
+
+### Settlement patterns
+
+The large and elaborate mound sites served a nearby scattering of people. The population was dispersed in small settlements of one to two structures. A typical house was built in a circle form from 15 to 45 feet in diameter. The walls were made of paired posts tilted outward, that were then joined to other pieces of wood to form a cone shaped roof. The roof was then covered with bark and the walls may have been bark and/or wickerwork.
+
+### Food sources
+
+Their sustenance was acquired through foraging and the cultivation of native plants.
+
+- Hunted deer, elk, black bear, woodchuck, beaver, porcupine, turkey, trumpeter swan, and ruffed grouse.
+- Gathered several edible seed, grasses, and nuts.
+- Cultivated pumpkin, squash, sunflower, goosefoot, and erect knotweed.
+
+### Tools
+
+The Adena ground stone tools and axes. Somewhat rougher slab-like stones with chipped edges were probably used as hoes. Bone and antler were used in small tools, but even more prominently in ornamental objects such as beads, combs, and worked animal-jaw gorgets or paraphernalia. Spoons, beads and other implements were made from the marine conch. A few copper axes have been found, but otherwise the metal was hammered into ornamental forms, such as bracelets, rings, beads, and reel-shaped pendants.

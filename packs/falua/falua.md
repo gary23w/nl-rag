@@ -1,0 +1,12 @@
+---
+title: "Falua"
+source: https://en.wikipedia.org/wiki/Falua
+domain: falua
+license: CC-BY-SA-4.0
+tags: falua
+fetched: 2026-07-05
+---
+
+# *Falua*
+
+***Falua***, also spelled ***faluwa***, is a traditional open-deck boat of the Ivatan people from the islands of Sabtang and Batan in the Philippines. It is about 8 to 12 m (26 to 39 ft) long and has one mast. It can also be propelled by six to ten pairs of rowers. It can carry thirty passengers and is used to ferry goods between the islands. Modern *falua* are generally motorized. *Falua* is similar in shape to the chinarem but differs in that it is usually larger and has a flat transom.

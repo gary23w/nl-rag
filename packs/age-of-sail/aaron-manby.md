@@ -1,0 +1,18 @@
+---
+title: "Aaron Manby"
+source: https://en.wikipedia.org/wiki/Aaron_Manby
+domain: age-of-sail
+license: CC-BY-SA-4.0
+tags: age of sail
+fetched: 2026-07-05
+---
+
+# *Aaron Manby*
+
+***Aaron Manby*** was a landmark vessel in the science of shipbuilding as the first iron steamship to go to sea. She was built by Aaron Manby (1776–1850) at the Horseley Ironworks. She made the voyage to Paris in June 1822 under Captain (later Admiral) Charles Napier, with Aaron's son Charles on board as engineer. *Aaron Manby* was then used by the *Compagnie des bateaux a vapeur en fer* to operate its service between Paris and Le Havre.
+
+## Vessel history
+
+Launched in 1821, *Aaron Manby* was the first steamship to be built of iron. She was the brainchild of the eccentric but far-seeing naval officer Captain (later Admiral) Charles Napier, who had conceived the idea of a fleet of steamships for service on the River Seine. The ship was named after the master of the Horseley Ironworks, Tipton, Staffordshire, where she was pre-fabricated to a design jointly formulated by Captain Napier, Aaron Manby and his son Charles. She was then shipped in pieces to Rotherhithe on the Thames and assembled there. Of 116 tons burthen, the ship was 120 feet (37 m) long. Her flat-bottomed hull was made of 1⁄4-inch-thick (6.4 mm) iron plate fastened to angle-iron ribs. There was one deck, of wood, and a bowsprit. The ship's distinctive profile boasted a single 47-foot-high (14 m) funnel. The engine was of the oscillating type, designed and patented (British Patent No 4558 of 1821) by Aaron Manby. The paddlewheels: were 12 feet (3.7 m) in diameter but only 2.5 feet (76 cm) wide, because the vessel's maximum beam was limited to 23 feet (7.0 m) for service on the Seine. Defying the prevailing wisdom of the day, the iron-hulled vessel not only floated but made 9 knots (10 mph; 17 km/h) and drew one foot (30 cm) less water than any other steamboat then operating.
+
+After trials in May 1822, *Aaron Manby* crossed the English Channel to Le Havre under Napier's command on 10 June, at an average speed of 8 knots (9.2 mph; 15 km/h), carrying passengers and freighted with a cargo of linseed and iron castings. The ship proceeded up the Seine to Paris, where she caused a great stir and where she was based for the next decade. This has been claimed (incorrectly) as the first passage from Britain to France by steam ship. There had been shorter crossings by wooden steamers, but Napier's was the first direct steam crossing from London to Paris and the first seagoing voyage by an iron ship anywhere. After some further channel voyages the ship was used for pleasure trips up and down the Seine. On the failure of Napier's enterprise through bankruptcy in 1827 (after he had financed the building of five similar iron steamships) she was sold to a French consortium ("Compagnie des bateaux a vapeur en fer" / "Iron steamship company") who operated her on the River Loire until she was broken up in 1855. The use of iron plates for the hull, in place of wood, was widely copied in shipbuilding during the following decades. Napier had conceived the ship as a first step towards an iron warship, and in this sense *Aaron Manby* could be considered a direct ancestor of the Royal Navy's first iron frigate, HMS *Warrior*, built the year of Napier's death.
