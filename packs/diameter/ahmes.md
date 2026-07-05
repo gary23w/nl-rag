@@ -1,0 +1,12 @@
+---
+title: "Ahmes"
+source: https://en.wikipedia.org/wiki/Ahmes
+domain: diameter
+license: CC-BY-SA-4.0
+tags: diameter
+fetched: 2026-07-05
+---
+
+# Ahmes
+
+**Ahmes** (Ancient Egyptian: *jꜥḥ-ms* “, a common Egyptian name also transliterated **Ahmose**) was an ancient Egyptian scribe who lived towards the end of the Fifteenth Dynasty (and of the Second Intermediate Period) and the beginning of the Eighteenth Dynasty (and of the New Kingdom). He transcribed the Rhind Mathematical Papyrus, a work of ancient Egyptian mathematics that dates to approximately 1550 BC; he is the earliest contributor to mathematics whose name is known. Ahmes claimed not to be the writer of the work but rather just the scribe. He claimed the material came from an even older document from around 2000 B.C.
