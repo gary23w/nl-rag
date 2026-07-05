@@ -1,0 +1,55 @@
+---
+title: "Capstan (nautical)"
+source: https://en.wikipedia.org/wiki/Capstan_(nautical)
+domain: capstan-nautical
+license: CC-BY-SA-4.0
+tags: capstan nautical
+fetched: 2026-07-05
+---
+
+# Capstan (nautical)
+
+A **capstan** is a vertical-axled rotating machine developed for use on sailing ships to multiply the pulling force of sailors when hauling ropes, cables, and hawsers. The principle is similar to that of the windlass, which has a horizontal axle.
+
+Capstan
+
+Anchor windlass
+
+The capstan and the
+
+anchor windlass
+
+on the deck below that it drives. On-board the museum sailing ship
+
+Balclutha
+
+## History
+
+The word, connected with the Old French *capestan* or *cabestan(t)*, from Old Provençal *cabestan*, from *capestre* "pulley cord", from Latin *capistrum*, a halter, from *capere*, to take hold of, seems to have come into English (14th century) from Portuguese or Spanish shipmen at the time of the Crusades. Both device and word are considered Spanish inventions.
+
+### Early form
+
+In its earliest form, the capstan consisted of a timber mounted vertically through a vessel's structure which was free to rotate. Levers, known as bars, were inserted through holes at the top of the timber and used to turn the capstan. A rope wrapped several turns around the drum was thus hauled upon. A rudimentary ratchet was provided to hold the tension. The ropes were always wound in a clockwise direction (seen from above).
+
+### Later form
+
+Capstans evolved to consist of a wooden drum or barrel mounted on an iron axle. Two barrels on a common axle were used frequently to allow men on two decks to apply force to the bars. Later capstans were made entirely of iron, with gearing in the head providing a mechanical advantage when the bars were pushed counterclockwise. One form of capstan was connected by a shaft and gears to an anchor windlass on the deck below. On riverine vessels, the capstan was sometimes cranked by steam power.
+
+Capstan winches were also important on sailing trawlers (e.g. Brixham trawlers) as a means for fetching in the nets after the trawl. When they became available, steam powered capstan winches offered a great saving in effort. These used a compact combined steam engine and boiler below decks that drove the winch from below via a shaft. Ruston, Proctor and Company at the UK 1883 Fisheries Exhibition marketed an engine, boiler, shafts and capstan designed specifically for this task.
+
+### Messenger
+
+As ships and their anchors grew in size, the anchor cable or chain would be too big to go around the capstan. Also, a wet cable or chain would be difficult to manage. A messenger would then be used as an intermediate device. This was a continuous loop of cable or chain which would go around the capstan. The main anchor cable or chain would then be attached to the messenger for hauling using some temporary connection such as ropes called nippers. These would be attached and detached as the anchor was pulled up onto the ship; (weighed) thus allowing a continuous hoist of the anchor, without any need for stopping or surging.
+
+### Modern form
+
+Modern capstans are powered electrically, hydraulically, pneumatically, or via an internal combustion engine. Typically, a gearbox is used which trades reduced speed, relative to the prime mover, for increased torque.
+
+## Similar machines
+
+- In yachting terminology, a winch functions on the same principle as a capstan. However, in industrial applications, the term "winch" generally implies a machine which stores the rope on a drum.
+- Most cassette players and other magnetic tape audio devices utilize a device called a capstan to draw the tape from the cassette or reel across the tape head. It functions similarly to, and was likely named for, the nautical device.
+
+## Use on land
+
+Hydraulically powered capstans were sometimes used in railway goods yards for shunting, or shifting railcars short distances. One example was Broad Street goods station in London. The yard was on a deck above some warehouses, and the deck was not strong enough to carry a locomotive, so ropes and capstans were used instead.

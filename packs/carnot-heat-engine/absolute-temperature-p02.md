@@ -1,0 +1,51 @@
+---
+title: "Thermodynamic temperature (part 2/2)"
+source: https://en.wikipedia.org/wiki/Absolute_temperature
+domain: carnot-heat-engine
+license: CC-BY-SA-4.0
+tags: carnot heat engine
+fetched: 2026-07-05
+part: 2/2
+---
+
+## History
+
+Guillaume Amontons (1663–1705) published two papers in 1702 and 1703 that may be used to credit him as being the first researcher to deduce the existence of a fundamental (thermodynamic) temperature scale featuring an absolute zero. He made the discovery while endeavoring to improve upon the air thermometers in use at the time. His J-tube thermometers comprised a mercury column that was supported by a fixed mass of air entrapped within the sensing portion of the thermometer. In thermodynamic terms, his thermometers relied upon the volume / temperature relationship of gas under constant pressure. His measurements of the boiling point of water and the melting point of ice showed that regardless of the mass of air trapped inside his thermometers or the weight of mercury the air was supporting, the reduction in air volume at the ice point was always the same ratio. This observation led him to posit that a sufficient reduction in temperature would reduce the air volume to zero. In fact, his calculations projected that absolute zero was equivalent to −240 °C—only 33.15 degrees short of the true value of −273.15 °C. Amonton's discovery of a one-to-one relationship between absolute temperature and absolute pressure was rediscovered a century later and popularized within the scientific community by Joseph Louis Gay-Lussac. Today, this principle of thermodynamics is commonly known as *Gay-Lussac's law* but is also known as *Amonton's law*.
+
+In 1742, Anders Celsius (1701–1744) created a "backwards" version of the modern Celsius temperature scale. In Celsius's original scale, zero represented the boiling point of water and 100 represented the melting point of ice. In his paper *Observations of two persistent degrees on a thermometer*, he recounted his experiments showing that ice's melting point was effectively unaffected by pressure. He also determined with remarkable precision how water's boiling point varied as a function of atmospheric pressure. He proposed that zero on his temperature scale (water's boiling point) would be calibrated at the mean barometric pressure at mean sea level.
+
+Coincident with the death of Anders Celsius in 1744, the botanist Carl Linnaeus (1707–1778) effectively reversed Celsius's scale upon receipt of his first thermometer featuring a scale where zero represented the melting point of ice and 100 represented water's boiling point. The custom-made *Linnaeus-thermometer*, for use in his greenhouses, was made by Daniel Ekström, Sweden's leading maker of scientific instruments at the time. For the next 204 years, the scientific and thermometry communities worldwide referred to this scale as the *centigrade scale*. Temperatures on the centigrade scale were often reported simply as *degrees* or, when greater specificity was desired, *degrees centigrade*. The symbol for temperature values on this scale was °C (in several formats over the years). Because the term *centigrade* was also the French-language name for a unit of angular measurement (one-hundredth of a right angle) and had a similar connotation in other languages, the term "centesimal degree" was used when very precise, unambiguous language was required by international standards bodies such as the International Bureau of Weights and Measures (BIPM). The 9th CGPM (General Conference on Weights and Measures and the CIPM (International Committee for Weights and Measures formally adopted *degree Celsius* (symbol: °C) in 1948.
+
+In his book *Pyrometrie* (1777) completed four months before his death, Johann Heinrich Lambert (1728–1777), sometimes incorrectly referred to as Joseph Lambert, proposed an absolute temperature scale based on the pressure/temperature relationship of a fixed volume of gas. This is distinct from the volume/temperature relationship of gas under constant pressure that Guillaume Amontons discovered 75 years earlier. Lambert stated that absolute zero was the point where a simple straight-line extrapolation reached zero gas pressure and was equal to −270 °C.
+
+Notwithstanding the work of Guillaume Amontons 85 years earlier, Jacques Alexandre César Charles (1746–1823) is often credited with discovering (circa 1787), but not publishing, that the volume of a gas under constant pressure is proportional to its absolute temperature. The formula he created was *V*1/*T*1 = *V*2/*T*2.
+
+Joseph Louis Gay-Lussac (1778–1850) published work in 1802 (acknowledging the unpublished lab notes of Jacques Charles fifteen years earlier) describing how the volume of gas under constant pressure changes linearly with its absolute (thermodynamic) temperature. This behavior is called Charles's law and is one of the gas laws. His are the first known formulas to use the number 273 for the expansion coefficient of gas relative to the melting point of ice (indicating that absolute zero was equivalent to −273 °C).
+
+William Thomson (1824–1907), also known as Lord Kelvin, wrote in his 1848 paper "On an Absolute Thermometric Scale" of the need for a scale whereby *infinite cold* (absolute zero) was the scale's zero point, and which used the degree Celsius for its unit increment. Like Gay-Lussac, Thomson calculated that absolute zero was equivalent to −273 °C on the air thermometers of the time. This absolute scale is known today as the Kelvin thermodynamic temperature scale. Thomson's value of −273 was derived from 0.00366, which was the accepted expansion coefficient of gas per degree Celsius relative to the ice point. The inverse of −0.00366 expressed to five significant digits is −273.22 °C which is remarkably close to the true value of −273.15 °C.
+
+In the paper he proposed to define temperature using idealized heat engines. In detail, he proposed that, given three heat reservoirs at temperatures $T_{A},T_{B},T_{C}$ , if two reversible heat engines (Carnot engine), one working between $T_{A},T_{B}$ and another between $T_{B},T_{C}$ , can produce the same amount of mechanical work W by letting the same amount of heat Q pass through, then define $T_{A}-T_{B}=T_{B}-T_{C}$ .
+
+Note that like Carnot, Kelvin worked under the assumption that heat is conserved ("the conversion of heat (or caloric) into mechanical effect is probably impossible"), and if heat Q goes into the heat engine, then heat Q must come out.
+
+Kelvin, realizing after Joule's experiments that heat is not a conserved quantity but is convertible with mechanical work, modified his scale in the 1851 work *An Account of Carnot's Theory of the Motive Power of Heat*. In this work, he defined as follows:
+
+> Given two heat reservoirs $T_{A},T_{B}$ , and a reversible heat engine working between them, such that if during an engine cycle, heat $Q_{A}$ moves into the engine, and heat $Q_{B}$ comes out of the engine, then ${\frac {T_{A}}{T_{B}}}={\frac {Q_{A}}{Q_{B}}}$ .
+
+The above definition fixes the ratios between absolute temperatures, but it does not fix a scale for absolute temperature. For the scale, Thomson proposed to use the Celsius degree, that is, ${\frac {1}{100}}$ the interval between the freezing and the boiling point of water.
+
+In 1859 Macquorn Rankine (1820–1872) proposed a thermodynamic temperature scale similar to William Thomson's but which used the degree Fahrenheit for its unit increment, that is, ${\frac {1}{180}}$ the interval between the freezing and the boiling point of water. This absolute scale is known today as the Rankine thermodynamic temperature scale.
+
+Ludwig Boltzmann (1844–1906) made major contributions to thermodynamics between 1877 and 1884 through an understanding of the role that particle kinetics and black body radiation played. His name is now attached to several of the formulas used today in thermodynamics.
+
+Gas thermometry experiments carefully calibrated to the melting point of ice and boiling point of water showed in the 1930s that absolute zero was equivalent to −273.15 °C.
+
+Resolution 3 of the 9th General Conference on Weights and Measures (CGPM) in 1948 fixed the triple point of water at precisely 0.01 °C. At this time, the triple point still had no formal definition for its equivalent kelvin value, which the resolution declared "will be fixed at a later date". The implication is that if the value of absolute zero measured in the 1930s was truly −273.15 °C, then the triple point of water (0.01 °C) was equivalent to 273.16 K. Additionally, both the International Committee for Weights and Measures (CIPM) and the CGPM formally adopted the name *Celsius* for the *degree Celsius* and the *Celsius temperature scale*.
+
+Resolution 3 of the 10th CGPM in 1954 gave the Kelvin scale its modern definition by choosing the triple point of water as its upper defining point (with no change to absolute zero being the null point) and assigning it a temperature of precisely 273.16 kelvins (what was actually written 273.16 *degrees Kelvin* at the time). This, in combination with Resolution 3 of the 9th CGPM, had the effect of defining absolute zero as being precisely zero kelvins and −273.15 °C.
+
+Resolution 3 of the 13th CGPM in 1967/1968 renamed the unit increment of thermodynamic temperature *kelvin*, symbol K, replacing *degree absolute*, symbol °K. Further, feeling it useful to more explicitly define the magnitude of the unit increment, the 13th CGPM also decided in Resolution 4 that "The kelvin, unit of thermodynamic temperature, is the fraction 1/273.16 of the thermodynamic temperature of the triple point of water".
+
+The CIPM affirmed in 2005 that for the purposes of delineating the temperature of the triple point of water, the definition of the Kelvin thermodynamic temperature scale would refer to water having an isotopic composition defined as being precisely equal to the nominal specification of Vienna Standard Mean Ocean Water.
+
+In November 2018, the 26th General Conference on Weights and Measures (CGPM) changed the definition of the Kelvin by fixing the Boltzmann constant to 1.380649×10−23 when expressed in the unit J/K. This change (and other changes in the definition of SI units) was made effective on the 144th anniversary of the Metre Convention, 20 May 2019.
