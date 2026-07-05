@@ -1,0 +1,74 @@
+---
+title: "Black Death (part 1/2)"
+source: https://en.wikipedia.org/wiki/Black_Death
+domain: demographic-history-of-scotland
+license: CC-BY-SA-4.0
+tags: demographic history of scotland
+fetched: 2026-07-05
+part: 1/2
+---
+
+# Black Death
+
+The **Black Death** was a plague pandemic that occurred in Europe from 1346 to 1353. It was one of the most fatal pandemics in human history, leading to the death of up to 50 million people, or 50% of Europe's 14th-century population. The disease is caused by the bacterium *Yersinia pestis* and is spread by fleas and through the air. One of the most significant events in European history, the Black Death had far-reaching population, economic, and cultural effects. It was the beginning of the second plague pandemic. The plague created religious, social, and economic upheavals, with profound effects on the course of European history.
+
+The Black Death was the second great natural disaster to strike Europe during the Late Middle Ages (the first one being the Great Famine of 1315–1317) and is estimated to have killed 30% to 60% of the European population, as well as approximately 33% of the population of the Middle East. There were further outbreaks throughout the Late Middle Ages and, also due to other contributing factors (the crisis of the late Middle Ages), the European population did not regain its 14th century level until the 16th century. Outbreaks of the plague recurred around the world until the early 19th century.
+
+
+## Origin
+
+The origin of the Black Death is disputed. Genetic analysis suggests *Yersinia pestis* bacteria evolved approximately 7,000 years ago, at the beginning of the Neolithic, with flea-mediated strains emerging around 3,800 years ago during the late Bronze Age. The immediate territorial origins of the Black Death and its outbreak remain unclear, with some evidence pointing towards Central Asia, China, the Middle East, and Europe. The pandemic was reportedly first introduced to Europe during the siege of the Genoese trading port of Caffa in Crimea by the Golden Horde army of Jani Beg in 1347. From Crimea, it was most likely carried by fleas living on the black rats that travelled on Genoese ships, spreading through the Mediterranean Basin and reaching North Africa, West Asia, and the rest of Europe via Constantinople, Sicily, and the Italian Peninsula. There is evidence that once it came ashore, the Black Death mainly spread from person-to-person as pneumonic plague, thus explaining the quick inland spread of the epidemic, which was faster than would be expected if the primary vector was rat fleas causing bubonic plague.
+
+A 2026 study published in *Nature* identified the oldest known evidence of plague outbreaks in human remains, finding traces of Yersinia pestis DNA in the teeth of 18 ancient hunter-gatherers from four cemeteries near Lake Baikal in Siberia. Carbon dating revealed two outbreaks, with the earliest cases dating to approximately 5,500 years ago — some 200 years earlier than previously established. Researchers concluded the disease likely spread initially from marmots through contact with raw organs or infected hides, and also transmitted between people through respiratory means. Many victims were young children, with three young girls buried side by side among the dead.
+
+### Patient zero
+
+There has been a quest to find "patient zero", the earliest known victim(s) with evidence of the Black Death. In 2022, in an article called "*The source of the Black Death in fourteenth-century central Eurasia*", researchers pointed to the earliest victims of the plague found at two cemeteries in the Chüy Valley near Lake Issyk-Kul in modern Kyrgyzstan. Here graves had tombstones with Syriac inscription, providing the name of the deceased, year of death and often the cause of death, showing a spike due to "pestilence" in 1338–1339. The article reported DNA data to provide genetic evidence from the teeth of seven individuals from the two cemeteries at Kara-Djigach and Burana finding evidence of *Yersinia pestis*. This confirms that the Yersinia pestis strain found in Kyrgyzstan predates and was the direct ancestor of the Black Death strains that devastated Europe and the Middle East starting in 1346–1347.
+
+### Effect on the Mongol Empire
+
+The Mongol Empire, founded by Genghis Khan, reached its peak expansion between 1206 and 1279. By the time the Black Death emerged in Central Asia in the late 1330s, the Mongol Empire had already reached its maximum geographic extent and had fractured into four distinct khanates (the Golden Horde, the Ilkhanate, the Chagatai Khanate, and the Yuan Dynasty). The Black Death became a catalyst for the Mongol Empire's fall. It disrupted trade as the Mongols relied on trade along the Silk Road and the plague spread along these trade routes, killing the merchants and officials who maintained the network. There was a depopulation of the ruling elite, decimating the Mongol administrative class in the Ilkhanate (Persia) and the Golden Horde (Russia), leading to political instability and the eventual overthrow of Mongol rulers.
+
+#### Chagatai Khanate (Central Asia)
+
+The Chagatai Khanate served as the "Ground Zero" for the genetic ancestor of the Black Death. A 2022 research paper by Spyrou et al. identified the Yersinia pestis strain in the cemetery sites of Kara-Djigach and Tolyak in 1338–1339, which were located within the borders of the Chagatai Khanate. The discovery in this specific khanate changes the "origin story" of the Black Death from a vague Far Eastern source (China) to a specific Central Asian focal point. The Chagatai Khanate sits at the very root of the "four-way split" (diversification) of the plague. This means the version that devastated the Ilkhanate, the Golden Horde, and Europe all radiated out from this single Central Asian source. The Chagatai Khanate was the geographic heart of the Silk Road. It acted as the bridge between the Yuan Dynasty in the east and the Ilkhanate/Golden Horde in the west. Because the Mongols maintained high-speed postal stations (Yam) and protected merchant caravans, they unintentionally created the perfect laboratory for a localized rodent-borne disease to become a transcontinental pandemic.
+
+#### Golden Horde (Russia)
+
+The Golden Horde played a pivotal role in the transmission of the Black Death from Central Asia to the Mediterranean. In 1346, the plague reached the Horde's territories along the Volga River, devastating major urban centers like the capital Sarai. The pandemic is famously associated with the Siege of Caffa (1346), where the Mongol army under Khan Jani Beg (r. 1342–1357) suffered heavy casualties from the disease while besieging the Genoese port. Chroniclers like Gabriele de' Mussi recorded that the Mongols catapulted plague-infected corpses into the city, an early instance of biological warfare, which likely contributed to the escape of infected Genoese ships toward Sicily and Europe.
+
+The plague triggered a profound domestic collapse for the Golden Horde, with the mass death of the ruling elite and the administrative class leading to a period of protracted civil war known as the "Great Troubles" (*Zamyatna*), beginning in 1359. This internal fragmentation, combined with the loss of tax revenue from the depopulated Silk Road trade routes, weakened Mongol authority over its Russian vassals, eventually facilitating the rise of the Grand Duchy of Moscow.
+
+#### Ilkhanate (Persia)
+
+The sudden collapse of the Ilkhanate following the death of its ruler Abu Sa'id in 1335 and turmoil that followed, have been linked to the outbreak of the Black Death. The Tian Shan mountains in Kyrgyzstan was a major node on the trade routes leading directly into the Ilkhanate. It is biologically plausible that the plague was already hitting nomadic camps and trade hubs before it was recorded by urban chroniclers. However, no evidence of mass graves or direct evidence of the plague have been found in the Ilkhanate dating to the early 1330s CE. George Childs Kohn, in his *Encyclopedia of Plague and Pestilence*, he explicitly lists 1335 as a potential early date for the plague reaching the Ilkhanate, citing the sudden death of the Khan and his court as circumstantial evidence. John France, a military and medieval historian who argues that the "shattering" of the Mongol military machine in the 1330s suggests a massive loss of manpower that political infighting alone cannot explain. Peter Jackson, in The Mongols and the Islamic World, notes the suspicious timing. While he remains cautious, he highlights that the "administrative paralysis" following 1335 mirrors the later effects of the Black Death in Europe. William H. McNeill, in his seminal work *Plagues and Peoples* (1976), pioneered the theory that the Mongol Empire's trade routes were the primary "caravanserai" for the plague, suggesting the Ilkhanate was the first major urban center to be hit.
+
+#### Yuan Dynasty (China)
+
+In 1368, the Fall of the Yuan Dynasty in China was due to the combination of plague, famine, and flooding that weakened Mongol authority, fueling the Red Turban Rebellion (c. 1351–1368) that established the Ming Dynasty.
+
+### Effect on India
+
+In India, the Tughlaq Dynasty ruled by Muhammad bin Tughlaq (r. 1325–1351) does not have records of the Black Death. There are records of outbreaks of massive pestilence (waba) around 1334–1335 (Warangal/Bidar Outbreak) and 1344. However, there is no clear evidence proving it was due to the Black Death bacterium.
+
+Ibn Battuta provides the primary description of this event at the time the army was stationed near Bidar/Warangal in the Deccan. The Waba (Pestilence) was described as a disease that struck with such speed that soldiers would fall dead almost instantly. It was reported that nearly half of the royal army perished. The Sultan himself became critically ill but survived, eventually retreating to Delhi to escape the contagion. The description of the Indian outbreak is somewhat general, focusing more on the suddenness of death and the high fever rather than the distinct physical markers like buboes. This has led some researchers to suggest it may have been a different tropical disease, such as a severe form of malaria or cholera.
+
+
+## Names
+
+European writers contemporary with the plague described the disease in Latin as *pestis* or *pestilentia*, 'pestilence'; *epidemia*, 'epidemic'; *mortalitas*, 'mortality'. In English prior to the 18th century, the event was called the "pestilence" or "great pestilence", "the plague" or the "great death". Subsequent to the pandemic "the *furste moreyn*" (first murrain) or "first pestilence" was applied, to distinguish the mid-14th century phenomenon from other infectious diseases and epidemics of plague.
+
+The 1347 pandemic plague was not referred to specifically as "black", at the time, in any European language. The expression "black death" had occasionally been applied to other fatal or dangerous diseases. In English, "Black death" was not used to describe this plague pandemic, however, until the 1750s; the term is first attested in 1755, where it translated Danish: *den sorte død*, lit. 'the black death'.
+
+This expression – as a proper name for the pandemic – had been popularized by Swedish and Danish chroniclers in the 15th and early 16th centuries, and in the 16th and 17th centuries, it was transferred to other languages as a calque: Icelandic: *svarti dauði*, German: *der schwarze Tod*, and French: *la mort noire*. Previously, most European languages had named the pandemic a variant or calque of the Latin: *magna mortalitas*, lit. 'Great Death'.
+
+The phrase 'black death' – describing Death as black – is very old. Homer used it in the Odyssey to describe the monstrous Scylla, with her mouths "full of black Death" (Ancient Greek: πλεῖοι μέλανος Θανάτοιο, romanized: *pleîoi mélanos Thanátoio*). Seneca the Younger may have been the first to describe an epidemic as 'black death' (Latin: *mors atra*), but only in reference to the acute lethality and dark prognosis of disease. The 12th–13th century French physician Gilles de Corbeil had already used *atra mors* to refer to a "pestilential fever" (*febris pestilentialis*) in his work *On the Signs and Symptoms of Diseases* (*De signis et symptomatibus aegritudium*). The phrase *mors nigra*, 'black death', was used in 1350 by Simon de Covino (or Couvin), a Belgian astronomer, in his poem "On the Judgement of the Sun at a Feast of Saturn" (*De judicio Solis in convivio Saturni*), which attributes the plague to an astrological conjunction of Jupiter and Saturn. His use of the phrase is not connected unambiguously with the plague pandemic of 1347 and appears to refer to the fatal outcome of disease.
+
+The historian Elizabeth Penrose, writing under the pen-name "Mrs Markham", described the 14th-century outbreak as the "black death" in 1823. The historian Cardinal Francis Aidan Gasquet wrote about the Great Pestilence in 1893 and suggested that it had been "some form of the ordinary Eastern or bubonic plague". In 1908, Gasquet said use of the name *atra mors* for the 14th-century epidemic first appeared in a 1631 book on Danish history by J. I. Pontanus: "Commonly and from its effects, they called it the black death" (Latin: *Vulgo & ab effectu atram mortem vocitabant*).
+
+
+## Previous plague epidemics
+
+Research from 2017 suggests plague first infected humans in Europe and Asia in the Late Neolithic to Early Bronze Age. Research in 2018 found evidence of *Yersinia pestis* in an ancient Swedish tomb, which may have been associated with the "Neolithic decline" around 3000BCE, in which European populations fell significantly. This *Y. pestis* may have been different from more modern types, with bubonic plague transmissible by fleas first known from Bronze Age remains near Samara.
+
+The symptoms of bubonic plague are first attested in a fragment of Rufus of Ephesus preserved by Oribasius; these ancient medical authorities suggest bubonic plague had appeared in the Roman Empire before the reign of Trajan, six centuries before arriving at Pelusium in the reign of Justinian I. In 2013, researchers confirmed earlier speculation that the cause of the plague of Justinian (541–549, with recurrences until 750) was *Y*.*pestis*. This is known as the first plague pandemic. In 610, the Chinese physician Chao Yuanfang described a "malignant bubo" "coming in abruptly with high fever together with the appearance of a bundle of nodes beneath the tissue." The Chinese physician Sun Simiao who died in 652 also mentioned a "malignant bubo" and plague that was common in Lingnan (Guangzhou). Ole Jørgen Benedictow believes that this indicates it was an offshoot of the first plague pandemic which made its way eastward to Chinese territory by around 600.

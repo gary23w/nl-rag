@@ -1,0 +1,59 @@
+---
+title: "Adomnán"
+source: https://en.wikipedia.org/wiki/Adomnan
+domain: christianisation-of-scotland
+license: CC-BY-SA-4.0
+tags: christianisation of scotland
+fetched: 2026-07-05
+---
+
+# Adomnán
+
+(Redirected from
+
+Adomnan
+
+)
+
+**Adomnán** or **Adamnán of Iona** (Old Irish: [ˈaðəβ̃ˌnaːn]; Latin: *Adamnanus*, *Adomnanus*; c. 624 – 704), also known as **Eunan** (/ˈjuːnən/ *YOO-nən*; from *Naomh Adhamhnán*), was an abbot of Iona Abbey (r. 679–704), hagiographer, statesman, canon jurist, and saint. He was the author of the *Life of Columba* (Latin: *Vita Columbae*), probably written between 697 and 700. This biography is by far the most important surviving work written in early-medieval Scotland, and is a vital source for our knowledge of the Picts, and an insight into the life of Iona and the early-medieval Gaelic monk.
+
+Adomnán promulgated the Law of Adomnán or "Law of Innocents" (Latin: *Lex Innocentium*). He also wrote the treatise *De Locis Sanctis* ('On Holy Places'), an account of the great Christian holy places and centres of pilgrimage. Adomnán got much of his information from a Frankish bishop called Arculf, who had personally visited Egypt, Rome, Constantinople and the Holy Land, and visited Iona afterwards.
+
+## Life
+
+Adomnán was born about 624, a relative on his father's side of Columba. He was a member of the Northern Uí Néill lineage Cenél Conaill. He was the son of Rónán mac Tinne by Ronat, a woman from another Northern Uí Néill lineage known as the Cenél nÉnda. Adomnán's birthplace was probably in or near Raphoe, a town in what later became Tír Chonaill (now mainly County Donegal), in Ulster in the north of Ireland. Some of Adomnán's childhood anecdotes seem to confirm at least an upbringing in this fertile eastern part of present-day County Donegal, not far from the modern city of Derry.
+
+It is thought that Adomnán may have begun his monastic career at a Columban monastery called Druim Tuamma, but any Columban foundation in northern Ireland or Dál Riata is a possibility, although Durrow is a stronger possibility than most. He probably joined the Columban *familia* (i.e. the federation of monasteries under the leadership of Iona Abbey) around 640. Some modern commentators believe that he could not have come to Iona until sometime after 669, the year of the accession of Fáilbe mac Pípáin, the first abbot of whom Adomnán gives any information. However, Richard Sharpe argues that he probably came to Iona during the abbacy of Ségéne (d. 652). Whenever or wherever Adomnán received his education, Adomnán attained a level of learning rare in early-medieval Northern Europe. It has been suggested by Alfred Smyth that Adomnán spent some years teaching and studying at Durrow, and while this is not accepted by all scholars, it remains a strong possibility.
+
+In 679, Adomnán became the ninth abbot of Iona after Columba. Abbot Adomnán enjoyed a friendship with King Aldfrith of Northumbria. In 684, Aldfrith stayed with Adomnán in Iona. In 686, after the death of Aldfrith's brother King Ecgfrith of Northumbria and Aldfrith's succession to the kingship, Adomnán was in the Kingdom of Northumbria on the request of King Fínsnechta Fledach of Brega in order to gain the freedom of sixty Gaels who had been captured in a Northumbrian raid two years before.
+
+Adomnán, in keeping with Ionan tradition, made several more trips to the lands of the English during his abbacy, including one the following year. It is sometimes thought, after the account given by Bede, that it was during his visits to Northumbria, under the influence of Abbot Ceolfrith, that Adomnán decided to adopt the Roman dating of Easter that had been agreed some years before at the Synod of Whitby. Bede implies that this led to a schism at Iona, whereby Adomnán became alienated from the Iona brethren and went to Ireland to convince the Irish of the Roman dating. Jeffrey Wetherill sees Adomnán's long absences from Iona as having led to something of an undermining of his authority; he was thus unable to persuade the monks to adopt the Roman dating of Easter, let alone the tonsure. It is clear that Adomnán did adopt that Roman dating and, moreover, probably did argue the case for it in Ireland.
+
+For many years, the people of Leinster made a triennial tribute payment, called the *Borumha*, to the Uí Néill. The payment was made largely in cattle. Around 692, the King of Leinster was prepared to go to war over the payment, but first sent a delegation led by Saint Moling to ask for its remittance. Fínsnechta Fledach agreed to remit payment "for a day and a night". Moling argued that "All time is day and night; thou canst never reimpose this tax." Although this was not the king's intention, Moling held him to his word, promising him heaven if he kept it, and the reverse if he did not. When Adomnán learned of this he left Iona to see the king and scolded him soundly for yielding the rights of the Uí Néill.
+
+## *Cáin Adomnáin*
+
+It is generally believed that in 697, Adomnán promulgated the *Cáin Adomnáin*, meaning literally the "Canons" or "Law of Adomnán". The *Cáin Adomnáin* was promulgated amongst a gathering of Irish, Dál Riatan and Pictish notables at the Synod of Birr in 697. It is a set of laws designed, among other things, to guarantee the safety and immunity of various types of non-combatants in warfare. For this reason it is also known as the *Lex Innocentium* (Law of Innocents).
+
+## Works
+
+Adomnán's most important work, and the one for which he is best known, is the *Vita Columbae* ("Life of Columba"), a hagiography of Iona's founder, Columba, probably written between 697 and 700. The format borrows to some extent from Sulpicius Severus' *Life of Saint Martin of Tours*. Adomnán adapted traditional forms of Christian biography to group stories about Columba thematically rather than chronologically, and present Columba as comparable to a hero in Gaelic mythology. Wetherill suggests that one of the motivations for writing the *Vita* was to offer Columba as a model for the monks, and thereby improve Adomnán's standing as abbot. The biography is by far the most important surviving work written in early-medieval Scotland, and is a vital source for our knowledge of the Picts, as well as a great insight into the life of Iona and the early-medieval Gaelic monk.
+
+However, the *Vita* was not his only work. Adomnán also wrote the treatise *De Locis Sanctis* (i.e. "On Holy Places"), an account of the great Christian holy places and centres of pilgrimage. Adomnán got much of his information from a Frankish bishop called Arculf, who had personally visited the Egypt, Rome, Constantinople and the Holy Land, and visited Iona afterwards. Adomnán gave a copy to the scholar-king Aldfrith of Northumbria (685–704). Also attributed to him is a good deal of Gaelic poetry, including a celebration of the Pictish King Bridei's (671–93) victory over the Northumbrians at the Battle of Dun Nechtain (685).
+
+## Death
+
+Adomnán died in 704, and became a saint in Scottish and Irish tradition, as well as one of the most important figures in either Scottish or Irish history. His death and feast day are commemorated on 23 September. Along with Columba, he is joint patron of the Roman Catholic Diocese of Raphoe, which encompasses the bulk of County Donegal in the north-west of Ireland. The Cathedral of St Eunan and St Columba (popularly known as St. Eunan's Cathedral), the Catholic cathedral in that diocese, is in Letterkenny. In 727 the relics of Adomnán were brought to Ireland to renew the *Cáin Adomnáin* and they were returned to Iona in 730.
+
+## Legacy
+
+In his native Donegal, Adomnán has given his name to several institutions and buildings including:
+
+- The Cathedral of St Eunan and St Columba in Letterkenny, County Donegal; the current seat of the Bishop of Raphoe,
+- The Anglican St Eunan's Cathedral in Raphoe, County Donegal,
+- St Eunan's NS, a national school in Raphoe,
+- St Eunan's College, a secondary school in Letterkenny,
+- St Eunan's NS, a national school in the small village of Laghey, just south of Donegal Town,
+- St Eunan's GAA, a GAA club in Letterkenny
+
+In County Sligo, just to the south, he is venerated as the founder of Skreen Abbey, now the site of the Church of Ireland church of Skreen Parish.

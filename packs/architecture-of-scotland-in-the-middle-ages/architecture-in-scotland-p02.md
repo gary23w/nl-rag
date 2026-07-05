@@ -1,0 +1,188 @@
+---
+title: "Architecture of Scotland (part 2/2)"
+source: https://en.wikipedia.org/wiki/Architecture_in_Scotland
+domain: architecture-of-scotland-in-the-middle-ages
+license: CC-BY-SA-4.0
+tags: architecture of scotland in the middle ages
+fetched: 2026-07-05
+part: 2/2
+---
+
+## List of Scottish architects and master masons
+
+- James Adam (1732–1794), son of William Adam
+- John Adam (1721–1792), eldest son of William Adam
+- Robert Adam (1728–1792)
+- William Adam (1689–1748), father of Robert; architect and builder
+- John Macvicar Anderson (1835–1915)
+- Robert Rowand Anderson (1834–1921)
+- Howard Ashley, architect practicing in Malaya, who worked for the Public Works Department of Malaysia
+- George Ashdown Audsley (1838–1925), architect, artist, illustrator, writer, and pipe organ designer
+- William James Audsley (1833–1907)
+- Ormrod Maxwell Ayrton (1874–1960), FRIBA
+- John Baird (1798–1859), influential figure in the development of Glasgow Georgian and Victorian Architecture
+- Andrew Balfour (1863–1943), architect, work including Holmlea Primary School, Glasgow
+- Isobel Hogg Kerr Beattie (1900–1970), possibly the first woman to practise architecture in Scotland
+- John Begg (1866–1937), architect who practised in London, South Africa and India, and taught at Edinburgh College of Art
+- William Bryce Binnie (c. 1885–c. 1963)
+- Alexander Black (c.1790–1858)
+- Hippolyte Blanc (1844–1917)
+- Thomas Bonnar (c.1770–1847), interior designer and architect
+- James MacLellan Brown (c. 1886–1967), city architect of Dundee, designer of the Mills Observatory
+- Thomas Brown (1781–1850), architect, works including Bellevue Church, Edinburgh
+- Thomas Brown (1806–1872), architect notable for prison design
+- Sir George Washington Browne (1853–1939)
+- Sir William Bruce (c. 1630–1710)
+- David Bryce (1803–1876)
+- William Burn (1789–1870)
+- John Burnet (1814–1901), architect who lived and practised in Glasgow
+- Sir John James Burnet (1857–1938), Edwardian architect, son of John Burnet
+- James Burton, famous London property developer and architect; father of Decimus Burton and James Burton (Egyptologist)
+- James Byres of Tonley (1733–1817), architect, antiquary and dealer in Old Master paintings and antiquities
+- Edward Calvert (c. 1847–1914)
+- Charles Cameron (1743–1812)
+- Alexander Buchanan Campbell (1914–2007)
+- Alexander Lorne Campbell (1871–1944), architect, who practised across Scotland, founder of Scott & Campbell
+- Colen Campbell (1676–1729)
+- Colin Robert Vaughan Campbell, 7th Earl Cawdor (born 1962)
+- John Campbell (1857–1942)
+- John Chesser (1819–1892), architect largely based in Edinburgh
+- Jack Coia (1898–1981) of Gillespie, Kidd and Coia.
+- Ninian Comper (1864-1960)
+- George Corson (1829–1910)
+- David Cousin (1809–1878), architect, landscape architect and planner
+- James Craig (1739–1795)
+- James Hoey Craigie (1870–1930)
+- Alexander Hunter Crawford (1865–1945), architect and businessman, owner of Crawford's Biscuits
+- Alexander Davidson (1839–1908), architect active in Australia
+- William Gordon Dey (1911–1997), architect who specialised in college buildings
+- John Douglas of Pinkerton (c.1709–1778), architect who designed and reformed several country houses
+- Sir Robert Drummond of Carnock (died 1592), Master of Work to the Crown of Scotland
+- Sir James Duncan Dunbar-Nasmith, (born 1927), leading conservation architect
+- Alan Dunlop (born 1958)
+- John Murray Easton (1889–1975), architect, winner of the Royal Gold Medal for architecture
+- Alexander Edward (1651–1708), Episcopalian clergyman, draughtsman, architect and landscape designer
+- Archibald Elliot (1760–1823)
+- Reginald Francis Joseph Fairlie (1883–1952), architect of the National Library of Scotland
+- James Fergusson (1808–1886)
+- Claude Waterlow Ferrier (1879–1935), architect, specialising in the Art Deco style
+- James Leslie Findlay (1868–1952)
+- Kathryn Findlay (1953-2014)
+- Robert Findlay (1859–1951)
+- George Topham Forrest (1872–1945)
+- William Fowler (1824–1906), 19th-century Scottish architect linked to Golspie and area
+- Malcolm Fraser (born 1959)
+- Patrick Allan Fraser (1812–1890), was architect and painter
+- Andrew Frazer (died 1792)
+- Thomas Gildard (died 1895), architect of Britannia Music Hall
+- James Gibbs (1682–1754)
+- Charles Lovett Gill (1880–1960)
+- James Gowan (1923–2015), postmodernist architect of the "engineering style"
+- Sir James Gowans (1821–1890), maverick Edinburgh architect and builder
+- James Gillespie Graham (1776–1855)
+- John Edgar Gregan (1813–1855)
+- David Hamilton (1768–1843)
+- Sir James Hamilton of Finnart (c1495–1540), Master of Work to the Crown of Scotland
+- Thomas Hamilton (1784–1858)
+- John Henderson (1804–1862), architect chiefly remembered as a church architect
+- William Hastie (1753/1763–1832)
+- Gareth Hoskins (1967–2016), architect, UK Architect of the year 2006
+- Edith Mary Wardlaw Burnet Hughes (1888–1971), considered Britain's first practising woman architect, who established her own firm in 1920
+- Robert Hurd (1905-1963)
+- Ernest Auldjo Jamieson (1880–1937), architect specialising in country houses, largely for wealthy family friends
+- George Meikle Kemp (1795–1844), carpenter, draughtsman, and architect, best known as the designer of the Scott Monument
+- Robert Kerr (1823–1904), co-founder of the Architectural Association
+- Sir William Hardie Kininmonth (1904–1988), architect whose work mixed a modern style with Scottish vernacular
+- William Leiper (1839–1916)
+- David Lennox (1788–1873), bridge-builder and master stonemason, working in Australia
+- John Lessels (1809–1883)
+- Ian G Lindsay (1906–1966)
+- Robert Lorimer (1864–1929)
+- David MacGibbon (1831–1902)
+- Kate Macintosh (born 1937), architect of Dawson's Heights in Southwark
+- Alexander George Robertson Mackenzie (1879–1963), architect, in London and Aberdeen
+- Alexander Marshall Mackenzie (1848–1933)
+- Charles Rennie Mackintosh (1868–1928), architect, designer and watercolourist; husband and business partner of Margaret McDonald
+- James Marjoribanks MacLaren (1853–1890), associated with the Arts and Crafts movement and Scottish Vernacular architecture
+- Thomas MacLaren (1863–1928), architect who worked in London, and the United States
+- Andy MacMillan(1928–2014), architect, educator, writer and broadcaster
+- Ebenezer James MacRae (1881–1951), City Architect for Edinburgh
+- Thomas P. Marwick (1854–1927), architect based in Edinburgh, important to the architectural character of Marchmont
+- Robert Matheson (1808–1877), architect and Clerk of Works for Scotland
+- Robert Matthew (1906–1975)
+- John McAslan, CBE (born 1954), designed many buildings around the world, such as the new departures concourse at London King's Cross railway station, the Iron Market in Port-au-Prince and the Olympia Park in Moscow
+- James Mckissack (1875-1940), cinema architect
+- John McLachlan (1843–1893), architect based in Edinburgh
+- George McRae (1858–1923), architect who migrated to Australia and pursued his career in Sydney
+- Sir Frank Charles Mears (1880–1953)
+- Adam Menelaws (born between 1748 and 1756–1831)
+- James Miller (1860–1947)
+- Sydney Mitchell (1856–1930)
+- Robert Morham (1839–1912), City Architect for Edinburgh
+- Richard Murphy (born 1955), architect, winner of the 2016 RIBA House of the year
+- Gordon Murray (born 1954)
+- Sir James Murray of Kilbaberton (died 1634), master wright and architect
+- John Mylne (died 1621), master mason
+- John Mylne of Perth (c. 1585–1657), master mason
+- John Mylne (1611–1667), master mason and architect
+- Robert Mylne (1633–1710), stonemason and architect, last Master Mason to the Crown of Scotland
+- Robert Mylne (1733–1811), architect and civil engineer, remembered for Blackfriars Bridge, London
+- Walter Newall (1780–1863)
+- Peter Nicholson (1765–1844)
+- John Paterson (died 1832)
+- Robert Hamilton Paterson (1843–1911), partner in the architectural practice, Hamilton-Paterson and Rhind
+- David Paton (1801–1882), Scottish architect and builder, who worked in the United States in the 1830s
+- John Dick Peddie (1824–1891)
+- John More Dick Peddie (1853–1921)
+- Frederick Thomas Pilkington (1832–1898)
+- James Playfair (1755–1794), father of William Henry
+- William Henry Playfair (1790–1857)
+- B. Marcus Priteca (1889–1971)
+- Alan Reiach (1910-1992)
+- Robert Reid Raeburn (1819–1888), architect who worked in and around Edinburgh
+- Robert Reid (1774–1856), King's architect and surveyor for Scotland
+- John Rennie (1761-1822)
+- David Rhind (1808–1883)
+- James Robert Rhind (1854–1918)
+- John Rhind (1836–1889), architect from Inverness
+- George Richardson (c. 1737–c. 1813), architectural and decorative draftsman
+- John Thomas Rochead (1814–1878)
+- Thomas Ross (1839–1930)
+- Fred Rowntree (1860–1927), Arts and Crafts architect
+- Witold Rybczynski (born 1943)
+- James Salmon (1873–1924), grandson of James Salmon (1805–1888)
+- James Salmon (1805–1888), grandfather of James Salmon (1873–1924)
+- William Schaw (c. 1550–1602), Master of Works to James VI of Scotland for building castles and palaces
+- John Scrimgeour of Myres (fl. 16th century), Master of Work for royal buildings for James V and Mary, Queen of Scots
+- James Robb Scott (1882–1965), Chief Architect of the Southern Railway
+- James Sellars (1843–1888)
+- Richard Norman Shaw (1831–1912), architect known for his country houses and for commercial buildings
+- Archibald Simpson (1790–1847), one of the major architects of Aberdeen
+- James Smith (c. 1645–1731)
+- James Smith of Jordanhill (1782–1867), architect, merchant, antiquarian, geologist, biblical critic and man of letters
+- John Smith (1781–1852), first official city architect of Aberdeen
+- Robert Smith (1722–1777), emigrant to America
+- William Smith (1817–1891)
+- John Soutar (1881–1951)
+- James Souttar (1840–1922), worked in Sweden
+- Basil Spence (1907–1976)
+- John James Stevenson (1831–1908)
+- James Stirling (1926–1992)
+- John Tait (1787–1856), architect based in Edinburgh
+- Thomas S. Tait (1882–1954)
+- Bruce James Talbert (1838–1881), architect and interior designer
+- Harold Tarbolton (1869–1947) architect based in Edinburgh.
+- Sir Andrew Thomas Taylor (1850–1937), architect and Conservative Party municipal councillor
+- Alexander "Greek" Thomson (1817–1875)
+- James Thomson (died 1927), City Engineer, City Architect, and Housing Director of Dundee
+- Ramsay Traquair, architect and academic with strong links to Canada
+- James Campbell Walker (1821–1888), architect specialising in poorhouses and schools
+- William Wallace (died 1631)
+- Frederick Walters (1849–1931), notable for Roman Catholic churches
+- George Henry Walton (1867–1933)
+- Thomas Lennox Watson (c. 1850–1920)
+- William Weir (1865–1950)
+- Charles Wilson (1810–1863)
+- Robert Wilson (1834–1901), architect for the Edinburgh Board of Education
+- George Wittet (1878–1926), architect working mostly in Bombay, India
+- William Young (1843–1900), designer of Glasgow City Chambers
