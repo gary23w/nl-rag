@@ -1,0 +1,52 @@
+---
+title: "17 & 19 Newhall Street, Birmingham"
+source: https://en.wikipedia.org/wiki/17_&_19_Newhall_Street,_Birmingham
+domain: birmingham-children-s-hospital
+license: CC-BY-SA-4.0
+tags: birmingham children's hospital
+fetched: 2026-07-05
+---
+
+# 17 & 19 Newhall Street, Birmingham
+
+Coordinates
+
+:
+
+52°28′53.5″N
+
+1°54′6.5″W
+
+﻿
+
+/
+
+﻿
+
+52.481528°N 1.901806°W
+
+﻿
+
+/
+
+52.481528; -1.901806
+
+**17 & 19 Newhall Street** is a red brick and architectural terracotta Grade I listed building, situated on the corner of Newhall Street and Edmund Street in the city centre of Birmingham, England. Although its official name is 17 & 19 Newhall Street, it is popularly known as **The Exchange**, and was previously known as the **Bell Edison Telephone Building**.
+
+## History
+
+Opened in 1887, the building was designed by Frederick Martin of the firm Martin & Chamberlain. It was constructed to house the new Central Telephone Exchange and offices for the National Telephone Company (NTC). Birmingham's central exchange had 5,000 subscribers and was the largest of its type in the country.
+
+Originally having the postal address of *19 Newhall Street*, it was known as "Telephone Buildings" within the NTC organisation but it was also popularly known as the "Bell Edison Telephone Building" – the NTC logo behind the wrought iron gates to the main entrance bears the names of Bell and Edison. The ground floor of the building was let out to shops.
+
+In 1912, the NTC was taken over by the Postmaster General and ownership of the building transferred to the GPO. Whereas Telephone House accommodated the telex automatic exchange, 19 Newhall Street held a TAS exchange which was used by the GPO to route telegrams around the UK. It also housed the Birmingham office of the Post Office Engineering Union (located on the basement floor in Edmund Street).
+
+During World War I, the building was used as the Midland headquarters of the air raid warning system.
+
+In 1936, the Central Telephone Exchange vacated the building and relocated to new premises (Telephone House) further down Newhall Street.
+
+## Modern era
+
+17 & 19 Newhall Street is now occupied by Core Marketing (a marketing and PR company), Mitchell Adam (an accountancy recruitment firm) and GBR Phoenix Beard (a firm of property consultants). The basement is occupied by a bar called *Bushwackers*, which has its entrance on Edmund Street.
+
+The building's full postal address is: *The Exchange, 19 Newhall Street, Birmingham B3 3PJ*. However, it occupies 17 & 19 Newhall Street as well as 103 Edmund Street.

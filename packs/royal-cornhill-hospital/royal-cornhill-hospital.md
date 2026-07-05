@@ -1,0 +1,44 @@
+---
+title: "Royal Cornhill Hospital"
+source: https://en.wikipedia.org/wiki/Royal_Cornhill_Hospital
+domain: royal-cornhill-hospital
+license: CC-BY-SA-4.0
+tags: royal cornhill hospital
+fetched: 2026-07-05
+---
+
+# Royal Cornhill Hospital
+
+Coordinates
+
+:
+
+57°09′15″N
+
+2°06′59″W
+
+﻿
+
+/
+
+﻿
+
+57.1542°N 2.1164°W
+
+﻿
+
+/
+
+57.1542; -2.1164
+
+**Royal Cornhill Hospital** is a psychiatric hospital in Westburn Road, Aberdeen, Scotland. It is managed by NHS Grampian.
+
+## History
+
+The hospital was founded as the **Aberdeen Lunatic Asylum** in 1800. The city's dancing master, Francis Peacock, donated all the funds from the profits of his 1805 book on dancing to the asylum and an enlarged facility designed by Archibald Simpson opened in 1818.
+
+It was renamed the **Aberdeen Royal Lunatic Asylum** in 1852 and a new hospital for sick and acute cases was built to the north of the existing facility in 1896. Pavilions for the treatment of tuberculosis were added in the 1920s and the facility became the Aberdeen Royal Mental Hospital in 1933. It suffered from bomb damage, which resulted in four fatalities, in 1943 during the Second World War. The facility joined the National Health Service in 1948 and became the Royal Cornhill Hospital in 1964. It was completely redeveloped in the early 1990s and the new modernised facilities re-opened in 1994.
+
+In 2013 the Health and Safety Executive issued an official warning that risk assessments at the hospital for patients in danger of self harming were insufficient, after three suicides.
+
+In 2015 proposals were put forward to redevelop part of the site which was surplus to requirements for residential use.
