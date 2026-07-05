@@ -1,0 +1,65 @@
+---
+title: "Chrysler A platform"
+source: https://en.wikipedia.org/wiki/Chrysler_A_platform
+domain: chrysler-a-platform
+license: CC-BY-SA-4.0
+tags: chrysler a platform
+fetched: 2026-07-05
+---
+
+# Chrysler A platform
+
+The **Chrysler A platform** was the basis for smaller rear wheel drive cars in the 1960s. These cars are sometimes referred to as **A-body** cars.
+
+Cars using the A platform in various markets around the world include:
+
+- 1960–1976 Plymouth Valiant
+- 1960–1981 Chrysler Valiant
+- 1961–1962 Dodge Lancer
+- 1961–1963 DeSoto Rebel
+- 1963–1976 Dodge Dart
+- 1964–1969 Plymouth Barracuda
+- 1971–1976 Plymouth Scamp
+- 1970–1976 Plymouth Duster
+- 1971–1972 Dodge Demon
+- 1971–1978 Valiant Charger
+- 1969–1970 Valiant VF
+- 1970–1971 Valiant VG
+
+This list is not complete: A-platform vehicles not included on this list were sold in some countries until 1981.
+
+Wheelbases:
+
+- 106.5 in
+  - 1960–1962 Valiant, Chrysler Valiant, and Plymouth Valiant (worldwide)
+  - 1961–1962 Dodge Lancer
+  - 1961–1963 DeSoto Rebel (South Africa)
+- 106 in
+  - 1963–1966 Plymouth Valiant (USA, Mexico, Europe)
+  - 1964–1966 Plymouth Barracuda
+  - 1963–1966 Dodge Dart wagon
+  - 1965 Valiant V100, Custom 100 (Canada)
+- 108 in
+  - 1967–1973 Plymouth Valiant
+  - 1967–1969 Plymouth Barracuda
+  - 1970–1976 Plymouth Duster
+  - 1971–1972 Dodge Demon
+  - 1973–1976 Dodge Dart *Sport*
+- 111 in
+  - 1963–1966 Chrysler Valiant (Argentina, Brazil)
+  - 1971–1976 Plymouth Scamp
+  - 1974–1976 Plymouth Valiant
+  - 1963–1976 Dodge Dart
+  - 1963–1964 and 1966 Chrysler Valiant (Canada)
+  - 1965 Valiant V200, Custom 200 (Canada)
+
+## 1989
+
+The "A" name was reused again for the mid-size Chrysler LeBaron, Dodge Spirit and Plymouth Acclaim sedans, though this was changed to AA when Chrysler moved to two-letter names for 1990. The "AA" cars lasted until 1995 when replaced by the more modern, but less popular, JA "Cloud Cars" in the same year.
+
+Cars that used the front wheel drive AA platform were:
+
+- 1990–1994 Chrysler LeBaron sedan
+- 1989–1995 Chrysler Saratoga (export only)
+- 1989–1995 Dodge Spirit
+- 1989–1995 Plymouth Acclaim
