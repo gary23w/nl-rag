@@ -1,0 +1,395 @@
+---
+title: "2019 in the United Kingdom (part 3/4)"
+source: https://en.wikipedia.org/wiki/2019_in_the_United_Kingdom
+domain: great-yarmouth
+license: CC-BY-SA-4.0
+tags: great yarmouth
+fetched: 2026-07-05
+part: 3/4
+---
+
+## Deaths
+
+### January
+
+- 1 January
+  - Katie Flynn, 82, British novelist.
+  - Dean Ford, 72, Scottish singer and songwriter Marmalade
+  - Freddie Glidden, 91, Scottish footballer (Hearts, Dumbarton).
+- 2 January
+  - Bill Elsey, 97, British racehorse trainer (Epsom Oaks, St Leger Stakes).
+  - Julia Grant, 64, British trans woman pioneer (*A Change of Sex*).
+  - Geoffrey Langlands, 101, army officer and educator.
+- 3 January
+  - Joe Casely-Hayford, 62, British fashion designer.
+  - Jack Fennell, 85, English rugby league footballer (Featherstone Rovers).
+  - Reg Holland, 78, English footballer (Wrexham, Chester City, Altrincham).
+- 4 January
+  - John Burningham, 82, English author and illustrator, pneumonia.
+  - David Garman, 92, inventor and businessman.
+  - Frank Mugglestone, 94, English rugby league footballer (Bradford Northern, Castleford).
+- 5 January
+  - Derek Foster, Baron Foster of Bishop Auckland, 81, politician, MP for Bishop Auckland (1979–2005) and member of the House of Lords (since 2005), cancer.
+  - Don Grierson, 77, music industry executive.
+  - Eric Haydock, 75, British bassist (The Hollies).
+  - Aisha Lemu, 79, British-born Nigerian Islamic scholar.
+- 6 January
+  - Derek Piggott, 96, British glider pilot and flight instructor.
+  - Ken Preston, 93, English cricketer (Essex).
+  - William Morgan Sheppard, 86, actor.
+  - Paul Streeten, 101, Austrian-born British economics professor
+- 7 January
+  - Laurie Gilfedder, 83, English rugby league footballer (Great Britain, Lancashire, Warrington, Wigan, Leigh).
+  - John Joubert, 91, South African-born British composer.
+  - Dave Laing, 71, English writer, editor and broadcaster, cancer.
+  - Ronald C. Read, 94, British-born Canadian mathematician.
+- 8 January – John Nye, 95, glaciologist, heart failure.
+- 9 January – Ian Adamson, 74, Northern Irish politician, Lord Mayor of Belfast (1996–1997), MLA (1998–2003).
+- 10 January
+  - Martin Gore, 67, oncologist, complications following yellow fever vaccination.
+  - Barbara Low, 98, British-American biochemist.
+  - Dianne Oxberry, 51, English broadcaster and weather presenter for the BBC regional news programme *BBC North West Tonight*.
+  - Lionel Price, 91, Olympic basketball player (1948).
+  - Ron Smith, 94, British comic artist (*Judge Dredd*).
+  - Sir Conrad Swan, 94, Canadian-born British officer of arms.
+- 11 January
+  - Sir Michael Atiyah, 89, British mathematician, President of the Royal Society (1990–1995).
+  - David Hinkley, 74–75, British-born American statistician.
+  - Steffan Lewis, 34, Welsh politician, AM (since 2016).
+  - Andrew MacLachlan, 77, Scottish actor (*Monty Python's Life of Brian*, *A Fish Called Wanda*, *By the Sword Divided*).
+  - Sue Povey, 76, geneticist.
+- 12 January
+  - Linda Kelly, 82, English historian.
+  - John Slim, 2nd Viscount Slim, 91, peer and Member of the House of Lords (since 1971).
+- 13 January – Serena Rothschild, 83, Thoroughbred horse owner.
+- 14 January
+  - Martha Ross, 79, English actress (*EastEnders*, *Grange Hill*) and radio presenter.
+  - Duncan Welbourne, 78, English footballer (Watford).
+- 17 January
+  - Windsor Davies, 88, Welsh actor.
+  - Garfield Owen, 86, Welsh rugby player (Halifax, Keighley, Newport). (death announced on this date)
+- 18 January
+  - Sylvia Kay, 82, English actress (*Rapture*, *Wake in Fright*, *Just Good Friends*)
+  - Brian Stowell, 82, Manx reporter (Max Radio), linguist, physicist and author, *Reih Bleeaney Vanannan* winner (2008).
+- 19 January
+  - Ted McKenna, 68, Scottish drummer (The Sensational Alex Harvey Band).
+  - Muriel Pavlow, 97, English actress, (*Malta Story*, *Doctor in the House*, *Reach for the Sky*)
+- 22 January – Andrew Fairlie, 55, Scottish chef.
+- 23 January – Diana Athill, 101, British literary editor and novelist.
+- 24 January – Hugh McIlvanney, 84, Scottish sports writer (*The Sunday Times*).
+- 25 January – Nigel Saddington, 53, English footballer (Doncaster Rovers, Carlisle United, Gateshead).
+- 27 January
+  - Sir Reginald Eyre, 94, British politician, MP for Birmingham Hall Green (1965–1987).
+  - Mike Harrison, 78, English footballer (Chelsea, Blackburn Rovers, Luton Town).
+- 28 January – Noel Rawsthorne, 89, British organist and composer.
+- 29 January – Martha Ross, 80, British actress (*EastEnders*, *Grange Hill*) and radio presenter.
+- 30 January
+  - Stewart Adams, 95, British chemist, developed ibuprofen.
+  - Dame Felicity Hill, 103, British Royal Air Force officer.
+  - Bernard Nevill, 88, English textile designer.
+  - Duncan Weldon, 77, English theatre producer.
+- 31 January – Dennis Hunt, 81, English football player (Gillingham, Brentford) and manager (Ashford Town).
+
+### February
+
+- 1 February
+  - Conway Berners-Lee, 97, English mathematician and computer scientist.
+  - Tim Elkington, 98, British Royal Air Force fighter pilot, member of The Few.
+  - Jeremy Hardy, 57, English comedian (*The News Quiz*, *I'm Sorry I Haven't a Clue*, *Jeremy Hardy Speaks to the Nation*), cancer.
+  - Clive Swift, 82, English actor (*The National Health*, *Keeping Up Appearances*, *The Old Guys*) and songwriter.
+  - Les Thornton, 84, British professional wrestler (Stampede, NWA, WWF).
+- 2 February – William Davis, 85, German-born British journalist (BBC).
+- 3 February
+  - Richard Lacey, 78, microbiologist.
+  - Danny Williams, 94, English football player (Rotherham United) and manager (Swindon Town, Sheffield Wednesday).
+- 4 February
+  - Colin Barker, 79, British sociologist and historian.
+  - Matt Brazier, 42, English footballer (QPR, Cardiff City, Leyton Orient).
+  - Ward Thomas, 95, British television executive and World War II fighter pilot.
+- 5 February
+  - Joe Fascione, 74, Scottish footballer (Chelsea, Dundee United).
+  - Peter Hughes, 96, English actor (*The Great Muppet Caper*, *Hope and Glory*, *Evita*), pneumonia.
+  - Andy Nisbet, 65, Scottish climber, fall.
+  - Edward H. Simpson, 96, code breaker, statistician and civil servant.
+- 6 February
+  - Edwin Barnes, 84, British Roman Catholic priest.
+  - Gerald English, 93, British tenor.
+  - Marcia Falkender, Baroness Falkender, 86, British politician.
+  - Michael Green, 88, British theologian.
+  - Vikki Orvice, 56, British sports journalist.
+  - Rosamunde Pilcher, 94, British author (*The Shell Seekers*).
+  - Mags Portman, 44, doctor, advocate for PrEP in fight against HIV, mesothelioma.
+- 7 February – Albert Finney, 82, English actor (*Tom Jones*, *Erin Brockovich*, *Murder on the Orient Express*, *Big Fish*, *Skyfall*).
+- 8 February
+  - John Haynes, 80, British publisher (Haynes Publishing Group).
+  - Jim Miller, 76, Scottish linguist.
+  - Cliff Myers, 72, English footballer (Charlton Athletic, Yeovil Town, Torquay United).
+- 9 February
+  - Cadet, 28, British rap artist.
+  - Katharina Lindner, 39, German-born Scottish footballer (Glasgow City).
+  - Fred Pickering, 78, English footballer (Blackburn Rovers, Everton, national team).
+  - Ian Ross, 72, English footballer (Liverpool, Aston Villa, Peterborough United).
+- 10 February
+  - Terry Dempsey, 77, English-born South African songwriter, struck by gyrocopter.
+  - Eric Dunning, 82, sociologist.
+  - Sam McCready, 82, Northern Irish actor, playwright and theatre director.
+  - Roderick MacFarquhar, 88, British politician, journalist and historian.
+- 12 February
+  - Gordon Banks, 81, English footballer (Leicester City, Stoke City, national team), world champion (1966).
+  - Austin Rhodes, 81, English rugby league football player (St Helens, Leigh) and coach (Swinton).
+  - David Walton, 73, British ecologist.
+- 13 February
+  - Dick Churchill, 99, British RAF squadron leader, last survivor of the Great Escape.
+  - Eric Harrison, 81, English football player (Halifax Town) and coach (Manchester United).
+- 14 February
+  - Andrea Levy, 62, English novelist (*Small Island*, *The Long Song*).
+  - Simon P. Norton, 66, English mathematician.
+  - Alfred Radley, 94, fashion designer.
+- 15 February
+  - Charles Farr, 59, British civil servant, Chair of Joint Intelligence Committee (since 2015).
+  - John Stalker, 79, police officer, Deputy Chief Constable of Greater Manchester Police (1984–1987).
+- 17 February
+  - Paul Flynn, 84, British politician, MP for Newport West (since 1987).
+  - Johnny Valentine, 88, Scottish footballer (Queen's Park, Rangers, St Johnstone).
+- 20 February
+  - Alan R. King, 64, British linguist.
+  - Bruno Schroder, 86, British banker (Schroders).
+- 21 February – Edward Enfield, 89, British television and radio presenter, and newspaper journalist.
+- 23 February
+  - Roger Ainsworth, 67, British engineer.
+  - Gillian Freeman, 89, British author (*The Undergrowth of Literature*) and screenwriter (*The Leather Boys*, *That Cold Day in the Park*).
+- 24 February – Patricia Garwood, 78, British actress (*The Lavender Hill Mob*, *Petticoat Pirates*, *No Place Like Home*).
+- 25 February
+  - Mark Hollis, 64, English singer-songwriter (Talk Talk).
+  - Kenneth Pitt, 96, British publicist and talent manager (David Bowie).
+- 26 February
+  - Andy Anderson, 68, English drummer (The Cure, The Glove, Steve Hillage).
+  - Bobby Doyle, 65, Scottish footballer (Peterborough United, Portsmouth).
+  - Peter Fox, 85, English rugby league player (Batley Bulldogs) and coach (Featherstone Rovers, Bradford Northern).
+  - Tony Honoré, 96, British lawyer and jurist.
+- 27 February – Doug Sandom, 89, English drummer (The Who).
+- 28 February – Peter Dolby, 78, English footballer (Shrewsbury Town).
+
+### March
+
+- 1 March
+  - Kumar Bhattacharyya, Baron Bhattacharyya, 78, British-Indian engineer, educator and government advisor, member of the House of Lords (since 2004).
+  - Paul Williams, 78, English singer (Zoot Money's Big Roll Band, Juicy Lucy, Allan Holdsworth).
+- 2 March
+  - David Held, 68, British political scientist.
+  - Mike Oliver, 74, British disability rights activist.
+- 3 March
+  - John Bloom, 87, English entrepreneur (Rolls Razor).
+  - Ben Hamilton-Baillie, 63, architect, cancer.
+  - Peter Hurford, 88, British organist and composer.
+- 4 March
+  - Eric Caldow, 84, Scottish footballer (Rangers, national team).
+  - Garfield Davies, Baron Davies of Coity, 83, British trade unionist (USDAW) and life peer.
+  - Keith Flint, 49, English singer, musician and dancer (The Prodigy).
+  - Michael Thomas, 66, actor (*Life Without George*, *The Boat That Rocked*, *Head over Heels*, myeloma.
+- 5 March – David Kear, 95, British-born New Zealand geologist and science administrator, director-general of the Department of Scientific and Industrial Research (1980–1983).
+- 6 March
+  - Grayston Burgess, 86, English countertenor and conductor
+  - Sir Simon Cassels, 91, British admiral, Second Sea Lord (1982–1986).
+  - Magenta Devine, 61, British television presenter (*Rough Guide*, *Network 7*).
+  - Mike Grose, British bassist (Queen).
+  - John Habgood, 91, British Anglican bishop, academic, and life peer, Bishop of Durham (1973–1983), Archbishop of York (1983–1995).
+- 7 March
+  - Robert Braithwaite, 75, British marine engineer and entrepreneur, founder of Sunseeker.
+  - Johnny Brittain, 86–87, British motorcycle racer.
+- 8 March
+  - David Martin, 89, sociologist and Anglican priest.
+  - Jason Reese, 51, engineer.
+  - Mike Watterson, 76, English snooker player, promoter and commentator.
+- 9 March – Tom Ballard, 30, British rock climber. (body discovered on this date)
+- 10 March
+  - Gordon McIntosh, 93, Scottish-born Australian politician, Senator (1974–1987).
+  - Angus Sinclair, 73, Scottish serial killer.
+- 11 March – Danny Kustow, 69, English rock guitarist (Tom Robinson Band).
+- 12 March
+  - Alan Moss, 88, English cricketer (Middlesex, MCC, national team).
+  - John Richardson, 95, British art historian, biographer of Picasso.
+- 13 March
+  - Keith Butler, 80, British racing cyclist.
+  - Edmund Capon, 78, British-Australian art historian.
+- 14 March
+  - John Hellawell, 75, English footballer (Bradford City).
+  - Paul Hutchins, 73, British tennis player.
+  - Sir Stanley Peart, 96, doctor and medical researcher.
+  - Charlie Whiting, 66, British motorsports director, FIA Formula 1 race director (since 1997).
+- 15 March
+  - Derek Burke, 89, academic.
+  - Alec Coppen, 96, psychiatrist.
+  - Derek Lewin, 88, English footballer (Bishop Auckland, Great Britain Olympic football team).
+  - Ron Peplow, 83, English footballer (Brentford).
+  - Mike Thalassitis, 26, British footballer (Stevenage) and reality television star (*Love Island*, *Celebs Go Dating*), suicide.
+- 17 March – Mick Murphy, 77, English rugby player (St. Helens, Leigh).
+- 18 March – Roy McDowell, 71, Scottish footballer (Berwick Rangers). (death announced on this date)
+- 19 March
+  - Derek Anthony, 71, military officer, Flag Officer Scotland, Northern England and Northern Ireland (2000–2003).
+  - Graham Arnold, 86, English artist.
+  - Tony Greenfield, 87, statistician.
+  - Clinton Greyn, 85, Welsh-born actor (*Compact*, *Goodbye, Mr. Chips*, *Doctor Who*)
+  - Rose Hilton, 87, British painter.
+  - Fraser Robertson, 47, Scottish sports journalist (Sky Sports, STV).
+  - Mary Warnock, Baroness Warnock, 94, British philosopher.
+- 21 March – Gordon Hill, 90, English football referee.
+- 22 March – Scott Walker, 76, American-born British singer-songwriter (The Walker Brothers), composer and record producer.
+- 23 March – Victor Hochhauser, 95, Slovak-born British music promoter.
+- 24 March
+  - James Barclay, 86, Scottish playwright and novelist, lung cancer.
+  - Julia Lockwood, 77, British actress (*My Teenage Daughter*, *Please Turn Over*, *No Kidding*)
+  - Brian MacArthur, 79, newspaper editor and writer, leukaemia.
+- 25 March
+  - Edna Barker, 82, English cricketer.
+  - Barrie Hole, 76, Welsh footballer (Cardiff City, Aston Villa, national team).
+- 26 March
+  - Ted Burgin, 91, British football player (Sheffield United, Leeds United, Rochdale) and manager.
+  - Ranking Roger, 56, British singer (The Beat, General Public), cancer.
+- 28 March – Kevin Randall, 73, English footballer and manager (Chesterfield, York City).
+- 29 March – Shane Rimmer, 89, Canadian-born British actor (*Thunderbirds*, *Dr. Strangelove*, *The Spy Who Loved Me*), cancer.
+- 30 March
+  - Tania Mallet, 77, English model and actress (*Goldfinger*).
+  - Jim Russell, 98, English racing driver.
+
+### April
+
+- 1 April – Michael William Feast, 92, British-born South African astronomer.
+- 2 April
+  - Martin Fido, 79, crime writer, fall.
+  - Bill Heine, 74, American-born British radio broadcaster (BBC Radio Oxford), leukaemia.
+  - Harry Judge, 90, English educational theorist.
+- 3 April – Billy Mainwaring, 78, Welsh rugby union player (Aberavon, Bridgend, national team).
+- 5 April – John Quarmby, 89, (*Fawlty Towers*, *K-9 and Company*, *A Christmas Carol*
+- 6 April – David J. Thouless, 84, physicist, Nobel Prize laureate (2016).
+- 7 April
+  - Mya-Lecia Naylor, 16, English actress (*Millie Inbetween*), hanged by misadventure.
+  - Willie McPheat, 76, Scottish footballer (Sunderland, Hartlepool United, Airdrieonians).
+  - Sandy Ratcliff, 70, English actress (*EastEnders*).
+- 8 April
+  - Clive Cohen, 73, English Anglican priest.
+  - Rex Garrod, 75, inventor, roboteer (*Brum*, *Robot Wars*) and television presenter (*The Secret Life of Machines*), complications from Alzheimer's disease.
+  - Sir Alexander Reid, 3rd Baronet, 86, English aristocrat and public servant.
+- 11 April
+  - Ian Cognito, 60, English stand-up comedian, heart attack.
+  - Una-Mary Parker, 89, English journalist and novelist.
+- 12 April
+  - Ivor Broadis, 96, English footballer (Carlisle United, Newcastle United).
+  - John McEnery, 75, English actor (*Romeo and Juliet*, *Nicholas and Alexandra*, *The Land That Time Forgot*) and writer.
+  - Norrie Muir, 70, Scottish climber.
+  - Paul Rawlinson, 56, lawyer, head of Baker McKenzie (since 2016).
+  - Tommy Smith, 74, English professional footballer, dementia.
+- 13 April
+  - Tony Buzan, 76, English author and educational consultant.
+  - Winifred Jordan, 99, English sprinter.
+  - Paul Raymond, 73, English musician (Plastic Penny, UFO, Savoy Brown), heart attack.
+- 14 April – Colin Collindridge, 98, English footballer (Sheffield United, Nottingham Forest).
+- 15 April
+  - Martin King, 86, British actor (*Captain Scarlet and the Mysterons* *Joe 90*)
+  - Sir Roger Moate, 80, politician, MP (1970–1997), cancer.
+  - Malky McCormick, 76, Scottish cartoonist, vascular dementia.
+  - Les Reed, 83, English songwriter ("It's Not Unusual", "Delilah", "The Last Waltz") and musician.
+- 17 April – Sir Clive Rose, 97, diplomat.
+- 18 April
+  - John Bowen, 94, writer.
+  - Con de Lange, 38, South African-born Scottish cricketer (Northamptonshire), brain tumour.
+  - Andrew Mallard, 56, British-born Australian wrongfully convicted prisoner, traffic collision.
+  - Lyra McKee, 29, Northern Irish journalist.
+- 19 April
+  - Philip Liner, 93, British-born New Zealand radio broadcaster (National Radio).
+  - Michael Yorke, 80, Anglican priest, Dean of Lichfield (1999–2005).
+- 20 April
+  - Joe Armstrong, 68, computer scientist, designer of Erlang.
+  - Charlie Kelsall, 98, Welsh footballer (Wrexham).
+- 21 April
+  - Polly Higgins, 50, Scottish environmentalist, cancer.
+  - Doreen Spooner, 91, photographer.
+- 22 April
+  - Heather Harper, 88, Northern Irish soprano, Grammy winner (1980, 1985).
+  - Billy McNeill, 79, Scottish footballer (Celtic) and manager (Aberdeen), dementia.
+- 23 April
+  - George Haigh, 103, English footballer.
+  - Edward Kelsey, 88, English actor (*The Archers*, *Danger Mouse*).
+  - Terry Rawlings, 85–86, film editor (*Alien*, *Blade Runner*, *Chariots of Fire*).
+  - Peter Skipper, 61, English footballer (Hull City), complications from a stroke.
+  - David Winters, 80, English-American actor and choreographer (*West Side Story*).
+- 25 April – Sir Nigel Seely, 95, English aristocrat.
+- 26 April – Sir David McNee, 94, Scottish police officer, Commissioner of the Metropolitan Police (1977–1982).
+- 27 April – Joseph Ward, 76, English tenor.
+- 29 April
+  - Stevie Chalmers, 83, Scottish footballer (Celtic).
+  - Betty Lockwood, Baroness Lockwood, 95, political activist and life peer, Member of the House of Lords (1978–2007).
+  - John Llewellyn Moxey, 94, Argentinian-born British director (*The City of the Dead*, *Foxhole in Cairo*, *Circus of Fear*).
+- 30 April
+  - Boon Gould, 64, English musician (Level 42).
+  - Peter Mayhew, 74, English-American actor (*Star Wars*), heart attack.
+
+### May
+
+- 2 May
+  - Lord Toby Jug, 53, politician.
+  - David Gordon Wilson, 91, British-born American professor of engineering.
+- 3 May
+  - Sir Peter Herbert, 90, admiral.
+  - Irene Sutcliffe, 94, English actress (*Coronation Street*)
+- 4 May – Tommy Sopwith, 86, racing driver and businessman.
+- 6 May
+  - Jack Cohen, 85, scientist and author.
+  - Ted Witherden, 97, English cricketer.
+- 7 May – Seamus Close, 71, Northern Irish politician, liver cancer.
+- 9 May
+  - Walter Harris, 93, author and broadcaster.
+  - Freddie Starr, 76, English comedian, heart disease.
+  - Micky Steele-Bodger, 93, English rugby union player (Harlequin, Barbarian).
+  - Dan van der Vat, Dutch-born British journalist and naval historian.
+  - Brian Walden, 86, journalist and broadcaster (*Weekend World*) and politician, MP (1964–1977), emphysema.
+- 10 May
+  - Jon Gittens, 55, English footballer (Swindon Town, Portsmouth, Exeter City).
+  - Richard L. Hills, 82, English historian and clergyman.
+  - Janet Kitz, 89, Scottish-born Canadian historian and author (*Shattered City: The Halifax Explosion and the Road to Recovery*).
+  - John MacInnes, 89, Scottish Gaelic scholar.
+  - Gordon Neate, 78, English footballer (Reading).
+- 11 May
+  - Melissa Ede, 58, English transgender campaigner and social media personality, heart attack.
+  - Nan Winton, 93, broadcaster, first woman to read BBC News on television, fall.
+- 12 May
+  - Dale Greig, 81, Scottish long-distance runner.
+  - Doug McAvoy, 80, trade union leader, General Secretary of the National Union of Teachers (1989–2004).
+  - Alan Skirton, 80, English footballer (Bath City, Arsenal), Alzheimer's disease.
+- 13 May – George Smith, 75, Scottish football referee.
+- 14 May – Tommy Donbavand, 53, English children's author (*Scream Street*) and actor, throat and lung cancer.
+- 15 May
+  - Kenneth Newing, 95, Anglican prelate, Bishop of Plymouth (1982–1988).
+  - John Ronane, 85, actor (*Strangers*).
+- 16 May – Geoff Toseland, 88, English footballer (Sunderland).
+- 18 May – Sir Timothy Kitson, 88, politician, MP for Richmond, North Yorkshire (1959–1983).
+- 20 May
+  - Andrew Hall, 65, English actor (*Butterflies*, *Casualty*, *Coronation Street*).
+  - John Moore, Baron Moore of Lower Marsh, 81, politician, MP (1974–1992).
+- 21 May – Royce Mills, 77, English actor (*History of the World, Part I*, *Up the Chastity Belt*, *Doctor Who*).
+- 22 May
+  - Maurice Bamford, 83, English rugby league player and coach (Wigan Warriors, Leeds Rhinos, Great Britain).
+  - Judith Kerr, 95, German-born writer and illustrator (*The Tiger Who Came to Tea*, *Mog*).
+- 23 May – Joseph Devine, 81, Scottish Roman Catholic prelate, Bishop of Motherwell (1983–2013).
+- 24 May – Edmund Morris, 78, Kenyan-born British-American writer (*The Rise of Theodore Roosevelt*, *Dutch: A Memoir of Ronald Reagan*), Pulitzer Prize winner (1980), stroke.
+- 25 May
+  - Margaret-Ann Armour, 79, Scottish-born Canadian chemist.
+  - Claus von Bülow, 92, Danish-British socialite.
+- 26 May
+  - Harry Hood, 74, Scottish footballer (Celtic) and manager (Queen of the South), cancer.
+  - Stephen Thorne, 84, English actor (*Z-Cars*, *Crossroads*, *Doctor Who*).
+- 27 May
+  - Sir David Sieff, 80 businessman (Marks & Spencer).
+  - Alan Smith, 97, English footballer (Arsenal, Brentford).
+- 28 May
+  - Ralph Murphy, 75, British-born Canadian country musician, cancer.
+  - Walter Wolfgang, 95, German-born socialist and peace activist.
+- 29 May
+  - Adam Patel, Baron Patel of Blackburn, 78, clothier and Member of the House of Lords (since 2000).
+  - Michael Spicer, 76, politician, MP (1974–2010), chairman of the 1922 Committee (2001–2010) and Member of the House of Lords (since 2010), Parkinson's disease and leukaemia.
+- 30 May
+  - Anthony Price, 90, author.
+  - Andrew Sinclair, 84, polymathic novelist, speechwriter and film director
+  - John Tidmarsh, 90, English broadcaster and journalist (*Outlook*).
+
+### June

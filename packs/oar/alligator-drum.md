@@ -1,0 +1,18 @@
+---
+title: "Alligator drum"
+source: https://en.wikipedia.org/wiki/Alligator_drum
+domain: oar
+license: CC-BY-SA-4.0
+tags: oar
+fetched: 2026-07-05
+---
+
+# Alligator drum
+
+The **alligator drum** (simplified Chinese: 鼍鼓; traditional Chinese: 鼉鼓; pinyin: *tuó gǔ*) is a type of drum once used in Neolithic China, made from clay and alligator hides.
+
+Alligator drums have been found over a broad area at the Neolithic sites from modern Shandong in the east to Qinghai in the west, dating to a period of 5500–2350 BC. In literary records, drums manifested shamanistic characteristics and were often used in ritual ceremonies. Drums covered with alligator skin for ceremonial use are mentioned in the *Shijing*.
+
+During the Archaic period, alligators probably lived along the east coast of China, including southern Shandong. The earliest alligator drums, comprising a wooden frame covered with alligator skin, are found in the archaeological sites at Dawenkou, as well as several sites of Longshan.
+
+Typical acoustic characteristics of the alligator drum are as follows: frequency: 4100–2600 Hz, amplitude: 3000–2000 dB, and wavelength: 2300–1900 Hz.

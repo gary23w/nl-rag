@@ -1,0 +1,241 @@
+---
+title: "17th century in philosophy"
+source: https://en.wikipedia.org/wiki/17th_century_in_philosophy
+domain: early-modern-period
+license: CC-BY-SA-4.0
+tags: early modern period
+fetched: 2026-07-05
+---
+
+# 17th century in philosophy
+
+This is a timeline of **philosophy in the 17th century**.
+
+## Events
+
+- 1600 – Giordano Bruno, Italian philosopher, poet, alchemist, astronomer, cosmological theorist, and esotericist was burned alive at Campo de' Fiori in Rome after being convicted of heresy.
+- 1611 – The first Accademia dei Lincei is founded by Federico Cesi, which holds discussions that reject the traditional Aristotelian framework.
+- 1620 – The establishment of Francis Bacon’s scientific method prompts reevaluation of empirical evidence in philosophy.
+- 1633 – The Roman Inquisition finds Galileo “vehemently suspect of heresy" after he defended heliocentricism, challenging traditional Aristotelian cosmology.
+- 1641 – René Descartes formulates the mind-body problem in his publication, Meditations on First Philosophy.
+- 1643 – Princess Elisabeth of Bohemia and René Descartes correspond about their differing views on mind, soul, and immortality.
+- 1649 – Christina, Queen of Sweden invites René Descartes to educate her in his philosophical views, particularly his insight into Catholicism.
+- 1653 – Blaise Pascal has a spiritual vision of fire that convinces him of God's presence, which leads to him dedicating the rest of his life to theological and philosophical interests.
+- 1656 – Portuguese-Jewish philosopher Baruch Spinoza is excommunicated from the Portuguese-Jewish community in Amsterdam after questioning rabbinic authority.
+- 1660 – The Royal Society in the United Kingdom establishes after 12 natural philosophers at Gresham College decide to commence a "Colledge for the Promoting of Physico-Mathematicall Experimentall Learning.”
+- 1668 – Gottfried Wilhelm Leibniz took up a diplomatic position in Mainz, which exposed him to an extensive range of philosophical thought and would lead to rigorous philosophical production.
+- 1670 – Pascal's wager is introduced, causing philosophers to analyze the rationality behind belief in God based on cost-benefit analysis.
+- 1687 – Isaac Newton's *Principia* demonstrates that the universe operates around rational, discoverable laws, supporting the rise of empiricism and rationalism.
+
+## Publications
+
+- *Monita Politico-Moralia et Icon Ingeniorum* by Andrzej Maksymilian Fredro
+- *Dissertatio, de Ingenii Muliebris ad Doctrinam, & meliores Litteras Aptitudine* by Anna Maria von Shurman
+- *Quaestiones Quodlibeticae* by Arnold Geulincx
+- *Logica fundamentis suis restituta* by Arnold Geulincx
+- *Methodus inveniendi argumenta* by Arnold Geulincx
+- *De virtute* by Arnold Geulincx
+- *Opera philosophica* by Arnold Geulincx
+- *La logique, ou l'art de penser* by Antonie Arnauld and Pierre Nicole
+- *Grammaire générale et raisonnée* by Antonie Arnauld and Claude Lancelot
+- *Ethics* by Baruch Spinoza
+- *Tractatus de Intellectus Emendatione* by Baruch Spinoza
+- *Principia philosophiae cartesianae* by Baruch Spinoza
+- *Tractatus Theologico-Politicus* by Baruch Spinoza
+- *Court Traité Sur Dieu* by Baruch Spinoza
+- *Pensées* by Blaise Pascal
+- *Trois discours sur la condition des grands* by Blaise Pascal
+- *Discours sur les passions de l'amour* by Blaise Pascal
+- *A Cabbalistical Dialogue* by Franciscus Mercurius van Helmont
+- *Discours de Métaphysique* by Gottfried Wilhelm Leibniz
+- *Brevis Demonstratio Erroris Memorabilis Cartesii et Aliorum Circa Legem Naturae* by Gottfried Wilhelm Leibniz
+- *Divine Dialogues* by Henry More
+- *Philosophical Poems* by Henry More
+- *Psychodoia Platonica: or, a Platonicall Song of the Soul* by Henry More
+- *Philosophiæ Naturalis Principia Mathematica* by Issac Newton
+- *Certamen Philosophicum Propugnatæ Veritatis Divinæ ac Naturalis Adversus J. Bredenburgi Principia* by Isaac Orobio de Castro
+- *Disputatio theologica practica de conscientia* by Johannes Clausberg
+- *Two Treatises of Government* by John Locke
+- *Epistola de tolerantia* by John Locke
+- *An Essay Concerning Human Understanding* by John Locke
+- *Tenure of Kings and Magistrates* by John Milton
+- *An Essay Towards a Real Character, and a Philosophical Language* by John Wilkins
+- *The Nature of Bodies* by Kenelm Digby
+- *On the Immortality of Reasonable Souls* by Kenelm Digby
+- *Observations upon Experimental Philosophy* by Margaret Cavendish
+- *Grounds of Natural Philosophy* by Margaret Cavendish
+- *Philosophical Letters* by Margaret Cavendish
+- *Some Reflections Upon Marriage* by Mary Astell
+- *Animadversiones* by Pierre Gassendi
+- *Exercitationes* by Pierre Gassendi
+- *Syntagma philosophicum* by Pierre Gassendi
+- *Dasbodh* by Samarth Ramdas
+- *Les Passions de l'âme* by René Descartes
+- *Discours de la Méthode* by René Descartes
+- *Meditationes de Prima Philosophia* by René Descartes
+- *L’Homme* by René Descartes
+- *Meditationes de Prima Philosophia* by René Descartes
+- *Considérations sur l'état présent de la controverse touchant le T. S. Sacrement de l'autel* by Robert Desgabets
+- *Discours de la communication ou transfusion du sang* by Robert Desgabets
+- *Critique de la critique de la Recherche de la vérité* by Robert Desgabets
+- *Traité de l’indéfectibilité des créatures* by Robert Desgabets
+- *Supplément à la philosophie de M. Descartes* by Robert Desgabets
+- *Guide de la raison naturelle* by Robert Desgabets
+- *Traité de l’union de l’âme et du corps* by Robert Desgabets
+- *De legibus naturae* by Richard Cumberland
+- *Leviathan* by Thomas Hobbes
+- *De Cive* by Thomas Hobbes
+- *De Corpore* by Thomas Hobbes
+- *De Motu, Loco et Tempore* by Thomas Hobbes
+- *The Horae Subsecivae* by Thomas Hobbes
+- *Elementorum Philosophiae Sectio Secunda De Homine* by Thomas Hobbes
+- *Problematica Physica* by Thomas Hobbes
+- *Of Liberty and Necessity* by Thomas Hobbes and John Bramhall
+
+## Births
+
+- 1600 – Elizabeth Foxcroft, English theosophist.
+- 1601 – Baltasar Gracián, Spanish Jesuit and Baroque prose writer and philosopher.
+- 1602 – William Chillingworth, English churchman.
+- 1602 – Bartholomew Mastrius, Italian Conventual Franciscan philosopher and theologian.
+- 1602 – Athanasius Kircher, German Jesuit scholar and polymath.
+- 1603 – Kenelm Digby, English courtier, diplomat, and natural philosopher.
+- 1603/04 – Issac Cardoso, Sephardic Jewish physician, philosopher, and polemic writer.
+- 1603/04 – Anandghan, Śvetāmbara Jain monk, mystical poet and hymnist.
+- 1605 – Thomas Browne, English polymath.
+- 1606 – Mulla Mahmud Jaunpuri, Indian natural philosopher and astronomer.
+- 1607 – Francesco Sforza Pallavicino, Italian cardinal, philosopher, theologian, literary theorist, and church historian.
+- 1607 – Anna Maria van Schurman, Dutch painter, engraver, poet, classical scholar, philosopher, and feminist writer.
+- 1608 – Samarth Ramdas, Indian Hindu saint, philosopher, poet, writer, and spiritual master.
+- 1609 – Kâtip Çelebi, Turkish polymath.
+- 1610 – Robert Desgabets, French Cartesian philosopher and Benedictine prior.
+- 1610 – Huang Zongxi, Chinese naturalist, political theorist, philosopher, and soldier.
+- 1612 – Antoine Arnauld, French Catholic theologian, philosopher, and mathematician.
+- 1614 – Henry More, English philosopher.
+- 1614 – John Wilkins, English Anglican clergyman, natural philosopher, and author.
+- 1614 – Franciscus Mercurius van Helmon, Flemish alchemist and writer.
+- 1617 – Ralph Cudworth, English Anglican clergyman, Christian Hebraist, classicist, theologian, and philosopher.
+- 1617 – Isaac Orobio de Castro, Portuguese Jewish philosopher, physician, and religious apologist.
+- 1617 – Tito Livio Burattini, Italian inventor, architect, Egyptologist, scientist, instrument-maker, traveller, engineer, and nobleman.
+- 1618 – Jacques Rohault, French philosopher, physicist, and mathematician.
+- 1618 – John Smith, English philosopher, theologian, and educator.
+- 1619 – Walter Charleton, English natural philosopher and writer.
+- 1619 – Nathaniel Culverwell, English author and theologian.
+- 1620 – Claude Frassen, French Franciscan Scotist theologian and philosopher.
+- 1620 - François Bernier, French physician and traveller.
+- 1622 – Johannes Clauberg, German theologian and philosopher.
+- 1623 – Margaret Cavendish, English philosopher, poet, scientist, fiction writer, and playwright.
+- 1623 – Blaise Pascal, French physicist, inventor, philosopher, and Catholic writer.
+- 1623 – William Petty, English economist, physician, scientist, and philosopher.
+- 1623 – Arnold Geulincx, Flemish philosopher, metaphysician, and logician.
+- 1626 – Géraud de Cordemoy, French philosopher, historian, and lawyer.
+- 1626 – Christiaan Huygens, Dutch mathematician, physicist, engineer, astronomer, and inventor.
+- 1625 – Francesco D'Andrea, Italian jurist and natural philosopher.
+- 1627 – Robert Boyle, Anglo-Irish natural philosopher, chemist, physicist, alchemist, and inventor.
+- 1627 – Hugh Binning, Scottish philosopher and theologian.
+- 1627 – Itō Jinsai, Japanese Confucian philosopher.
+- 1630 – Pierre Daniel Huet, French churchman, scholar, editor, and Bishop of Soissons.
+- 1630 – Kaibara Ekken, Japanese Neo-Confucianist philosopher and botanist.
+- 1631 – Richard Cumberland, English philosopher and Bishop of Peterborough.
+- 1631 – Ann Conway, English philosopher.
+- 1632 – John Locke, English philosopher and physician.
+- 1632 – Baruch Spinoza, Dutch philosopher, theologian, author, and political scientist.
+- 1632 – Louis de La Forge, French philosopher.
+- 1632 – Pierre-Sylvain Régis, French philosopher.
+- 1633 – Walda Heywat, Ethiopian philosopher.
+- 1634 – Balthasar Bekker, Dutch minister, philosopher, and theologian.
+- 1635 – Yan Yuan, Chinese classicist, essayist, and philosopher.
+- 1636 – Joseph Glanvill, English philosopher and clergyman.
+- 1637/38 – Richard Burthogge, physician, magistrate, and philosopher.
+- 1638 – Nicolas Malebranche, French Oratorian Catholic priest and rationalist philosopher.
+- 1642 – Isaac Newton, English polymath.
+- 1644 – Simon Foucher, French polemic philosopher.
+- 1646 – Elena Cornaro Piscopia, Italian philosopher.
+- 1647 – Pierre Bayle, French philosopher, author, and lexicographer.
+- 1649 – Samuel Bold, English clergyman and controversialist.
+- 1649 – Samuel Johnson, English clergyman and political writer.
+- 1650 – Michelangelo Fardella**,** Italian scientist and mathematician.
+- 1655 – Christian Thomasius, German jurist and philosopher.
+- 1657 – John Norris, English philosopher, theologian, and poet.
+- 1657 – Bernard Le Bovier de Fontenelle, French author and philosopher.
+- 1659 – Damaris Cudworth Masham, English writer, philosopher, theologian, and proto-feminist.
+- 1659 – William Wollaston, English teacher, priest, scholar, theologian, and philosopher.
+- 1661 – René-Joseph de Tournemine, French Jesuit philosopher and theologian.
+- 1661 – Claude Buffier, French philosopher, historian, and teacher.
+- 1662 – Francesco Bianchini, Italian philosopher and scientist.
+- 1663 – Jean-Pierre de Crousaz, Swiss theologian and philosopher.
+- 1665 – Ingeborg i Mjärhult, Swedish natural healer, natural philosopher, soothsayer and spiritual visionary.
+- 1665 – Richard Bentley, English classical scholar, critic, and theologian.
+- 1665 – Peter Browne, Irish Anglican priest.
+- 1666 – Ogyū Sorai, Japanese historian, philologist, philosopher, and translator.
+- 1666 – Guru Gobind Singh, Sikh Guru, warrior, poet, and philosopher.
+- 1668 – Giambattista Vico, Italian philosopher, rhetorician, historian, and jurist.
+- 1668 – Tommaso Campailla, Italian philosopher, physician, politician and poet.
+- 1670 – Bernard Mandeville, Anglo-Dutch philosopher, political economist, satirist, writer and physician.
+- 1671 – Anthony Ashley-Cooper, 3rd Earl of Shaftesbury, English peer, Whig politician, philosopher, and writer.
+- 1671 – Luigi Guido Grandi, Italian monk, priest, philosopher, theologian, mathematician, and engineer.
+- 1672 – Gershom Carmichael, Scottish philosopher.
+- 1675 – Samuel Clarke, English philosopher and Anglican cleric.
+- 1675 – Yves Marie André, French Jesuit mathematician, philosopher, and essayist.
+- 1676 – Anthony Collins, English philosopher and essayist.
+- 1676 – Pietro Giannone, Italian philosopher, historian, and jurist.
+- 1677 – Antonio Schinella Conti, Italian writer, translator, mathematician, philosopher, and physicist.
+- 1678 – Robert Greene, English philosopher.
+- 1679 – Christian Wolff, German philosopher.
+- 1679 – Firmin Abauzit, French philosopher.
+- 1679 – Catharine Trotter Cockburn, English novelist, dramatist, and philosopher.
+- 1679 – Anthony Collins, English philosopher and essayist.
+- 1680 – Arthur Collier, English Anglican priest and philosopher.
+- 1683 – John Theophilus Desaguliers, French-born English natural philosopher, clergyman, engineer and freemason.
+- 1685 – George Berkeley, Anglo-Irish philosopher.
+- 1686 – John Balguy, English divine and philosopher.
+- 1689 – Montesquieu, French judge, man of letters, historian, and political philosopher.
+- 1692 – Joseph Butler, English Anglican bishop, theologian, apologist, and philosopher.
+- 1692 – Francesco Maria Zanotti, Italian philosopher and writer.
+- 1694 – Francis Hutcheson, Irish philosopher.
+- 1694 – Samuel von Pufendorf, German jurist, political philosopher, economist, and historian.
+- 1696 – Voltaire, French Enlightenment writer, philosopher, satirist, and historian.
+- 1696 – Henry Home, Lord Kames, Scottish writer, philosopher, and judge.
+- 1698 – Alberto Radicati, Italian historian, philosopher and free-thinker.
+- 1699 – Jacopo Stellini, Italian abbot, polymath writer, and philosopher.
+
+## Deaths
+
+- 1600 – Giordano Bruno, Italian philosopher, poet, alchemist, astronomer, cosmological theorist, and esotericist.
+- 1624/25 – Ahmad Sirhindi, Indian Islamic scholar, Hanafi jurist, and member of the Naqshbandī Sufi order.
+- 1635/40 – Mulla Sadra, Persian Twelver Shi'i Islamic mystic, philosopher, theologian, and ‘Ālim.
+- 1642 – Galileo Galilei, Italian polymath.
+- 1644 – William Chillingworth, English churchman.
+- 1649 – Caspar Schoppe, German catholic controversialist and scholar.
+- 1651 – Nathaniel Culverwell, English author and theologian.
+- 1652 – John Smith, English philosopher, theologian, and educator.
+- 1653 – Hugh Binning, Scottish philosopher and theologian.
+- 1657 – Kâtip Çelebi, Turkish polymath.
+- 1658 – Baltasar Gracián, Spanish Jesuit and Baroque prose writer and philosopher.
+- 1662 – Blaise Pascal, French mathematician and philosopher.
+- 1665 – Kenelm Digby, English courtier, diplomat and natural philosopher.
+- 1665 – Johannes Clauberg, German theologian and philosopher.
+- 1667 – Francesco Sforza Pallavicino, Italian cardinal, philosopher, theologian, literary theorist, and church historian.
+- 1672 – Jacques Rohault, French philosopher, physicist, and mathematician.
+- 1672 – John Wilkins, English Anglican clergyman, natural philosopher, and author.
+- 1673 – Margaret Cavendish, English philosopher, poet, scientist, fiction writer, and playwright.
+- 1675 – Emanuele Tesauro, Italian philosopher, rhetorician, literary theorist, dramatist, Marinist poet, and historian.
+- 1677 – Baruch Spinoza, Dutch philosopher.
+- 1678 – Anna Maria van Schurman, Dutch painter, engraver, poet, classical scholar, philosopher, and feminist writer.
+- 1678 – Robert Desgabets, French Cartesian philosopher and Benedictine prior.
+- 1679 – Elizabeth Foxcroft, English theosophist.
+- 1679 – Ann Conway, English philosopher.
+- 1679 – Thomas Hobbes, English philosopher.
+- 1680 – Athanasius Kircher, German Jesuit scholar and polymath.
+- 1681 – Tito Livio Burattini, Italian inventor, architect, Egyptologist, scientist, instrument-maker, traveller, engineer, and nobleman.
+- 1687 – Thomas Browne, English polymath.
+- 1687 – Isaac Orobio de Castro, Portuguese Jewish philosopher, physician, and religious apologist.
+- 1687 – Henry More, English philosopher.
+- 1687 – William Petty, English economist, physician, scientist, and philosopher.
+- 1688 – Ralph Cudworth, English Anglican clergyman, Christian Hebraist, classicist, theologian, and philosopher.
+- 1688 – François Bernier, French physician and traveller.
+- 1694 – Antoine Arnauld, French Catholic theologian, philosopher, and mathematician.
+- 1695 – Huang Zongxi, Chinese naturalist, political theorist, philosopher, and soldier.
+- 1696 – Simon Foucher, French polemic philosopher.
+- 1698 – Franciscus Mercurius van Helmon, Flemish alchemist and writer.
+- 1699 – Edward Stillingfleet, English Christian theologian and scholar.

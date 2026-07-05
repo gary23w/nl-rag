@@ -1,0 +1,322 @@
+---
+title: "1928 in the United Kingdom"
+source: https://en.wikipedia.org/wiki/1928_in_the_United_Kingdom
+domain: great-yarmouth
+license: CC-BY-SA-4.0
+tags: great yarmouth
+fetched: 2026-07-05
+---
+
+# 1928 in the United Kingdom
+
+Events from the year **1928 in the United Kingdom**.
+
+## Incumbents
+
+- Monarch – George V
+- Prime Minister – Stanley Baldwin (Conservative)
+
+## Events
+
+- January – Frederick Griffith reports the results of Griffith's experiment, indirectly proving the existence of DNA.
+- 1 January – Abolition of domestic slavery in the British Protectorate of Sierra Leone comes into effect.
+- 6–7 January – River Thames floods in London; 14 drown. On 7 January, the moat at the Tower of London (drained in 1843 and planted with grass) is completely refilled by the river.
+- 29 January – The country's leading World War general, Douglas Haig, 1st Earl Haig, dies of a heart attack in London aged 66.
+- 3 February – Funeral ceremony of Earl Haig takes place at Westminster Abbey.
+- 8 February – John Logie Baird broadcasts a transatlantic television signal from London to Hartsdale, New York.
+- 11–19 February – Great Britain and Northern Ireland compete at the Winter Olympics in St. Moritz, Switzerland and win one bronze medal.
+- 12 February
+  - An underground explosion at Haig Pit, Whitehaven, in the Cumberland Coalfield, kills thirteen miners undertaking clearance after an earlier fatal accident.
+  - Heavy hailstorms kill eleven in England.
+- 18 February – The Australian sport of motorcycle speedway is competitively demonstrated for the first time in the UK with a meet at High Beach in Epping Forest.
+- 12 March – Malta becomes a British dominion.
+- 1 April – Cinematograph Films Act 1927 comes into force, setting a minimum quota for British films to be shown in UK cinemas.
+- 19 April – Publication of the original *Oxford English Dictionary* is completed after 70 years with issue of the last section ("wise – wyze") in Oxford.
+- May – The Scottish county of Forfarshire resolves to revert to its historic name of Angus.
+- 1 May – The London and North Eastern Railway's *Flying Scotsman* steam-hauled express train begins to run non-stop over the 393 miles (632 km) of the East Coast Main Line from London King's Cross to Edinburgh.
+- 5 May – William Ralph "Dixie" Dean finishes the football season with a Football League record of 60 goals for First Division champions Everton.
+- 16 May – Opening of Royal Tweed Bridge, Berwick-upon-Tweed, constructed from reinforced concrete to the design of L. G. Mouchel & Partners.
+- 17 May–12 August – Great Britain and Northern Ireland compete at the Olympics in Amsterdam and win 3 gold, 10 silver and 7 bronze medals.
+- 13 June – Savidge Inquiry issues its final report, recommending improvements in police procedures for questioning, particularly of women.
+- 27 June – Darlington rail crash: a head-on collision kills 25 people.
+- 2 July – Representation of the People (Equal Franchise) Act 1928 given royal assent and comes into effect, lowering the voting age for women from 30 to 21 and removing remaining property qualifications from them, giving them equal suffrage with men (passed in Parliament 7 May).
+- 3 July – John Logie Baird demonstrates the world's first colour television transmission in Glasgow.
+- 27 July – Tich Freeman becomes the only bowler ever to take 200 wickets in first-class cricket before the end of July.
+- 26 August – In Paisley, May Donoghue finds the remains of a snail in her ginger beer, leading to the landmark negligence case *Donoghue v. Stevenson*.
+- 15 September – Tich Freeman sets all-time record for number of wickets taken in an English cricket season.
+- 28 September
+  - Scottish-born microbiologist Alexander Fleming, at St Mary's Hospital, London, accidentally rediscovers the antibiotic which he will call Penicillin.
+  - Dangerous Drugs Act 1925 comes into effect, placing restrictions on the use of cannabis.
+- 10 October – Tyne Bridge opens, connecting Newcastle upon Tyne and Gateshead.
+- 9–16 November – Radclyffe Hall's novel *The Well of Loneliness* (published on 27 July by Jonathan Cape in London) is tried and convicted on the grounds of obscenity due to its theme of lesbian love, following a campaign by James Douglas in the *Sunday Express* newspaper.
+- 12 November – Randall Davidson becomes the first Archbishop of Canterbury to retire, having served for twenty-five years, the longest in this office since the Reformation. He is created 1st Baron Davidson of Lambeth three days later.
+- 15 November – The *Mary Stanford* life-boat capsizes on service in Rye Harbour: all 17 crew lost.
+- 22 November – Following passage of the Currency and Banknotes Act on 2 July, the Bank of England resumes responsibility for issue of banknotes from HM Treasury and issues pound and (for the first time) ten shilling notes, the first to be printed in colour and on both sides.
+- 23–25 November – A windstorm affects parts of northwestern Europe and kills 38 people, mainly in England.
+- 4 December – Cosmo Lang enthroned as Archbishop of Canterbury, the first bachelor to be appointed in 150 years.
+- 20 December – The first Harry Ramsden's fish and chip shop opens in Yorkshire.
+- 24 December – The first Festival of Nine Lessons and Carols to be broadcast from King's College Chapel, Cambridge, by BBC Radio.
+
+### Undated
+
+- Mond–Turner talks between industrialist Sir Alfred Mond and chairman of the Trades Union Congress Ben Turner on consensual approaches to industrial relations.
+- First high-voltage electricity pylon for the National Grid is erected, near Edinburgh.
+- Owen Willans Richardson wins the 1928 Nobel Prize in Physics "for his work on the thermionic phenomenon and especially for the discovery of the law named after him". This award is announced on 12 November 1929.
+- British Home Stores opens its first department store at Brixton, London.
+- Uffa Fox launches his first planing sailing dinghy, *Avenger*, in the International 14 class and wins 52 out of 57 races. He sails *Avenger* across the Channel and competes in some races in Cherbourg Harbour.
+
+## Sport
+
+- Everton F.C. win the Championship.
+- Blackburn Rovers F.C. 3 Huddersfield F.C. 1 (F.A. Cup)
+- René Lacoste Wimbledon Men's Champion
+- Helen Wills Wimbledon Women's Champion
+- Swinton win rugby league's *All Four Cups* in season 1927–28
+
+## Publications
+
+- Edmund Blunden's autobiographical *Undertones of War*.
+- Elizabeth Bowen's novel *The Hotel*.
+- Joyce Lankester Brisley's children's collection *Milly-Molly-Mandy Stories*, introducing the title character in book form.
+- Leslie Charteris's first Simon Templar novel *Meet the Tiger*.
+- Agatha Christie's Hercule Poirot novel *The Mystery of the Blue Train*.
+- Ford Madox Ford's novel *Last Post*, last of the *Parade's End* tetralogy.
+- Radclyffe Hall's novel *The Well of Loneliness*.
+- Aldous Huxley's novel *Point Counter Point*.
+- D. H. Lawrence's novel *Lady Chatterley's Lover* published in Italy; it will not be published in Britain until 1960.
+- Compton MacKenzie's satirical novel *Extraordinary Women*.
+- W. Somerset Maugham's short stories *Ashenden: Or the British Agent*.
+- *Oxford English Dictionary* completed (19 April).
+- Dorothy L. Sayers' Lord Peter Wimsey novel *The Unpleasantness at the Bellona Club* and collected short stories *Lord Peter Views the Body*.
+- Evelyn Waugh's satirical novel *Decline and Fall*.
+- Clough Williams-Ellis' tract *England and the Octopus*.
+- Virginia Woolf's novel *Orlando: A Biography*.
+
+## Births
+
+- 2 January – Harry Hyams, property speculator (died 2015)
+- 3 January – Michael Barratt, television presenter (died 2022)
+- 5 January – Denise Bryer, voice actress (died 2021)
+- 11 January – Alan Bowness, art historian (died 2021)
+- 17 January
+  - Matt McGinn, Scottish folk musician, writer and entertainer (died 1977)
+  - Vidal Sassoon, cosmetologist (died 2012)
+- 18 January – Terence Higgins, athlete and politician
+- 19 January – Joan Regan, singer (died 2013)
+- 21 January – Barbara Harvey, medieval historian (died 2025)
+- 24 January – Desmond Morris, anthropologist and writer (died 2026)
+- 28 January – Stan Barstow, novelist (died 2011)
+- 29 January – Peter Byrne, actor and director (died 2018)
+- 2 February – Felix Pirani, theoretical physicist (died 2015)
+- 8 February – Osian Ellis, Welsh harpist (died 2021)
+- 10 February
+  - Anthony Dawes, character actor (died 2021)
+  - John Ringham, actor and playwright (died 2008)
+- 13 February – Jack Lewis, Baron Lewis of Newnham, chemist and academic (died 2014)
+- 14 February
+  - Mark Eden, actor (died 2021)
+  - David Kimche, British-born Israeli diplomat (died 2010)
+- 17 February – Seán Mac Stíofáin, IRA terrorist (died 2001)
+- 21 February – Cecil Sandford, English motorcycle racer (died 2023)
+- 22 February – Bruce Forsyth, entertainer (died 2017)
+- 23 February – David Somerset, 11th Duke of Beaufort, peer (died 2017)
+- 29 February
+  - Joss Ackland, actor (died 2023)
+  - Jean Adamson, children's writer and illustrator (died 2024)
+  - Michael Henshall, bishop (died 2017)
+- 2 March – Katharine Whitehorn, journalist (died 2021)
+- 4 March – Alan Sillitoe, writer (died 2010)
+- 5 March – Diana Coupland, actress (died 2006)
+- 6 March – Glyn Owen, actor (died 2004)
+- 10 March – Arthur Milton, cricketer and footballer (died 2007)
+- 12 March – Philip Jones, trumpeter (died 2000)
+- 13 March – Jane Grigson, cookery writer (died 1990)
+- 16 March
+  - Victor Maddern, actor (died 1993)
+  - George Styles, army lieutenant-colonel, George Cross winner (died 2006)
+- 17 March
+  - Eunice Gayson, actress (died 2018)
+  - Katharine Whitehorn, newspaper columnist (died 2021)
+- 23 March
+  - Alf Morris, politician (died 2012)
+  - Geoffrey Smith, gardener and television presenter (died 2009)
+  - Raymond Wilson, physicist (died 2018)
+- 26 March – John H. Edwards, geneticist (died 2007)
+- 29 March – Philip Locke, actor (died 2004)
+- 30 March – Tom Sharpe, author (died 2013)
+- 31 March – Dilys Hamlett, actress (died 2002)
+- 2 April – April Cantelo, soprano (died 2024)
+- 3 April – Jennifer Paterson, chef and broadcaster (died 1999)
+- 4 April – Jimmy Logan, actor and producer (died 2001)
+- 5 April – Michael Bryant, actor (died 2002)
+- 6 April – Peter Townsend, sociologist (died 2009)
+- 7 April – James White, science fiction writer (died 1999)
+- 8 April – Eric Porter, actor (died 1995)
+- 9 April – Ian Ward, physicist (died 2018)
+- 13 April – Alan Clark, politician and diarist (died 1999)
+- 14 April
+  - Cyril Mango, Byzantine scholar (died 2021)
+  - John Roberts, historian (died 2003)
+- 19 April – Alexis Korner, musician (died 1984)
+- 23 April – Bill Cotton, television executive (died 2008)
+- 24 April – Tommy Docherty, football player and manager (died 2020)
+- 25 April
+  - Jack Fitzmaurice, snooker player (died 2005)
+  - James MacTaggart, television producer (died 1974)
+- 30 April
+  - Dickie Davies, sports presenter (died 2023)
+  - Alf Lomas, politician (died 2021)
+- 1 May – Desmond Titterington, racing driver (died 2002)
+- 8 May – John Bennett, actor (died 2005)
+- 9 May – Colin Chapman, automotive engineer (died 1982)
+- 10 May – John Forbes-Robertson, actor (died 2008)
+- 12 May – Gordon Shattock, British veterinarian, Conservative politician and survivor of the Brighton hotel bombing (died 2010)
+- 18 May
+  - John Abineri, actor (died 2000)
+  - Peter Hammersley, rear admiral (died 2020)
+- 23 May – Jeannie Carson, actress
+- 27 May – Thea Musgrave, Scottish composer
+- 29 May – Frederick Jaeger, actor (born in Germany; died 2004)
+- 31 May – Derek Ufton, cricketer and footballer (died 2021)
+- 1 June – Bob Monkhouse, comedian and game show host (died 2003)
+- 3 June – Archie Hind, novelist (died 2008)
+- 4 June – Paul Greening, naval officer and courtier (died 2008)
+- 5 June – Tony Richardson, film director (died 1991)
+- 6 June
+  - Nicolas Rea, 3rd Baron Rea, physician and politician (died 2020)
+  - R. D. Wingfield, novelist and radio dramatist (died 2007)
+- 7 June
+  - Ken McKinlay, racing cyclist (died 2003)
+  - Reg Park, bodybuilder (died 2007)
+- 8 June – John Russell, 27th Baron de Clifford, aristocrat (died 2018)
+- 14 June – Rosemary Rue, physician (died 2004)
+- 15 June – Adele Leigh, opera singer (died 2004)
+- 17 June – Basil McIvor, politician (died 2004)
+- 19 June
+  - Margaret Maughan, paralympian (died 2020)
+  - Ray Powell, politician (died 2001)
+  - Barry Took, comedian, scriptwriter and television presenter (died 2002)
+- 21 June – Maurice Line, librarian (died 2010)
+- 25 June – Peter Sawyer, historian (died 2018)
+- 28 June
+  - Stan Barstow, novelist (died 2011)
+  - Harold Evans, newspaper editor (died 2020)
+- 29 June – Ian Bannen, Scottish actor (died 1999)
+- 30 June – Tony Conyers, journalist (died 2011)
+- 1 July – Jim Hankinson, footballer (died 2016)
+- 2 July – John Timpson, journalist and radio presenter (died 2005)
+- 3 July – Evelyn Anthony, writer (died 2018)
+- 4 July – Patrick Tilley, science fiction author (died 2021)
+- 5 July – Jeremy Moore, officer in the Royal Marines (died 2007)
+- 6 July
+  - Peter Glossop, opera singer (died 2008)
+  - Antony Hignell, cricketer and javelin thrower (died 2015)
+- 7 July – Pat Hitchcock, actress (died 2021)
+- 8 July – Gordon Hill, football player (died 2019)
+- 10 July – Patsy Burt, racing driver (died 2001)
+- 11 July
+  - Jane Gardam, writer (died 2025)
+  - Greville Janner, politician, barrister and writer (died 2015)
+- 12 July
+  - Alastair Burnet, journalist and broadcaster (died 2012)
+  - Kathy Staff, actress (died 2008)
+- 14 July
+  - Haydn Morris, British and Irish Lions international rugby union wing three-quarter (died 2021)
+  - Moira Redmond, actress (died 2006)
+  - William Rees-Mogg, journalist and editor (died 2012)
+- 16 July – Anita Brookner, novelist and art historian (died 2016)
+- 20 July – Peter Ind, jazz double bassist and record producer (died 2021)
+- 21 July
+  - Jervis Percy, modern pentathlete
+  - George Brian Sinclair, army officer (died 2020)
+- 22 July – Jimmy Hill, footballer and television sports presenter (died 2015)
+- 26 July – Sally Oppenheim-Barnes, politician(died 2025)
+- 5 August – Carla Lane, born Romana Barrack, television comedy scriptwriter (died 2016)
+- 6 August – Vince Powell, scriptwriter (died 2009)
+- 7 August – Owen Luder, architect (died 2021)
+- 8 August – Alfred Hayes, wrestler and wrestling announcer (died 2005)
+- 10 August – Henry Sandon, tv antiques expert (died 2023)
+- 12 August – Maureen Colquhoun, economist and politician (died 2021)
+- 15 August – Nicolas Roeg, film director (died 2018)
+- 19 August – Bernard Levin, writer and journalist (died 2004)
+- 21 August
+  - Chris Brasher, athlete (died 2003)
+  - Gillian Sheen, Olympic champion fencer (died 2021)
+  - Barbara Steveni, conceptual artist (died 2020)
+- 28 August – Charles Gray, actor (died 2000)
+- 29 August – Peter Miles, actor (died 2018)
+- 5 September – Joyce Hatto, pianist (died 2006)
+- 6 September – Norman Holwell, speed skater (died 2020)
+- 14 September – Angus Ogilvy, businessman (died 2004)
+- 17 September – Roddy McDowall, actor (died 1998)
+- 22 September – Eric Broadley, race car builder, founder of Lola Cars (died 2017)
+- 27 September – Geoffrey Martin, historian (died 2007)
+- 1 October – Jim Radford, peace activist and folk singer (died 2020)
+- 8 October – Bill Maynard, comic actor (died 2018)
+- 10 October – Sheila Walsh, novelist (died 2009)
+- 11 October – Geoffrey Tordoff, politician (died 2019)
+- 14 October – Peter Jackson, politician (died 2020)
+- 17 October – Michael Palmer, senior British Army officer (died 2017)
+- 18 October – Dick Taverne, politician
+- 20 October – Michael O'Donnell, physician, journalist, medical campaigner and broadcaster (died 2019)
+- 21 October – Ken Major, architect (died 2009)
+- 28 October – Bill Rodgers, politician, member of the "Gang of Four"
+- 29 October – Cecil Humphery-Smith, genealogist and heraldist (died 2021)
+- 30 October
+  - Charles Brett, architectural historian (died 2005)
+  - Peter Wales, Sussex cricketer (died 2018)
+- 31 October – Michael J. Bird, writer (died 2001)
+- 2 November – Paul Johnson, journalist, historian and author (died 2023)
+- 5 November – John Bailey, lawyer and public servant (died 2021)
+- 7 November – Arthur Davidson, politician (died 2018)
+- 8 November – Edward Goldsmith, environmentalist and philosopher (died 2009)
+- 12 November – Maureen Gardner, athlete (died 1974)
+- 15 November – John Orchard, actor (died 1995)
+- 17 November – Don Lawrence, comic book artist (died 2003)
+- 22 November
+  - Tim Beaumont, politician and Anglican priest (died 2008)
+  - Pat Smythe, show jumper (died 1996)
+- 26 November
+  - John Acland, major-general (died 2006)
+  - John Barton, theatre director (died 2018)
+- 6 December – Stanley Clinton-Davis, English politician, solicitor (died 2023)
+- 10 December – Jeremy Morse, English banker, academic and crossword compiler (died 2016)
+- 11 December
+  - Paul Bircher, rower (died 2019)
+  - Peter Firmin, children's stop-motion animator (died 2018)
+- 12 December – Lionel Blair, Canadian-born English actor, choreographer, dancer and television presenter (died 2021)
+- 19 December – Antony Buck, politician (died 2003)
+- 20 December – Donald Adams, actor and opera singer (died 1996)
+- 29 December
+  - Bernard Cribbins, comic actor (died 2022)
+  - Piers Dixon, Conservative politician (died 2017)
+
+## Deaths
+
+- 11 January – Thomas Hardy, novelist and poet (born 1840)
+- 21 January – Sir John de Robeck, admiral (born 1862)
+- 29 January – Douglas Haig, 1st Earl Haig, soldier (born 1861)
+- 15 February – H. H. Asquith, Prime Minister of the United Kingdom (born 1852)
+- 21 March – Edward Walter Maunder, astronomer (born 1851)
+- 24 March – Charlotte Mew, poet, suicide (born 1869)
+- 5 April – Roy Kilner, cricketer (born 1890)
+- 10 April – Stanley J. Weyman, novelist (born 1855)
+- 15 April – Jane Ellen Harrison, scholar, linguist and feminist (born 1850)
+- 1 May – Sir Ebenezer Howard, urban planner (born 1850)
+- 3 May – Walter Biggar Blaikie, astronomer, engineer, historian and printer (born 1847)
+- 5 May – Barry Pain, writer (born 1864)
+- 16 May – Edmund Gosse, poet and critic (born 1849)
+- 10 June – Dennis Eadie, Scottish-born character actor (born 1869)
+- 13 June – Charles Wynn-Carington, 1st Marquess of Lincolnshire, politician and colonial governor (born 1843)
+- 14 June – Emmeline Pankhurst, suffragette (born 1858)
+- 1 July – John Elmes Beale, politician and merchant (born 1847)
+- 6 July – Frederick Green, footballer (born 1851)
+- 21 July – Dame Ellen Terry, actress (born 1847)
+- 17 August – Sir George Trevelyan, 2nd Baronet, statesman and author (born 1838)
+- 19 August – Richard Haldane, 1st Viscount Haldane, politician and lawyer (born 1856)
+- 30 August – Sir Hugh Evan-Thomas, admiral (born 1862)
+- 27 November – Frank Hedges Butler, wine merchant, founding member of the Aero Club of Great Britain (born 1855)
+- 1 December – Arthur Gore, tennis player (born 1868)
+- 2 December – Hallam Tennyson, 2nd Baron Tennyson, 2nd Governor-General of Australia (born 1852)
+- 10 December – Charles Rennie Mackintosh, Scottish-born architect (born 1868)
+- 17 December – Eglantyne Jebb, human rights activist, co-founder of Save the Children (born 1876)

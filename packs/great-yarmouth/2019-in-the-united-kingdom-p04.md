@@ -1,0 +1,430 @@
+---
+title: "2019 in the United Kingdom (part 4/4)"
+source: https://en.wikipedia.org/wiki/2019_in_the_United_Kingdom
+domain: great-yarmouth
+license: CC-BY-SA-4.0
+tags: great yarmouth
+fetched: 2026-07-05
+part: 4/4
+---
+
+# 2019 in the United Kingdom
+
+- 1 June
+  - John Myers, 60, radio executive (GMG Radio, Radio Academy) and presenter, cancer.
+  - Alasdair Walker, 62, physician and military officer, brain cancer.
+- 2 June
+  - Barry Hughes, 81, Welsh footballer and manager (Go Ahead Eagles, Sparta Rotterdam, HFC Haarlem).
+  - Ken Matthews, 84, English race walker, Olympic champion (1964).
+  - Stuart Mustow, 90, civil engineer
+  - Alan Rollinson, 76, English racing driver, cancer.
+- 3 June
+  - Ian Craft, 81, physician.
+  - Roy Cruttenden, 94, Olympic long jumper.
+  - Paul Darrow, 78, English actor (*Blake's 7*, *Doctor Who*).
+  - Max Kay, 82, Scottish-born Australian entertainer and manager (Andy Stewart), pneumonia as a complication of cancer.
+- 4 June
+  - George Darwin, 87, English footballer (Huddersfield Town, Mansfield Town, Derby County, Rotherham United, Barrow).
+  - Robin Herd, 80, English engineer, designer and businessman, co-founder of March Engineering.
+  - Lawrie Leslie, 84, Scottish footballer (Hibernian, West Ham United, Stoke City, Millwall, Southend United).
+- 5 June
+  - Claire Donovan, 71, historian.
+  - Geoff Lees, 85, English footballer (Bradford City, Barnsley).
+  - Sir David Plastow, 87, businessman.
+- 6 June – Johnny Robinson, 83, English footballer (Bury, Oldham Athletic).
+- 7 June – Noel Lloyd, 72, Welsh academic, vice-chancellor of Aberystwyth University (2004–2011).
+- 8 June
+  - Norman Dewis, 98, racing driver and engineer.
+  - Justin Edinburgh, 49, English footballer (Southend United, Tottenham Hotspur, Portsmouth) and manager (Newport County, Gillingham, Northampton Town, Leyton Orient), cardiac arrest.
+- 9 June – Bill Bryant, 78, English rugby league player (Castleford).
+- 10 June
+  - Tom Derek Bowden, 97, military officer.
+  - Peter Whitehead, 82, English writer and filmmaker (*Wholly Communion*, *Charlie Is My Darling*, *Tonite Let's All Make Love in London*).
+  - Cecil Woolf, 92, English author and publisher.
+- 17 June – Ian MacFarlane, 86, Scottish footballer (Aberdeen, Chelsea, Leicester City) and manager (Carlisle United, Sunderland, Leicester City).
+- 19 June
+  - Bobby Brown, 87, Scottish footballer (Workington)
+  - Lionheart, 36, professional wrestler (ICW).
+  - Dennis White, 70, English footballer (Hartlepool United).
+- 21 June – William Simons, 78, Welsh-born actor, (*Heartbeat*, *Crown Court*, *Where No Vultures Fly*).
+- 24 June – Graham Barnett, 83, English footballer (Port Vale, Tranmere Rovers, Halifax Town)
+- 25 June – Bryan Marshall, 81, actor, (*The Spy Who Loved Me*, *Quatermass and the Pit*, *The Long Good Friday*)
+- 26 June
+  - Simon Bendall, 82, English numismatist.
+  - Douglas Fielding, 73, actor, (*Z-Cars*, *EastEnders*)
+- 30 June – Glyn Houston, 93, Welsh actor, (*Doctor Who*, *Keep It in the Family*)
+
+### July
+
+- 1 July – Bob Collymore, 61, Guyanese-born telecom executive, CEO of Safaricom (since 2010), acute myeloid leukaemia.
+- 2 July – Diana Henderson, 72, solicitor, army officer and historian.
+- 3 July
+  - Christopher Booker, 81, English journalist (*The Sunday Telegraph*, *Private Eye*) and author.
+  - Julia Farron, 96, English ballerina.
+  - Alan Rogan, 68, English guitar technician (The Who), cancer.
+  - Edward Shotter, 86, Anglican priest and author, Dean of Rochester (1989–2003).
+- 4 July – Leon Kossoff, 92, English painter, stroke.
+- 5 July
+  - Sir Wynn Hugh-Jones, 95, diplomat and politician.
+  - John McCririck, 79, English television horse racing pundit, (*ITV Racing*, *Channel 4 Racing*).
+- 7 July
+  - Jonathan Hodge, 78, composer (*Henry's Cat*, *Fiddley Foodle Bird*, *Babe*), multiple organ failure.
+  - Jeff Ingber, 83, English table tennis player.
+  - Elizabeth Killick, 94, naval electronics engineer, heart attack.
+- 9 July
+  - Neil Greatrex, 68, English trade unionist and convicted fraudster, President of the Union of Democratic Mineworkers (1993–2009), complications from brain haemorrhage.
+  - Freddie Jones, 91, English actor, (*Emmerdale*, *The Elephant Man*, *The Ghosts of Motley Hall*).
+- 10 July
+  - Motto McLean, 93, Scottish-born Canadian ice hockey player (Omaha Knights).
+  - Albert Shepherd, 82, English actor, (*The Anniversary*, *Crossroads*, *Rosie*).
+- 11 July
+  - Jack Bond, 87, English cricketer (Lancashire).
+  - Robert Entwistle, 77, English cricketer (Minor Counties, Cumberland, Lancashire).
+  - John Gardner, 54, Scottish legal philosopher, oesophageal cancer.
+- 12 July
+  - Emily Hartridge, 35, English YouTube and television presenter
+  - Matthew Trundle, 53, British-born New Zealand classics and ancient history academic (University of Auckland), leukemia.
+- 13 July
+  - Cyril Edwards, 71, medievalist and translator.
+  - Terry Hodgkinson, 70, land developer, Chairman of Yorkshire Forward (2003–2010).
+  - Rod Richards, 72, Welsh politician, MP for Clwyd North West (1992–1997), Leader of the Welsh Conservative Party (1999), cancer.
+- 14 July – Claire Dwyer, 55, geographer, cancer.
+- 15 July
+  - Craig Fallon, 36, English judoka, world champion (2005).
+  - Sir Fergus Millar, 84, ancient historian, Camden Professor of Ancient History (1984–2002).
+  - Sir Rex Richards, 96, chemist and academic.
+  - Joe Rayment, 84, English footballer (Middlesbrough, Hartlepool United, Darlington).
+- 16 July
+  - Johnny Clegg, 66, British-born South African singer and musician (Juluka, Savuka), pancreatic cancer.
+  - Michael English, 88, politician, MP for Nottingham West (1964–1983).
+  - Jonathan Gathorne-Hardy, 86, author.
+- 19 July
+  - Jeremy Kemp, 84, English actor (*The Winds of War*, *Z-Cars*, *The Blue Max*).
+  - William Morton, 58, Scottish cricketer (Warwickshire Bears, national team).
+- 20 July – Paul Barker, 83, journalist.
+- 21 July – Trish Godman, 79, Scottish MSP (1999–2011).
+- 23 July
+  - Ruth Gotlieb, 96, British-born New Zealand politician, Wellington City Councillor (1983–2001).
+  - Bobby Park, 73, Scottish footballer (Aston Villa, Wrexham, Peterborough United, Northampton Town, Hartlepool United), cancer.
+  - Sir Patrick Sheehy, businessman (BAT Industries).
+- 24 July
+  - Sammy Chapman, 81, Northern Irish footballer (Mansfield Town, Portsmouth) and manager (Wolverhampton Wanderers).
+  - Bernard Evans, 82, English footballer (Wrexham, Queens Park Rangers, Oxford United, Tranmere Rovers).
+  - Margaret Fulton, 94, Scottish-born Australian chef and cookbook writer (*The Margaret Fulton Cookbook*).
+  - Sir Freddie Sowrey, 96, air marshal.
+- 25 July
+  - Jimmy Patton, 87, British comedian (*ChuckleVision*) and half of the Patton Brothers, cancer.
+- 26 July
+  - Hugh Brogan, 83, historian and biographer.
+  - Bryan Magee, 89, philosopher and politician, MP (1974–1983).
+  - Marty Wilson, 62, English poker player, cancer.
+- 28 July
+  - Peter McConnell, 82, English footballer (Leeds United, Carlisle United, Bradford City).
+  - Kevin Stonehouse, 59, English footballer (Blackburn Rovers, Huddersfield Town, Blackpool, Darlington, Rochdale).
+- 30 July
+  - Ron Hughes, 89, Welsh footballer, (Chester) and manager (Mold Alexandra).
+  - John Humble, English hoaxer who claimed to be the Yorkshire Ripper.
+  - Malcolm Nash, 74, Welsh cricketer.
+  - Ian Van Bellen, 73, English rugby union and rugby league player.
+- 31 July – Steve Talboys, 52, English footballer (Wimbledon, Watford).
+
+### August
+
+- 1 August
+  - Gordon Brand Jnr, 60, Scottish golfer.
+  - William Brown, 74, academic, Master of Darwin College (2000–2012).
+  - Ian Gibbons, 67, English keyboardist (The Kinks), bladder cancer.
+  - Maurice Pope, 93, classical linguist.
+- 3 August
+  - Basil Heatley, 85, athlete, marathon world-record holder (1964) and Olympic silver medallist (1964).
+  - Joe Longthorne, 64, English singer and entertainer, throat cancer.
+- 4 August – Alfred Smith, 111, Scottish supercentenarian, oldest man in Scotland.
+- 5 August – John Lowey, 61, English footballer (Sheffield Wednesday, Blackburn Rovers, Chester City).
+- 6 August – Steve Parr, 92, English footballer (Liverpool).
+- 9 August
+  - Huw O. Pritchard, 91, Welsh-born Canadian chemist.
+  - Sir Michael Uren, 95, businessman and philanthropist.
+- 10 August
+  - Freda Dowie, 91, English actress (*Distant Voices, Still Lives*, *The Old Curiosity Shop*, *The Omen*).
+  - Jo Lancaster, 100, RAF pilot.
+- 11 August
+  - Freddy Bannister, 84, English rock concert promoter, cancer.
+  - Doug Clarke, 85, English footballer (Hull City, Torquay United, Bury).
+  - John Dillon, 76, Scottish footballer (Albion Rovers, Sunderland).
+  - Kerry Downes, 88, English architectural historian.
+- 12 August
+  - Terence Knapp, 87, English actor (*Urge to Kill*, *The Valiant*, *Othello*), director, educator and author.
+  - Robyn Léwis, 89, Welsh author, politician and archdruid, Vice President of Plaid Cymru (1970–1976).
+- 13 August – Carole Satyamurti, 80, poet, sociologist and translator.
+- 16 August
+  - Anna Quayle, 86, English actress (*Grange Hill*)
+  - Bobby Smith, 78, English footballer (Barnsley, Chelmsford City).
+  - Richard Williams, 86, Canadian-British animator and director (*The Thief and the Cobbler*, *Who Framed Roger Rabbit*, *A Christmas Carol*), three-time Oscar winner, cancer.
+- 18 August – Gary Cooper, 80, English rugby league footballer, and coach.
+- 20 August – Richard Booth, 80, Welsh bookseller.
+- 21 August
+  - Richard Gregson, 89, agent, film producer and screenwriter, Parkinson's disease.
+  - John W. Neill, 85, Olympic field hockey player (1960, 1964, 1968).
+- 23 August – Sheila Steafel, 84, South African-born actress (*Daleks' Invasion Earth 2150 A.D.*, *Quatermass and the Pit*, *The Ghosts of Motley Hall*), leukemia.
+- 24 August
+  - Michael Eagar, 85, English cricketer (Gloucestershire).
+  - Ia McIlwaine, 84, librarian.
+- 25 August
+  - Timothy Bell, Baron Bell, 77, advertising and public relations executive (Bell Pottinger).
+  - Alf Burnell, 95, English rugby league footballer, heart attack.
+  - Jonathan Goldstein, 50, English composer, plane crash.
+  - Sam McGredy, 87, Northern Irish-born New Zealand rose hybridiser (*Rosa* 'Violet Carson', *Rosa* 'New Zealand').
+- 26 August
+  - Ray Henwood, 82, Welsh-born New Zealand actor (*Gliding On*).
+  - Geoffrey Wraith, 72, English rugby league footballer, and coach.
+- 28 August – Steve Hiett, 79, English photographer.
+- 29 August
+  - Terrance Dicks, 84, English screenwriter (*Doctor Who*, *Crossroads*, *Space: 1999*).
+  - Guy Innes-Ker, 10th Duke of Roxburghe, 64, aristocrat.
+- 30 August
+  - James Cellan Jones, 88, Welsh director (*The Roads to Freedom*, *The Forsyte Saga*, *Fortunes of War*), chairman of BAFTA (1983–1985), stroke.
+  - Stephen Cretney, 83, legal scholar.
+
+### September
+
+- 1 September – Ciaran McKeown, 76, Northern Irish peace activist.
+- 2 September – Michael Beddow, 72, academic.
+- 4 September
+  - Sir Hugh Beach, 96, British Army general.
+  - Jamie Janson, 43, aid worker and militant, suicide.
+  - Kenny Mitchell, 62, English footballer (Newcastle United).
+- 7 September – Peter Nichols, 92, English playwright (*A Day in the Death of Joe Egg*, *Passion Play*, *Poppy*).
+- 8 September
+  - Marjorie Blamey, 101, English painter and illustrator.
+  - Sir Chris Dobson, 69, chemist, Master of St John's College, Cambridge (since 2007), cancer.
+- 9 September – Brian Barnes, 74, Scottish golfer, cancer.
+- 10 September – Valerie Van Ost, 75, English actress (*Carry On*, *The Beauty Jungle*, *Mister Ten Per Cent*).
+- 12 September
+  - Sir Norman Browse, 87, surgeon, President of the States of Alderney (2002–2011).
+  - Sir Hugh Cunningham, 97, military officer, Deputy Chief of the Defence Staff (1976–1978).
+  - Keith Robbins, 79, historian and vice-chancellor of University of Wales, Lampeter (1992–2003).
+- 13 September
+  - Magdalen Berns, 36, Scottish YouTuber, glioblastoma.
+  - Cynthia Cockburn, 85, feminist and peace activist.
+  - Dennis Edwards, 82, English footballer (Slough Town, Wycombe Wanderers, Charlton Athletic, Portsmouth).
+  - Frank Key, 60, writer.
+- 14 September
+  - Jean Heywood, 98, British actress (*When the Boat Comes In*, *Our Day Out*, *Billy Elliot*)
+  - Julian Piper, 72, English blues guitarist.
+- 15 September – Sir Michael Edwardes, 88, British-South African businessman, Chairman of British Leyland (1977–1982) and International Computers Limited (1984).
+- 16 September
+  - Leah Bracknell, 55, English actress (*Emmerdale*, *Doctors*, *The Royal Today*)
+  - Sir Toby Clarke, 80, businessman.
+  - Sir Donald Gosling, 90, vice admiral and businessman, Chairman of National Car Parks (1959–1998).
+  - Bobby Prentice, 65, Scottish footballer (Heart of Midlothian, Toronto Blizzard).
+- 17 September – Roy Williamson, 86, Anglican cleric, Bishop of Southwark (1991–1998).
+- 18 September
+  - Lady Anne Berry, 99, English-New Zealand horticulturist, founder of Rosemoor Garden.
+  - Tony Mills, 57, English rock singer (Shy, TNT), pancreatic cancer.
+- 19 September
+  - Larry Wallis, 70, English musician (Pink Fairies, Motörhead).
+  - Henry Woods, 95, army officer.
+- 20 September
+  - Myles Burnyeat, 80, English philosopher and scholar.
+  - Diarmuid Lawrence, 71, English television director (*The Hanging Gale*, *Little Dorrit*, *Peter and Wendy*)
+- 23 September
+  - Al Alvarez, 90, English poet (*The New Poetry*) and writer (*The Biggest Game in Town*), pneumonia.
+  - Elaine Feinstein, 88, English poet and writer.
+- 25 September
+  - Donald Nicholls, Baron Nicholls of Birkenhead, 86, jurist, Lord of Appeal in Ordinary (1994–2007).
+  - Sir John Wilsey, 80, military officer, Commander-in-Chief, Land Forces (1993–1996).
+- 26 September – Peter Downsborough, 76, English footballer (Halifax Town, Swindon Town, Bradford City).
+- 27 September – Russell Robins, 87, Welsh rugby union and rugby league player (Pontypridd, national team).
+- 28 September – John Haylett, 74, journalist, editor of the *Morning Star* (1995–2009).
+- 30 September – Sir David Akers-Jones, 92, politician, Chief Secretary for Administration (1985–1987) and acting Governor of Hong Kong (1986–1987), colon cancer.
+
+### October
+
+- 1 October
+  - Fred Molyneux, 75, English footballer (Southport, Plymouth Argyle, Tranmere Rovers).
+  - Peter Sissons, 77, English journalist and broadcaster (BBC News, ITN, *Question Time*).
+- 4 October – Stephen Moore, 81, English actor (*A Bridge Too Far*, *The Last Place on Earth*, *The Hitchhiker's Guide to the Galaxy*).
+- 5 October
+  - Tony Hoar, 87, racing cyclist, cancer.
+  - Sally Soames, 82, English photographer.
+- 6 October
+  - Ginger Baker, 80, English drummer (Cream, Blind Faith, Ginger Baker's Air Force).
+  - Ciaran Carson, 70, Northern Irish poet.
+- 7 October
+  - Barry Jackson, 82, English rugby union player (Broughton Park, Lancashire, national team).
+  - Tony Mulhearn, 80, political campaigner, lung disease.
+- 8 October
+  - Molly Duncan, 74, Scottish saxophonist (Average White Band), cancer.
+  - Helen Shingler, 100, actress (*Quiet Weekend*, *The Lady with a Lamp*, *Room in the House*).
+  - Split Waterman, 96, English speedway rider.
+- 9 October – Éamonn Burns, 56, Northern Irish Gaelic footballer (Down).
+- 10 October
+  - Sir Desmond Cassidi, 94, admiral, Commander-in-Chief, Naval Home Command (1983–1984).
+  - Juliette Kaplan, 80, English actress (*Last of the Summer Wine*, *Coronation Street*), cancer.
+  - Stuart Taylor, 72, English footballer (Bristol Rovers)
+- 12 October
+  - James Hughes-Hallett, 70, businessman and investor.
+  - Alison Prince, 88, children's writer.
+  - Norman Schofield, 75, Scottish-American political scientist.
+- 13 October – Richard Huckle, 33, convicted sex offender, stabbed.
+- 14 October – Rosemary Harris, 96, English author (*The Moon in the Cloud*).
+- 15 October – Andrew Cowan, 82, Scottish rally driver and team owner (Ralliart).
+- 17 October – Michael Bowen, 89, Roman Catholic prelate, Archbishop of Southwark (1977–2003).
+- 18 October
+  - Sir John Boyd, 83, diplomat, Ambassador to Japan (1992–1996).
+  - Horace Romano Harré, 91, New Zealand-born philosopher and psychologist.
+- 19 October – Deborah Orr, 57, Scottish journalist (*The Guardian*, *The Independent*), breast cancer.
+- 20 October
+  - Sir Peter Graham, 85, lawyer and parliamentary draftsman, First Parliamentary Counsel (1991–1994).
+  - Norman Myers, 85, environmentalist, dementia.
+- 22 October – Raymond Leppard, 92, conductor, director of the Indianapolis Symphony Orchestra (1987–2001).
+- 23 October
+  - Duncan Forbes, 78, Scottish footballer (Colchester United, Norwich City), complications from Alzheimer's disease.
+  - Brian Noble, 83, English Roman Catholic prelate, Bishop of Shrewsbury (1995–2010).
+  - Francis Tresham, 83, game designer.
+- 26 October – Jack Dunnett, 97, politician and football administrator, MP for Nottingham Central (1964–1974) and Nottingham East (1974–1983).
+- 27 October
+  - Vladimir Bukovsky, 76, Russian-born human rights activist and political dissident, heart attack.
+  - Sir Malcolm Ross, 76, royal courtier, Master of the Household of the Prince of Wales (2006–2008).
+- 28 October – Bert Mozley, 96, English footballer (Derby County, national team).
+- 30 October
+  - Russell Brookes, 74, rally driver, British Rally champion (1977, 1985).
+  - Frank Giles, 100, English journalist and historian, editor of *The Sunday Times* (1981–1983).
+
+### November
+
+- 1 November
+  - Daniel Mullins, 90, Irish-born Welsh Roman Catholic prelate, Bishop of Menevia (1987–2001).
+  - Archie Scott, 101, Scottish cricketer (national team).
+  - Paul Turner, 73, Welsh film director (*Hedd Wyn*).
+  - Hugh Waddell, 60, Scottish football league player.
+- 4 November – Robert Smithies, 71, English-born Australian rugby league player (Hull Kingston Rovers, Balmain).
+- 6 November
+  - Tazeen Ahmad, 48, journalist and broadcaster, cancer.
+  - Richard Lindley, 83, journalist and broadcaster.
+- 7 November
+  - Robert Freeman, 82, photographer (*With the Beatles*, *A Hard Day's Night*) and graphic designer.
+  - Nik Powell, 69, film producer and record executive, co-founder of Virgin Records, Director of the National Film and Television School (2003–2017).
+- 8 November – Annie Hall, 69, businesswoman and High Sheriff of Derbyshire (2017–2018) (drowned in the 2019 Yorkshire floods).
+- 9 November
+  - Brian Mawhinney, 79, Northern Irish politician, MP (1979–2005), Secretary of State for Health (1992–1994).
+  - Cyril Robinson, 90, English footballer (Blackpool, Bradford Park Avenue, Southport).
+- 10 November
+  - Les Campbell, 84, English footballer (Preston North End, Blackpool, Tranmere Rovers).
+  - Dennis Sorrell, 79, English footballer (Leyton Orient, Chelsea).
+- 11 November
+  - Edward Cullinan, 88, architect (Charles Cryer Theatre, Fountains Abbey, Weald and Downland Gridshell).
+  - Frank Dobson, 79, British politician, MP (1979–2015), Secretary of State for Health (1997–1999).
+  - James Le Mesurier, 48, Army officer and aid worker (White Helmets).
+- 12 November
+  - Edwin Bramall, Lord Bramall, 95, field marshal, Chief of the General Staff (1979–1982), Chief of the Defence Staff (1982–1985).
+  - Ian Cullen, 80, actor (*Z-Cars*).
+- 14 November – Jean Fergusson, 74, British actress (*Last of the Summer Wine*, *Coronation Street*).
+- 16 November
+  - John Campbell Brown, 72, Scottish astronomer, Astronomer Royal for Scotland (since 1995).
+  - Terry O'Neill, 81, British photographer, prostate cancer.
+  - Johnny Wheeler, 91, English footballer (England, Tranmere Rovers, Bolton Wanderers, Liverpool).
+- 19 November
+  - Basil Feldman, Baron Feldman, 96, businessman and life peer.
+  - Lloyd Watson, 70, rock guitarist.
+- 21 November – Colin Skipp, 80, actor (*The Archers*).
+- 22 November
+  - Sir Stephen Cleobury, 70, organist, Director of the Choir of King's College, Cambridge (since 1982).
+  - Jasper Griffin, 82, classical scholar.
+  - Chris Moncrieff, 88, journalist, political editor of the Press Association (1980–1994).
+- 23 November
+  - Leo Chamberlain, 79, priest and headmaster of Ampleforth College (1993–2003).
+  - Olly Croft, 90, darts player and founder of the British Darts Organisation.
+  - Sean Haslegrave, 68, English footballer (Stoke City, Nottingham Forest, Preston North End, Crewe Alexandra, York City, Torquay United).
+- 24 November
+  - Clive James, 80, Australian-born broadcaster and writer.
+  - Colin Mawby, 83, English organist, choral conductor and composer.
+- 25 November
+  - Martin Harvey, 78, Northern Irish footballer (Northern Ireland, Sunderland).
+  - Iain Sutherland, 71, Scottish musician (The Sutherland Brothers) and songwriter ("(I Don't Want to Love You But) You Got Me Anyway", "Arms of Mary").
+- 26 November
+  - Cyrus Chothia, 77, biochemist.
+  - Gary Rhodes, 59, restaurateur and television chef.
+- 27 November
+  - Terry de Havilland, 81, shoe designer.
+  - Sir Jonathan Miller, 85, humorist (*Beyond the Fringe*), actor and theatre director.
+- 29 November
+  - Tony Karalius, 76, English rugby league player (St Helens, Wigan, Great Britain).
+  - Usman Khan, Islamic terrorist and perpetrator of the 2019 London Bridge stabbing
+- 30 November
+  - Sir Michael Howard, 97, historian, co-founder of the International Institute for Strategic Studies.
+  - Brian Tierney, 97, historian and medievalist.
+
+### December
+
+- 2 December – Sir John Kerr, 82, Royal Navy admiral, Chief of Defence Intelligence (1988–1991), Commander-in-Chief, Naval Home Command (1992–1993).
+- 3 December – Donald Tosh, 84, screenwriter (*Doctor Who*).
+- 4 December
+  - Sheila Mercier, 100, actress (*Emmerdale*).
+  - Bob Willis, 70, English cricketer (Surrey, Warwickshire, national team).
+- 6 December
+  - Maurice Mounsdon, 101, Battle of Britain RAF pilot.
+  - Michael Peacock, 90, television executive.
+- 7 December
+  - Kate Figes, 62, author.
+  - Ron Saunders, 87, English footballer (Portsmouth) and football manager (Aston Villa, Birmingham City).
+  - Simon Streatfeild, 90, violist and orchestral conductor.
+- 8 December – Roy Cheetham, 79, English footballer (Manchester City).
+- 9 December – Elizabeth Sutherland, 24th Countess of Sutherland, 98, Scottish noblewoman, chief of Clan Sutherland.
+- 10 December
+  - Natalie Harrowell, 29, English rugby league player (Featherstone Rovers, national team).
+  - Barrie Keeffe, 74, screenwriter (*The Long Good Friday*).
+  - Jim Smith, 79, English footballer (Boston United) and football manager (Portsmouth, Derby County, Queens Park Rangers).
+- 11 December
+  - David Bellamy, 86, naturalist, television presenter (*Bellamy's Backyard Safari*) and author.
+  - Paul Crossley, 74, art historian.
+  - Ann Elizabeth Wee, 93, social worker in Singapore.
+  - Ian Young, 76, Scottish footballer (Celtic, St Mirren).
+- 14 December – Lord Tim Hudson, 79, English DJ, voice actor (*The Jungle Book*), and agent (Ian Botham).
+- 15 December
+  - Nicky Henson, 74, actor (*Fawlty Towers*, *EastEnders*, *Downton Abbey*).
+  - David Lambie, 94, politician and MP (1970–1992).
+  - Sir Thomas Pearson, 105, Army general.
+- 17 December
+  - Tom Adams, 93, American-born Scottish illustrator.
+  - Ron Hogg, 68, police officer, Durham Police and Crime Commissioner (since 2012), amyotrophic lateral sclerosis.
+  - Cuchlaine King, 97, geomorphologist.
+  - Tom White, 80, Scottish footballer (Hearts, Bury, Crystal Palace).
+  - Peter Wollen, 81, film theorist and filmmaker.
+- 18 December
+  - Mary Cosh, 100, freelance journalist and local historian.
+  - Kenny Lynch, 81, singer ("You Can Never Stop Me Loving You"), actor (*Carry On Loving*, *The Playbirds*) and entertainer.
+- 20 December
+  - Frank Foster, 79, English rugby league player.
+  - Billy Hughes, 70, Scottish footballer (Sunderland, Leicester City, national team).
+  - Bashir Maan, 93, Pakistani-British politician.
+- 21 December
+  - Ronald Bowlby, 93, Anglican prelate, Bishop of Southwark (1980–1991).
+  - Leslie Brent, 94, German-born immunologist and zoologist.
+  - Martin Peters, 76, English footballer (West Ham United, Norwich City, national team) and football manager, World Cup winner (1966).
+- 22 December
+  - Tony Britton, 95, actor (*Operation Amsterdam*, *Sunday Bloody Sunday*, *The Day of the Jackal*).
+  - Sidney Holt, 93, marine biologist.
+  - Billy Slade, 78, Welsh cricketer (Glamorgan).
+  - Gary Talbot, 82, British footballer (Chester, Crewe Alexandra, Drumcondra).
+- 23 December – Alan Harrington, 86, Welsh footballer (Cardiff City, national team).
+- 24 December – Andrew Miller, 70, politician, MP (1992–2015).
+- 25 December
+  - Martyn King, 82, English footballer (Colchester United, Wrexham).
+  - Duncan MacKay, 82, Scottish footballer (Celtic, Perth, national team).
+  - Johnny Matthews, 73, English footballer (Waterford, Limerick) and football manager (Newcastlewest).
+- 28 December – Robert Baden-Powell, 3rd Baron Baden-Powell, 83, Scouting leader.
+- 29 December
+  - Alasdair Gray, 85, Scottish writer (*Lanark*) and artist.
+  - Neil Innes, 75, writer, comedian (Monty Python) and musician (The Rutles, Bonzo Dog Doo-Dah Band, Grimms).
+  - Vaughan Oliver, 62, graphic designer (4AD).
+  - John Shuker, 77, British footballer (Oxford United).
+- 30 December
+  - Micky Block, 79, English footballer (Chelsea).
+  - Marion Chesney, 83, Scottish novelist (*Death of a Gossip*, *Death of an Outsider*, *Agatha Raisin and the Deadly Dance*).
+  - Elizabeth Sellars, 98, Scottish actress (*The Barefoot Contessa*, *55 Days at Peking*, *The Webster Boy*).
+  - Charles Williams, Baron Williams of Elvel, 86, cricketer (Essex, Oxford University) and business executive, member of the House of Lords (1985–2019).
+  - Johnny Ward, 78, English rugby league footballer who played in the 1950s, 1960s and 1970s.
+- 31 December
+  - Andrew Hughes Hallett, 72, British economist.
+  - Basil Watts, 93, English rugby league player (York Wasps, England national team, Great Britain national team), world champion (1954).
