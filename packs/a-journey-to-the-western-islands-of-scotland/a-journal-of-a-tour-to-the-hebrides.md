@@ -1,0 +1,22 @@
+---
+title: "The Journal of a Tour to the Hebrides"
+source: https://en.wikipedia.org/wiki/A_Journal_of_a_Tour_to_the_Hebrides
+domain: a-journey-to-the-western-islands-of-scotland
+license: CC-BY-SA-4.0
+tags: a journey to the western islands of scotland
+fetched: 2026-07-05
+---
+
+# *The Journal of a Tour to the Hebrides*
+
+(Redirected from
+
+A Journal of a Tour to the Hebrides
+
+)
+
+***The Journal of a Tour to the Hebrides with Samuel Johnson, LL.D.*** is a travel journal by Scotsman James Boswell first published in 1785. In 1773, Boswell enticed his English friend Samuel Johnson to accompany him on a tour through the Scottish Highlands and western islands of Scotland. Johnson was then in his mid-sixties and well known for his literary works and his Dictionary. The two travellers set out from Edinburgh and skirted the eastern and northeastern coasts of Scotland, passing through St Andrews, Aberdeen and Inverness. They then passed into the highlands and spent several weeks on various islands in the Hebrides, including Skye, Coll, and Mull. After a visit to Boswell's estate at Auchinleck, the travellers returned to Edinburgh. Johnson published his *Journey to the Western Islands of Scotland* on 18 January 1775.
+
+It was widely read, discussed and criticised, especially for some sceptical remarks Johnson made questioning the authenticity of the Ossian poems, which were then all the rage. After Johnson's death in 1784, Boswell published his *Journal of a Tour to the Hebrides*. This work was based on a diary Boswell had kept during the 1773 tour and included detailed descriptions of where he and Johnson had gone and what Johnson had said.
+
+The Journal served as a teaser for the longer biography Boswell was preparing for publication, his *Life of Samuel Johnson*, which would exhibit the same qualities. Boswell's *Journal* and Johnson's *Journey* make an interesting study in contrasts. Johnson considers things philosophically and maintains a high level of generality. Boswell's approach is more anecdotal, even gossipy, and succeeds in large part because of Boswell's keen eye and ear for detail. Both accounts are still widely read and admired today.

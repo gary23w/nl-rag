@@ -1,0 +1,36 @@
+---
+title: "2006 UK Independence Party leadership election"
+source: https://en.wikipedia.org/wiki/2006_UK_Independence_Party_leadership_election
+domain: abolish-the-welsh-assembly-party
+license: CC-BY-SA-4.0
+tags: abolish the welsh assembly party
+fetched: 2026-07-05
+---
+
+# 2006 UK Independence Party leadership election
+
+The UK Independence Party (UKIP) held a leadership election in September 2006.
+
+The Eurosceptic party had been led since 2002 by Roger Knapman. Although he was entitled to stand for second term of office on the expiry of his four-year term, he decided not to.
+
+## Candidates
+
+Four candidates stood in the election:
+
+- Nigel Farage was an MEP for South East England, and the group's leader in the European Parliament. He called for the party to avoid being seen as a single issue pressure group, by focussing campaigning on low taxation, selective education and a distinctive trade policy. He was viewed as the highest-profile candidate, and was backed by the party's largest donor, Alan Bown.
+- Richard Suchorzewski, the Chair of UKIP Wales, had defected from the Conservative Party in 2004, and called for the party to develop greater internal democracy, with the formation of a governing committee who would liaise with members on policy initiatives. He also wanted to prioritise the recruitment of more members under 40 and for party leaders to be based permanently in the UK. He attracted the backing of former chairman Petrina Holdsworth.
+- David Campbell Bannerman was a former Conservative Party councillor and former chairman of the Bow Group, who had joined UKIP in 2002, and became its chairman in early 2006. He also called for the party to broaden its policies, and wanted to focus on democracy and freedom from government interference. If elected, he wanted to work alongside Farage, who he hoped would remain the party's leader in the European Parliament.
+- David Noakes, a computer consultant, called for the party to strengthen its focus on anti-EU campaigning. He stressed his belief that the European Union was equivalent to a police state. He called for co-operation with trade unions to organise an anti-EU general strike and for creating a permanent protest outside the British Houses of Parliament with a van broadcasting the party's message.
+
+## Result
+
+Farage was elected, with 44% of the votes cast.
+
+| Candidate | Votes | % share |
+|---|---|---|
+| Nigel Farage | 3,329 | 44.0 |
+| Richard Suchorzewski | 1,782 | 23.5 |
+| David Campbell Bannerman | 1,443 | 19.0 |
+| David Noakes | 851 | 11.2 |
+| Spoiled votes | 169 | — |
+| **Turnout** | 7,574 | 46.0 |

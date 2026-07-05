@@ -1,0 +1,14 @@
+# accession-of-the-united-kingdom-to-the-european-communities — nl-rag pack
+
+Pre-normalized AI markdown. tags: accession of the united kingdom to the european communities. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1965 Conservative Party leadership election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/1965-conservative-party-leadership-election.md) — upstream: https://en.wikipedia.org/wiki/1965_Conservative_Party_leadership_election
+- [1966 United Kingdom general election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/1966-united-kingdom-general-election.md) — upstream: https://en.wikipedia.org/wiki/1966_United_Kingdom_general_election
+- [1970 United Kingdom general election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/1970-united-kingdom-general-election.md) — upstream: https://en.wikipedia.org/wiki/1970_United_Kingdom_general_election
+- [1972 United Kingdom miners' strike](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/1972-united-kingdom-miners-strike.md) — upstream: https://en.wikipedia.org/wiki/1972_United_Kingdom_miners'_strike
+- [1973 enlargement of the European Communities](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/1973-enlargement-of-the-european-communities.md) — upstream: https://en.wikipedia.org/wiki/1973_enlargement_of_the_European_Communities
+- [1975 Conservative Party leadership election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/1975-conservative-party-leadership-election.md) — upstream: https://en.wikipedia.org/wiki/1975_Conservative_Party_leadership_election
+- [1975 United Kingdom European Communities membership referendum](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/1975-united-kingdom-european-communities-membership-referendum.md) — upstream: https://en.wikipedia.org/wiki/1975_United_Kingdom_European_Communities_membership_referendum
+- [Accession of the United Kingdom to the European Communities](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/accession-of-the-united-kingdom-to-the-european-communities.md) — upstream: https://en.wikipedia.org/wiki/Accession_of_the_United_Kingdom_to_the_European_Communities
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/accession-of-the-united-kingdom-to-the-european-communities/pack.facts) — distilled one-line facts (neuron CLI import)

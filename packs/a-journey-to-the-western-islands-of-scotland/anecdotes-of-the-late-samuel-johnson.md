@@ -1,0 +1,48 @@
+---
+title: "Anecdotes of the Late Samuel Johnson"
+source: https://en.wikipedia.org/wiki/Anecdotes_of_the_Late_Samuel_Johnson
+domain: a-journey-to-the-western-islands-of-scotland
+license: CC-BY-SA-4.0
+tags: a journey to the western islands of scotland
+fetched: 2026-07-05
+---
+
+# *Anecdotes of the Late Samuel Johnson*
+
+The ***Anecdotes of the Late Samuel Johnson*** or the ***Anecdotes of the Late Samuel Johnson, LL.D. During the Last Twenty Years of His Life*** by Hester Thrale, also known as Hester Lynch Piozzi, was first published 26 March 1786. It was based on the various notes and anecdotes of Samuel Johnson that Thrale kept in her *Thraliana*. Thrale wrote the work in Italy while she lived there for three years after marrying Gabriel Piozzi.
+
+## Background
+
+Before Thrale began to write the *Thraliana*, she kept two sets of anecdotes: the first was devoted to Samuel Johnson and the other for miscellaneous events. She relied on these, along with her memory, to write the early portions of her work.
+
+After Johnson's death, Thrale decided to publish a series of anecdotes of Johnson's life based on the various notes and anecdotes, called Johnsoniana by her friends, that she incorporated into her *Thraliana*. She was eager to start publishing her writings, and Johnson's death gave her the opportunity. Thrale wrote the work in Italy while she lived there for three years after marrying Gabriel Piozzi.
+
+The work was first published 26 March 1786. In 1815, Thrale claimed:
+
+> "At Rome we received letters saying the book was bought with such avidity, that Cadell had not one copy left when the King sent for it at ten o'clock at night, and he was forced to be one from a friend to supply his Majesty's impatience, who sate up all night reading it. I received £300, a sum unexampled in those days for so small a volume."
+
+The *Gentleman's Magazine* of March 1786 said "On the third morning after the book was published not a copy of it could be obtained". The book went into four editions during 1786.
+
+## Anecdotes
+
+Thrale began her work by stating in the Preface:
+
+> "I have somewhere heard or read, that the Preface before a book, like the portico before a house, should be contrived, so as to catch, but not detain the attention of those who desire admission to the family within, or leave to look over the collection of pictures made by one whose opportunities of obtaining them we know to have been not unfrequent. I wish not to keep my readers long from such intimacy with the manners of Dr. Johnson, or such knowledge of his sentiments as these pages can convey. To urge my distance from England as an excuse for the book's being ill written, would be ridiculous; it might indeed serve as a just reason for my having written it at all; because, though others may print the same aphorisms and stories, I cannot *here* be sure that they have done so....
+> 
+> I am aware that many will say, I have not spoken highly enough of Dr. Johnson; but it will be difficult for those who say so, to speak more highly. If I have described his manners as they were, I have been careful to shew his superiority to the common forms of common life....
+> 
+> When I have said, that he was more a man of genius than of learning, I mean not to take from the one part of his character that which I willingly give to the other. The erudition of Mr. Johnson proved his genius; for he had not acquired it by long or profound study....
+> 
+> But I must conclude my Preface, and begin my book, the first I ever presented before the Public; from whose awful appearance in some measure to defend and conceal myself.... Studious however to avoid offending, and careful of that offence which can be taken without a cause, I here not unwillingly submit my slight performance to the decision of that glorious country, which I have the daily delight to hear applauded in others, as eminently just, generous, and humane.
+
+## Critical response
+
+Horace Walpole quickly responded to the work in a letter 28 March 1786:
+
+> "Two days ago appeared Madame Piozzi's *Anecdotes of Dr. Johnson*. I am lamentably disappointed - in her, I mean; not in him. I had conceived a favourable opinion of her capacity. But this new book is wretched; a high-varnished preface to a heap of rubbish, in a very vulgar style, and too void of method even for such a farrago."
+
+On 30 April 1786 he followed with another:
+
+> "As she must have heard that the whole first impression was sold the first day, no doubt she expects, on her landing to be received like the Governor of Gibraltar, and to find the road strewed with branches of palm. She, and Boswell, and their Hero are the joke of the public."
+
+Edmond Malone said, "On the whole the public is indebted to her for her lively, though very inaccurate and artful account of Dr. Johnson". James Clifford declared that the *Anecdotes* and the *Thraliana* "established her reputation as a bluestocking writer of the late eighteenth century". Martine Brownley claims that the *Anecdotes* "have long pleased Johnsonians", but her "lasting literary fame is due to her diaries and letters".
