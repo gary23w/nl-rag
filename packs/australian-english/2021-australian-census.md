@@ -1,0 +1,88 @@
+---
+title: "2021 Australian census"
+source: https://en.wikipedia.org/wiki/2021_Australian_census
+domain: australian-english
+license: CC-BY-SA-4.0
+tags: australian english
+fetched: 2026-07-05
+---
+
+# 2021 Australian census
+
+The **2021 Australian census**, simply called the **2021 Census**, was the eighteenth national Census of Population and Housing in Australia. The 2021 Census took place on 10 August 2021, and was conducted by the Australian Bureau of Statistics (ABS). It had a response rate of 96.1%, up from the 95.1% at the 2016 census. The total population of the Commonwealth of Australia was counted as 25,422,788, an increase of 8.6 per cent or 2,020,896 people over the previous 2016 census.
+
+Results from the 2021 census were released to the public on 28 June 2022 from the Australian Bureau of Statistics website. A small amount of additional 2021 census data was released in October 2022 and in 2023. Australia's next census is scheduled to take place in 2026.
+
+The census was undertaken during the COVID-19 pandemic. It therefore provided a clear snapshot of how the pandemic impacted Australian society.
+
+## Overview
+
+In Australia, completing the census is compulsory for all people in Australia on census night, only excluding foreign diplomats and their families. Census data is used to "help governments, businesses, not-for-profit and community organisations across the country make informed decisions", including helping governments to plan the provision of services. An independent report from Lateral Economics found that for every $1 of investment on the census, $6 of benefits are created in the Australian economy.
+
+Since the 2001 Census, all households have the option of allowing their census data, including personal information such as names and addresses, to be stored by the National Archives of Australia (NAA) for 99 years. 99 years after Census Night, the NAA will release that data to the public in a Census Time Capsule. Censuses stored by the NAA cannot by accessed, amended, or retrieved by anyone, including courts and tribunal, until their release, the first of which will occur in 2100.
+
+The 2020 Census Test occurred on 27 October 2020 with around 100,000 households from Sydney, Adelaide, Darwin, and Canberra, as well as communities in Karratha, Warrnambool, and Alice Springs Town Camps.
+
+## Topics
+
+Every census, the ABS makes a recommendation to the Australian Government on the topics to be included, based on the benefit that data would provide to Australia. Through the *Census and Statistics Amendment (Statistical Information) Regulations 2020*, the federal parliament approves topics that may be included. For the 2021 census, the ABS had been authorised to include questions relating to long-term health conditions and service in the Australian Defence Force, and would not continue asking questions about home internet access considering the rise of mobile devices. This represented the first significant change to census topics since 2006.
+
+Alongside these two new topics, the 2021 Census continued to ask questions related to:
+
+- Population
+- Sex and gender
+- Households and families
+- Aboriginal and Torres Strait Islander peoples
+- Income and work
+- Unpaid work and care
+- Education and training
+- Disability and carers
+- Housing
+- Location
+- Transport
+- Cultural diversity
+- Religion
+
+### Consultations
+
+Through late 2017, the ABS began discussions with major census data users on what was needed. From 3 April to 30 June 2018, a formal consultation process occurred on the online "ABS Consultation Hub", with the ABS receiving 450 submissions, 315 of which were published with consent.
+
+## Collection
+
+Since 2006, the ABS has allowed the census to be completed online, moving in 2016 to be digital-first. Like 2016, the 2021 Census was primarily collected online, with paper census forms being available on request for any household. In 2016, around a third of all households requested and completed their census using the paper form.
+
+## Population and dwellings
+
+The population counts for Australian states and territories were that New South Wales remains the most populous state, with 8,072,163 people counted, ahead of Victoria (6,503,491) and Queensland (5,156,138). The total population of Australian as counted in the 2021 census by state and external territories are:
+
+| States and territories | Male | Female | Total | % change |   |
+|---|---|---|---|---|---|
+|   | New South Wales | 3,984,166 | 4,087,995 | 8,072,163 | (Increase) 7.9% |
+|   | Victoria | 3,200,963 | 3,302,528 | 6,503,491 | (Increase) 9.7% |
+|   | Queensland | 2,540,404 | 2,615,736 | 5,156,138 | (Increase) 9.6% |
+|   | Western Australia | 1,322,855 | 1,337,171 | 2,660,026 | (Increase) 7.5% |
+|   | South Australia | 878,592 | 902,924 | 1,781,516 | (Increase) 6.3% |
+|   | Tasmania | 273,765 | 283,804 | 557,571 | (Increase) 9.3% |
+|   | Australian Capital Territory | 224,361 | 230,140 | 454,499 | (Increase) 14.4% |
+|   | Northern Territory | 117,526 | 115,075 | 232,605 | (Increase) 9.7% |
+|   | Jervis Bay Territory | 149 | 158 | 310 | (Decrease) 20.7% |
+| External Territories |   |   |   |   |   |
+|   | Christmas Island | 1,006 | 685 | 1,692 | (Decrease) 8.2% |
+|   | Norfolk Island | 1,060 | 1,130 | 2,188 | (Increase) 25.2% |
+|   | Cocos (Keeling) Islands | 302 | 292 | 593 | (Increase) 9.0% |
+| Australia | 12,545,154 | 12,877,635 | 25,422,788 | (Increase) 8.7% |   |
+
+## Country of birth
+
+Of all residents over two-thirds (72.4% or 18,235,690) were born in Australia. Over a quarter of the population (27.6% or 7,502,450 persons) said they were born overseas. After Australia, England is the most common birthplace with 927,490 people. India became the third-largest country of birth, surpassing China and New Zealand.
+
+## Language
+
+- 72.0% spoke only English at home.
+- 24.8% spoke a language other than English at home. The most common of these were:
+  - Mandarin
+  - Arabic
+  - Vietnamese
+  - Cantonese
+  - Punjabi
+- 2% of the population could not speak English at all.
