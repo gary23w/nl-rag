@@ -1,0 +1,56 @@
+---
+title: ".30-40 Krag"
+source: https://en.wikipedia.org/wiki/.30_Army
+domain: gatling-gun
+license: CC-BY-SA-4.0
+tags: gatling gun
+fetched: 2026-07-05
+---
+
+# .30-40 Krag
+
+(Redirected from
+
+.30 Army
+
+)
+
+The **.30-40 Krag**, also known as the **.30 U.S.**, **.30 Army** and **.30 Flanged Nitro Express (Purdey)** was a rifle cartridge developed in the early 1890s to provide the U.S. armed forces with a smokeless powder cartridge suited for use with modern small-bore repeating rifles to be selected in the 1892 small arm trials. Since the cartridge it was replacing was the .45-70 Government, the new cartridge was considered *small-bore* at the time. The rifle ultimately selected for use by the Army was formally adopted as the M1892 Springfield, better known as the Krag–Jørgensen from the Norwegian designers' names. The cartridge was also used in the M1893, M1895, M1897, and M1900 Gatling guns.
+
+## History and development
+
+### U.S. Army’s first smokeless cartridge
+
+Though the U.S. Navy and Marine Corps had adopted limited numbers of smokeless powder and bolt-action rifles, the .30-40 was the first cartridge adopted by the US Army that was designed from the outset for smokeless powder. It was patterned after .303 British, to which it is very similar geometrically.
+
+After a brief experiment with a 230-grain bullet loading, the .30 Army loading was standardized in 1894 using a 220-grain (14 g) metal-jacketed round-nose bullet with 40 gr (2.6 g) of nitrocellulose powder. This loading developed a maximum velocity of 2,000 ft/s (610 m/s) in the 30-inch (760 mm) barrel of the Krag rifle, and 1,960 ft/s (600 m/s) in the 22-inch (560 mm) barrel of the Krag carbine.
+
+### Case interchangeability and handloading
+
+Due to its dimensional similarities .303 brass can be annealed and pressed into .30-40 dimensions in a full-length sizing die.
+
+A converted .303 case will turn out ~2 mm shorter than a factory new .30-40 case, but it is still a viable option for handloaders when new factory brass is scarce.
+
+### Nomenclature and early commercial use
+
+The rimmed .30-40 round was also known as .30 Army or .30 U.S. Although the .30-40 Krag was the first smokeless powder round adopted by the U.S. military, it retained the "caliber-charge" naming system of earlier black powder cartridges, i.e. a .30-caliber bullet propelled by 40 grains (2.6 g) of smokeless powder. The first use of a smokeless powder round by Winchester was a single shot in 30-40, and it was one of only three rounds for which the 1895 Winchester lever action, introduced in 1896, was originally chambered.
+
+### Early sporting use and the Plute elk
+
+From the outset, the .30-40 cartridge proved popular for hunting and was chambered in a variety of firearms. In 1899, a Krag in .30-40 caliber owned by Colorado coal miner John Plute, was used to shoot a world-record Rocky Mountain elk.
+
+Although Plute never lived to see the record, he gave the antlers to a bar called the Elk Saloon in 1915 to pay his bar tab and died in 1922, 40 years before the record was declared. The massive 6x7 point set of antlers was mounted on the wall until the owner died in 1948 and it was bought by new owners, the antlers remained in the bar for another decade when an experienced elk hunter noticed their impressive size, he suggested to the owners that they get them measured and scored, as they could have a record rack on their hands.
+
+The owners then requested an official score sheet from the Boone and Crockett Club, after scoring the antlers and sending the card back the club didn't believe the results, as it was much larger than the current record at the time. So, the owners asked a Colorado game warden to measure the antlers, and the club disbelieved his measurements as well.
+
+The club said they would only publish the results if they could examine the antlers in person, so in 1962 the antlers were shipped to their headquarters in New York. The club measured the antlers at being five feet wide and the base measured a foot around, they declared it a world record which stood from 1962 until 1998 when another elk beat it by only quarter of an inch.
+
+### Ballistic upgrade attempt
+
+In October 1899, after reviewing the experiences of the Spanish–American War, U.S. Army ordnance authorities developed a new loading for the .30 Army used in the Krag rifle, in an attempt to match the ballistics of the 7×57mm Mauser cartridge employed by Spanish forces in that conflict.
+
+The new loading increased the muzzle velocity in the rifle version of the Krag to 2,200 ft/s (670 m/s) at 45,000 psi. However, once the new loading was issued, reports of cracked locking lugs on service Krags began to surface. In March 1900, the remaining stocks of this ammunition (some 3.5 million rounds) were returned to the arsenals, broken down, and reloaded back to the original 2,000 ft/s (610 m/s) specification.
+
+### Replacement and legacy
+
+In 1903, after recommendations from the infantry Small Arms Board, the U.S. Army formally adopted a higher-velocity .30-caliber replacement for the .30-40 or .30 Army cartridge. The new cartridge was designated by its year of adoption, the .30-03, although it was only in service for three years before being modified and became the .30-06 Springfield.
