@@ -1,0 +1,46 @@
+---
+title: "Ancient Black Sea shipwrecks"
+source: https://en.wikipedia.org/wiki/Ancient_Black_Sea_shipwrecks
+domain: ancient-black-sea-shipwrecks
+license: CC-BY-SA-4.0
+tags: ancient black sea shipwrecks
+fetched: 2026-07-05
+---
+
+# Ancient Black Sea shipwrecks
+
+**Ancient Black Sea shipwrecks** found in the Black Sea date to antiquity. In 1976, Willard Bascom suggested that the deep, anoxic waters of the Black Sea might have preserved ships from antiquity since typical wood-devouring organisms could not survive there. At a depth of 150m, the Black Sea contains insufficient oxygen to support most familiar biological life forms.
+
+## Meromictic composition and preservation
+
+Originally a land-locked fresh water lake, the Black Sea was flooded with salt water from the Mediterranean Sea during the Holocene. The influx of salt water essentially smothered the fresh water below it because a lack of internal motion and mixing meant that no fresh oxygen reached the deep waters, creating a meromictic body of water. The anoxic environment, which is hostile to many biological organisms that destroy wood in the oxygenated waters, provides an excellent testing site for deep water archaeological survey.
+
+## Archaeology
+
+In a series of expeditions beginning around 2000, the NOAA Ocean Exploration program led by Robert Ballard identified what appeared to be ancient shorelines, freshwater snail shells, and drowned river valleys in roughly 100 m (330 ft) of water off the Black Sea coast of modern Turkey.
+
+The team discovered three ancient wrecks to the west of the town of Sinop at depths of 100 m (330 ft). Wreck A and Wreck C probably date to the late Roman period (2nd-4th century AD), while Wreck B probably dates to the Byzantine period (5th to 7th century AD).
+
+To the east of Sinop, the team discovered a remarkably well-preserved wreck at a 320 m (1,050 ft) depth, in Black Sea's deep anoxic waters. The vessel's entire hull and cargo are intact, buried in sediments. Its deck structures are also intact, including a mast rising some 11 m (36 ft) into the water column. Radiocarbon dating of wood from the wreck provides a date of 410-520 AD. This ship has been named "Sinop D" by the Ballard team.
+
+In 2008, Ballard and his team conducted an expedition that focused on the exploration of the sea bed about 15–30 km west of Sinop, and an additional deep-water survey east and north of the peninsula. Their project had several goals. They sought to discover whether human habitation sites could be identified on the ancient submerged landscape, to examine the sea-bed for shipwrecks (where they found Sinop A-D), to test the hypothesis that the anoxic waters below 200m would protect shipwrecks from the expected biological attacks on organic components, and to seek data about an ancient trade route between Sinop and the Crimea indicated by terrestrial archaeological remains.
+
+Although Sinop served as a primary trade center in the Black Sea, the wrecks were located west of the trade route predicted by the prevalence of Sinopian ceramics on the Crimean peninsula. On wrecks A-C, mounds of distinctive carrot-shaped shipping jars, called amphorae, were found. They were of a style associated with Sinop and retained much of their original stacking pattern on the sea floor. The jars may have carried a variety of archetypal Black Sea products such as olive oil, honey, wine or fish sauce but the contents are presently unknown because no artifacts were recovered from any of these wreck sites in 2000.
+
+The wreck found provided the team with vast information about both the technological changes and trade that occurred in the Black Sea during a period of political, social and economic transition through their study of the ship’s construction techniques. Studies show that in Sinop during the Byzantine era, they had developed long-distance trading as early as 4500 BC. Sea-trading on the Black Sea was most intense during the period of late antiquity, between the 2nd and 7th centuries AD. The examination of the four shipwrecks found by Ballard and his team provide the direct evidence for Black Sea maritime trade so well attested by the distribution of ceramics on land.
+
+The video images of Shipwreck A that were taken show a wall of shipping jars standing about 2m above the sea-bed. The amphorae highest on the mound had fallen over without displacing those still standing in the rows beneath them, and it is likely that the ship settled upright on the sea-bed, gradually being both buried in and filled with sediment as exposed wood was devoured by the larva of the shipworm.
+
+Shipwreck B also consisted of a large pile of amphorae but several types are visible, as are multiple timbers protruding from within the mound and on it. In addition to the Sinop-styles jars, several amphorae similar to examples excavated on the Yassiada Byzantine shipwreck and dating from the 5th to late 6th century AD are present.
+
+Two discrete and mostly buried piles of carrot-shaped shipping jars comprise shipwreck C. The team’s visit to the site was short and was intended primarily to test survey methodology for deep-water procedures.
+
+Shipwreck D provided Ballard and his team with an unprecedented opportunity to document hull construction during a time of transition. When observing the sonar signature of Shipwreck D, a long, slender upright feature on the sea-bed, transformed itself into a wooden mast. Elements rarely present on shallower shipwreck sites are beautifully preserved 200m below the surface. Disappointingly for ship scholars and historians of technology, there are few indications of how the planks of Sinop D are held together. There are no mortise and tenon fastenings, and no sewing. Shipwreck D may be one of the earliest lateen-rigged ships to be studied by archaeologists. The angle of the mast and the lack of fittings on it suggest that a lateen sail is the most likely configuration for such a small vessel. A 2007 expedition to the site, however, identified what may be a mast for an artemon, suggesting a different type of vessel.
+
+The Institute for Exploration Black Sea expeditions relied on remote sensing with side-scan sonar in shallow and deep water to identify potential archaeological sites examined by ROVs. The hypothesis that the anoxic waters of the Black Sea would allow extraordinary organic preservation is borne out by the discovery of Sinop D, the 1,500-year-old shipwreck with excellent preservation of features above the sediment layer.
+
+In 2016, the Black Sea Maritime Archaeology Project was initiated, which uncovered 41 shipwrecks off the Bulgarian coast of the Black Sea within just a few months of initiation. The ships were documented with 3D photogrammetry, revealing their intricate details. Some of the ships were well preserved and date back to Byzantine times. This technology also has potential for the study of shipwrecks from antiquity.
+
+In 2018, a Roman trading vessel which dates back to 2nd–3rd centuries AD was found near Balaklava, Crimean Peninsula.
+
+Also in 2018, a Greek merchant vessel dating to around 400 BC was discovered, almost completely intact, off the coast of the Bulgarian city of Burgas at a depth of roughly 2,000 m (1.2 mi) by ROV. Thanks to the anoxic environment at this depth the ship was found on its side with its hull, rudder, mast, and decking still all almost completely intact. The contents of the ship's hold was also found to be intact but could not be examined closely as the ship's incredible preservation meant the hold remained largely sealed. At over 2,400 years old this wreck is considered the world's oldest intact shipwreck discovered to date.
