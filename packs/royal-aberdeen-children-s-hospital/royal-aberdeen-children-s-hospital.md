@@ -1,0 +1,44 @@
+---
+title: "Royal Aberdeen Children's Hospital"
+source: https://en.wikipedia.org/wiki/Royal_Aberdeen_Children's_Hospital
+domain: royal-aberdeen-children-s-hospital
+license: CC-BY-SA-4.0
+tags: royal aberdeen children's hospital
+fetched: 2026-07-05
+---
+
+# Royal Aberdeen Children's Hospital
+
+Coordinates
+
+:
+
+57°09′12″N
+
+2°08′06″W
+
+﻿
+
+/
+
+﻿
+
+57.1532°N 2.1351°W
+
+﻿
+
+/
+
+57.1532; -2.1351
+
+**The Royal Aberdeen Children's Hospital** or **RACH** is a children's hospital in Aberdeen, Scotland. It is situated on the Foresterhill site, with the Aberdeen Royal Infirmary and Aberdeen Maternity Hospital and provides services to children across the North of Scotland. It is managed by NHS Grampian.
+
+## History
+
+The hospital has its origins in a private house at Castle Hill which opened in 1877. It was evacuated to Kepplestone House during the First World War. It moved to a new facility which was designed by William Kelly and opened on the Foresterhill site in 1929. After the hospital had been completely rebuilt to modern standards, it re-opened in January 2004.
+
+In 2012 the hospital revised its policy around the age of patients who could be admitted for care, raising the limit from 14 to 16 years of age.
+
+## Performance
+
+The hospital's performance against the four-hour target in emergency departments was 99.6% ranking third best in Scotland in August 2015.

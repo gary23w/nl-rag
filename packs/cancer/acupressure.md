@@ -1,0 +1,42 @@
+---
+title: "Acupressure"
+source: https://en.wikipedia.org/wiki/Acupressure
+domain: cancer
+license: CC-BY-SA-4.0
+tags: cancer
+fetched: 2026-07-05
+---
+
+# Acupressure
+
+**Acupressure** is an alternative medicine technique often used in conjunction with acupuncture or reflexology. It is based on the concept of "life energy" (qi), which purportedly flows through "meridians" in the body. There is no scientific evidence for the existence of acupuncture points, meridians, or qi.
+
+Although some medical studies have suggested that acupressure may be effective at helping manage nausea and vomiting, insomnia, low back pain, migraines, and constipation, among other things, such studies have been found to have a high likelihood of bias. There is no reliable evidence for the effectiveness of acupressure.
+
+## History and origin
+
+Acupressure originated in ancient China, developing as part of traditional Chinese medicine.
+
+### Chinese origin
+
+Acupressure and acupuncture are generally held to have originated in China, with the earliest references appearing in documents from a few hundred years before the Common Era. The *Huangdi Neijing* (Yellow Emperor's Classic of Internal Medicine), dating from approximately 100 BCE, represents the first document that unequivocally described an organized system of diagnosis and treatment recognized as acupuncture. This foundational text, compiled over 2000 years ago during China's Warring States period, established the concepts of meridians through which Qi (vital energy) flowed, though precise anatomical locations of acupuncture points developed later. Historical evidence indicates that acupuncture has been practiced in China for more than 3000 years and subsequently spread to Europe and America from the sixteenth to nineteenth centuries.
+
+### Indian origin theory
+
+An alternative theory posits that acupressure originated in India around 560 BCE during the Buddhist era, was taught at Nalanda and Takshshila, and later transmitted to China by a migrating Buddhist monk. Proponents of this theory note that major points of Indian acupressure and Chinese acupuncture share similarities. The subsequent development and promotion of this medicine in China is attributed to official support and extensive research conducted there.
+
+## Effectiveness
+
+A 2011 systematic review of 43 studies of acupressure's effectiveness at treating symptoms found that the nature of these 43 studies "indicated a significant likelihood of bias." Thirty-five of the 43 studies had concluded that acupressure was effective at treating certain symptoms. The authors of this systematic review concluded that this "review of clinical trials from the past decade did not provide rigorous support for the efficacy of acupressure for symptom management. Well-designed, randomized controlled studies are needed to determine the utility and efficacy of acupressure to manage a variety of symptoms in a number of patient populations."
+
+A 2011 Cochrane review of four trials using acupuncture and nine studies using acupressure to control pain in childbirth concluded that "acupuncture or acupressure may help relieve pain during labour, but more research is needed". Another Cochrane Collaboration review found that massage provided some long-term benefit for low back pain, and stated: "It seems that acupressure or pressure point massage techniques provide more relief than classic (Swedish) massage, although more research is needed to confirm this."
+
+An acupressure wristband that is claimed to relieve the symptoms of motion sickness and other forms of nausea provides pressure to the P6 acupuncture point, a point that has been extensively investigated. The Cochrane Collaboration reviewed the use of P6 for nausea and vomiting, and found it to be effective for reducing post-operative nausea, but not vomiting. The Cochrane review included various means of stimulating P6, including acupuncture, electro-acupuncture, transcutaneous nerve stimulation, laser stimulation, acustimulation device and acupressure; it did not comment on whether one or more forms of stimulation were more effective; it found low-quality evidence supporting stimulation of P6 compared with sham, with 2 out of 59 trials having low risk of bias. EBM reviewer Bandolier said that P6 in two studies showed 52% of patients with control having a success, compared with 75% with P6.
+
+Quackwatch includes acupressure in a list of methods which have no "rational place" as massage therapy and states that practitioners "may also use irrational diagnostic methods to reach diagnoses that do not correspond to scientific concepts of health and disease."
+
+Clinical use of acupressure frequently relies on the conceptual framework of traditional Chinese medicine. There is no physically verifiable anatomical or histological basis for the existence of acupuncture points or meridians. Proponents reply that TCM is a prescientific system that continues to have practical relevance. Acupuncturists tend to perceive TCM concepts in functional rather than structural terms (e.g., as being useful in guiding evaluation and care of patients). Trials using placebo have not demonstrated any statistically significant effect but concluded that acupressure is safe to use along with conventional treatment.
+
+## Instruments
+
+There are several different instruments for applying nonspecific pressure by rubbing, rolling, or applying pressure on the reflex zones of the body. The acuball is a small ball made of rubber with protuberances that is heatable. It is used to apply pressure and relieve muscle and joint pain. The energy roller is a small cylinder with protuberances. It is held between the hands and rolled back and forth to apply acupressure. The foot roller (also "krupa chakra") is a round, cylindrical roller with protuberances. It is placed on the floor, and the foot is rolled back and forth over it. The power mat (also pyramid mat) is a mat with small pyramid-shaped bumps that you walk on. The spine roller is a bumpy roller containing magnets that is rolled up and down the spine. The Teishein is one of the original nine classical acupuncture needles described in the original acupuncture texts. Even though it is described as an acupuncture needle, it did not pierce the skin. It is used to apply rapid percussion pressure to the points being treated.

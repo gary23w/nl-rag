@@ -1,0 +1,101 @@
+---
+title: "Breast cancer (part 2/2)"
+source: https://en.wikipedia.org/wiki/Breast_cancer
+domain: baby-friendly-hospital-initiative
+license: CC-BY-SA-4.0
+tags: baby friendly hospital initiative
+fetched: 2026-07-05
+part: 2/2
+---
+
+## History
+
+Because of its visibility, breast cancer was the form of cancer most often described in ancient documents. Because autopsies were rare, cancers of the internal organs were essentially invisible to ancient medicine. Breast cancer, however, could be felt through the skin, and in its advanced state often developed into fungating lesions: the tumor would become necrotic (die from the inside, causing the tumor to appear to break up) and ulcerate through the skin, weeping fetid, dark fluid.
+
+The oldest discovered evidence of breast cancer is from Egypt; it dates back 4200 years, to the Sixth Dynasty. The study of a woman's remains from the necropolis of Qubbet el-Hawa showed the typical destructive damage due to metastatic spread. The Edwin Smith Papyrus describes eight cases of tumors or ulcers of the breast that were treated by cauterization. The writing says about the disease, "There is no treatment." For centuries, physicians described similar cases in their practices, with the same conclusion. Ancient medicine, from the time of the Greeks through the 17th century, was based on humoralism, and thus believed that breast cancer was generally caused by imbalances in the fundamental fluids that controlled the body, especially an excess of black bile. Alternatively it was seen as divine punishment.
+
+Mastectomy for breast cancer was performed at least as early as AD 548, when it was proposed by the court physician Aetios of Amida to Theodora. It was not until doctors achieved greater understanding of the circulatory system in the 17th century that they could link breast cancer's spread to the lymph nodes in the armpit. In the early 18th century, the French surgeon Jean Louis Petit performed total mastectomies that included removing the axillary lymph nodes, as he recognized that this reduced recurrence. Petit's work built on the methods of the surgeon Bernard Peyrilhe, who in the 17th century additionally removed the pectoral muscle underlying the breast, as he judged that this greatly improved the prognosis. But poor results and the considerable risk to the patient meant that physicians did not share the opinion of surgeons such as Nicolaes Tulp, who in the 17th century proclaimed "the sole remedy is a timely operation." The eminent surgeon Richard Wiseman documented in the mid-17th century that following 12 mastectomies, two patients died during the operation, eight patients died shortly after the operation from progressive cancer, and only two of the 12 patients were cured. Physicians were conservative in the treatment they prescribed in the early stages of breast cancer. Patients were treated with a mixture of detox purges, blood letting, and traditional remedies that were supposed to lower acidity, such as the alkaline arsenic.
+
+When in 1664 Anne of Austria was diagnosed with breast cancer, the initial treatment involved compresses saturated with hemlock juice. When the lumps increased, the King's physician commenced a treatment with arsenic ointments. The royal patient died in 1666 in atrocious pain. Each failing treatment for breast cancer led to the search for new treatments, spurring a market in remedies that were advertised and sold by quacks, herbalists, chemists and apothecaries. The lack of anesthesia and antiseptics made mastectomy a painful and dangerous ordeal. In the 18th century, a wide variety of anatomical discoveries were accompanied by new theories about the cause and growth of breast cancer. The investigative surgeon John Hunter claimed that neural fluid generated breast cancer. Other surgeons proposed that milk within the mammary ducts led to cancerous growths. Theories about trauma to the breast as a cause for malignant changes in breast tissue were advanced. The discovery of breast lumps and swellings fueled controversies about hard tumors and whether lumps were benign stages of cancer. Medical opinion about the necessary immediate treatment varied. The surgeon Benjamin Bell advocated removal of the entire breast, even when only a portion was affected.
+
+Breast cancer was uncommon until the 19th century, when improvements in sanitation and control of deadly infectious diseases resulted in dramatic increases in lifespan. Previously, most women had died too young to have developed breast cancer. In 1878, an article in *Scientific American* described historical treatment by pressure intended to induce local ischemia in cases when surgical removal were not possible. William Stewart Halsted started performing radical mastectomies in 1882, helped greatly by advances in general surgical technology, such as aseptic technique and anesthesia. The Halsted radical mastectomy often involved removing both breasts, associated lymph nodes, and the underlying chest muscles. This often led to long-term pain and disability, but was seen as necessary to prevent the cancer from recurring. Before the advent of the Halsted radical mastectomy, 20-year survival rates were only 10%; Halsted's surgery raised that rate to 50%.
+
+Breast cancer staging systems were developed in the 1920s and 1930s to determining the extent to which a cancer has developed by growing and spreading. The first case-controlled study on breast cancer epidemiology was done by Janet Lane-Claypon, who published a comparative study in 1926 of 500 breast cancer cases and 500 controls of the same background and lifestyle for the British Ministry of Health. Radical mastectomies remained the standard of care in the USA until the 1970s, but in Europe, breast-sparing procedures, often followed by radiation therapy, were generally adopted in the 1950s. In 1955, George Crile Jr. published *Cancer and Common Sense* arguing that cancer patients needed to understand available treatment options. Crile became a close friend of the environmentalist Rachel Carson, who had undergone a Halsted radical mastectomy in 1960 to treat her malignant breast cancer. The US oncologist Jerome Urban promoted super radical mastectomies, taking even more tissue, until 1963, when the ten-year survival rates proved equal to the less-damaging radical mastectomy. Carson died in 1964, and Crile went on to publish a wide variety of articles, both in the popular press and in medical journals, challenging the widespread use of the Halsted radical mastectomy. In 1973, Crile published *What Women Should Know About the Breast Cancer Controversy*. In 1974, Betty Ford was diagnosed with breast cancer, and the options for treating breast cancer were openly discussed in the press. During the 1970s, a new understanding of metastasis led to perceiving cancer as a systemic illness as well as a localized one, and more sparing procedures were developed that proved equally effective.
+
+In the 1980s and 1990s, thousands of women who had successfully completed standard treatment then demanded and received high-dose bone marrow transplants, thinking this would lead to better long-term survival. However, it proved completely ineffective, and 15–20% of women died because of the brutal treatment. The 1995 reports from the Nurses' Health Study and the 2002 conclusions of the Women's Health Initiative trial conclusively proved that HRT significantly increased the incidence of breast cancer.
+
+
+## Society and culture
+
+Before the 20th century, breast cancer was feared and discussed in hushed tones, as if it were shameful. As little could be safely done with primitive surgical techniques, women tended to suffer silently rather than seek care. When surgery advanced, and long-term survival rates improved, women began raising awareness of the disease and the possibility of successful treatment. The "Women's Field Army", run by the American Society for the Control of Cancer (later the American Cancer Society) during the 1930s and 1940s, was one of the first organized campaigns. In 1952, the first peer-to-peer support group, called "Reach to Recovery", began providing post-mastectomy, in-hospital visits from women who had survived breast cancer.
+
+The breast cancer movement of the 1980s and 1990s developed out of the larger feminist movements and women's health movement of the 20th century. This series of political and educational campaigns, partly inspired by the politically and socially effective AIDS awareness campaigns, resulted in the widespread acceptance of second opinions before surgery, less invasive surgical procedures, support groups, and other advances in care.
+
+### Pink ribbon
+
+A pink ribbon is the most prominent symbol of breast cancer awareness. Pink ribbons, which can be made inexpensively, are sometimes sold as fundraisers. They may be worn to honor those who have been diagnosed with breast cancer, or to identify products that the manufacturer would like to sell to consumers who are interested in breast cancer. In the 1990s, breast cancer awareness campaigns were launched by US-based corporations. As part of these cause-related marketing campaigns, corporations donated to a variety of breast cancer initiatives for every pink ribbon product that was purchased. The *Wall Street Journal* noted that "the strong emotions provoked by breast cancer translate to a company's bottom line". While many US corporations donated to existing breast cancer initiatives, others, such as Avon, established their own breast cancer foundations on the back of pink ribbon products.
+
+Wearing or displaying a pink ribbon has been criticized by the opponents of this practice as a kind of slacktivism, because it has no practical positive effect. It has also been criticized as hypocrisy, because some people wear the pink ribbon to show goodwill towards women with breast cancer, but then oppose these women's practical goals, like patient rights and anti-pollution legislation. Critics say that the feel-good nature of pink ribbons and pink consumption distracts society from the lack of progress on preventing and curing breast cancer. It is also criticized for reinforcing gender stereotypes and objectifying women and their breasts. Breast Cancer Action launched the "Think Before You Pink" campaign in 2002 against pinkwashing, to target businesses that have co-opted the pink campaign to promote products that cause breast cancer, such as alcoholic beverages.
+
+### Breast cancer culture
+
+In her 2006 book *Pink Ribbons, Inc.: Breast Cancer and the Politics of Philanthropy* Samantha King claimed that breast cancer has been transformed from a serious disease and individual tragedy to a market-driven industry of survivorship and corporate sales pitch. In 2010 Gayle Sulik argued that the primary purposes or goals of breast cancer culture are to maintain breast cancer's dominance as the pre-eminent women's health issue, to promote the appearance that society is doing something effective about breast cancer, and to sustain and expand the social, political, and financial power of breast cancer activists. In the same year Barbara Ehrenreich published an opinion piece in *Harper's Magazine*, lamenting that in breast cancer culture, breast cancer therapy is viewed as a rite of passage rather than a disease. To fit into this mold, the woman with breast cancer needs to normalize and feminize her appearance and minimize the disruption that her health issues cause to anyone else. Anger, sadness, and negativity must be silenced. As with most cultural models, people who conform to the model are given social status, in this case as cancer survivors. Women who reject the model are shunned, punished, and shamed. The culture is criticized for treating adult women like little girls, as evidenced by "baby" toys such as pink teddy bears given to adult women.
+
+
+## Health disparities in breast cancer
+
+There are ethnic disparities in the mortality rates for breast cancer as well as in breast cancer treatment. Breast cancer is the most prevalent cancer affecting women of every ethnic group in the United States. Breast cancer incidence among Black women aged 45 and older is higher than that of white women in the same age group. White women aged 60–84 have higher incidence rates of breast cancer than Black women. Despite this, Black women at every age are more likely to die of breast cancer.
+
+Breast cancer treatment has improved greatly over the years; however, Black women are still less likely to obtain treatment compared to white women. Risk factors such as socioeconomic status, late-stage, or breast cancer at diagnosis, genetic differences in tumor subtypes, and differences in healthcare access all contribute to these disparities. Socioeconomic determinants affecting the disparity in breast cancer illness include poverty, culture, and social injustice. In Hispanic women, the incidence of breast cancer is lower than in non-Hispanic women, but it is often diagnosed at a later stage than in white women with larger tumors.
+
+Black women are usually diagnosed with breast cancer at a younger age than white women. The median age of diagnosis for Black women is 59, in comparison to 62 in White women. The incidence of breast cancer in Black women has increased by 0.4% per year since 1975, and 1.5% per year among Asian/Pacific Islander women since 1992. Incidence rates were stable for non-Hispanic White, Hispanic, and Native American women. The five-year survival rate is noted to be 81% in Black women and 92% in White women. Chinese and Japanese women have the highest survival rates.
+
+### Disparities in breast cancer screenings
+
+Low-income, immigrant, disabled, and racial and sexual minority women are less likely to undergo breast cancer screening and thus are more likely to receive late-stage diagnoses. Ensuring equitable health care, including breast cancer screenings, can positively affect these disparities.
+
+Efforts to raise awareness about the significance of screenings, such as informational materials, are ineffective in reducing these disparities. Successful methods directly address the barriers that prevent access to screenings, such as language barriers or lack of health insurance.
+
+Through community outreach in underserved communities, patient navigators and advocates can offer women personalized assistance with attending screening and follow-up appointments. However, the long-term benefits are unclear, primarily due to a lack of resources and staff to sustain these community-based solutions. Legislation that requires mandatory insurance coverage of language assistance and mammograms has also increased screening rates, particularly among ethnic minority communities. Innovative solutions proven effective include mobile screening vehicles, telehealth consultations, and online tools to assess potential risks and signs of breast cancer.
+
+### Disparities in breast cancer research
+
+A diverse pool of participants in breast cancer research facilitates the investigation of the disease's unique risks and development patterns in ethnic minority populations. These populations experience better health outcomes from medical treatments designed based on research with diverse patient representation.
+
+Within the United States, less than 3% of patients in clinical trials identify as Black, despite representing 12.7% of the national population. Hispanic and indigenous women are also significantly underrepresented in breast cancer research. Lengthy involvement in clinical trials without financial compensation discourages the participation of low-income women unable to miss work or afford traveling expenses. Monetary compensation, language interpreters, and patient navigators can increase the diversity of participants in research and clinical trials.
+
+
+## Special populations
+
+### Men
+
+Breast cancer is relatively uncommon in men, but it can occur. Typically, a breast tumor appears as a lump in the breast. Men who develop gynecomastia (enlargement of the breast tissue due to hormone imbalance) are at increased risk, as are men with disease-associated variations in the *BRCA2* gene, high exposure to estrogens, or men with Klinefelter syndrome (who have two copies of the X chromosome, and naturally high estrogen levels). Treatment typically involves surgery, followed by radiation if needed. Around 90% men's tumors are ER-positive and are treated with endocrine therapy, typically tamoxifen. The disease course and prognosis are similar to those in women of similar age with similar disease characteristics.
+
+### Pregnant women
+
+Diagnosing breast cancer in pregnant women is often delayed, as symptoms can be masked by pregnancy-related breast changes. The diagnostic path is the same as in non-pregnant women, except that radiography of the abdomen is avoided. Chemotherapy is avoided during the first trimester, but can be safely administered through the rest of the pregnancy term. Anti-HER2 treatments and endocrine therapies are delayed until after delivery. These treatments given after delivery can cross into the breast milk, and so breast feeding is generally not possible. The prognosis for pregnant women with breast cancer is similar to that of non-pregnant women of similar age.
+
+
+## Research
+
+Treatments are being evaluated in clinical trials. This includes individual drugs, combinations of drugs, and surgical and radiation techniques Investigations include new types of targeted therapy, cancer vaccines, oncolytic virotherapy, gene therapy and immunotherapy.
+
+The latest research is reported annually at scientific meetings such as that of the American Society of Clinical Oncology, San Antonio Breast Cancer Symposium, and the St. Gallen Oncology Conference in St. Gallen, Switzerland. These studies are reviewed by professional societies and other organizations, and formulated into guidelines for specific treatment groups and risk category.
+
+Fenretinide, a retinoid, is also being studied as a way to reduce the risk of breast cancer. In particular, combinations of ribociclib plus endocrine therapy have been the subject of clinical trials.
+
+A 2019 review found moderate certainty evidence that giving people antibiotics before breast cancer surgery helped to prevent surgical site infection (SSI). Further study is required to determine the most effective antibiotic protocol and use in women undergoing immediate breast reconstruction.
+
+### Cryoablation
+
+As of 2014, cryoablation is being studied to see if it could be a substitute for a lumpectomy in small cancers. There is tentative evidence in those with tumors less than 2 centimeters across. It may also be used in those in who surgery is not possible. Another review states that cryoablation looks promising for early breast cancer of small size.
+
+### Breast cancer cell lines
+
+Part of the current knowledge on breast carcinomas is based on in vivo and in vitro studies performed with cell lines derived from breast cancers. These provide an unlimited source of homogenous self-replicating material, free of contaminating stromal cells, and often easily cultured in simple standard media. The first breast cancer cell line described, BT-20, was established in 1958. Since then, and despite sustained work in this area, the number of permanent lines obtained has been strikingly low (about 100). Indeed, attempts to culture breast cancer cell lines from primary tumors have been largely unsuccessful. This poor efficiency was often due to technical difficulties associated with the extraction of viable tumor cells from their surrounding stroma. Most of the available breast cancer cell lines originated from metastatic tumors, mainly from pleural effusions. Effusions generally provided large numbers of dissociated, viable tumor cells with little or no contamination by fibroblasts and other tumor stroma cells. Many of the currently used BCC lines were established in the late 1970s. A very few of them, namely MCF-7, T-47D, MDA-MB-231, and SK-BR-3, account for more than two-thirds of all abstracts reporting studies on the mentioned breast cancer cell lines, as concluded from a Medline-based survey.
+
+
+## Other animals
+
+- Mammary tumor for breast cancer in other animals
+- Mouse models of breast cancer metastasis
