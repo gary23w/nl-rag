@@ -1,0 +1,14 @@
+# 1998-northern-ireland-good-friday-agreement-referendum — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1998 northern ireland good friday agreement referendum. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1921 Northern Ireland general election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1921-northern-ireland-general-election.md) — upstream: https://en.wikipedia.org/wiki/1921_Northern_Ireland_general_election
+- [1922 United Kingdom general election in Northern Ireland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1922-united-kingdom-general-election-in-northern-ireland.md) — upstream: https://en.wikipedia.org/wiki/1922_United_Kingdom_general_election_in_Northern_Ireland
+- [1923 United Kingdom general election in Northern Ireland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1923-united-kingdom-general-election-in-northern-ireland.md) — upstream: https://en.wikipedia.org/wiki/1923_United_Kingdom_general_election_in_Northern_Ireland
+- [1924 Northern Ireland local elections](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1924-northern-ireland-local-elections.md) — upstream: https://en.wikipedia.org/wiki/1924_Northern_Ireland_local_elections
+- [1924 United Kingdom general election in Northern Ireland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1924-united-kingdom-general-election-in-northern-ireland.md) — upstream: https://en.wikipedia.org/wiki/1924_United_Kingdom_general_election_in_Northern_Ireland
+- [1925 Northern Ireland general election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1925-northern-ireland-general-election.md) — upstream: https://en.wikipedia.org/wiki/1925_Northern_Ireland_general_election
+- [1929 Northern Ireland general election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1929-northern-ireland-general-election.md) — upstream: https://en.wikipedia.org/wiki/1929_Northern_Ireland_general_election
+- [1998 Northern Ireland Good Friday Agreement referendum](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/1998-northern-ireland-good-friday-agreement-referendum.md) — upstream: https://en.wikipedia.org/wiki/1998_Northern_Ireland_Good_Friday_Agreement_referendum
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1998-northern-ireland-good-friday-agreement-referendum/pack.facts) — distilled one-line facts (neuron CLI import)

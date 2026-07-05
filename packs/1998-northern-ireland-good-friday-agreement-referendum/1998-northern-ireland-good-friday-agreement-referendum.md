@@ -1,0 +1,74 @@
+---
+title: "1998 Northern Ireland Good Friday Agreement referendum"
+source: https://en.wikipedia.org/wiki/1998_Northern_Ireland_Good_Friday_Agreement_referendum
+domain: 1998-northern-ireland-good-friday-agreement-referendum
+license: CC-BY-SA-4.0
+tags: 1998 northern ireland good friday agreement referendum
+fetched: 2026-07-05
+---
+
+# 1998 Northern Ireland Good Friday Agreement referendum
+
+A referendum was held in Northern Ireland on 22 May 1998 over whether there was support for the Good Friday Agreement. The result was a majority (71.1%) in favour. A simultaneous referendum held in the Republic of Ireland produced an even larger majority (94.4%) in favour.
+
+The total number of people who voted in both referendums was 2,499,078.
+
+## Party support
+
+All the main UK political parties (Labour, Conservative, and Liberal Democrat) supported the Yes campaign. Of the local Northern Ireland parties represented in the Northern Ireland Peace Forum, the Ulster Unionist Party, Social Democratic and Labour Party, Sinn Féin, Alliance, Progressive Unionist Party, Ulster Democratic Party, Northern Ireland Women's Coalition and local "Labour" groups supported the proposals.
+
+The only two parties in the Forum to campaign against the Agreement were the Democratic Unionist Party and the UK Unionist Party, though many prominent individuals in the Ulster Unionists also did so. Some minor parties campaigned against it. Republican Sinn Féin, which at the time did not run candidates in Northern Ireland, still opposes the agreement.
+
+In the Republic of Ireland, all parties represented in the Oireachtas were in favour – Fianna Fáil, Fine Gael, Labour, Progressive Democrats, Democratic Left, Green Party, Sinn Féin and the Socialist Party.
+
+## Results
+
+### Northern Ireland
+
+The referendum saw a large majority 'Yes' vote across the province on Friday 22 May 1998. The votes were counted the next day. A total of 1,738 ballots were spoiled. Turnout, at 81.1%, was very high for a developed country where voting is not compulsory. Turnout in the equivalent referendum in the Republic of Ireland was average for a constitutional referendum but returned almost universal approval (94.39%).
+
+| **Northern Ireland Good Friday Agreement referendum, 1998** National result |   |   |   |
+|---|---|---|---|
+| Choice | Votes | % |   |
+|   | **Yes** | **676,966** | **71.12%** |
+|   | No | 274,979 | 28.88% |
+|   |   |   |   |
+| Valid votes | 951,845 | 99.81% |   |
+| Invalid or blank votes | 1,738 | 0.19% |   |
+| **Total votes** | **953,683** | **100.00%** |   |
+|   |   |   |   |
+| Registered voters and turnout | 1,175,403 | 81.14% |   |
+
+| National referendum results (excluding invalid votes) |   |
+|---|---|
+| **Yes 676,966 (71.1%)** | No 274,979 (28.9%) |
+| **▲** 50% |   |
+
+### Republic of Ireland
+
+The referendum in the Republic of Ireland was held on the same day but rather than explicitly seeking approval of the Agreement itself it sought endorsement of constitutional amendments required by the Agreement, and produced an overwhelming Yes vote in favour.
+
+| **Nineteenth Amendment of the Constitution of Ireland** National Result |   |   |   |
+|---|---|---|---|
+| Choice | Votes | % |   |
+|   | **Yes** | **1,442,583** | **94.39%** |
+|   | No | 85,748 | 5.61% |
+|   |   |   |   |
+| Valid votes | 1,528,331 | 98.90% |   |
+| Invalid or blank votes | 17,064 | 1.10% |   |
+| **Total votes** | **1,545,345** | **100.00%** |   |
+|   |   |   |   |
+| Registered voters and turnout | 2,747,088 | 56.26% |   |
+
+| National referendum results (excluding invalid votes) |   |
+|---|---|
+| **Yes 1,442,583 (94.4%)** |   |
+| **▲** 50% |   |
+
+## Turnout
+
+The turnout in Northern Ireland was noticeably high at 81.1% and also quite high evenly throughout Northern Ireland, compared to many elections where turnout is highest in strong nationalist areas and significantly lower in unionist areas. It is estimated that approximately 147,000 people who do not normally vote in elections turned out to vote in the referendum, most of them in traditionally staunch unionist areas. In the Republic the turnout was lower, at 56.3%.
+
+## Legislative responses
+
+The UK Parliament passed the Northern Ireland Act 1998, while in the Republic the Nineteenth Amendment of the Constitution Act 1998 passed into law.

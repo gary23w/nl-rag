@@ -1,0 +1,61 @@
+---
+title: "Aeolis"
+source: https://en.wikipedia.org/wiki/Aeolis
+domain: aigosages
+license: CC-BY-SA-4.0
+tags: aigosages
+fetched: 2026-07-05
+---
+
+# Aeolis
+
+Coordinates
+
+:
+
+39°12′N
+
+26°42′E
+
+﻿ / ﻿
+
+39.2°N 26.7°E
+
+﻿ /
+
+39.2; 26.7
+
+**Aeolis** (/ˈiːəlɪs/; Ancient Greek: Αἰολίς, romanized: *Aiolís*), or **Aeolia** (/iːˈoʊliə/; Ancient Greek: Αἰολία, romanized: *Aiolía*), was an area that comprised the west and northwestern region of Asia Minor (modern-day Turkey), mostly along the coast, and also several offshore islands (particularly Lesbos), where the Aeolian Greek city-states were located. Aeolis incorporated the southern parts of Mysia, and is bounded by it to the north, Ionia to the south, and Lydia to the east.
+
+## Geography
+
+Aeolis was an ancient district on the western coast of Asia Minor. It extended along the Aegean Sea from the entrance of the Hellespont (now the Dardanelles) south to the Hermus River (now the Gediz River). It was named for the Aeolians, some of whom migrated there from Greece before 1000 BC. Aeolis was, however, an ethnological and linguistic enclave rather than a geographical unit. The district often was considered part of the larger northwest region of Mysia.
+
+## History
+
+According to Homer's *Odyssey*, Odysseus, after his stay with the Cyclopes, reached the floating island of Aeolia, where Aeolus son of Hippotas provided him with the west wind Zephyrus.
+
+### Iron Age II
+
+By the 8th century BC the Aeolians' twelve most important cities were independent. They formed a league of twelve cities (a Dodecapolis): Cyme (also called Phriconis), Larissa, Neonteichos, Temnos, Cilla, Notion, Aegiroessa, Pitane, Aegae, Myrina, Gryneion, and Smyrna.
+
+The most celebrated of the cities was Smyrna (modern İzmir, Turkey), but in 699 BC, Smyrna became part of an Ionian confederacy. This league or confederation, known as the *Ionian League*, also called the *Panionic League*, was formed at the end of the Meliac War in the mid-7th century BC.
+
+#### Lydian period
+
+Croesus, king of Lydia (reigned 560–546 BC), conquered the remaining cities.
+
+### Classical Age
+
+Later they were held successively by the Persians, Macedonians, Seleucids, and Pergamenes.
+
+#### Roman period
+
+Attalus III, the last king of Pergamum, bequeathed Aeolis to the Roman Republic in 133 BC. Shortly afterwards it became part of the Roman province of Asia. At the partition of the Roman Empire (395 AD), Aeolis was assigned to the East Roman (Byzantine) empire and remained largely under Byzantine rule until the early 15th century, when the Ottoman Turks occupied the area.
+
+## Notable people
+
+- Hesiod
+- Autolycus of Pitane
+- Andriscus
+- Elias Venezis

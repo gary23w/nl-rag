@@ -1,0 +1,17 @@
+# 2014-scottish-independence-referendum — nl-rag pack
+
+Pre-normalized AI markdown. tags: 2014 scottish independence referendum. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [Glorious Revolution in Scotland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/1689-scottish-general-election.md) — upstream: https://en.wikipedia.org/wiki/1689_Scottish_general_election
+- [1702 Scottish general election](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/1702-scottish-general-election.md) — upstream: https://en.wikipedia.org/wiki/1702_Scottish_general_election
+- [1880 United Kingdom general election in Scotland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/1880-united-kingdom-general-election-in-scotland.md) — upstream: https://en.wikipedia.org/wiki/1880_United_Kingdom_general_election_in_Scotland
+- [1885 United Kingdom general election in Scotland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/1885-united-kingdom-general-election-in-scotland.md) — upstream: https://en.wikipedia.org/wiki/1885_United_Kingdom_general_election_in_Scotland
+- [1886 United Kingdom general election in Scotland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/1886-united-kingdom-general-election-in-scotland.md) — upstream: https://en.wikipedia.org/wiki/1886_United_Kingdom_general_election_in_Scotland
+- [1892 United Kingdom general election in Scotland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/1892-united-kingdom-general-election-in-scotland.md) — upstream: https://en.wikipedia.org/wiki/1892_United_Kingdom_general_election_in_Scotland
+- [1895 United Kingdom general election in Scotland](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/1895-united-kingdom-general-election-in-scotland.md) — upstream: https://en.wikipedia.org/wiki/1895_United_Kingdom_general_election_in_Scotland
+- [2014 Scottish independence referendum (part 1/4)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/2014-scottish-independence-referendum-p01.md) — upstream: https://en.wikipedia.org/wiki/2014_Scottish_independence_referendum
+- [2014 Scottish independence referendum (part 2/4)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/2014-scottish-independence-referendum-p02.md) — upstream: https://en.wikipedia.org/wiki/2014_Scottish_independence_referendum
+- [2014 Scottish independence referendum (part 3/4)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/2014-scottish-independence-referendum-p03.md) — upstream: https://en.wikipedia.org/wiki/2014_Scottish_independence_referendum
+- [2014 Scottish independence referendum (part 4/4)](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/2014-scottish-independence-referendum-p04.md) — upstream: https://en.wikipedia.org/wiki/2014_Scottish_independence_referendum
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2014-scottish-independence-referendum/pack.facts) — distilled one-line facts (neuron CLI import)
