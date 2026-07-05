@@ -1,0 +1,14 @@
+---
+title: "Albanian Sign Language"
+source: https://en.wikipedia.org/wiki/Albanian_Sign_Language
+domain: albanian-sign-language
+license: CC-BY-SA-4.0
+tags: albanian sign language
+fetched: 2026-07-05
+---
+
+# Albanian Sign Language
+
+**Albanian Sign Language** (AlbSL, Albanian: *Gjuha e Shenjave Shqipe*) is one of the deaf sign languages of Europe. It is unrelated to other sign languages of the Balkans.
+
+It is relatively young, having developed primarily since the collapse of Communism in 1990. During the communist era, deaf people did not associate with each other on a regular basis. Their communication was primarily with hearing people, and so was strongly influenced by Albanian, with extensive use of fingerspelling and initialized signs, along with some gestures borrowed from hearing people. After the collapse of communism, deaf people began to congregate and a fully-fledged sign language developed. They invented new signs to replace the former use of fingerspelling, and also came into contact with International Sign and other European sign languages, resulting in numerous loan words. The language continues to change rapidly, with innovations tending to radiate from the capital, Tirana, to rural areas.

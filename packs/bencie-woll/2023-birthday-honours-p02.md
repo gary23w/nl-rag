@@ -1,0 +1,968 @@
+---
+title: "2023 Birthday Honours (part 2/4)"
+source: https://en.wikipedia.org/wiki/2023_Birthday_Honours
+domain: bencie-woll
+license: CC-BY-SA-4.0
+tags: bencie woll
+fetched: 2026-07-05
+part: 2/4
+---
+
+# 2023 Birthday Honours
+
+- Stuart Neil Crossan, Head Gardener, Government House, Jersey.
+- Terry Alan Humphries, Yeoman Warder, H.M. Tower of London.
+- Brian Francis Lees, Foreman, Balmoral Castle.
+- Stella June McLaren, lately Hat Maker to Her Majesty Queen Elizabeth II.
+- Stephen John Shand, lately Chauffeur, Royal Mews, Royal Household.
+- Anne Theresa Stevens, Daily Cleaner, Bagshot Park.
+- Estrellita Mateo Talbot, Dresser to Princess Alexandra, the Honourable Lady Ogilvy.
+- Carol Margaret Leslie Turpie, Warden, Palace of Holyroodhouse.
+- Peter Whyte, Warden, Palace of Holyroodhouse.
+
+### Most Excellent Order of the British Empire
+
+#### Dame Commander of the Order of the British Empire (DBE)
+
+**Civil**
+
+- Jacqueline Marie Baillie. Deputy Leader of the Scottish Labour Party. For Political and Public Service.
+- Professor Averil Olive Bradley (Averil Mansfield), CBE. For services to Surgery and to Equality in Medicine.
+- Professor Diane Coyle, CBE. Bennett Professor of Public Policy, University of Cambridge. For services to Economics.
+- Annette King. Chief Executive Officer, Publicis Groupe UK. For services to Advertising and to the Creative Industries.
+- Susan Carol Langley, OBE. Non-Executive Chair, Gallagher UK and lately Lead Non-Executive Director, Home Office. For Public Service and to the Financial Services Industry.
+- Kathryn Alexandra McDowell, CBE, DL. Managing Director, London Symphony Orchestra. For services to Music.
+- Professor Eleanor Jane Milner-Gulland. Tasso Leventis Chair in Biodiversity, Department of Biology, Oxford University. For services to International Conservation.
+- Elizabeth Mary Nicholl, CBE. President, World Netball. For services to Sport.
+- Dr. Neslyn Eugenie Watson-Druée, CBE. Voluntary Chair, Birmingham and Midlands Women Economic Forum. For services to Women and to Ethnic Minorities.
+- Professor Melanie Joanne Welham. Executive Chair, Biotechnology and Biological Sciences Research Council. For services to Bioscience.
+
+#### Commander of the Order of the British Empire (CBE)
+
+**Military**
+
+- Rear Admiral Timothy Christopher Woods
+- Commodore James Robert Dean, OBE
+- Brigadier Andrew Stuart Garner, OBE
+- Brigadier Anna Clare Luedicke, OBE
+- Brigadier Toby Lloyd Rowland
+- Colonel (now Acting Brigadier) Nicholas Thomas
+- Air Commodore Anthony John Beasent
+- Air Commodore Emily Jane Flynn, OBE
+- Group Captain Sara Bridget Mackmin
+
+**Civil**
+
+- Professor David Samuel Harvard Abulafia, FBA. Emeritus Professor of Mediterranean History, University of Cambridge. For services to Scholarship.
+- Professor Derek Alderson. Chair, Centre for Perioperative Care and lately President, Royal College of Surgeons of England. For services to Surgery.
+- Zahra Shiva Bahrololoumi. Chief Executive Officer, Salesforce UKI. For services to the Information Technology Sector.
+- John Charles Baron, MP. Member of Parliament for Basildon and Billericay. For Political and Public Service.
+- Professor Paliarkarakadu Assen Muhammed Basheer, FREng. Chair in Structural Engineering, University of Leeds. For services to Civil Engineering.
+- Brigadier Neil Alexander Crerar Baverstock, OBE. Yeoman Usher, House of Lords. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Donna Bell. Director, Social Care and National Care Service Development, Scottish Government. For Public Service.
+- David John Bellamy. Chief of Staff to the Mayor of London, Greater London Authority. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Ann Elizabeth Bentley. Global Board Member, Rider Levett Bucknall. For services to Construction.
+- Robert John Blackman, MP. Member of Parliament for Harrow East. For Political and Public Service.
+- Ivor Bolton. Conductor. For services to Music.
+- Roy Brannen. Interim Director General, Net Zero, Energy and Transport, Scottish Government. For services to Transport in Scotland on the Demise of Her Majesty Queen Elizabeth II.
+- Major General Nicholas John Caplin, CB. Chief Executive Officer, Blind Veterans UK. For services to Veterans and to the Vision Impaired.
+- Anthony John Valerian Cheetham. Publisher. For services to Literature.
+- Michael Hugh Cherry, OBE. Lately Chair, Federation of Small Businesses. For services to Business and to International Trade.
+- Kenneth Cranham. Actor. For services to Drama.
+- Peter Anthony Davies, OBE. Chair, Smart Energy Code Panel. For services to the Energy Industry and Net Zero Emissions.
+- Cynthia Verna Davis. Founder, Diversifying Group Ltd. For services to Equality, Diversity, and Inclusion.
+- Barrie Chisholm Deas, OBE. Lately Chief Executive, National Federation of Fishermen's Organisations. For services to the Fishing Industry.
+- Mark David Ducker, OBE. Lately Chief Executive Officer, STEP Academy Trust, Thornton Heath, London Borough of Croydon. For services to Education.
+- Professor Thomas John Evans. Professor of Molecular Microbiology, University of Glasgow. For services to Healthcare during Covid-19.
+- Clenton Anthony Farquharson, MBE. Associate and lately Chair, Think Local Act Personal. For services to Disability Personalisation, to Social Care and to Health Policy.
+- Professor Anne Carla Ferguson-Smith, FRS, FMedSci. Pro-vice-chancellor for Research and International Partnerships, and the Arthur Balfour Professor of Genetics, University of Cambridge. For services to Medical Research.
+- Dr. Peta Jane Dunckley Foxall. Lately Chair, The Wildlife Trusts. For services to Nature Conservation.
+- Professor Vincent Francis Fusco, FREng. Professor, High Frequency Electronic Engineering, School of Electronics, Electrical Engineering and Computer Science, Queen's University Belfast. For services to Science and to Engineering.
+- Rev. Canon Nigel Mark Genders. Chief Education Officer, Church of England. For services to Education.
+- Alan George Gibb. Head of Sea Fisheries, Marine Scotland. For services to Marine Resources in Scotland.
+- John Greig, MBE. For services to Association Football and to the community in Scotland.
+- Derek Grieve. Deputy Director, Head of Vaccinations Division, Scottish Government. For services to Public Health during Covid-19.
+- Andrew George Haldane, FRS. Chief Executive, Royal Society of Arts. For services to the Economy and to Public Policy.
+- William Benedict Hamilton-Dalrymple. Historian, Author and Art Curator. For services to Literature and to the Arts.
+- Christopher Hampson. Chief Executive Officer and Artistic Director, Scottish Ballet. For services to Dance.
+- Edward Harley, OBE. Chair, Acceptance in Lieu Panel. For services to Heritage, to Charity and to the community in Herefordshire.
+- Angela Yvette Hillery. Chief Executive, Northamptonshire Healthcare NHS Foundation Trust and Leicestershire Partnership NHS Trust. For services to the NHS.
+- Damian Andrew Hopkins. Founder, The Radius Group. For services to the Retail Industry.
+- Professor Medwin Hughes, DL. Vice-chancellor, University of Wales and University of Wales Trinity St David Group. For services to Education and to the Welsh Language.
+- Professor Debra Jean Humphris. Vice-chancellor, University of Brighton. For services to Education and to the NHS.
+- Sarah Alice Hunter, MBE. Captain, England Women's Rugby Union Team. For services to Rugby Union.
+- Jane Elizabeth Hutt, MS. Minister for Social Justice, Welsh Government and Senedd Member for Vale of Glamorgan. For Political and Public Service.
+- Dr. Susan Louise Ibbotson. Lately Regional Director of Public Health, Midlands and Regional Director, Office for Health Improvement and Disparities, Department of Health and Social Care. For services to Public Health.
+- Celia Diana Savile Imrie. Actress. For services to Drama.
+- John Brian Hansen Johnson. Lately Chief Executive Officer, Maritime and Coastguard Agency. For services to the Maritime Industry.
+- Professor Christopher John Hugh Jones. Deputy Chief Medical Officer, Welsh Government. For services to Healthcare.
+- Vincent Thomas Keaveny. Lately Lord Mayor of London. For services to Socio-Economic Advancement, to British-Irish relations and to the City of London.
+- Professor Peter James Kelly. Regional Director of Public Health, Office for Health Improvements and Disparities, Department of Health and Social Care. For services to Public Health.
+- Ian Peter Kenyon. Director, Finance and Programmes, Defence Nuclear Organisation, Ministry of Defence. For services to Public Finance and to Volunteering.
+- David Richard Kilburn. Founder, MKM Building Supplies. For services to the Construction Industry and to Charity.
+- Michael King, OBE. Local Government and Social Care Ombudsman. For services to Local Government.
+- Nicholas David Gordon Knight, OBE. Photographer. For services to Fashion and to Photography.
+- Barbara Anne Laithwaite. Managing Director, Laithwaites. For services to the Wine Industry.
+- Peter John Lawson. Chair, Scottish Opera. For services to the Arts in Scotland.
+- Simon David Lebus. Interim Chief Regulator, Ofqual. For services to Educational Assessment.
+- David John Lewis. Co-Founder and Co-Chair, Commission for Looted Art in Europe. For services to the Return of Looted Art.
+- Dr. Paul Gregory Kieran Little. Principal and Chief Executive, City of Glasgow College. For services to Education.
+- Tasmin Elizabeth Little, OBE. Violinist. For services to Music.
+- Laura Elizabeth Marks, OBE. Social Activist and Broadcaster. For services to Interfaith Relations, to Holocaust Education and Commemoration and to Women's Empowerment.
+- Therese Lynn Miller, OBE. Non-Executive Director, Galliford Try plc, Stelrad Group plc, Goldman Sachs International, Rothesay Life, and Goldman Sachs International Bank. For services to the Financial Sector.
+- Ceri Ann Morgan. Director, EU and International Trade, Department for Environment, Food and Rural Affairs. For services to Capability and Inclusion in International Trade.
+- Dr. Edward Patrick Morris. Lately President, Royal College of Obstetricians and Gynaecologists and Consultant Gynaecologist, Norfolk and Norwich University NHS Foundation Trust. For services to the Improvement of Women's Healthcare and to Patient Safety.
+- Paul Noble Wilson Morrison. Director, Ukraine Humanitarian Taskforce and Refugee Resettlement and Asylum Support, Department for Levelling Up, Housing and Communities. For services to Refugees.
+- Elizabeth Margaret Murray (Elma Murray), OBE. Deputy Chair, Developing the Young Workforce, Employers' Forum. For services to Young People in Scotland.
+- Professor Paul Michael Newman, FREng. BP Professor in Information Engineering, University of Oxford. For services to Technology and Engineering.
+- Professor Julia Alison Noble, OBE, FRS, FREng. Technikos Professor of Biomedical Engineering, University of Oxford. For services to Engineering and Biomedical Imaging.
+- Phillip Mark Hayes O'Dell. Lately Director of Flight Operations and Chief Test Pilot, Rolls-Royce. For services to UK Aviation.
+- Olivia Clare Pinkney, QPM. Chief Constable, Hampshire and Isle of Wight Constabulary. For services to Policing.
+- Judith Ragan, OBE. Trustee, The Queensmill Trust. For services to Children and Young People with Special Educational Needs.
+- Carolyn Ann Regan. Chief Executive, West London NHS Trust. For Public Service.
+- Dr. Sheila Baillie Mackenzie Reith. Lately Consultant Physician. For services to People with Diabetes.
+- Professor Eleanor Mary Riley, FRSE, FMedSci. Professor of Immunology and Infectious Disease, University of Edinburgh. For services to Immunology.
+- David James Ring. Independent Chair, National Shipbuilding Projects. For services to Shipbuilding.
+- Clifford Mark Robson. Group Managing Director, BAE Systems. For services to the Defence Industry.
+- Stephen Edward Rogers. Lately District Judge County and Family Court, Chair of Mental Health Tribunal and Recorder of the Crown Court. For services to the Administration of Justice.
+- Mary Patricia Ryan. Founder and Director, Cyber Girls First. For services to STEM Education for Girls and to the Provision of IT Equipment for Children in Hospital.
+- Eve Caroline Samson. Clerk of the Journals, House of Commons. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Charles Adam Laurie Sebag-Montefiore. Trustee, National Gallery. For services to the Arts and to Culture.
+- Professor Caroline Mary Series, FRS. Emeritus Professor of Mathematics, University of Warwick. For services to Mathematics.
+- Gary Paul John Shaughnessy. Chair, Z Zurich Foundation and Parkinson's UK. For services to Business and to Charity.
+- Peter Francis Sheridan, OBE, DL. Chief Executive, Co-Operation Ireland. For services to Peacebuilding.
+- Professor Giuliana Silvestri. Clinical Director, Ophthalmology, Belfast Health and Social Care Trust and Clinical Lead, NI Eyecare Network. For services to Ophthalmology and Eyecare in Northern Ireland.
+- James Roland Sinker. Chief Executive, Cambridge University Hospitals NHS Foundation Trust. For services to Healthcare.
+- Elizabeth Ann Sloan. Director, Annie Sloan Interiors Ltd. For services to Interior Design.
+- Professor Deborah Anne Swallow. Märit Rausing Director, Courtauld Institute of Art. For services to Art and to Education.
+- María Silvana Tenreyro. For services to the Economy.
+- Ann Elizabeth Underwood. Deputy Finance Director, Defence Equipment and Support, Ministry of Defence. For services to Defence.
+- Simon Robert Vincent, OBE. Executive Vice President, Hilton Group Europe, Middle East and Africa. For services to the Tourism Industry.
+- Anthony Watson. Chief Executive Officer and Founder, The Bank of London, and Advocate for LGBT Equality. For services to the LGBT Community, to Equality and to Diversity.
+- Anne Rachel Webber. Co-Founder and Co-Chair, Commission for Looted Art in Europe. For services to the Return of Looted Art.
+- Gordon George Welsh. Lately Head of Business Group, UK Export Finance. For services to Business.
+- Stephen Frank Welton. Founder and Chair, BGF. For services to Small Businesses and Entrepreneurship.
+- Mark Steven White, OBE, DL. Lately Chair, Education Training Collective. For services to Further Education.
+- Charles Alexander Wilson. Lately President, Grocery Aid. For services to Business and Philanthropy.
+- Duncan Henry Wilson, OBE. Chief Executive, Historic England. For services to Heritage.
+- Dr. Janet Young. Lately Government Head of Property Profession, Cabinet Office. For Public Service.
+
+#### Officer of the Order of the British Empire (OBE)
+
+**Military**
+
+- Commander Charles Michael Barrow, Royal Navy, C039605X.
+- Commander Ian Gerald Danbury, Royal Navy, C030050R.
+- Colonel Jonathan Wyn Dowd, Royal Marines, N028417W.
+- Captain Francis Durham Hirons, Royal Navy, C038755J.
+- Captain Stephen Andrew Large, Royal Navy, C036104F.
+- Lieutenant Colonel Michael John Scanlon, Royal Marines, N029361M.
+- Commander Fergus Steven Walker, Royal Navy, C042079H.
+- Colonel Richard David Hadley Ball, 551241.
+- Colonel Sharon Mary Beatty, AARC, 551953.
+- Lieutenant Colonel James Campbell, The Royal Regiment of Scotland, Army Reserve, 533586.
+- Colonel David Roland Cockwell, MBE, 531430.
+- Lieutenant Colonel Belinda Lorraine Forsyth, MBE, Adjutant General’s Corps (Royal Military Police), 536565.
+- Lieutenant Colonel (now Acting Colonel) Rebecca Sarah Jacques-Grey, Royal Corps of Signals, 554306.
+- Colonel (now Acting Brigadier) Tobias Lambert, 555493.
+- Lieutenant Colonel Philip Robert Nathan, The Duke of Lancaster’s Regiment, 544377.
+- Warrant Officer Class 1 Andrew John Stokes, MVO, Coldstream Guards, 24830026.
+- Colonel Tim John Symonds, 551380.
+- Colonel Andrew Derrick Watson, 553473.
+- Wing Commander Tracey Louise Affleck, Royal Air Force, 306472U.
+- Group Captain Leonie Boyd, Royal Air Force, 2659122P.
+- Group Captain James Matthew Calvert, Royal Air Force, 8700017V.
+- Wing Commander Victoria Ann Fulton, Royal Air Force, 2659486K.
+- Wing Commander Craig Robert Ledieu, MBE, Royal Air Force, T8600144.
+- Wing Commander Anthony John Lett, Royal Air Force, 8260973E.
+- Wing Commander Victoria Tuesday Williams, Royal Air Force, 8302849T.
+- Wing Commander Jonathan Robert Gibson Young, Royal Air Force, 8701571C.
+
+**Civil**
+
+- Katherine Ruth Abbott. Capability and Performance Management Lead, Department for Levelling Up, Housing and Communities. For services to Human Resources and Mental Health.
+- Khurshid Alam. Chair, Academy for Advanced Studies and Training UK International. For services to BAME Healthcare and the Professional Development of BAME Doctors.
+- Professor Dario Renato Alessi, FRS, FRSE. Professor of Signal Transduction, University of Dundee. For services to Biomedical Research and Translation.
+- Dr. Parvinder Kaur Aley. Director of Global Operations, Oxford Vaccine Group, University of Oxford. For services to Vaccination during Covid-19.
+- Leanne Almond. Lately Deputy Director, National Crime Agency. For services to Law Enforcement.
+- Luke Anthony. Senior Officer, National Crime Agency. For services to Law Enforcement.
+- Dr. Elaine Arnold. Founder, Separation and Reunion Forum. For services to Children of African Descent and to Charity.
+- Christopher Paul Ashworth. Head of Social Impact, Nominet. For services to Social Equality, Inclusion and to the Voluntary Sector.
+- Anthony Keith Atherton. For services to Disability Sport and to Inclusion.
+- James Keith Babbington. Vice Chair, National Association of Civic Officers. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Mark Jonathan Bailey. Executive Director, UK Centre for Ecology and Hydrology. For services to Microbial Ecology and Scientific Leadership.
+- Vincent James Bailey. Lately Leader, Conservative Group, Vale of Glamorgan Council. For Political, Voluntary and Charitable services.
+- Rhona Margaret Baillie. Chief Executive, The Prince and Princess of Wales Hospice, Glasgow. For services to Palliative Care and to the Hospice Movement.
+- Antony Ellis Baines. Executive Director for Services, The Royal British Legion. For services to the Armed Forces Community.
+- John Nigel Barnes. Chief Executive Officer, Historic Royal Palaces. For services to Heritage.
+- Nicholas Guy Baveystock, DL. Director General and Secretary, Institution of Civil Engineers. For services to Engineering.
+- Dr. Timothy David Bestwick. Chair, Harwell Science and Innovation Campus. For services to the Commercialisation of Science, Technology and Innovation.
+- Ceinwen Blake. Deputy Director, Corporate Information Technology and Services, Office for National Statistics. For Public Service.
+- Patricia Margaret Brennan-Barrett. Chief Executive Officer and Principal, Northampton College, Northamptonshire. For services to Further Education.
+- James William John Brereton. Lately Deputy Director, Transport Security Operations Centre, Department for Transport. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Elizabeth Jane Brewin. Lately Chief Executive, Tommy's. For services to Women's Health.
+- Pippa Britton. Lately Vice-Chair, UK Anti-Doping and Vice-Chair Sport Wales. For services to Sport.
+- Clare Parry Brunton, MBE. Deputy Director, Major Events Directorate, Cabinet Office. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Chantal Louise Bryan. Founding Trustee and Campaigner, Teach Us Too. For services to Children and Young People with Special Educational Needs.
+- Gareth Richard Bullock. For services to the Welsh Financial Economy.
+- David Colleton Buxton. Chief Executive Officer, Action on Disability and lately Chair, British Deaf Association. For services to the Deaf and British Sign Language Communities.
+- Alison Byrne. Interim Director for Equality, Inclusion and Human Rights, Scottish Government. For services to the Ukraine Crisis.
+- Kevin Byrne. Founder, Checkatrade.com. For services to Industry and to Consumer Protection.
+- Dr. Audrey Cameron. Chair, British Sign Language Plan Working Group, University of Edinburgh. For services to Chemical Sciences and to Inclusion in Science Communications.
+- John Raymond Camp. Chief Executive Officer, The Compass Partnership of Schools, Royal Borough of Greenwich and Essex. For services to Education.
+- Michele Louise Campbell-Louden. Assistant Director, Immigration Prison Team, Home Office. For services to Immigration and to National Security.
+- Dr. Gail Lindsay Carson. Director of Network Development, International Severe Acute Respiratory and Emerging Infections Consortium. For services to Global Health.
+- Anuj Jayantilal Chande. Partner, Grant Thornton. For services to International Trade and Investment.
+- Professor Ian Charles. Director, Quadram Institute and Professor, Norwich Medical School, University of East Anglia. For services to Science and Clinical Research.
+- Professor Carolyn Anne Chew-Graham. Professor of General Practice Research, Keele University and Lately Chair, Society of Academic Primary Care. For services to General Practice and Patient Care, and to Primary Care Research, particularly into Long Covid.
+- Andrew James Churchill, FREng. Executive Chairman, JJ Churchill Ltd. For services to Engineering.
+- Trevor Clare. Team Leader, Ministry of Defence. For services to Defence.
+- Michael Kenneth Claridge. Operations and Customer Interface Team Leader, Defence Equipment and Support, Ministry of Defence. For services to Defence.
+- David Philip Clarke. Chief Executive Officer, British Paralympic Association. For services to Paralympic Sport.
+- Linda Jayne Cobb. Principle Manager, Decent and Safe Homes Services (DASH), Derby City Council. For services to Housing.
+- Damian Collins, MP. Member of Parliament for Folkestone and Hythe. For Political and Public Service.
+- Anthony Cook. Senior Officer, National Crime Agency. For services to Law Enforcement.
+- Philip Michael Cook. Lately Chief Executive and Group Principal of Education Training Collective, Stockton-on-Tees, County Durham. For services to Further Education.
+- Professor Aravinthan Coomarasamy. Professor of Gynaecology and Reproductive Medicine, University of Birmingham. For services to Maternal Health.
+- Richard Devereux Burcombe Cooper. Lately Chair of Trustees, Rambert School of Ballet and Contemporary Dance. For services to Dance.
+- Jonathan Simon Cox. Deputy Director, Citizens UK. For services to Community Organising and Refugee Resettlement.
+- Susan Christine Cox. Founder and Director of SMART-UK. For services to Addicts in Prison.
+- Lisa Anne Crausby. Executive Director, Star Academies, Blackburn, Lancashire. For services to Education.
+- Lucy Mary Elizabeth Crowe. Soprano. For services to Music.
+- Jo-Ann D'Costa-Manuel. Autism Ambassador and Parent Advocate. For services to Children and Young People with Autism.
+- Simon Daglish. Co-Founder, Walking With The Wounded and Fundraiser, Tommy's. For Charitable Services.
+- Dr. Kevin John Daly. Co-Head of Central and Eastern Europe, Middle East and Africa Economics, Goldman Sachs' Global Macro Research. For services to Economics.
+- Professor Prokar Dasgupta. Foundation Professor of Surgery, King's Health Partners and Chair in Robotic Surgery and Urological Innovation, King's College London. For services to Surgery and Science.
+- Janet Davies. For services to Healthcare in Wales.
+- Roy Allan Steven Devon. Head of Events and Exhibitions, Scottish Parliament. For services in Scotland on the Demise of Her Majesty Queen Elizabeth II.
+- Frances Anne Dickens. Founder and Chair, Astus Group. For services to Media Trading.
+- Keith Michael Donnelly. Fire and Rescue Service Adviser UK. For services to Fire and Rescue.
+- Jonathan Michael Dutton. Chief Executive Officer, Rugby League World Cup. For services to Rugby.
+- Michael John Edgar. Director, Mike Edgar Production Ltd. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Bianca Jutta Effemey. Co-Founder and Chief Executive Officer, Momentum Children's Charity. For services to Young People with Life Challenging Conditions.
+- Oluwafemi Elufowoju, Jr. Director and Actor. For services to Drama.
+- Tina Louise Emery. Co-Chair, National Network of Parent Carer Forums. For services to Children and Young People with Special Educational Needs and Disabilities.
+- Lawrence James English. Lately Senior District Crown Prosecutor, West Midlands. For services to Law and Order.
+- Anthony John Plowden Eyton. Artist. For services to Painting and to the Art Community.
+- Peter Alan Farr. Head of Civil Law Policy, Ministry of Justice. For services to Civil Justice.
+- Mark Alexander Fawcett. Chief Executive Officer, Nest Invest. For services to Pension Saving.
+- Robert Francis Fellows. Lately Head of Education, College of Paramedics. For services to Paramedic Education.
+- Yvonne Anita Field. Founder and Chief Executive Officer, The Ubele Initiative. For services to the Voluntary, Community and Social Enterprise Sector and to Social Justice.
+- Xenia Mary Fletcher (Xenia Carr-Griffiths). For services to the Public Sector and to the British Retail Industry.
+- Simon McLean Flowers. Executive Principal, Carr Manor Community School, Leeds, and Chief Executive Officer, Leeds Learning Alliance. For services to Education.
+- Dr. Susan Rosemary Foister. Director of Public Programmes and Partnerships, The National Gallery. For services to Art.
+- Laura Frances Fretwell. Head of Ceremonial Team, Northern Ireland Office. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Neil Frow. Managing Director, NHS Wales Shared Services Partnership. For services to NHS Wales.
+- Zoe Jane Fry. Director, The Outstanding Society. For services to Social Care and Nursing.
+- William Fullen. Lately Chief Executive, Believe Housing. For services to Housing.
+- Martino Gamper. Product Designer. For services to Design.
+- Dr. Edmund Ross Garratt. Chief Executive, NHS Suffolk and North East Essex. For services to the Integrated Care System.
+- Hugh Dunlop Gillies. For services to Transport in Scotland on the Demise of Her Majesty Queen Elizabeth II.
+- Victoria Gradden. Head, Royal Navy's Domestic Engagement. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Brigadier John Thomas Graham, DL. For services to the Military and to the community in Northern Ireland.
+- Lydia Greenway. Founder, Cricket for Girls and lately Cricket Player. For services to Cricket.
+- Suzanne Lisa Griffin. Deputy Director, DWP Digital, Department for Work and Pensions. For Public Service.
+- David Roger Griffiths. For services to Association Football in Wales.
+- Freya Rose Grimwood. Lately Principal Private Secretary to the Law Officers, Attorney General's Office. For Public Service.
+- Dr. Claire Marie Guest. Co-Founder, Chief Executive and Chief Scientific Officer, Medical Detection Dogs. For services to Medical Knowledge, Public Health and Wellbeing.
+- Camilla Anne, Countess of Halifax. Lately President, Macmillan Cancer Support. For voluntary services to People Affected by Cancer.
+- Beverley Ann Halligan. Principal Social Worker, Children and Families, London Borough of Newham. For services to Social Care.
+- Thomas Edward Halliwell. Captain, England Wheelchair Rugby League. For services to Wheelchair Rugby League.
+- Julie Harmsworth. Lately Deputy Chief Executive, Unlock, National Association of Ex-Offenders. For services to Ex-Offenders.
+- Professor Jennifer Margaret Hartley. Co-Founder, Prison Reading Groups. For services to Prisoners.
+- Paul Ragle Harvey. Fundraiser. For services to Charity and to People Living with Alzheimer's and Dementia.
+- Tina Harvey. Executive Headteacher, Perseid School, London Borough of Merton. For services to Special Education.
+- Elizabeth Noël Harwerth. Chair, UK Export Finance. For services to International Trade.
+- Jeffrey Christopher Hayes. Trustee, St John's Foundation, Trustee, West Ham United Foundation and lately Trustee and Chair, Trust for London. For services to Charity and to the Voluntary Sector.
+- Paula Maria Hay-Plumb. Independent Non-Executive Board Member, The Crown Estate. For services to the Public Sector.
+- Varinder Hayre. District Crown Prosecutor, Crown Prosecution Service, London. For services to Law and Order.
+- Steven Hemsley. Senior Officer, National Crime Agency. For services to Law Enforcement.
+- Colin James Herring. Head of Employee Policy Team, Department for Work and Pensions. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Alfie Thomas Hewett. Wheelchair Tennis Player. For services to Tennis.
+- Charlotte Heyes. Chief Negotiator and Deputy Director, Trade Negotiations Group, Department for Business and Trade. For services to International Trade.
+- Rebecca Joanne Hickey. Assistant Director, Harris Federation and Principal, Harris Academy Beckenham, London Borough of Bromley. For services to Education.
+- Professor Jane Katharine Hill, Hon. FRES. Professor of Ecology, University of York. For services to Conservation Ecology.
+- Georgina Gay Hood. Founder and Principal, Paint Pots Montessori Schools Ltd. For services to Early Years Education and to the community in London.
+- Clare Howard. Chief Executive Officer, Natspec. For services to Children and Young People with Special Educational Needs and Disabilities.
+- Professor Louise Michele Howard. Professor Emerita of Women's Mental Health, King's College London. For services to Women's Mental Health.
+- Stephen Glyn Hughes. Chief Executive Officer, Education Impact Academy Trust, Birmingham, West Midlands. For services to Children and Young People with Special Educational Needs and Disabilities.
+- Juliet Hughes-Hallett. Founder and Honorary President, Smart Works Charity. For services to Unemployed Women.
+- Michael Hulls. Lighting Designer. For services to Dance and to the Arts.
+- Dr. Garry Edward Hunt. Professor and Research Scientist. For services to Space Science and Business.
+- Jacqueline Leigh Hunt. Member, Culture Recovery Board and Trustee, British Film Institute. For services to the Arts.
+- Ishtiaq Hussain. Assistant Director, Department for Levelling Up, Housing and Communities. For Public Service.
+- Janine Mireille Irons, MBE. Co-Founder and Chief Executive, Tomorrow's Warriors. For services to the Music Industry.
+- Thomas Neill Jackson. Head of Executive Services, The Executive Office, Northern Ireland Executive. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Lisa Juliet James. Community Outreach, Ukraine Humanitarian Taskforce, Department for Levelling Up, Housing and Communities. For services to the Ukrainian Community.
+- Christopher John Jenkins. Lately Chief Executive Officer, Commonwealth Games Wales. For services to the Commonwealth Games and to Sport in Wales.
+- Alexandra Claire Johnson. Co-Founder, Duchenne UK, Co-Founder, Joining Jack and lately Board Member, World Duchenne Organisation. For services to Charity and to People with Duchenne Muscular Dystrophy.
+- Shirley Jones. Inspector, Department of Education Northern Ireland. For services to Education, Training and Safeguarding Young People and Adults at Risk.
+- Neil Arthur Kermode. Managing Director, European Marine Energy Centre. For services to Renewable Energy and to the community in Orkney.
+- Derek Irwin Keys. Founder, Euro Auctions. For services to the Economy.
+- Dr. Kavitha Kishen. Deputy Director, Security, Resilience and Strategy, Government Office for Science. For services to National Resilience and Diversity in Government Science and Engineering.
+- Dr. Sarah Elizabeth Knight. Behavioural Scientist, Defence Science and Technology Laboratory, Ministry of Defence. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Anju Kumar. Consultant Obstetrician and Gynaecologist. For services to Women's Health and Welfare in Wales.
+- Amar Latif. Founder and Chief Executive Officer, Traveleyes. For services to the Visually Impaired and to Entrepreneurship.
+- Dr. Zoë Elena Leach. Lately Chief Executive Officer, National Pig Association. For services to the Pig Industry.
+- Andrew Fraser Ledgerton-Lynch. Editor, Fire Magazine. For services to The Fire Fighters Charity and Fire Safety.
+- Roy Andrew Ledgister. For services to Social Mobility.
+- Janet Carole Lewis, MBE. Founder and Director, English Youth Ballet. For services to Dance.
+- Dr. Peter Hammond Liddle. Founder, Liddle Collection, The University of Leeds, Patron, Halifax Great War Heritage Society and Life President, The Second World War Experience Centre. For services to Heritage and to Public Understanding of the World Wars.
+- Debra Mary Livingstone, MVO. Head of Protocol and Honours, Scottish Government. For services in Scotland on the Demise of Her Majesty Queen Elizabeth II.
+- Martin Lawrence Loat. Lately Chair, Equal Civil Partnerships Campaign. For services to Civil Partnerships.
+- Hew Donald Joseph Locke. Artist. For services to Art.
+- Matthew John Lodge. Director, Rail Infrastructure, Department for Transport. For services to the Rail Industry.
+- Robert William Henderson Macgeachy. Chair, PEAK Scientific. For services to Manufacturing and Philanthropy.
+- Dr. Miles Bradley Mack. Lately Chair, Academy of Medical Royal Colleges and Faculties in Scotland. For services to General Practice.
+- Joan Ishbel Mackay. Head of Curriculum Innovation at Education Scotland. For services to Education in Scotland.
+- Russell Scott Maliphant. Choreographer. For services to Dance.
+- Professor Helen Jane Marshall. Vice-chancellor and Chief Executive Officer, University of Salford, Greater Manchester. For services to Higher Education.
+- Roisin Theresa Marshall. Chief Executive Officer, Northern Ireland Council for Integrated Education. For services to Education and Community Reconciliation in Northern Ireland.
+- Dr. Giles Francis Maskell. Consultant Clinical Radiologist, Royal Cornwall Hospitals NHS Trust. For services to Diagnostic Radiology.
+- Georgina Alison May Masters. Assistant Director, HISP Multi-Academy Trust, Eastleigh, Hampshire. For services to Education.
+- Chloe Kate Sevgi Kilcoyne Mawson. Clerk Assistant, House of Lords. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Anthony James May, DL. Lately Chief Executive, Nottinghamshire County Council. For services to Local Government.
+- Elizabeth Anne McCleary. Lately Director, Social Security Policy and Legislation, Department for Communities, Northern Ireland Executive. For services to Social Security Policy and Legislation in Northern Ireland.
+- Fiona Teresa McDonald. Principal, Drumnamoe Nursery School, Lurgan, County Armagh. For services to Education and voluntary and charitable service in Northern Ireland and Abroad.
+- Fiona Mary McKenzie. Founder, Centrestage, Kilmarnock. For services to the community in East Ayrshire.
+- Jennifer Gail McKibbin. Lately Director of EU Exit Operational Readiness, The Executive Office, Northern Ireland Executive. For services to EU Exit and Covid-19 Contingency Planning.
+- Gavin Marcus McKinnon. Chief Officer, Kent Special Constabulary. For services to Policing.
+- Professor Donald Campbell McMillan. Professor of Surgical Science, University of Glasgow. For services to Cancer Research.
+- Claire Louise Merron. Deputy Head, Safety, Security and Business Resilience, Ministry of Defence. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Alan Keith Meyrick. Deputy Director, Teaching Regulation Agency. For services to Education.
+- John Joseph Millward. Head, Inspections and Enforcement Division, Veterinary Medicines Directorate. For services to Animal Health and Welfare.
+- Professor Nicola Jane Milner, FBA. Professor of Archaeology, University of York. For services to Archaeology.
+- Alyson Mitchell. Lately Head of Ethical Digital National Team, Scottish Government. For services to Digital Inclusion.
+- William Montgomery. Board Member, Agri-Food and Biosciences Institute and Belfast Metropolitan College. For services to the Northern Ireland Economy.
+- Timothy Michael Morfin. Chief Executive Officer, Transforming Lives for Good. For services to Disadvantaged Children and Young People.
+- Geoffrey Owen Morris. Director, Eden Campus, University of St. Andrews. For services to Charity and to the Environment.
+- Colin Michael Morrow. Director, Procurement Operations, Crown Commercial Service, Cabinet Office. For Public Service.
+- Paul Richard Mott. Head of Joint Extremism Unit, Home Office and HM Prison and Probation Service. For services to National Security.
+- Sheila Murphy, MBE. Liverpool Officer, Labour Party. For Political and Voluntary Services.
+- Barry Neilson. Chief Executive, Construction Industry Training Board Northern Ireland. For services to Economic Development.
+- Professor John Norman Newton. Director of Public Health Analysis, Office for Health Improvement and Disparities, Department of Health and Social Care. For services to Public Health.
+- Julia Elizabeth Nolan. Lately Deputy Director, International Climate Strategy, Department for Business, Energy and Industrial Strategy. For services to International Climate Diplomacy.
+- Professor Joanne Victoria Elizabeth Norton (Jo Smith). Professor of Early Intervention and Psychosis, University of Worcester. For services to Higher Education and to Student Suicide Prevention and Response.
+- Sean Joseph O'Callaghan. Police Leader, British Transport Police. For services to Policing and the State Funeral of Her Majesty Queen Elizabeth II.
+- Jacqueline O'Donovan. Managing Director, O'Donovan Waste Disposal. For services to Recycling, to Safety and to Industry.
+- Christopher Oglesby. Chief Executive Officer, Bruntwood. For services to Charity and to Regeneration in the North West of England.
+- Peter Daniel Oliver. Trustee and Chair, Strategy and Delivery, UK Scouts. For services to Young People.
+- Roland Alan Owers. Chief Executive, World Horse Welfare. For charitable services to Equine Welfare in the UK and Abroad.
+- Christian William Papaleontiou. Head of Tackling Child Sexual Abuse Unit, Home Office. For services to Tackling Child Sexual Abuse and Exploitation.
+- Dr. Navaratnam Partheeban. Co-Founder, British Veterinary Ethnicity and Diversity Society. For services to Inclusion.
+- Richard Jeremy Paxman. Chief Executive Officer, Paxman Coolers Limited. For services to International Trade.
+- Dr. Simon Robert Pender. Deputy Director, Cabinet Office. For services to National Security.
+- Dr. Mark Antony Pilgrim. Lately Chief Executive, North of England Zoological Society (Chester Zoo). For services to Zoos and to Wildlife Conservation.
+- Dr. Susan Pope. Forensic Scientist, Principal Forensic Services. For services to Forensic Science and to the Criminal Justice System.
+- Gareth William Powell. Lately Chief Customer and Strategy Officer, Transport for London. For services to Transport and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Sunand Prasad, MBE. Chair, UK Green Building Council. For services to Regeneration.
+- Patricia Pritchard. Chair, Fenland and East Cambridgeshire Opportunity Area. For services to Education and to Social Mobility in Fenland and East Cambridgeshire.
+- Stuart Graham Proffitt. Editor and Publisher, Penguin. For services to Literature.
+- Graham Quinn. Chief Executive Officer, New Bridge Multi Academy Trust, Oldham, Greater Manchester. For services to Children and Young People with Special Educational Needs and Disabilities.
+- Dr. Amarjit Raju. Chief Executive, Disability Direct. For services to People with Disabilities, to Carers and to Mental Health.
+- Charles Mottram Ramsden. Deputy Director, Government Equalities Office. For Public Service.
+- Dr. Norma Victoria Raynes. Director, From Generation 2 Generation and Chair, Caldecott Festival Group. For services to Tackling Loneliness in Older People and to the community in Shropshire.
+- Neil Andrew Redit. Senior Principal Engineer, Defence Science and Technology Laboratory, Ministry of Defence. For services to Defence.
+- Gordon James Reid, MBE. Wheelchair Tennis Player. For services to Tennis.
+- Emily Elisheva Renee Reuben. Co-Founder and Chief Executive, Duchenne UK. For services to Charity and to People with Duchenne Muscular Dystrophy.
+- Professor Stuart Ian Rogers. Lately Marine Scientist, Cefas. For services to Marine Fisheries and Environmental Science.
+- Michael Peter Rose. Joint Managing Director, Magic Light Pictures. For services to Animation.
+- Dr. Edward Rowland. Lately Medical Director, St Bartholomew's Hospital, Barts Health NHS Trust. For services to Cardiology.
+- Judith Rosemary Salinson. Lately President, Women in Advertising Communications London. For services to Advertising.
+- Robert David Sanders. Director of Digital Customer Services, Houses of Parliament. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Jonathon Hugh Christopher Saxton (Joe Saxton). Founder, nfpSynergy, Founder, CharityComms and Chair, PTA UK/Parentkind. For services to the Charitable Sector.
+- Douglas William Scarfe. Chief Executive Officer, Bournemouth Symphony Orchestra. For services to the Arts.
+- Duncan Clinton Sharkey. Lately Chief Executive. Royal Borough of Windsor and Maidenhead. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Anne Catherine Shaw. Executive Director, Transport for West Midlands. For services to the Commonwealth Games 2022.
+- Mark Thomas Sheridan. Deputy Director, HM Revenue and Customs Fraud Investigation Service. For services to Combatting Fiscal Fraud and to Staff Mentoring.
+- Ryan Daniel Sinclair. Assistant Head, Department for Business and Trade. For services to Defence and Security Exports to Ukraine.
+- Michelle Prudencear Skeer, QPM. Chief Constable, Cumbria Police. For services to Policing.
+- David William Smith. Founder, Women in Games and Founder, BAME in Games. For services to the Video Game Industry and to Diversity.
+- Howard Geoffrey Smith. Director of the Elizabeth Line, Transport for London. For services to Rail Transport in London.
+- Dr. Jenifer Ann Evelyn Smith. Lately Deputy Medical Director, Public Health England. For services to Sport during Covid-19.
+- Nicola Jayne Smith. Governor, HM Prison Risley. For services to HM Prison and Probation Service.
+- Susan Catherine Soroczan. Group Director, Department for Work and Pensions. For Public Service.
+- Ingrid Marika Sarah Southworth. Lately Director, International Affairs, Cabinet Office. For Public Service, particularly for services to British Foreign Policy.
+- Nicky Spence. Operatic Tenor. For services to Music.
+- Philip Spence. Chief Operating Officer, The British Library. For services to Libraries.
+- Jennifer Naomi Spencer-Plews. Chief Executive Officer, Northern Star Academies Trust, Yorkshire. For services to Education.
+- Professor Stephen George Spiro. Vice-President and lately Chair, Rennie Grove Hospice Care. For services to Hospice Care.
+- Stuart James Sterling. Deputy Director, Major Events Directorate, Cabinet Office. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Philippa Ruth Stobbs. Lately Assistant Director, Council for Disabled Children. For services to Disabled Children.
+- Andrew John Stokes. Director, Visit England. For services to Tourism.
+- Sarah Louise Strangleman. Liaison Officer, Defence Science and Technology Laboratory, Ministry of Defence. For Public Service.
+- Michael Straughan. For services to the British Automotive Industry.
+- Dr. Rex Strong. Head of Regulatory Integration, Sellafield Ltd. For services to the Civil Nuclear Industry.
+- Thomas Richard Stephen Peregrine Stuart-Smith. Garden and Landscape Designer. For services to Landscape Design.
+- Reverend Dr. Richard John Sudworth. Secretary, Inter Religious Affairs and National Inter Religious Affairs Adviser, Church of England. For services to Interfaith and Cohesion.
+- Jane Susan Sweeney. Head of Programme Management, Delivery and Challenge, HM Treasury. For Public Service.
+- Kevin Brendan Taylor. Chair, Industrial Development Advisory Board. For services to Business and to the Economy.
+- Sharon Jane Tennant. Lately Principal, Sandelford Special School, Coleraine. For services to Education in Northern Ireland.
+- Professor Rama Thirunamachandran, DL. Vice-chancellor, Canterbury Christ Church University, Canterbury, Kent. For services to Higher Education.
+- Dr. Carol Lee Tozer. Lately Director, Adult Social Services, Isle of Wight Council and Trustee, Association of Directors of Adult Social Services. For services to Social Care.
+- Anne Margaret Turner. Director of Children's Safeguarding and Social Work, London Borough of Camden. For services to Children's Social Work.
+- Sarah Catherine Turvey. Co-Founder, Prisons Reading Groups. For services to Prisoners.
+- Christian Cyril van Der Nest. Resilience and Partnership Lead, Transport for London. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Linda Ventress. Lately Cluster Manager North East and Regional Estates and Strategy Manager, HM Courts and Tribunals Service. For services to the Administration of Justice.
+- John Stanley Vice. Lately Editor of Debates, House of Lords. For services to Parliament.
+- Dr. Martin Austin Walsh. Deputy Director of Life Sciences, Diamond Light Source. For services to Science during Covid-19.
+- Mohammad Amjid Wazir. Member and Deputy Leader, Stoke-on-Trent City Council. For Political Service and to the community in Stoke-on-Trent.
+- Caron Melina Wheeler. Singer, Songwriter, Record Producer and Musician. For services to Music.
+- Heather Kay Wheeler, MP. Member of Parliament for South Derbyshire. For Political and Public Service.
+- Professor Timothy John Whitley. Managing Director, Applied Research, BT. For services to Communications Technologies and Scientific Policy.
+- Reverend Dr. George James Whyte. Lately Principal Clerk, General Assembly of the Church of Scotland. For services to Faith Communities.
+- Professor Graham Richard Williams. President, European Thyroid Association. For services to Endocrinology.
+- Simon Richard Williams. Director, National Care and Health Improvement Programme. For services to Care.
+- Denis Edmond Woulfe, MBE. Co-Chair, Leaders as Change Agent Board. For services to Business and to Equality.
+- Ian Edward Wright, MBE. Broadcaster and Author. For services to Association Football and Charity.
+- Mohammed Younis. Owner, Star Day Nurseries, Peterborough, Cambridgeshire. For services to Early Years Education and to the community in Peterborough.
+
+#### Member of the Order of the British Empire (MBE)
+
+**Military**
+
+- Lieutenant Zachariah Thomas Sidney Blow, Royal Navy, 30073650.
+- Warrant Officer Class 1 Andrew Charles Cornish, Royal Marines, P037162T.
+- Petty Officer (Diver) Andrew Robert Coulson, Royal Navy, D227346K.
+- Warrant Officer Class 1 (Mine Warfare) John Cowan, Royal Navy, D240448Q.
+- Sub Lieutenant Adaiah Jekamiah Pelailiah Providence Culzac, Royal Naval Reserve, 30282217.
+- Warrant Officer Class 2 Engineering Technician (Marine Engineering) Jamie Paul Dougal, Royal Navy, D239732L.
+- Sergeant James Dunlop, Royal Marines, P066009C.
+- Chief Petty Officer (Royal Navy Welfare) Victoria Glassey, Royal Navy, W148727N.
+- Lieutenant Commander Amy Glover, Royal Navy, 30008841.
+- Lieutenant Commander Anthony James Rodney Lofts, Royal Navy, 30017213.
+- Petty Officer Engineering Technician (Weapon Engineering Submarines) Barry John Turner MacDonald, Royal Navy, D252123D.
+- Captain Richard Ian Watson, Royal Marines, N029185A.
+- Major Christopher Alan Webber, Royal Marines, 30064654.
+- Captain Steven John Adamson, Royal Corps of Signals, 25106171.
+- Lieutenant Colonel (now Acting Colonel) Stuart Richard Allen, Adjutant General’s Corps (Educational and Training Service Branch), 555343.
+- Major Daniel Robert Austin, Royal Army Medical Corps, 25041196.
+- Sergeant Liam James Bamford, Royal Corps of Signals, 30144379.
+- Warrant Officer Class 1 Robbie George Beech, Queen Alexandra’s Royal Army Nursing Corps, 25105667.
+- Lieutenant Colonel James Leonard Brown, The Royal Logistic Corps, 549475.
+- Lieutenant Colonel Rosanne Kathleen Buckley, Intelligence Corps, 552156.
+- Major (now Acting Lieutenant Colonel) Christopher Paul Carter, The Duke of Lancaster’s Regiment, 555097.
+- Major Peter James Cornish, The Royal Logistic Corps, 565695.
+- Sergeant Thomas Couper, The Royal Regiment of Scotland, 30107952.
+- Colonel Peter Michael John Cowell, The Yorkshire Regiment, 545525.
+- Major Hamish Lawson Davison, Royal Tank Regiment, 25232059.
+- Lance Corporal Natasha Maria Linda Day, Royal Army Medical Corps, 30208522.
+- Major Steven George Day, The Yorkshire Regiment, 25185379.
+- Warrant Officer Class 1 Deborah Anne Fairclough, Adjutant General’s Corps (Staff and Personnel Support Branch), W0807155.
+- Lieutenant Colonel Wendy Faux, V.R., Royal Regiment of Artillery, Army Reserve, 538806.
+- Major Paul John Ganuszko, Royal Regiment of Artillery, 556359.
+- Lieutenant Colonel Benjamin Gareth Russel Hall, Royal Army Medical Corps, 30047573.
+- Captain Melissa Jane Henley, Adjutant General’s Corps (Royal Military Police), W1034319.
+- Major Craig Hutton, Scots Guards, 24797517.
+- Captain Helen Jasper, V.R., Royal Regiment of Artillery, Army Reserve, 555195.
+- Lieutenant Colonel (now Acting Colonel) Iain Lamont, Corps of Royal Engineers, 553017.
+- Lieutenant Colonel Danny Scott Alan Leslie, Corps of Royal Electrical and Mechanical Engineers, 558180.
+- Captain (now Acting Major) George Wayne Long, The Mercian Regiment, 25039762.
+- Lieutenant (now Acting Captain) Bartholomew Philip Lucas, Army Cadet Force, 528432.
+- Major Robert Marshall, The Royal Logistic Corps, 24688268.
+- Major Iain Veitch McDavid, Corps of Royal Electrical and Mechanical Engineers, 24815221.
+- Captain (now Acting Major) Matthew Speirs McNairn, The Royal Logistic Corps, Army Reserve, 553968.
+- Major Robert Edward Morford, The Royal Gurkha Rifles, 25229107.
+- Major Harry Anthony Noble, Intelligence Corps, 25214760.
+- Major William James Devine Patrick, The Royal Gurkha Rifles, 30105693.
+- Warrant Officer Class 2 Deborah Christine Penny, The Royal Logistic Corps, Army Reserve, 30118277.
+- Warrant Officer Class 2 James Stephen Christopher Rochester, Corps of Royal Engineers, 25135103.
+- Corporal William James Ross, The Royal Logistic Corps, 30154278.
+- Warrant Officer Class 1 Abbas Salihu, The Royal Logistic Corps, 25164948.
+- Major Keith William Scott, Adjutant General’s Corps (Royal Military Police), 548005.
+- Major Helen Mary Morrell Stamp, Corps of Royal Engineers, 565371.
+- Warrant Officer Class 2 Johannes Jakobus Du Toit, The Royal Logistic Corps, 25168501.
+- Major Anthony Russell Viny, The Yorkshire Regiment, 556825. Major Edward Charles Watts, The Yorkshire Regiment, 30143965.
+- Major (now Acting Lieutenant Colonel) Joseph Francis Caven Wood, Corps of Royal Engineers, 563713.
+- Sergeant (now Acting Flight Sergeant) Robyn Caroline Muscroft-Bloomfield, Royal Air Force, 30004078.
+- Sergeant Matthew James Breese, Royal Air Force, R8506760.
+- Squadron Leader David Gary Cooper, Royal Air Force, 8028812B.
+- Warrant Officer Andrea Jane Culley, Royal Air Force, R8241331.
+- Chief Technician Martin Richard Darbon, Royal Air Force, S8446978.
+- Squadron Leader Elizabeth Margaret Dawson, Royal Air Force, 8307855Q.
+- Squadron Leader Brendan Christopher Dunne, Royal Air Force, 30003837.
+- Squadron Leader Robyn Elizabeth Hackwell, Royal Air Force, F8704197.
+- Wing Commander Lorna Jayne Hoban, Royal Air Force, 306439V.
+- Air Specialist 1 (now Acting Corporal) Prem Dorje Lama, Royal Air Force, 30246584.
+- Squadron Leader William Anthony Leather, Royal Air Force, D211099C.
+- Sergeant Paul David Mitchell, Royal Air Force, H8436973.
+- Squadron Leader Gary Montgomery, Royal Air Force, 8703385B.
+- Squadron Leader Andrew Spour, Royal Air Force, 30000035.
+- Flight Lieutenant David Alexander Taylor, Royal Air Force, 30039977.
+- Squadron Leader Princejit Singh Uubhi, Royal Air Force, X8703821.
+
+**Civil**
+
+- Julia Elizabeth Adamson. Managing Director, Education and Public Benefit, BCS, The Chartered Institute for IT. For services to Education.
+- Professor Pascale Veronique Aebischer. Professor, Shakespeare and Early Modern Performance Studies, University of Exeter. For services to Economic and Societal Resilience during Covid-19.
+- George Gray Alexander. Lately Member, Moray Council. For services to the community in Forres, Moray.
+- Peter Frank Allam. Lately Chief Executive, Weymouth and Portland National Sailing Academy. For services to Sailing.
+- Eniola Aluko. For services to Association Football and Charity.
+- Darnish Amraz. Youth Worker, Birmingham City Youth Service. For services to Young People in Birmingham.
+- Carol Ann Anderson. Director, Trustee Savings Bank. For services to the Banking and Financial Services Sector.
+- Ewan David Anderson. Superintendent, Police Service of Northern Ireland. For services to Law and Order.
+- Muhammad Arif Anis. Co-Founder, One Million Meals. For services to Frontline Workers during Covid-19.
+- Lisa Karen Ashford. Director and Chief Executive Officer, Ethex. For services to Impact Investment.
+- Rachael Joanna Atkins. Deputy Head, Strategy and Protocol Team, Constitution and Major Events Directorate, and lately Deputy Head, Venue Security and Transport, COP26, Cabinet Office. For services to COP26 and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Richard Norman Auty. Lately Inspector, Metropolitan Police Service. For services to Forensic Collision Investigation.
+- Hilda Bailey. Team Leader, Ministry of Defence. For services to Defence.
+- Norma Baillie. Founder and Operations Manager, PrioritEyes Ltd. For services to Blind and Partially Sighted People.
+- David Alfred Baker. Foster Carer, Plymouth City Council. For services to Children.
+- Susannah Jane Baker. Co-Founder, The Pickwell Foundation. For services to Ukrainian Refugees.
+- Vivienne Patricia Baker. Foster Carer, Plymouth City Council. For services to Children.
+- Euan Andrew Barker. Royal and Ceremonial Planning Manager, Scottish Government. For services in Scotland on the Demise of Her Majesty Queen Elizabeth II.
+- Jane Margaret Barker. Founder, Perry Riding for the Disabled Group and the Cavalier Centre. For services to Charity and to People with Disabilities.
+- Dr. Jessica Lucy Barker. Co-Founder and Joint Chief Executive Officer, Cygenta. For services to Cyber Security.
+- Richard Barley. Director of Gardens, Royal Botanic Gardens Kew. For services to Horticulture.
+- William Barnes. Governor, St Cuthbert's Catholic Primary School, Newcastle-upon-Tyne. For services to Education and to the community in Newcastle-Upon-Tyne.
+- Dr. Richard Maxwell Barrett. Founder, Daventry Contact and Spencer Contact. For services to the Environment and to the community in Northamptonshire.
+- John Livesey Hender Bate. For services to the Talyllyn Railway, Wales.
+- Marjorie Elaine Baylis. Deputy Regional Chair, Membership, Conservative Party South West. For Political Service.
+- Sebastien Joseph Bechara. For services to Wheelchair Rugby League.
+- John Charles Bennett. Group Scout Leader, Wistaston Scout Group. For services to Young People in Cheshire.
+- Matteo Giulio Livio Bergamini. Founder and Chief Executive Officer, Shout Out UK. For services to Charity, to Social Enterprise and to Education.
+- David Lambert Berry. Volunteer, The Duke of Edinburgh's Award. For services to Young People and to the community in the Wirral.
+- Claire Joanne Bessant. Lately Chief Executive Officer, International Cat Care. For services to Cat Welfare.
+- Roma Bhopal. Physiotherapist and Specialist Hand Therapist. For services to Physiotherapy.
+- Deborah Jayne Blackburn. Assistant Principal, Finance, Aquinas College, Stockport, Greater Manchester. For services to Further Education.
+- Nicholas John Blackburn. Chief Executive Officer, Lingfield Education Trust, Darlington, County Durham. For services to Education.
+- Colin Francis Bland. Chief Executive Officer, Sporting Chance. For services to Sport.
+- Fiona Elizabeth Blyth. Lately Deputy Head, Russia Ukraine Team, Cabinet Office. For Public Service.
+- Deborah Jane Boden. World Heritage Site Coordinator, Cornwall and West Devon Mining Landscape World Heritage Site. For services to Heritage.
+- James Robert Bolton. For services to Charity in Rutland.
+- Jean Frances Bonnick, JP. Magistrate, Supplemental List and Vice President, Norfolk Magistrates' Association. For services to the Administration of Justice.
+- Marie Boyce. Customer Services Manager, Department for Work and Pensions. For services to Business Transformation.
+- Iain Patrick Wentworth Boyd. Lately Chair and Trustee, Society for the Protection of Ancient Buildings. For services to Heritage.
+- Paul Boyd. Founder and Director, Morningside School of Music, Edinburgh. For services to Entrepreneurship and to the Music Industry.
+- Prudence Bray. Chair, Association of Liberal Democrat Councillors and Campaigners. For Political Service.
+- Mark Julian Bretton, TD. For services to Business, the Economy and to Charity, particularly during Covid-19.
+- Caroline Sandra Brewster. Programme Management Office Lead, HM Revenue and Customs. For Public and Charitable Services.
+- Rosemarie Brim. Manager, Prime Minister's Office. For Public Service.
+- Simon Andrew Broadhurst. Detective Inspector, Police Service of Scotland. For services to Policing.
+- James Reginald Brockman. For services to Bookbinding.
+- Erika Elaine Brodnock. Entrepreneur. For services to Diversity in the Technology Sector.
+- Vanita Brookes. Fellow, Faculty of Dental Surgery, Royal College of Surgeons of England. For services to the Oral Health of People with Disabilities.
+- Geoffrey Brown. Managing Director, Ripon Farm Services. For services to the Rural Economy.
+- William Eric Brown. Lately Museums National Security Adviser. For services to Museums and to the Arts.
+- Gareth Boswell Browning. Beat Forester, Forestry England. For services to Forestry and Nature Recovery.
+- Kenneth Robertson Bruce. Broadcaster. For services to Radio, Autism Awareness and Charity.
+- Michael Buckland. Lifeboat Operations Manager and Helm, Weston-Super-Mare Lifeboat Station, Royal National Lifeboat Institution. For services to Maritime Safety.
+- Margaret Mary Bull. Governor, Mandeville School, Aylesbury, Buckinghamshire. For services to Education.
+- Christopher Robert Burghes. Trustee, NHS Charities Together. For services to the NHS.
+- Malcolm Roger Burnell. Founder, It's My Shout Productions. For services to the Creative Industries in Bridgend, Mid Glamorgan.
+- Nicola Anne Butler. Chief Executive Officer, Young K&C, Royal Borough of Kensington and Chelsea. For services to the Play Sector.
+- Delia Alexandra Button. For services to the community in Leamington Spa, Warwickshire.
+- Carroll Carson Buxton. Deputy Chief Executive, Highlands and Islands Enterprise. For services to Economic Development in the Highlands and Islands of Scotland.
+- Mary Elizabeth Byatt, DL. For services to Education, to the Arts and to Charity in Moray.
+- Lorna Lynn Canning. Senior Policy Adviser, Home Office. For Public Service.
+- Emma Rose Cantrell. Founder and Chief Executive Officer, First Days Children's Charity. For services to Children and Vulnerable People in Wokingham, Berkshire.
+- Angela Devonte Caroo. Head, Physical Security Compliance, Barclays UK. For services to the community in the London Borough of Newham.
+- Raymond Stephen Carroll, BEM. Transport Manager, Northern Ireland Office. For services in Northern Ireland on the Demise of Her Majesty Queen Elizabeth II.
+- Gillian Karen Carver. Headteacher, St Ann's School, Hanwell, London Borough of Ealing. For services to Education.
+- Philip Julian Castang. Chair, UK Music Education Council. For services to Music Education.
+- Siena Castellon. Neurodiversity Advocate. For services to Neurodiversity Acceptance, Equality and Inclusion.
+- Ann Chalmers. Chief Executive, Child Bereavement UK. For services to Bereaved Children, Young People, Parents and Families.
+- Rosalyn Carol Chalmers. For services to the Arts and to People with Sensory Impairments.
+- Yui Chit Daniel Chan. Honorary Treasurer and Trustee, UK Youth. For services to Charity and to Young People.
+- Nicola Jane Chance Thompson, DL. Chief Executive, Piece Hall Trust. For services to Culture and to Heritage.
+- Fiona Susan Channon. Deputy Yeoman Usher, House of Lords. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Teresa Chaytor. Artistic Director, TIN Arts. For services to the Performing Arts for People with Learning Disabilities.
+- John Child. Lately Managing Director, Sandcastle Waterpark. For services to Tourism, to People with Disabilities and to the community in Blackpool, Lancashire.
+- Margaret Jean Christensen. Commercial Adviser, Department for Culture, Media and Sport. For Public Service.
+- Hayley Karen Citrine. Lately Chief Nurse North West, NHS England. For services to Nursing.
+- Lorna Shireen Paterson Clayton. Founder, ACTS Educational Charity and Academic Families. For services to Young People.
+- Tania Natasha Cohen. Chief Executive, 360Giving. For services to Charity and Social Justice.
+- Dr. Razvan Ungureanu Constantinescu. Founder, From Bristol with Love for Ukraine. For voluntary services to the People of Ukraine.
+- Monica Mary Cooney. Head of Control Centre Operations, Transport for London. For services to Transport and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Anthony Philip Cooper. Volunteer, The Royal British Legion. For voluntary services to Veterans.
+- Professor David Alan Cooper. For services to Lift and Escalator Engineering.
+- Susan Margaret Copeland. Regional Chair and Trustee, East of England National Garden Scheme. For services to Heritage and to Charity.
+- Peter Andrew Corry. For services to Music and to the Arts in Northern Ireland.
+- Catherine Diana Courtney. Project Director, Artists' Lives, British Library. For services to Oral History.
+- Sara Louise Cox. Referee. For services to Rugby Union.
+- Thomas Dillon Coyd. Coach, England Wheelchair Rugby League Team. For services to Wheelchair Rugby League.
+- Ronan Gerard Cregan. For services to Local Government and to Regeneration in Belfast.
+- Helena June Rachel Croft. Founder and Chief Executive Officer, Streetlight UK. For services to the Eradication of Modern Day Slavery.
+- Sara Joanne Crookdake. Assistant Chief Executive, Disability Stockport. For services to Disabled People in North West England.
+- Jennifer Anne Cross, JP. Lately Member, Mental Health and Care Standards Tribunals. For services to the Administration of Justice and to the community in Tunbridge Wells, Kent.
+- Tara Jane Cullen. Operations Lead, Members Services Team, House of Commons. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Pauline Culley. Association Chair, Darlington and Sedgefield Conservatives. For Political Service.
+- Samuel Matthew Curran. For services to Cricket.
+- Catherine Daley. Lately Constable, British Transport Police. For services to Law and Order.
+- Nizamuddin Noordin Damani. Consultant Microbiologist, Southern Health and Social Care Trust. For services to Infection Prevention and Control in Northern Ireland and to the World Health Organisation.
+- Andrew James Daniels. Foster Carer, Credo Care. For services to Children with Disabilities.
+- Frances Elizabeth Davies. Manager, Totally Different Playscheme, Bushey, Hertfordshire. For services to Children and Young People with Special Educational Needs.
+- Rhiannon Louise Davies. Campaigner, Maternity Services, Shrewsbury and Telford Hospital NHS Trust. For services to Maternity Healthcare.
+- Michel Jean Dearman. Honorary Vice President, Wooden Spoon Yorkshire Region. For charitable services to Young People.
+- Brenda Rivera Agon Deocampo. Ward Manager, Acute Medicine, Imperial College Healthcare NHS Trust. For services to Nursing.
+- Anna Marta Dezyk (Hanya Dezky). Deputy Chair, Association of Ukrainians in Great Britain. For services to Ukrainian Refugees.
+- Bawa Singh Dhallu. Lately Councillor and Mayor, Sandwell Metropolitan Borough Council, West Midlands. For Political and Voluntary Service.
+- Professor Philip Michael Dickens. Founder, Added Scientific. For services to the Additive Manufacturing Sector.
+- Séan Joseph Dillon. Principal, Primate Dixon Primary School, Coalisland, County Tyrone. For services to Education in Northern Ireland.
+- Delyth Eirian Done. Head of School, School of Materials and Design, Hereford College of Arts. For services to Blacksmithing and to Heritage Crafts.
+- Sandeep Dwesar. Chief Operating and Financial Officer, Barbican Centre. For Public Service in the City of London.
+- Susan Dzendzera. Lately Chief Executive Officer, Gingerbread Corner. For services to Children and to the community in the London Borough of Croydon.
+- Gillian Pearl Eaton. Director, Sporting Futures Training, Stevenage, Hertfordshire. For services to Further Education and Skills.
+- Mary Edmiston. Payment Services Operations Manager, Student Loans Company. For services to Education and to Charity.
+- Inua Muhammed Ellams. Poet, Playwright and Performer. For services to the Arts.
+- Theresa Mary Ellerby. Director, The Children's House, Stallingborough, North East Lincolnshire. For services to Education.
+- Dr. Niall William Andrew Elliott. Head of Sports Medicine, sportscotland Institute of Sport and Chief Medical Officer, British Olympic Association. For services to Sports and Exercise Medicine.
+- Winston George Ellis. Ambassador, BAME Health Collaborative. For charitable services to Ethnic Minority communities.
+- Paul Stuart Ethell. HR Director, BAE Systems Submarines. For services to the Defence Industry and to the community in Barrow-in-Furness, Cumbria.
+- Caroline Evans. Headteacher, Parks Primary School, Leicester. For services to Education.
+- Jonathan Grant Evans. For services to Association Football in Northern Ireland.
+- David Anthony Eyre. Manager, Building Services and Ceremonial Works, House of Commons. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Mohammed Fahim. For services to the community in Walsall, West Midlands, particularly during Covid-19.
+- Aqil Farooq. Police Sergeant and Chair, Staff Association, Avon and Somerset Police. For services to Policing and to Diversity and Inclusion.
+- Karen Jane Farr. Children and Young Persons Manager, Hampshire and the Isle of Wight Fire and Rescue Service. For services to Young People and to Public Safety.
+- Amy Elizabeth Fearn. Referee. For services to Association Football.
+- Professor Ruth Fee. Professor, Public Services Education, Ulster University. For Public Service and to Higher Education in Northern Ireland.
+- Lynn Marie Fell. Senior Operations Manager, Work and Health, Department for Work and Pensions. For Public Service.
+- Lynn Fidler. Ceremonials Team, Department for Culture, Media and Sport. For Public Service.
+- Kate Fisher-Stevens. Deputy Director, National Crime Agency. For services to Law Enforcement.
+- Nicola Jean Fleury. Managing Director, Kidzrus Nursery Group, Salford, Greater Manchester. For services to Early Years Education and to the community in Salford, Greater Manchester.
+- Wendy Jacqueline Forrester. Philanthropist and Founder, Forrester Family Trust. For services to Charity.
+- Stephen William Franey. Technical Staff Development Manager, King's College London. For services to Technical Staff in Research and Education.
+- Angela Maddalyna Frazer-Wicks. Chair, Family Rights Group. For services to Children and Families.
+- Eileen Mary French. Founder Trustee, Essex Council of Voluntary Youth Organisations. For services to Young People in Essex.
+- Emma Elizabeth Fry (Emma Bristow). For services to Motor Sports and Women in Sport.
+- John Fyffe. For services to Education and to Young People in Scotland.
+- Pauline Marie Gamester. Founder, Connector Media Community Interest Company and Co-Founder and Director, The Sewing Room. For services to Social Enterprise and to the community in Lancashire.
+- Janice Rosanne Gault. Chief Executive, Northern Ireland Hotels Federation. For services to Tourism and Hospitality.
+- Rosamund Jane Gentle. For voluntary service to Children with Special Needs and their Families in West Sussex.
+- Diana Judith Gerald. Chief Executive Officer, Book Trust. For services to Reading and Children's Literature.
+- Michael Frederick Gibbons. Commissioner Operations, St John Ambulance. For Voluntary Service.
+- Mary Gillespie. People and Capability Team, HM Treasury. For services to People with Disabilities.
+- Sarah Na-Lamle Godwin Lamptey. Founder, ShowerBox. For services to Homeless People.
+- Dr. Alice Karen Good. Founder, Sunflower Sisters. For services to Ukrainian Refugees.
+- Mark Andrew Goodway. Founder and Chief Executive, The Matthew Tree Project Charity. For services to Charity and to Disadvantaged People.
+- Jon-Paul Graham. Head of City Operations, Greater London Authority. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- William Gerald Gray. Chairman, Royal Highland and Agricultural Society of Scotland. For services to Agriculture, to Charity and to the community in Scotland.
+- Sarah Greenhalgh (Sarah Smith). Chair, Tobacco Factory Theatres. For services to Theatre and to the community in Bristol and Cornwall.
+- Luke Peter Grenfell-Shaw. Cancer Activist and Cyclist, Founder, Bristol2Beijing. For services to Charitable Fundraising for People with Cancer.
+- Colin James Griffiths. Campaigner, Maternity Services, Shrewsbury and Telford Hospital NHS Trust. For services to Maternity Healthcare.
+- Jacqueline Amanda Griffiths. Senior Policy Adviser, Department for Business and Trade. For Public Service.
+- John Parry Griffiths. Coach, British Canoeing. For services to Canoeing and Paddlesport.
+- Kayleigh Rhianon Griffiths. Campaigner, Maternity Services, Shrewsbury and Telford Hospital NHS Trust. For services to Maternity Healthcare.
+- Rhiannon Mair Griffiths. Co-Founder and Managing Director, Comics Youth. For services to Young People.
+- Nigel Sylvester Guy. Director, Windrush Generations UK. For services to the Windrush Generation.
+- Lynne Haines. Headteacher, Greenvale School, London Borough of Lewisham. For services to Children and Young People with Special Educational Needs.
+- Lindsey Victoria Hall. Chief Executive Officer, Real Ideas Organisation. For services to Social Enterprise and to the community in Cornwall and Plymouth.
+- Thomas Kingsley Hall. Welfare Support Officer, BLESMA. For services to Veterans in Wales.
+- William Andrew Hall, MC. Head of Testing, Exercising and Activation Team, Cabinet Office. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Stephen Philip Hallam. Lately Managing Director, Ye Olde Pork Pie Shoppe, Melton Mowbray. For services to the Baking Industry and to the community in Leicestershire and Lincolnshire.
+- Caroline Marie Hamilton. Chief Executive, Safety Assessment Federation. For services to Business and to Engineering.
+- Elaine Hammans. Lately Head of Early Years, Southend City Council, Essex. For services to Education.
+- Dr. Stewart John Harding. Lately Co-Founder, Parks Agency and Director, GreenSpace. For services to Heritage and Park Conservation.
+- Jennifer Anne Hardy. Campaigner and Founder, Cancer Card. For services to Cancer Support.
+- Andrea Harford. Lately Work Coach Team Leader, Department for Work and Pensions. For services to People with Autism.
+- Robert Harper. Volunteer, Belfast Lough Sailability. For services to Sailing for People with Disabilities in Northern Ireland.
+- Kathryn Ann Harper-Quinn. Headteacher, Hounslow Heath Infant and Nursery School, London Borough of Hounslow. For services to Education.
+- Dr. Victoria Louise Harrington. Lately Assistant Chief Officer, Essex Police. For services to Policing.
+- Mary Rosaleen Harrison. Headteacher, St Francis Catholic Primary School, Morley, Leeds. For services to Education.
+- Dr. Tanya Olivia Harrod. Art Historian. For services to the Crafts.
+- Emma Louise Hart. Deputy Head, Engagement and Protocol and lately Chief Media Operations and Events Officer, COP26 Unit, Cabinet Office. For services to COP26 and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Peter Hart. District Executive Committee Member, Wigan and District Scout Council. For services to Young People in Greater Manchester.
+- Nigel Alan Hartley. Chief Executive Officer, Mountbatten Hospice Group, Isle of Wight and Hampshire. For services to Hospice Care.
+- Valerie Margaret Hawkins. Chief Executive Officer, Mid Wales Tourism. For services to Tourism and to the Economy in Wales.
+- Dr. Andrew Paul Haynes. Lately Specialist Adviser to the Board, Sherwood Forest NHS Foundation Trust and Non-Executive Director, University Hospitals Leicester NHS Trust. For services to Health and to the NHS in Nottinghamshire and Leicestershire.
+- Aaron Lee Hearne. Fundraiser, Childline. For services to Children.
+- David Ian Heaton. Facilities Manager, Prime Minister's Office. For Public and Voluntary Service.
+- Diane Gillian Heighes. Government Banking Industry Lead, HM Revenue and Customs. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Claude Livingston Hendrickson. For services to Community Self-Build Housing.
+- Ian Scott Henry. Group Director, Henry Brothers Ltd. For services to the Economy and to Charity in Northern Ireland.
+- Robin Matthew Herringshaw. Head of Resilience, National Highways. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Kevin Hewlett. Managing Director and Registered Manager, Hale Place Care Homes Ltd. For services to People with Dementia.
+- Susan Penelope Hewson-Lowe. Founder and Director, Bodywise UK. For services to Women's Health and to the Environment.
+- David William Heyburn. Head of Operations Microbiology and Health Protection, Public Health Wales. For services to the NHS.
+- Keith Robert Hill. For services to Education and to Disadvantaged Children.
+- Professor Jane Elizabeth Hillston, FRS. Professor, Quantitative Modelling, University of Edinburgh. For services to Computer Science and to Women in Science.
+- Ronald Hines. Lately Non-Executive Director, Scottish Government. For Public Service.
+- Fiona Jane Hoban. Assistant Remembrancer (Ceremonial), Guildhall, City of London. For services to the City of London and to the State Funeral of HM Queen Elizabeth II.
+- Zoe Branka Holland. For Charitable Service, particularly during Covid-19.
+- Michaela Anne Hollywood. For services to People with Disabilities.
+- Dr. Arlene Victoria Holmes Henderson. Associate Professor of Classics and Ancient History, Durham University. For services to Education.
+- Jonathan Holt. Lately Head, Customs Process Owner Project Management Office, HM Revenue and Customs. For Public Service and services to Neurodiversity Awareness.
+- Lawrence George Langford Honeysett. Head of Financial Scrutiny, Committee Office, House of Commons. For services to Parliament.
+- Edward Hosking. Team Leader, Ministry of Defence. For services to Defence.
+- Professor Rachid Hourizi. Director, Institute of Coding. For services to the Digital Sector.
+- Robert Ian Houston. Founder and Chair of Trustees, Boost Charitable Trust. For services to People with Disabilities and to Disadvantaged Communities through Sport.
+- Ian Philip Howard. Vice President, World Triathlon. For services to Triathlon.
+- Inna Hryhorovych. Head Teacher, St Mary's Ukrainian School, Royal Borough of Kensington and Chelsea. For services to Education and to the Ukrainian Community in the UK.
+- Professor Francis John Hughes. Lately Professor of Periodontology, King's College London. For services to Dentistry.
+- Katherine Alexandra Hui. Founder, Laces Community Club. For services to Community Football and to Young Women in East London.
+- Catherine Elizabeth Humphrey. Principal, Groggan Primary School, Randalstown, County Antrim. For services to Education in Northern Ireland.
+- Suzanne Elizabeth Hutchinson. Chief Executive, Little Hearts Matter. For services to Children, Adults and their Families with Congenital Heart Disease.
+- Dr. Corinne Hutton. Founder, Finding Your Feet. For services to Sepsis Awareness and to Amputees.
+- Roksanda Ilinčić. For services to Fashion Design.
+- George Imafidon. Chief Executive Officer, Motivez. For services to Engineering, to Technology and to Young People.
+- Dr. John Lea Ivens. Executive Headteacher, Maudsley and Bethlem Hospital School, London Borough of Southwark. For services to Education.
+- William Hugh Jack. Proprietor, Duke of York Public House. For services to the Arts and to Tourism in Belfast.
+- Faye Elizabeth Alice Jackson. Chief Communications Officer, Ceremonials and Culture, Department for Culture, Media and Sport. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Dr. Desmond Jaddoo. Bishop, The Village Fellowship Church and Chairman, Windrush National Organisation. For services to the Windrush Generation.
+- Sarah Mary James. Director, Craft Festival. For services to Craft.
+- Sarah Helen Atkinson Javaid. Founder, Cycle Sisters. For services to Cycling and to the community in London.
+- Thomas Jeffers. For services to Local Government and to the community in Dundonald, County Down.
+- Archibald Ian Jenkins. For services to Charity and to the community in Peebles, Scotland.
+- Kapaljit Singh Jhuti. Head of Services, Transport and Passenger Logistics, Heathrow Airport, London. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Joysy John. Adviser, EdTech. For services to the Technology Sector.
+- Barbara Ann Johnson. Director of Nursing, Risedale Estates Ltd. For services to Social Care.
+- Clare Louise Johnson. Deputy Head, Property Profession, Valuation Office Agency. For services to the Surveying Profession and to Diversity.
+- Alan Edward Jones. Lately Chairman and Consultant, The Village Bakery. For services to the Food Industry and to the Economy in Wales.
+- Dr. Gareth Lloyd Jones. For services to Sport and Exercise Medicine in Wales.
+- Keith Jones. Chairman, EAST. For services to Marginalised People in Peterborough, Cambridgeshire.
+- Pauline Jones. Employer and Partnership Manager, Department for Work and Pensions. For services to the community in Birmingham, particularly during the 2022 Commonwealth Games.
+- Sonya Jones. For services to Tackling Child Exploitation.
+- Nadine McKenzie Judge. Choreographer and Honorary Patron, Big Bad Wolf Children's Theatre Company. For services to Dance in Scotland.
+- Natalia Kaliada. Co-Founding Artistic Director, Belarus Free Theatre. For services to Theatre.
+- Sardarni Navleen Kaur. Founder, Sahara Sisterhood. For services to Women and to Interfaith Relations.
+- Dr. Michael Olatunde Kehinde. Equality, Diversity and Inclusion Champion, Environment Agency. For Public Service.
+- Kenneth Keld. Secretary, North of England Branch, British Korean Veterans Association. For services to Veterans.
+- Ellen Dorothy Kemp. Member, Boleyn Trust. For services to Education in the London Borough of Newham.
+- Dr. Rosalind Penelope Kennedy. For services to Charity and to the community in Bristol.
+- Penelope Jane Kenway. Director of Early Intervention and Prevention, London Borough of Islington. For services to Early Years Children and Families.
+- Nicolai Khalezin. Co-Founding Artistic Director, Belarus Free Theatre. For services to Theatre.
+- Ritu Khurana. Disc Jockey and Broadcaster. For services to Music and to Broadcasting.
+- Heather Mary Kidd. Councillor, Shropshire Council. For services to Rural Communities.
+- Carly Teresa Nyst Kind. Director, Ada Lovelace Institute. For services to Data and Artificial Intelligence Ethics.
+- Andrew Michael Blair Knox. Director of Population Health and Engagement, Bay Health and Care Partners, Morecambe Bay. For services to General Practice.
+- Dr. Nihara Sonali Krause. Founder and Chief Executive, Stem4. For services to the Mental Health of Young People.
+- Charlotte Kume-Holland. Head of Policy, Major Events, Cabinet Office and lately Head of Strategy Covid-19 Vaccine Deployment, Department of Health and Social Care. For Public Service, Mental Health and Wellbeing Leadership, and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Elizabeth Angela Lalley. Director of Risk, Resilience and Community Safety, Welsh Government. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Frances Emma Lane. Chief Executive Officer, Northwick Park Trust, Canvey Island. For services to Education in Essex.
+- Professor Helen Eileen Langton. Vice-chancellor, University of Suffolk. For services to Education.
+- Elizabeth Delia Larkin. Founder and President, Friends of Rosie. For services to Charity, especially Childhood Cancer Research.
+- Andrew James Laver. For services to Education in Bradford, West Yorkshire.
+- Anne-Marie Lavery. Head of Facilities Management, Prime Minister's Office. For Public Service.
+- Julie Lawrence. Lately Director, National Executive Committee and General Secretary of Office Staff, Labour Party. For Political Service.
+- Mark Maurice Leach. Founder and Editor, Wonkhe. For services to Higher Education.
+- Paul Jeffrey Leach. Paediatric and Special Care Dentist. For services to Children with Special Educational Needs and Disabilities in North West Wales.
+- Judith Elizabeth Alison Ledger. Founder and Chief Executive, Baby Lifeline. For services to Pregnant Women and Newborn Babies.
+- Stewart Andrew Leggett. Interim Director for Roads, Transport Scotland. For services in Scotland on the Demise of Her Majesty Queen Elizabeth II.
+- Hearl Roger Lenton. Chair of Trustees, Wellspring Academy Trust, Barnsley, West Yorkshire. For services to Education.
+- Marcella Leonard. For services to Social Work in Northern Ireland and Internationally.
+- Rabbi Stanley Levin (Shlomo Levin). For services to Interfaith and to the Jewish Community in the London Borough of Camden.
+- Robin Lipscombe. Learning Facilitator, Marshall Skills Academy, Cambridge. For services to Further Education and Skills.
+- Helen Mary Lloyd. For services to Cultural Heritage Conservation.
+- Patricia Joyce Longdon. Chair, Strategic Lay Forum, Imperial College Healthcare NHS Trust. For services to Health and Social Care.
+- Rachel Anne Lopata. Co-Founder, Sea-Changers. For services to Marine Nature Conservation.
+- David Thomas Lowbridge-Ellis. Director of School Improvement, Matrix Academy Trust, Walsall, West Midlands. For services to Education.
+- Adrian Lucas, DL. For services to Charity and Veterans in Scotland.
+- Karen Jane Lynch. For services to Social Enterprise and to Charity.
+- Steven Machin. Lately Head of Counter Terrorism, HM Prison Whitemoor. For services to HM Prison and Probation Service.
+- Ronald John Maclean. Manager, Grimsay Boat Shed. For services to Boat Building and to Heritage Crafts in the Western Isles.
+- Annie Macsween, DL. Honorary President, Comunn Eachdraidh Nis (Ness Historical Society). For services to the Scots Gaelic Language.
+- Barbara Mary Maddison. Honorary Vice-President, National Council of Women of Great Britain. For services to Young Women.
+- Sally Magnusson. Broadcaster and Author. For services to People with Dementia and their Carers.
+- Rizwana Mahmood-Ahmed. Headteacher, Carlton Junior and Infants School, Dewsbury, West Yorkshire. For services to Education.
+- Andrew Malcolm. Chief Executive Officer, W H Malcolm Ltd. For services to the Transport Industry.
+- Anthony Kevin Male. For services to Charity and to the community in Portsmouth, Hampshire.
+- Dennis John Mardon. Chair, Citizens' Advice Exeter. For services to Vulnerable People in Exeter, Devon.
+- John Michael Marren, DL. Founder, Company Shop Group. For services to Alleviating Food Poverty.
+- Camilla Marshall. Deputy Head of News, Prime Minister's Office. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Hannah McGarry McLachlan Marshall (Anna Marshall). For services to Lawn Bowls.
+- Andrew Clive Martin. Head of Access and Services, House of Commons. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Roy Martin. Volunteer Engineering Co-ordinator, RAF Museum and Chair, The Aerospace Museum Society. For services to Heritage.
+- Julia Margaret Maskery. Highly Specialist Paediatric Occupational Therapist, Belfast Trust. For services to Children.
+- Andrew Mason. Officer, National Crime Agency. For services to Law Enforcement.
+- Sonia Maulson. General Manager (North), Southeastern Trains. For services to Rail Transport and to the State Funeral of Her Majesty Queen Elizabeth II.
+- William Jonathan McArthur. Emergency Planning Officer, Northern Ireland Ambulance Service. For services to Emergency Planning Preparedness, Resilience and Response.
+- Thomas Mcauley. Acting Head, Sign Language Policy Team, Department for Communities, Northern Ireland Executive. For services to Deaf People in Northern Ireland.
+- Dr. Mark McBride-Wright. Founder and Chief Executive Officer, EqualEngineers. For services to Diversity, Equity and Inclusion in Engineering.
+- David Alexander Mervyn McCall. For services to Business and to the community in Northern Ireland.
+- Davina Lucy Pascale McCall. For services to Broadcasting.
+- Gerard Joseph McCann. For services to Victims of Historical Institutional Abuse in Northern Ireland.
+- Michael Phillip Anthony McCann. Head of Maintenance Operations, House of Commons. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Dr. Rosemary McCarthy. Head of Global Workforce, Education and Research, Health Education England. For services to Midwifery and Maternity Healthcare.
+- Mark Richard McClennon. Chair, Institute for Apprenticeships and Technical Education. For services to Further Education and Apprenticeships.
+- Professor Wilson Glenn McCluggage. Professor, Queen's University, Belfast. For services to People with Gynaecological Cancer.
+- Vicky Lee McClure. Actor. For services to Drama and to Charity.
+- Laura Ann McCorry. Head of Hillsborough Castle, Historic Royal Palaces. For services in Northern Ireland on the Demise of Her Majesty Queen Elizabeth II.
+- Dr. Hazel McFarlane. Development Officer, Royal National Institute of Blind People. For charitable services to People with Sight Loss.
+- Mary Katherine McGee. Business Engagement Officer, Mid Ulster Council. For services to Tourism in Northern Ireland.
+- Michael Albert Paul McGrath, DL. Founder and Chief Executive Officer, The Muscle Help Foundation. For charitable services to People with Muscular Dystrophy.
+- Margaret McGuckin. For services to Survivors and Victims of Historical Institutional Abuse in Northern Ireland.
+- Professor Lynne McKenna. Dean, Education and Society, University of Sunderland, Tyne and Wear. For services to Education.
+- Martina Elizabeth McKenzie. Chief Executive, Staffline Ireland and Chair, Policy and Advocacy, Federation of Small Businesses. For services to the Economy in Northern Ireland.
+- Ian McLaughlan. Lately Chief Executive, Youth Scotland. For services to Charity and to Youth Work.
+- Maria Teresa McLoughlin. Chair, Women's Artistic Gymnastics Technical Committee, British Gymnastics. For services to Gymnastics.
+- Joan Elizabeth McParland. For services to People with Myalgic Encephalomyelitis and to their Families and Carers in Northern Ireland.
+- Reverend Tracey Elaine McRoberts. Rector, Saint Matthew's Parish and Rural Dean of Mid-Belfast. For services to the community in Belfast.
+- Robb Merchant. Owner, White Castle Vineyard. For services to Viticulture.
+- Heather Patricia Miller. Lately Head of Quality, Excellence and Development, South Eastern Regional College. For services to Education in Northern Ireland.
+- Lorna Marie Millington. Future Networks Manager, Cadent Gas. For services to Business and to the Environment.
+- Dr. Gary George Ernest Mitchell. Senior Lecturer, School of Nursing and Midwifery, Queen's University Belfast. For services to Nursing and Dementia Care.
+- Professor Terrie Edith Moffitt, FBA. Chair, Social Behaviour and Development, King's College London. For services to Social Science.
+- Rizwan Wali Mohammed. For services to the community in Glasgow.
+- Professor Mark John Monaghan. Consultant Clinical Scientist in Echocardiography and Director of Non-invasive Cardiology, King's College Hospital NHS Foundation Trust. For services to Cardiology.
+- Derek Moore. Community Development Worker, North West Cultural Partnership. For services to the community in Londonderry.
+- Janice Kathleen Moore. Senior Psychosocial Practitioner, British Red Cross. For services to Mental Health.
+- William Morgan. Patron and Fundraiser, NSPCC. For services to Charity.
+- Selwyn Arthur Leslie Morgans. Lately Manager, Aycliffe Secure Children's Home, Durham. For services to Children's Social Care.
+- Michelle Sharon Morris. Early Years Language and Communication Pathway Lead, Greater Manchester Combined Authority. For services to Speech and Language Therapy.
+- Reverend John Irvine Morrow. Chaplain, Northern Ireland Prison Service. For services to Prisoners and their Families.
+- Professor Raja Anindya Sekhar Mukherjee. Consultant Psychiatrist, Surrey and Borders Partnership NHS Foundation Trust. For services to People with Fetal Alcohol Spectrum Disorders.
+- Jennie Muskett. Composer. For services to Music.
+- Christine Elizabeth Myhill. Libraries and Heritage Manager, Gateshead and Chair, Association of Senior Children's and Education Librarians. For services to Public Libraries during Covid-19.
+- Robert Malcolm Naish. Lately Protector, Canal and River Trust. For services to the Canal Network.
+- Lennox Floyd Nembhard. Chief Immigration Officer, Home Office. For Public Service and to Diversity.
+- Shiva Chandra Niraula. Pandit, Brigade of Gurkhas, Ministry of Defence. For pastoral services to Military Personnel.
+- Alan Stephen Noake. Assistant County Commissioner, Global Projects and Community Impact (Kent Scouts) and Deal, Walmer, Sandwich and District. For services to Young People in Kent.
+- Barry Joseph Nolan. Chair of Trustees, Eden Academy Trust. For services to Education.
+- Damian Benedict Nolan. Divisional Manager, Adult Social Care Services, Halton Borough Council. For services to Adult Social Care.
+- Professor Christine Susan Norton. Professor of Clinical Nursing Research, Florence Nightingale Faculty of Nursing, Midwifery and Palliative Care, King's College London. For services to Nursing Research.
+- Peter Cairns O'Hara. Chief Executive, OLM Systems. For services to Social Care.
+- Sally Angela O'Sullivan. Board Member, Turn2Us. For services to Charity and to Families Affected by Poverty during Covid-19.
+- Sally Jane Orange. Fundraiser. For services to Charity and to Mental Health.
+- Rhiannon Catherine Page. Ceremonials Team, Department for Culture, Media and Sport. For Public Service.
+- Asitha Panditharatna. Director of Employment Services, The Forward Trust. For services to Further Education and Skills.
+- Professor Catherine Rebecca Parker. Chair, Institute of Place Management, Manchester Metropolitan University. For services to Education and to Place Management.
+- Anita Parmar. Head, Lessons from Auschwitz Project, Holocaust Educational Trust. For services to Holocaust Education and Remembrance.
+- Professor Kanwal John Pasi. Lately Centre Director, Royal London Haemophilia Centre, Barts Health NHS Trust. For services to the NHS.
+- Jay Prakash Patel. Qualified Person Assessor, AstraZeneca. For services to Public Health during Covid-19.
+- Jeeta Patel. Lately Senior Policy Adviser, Cabinet Office. For Public Service.
+- Christine Grace Payne. Lately General Secretary, Equity. For services to the Trade Union Movement.
+- Hilary Jasmine Erica Paynter. Exhibitions Secretary, Society of Wood Engravers. For services to the Arts.
+- Professor Robert Charles Pearson. Lately Chair, Clinical Ethics Committee, Manchester University NHS Foundation Trust. For services to Medicine, Medical Education and to Health Research and Innovation.
+- Deborah Evelyn Pecover. Commission Director, Arcadis. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Leanne Jummai Pero. Founder, Leanne Pero Foundation. For services to Charity, particularly to Minority Ethnic People with Cancer.
+- Emma Louise Petrucci. Co-Founder, Red Sky Foundation. For services to Health and to the community in North East England.
+- Sergio Petrucci. Co-Founder, Red Sky Foundation. For services to Health and to the community in North East England.
+- Margaret Patricia Pieroni. Lately Head of Employment Policy, Pay and Reward, House of Lords. For services to Parliament and to the State Funeral of Her Majesty Queen Elizabeth II.
+- Gail Fiona Pirkis. Co-Founder and Editor, Slightly Foxed. For services to Literature.
+- Rabbi Alan Plancey. Councillor, Hertsmere Borough Council and Emeritus Rabbi, Borehamwood and Elstree Synagogue. For Political and Public Service.
+- Dr. Shubha Platt (Shubha Sathyendranath). Merit Scientist, Remote Sensing, Plymouth Marine Laboratory. For services to Oceanography.
+- David William Pond. Lately Chief Executive, Great Britain Wheelchair Rugby. For services to Wheelchair Rugby.
+- David John Poole. Clockmaker. For services to Horology and Heritage Crafts.
+- Andrew Kenneth Portersmith. Chief Executive, Music Stuff. For services to Young People and to the community in Manchester.
+- Dr. Sandrasekeram Premachandran. Advisor, Care Quality Commission and Emergency Medicine Consultant, Frimley Health NHS Foundation Trust. For services to Health and Care.
+- Colin John Preston. Lately Chief Executive, Shropshire Wildlife Trust. For services to Wildlife Conservation in Shropshire and the Marches.
+- Jenny Halpern Prince. Founder and Chair, Access Aspiration. For services to Charity, to Young People and to Social Mobility.
+- Maxine Hannah Pritchard. Head, Financial Inclusion and Vulnerability, HSBC UK. For services to Vulnerable People.
+- Dr. Jennifer Elizabeth Pugh. Chief Medical Officer, Irish Horse Racing Regulatory Board. For services to Horse Racing in Northern Ireland.
+- Caroline Thomson Rae. Libraries and Community Assets Manager, London Borough of Newham. For services to Public Libraries.
+- Aftabur Rahman. Chief Executive Officer, Legacy West Midlands. For services to Heritage and to the community in Birmingham.
+- Nimisha Raja. Founder, Nim's Fruit Crisps. For services to Small and Medium Enterprises.
+- Adil Rashid. For services to Cricket.
+- Adam Ernest Reid. Senior Security Strategic Communications Manager, Northern Ireland Office. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Dr. John Henderson Reid. Chair of Trustees, Trimontium Museum. For services to Culture and Heritage in Scotland.
+- Norman Victor Reid. Staff Officer, Department for Communities, Northern Ireland Executive. For services to Social Housing.
+- Petro Rewko. Board Chairman, Association of Ukrainians in Great Britain. For services to the Ukrainian Community.
+- Dr. Martin Richard Finch Reynolds. Volunteers Coordinator, MissionAssist Charity. For services to Indigenous Languages.
+- Suzanne Jacqueline Richards. Campaigner, Smile For Joel. For services to People Bereaved by Homicide.
+- Elizabeth Anne Rix. Chief Nurse, Portsmouth Hospitals University NHS Trust. For services to Nursing Leadership.
+- Paul Anthony Roach. Town Manager, Windsor, Eton and Ascot and Deputy Chair, Ceremonial Events Planning Group, Royal Borough of Windsor and Maidenhead. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Sonia Heather Roberts. For services to the community in Shropshire.
+- Dr. Claire Elisabeth Robinson. Consultant Radiographer in Forensic Imaging, University Hospitals of Leicester NHS Trust. For services to Forensic Investigations.
+- Graham Robinson. Policy Manager, Scottish Government. For services to Equality in Scotland.
+- Suzann Marie Robinson (Suzann McLean). Chief Executive Officer and Artistic Director, Theatre Peckham. For services to the Arts and to Marginalised Young People in London.
+- Lieutenant Colonel (Rtd.) Paul Damian Rodgers. Staff Officer, Headquarters Infantry, Ministry of Defence. For services to the Army and to Veterans.
+- Ian Malcolm Rogers. Athletics Official. For services to Athletics.
+- Helen Margaret Rooker (Helen Hughes). Lately Voluntary Chief Executive Officer, Ludlow Assembly Rooms. For services to Charity, to the Arts and to the community in Ludlow, Shropshire.
+- Alison Ross. Operations and Culture Director, Auto Trader. For services to the Digital and Technology Industry.
+- Erika Ann Rushton. Co-Founder, Kindred Liverpool City Region Community Interest Company. For services to Civil Society and to Social Enterprise.
+- Alison Ryland. Lately Head of Healthcare, HM Prisons Usk and Prescoed, Aneurin Bevan University Health Board. For services to Prison Healthcare in Monmouthshire.
+- Narinder Singh Sagoo. For services to Charity.
+- Reverend Fiona Jean Sample. Founder and Chief Executive Officer, The Oswin Project. For services to the Rehabilitation of Offenders.
+- Bilal Bin Saqib. Co-Founder, One Million Meals. For services to the NHS and to the community in Stanmore, London Borough of Harrow.
+- Prodaman Kumar Sarwal. Lately Trustee, Chatham Historic Dockyard Trust and Chair, Master Ropemakers Ltd. For services to Heritage and to the Charitable Sector.
+- Jacqueline Ann Sawdon. Co-Founder, The Exodus Project. For services to Young People and to Charity in Barnsley, South Yorkshire.
+- Martin Harold Sawdon. Co-Founder, The Exodus Project. For services to Young People and to Charity in Barnsley, South Yorkshire.
+- Clare Elizabeth Scherer. Chief Executive Officer, The Naval Children's Charity. For services to Royal Navy Families.
+- Kendra Amelia Schneller. Homeless and Inclusion Health Programme Lead, Queen's Nursing Institute and Nurse Practitioner, Guy's and St Thomas' NHS Foundation Trust. For services to Homeless and Inclusion Health Nursing.
+- Susannah Ruth Schofield. For services to Journalism and to Diversity in the Broadcasting Industry.
+- Joe Scotland. Director, Studio Voltaire. For services to Art.
+- Jane Elizabeth Scott. Divisional Bereavement Project Lead Midwife, West Hertfordshire Teaching Hospitals NHS Trust, and Lead and Founder, National Bereavement Midwives' Forum. For services to Bereaved Parents.
+- Sophie Elizabeth Scowen. Major Ceremonials Manager, Greater London Authority. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Richard Anthony Selby, DL. Managing Director Pro Steel Engineering and National Chair, Institute of Directors. For services to the Economy and to Charity in Wales.
+- John Alexander Charles Sennett. Police Staff, Metropolitan Police Service. For services to Policing.
+- Dr. Farrukh Tasnim Shah. Consultant Haematologist, Whittington Health NHS Trust. For services to Thalassaemia and Sickle Cell Patients.
+- Sarah Isobel Sharpe. Lately Support Staff Member, National Assembly for Wales. For Political and Public Service.
+- Catherine Annette Shaw. Lead Advanced Nurse Practitioner, NHS Highland. For services to Nursing in Rural Scotland.
+- Dr. Natalie Susannah Shenker. Co-Founder, Human Milk Foundation. For services to Charity and to Human Milk Banking.
+- Fallon Suzanne Michelle Sherrock. For services to Darts.
+- Mercy Lusungu Shibemba. Speaker and Campaigner. For services to People with HIV.
+- Colin Shields. For services to Ice Hockey.
+- Samuel Shouksmith. Team Leader, Ministry of Defence. For services to Defence.
+- David Arthur Shreeve. Co-founder and Director, Conservation Foundation, and Environmental Adviser, Archbishops' Council, Church of England. For services to the Environment.
+- Andrew Paul Simpson. Head of Digital Communications, Department for Culture, Media and Sport. For services to Government Communications.
+- James Simpson. For services to Wheelchair Rugby League.
+- Michelle Gabriel Anita Simpson. Project Coordinator, St Columbs Park House. For services to Young People in Northern Ireland.
+- Dr. Inderjit Singh. For voluntary and charitable services to the community in Scotland.
+- Harvinder Singh Rai. Sergeant, West Midlands Police. For services to Policing and to the Sikh Community.
+- Rosalind Margaret Slinger. Chair, Centre Membership Committee, Pony Club. For services to Equestrianism and to Charity.
+- David Mark Smith. Lately Chief Executive, Energy Networks Association. For services to the Energy Industry.
+- James Smith. Team Leader, Ministry of Defence. For services to Defence.
+- Janine Faye Smith. Commercial and Digital Resilience Manager, Department for Work and Pensions. For Public Service.
+- Stephen Robert Smith. Lately Chief Engineer, BAE Systems Digital Intelligence. For services to Defence.
+- Hina Solanki. Founder, Sol Cosmedics. For services to Business and to Charity.
+- Professor Eva Sorensen. Professor, Chemical Engineering, University College London. For services to Education and Chemical Engineering.
+- Glenda Stephanie Spencer. Chair, Trinity School, Dagenham, London Borough of Barking and Dagenham. For services to Children with Disabilities and Special Educational Needs.
+- Patricia Clare Spruce (Patricia Murphy). Associate Director, People Services and Recruitment, Yeovil District Hospital and Somerset NHS Foundation Trusts. For services to the NHS.
+- Jyotsna Srikanth. Violinist. For services to Music.
+- Patricia Mary Stafford. Vice Chair, Battersea. For services to Charity and to Visually Impaired People.
+- Non Rhiannydd Stanford. For services to Triathlon in Wales.
+- Jane Elizabeth Stanford-Beale. Volunteer and Chief Executive Officer, Autism Berkshire. For services to Young People with Autism and their Families.
+- Richard Antony Stanton. Campaigner, Maternity Services, Shrewsbury and Telford Hospital NHS Trust. For services to Maternity Healthcare.
+- Jadwiga Lisa Stepanovic. Founder and Chief Executive Officer, Social Ark. For services to Young People and to Social Enterprise.
+- Sandra Stephenson. Head of Personnel Security, Department for International Trade. For Public Service.
+- John Benedict Stepney. Chair, Nationwide Association of Blood Bikes. For services to the NHS and to Charity.
+- John Alexander Eadie Stevenson. Volunteer, Tennis Scotland. For services to Lawn Tennis.
+- James Brown Stewart. Lately Chair, Hamilton Sound Talking Newspaper. For services to Visually Impaired People in Hamilton, Lanarkshire.
+- James Wilson Stockan. Leader, Orkney Isles Council. For services to Local Government.
+- Reverend Robert Stevenson Stockman. Minister, Fitzroy Presbyterian Church, Belfast. For services to Peace and Reconciliation.
+- Karen Stone. Team Leader, Ministry of Defence. For services to Defence.
+- Kelly Stone. Head of Airport Operations, Heathrow Airport, London. For services to Women in Aviation Engineering.
+- Sandra Strong. Chair, Customs and Export Licensing Committee, British Exporters Association. For services to British Exporters.
+- Alan Edward Stubbs. Vice-President, Buglife. For services to Invertebrate Conservation.
+- Donna Marie Swan. Founder, Calmer Therapy. For services to Children with Special Educational Needs and their Families in North East England.
+- Robin Keiji Kingston Sykes. Lately Head of Import Controls, Department for International Trade. For Public Service.
+- Richard James Symonds. Security Incident Policy and Investigation Team Leader, Ministry of Defence. For services to Defence.
+- Penelope Jane Taylor. Head, Newark College and Air and Space Institute. For services to Skills and Employment in Newark and Sherwood, Nottinghamshire.
+- Susan Taylor. Chair, British Amateur Rugby League Association and Vice-President, Rugby Football League. For services to Rugby League Football.
+- Iryna Terlecky. Chair, Association of Ukrainian Women in Great Britain. For services to Ukrainian Refugees.
+- Karel Victoria Thomas. Executive Director, British Universities Finance Directors Group. For services to Higher Education.
+- Lloyd Justin Thomas. Lead, Apprenticeships and Funded Skills, The Co-Operative Group. For services to Food Retail.
+- Robert Thompson. Chef. For services to Hospitality, to Tourism and to Charity.
+- Terri Thomson. Deputy Head, Protocol and Honours Team, Scottish Government. For services in Scotland on the Demise of Her Majesty Queen Elizabeth II.
+- Paul Nigel Todd. Manager, Green Flag Award Scheme and Keep Britain Tidy. For services to Public Parks and to the community in Liverpool.
+- Iain Douglas Tolhurst. Organic Farmer. For services to Agriculture.
+- Dr. Yuliana Topazly. Founder, Buddy With. For services to Business and Female Entrepreneurship.
+- Rachel Tranter-Needham. Director, Group for Education in Museums. For services to Museums, Heritage and to the Arts.
+- Jean Verona Trewick. Business Management Lead, Department for Work and Pensions. For services to Voluntary Organisations.
+- Terence David Alan Tricker. For services to the community in Staffordshire.
+- Katharine Jane Turnpenney. Chief Executive Officer, Children First Academy Trust, Edmonton, London Borough of Enfield. For services to Education.
+- Ian Robert Twinley, DL. Chair, East Anglia Reserve Forces and Cadets Association. For voluntary service to Defence and to the community in the East of England.
+- William Peter Upham. Executive Director, Growing Space. For services to Mental Health in Newport, Wales.
+- David Upjohn. Foster Carer, Credo Care. For services to Children with Disabilities.
+- Elliot David Vaughn. Founder, GiveOut. For services to Charity and to the LGBTQ+ Community.
+- Lisa Serafina Ventura. For services to Cyber Security and to Diversity and Inclusion.
+- Dr. Arturo Vilches-Moraga. Consultant Geriatrician and Physician, Northern Care Alliance NHS Group. For services to Geriatric Patients.
+- Dr. Shivani Anika Walia. Founder, Anika Food Charity. For services to the Alleviation of Food Poverty.
+- David Kenneth Walker, JP. For services to the Hospitality Industry and to Charity.
+- Rhoda Jean Walker. Volunteer, Northern Ireland Rare Diseases Partnership. For services to People with Rare Diseases in Northern Ireland.
+- Kingsley Cyril Ward. Founder, Rockfield Studios. For services to Music.
+- Jamie Antoney Ward-Smith. Chair, Co-Op Foundation and lately Chief Executive Officer, Do-It Foundation. For services to Young People and Charity.
+- David Timothy Warner. Chair, Local Trust. For services to the Community and Voluntary Sector.
+- Derek Alexander Watson. Quaestor and Factor, University of St Andrews. For services to Entrepreneurship and Sustainability.
+- Gillian Anne Weaver. Co-Founder, Human Milk Foundation. For services to Charity and to Human Milk Banking.
+- Helen Catherine Webb. Co-Founder, Sea-Changers. For services to Marine Nature Conservation.
+- Susan Mary Wilkinson. Lately County Co-ordinator, Farm Community Network. For services to the Farming Community in Somerset.
+- John Beresford Willett. Police Staff, Office of the Sussex Police and Crime Commissioner. For services to Policing and to Community Cohesion in Sussex.
+- Charles Emmanuel Williams (Charlie Dark). Founder, Run Dem Crew. For services to Running and to Young People.
+- David Henry Williams, DL. Vice Chair, D2N2 Local Enterprise Partnership and Chairman, Geldards LLP. For services to Business and to the Economy in Derbyshire and Nottinghamshire.
+- Lynn Willis. Operations Manager, Sellafield Ltd. For services to Business.
+- Barbara Wilson. Programme Adviser, Childcare Works. For services to Education.
+- Professor Bencie Woll. Professor of Sign Language, University College London. For services to Higher Education and Deaf People.
+- Hazel Verena Constance Wood. Co-Founder and Editor, Slightly Foxed. For services to Literature.
+- Katherine Wooder. Executive Headteacher, The Bridges Federation, London Borough of Southwark. For services to Education.
+- Robert Woodland. Wood Grainer and Decorative Artist. For services to Art and to Heritage Crafts.
+- Claire Elizabeth Woods. Head Gardener, Hillsborough Castle. For services to Horticulture and to the community in Northern Ireland on the Demise of Her Majesty Queen Elizabeth II.
+- Colin Richard Woolford. Strategic Security Director and Counter Terrorism Adviser, City of London Corporation. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Dr. Margaret Wright. For services to the Third Sector in Scotland.
+- Graham Philip Yandell. Chief Executive, Yandell Media Group. For services to the Media and to the Food Industry.
+- Sharon Young. Principal, Project Engineering, Elizabeth Line, Transport for London. For services to Rail Transport in London.
+- Susan Jane Young (Susan Alder). People Policy Leader, HM Revenue and Customs. For services to the State Funeral of Her Majesty Queen Elizabeth II.
+- Janet Sally Zmroczek. Lately Head, European and Americas Collections, British Library. For services to Literature and to Heritage.
+
+### British Empire Medal (BEM)

@@ -1,0 +1,26 @@
+---
+title: "Afghan Sign Language"
+source: https://en.wikipedia.org/wiki/Afghan_Sign_Language
+domain: ban-khor-sign-language
+license: CC-BY-SA-4.0
+tags: ban khor sign language
+fetched: 2026-07-05
+---
+
+# Afghan Sign Language
+
+**Afghan Sign Language** (Dari: زبان اشاره افغانستانی, romanized: *zaban eshareh afghanstani* ; AFSL) is a sign language spoken in Jalalabad in eastern Afghanistan and Kabul.
+
+## History
+
+Education for the deaf in Afghanistan grew out of educational efforts among Afghan refugees in Peshawar in the 1990s, making Pakistani Sign Language (IPSL) an early influence on Afghan Sign Language.
+
+The first formal school for the deaf in Afghanistan was established in Jalalabad in 1995 by SERVE Afghanistan. That same year, SERVE began a project to document Afghan Sign Language, and later produced a trilingual (Dari, Pashto, and English) dictionary of Afghan Sign Language. The language derives from the Deaf-community sign language of Jalalabad, and it is not known what connection it may have, if any, with the sign languages of other cities with established deaf populations, which are principally Mazar-i-Sharif, Herat, and Kandahar.
+
+Early analysis suggested some AFSL signs may have come from Pakistani Sign Language (IPSL) or American Sign Language (ASL), although intensive research on this link was not undertaken at the time. While IPSL's influence would have been due to regional exchange, ASL could have had an influence due to its use by some SERVE teachers in its early programming.
+
+Fingerspelling was introduced to AFSL in the late 1990s, after SERVE educators visited the Holy Land Institute for the Deaf in Jordan. Thus, Jordanian Sign Language and AFSL share a fingerspelling alphabet, although AFSL also introduced some additional letters to represent letters not found in the Arabic script.
+
+## Distribution
+
+Afghan Sign Language is primarily spoken in Jalalabad and Kabul, which have three large schools for the deaf between them. Smaller deaf populations who use AFSL are also found in major urban centers in the country, those being Mazar-e Sharif, Herat, and Kandahar. The majority of profoundly deaf Afghans (estimated at 30,000 in 2013) have never attended a school for the deaf.
