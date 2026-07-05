@@ -1,0 +1,48 @@
+---
+title: "Abby in Wonderland"
+source: https://en.wikipedia.org/wiki/Abby_in_Wonderland
+domain: humpty-dumpty
+license: CC-BY-SA-4.0
+tags: humpty dumpty
+fetched: 2026-07-05
+---
+
+# *Abby in Wonderland*
+
+**Abby in Wonderland** is a 2008 American musical fantasy film that adapts Lewis Carroll's Alice in Wonderland with the Muppets of Sesame Street. Abby Cadabby stars in the role of Alice. The feature-length adventure was released on DVD by Genius Products on September 30, 2008. In addition to receiving a DVD release, the film received a limited theatrical run in September 2008 through the Kidtoons family matinee series, and was aired on PBS Kids Feast of Favorites during the week of Thanksgiving 2008. It was aired again on December 29, 2008 on local PBS stations.
+
+## Plot
+
+Abby wants very much to be in her own fairy tale. Elmo takes an interest in Abby's wish and tells her the story of "Alice in Wonderland". For a second Abby falls asleep and she opens her eyes to see that she is wearing a blue dress and blouse and Elmo has turned into a rabbit and is in a great hurry.
+
+Abby follows Mr. Rabbit down a tunnel. At the bottom, she loses her wand to Mr. Rabbit, who disappears at the end of the tunnel. Abby notices there is a small door, but it's locked. She finds the key to the door on a table that just appeared. She unlocks the door, but she's too big to fit through the little door. With that she closes, locks the door and puts the key back on the table. Then Abby notices there is a bottle that just appeared. Before Abby can drink it, the bottle tells her not to drink him, but say things that rhyme with 'drink'. Abby does and she shrinks to the right size to go through the door, but she recalls she locked it and left the key on the table, where it is out of her reach. Abby finds a cookie who tells her to say things that rhyme with 'eat'. Abby says so many rhymes, she grows pretty big, but she manages to balance her size, grab the key and shrink herself to a small size. Abby takes Bottle and Cookie with her as she unlocks the door and enters a flowerbed.
+
+Further in the flowerbed, Abby meets the Counterpillar (played by Count von Count) and his partner Little Rose-ita (played by Rosita), but does not want to join in their counting game. With Cookie's help, Abby restores herself to her regular size. Just then Mr. Rabbit rushes past and Abby runs after him, passing Tweedle-Dee and Tweedle-Dum (played by Bert and Ernie, respectively), whom the former tells the latter that they are actually not in this story. Abby bumps into a tree and meets the Cheshire Cookie Cat (played by Cookie Monster), who points her in the direction of a tea party.
+
+At the tea party, Abby meets the Mad Hatter (played by Grover), Mr. Rabbit and Mousie (played by Zoe). To Abby's surprise, the Hatter doesn't serve tea, but letters 'T' in the cups. The Hatter shows Abby his collection of hats. After that Abby asks Mr. Rabbit for her wand, but with the hole in his pocket, he dropped it somewhere. The Cheshire Cookie Cat appears, guzzles up all the scones and cookies and scares away Mousie.
+
+Abby walks down a path in the search for her wand until she sees the path forks into four directions. As Mr. Rabbit comes to talk with Abby, she sits down in despair of being lost in this wonderland. Soon Mr. Rabbit rushes off to attend the King's Croquet Game. Abby follows him and finds a door in a tree. The door takes her to the messy castle of the king, "The Grouch of Cards" (played by Oscar the Grouch). The king has Abby's wand thinking it's a new royal scepter. Abby tries to retrieve her wand, challenging the king to a game of croquet, but he cheats. Mr. Rabbit protests at the king's decision to keep the wand. Before his grouchlings can throw out Abby and Mr. Rabbit, they both use Cookie to grow large. They scare the grouchlings and the king away. Once Abby and Mr. Rabbit restore themselves to their original size, Abby reclaims her wand. Abby is unable to magic herself back home, but Mr. Rabbit reminds her she's still dreaming.
+
+Back in Sesame Street, Elmo shakes Abby awake. Although Abby sort of got her wish to be in a fairy tale, she thinks she's better off being in a fairy tale when she's a little older.
+
+## Cast
+
+- Leslie Carrara as Abby Cadabby/herself
+- Kevin Clash as Elmo/Red Rabbit
+- Jerry Nelson as the Counter-pillar (Count von Count)
+- Caroll Spinney as the Grouch of Hearts (Oscar the Grouch)
+- David Rudman as the Cheshire Cookie Cat (Cookie Monster)
+- Fran Brill as Zoe/Mousey the Hatter Helper
+- Tyler Bunch as Bottle
+- Rickey Boyd as Cookie
+- Eric Jacobson as Grover/Mad Hatter and Tweedledee (Bert)
+- Carmen Osbahr as Rosita/Little Rose
+- Steve Whitmire as Tweedledum (Ernie)
+
+Additional Muppets performed by Pam Arciero, John Kennedy, Peter Linz, Paul McGinnis, Martin P. Robinson, David Stephens, and Matt Vogel.
+
+## Reception
+
+*DVD Verdict* gave the film a positive review, noting that while the original *Alice in Wonderland* story "kooky and fanciful, but also a little creepy", the Sesame Street version was sanitized for its target audience by polishing the original's "rough edges" and "removing any real sense of danger." They further noted that there is a place for some scary children's tales, but not on Sesame Street. While the film is targeted to a very young audience, some of the jokes are for adults. An example given is on how Ernie explains to Bert "that, despite popular misconception," the characters of Tweedledum and Tweedledee are "not actually in this story". It was noted that while the songs written by Mark Radice are bright and fun, "they don't quite live up to the best tunes Sesame Street has to offer." It was concluded "There are a lot of bad remakes of Alice in Wonderland. This isn't one of them."
+
+*Common Sense Media* gave it 4 out of 5 stars.
