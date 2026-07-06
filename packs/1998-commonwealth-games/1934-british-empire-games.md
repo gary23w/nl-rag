@@ -1,0 +1,75 @@
+---
+title: "1934 British Empire Games"
+source: https://en.wikipedia.org/wiki/1934_British_Empire_Games
+domain: 1998-commonwealth-games
+license: CC-BY-SA-4.0
+tags: 1998 commonwealth games
+fetched: 2026-07-06
+---
+
+# 1934 British Empire Games
+
+The **1934 British Empire Games** were the second edition of what is now known as the Commonwealth Games, held in England, from 4–11 August 1934. The host city was London, with the main venues at Wembley Park and the White City Stadium, although the track cycling events were in Manchester. Seventeen national teams took part, including the Irish Free State (the only Games in which they participated, although an all-Ireland team competed at the 1930 Games).
+
+The 1934 Games had been originally awarded to Johannesburg, South Africa, but the change of venue to London was made due to concerns regarding the treatment of black and Asian athletes by South African officials and fans.
+
+Six sports were featured in the Games with rowing being dropped from 1930 but cycling making its first appearance. Athletics took place at the White City Stadium, while boxing, wrestling, and aquatics (swimming and diving) were held at the Wembley Empire Pool, where the swimming pool would be converted overnight into an arena with 7,000 additional seats brought in to increase the capacity to 12,000. Lawn bowls was held at two clubs in Paddington and Temple, while the cycling was held at the Fallowfield Stadium in Manchester.
+
+Events for women athletes included a debut in athletics; the previous games had women's events in swimming and diving only.
+
+The Wembley Empire Pool was built specifically for the games on the instruction of Arthur Elvin and had been completed in just nine months, opening 10 days before the start of the Games on 25 July.
+
+## Sports
+
+- Aquatics ()
+  - Diving ()
+  - Swimming ()
+- Athletics ()
+- Boxing ()
+- Cycling ()
+- Lawn bowls ()
+- Wrestling ()
+
+## Participating nations
+
+(Teams participating for the first time in **bold**).
+
+- Australia
+- Bermuda
+- British Guiana
+- Canada
+- England **(host)**
+- **Hong Kong**
+- **India**
+- **(Republic of Ireland) Irish Free State***
+- **Jamaica**
+- New Zealand
+- Newfoundland
+- **Northern Ireland***
+- Scotland
+- South Africa
+- **Southern Rhodesia**
+- **Trinidad and Tobago**
+- Wales
+
+*The affiliation of Irish athletes at these games is unclear, see Ireland at the British Empire Games § 1934 games
+
+## Medal table
+
+*   Host nation (England)
+
+| Rank | Nation | Gold | Silver | Bronze | Total |
+|---|---|---|---|---|---|
+| 1 | England* | 29 | 20 | 24 | 73 |
+| 2 | Canada | 17 | 25 | 9 | 51 |
+| 3 | Australia | 8 | 4 | 2 | 14 |
+| 4 | South Africa | 7 | 10 | 5 | 22 |
+| 5 | Scotland | 5 | 4 | 17 | 26 |
+| 6 | New Zealand | 1 | 0 | 2 | 3 |
+| 7 | British Guiana | 1 | 0 | 0 | 1 |
+| 8 | Wales | 0 | 3 | 3 | 6 |
+| 9 | Northern Ireland | 0 | 1 | 2 | 3 |
+| 10 | Jamaica | 0 | 1 | 1 | 2 |
+| 11 | Southern Rhodesia | 0 | 0 | 2 | 2 |
+| 12 | India | 0 | 0 | 1 | 1 |
+| Totals (12 entries) | 68 | 68 | 68 | 204 |   |
