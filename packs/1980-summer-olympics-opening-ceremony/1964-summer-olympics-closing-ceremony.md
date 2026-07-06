@@ -1,0 +1,47 @@
+---
+title: "1964 Summer Olympics closing ceremony"
+source: https://en.wikipedia.org/wiki/1964_Summer_Olympics_closing_ceremony
+domain: 1980-summer-olympics-opening-ceremony
+license: CC-BY-SA-4.0
+tags: 1980 summer olympics opening ceremony
+fetched: 2026-07-06
+---
+
+# 1964 Summer Olympics closing ceremony
+
+Coordinates
+
+:
+
+35°40′48.6″N
+
+139°42′52.66″E
+
+﻿
+
+/
+
+﻿
+
+35.680167°N 139.7146278°E
+
+﻿
+
+/
+
+35.680167; 139.7146278
+
+The **Closing Ceremony** of the **1964 Summer Olympics** took place on October 24, 1964, at the National Olympic Stadium in Tokyo, Japan.
+
+The athletes from each country entered informally, despite plans to have a formal entrance. There did not appear to be any backup plan to sort athletes into their respective countries, and as a result the athletes rushed the field, sometimes arm in arm or riding piggyback, in a disorganized and chaotic spectacle. Zambia had just declared independence from Northern Rhodesia on that day and proudly marched under a newly made placard, but other placards were nowhere to be seen. The Japanese television networks were praised for covering the event live without losing their professional demeanor.
+
+When order was restored, the officially regulated ceremony was held, overseen by IOC president Avery Brundage. The athletes stood in a circle holding lights, and the large display above the field changed to read "SAYONARA". The national anthems of Greece, Japan, and Mexico as the next Olympic host country were played. As the closing ceremony completed with fireworks, the audience sang *Hotaru no Hikari* (the tune of Auld Lang Syne).
+
+The Showa Emperor was in attendance.
+
+## Anthems
+
+- Japanese national anthem
+- Greek national anthem
+- Olympic Hymn
+- Mexican national anthem
