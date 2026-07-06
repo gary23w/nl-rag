@@ -1,0 +1,696 @@
+---
+title: "Timeline of Montreal history (part 2/2)"
+source: https://en.wikipedia.org/wiki/1630s_(Timeline_of_Montreal_history)
+domain: 1976-summer-olympics
+license: CC-BY-SA-4.0
+tags: 1976 summer olympics
+fetched: 2026-07-06
+part: 2/2
+---
+
+## 19th century
+
+### 1801–1819
+
+- 1802 The first unofficial cavalry corps is formed in Montreal.
+- 1803–15 – With the Napoleonic Wars comes a demand for large amounts of squared timber for shipbuilding. Montreal is able to fulfil the demand, and this expansion of the city's economic base is reflected in a rise in population to 26,154 by the year 1825.
+- 1804–17 – The demolition of Montreal's fortifications takes 13 years, from 1804 to 1817.
+- 1805
+  - Thomas McCord returns to Montreal and recovers his land, which has been divided by Mary Griffin into streets and lots. The name Griffintown sticks.
+  - Thomas Porteous (merchant) opens a store at Sainte-Thérèse-de-Blainville, where he also produces potash.
+- 1807
+  - May – The Canadian Courant and Montreal Advertiser are first issued; owner and editor: Nahum Mower.
+  - The brothers James and Charles Brown begin publishing the Canadian Gazette/Gazette canadienne in July.
+  - An Act provides for a new market house in Montreal.
+- 1808
+  - In early 1808, sick and in debt, Edward Edwards sells the Montreal Gazette to the Browns, who the following month announce their plan to revive it.
+  - Importation of slaves is banned.
+  - July 12 – 5 privates of the 100th Regiment, Montreal, are charged with desertion and are transported as felons to New South Wales for 7 years, afterwards to serve as soldiers in that colony.
+- 1808-11 – A new prison is built.
+- 1809
+  - August 17 – The foundation of Nelson's Column is laid in Montreal. Installed on Place Jacques-Cartier, this is the second monument to be erected in Montreal.
+  - November 3 – John Molson's steamboat PS Accommodation sails from Montreal to Quebec. It is 85 feet over all, has a 6 horse-power engine, makes the distance in 36 hours, but stops at night and reaches Quebec on the 6th. The PS Accommodation is the second steamboat in America and probably in the world. The fare for an adult is £2.10s.od =$10.
+- 1810 – John Jacob Astor founds the Pacific Fur Company. (His great-grandson, John Jacob Astor IV died on the RMS Titanic).
+- 1811 – Founding of the newspaper the Montreal Herald by William Grey and Mungo Kay, founders, owners and publishers.
+- 1812
+  - June 18 – The United States declares war against Great Britain over territorial disputes in Canada (War of 1812).
+  - July 11 – U.S. troops invade Canada.
+- 1814 – The Treaty of Ghent ends the War of 1812 between the United States and Britain.
+- 1815
+  - John Molson builds the luxurious Mansion House Hotel on Rue St. Paul.
+  - March – Parliament votes $25,000 for Lachine Canal.
+- 1816
+  - Population of Montreal is about 16,000.
+  - The National School is opened.
+  - May 14 – Thomas A. Turner and Robert Armour, Esq., are appointed commissioners for the improvement of internal navigation between Montreal and Lachine, under the Provincial Act 48 George III, c. 19.
+- 1816-18 – John Coape Sherbrooke is the Governor General of British North America; Sherbrooke Street and the town of Sherbrooke later named after him.
+- 1817
+  - The Bank of Montreal begins operations in June. Mary Griffin's husband, Robert, is the first clerk.
+  - Guy Street is named on August 30 for Étienne Guy, a notary who gave the city the land for the street.
+- 1818 – Saint Helen's Island was purchased by the British government. Fort de l'Île Sainte-Hélène was built on the island as defences for the city, in consequence of the War of 1812.
+- 1819 – Darkness at noon on November 9.
+
+### 1820–1839
+
+- 1821
+  - The Earl of Dalhousie presents Dalhousie Square to Montreal
+  - March 31 – McGill University established by Royal Charter.
+  - Beginning of Lachine Canal excavations on July 17.
+  - The British garrison starts the construction of the Fort de l'Île Sainte-Hélène. It is completed in 1823 and partially rebuilt in 1863 after a fire as a preventive measure against an eventual American attack.
+- 1822
+  - The first iron bridge is erected on March 8.
+  - May 1 – The Montreal General Hospital building is completed.
+  - In September, a whale (42 feet 8 inches in length, 6 feet across the back, and 7 feet deep) finds its way up the Saint Lawrence River.
+- 1824
+  - Recollet Convent opens as a school for Irish children.
+  - First Saint Patrick's Day Parade organized on March 17.
+  - Construction on the new Notre-Dame Basilica (Montreal) begins, designed by New York architect James O'Donnell, an Irish Protestant.
+- 1825
+  - The Lachine Canal is opened, and new industries spring up in the St. Antoine ward area as a direct outcome of the easier transport of goods. Shipping immediately increases and, along with the destruction of the city walls, Montreal comes to be an economic, rather than military, city. Gradually, the city's harbour facilities expand. In 1830 the wharves are rudimentary and stretched for only a short distance along De la Commune Street.
+  - First permanent theatre building in Montreal, Theatre Royal, is built by John Molson to attract bigger names to the city, which lacked such a venue. It costs the magnate $30,000. The building is demolished in 1844 and the site was used for the Bonsecours Market. Another venue, also called Theatre Royal, was built not far away in Old Montreal; this building, too, no longer exists.
+- 1826–37 and 1842–99 – La Minerve published.
+- 1827 – Fleming windmill (13, avenue Strathyre) built.
+- 1829 – Most of Notre-Dame Basilica (Montreal) is now completed. Work continues for more than a decade on the two bell towers. A new skyline begins to develop.
+- 1830 – The Montreal harbour is officially incorporated.
+- 1831 – Alexis de Tocqueville visits Montreal in August–September.
+- 1832
+  - Charter of incorporation for the city of Montreal (27,000 inhabitants).
+  - Exchange Coffee House opens.
+  - Thousands of deaths by cholera in Montreal.
+  - Collège de l'Assomption is founded by Jean-Baptiste Meilleur
+- 1832–34 – Sainte-Anne Market built.
+- 1833
+  - Jacques Viger becomes the first mayor, elected by city councillors.
+  - Coat of arms of Montreal adopted.
+  - February 6 – General fast to pray for the end of the cholera epidemic.
+  - August 18 – First Trans-Atlantic steamship SS Royal William steams from Pictou, Nova Scotia.
+- 1834
+  - August 1 – Slavery comes to an end in all British territories, including British North America.
+  - Hundreds of deaths from cholera in Montreal.
+- 1836
+  - The Roman Catholic Archdiocese of Montreal is made distinct from the diocese of Quebec on May 13, 1836.
+  - Montreal is lighted by the Montreal Gas Light Co.
+  - On July 21, the first railway line in British North America, the Champlain and St. Lawrence Railroad connects La Prairie with Saint-Jean-sur-Richelieu.
+  - Pied-du-Courant Prison opens.
+- 1837
+  - Britain refuses to grant more home rule in Canada, which leads to the Rebellions of 1837.
+  - On the November 6, a trifling skirmish between two political parties in the Place d'Armes begins the Lower Canada Rebellion.
+- 1838
+  - Coal gas street lighting is introduced.
+  - The Old Montreal Custom House is completed
+  - The "Lord Sydenham" steamboat runs the Lachine Rapids.
+  - Montreal rebel leader Robert Nelson reads a declaration of independence to a crowd at Napierville.
+  - November 3 – Second rebellion in Canada.
+  - December 21 – Execution of the rebels Joseph-Narcisse Cardinal and Joseph Duquet, at Pied-du-Courant Prison.
+- 1839
+  - February 15 – Chevalier DeLorimier, Charles Hindelang, and others who joined the Rebellion are executed at Pied-du-Courant Prison.
+  - September 26 – Canadian rebels are transported to New South Wales.
+
+### 1840–1859
+
+- 1840
+  - The Act of Union combines Lower Canada and Upper Canada.
+  - August 19 – Lachine Rapids first navigated in a steamboat.
+- 1841
+  - There are now at least 6,500 Irish Catholics in Montreal. Most of the immigrants to Montreal settle in Griffintown, particularly in the area west of McGill Street (Montreal). In this district, the area between the Lachine Railroad and the Lachine Canal becomes a slum. Much like the French slums of Hochelaga Maisonneuve to the east.
+  - West Bell Tower of Notre-Dame Basilica (Montreal), called "Perseverance" and housing the 10,900 kg bell "Le Gros Bourdon" / "Jean-Baptiste", completed.
+- 1842 – In May, Charles Dickens appears at Theatre Royal, in Montreal, surrounded by local talent. While Dickens is in Montreal he produces, directs and acts in three plays.
+- 1843
+  - The Cornwall Canal and the Chambly Canal are opened.
+  - Survey of the boundary between the U.S. and Canada is begun.
+  - Montreal Police Service established on March 15.
+  - The first labour strike in Canada occurs. The Lachine Canal was widened in the 1840s under conditions of bitter conflict between contractors and Irish labourers.
+  - After completion of the East Bell Tower of Notre-Dame Basilica (Montreal), called "Temperance" and housing a ten-bell carillon, Notre-Dame Basilica (Montreal) is finally completed.
+  - Superior Joseph-Vincent Quiblier authorizes construction of St. Patrick's Church for the city's English-speaking Roman Catholics.
+  - Foundation of the religious congregation of the Sisters of Providence by Émilie Gamelin.
+  - Foundation of the religious congregation Saints-Noms-de-Jésus-et-de-Marie.
+- 1844
+  - Government moves from Kingston to Montreal.
+  - The seat of the government of Canada East and Canada West is moved from Kingston to Montréal.
+  - Église Sainte-Geneviève (Montréal) completed.
+- 1845
+  - Ottawa Hotel, Montreal built.
+  - Morgan's store opens.
+- 1846 – Foundation of the Montreal City and District Savings Bank, now known as the Laurentian Bank.
+- 1847
+  - The Montreal Telegraph Company founded. In 1850, the year prior to Hugh Allan's presidency, Montreal Telegraph Co operated merely 500 miles of line, all in the province of Canada.
+  - Telegraph service between Montréal and Toronto, between Montréal and Quebec City, and between Montréal and New York City established.
+  - Bonsecours Market opened. It housed City Hall between 1852 and 1878.
+  - The railway from Montreal to Lachine is opened.
+  - Desbarats & Derbyshire (Georges-Édouard Desbarats and Stewart Derbyshire) start a glass factory at Vaudreuil.
+  - The first mass is celebrated in St. Patrick's Basilica on St. Patrick's Day, March 17.
+  - September 1 – Lord Elgin visits the fever sheds at Windmill Point.
+  - October 23 – 65 immigrants die in a week at Windmill Point.
+  - November 1–9, 634 deaths of mostly Irish immigrants since January 1.
+  - November – Death of John Easton Mills, mayor of Montreal, as he tends the sick in the fever sheds
+- 1847–48 – In all, between 3,500 and 6,000 Irish immigrants die of the Typhus epidemic of 1847 at Windmill Point.
+- 1848
+  - January 2 – Wellington and Commissioners streets flooded.
+  - July 5 – Run on the Savings Bank, Montreal, followed by re-deposit.
+  - Foundation of the religious congregation of Sisters of Mercy.
+- 1849
+  - Burning of the Parliament Buildings in Montreal.
+  - Beauharnois Canal is opened.
+  - April 25 – For sanctioning the Rebellion Losses Bill, Lord Elgin is mobbed and the Parliament House in Montreal is burned. Parliament will now sit alternately in Quebec and Toronto.
+- 1850
+  - Anglican Diocese of Montreal established.
+  - Opening of the Ann Street School.
+  - Beginning of the dredging of the St. Lawrence to allow seagoing ships to reach to Montreal.
+- 1851
+  - Grand Trunk Railway Company formed.
+  - November 19 – First YMCA on the continent opened in Montreal.
+- 1851–53 – Église Saint-Pierre-Apôtre de Montréal built.
+- 1852
+  - Laval University is opened.
+  - July 8 – Beginning of Great Fire of 1852, which burns 11,000 houses in Montreal; 20% of the eastern side of the city is devastated.
+- 1853
+  - The first screw steamer up the Saint Lawrence River arrives from Liverpool. Canadian Steam Navigation Company runs regular services from Liverpool and Glasgow to Quebec City and Montreal, twice a month in summer and once a month in winter.
+  - May 23 – First charter for steamers from Montreal to Great Britain.
+  - June 9 – Alessandro Gavazzi's anticlerical speeches at Montreal's First Congregational Church (Zion Church) spark riots that kill 40 people.
+  - June 18 – The Grand Trunk Railway opens to Portland. Portland becomes the primary ice-free winter seaport for Canadian exports.
+  - July 22 – Pier No.1 of the Victoria Bridge is begun.
+  - Notre-Dame-de-Grâce built.
+- 1854
+  - Villa Maria founded.
+  - July – Six Nations Indians offer to fight the Queen's enemies anywhere
+  - July 20 – The first stone of the Victoria Bridge across the St. Lawrence is laid.
+  - August 2 – First coffer-dam of Victoria Bridge ready for masonry.
+  - October 16 – Twenty-one vessels in port at Montreal.
+  - St. Ann's Church is consecrated, becoming the centre of Griffintown life; it opens on December 8 (Feast of the Immaculate Conception) and was designed by John Ostell. The Sulpicians donated the land for the church and provided the Irish-born pastors: Father Michael O'Brien, Father Michael O'Farrell and Father James Hogan (priest 1867–1884). Some residents of Griffintown claim that St. Ann's ("down the hill") was actually more of a center for the Irish in Montreal than St. Patrick's Basilica, Montreal's ("up the hill") was, since most of the city's Irish lived in Griffintown. It will be demolished in 1970.
+  - Cholera kills more than 1,000 citizens.
+  - Canada Steamship Lines Inc. established.
+- 1855
+  - The Redpath Sugar Refinery opens.
+  - Hugh Allan and Andrew Allan establish the Montreal Ocean Steamship Company, with four steamships fortnightly.
+  - October 19 – G.T. Railway is open to Brockville.
+- 1856
+  - Montreal's Water Works made ready for use
+  - The Allan's four steamships, between Montreal and Liverpool bring 3,031 passengers, Westward (average voyage 13 days).
+  - September 16 – Balloon ascension from Griffintown, in the "Canada"
+  - The Grand Trunk Railway begins through passenger service between Montreal and Toronto on October 27 with great celebrations being held in Kingston to celebrate this accomplishment.
+  - December 10 – Burning of Christ Church Cathedral (Montreal).
+- 1857
+  - June 13–26 ocean steamships at Montreal today
+  - June 26 – Fire on board the steamer "Montreal" en route from Quebec to Montreal – 253 lives lost, including Stephen C. Phillips.
+  - September 7 – 500 of the 39th Regiment leave Montreal, possibly for the Crimea.
+  - Saint-Enfant-Jésus du Mile-End Church completed.
+  - The lower part of Griffintown entirely submerged by river flooding.
+- 1857–2000 – Seagram opens. The former Seagram headquarters in Montreal now belongs to McGill University under the name Martlet House.
+- 1858
+  - Formation of the Royal Canadian Regiment.
+  - January 27 – The Queen names Ottawa the seat of government
+  - February 20 – In Griffintown, beds stand in three feet of water
+  - Riots and street fights run rampant through Griffintown on election day when D'Arcy McGee is chosen to represent the Montreal West riding, including Griffintown, in the federal government.
+- 1859
+  - Mgr Ignace Bourget condemns the Institut canadien de Montréal, excommunicating its members, and on July 7, 1869, Rome adds the institute's *Annuaire* for the year 1868 to the Catholic Church's Index of prohibited books.
+  - December 12 – The Victoria Bridge opens.
+  - December 17 – The first passenger train passes through the Victoria Bridge.
+  - The Black Rock is erected by canal workers on Bridge St. to honour the Windmill Point victims of cholera.
+  - Foundation of the National Bank of Canada.
+
+### 1860–1879
+
+- 1860
+  - Victoria Square, Montreal opens.
+  - February 20 – The wreck of the Allan Line steamship SS Hungarian with a number of Montrealers on board.
+  - May – Crystal Palace built for the Montreal Industrial Exhibition of 1860.
+  - August 25
+    - The Prince of Wales visits Montreal.
+    - Opening of the Victoria Railway Bridge.
+  - November 27 – Opening of the Christ Church Cathedral (Montreal).
+- 1861
+  - Griffintown again flooded.
+  - January – British troops ordered to Canada.
+  - January 18 – A meeting in Montreal, respecting extradition of John Anderson, a slave charged with murder, is addressed by Hon. Messrs.
+  - February – John Anderson not to be surrendered without instructions from England.
+  - April 15 – Great inundation at Montreal.
+  - June 6 – Formation of the Canada Presbyterian Church by fusion of the Free Church and the United Presbyterian body.
+  - June 13 – Prince Alfred visits Montreal.
+  - The street horsecar is introduced as public transportation on 27 November. It was operated by Montreal City Passenger Railway Company 1861–1886.
+  - December – Six steamers chartered to bring troops to Canada.
+  - Church of St. John the Evangelist founded.
+- 1862
+  - The Montreal Corn Exchange Association is organized.
+  - Montreal Sailor's Institute founded.
+  - Ocean steamers trading to Montreal have increased from 5,545 tons in 1854, to 62,912; other ocean vessels from 58,416 to 195,348 tons.
+  - January – Military companies are organizing throughout Canada.
+  - January 4 – Victoria Bridge is guarded to prevent its destruction, threatened from the USA.
+  - April 2 – By-law to establish a Montreal Fire Department.
+  - May 20 – The Montreal Water Works are commenced.
+- 1863
+  - Bounties for USA recruits and substitutes often reach $2,000, inducing kidnapping and contraventions of the British Foreign Enlistment Act, for which heavy bail is exacted.
+  - Fire Alarm established on January 19.
+  - May 12 – Protestant House of Refuge in Montreal incorporated.
+  - Art Association of Montreal incorporated.
+- 1864
+  - The Montreal City Passenger Railway Company has 10 miles of track, $240,000 paid capital and carries 1,485,725 passengers at 5 cents each.
+  - In October, delegates from across British North America developed the terms for Confederation at a three-week conference in Quebec City. After the Quebec Conference, there remained the task of selling Confederation to the citizens.
+  - November 10 – Continued examination of raiders at Montreal.
+- 1865
+  - The Parliament of Upper Canada and Lower Canada favors Confederation.
+  - The Montreal Board of Trade Building erected in 1855 is burned.
+  - July 11–14 – Convention at Detroit to promote a new Reciprocity treaty. Montrealers attend, but only to give desired information. The Convention passes resolutions favouring a new Reciprocity treaty.
+  - December 3 – Church of the Gesu opened. It was built and designed by Irish architect Patrick Keely.
+- 1866
+  - Molson Bank Building, Montreal built.
+  - The Montreal Glass Co., at Hudson, makes chimneys, bottles and insulators.
+  - March 13 – The Prince of Wales Regiment and Battery of Artillery leave Montreal to repel Fenian invaders.
+  - March 17 – The Canadian–American Reciprocity Treaty terminates
+  - July 18 – The 47th Regiment reaches Montreal from Kingston.
+  - First successful transatlantic telegraph cable is laid.
+- 1867
+  - Canada East becomes the Province of Quebec.
+  - March – Cornerstone of St. Patrick's Hall, Montreal, laid
+  - July 1 – The Dominion of Canada is formed by the confederation of several provinces.
+- 1868 – Thomas D'Arcy McGee is assassinated by pistol shot in April. He is given a state funeral in Ottawa and interred in the Cimetière Notre-Dame-des-Neiges. Patrick J. Whelan, a Fenian sympathizer, is accused, tried, convicted, and hanged for the crime.
+- 1869
+  - First transcontinental railroad completed on May 10.
+  - Red River Rebellion.
+  - Collège Notre-Dame du Sacré-Cœur established.
+  - Montreal Star founded.
+- 1870 – Second Fenian Raid
+- 1872
+  - Montreal Exchange created.
+  - Montreal Royals founded.
+  - November 21, Lord Dufferin, the Governor-General, formally presents the statue of Queen Victoria in Victoria Square to the city.
+- 1872–78 – Montreal City Hall is built.
+- 1873–82 – Chapelle Notre-Dame-de-Lourdes de Montréal built.
+- 1874
+  - Saint Helen's Island becomes a fashionable park.
+  - Shaughnessy House built for Duncan McIntyre by architect William T. Thomas. McIntyre sells it to William Van Horne who in turn sells it to Thomas Shaughnessy. The house is declared a national historic site in 1974 and is now part of the Canadian Centre for Architecture.
+- 1875
+  - June 15 – Formation of the Presbyterian Church in Canada.
+  - September 2 – The Guibord case occasions some ill feeling in Montreal, but by the energetic action of Dr. William Hales Hingston, the Mayor, there are no riots.
+  - Hockey, in the form known today, is first played in Montreal in 1875, according to rules devised by James George Aylwin Creighton, a McGill University student.
+  - Montreal Academy of Music inaugurated.
+  - Montreal and New York City are now linked by train.
+- 1876
+  - Dorchester Square opened.
+  - Place du Canada opened.
+  - Inauguration of Mount Royal Park on May 24.
+- 1877
+  - Thomas George Roddick introduces Lister's antiseptic methods to the Montreal General Hospital.
+  - The first telephone conversation in Quebec.
+- 1878
+  - Université de Montréal is established.
+  - Windsor Hotel completed.
+- 1879
+  - Mary Gallagher is murdered by jealous rival Susan Kennedy on June 27. It is a sensational story. It's said Gallagher's ghost returns every seven years to haunt Griffintown.
+  - In a strange turn of events, Michael Flanagan, cleared of all charges regarding the death of Mary Gallagher, is loading barges in the Wellington Basin when he falls and drowns on December 5, the very same day Susan Kennedy was supposed to be hanged.
+
+### 1880–1900
+
+- 1881 – Mark Twain visits in November, remarks that "this is the first time I was ever in a city where you couldn't throw a brick without breaking a church window."
+- 1882
+  - Redpath Museum established.
+  - Opening of the Montreal-Sorel railway.
+  - Montreal has its first electric lighting.
+- 1883 – First winter carnival in Montreal.
+- 1883–1985 – Montreal Locomotive Works opens.
+- 1883–84 – Dalhousie train station is built.
+- 1884–1933 – Montreal Hockey Club established.
+- 1884 – First issue of the newspaper La Presse.
+- 1884–1920 – Mount Royal Funicular Railway brings sightseers to the top of Mount Royal.
+- 1885
+  - A smallpox epidemic in February kills 3,164 Montrealers (out of over 150,000 inhabitants).
+  - Last Spike (Canadian Pacific Railway) on November 7.
+  - The Fraser-Hickson Library opened.
+  - Saint-Joachim de Pointe-Claire completed.
+- 1885–86 – Massive flooding and fires recorded in Griffintown.
+- 1886
+  - First Trans Canada train departure on June 28.
+  - On July 4, the first scheduled Canadian Pacific Railway transcontinental passenger train reaches Vancouver, after travelling for five days, 19 hours.
+  - Worst flooding recorded – also two major fires.
+  - Dominion Bridge Company founded.
+- 1887–1889 – Windsor Station (Montreal) built.
+- 1888
+  - Lafontaine Park created.
+  - Mont-Saint-Louis College is founded.
+- 1889 – Saint James United Church (Montreal) built in June.
+- 1890 – Sanctuaire du Saint-Sacrement built.
+- 1891–94 – Monument-National built.
+- 1892
+  - April 3 – Bonsecours Market sustains its fourth serious fire. The uninsured loss is $20,000.
+  - The era of public transportation in Montreal begins with the inauguration of the electric tram. The trams constitute a practical way to get from one end of the city to the other, especially for workers.
+- 1893
+  - Royal Victoria Hospital, Montreal established.
+  - The Montreal Hockey Club is the first hockey team to win the newly donated Stanley Cup.
+  - Jacques Cartier Monument unveiled.
+- 1894
+  - Pioneers Monument Obelisk (Montreal) unveiled on May 17.
+  - Mary, Queen of the World Cathedral consecrated.
+
+- 1895 – The monument in memory of Paul Chomedey de Maisonneuve, by artist Louis-Philippe Hébert, was unveiled on July 1 on Place d'Armes.
+- 1896 – Motion pictures are first shown in Canada for the first time at the Palace Theatre at 972 St. Lawrence, corner Viger, on June 27.
+- 1897
+  - *Lion of Belfort* (Montreal) unveiled on May 24.
+  - A survey of living conditions is conducted by Mr. Herbert Brown Ames. He points out the discrepancy in living conditions between wealthy areas of Montreal ('the upper city') and the areas inhabited by the working class ('the city below the hill'): "The sanitary accommodation of 'the city below the hill' is a disgrace to any nineteenth century city on this or any other continent. I presume there is hardly a house in all the upper city without modern plumbing, and yet in the lower city not less than half the homes have indoor water-closet privileges. In Griffintown only one home in four is suitably equipped, beyond the canal (in Pointe-Saint-Charles) it is but little better. Our city by-law prohibits the erection of further out-door closets, but it contains no provision for eradicating those already in use."
+  - Canadian Car and Foundry's history goes back to 1897, but the main company is established in 1909 from an amalgamation of several companies and later becomes part of Hawker Siddeley Canada through the purchase of Avro Canada in the late 1950s.
+- 1898
+  - Place Viger constructed.
+  - Hôpital du Sacré-Cœur de Montréal founded on June 1.
+- 1898–1903 – Saint-Jean-Baptiste Church built.
+- 1899
+  - The Montreal Shamrocks win the Stanley Cup.
+  - Incorporation of Loyola College on March 10.
+  - October 30 – The First Canadian Contingent of the Boer War sets sail to South Africa on the SS Sardinian of the Allan Line, bearing Canada's initial quota of fighting men, including the men of "E Company" of Montreal.
+  - In the afternoon of November 21, Montrealers see their first car. At the wheel of this first steam-powered automobile is Ucal-Henri Dandurand, accompanied by Mayor Raymond Préfontaine. They descend steep Côte du Beaver Hall without difficulty and climb back up through the streets in the same fashion.
+  - Construction of a dam in the Old Port of Montreal: there will be no more flooding.
+- 1900 – The Montreal Shamrocks win the Stanley Cup.
+
+
+## 20th century
+
+### 1901–1919
+
+- 1901
+  - Montreal Light, Heat & Power established.
+  - The city counted 1033 men and 4 women in the Chinese community. Clustered together along Saint Laurent Boulevard and De la Gauchetière Street, various Chinese establishments also serve as living quarters for the first Chinese Montrealers and, from the end of the 19th century onwards, constitute a distinctive neighbourhood: Chinatown.
+- 1901–1903 – Église Saint-Léon de Westmount built.
+- 1903
+  - Monument to Ignace Bourget is unveiled in front of Mary, Queen of the World Cathedral on June 24. Sculptor Louis-Philippe Hébert.
+  - General strike by the tram employees of Montreal on February 6.
+- 1904
+  - Montreal Children's Hospital founded.
+  - During the federal election, Léo-Ernest Ouimet uses his kinetoscope to project election results on to the front wall of the newspaper La Patrie.
+- 1906
+  - Opening of the first cinema in Montreal. The Ouimetoscope is inaugurated on January 1.
+  - Dominion Park opens.
+  - First demonstration of a zeppelin in Montreal.
+  - Dominion Car and Foundry incorporated.
+- 1907
+  - Boer War Memorial unveiled on May 24.
+  - Inauguration of Blue Bonnets Horse Race track on June 14.
+  - Centre hospitalier universitaire Sainte-Justine founded.
+  - Canadian Express built.
+- 1909
+  - March 17 - Runaway train crashes into Windsor Station (Montreal).
+  - Jeanne Mance Monument unveiled on September 2.
+  - December 4 – Montreal Canadiens are founded
+  - Jubilee Arena opens.
+  - Canada Car Company merges with several other companies to form Canadian Car and Foundry.
+- 1909–56 – The Montreal and Southern Counties Railway is an interurban streetcar line that ran between Montréal and Granby.
+- 1910 – Great Eucharistic Congress in Montreal on September 6.
+- 1911 – Église Saint-Viateur d'Outremont built.
+- 1912
+  - April 15 – The sinking of the steamship Titanic with a number of Montrealers on board.
+  - September 3 – Jack Haney on "The first Trans-Canada Auto trip" (Halifax: August 27, 1912, to Victoria: October 17, 1912) arrives in Montreal.
+  - December 31 – Ritz-Carlton Montreal opens.
+  - Saint Helen's Island Lighthouse built. It is located below the Fort de l'Île Sainte-Hélène at the west side of the island in Montreal harbor.
+- 1912–14 – Maisonneuve Market is built. This Beaux-Arts building is the crowning achievement of architect Marius Dufresne.
+- 1913 – Establishment of a permanent Yiddish theatre troupe in Montreal.
+- 1914
+  - May 29 – The sinking of the steamship RMS Empress of Ireland with a number of Montrealers on board.
+  - The Edward VII Monument is unveiled in Phillips Square on October 1.
+  - Jewish Public Library (Montreal) founded.
+  - Foundation of the Catholic Working Federation of Montreal.
+- 1915
+  - May 7 – The sinking of the RMS Lusitania with a number of Montrealers on board.
+  - Inauguration of new custom house at 105 McGill Street (Montreal).
+- 1916 – March 1 – Fire burns the Grand Trunk Railway Station.
+- 1917 – Conscription Crisis of 1917: riots break out in the streets of Montréal.
+- 1918
+  - Province of Quebec puts Montreal under its direct control.
+  - The Canadian Government Motion Picture Bureau is established.
+  - Mount Royal Tunnel completed. First train under the mountain on October 21; it transports soldiers leaving for Sevastopol in Russia.
+  - Canadian National Railway created.
+- 1919
+  - The Montreal Clock Tower cornerstone is laid by the Prince of Wales, on October 31. It is completed in 1922.
+  - On November 22, the city's first regular bus service is launched on St-Étienne Street, better known as Bridge St.
+  - CINW (originally XWA) Montreal is the first radio station to broadcast regular programming, on December 1.
+  - Montreal Bagel Bakery on Saint Laurent Boulevard opened by Isadore Shlafman, introducing the Montreal-style bagel. The bakery moved in the 1950s to become Fairmount Bagel.
+  - Church of the Madonna della Difesa inaugurated.
+
+### 1920–1939
+
+- 1920 – The Prohibition movement in the United States turns Montreal night life into a haven for U.S. tourists looking for alcohol.
+- 1921 - Majority vote against change to proportional representation for city elections.
+- 1922 – CKAC radio makes its first broadcast September 22. This is the world's first commercial station broadcasting in French.
+- 1923 – The congregation Notre-Dame de Montréal is founded by Marie Lacoste Gérin-Lajoie.
+- 1923–83 – Belmont Park, Montreal begins operations.
+- 1924
+  - An illuminated Mount Royal cross is installed by the Société Saint-Jean-Baptiste.
+  - Samuel Bronfman sets up shop as a distributor, founding the Distillers Corporation in Montréal, specializing in cheap whiskey, and takes advantage of prohibition in the United States. Distillers Corporation acquires Joseph E. Seagram & Sons of Waterloo, Ontario from the heirs of Joseph Seagram in 1928.
+- 1924–25 – Saint-Ambroise Church built.
+- 1925
+  - June 10 – Canada's Methodist churches, Congregational churches, and a large portion of its Presbyterian churches join to form the United Church of Canada.
+  - Power Corporation of Canada founded.
+- 1926
+  - Montreal Curb Market/Canadian Stock Exchange created.
+  - The Patriotes Monument was unveiled on June 24 (Saint-Jean-Baptiste Day); it is the work of Alfred Laliberté. On each of its three faces a carved bronze medallion represents Chevalier de Lorimier, Louis-Joseph Papineau, and Wolfred Nelson. The monument is in Place des Patriotes, in front of the former Pied-du-Courant Prison.
+  - Queen Marie of Romania becomes the first reigning monarch to visit Montreal
+- 1927
+  - Collège André-Grasset is founded by the Sulpicians.
+  - Laurier Palace Theatre fire.
+  - The era of Montreal's first skyscrapers begins: Old Royal Bank Building, Montreal, the Sun Life Building, Aldred Building, etc. Until 1927, legislation prevented builders from putting up structures over ten stories high.
+- 1928
+  - Saint-Hubert Airport built.
+  - Collège Jean-de-Brébeuf established.
+- 1929 – Collège de Maisonneuve established.
+- 1930
+  - Cabaret Frolics opens.
+  - Jacques Cartier Bridge opens on May 14 as the Harbour Bridge; it will be renamed for Jacques Cartier in 1934.
+  - Lachapelle Bridge opens on May 24.
+  - Robert Burns Memorial unveiled on October 18.
+  - The foundation of the monument of Jean Vauquelin (1728–1772) – defender of Louisbourg and Quebec City – is laid in Montreal; sculptor Paul-Eugène Benet.
+  - Beginning of commercial flights from Montreal.
+- 1930–78 – Montréal-Matin published.
+- 1931
+  - Canada's first television station, VE9EC, begins broadcasting in Montréal. VE9EC is owned jointly by radio station CKAC and the newspaper *La Presse*.
+  - Montreal Botanical Garden founded.
+- 1932 - Church of St. Andrew and St. Paul opens.
+- 1933
+  - Jean-Talon Market and Atwater Market open.
+  - CBME-FM launched.
+  - Montreal Children's Theatre founded.
+- 1934
+  - Sir Mortimer B. Davis Jewish General Hospital founded.
+  - Montreal Neurological Institute founded.
+  - Honoré Mercier Bridge completed in summer.
+- 1936 – Air Canada founded on August 11 as Trans-Canada Airlines.
+- 1937
+  - Snowdon Theatre opens in February.
+  - Pie-IX Bridge opens.
+  - CBF radio launched.
+- 1938–39 – Saint-Jean-Berchmans Church built.
+- 1939–45
+  - World War II – Fort de l'Île Sainte-Hélène serves to contain 250 prisoners of war, considered Nazi supporters, fascists or deserters.
+  - 1939–45 – Canadian Power Boat Company operated.
+- 1939
+  - Collège International Marie de France founded.
+  - Pierre Le Gardeur Bridge built.
+  - The Flag of Montreal is first displayed in May, and is based on the city's coat of arms.
+- 1939–44 – During World War II, Mayor Camillien Houde protests against conscription and urges Montrealers to disobey the federal government's orders. Ottawa is furious over Houde's insubordination and holds him in a prison camp until 1944, when the government is forced to institute conscription (see Conscription Crisis of 1944).
+
+### 1940–1959
+
+- 1941 – Opening of the Dorval International Airport on September 1.
+- 1941–51 – Montreal's population grows by 20% and Toronto's by 25%.
+- 1942 – 300th anniversary of Montreal's founding.
+- 1943
+  - Central Station (Montreal) opens.
+  - Recluse Sisters are founded in Alberta. Their inspiration is Jeanne Le Ber.
+- 1944
+  - Hydro-Québec founded on April 14 as the Quebec Hydroelectric Commission by nationalizing Montreal Light, Heat and Power.
+  - A RAF Liberator Bomber, fully loaded for a flight to England, crashes into a row of houses in Griffintown on April 25. 15 to 20 fatalities noted.
+- 1945
+  - Radio Canada International launched.
+  - CJAD's first broadcast.
+- 1947
+  - International Civil Aviation Organization established in April.
+  - CAE Inc. founded as Canadian Aviation Electronics.
+- 1948 – Lachine Museum founded.
+- 1949
+  - Norgate shopping centre built.
+  - Iron Ore Company of Canada founded.
+- 1940s – Gibeau Orange Julep first built - original orange-shaped building will be torn down for the construction of the Decarie autoroute and rebuilt in 1965.
+- 1951
+  - Congregation Shaare Zedek founded.
+  - Station Centrale d'Autobus Montreal built.
+  - St-Hubert opened.
+- 1951–52 – Saint-Sixte Church built.
+- 1951–61 – Montreal's population grows by 35% and Toronto's by 45%.
+- 1952
+  - Bus service replaces streetcars on Boulevard St-Laurent. Gradually, trams began to be replaced by buses.
+  - Regular television broadcasts on a modern system in Canada begin with the inauguration of CBFT on September 6.
+- 1954
+  - Greater Montreal Real Estate Board founded.
+  - Dic Ann's Hamburgers founded.
+  - Saint-Arsène Church built.
+- 1955
+  - March 17 – Richard Riot on Saint Catherine Street following the suspension of Maurice Richard.
+  - Gaz Métro founded as the Corporation de gaz naturel du Québec.
+  - Many buildings are demolished as Dorchester Street is widened into a boulevard.
+- 1957 – The lowest temperature ever recorded was −37.8 °C (−36 °F) on January 15.
+- 1958
+  - Dora Wasserman Yiddish Theatre founded.
+  - Queen Elizabeth Hotel completed.
+- 1959
+  - Inauguration of the Saint Lawrence Seaway on June 26.
+  - On August 30, having completed its route along the Papineau-Rosemont line, the last streetcar entered the station at 4:50 p.m., ending 67 years of tram service in the city.
+  - LaSalle College established.
+
+### 1960–1979
+
+- 1960 – Temple Emanu-El-Beth Sholom completed.
+- 1961–71 – Montreal's population grows by 20% and Toronto's by 25%.
+- 1962
+  - Montreal's first tunnel between Place Ville-Marie and Central Station.
+  - Hydro-Quebec building completed.
+  - Pont Viau opened.
+  - Champlain Bridge, Montreal opens on June 29.
+- 1963
+  - TVA (TV network) launched.
+  - Place des Arts opens.
+- 1964–67 – Place Bonaventure constructed.
+- 1965
+  - Lakeshore General Hospital founded.
+  - Île Notre-Dame created.
+  - Herzing College founded.
+- 1966
+  - Dow Planetarium inaugurated on April 1.
+  - Inauguration of Montreal subway on October 14.
+  - Montreal Aquarium built.
+- 1967
+  - Louis-Hippolyte Lafontaine Bridge-Tunnel opens on March 11.
+  - Expo 67
+    - La Ronde (amusement park) opens in April.
+    - Charles de Gaulle's Vive le Québec libre speech delivered on July 24.
+    - Casino de Montréal built as the French pavilion at Expo 67.
+    - Montreal Biosphère opens as the U.S. pavilion at Expo 67.
+    - Habitat 67 built as part of Expo 67.
+  - Saint Joseph's Oratory completed.
+  - Institut de pastorale des Dominicains established.
+  - Collège de Bois-de-Boulogne founded.
+  - Collège Ahuntsic established.
+- 1969
+  - On February 13, the Montreal Stock Exchange is attacked by the Front de libération du Québec with a massive bomb that wounded 38 people.
+  - October 7 - Murray-Hill riot. Illegal 16-hours strike of the Montreal police, bringing chaos in the city.
+  - Papineau-Leblanc Bridge opens.
+  - Université du Québec à Montréal founded.
+  - Sir George Williams Computer Riot.
+  - Concordia University Television founded.
+- 1970
+  - St. Ann's Church (Griffintown) is torn down.
+  - The Lachine Canal is closed to shipping.
+  - October Crisis.
+- 1971
+  - Festival du Nouveau Cinéma founded.
+  - Montreal receives the biggest snowfall recorded for a year: 383.3 centimetres (12.58 ft).
+- 1972
+  - Blue Bird Café fire kills 37; deliberately set by patrons angry they were not admitted to the Wagon Wheel Bar upstairs for being too drunk.
+  - Armed robbers steal 18 paintings, including a Rembrandt, along with 38 pieces of jewellery, from the Museum of Fine Arts in Canada's largest art theft, and indeed largest theft of private property, ever; with the exception of one returned during ransom negotiations, none of the missing works has ever been found nor the thieves publicly identified
+- 1974 – Birth of Concordia University from a merger of Sir George Williams and Loyola College.
+- 1975
+  - Télé-Québec first airs on January 19.
+  - The highest temperature ever recorded was 37.6 °C (100 °F) on August 1.
+  - Montréal-Mirabel International Airport opened on October 4.
+  - Montreal Canadiens face the Russian Red Army team on December 31.
+- 1976
+  - Summer Olympics
+    - Montreal Biodome built as the velodrome for the 1976 Summer Olympics.
+  - Château Dufresne declared a historic monument.
+  - Montréal is surpassed in population by Toronto. (See Toronto-Montreal rivalry).
+- 1977 – Montreal World Film Festival founded.
+- 1978 – The Canadian Grand Prix moves to its current home on Île Notre-Dame in Montreal.
+- 1979
+  - Montreal Holocaust Memorial Centre established.
+  - First Montreal International Marathon on August 25.
+
+### 1980–1999
+
+- 1980
+  - Opéra de Montréal founded.
+  - Montreal International Jazz Festival founded.
+  - Floralies Internationales de Montréal.
+- 1982
+  - Montreal Jubilation Gospel Choir founded.
+  - Gray Line Montreal founded.
+- 1983
+  - Centre d'histoire de Montréal opened.
+  - I Musici de Montréal Chamber Orchestra founded.
+- 1984
+  - A bomb planted by Thomas Bernard Brigham in Central Station kills three French tourists and injures several dozen others on September 3.
+  - On September 11, Pope John Paul II participates in a youth rally with about 55,000 people in attendance at the Olympic Stadium.
+  - Frank "Dunie" Ryan, leader of the West End Gang, assassinated on November 13.
+  - Cirque du Soleil founded.
+  - Île de la Visitation opens as a park and historic site.
+- 1987
+  - The first Montreal Museums Day.
+  - Montreal deluge: more than 100 mm of rain in 2 hours transforms the sunken Decarie autoroute expressway into a river.
+  - Promenades de la Cathédrale constructed.
+  - Montreal Protocol enters into force.
+- 1989
+  - École Polytechnique massacre occurs on December 6. Marc Lépine murders fourteen women and wounds ten other women and four men.
+  - Canadian Space Agency formed on December 14.
+- 1990 – Oka Crisis.
+- 1992
+  - 1000 de La Gauchetière built; it is Montreal's highest skyscraper.
+  - Concordia University massacre on August 24. Valery Fabrikant kills four people.
+  - World Trade Centre Montreal completed.
+  - Aéroports de Montréal founded.
+  - Lion de la Feuillée was donated by the city of Lyon on the occasion of the 350th anniversary of Montreal.
+- 1993 – Casino de Montréal opened.
+- 1995 – Unity rally held in advance of the Quebec independence referendum.
+- 1996 – Fantasia Festival founded.
+- 1997
+  - McGill University Health Centre founded.
+  - Montreal screwjob.
+- 1998 – Record-setting North American ice storm of 1998 afflicts Montreal and other parts of Quebec.
+- 1999
+  - Montreal Convention is adopted by the ICAO.
+  - Montreal Economic Institute established.
+  - World Anti-Doping Agency set up on November 10.
+
+
+## 21st century
+
+### 2001–2019
+
+- 2001
+  - Reorganization of Montreal.
+  - According to Statistics Canada, in 2001, the city of Montreal has 1,583,590 inhabitants.
+  - Six Flags acquires La Ronde.
+- 2002
+  - Montreal is merged with the 27 surrounding municipalities on the Île de Montréal on January 1. The merger creates a unified city covering the entire Île de Montréal.
+  - Official reopening of the Lachine Canal exclusively for pleasure boating, May 17.
+  - Concordia University Netanyahu riot, September 9.
+- 2004
+  - The Montreal Expos professional baseball team is relocated to Washington, D.C..
+  - Several former municipalities, totalling 13% of the population of Île de Montréal, vote to leave the newly unified city in separate referendums in June.
+  - Passenger operations through Montréal-Mirabel International Airport cease on October 31.
+- 2005 –
+  - Montreal hosts the 2005 United Nations Climate Change Conference.
+  - Montreal hosts the FINA World Aquatic Championships.
+- 2006
+  - The demerger becomes effective January 1. Fifteen municipalities remain on the island.
+  - 2006 World Outgames take place from July 26 to August 5.
+  - Declaration of Montreal on July 29.
+  - 2006 Dawson College shooting on September 13. Kimveer Gill kills one student and wounds nineteen others before being winged by a police sniper and committing suicide.
+  - De la Concorde overpass collapse on September 30.
+- 2007 – Montreal is host to a series of preliminary games of the FIFA U-20 World Cup.
+- 2008 – Saputo Stadium opens.
+- 2009 – BIXI launched in May.
+- 2011
+  - 2011 Montreal Museum of Fine Arts theft. On two occasions in September and October, a thief steals a small antiquity from the museum
+  - La maison symphonique opens in September.
+- 2012
+  - Charbonneau Commission begins examining corruption in Montreal civic governance and collusion among major engineering and construction firms bidding for municipal contracts.
+  - Gérald Tremblay steps down as mayor in November after allegations of serious irregularities in party financing. Michael Applebaum becomes interim mayor until municipal elections in November 2013.
+- 2013
+  - Michael Applebaum is arrested and indicted with 14 charges including fraud and corruption. He steps down. City councillors elect Laurent Blanchard to serve as mayor for the four months remaining before the municipal elections.
+  - Denis Coderre elected mayor of Montreal.
+- 2015 – Some matches of the FIFA Women's World Cup are held in Montreal at the Olympic stadium.
+- 2017
+  - Montreal celebrated its 375th anniversary
+  - Valérie Plante, Montreal's 45th and first female mayor, is elected.
+- 2020
+  - COVID-19 pandemic in Montreal
+  - 2020 Port of Montreal strike
+- 2023
+  - 2023 Old Montreal fire
+  - *Réseau express métropolitain* opens.
+- 2024 – McGill University pro-Palestinian encampment
+- 2025
+  - Death of Abisay Cruz
+  - Soraya Martinez Ferrada, Montreal's 46th mayor, is elected.
