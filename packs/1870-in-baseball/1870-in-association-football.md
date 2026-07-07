@@ -1,0 +1,42 @@
+---
+title: "1870 in association football"
+source: https://en.wikipedia.org/wiki/1870_in_association_football
+domain: 1870-in-baseball
+license: CC-BY-SA-4.0
+tags: 1870 in baseball
+fetched: 2026-07-07
+---
+
+# 1870 in association football
+
+The following are events in 1870 which are relevant to the development of association football. Included are events in closely related codes, such as the Sheffield Rules.
+
+Maidenhead Football Club was established in October 1870, with the club's first match played on 17 December 1870 against Windsor Home Park at Bond's Meadow.
+
+## Events
+
+- 5 March – a representative match between teams called England and Scotland is played at Kennington Oval and results in a 1–1 draw.
+- 19 November – a second representative match between the two teams results in a 1–0 victory to England.
+- Various dates – match reports from London and Sheffield mention goalkeepers and, in tactical terms, the passage from a "dribbling game" to a "passing game". Royal Engineers are noted as early practitioners of the passing game.
+
+## Clubs founded
+
+### England
+
+- Abingdon Town
+- Rotherham County
+
+### Scotland
+
+- Stranraer – the third-oldest football club in Scotland behind Queen's Park and Kilmarnock and one of the 20 oldest in the world.
+
+## Births
+
+- 25 January – Fred Spiksley (d. 1948), England international forward in seven matches, scoring seven goals (1893–1898).
+- 13 April – Jock Drummond (d. 1935), Scotland international defender in 14 matches (1892–1903) and captain in four; won five Scottish Cups and four league titles with Rangers.
+- 22 April – Jack Robinson (d. 1931), England international goalkeeper in eleven matches (1897–1901).
+- 9 September – Tom Waddell (d. unknown), Scotland international in six matches (1891–1895).
+- 12 September – Alf Milward (d. 1941), England international forward in four matches, scoring three goals (1891–1897).
+- 3 October – Alex Fotheringham (d. -), Scottish professional footballer
+- 16 October – Sandy McMahon (d. 1916), Scotland international forward in six matches, scoring four goals (1892–1902); won four league titles with Celtic from 1893 to 1898.
+- unknown date – James Gillespie (d. unknown), Scotland international forward in one match (1898), scoring a hat-trick; won the English league title with Sunderland in 1893 and 1895.
