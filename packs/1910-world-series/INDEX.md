@@ -1,0 +1,14 @@
+# 1910-world-series — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1910 world series. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [$100,000 infield](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/100-000-infield.md) — upstream: https://en.wikipedia.org/wiki/%24100,000_infield
+- [1871 Chicago White Stockings season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/1871-chicago-white-stockings-season.md) — upstream: https://en.wikipedia.org/wiki/1871_Chicago_White_Stockings_season
+- [1874 Chicago White Stockings season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/1874-chicago-white-stockings-season.md) — upstream: https://en.wikipedia.org/wiki/1874_Chicago_White_Stockings_season
+- [1874 in baseball](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/1874-major-league-baseball-season.md) — upstream: https://en.wikipedia.org/wiki/1874_Major_League_Baseball_season
+- [1875 Chicago White Stockings season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/1875-chicago-white-stockings-season.md) — upstream: https://en.wikipedia.org/wiki/1875_Chicago_White_Stockings_season
+- [1876 Chicago White Stockings season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/1876-chicago-white-stockings-season.md) — upstream: https://en.wikipedia.org/wiki/1876_Chicago_White_Stockings_season
+- [1877 Chicago White Stockings season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/1877-chicago-white-stockings-season.md) — upstream: https://en.wikipedia.org/wiki/1877_Chicago_White_Stockings_season
+- [1910 World Series](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/1910-world-series.md) — upstream: https://en.wikipedia.org/wiki/1910_World_Series
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1910-world-series/pack.facts) — distilled one-line facts (neuron CLI import)
