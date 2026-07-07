@@ -1,0 +1,14 @@
+# 1927-colored-world-series — nl-rag pack
+
+Pre-normalized AI markdown. tags: 1927 colored world series. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1920 Chicago American Giants season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1920-chicago-american-giants-season.md) — upstream: https://en.wikipedia.org/wiki/1920_Chicago_American_Giants_season
+- [1921 Chicago American Giants season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1921-chicago-american-giants-season.md) — upstream: https://en.wikipedia.org/wiki/1921_Chicago_American_Giants_season
+- [1922 Chicago American Giants season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1922-chicago-american-giants-season.md) — upstream: https://en.wikipedia.org/wiki/1922_Chicago_American_Giants_season
+- [1923 Chicago American Giants season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1923-chicago-american-giants-season.md) — upstream: https://en.wikipedia.org/wiki/1923_Chicago_American_Giants_season
+- [1924 Chicago American Giants season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1924-chicago-american-giants-season.md) — upstream: https://en.wikipedia.org/wiki/1924_Chicago_American_Giants_season
+- [1924 Colored World Series](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1924-colored-world-series.md) — upstream: https://en.wikipedia.org/wiki/1924_Colored_World_Series
+- [1925 Chicago American Giants season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1925-chicago-american-giants-season.md) — upstream: https://en.wikipedia.org/wiki/1925_Chicago_American_Giants_season
+- [1927 Colored World Series](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/1927-colored-world-series.md) — upstream: https://en.wikipedia.org/wiki/1927_Colored_World_Series
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/1927-colored-world-series/pack.facts) — distilled one-line facts (neuron CLI import)
