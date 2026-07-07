@@ -1,0 +1,150 @@
+---
+title: "Plainfield, New Jersey (part 2/2)"
+source: https://en.wikipedia.org/wiki/Plainfield,_New_Jersey
+domain: plainfield-new-jersey
+license: CC-BY-SA-4.0
+tags: plainfield, new jersey
+fetched: 2026-07-07
+part: 2/2
+---
+
+## Notable people
+
+People who were born in, residents of, or otherwise closely associated with Plainfield include:
+
+- Ernest R. Ackerman (1863–1931), represented New Jersey's 5th congressional district from 1919 to 1931
+- John Adams (1772–1863), educator who taught at the Plainfield Academy
+- Katherine Langhorne Adams (1885–1977), painter and printmaker
+- Erika Amato (born 1969), actress, singer and founder of Velvet Chain
+- Donald C. Backer (1943–2010), radio astronomer and professor at University of California, Berkeley who was discoverer of millisecond pulsars and pioneer in pulsar-based searches for gravitational waves
+- Rich Bagger (born 1960), former mayor of Westfield, New Jersey
+- John Drayton Baker (1915–1942), American Naval aviator who was awarded the Navy Cross for his actions during World War II
+- Jeff Barry (born 1938), pop music songwriter, singer and record producer
+- Ann Baumgartner (1918–2008), aviator who became the first American woman to fly a United States Army Air Forces jet aircraft when she flew the Bell YP-59A jet fighter as a test pilot during World War II
+- James Bell (born 1992), basketball player for Israeli team Hapoel Holon
+- G. P. Mellick Belshaw (1928–2020), ninth bishop of the Episcopal Diocese of New Jersey, serving from 1983 to 1994
+- Charlie Bicknell (1928–2013), MLB pitcher who played for the Philadelphia Phillies in 1948 and 1949
+- Joe Black (1924–2002), professional baseball player for the Brooklyn Dodgers and Cincinnati Reds
+- Judy Blume (born 1938), author
+- Jon Bramnick (born 1953), member of the New Jersey General Assembly since 2003 who served on the Plainfield City Council from 1984 to 1991
+- Anthony Branker (born 1958), jazz musician and educator
+- Jack E. Bronston (1922–2017), lawyer and politician who served in the New York Senate from 1959 to 1978
+- Van Wyck Brooks (1886–1963), author
+- Zoe Brooks (born 2005), college basketball player for the NC State Wolfpack
+- Brock Brower (1931–2014), novelist, magazine journalist and TV writer
+- Glenwood Brown (born 1967), former professional boxer in the welterweight (147lb) division
+- Milt Campbell (1933–2012), 1956 Olympic decathlon gold medalist
+- Pete Carmichael (1941–2016), former football coach
+- Leonte Carroo (born 1994), wide receiver who played in the NFL for the Miami Dolphins
+- Linda S. Carter (born 1963), politician who has represented the 22nd Legislative District since 2018
+- Jeremiah E. Cary (1803–1888), member of the U.S. House of Representatives from New York's 21st congressional district
+- W. Sterling Cary (1927–2021), president of the National Council of Churches from 1972 to 1975
+- James Herbert Case Jr. (1906–1965), 8th president of Washington & Jefferson College
+- Diane Chamberlain, author of adult fiction
+- DJ Cheese, first world champion of the DMC World DJ Championships, in 1986
+- John Chironna (1928–2010), head coach of the Rhode Island Rams football team in 1961 and 1962
+- Rohit Chopra (born 1982), member of the Federal Trade Commission
+- Earl Clark (born 1988), basketball player for the Los Angeles Lakers, formerly for the University of Louisville Cardinals
+- George Clinton (born 1941), founder of Parliament-Funkadelic, childhood home
+- Manny Collins (born 1984) American football cornerback
+- Richard Guy Condon (1952–1995), anthropologist who specialized in the study of Inuit
+- William Consovoy (1974–2023), attorney for conservative causes
+- Archibald Cox (1912–2004), Watergate special prosecutor
+- Kathy Cox (born 1964), former superintendent of public schools for the U.S. state of Georgia
+- Dan Davis (born 1986), defensive lineman who played for the New York Sentinels of the United Football League
+- Myles Davis, former college basketball player who played guard for the Xavier Musketeers men's basketball team
+- Pat DiNizio (1955–2017), lead singer, songwriter and founding member of the band The Smithereens
+- Charles C. Dodge (1841–1910), Union Army brigadier general in the American Civil War and one of the youngest in history, receiving his commission at the age of 21
+- Barbara L. Drinkwater (1926–2019), sports physiologist who was the first woman to be president of the American College of Sports Medicine
+- William Archibald Dunning (1857–1922), historian best known for his work on the Reconstruction Era
+- Justice Dwight, self-taught visual artist
+- Devine Eke (born 1996), professional basketball player who has played for ASC Ville de Dakar of the Nationale 1 and the Basketball Africa League
+- Bill Evans (1929–1980), jazz pianist
+- Alfred A. Farland (1864–1954), classic banjoist
+- Dionne Farris (born 1969), singer, songwriter, producer and actress
+- Negley Farson (1890–1960), adventurer, journalist and author
+- J. Michael Fay (born 1956), conservationist
+- Rashan Gary (born 1997), defensive tackle for the Michigan Wolverines football team
+- Glenn Goins (1954–1978), singer and guitarist for Parliament-Funkadelic
+- Gertrude Joy Grimm (1904–1988), WAVES officer in World War II
+- Jan Groover (1943–2012), photographer noted for her use of emerging color photography technologies
+- Mark Haines (1946–2011), former host of the CNBC shows *Squawk Box* and *Squawk on the Street*
+- David Hand (1900–1986), American and British-American animator at Out of the Inkwell studios, Walt Disney Animation Studios, and Gaumont Film Company's British Animation Studio
+- Bret Harte (1836–1902), author and poet
+- Eddie Hazel (1950–1992), lead guitarist and founding member of Parliament-Funkadelic
+- William Hazell (1908–1995), president of the New Jersey Institute of Technology
+- Elise B. Heinz (1935–2014), lawyer and politician who was a member of the Virginia House of Delegates from 1978 to 1981
+- Richard X. Heyman, singer-songwriter and musician, who was a founding member of The Doughboys
+- Jon Hilliman (born 1995; class of 2014), professional football player for the New York Giants
+- Byron Hurt (born 1969), documentary filmmaker
+- Dontae Johnson (born 1991), cornerback who has played in the National Football League for the San Francisco 49ers
+- Marion Lee Johnson, African-American mathematician who was crucial to the landing of the Apollo 11 mission
+- Tyrone Johnson (born 1992), professional basketball player
+- Betty Jones (1930–2019), operatic spinto soprano, who did not begin her career until the age of 41
+- Donald Jones (born 1987), former professional wide receiver who played in the NFL with the Buffalo Bills and New England Patriots
+- David Kapralik (1925/26–2017), music industry executive, who was an A&R executive, producer and talent manager
+- Robyn Kenney (born 1979), field hockey player
+- Phyllis Kirk (1927–2006), actress
+- Florence LaRue (born 1944), singer and actress best known as an original member of the 5th Dimension
+- Geoffrey Lewis (1935–2015), character actor who appeared in more than 100 films and television shows, and was principally known for his film roles alongside Clint Eastwood and Robert Redford
+- Peter Liske (born 1942), former professional football player
+- Edith Elizabeth Lowry (1897–1970), interdenominational leader in home mission work
+- Robert Lowry (1826–1899), Christian preacher and prolific hymn-writer/musician, whose works include "Shall We Gather at the River?"
+- Randolph Manning (1804–1864), Michigan Supreme Court justice
+- Queena Mario (1896–1951), soprano opera singer, newspaper columnist, voice teacher and fiction writer
+- Donald Martino (1931–2005), Pulitzer Prize-winning composer
+- Burke Marshall (1922–2003), attorney who served as head of the United States Assistant Attorney General for the Civil Rights Division during the Civil Rights movement
+- John Marshall (born 1963), former middle-distance track athlete who specialized in the 800 meters and competed at the 1984 Summer Olympics
+- Jack Martin (1887–1980), slick-fielding, weak-hitting infielder in Major League Baseball, playing mainly at shortstop for three different teams between the 1912 and 1914 seasons
+- James Edgar Martine (1850–1925), United States Senator from New Jersey
+- Robert Mason (born 1942), author of *Chickenhawk*
+- Bridget Mary McCormack (born 1966), lawyer, professor, and judge, serving on the Michigan Supreme Court since 2013, and as Chief Justice since 2019
+- Mary McCormack (born 1969), actress
+- Will McCormack (born 1974), actor, executive producer, screenwriter and film director, best known for his 2020 short film *If Anything Happens I Love You*, which was nominated for the Academy Award for Best Animated Short Film
+- Peter McDonough (1925–1998), politician who served in both the New Jersey General Assembly and New Jersey Senate
+- Jim McGreevey (born 1957), former Governor of New Jersey
+- Warren McLaughlin (1876–1923), Major League Baseball pitcher who played for the Philadelphia Phillies and Pittsburgh Pirates
+- Eugene Monroe (born 1987), former professional football player
+- Dudley Moore (1935–2002), actor who resided there at the time of his death
+- Nonnie Moore (1922–2009), fashion editor at *Mademoiselle*, *Harper's Bazaar* and *GQ*"
+- Cordell Mosson (1952–2013), vocalist and bassist for Parliament-Funkadelic
+- James S. Negley (1826–1901), Civil War General, farmer, railroader, and U.S. Representative from the state of Pennsylvania
+- Billy Bass Nelson (born 1951), bassist, founding member of Parliament-Funkadelic
+- Gail R. O'Day (1954–2018), biblical scholar
+- Andrew P. O'Rourke (1933–2013), former Westchester County Executive
+- Montell Owens (born 1984), professional football player for the Jacksonville Jaguars
+- Irving Penn (1917–2009), photographer
+- Elizabeth Price (born 1996), gymnast
+- Kasim Reed (born 1969), birthplace, former Mayor of Atlanta
+- Edward Regan (1930–2014), politician who served for 15 years as New York State Comptroller
+- Emma Winner Rogers (1855–1922), writer and speaker on economic and social questions, and on the Arts and Crafts movement
+- Erik Rosenmeier (born 1965), former NFL center who played for the Buffalo Bills in 1987
+- Jane Rule (1931–2007), author of lesbian-themed novels and non-fiction
+- William Nelson Runyon (1871–1931), Acting Governor of New Jersey from 1919 to 1920
+- Justin Sears (born 1994), basketball player for the Gießen 46ers in Germany
+- Robert Shapiro (born 1942), lawyer
+- Garry Shider (1953–2010), musical director of P-Funk
+- Henry Soles Jr. (1935–2018), minister who served as the senior chaplain for the Chicago Bulls for more than 30 years
+- Percy Hamilton Stewart (1867–1951), mayor of Plainfield in 1912 and 1913, represented New Jersey's 5th congressional district from 1931 to 1933
+- Bertram D. Tallamy (1901–1989), transportation official who served as Federal Highway Administrator and as superintendent of the New York State Department of Public Works
+- Robert W. Tebbs (1875–1945), architectural photographer
+- Edward Herbert Thompson (1856–1935), archaeologist and diplomat
+- Jeff Torborg (born 1941), former professional baseball player and manager
+- Janeen Uzzell, global technology executive who was chief operating officer of the Wikimedia Foundation
+- Daniel Tompkins Van Buren (1826–1890), Union Army officer who attained the rank of brigadier general by brevet in the American Civil War
+- Nancy Van de Vate (1930–2023), composer
+- Fred Van Eps (1878–1960), banjoist and early recording artist
+- George Van Eps (1913–1998), swing and mainstream jazz guitarist
+- Rich Vos (born 1957), comedian
+- Helen Walulik (1929–2012), All-American Girls Professional Baseball League player
+- David S. Ware (1949–2012), jazz saxophonist
+- Vic Washington (1946–2008), former professional football player
+- James West (born 1931), co-inventor of the foil electret microphone and member of the National Inventors Hall of Fame
+- Kevin White (born 1992), former NFL wide receiver, Chicago Bears, New Orleans Saints, and San Francisco 49ers
+- Harrison A. Williams (1919–2001), U.S. Senator who resigned following the Abscam scandal
+- Jay Williams (born 1981), former professional basketball player with the Chicago Bulls
+- Malinda Williams (born 1975), actress who played hair stylist Tracy "Bird" Van Adams on the Showtime television drama *Soul Food*
+- Bernie Worrell (1944–2016), keyboardist, founding member of Parliament-Funkadelic, childhood home
+- Albert Capwell Wyckoff (1903–1953), ordained minister of the Presbyterian Church (USA) and author of juvenile fiction, most notably the Mercer Boys series and Mystery Hunter series
+- James A. Yorke (born 1941), chair of the Mathematics Department at the University of Maryland, College Park
+- Olamide Zaccheaus (born 1997), American football wide receiver for the Atlanta Falcons of the National Football League
