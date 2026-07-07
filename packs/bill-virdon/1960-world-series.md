@@ -1,0 +1,1064 @@
+---
+title: "1960 World Series"
+source: https://en.wikipedia.org/wiki/1960_World_Series
+domain: bill-virdon
+license: CC-BY-SA-4.0
+tags: bill virdon
+fetched: 2026-07-07
+---
+
+# 1960 World Series
+
+The **1960 World Series** was the championship series of Major League Baseball's (MLB) 1960 season. The 57th edition of the World Series, it was a best-of-seven playoff that matched the National League (NL) champion Pittsburgh Pirates against the American League (AL) champion New York Yankees. In Game 7, Bill Mazeroski hit the series winning ninth-inning home run, the first time a winner-take-all World Series game ended with a home run, and the first World Series to end on a home run. Mazeroski's home run gave the Pirates their third title overall and their first since 1925.
+
+Despite losing the series, the Yankees scored 55 runs, the most runs scored by any one team in World Series history, and more than twice as many as the Pirates, who scored 27. The Yankees won three blowouts (16–3, 10–0, and 12–0), while the Pirates won four close games (6–4, 3–2, 5–2, and 10–9) to win the series. The Pirates' run differential of minus 28 is the lowest ever by any team, winner or loser, in a World Series. The Series MVP was Bobby Richardson of the Yankees, the only time in history that the award has been given to a member of the losing team, though the rules were different at this time. Votes had to be in by the start of the 8th inning of Game 7, at which point the Yankees were in the lead, and this was the first time since the series MVP award was created in 1955 that the team leading at that point did not go on to win. Richardson was also the first non-pitcher to be named MVP.
+
+This World Series featured seven past, present, or future league Most Valuable Players. The Pirates had two – Dick Groat (1960) and Roberto Clemente (1966) – while the Yankees had five: Yogi Berra (1951, 1954, 1955), Bobby Shantz (1952), Mickey Mantle (1956, 1957, 1962), Roger Maris (1960, 1961), and Elston Howard (1963).
+
+## Summary
+
+The Yankees, winners of their 10th pennant in 12 years, outscored the Pirates 55–27 in this Series, out-hit them 91–60, out-batted them .338 to .256, hit 10 home runs to Pittsburgh's four (three of which came in Game 7), got two complete-game shutouts from Whitey Ford—and lost. The Pirates' inconsistent pitching and Yankees' manager Casey Stengel's controversial decision not to start Ford in Games 1 and 4 resulted in the peculiar combination of close games and routs. Ford (Games 3 and 6) and Vern Law (Games 1 and 4) were excellent, while Pirates relief pitcher Roy Face was a major factor in Games 1, 4 and 5. The Yankees also committed twice as many errors as the Pirates in the series. The Yankees had 8 errors while the Pirates had four errors.
+
+**NL Pittsburgh Pirates (4) vs. AL New York Yankees (3)**
+
+| Game | Date | Score | Location | Time | Attendance |
+|---|---|---|---|---|---|
+| 1 | October 5 | New York Yankees – 4, **Pittsburgh Pirates** – 6 | Forbes Field | 2:29 | 36,676 |
+| 2 | October 6 | **New York Yankees** – 16, Pittsburgh Pirates – 3 | Forbes Field | 3:14 | 37,308 |
+| 3 | October 8 | Pittsburgh Pirates – 0, **New York Yankees** – 10 | Yankee Stadium | 2:41 | 70,001 |
+| 4 | October 9 | **Pittsburgh Pirates** – 3, New York Yankees – 2 | Yankee Stadium | 2:29 | 67,812 |
+| 5 | October 10 | **Pittsburgh Pirates** – 5, New York Yankees – 2 | Yankee Stadium | 2:32 | 62,753 |
+| 6 | October 12 | **New York Yankees** – 12, Pittsburgh Pirates – 0 | Forbes Field | 2:38 | 38,580 |
+| 7 | October 13 | New York Yankees – 9, **Pittsburgh Pirates** – 10 | Forbes Field | 2:36 | 36,683 |
+
+## Matchups
+
+### Game 1
+
+Wednesday, October 5, 1960 1:00 pm (
+
+ET
+
+) at
+
+Forbes Field
+
+in
+
+Pittsburgh
+
+,
+
+Pennsylvania
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+2
+
+4
+
+13
+
+2
+
+Pittsburgh
+
+3
+
+0
+
+0
+
+2
+
+0
+
+1
+
+0
+
+0
+
+X
+
+6
+
+8
+
+0
+
+WP
+
+:
+
+Vern Law
+
+(1–0)
+
+LP
+
+:
+
+Art Ditmar
+
+(0–1)
+
+Sv
+
+:
+
+Roy Face
+
+(1)
+
+Home runs
+
+:
+
+NYY:
+
+Roger Maris
+
+(1),
+
+Elston Howard
+
+(1)
+
+PIT:
+
+Bill Mazeroski
+
+(1)
+
+The Yankees threw Art Ditmar against the Pirates' Vern Law (the NL Cy Young Award winner) in Game 1. In the top of the first inning, New York right fielder Roger Maris, the eventual 1960 AL MVP, drilled a home run off Law to give the Yankees a 1–0 lead. In the bottom half, however, the Pirates evened the score when Bill Virdon walked, stole second, advanced to third on an error by shortstop Tony Kubek, and scored on a double by eventual National League Most Valuable Player Dick Groat. Bob Skinner then singled to drive in Groat and stole second, coming home on a single by Roberto Clemente. Pittsburgh now led 3–1. This was enough to compel Casey Stengel, the Yankee manager, to pull Ditmar in favor of Jim Coates, who finished the inning.
+
+In the fourth, New York cut the lead to one run when Maris singled, moved to second on a Mickey Mantle walk, took third on a fly out by Yogi Berra, and scored on a single by Bill Skowron. But the Pirates extended their lead to 5–2 in the fourth when Don Hoak walked and Bill Mazeroski homered. Pittsburgh added an insurance run in the sixth when Mazeroski doubled with one out and scored on Virdon's double off Duke Maas, and although the Yankees cut the lead in half on a ninth-inning 2-run home run to right field by Elston Howard, reliever Roy Face successfully closed it out to give the Pirates a 6–4 victory and a 1–0 series lead.
+
+### Game 2
+
+Thursday, October 6, 1960 1:00 pm (ET) at
+
+Forbes Field in Pittsburgh, Pennsylvania
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+0
+
+0
+
+2
+
+1
+
+2
+
+7
+
+3
+
+0
+
+1
+
+16
+
+19
+
+1
+
+Pittsburgh
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+2
+
+3
+
+13
+
+1
+
+WP
+
+:
+
+Bob Turley
+
+(1–0)
+
+LP
+
+:
+
+Bob Friend
+
+(0–1)
+
+Sv
+
+:
+
+Bobby Shantz
+
+(1)
+
+Home runs
+
+:
+
+NYY:
+
+Mickey Mantle
+
+2 (2)
+
+PIT: None
+
+Game 2, matching New York's Bob Turley against the Pirates' Bob Friend, saw the Yankees pummel Pittsburgh 16–3.
+
+The game was scoreless until the top of the third, when the Yankees jumped out to a 2–0 lead. Second baseman Bobby Richardson walked, was sacrificed over to second by Turley, and scored on a single by Tony Kubek. Gil McDougald then doubled, plating Kubek all the way from first base. Turley aided his own cause with an RBI single in the fourth, driving home Richardson, who had singled and moved to second on a passed ball. Although Hoak doubled home Gino Cimoli in the bottom of the fourth to break the shutout, the Yankees extended their lead to 5–1 courtesy of a two-run home run by Mantle off Fred Green.
+
+In the sixth, the solid Yankee lead turned into a rout. Elston Howard hit a lead-off triple and scored on Bobby Richardson's double to chase Green from the game. Clem Labine replaced Green. A passed ball by Smoky Burgess and error by shortstop Dick Groat on Tony Kubek's ground ball put runners on first and third with one out before McDougald's RBI single made it 7–1 Yankees. After a walk and strikeout, Yogi Berra's two-run single and Bill Skowron's RBI single made it 10–1 Yankees. Red Witt relieved Labine and allowed back-to-back RBI singles to Howard and Richardson that made it 12–1 Yankees. Mantle continued the onslaught by blasting a three-run home run in the seventh off Joe Gibbon and scoring on a wild pitch by Tom Cheney in the ninth after walking and moving to third on a double, making it 16–1 Yankees. Although the Pirates tacked on two runs in the bottom half of the frame on back-to-back RBI singles by Gino Cimoli and Smoky Burgess, Bobby Shantz relieved Turley and got Don Hoak to hit into the game-ending double play. This decisive Yankee victory tied the series at a game apiece.
+
+### Game 3
+
+Saturday, October 8, 1960 1:00 pm (ET) at
+
+Yankee Stadium
+
+in
+
+Bronx
+
+,
+
+New York
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+Pittsburgh
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+4
+
+0
+
+New York
+
+6
+
+0
+
+0
+
+4
+
+0
+
+0
+
+0
+
+0
+
+X
+
+10
+
+16
+
+1
+
+WP
+
+:
+
+Whitey Ford
+
+(1–0)
+
+LP
+
+:
+
+Vinegar Bend Mizell
+
+(0–1)
+
+Home runs
+
+:
+
+PIT: None
+
+NYY:
+
+Bobby Richardson
+
+(1),
+
+Mickey Mantle
+
+(3)
+
+For Game 3, the Series shifted to Yankee Stadium as Stengel sent Whitey Ford to the mound against Pittsburgh's Vinegar Bend Mizell. Ford had somewhat of an off year (12–9, 3.08 ERA and 192.2 IP) for his lofty standards, but was brilliant against the Pirates.
+
+The Yankees continued the offensive onslaught they displayed in Game 2, grabbing a 6–0 lead by the end of the first inning. Mizell would only get one batter out. After two singles, Bill Skowron drove in the first run with an RBI single. After a walk loaded the bases, Elston Howard added another run with an RBI single off Clem Labine before Bobby Richardson capped the scoring with a grand slam (during the regular season, Richardson had hit only one home run, off Baltimore's Arnie Portocarrero on April 30). The next time a first inning World Series Grand slam would be hit would be in the 2021 World Series, 61 years later. In the fourth, the Bronx Bombers added on four more runs, courtesy of a two-run home run by Mickey Mantle off Fred Green and—after three singles had loaded the bases—a two-run single by Richardson off Red Witt. The Pirates, meanwhile, could not get anything going against Ford, who tossed a masterful four-hitter. The Yankees now led the series 2–1.
+
+### Game 4
+
+Sunday, October 9, 1960 2:00 pm (ET) at
+
+Yankee Stadium in Bronx, New York
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+Pittsburgh
+
+0
+
+0
+
+0
+
+0
+
+3
+
+0
+
+0
+
+0
+
+0
+
+3
+
+7
+
+0
+
+New York
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+2
+
+8
+
+0
+
+WP
+
+:
+
+Vern Law
+
+(2–0)
+
+LP
+
+:
+
+Ralph Terry
+
+(0–1)
+
+Sv
+
+:
+
+Roy Face
+
+(2)
+
+Home runs
+
+:
+
+PIT: None
+
+NYY:
+
+Bill Skowron
+
+(1)
+
+The Pirates had seen their pitching fail them in the last two games, as the team fell victim to the powerful Yankee bats. This was not the case in Game 4, however, as Pittsburgh sent Game 1 winner Vern Law to the hill against Ralph Terry.
+
+The game was scoreless until the bottom of the fourth, when Bill Skowron launched a home run off Law to give New York a 1–0 advantage. The very next half-inning, though, Pittsburgh stormed back, when with two on and two outs, Law doubled in Gino Cimoli to tie the game and Bill Virdon's two-run single put the Pirates up 3–1. Law kept the potent pinstripers at bay, though the Yankees did scratch and claw for a single run in the bottom of the seventh when Skowron doubled, moved to third on a single by McDougald, and scored on a fielder's choice on a ball hit by Richardson. After a pinch-hit single by Johnny Blanchard, Pirate manager Danny Murtaugh brought in reliever Roy Face, who held the fort for the final 2+2⁄3 innings as Pittsburgh tied the series at two games apiece to ensure a return to Forbes Field.
+
+### Game 5
+
+Monday, October 10, 1960 1:00 pm (ET) at
+
+Yankee Stadium in Bronx, New York
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+Pittsburgh
+
+0
+
+3
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+5
+
+10
+
+2
+
+New York
+
+0
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+2
+
+5
+
+2
+
+WP
+
+:
+
+Harvey Haddix
+
+(1–0)
+
+LP
+
+:
+
+Art Ditmar
+
+(0–2)
+
+Sv
+
+:
+
+Roy Face
+
+(3)
+
+Home runs
+
+:
+
+PIT: None
+
+NYY:
+
+Roger Maris
+
+(2)
+
+With the series now tied at two, Yankee manager Casey Stengel started pitcher Art Ditmar, his Game 1 starter (in which he was ineffective), against the Pirates' Harvey Haddix, who had become famous for taking a perfect game into the thirteenth inning in a loss to the Milwaukee Braves the previous year.
+
+As it turned out, on this day Ditmar could not get out of the second inning once again. Dick Stuart singled and was forced out at second on a fielder's choice hit by Gino Cimoli, who then moved to third on a double by Smoky Burgess. Don Hoak then slapped a ground ball toward Yankee shortstop Tony Kubek, who flipped it to third baseman Gil McDougald in an attempt to retire Burgess, who was attempting to advance. However, McDougald dropped the ball for an error (Kubek's toss was accurate), allowing Cimoli to score, with Burgess safe at third, and Hoak reaching second on the error. Bill Mazeroski then lashed a double to left, scoring Burgess and Hoak. After this offensive outburst, Stengel yanked Ditmar and replaced him with Luis Arroyo, who finally ended the inning and stranded Mazeroski.
+
+The next half-inning, New York picked up a run when Elston Howard doubled, moved to third on a ground-out by Bobby Richardson, and scored on another grounder by Kubek. However, the Pirates extended their lead back to three runs in the third, when Roberto Clemente singled home Groat, who led off with a double.
+
+In the bottom of the third, Roger Maris touched Haddix for a home run to deep right field. Otherwise, however, the Pittsburgh hurler was in fine form, holding the Yankees at bay until the seventh, when he was replaced by Face. In the ninth, the Pirates added an insurance run off Ryne Duren. Smoky Burgess had singled and taken second on an error; he was replaced at second by pinch-runner Joe Christopher, who moved to third on a wild pitch, and was singled in by Hoak. Face then shut down the Yankees once again to give the Pirates a 5–2 victory and 3–2 series lead.
+
+### Game 6
+
+Wednesday, October 12, 1960 1:00 pm (ET) at
+
+Forbes Field in Pittsburgh, Pennsylvania
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+0
+
+1
+
+5
+
+0
+
+0
+
+2
+
+2
+
+2
+
+0
+
+12
+
+17
+
+1
+
+Pittsburgh
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+7
+
+1
+
+WP
+
+:
+
+Whitey Ford
+
+(2–0)
+
+LP
+
+:
+
+Bob Friend
+
+(0–2)
+
+For the sixth contest in Pittsburgh, the Yankees started Whitey Ford against the Pirates' Bob Friend. And as was the case the last time Ford had toed the rubber for the Yanks in Game 3, his teammates relentlessly mashed the ball, en route to a resounding 12–0 victory.
+
+In the top of the second, the Yankees went to work. After a Yogi Berra walk and a Bill Skowron single, Elston Howard was hit by a pitch to load the bases (Eli Grba ran for him). Ford himself then notched the first RBI of the game, with a ground ball single to his counterpart Friend that scored Berra. The next inning, after a lead-off hit-by-pitch and double, Mantle cracked a two-run single that scored Tony Kubek and Roger Maris. After a Yogi Berra single moved Mantle to third, Pirates skipper Danny Murtaugh removed the clearly ineffective Friend in favor of Tom Cheney. Cheney, however, fared no better, as a Bill Skowron sacrifice fly scored Mantle and, after a single, a Richardson triple to deep left field scored Berra and Johnny Blanchard, making the score 6–0.
+
+The Yankees then ran away with the game, scoring two runs in each of the sixth, seventh, and eighth innings. In the sixth, Clete Boyer hit a lead-off triple off Fred Green and scored on Kubek's single. After another single, Berra's RBI single off Clem Labine made it 8–0 Yankees. Next inning, after a lead-off double by Blanchard, Richardson ripped his second RBI triple of the contest, and Ford added his second RBI courtesy of a fielder's choice on a sacrifice bunt. In the eighth, Berra hit an RBI single with a runner on second, and later scored on Blanchard's double. As in Game 3, Ford was his masterful self, not letting the Pirates mount anything resembling a rally for the full nine innings. His second shutout of the series was critical, as it forced Game 7. Yankee manager Casey Stengel would come under fire in Mickey Mantle's autobiography for letting Ford finish this game—instead of removing him once the Yankees had a comfortable lead—thus making him unavailable out of the bullpen if needed in Game 7.
+
+### Game 7
+
+Thursday, October 13, 1960 1:00 pm (ET) at
+
+Forbes Field in Pittsburgh, Pennsylvania
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+0
+
+0
+
+0
+
+0
+
+1
+
+4
+
+0
+
+2
+
+2
+
+9
+
+13
+
+1
+
+Pittsburgh
+
+2
+
+2
+
+0
+
+0
+
+0
+
+0
+
+0
+
+5
+
+1
+
+10
+
+11
+
+0
+
+WP
+
+:
+
+Harvey Haddix
+
+(2–0)
+
+LP
+
+:
+
+Ralph Terry
+
+(0–2)
+
+Home runs
+
+:
+
+NYY:
+
+Bill Skowron
+
+(2),
+
+Yogi Berra
+
+(1)
+
+PIT:
+
+Rocky Nelson
+
+(1),
+
+Hal Smith
+
+(1),
+
+Bill Mazeroski
+
+(2)
+
+For the deciding seventh game, Bob Turley, the winning pitcher in Game 2, got the nod for the Yankees against the Pirates' Vern Law, the winning pitcher in Games 1 and 4.
+
+Turley lasted only one inning plus one batter. After retiring the first two batters, Turley walked Bob Skinner, then first baseman Rocky Nelson homered, Pittsburgh's first home run since Bill Mazeroski's in Game 1, to give the Pirates a 2–0 lead. Turley was then pulled after giving up a single to Smoky Burgess leading off the second. Don Hoak then drew a walk against Bill Stafford, and a bunt single by Mazeroski loaded the bases. Stafford appeared to get the Yankees out of trouble after inducing Law to hit into a double play, pitcher to catcher to first. But lead-off man Bill Virdon's single to right scored Hoak and Mazeroski and increased the Pirates' lead to 4–0.
+
+The Yankees got on the board in the fifth on Bill Skowron's lead-off home run, his second of the Series. In the sixth, Bobby Richardson led off with a single and Tony Kubek drew a walk. Elroy Face relieved Law and got Roger Maris to pop out to Hoak in foul territory, but Mickey Mantle singled to score Richardson. Face then blew the save when Yogi Berra followed with a three-run shot to right that gave the Yankees their first lead, 5–4.
+
+The Yankees extended their lead to 7–4 in the eighth with two more runs off Face. With two out, Berra walked, and Skowron singled when the Pirates couldn't get a force-out. Johnny Blanchard (who had replaced Elston Howard at catcher for game 7) then singled to score Berra, and Clete Boyer doubled to score Skowron.
+
+But the Pirates retook the lead with a 5-run eighth inning. Gino Cimoli (pinch-hitting for Face) led off with a single, and Virdon hit a ground ball to short for what could have been a double play. But the ball instead took a bad hop and hit Kubek in the throat, leaving everybody safe and knocking the wind out of Kubek. He eventually got up, and game footage showed him arguing with manager Stengel, seemingly insisting he was ok to stay in the game. He was eventually coaxed off the field and replaced. He was taken to a hospital and kept overnight for observation due to concerns surrounding his trachea swelling up and thus, causing difficulty breathing. Back on the field, Dick Groat then chased Bobby Shantz (who had entered the game in the third and had pitched five innings, having not pitched more than four in any game during the regular season) with a single to score Cimoli and send Virdon to second. Jim Coates relieved Shantz and got Skinner out on a sacrifice bunt, which moved the runners up. Nelson followed with a fly ball to right, and Virdon declined to challenge Maris' throwing arm. Coates then got two quick strikes on Roberto Clemente and was a strike away from getting the Yankees out of their most serious trouble of the afternoon, when Clemente hit a Baltimore chop towards first; first baseman Skowron and Coates both tried to get to the ball at the same time, and Clemente's speed forced Skowron to just hold the ball as Coates could not make it to first base in time to cover. The high chopper allowed Virdon to score, cutting the Yankee lead to 7–6. Hal Smith, who had replaced Smoky Burgess at catcher after being pinch-run for by Joe Christopher followed with a three-run home run to give the Pirates a 9–7 lead. Game 4 loser Ralph Terry relieved Coates and got the last out.
+
+Bob Friend, an 18-game winner for the Pirates and their starter (and loser) in Games 2 and 6, came on in the ninth to try to protect the lead. Bobby Richardson and pinch-hitter Dale Long both greeted him with singles, and Pirates manager Danny Murtaugh was forced to remove the veteran pitcher in favor of Harvey Haddix. Although he got Roger Maris to foul out, Haddix gave up a key single to Mickey Mantle that scored Richardson and moved Long to third. Yogi Berra followed, hitting a sharp grounder to first, with Rocky Nelson easily getting the second out. In what, at the moment, appeared to be a monumental play, Mantle, seeing he had no chance to beat a play at second, faked a step toward second base and then dove head-first back to first, narrowly avoiding Nelson's tag (which would have been the third out) as Gil McDougald (pinch-running for Long) raced home to tie the game at 9-9. Had Mantle been out on the play, the run would likely not have counted since the play happened so quickly that the runner on third might not have crossed the plate before the out was recorded. With Mantle safe, the inning continued, but ended when Bill Skowron hit into a force play.
+
+Ralph Terry returned to the mound in the bottom of the ninth. The first batter to face him was Bill Mazeroski. With a count of one ball and no strikes, the Pirates' second baseman smashed a historic long drive over the left field wall for his second home run of the Series (left fielder Berra had no chance to catch it despite following it to the wall), winning the game 10–9 and crowning the Pirates as World Series champions. As the Pirates erupted, the Yankees stood across the field in stunned disbelief. The improbable champions were outscored, out-hit, and outplayed, but somehow had managed to pull out a Game 7 victory. Years later, Mickey Mantle was quoted in Ken Burns' documentary *Baseball* as saying that losing the 1960 series was the only loss, amateur or professional, he cried actual tears over. For Bill Mazeroski, by contrast, his Series-clinching home run was the highlight of a Hall of Fame career otherwise notable mostly for excellent defense.
+
+Mazeroski became the first player to end the World Series with a home run. Thirty-three years later, Joe Carter would become the only other player to end a World Series with a home run, doing so for the Toronto Blue Jays in the 1993 World Series against the Pirates' in-state rivals, the Philadelphia Phillies, albeit in Game 6. Mazeroski remains the only player to end a Game 7 of the World Series with a home run, and is one of just two players to hit a walk-off home run in a Game 7 of any postseason series (Aaron Boone is the other, doing so for the Yankees in the 2003 American League Championship Series against the Boston Red Sox).
+
+Because of the game’s back-and-forth nature (especially in the eighth and ninth innings) and historic conclusion, the game is considered by some to be the greatest game in MLB history, as well as one of the greatest games in the history of professional sports. Although most noted for the series-ending homer, Game 7 is also the only game in all of postseason history with no strikeouts recorded by either side. Three teams in the expansion era (since 1961) went a whole postseason game without striking out - the Pirates in 1974 (Game 2 of NLCS), the Anaheim Angels in 2002 (Game 2 of World Series), and the New York Mets in 2024 (Game 5 of NLCS) - although each of these teams struck out their opponents in these games at least once.
+
+Bobby Richardson of the Yankees was named MVP of the Series, the only time someone from the losing team has been so honored. He batted .367 with 12 RBIs and eight runs in the Series and hit the key grand slam in Game 3.
+
+#### Game 7 telecast
+
+Prior to the mid-1970s, television networks and stations generally did not preserve their telecasts of sporting events, choosing instead to tape over them. As a result, the broadcasts of the first six games are no longer known to exist. The lone exception is a black-and-white kinescope of the entire telecast of Game 7, which was discovered in a wine cellar in Bing Crosby's former home in Hillsborough, California, in December 2009.
+
+A part-owner of the Pirates who was too superstitious to watch the Series live, Crosby listened to the decisive contest with his wife Kathryn and two friends on a shortwave radio in Paris, France. Wanting to watch the game at a later date only if the Pirates won, he arranged for the telecast to be recorded by Ampex, in which he also held a financial investment. After viewing the kinescope, he placed it in his wine cellar, where it sat untouched for 49 years. It was finally found by Robert Bader, vice-president of marketing and production for Bing Crosby Enterprises, while looking through videotapes of Crosby's television specials which were to be transferred to DVD. The five-reel set is the only known complete copy of the historic game, which was originally broadcast in color.
+
+The NBC television announcers for the Series were Bob Prince and Mel Allen, the primary play-by-play voices for the Pirates and Yankees respectively. Prince called the first half of Game 7 and conducted post-game interviews in the Pittsburgh clubhouse, while Allen did the latter portion of the game.
+
+## 50th anniversary celebrations
+
+On October 13, 2010, for the 50th anniversary of the series winning home run, a gala was hosted by the Byham Theater in downtown Pittsburgh, where the historic telecast of Game 7 was re-aired in its entirety. Bill Virdon, 1960 MVP Dick Groat and Yankee Bobby Richardson were guest speakers, with actor and Pittsburgh native Jeff Goldblum hosting the event. The MLB Network would air the game and gala on December 15, 2010. The telecast was also released on DVD by A&E Home Video.
+
+## Composite box
+
+1960 World Series **(4–3): Pittsburgh Pirates (N.L.)** over New York Yankees (A.L.)
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+Pittsburgh Pirates
+
+5
+
+5
+
+1
+
+3
+
+3
+
+1
+
+0
+
+5
+
+4
+
+27
+
+60
+
+4
+
+New York Yankees
+
+7
+
+2
+
+8
+
+7
+
+3
+
+13
+
+6
+
+4
+
+5
+
+55
+
+91
+
+8
+
+Total
+
+attendance:
+
+349,813
+
+Average
+
+attendance:
+
+49,973
+
+Winning player's share:
+
+$8,418
+
+Losing player's share:
+
+$5,215
+
+To date, the Pirates are the only team to win a seven-game postseason series while being out-scored by 28 runs or more.
+
+## Aftermath
+
+This would prove to be Casey Stengel's last World Series, as the Yankees soon sent him into retirement. This led to his famous remark, "I'll never make the mistake of turning 70 again." Mazeroski and Clemente were the last two remaining Pirates players from the 1960 World Series winners along with manager Danny Murtaugh and third-base coach Frank Oceak, when the Pirates won the World Series in 1971.
+
+To date, this is the last championship in any of the four major sports to be won in Pittsburgh by the home team, as the Pirates' two subsequent World Series championships in 1971 and 1979, both against the Baltimore Orioles, were clinched at Memorial Stadium. The Pittsburgh Penguins have won all five of their Stanley Cup titles on the road, and the Pittsburgh Steelers have won all six of their Super Bowl championships at neutral sites, as is customary in the NFL.
+
+The Yankees returned to the World Series the following year and the year after, and won back-to-back championships over the Cincinnati Reds and San Francisco Giants in five and seven games respectively.
+
+In 2025, the NBC radio broadcast of Game 7 by Chuck Thompson was selected by the Library of Congress for preservation in the National Recording Registry.
