@@ -1,0 +1,453 @@
+---
+title: "1893 Chicago Colts season"
+source: https://en.wikipedia.org/wiki/1893_Chicago_Colts_season
+domain: 1893-chicago-colts-season
+license: CC-BY-SA-4.0
+tags: 1893 chicago colts season
+fetched: 2026-07-07
+---
+
+# 1893 Chicago Colts season
+
+The **1893 Chicago Colts season** was the 22nd season of the Chicago Colts franchise, the 18th in the National League and the first at West Side Park. The Colts finished ninth in the National League with a record of 56–71.
+
+## Regular season
+
+### Season standings
+
+| Team | W | L | Pct. | GB | Home | Road |
+|---|---|---|---|---|---|---|
+| Boston Beaneaters | 86 | 43 | .667 | — | 49‍–‍15 | 37‍–‍28 |
+| Pittsburgh Pirates | 81 | 48 | .628 | 5 | 54‍–‍19 | 27‍–‍29 |
+| Cleveland Spiders | 73 | 55 | .570 | 12½ | 47‍–‍22 | 26‍–‍33 |
+| Philadelphia Phillies | 72 | 57 | .558 | 14 | 43‍–‍22 | 29‍–‍35 |
+| New York Giants | 68 | 64 | .515 | 19½ | 49‍–‍20 | 19‍–‍44 |
+| Cincinnati Reds | 65 | 63 | .508 | 20½ | 37‍–‍27 | 28‍–‍36 |
+| Brooklyn Grooms | 65 | 63 | .508 | 20½ | 43‍–‍24 | 22‍–‍39 |
+| Baltimore Orioles | 60 | 70 | .462 | 26½ | 36‍–‍24 | 24‍–‍46 |
+| Chicago Colts | 56 | 71 | .441 | 29 | 38‍–‍34 | 18‍–‍37 |
+| St. Louis Browns | 57 | 75 | .432 | 30½ | 40‍–‍30 | 17‍–‍45 |
+| Louisville Colonels | 50 | 75 | .400 | 34 | 24‍–‍28 | 26‍–‍47 |
+| Washington Senators | 40 | 89 | .310 | 46 | 21‍–‍27 | 19‍–‍62 |
+
+### Record vs. opponents
+
+Sources:
+
+Team
+
+BAL
+
+BSN
+
+BRO
+
+CHI
+
+CIN
+
+CLE
+
+LOU
+
+NYG
+
+PHI
+
+PIT
+
+STL
+
+WAS
+
+Baltimore
+
+—
+
+2–10
+
+10–2
+
+5–7
+
+4–8
+
+8–4
+
+5–5
+
+4–8
+
+5–7
+
+1–11
+
+9–3
+
+7–5
+
+Boston
+
+10–2
+
+—
+
+8–4
+
+8–3–1
+
+6–6
+
+7–5
+
+10–2
+
+8–4
+
+8–4
+
+4–6–1
+
+10–2
+
+7–5
+
+Brooklyn
+
+2–10
+
+4–8
+
+—
+
+7–3
+
+4–8
+
+5–7–1
+
+7–5
+
+6–6
+
+6–5–1
+
+8–4
+
+8–4
+
+8–3
+
+Chicago
+
+7–5
+
+3–8–1
+
+3–7
+
+—
+
+5–7
+
+4–8
+
+6–4
+
+7–5
+
+6–6
+
+3–9
+
+3–9
+
+9–3
+
+Cincinnati
+
+8–4
+
+6–6
+
+8–4
+
+7–5
+
+—
+
+6–5
+
+6–6
+
+6–6–1
+
+1–9–1
+
+3–9
+
+7–5–1
+
+7–4
+
+Cleveland
+
+4–8
+
+5–7
+
+7–5–1
+
+8–4
+
+5–6
+
+—
+
+6–3
+
+6–6
+
+3–9
+
+9–3
+
+9–3
+
+11–1
+
+Louisville
+
+5–5
+
+2–10
+
+5–7
+
+4–6
+
+6–6
+
+3–6
+
+—
+
+5–7–1
+
+4–8
+
+4–8
+
+4–8
+
+8–4
+
+New York
+
+8–4
+
+4–8
+
+6–6
+
+5–7
+
+6–6–1
+
+6–6
+
+7–5–1
+
+—
+
+7–5–1
+
+4–8–1
+
+8–4
+
+7–5
+
+Philadelphia
+
+7–5
+
+4–8
+
+5–6–1
+
+6–6
+
+9–1–1
+
+9–3
+
+8–4
+
+5–7–1
+
+—
+
+7–5
+
+4–8–1
+
+8–4
+
+Pittsburgh
+
+11–1
+
+6–4–1
+
+4–8
+
+9–3
+
+9–3
+
+3–9
+
+8–4
+
+8–4–1
+
+5–7
+
+—
+
+9–3
+
+9–2
+
+St. Louis
+
+3–9
+
+2–10
+
+4–8
+
+9–3
+
+5–7–1
+
+3–9
+
+8–4
+
+4–8
+
+8–4–1
+
+3–9
+
+—
+
+8–4–1
+
+Washington
+
+5–7
+
+5–7
+
+3–8
+
+3–9
+
+4–7
+
+1–11
+
+4–8
+
+5–7
+
+4–8
+
+2–9
+
+4–8–1
+
+—
+
+## Roster
+
+| 1893 Chicago Colts |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| **Roster** |   |   |   |   |   |   |
+| **Pitchers** Bert Abbey Fritz Clausen Frank Donnelly Clark Griffith Jim Hughey Bill Hutchison Abe Johnson Hal Mauck Willie McGill Gus McGinnis Doc Parker Tom Parrott Sam Shaw Gus Yost |   | **Catchers** Malachi Kittridge Pop Schriver **Infielders** Cap Anson Lew Camp Bill Dahlen Bill Eagan Bob Glenalvin Charlie Irwin Bill Lange John O'Brien Jiggs Parrott |   | **Outfielders** Bob Caruthers George Decker Sam Dungan Henry Lynch Jimmy Ryan Walt Wilmot |   | **Manager** Cap Anson |
+
+## Player stats
+
+### Batting
+
+#### Starters by position
+
+*Note: Pos = Position; G = Games played; AB = At bats; H = Hits; Avg. = Batting average; HR = Home runs; RBI = Runs batted in*
+
+| Pos | Player | G | AB | H | Avg. | HR | RBI |
+|---|---|---|---|---|---|---|---|
+| C | Malachi Kittridge | 70 | 255 | 59 | .231 | 2 | 30 |
+| 1B | Cap Anson | 103 | 398 | 125 | .314 | 0 | 91 |
+| 2B | Bill Lange | 117 | 469 | 132 | .281 | 8 | 88 |
+| SS | Bill Dahlen | 116 | 485 | 146 | .301 | 5 | 64 |
+| 3B | Jiggs Parrott | 113 | 468 | 113 | .241 | 1 | 65 |
+| OF | Walt Wilmot | 94 | 392 | 118 | .301 | 3 | 61 |
+| OF | Jimmy Ryan | 83 | 341 | 102 | .299 | 3 | 30 |
+| OF | Sam Dungan | 107 | 465 | 138 | .297 | 2 | 64 |
+
+#### Other batters
+
+*Note: G = Games played; AB = At bats; H = Hits; Avg. = Batting average; HR = Home runs; RBI = Runs batted in*
+
+| Player | G | AB | H | Avg. | HR | RBI |
+|---|---|---|---|---|---|---|
+| George Decker | 81 | 328 | 89 | .271 | 2 | 48 |
+| Pop Schriver | 64 | 229 | 65 | .284 | 4 | 34 |
+| Lew Camp | 38 | 156 | 41 | .263 | 2 | 17 |
+| Charlie Irwin | 21 | 82 | 25 | .305 | 0 | 13 |
+| Bob Glenalvin | 16 | 61 | 21 | .344 | 0 | 12 |
+| Bill Eagan | 6 | 19 | 5 | .263 | 0 | 2 |
+| John O'Brien | 4 | 14 | 5 | .357 | 0 | 1 |
+| Henry Lynch | 4 | 14 | 3 | .214 | 0 | 2 |
+| Bob Caruthers | 1 | 3 | 0 | .000 | 0 | 0 |
+
+### Pitching
+
+#### Starting pitchers
+
+*Note: G = Games pitched; IP = Innings pitched; W = Wins; L = Losses; ERA = Earned run average; SO = Strikeouts*
+
+| Player | G | IP | W | L | ERA | SO |
+|---|---|---|---|---|---|---|
+| Bill Hutchison | 44 | 348.1 | 16 | 24 | 4.75 | 80 |
+| Willie McGill | 39 | 302.2 | 17 | 18 | 4.61 | 91 |
+| Hal Mauck | 23 | 143.0 | 8 | 10 | 4.41 | 23 |
+| Fritz Clausen | 10 | 76.0 | 6 | 2 | 3.08 | 31 |
+| Bert Abbey | 7 | 56.0 | 2 | 4 | 5.46 | 6 |
+| Frank Donnelly | 7 | 42.0 | 3 | 1 | 5.36 | 6 |
+| Tom Parrott | 4 | 27.0 | 0 | 3 | 6.67 | 7 |
+| Sam Shaw | 2 | 16.0 | 1 | 0 | 5.63 | 1 |
+| Jim Hughey | 2 | 9.0 | 0 | 1 | 11.00 | 4 |
+| Gus Yost | 1 | 2.2 | 0 | 1 | 13.50 | 1 |
+
+#### Other pitchers
+
+*Note: G = Games pitched; IP = Innings pitched; W = Wins; L = Losses; ERA = Earned run average; SO = Strikeouts*
+
+| Player | G | IP | W | L | ERA | SO |
+|---|---|---|---|---|---|---|
+| Gus McGinnis | 13 | 67.1 | 2 | 5 | 5.35 | 13 |
+| Clark Griffith | 4 | 19.2 | 1 | 2 | 5.03 | 9 |
+
+#### Relief pitchers
+
+*Note: G = Games pitched; W = Wins; L = Losses; SV = Saves; ERA = Earned run average; SO = Strikeouts*
+
+| Player | G | W | L | SV | ERA | SO |
+|---|---|---|---|---|---|---|
+| Jimmy Ryan | 1 | 0 | 0 | 0 | 0.00 | 1 |
+| Doc Parker | 1 | 0 | 0 | 1 | 13.50 | 0 |
+| Abe Johnson | 1 | 0 | 0 | 1 | 36.00 | 0 |
