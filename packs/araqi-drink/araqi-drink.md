@@ -1,0 +1,20 @@
+---
+title: "Araqi (drink)"
+source: https://en.wikipedia.org/wiki/Araqi_(drink)
+domain: araqi-drink
+license: CC-BY-SA-4.0
+tags: araqi drink
+fetched: 2026-07-08
+---
+
+# Araqi (drink)
+
+**Araqi** (Arabic: عرقي, romanized: *ʿaraqī*; also *araki*, *aragy*) is a liquor distilled in Sudan. The 1983 introduction of sharia in Sudan banned sales of alcohol, but a black market exists to meet local demand. The drink is made by mixing dates with water and yeast, fermenting the mix, and then distilling it. It is usually drunk neat.
+
+During the war in Darfur, a number of southern Sudanese women came to the north as refugees, and found that some of the only professions available to them were prostitution or brewing araqi, the latter being a skill some already had, with a reliable market demand. A 2000 UN report noted that 80% of the women in Khartoum's women's prison were there on charges of prostitution or brewing araqi.
+
+Araqi is also popular in South Sudan, which split from Sudan in 2011 and where alcohol is legal.
+
+Home distilling can lead to methanol poisoning; 10 died and several others were blinded by a batch of incorrectly distilled araqi in East Darfur in 2017.
+
+In 2020, a new law permitted alcohol sales to non-Muslims in Sudan.

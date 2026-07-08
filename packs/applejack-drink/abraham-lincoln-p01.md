@@ -1,0 +1,134 @@
+---
+title: "Abraham Lincoln (part 1/3)"
+source: https://en.wikipedia.org/wiki/Abraham_Lincoln
+domain: applejack-drink
+license: CC-BY-SA-4.0
+tags: applejack drink
+fetched: 2026-07-08
+part: 1/3
+---
+
+# Abraham Lincoln
+
+**Abraham Lincoln** (February 12, 1809 – April 15, 1865) was the 16th president of the United States, serving from 1861 until his assassination in 1865. He led the United States through the American Civil War, defeating the Confederacy and playing a major role in the abolition of slavery.
+
+Born in a one-room log cabin in Kentucky, Lincoln was raised on the frontier. He was self-educated and became a lawyer, Illinois state legislator, and U.S. representative. Angered by the Kansas–Nebraska Act of 1854, which opened the territories to slavery, he became a leader of the new Republican Party. He reached a national audience in the 1858 Senate campaign debates against Stephen A. Douglas. Lincoln won the 1860 presidential election, becoming the first Republican president. His victory prompted a majority of the slave states to begin seceding and form the Confederate States. A month after Lincoln assumed the presidency, Confederate forces attacked Fort Sumter, starting the Civil War.
+
+As a moderate Republican, Lincoln had to navigate conflicting political opinions from contentious factions during the war effort. He closely supervised the Union's strategy and tactics, including the selection of generals and the implementation of a naval blockade of Southern ports. He suspended the writ of *habeas corpus* in April 1861, an action that Chief Justice Roger Taney found in *Ex parte Merryman* that only Congress could do, and he averted war with Britain by defusing the *Trent* Affair. On January 1, 1863, he issued the Emancipation Proclamation, which declared the slaves in the states "in rebellion" to be free. On November 19, 1863, he delivered the Gettysburg Address, which became one of the most famous speeches in American history. He promoted the Thirteenth Amendment to the U.S. Constitution, which, in 1865, abolished chattel slavery. Following his re-election in 1864, he sought to heal the war-torn nation through Reconstruction.
+
+On April 14, 1865, five days after the Confederate surrender at Appomattox, Lincoln was fatally shot by John Wilkes Booth at Ford's Theatre in Washington, D.C., becoming the first U.S. president to be assassinated. Lincoln is remembered as a martyr and a national hero for his wartime leadership and for his efforts to preserve the Union and abolish slavery. He is consistently ranked in both popular and scholarly polls as among the greatest presidents in American history.
+
+
+## Family and childhood
+
+### Early life
+
+Born in a one-room log cabin in Kentucky on February 12, 1809, Abraham Lincoln was raised on Sinking Spring Farm near Hodgenville, Kentucky. The second child of Thomas Lincoln and Nancy Hanks Lincoln, he was a descendant of Samuel Lincoln, an Englishman who emigrated to Massachusetts in 1637 (Abraham Lincoln said that Samuel Lincoln "came from Norwich, England, in 1638".) His paternal grandfather and namesake, Captain Abraham Lincoln, moved the family from Virginia to Kentucky. The captain was killed in a Native American raid in 1786. The family settled in Hardin County, Kentucky, in the early 1800s. Nancy is widely assumed to have been the daughter of Lucy Hanks. Thomas and Nancy married on June 12, 1806, and moved to Elizabethtown, Kentucky. They had three children: Sarah, Abraham, and Thomas Jr., who died as an infant.
+
+Lincoln's father bought multiple farms in Kentucky but could not get clear property titles to any, losing hundreds of acres in legal disputes. In 1816, the family moved to Indiana, where land titles were more reliable. They settled on a forested plot in Little Pigeon Creek Community. In Kentucky and Indiana, Thomas worked as a farmer, cabinetmaker, and carpenter. At various times, he owned farms, livestock, and town lots, appraised estates, and served on county patrols. Thomas and Nancy were members of a Separate Baptist Church, a pious evangelical group whose members largely opposed slavery. Overcoming financial challenges, Thomas obtained clear title to 80 acres (32 ha) in Little Pigeon Creek Community in 1827.
+
+On October 5, 1818, Nancy died from milk sickness, leaving 11-year-old Sarah in charge of the household, which included her father, 9-year-old Abraham, and Nancy's 19-year-old orphan cousin, Dennis Hanks. Thomas married Sarah Bush Johnston, a widow with three children of her own, on December 2, 1819. Abraham became close to his stepmother and called her "Mama". On January 20, 1828, Lincoln's sister died in childbirth, devastating him.
+
+### Education and move to Illinois
+
+Lincoln was largely self-educated. His formal schooling was from itinerant teachers. It included two short stints in Kentucky, where he learned to read, but probably not to write. After moving to Indiana at age seven, he attended school only sporadically, for a total of less than 12 months by age 15. Nevertheless, he was an avid reader and maintained a lifelong interest in learning.
+
+When Lincoln was a teenager his father relied heavily on him for farmwork and for supplementary income, hiring the boy out to area farmers and pocketing the money, as was the custom at the time. When he was somewhat older, Lincoln and some friends took a job carrying goods by flatboat to New Orleans, Louisiana, where the slave markets, according to the historian Michael Burlingame, "would leave an indelible impression on him.... It was the first time, but not the last, that he would be repelled while observing slavery firsthand."
+
+In March 1830, fearing another milk-sickness outbreak, several members of the extended Lincoln family, including Abraham, moved west to Illinois and settled in Macon County. Abraham became increasingly distant from Thomas, in part due to his father's lack of interest in education; he would later refuse to attend his father's deathbed or funeral in 1851.
+
+### Marriage and children
+
+Some historians, such as Michael Burlingame, identify Lincoln's first romantic interest as Ann Rutledge, a young woman also from Kentucky whom he met when he moved to New Salem, Illinois. Lewis Gannett disputes that the evidence supports a romantic relationship between the two. David Herbert Donald states that "How that friendship [between Lincoln and Rutledge] developed into a romance cannot be reconstructed from the record". Rutledge died on August 25, 1835, of typhoid fever. Lincoln took her death very hard, sinking into a serious depression and contemplating suicide.
+
+In the early 1830s, Lincoln met Mary Owens from Kentucky. Late in 1836, Lincoln agreed to marry Owens if she returned to New Salem. Owens arrived that November and he courted her, but they both had second thoughts. On August 16, 1837, he wrote Owens a letter saying he would not blame her if she ended the relationship, and she declined to marry him.
+
+In 1839, Lincoln met Mary Todd in Springfield, Illinois, and the following year they became engaged. She was a daughter of Robert Smith Todd, a wealthy lawyer and businessman in Lexington, Kentucky. Lincoln initially broke off the engagement in early 1841, but the two were reconciled and married on November 4, 1842. In 1844, the couple bought a house in Springfield near his law office. The marriage was turbulent; Mary was verbally abusive and at times physically violent towards her husband.
+
+They had four sons. The eldest, Robert Todd Lincoln, was born in 1843, and was the only child to live to maturity. Edward Baker "Eddie" Lincoln, born in 1846, died February 1, 1850, probably of tuberculosis. Lincoln's third son, William Wallace "Willie" Lincoln, was born on December 21, 1850, and died of a fever at the White House on February 20, 1862. The youngest, Thomas "Tad" Lincoln, was born on April 4, 1853, and died of edema at age 18 on July 16, 1871. Lincoln loved children, and the Lincolns were not considered to be strict with their own. The deaths of Eddie and Willie had profound effects on both parents. Lincoln suffered from "melancholy", a condition now thought to be clinical depression.
+
+### Early vocations and militia service
+
+In 1831, Lincoln's father moved the family to a new homestead in Coles County, Illinois, after which Abraham struck out on his own. He made his home in New Salem, Illinois, for six years. During 1831 and 1832, Lincoln worked at a general store in New Salem. He gained a reputation for strength and courage after winning a wrestling match with the leader of a group of ruffians known as the Clary's Grove boys. In 1832, he declared his candidacy for the Illinois House of Representatives, though he interrupted his campaign to serve as a captain in the Illinois Militia during the Black Hawk War. He was elected the captain of his militia company but did not see combat. In his political campaigning, Lincoln advocated for navigational improvements on the Sangamon River. He drew crowds as a raconteur, but he lacked name recognition, powerful friends, and money, and he lost the election.
+
+When Lincoln returned home from the war, he planned to become a blacksmith but instead purchased a New Salem general store in partnership with William Berry. Because a license was required to sell customers alcoholic beverages, Berry obtained bartending licenses for Lincoln and himself, and in 1833 the Lincoln–Berry General Store became a tavern as well. Burlingame wrote that Berry was "an undisciplined, hard-drinking fellow", and Lincoln "was too soft-hearted to deny anyone credit". Although the economy was booming, the business struggled and went into debt, prompting Lincoln to sell his share.
+
+Lincoln served as New Salem's postmaster and later as county surveyor, but he continued his voracious reading and decided to become a lawyer. Rather than studying in the office of an established attorney, as was customary, Lincoln read law on his own, borrowing legal texts, including Blackstone's *Commentaries* and Chitty's *Pleadings*, from attorney John Todd Stuart. He later said of his legal education that he "studied with nobody." He was bestowed an honorary degree of Doctor of Laws by Columbia University in 1861.
+
+
+## Early political offices and prairie lawyer
+
+### Illinois state legislature (1834–1842)
+
+In Lincoln's second state house campaign in 1834, as a supporter of Whig Party leader Henry Clay, he finished second among thirteen candidates running for four places. Lincoln echoed Clay's support for the American Colonization Society, which advocated abolition in conjunction with settling freed slaves in Liberia. The Whigs also favored economic modernization in banking, tariffs to fund internal improvements such as railroads, and urbanization.
+
+Lincoln served four terms in the Illinois House of Representatives for Sangamon County. In this role, he championed construction of the Illinois and Michigan Canal. Lincoln voted to expand suffrage beyond White landowners to all White men. He supported the chartering of the Illinois State Bank, and also led a successful campaign for moving the state capital from Vandalia to Springfield.
+
+On January 27, 1838, Lincoln delivered an address at the Lyceum in Springfield, after the murder of the anti-slavery newspaper editor Elijah Parish Lovejoy. In this ostensibly non-partisan speech, Lincoln attacked Stephen A. Douglas and the Democratic Party, who the Whigs argued were supporting "mobocracy". His speech also attacked anti-abolitionism and racial bigotry.
+
+Lincoln was criticized in the press for a planned duel with James Shields, whom he had ridiculed in letters published under the name "Aunt Rebecca". Although the duel did not take place, Burlingame noted that "the affair embarrassed Lincoln terribly".
+
+### U.S. House of Representatives (1847–1849)
+
+In 1843, Lincoln sought the Whig nomination for Illinois's 7th district seat in the U.S. House of Representatives; John J. Hardin was the winning candidate, though Lincoln convinced the party convention to limit Hardin to one term. Lincoln not only gained the nomination in 1846, but also won the election. The only Whig in the Illinois delegation, he was assigned to the Committee on Post Office and Post Roads and the Committee on Expenditures in the War Department. Lincoln teamed with Joshua R. Giddings on a bill to abolish slavery in the District of Columbia, but dropped the bill when it failed to attract support from most other Whigs.
+
+Lincoln spoke against the Mexican–American War (1846–1848), for which he said President James K. Polk had "some strong motive ... to involve the two countries in a war, and trusting to escape scrutiny, by fixing the public gaze upon the exceeding brightness of military glory—that attractive rainbow, that rises in showers of blood". He supported the Wilmot Proviso, a failed 1846 proposal to ban slavery in any U.S. territory won from Mexico. Polk insisted that Mexican soldiers had begun the war by "invading the territory of the State of Texas ... and shedding the blood of our citizens on our own soil". In his 1847 "spot resolutions", Lincoln rhetorically demanded that Polk tell Congress the exact "spot" where this occurred, but the Polk administration did not respond. His approach and rhetoric cost Lincoln political support in his district, and newspapers derisively nicknamed him "spotty Lincoln".
+
+Lincoln had pledged in 1846 to serve only one term in the House. At the 1848 Whig National Convention, he initially supported Henry Clay and was among the leaders of the Illinois delegation backing Clay, voting for him on the early ballots. When it became clear that Clay could not secure the nomination, Lincoln joined other Whigs in shifting support to Zachary Taylor, who won the party's nomination and the presidency in 1848. After Taylor won, Lincoln hoped in vain to be appointed commissioner of the United States General Land Office. The administration offered to appoint him secretary of the Oregon Territory instead. This would have disrupted his legal and political career in Illinois, so he declined and resumed his law practice.
+
+### Prairie lawyer
+
+Lincoln was admitted to the Illinois bar on September 9, 1836. He moved to Springfield and began to practice law under John T. Stuart, Mary Todd's cousin. He partnered for several years with Stephen T. Logan and, in 1844, began his practice with William Herndon.
+
+In his Springfield practice, according to Donald, Lincoln handled "virtually every kind of business that could come before a prairie lawyer". He dealt with many transportation cases in the midst of the nation's western expansion, particularly river barge conflicts under the new railroad bridges. In 1849 he received a patent for a flotation device for the movement of riverboats in shallow water and Lincoln initially favored riverboat legal interests, but he represented whoever hired him.
+
+He represented a bridge company against a riverboat company in *Hurd v. Rock Island Bridge Company*, a landmark case involving a canal boat that sank after hitting a bridge. His patent was never commercialized, but it made Lincoln the only president to hold a patent. Lincoln appeared before the Illinois Supreme Court in 411 cases. From 1853 to 1860, one of his largest clients was the Illinois Central Railroad, which Lincoln successfully sued to recover his legal fees.
+
+Lincoln represented William "Duff" Armstrong in his 1858 trial for the murder of James Preston Metzker. The case is famous for Lincoln's use of a fact established by judicial notice to challenge the credibility of an eyewitness. After a witness testified to seeing the crime in the moonlight, Lincoln produced a *Farmers' Almanac* showing the Moon was at a low angle, drastically reducing visibility. Armstrong was acquitted. In an 1859 murder case, he defended "Peachy" Quinn Harrison, the grandson of Peter Cartwright, Lincoln's political opponent. Harrison was charged with the murder of Greek Crafton who, according to Cartwright, said as he lay dying that he had "brought it upon myself" and that he forgave Harrison. Lincoln angrily protested the judge's initial decision to exclude Cartwright's claim as hearsay. Lincoln argued that the testimony involved a dying declaration and so was not subject to the hearsay rule. Instead of holding Lincoln in contempt of court as expected, the judge, a Democrat, admitted the testimony into evidence, resulting in Harrison's acquittal.
+
+
+## Republican politics (1854–1860)
+
+### Emergence as Republican leader
+
+The Compromise of 1850 failed to alleviate tensions over slavery between the slave-holding South and the free North. As the slavery debate in the Nebraska and Kansas territories became particularly acrimonious, Illinois Senator Stephen A. Douglas proposed popular sovereignty as a compromise; the measure would allow the electorate of each territory to decide the status of slavery. The legislation alarmed many Northerners, who sought to prevent the spread of slavery, but Douglas's Kansas–Nebraska Act narrowly passed Congress in May 1854. Lincoln's Peoria Speech of October 1854, in which he declared his opposition to slavery, was one of an estimated 175 speeches he delivered in the next six years on the topic of excluding slavery from the territories. Lincoln's attacks on the Kansas–Nebraska Act marked his return to political life.
+
+Nationally, the Whigs were irreparably split by the Kansas–Nebraska Act and other ineffective efforts to compromise on the slavery issue. Reflecting on the demise of his party, Lincoln wrote in 1855, "I think I am a whig; but others say there are no whigs, and that I am an abolitionist.... I now do no more than oppose the *extension* of slavery." The new Republican Party was formed as a northern party dedicated to anti-slavery, drawing from the anti-slavery wing of the Whig Party and combining Free Soil, Liberty, and anti-slavery Democratic Party members.
+
+Lincoln resisted early Republican entreaties, fearing that the new party would become a platform for extreme abolitionists. Lincoln held out hope for rejuvenating the Whigs, though he lamented his party's growing closeness with the nativist Know Nothing movement. In 1854, Lincoln was elected to the Illinois legislature, but before the term began he declined to take his seat so that he would be eligible to run in the upcoming U.S. Senate election.
+
+At that time, senators were elected by state legislatures. After leading in the first six rounds of voting, Lincoln was unable to obtain a majority. Lincoln instructed his backers to vote for Lyman Trumbull, an anti-slavery Democrat who had received few votes in the earlier ballots. Lincoln's decision to withdraw enabled his Whig supporters and Trumbull's anti-slavery Democrats to combine and defeat the mainstream Democratic candidate, Joel Aldrich Matteson.
+
+#### 1856 campaign
+
+Violent political confrontations in Kansas continued, and opposition to the Kansas–Nebraska Act remained strong throughout the North. As the 1856 elections approached, Lincoln joined the Republicans and attended the Bloomington Convention, where the Illinois Republican Party was established. The convention platform endorsed Congress's right to regulate slavery in the territories and backed the admission of Kansas as a free state. Lincoln gave the final speech of the convention, calling for the preservation of the Union.
+
+At the June 1856 Republican National Convention, Lincoln received support to run as vice president, but the party put forward a ticket of John C. Frémont and William Dayton, which Lincoln supported throughout Illinois. The Democrats nominated James Buchanan and the Know Nothings nominated Millard Fillmore. Buchanan prevailed, while Republican William Henry Bissell won election as Governor of Illinois, and Lincoln became a leading Republican in Illinois.
+
+#### *Dred Scott v. Sandford*
+
+Dred Scott was a slave whose master took him from a slave state to a territory that was free as a result of the Missouri Compromise. After Scott was returned to the slave state, he petitioned a federal court for his freedom. His petition was denied in *Dred Scott v. Sandford* (1857). Supreme Court Chief Justice Roger B. Taney wrote in his opinion that the Missouri Compromise was unconstitutional because it infringed on slave owners' property rights by prohibiting them from bringing their slaves into the territories. While many Democrats hoped that *Dred Scott* would end the dispute over slavery in the territories, the decision sparked further outrage in the North. Lincoln denounced it as the product of a conspiracy of Democrats to support the Slave Power. He argued that the decision was at variance with the Declaration of Independence, which stated that "all men are created equal ... with certain unalienable rights", among them "life, liberty, and the pursuit of happiness".
+
+### Lincoln–Douglas debates and Cooper Union speech
+
+In 1858, Douglas was up for re-election in the U.S. Senate, and Lincoln hoped to defeat him. Many in the party felt that a former Whig should be nominated in 1858, and Lincoln's 1856 campaigning and support of Trumbull had earned him a favor. For the first time, Illinois Republicans held a convention to agree upon a Senate candidate, and Lincoln won the nomination with little opposition. Lincoln accepted the nomination with great enthusiasm and zeal. After his nomination he delivered his House Divided Speech:
+
+> "A house divided against itself cannot stand." I believe this government cannot endure, permanently half *slave* and half *free*. I do not expect the Union to be *dissolved*—I do not expect the house to *fall*—but I *do* expect it will cease to be divided. It will become all one thing, or all the other.
+
+The speech created a stark image of the danger of disunion. When informed of Lincoln's nomination, Douglas stated, "[Lincoln] is the strong man of the party ... and if I beat him, my victory will be hardly won."
+
+The Senate campaign featured seven debates between Lincoln and Douglas; they had an atmosphere akin to a prizefight and drew thousands. Lincoln warned that the Slave Power was threatening the values of republicanism, and he accused Douglas of distorting Jefferson's premise that all men are created equal. In his Freeport Doctrine, Douglas argued that, despite the *Dred Scott* decision, which he claimed to support, local settlers, under popular sovereignty, should be free to choose whether to allow slavery in their territory. He accused Lincoln of having joined the abolitionists.
+
+Though the Republican legislative candidates won more popular votes, the Democrats won more seats, and the legislature re-elected Douglas. However, Lincoln's articulation of the issues had given him a national political presence. In the aftermath of the 1858 election, newspapers frequently mentioned Lincoln as a potential Republican presidential candidate. While Lincoln was popular in the Midwest, he lacked support in the Northeast and was unsure whether to seek the office. In January 1860, Lincoln told a group of political allies that he would accept the presidential nomination if offered and, in the following months, William O. Stoddard's *Central Illinois Gazette*, the *Chicago Press & Tribune*, and other local papers endorsed his candidacy.
+
+In February 1860, Henry Ward Beecher invited Lincoln to address his congregation at Plymouth Church in Brooklyn, New York. Lincoln agreed, but the venue shifted to Cooper Union in Manhattan. In his speech at Cooper Union, which he gave on February 27, Lincoln argued that the Founding Fathers had little use for popular sovereignty, and that in the Northwest Ordinance they had restricted slavery in the territories; he insisted that morality required opposition to slavery and rejected any "groping for some middle ground between the right and the wrong". Many in the audience thought he appeared awkward and even ugly. But Lincoln demonstrated intellectual leadership, which brought him into contention for the presidency. Journalist Noah Brooks reported, "No man ever before made such an impression on his first appeal to a New York audience". Historian David Herbert Donald described the speech as "a superb political move for an unannounced presidential aspirant." In response to an inquiry about his ambitions, Lincoln said, "The taste *is* in my mouth a little".
+
+### 1860 presidential election
+
+On May 9–10, 1860, the Illinois Republican State Convention was held in Decatur. Exploiting his embellished frontier legend of clearing land and splitting fence rails, Lincoln's supporters promoted him as "The Rail Candidate". On May 18 at the Republican National Convention in Chicago, Lincoln won the nomination on the third ballot. A former Democrat, Hannibal Hamlin of Maine, was nominated for vice president to balance the ticket.
+
+Throughout the 1850s, Lincoln had doubted the prospects of civil war, and his supporters rejected claims that his election would incite secession. When Douglas was selected as the candidate of the Northern Democrats, delegates from the Southern slave states elected incumbent Vice President John C. Breckinridge as their candidate. A group of former Whigs and Know Nothings formed the Constitutional Union Party and nominated John Bell of Tennessee. Lincoln and Douglas competed for votes in the North, while Bell and Breckinridge found support primarily in the South. A nationwide militaristic Republican youth organization, the Wide Awakes, "turned it into one of the most excited elections in American history" and "triggered massive popular enthusiasm", according to the political historian Jon Grinspan. People of the Northern states knew the Southern states would vote against Lincoln and rallied supporters for him.
+
+As Douglas and the other candidates campaigned, Lincoln gave no speeches, relying on the enthusiasm of the Republican Party. Republican speakers emphasized Lincoln's childhood poverty to demonstrate the power of "free labor", which allowed a common farm boy to work his way to the top by his own efforts. Though he did not make public appearances, many sought to visit and write to Lincoln. In the runup to the election, he took an office in the Illinois state capitol to deal with the influx of attention. He also hired John George Nicolay as his personal secretary, who would remain in that role during the presidency.
+
+On November 6, 1860, Lincoln was elected as the first Republican president. His victory was entirely due to his support in the North and West. No ballots were cast for him in 10 of the 15 Southern slave states. Lincoln received 1,866,452 votes, or 39.8 percent of the total in a four-way race, carrying the free Northern states, as well as California and Oregon, and winning the electoral vote decisively.
