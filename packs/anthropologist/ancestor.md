@@ -1,0 +1,40 @@
+---
+title: "Ancestor"
+source: https://en.wikipedia.org/wiki/Ancestor
+domain: anthropologist
+license: CC-BY-SA-4.0
+tags: anthropologist
+fetched: 2026-07-08
+---
+
+# Ancestor
+
+Checked
+
+## Page version status
+
+This is an accepted version of this page
+
+This is the
+
+latest accepted revision
+
+,
+
+reviewed
+
+on
+
+16 April 2026
+
+.
+
+In genealogy and evolutionary biology, an **ancestor**, also known as a **forefather**, **fore-elder**, or a **forebear**, is a parent or (recursively) the parent of an antecedent (i.e., a grandparent, great-grandparent, great-great-grandparent and so forth). *Ancestor* is "any person from whom one is descended. In law, the person from whom an estate has been inherited."
+
+## Relationship
+
+Two individuals have a genetic relationship if one is the ancestor of the other or if they share a common ancestor. In evolutionary theory, species which share an evolutionary ancestor are said to be of common descent. However, this concept of ancestry does not apply to some bacteria and other organisms capable of horizontal gene transfer. Some research suggests that the average person has twice as many female ancestors as male ancestors. This might have been due to the past prevalence of polygynous relations and female hypergamy.
+
+Assuming that all of an individual's ancestors are otherwise unrelated to each other, that individual has 2*n* ancestors in the *n*th generation before them and a total of 2*g*+1 − 2 ancestors in the *g* generations before them. In practice, however, it is clear that most ancestors of humans (and any other species) are multiply related (see pedigree collapse). Consider *n* = 40: the human species is more than 40 generations old, yet the number 240, approximately 1012 or one trillion, dwarfs the number of humans who have ever lived.
+
+Some cultures confer reverence to ancestors, both living and dead; in contrast, some more youth-oriented cultural contexts display less veneration of elders. In other cultural contexts, ancestor worship or, more accurately, ancestor veneration is when people seek providence from their deceased ancestors.

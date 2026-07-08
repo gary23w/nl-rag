@@ -1,0 +1,69 @@
+---
+title: "Bacteria (part 2/2)"
+source: https://en.wikipedia.org/wiki/Bacteria
+domain: bacteria
+license: CC-BY-SA-4.0
+tags: bacteria
+fetched: 2026-07-08
+part: 2/2
+---
+
+## Interactions with other organisms
+
+Despite their apparent simplicity, bacteria can form complex associations with other organisms. These symbiotic associations can be divided into parasitism, mutualism and commensalism.
+
+### Commensals
+
+The word "commensalism" is derived from the word "commensal", meaning "eating at the same table" and all plants and animals are colonised by commensal bacteria. In humans and other animals, trillions of them live on the skin, the airways, the gut and other orifices. Referred to as "normal flora", or "commensals", these bacteria usually cause no harm but may occasionally invade other sites of the body and cause infection. *Escherichia coli* is a commensal in the human gut but can cause urinary tract infections. Similarly, streptococci, which are part of the normal flora of the human mouth, can cause heart disease.
+
+### Predators
+
+Some species of bacteria kill and then consume other microorganisms; these species are called *predatory bacteria*. These include organisms such as *Myxococcus xanthus*, which forms swarms of cells that kill and digest any bacteria they encounter. Other bacterial predators either attach to their prey in order to digest them and absorb nutrients or invade another cell and multiply inside the cytosol. These predatory bacteria are thought to have evolved from saprophages that consumed dead microorganisms, through adaptations that allowed them to entrap and kill other organisms.
+
+### Mutualists
+
+Certain bacteria form close spatial associations that are essential for their survival. One such mutualistic association, called interspecies hydrogen transfer, occurs between clusters of anaerobic bacteria that consume organic acids, such as butyric acid or propionic acid, and produce hydrogen, and methanogenic archaea that consume hydrogen. The bacteria in this association are unable to consume the organic acids as this reaction produces hydrogen that accumulates in their surroundings. Only the intimate association with the hydrogen-consuming archaea keeps the hydrogen concentration low enough to allow the bacteria to grow.
+
+In soil, microorganisms that reside in the rhizosphere (a zone that includes the root surface and the soil that adheres to the root after gentle shaking) carry out nitrogen fixation, converting nitrogen gas to nitrogenous compounds. This serves to provide an easily absorbable form of nitrogen for many plants, which cannot fix nitrogen themselves. Many other bacteria are found as symbionts in humans and other organisms. For example, the presence of over 1,000 bacterial species in the normal human gut flora of the intestines can contribute to gut immunity, synthesise vitamins, such as folic acid, vitamin K and biotin, convert sugars to lactic acid (see *Lactobacillus*), as well as fermenting complex undigestible carbohydrates. The presence of this gut flora also inhibits the growth of potentially pathogenic bacteria (usually through competitive exclusion) and these beneficial bacteria are consequently sold as probiotic dietary supplements.
+
+Nearly all animal life is dependent on bacteria for survival as only bacteria and some archaea possess the genes and enzymes necessary to synthesise vitamin B12, also known as cobalamin, and provide it through the food chain. Vitamin B12 is a water-soluble vitamin that is involved in the metabolism of every cell of the human body. It is a cofactor in DNA synthesis and in both fatty acid and amino acid metabolism. It is particularly important in the normal functioning of the nervous system via its role in the synthesis of myelin.
+
+### Pathogens
+
+The body is continually exposed to many species of bacteria, including beneficial commensals, which grow on the skin and mucous membranes, and saprophytes, which grow mainly in the soil and in decaying matter. The blood and tissue fluids contain nutrients sufficient to sustain the growth of many bacteria. The body has defence mechanisms that enable it to resist microbial invasion of its tissues and give it a natural immunity or innate resistance against many microorganisms. Unlike some viruses, bacteria evolve relatively slowly so many bacterial diseases also occur in other animals.
+
+If bacteria form a parasitic association with other organisms, they are classed as pathogens. Pathogenic bacteria are a major cause of human death and disease and cause infections such as tetanus (caused by *Clostridium tetani*), typhoid fever, diphtheria, syphilis, cholera, foodborne illness, leprosy (caused by *Mycobacterium leprae*) and tuberculosis (caused by *Mycobacterium tuberculosis*). A pathogenic cause for a known medical disease may only be discovered many years later, as was the case with *Helicobacter pylori* and peptic ulcer disease. Bacterial diseases are also important in agriculture, and bacteria cause leaf spot, fire blight and wilts in plants, as well as Johne's disease, mastitis, salmonella and anthrax in farm animals.
+
+Each species of pathogen has a characteristic spectrum of interactions with its human hosts. Some organisms, such as *Staphylococcus* or *Streptococcus*, can cause skin infections, pneumonia, meningitis and sepsis, a systemic inflammatory response producing shock, massive vasodilation and death. Yet these organisms are also part of the normal human flora and usually exist on the skin or in the nose without causing any disease at all. Other organisms invariably cause disease in humans, such as *Rickettsia*, which are obligate intracellular parasites able to grow and reproduce only within the cells of other organisms. One species of *Rickettsia* causes typhus, while another causes Rocky Mountain spotted fever. *Chlamydia*, another phylum of obligate intracellular parasites, contains species that can cause pneumonia or urinary tract infection and may be involved in coronary heart disease. Some species, such as *Pseudomonas aeruginosa*, *Burkholderia cenocepacia*, and *Mycobacterium avium*, are opportunistic pathogens and cause disease mainly in people who are immunosuppressed or have cystic fibrosis. Some bacteria produce toxins, which cause diseases. These are endotoxins, which come from broken bacterial cells, and exotoxins, which are produced by bacteria and released into the environment. The bacterium *Clostridium botulinum* for example, produces a powerful exotoxin that cause respiratory paralysis, and *Salmonellae* produce an endotoxin that causes gastroenteritis. Some exotoxins can be converted to toxoids, which are used as vaccines to prevent the disease.
+
+Bacterial infections may be treated with antibiotics, which are classified as bacteriocidal if they kill bacteria or bacteriostatic if they just prevent bacterial growth. There are many types of antibiotics, and each class inhibits a process that is different in the pathogen from that found in the host. An example of how antibiotics produce selective toxicity are chloramphenicol and puromycin, which inhibit the bacterial ribosome, but not the structurally different eukaryotic ribosome. Antibiotics are used both in treating human disease and in intensive farming to promote animal growth, where they may be contributing to the rapid development of antibiotic resistance in bacterial populations. Infections can be prevented by antiseptic measures such as sterilising the skin prior to piercing it with the needle of a syringe, and by proper care of indwelling catheters. Surgical and dental instruments are also sterilised to prevent contamination by bacteria. Disinfectants such as bleach are used to kill bacteria or other pathogens on surfaces to prevent contamination and further reduce the risk of infection.
+
+
+## Significance in technology and industry
+
+Bacteria, often lactic acid bacteria, such as *Lactobacillus* species and *Lactococcus* species, in combination with yeasts and moulds, have been used for thousands of years in the preparation of fermented foods, such as cheese, pickles, soy sauce, sauerkraut, vinegar, wine, and yogurt.
+
+The ability of bacteria to degrade a variety of organic compounds is remarkable and has been used in waste processing and bioremediation. Bacteria capable of digesting the hydrocarbons in petroleum are often used to clean up oil spills. Fertiliser was added to some of the beaches in Prince William Sound in an attempt to promote the growth of these naturally occurring bacteria after the 1989 *Exxon Valdez* oil spill. These efforts were effective on beaches that were not too thickly covered in oil. Bacteria are also used for the bioremediation of industrial toxic wastes. In the chemical industry, bacteria are most important in the production of enantiomerically pure chemicals for use as pharmaceuticals or agrichemicals.
+
+Bacteria can also be used in place of pesticides in biological pest control. This commonly involves *Bacillus thuringiensis* (also called BT), a Gram-positive, soil-dwelling bacterium. Subspecies of this bacteria are used as Lepidopteran-specific insecticides under trade names such as Dipel and Thuricide. Because of their specificity, these pesticides are regarded as environmentally friendly, with little or no effect on humans, wildlife, pollinators, and most other beneficial insects.
+
+Because of their ability to quickly grow and the relative ease with which they can be manipulated, bacteria are the workhorses for the fields of molecular biology, genetics, and biochemistry. By making mutations in bacterial DNA and examining the resulting phenotypes, scientists can determine the function of genes, enzymes, and metabolic pathways in bacteria, then apply this knowledge to more complex organisms. This aim of understanding the biochemistry of a cell reaches its most complex expression in the synthesis of huge amounts of enzyme kinetic and gene expression data into mathematical models of entire organisms. This is achievable in some well-studied bacteria, with models of *Escherichia coli* metabolism now being produced and tested. This understanding of bacterial metabolism and genetics allows the use of biotechnology to bioengineer bacteria for the production of therapeutic proteins, such as insulin, growth factors, or antibodies.
+
+Because of their importance for research in general, samples of bacterial strains are isolated and preserved in Biological Resource Centres. This ensures the availability of the strain to scientists worldwide.
+
+
+## History of bacteriology
+
+Bacteria were first observed by the Dutch microscopist Antonie van Leeuwenhoek in 1676, using a single-lens microscope of his own design. Leeuwenhoek did not recognize bacteria as a distinct category of microorganisms, referring to all microorganisms that he observed, including bacteria, protists, and microscopic animals, as animalcules. He published his observations in a series of letters to the Royal Society of London. Bacteria were Leeuwenhoek's most remarkable microscopic discovery. Their size was just at the limit of what his simple lenses could resolve, and, in one of the most striking hiatuses in the history of science, no one else would see them again for over a century. His observations also included protozoans, and his findings were looked at again in the light of the more recent findings of cell theory.
+
+Christian Gottfried Ehrenberg introduced the word "bacterium" in 1828. In fact, his *Bacterium* was a genus that contained non-spore-forming rod-shaped bacteria, as opposed to *Bacillus*, a genus of spore-forming rod-shaped bacteria defined by Ehrenberg in 1835.
+
+Louis Pasteur demonstrated in 1859 that the growth of microorganisms causes the fermentation process and that this growth is not due to spontaneous generation (yeasts and molds, commonly associated with fermentation, are not bacteria, but rather fungi). Along with his contemporary Robert Koch, Pasteur was an early advocate of the germ theory of disease. Before them, Ignaz Semmelweis and Joseph Lister had realised the importance of sanitised hands in medical work. Semmelweis, who in the 1840s formulated his rules for handwashing in the hospital, prior to the advent of germ theory, attributed disease to "decomposing animal organic matter". His ideas were rejected and his book on the topic condemned by the medical community. After Lister, however, doctors started sanitising their hands in the 1870s.
+
+Robert Koch, a pioneer in medical microbiology, worked on cholera, anthrax and tuberculosis. In his research into tuberculosis, Koch finally proved the germ theory, for which he received a Nobel Prize in 1905. In Koch's postulates, he set out criteria to test if an organism is the cause of a disease, and these postulates are still used today.
+
+Ferdinand Cohn is said to be a founder of bacteriology, studying bacteria from 1870. Cohn was the first to classify bacteria based on their morphology.
+
+Though it was known in the nineteenth century that bacteria are the cause of many diseases, no effective antibacterial treatments were available. In 1910, Paul Ehrlich developed the first antibiotic, by changing dyes that selectively stained *Treponema pallidum*—the spirochaete that causes syphilis—into compounds that selectively killed the pathogen. Ehrlich, who had been awarded a 1908 Nobel Prize for his work on immunology, pioneered the use of stains to detect and identify bacteria, with his work being the basis of the Gram stain and the Ziehl–Neelsen stain.
+
+A major step forward in the study of bacteria came in 1977 when Carl Woese recognised that archaea have a separate line of evolutionary descent from bacteria. This new phylogenetic taxonomy depended on the sequencing of 16S ribosomal RNA and divided prokaryotes into two evolutionary domains, as part of the three-domain system.
