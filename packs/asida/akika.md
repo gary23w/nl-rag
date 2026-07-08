@@ -1,0 +1,52 @@
+---
+title: "Aqiqah"
+source: https://en.wikipedia.org/wiki/Akika
+domain: asida
+license: CC-BY-SA-4.0
+tags: asida
+fetched: 2026-07-08
+---
+
+# Aqiqah
+
+(Redirected from
+
+Akika
+
+)
+
+**ʿAqīqah** (Arabic: عقيقة), **aqeeqa**, or **aqeeqah** is the Islamic tradition of the sacrifice of an animal on the occasion of a child's birth. Aqiqah is a type of *sadaqah* and it is also *sunnah*, though not obligatory.
+
+## Description
+
+According to hadith and the majority of Islamic scholars, two goats are sacrificed for a boy and one for a girl.
+
+If one cannot perform the slaughter on the seventh day, it may be done on the fourteenth or the twenty-first day. If one is still unable to do so, it may be performed at any time before the child reaches puberty. The aqiqah is sunnah and mustahabb; it is not obligatory, so there is no sin upon one who does not perform it.
+
+According to a hadith in Muwatta Imam Malik, Fatima donated, in silver equivalent, the weight of the shaved hair of her children Hasan, Husayn, Umm Kulthum, and Zaynab.
+
+## Alternative views
+
+### Shia views
+
+Ja'far al-Sadiq, a great grandchild of the Islamic prophet Muhammad and a prominent scholar in his era, claimed that the shaving, slaughtering for aqiqah, and naming of the child should, ideally, be done within one hour.
+
+Additionally, Ja'far al-Sadiq replied in response to a question: "'Would almsgiving (equal to the price of aqiqah) be sufficient instead of aqiqah?'" with the answer that: 'No, it wouldn't be sufficient; Allah likes giving food and submission to his will.'"
+
+According to another hadith from Ja'far al-Sadiq, every born is in pawn of aqiqah; namely, it would be exposed to death/kinds of calamities if they don't do aqiqah for the child. It is Sunnah for the parents to eat from the meat of aqiqah.
+
+Abu Talib ibn Abd al-Muttalib performed aqiqah for Muhammad on the seventh day of his birth and invited members of his family for the occasion, who asked "what is this?" to which he replied "aqiqah for Ahmad". He claimed to have named him Ahmad "because of the praises of the inhabitants of the skies and the Earth for him".
+
+Muhammad is said to have performed aqiqah for both Hasan ibn Ali and Husayn ibn Ali, his grandsons, on the seventh day of their births respectively by sacrificing one sheep each; the leg of which was given to the nurse that helped with the delivery. Anointing the baby with the blood of the sacrificed animal for aqiqah was a common practice among Arab pagans and was, therefore, prohibited in Islam.
+
+### Shafi'i view
+
+The Shafiʿi madhdhab allows for an aqiqah practice after the death of a child. This is also the school of law that emphasizes the child’s potential for shafaʿa (intercession). Two prominent representatives of the Shafiʿi madhhab who defend this idea of a deceased child as a heavenly intercessor are alSuyuti (ca. 1445–1505) and al-Ghazzali (ca. 1058-1111).
+
+### Abu Hanifa's view
+
+Abu Hanifa, unlike other jurists, held that the aqiqah sacrifice was an illegitimate practice from the pre-Islamic pagan period in Arabia.
+
+## Islamic historical usage
+
+The tradition of animal sacrifice and weighing the first haircut against gold or silver for charity appear to have their origins in pre-Islamic Arabia.

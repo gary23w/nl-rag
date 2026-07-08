@@ -1,0 +1,55 @@
+---
+title: "Kofta"
+source: https://en.wikipedia.org/wiki/Ak%C3%A7aabat_meatballs
+domain: ashure
+license: CC-BY-SA-4.0
+tags: ashure
+fetched: 2026-07-08
+---
+
+# Kofta
+
+(Redirected from
+
+Akçaabat meatballs
+
+)
+
+**Kofta** is a family of meatball or meatloaf dishes found in South Asian, Central Asian, Balkan, Middle Eastern, North African, and South Caucasian cuisines. In the simplest form, koftas consist of balls of minced meat—usually beef, chicken, lamb or mutton, camel, seldom pork, or a mixture—mixed with spices and sometimes other ingredients. The earliest known recipes are found in early Arab cookbooks, as well as in the Byzantine Empire, and call for ground lamb.
+
+There are many national and regional variations, as well as vegetable and uncooked versions. Shapes vary and include balls, patties, and cylinders. Sizes vary from that of a golf ball to that of an orange.
+
+## Etymology
+
+In English, *kofta* is a loanword from the Hindi-Urdu कोफ़्ता / کوفتہ and Persian کوفته *kofta* meaning *pounded meat*. The earliest extant use of the word in the Urdu language is attested in Mulla Nusrati's *ʿAlī Nāma* (1665). It was first used in English in *Qanoon-e-Islam* (1832), and then by James Wise in 1883. The languages of the region of the kofta's origin have adopted the word with minor phonetic variations. In other languages, similar foods are called croquettes, dumplings, meatballs, rissoles, and turnovers.
+
+## History
+
+The ancient Roman cookbook *Apicius* included many meatball-type recipes.
+
+The first appearance of recipes for kofta are in the earliest Arab cookbooks; Kofta were also found in the Byzantine Empire. The earliest recipes are for large ground lamb meatballs triple-glazed in a mixture of saffron and egg yolk. This glazing method spread to the West, where it is referred to as "gilding" or "endoring". Koftas moved to India; according to Alan Davidson, Nargisi kofta was served at the Mughal court.
+
+Koftas are found from the Indian subcontinent through Central Asia, the Middle East, the Balkans, and northern Africa. Koftas are found in the traditional cuisines of Armenia, Afghanistan, Albania, Bosnia and Herzegovina, Bulgaria, Georgia, Lebanon, Palestine, Syria, Egypt, Greece, India, Iran, Morocco, Pakistan, Romania, Serbia, North Macedonia, and Turkey. Kofta is also a popular dish among Kurdish people and Assyrian people. In Turkey, it is "a preferred offering at communal gatherings of all kinds", according to Engin Akın. In Armenia and Azerbaijan, it is, along with dolma, lavash, harissa, kebabs, and pahlava, a dish of "clearly symbolic ethnic significance" often argued over by gastronationalists attempting to claim it as one of their own country's traditional dishes that has been co-opted by the other country.
+
+## Cooking methods
+
+Meat is mixed with spices and often other ingredients such as rice, bulgur, vegetables, or eggs to form a paste. Often added into the kofta mixture are nuts, cheese, or eggs. They can be grilled, fried, steamed, poached, baked, or marinated, and may be served with a rich spicy sauce or in a soup or stew. Koftas are sometimes made from fish or vegetables or even cottage cheese rather than red meat. Some versions are stuffed with nuts, cheese, or eggs. Generally the size can vary from the "size of an orange to the size of a golf ball", although *tabriz köftesi*, the largest, average 20 centimetres (8 in) in diameter. They can be shaped in various forms including patties, balls, or cylinders. A Levantine version, pronounced *kafta* /ˈkɑːftə/, is typically made with minced beef or lamb, mixed with onion, parsley, and spices. It can be shaped into cylinders, patties, or balls, and grilled, baked, or pan-fried, served with sauces, dips, or flatbreads.
+
+## Variants
+
+Variants include Arayes , a Levantine dish made from pita bread that is stuffed with kufta and then grilled. In Iranian cuisine there are Koofteh Berenji, Koofteh Hamedani, Koofteh Nar, Koofteh Tabrizi and Koofteh Shirin-e Kermanshahi variants. Azerbaijani cuisine has Tabriz köftesi, with an unusually large diameter of some 20 centimetres (8 in).
+
+Bulgarian cuisine has Tatarsko kyufte, a Tatar version. Greek cuisine has tomatokeftedes, a vegetarian version with tomatoes, and *kolokithokeftedes*, with courgettes and feta cheese. Çiğ köfte is a Turkish and Armenian version made with bulgur and raw meat.
+
+In Kurdish cuisine there is doughawa, though it can be stuffed with meat; the kufta is usually stuffed with fried onions and eggs, while the kofta itself is in yogurt soup.
+
+In the Indian subcontinent, variants include Kofte chawal, with meat or vegetable balls in a curry sauce, served with rice. Variations use different ingredients for the balls, such as paneer, bottle gourd, chicken or mutton. Other Indian versions are Malai kofta and Nargisi kofta with a hard-boiled egg wrapped in the kofta mixture. Historically, Pishtha meatballs were mentioned in a Sanskrit text on medicine, the *Sushruta Samhita*.
+
+- (Malai kofta, a dish common in the cuisine of the Indian subcontinent)*Malai kofta*, a dish common in the cuisine of the Indian subcontinent
+- (Three eight-inch meatballs in sauce)Iranian *Tabrizi kofta* include yellow split peas and potatoes, as well as minced meat.
+- (Sauced meatballs with rice)*Kofte chawal* from India (vegetarian kofta made with bottle gourd), served with rice
+- (Egyptian koftet el hati on a mixed grill platter, served with tehina)Egyptian koftet el hati on a mixed grill platter, served with tehina
+- (Armenian types of kofte)Armenian types of kofte
+- (Orkh, Armenian kofta made with meat and bulgur served in cylindrical shapes)Orkh, Armenian kofta made with meat and bulgur served in cylindrical shapes
+- (Nargesi kofta, a popular dish in Lucknow and Karachi)Nargesi kofta, a popular dish in Lucknow and Karachi
+- (Mercimek köftesi, Turkish plant-based kofta made with lentils and bulgur) Mercimek köftesi, Turkish plant-based kofta made with lentils and bulgur
