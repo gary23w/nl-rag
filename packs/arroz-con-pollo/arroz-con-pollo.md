@@ -1,0 +1,18 @@
+---
+title: "Arroz con pollo"
+source: https://en.wikipedia.org/wiki/Arroz_con_pollo
+domain: arroz-con-pollo
+license: CC-BY-SA-4.0
+tags: arroz con pollo
+fetched: 2026-07-08
+---
+
+# Arroz con pollo
+
+***Arroz con pollo*** (Spanish for *rice with chicken*) is a traditional dish of Latin America. It typically consists of chicken cooked with rice, onions, saffron, and a plethora of other grains or vegetables. In the Dominican Republic it is alternately called locrio de pollo, and in Saint Martin it is called lokri or locreo.
+
+## Origins
+
+There is some debate as to whether it originated in Spain or Puerto Rico. Many Puerto Ricans note that arroz con pollo cannot be made without beer and annatto oil, and saffron is no substitute. Beer and annatto are rarely used in Spanish cooking and never in arroz con pollo there. Annatto is frequently used in Puerto Rican cooking especially in rice dishes like arroz con gandules (rice with pork and pigeon peas) and arroz con maiz (rice with corn and sausage). Beer is used in many Puerto Rican dishes like pollo guisado (braised stewed chicken) and asopao de pollo (chicken rice stew). Many Puerto Rican rice dishes are generously seasoned with sofrito, a sauce commonly used in arroz con pollo.
+
+Food writer Elisabeth Lambert Ortiz, pointing out the international aspects of the dish, notes the origin of arroz con pollo in the Spanish forms of pilaf, already reflecting international influences: chicken was brought from India and rice from Asia; saffron (used for the yellow colour in Spain, instead of annatto) was introduced by Phoenician traders; tomatoes and peppers (also known as sofrito) are natives of the Americas.

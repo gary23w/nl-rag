@@ -1,0 +1,12 @@
+---
+title: "Ayam masak merah"
+source: https://en.wikipedia.org/wiki/Ayam_masak_merah
+domain: ayam-masak-merah
+license: CC-BY-SA-4.0
+tags: ayam masak merah
+fetched: 2026-07-08
+---
+
+# Ayam masak merah
+
+**Ayam masak merah** (Jawi: ‏ايم ماسق ميره‎; lit. 'red-cooked chicken' in Malay; Malay pronunciation: [ˌajam ˌmasaʔ ˈmerah]) is a Malaysian and Singaporean chicken dish. Popular in both countries, it is a casserole of chicken pieces in dried chillies sambal. It tends to be a home-cooked dish, so many variations on the recipe exist. Pieces of chicken are first marinated in turmeric before being fried to a golden brown then slowly braised in a spicy dried chillies, onion and tomato sauce. Peas are sometimes added to the dish, as are aromatic spices such as cloves, star anise and cinnamon bark, and it is garnished with shredded kaffir lime leaves as well as coriander. It is often paired with tomato rice – cooked with tomato sauce or paste, milk, dried spices, and garlic, onions and ginger.

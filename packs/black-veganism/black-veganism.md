@@ -1,0 +1,54 @@
+---
+title: "Black veganism"
+source: https://en.wikipedia.org/wiki/Black_veganism
+domain: black-veganism
+license: CC-BY-SA-4.0
+tags: black veganism
+fetched: 2026-07-08
+---
+
+# Black veganism
+
+**Black veganism** in the United States is a social and political philosophy that connects the use of non-human animals with other social justice concerns such as racism and with the lasting effects of slavery, such as the subsistence diets of enslaved people enduring as familial and cultural food traditions. Sisters Syl Ko and Aph Ko first proposed the intersectional framework for and coined the term Black veganism. In 2021 the Institute for Critical Animal Studies called Black veganism an "emerging discipline".
+
+A 2015 survey found that about 8% of Black Americans are vegetarian or vegan, compared to a rate of 3.4% for all those surveyed.
+
+## History
+
+Veganism as a named movement historically was made up primarily of white people, and the stereotypical vegan is white; Khushbu Shah pointed out in 2018 that not until the bottom of the third page on Shutterstock was a person of color included among the images for the search term "vegan person". Omowale Adewale, founder of New York City's Black VegFest, argues that there is a history of Black veganism in the US, but said in 2020 that the recent increase in Black veganism is partially because "You love to see yourself represented. That's one of the main reasons why the Black community has really galvanised around the vegan idea".
+
+The modern Black veganism movement takes inspiration from Rastafari, which developed a plant-based diet known as Ital in Jamaica in the 1930s, and groups like the African Hebrew Israelites of Jerusalem, which has advocated strict veganism since the 1960s, and the Nation of Islam, which specifically connected choosing a plant-based diet to fighting racist oppression. It also has roots in the American Civil Rights movement; Dick Gregory, who marched with Martin Luther King, Jr., argued that "Because I'm a civil rights activist, I am also an animal rights activist. Animals and humans suffer and die alike." According to Amirah Mercer, by the 1980s veganism had "settled firmly into celebrity and activist pockets" among Black people in the US. The 1990 hip hop song "Beef" by KRS-One, according to Keith Tucker, founder of Hip Hop is Green vegan advocacy group, influenced many in the hip hop community to think about veganism and "meat in the slave diet". In 2017 Carol J. Adams argued, "Now is the time for us to listen to and embrace black veganism." In the late 1990s and early 2000s, Queen Afua played an influential role in promoting Black raw veganism. She advocated using food as a tool for healing Black women's reproductive and spiritual health.
+
+Aph and Syl Ko are prominent Black philosophers, together they contributed a philosophical framework for Black veganism. Syl Ko in a 2020 presentation to The Brooks Institute describes the development of the concept of Black veganism as an intersectional theory for political and social commentary, saying that she and her sister had in 2012 first discussed the idea that "animals are raced" and in 2015 started calling that idea Black veganism. Syl Ko conceptualizes Black veganism as a critique of society's perception of animals. Syl Ko states in the presentation for The Brooks Institute, "we are not interested in the cosmetic diversity issue that's going on in animal ethics." In 2017 Aph and Syl Ko published *Aphro-ism*; Corey Lee Wrenn in a review said it presented Black veganism as "a political protest against the oppressiveness of animality, Eurocentric hierarchy-building, and harmful foodways."
+
+In 2021,*The Washington Post*, citing a Gallup report, referred to Black people as the fastest-growing demographic of vegans.
+
+## Description
+
+In the United States, Black veganism is a social and political philosophy as well as a diet. It connects the use of non-human animals with other social justice concerns such as racism, and with the lasting effects of slavery, such as the subsistence diets of enslaved people enduring as familial and cultural food traditions. Dietary changes caused by the Great Migration also meant former farmers, who had previously been able to grow or forage their own vegetables, became reliant on processed foods. Adams described Black veganism as a "lens of race and animality" through which veganism could be understood as a radical movement for social justice.Additionally, health issues within the black community have been cited as catalysts for people of color to become vegan. Diet-related conditions include diabetes, heart disease, hypertension, and stroke.
+
+Syl Ko starts from a framework initially discussed by Peter Singer but which does not consider race. According to Syl Ko, Black veganism is "an animal ethic generated from within an anti-racist commitment." She and her sister proposed developing a "revolutionary" concept of animal ethics that removes non-human animals from the discussion. Ko told the Brooks Institute that the debate about ethical veganism was whether speciesism was just like racism or sexism; she and her sister had framed it around the idea that speciesism and racism were the same thing. Syl Ko and Aph Ko conceptualized a theoretical framework for Black veganism, but in praxis there are also Black communities that define Black veganism as cultural-specific practice. Some Black vegans that consider race in important component to their food practice, who also believe in speciesism, connect the violence of systemic racism and the legacy of slavery to the violence that is currently exerted over Black people today and non-human animals.
+
+According to AshEL Eldridge, an Oakland activist, the movement is about the Black community reclaiming its food sovereignty and "decolonizing" the diet of Black Americans. According to Shah, the area where most vegans of color feel the greatest rift with mainstream veganism is in mainstream veganism's failure to recognize the intersectionality with other social justice issues such as food access. Dr. A. Breeze Harper also attributes this spilt in vegan philosophy and praxis to the misalignment of goals by saying, "the overwhelmingly white U.S. vegan movement guides the assumption that serious dialogue around race, racism, whiteness, and racialized colonialism are unrelated to its goals."
+
+PETA columnist Zachary Tolivar noted he had often heard Black veganism called "a revolutionary act" because it often involves rejecting both family tradition and systemic oppression. Mercer described it as "revoking my own Black card" and said that for US Black people, choosing veganism was an act of protest against disenfranchisement by governmental health care and food policy.
+
+The Institute for Critical Animal Studies in 2021 called Black veganism an "emerging discipline".
+
+## Influences
+
+In 2010, two influential books, A. Breeze Harper's *Sistah Vegan* and McQuirter's *By Any Greens Necessary* were published. In the anthology, *Sistah Vegan,* the editor Dr. A. Breeze Harper, a prominent critical race feminist scholar, argued that veganism is a tool for combating environmental injustice, health inequities, and internalized colonization. In 2014 Bryant Terry wrote *Afro-Vegan*; Mercer described seeing the two words juxtaposed on a book cover as having "disrupted everything the mainstream had ever shown me about veganism." In 2015 Aph Ko, tired of hearing that only white people were vegans, created Black Vegans Rock, initially a list of prominent Black vegans but eventually a website. Two years later she and her sister Syl Ko published *Aphro-ism: Essays on Pop Culture, Feminism, and Black Veganism from Two Sisters.*
+
+Prominent African-Americans have publicly discussed their veganism. In 2011, Oprah Winfrey's staff went vegan for a week and produced a show about the experience. David Carter made headlines as the "300-pound vegan" after adopting a vegan diet in 2014. In 2017, Bleacher Report published a story about multiple Black NBA players having adopted a vegan diet. Beyonce has discussed her experimentation with plant-based eating. Senator Cory Booker's veganism was discussed during his 2020 presidential campaign. A *Los Angeles Times* article featured the headline "Cory Booker could be our first vegan president." When asked about it at the third Democratic presidential debate, he discussed the factory farming system. New York City Mayor Eric Adams is the first vegan leader of that metropolis.
+
+Veganism was particularly embraced by the hip hop community in the late 2010s and early 2020s. In 2016 "health and wellness", including a plant-based diet, was added as the 10th "element of hip hop". According to hip hop artist SupaNova Slom, young Black people turned to veganism in response to their older relatives' diet-caused health issues.
+
+## Appropriation
+
+Black vegans often face exotification of their food and culture by white vegan communities and spaces, which may alienate Black people from participating in the larger vegan community. A prime example of the appropriation and exotification of Black vegan cooking is in the popular vegan cooking blog, Thug Kitchen. This blog written in a style "borrowed heavily from African-American culture" and which had spawned book deals, was revealed as being authored by a white couple, Michelle Davis and Matt Holloway. Multiple critics described it as akin to blackface and pointed out the history of the use of the word "thug" as racially charged and typically used to describe Black men as criminals. Vice pointed out that the website and cookbooks were an example of how "you don't have to look very hard to find white and non-black people profiting off of what could traditionally be deemed black culture." Alice Randall said it was "perpetuating the fraud" that veganism was not present among urban Black people and it helped to drown out or distract from authentic Black vegan voices.
+
+Terry in 2014 described the blog and cookbooks as "whites masking in African-American street vernacular for their own amusement and profit", pointing out that the fact the couple had not identified themselves for two years was evidence of knowledge of the problematic nature of their behavior. After years of backlash about the name, in June 2020, in the midst of the George Floyd protests, the organization announced it would no longer be called Thug Kitchen. The *Austin American-Statesman* said, "The TK joke isn't funny."
+
+## Advocacy
+
+Hip Hop is Green is a US-based organization that uses hip hop events to promote veganism to Black youth as both a healthy choice and a political statement. The group held their first event in 2009 and in 2015 held one at the White House. Vegan Voices of Color argues that "mainstream veganism" is still "white veganism". The Food Empowerment Project is a vegan food justice advocacy group.

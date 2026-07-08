@@ -1,0 +1,12 @@
+---
+title: "Aloo chap"
+source: https://en.wikipedia.org/wiki/Aloo_chap
+domain: adhirasam
+license: CC-BY-SA-4.0
+tags: adhirasam
+fetched: 2026-07-08
+---
+
+# Aloo chap
+
+**Aloo Chap** (Bengali: আলুর চপ, Odia: ଆଳୁ ଚପ, Bhojpuri: 𑂄𑂪𑂴 𑂒𑂣) a snack originating from the Indian subcontinent made out of boiled potatoes and various spices. It is available widely in the Indian states of Bihar, Odisha, Assam, Jharkhand and West Bengal, in the Bhojpuri region and in Bangladesh. "Aloo" means potato, and the word "chap" means a small cutlet fritters or croquette in Bengali. It is served hot and warm along with muri (puffed rice), green chilies, and sometimes sauce and salads. It is a vegetarian alternative, and an equivalent of aloo tikki.

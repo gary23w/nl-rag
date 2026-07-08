@@ -1,0 +1,20 @@
+---
+title: "BK Tee Vee"
+source: https://en.wikipedia.org/wiki/BK_Tee_Vee
+domain: bk-chicken-fries
+license: CC-BY-SA-4.0
+tags: bk chicken fries
+fetched: 2026-07-08
+---
+
+# BK Tee Vee
+
+**BK Tee Vee** was Burger King's MTV-inspired advertising campaign from 1991 to 1993.
+
+## History
+
+The campaign was created by the New York based agency D'Arcy Masius Benton & Bowles. The original advertisements were used to promote the Burger King Every Day Value Menu and BK Dinner Baskets. The advertising program was designed as part of a back to basics plan by Burger King after a series of disappointing advertising schemes, including the failure of its 1980s *Where's Herb?* campaign. One of the main parts of the plan was to introduce a value menu in response to McDonald's, Taco Bell and Wendy's.
+
+Many of the advertisements featured Dan Cortese as Dan the Whopper Man, while others used clips from the rap musicians Kid 'n Play's film *House Party*. The cross-promotion of the Disney film *Aladdin* was also advertised under this promotion, as well as *Last Action Hero*. The last commercials using this campaign were to promote *The Nightmare Before Christmas*.
+
+The advertisement program was also used in the German market to promote a sandwich called the Big Tex.

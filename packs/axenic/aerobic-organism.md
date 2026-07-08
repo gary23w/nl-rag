@@ -1,0 +1,63 @@
+---
+title: "Aerobic organism"
+source: https://en.wikipedia.org/wiki/Aerobic_organism
+domain: axenic
+license: CC-BY-SA-4.0
+tags: axenic
+fetched: 2026-07-08
+---
+
+# Aerobic organism
+
+An **aerobic organism** or **aerobe** is an organism that can survive and grow in an oxygenated environment. The ability to exhibit aerobic respiration may yield benefits to the aerobic organism, as aerobic respiration yields more energy than anaerobic respiration. Energy production of the cell involves the synthesis of ATP by an enzyme called ATP synthase. In aerobic respiration, ATP synthase is coupled with an electron transport chain in which oxygen acts as a terminal electron acceptor. In July 2020, marine biologists reported that aerobic microorganisms (mainly), in "quasi-suspended animation", were found in organically poor sediments, up to 101.5 million years old, 250 feet below the seafloor in the South Pacific Gyre (SPG) ("the deadest spot in the ocean"), and could be the longest-living life forms ever found.
+
+## Types
+
+- Obligate aerobes need oxygen to grow. In a process known as cellular respiration, these organisms use oxygen to oxidize substrates (for example sugars and fats) and generate energy.
+- Facultative anaerobes use oxygen if it is available, but also have anaerobic methods of energy production.
+- Microaerophiles require oxygen for energy production, but are harmed by atmospheric concentrations of oxygen (21% O2).
+- Aerotolerant anaerobes do not use oxygen but are not harmed by it.
+
+When an organism is able to survive in both oxygen and anaerobic environments, the use of the Pasteur effect can distinguish between facultative anaerobes and aerotolerant organisms. If the organism is using fermentation in an anaerobic environment, the addition of oxygen will cause facultative anaerobes to suspend fermentation and begin using oxygen for respiration. Aerotolerant organisms must continue fermentation in the presence of oxygen. Facultative organisms grow in both oxygen rich media and oxygen free media.
+
+## Aerobic respiration
+
+Aerobic organisms use a process called aerobic respiration to create ATP from ADP and a phosphate. Glucose (a monosaccharide) is oxidized to power the electron transport chain:
+
+This equation is a summary of what happens in three series of biochemical reactions: glycolysis, the Krebs cycle (also known as the Citric acid cycle), and oxidative phosphorylation.
+
+C
+
+6
+
+H
+
+12
+
+O
+
+6
+
++ 6 O
+
+2
+
++ 38
+
+ADP
+
++ 38 phosphate → 6 CO
+
+2
+
++ 44 H
+
+2
+
+O + 38
+
+ATP
+
+In Oxidative phosphorylation, ATP is synthesized from ADP and a phosphate using ATP synthase. ATP synthase is powered by a proton-motive force created by using the energy generated from the electron transport chain. A hydrogen ion (H+) has a positive charge and if separated by a cellular membrane, it creates a difference in charge between the inside and outside of the membrane. Oxidative phosphorylation occurs in the mitochondria of eukaryotes.
+
+Aerobic respiration needs O2 because it acts as the terminal electron acceptor in prokaryotes' electron transport chain. Molecular Oxygen is reduced to water in this process.
