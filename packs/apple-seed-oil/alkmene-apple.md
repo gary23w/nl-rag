@@ -1,0 +1,20 @@
+---
+title: "Alkmene (apple)"
+source: https://en.wikipedia.org/wiki/Alkmene_(apple)
+domain: apple-seed-oil
+license: CC-BY-SA-4.0
+tags: apple seed oil
+fetched: 2026-07-08
+---
+
+# Alkmene (apple)
+
+'**Alkmene'** is a German cultivar of domesticated apple, also called '**Early Windsor'**.
+
+Two natural mutations (sports) of this cultivar that have red-skinned fruit have been selected: one called '**Red Alkmene'** was trademarked under the name of **Red Windsor**; the other is '**Ceeval'**.
+
+It was developed between 1900 and 1949, by the Kaiser Wilhelm Institute in Müncheberg, Germany, by crossing the two cultivars 'Cox's Orange Pippin' and 'Geheimrat Dr. Oldenburg' (frequently confused with the similar-sounding 'Duchess of Oldenburg'). The result is an early harvest apple (early mid season), which is very attractive, with a honeyed flavor similar to Cox's but slightly sharper. Its main use is for fresh eating.
+
+'Alkmene' flowers early mid season, with self-fertile blossoms, hence no cross pollination is needed. Fruit size is medium and variable, flesh color is yellowish or extremely yellow for an apple, skin has greenish-yellow background with orange-reddish flush and strong red strips. The 'Red Windsor' cultivar has a larger portion of red. It is resistant to apple scab and susceptible to blossom frost.
+
+'Alkmene' was awarded the Award of Garden Merit by the Royal Horticultural Society in 1998.
