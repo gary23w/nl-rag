@@ -1,0 +1,1200 @@
+---
+title: "2001 World Series"
+source: https://en.wikipedia.org/wiki/2001_World_Series
+domain: clutch-hitter
+license: CC-BY-SA-4.0
+tags: clutch hitter
+fetched: 2026-07-08
+---
+
+# 2001 World Series
+
+The **2001 World Series** was the championship series of Major League Baseball's (MLB) 2001 season. The 97th edition of the World Series, it was a best-of-seven series between the National League (NL) champion Arizona Diamondbacks and the American League (AL) champion (and three-time defending World Series champion) New York Yankees. The Diamondbacks defeated the Yankees, four games to three, to win the series. Considered one of the greatest World Series of all time, its memorable aspects included two extra-inning games and three late-inning comebacks. Diamondbacks pitchers Randy Johnson and Curt Schilling were both named World Series Most Valuable Players.
+
+The Yankees advanced to the World Series by defeating the Oakland Athletics, three games to two, in the AL Division Series, and then the Seattle Mariners in the AL Championship Series, four games to one. It was the Yankees' fourth consecutive World Series appearance, after winning championships in 1998, 1999, and 2000. The Diamondbacks advanced to the World Series by defeating the St. Louis Cardinals, three games to two, in the NL Division Series, and then the Atlanta Braves in the NL Championship Series, four games to one. It was the franchise's first appearance in a World Series.
+
+The Series began later than usual, as a result of a delay in the regular season after the September 11 attacks, and it was the first to extend into November. The Diamondbacks won the first two games at home, limiting the Yankees to just one run. The Yankees responded with a close win in Game 3, at which U.S. President George W. Bush threw out the ceremonial first pitch. In Games 4 and 5, the Yankees won in comeback fashion, hitting game-tying home runs off Diamondbacks closer Byung-hyun Kim with one out remaining in consecutive games, before winning in extra innings. The Diamondbacks won Game 6 in a blowout, forcing a decisive Game 7. In the final game, the Yankees led in the ninth inning before the Diamondbacks staged a comeback against closer Mariano Rivera, capped off by a walk-off, bases-loaded bloop single by Luis Gonzalez to clinch Arizona's championship victory. This was the third World Series to end in a bases-loaded, walk-off hit, following 1991 and 1997, and to this date, the last Series to end on a walk-off of any kind. This series held the record for the latest date that a Series ended (November 4), until that record was broken during the 2022 World Series.
+
+Among several firsts, the 2001 World Series was the first World Series championship for the Diamondbacks; the first major professional sports championship won by a Phoenix-based team (and the first World Series championship for a Western state other than California); and the earliest an MLB franchise had won a World Series (the Diamondbacks were in just their fourth year of existence). The home team won every game in the Series, which had only happened twice before, in 1987 and 1991, both won by the Minnesota Twins. The Diamondbacks outscored the Yankees, 37–14, as a result of large margins of victory achieved by Arizona at Bank One Ballpark (now known as Chase Field) relative to the one-run margins the Yankees achieved at Yankee Stadium. Arizona's pitching held powerhouse New York to a .183 batting average, the lowest ever in a seven-game World Series. This and the 2002 World Series were the last two consecutive World Series to have game sevens until the World Series of 2016 and 2017, and the last two consecutive ones where Game 7 was won by the home team. The 2001 World Series was the subject of an HBO documentary, *Nine Innings from Ground Zero*, in 2004.
+
+## Background
+
+### Arizona Diamondbacks
+
+The Arizona Diamondbacks began play in 1998, along with the Tampa Bay Devil Rays, as the youngest expansion team in Major League Baseball (MLB). After a mediocre debut season, the Diamondbacks finished the following year first in the National League (NL) West with a 100–62 record, but lost to the New York Mets in the National League Division series. With several All-Star players like Randy Johnson and Matt Williams, the Diamondbacks had high expectations for the 2000 season, but finished third in the NL West with an 85–77 record. During the offseason, team manager Buck Showalter was fired, and replaced by sportscaster Bob Brenly. The Diamondbacks acquired several notable free agent players during the offseason, including Miguel Batista, Mark Grace, and Reggie Sanders. Most of the Diamondbacks players were above the age of 30, and had already played on a number of teams prior to the 2001 season. In fact, the Diamondbacks starting lineup for the World Series did not include a player under the age of 31, making them the oldest team by player age in World Series history. With several players nearing the age of retirement, Luis Gonzalez noted that the overall team mentality was "there's too many good guys in here to let this opportunity slip away".
+
+Although the Diamondbacks were only one game above .500 by the end of April, Gonzalez had a particularly memorable start to the season, in which he tied the MLB record with 13 home runs during the month of April. The Diamondbacks found greater success in May and June, and at one point had a six-game lead in the NL West. During this span, the team won nine consecutive games, and Johnson tied the MLB record with 20 strikeouts in a nine-inning game. The six game lead did not last long however, and by the end of July, the Diamondbacks were a half game behind the Los Angeles Dodgers in the West. A resurgent August pushed the team back into first place, a spot they maintained for the rest of the season. By the end of the season, several Diamondbacks players had put up exceptional statistics: Curt Schilling had the most wins of any pitcher in MLB that year with 22, while Johnson nearly broke the single season strikeout record with 372. Johnson and Schilling also had the two lowest earned run averages (ERA) in the NL, with 2.49 and 2.98 respectively. Gonzalez ended the season with a .325 batting average and 57 home runs, and finished third in voting for the NL Most Valuable Player Award. The Diamondbacks were also one of the best defensive teams in MLB that year, second in fewest errors committed, and tied with the Seattle Mariners for the best fielding percentage.
+
+The Diamondbacks entered the postseason as the #2 seed in the National League, and played the #4 seed St. Louis Cardinals in the National League Division Series. Schilling threw a shutout in Game 1 to give the Diamondbacks an early series lead, but the Cardinals won Game 2 thanks to a two-run home run from Albert Pujols. Craig Counsell hit a three-run home run late in Game 3 to give the Diamondbacks a 2–1 series lead, but the Cardinals won Game 4 with strong pitching performances from Bud Smith and their relief pitchers. The Diamondbacks clinched the series in Game 5, when Tony Womack hit a game winning single that scored Danny Bautista. They then faced the third seeded Atlanta Braves in the National League Championship Series. Johnson also threw a shutout in Game 1, while the Braves hit three home runs in Game 2 to tie the series at one game apiece. Schilling threw a complete game in Game 3, and the Diamondbacks scored 11 runs in a Game 4 victory to take a 3–1 series lead. The Diamondbacks clinched the series in Game 5 with another strong performance from Johnson. With the win, they became the fastest expansion team to reach the World Series, in just their fourth year of play.
+
+### New York Yankees
+
+In contrast to the Diamondbacks, the New York Yankees were one of the oldest and most recognized teams in all of North American sports. The Yankees had built a dynasty in the late 1990s that extended into 2000, which included winning three consecutive World Series' and four of the last five. These teams were led by a group of talented young players that became known as the Core Four: Derek Jeter, Andy Pettitte, Jorge Posada, and Mariano Rivera. Following the Yankees win over the Braves in the 1999 World Series, sportscaster Bob Costas called the Yankees "the team of the decade, [and] most successful franchise of the century."
+
+The Yankees finished the 2001 season in first place in the AL East with a win–loss record of 95–65 (a winning percentage of .594), 13+1⁄2 games ahead of the Boston Red Sox, good enough to secure the #2 seed in the American League playoff bracket. The Yankees then defeated the fourth seeded Oakland Athletics 3 games to 2 in the AL Division Series, after losing 2 games at home, and the top seeded Seattle Mariners 4 games to 1 in the AL Championship Series to advance to their fourth consecutive World Series, and fifth in six years.
+
+Derek Jeter and Tino Martinez led the Yankees offensively during the 2001 season. Jeter batted .311 with 21 home runs and 74 RBI in 150 games, while Martinez batted .280 with 34 home runs and 113 RBI in 154 games. Roger Clemens and Mike Mussina were the leaders of the Yankees' pitching staff. Clemens who won the Cy Young Award, his sixth of a career total and major league record 7, finished with a win–loss record of 20–3, an earned-run average (ERA) of 3.51, and struck out 213 batters in 220.1 innings pitched and was by far the Yankee's best starter in the World Series. Mussina finished with a win–loss record of 17–11, an ERA of 3.15, and struck out 214 batters in 228.2 innings pitched.
+
+### September 11 and the month of November
+
+After MLB games were postponed as a result of the September 11 attacks, the World Series began on October 27, 2001, which was, at the time, the latest-ever start date for a World Series. The last three games were the first major-league games (other than exhibitions) played in the month of November. This was just the fourth time that no World Series champion was decided within the traditional month of October. The previous three occurrences were in 1904 (no series), 1918 (series held in September because of World War I), and 1994 (series cancelled by the players' strike). Game 7 was played on November 4; at the time this was the latest date a World Series game was played, and still tied with Game 6 of the 2009 Series for the second-latest date of a World Series game (only behind 2022's Game 6, played on November 5).
+
+Additionally, the Series took place in New York City only seven weeks after the attacks, representing a remarkable boost in morale for the fatigued city. A tattered and torn American flag recovered from the wreckage at Ground Zero, which had been used at funerals of fallen Port Authority police officers after the attacks, was flown over Yankee Stadium during the series. According to Port Authority sergeant Antonio Scannella, "We wanted a place America could see this flag so they could see the rips in it, but it still flies."
+
+President George W. Bush threw out the ceremonial first pitch before Game 3 at Yankee Stadium. Bush had been counseled by security officials to appear before Game 1 in Phoenix because they believed it would be more secure there, but Bush thought it would be better for the country to do it in New York. Security was extremely tight at Yankee Stadium before the game, with bomb sniffing dogs sweeping the property, snipers positioned around the stadium, and vendors screened by federal agents. A Secret Service agent dressed as an umpire and stood on the field with the other umpires before the game, briefly appearing on the TV broadcast. Bush wore a bulletproof vest underneath an FDNY sweater. Having been counseled by Derek Jeter to throw from the rubber on top of the pitcher's mound rather than the base of the mound, Bush strode to the rubber, gave a thumbs up to the crowd, and fired a strike over home plate as the crowd chanted "U-S-A". Bush later reflected, "I had never had such an adrenaline rush as when I finally made it to the mound. I was saying to the crowd, 'I'm with you, the country's with you' ... And I wound up and fired the pitch. I've been to conventions and rallies and speeches: I've never felt anything so powerful and emotions so strong, and the collective will of the crowd so evident."
+
+## Summary
+
+*Arizona won the series, 4–3.*
+
+| Game | Date | Score | Location | Time | Attendance |
+|---|---|---|---|---|---|
+| 1 | October 27 | New York Yankees – 1, **Arizona Diamondbacks** – 9 | Bank One Ballpark | 2:44 | 49,646 |
+| 2 | October 28 | New York Yankees – 0, **Arizona Diamondbacks** – 4 | Bank One Ballpark | 2:35 | 49,646 |
+| 3 | October 30 | Arizona Diamondbacks – 1, **New York Yankees** – 2 | Yankee Stadium (I) | 3:26 | 55,820 |
+| 4 | October 31 | Arizona Diamondbacks – 3, **New York Yankees** – 4 (10) | Yankee Stadium (I) | 3:31 | 55,863 |
+| 5 | November 1 | Arizona Diamondbacks – 2, **New York Yankees** – 3 (12) | Yankee Stadium (I) | 4:15 | 56,018 |
+| 6 | November 3 | New York Yankees – 2, **Arizona Diamondbacks** – 15 | Bank One Ballpark | 3:33 | 49,707 |
+| 7 | November 4 | New York Yankees – 2, **Arizona Diamondbacks** – 3 | Bank One Ballpark | 3:20 | 49,589 |
+
+## Matchups
+
+### Game 1
+
+October 27, 2001 5:02
+
+pm (
+
+MST
+
+) at
+
+Bank One Ballpark
+
+in
+
+Phoenix, Arizona
+
+95
+
+°F (35
+
+°C), roof open, Mostly Cloudy
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+3
+
+2
+
+Arizona
+
+1
+
+0
+
+4
+
+4
+
+0
+
+0
+
+0
+
+0
+
+X
+
+9
+
+10
+
+0
+
+WP
+
+:
+
+Curt Schilling
+
+(1–0)
+
+LP
+
+:
+
+Mike Mussina
+
+(0–1)
+
+Home runs
+
+:
+
+NYY: None
+
+AZ:
+
+Craig Counsell
+
+(1),
+
+Luis Gonzalez
+
+(1)
+
+Boxscore
+
+The Series commenced on October 27, which was the latest a World Series had started, beating the previous record by four days (1999 World Series, October 23). The Yankees struck first in Game 1 when Derek Jeter was hit by a pitch with one out in the first and scored on Bernie Williams's double two batters later. However, Arizona's Curt Schilling and two relievers, Mike Morgan and Greg Swindell held the Yankees scoreless afterward. They managed to get only two walks and two hits for the rest of the game, Scott Brosius's double in the second and Jorge Posada's single in the fourth, both with two outs.
+
+Meanwhile, the Diamondbacks tied the game on Craig Counsell's one-out home run in the first off of Mike Mussina. After a scoreless second, Mussina led off the third by hitting Tony Womack with a pitch. He moved to second on Counsell's sacrifice bunt before Luis Gonzalez's home run put the Diamondbacks up 3–1. A single and right fielder David Justice's error put runners on second and third before Matt Williams's sacrifice fly put Arizona up 4–1. After Mark Grace was intentionally walked, Damian Miller's RBI double gave Arizona a 5–1 lead.
+
+Next inning, Gonzalez hit a two-out double off of Randy Choate. Reggie Sanders was intentionally walked before Gonzalez scored on Steve Finley's single. An error by third baseman Brosius scored Sanders, put Finley at third, and Williams at second. Both men scored on Mark Grace's double, putting Arizona up 9–1. Though the Diamondbacks got just one more hit for the rest of the game off of Sterling Hitchcock and Mike Stanton (Williams' leadoff single in the seventh), they went up 1–0 in the series.
+
+The Diamondbacks' win in Game 1 was the first World Series game won by a non-New York City team since 1997. In every World Series between 1997 and 2001, either both teams were from New York City or a New York City team won in a sweep (1998 and 1999).
+
+### Game 2
+
+October 28, 2001 5:59
+
+pm (MST) at
+
+Bank One Ballpark in Phoenix, Arizona 87
+
+°F (31
+
+°C), roof open, Partly Cloudy
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+3
+
+0
+
+Arizona
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+3
+
+0
+
+X
+
+4
+
+5
+
+0
+
+WP
+
+:
+
+Randy Johnson
+
+(1–0)
+
+LP
+
+:
+
+Andy Pettitte
+
+(0–1)
+
+Home runs
+
+:
+
+NYY: None
+
+AZ:
+
+Matt Williams
+
+(1)
+
+Boxscore
+
+Arizona continued to take control of the Series with the strong pitching performance of Randy Johnson. The Big Unit pitched a complete-game shutout, allowing only four baserunners and three hits while striking out 11 Yankees. Andy Pettitte meanwhile nearly matched him, retiring Arizona in order in five of the seven innings he pitched. In the second, he allowed a leadoff single to Reggie Sanders, who scored on Danny Bautista's double. Bautista was the only Arizona runner stranded for the entire game. In the seventh, Pettitte hit Luis Gonzalez with a pitch before Sanders grounded into a forceout. After Bautista singled, Matt Williams's three-run home run put Arizona up 4–0. They won the game with that score and led the series two games to none as it moved to New York City. This was the 1,000th game played in the history of the MLB postseason.
+
+### Game 3
+
+October 30, 2001 8:30
+
+pm (
+
+EST
+
+) at
+
+Yankee Stadium
+
+in
+
+Bronx
+
+,
+
+New York
+
+52
+
+°F (11
+
+°C), Mostly clear
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+Arizona
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+3
+
+3
+
+New York
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+X
+
+2
+
+7
+
+1
+
+WP
+
+:
+
+Roger Clemens
+
+(1–0)
+
+LP
+
+:
+
+Brian Anderson
+
+(0–1)
+
+Sv
+
+:
+
+Mariano Rivera
+
+(1)
+
+Home runs
+
+:
+
+AZ: None
+
+NYY:
+
+Jorge Posada
+
+(1)
+
+Boxscore
+
+The game was opened in New York City by President George W. Bush, who threw the ceremonial first pitch, a strike to Yankees backup catcher Todd Greene. Bush became the first incumbent U.S. president to throw a World Series first pitch since Jimmy Carter in 1979. He also threw the baseball from the mound where the pitcher would be set (unlike most ceremonial first pitches which are from in front of the mound) and threw it for a strike. Chants of *"U-S-A, U-S-A"* rang throughout Yankee Stadium. Yankees starter Roger Clemens was outstanding allowing only three hits and struck out nine in seven innings of work. Yankees closer Mariano Rivera pitched two innings for the save.
+
+Jorge Posada's leadoff home run off of Brian Anderson in the second put the Yankees up 1–0. The Diamondbacks loaded the bases in the fourth on two walks and one hit before Matt Williams's sacrifice fly tied the game. Bernie Williams hit a leadoff single in the sixth and moved to second on a wild pitch one out later before Posada walked. Mike Morgan relieved Anderson and struck out David Justice before Scott Brosius broke the tie with an RBI single. That would be all the scoring as Morgan and Greg Swindell pitched the rest of the game for the Diamondbacks while Clemens and Rivera shut down the D'Backs. The Yankees cut Arizona's series lead to 2–1 with the win.
+
+### Game 4
+
+October 31, 2001 8:23
+
+pm (EST) at
+
+Yankee Stadium in Bronx, New York 57
+
+°F (14
+
+°C), Overcast
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+R
+
+H
+
+E
+
+Arizona
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+2
+
+0
+
+0
+
+3
+
+6
+
+0
+
+New York
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+2
+
+1
+
+4
+
+7
+
+0
+
+WP
+
+:
+
+Mariano Rivera
+
+(1–0)
+
+LP
+
+:
+
+Byung-hyun Kim
+
+(0–1)
+
+Home runs
+
+:
+
+AZ:
+
+Mark Grace
+
+(1)
+
+NYY:
+
+Shane Spencer
+
+(1),
+
+Tino Martinez
+
+(1),
+
+Derek Jeter
+
+(1)
+
+Boxscore
+
+Game 4 saw the Yankees send Orlando Hernández to the mound while the Diamondbacks elected to bring back Curt Schilling on three days' rest. Both pitchers gave up home runs, with Schilling doing so to Shane Spencer in the third inning and Hernandez doing so to Mark Grace in the fourth. Hernandez pitched 6+1⁄3 solid innings, giving up four hits while Schilling went seven innings and gave up one.
+
+With the game still tied entering the eighth, Arizona struck. After Mike Stanton recorded the first out of the inning, Luis Gonzalez singled and Erubiel Durazo hit a double to bring him in. Matt Williams followed by grounding into a fielder's choice off of Ramiro Mendoza, which scored pinch runner Midre Cummings and gave the team a 3–1 lead.
+
+With his team on the verge of taking a commanding 3–1 series lead, Diamondbacks manager Bob Brenly elected to bring in closer Byung-hyun Kim in the bottom of the eighth for a two-inning save. Kim, at 22, became the first Korean-born player to play in the MLB World Series. Kim struck out the side in the eighth, but ran into trouble in the ninth.
+
+Derek Jeter led off by trying to bunt for a hit but was thrown out by Williams. Paul O'Neill then lined a single in front of Gonzalez. After Bernie Williams struck out, Kim seemed to be out of trouble with Tino Martinez coming to the plate. However, Martinez drove the first pitch he saw from Kim into the right-center field bleachers, tying the score at 3–3. The Yankees were not done, as Jorge Posada walked and David Justice moved him into scoring position with a single. Kim struck Spencer out to end the threat.
+
+When the scoreboard clock in Yankee Stadium passed midnight, World Series play in November began, with the message on the scoreboard "Welcome to November Baseball".
+
+Mariano Rivera took the hill for the Yankees in the tenth and retired the Diamondbacks in order. Kim went out for a third inning of work and retired Scott Brosius and Alfonso Soriano, but Jeter hit an opposite field home run on a 3–2 pitch count from Kim. This home run gave the Yankees a 4–3 victory and tied the Series at two games apiece which guaranteed a return trip to Arizona and made Jeter the first player to hit a November home run and earning him the tongue-in-cheek nickname of "Mr. November".
+
+### Game 5
+
+November 1, 2001 8:23
+
+pm (EST) at
+
+Yankee Stadium in Bronx, New York 61
+
+°F (16
+
+°C), Mostly cloudy
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+R
+
+H
+
+E
+
+Arizona
+
+0
+
+0
+
+0
+
+0
+
+2
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+2
+
+8
+
+0
+
+New York
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+2
+
+0
+
+0
+
+1
+
+3
+
+9
+
+1
+
+WP
+
+:
+
+Sterling Hitchcock
+
+(1–0)
+
+LP
+
+:
+
+Albie Lopez
+
+(0–1)
+
+Home runs
+
+:
+
+AZ:
+
+Steve Finley
+
+(1),
+
+Rod Barajas
+
+(1)
+
+NYY:
+
+Scott Brosius
+
+(1)
+
+Boxscore
+
+Game 5 saw the Yankees return to Mike Mussina for the start while the Diamondbacks sent Miguel Batista, who had not pitched in twelve days, to the mound. Batista pitched a strong 7+2⁄3 scoreless innings, striking out six, and reliever Greg Swindell got the last out of the eighth inning. Mussina bounced back from his poor Game 1 start, recording ten strikeouts, but allowed solo home runs in the fifth inning to Steve Finley and Rod Barajas.
+
+In the top of the ninth, the soon to be retired Paul O'Neill was honored by Yankee fans who chanted his name to which O'Neill, who was visibly in tears, tipped his hat. With the Diamondbacks leading 2–0 in the ninth, Byung-hyun Kim was called upon for the save despite having thrown three innings the night before. Jorge Posada doubled to open the inning, but Kim got Shane Spencer to ground out and then struck out Chuck Knoblauch. As had happened the previous night, Kim could not hold the lead as Scott Brosius hit a 1–0 pitch over the left field wall, the second straight game tying home run in the bottom of the ninth for the Yankees. Kim was pulled from the game in favor of Mike Morgan who recorded the final out.
+
+Morgan retired the Yankees in order in the 10th and 11th innings, while the Diamondbacks got to Mariano Rivera in the 11th. Danny Bautista and Erubiel Durazo opened the inning with hits and Matt Williams advanced them into scoring position with a sacrifice bunt. Rivera then intentionally walked Steve Finley to load the bases, then got Reggie Sanders to line out and Mark Grace grounded out to end the inning.
+
+Arizona went to midseason trade acquisition Albie Lopez in the 12th, and in his first at bat he gave up a single to Knoblauch (who had entered the game as a pinch runner). Brosius moved him over with a bunt, and then Alfonso Soriano ended the game with an RBI single to give the Yankees a 3–2 victory and a 3–2 series lead as the series went back to Phoenix. Lopez would not pitch again in the series. Sterling Hitchcock got the win for the Yankees after he relieved Rivera for the twelfth.
+
+### Game 6
+
+November 3, 2001 5:53
+
+pm (MST) at
+
+Bank One Ballpark in Phoenix, Arizona 88
+
+°F (31
+
+°C), Mostly Cloudy
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+0
+
+0
+
+0
+
+0
+
+0
+
+2
+
+0
+
+0
+
+0
+
+2
+
+7
+
+1
+
+Arizona
+
+1
+
+3
+
+8
+
+3
+
+0
+
+0
+
+0
+
+0
+
+X
+
+15
+
+22
+
+0
+
+WP
+
+:
+
+Randy Johnson
+
+(2–0)
+
+LP
+
+:
+
+Andy Pettitte
+
+(0–2)
+
+Boxscore
+
+With Arizona in a must-win situation, Randy Johnson pitched seven innings and struck out seven, giving up just two runs, and Bobby Witt and Troy Brohawn finished the blowout. The Diamondbacks struck first when Tony Womack hit a leadoff double off of Andy Pettitte and scored on Danny Bautista's single in the first. Next inning, Womack's bases-loaded single scored two and Bautista's single scored another. The Yankees loaded the bases in the third on a single and two walks, but Johnson struck out Jorge Posada to end the inning. The Diamondbacks broke the game open with eight runs in the bottom half. Pettitte allowed a leadoff walk to Greg Colbrunn and subsequent double to Matt Williams before being relieved by Jay Witasick, who allowed four straight singles to Reggie Sanders, Jay Bell, Damian Miller, and Johnson that scored three runs. After Womack struck out, Bautista's single scored two more runs and Luis Gonzalez's double scored another, with Bautista being thrown out at home. Colbrunn's single and Williams's double scored a run each before Sanders struck out to end the inning. In the fourth, Bell reached first on a strike-three wild pitch before scoring on Miller's double. Johnson struck out before Womack singled to knock Witasick out of the game. With Randy Choate pitching, Yankees second baseman Alfonso Soriano's error on Bautista's ground ball allowed Miller to score and put runners on first and second before Gonzalez's single scored the Diamondbacks' final run. Choate and Mike Stanton kept them scoreless for the rest of the game. Pettitte was charged with six runs in two innings while Witasick was charged with nine runs in 1+1⁄3 innings, the most runs allowed by any pitcher in a World Series game since Hall of Famer Walter Johnson also allowed nine runs in Game 7 of the 1925 World Series. The Yankees scored their only runs in the sixth on back-to-back one-out singles by Shane Spencer and Luis Sojo with runners on second and third, but by then the score had become so far out of reach that it didn't do the Yankees much good. The Diamondbacks hit six doubles and Danny Bautista batted 3-for-4 with five RBIs. The team set a World Series record with 22 hits and defeated the New York Yankees in its most lopsided postseason loss in 293 postseason games, since surpassed by a 16–1 loss to the Boston Red Sox in Game 3 of the 2018 American League Division Series. The 15–2 win evened the series at three games apiece and set up a Game 7 for the ages between Roger Clemens and Curt Schilling. The Diamondbacks’ thirteen-run margin of victory in Game 6 was the largest in a World Series game since Game 6 of the 1982 World Series, and is tied for the second largest margin of victory in a World Series game overall.
+
+### Game 7
+
+Luis Gonzalez
+
+(left) hit the game (and series) winning single in the bottom of the ninth inning off
+
+Mariano Rivera
+
+to give the state of Arizona its first professional sports championship.
+
+November 4, 2001 5:55
+
+pm (MST) at
+
+Bank One Ballpark in Phoenix, Arizona 89
+
+°F (32
+
+°C), roof open, Mostly cloudy
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+R
+
+H
+
+E
+
+New York
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+1
+
+0
+
+2
+
+6
+
+3
+
+Arizona
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+2
+
+3
+
+11
+
+0
+
+WP
+
+:
+
+Randy Johnson
+
+(3–0)
+
+LP
+
+:
+
+Mariano Rivera
+
+(1–1)
+
+Home runs
+
+:
+
+NYY:
+
+Alfonso Soriano
+
+(1)
+
+AZ: None
+
+Boxscore
+
+It was a matchup of two 20-game winners in the Series finale. Roger Clemens, at 39 years old, became the oldest Game 7 starter. Curt Schilling had already started two games of the Series and pitched his 300th inning of the season on just three days' rest. The two aces matched each other inning by inning and after seven full innings, the game was tied at 1–1. The Diamondbacks scored first in the sixth inning with a Steve Finley single and a Danny Bautista double (Bautista, trying to stretch it into a triple, was called out at third base). The Yankees responded with an RBI single from Tino Martinez, which drove in Derek Jeter who had singled earlier. Brenly stayed with Schilling into the eighth, and the move backfired as Alfonso Soriano hit a home run on an 0–2 pitch. After Schilling struck out Scott Brosius (who, like O'Neill, would also retire following the series), he gave up a single to David Justice, and he left the game trailing 2–1. When Brenly came to the mound to remove Schilling, he was heard on the Sounds of the Game microphone telling his clearly upset pitcher, "love you brother, you're my hero" and assuring him that "that ain't gonna beat us, we're gonna get that back and then some." He then brought in Game 5 starter Miguel Batista to get Jeter out and then in an unconventional move, brought in the previous night's starter and winner Randy Johnson, who had thrown 104 pitches, in relief to keep it a one-run game. It proved to be a smart move, as Johnson retired pinch hitter Chuck Knoblauch (who batted for the left handed Paul O'Neill) on a fly out to Bautista in right field, then returned to the mound for the top of the ninth where he got Bernie Williams to fly out to Steve Finley in center field and Martinez to ground out to Tony Womack at shortstop, and then struck out catcher Jorge Posada to send the game to the bottom of the ninth inning.
+
+With the Yankees ahead 2–1 in the bottom of the eighth, manager Joe Torre decided to relieve setup man Mike Stanton, who had got the last two outs, to his ace closer Mariano Rivera for a two-inning save. Rivera struck out the side in the eighth, including Arizona's Luis Gonzalez, Matt Williams, and Bautista. Although he was effective in the eighth, this game would end in the third ninth-inning comeback of the Series.
+
+Mark Grace led off the inning with a single to center on a 1–0 pitch. Rivera's errant throw to second base on a bunt attempt by catcher Damian Miller on an 0–1 pitch put runners on first and second. Jeter tried to reach for the ball, but got tangled in the legs of pinch-runner David Dellucci, who was sliding in an attempt to break up the double play. During the next at bat, Rivera appeared to regain control when he fielded pinch hitter Jay Bell's (who was hitting for Johnson) bunt and threw out Dellucci at third base, but third baseman Brosius decided to hold onto the baseball instead of throwing to first to complete the double play. Midre Cummings was sent in to pinch-run for Damian Miller, who had reached second base safely. With Cummings at second and Bell at first, the next batter, Womack, hit a double down the right-field line on a 2–2 pitch that tied the game and earned Rivera a blown save, his first in a postseason since 1997. Bell advanced to third and the Yankees pulled the infield and outfield in as the potential winning run (Bell) stood at third with fewer than two outs. After Rivera hit Craig Counsell unintentionally with an 0–1 pitch, the bases were loaded. On an 0–1 pitch, with Williams in the on-deck circle, Gonzalez lofted a soft floater single over the drawn-in Jeter that barely reached the outfield grass, plating Jay Bell with the winning run.
+
+Gonzalez's single ended New York's bid for a fourth consecutive title (and fifth in six seasons) and brought Arizona its first championship in its fourth year of existence, making the Diamondbacks the fastest expansion team to win a World Series (beating out the 1997 Florida Marlins, who had done it in their fifth season at that time). It was also the first, and remains the only, major professional sports championship won by a Phoenix-based team. As a result of the Diamondbacks’ victory, Randy Johnson became the first pitcher to win three World Series games since Mickey Lolich did so in 1968, and was the last to do so until Yoshinobu Yamamoto in 2025, though like Yamamoto, Johnson pitched fewer innings and only got his third win in relief. Rivera took the loss, his only postseason loss in his career. Coincidentally, this was also the second World Series in a 5-year span (1997 to 2001) to end with a game-winning RBI single. Edgar Renteria hit the game-winner in the 1997 series, while Gonzalez hit it here, with Craig Counsell being on the basepaths for each. No other World Series has ended with a game-winning hit since 2001.
+
+Two of the Diamondbacks' at-bats in the bottom of the 9th were rare "golden pitch" situations, by which either team could theoretically have won the World Series on the next pitch. Mariano Rivera threw six pitches to Jay Bell (who bunted into a forceout on the first pitch) and Tony Womack (who hit an RBI double on the fifth pitch of the at-bat) during the 10th and 11th golden-pitch plate appearances in baseball history.
+
+In 2009, Game 7 of the 2001 World Series was chosen by *Sports Illustrated* as the Best Postseason Game of the Decade (2000–2009).
+
+In the years that have followed, many fans (regardless of team allegiance) consider Game 7 of the 2001 World Series to be one of the greatest games ever played in the history of professional baseball.
+
+## Composite box
+
+2001 World Series **(4–3): Arizona Diamondbacks (N.L.)** over New York Yankees (A.L.)
+
+Team
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+R
+
+H
+
+E
+
+Arizona Diamondbacks
+
+2
+
+4
+
+12
+
+9
+
+2
+
+1
+
+3
+
+2
+
+2
+
+0
+
+0
+
+0
+
+37
+
+65
+
+3
+
+New York Yankees
+
+1
+
+1
+
+1
+
+0
+
+0
+
+3
+
+1
+
+1
+
+4
+
+1
+
+0
+
+1
+
+14
+
+42
+
+8
+
+Total
+
+attendance:
+
+366,289
+
+Average
+
+attendance:
+
+52,327
+
+Winning player's share:
+
+$279,260
+
+Losing player's share:
+
+$201,014
+
+## Media coverage
+
+For the second consecutive year, Fox carried the World Series with its top broadcast team, Joe Buck and Tim McCarver (himself a Yankees broadcaster). This was the first year of Fox's exclusive rights to the World Series (in the previous contract, Fox only broadcast the World Series in even numbered years while NBC broadcast it in odd numbered years), which it has held since. This particular contract also had given Fox exclusive rights to the entire baseball postseason, which aired over its family of networks, but shortly after the World Series, Fox sold its cable outlet Fox Family Channel, on which it aired Division Series games, shortly after the World Series ended, to Disney, which renamed the channel to ABC Family; since this made the channel a corporate sibling of ESPN, Disney would move those games to ESPN in 2003 after airing them for one more season on ABC Family.
+
+ESPN Radio provided national radio coverage for the fourth consecutive year, with Jon Miller and Joe Morgan calling the action.
+
+Locally, the Series was broadcast by KTAR-AM in Phoenix with Thom Brennaman, Greg Schulte, Rod Allen and Jim Traber, and by WABC-AM in New York City with John Sterling and Michael Kay. This was WABC's last broadcast of Yankees baseball after twenty-one seasons as the team's flagship, and also the last time Sterling and Kay broadcast together after ten seasons. Sterling and the Yankees joined WCBS-AM the next season on the radio side, while Kay was promoted to television as the YES Network launched for 2002.
+
+### Books and films
+
+Buster Olney, who covered the Yankees for *The New York Times* before joining ESPN, would write a book titled *The Last Night of the Yankee Dynasty*, published in 2004. The book is a play by play account of Game 7 in addition to stories about key players, executives, and moments from the 1996–2001 dynasty. In a 2005 reprinting, Olney included a new epilogue covering the aftermath of the 2001 World Series up to the Boston Red Sox epic comeback from down 3–0 in the 2004 ALCS.
+
+The official MLB Productions documentary film of the series was released in 2001.
+
+In 2004, HBO released *Nine Innings from Ground Zero*, a documentary focusing on the special role that baseball, and particularly the Yankees, played in helping to heal New York after 9/11. The film features interviews with players, fans who lost family members, firefighters, sportswriters, and then United States President George W. Bush.
+
+In 2005, A&E Home Video released the *New York Yankees Fall Classic Collectors Edition (1996–2001)* DVD set. Game 4 of the 2001 World Series is included in the set. In 2008, *The Arizona Diamondbacks 2001 World Series* DVD set was released. All seven games are included on this set.
+
+## Aftermath and Legacy
+
+> "The odds of getting two runs in the ninth inning off Mariano Rivera are right up there with the odds of going to the moon in a used Hyundai. Can't happen. Never happens. ... But it happened. But it happened."
+
+—
+
+Sports writer
+
+Jayson Stark
+
+after Game 7
+
+Mariano Rivera, even in 2001, was considered the greatest closer ever. Entering the bottom of the 9th inning, the deck was stacked against the Diamondbacks. Rivera had a 0.70 career postseason ERA in 51 appearances. He once pitched a record 34 1/3 scoreless innings in the postseason and he had converted 23 consecutive save chances in the playoffs since Sandy Alomar's home run in Game 4 of the 1997 Division Series. However, it was the throwing error on Rivera's part that turned what could have been a save and Yankees fourth straight World Series into one of the most memorable moments in MLB history. "That's baseball," Rivera said after the game. "There's nothing I can do about it."
+
+The duo of Curt Schilling and Randy Johnson were awarded the World Series Most Valuable Player, the first players to split the award since 1981, when Dodgers players Steve Yeager, Ron Cey, and Pedro Guerrero were declared co-winners, and last to do so, to date. This would not be the only award they split, as both were named Sports Illustrated Sportsperson of the Year for 2001.
+
+Rivera's blown save and the Yankees' loss proved to be life-saving for Yankees utility player Enrique Wilson. Had the Yankees won, Wilson was planning to fly home to the Dominican Republic for the winter on American Airlines Flight 587 on November 12 after what would have been a Yankees victory parade down the Canyon of Heroes. But after the Yankees lost (and thus no parade occurred), Wilson decided to fly home earlier. Flight 587 would crash in Belle Harbor, Queens, killing everyone on board. Rivera later said, "I am glad we lost the World Series because it means that I still have a friend."
+
+During the offseason, several Yankees moved on to other teams or retired, the most notable changes being the free agent departures of Martinez and Knoblauch to the St. Louis Cardinals and Kansas City Royals, and Brosius and O'Neill retiring. Martinez would later return to the Yankees to finish his career in 2005.
+
+After winning the NL West again in 2002 the Diamondbacks were swept 3–0 by St. Louis in the NLDS. From here they declined, losing 111 games in 2004 as Bob Brenly was fired during that season. Arizona would not win another NL West title until 2007. Schilling was traded to the Boston Red Sox after the 2003 season and in 2004 helped lead them to their first World Series championship since 1918. He helped them win another championship in 2007 and retired after four years with Boston, missing the entire 2008 season with a shoulder injury. Johnson was traded to the Yankees after the 2004 season, a season that saw him throw a perfect game against the Atlanta Braves, though he would be traded back to the Diamondbacks two years later and finish his career with the San Francisco Giants in 2009. The last player from the 2001 Diamondbacks roster, Lyle Overbay, retired following the 2014 season with the Milwaukee Brewers while the last player from the 2001 Yankees, Randy Choate, retired following the 2016 season.
+
+From 2002 through 2007, the Yankees' misfortune in the postseason continued, with the team losing the ALDS to the Anaheim Angels in 2002, the World Series to the Florida Marlins in 2003, the ALCS to the Boston Red Sox (in the process becoming the first team in postseason history to blow a 3–0 series lead) in 2004, the ALDS again to the Angels in 2005, and then losing the ALDS to the Detroit Tigers and the Cleveland Indians in 2006 and 2007, respectively. In addition, including the World Series loss in 2001, every World Series champion from 2001 to 2004 won the title at the Yankees' expense in postseason play, which is an AL record and as of 2023 tied for the MLB record with the Los Angeles Dodgers from 2016 to 2019. Joe Torre's contract was allowed to expire and he was replaced by Joe Girardi in 2008, a season in which the Yankees would miss the playoffs for the first time since 1993. The Yankees won their 27th World Series championship in 2009, defeating the defending 2008 champion Philadelphia Phillies in six games, but could not pull off another dynasty like they did during the late 1990s and early 2000s; in fact, they failed to reach the World Series during the entirety of the 2010s. The Yankees would finally return to the World Series in 2024 only to fall in five games to the Los Angeles Dodgers. Since 2001, the Yankees have played in four World Series and lost three of them ('01, '03, '24)
+
+This remains the only championship among the four major North American men's professional sports won by a Phoenix-based team. The NBA’s Phoenix Suns would make the NBA Finals three times in their history (1976, 1993, 2021), but lost all three in six games. The NFL’s Arizona Cardinals made the Super Bowl in 2009, but narrowly lost to the Pittsburgh Steelers. The NHL’s Arizona Coyotes never made the Stanley Cup Final and would later move to Salt Lake City, Utah to become the Utah Mammoth. However, the WNBA's Phoenix Mercury have won three championships since then (2007, 2009, and 2014).
+
+The Diamondbacks and the Baltimore Ravens, who won the Super Bowl earlier in 2001, created the first instance of two major sports teams winning a championship game or series on their first attempts. This would not occur again until 2019, when two first time attempt champions won: the Toronto Raptors and Washington Nationals.
+
+The Diamondbacks would not return to the World Series again until 2023; this time, they would go on to lose to the Texas Rangers in five games.
+
+## Quotes
+
+> Floater, center field! The Diamondbacks are world champions!
+
+— Joe Buck of Fox Sports calling Luis Gonzalez's series-winning RBI single
