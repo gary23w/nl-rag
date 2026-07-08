@@ -1,0 +1,23 @@
+---
+title: "129th IOC Session"
+source: https://en.wikipedia.org/wiki/129th_IOC_Session
+domain: 2018-summer-youth-olympics
+license: CC-BY-SA-4.0
+tags: 2018 summer youth olympics
+fetched: 2026-07-08
+---
+
+# 129th IOC Session
+
+The 129th Session of the International Olympic Committee, was held in Rio de Janeiro, Brazil from August 1 to August 4, 2016, prior to the Games of the XXXI Olympiad, being held in Rio. Some key moments of the session included a keynote address from Professor Muhammad Yunus and the election of new sports for the 2020 Olympic program.
+
+## The Election of New Sports for the 2020 Olympic Games
+
+After the introduction of Olympic Agenda 2020 in 2014, the IOC granted Olympic host city organizing committees the ability to propose other sports in addition to the core olympic sports to be included in their respective Olympic Games. Several International Sports Federations campaigned to the Tokyo Organizing Committee to be included in the 2020 program; eventually the Tokyo OCOG made the decision to propose the inclusion of baseball/softball(as one sport, two disciplines), karate, skateboarding, sport climbing and surfing. The 2020 organizing committee presented the five sport package to the full International Olympic Committee at the IOC session in Rio on August 3, 2016.
+
+| Vote on the Five "New Sports" Proposed by the Tokyo OCOG for the Games of the XXXII Olympiad |   |
+|---|---|
+| Sports | Votes |
+| **Baseball/Softball, Karate, Skateboarding, Sport Climbing and Surfing** | ***Unanimous*** |
+
+The IOC, unanimously approved the proposal of the inclusion of the five sports for a one-off appearance in the Tokyo Games.
