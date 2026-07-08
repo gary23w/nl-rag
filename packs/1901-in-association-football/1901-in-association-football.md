@@ -1,0 +1,47 @@
+---
+title: "1901 in association football"
+source: https://en.wikipedia.org/wiki/1901_in_association_football
+domain: 1901-in-association-football
+license: CC-BY-SA-4.0
+tags: 1901 in association football
+fetched: 2026-07-08
+---
+
+# 1901 in association football
+
+The following are the association football events of the year 1901 throughout the world.
+
+## Events
+
+- April 7 – Foundation of Brazilian football club Clube Náutico Capibaribe.
+- May 16 – Uruguay and Argentina both play their first ever international match, when they meet in Montevideo. Argentina wins the contest (2–3).
+
+## National champions
+
+| Argentina: Alumni Athletic Club Belgium: Racing Club de Bruxelles England: Liverpool France: Standard AC Meudon Hungary: Budapest T.C. (first Hungarian League champions) Ireland: Distillery | Italy: A.C. Milan Netherlands: HVV Den Haag Scotland: Division One: Rangers Scottish Cup: Hearts Sweden: AIK Switzerland: Grasshopper Zurich Uruguay: CURCC |
+|---|---|
+
+## International tournaments
+
+- 1901 British Home Championship (February 23 – March 30, 1901)
+
+England
+
+## Births
+
+- January 21
+  - John Coshall, English footballer (died 1975)
+  - Billy Powell, English professional footballer
+  - Ricardo Zamora, Spanish international footballer
+- May 24 – José Nasazzi, Uruguayan international footballer
+- July 26 – Umberto Caligaris, Italian international footballer (died 1940)
+- September 15 – Augusto Lopes, Portuguese footballer (died-unknown)
+- October 19 – Ike McGorian, English professional footballer
+- November 10 – James Oakley, English professional footballer (died 1972)
+- November 22 – José Leandro Andrade, Uruguayan international footballer
+
+## Clubs founded
+
+- FC Luzern
+- Kickers Offenbach
+- Brighton & Hove Albion F.C.
