@@ -1,0 +1,38 @@
+---
+title: "Bo-taoshi"
+source: https://en.wikipedia.org/wiki/Bo-taoshi
+domain: bo-taoshi
+license: CC-BY-SA-4.0
+tags: bo-taoshi
+fetched: 2026-07-08
+---
+
+# Bo-taoshi
+
+**Bo-taoshi** (Japanese: 棒倒し, Hepburn: *bōtaoshi*; "pole toppling"), is a capture-the-flag-like game, played on sports days at schools in Japan. The game, traditionally played by cadets at the National Defense Academy (NDA) of Japan on its anniversary, is famous for its size, wherein two teams, totaling 150 individuals, each vie for control of the opposition's pole. Each team is split into two groups of 75 attackers and 75 defenders. The defenders begin in a defensive orientation respective to their pole, while the attackers assume position some measure away from the other team's pole. When the defending team has their pole brought lower than 30° to the horizontal (beginning perpendicular, or 90°, to the horizontal), they lose. Until a rule change in 1973, the pole had only to be brought lower than 45° to the horizontal.
+
+## Rules and player positions
+
+The National Defense Academy of Japan explains the rules and positions as follows:
+
+### Rules
+
+- A match lasts two minutes.
+- A team loses when their pole is tilted to a 30° angle. A referee will indicate this using a flag, then declare the winner.
+- If no team's pole is lowered within the match time, the match remains undecided and will be repeated.
+- A team consists of 150 players, divided into attackers and defenders. Offense players wear shirts in their team's color, defense players wear white shirts.
+- Punching, kicking, strangling, pulling heads, and similarly dangerous roughness are prohibited.
+- A team is disqualified after three fouls
+
+### Defense positions
+
+- rider on top (上乗り, "rider on top"), a single player sitting or clinging to the top of the pole
+- circle (サークル, "circle"), players surrounding the pole in a circle
+- pole support (棒持ち, "pole support"), players inside the circle supporting the base of the pole
+- interference (キラー, "killer"), players interfering with attackers
+
+### Offense positions
+
+- attackers (遊撃, "attack"), individual offensive players
+- scrum (スクラム, "scrum"), formations of players plunging into the defensive circle, becoming springboards for attackers charging at the pole
+- chargers (突攻, "sudden attack"), players charging at the pole

@@ -1,0 +1,12 @@
+---
+title: "Animal hat"
+source: https://en.wikipedia.org/wiki/Animal_hat
+domain: balaclava-clothing
+license: CC-BY-SA-4.0
+tags: balaclava clothing
+fetched: 2026-07-08
+---
+
+# Animal hat
+
+An **animal hat** is a novelty hat made to resemble an animal or other character. It is often similar to a beanie, with facial features, added ears and sometimes details such as whiskers, although versions made from fake fur are also known by this name. While they were known before 2010, animal hats became an American fashion trend in the winter of 2010-11. Despite ongoing criticism, including the animal hat being listed as a 2012 fashion faux pas despite also being a "serious fashion statement," they stayed popular into 2013. Books dedicated exclusively to knitting and crocheting various styles of animal hats have been published.
