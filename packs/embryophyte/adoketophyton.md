@@ -1,0 +1,28 @@
+---
+title: "Adoketophyton"
+source: https://en.wikipedia.org/wiki/Adoketophyton
+domain: embryophyte
+license: CC-BY-SA-4.0
+tags: embryophyte
+fetched: 2026-07-08
+---
+
+# *Adoketophyton*
+
+***Adoketophyton*** is a genus of extinct vascular plants of the Early Devonian (Pragian stage, around 410 million years ago). The plant was first described in 1977 based on fossil specimens from the Posongchong Formation, Wenshan district, Yunnan, China. These were originally named *Zosterophyllum subverticillatum*; later the species was transferred to a new genus as *Adoketophyton subverticillatum*. One cladistic analysis suggested that it is a lycophyte, related to the zosterophylls. Other researchers regard its placement within the vascular plants as uncertain.
+
+## Description
+
+Like other Early Devonian plants, the sporophyte of *Adoketophyton* consisted of leafless stems (axes), approximately 1 to 2.5 mm in diameter. These branched equally or unequally (pseudomonopodially). Its vascular tissue was relatively simple, consisting of a central (centrarch) cylinder of primary xylem with G-type tracheids. Fossils suggest that stems which did not bear sporangia initially had coiled (circinnate) tips, consistent with other "zosterophylls", and similar to the way in which modern ferns grow. A unique feature of this genus among plants of similar age is the manner in which the sporangia (spore-forming organs) were borne. Fertile stems had terminal 'strobili', structures very superficially resembling an ear of wheat, which consisted of four vertical rows of fan-shaped leaf-like organs (sporophylls), each with a stalked sporangium on the side facing the stem (adaxial). The flattened sporangia were almost round and split (dehisced) along a distally thickened margin into two equal parts. The sporophylls may have had vascular tissue.
+
+A second species, *A. parvulum*, was described in 2011. The species differ in size overall; for example, the largest strobili found were 90 mm long in *A. subverticillatum*, but only 17 mm long in *A. parvulum*. The relative size of the sporophylls and the sporangia is also different: they were roughly the same height in *A. parvulum*, whereas the sporangia were a half to a third of the height of the sporophylls in *A. subverticillatum*.
+
+## Phylogeny
+
+A cladogram published in 2004 by Crane et al. places *Adoketophyton* in a paraphyletic stem group of broadly defined "zosterophylls", basal to the lycopsids (living and extinct clubmosses and relatives).
+
+| lycophytes | † *Hicklingia*  †basal groups  *Adoketophyton*, *Discalis*, *Distichophytum* (=*Rebuchia*), *Gumuia*, *Huia*, *Zosterophyllum myretonianum*, *Z. llanoveranum, Z. fertile*  †'core' zosterophylls  *Zosterophyllum divaricatum*, *Tarella*, *Oricilla*, *Gosslingia*, *Hsua*, *Thrinkophyton*, *Protobarinophyton*, *Barinophyton obscurum*, *B. citrulliforme*, *Sawdonia*, *Deheubarthia*, *Konioria*, *Anisophyton*, *Serrulacaulis*, *Crenaticaulis*  †basal groups  *Nothia*, *Zosterophyllum deciduum*  lycopsids  extant and extinct members |
+|---|---|
+|   |   |
+
+Other researchers have concluded that the mixture of relatively 'primitive' vascular tissue and 'advanced' sporophylls suggests that the genus evolved separately from the lycopsids, so that its taxonomic placement is uncertain.
