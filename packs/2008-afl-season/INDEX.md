@@ -1,0 +1,14 @@
+# 2008-afl-season — nl-rag pack
+
+Pre-normalized AI markdown. tags: 2008 afl season. license: CC-BY-SA-4.0 (see SOURCES.md).
+Fetch any page below as raw markdown — no HTML, no chrome, ready to ingest.
+
+- [1897 VFL season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/1897-vfl-season.md) — upstream: https://en.wikipedia.org/wiki/1897_VFL_season
+- [1898 VFL grand final](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/1898-vfl-grand-final.md) — upstream: https://en.wikipedia.org/wiki/1898_VFL_grand_final
+- [1898 VFL season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/1898-vfl-season.md) — upstream: https://en.wikipedia.org/wiki/1898_VFL_season
+- [1899 VFL grand final](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/1899-vfl-grand-final.md) — upstream: https://en.wikipedia.org/wiki/1899_VFL_grand_final
+- [1899 VFL season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/1899-vfl-season.md) — upstream: https://en.wikipedia.org/wiki/1899_VFL_season
+- [1900 VFL grand final](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/1900-vfl-grand-final.md) — upstream: https://en.wikipedia.org/wiki/1900_VFL_grand_final
+- [1900 VFL season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/1900-vfl-season.md) — upstream: https://en.wikipedia.org/wiki/1900_VFL_season
+- [2008 AFL season](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/2008-afl-season.md) — upstream: https://en.wikipedia.org/wiki/2008_AFL_season
+- [pack.facts](https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/2008-afl-season/pack.facts) — distilled one-line facts (neuron CLI import)

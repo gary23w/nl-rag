@@ -1,0 +1,92 @@
+---
+title: "AFL New Zealand"
+source: https://en.wikipedia.org/wiki/AFL_New_Zealand
+domain: australia-national-australian-rules-football-team
+license: CC-BY-SA-4.0
+tags: australia national australian rules football team
+fetched: 2026-07-08
+---
+
+# AFL New Zealand
+
+**AFL New Zealand** is the governing body of Australian rules football in New Zealand. AFL New Zealand regulates the regional competitions and runs a national draft to its 4 team AFL New Zealand Premiership national league.
+
+AFL New Zealand currently has 30,000 Registered Players, although this is refuted, as it would mean that each of the clubs in the country has 1,875 players per team.
+
+## National team
+
+Australian rules football is a sport played in New Zealand rapidly gaining popularity. AFL New Zealand co-ordinate the national team, who have competed in the Australian Football International Cup and crowned international champions in 2005.
+
+Since 2012 the national side has played against the National Australian Under 17 team (NAB AFL Academy). The first game was won convincingly by the AFL Academy by 91 points. 2013 saw the Australians win by 44 points and in 2014 it took a goal in the final minutes to win their third straight game by only 4 points.
+
+## New Zealand Heritage Team
+
+NZAFL selects a team of the best Australian-based players with NZ heritage. This team includes some AFL legends including Simon Black (Brisbane Lions AFL) and Wayne Schwass – (Sydney Swans AFL).
+
+## Provincial Championships
+
+The AFLNZ National Provincial Championships were an annual tournament between the regional leagues comprising the New Zealand Australian Football League. The first of the current incarnation of the NPC was held on 25 and 26 September 2004 in Christchurch.
+
+Representative Teams:
+
+- Canterbury Cobras
+- Wellington Tigers
+- Auckland Buccaneers
+- Waikato Thunder
+- Otago Riot
+
+## National League – AFL New Zealand Premiership
+
+Since 2016 AFL New Zealand runs a 4 team 8 round men's national competition as part of its high performance programme similar to the AFL Academy club pathway in Australia. Players are recruited via a national draft from throughout the country. Matches are played at North Harbour Stadium outer oval in Auckland and QE2 Park Christchurch. A women's national league was established in 2019, with only Waitākere having a full women's roster, an opponent, the Lions was drafted from female players across the country.
+
+### Men's
+
+National Men's League teams:
+
+- Western Crows 2016–
+- Southern Saints 2016–
+- Central Giants 2016–
+- Northern Suns 2016–
+
+#### Men's Results
+
+| Year | Premier | Runner up | Result |
+|---|---|---|---|
+| 2023 | Central Giants | Western Crows | 44-21 |
+| 2022 (cancelled) | (cancelled) | (cancelled) |   |
+| 2021 (cancelled) | (cancelled) | (cancelled) |   |
+| 2020 | Southern Saints | Western Crows |   |
+| 2019 | Western Crows | Southern Saints |   |
+| 2018 | Central Giants | Northern Suns |   |
+| 2017 | Southern Saints | Western Crows |   |
+| 2016 | Western Crows | Northern Suns |   |
+
+### Women's
+
+National Women's League teams:
+
+- Western Ravens 2021–
+- Central Shakers 2021–
+- Northern Storm 2021–
+
+Former teams:
+
+- Magpies 2019
+- Lions 2019
+
+#### Women's Results
+
+| Year | Premier | Runner up | Result |
+|---|---|---|---|
+| 2022 |   |   |   |
+| 2021 |   |   |   |
+| 2020 |   |   |   |
+| 2019 |   |   |   |
+
+## Affiliated leagues
+
+- Auckland AFL
+- Canterbury AFL
+- Otago AFL
+- Waikato AFL
+- Wellington AFL
