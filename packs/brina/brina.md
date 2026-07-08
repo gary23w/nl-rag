@@ -1,0 +1,14 @@
+---
+title: "Brina"
+source: https://en.wikipedia.org/wiki/Brina
+domain: brina
+license: CC-BY-SA-4.0
+tags: brina
+fetched: 2026-07-08
+---
+
+# Brina
+
+The **Brina** apple is an apple cultivar that was first developed in the Italy in the 1979s by open pollination **PRI 2059-101** apples.
+
+The cultivar is resistant to scab. It has a spreading habit with intermediate vigor; full flowering season is medium-late and production is heavy. The fruit is medium or medium-large with a smooth skin, white lenticels, and no russet. It has excellent taste characteristics. Its ripening time: I decade of October, in Trentino A.A. (I).

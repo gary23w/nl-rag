@@ -1,0 +1,28 @@
+---
+title: "Bismarck (apple)"
+source: https://en.wikipedia.org/wiki/Bismarck_(apple)
+domain: bismarck-apple
+license: CC-BY-SA-4.0
+tags: bismarck apple
+fetched: 2026-07-08
+---
+
+# Bismarck (apple)
+
+**Bismarck** (*Malus domestica* 'Bismarck') is an apple cultivar. The fruit from the tree is used for cooking due to its sharp flavour and is most commonly pureed when cooking.
+
+## History
+
+There are several different accounts of the origin on this apple cultivar. One theory is that it originated from Bismarck in Tasmania (now Collinsvale), which was a German settlement. Another theory is that it was raised by F. Fricke, a German settler at Carisbrooke, Victoria, Australia. A third is that it originated in Canterbury, New Zealand. The fruit was grown in Victoria and also in England and across Europe until the 1930s.
+
+## Tree
+
+The tree itself will grow to approximately 25 ft spread and 15 ft in height bearing a large crop of medium size fruit with a green and red skin. The apple is not commonly grown and its distribution is far and few across the globe. The tree and its crop were awarded the RHS First Class Certificate in 1887.
+
+### Listed specimens of this tree
+
+| Place | Country | Age | Notes |
+|---|---|---|---|
+| Bank Hall, Lancashire | United Kingdom | Unknown | Situated in the Walled Garden at Bank Hall |
+| Fulham, London | United Kingdom | Unknown | Situated in a Private Garden |
+| Winchester, Hampshire | United Kingdom | Unknown | Situated in a Private Garden |

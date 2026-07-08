@@ -1,0 +1,14 @@
+---
+title: "3-in-1 (fast food dish)"
+source: https://en.wikipedia.org/wiki/3-in-1_(fast_food_dish)
+domain: bagoong-fried-rice
+license: CC-BY-SA-4.0
+tags: bagoong fried rice
+fetched: 2026-07-08
+---
+
+# 3-in-1 (fast food dish)
+
+A **3-in-1**, **trio** or **three-in-one** is a fast-food dish consisting of chips, boiled rice (or egg fried rice), and curry sauce served in a single foil tray or plastic container. It became popular in Ireland as a dish from chip shops and Chinese restaurants in the early twenty-first century. It developed a cult following in the 2010s, and media outlets debated the merits of it compared to a spice bag, which became popular around the same time.
+
+Related dishes (four-, five-in one) contain additional ingredients such as chicken balls, or chicken or beef pieces.
