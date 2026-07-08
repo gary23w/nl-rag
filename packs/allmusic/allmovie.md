@@ -1,0 +1,28 @@
+---
+title: "AllMovie"
+source: https://en.wikipedia.org/wiki/AllMovie
+domain: allmusic
+license: CC-BY-SA-4.0
+tags: allmusic
+fetched: 2026-07-08
+---
+
+# AllMovie
+
+**AllMovie** (previously **All Movie Guide**) is an online database with information about films, television programs, television series, and screen actors. As of 2015, AllMovie.com and the AllMovie consumer brand are owned by RhythmOne.
+
+## History
+
+AllMovie was founded by popular-culture archivist Michael Erlewine, who also founded AllMusic and AllGame.
+
+The AllMovie database was licensed to tens of thousands of distributors and retailers for point-of-sale systems, websites and kiosks. The AllMovie database is comprehensive, including basic product information, cast and production credits, plot synopsis, professional reviews, biographies, relational links and more.
+
+AllMovie data is accessed on the web at the AllMovie website. It was also available via the AMG LASSO media recognition service, which can automatically recognize DVDs.
+
+In late 2007, TiVo Corporation acquired AMG for a reported $72 million.
+
+The AMG consumer facing web properties AllMusic, AllMovie and AllGame were sold by Rovi in August 2013 to All Media Network, LLC. The buyers also include the original founders of SideReel and Ackrell Capital investor Mike Ackrell.
+
+RhythmOne offices are located in San Francisco, California, and Ann Arbor, Michigan, United States.
+
+In the spring of 2024, AllMovie announced that they have moved to a different data provider. The site added a "collections" feature for organizing films (e.g. *Star Wars* films in the "Skywalker Saga") and information on where films can be streamed, but removed elements including professional reviews and DVD information.

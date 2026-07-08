@@ -1,0 +1,22 @@
+---
+title: "Achterhooks"
+source: https://en.wikipedia.org/wiki/Achterhooks
+domain: afrikaans
+license: CC-BY-SA-4.0
+tags: afrikaans
+fetched: 2026-07-08
+---
+
+# Achterhooks
+
+**Achterhooks** (Dutch Low Saxon: [ˈɑxtərɦoːks]; Dutch: *Achterhoeks* [ˈɑxtərɦuks]) is a Westphalian dialect spoken in Gelderland.
+
+## Geographic distribution
+
+The Achterhooks language is spoken in the Netherlands in western Europe, Northeast, with speakers concentrated in Gelderland Province.
+
+### Status
+
+The language was recognized by the government of the Netherlands in 1996 (as being part of Low Saxonian).
+
+The speech variety has had some growth and development, with Bible portions translated in 2002.
