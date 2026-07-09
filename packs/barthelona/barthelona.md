@@ -1,0 +1,26 @@
+---
+title: "Barthelona"
+source: https://en.wikipedia.org/wiki/Barthelona
+domain: barthelona
+license: CC-BY-SA-4.0
+tags: barthelona
+fetched: 2026-07-09
+---
+
+# *Barthelona*
+
+***Barthelona*** is a genus of barthelonid protists. They are basal eukaryotes closely related to skoliomonads, within the phylum Metamonada. It is a monotypic genus containing the sole species ***Barthelona vulgaris***.
+
+## Description
+
+Barthelonids are flagellates, unicellular protists (a type of eukaryote) that use flagella for movement. Their cells measure 6–8 μm in length, and are oval on the dorsal side and flattened on the ventral side. Each cell has two flagella inserted sub-apically and laterally, at an angle of 60° from each other. The anterior flagellum is 1–2 times the cell length, while the posterior flagellum is 3–5 times as large as the cell body, and is slightly acronematic. The nucleus is located in the anterior end of the cell. The cytoplasm usually contains refractile granules.
+
+Barthelonids are free-living solitary heterotrophs. They swim or, more rarely, glide slowly. When stationary, they still beat their flagella with a gentle undulation. They are anaerobes.
+
+## Taxonomy
+
+| "barthelonids" *Barthelona* sp. EYP1702 LC506387 *Barthelona* PCE LC506390.1 *Barthelona* sp. FB11 LC506388.1 *Barthelona* sp. LRM2 LC506389.1 TG1SB9_26 LC220719.1 *Barthelona* PAP020 LC506386 "skoliomonads" *Skoliomonas* isolates Fornicata |
+|---|
+| Cladogram of skoliomonads based on a SSU rRNA phylogeny published in 2024. |
+
+The genus *Barthelona* was described by protistologists Catherine Bernard, Alastair G.B. Simpson, and David J. Patterson. They isolated flagellates from sediments of Quibray Bay, Australia in the spring of 1996. After observing the microorganisms, the authors assigned them to a new species *Barthelona vulgaris* and published the description in 2000. Since the identification of *B. vulgaris* was purely based on observations under light microscopy, it was treated as a morphospecies. This morphospecies was later identified at other geographical locations, but it was never genetically sequenced, and consequently its evolutionary position remained uncertain. In 2020, five strains of *Barthelona* were isolated and genetically sequenced in order to reveal their phylogenetic position.
