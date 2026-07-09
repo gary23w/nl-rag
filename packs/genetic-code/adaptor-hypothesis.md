@@ -1,0 +1,72 @@
+---
+title: "Adaptor hypothesis"
+source: https://en.wikipedia.org/wiki/Adaptor_hypothesis
+domain: genetic-code
+license: CC-BY-SA-4.0
+tags: genetic code
+fetched: 2026-07-09
+---
+
+# Adaptor hypothesis
+
+The **adaptor hypothesis** is a theoretical scheme in molecular biology to explain how information encoded in the nucleic acid sequences of messenger RNA (mRNA) is used to specify the amino acids that make up proteins during the process of translation. It was formulated by Francis Crick in 1955 in an informal publication of the RNA Tie Club, and later elaborated in 1957 along with the central dogma of molecular biology and the sequence hypothesis. It was formally published as an article "On protein synthesis" in 1958. The name "adaptor hypothesis" was given by Sydney Brenner.
+
+Crick postulated that there must exist a small molecule to precisely recognise and bind the mRNA sequences while amino acids are being synthesised. The hypothetical adaptor molecule was later established to be a hitherto unknown nucleic acid, transfer RNA (tRNA).
+
+## Development
+
+In 1953, English biophysicist Francis Crick and American biologist James Watson, working together at the Cavendish Laboratory of the University of Cambridge, worked out the correct description of the structure of DNA, one of the major genetic materials. In their follow-up paper the same year, they introduced the concept of genetic information alongside the notion that DNA and protein cloud be related. By 1954, it was becoming to be understood that DNA, RNA (only messenger RNA was understood at the time, but only as a vague nucleic acid, and identified as such only in 1960) and proteins were related as components of the same genetic information pathway. However, the structure of RNA and details of how these biological molecules related and interact with each other were still a mystery, especially on how proteins could be synthesised from nucleic acids. Watson called this problem "the mysteries of life" in his letter to Crick. Watson and Alexander Rich discussed in the *PNAS*, saying, "We shall not be able to check a structural relationship between RNA and protein synthesis or between RNA and DNA until we know the structure of RNA."
+
+Evidences had been accumulating since the 1940s that protein synthesis occurs simultaneously with increased level of RNA in the cytoplasm. The relationship between DNA and RNA for protein synthesis was first hypothesised by French biologist André Boivin and Roger Vendrely in 1947. They wrote in *Experientia* (later renamed *Cellular and Molecular Life Sciences*): "Through catalytic actions the macromolecular desoxyribonucleic acids govern the building of macromolecular ribonucleic acids, and, in turn, these control the production of cytoplasmic enzymes. In truth, the enzymic equipment results simultaneously from the effect of ribonucleic acids (catalytic action) and from the effect of substrates (mass action).
+
+### The nucleic acid template hypotheses
+
+Alexander Dounce, of the University of Rochester Medical Center in New York, came close to the correct interpretation of protein synthesis from RNA. In 1952, he proposed the first notion, naming it the "nucleic acid template hypotheses," that proteins were made from RNA, rather than from DNA. However, since the exact chemical structure of DNA or RNA was not known at the time, he suggested erroneously that proteins and RNA have complimentary sequences, as he described in *Enzymologia*: "the specific arrangement of amino acid residues in a given peptide chain is derived from the specific arrangement of nucleotide residues in a corresponding specific nucleic acid molecule." It was met with criticism in *Nature* the next year, to which Dounce defended his hypothesis:
+
+> In the hypothesis proposed by me, ribonucleic acid was deliberately chosen as the template, since it seems probable from a number of considerations and experimental investigations that protein syn- thesis may occur in cytoplasm as well as in nuclei. There can be no objection at the present time to assuming that the genes are templates, but it is not necessary to assume that the genes act directly as templates for protein synthesis.
+
+Dounce was also close to a correct and fundamental explanation of the gene protein relationship, as he said: "the relationship between plasma genes and nuclear genes [postulated by Sol Spiegelman and Martin David Kamen in 1946] could be explained by the template sequence deoxyribonucleic acid - ribonucleic acid - protein, with the additional postulate of a co-existing independent ribonucleic acid synthesis with ribonucleic acid acting as its own template." The correct interpretation of genetic information transfer (DNA → RNA → protein) developed by Crick in 1957 became the central dogma of molecular biology.
+
+### Direct DNA template hypothesis
+
+Soviet-American physicist George Gamow was the first to come up with a coherent scheme for protein synthesis from DNA. Based on the Watson-Crick model, he envisaged that the DNA itself is a direct template for protein synthesis. Assuming that the four bases of DNA could produce 20 different combinations as triplets, he suggested that the different amino acids must correspond to a twenty-letter alphabet of the nucleotide sequence. In such configuration, the DNA directly produces proteins from the free molecules of amino acids. In the 13 February 1954 issue of *Nature* he explained:
+
+> It seems to me that such translation procedure can be easily established by considering the 'key-and-lock' relation between various amino-acids, and the rhomb-shaped 'holes' formed by various nucleotides in the deoxyribonucleic acid chain... One can speculate that free amino-acids from the surrounding medium get caught into the 'holes' of deoxyribonucleic acid molecules, and thus unite into the corresponding peptide chains.
+
+Watson, then at the California Institute of Technology in Massachusetts, also thought up the issue. Unlike Gamow, he realised the possible importance of RNA as an intermediate stage in protein synthesis. He initially imagined that DNA was first converted by chemical reaction to RNA, but then changed his view to DNA as a template for RNA synthesis. This latter model, which he called "not ugly" was starting to become more convincing. In a letter to Crick on 11 December 1954, discussing how RNA could be produced from DNA since they contain fundamentally similar nucleotide compositions, he wrote: "I suspect the answer is staring us in the face."
+
+To solve the riddle of protein synthesis, Gamow (as the Synthesiser) created an informal team of scientists which he called the RNA Tide Club in 1954. As his prediction to denote 20 amino acids, the club could have only 20 members, with the designated officers: Crick (as the Pessimist), Rich (the Lord Privy Seal) and Watson (the Optimist) among them. It was meant partly to be humorous.
+
+## Crick's hypothesis
+
+Coming across Gamow's paper, Crick immediately noticed some issues in the scheme. The first was that he and Watson never had before counted the 20 amino acids or the possible 20 nucleotide triplets (although Gamow was subsequently proven to be correct and his model was the first prediction of the genetic code). The other issue was that RNA and protein synthesis appeared to exclusively take place in the cytoplasm, and not in the nucleus, indicating that DNA to protein pathway requires just not direct chemical binding, but some kind of mediator must be involved.
+
+Crick began to think of a solution to this problem in the line of Watson's idea that the role of RNA was overlooked. He rejected Gamow's assumption that molecules like amino acids that are too different chemically from nucleic acid that it would be structurally impossible to bind to DNA. Instead, he visualised a certain kind but unknown molecule that linked nucleic acids and carry amino acids to ribosomes to form peptide chains. As he discussed it with his colleague Sydney Brenner about the features of such molecule, Brenner was impressed with the idea and named the concept as the "adaptor hypothesis". The adaptor was then a hypothetical molecule that apparently help in an indirect interaction between DNA, RNA and amino acids during protein synthesis. As Crick explained:
+
+> I don't think that anybody looking at DNA or RNA would think of them as templates for amino acids were it not for other, indirect evidence... [In one possible scheme] each amino acid would combine chemically, at a special enzyme, with a small molecule which, having a specific hydrogen-bonding surface, would combine specifically with the nucleic acid template, This combination would also supply the energy necessary for polymerisation. In its simplest form there would be 20 different kinds of adaptor molecule, one for each amino acid, and 20 different enzymes to join the amino acid to their adaptors, Sydney Brenner, with whom I have discussed this idea, calls this the "adaptor hypothesis", since each amino acid is fitted with an adaptor to go on to the template... The adaptor hypothesis implies that the actual set of twenty amino acids found in proteins is due either to a historical accident or to biological selection at an extremely primitive stage."
+
+Crick admitted that he had no way knowing what kind of chemical substance was an adaptor, but then prudently suggested that it was composed of nucleotides, a sort of RNA, that had common features of both DNA and RNA. He even speculated that "insulin, for example, are probably RNA-made proteins. Perhaps a special class of DNA-made proteins exists, almost always in small quantities (and thus normally overlooked).
+
+> The template could consist of perhaps a single chain of RNA…Each adaptor molecule containing, say, a di- or trinucleotide would each be joined to its own amino acid by a special enzyme. These molecules would then diffuse to the microsomal particles and attach to the proper place on the basis of the RNA by base-pairing.
+
+The article circulated to the members of the RNA Tie Club in January 1955 as "On Degenerate Templates and the Adaptor Hypothesis: A Note for the RNA Tie Club" is described as "one of the most important unpublished articles in the history of science", and "the most famous unpublished paper in the annals of molecular biology."
+
+The adaptor hypothesis was fully formalised in 1957. Crick presented the elaborate explanation in a lecture titled "Protein synthesis" on 19 September 1957 at the Society for Experimental Biology symposium on the Biological Replication of Macromolecules, held at University College London.
+
+The lecture was further expanded and published as "On protein synthesis" in 1958, which science historian Horace Freeland Judson remarked: "The paper permanently altered the logic of biology." This is because it was the first comprehensive insight into genetic information (later called the central dogma of molecular biology), protein synthesis (known as the sequence hypothesis), the role of RNA (the adaptor hypothesis) as well as the existence of genetic code.
+
+## Explanation
+
+The adaptor hypothesis was framed to explain how information could be extracted from a nucleic acid and used to put together a string of amino acids in a specific sequence, that sequence being determined by the nucleotide sequence of the nucleic acid (DNA or RNA) template. Crick proposed that each amino acid is first attached to its own specific "adaptor" piece of nucleic acid (in an enzyme-catalysed reaction). The order of assembly of the amino acids is then determined by a specific recognition between the adaptor and the nucleic acid which is serving as the informational template. In this way the amino acids could be lined up by the template in a specific order. Coupling between adjacent amino acids would then lead to the synthesis of a polypeptide whose sequence is determined by the template nucleic acid.
+
+### Basis
+
+Crick's thinking behind this proposal was based on a general consideration of the chemical properties of the two classes of molecule — nucleic acids and proteins. The amino acids are characterised by having a variety of side chains which vary from being hydrophilic to hydrophobic: their individual characters reside in the very different properties these side chains have. By contrast, a nucleic acid is composed of a string of nucleotides whose sequence presents a geometrically defined surface for hydrogen bonding. This makes nucleic acids good at recognising each other, but poor at distinguishing the varied side chains of amino acids. It was this apparent lack of any possibility of specific recognition of amino acid side chains by a nucleotide sequence which led Crick to conclude that amino acids would first become attached to a small nucleic acid — the adaptor — and that this, by base-pairing with the template (presumably as occurs between DNA strands in the double helix), would carry the amino acids to be lined up on the template.
+
+## Proof
+
+Gamow was not entirely wrong. Although his concept about the direct synthesis of amino acid from the DNA double strands was proven false, his prediction on the nature of amino acids and how they were coded by the DNA sequences (triplet nucleotides) were confirmed the key components of protein synthesis. This broad concept is now known as the genetic code. It was Crick, along with J.S. Griffith and Leslie Orgel (member of the RNA Tie Club), describing the 20-amino acid prediction as the "magic number," introduced the proper concept in 1957:
+
+> [The] order of the amino acids is determined by the order of the nucleotides of the nucleic acid. There are some twenty naturally occurring amino acids commonly found in proteins, but (usually) only four different nucleotides. The problem of how a sequence of four things (nucleotides) can determine a sequence of twenty things (amino acids) is known as the 'coding' problem.
+
+As Crick was lecturing on his hypothesis, such adaptors do exist in nature was already discovered by the team of Mahlon Hoagland and Paul Zamecnik, whose paper was published the following year in March 1958. These "soluble RNAs" are now called transfer RNAs and mediate the translation of messenger RNAs on ribosomes according to the rules contained in the genetic code. Crick imagined that his adaptors would be small, perhaps 5-10 nucleotides long. In fact, they are much larger, having a more complex role to play in protein synthesis, and are closer to 100 nucleotides in length.

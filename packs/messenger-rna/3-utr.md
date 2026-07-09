@@ -1,0 +1,68 @@
+---
+title: "Three prime untranslated region"
+source: https://en.wikipedia.org/wiki/3'_UTR
+domain: messenger-rna
+license: CC-BY-SA-4.0
+tags: messenger rna
+fetched: 2026-07-09
+---
+
+# Three prime untranslated region
+
+(Redirected from
+
+3' UTR
+
+)
+
+In molecular genetics, the **three prime untranslated region** (**3′ UTR**) is the section of messenger RNA (mRNA) that immediately follows the translation termination codon. The 3′ UTR often contains regulatory regions that post-transcriptionally influence gene expression.
+
+During gene expression, an mRNA molecule is transcribed from the DNA sequence and is later translated into a protein. Several regions of the mRNA molecule are not translated into a protein including the 5′ cap, 5′ untranslated region, 3′ untranslated region and poly(A) tail. Regulatory regions within the 3′ untranslated region can influence polyadenylation, translation efficiency, localization, and stability of the mRNA. The 3′ UTR contains binding sites for both regulatory proteins and microRNAs (miRNAs). By binding to specific sites within the 3′ UTR, miRNAs can decrease gene expression of various mRNAs by either inhibiting translation or directly causing degradation of the transcript. The 3′ UTR also has silencer regions which bind to repressor proteins and will inhibit the expression of the mRNA.
+
+Many 3′ UTRs also contain AU-rich elements (AREs). Proteins bind AREs to affect the stability or decay rate of transcripts in a localized manner or affect translation initiation. Furthermore, the 3′ UTR contains the sequence AAUAAA that directs addition of several hundred adenine residues called the poly(A) tail to the end of the mRNA transcript. Poly(A) binding protein (PABP) binds to this tail, contributing to regulation of mRNA translation, stability, and export. For example, poly(A) tail bound PABP interacts with proteins associated with the 5′ end of the transcript, causing a circularization of the mRNA that promotes translation.
+
+The 3′ UTR can also contain sequences that attract proteins to associate the mRNA with the cytoskeleton, transport it to or from the cell nucleus, or perform other types of localization. In addition to sequences within the 3′ UTR, the physical characteristics of the region, including its length and secondary structure, contribute to translation regulation. These diverse mechanisms of gene regulation ensure that the correct genes are expressed in the correct cells at the appropriate times.
+
+## Physical characteristics
+
+The 3′ UTR of mRNA has a great variety of regulatory functions that are controlled by the physical characteristics of the region. One such characteristic is the length of the 3′ UTR, which in the mammalian genome has considerable variation. This region of the mRNA transcript can range from 60 nucleotides to about 4000. On average the length for the 3′ UTR in humans is approximately 800 nucleotides, while the average length of 5′ UTRs is only about 200 nucleotides. The length of the 3′ UTR is significant since longer 3′ UTRs are associated with lower levels of gene expression. One possible explanation for this phenomenon is that longer regions have a higher probability of possessing more miRNA binding sites that have the ability to inhibit translation. In addition to length, the nucleotide composition also differs significantly between the 5′ and the 3′ UTR. The mean G+C percentage of the 5′ UTR in warm-blooded vertebrates is about 60% as compared to only 45% for 3′ UTRs. This is important because an inverse correlation has been observed between the G+C% of 5′ and 3′ UTRs and their corresponding lengths. The UTRs that are GC-poor tend to be longer than those located in GC-rich genomic regions.
+
+Sequences within the 3′ UTR also have the ability to degrade or stabilize the mRNA transcript. Modifications that control a transcript's stability allow expression of a gene to be rapidly controlled without altering translation rates. One group of elements in the 3′ UTR that can help destabilize an mRNA transcript are the AU-rich elements (AREs). These elements range in size from 50 to 150 base pairs and generally contain multiple copies of the pentanucleotide AUUUA. Early studies indicated that AREs can vary in sequence and fall into three main classes that differ in the number and arrangement of motifs. Another set of elements that is present in both the 5′ and the 3′ UTR are iron response elements (IREs). The IRE is a stem-loop structure within the untranslated regions of mRNAs that encode proteins involved in cellular iron metabolism. The mRNA transcript containing this element is either degraded or stabilized depending upon the binding of specific proteins and the intracellular iron concentrations.
+
+The 3′ UTR also contains sequences that signal additions to be made, either to the transcript itself or to the product of translation. For example, there are two different polyadenylation signals present within the 3′ UTR that signal the addition of the poly(A) tail. These signals initiate the synthesis of the poly(A) tail at a defined length of about 250 base pairs. The primary signal used is the nuclear polyadenylation signal (PAS) with the sequence AAUAAA located toward the end of the 3′ UTR. However, during early development cytoplasmic polyadenylation can occur instead and regulate the translational activation of maternal mRNAs. The element that controls this process is called the CPE which is AU-rich and located in the 3′ UTR as well. The CPE generally has the structure UUUUUUAU and is usually within 100 base pairs of the nuclear PAS. Another specific addition signaled by the 3′ UTR is the incorporation of selenocysteine at UGA codons of mRNAs encoding selenoproteins. Normally the UGA codon encodes for a stop of translation, but in this case a conserved stem-loop structure called the selenocysteine insertion sequence (SECIS) causes for the insertion of selenocysteine instead.
+
+## Role in gene expression
+
+The 3′ untranslated region plays a crucial role in gene expression by influencing the localization, stability, export, and translation efficiency of an mRNA. It contains various sequences that are involved in gene expression, including microRNA response elements (MREs), AU-rich elements (AREs), and the poly(A) tail. In addition, the structural characteristics of the 3′ UTR as well as its use of alternative polyadenylation play a role in gene expression.
+
+### MicroRNA response elements
+
+The 3′ UTR often contains microRNA response elements (MREs), which are sequences to which miRNAs bind. miRNAs are short, non-coding RNA molecules capable of binding to mRNA transcripts and regulating their expression. One miRNA mechanism involves partial base pairing of the 5′ seed sequence of an miRNA to an MRE within the 3′ UTR of an mRNA; this binding then causes translational repression.
+
+### AU-rich elements
+
+In addition to containing MREs, the 3′ UTR also often contains AU-rich elements (AREs), which are 50 to 150 bp in length and usually include many copies of the sequence AUUUA. ARE binding proteins (ARE-BPs) bind to AU-rich elements in a manner that is dependent upon tissue type, cell type, timing, cellular localization, and environment. In response to different intracellular and extracellular signals, ARE-BPs can promote mRNA decay, affect mRNA stability, or activate translation. This mechanism of gene regulation is involved in cell growth, cellular differentiation, and adaptation to external stimuli. It therefore acts on transcripts encoding cytokines, growth factors, tumor suppressors, proto-oncogenes, cyclins, enzymes, transcription factors, receptors, and membrane proteins.
+
+### Poly(A) tail
+
+The poly(A) tail contains binding sites for poly(A) binding proteins (PABPs). These proteins cooperate with other factors to affect the export, stability, decay, and translation of an mRNA. PABPs bound to the poly(A) tail may also interact with proteins, such as translation initiation factors, that are bound to the 5′ cap of the mRNA. This interaction causes circularization of the transcript, which subsequently promotes translation initiation. Furthermore, it allows for efficient translation by causing recycling of ribosomes. While the presence of a poly(A) tail usually aids in triggering translation, the absence or removal of one often leads to exonuclease-mediated degradation of the mRNA. Polyadenylation itself is regulated by sequences within the 3′ UTR of the transcript. These sequences include cytoplasmic polyadenylation elements (CPEs), which are uridine-rich sequences that contribute to both polyadenylation activation and repression. CPE-binding protein (CPEB) binds to CPEs in conjunction with a variety of other proteins in order to elicit different responses.
+
+### Structural characteristics
+
+While the sequence that constitutes the 3′ UTR contributes greatly to gene expression, the structural characteristics of the 3′ UTR also play a large role. In general, longer 3′ UTRs correspond to lower expression rates since they often contain more miRNA and protein binding sites that are involved in inhibiting translation. Human transcripts possess 3′ UTRs that are on average twice as long as other mammalian 3′ UTRs. This trend reflects the high level of complexity involved in human gene regulation. In addition to length, the secondary structure of the 3′ untranslated region also has regulatory functions. Protein factors can either aid or disrupt folding of the region into various secondary structures. The most common structure is a stem-loop, which provides a scaffold for RNA binding proteins and non-coding RNAs that influence expression of the transcript.
+
+### Alternative polyadenylation
+
+Another mechanism involving the structure of the 3′ UTR is called alternative polyadenylation (APA), which results in mRNA isoforms that differ only in their 3′ UTRs. This mechanism is especially useful for complex organisms as it provides a means of expressing the same protein but in varying amounts and locations. It is utilized by about half of human genes. APA can result from the presence of multiple polyadenylation sites or mutually exclusive terminal exons. Since it can affect the presence of protein and miRNA binding sites, APA can cause differential expression of mRNA transcripts by influencing their stability, export to the cytoplasm, and translation efficiency.
+
+## Methods of study
+
+Scientists use a number of methods to study the complex structures and functions of the 3′ UTR. Even if a given 3′ UTR in an mRNA is shown to be present in a tissue, the effects of localization, functional half-life, translational efficiency, and trans-acting elements must be determined to understand the 3′ UTR's full functionality. Computational approaches, primarily by sequence analysis, have shown the existence of AREs in approximately 5 to 8% of human 3′ UTRs and the presence of one or more miRNA targets in as many as 60% or more of human 3′ UTRs. Software can rapidly compare millions of sequences at once to find similarities between various 3′ UTRs within the genome. Experimental approaches have been used to define sequences that associate with specific RNA-binding proteins; specifically, recent improvements in sequencing and cross-linking techniques have enabled fine mapping of protein binding sites within the transcript. Induced site-specific mutations, for example those that affect the termination codon, polyadenylation signal, or secondary structure of the 3′ UTR, can show how mutated regions can cause translation deregulation and disease. These types of transcript-wide methods should help our understanding of known cis elements and trans-regulatory factors within 3′ UTRs.
+
+## Disease
+
+3′ UTR mutations can be very consequential because one alteration can be responsible for the altered expression of many genes. Transcriptionally, a mutation may affect only the allele and genes that are physically linked. However, since 3′ UTR binding proteins also function in the processing and nuclear export of mRNA, a mutation can also affect other unrelated genes. Dysregulation of ARE-binding proteins (AUBPs) due to mutations in AU-rich regions can lead to diseases including tumorigenesis (cancer), hematopoietic malignancies, leukemogenesis, and developmental delay/autism spectrum disorders. An expanded number of trinucleotide (CTG) repeats in the 3′ UTR of the dystrophia myotonica protein kinase (DMPK) gene causes myotonic dystrophy. Retro-transposal 3-kilobase insertion of tandem repeat sequences within the 3′ UTR of fukutin protein is linked to Fukuyama-type congenital muscular dystrophy. Elements in the 3′ UTR have also been linked to human acute myeloid leukemia, alpha-thalassemia, neuroblastoma, Keratinopathy, Aniridia, IPEX syndrome, and congenital heart defects. The few UTR-mediated diseases identified only hint at the countless links yet to be discovered.
+
+## Future development
+
+Despite current understanding of 3′ UTRs, they are still relative mysteries. Since mRNAs usually contain several overlapping control elements, it is often difficult to specify the identity and function of each 3′ UTR element, let alone the regulatory factors that may bind at these sites. Additionally, each 3′ UTR contains many alternative AU-rich elements and polyadenylation signals. These cis- and trans-acting elements, along with miRNAs, offer a virtually limitless range of control possibilities within a single mRNA. Future research through the increased use of deep-sequencing based ribosome profiling will reveal more regulatory subtleties as well as new control elements and AUBPs.
