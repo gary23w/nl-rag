@@ -1,0 +1,14 @@
+---
+title: "A Dictionary of First Names"
+source: https://en.wikipedia.org/wiki/A_Dictionary_of_First_Names
+domain: a-greek-english-lexicon
+license: CC-BY-SA-4.0
+tags: a greek–english lexicon
+fetched: 2026-07-09
+---
+
+# *A Dictionary of First Names*
+
+***A Dictionary of First Names*** is an onomastic work of reference on given names, published by Oxford University Press, edited by Patrick Hanks, Kate Hardcastle, and Flavia Hodges in 1990 and 2006. The second edition of 2006 (as paperback 2007) discusses a total of "over 6,000 names". An abbreviated version, *A Concise Dictionary of First Names* was published by Oxford Paperback Reference in 1992, and an even more concise "Oxford minireference" version entitled *Babies' Names* in 1995. An online version is available to paying subscribers at oxfordreference.com.
+
+The same editors also published *A Dictionary of Surnames* with OUP in 1988.
