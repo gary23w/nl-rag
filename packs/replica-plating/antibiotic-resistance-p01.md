@@ -1,0 +1,150 @@
+---
+title: "Antimicrobial resistance (part 1/3)"
+source: https://en.wikipedia.org/wiki/Antibiotic_resistance
+domain: replica-plating
+license: CC-BY-SA-4.0
+tags: replica plating
+fetched: 2026-07-09
+part: 1/3
+---
+
+# Antimicrobial resistance
+
+(Redirected from
+
+Antibiotic resistance
+
+)
+
+**Antimicrobial resistance** (**AMR** or **AR**) occurs when microbes evolve mechanisms that protect them from antimicrobials, which are drugs used to treat infections in humans, animals, and plants. Any microbe can develop resistance, including bacteria (**antibiotic resistance**), viruses (**antiviral resistance**), parasites (**antiparasitic resistance**), and fungi (**antifungal resistance**). Together, these adaptations fall under the AMR umbrella, posing a challenge to all countries and all demographics. Misuse and improper management of antimicrobials are primary drivers of this resistance, though it can also occur naturally through genetic mutations and the spread of resistant genes. Microbes resistant to multiple drugs are termed multidrug-resistant (MDR) and are sometimes called superbugs.
+
+Antibiotic resistance is a serious result of AMR. Resistance arises through spontaneous mutation, horizontal gene transfer, and increased selective pressure from antibiotic overuse, both in medicine and agriculture, which accelerates resistance development. Preventive measures, such as using narrow-spectrum antibiotics and improving hygiene practices, aim to reduce the spread of resistance.
+
+The World Health Organization (WHO) claims that AMR is one of the top global public health and development threats, estimating that bacterial AMR was directly responsible for 1.27 million global deaths in 2019 and contributed to 4.95 million deaths. The burden of AMR is immense, with nearly 5 million annual deaths associated with resistant infections. Infections from AMR microbes are more challenging to treat and often require costly alternative therapies that may have more severe side effects. Moreover, the WHO and other international bodies warn that AMR could lead to up to 10 million deaths annually by 2050 unless actions are taken. Global initiatives, such as calls for international AMR treaties, emphasize coordinated efforts to limit misuse, fund research, and provide access to necessary antimicrobials in developing nations. However, the COVID-19 pandemic redirected resources and scientific attention away from AMR, intensifying the challenge.
+
+
+## Definition
+
+Antimicrobial resistance means that a microorganism is resistant to an antimicrobial drug that was once able to treat an infection by that microorganism. Resistance is a property of the microbe, not a person or other organism infected by a microbe. All types of microbes can develop drug resistance. Thus, there are antibiotic, antifungal, antiviral and antiparasitic resistance.
+
+Antibiotic resistance is a subset of antimicrobial resistance. This more specific resistance is linked to bacteria and thus broken down into two further subsets, microbiological and clinical. Microbiological resistance is the most common and occurs from genes, mutated or inherited, that allow the bacteria to resist the mechanism to kill the microbe associated with certain antibiotics. Clinical resistance is shown through the failure of many therapeutic techniques where the bacteria that are normally susceptible to a treatment become resistant after surviving the outcome of the treatment. In both cases of acquired resistance, the bacteria can pass the genetic catalyst for resistance through horizontal gene transfer: conjugation, transduction, or transformation. This allows the resistance to spread across the same species of pathogen or even similar bacterial pathogens.
+
+
+## Overview
+
+WHO report released April 2014 stated, "this serious threat is no longer a prediction for the future, it is happening right now in every region of the world and has the potential to affect anyone, of any age, in any country. Antibiotic resistance—when bacteria change so antibiotics no longer work in people who need them to treat infections—is now a major threat to public health."
+
+In 2024, nearly 5 million deaths were associated with AMR and deaths attributable to AMR numbered 1.27 million. One in five people who died due to AMR were children under five years old.
+
+In 2018, WHO considered antibiotic resistance to be one of the biggest threats to global health, food security and development. Deaths attributable to AMR vary by area:
+
+| Place | Deaths per 100,000 attributable to AMR |
+|---|---|
+| North Africa and Middle East | 11.2 |
+| Southeast and East Asia, and Oceania | 11.7 |
+| Latin America and Caribbean | 14.4 |
+| Central and Eastern Europe and Central Asia | 17.6 |
+| South Asia | 21.5 |
+| Sub-Saharan Africa | 23.7 |
+
+The European Centre for Disease Prevention and Control calculated that in 2015 there were 671,689 infections in the EU and European Economic Area caused by antibiotic-resistant bacteria, resulting in 33,110 deaths. Most were acquired in healthcare settings. In 2019 there were 133,000 deaths caused by AMR.
+
+
+## Causes
+
+AMR is driven largely by the misuse and overuse of antimicrobials. They reproduce and spread quickly, and they also can adapt to their environment and change how well they can survive. (NIAID, 2025). Yet, at the same time, many people do not have access to essential antimicrobials. This leads to microbes either evolving a defense against drugs used to treat them, or certain strains of microbes that have a natural resistance to antimicrobials becoming much more prevalent than the ones that are easily defeated with medication. Genetic changes can also occur, which would allow the microbe to survive. While antimicrobial resistance does occur naturally over time, the use of antimicrobial agents in a variety of settings both within the healthcare industry and outside of has led to antimicrobial resistance becoming increasingly more prevalent.
+
+Although many microbes develop resistance to antibiotics over time through natural mutation, overprescribing and inappropriate prescription of antibiotics have accelerated the problem. During mutation, when replication happens, these mutations help individual microbes survive exposure. (NIAID, 2025) It is possible that as many as 1 in 3 prescriptions written for antibiotics are unnecessary. Every year, approximately 154 million prescriptions for antibiotics are written. Of these, up to 46 million are unnecessary or inappropriate for the condition that the patient has. Microbes may naturally develop resistance through genetic mutations that occur during cell division, and although random mutations are rare, many microbes reproduce frequently and rapidly, increasing the chances of members of the population acquiring a mutation that increases resistance. In contrast to that, recent research suggests that, contrary to the traditional model of rapid genetic mutation, mycobacteria maintain high genomic stability under antibiotic pressure, relying instead on phenotypic tolerance and DNA-repair mechanisms for survival. Many individuals stop taking antibiotics when they begin to feel better. When this occurs, it is possible that the microbes that are less susceptible to treatment still remain in the body. If these microbes are able to continue to reproduce, this can lead to an infection by bacteria that are less susceptible or even resistant to an antibiotic. Microbes may also get genes from each other, which makes them drug-resistant. Bacteria that have drug-resistant DNA often transfer a copy of these genes to the other bacteria. They can then multiply and thrive. This process, known as horizontal gene transfer, allows resistance genes to spread rapidly between different bacterial species through mechanisms such as conjugation, transformation, and transduction.
+
+Bacteria become resistant to antibiotics by changing themselves or acquiring resistance genes from other bacteria. Over the past 20 years, antimicrobial resistance (AMR) has grown, making common infections like respiratory infections, urinary tract infections, STDs, and tuberculosis harder to treat. New antibiotics are not being developed fast enough and may lead to a "post-antibiotic era" where some infections are untreatable.
+
+AMR makes infections more difficult and costly to treat. Proper antibiotic use—correct drug, dose, and duration—and strict hospital hygiene are essential. Combating AMR requires cooperation among governments, healthcare workers, researchers, pharmaceutical companies, farmers, and the public through responsible antibiotic use, monitoring resistance, limiting antibiotics in animals, and improving access to medicines, vaccines, and tests.
+
+Prevention is the most effective strategy. Along with careful antibiotic use, there is a need for new drugs, alternative treatments, better diagnostics, and vaccines. Without coordinated global action, vital medical procedures like surgery, organ transplants, neonatal care, and cancer treatment could be at risk.
+
+### Natural occurrence
+
+AMR is a naturally occurring process. Antimicrobial resistance can evolve naturally due to continued exposure to antimicrobials. Natural selection means that organisms that are able to adapt to their environment, survive, and continue to produce offspring. As a result, the types of microorganisms that are able to survive over time with continued attack by certain antimicrobial agents will naturally become more prevalent in the environment, and those without this resistance will become obsolete.
+
+Some contemporary antimicrobial resistances have also evolved naturally before the use of antimicrobials of human clinical uses. For instance, methicillin-resistance evolved as a pathogen of hedgehogs, possibly as a co-evolutionary adaptation of the pathogen to hedgehogs that are infected by a dermatophyte that naturally produces antibiotics. Also, many soil fungi and bacteria are natural competitors and the original antibiotic penicillin discovered by Alexander Fleming rapidly lost clinical effectiveness in treating humans and, furthermore, none of the other natural penicillins (F, K, N, X, O, U1 or U6) are currently in clinical use.
+
+Antimicrobial resistance can be acquired from other microbes through swapping genes in a process termed horizontal gene transfer. This means that once a gene for resistance to an antibiotic appears in a microbial community, it can then spread to other microbes, potentially moving from a non-disease causing microbe to a disease-causing microbe. This process is heavily driven by the natural selection processes that happen during antibiotic use or misuse.
+
+Over time, most of the strains of bacteria and infections present will be the type resistant to the antimicrobial agent being used to treat them, making this agent now ineffective to defeat most microbes. With the increased use of antimicrobial agents, there is a speeding up of this natural process.
+
+### Self-medication
+
+In the vast majority of countries, antibiotics can only be prescribed by a doctor and supplied by a pharmacy. Self-medication by consumers is defined as "the taking of medicines on one's own initiative or on another person's suggestion, who is not a certified medical professional", and it has been identified as one of the primary reasons for the evolution of antimicrobial resistance. Self-medication with antibiotics is an unsuitable way of using them but a common practice in resource-constrained countries. The practice exposes individuals to the risk of bacteria that have developed antimicrobial resistance. Many people resort to this out of necessity, when access to a physician is unavailable, or when patients have a limited amount of time or money to see a doctor. This increased access makes it extremely easy to obtain antimicrobials. An example is India, where in the state of Punjab 73% of the population resorted to treating their minor health issues and chronic illnesses through self-medication.
+
+Self-medication is higher outside the hospital environment. The prevalence of self-medication in low- and middle-income countries (LMICs) ranges from 8.1% to 93%. Accessibility, affordability, and conditions of health facilities, as well as the health-seeking behavior, are factors that influence self-medication in low- and middle-income countries. Two issues with self-medication are the lack of knowledge of the public on the dangerous effects of certain antimicrobials (for example ciprofloxacin which can cause tendonitis, tendon rupture and aortic dissection) and broad microbial resistance and when to seek medical care if the infection is not clearing. To determine the public's knowledge and preconceived notions on antibiotic resistance, a screening of 3,537 articles published in Europe, Asia, and North America was done. Of the 55,225 total people surveyed in the articles, 70% had heard of antibiotic resistance previously, but 88% of those people thought it referred to some type of physical change in the human body.
+
+### Clinical misuse
+
+Clinical misuse by healthcare professionals is another contributor to increased antimicrobial resistance. Studies done in the US show that the indication for treatment of antibiotics, choice of the agent used, and the duration of therapy was incorrect in up to 50% of the cases studied. In 2010 and 2011 about a third of antibiotic prescriptions in outpatient settings in the United States were not necessary. Another study in an intensive care unit in a major hospital in France has shown that 30% to 60% of prescribed antibiotics were unnecessary. These inappropriate uses of antimicrobial agents promote the evolution of antimicrobial resistance by supporting the bacteria in developing genetic alterations that lead to resistance.
+
+According to research conducted in the US that aimed to evaluate physicians' attitudes and knowledge on antimicrobial resistance in ambulatory settings, only 63% of those surveyed reported antibiotic resistance as a problem in their local practices, while 23% reported the aggressive prescription of antibiotics as necessary to avoid failing to provide adequate care. This demonstrates that many doctors underestimate the impact that their own prescribing habits have on antimicrobial resistance as a whole. It also confirms that some physicians may be overly cautious and prescribe antibiotics for both medical or legal reasons, even when clinical indications for use of these medications are not always confirmed. This can lead to unnecessary antimicrobial use, a pattern which may have worsened during the COVID-19 pandemic.
+
+Studies have shown that common misconceptions about the effectiveness and necessity of antibiotics to treat common mild illnesses contribute to their overuse.
+
+Important to the conversation of antibiotic use is the veterinary medical system. Veterinary oversight is required by law for all medically important antibiotics. Veterinarians use the Pharmacokinetic/pharmacodynamic model (PK/PD) approach to ensuring that the correct dose of the drug is delivered to the correct place at the correct timing.
+
+### Pandemics, disinfectants and healthcare systems
+
+Increased antibiotic use during the early waves of the COVID-19 pandemic may exacerbate this global health challenge. Moreover, pandemic burdens on some healthcare systems may contribute to antibiotic-resistant infections. The use of disinfectants such as alcohol-based hand sanitizers, and antiseptic hand wash may also have the potential to increase antimicrobial resistance. Overuse of disinfectants can lead to mutations that induce antimicrobial resistance. On the other hand, "increased hand hygiene, decreased international travel, and decreased elective hospital procedures may have reduced AMR pathogen selection and spread in the short term" during the COVID-19 pandemic.
+
+Critically ill patients are prone to infections, and because of that, they often require antimicrobials. The more antimicrobials, the more resistance one becomes to it.
+
+Antimicrobial resistance (AMR) significantly strains healthcare systems and national economies. The World Bank estimates that by 2050, AMR could increase healthcare costs by around US$1 trillion and cause global economic losses of US$1–3.4 trillion annually by 2030. Resistant infections are harder to treat, often requiring longer hospital stays, additional tests, and stronger, more expensive medications, placing extra pressure on hospitals and health systems, especially during pandemics. A 2024 United Nations High-Level Meeting on AMR has pledged to reduce deaths associated with bacterial AMR by 10% over the next six years. In their first major declaration on the issue since 2016, global leaders also committed to raising $100 million to update and implement AMR action plans. However, the final draft of the declaration omitted an earlier target to reduce antibiotic use in animals by 30% by 2030, due to opposition from meat-producing countries and the farming industry. Critics argue this omission is a major weakness, as livestock accounts for around 73% of global sales of antimicrobial agents, including antibiotics, antivirals, and antiparasitics.
+
+### Environmental pollution
+
+Considering the complex interactions between humans, animals and the environment, it is also important to consider the environmental aspects and contributors to antimicrobial resistance.
+
+One of these factors is human and hospital waste, which is a substantial contributor to environmental antimicrobial resistance (AMR). It is estimated that around 50–80% of antibiotics are passed unmetabolized in urine and 4–30% in feces, causing large quantities of active antibiotics to enter sewage systems. Sewage environments contain high levels of antimicrobial-resistant bacteria (ARB), antimicrobial resistance genes (ARGs), and mobile genetic elements such as plasmids, which enable rapid gene exchange. Wastewater treatment plants (WWTPs) are typically not designed to remove AMR; in some cases, multidrug-resistant species such as *Escherichia, Shigella, and Klebsiella* can increase twofold in treated wastewater. Methicillin-resistant *Staphylococcus aureus* (MRSA) has also been detected in both raw and treated sewage.
+
+Agriculture is also a major contributor to environmental AMR. Manure from livestock (such as cattle, sheep, etc.) contains residual antibiotics, which enter the soil as farmers usually use it as fertilizer. These are typically at levels of 1–10 mg/kg, and also contain ARBs and ARGs. One megaton of antibiotics has been estimated to have entered global soils through manure application. Pathogens can survive in soil for up to 10 years and on plant surfaces for up to 1 year, thereby enabling long-term environmental continuation of AMR. Because manure can be applied to diverse crops, residual antibiotics and resistance genes can enter plant tissues and the surrounding soil microbiota, contributing to AMR detected on fruits and vegetables.
+
+Heavy metals in soil, often introduced through fertilizers or industrial processes, can drive cross- and co-resistance mechanisms that select for antibiotic-resistant bacteria even when no antibiotics are present. Similar selective results happen with biocides and pesticides.
+
+Aquaculture is an underrecognized source of environmental AMR. Approximately 70% of antibiotics administered in aquaculture enter surrounding waterways, and tetracycline-resistant genes have been found even in isolated environments such as Antarctica and the Arctic. Antibiotic usage varies substantially across countries, showing the major differences in regulatory oversight. High antibiotic use in many Asian aquaculture systems has added to the elevated levels of clinically important resistance genes in sediments and river systems.
+
+Recent research has shown that AMR also occurs through the air. Airborne resistance genes have been detected at high levels in major urban centers, and farms have been determined as hotspots for airborne AMR, with resistance markers detected in the air surrounding animal operations.
+
+### Food production
+
+#### Livestock
+
+The antimicrobial resistance crisis also extends to the food industry, specifically with food producing animals. With an ever-increasing human population, there is constant pressure to intensify productivity in many agricultural sectors, including the production of meat as a source of protein. Antibiotics are fed to livestock to act as growth supplements, and a preventive measure to decrease the likelihood of infections.
+
+Farmers typically use antibiotics in animal feed to improve growth rates and prevent infections. However, this is illogical as antibiotics are used to treat infections and not prevent infections. 80% of antibiotic use in the U.S. is for agricultural purposes and about 70% of these are medically important. Overusing antibiotics gives the bacteria time to adapt leaving higher doses or even stronger antibiotics needed to combat the infection. Though antibiotics for growth promotion were banned throughout the EU in 2006, 40 countries still use antibiotics to promote growth.
+
+This can result in the transfer of resistant bacterial strains into the food that humans eat, causing potentially fatal transfer of disease. While the practice of using antibiotics as growth promoters does result in better yields and meat products, it is a major issue and needs to be decreased to prevent antimicrobial resistance. Though the evidence linking antimicrobial usage in livestock to antimicrobial resistance is limited, the World Health Organization Advisory Group on Integrated Surveillance of Antimicrobial Resistance strongly recommended the reduction of use of medically important antimicrobials in livestock. Additionally, the Advisory Group stated that such antimicrobials should be expressly prohibited for both growth promotion and disease prevention in food producing animals.
+
+By mapping antimicrobial consumption in livestock, it was predicted that in 228 countries there would be a total 67% increase in consumption of antibiotics by livestock by 2030. In some countries such as Brazil, Russia, India, China, and South Africa it is predicted that a 99% increase will occur. Several countries have restricted the use of antibiotics in livestock, including Canada, China, Japan, and the US. These restrictions are sometimes associated with a reduction of the prevalence of antimicrobial resistance in humans.
+
+In the United States the Veterinary Feed Directive went into practice in 2017 dictating that *All medically important antibiotics to be used in feed or water for food animal species require a veterinary feed directive (VFD) or a prescription.*
+
+#### Pesticides
+
+Most pesticides protect crops against insects and plants, but in some cases antimicrobial pesticides are used to protect against various microorganisms such as bacteria, viruses, fungi, algae, and protozoa. The overuse of many pesticides in an effort to have a higher yield of crops has resulted in many of these microbes evolving a tolerance against these antimicrobial agents. Currently there are over 4000 antimicrobial pesticides registered with the US Environmental Protection Agency (EPA) and sold to market, showing the widespread use of these agents. It is estimated that for every single meal a person consumes, 0.3 g of pesticides is used, as 90% of all pesticide use is in agriculture. A majority of these products are used to help defend against the spread of infectious diseases, and hopefully protect public health. But out of the large amount of pesticides used, it is also estimated that less than 0.1% of those antimicrobial agents, actually reach their targets. That leaves over 99% of all pesticides used available to contaminate other resources. In soil, air, and water these antimicrobial agents are able to spread, coming in contact with more microorganisms and leading to these microbes evolving mechanisms to tolerate and further resist pesticides. The use of antifungal azole pesticides that drive environmental azole resistance have been linked to azole resistance cases in the clinical setting. The same issues confront the novel antifungal classes (e.g. orotomides) which are again being used in both the clinic and agriculture.
+
+### Wild birds
+
+Wildlife, including wild and migratory birds, serve as indicators of ecosystem health. They act as a reservoir for zoonotic diseases and antimicrobial-resistant organisms. Birds are a key link between the transmission of zoonotic diseases to human populations. By the same token, increased contact between wild birds and human populations (including domesticated animals), has increased the amount of anti-microbial resistance (AMR) to the bird population. The introduction of AMR to wild birds positively correlates with human pollution and increased human contact. Additionally, wild birds can participate in horizontal gene transfer with bacteria, leading to the transmission of antibiotic-resistant genes (ARG).
+
+For simplicity, wild bird populations can be divided into two major categories, wild sedentary birds and wild migrating birds. Wild sedentary bird exposure to AMR is through increased contact with densely populated areas, human waste, domestic animals, and domestic animal/livestock waste. Especially if they are predators, wild, sedentary birds can come into contact with prey that interact more closely with humans. Wild migrating birds interact with sedentary birds in different environments along their migration route. This increases the rate and diversity of AMR across varying ecosystems.
+
+Neglect of wildlife in the global discussions surrounding health security and AMR, creates large barriers to true AMR surveillance. The surveillance of antimicrobial-resistant resistant organisms in wild birds is a potential metric for the rate of AMR in the environment. This surveillance also allows for further investigation into the transmission routes between different ecosystems and human populations (including domesticated animals and livestock). Such information gathered from wild bird biomes, can help identify patterns of diseased transmission and better target interventions. These targeted interventions can inform the use of antimicrobial agents and reduce the persistence of multidrug resistant organisms.
+
+Recent studies demonstrate the importance of wild birds as sentinels for AMR. For example, *Escherichia coli* isolated from free-ranging Bonelli's eagles (*Aquila fasciata*) in eastern Spain showed that 53.3% of isolates were resistant to at least one antimicrobial, and 29.3% were multidrug-resistant, despite the species' minimal exposure to human-associated environments. The study also reported resistance to colistin and meropenem, two last-resort antibiotics, and documented 19 different multidrug-resistance patterns, suggesting persistent and heterogeneous selective pressures in the environment. Because Bonelli's eagles live far from humans and urban areas, they acquire resistance largely through interactions with prey species that interact with humans. These findings demonstrate how AMR can spread into remote ecosystems via indirect pathways, strengthening the role of wild birds, particularly apex predators, as effective bioindicators in AMR surveillance.
+
+### Gene transfer from ancient microorganisms
+
+Permafrost is a term used to refer to any ground that remained frozen for two years or more, with the oldest known examples continuously frozen for around 700,000 years. In the recent decades, permafrost has been rapidly thawing due to climate change. The cold preserves any organic matter inside the permafrost, and it is possible for microorganisms to resume their life functions once it thaws. While some common pathogens such as influenza, smallpox or the bacteria associated with pneumonia have failed to survive intentional attempts to revive them, more cold-adapted microorganisms such as anthrax, or several ancient plant and amoeba viruses, have successfully survived prolonged thaw.
+
+Some scientists have argued that the inability of known causative agents of contagious diseases to survive being frozen and thawed makes this threat unlikely. Instead, there have been suggestions that when modern pathogenic bacteria interact with the ancient ones, they may, through horizontal gene transfer, pick up genetic sequences which are associated with antimicrobial resistance, exacerbating an already difficult issue. Antibiotics to which permafrost bacteria have displayed at least some resistance include chloramphenicol, streptomycin, kanamycin, gentamicin, tetracycline, spectinomycin and neomycin. However, other studies show that resistance levels in ancient bacteria to modern antibiotics remain lower than in the contemporary bacteria from the active layer of thawed ground above them, which may mean that this risk is "no greater" than from any other soil.
+
+
+## Prevention
+
+There have been increasing public calls for global collective action to address the threat, including a proposal for an international treaty on antimicrobial resistance. Further detail and attention is still needed to recognize and measure trends in resistance on the international level; the idea of a global tracking system has been suggested but implementation has yet to occur. A system of this nature would provide insight to areas of high resistance as well as information necessary for evaluating programs, introducing interventions and other changes made to fight or reverse antibiotic resistance.
