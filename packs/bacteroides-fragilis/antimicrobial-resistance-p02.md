@@ -1,0 +1,305 @@
+---
+title: "Antimicrobial resistance (part 2/3)"
+source: https://en.wikipedia.org/wiki/Antimicrobial_resistance
+domain: bacteroides-fragilis
+license: CC-BY-SA-4.0
+tags: bacteroides fragilis
+fetched: 2026-07-09
+part: 2/3
+---
+
+## One Health approach
+
+Antimicrobial resistance (AMR) is commonly described within a *One Health* framework, which emphasizes the interconnected relationships between human health, animal health, and the environment. Antimicrobial use in clinical medicine, veterinary practice, and agriculture has been associated with the selection and spread of resistant microorganisms across these sectors.
+
+Research indicates that resistant bacteria and antimicrobial resistance genes can move between humans, animals, and environmental reservoirs through multiple pathways, including food production systems, direct contact, and exposure to contaminated water or soil. These pathways contribute to the persistence and wider dissemination of antimicrobial resistance beyond individual settings.
+
+Environmental sources have been increasingly examined in relation to AMR. Wastewater systems, agricultural runoff, and pharmaceutical residues have been identified as potential reservoirs where resistant microorganisms and resistance genes may persist. Such reservoirs may facilitate ongoing transmission between environmental, animal, and human populations.
+
+Efforts to address AMR within a One Health framework typically involve coordinated strategies across sectors, including antimicrobial stewardship, infection prevention and control, and improvements in sanitation and hygiene. Evidence from systematic reviews suggests that interventions such as farm biosecurity and water, sanitation, and hygiene (WASH) practices may reduce antimicrobial use and contribute to limiting the development and spread of resistance.
+
+### Duration of antimicrobials
+
+Delaying or minimizing the use of antibiotics for certain conditions may help safely reduce their use. Antimicrobial treatment duration should be based on the infection and other health problems a person may have. For many infections once a person has improved there is little evidence that stopping treatment causes more resistance. Some, therefore, feel that stopping early may be reasonable in some cases. Other infections, however, do require long courses regardless of whether a person feels better.
+
+Delaying antibiotics for ailments such as a sore throat and otitis media may have no difference in the rate of complications compared with immediate antibiotics, for example. When treating respiratory tract infections, clinical judgement is required as to the appropriate treatment (delayed or immediate antibiotic use).
+
+### Monitoring and mapping
+
+There are multiple national and international monitoring programs for drug-resistant threats, including methicillin-resistant *Staphylococcus aureus* (MRSA), vancomycin-resistant *S. aureus* (VRSA), extended spectrum beta-lactamase (ESBL) producing Enterobacterales, vancomycin-resistant *Enterococcus* (VRE), and multidrug-resistant *Acinetobacter baumannii* (MRAB).
+
+ResistanceOpen is an online global map of antimicrobial resistance developed by HealthMap which displays aggregated data on antimicrobial resistance from publicly available and user submitted data. The website can display data for a 25 miles (40 km) radius from a location. Users may submit data from antibiograms for individual hospitals or laboratories. European data is from the EARS-Net (European Antimicrobial Resistance Surveillance Network), part of the ECDC. ResistanceMap is a website by the Center for Disease Dynamics, Economics & Policy and provides data on antimicrobial resistance on a global level.
+
+The WHO's AMR global action plan also recommends antimicrobial resistance surveillance in animals. Initial steps in the EU for establishing the veterinary counterpart EARS-Vet (EARS-Net for veterinary medicine) have been made. AMR data from pets in particular is scarce, but needed to support antibiotic stewardship in veterinary medicine.
+
+By comparison there is a lack of national and international monitoring programs for antifungal resistance.
+
+### Limiting antimicrobial use in humans
+
+Antimicrobial stewardship programmes appear useful in reducing rates of antimicrobial resistance. The antimicrobial stewardship program will also provide pharmacists with the knowledge to educate patients that antibiotics will not work for a virus for example.
+
+Excessive antimicrobial use has become one of the top contributors to the evolution of antimicrobial resistance. Since the beginning of the antimicrobial era, antimicrobials have been used to treat a wide range of infectious diseases. Overuse of antimicrobials has become the primary cause of rising levels of antimicrobial resistance. Prescribers are willing to prescribe antimicrobials to individuals who believe that antimicrobials can cure nearly all illnesses, including viral infections like the common cold. In an analysis of drug prescriptions, 36% of individuals with a cold or an upper respiratory infection (both usually viral in origin) were given prescriptions for antibiotics. These prescriptions increase the risk of further evolution of antibiotic resistant bacteria. Using antimicrobials without prescription is another driving force leading to the overuse of antibiotics to self-treat diseases like the common cold, cough, fever, and dysentery resulting in an epidemic of antibiotic resistance in countries like Bangladesh, risking its spread around the globe. Introducing strict antibiotic stewardship in the outpatient setting to reduce inappropriate prescribing of antibiotics may reduce the emerging bacterial resistance.
+
+The WHO AWaRe (Access, Watch, Reserve) guidance and antibiotic book has been introduced to guide antibiotic choice for the 30 most common infections in adults and children to reduce inappropriate prescribing in primary care and hospitals. Narrow-spectrum antibiotics are preferred due to their lower resistance potential, and broad-spectrum antibiotics are only recommended for people with more severe symptoms. Some antibiotics are more likely to confer resistance, so are kept as reserve antibiotics in the AWaRe book.
+
+Various diagnostic strategies have been employed to prevent the overuse of antifungal therapy in the clinic, proving a safe alternative to empirical antifungal therapy, and thus underpinning antifungal stewardship schemes.
+
+#### At the hospital level
+
+Antimicrobial stewardship teams in hospitals are encouraging optimal use of antimicrobials. The goals of antimicrobial stewardship are to help practitioners pick the right drug at the right dose and duration of therapy while preventing misuse and minimizing the development of resistance. Stewardship interventions may reduce the length of stay by an average of slightly over 1 day while not increasing the risk of death. Dispensing the exact number of antibiotic pharmaceutical units necessary to complete an ongoing treatment can reduce excess antibiotics.
+
+A 2025 cross-sectional study of 125 pharmacists at a UK NHS Foundation Trust examined knowledge, attitudes, and perceptions regarding antimicrobial stewardship following the COVID-19 pandemic. The study found that more than 85% of pharmacists recognized antimicrobial resistance as a public health concern. However, the pandemic created challenges, with 80% reporting that COVID-19 patient conditions influenced antibiotic prescription.
+
+A 2026 systematic review of 73 studies examined arthropod-mediated pathogen transmission in hospitals. Research indicates that cockroaches, flies, and ants frequently harbor multidrug-resistant bacteria, fungi, and viruses. While direct causality is difficult to prove, genetic evidence links these pests to hospital-associated infections.
+
+#### At the primary care level
+
+Given the volume of care provided in primary care (general practice), recent strategies have focused on reducing unnecessary antimicrobial prescribing in this setting. Simple interventions, such as written information explaining when taking antibiotics is not necessary, for example in common infections of the upper respiratory tract, have been shown to reduce antibiotic prescribing. Various tools are also available to help professionals decide if prescribing antimicrobials is necessary.
+
+Parental expectations, driven by the worry for their children's health, can influence how often children are prescribed antibiotics. Parents often rely on their clinician for advice and reassurance. However a lack of plain language information and not having adequate time for consultation negatively impacts this relationship. In effect parents often rely on past experiences in their expectations rather than reassurance from the clinician. Adequate time for consultation and plain language information can help parents make informed decisions and avoid unnecessary antibiotic use.
+
+The prescriber should closely adhere to the five rights of drug administration: the right patient, the right drug, the right dose, the right route, and the right time. Microbiological samples should be taken for culture and sensitivity testing before treatment when indicated and treatment potentially changed based on the susceptibility report. Health workers and pharmacists can help tackle antibiotic resistance by: enhancing infection prevention and control; only prescribing and dispensing antibiotics when they are truly needed; prescribing and dispensing the right antibiotic(s) to treat the illness. A unit dose system implemented in community pharmacies can also reduce antibiotic leftovers at households. Despite these, written guideline intervention for prescriber to do history taking and provision of advice and knowledge of pharmacists and non‐pharmacists may not reduce the sales of non‐prescription antimicrobial drugs in community pharmacies, drugstores, and other medicine outlets.
+
+#### At the individual level
+
+People can help tackle resistance by using antibiotics only when prescribed for a bacterial infetion as well as completing the full treatment course, never sharing medication with others, and using proper disposal methods for excess drugs. Basic hygiene practices also help prevent the spread of bacteria.
+
+#### Countries
+
+- The Netherlands has the lowest rate of antibiotic prescribing in the OECD, at a rate of 11.4 defined daily doses (DDD) per 1,000 people per day in 2011. DDD is a statistical measure of drug consumption, defined by the World Health Organization (WHO).
+
+• Germany and Sweden also have lower prescribing rates, with Sweden's rate having been declining since 2007. • Greece, France and Belgium have high prescribing rates.
+
+### Water, sanitation, hygiene
+
+Infectious disease control through improved water, sanitation and hygiene (WASH) infrastructure needs to be included in the antimicrobial resistance (AMR) agenda. The "Interagency Coordination Group on Antimicrobial Resistance" stated in 2018 that "the spread of pathogens through unsafe water results in a high burden of gastrointestinal disease, increasing even further the need for antibiotic treatment." This is particularly a problem in developing countries where the spread of infectious diseases caused by inadequate WASH standards is a major driver of antibiotic demand. Growing usage of antibiotics together with persistent infectious disease levels have led to a dangerous cycle in which reliance on antimicrobials increases while the efficacy of drugs diminishes. The proper use of infrastructure for water, sanitation and hygiene (WASH) can result in a 47–72 percent decrease of diarrhea cases treated with antibiotics depending on the type of intervention and its effectiveness. A reduction of the diarrhea disease burden through improved infrastructure would result in large decreases in the number of diarrhea cases treated with antibiotics. This was estimated as ranging from 5 million in Brazil to up to 590 million in India by the year 2030. The strong link between increased consumption and resistance indicates that this will directly mitigate the accelerating spread of AMR. Sanitation and water for all by 2030 is Goal Number 6 of the Sustainable Development Goals.
+
+An increase in hand washing compliance by hospital staff results in decreased rates of resistant organisms.
+
+Water supply and sanitation infrastructure in health facilities offer opportunities for combatting AMR, and investment should be increased. There is much room for improvement: WHO and UNICEF estimated in 2015 that 38% of health facilities did not have a source of water, nearly 19% had no toilets and 35% had no water and soap or alcohol-based hand rub for handwashing.
+
+### Industrial wastewater treatment
+
+Manufacturers of antimicrobials need to improve the treatment of their wastewater (by using industrial wastewater treatment processes) to reduce the release of residues into the environment.
+
+### Limiting antimicrobial use in animals and farming
+
+It is established that the use of antibiotics in animal husbandry can give rise to AMR resistances in bacteria found in food animals to the antibiotics being administered (through injections or medicated feeds). For this reason only antimicrobials that are deemed "not-clinically relevant" are used in these practices.
+
+Unlike resistance to antibacterials, antifungal resistance can be driven by arable farming, currently there is no regulation on the use of similar antifungal classes in agriculture and the clinic.
+
+Recent studies have shown that the prophylactic use of "non-priority" or "non-clinically relevant" antimicrobials in feeds can potentially, under certain conditions, lead to co-selection of environmental AMR bacteria with resistance to medically important antibiotics. The possibility for co-selection of AMR resistances in the food chain pipeline may have far-reaching implications for human health.
+
+#### Country examples
+
+##### Europe
+
+In 1997, European Union health ministers voted to ban avoparcin and four additional antibiotics used to promote animal growth in 1999. In 2006 a ban on the use of antibiotics in European feed, with the exception of two antibiotics in poultry feeds, became effective. In Scandinavia, there is evidence that the ban has led to a lower prevalence of antibiotic resistance in (nonhazardous) animal bacterial populations. As of 2004, several European countries established a decline of antimicrobial resistance in humans through limiting the use of antimicrobials in agriculture and food industries without jeopardizing animal health or economic cost.
+
+##### United States
+
+The United States Department of Agriculture (USDA) and the Food and Drug Administration (FDA) collect data on antibiotic use in humans and in a more limited fashion in animals. About 80% of antibiotic use in the U.S. is for agriculture purposes, and about 70% of these are medically important. This gives reason for concern about the antibiotic resistance crisis in the U.S. and more reason to monitor it. The FDA first determined in 1977 that there is evidence of emergence of antibiotic-resistant bacterial strains in livestock. The long-established practice of permitting OTC sales of antibiotics (including penicillin and other drugs) to lay animal owners for administration to their own animals nonetheless continued in all states. In 2000, the FDA announced their intention to revoke approval of fluoroquinolone use in poultry production because of substantial evidence linking it to the emergence of fluoroquinolone-resistant *Campylobacter* infections in humans. Legal challenges from the food animal and pharmaceutical industries delayed the final decision to do so until 2006. Fluroquinolones have been banned from extra-label use in food animals in the USA since 2007. However, they are still used in treatment of companion and exotic animals.
+
+### Global action plans and awareness
+
+At the 79th United Nations General Assembly High-Level Meeting on AMR on 26 September 2024, world leaders approved a political declaration committing to a clear set of targets and actions, including reducing the estimated 4.95 million human deaths associated with bacterial AMR annually by 10% by 2030. The increasing interconnectedness of the world and the fact that new classes of antibiotics have not been developed and approved for 25 years highlight the extent to which antimicrobial resistance is a global health challenge. A global action plan to tackle the growing problem of resistance to antibiotics and other antimicrobial medicines was endorsed at the Sixty-eighth World Health Assembly in May 2015. One of the key objectives of the plan is to improve awareness and understanding of antimicrobial resistance through effective communication, education and training. This global action plan developed by the World Health Organization was created to combat the issue of antimicrobial resistance and was guided by the advice of countries and key stakeholders. The WHO's global action plan is composed of five key objectives that can be targeted through different means, and represents countries coming together to solve a major problem that can have future health consequences. These objectives are as follows:
+
+- improve awareness and understanding of antimicrobial resistance through effective communication, education and training.
+- strengthen the knowledge and evidence base through surveillance and research.
+- reduce the incidence of infection through effective sanitation, hygiene and infection prevention measures.
+- optimize the use of antimicrobial medicines in human and animal health.
+- develop the economic case for sustainable investment that takes account of the needs of all countries and to increase investment in new medicines, diagnostic tools, vaccines and other interventions.
+
+**Steps towards progress**
+
+- React based in Sweden has produced informative material on AMR for the general public.
+- Videos are being produced for the general public to generate interest and awareness.
+- The Irish Department of Health published a National Action Plan on Antimicrobial Resistance in October 2017. The Strategy for the Control of Antimicrobial Resistance in Ireland (SARI), Iaunched in 2001 developed Guidelines for Antimicrobial Stewardship in Hospitals in Ireland in conjunction with the Health Protection Surveillance Centre, these were published in 2009. Following their publication a public information campaign 'Action on Antibiotics' was launched to highlight the need for a change in antibiotic prescribing. Despite this, antibiotic prescribing remains high with variance in adherence to guidelines.
+- The United Kingdom published a 20-year vision for antimicrobial resistance that sets out the goal of containing and controlling AMR by 2040. The vision is supplemented by a 5-year action plan running from 2019 to 2024, building on the previous action plan (2013–2018).
+- The World Health Organization has published the 2024 Bacterial Priority Pathogens List which covers 15 families of antibiotic-resistant bacterial pathogens. Notable among these are gram-negative bacteria resistant to last-resort antibiotics, drug-resistant mycobacterium tuberculosis, and other high-burden resistant pathogens such as *Salmonella*, *Shigella*, *Neisseria gonorrhoeae*, *Pseudomonas aeruginosa*, and *Staphylococcus aureus*. The inclusion of these pathogens in the list underscores their global impact in terms of burden, as well as issues related to transmissibility, treatability, and prevention options. It also reflects the R&D pipeline of new treatments and emerging resistance trends.
+
+#### Antibiotic Awareness Week
+
+The World Health Organization has promoted the first World Antibiotic Awareness Week running from 16 to 22 November 2015. The aim of the week is to increase global awareness of antibiotic resistance. It also wants to promote the correct usage of antibiotics across all fields to prevent further instances of antibiotic resistance.
+
+World Antibiotic Awareness Week has been held every November since 2015. For 2017, the Food and Agriculture Organization of the United Nations (FAO), the World Health Organization (WHO) and the World Organisation for Animal Health (OIE) are together calling for responsible use of antibiotics in humans and animals to reduce the emergence of antibiotic resistance.
+
+**United Nations**
+
+In 2016 the Secretary-General of the United Nations convened the Interagency Coordination Group (IACG) on Antimicrobial Resistance. The IACG worked with international organizations and experts in human, animal, and plant health to create a plan to fight antimicrobial resistance. Their report released in April 2019 focuses on the seriousness of antimicrobial resistance and the threat it poses to world health. It suggests five recommendations for member states to follow to tackle this increasing threat. The IACG recommendations are as follows:
+
+- Accelerate progress in countries
+- Innovate to secure the future
+- Collaborate for more effective action
+- Invest for a sustainable response
+- Strengthen accountability and global governance
+
+### One Health Approach
+
+The **One Health** approach recognizes that human, animal, and environmental health are interconnected in the development and spread of antimicrobial resistance (AMR). Key strategies include:
+
+#### Integrated Surveillance
+
+- Monitoring antibiotic use and resistance trends across human medicine, agriculture, and environmental sectors.
+- For example, 73% of the world's antibiotics are used in livestock, often for non-therapeutic purposes like growth promotion.
+
+#### Policy Interventions
+
+- Banning non-therapeutic antibiotics in agriculture (e.g., European Union's 2006 growth promoter ban).
+- Incentivizing development of new antibiotics and alternatives (e.g., vaccines, bacteriophages).
+
+#### Environmental Mitigation
+
+- Reducing pharmaceutical waste in water systems and soil through improved waste management.
+- Addressing resistance genes in wastewater from hospitals, farms, and drug manufacturing sites.
+
+
+## Mechanisms and organisms
+
+### Bacteria
+
+The five main mechanisms by which bacteria exhibit resistance to antibiotics are:
+
+1. Drug inactivation or modification: for example, enzymatic deactivation of penicillin G in some penicillin-resistant bacteria through the production of β-lactamases. Drugs may also be chemically modified through the addition of functional groups by transferase enzymes. For example, acetylation, phosphorylation, or adenylation are resistance mechanisms to aminoglycosides. Acetylation is the most common and can affect a number of drug classes.
+2. Alteration of target- or binding site: for example, alteration of PBP—the binding target site of penicillins—in MRSA and other penicillin-resistant bacteria. Another protective mechanism found among bacterial species is ribosomal protection proteins. These proteins protect the bacterial cell from antibiotics that target the cell's ribosomes to inhibit protein synthesis. The mechanism involves the binding of the ribosomal protection proteins to the ribosomes of the bacterial cell, which in turn changes its conformational shape. This allows the ribosomes to continue synthesizing proteins essential to the cell while preventing antibiotics from binding to the ribosome to inhibit protein synthesis.
+3. Alteration of metabolic pathway: for example, some sulfonamide-resistant bacteria do not require para-aminobenzoic acid (PABA), an important precursor for the synthesis of folic acid and nucleic acids in bacteria inhibited by sulfonamides, instead, like mammalian cells, they turn to using preformed folic acid.
+4. Reduced drug accumulation: by decreasing drug permeability or increasing active efflux (pumping out) of the drugs across the cell surface. These multidrug efflux pumps within the cellular membrane of certain bacterial species are used to pump antibiotics out of the cell before they are able to do any damage. They are often activated by a specific substrate associated with an antibiotic, as in fluoroquinolone resistance.
+5. Ribosome splitting and recycling: for example, drug-mediated stalling of the ribosome by lincomycin and erythromycin unstalled by a heat shock protein found in *Listeria monocytogenes*, which is a homologue of HflX from other bacteria. Liberation of the ribosome from the drug allows further translation and consequent resistance to the drug.
+
+There are several different types of germs that have developed a resistance over time.
+
+The six pathogens causing most deaths associated with resistance are *Escherichia coli*, *Staphylococcus aureus, Klebsiella pneumoniae, Streptococcus pneumoniae, Acinetobacter baumannii*, and *Pseudomonas aeruginosa*. They were responsible for 929,000 deaths attributable to resistance and 3.57 million deaths associated with resistance in 2019.
+
+Penicillinase-producing *Neisseria gonorrhoeae* developed a resistance to penicillin in 1976. Another example is Azithromycin-resistant *Neisseria gonorrhoeae*, which developed a resistance to azithromycin in 2011.
+
+In gram-negative bacteria, plasmid-mediated resistance genes produce proteins that can bind to DNA gyrase, protecting it from the action of quinolones. Finally, mutations at key sites in DNA gyrase or topoisomerase IV can decrease their binding affinity to quinolones, decreasing the drug's effectiveness.
+
+Some bacteria are naturally resistant to certain antibiotics; for example, gram-negative bacteria are resistant to most β-lactam antibiotics due to the presence of β-lactamase. Antibiotic resistance can also be acquired as a result of either genetic mutation or horizontal gene transfer. Although mutations are rare, with spontaneous mutations in the pathogen genome occurring at a rate of about 1 in 105 to 1 in 108 per chromosomal replication, Bacteria reproduce at a high rate, lifespans and production of new generations can be on a timescale of mere hours. A new (de novo) mutation in a parent cell can quickly become an inherited mutation of widespread prevalence, resulting in the microevolution of a fully resistant colony. However, chromosomal mutations also confer a cost of fitness. For example, a ribosomal mutation may protect a bacterial cell by changing the binding site of an antibiotic but may result in slower growth rate. Moreover, some adaptive mutations can propagate not only through inheritance but also through horizontal gene transfer.
+
+The most common mechanism of horizontal gene transfer is the transferring of plasmids carrying antibiotic resistance genes between bacteria of the same or different species via conjugation. However, bacteria can also acquire resistance through transformation, as in *Streptococcus pneumoniae* uptaking of naked fragments of extracellular DNA that contain antibiotic resistance genes to streptomycin, through transduction, as in the bacteriophage-mediated transfer of tetracycline resistance genes between strains of *S. pyogenes*, or through gene transfer agents, which are particles produced by the host cell that resemble bacteriophage structures and are capable of transferring DNA.
+
+Antibiotic resistance can be introduced artificially into a microorganism through laboratory protocols, sometimes used as a selectable marker to examine the mechanisms of gene transfer or to identify individuals that absorbed a piece of DNA that included the resistance gene and another gene of interest.
+
+Recent findings show no necessity of large populations of bacteria for the appearance of antibiotic resistance. Small populations of *Escherichia coli* in an antibiotic gradient can become resistant. Any heterogeneous environment with respect to nutrient and antibiotic gradients may facilitate antibiotic resistance in small bacterial populations. Researchers hypothesize that the mechanism of resistance evolution is based on four SNP mutations in the genome of *E. coli* produced by the gradient of antibiotic.
+
+In one study, which has implications for space microbiology, a non-pathogenic strain *E. coli* MG1655 was exposed to trace levels of the broad spectrum antibiotic chloramphenicol, under simulated microgravity (LSMMG, or Low Shear Modeled Microgravity) over 1000 generations. The adapted strain acquired resistance to not only chloramphenicol, but also cross-resistance to other antibiotics; this was in contrast to the observation on the same strain, which was adapted to over 1000 generations under LSMMG, but without any antibiotic exposure; the strain in this case did not acquire any such resistance. Thus, irrespective of where they are used, the use of an antibiotic would likely result in persistent resistance to that antibiotic, as well as cross-resistance to other antimicrobials.
+
+In recent years, the emergence and spread of β-lactamases called carbapenemases has become a major health crisis. One such carbapenemase is New Delhi metallo-beta-lactamase 1 (NDM-1), an enzyme that makes bacteria resistant to a broad range of beta-lactam antibiotics. The most common bacteria that make this enzyme are gram-negative such as *E. coli* and *Klebsiella pneumoniae*, but the gene for NDM-1 can spread from one strain of bacteria to another by horizontal gene transfer.
+
+### Viruses
+
+Specific antiviral drugs are used to treat some viral infections. These drugs prevent viruses from reproducing by inhibiting essential stages of the virus's replication cycle in infected cells. Antivirals are used to treat HIV, hepatitis B, hepatitis C, influenza, herpes viruses including varicella zoster virus, cytomegalovirus and Epstein–Barr virus. With each virus, some strains have become resistant to the administered drugs.
+
+Antiviral drugs typically target key components of viral reproduction; for example, oseltamivir targets influenza neuraminidase,while guanosine analogs inhibit viral DNA polymerase. Resistance to antivirals is thus acquired through mutations in the genes that encode the protein targets of the drugs.
+
+Resistance to HIV antivirals is problematic, and even multi-drug resistant strains have evolved. One source of resistance is that many current HIV drugs, including NRTIs and NNRTIs, target reverse transcriptase; however, HIV-1 reverse transcriptase is highly error prone and thus mutations conferring resistance arise rapidly. Resistant strains of the HIV virus emerge rapidly if only one antiviral drug is used. Using three or more drugs together, termed combination therapy, has helped to control this problem, but new drugs are needed because of the continuing emergence of drug-resistant HIV strains.
+
+### Fungi
+
+Infections by fungi are a cause of high morbidity and mortality in immunocompromised persons, such as those with HIV/AIDS, tuberculosis or receiving chemotherapy. The fungi *Candida*, *Cryptococcus neoformans* and *Aspergillus fumigatus* cause most of these infections and antifungal resistance occurs in all of them. Multidrug resistance in fungi is increasing because of the widespread use of antifungal drugs to treat infections in immunocompromised individuals and the use of some agricultural antifungals. Antifungal resistant disease is associated with increased mortality.
+
+Some fungi (for example, *Candida krusei* and fluconazole) exhibit intrinsic resistance to certain antifungal drugs or classes, whereas some species develop antifungal resistance to external pressures. Antifungal resistance is a One Health concern, driven by multiple extrinsic factors, including overuse of fungicides, clinical antifungals, environmental change and host factors.
+
+In the USA fluconazole-resistant Candida species and azole resistance in Aspergillus fumigatus have been highlighted as a growing threat.
+
+20 species of *Candida* can cause candidiasis infection, the most common of which is *Candida albicans*. *Candida* yeasts normally inhabit the skin and mucous membranes without causing infection. However, overgrowth of *Candida* can lead to candidiasis. Some *Candida* species (e.g. *Candida glabrata)* are becoming resistant to first-line and second-line antifungal agents such as echinocandins and azoles.
+
+The emergence of *Candida auris* as a potential human pathogen that sometimes exhibits multi-class antifungal drug resistance is concerning and has been associated with several outbreaks. The WHO has released a priority fungal pathogen list, including pathogens with antifungal resistance.
+
+The identification of antifungal resistance is undermined by limited classical diagnosis of infection, where a culture is lacking, preventing susceptibility testing. National and international surveillance schemes for fungal disease and antifungal resistance are limited, hampering the understanding of the disease burden and associated resistance. The application of molecular testing to identify genetic markers associating with resistance may improve the identification of antifungal resistance, but the diversity of mutations associated with resistance is increasing across the fungal species causing infection. In addition, a number of resistance mechanisms depend on up-regulation of selected genes (for instance reflux pumps) rather than defined mutations that are amenable to molecular detection.
+
+Due to the limited number of antifungals in clinical use and the increasing global incidence of antifungal resistance, using the existing antifungals in combination might be beneficial in some cases but further research is needed. Similarly, other approaches that might help to combat the emergence of antifungal resistance could rely on the development of host-directed therapies such as immunotherapy or vaccines.
+
+### Parasites
+
+The protozoan parasites that cause the diseases malaria, trypanosomiasis, toxoplasmosis, cryptosporidiosis and leishmaniasis are important human pathogens.
+
+Malarial parasites that are resistant to the drugs that are currently available to infections are common and this has led to increased efforts to develop new drugs. Resistance to recently developed drugs such as artemisinin has also been reported. The problem of drug resistance in malaria has driven efforts to develop vaccines.
+
+Trypanosomes are parasitic protozoa that cause African trypanosomiasis and Chagas disease (American trypanosomiasis). There are no vaccines to prevent these infections so drugs such as pentamidine and suramin, benznidazole and nifurtimox are used to treat infections. These drugs are effective but infections caused by resistant parasites have been reported.
+
+Leishmaniasis is caused by protozoa and is a public health problem in sub-tropical and tropical countries. Drug resistance has "become a major concern". The preferred treatment for leishmaniasis regionally; liposomal amphotericin B is used in the Mediterranean basin and pentavalent antimonials are more commonly used in Africa, South America, Bangladesh, India, and Nepal. Resistance to antibiotics in *Leishmania* is a relatively recent phenomena. The first reported instance of resistance to antimonials was reported in India in the 1980s.
+
+### Global and genomic data
+
+In 2022, genomic epidemiologists reported results from a global survey of antimicrobial resistance via genomic wastewater-based epidemiology, finding large regional variations, providing maps, and suggesting resistance genes are also passed on between microbial species that are not closely related. The WHO provides the Global Antimicrobial Resistance and Use Surveillance System (GLASS) reports which summarize annual (e.g. 2020's) data on international AMR, also including an interactive dashboard.
+
+
+## Epidemiology
+
+### United Kingdom
+
+Public Health England reported that the total number of antibiotic resistant infections in England rose by 9% from 55,812 in 2017 to 60,788 in 2018, but antibiotic consumption had fallen by 9% from 20.0 to 18.2 defined daily doses per 1,000 inhabitants per day between 2014 and 2018.
+
+### United States
+
+The Centers for Disease Control and Prevention reported that 2.8 million cases of antibiotic resistance have been reported. However, in 2019 overall deaths from antibiotic-resistant infections decreased by 18% and deaths in hospitals decreased by 30%.
+
+The COVID pandemic caused a reversal of much of the progress made on attenuating the effects of antibiotic resistance, resulting in more antibiotic use, more resistant infections, and less data on preventive action. Hospital-onset infections and deaths both increased by 15% in 2020, and significantly higher rates of infections were reported for 4 out of 6 types of healthcare associated infections.
+
+### India
+
+Owing to rampant misuse, over-prescription, and unregulated over-the-counter access to antibiotics, the growth of AMR superbugs has proliferated in India. Pharmacies surveyed by the Karnataka government revealed that 80% of drugs were being sold without a prescription.
+
+A CDC survey revealed that half of inpatients were using "antibiotics from the 'Watch' category of WHO's AWaRe classification, which should be reserved for severe infections."
+
+In 2019, India reported 300,000 deaths because of infections relating to AMR, India also reports the most number of tuberculosis cases resistant to antibiotics.
+
+
+## History
+
+The 1950s to 1970s represented the golden age of antibiotic discovery, where countless new classes of antibiotics were discovered to treat previously incurable diseases such as tuberculosis and syphilis. However, since that time the discovery of new classes of antibiotics has been almost nonexistent, and represents a situation that is especially problematic considering the resiliency of bacteria shown over time and the continued misuse and overuse of antibiotics in treatment.
+
+Already in 1940, in their letter to the editor of Nature journal, Abraham and Chain identified the enzyme penicillinase as responsible for the deactivation of penicillin in penicillin-resistant bacteria. This discovery was the first step in understanding the mechanisms of microbial resistance to β-lactam antibiotics. The phenomenon of antimicrobial resistance caused by overuse of antibiotics was predicted as early as 1945 by Alexander Fleming who said "The time may come when penicillin can be bought by anyone in the shops. Then there is the danger that the ignorant man may easily under-dose himself and by exposing his microbes to nonlethal quantities of the drug make them resistant." Without the creation of new and stronger antibiotics an era where common infections and minor injuries can kill, and where complex procedures such as surgery and chemotherapy become too risky, is a very real possibility. Antimicrobial resistance can lead to epidemics of enormous proportions if preventive actions are not taken. In this day and age current antimicrobial resistance leads to longer hospital stays, higher medical costs, and increased mortality.
+
+
+## Society and culture
+
+### Policy
+
+Since the mid-1980s pharmaceutical companies have invested in medications for cancer or chronic disease that have greater potential to make money and have "de-emphasized or dropped development of antibiotics". On 20 January 2016 at the World Economic Forum, "80 pharmaceutical and diagnostic companies" called for "transformational commercial models" at an international level to spur research and development on antibiotics and on the use of diagnostic tests. A number of countries are considering or implementing delinked payment models for new antimicrobials whereby payment is based on value rather than volume of drug sales. This offers the opportunity to pay for valuable new drugs even if they are reserved for use in relatively rare drug resistant infections.
+
+### Legal frameworks
+
+Some global health scholars have argued that a global, legal framework is needed to prevent and control antimicrobial resistance. For instance, binding global policies could be used to create antimicrobial use standards, regulate antibiotic marketing, and strengthen global surveillance systems. Ensuring compliance of involved parties is a challenge. Global antimicrobial resistance policies could take lessons from the environmental sector by adopting strategies that have made international environmental agreements successful in the past such as: sanctions for non-compliance, assistance for implementation, majority vote decision-making rules, an independent scientific panel, and specific commitments.
+
+#### United States
+
+For the United States 2016 budget, U.S. president Barack Obama proposed to nearly double the amount of federal funding to "combat and prevent" antibiotic resistance to $1.2 billion. Many international funding agencies like USAID, DFID, Sida and Gates Foundation have pledged money for developing strategies to counter antimicrobial resistance.
+
+On 27 March 2015, the White House released a plan to address the increasing need for agencies to combat the rise of antibiotic-resistant bacteria. The Task Force for Combating Antibiotic-Resistant Bacteria developed *The National Action Plan for Combating Antibiotic-Resistant Bacteria* with the intent of providing a roadmap to guide the US in the antibiotic resistance challenge and with hopes of saving many lives. This plan outlines steps taken by the Federal government over the next five years needed to prevent and contain outbreaks of antibiotic-resistant infections; maintain the efficacy of antibiotics already on the market; and to help to develop future diagnostics, antibiotics, and vaccines.
+
+The Action Plan was developed around five goals with focuses on strengthening health care, public health veterinary medicine, agriculture, food safety and research, and manufacturing. These goals, as listed by the White House, are as follows:
+
+- Slow the Emergence of Resistant Bacteria and Prevent the Spread of Resistant Infections
+- Strengthen National One-Health Surveillance Efforts to Combat Resistance
+- Advance Development and use of Rapid and Innovative Diagnostic Tests for Identification and Characterization of Resistant Bacteria
+- Accelerate Basic and Applied Research and Development for New Antibiotics, Other Therapeutics, and Vaccines
+- Improve International Collaboration and Capacities for Antibiotic Resistance Prevention, Surveillance, Control and Antibiotic Research and Development
+
+The following are goals set to meet by 2020:
+
+- Establishment of antimicrobial programs within acute care hospital settings
+- Reduction of inappropriate antibiotic prescription and use by at least 50% in outpatient settings and 20% inpatient settings
+- Establishment of State Antibiotic Resistance (AR) Prevention Programs in all 50 states
+- Elimination of the use of medically important antibiotics for growth promotion in food-producing animals.
+
+Current Status of AMR in the U.S.
+
+As of 2023, AMR remains a public health threat in the United States. According to the Centers for Disease Control and Prevention's 2023 Report on Antibiotic Resistance Threats, over 2.8 million antibiotic-resistant infections occur in the U.S. each year, leading to at least 35,000 deaths annually. Among the most concerning resistant pathogens are Carbapenem-resistant *Enterobacteriaceae* (CRE), Methicillin-resistant *Staphylococcus aureus* (MRSA), and *Clostridioides difficile* (C. diff), all of which continue to be responsible for severe healthcare-associated infections (HAIs).
+
+The COVID-19 pandemic led to a disruption in healthcare, with an increase in the use of antibiotics during the treatment of viral infections. This rise in antibiotic prescribing, coupled with overwhelmed healthcare systems, contributed to a resurgence in AMR during the pandemic years. A 2021 CDC report identified a sharp increase in HAIs caused by resistant pathogens in COVID-19 patients, a trend that has persisted into 2023. Recent data suggest that although antibiotic use has decreased since the pandemic, some resistant pathogens remain prevalent in healthcare settings.
+
+The CDC has also expanded its Get Ahead of Sepsis campaign in 2023, focusing on raising awareness of AMR's role in sepsis and promoting the judicious use of antibiotics in both healthcare and community settings. This initiative has reached millions through social media, healthcare facilities, and public health outreach, aiming to educate the public on the importance of preventing infections and reducing antibiotic misuse.
+
+Under the administration of Donald J. Trump, severe federal funding cuts in 2025 at the National Institutes of Health (NIH) and many other research entities in the United States are expected to impede progress in combating antimicrobial resistance. Public health experts believe these budget reductions will adversely affect the development of new antibiotics as well as advances in diagnostics and treatment strategies, thus undermining efforts currently underway to address AMR. The Infectious Diseases Society of America (IDSA) is but one organization that has expressed grave concern regarding the negative consequences of such extreme budget measures on antimicrobial stewardship, and, as a result, on global health security overall.
+
+### Policies
+
+According to World Health Organization, policymakers can help tackle resistance by strengthening resistance-tracking and laboratory capacity and by regulating and promoting the appropriate use of medicines. Policymakers and industry can help tackle resistance by: fostering research and development of new tools and promoting cooperation and information sharing among all stakeholders.
+
+The U.S. government continues to prioritize AMR mitigation through policy and legislation. In 2023, the National Action Plan for Combating Antibiotic-Resistant Bacteria (CARB) 2023-2028 was released, outlining strategic objectives for reducing antibiotic-resistant infections, advancing infection prevention, and accelerating research on new antibiotics. The plan also emphasizes the importance of improving antibiotic stewardship across healthcare, agriculture, and veterinary settings. Furthermore, the PASTEUR Act (Pioneering Antimicrobial Subscriptions to End Upsurging Resistance) has gained momentum in Congress. If passed, the bill would create a subscription-based payment model to incentivize the development of new antimicrobial drugs, while supporting antimicrobial stewardship programs to reduce the misuse of existing antibiotics. This legislation is considered a critical step toward addressing the economic barriers to developing new antimicrobials.
+
+### Policy evaluation
+
+Measuring the costs and benefits of strategies to combat AMR is difficult and policies may only have effects in the distant future. In other infectious diseases this problem has been addressed by using mathematical models. More research is needed to understand how AMR develops and spreads so that mathematical modelling can be used to anticipate the likely effects of different policies.

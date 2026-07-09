@@ -1,0 +1,14 @@
+---
+title: "Altrose"
+source: https://en.wikipedia.org/wiki/Altrose
+domain: amylopectin
+license: CC-BY-SA-4.0
+tags: amylopectin
+fetched: 2026-07-09
+---
+
+# Altrose
+
+**Altrose** is an aldohexose sugar. D-Altrose is an unnatural monosaccharide. It is soluble in water and practically insoluble in methanol. However, L-altrose has been isolated from strains of the bacterium *Butyrivibrio fibrisolvens*.
+
+Altrose is a C-3 epimer of mannose. The ring conformation of α-altropyranoside is flexible compared to most other aldohexopyranosides, with idose as exception. In solution different derivatives of altrose have been shown to occupy both 4C1, OS2 and 1C4-conformations.

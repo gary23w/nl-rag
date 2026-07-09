@@ -1,0 +1,78 @@
+---
+title: "4-Nitroaniline"
+source: https://en.wikipedia.org/wiki/4-Nitroaniline
+domain: amine
+license: CC-BY-SA-4.0
+tags: amine
+fetched: 2026-07-09
+---
+
+# 4-Nitroaniline
+
+**4-Nitroaniline**, **p-nitroaniline** or **1-amino-4-nitrobenzene** is an organic compound with the formula C6H6N2O2. A yellow solid, it is one of three isomers of nitroaniline. It is an intermediate in the production of dyes, antioxidants, pharmaceuticals, gasoline, gum inhibitors, poultry medicines, and as a corrosion inhibitor.
+
+## Synthesis
+
+4-Nitroaniline is produced industrially via the amination of 4-nitrochlorobenzene:
+
+ClC
+
+6
+
+H
+
+4
+
+NO
+
+2
+
++ 2 NH
+
+3
+
+→ H
+
+2
+
+NC
+
+6
+
+H
+
+4
+
+NO
+
+2
+
++ NH
+
+4
+
+Cl
+
+Below is a laboratory synthesis of 4-nitroaniline from aniline. The key step in this reaction sequence is an electrophilic aromatic substitution to install the nitro group *para* to the amino group. The amino group can be easily protonated and become a meta director. Therefore, a protection of the acetyl group is required. After this reaction, a separation must be performed to remove 2-nitroaniline, which is also formed in a small amount during the reaction.
+
+## Applications
+
+4-Nitroaniline is mainly consumed industrially as a precursor to *p*-phenylenediamine, an important dye component. The reduction is effected using iron metal and by catalytic hydrogenation.
+
+It is a starting material for the synthesis of Para Red, the first azo dye:
+
+It is also a precursor to 2,6-dichloro-4-nitroaniline, also used in dyes.
+
+### Laboratory use
+
+Nitroaniline undergoes diazotization, which allows access to 1,4-dinitrobenzene and nitrophenylarsonic acid. With phosgene, it converts to 4-nitrophenylisocyanate.
+
+### Carbon snake demonstration
+
+When mixed with sulfuric acid and heated, it dehydrates and polymerizes explosively into a rigid foam. The exact composition of the foam is unclear, but the process is believed to involve acidic protonation as well as displacement of the amine group by a sulfonic acid moiety.
+
+In Carbon snake demo, paranitroaniline can be used instead of sugar, if the experiment is allowed to proceed under an obligatory fumehood. With this method the reaction phase prior to the black snake's appearance is longer, but once complete, the black snake itself rises from the container very rapidly. This reaction may cause an explosion if too much sulfuric acid is used.
+
+## Toxicity
+
+The compound is toxic by way of inhalation, ingestion, and absorption, and should be handled with care. Its LD50 in rats is 750.0 mg/kg when administered orally. 4-Nitroaniline is particularly harmful to all aquatic organisms, and can cause long-term damage to the environment if released as a pollutant.
