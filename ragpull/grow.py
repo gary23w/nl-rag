@@ -156,6 +156,7 @@ def write_domain(dom):
 def rebuild_atlas():
     """Regenerate atlas.json from what's on disk — self-contained, no registry reload."""
     domains = []
+    auto = emit.auto_domain_names(ROOT)
     for d in sorted(p for p in PACKS.iterdir() if p.is_dir()):
         mds = [p.name for p in sorted(d.glob("*.md")) if p.name != "INDEX.md"]
         if not mds:
@@ -163,6 +164,7 @@ def rebuild_atlas():
         meta = emit.read_frontmatter(d / mds[0])
         tags = [t.strip() for t in meta.get("tags", "").split(",") if t.strip()]
         domains.append({"name": d.name, "tags": tags, "license": meta.get("license", ""),
+                        "origin": "auto" if d.name in auto else "curated",
                         "files": mds, "facts": (d / "pack.facts").exists()})
     emit.write_atlas(ROOT, {"name": "nl-rag", "generated": date.today().isoformat(),
                             "domains": domains})

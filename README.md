@@ -45,7 +45,9 @@ packs first, so a small model reads pre-cleaned markdown instead of fighting HTM
 - `packs/<domain>/pack.facts` — the pack distilled to one declarative sentence per line with
   `[src:domain/page]` provenance tags; bulk-loads into
   [neuron-db](https://github.com/gary23w/neuron-db) via `neuron import pack.facts --scope knowledge`
-- `atlas.json` — machine-readable manifest: every domain, its tags, license, and file list
+- `atlas.json` — machine-readable manifest: every domain, its tags, license, file list, and
+  `origin` (`curated` = hand-registered, `auto` = admitted by the grower) so consumers can
+  tier — e.g. vendor only the curated packs
 
 ## Domains
 

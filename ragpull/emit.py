@@ -136,6 +136,17 @@ def write_index(domain: str, pack_dir: Path, tags: list[str], license_id: str) -
     return rows
 
 
+def auto_domain_names(root: Path) -> set[str]:
+    """Names the grower appended to auto_domains.json — every other pack is hand-curated.
+    Both atlas writers stamp `origin` from this one rule so a consumer can tier on it
+    (e.g. vendor only curated packs) without loading the Python registry."""
+    p = root / "ragpull" / "sources" / "auto_domains.json"
+    try:
+        return {d["name"] for d in json.loads(p.read_text(encoding="utf-8")) if d.get("name")}
+    except Exception:
+        return set()
+
+
 def write_atlas(root: Path, manifest: dict):
     manifest = dict(manifest)
     manifest["raw_base"] = RAW_BASE

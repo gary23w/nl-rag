@@ -4,6 +4,7 @@
   python -m ragpull pull [domain ...]        # fetch + normalize + gate + index (all domains when none named)
   python -m ragpull verify [domain ...]      # re-audit the committed packs
   python -m ragpull index [domain ...]       # regenerate INDEX.md / pack.facts / atlas.json from packs on disk
+  python -m ragpull atlas                    # regenerate atlas.json only (no pack churn)
   python -m ragpull grow [--budget N]        # autonomously discover + admit new usable domains (CI grower)
 """
 
@@ -109,6 +110,7 @@ def _write_atlas():
     # sorted by domain name so atlas.json diffs stay minimal as the hourly grower appends
     # (the grower's rebuild_atlas uses the same order)
     manifest = {"name": "nl-rag", "generated": date.today().isoformat(), "domains": []}
+    auto = emit.auto_domain_names(ROOT)
     for name in sorted(DOMAINS):
         d = DOMAINS[name]
         pack_dir = PACKS / name
@@ -119,6 +121,7 @@ def _write_atlas():
             "name": name,
             "tags": d["tags"],
             "license": d["license"],
+            "origin": "auto" if name in auto else "curated",
             "files": files,
             "facts": (pack_dir / "pack.facts").exists(),
         })
@@ -129,6 +132,12 @@ def _write_atlas():
 def cmd_index(args):
     for name in pick(args.domains):
         _reindex(name)
+    _write_atlas()
+    return 0
+
+
+def cmd_atlas(_args):
+    # atlas.json alone — no pack churn; used after registry/metadata changes
     _write_atlas()
     return 0
 
@@ -164,10 +173,12 @@ def main():
     p.add_argument("domains", nargs="*")
     p = sub.add_parser("index")
     p.add_argument("domains", nargs="*")
+    sub.add_parser("atlas")
     from .grow import add_parser as _grow_parser, cmd_grow
     _grow_parser(sub)
     args = ap.parse_args()
-    fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index, "grow": cmd_grow}[args.cmd]
+    fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index,
+          "atlas": cmd_atlas, "grow": cmd_grow}[args.cmd]
 
     # big-stack worker thread because the normalizer recurses to DOM depth and a raised
     # recursionlimit past the native stack is a silent process kill, not a Python exception
