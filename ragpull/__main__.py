@@ -6,6 +6,7 @@
   python -m ragpull index [domain ...]       # regenerate INDEX.md / pack.facts / atlas.json from packs on disk
   python -m ragpull atlas                    # regenerate atlas.json only (no pack churn)
   python -m ragpull grow [--budget N]        # autonomously discover + admit new usable domains (CI grower)
+  python -m ragpull api [--out DIR]          # generate the static AI-facing REST API (GitHub Pages tree)
 """
 
 import argparse
@@ -20,7 +21,7 @@ for _stream in (sys.stdout, sys.stderr):
     if hasattr(_stream, "reconfigure"):
         _stream.reconfigure(encoding="utf-8", errors="replace")
 
-from . import emit, verify
+from . import api, emit, verify
 from .fetch import FetchError, fetch
 from .normalize import normalize, split_markdown
 from .sources import DOMAINS, slug_for
@@ -174,11 +175,18 @@ def main():
     p = sub.add_parser("index")
     p.add_argument("domains", nargs="*")
     sub.add_parser("atlas")
+    p = sub.add_parser("api", help="generate the static AI-facing REST API (GitHub Pages tree)")
+    p.add_argument("--out", help="output directory (default build/site)")
+    p.add_argument("--base", default=api.DEFAULT_BASE,
+                   help=f"public base URL of the published site (default {api.DEFAULT_BASE})")
+    p.add_argument("--limit", type=int, help="only the first N domains — for a smoke build")
+    p.add_argument("--only", help="comma-separated domain names — for a targeted build")
     from .grow import add_parser as _grow_parser, cmd_grow
     _grow_parser(sub)
     args = ap.parse_args()
     fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index,
-          "atlas": cmd_atlas, "grow": cmd_grow}[args.cmd]
+          "atlas": cmd_atlas, "grow": cmd_grow,
+          "api": lambda a: api.cmd_api(a, ROOT)}[args.cmd]
 
     # big-stack worker thread because the normalizer recurses to DOM depth and a raised
     # recursionlimit past the native stack is a silent process kill, not a Python exception
@@ -191,7 +199,14 @@ def main():
         try:
             rc[0] = fn(args) or 0
         except SystemExit as e:
-            rc[0] = int(e.code or 0)
+            # sys.exit("message") carries a str, not a status — CPython prints it and exits 1.
+            # int()-ing it blindly turned every argument-error message into a ValueError
+            # traceback from inside the worker thread.
+            if e.code is None or isinstance(e.code, int):
+                rc[0] = e.code or 0
+            else:
+                print(e.code, file=sys.stderr)
+                rc[0] = 1
         except BaseException:
             import traceback
 

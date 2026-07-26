@@ -5,9 +5,12 @@ markdown, and served as fetchable packs. Built as the knowledge substrate for
 [nl-veil](https://github.com/gary23w/nl-veil): the veil's source atlas points scouts at these
 packs first, so a small model reads pre-cleaned markdown instead of fighting HTML.
 
+It is also served as a **machine-readable manual** — a static, path-addressed corpus API
+for AI consumers, with no frontend at all. See **[docs/API.md](docs/API.md)**.
+
 ## What's here
 
-- `packs/<domain>/` — one directory per knowledge domain (**3,337 domains, ~22,000 pack
+- `packs/<domain>/` — one directory per knowledge domain (**8,343 domains, ~73,000 pack
   files**): every programming language and dialect (systems, JVM, .NET, functional,
   lisp family, scripting, assembly, the legacy canon), every paradigm and problem-solving
   method, the full embedded/IoT stack + hardware design & EDA (SystemVerilog, synthesis,
@@ -77,6 +80,27 @@ compliance (mitre-attack, zero-trust, pki, webauthn, gdpr/hipaa/pci-dss) · bloc
 (bitcoin, ethereum, solidity, smart-contracts, defi, zk-proofs) · dev tooling
 (testing/build/package/docs/editors) · rosetta-code (the same task in dozens of languages)
 
+## The API — a manual for machines
+
+`docs/API.md` is the full contract. The short version: the corpus is published as a static,
+**path-addressed** REST API on GitHub Pages. Static hosting cannot read `?q=`, so search is
+a path you construct offline — `bucket` is the first two characters of the lowercased term:
+
+```bash
+curl https://gary23w.github.io/nl-rag/api/v1/search/q/ow.json   # read terms["ownership"]
+curl https://gary23w.github.io/nl-rag/api/v1/domain/rust.json   # follow the top hit
+curl https://raw.githubusercontent.com/gary23w/nl-rag/main/packs/rust/ch04-01-what-is-ownership.md
+```
+
+Responses are corpus records shaped like man pages — `corpus > domain > document > section |
+fact` — carrying NAME, SYNOPSIS, a line-addressed outline, provenance-tagged facts, SOURCE
+and license. Bodies are never duplicated into the API: a record points at the markdown
+already in `packs/`. Start at `/api/v1/index.json`, or read `/api/v1/README.txt` — the
+NL-RAG(7) man page that tells a model how to traverse the whole thing.
+
+`.github/workflows/publish-api.yml` regenerates it daily and deploys it to GitHub Pages as a
+workflow artifact — no branch holds generated JSON, so `main` stays pure corpus.
+
 ## The tool
 
 `ragpull/` is the puller/normalizer — Python stdlib only, no dependencies.
@@ -88,6 +112,7 @@ python -m ragpull pull rust zig     # just those domains
 python -m ragpull verify            # re-audit every committed pack file
 python -m ragpull index             # regenerate INDEX.md / pack.facts / atlas.json
 python -m ragpull grow --budget 40  # autonomously discover + admit new usable domains
+python -m ragpull api               # generate the static corpus API -> build/site
 ```
 
 The pipeline per page: polite cached fetch (per-host rate limit, charset sniffing) →
@@ -97,10 +122,11 @@ markdown rendering (headings, fenced code, GFM tables, lists; man pages unwrappe
 prose-ratio, sentence-count checks — a page that fails is rejected, never shipped) →
 frontmattered emit with heading-boundary splitting.
 
-## Grows itself, hourly
+## Grows itself
 
-`.github/workflows/grow-rag.yml` runs `ragpull grow` **every hour on GitHub's runners** — no
-local machine, nothing to keep open. Each run:
+`ragpull grow` discovers and admits new domains on its own. It ran hourly on GitHub's
+runners via `.github/workflows/grow-rag.yml` until that workflow was removed in `7e6650b5`
+— the corpus currently grows only when `grow` is invoked. Each run:
 
 1. **checks the size limit** (the repo's server-side size vs GitHub's ~1 GB soft limit) and
    **no-ops once the repo is full** — growth stops itself;

@@ -1,0 +1,72 @@
+name: publish api
+
+# Builds the static AI-facing REST API from packs/ and deploys it straight to GitHub Pages
+# as a workflow artifact — no gh-pages branch, so no generated JSON ever lands in a branch
+# and main's history stays clean.
+#
+# Setup is automatic: configure-pages with enablement:true creates the Pages site and sets
+# its source to GitHub Actions on the first run. If an org policy blocks that, set it by
+# hand once — Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: override the public base URL (blank = the real Pages URL)
+        default: ""
+      limit:
+        description: build only the first N domains (blank = all)
+        default: ""
+  schedule:
+    - cron: "23 5 * * *"   # daily, after the grower has had a night to add domains
+
+# Pages deployments must not be cancelled mid-flight, so queue instead of replacing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: configure pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      # base_url is the site's real address, so every generated href is correct even if
+      # the repo or owner is renamed. Dispatch inputs go through the environment rather
+      # than being interpolated into the shell.
+      - name: build the api tree
+        env:
+          API_BASE: ${{ inputs.base || steps.pages.outputs.base_url }}
+          API_LIMIT: ${{ inputs.limit }}
+        run: |
+          python -m ragpull api --out _site --base "$API_BASE" \
+            ${API_LIMIT:+--limit "$API_LIMIT"}
+
+      - name: sanity-gate the build
+        run: python scripts/check_api.py _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: deploy to pages
+        id: deploy
+        uses: actions/deploy-pages@v4
