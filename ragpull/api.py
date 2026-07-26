@@ -178,7 +178,11 @@ def scan_domain(domain: str, pack_dir: Path, meta: dict, base: str) -> dict | No
         fm = read_frontmatter(md)
         body = fm.pop("_body", "")
         slug = md.stem
-        total_bytes += md.stat().st_size
+        # Size as SERVED, not as checked out: a Windows clone has CRLF line endings and git
+        # hands GitHub the LF version, so st_size overstated every document by a byte per
+        # line (10.5 MB across the corpus) and made the build platform-dependent.
+        doc_bytes = len(md.read_bytes().replace(b"\r\n", b"\n"))
+        total_bytes += doc_bytes
         outline, langs, lead, blocks = parse_body(body)
 
         counts = Counter(tokenize(fm.get("title", "") + "\n" + body))
@@ -200,7 +204,7 @@ def scan_domain(domain: str, pack_dir: Path, meta: dict, base: str) -> dict | No
             "slug": slug,
             "raw": f"{RAW_BASE}/packs/{domain}/{md.name}",
             "lines": body.count("\n") + 1,
-            "bytes": md.stat().st_size,
+            "bytes": doc_bytes,
         }
         g = groups.get(key)
         if g is None:
@@ -646,8 +650,17 @@ def build(root: Path, out: Path, base: str, limit: int | None = None,
                     "are padded with '_'",
             "examples": {"ownership": "ow", "zig": "zi", "c++": "c_", "x86": "x8", "b": "b_"},
         },
-        "multi_word": "fetch one shard per word and intersect on hit.d — the shards are "
-                      "small and the intersection is exact; there is no server to do it for you",
+        "multi_word": {
+            "quick": f"fetch one shard per word and intersect on hit.d. NOTE both hit lists "
+                     f"are capped at {HITS_PER_TERM}, so this intersects TOP HITS, not full "
+                     f"posting lists — an empty result means 'neither is in the other's top "
+                     f"{HITS_PER_TERM}', NOT 'they never co-occur'.",
+            "when_empty": "take the RARER word (lower df — it discriminates more), open each "
+                          "of its hit domains, and confirm the other word inside that domain "
+                          "record's keywords/outlines or its pack.facts. that is the exact "
+                          "answer; the quick intersection is only a shortcut.",
+            "why": "there is no server to intersect full posting lists for you",
+        },
         "coverage": {
             "term_axis": f"each domain's top {TOP_TERMS_PER_DOMAIN} characteristic terms. a "
                          "word that appears only incidentally may not be indexed — that is a "
@@ -777,8 +790,9 @@ def tools_doc(base: str, st: dict) -> dict:
             "1. term search: bucket the word, GET search/q/<bucket>.json, read terms[<word>]",
             "2. follow hits[0].domain_href (already a literal URL) for structure",
             "3. GET the document's 'raw' url for the content",
-            "multi-word: one shard per word, intersect on hit.d — exact, and nothing "
-            "server-side will do it for you",
+            f"multi-word: one shard per word, intersect on hit.d — but hits are capped at "
+            f"{HITS_PER_TERM}, so empty means 'not in each other's top {HITS_PER_TERM}', not "
+            f"'never co-occur'. then walk the rarer word's domains and confirm the other there.",
         ],
         "counts": {k: st[k] for k in ("domains", "documents", "indexed_terms")},
         "attribution": ("every document carries 'source' and its upstream license (mostly "
@@ -830,8 +844,12 @@ and read terms["ownership"]:
 Shard keys are SORTED. On a miss, scan them for the nearest match instead of
 guessing another URL — that is the built-in fuzzy fallback.
 
-Multi-word query: fetch one shard per word and intersect on hit.d. The result
-is exact. Nothing server-side will do it for you.
+Multi-word query: fetch one shard per word and intersect on hit.d — but both
+hit lists are capped at {HITS_PER_TERM}, so that intersects TOP HITS, not full posting
+lists. Empty means "neither word is in the other's top {HITS_PER_TERM}", NOT "they never
+co-occur". When it comes up empty, take the RARER word (lower df, it
+discriminates more) and confirm the other one inside each of its hit domains,
+via the domain record's keywords/outlines or that domain's pack.facts.
 
 ────────────────────────────────────────────────────────────────────────────
 THE FOUR CALLS
@@ -1155,8 +1173,13 @@ SEARCHING
           Tokens from document titles, domain names and tags. Every hit carries
           literal hrefs already: 'raw' (the page) and 'domain_href' (its domain).
 
-       3. Multi-word   - fetch one shard per word, intersect on hit.d. The shards
-          are small; the intersection is exact. Nothing server-side will do it.
+       3. Multi-word   - fetch one shard per word and intersect on hit.d.
+          Both hit lists are capped at {HITS_PER_TERM}, so this intersects TOP HITS, not
+          full posting lists: an empty result means "neither word is in the
+          other's top {HITS_PER_TERM}", NOT "they never co-occur". When it comes up
+          empty, take the RARER word (lower df) and confirm the other inside
+          each of its hit domains - the domain record's keywords and outlines,
+          or that domain's pack.facts. Nothing server-side will do this.
 
 COVERAGE, HONESTLY
        The term axis indexes each domain's top {TOP_TERMS_PER_DOMAIN} characteristic terms, not every

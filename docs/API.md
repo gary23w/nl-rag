@@ -79,8 +79,15 @@ GET .../packs/golang/sync.md            # expand d + p with templates.document_r
 ```
 
 `templates` ships inside every shard, so short keys (`d`, `p`, `t`, `s`) expand without
-consulting this page. Multi-word queries: fetch one shard per word and intersect on
-`hit.d` — the intersection is exact and nothing server-side will do it for you.
+consulting this page.
+
+**Multi-word queries** — fetch one shard per word and intersect on `hit.d`. Be aware this
+intersects *top hits*, not full posting lists: both lists are capped at 10, so an empty
+intersection means "neither word is in the other's top 10", **not** "they never co-occur"
+(`memory` ∩ `safety` is empty for exactly this reason). When it comes up empty, take the
+**rarer** word — lower `df`, so it discriminates more — and confirm the other word inside
+each of its hit domains, via the domain record's keywords/outlines or that domain's
+`pack.facts`. Nothing server-side will do this for you.
 
 ## Coverage, honestly
 
