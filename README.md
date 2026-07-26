@@ -101,6 +101,24 @@ NL-RAG(7) man page that tells a model how to traverse the whole thing.
 `.github/workflows/publish-api.yml` regenerates it daily and deploys it to GitHub Pages as a
 workflow artifact — no branch holds generated JSON, so `main` stays pure corpus.
 
+**When the corpus doesn't cover a query**, a miss means "not here", not "doesn't exist" — and a
+static host can't tell you which. So resolution runs where compute is free, on your machine:
+
+```bash
+python -m ragpull resolve "tail latency budgeting"   # corpus first, live fallback on a miss
+python -m ragpull serve --site _site                 # the same API, plus real ?q= queries
+```
+
+The live fetcher (`ragpull/live.py`) ports curl_cffi's escalation methodology into the stdlib
+rather than taking the dependency — browser header sets, cookie jar, Referer chains, and the TLS
+knobs `ssl` exposes — and escalates on a gate failure as well as a fetch failure, since a
+JS-shell page returns 200 and only dies at the clean-data gates. It recovers pages plain
+`urllib` gets 403 on; it does not forge a JA3 fingerprint, and says so. Live results pass the
+same gates as committed packs and can be admitted with `--admit` through the grower's own writer.
+
+Everything is free because the repo is public, and both workflows refuse to run if it ever
+isn't — see [docs/API.md](docs/API.md#cost).
+
 ## The tool
 
 `ragpull/` is the puller/normalizer — Python stdlib only, no dependencies.

@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 FULL = "--full" in sys.argv
+API_PREFIX = "/api/v1"
 fails: list[str] = []
 notes: list[str] = []
 
@@ -87,14 +88,47 @@ def main(site: Path) -> int:
     if not exists(site / ".nojekyll"):
         bad(".nojekyll missing — Pages would run Jekyll over 8k+ JSON files")
 
+    # "/" is what an agent, a crawler or a pasted link hits first. Without index.html Pages
+    # answers 404 there, and the whole API looks dead from its own front door.
+    if not exists(site / "index.html"):
+        bad("index.html missing — the site root would 404 on GitHub Pages")
+    else:
+        with open(longpath(site / "index.html"), encoding="utf-8") as fh:
+            landing = fh.read()
+        for must in ("bucket", "search/q/", "<title>"):
+            if must not in landing:
+                bad(f"landing page does not mention {must!r} — it must teach search by itself")
+        if "<style" in landing or "<link" in landing:
+            bad("landing page carries styling — this surface is for AI readers, not a website")
+
+    tools = load(api / "tools.json") or {}
+    names = [t.get("name") for t in tools.get("tools", [])]
+    for want in ("nl_rag_search_term", "nl_rag_get_domain", "nl_rag_get_document"):
+        if want not in names:
+            bad(f"tools.json is missing the {want} tool definition")
+    for t in tools.get("tools", []):
+        if "url_template" not in t or "parameters" not in t:
+            bad(f"tool {t.get('name')!r} is not callable — needs url_template + parameters")
+
     root = load(api / "index.json") or {}
     for key in ("nl_rag", "kind", "counts", "endpoints", "read_this_first", "license"):
         if key not in root:
             bad(f"root manifest missing '{key}'")
     if not exists(api / "README.txt"):
         bad("README.txt (NL-RAG(7)) missing")
-    for name in ("corpus.json", "openapi.json", "stats.json"):
+    for name in ("corpus.json", "openapi.json", "stats.json", "fallback.json"):
         load(api / name)
+
+    # the fallback must stay discoverable: without it a consumer reads "not in the corpus"
+    # as "does not exist", which is the one wrong conclusion this API can cause
+    fb = load(api / "fallback.json") or {}
+    for key in ("why", "when_to_use", "options", "resolution_shape", "guarantees"):
+        if key not in fb:
+            bad(f"fallback.json missing '{key}'")
+    if not any("resolve" in json.dumps(o) for o in fb.get("options", [])):
+        bad("fallback.json lists no option that actually resolves a miss")
+    if f"{API_PREFIX}/fallback.json" not in json.dumps(root):
+        bad("root manifest does not advertise fallback.json — it would never be found")
 
     stats = load(api / "stats.json") or {}
     si = load(api / "search" / "index.json") or {}

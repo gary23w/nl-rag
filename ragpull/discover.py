@@ -123,6 +123,25 @@ def page_links(title: str, limit: int = 60):
     return out
 
 
+def search_titles(query: str, limit: int = 12) -> list[str]:
+    """Full-text search for an ARBITRARY query. The category walk and link expansion both
+    start from something already accepted, which is no help when a consumer asks about a
+    topic the corpus has never covered. Admissible titles only, best match first."""
+    r = _api({
+        "action": "query", "list": "search", "srsearch": query,
+        "srnamespace": "0", "srlimit": str(max(limit * 2, 10)), "srwhat": "text",
+    })
+    out = []
+    for m in r.get("query", {}).get("search", []):
+        t = m.get("title", "")
+        if _is_admissible_title(t) and t not in out:
+            out.append(t)
+        if len(out) >= limit:
+            break
+    time.sleep(0.4)
+    return out
+
+
 def title_to_url(title: str) -> str:
     return WIKI + urllib.parse.quote(title.replace(" ", "_"), safe="_(),'!-./:%&")
 

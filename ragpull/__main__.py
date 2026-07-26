@@ -10,6 +10,7 @@
 """
 
 import argparse
+import json
 import sys
 from datetime import date
 from pathlib import Path
@@ -162,6 +163,29 @@ def cmd_verify(args):
     return 1 if bad else 0
 
 
+def cmd_resolve(args):
+    """Corpus first, live fallback on a genuine miss. Prints one self-describing JSON
+    envelope on stdout so it pipes straight into whatever asked."""
+    from . import live
+
+    env = live.resolve(args.query, ROOT, cache_dir=CACHE, want=args.want,
+                       max_candidates=args.candidates, force=args.force,
+                       progress=(lambda *_: None) if args.quiet else
+                                (lambda m: print(m, file=sys.stderr)))
+    if args.admit:
+        tags = [t.strip() for t in (args.tags or "").split(",") if t.strip()] or None
+        env["admission"] = live.admit(env, ROOT, tags=tags)
+    print(json.dumps(env, ensure_ascii=False, indent=1))
+    # a miss that retrieved nothing is not a success — let a caller branch on the exit code
+    return 0 if (env.get("corpus_hits") or env.get("results")) else 3
+
+
+def _serve(args):
+    from .serve import cmd_serve
+
+    return cmd_serve(args, ROOT)
+
+
 def main():
     ap = argparse.ArgumentParser(prog="ragpull")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -181,12 +205,28 @@ def main():
                    help=f"public base URL of the published site (default {api.DEFAULT_BASE})")
     p.add_argument("--limit", type=int, help="only the first N domains — for a smoke build")
     p.add_argument("--only", help="comma-separated domain names — for a targeted build")
+    p = sub.add_parser("resolve", help="answer a query: corpus first, live fallback on a miss")
+    p.add_argument("query", help="a search phrase, or an absolute http(s) url")
+    p.add_argument("--want", type=int, default=3, help="usable documents to gather (default 3)")
+    p.add_argument("--candidates", type=int, default=8, help="urls to consider (default 8)")
+    p.add_argument("--admit", action="store_true",
+                   help="fold the result into packs/ with the grower's own writer")
+    p.add_argument("--tags", help="comma-separated tags to use when admitting")
+    p.add_argument("--force", action="store_true", help="bypass the fetch cache")
+    p.add_argument("--quiet", action="store_true", help="JSON only, no progress lines")
+    p = sub.add_parser("serve", help="serve the static API locally, with the live fallback")
+    p.add_argument("--site", help="built API tree to serve (default _site)")
+    p.add_argument("--host", default="127.0.0.1")
+    p.add_argument("--port", type=int, default=8077)
+    p.add_argument("--no-live", action="store_true", help="corpus only; never fetch")
     from .grow import add_parser as _grow_parser, cmd_grow
     _grow_parser(sub)
     args = ap.parse_args()
     fn = {"list": cmd_list, "pull": cmd_pull, "verify": cmd_verify, "index": cmd_index,
           "atlas": cmd_atlas, "grow": cmd_grow,
-          "api": lambda a: api.cmd_api(a, ROOT)}[args.cmd]
+          "api": lambda a: api.cmd_api(a, ROOT),
+          "resolve": cmd_resolve,
+          "serve": lambda a: _serve(a)}[args.cmd]
 
     # big-stack worker thread because the normalizer recurses to DOM depth and a raised
     # recursionlimit past the native stack is a silent process kill, not a Python exception

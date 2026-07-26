@@ -95,6 +95,72 @@ consulting this page. Multi-word queries: fetch one shard per word and intersect
   domain's name or tags. The grower copies neighbour pages between packs, so without that
   boost near-duplicate packs tie on raw term frequency.
 
+## When the corpus does not cover it
+
+A miss here means *"not in this corpus"*, not *"does not exist"* — and the host cannot tell
+you which, because static files cannot fetch. The published
+[`/api/v1/fallback.json`](https://gary23w.github.io/nl-rag/api/v1/fallback.json) declares the
+protocol so a consumer can discover it without reading this page.
+
+```bash
+python -m ragpull resolve "tail latency budgeting"     # one shot, JSON on stdout, exit 3 on nothing
+python -m ragpull serve --site _site                   # the same API + real query strings
+curl 'http://127.0.0.1:8077/api/v1/resolve?q=tail+latency+budgeting'
+```
+
+Resolution is **corpus first** — a live fetch is the fallback, not the default. `resolved_by`
+tells you which answered. A live document is shaped exactly like a corpus document record with
+two differences: `origin` is `"live"`, and `body` is **inlined**, because nothing hosts it yet.
+
+The local endpoint mirrors every static path byte for byte, so code written against the hosted
+API runs against it unchanged. It adds the two things static hosting cannot do: `?q=` and
+fetching what the corpus lacks. It also exposes `/api/v1/live/<url>` to normalize a single URL
+on demand, and `/api/v1/health` to state what it can and cannot do.
+
+### The fetcher
+
+`ragpull/live.py` escalates: the polite cached corpus fetcher first, then browser profiles
+(chrome → firefox → safari). It escalates on a fetch failure **and** on a gate failure, since a
+JS-shell page returns HTTP 200 and only dies at the clean-data gates — exactly the case a
+browser-shaped request fixes.
+
+The methodology is **ported from curl_cffi / curl-impersonate, not imported**: `ragpull` is
+stdlib-only by design, and a bundled libcurl binary is what endpoint protection shoots at. What
+ports cleanly — full browser header *sets* in emission order (including `sec-ch-ua` client hints
+and `Sec-Fetch-*`), a cookie jar, Referer chains across redirects, and the TLS knobs `ssl`
+exposes (cipher-suite order, TLS floor, ALPN).
+
+What does **not** port, stated plainly: curl-impersonate's exact TLS ClientHello fingerprint
+(JA3 — GREASE, extension ordering, supported-groups lists) and HTTP/2 SETTINGS frames.
+`http.client` speaks HTTP/1.1 and offers no hook for extension ordering, so the JA3 hash is
+still Python's. Measured: `zhihu.com` refuses plain `urllib` with 403 and returns 44 KB to the
+chrome profile; `glassdoor.com` refuses both. When a wall really matches JA3, the resolver
+reports the URL as `unretrievable` rather than inventing content.
+
+Live pages clear the **same** clean-data gates as every committed pack. `--admit` folds a result
+into `packs/` using the grower's own writer, subject to the grower's own floor of 3 usable pages
+— the corpus does not gain thin packs just because somebody asked.
+
+## Cost
+
+Everything here is free because **nl-rag is public**:
+
+| | |
+|---|---|
+| Actions minutes | free, no cap, on public repos (billing is private-repo only) |
+| Pages hosting | free on public repos; the 1 GB site / 100 GB-month / 10-builds-hour ceilings are *soft* — throttled or emailed, never invoiced |
+| Artifact storage | free on public repos |
+| Live fallback | runs on the consumer's machine, not on any host |
+
+Both workflows **refuse to run if the repo is not public** — a visibility flip cannot silently
+start burning paid minutes. The guard is the first step, before the checkout, so it costs
+nothing to fail. The things that *would* bill — Git LFS, GitHub Packages, a private repo — are
+not used.
+
+`resolve-request.yml` is maintainer-gated by construction: applying a label requires write or
+triage access, so anyone may open an issue asking for a gap to be filled, but only a maintainer
+labelling it `corpus-request` spends a runner.
+
 ## Building and publishing
 
 ```bash

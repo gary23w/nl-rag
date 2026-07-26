@@ -659,6 +659,7 @@ def build(root: Path, out: Path, base: str, limit: int | None = None,
         "shards": {"term": q_buckets, "title": t_buckets},
     })
 
+    write_json(api / "fallback.json", fallback_doc(base))
     write_json(api / "corpus.json", corpus_schema(base))
     write_json(api / "openapi.json", openapi(base, stats, len(scanned)))
     stats_obj = {
@@ -675,10 +676,18 @@ def build(root: Path, out: Path, base: str, limit: int | None = None,
     man = manpage(base, stats_obj)
     write_text(api / "README.txt", man)
     write_text(out / "llms.txt", man)
+    write_json(api / "tools.json", tools_doc(base, stats_obj))
+    # The landing page IS the tooling file: whatever hits "/" first — an agent, a crawler, a
+    # person pasting the URL — should learn how to search from that one response, without
+    # having to guess a second URL. Served as an unstyled <pre> so it is the same plain text
+    # in a browser as it is to a fetcher.
+    write_text(out / "index.html", landing_page(base, stats_obj))
     write_json(out / "index.json", {
         **_stamp(base, "site"),
         "name": "nl-rag", "what": "AI-only corpus API — no frontend, path-addressed",
-        "start_here": [f"{base}/api/{API_VERSION}/index.json", f"{base}/api/{API_VERSION}/README.txt"],
+        "start_here": [f"{base}/", f"{base}/api/{API_VERSION}/tools.json",
+                       f"{base}/api/{API_VERSION}/index.json",
+                       f"{base}/api/{API_VERSION}/README.txt"],
     })
 
     shutil.rmtree(longpath(work), ignore_errors=True)
@@ -686,6 +695,279 @@ def build(root: Path, out: Path, base: str, limit: int | None = None,
 
 
 # ---------------------------------------------------------------- self-describing docs
+
+def tools_doc(base: str, st: dict) -> dict:
+    """Search as callable tool definitions. An agent harness can register these directly
+    instead of deriving them from prose — same JSON-Schema shape as function calling."""
+    a = f"{base}/api/{API_VERSION}"
+    bucket = ("lowercase the term; take its first two characters; replace any character "
+              "outside [a-z0-9] with '_'; pad a one-character term with '_'")
+    return {
+        **_stamp(base, "tools"),
+        "for": "AI agents. register these as tools, or call the url_template directly.",
+        "transport": "plain HTTP GET. every response is JSON except README.txt.",
+        "no_auth": True,
+        "tools": [
+            {
+                "name": "nl_rag_search_term",
+                "description": ("Full-text search for one term. Returns the domains that "
+                                "carry it, ranked, plus similar terms to try next. Use this "
+                                "first when you know a word or identifier."),
+                "url_template": f"{a}/search/q/{{bucket}}.json",
+                "parameters": {"type": "object", "required": ["bucket", "term"], "properties": {
+                    "bucket": {"type": "string", "description": bucket},
+                    "term": {"type": "string",
+                             "description": "look this key up in the response's 'terms' object"},
+                }},
+                "returns": ("terms[term] = {df, hits[{d domain, p page slug, s score}], "
+                            "related[]}. hits[0] also carries literal 'raw' and 'domain_href'."),
+                "on_miss": ("keys are sorted — scan them for the nearest match before trying "
+                            f"another URL. still nothing: see {a}/fallback.json"),
+            },
+            {
+                "name": "nl_rag_search_title",
+                "description": ("Search document titles, domain names and tags. Complete "
+                                "coverage, unlike the term axis. Use for 'does this corpus "
+                                "have anything about X'."),
+                "url_template": f"{a}/search/t/{{bucket}}.json",
+                "parameters": {"type": "object", "required": ["bucket", "token"], "properties": {
+                    "bucket": {"type": "string", "description": bucket},
+                    "token": {"type": "string", "description": "a single lowercased word"},
+                }},
+                "returns": "terms[token] = {df, hits[{d, t title, raw, domain_href}]}",
+            },
+            {
+                "name": "nl_rag_get_domain",
+                "description": ("Fetch one domain record: its synopsis, keywords, license, "
+                                "related domains, and EVERY document's outline with line "
+                                "numbers. Read this to decide which document to spend a "
+                                "fetch on."),
+                "url_template": f"{a}/domain/{{domain}}.json",
+                "parameters": {"type": "object", "required": ["domain"], "properties": {
+                    "domain": {"type": "string", "description": "a domain name, e.g. from hit.d"},
+                }},
+            },
+            {
+                "name": "nl_rag_get_document",
+                "description": ("Fetch a document body: clean markdown, no HTML, fenced code, "
+                                "frontmatter at the top. This is the actual content."),
+                "url_template": RAW_BASE + "/packs/{domain}/{page}.md",
+                "parameters": {"type": "object", "required": ["domain", "page"], "properties": {
+                    "domain": {"type": "string"},
+                    "page": {"type": "string", "description": "a page slug, e.g. hit.p"},
+                }},
+            },
+            {
+                "name": "nl_rag_resolve_live",
+                "description": ("LOCAL ONLY — not on this host. When the corpus has no answer, "
+                                "this fetches, normalizes and gates live sources on your own "
+                                "machine and returns the same record shape with the body "
+                                "inlined. Static hosting cannot do this."),
+                "url_template": "http://127.0.0.1:8077/api/v1/resolve?q={query}",
+                "setup": ["git clone https://github.com/gary23w/nl-rag",
+                          "python -m ragpull api --out _site",
+                          "python -m ragpull serve --site _site"],
+                "parameters": {"type": "object", "required": ["query"], "properties": {
+                    "query": {"type": "string", "description": "a phrase, or an absolute url"},
+                }},
+                "cost": "none — runs locally",
+            },
+        ],
+        "recipe": [
+            "1. term search: bucket the word, GET search/q/<bucket>.json, read terms[<word>]",
+            "2. follow hits[0].domain_href (already a literal URL) for structure",
+            "3. GET the document's 'raw' url for the content",
+            "multi-word: one shard per word, intersect on hit.d — exact, and nothing "
+            "server-side will do it for you",
+        ],
+        "counts": {k: st[k] for k in ("domains", "documents", "indexed_terms")},
+        "attribution": ("every document carries 'source' and its upstream license (mostly "
+                        "CC-BY-SA-4.0). carry the source URL into anything you generate."),
+    }
+
+
+def landing_page(base: str, st: dict) -> str:
+    """The site root. Not a website — a tooling file, rendered as raw text in a browser."""
+    a = f"{base}/api/{API_VERSION}"
+    body = f"""\
+nl-rag — a machine-readable manual of technical documentation.
+FOR AI READERS. There is no styled frontend and nothing to render.
+
+{st['domains']} domains · {st['documents']} documents · {st['indexed_terms']} indexed terms
+Generated {st['generated']}.
+
+────────────────────────────────────────────────────────────────────────────
+HOW TO SEARCH — the whole protocol
+────────────────────────────────────────────────────────────────────────────
+
+This is static hosting. It CANNOT read "?q=". Search is a PATH you build
+yourself, with one rule:
+
+    bucket = lowercase the term
+             take the first two characters
+             replace anything outside [a-z0-9] with '_'
+             pad a one-character term with '_'
+
+    ownership -> ow      zig -> zi      c++ -> c_      x86 -> x8
+
+Then:
+
+    GET {a}/search/q/ow.json
+
+and read terms["ownership"]:
+
+    {{ "df": 2,
+      "hits": [ {{ "d": "rust", "p": "ch04-01-what-is-ownership", "s": 210.16,
+                  "raw": "<the markdown, literal url>",
+                  "domain_href": "<the domain record, literal url>" }}, ... ],
+      "related": [ "borrow", "mut", "slice", ... ] }}
+
+  d = domain   p = page slug   s = tf-idf score   df = domains carrying the term
+  hits[0] carries literal URLs. For the rest, expand the "templates" block that
+  every shard ships. "related" is your similar-searches list — each entry is
+  another term with its own shard.
+
+Shard keys are SORTED. On a miss, scan them for the nearest match instead of
+guessing another URL — that is the built-in fuzzy fallback.
+
+Multi-word query: fetch one shard per word and intersect on hit.d. The result
+is exact. Nothing server-side will do it for you.
+
+────────────────────────────────────────────────────────────────────────────
+THE FOUR CALLS
+────────────────────────────────────────────────────────────────────────────
+
+  1. TERM      GET {a}/search/q/<bucket>.json
+               a word or identifier -> ranked domains + similar terms
+
+  2. TITLE     GET {a}/search/t/<bucket>.json
+               titles, domain names, tags -> documents, hrefs included.
+               COMPLETE coverage — use it to ask "is X in here at all?"
+
+  3. DOMAIN    GET {a}/domain/<name>.json
+               synopsis, keywords, license, SEE ALSO, and every document's
+               outline with line numbers. Read this BEFORE fetching a body.
+
+  4. DOCUMENT  GET {RAW_BASE}/packs/<domain>/<page>.md
+               the content: clean markdown, fenced code, frontmatter on top.
+
+Tool definitions in function-calling form: {a}/tools.json
+
+────────────────────────────────────────────────────────────────────────────
+COVERAGE, HONESTLY
+────────────────────────────────────────────────────────────────────────────
+
+The TERM axis indexes each domain's top {TOP_TERMS_PER_DOMAIN} characteristic terms — not every
+word. A doc-level index over every document is ~400 MB, and static hosting
+ships it whole. So an incidental word can be missing even though the corpus
+contains it. The TITLE axis is complete. Per-domain, every distilled sentence
+lives in packs/<domain>/pack.facts, which is the fallback worth trying first.
+
+A miss here means "not in this corpus" — NOT "does not exist". This host
+cannot tell the difference, because static files cannot fetch. To resolve one:
+
+    python -m ragpull resolve "<query>"     # corpus first, live fetch on a miss
+    python -m ragpull serve --site _site    # the same API, plus real ?q=
+
+Both run on YOUR machine and cost nothing. Live documents pass the same
+clean-data gates as committed ones; anything unretrievable is reported as
+such, never invented. Full protocol: {a}/fallback.json
+
+────────────────────────────────────────────────────────────────────────────
+CONTEXT STRUCTURE
+────────────────────────────────────────────────────────────────────────────
+
+  corpus > domain > document > section | fact
+
+Every document was pulled from upstream documentation, stripped of HTML, nav
+and boilerplate, rendered to clean markdown, gated for quality, and
+frontmattered with title, source, domain, license, tags and fetch date. A
+record carries the man-page scaffolding — NAME, SYNOPSIS, a line-addressed
+outline, code languages, provenance-tagged facts, SOURCE — and points at the
+markdown. Bodies are never duplicated into the API. Schemas: {a}/corpus.json
+
+────────────────────────────────────────────────────────────────────────────
+ATTRIBUTION
+────────────────────────────────────────────────────────────────────────────
+
+Tooling is MIT. Every document keeps its upstream license, declared in its own
+frontmatter and in each record's "license" field; most of the corpus is
+CC-BY-SA-4.0. The "source" URL is the attribution — carry it into anything you
+generate from this corpus.
+
+Full manual: {a}/README.txt        Root manifest: {a}/index.json
+Repository:  https://github.com/gary23w/nl-rag
+"""
+    esc = body.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
+            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+            "<title>nl-rag — how to search this corpus (for AI readers)</title>\n"
+            "<meta name=\"description\" content=\"Machine-readable manual of technical "
+            "documentation. Path-addressed search for AI consumers; no frontend.\">\n"
+            "</head>\n<body>\n<pre>\n" + esc + "</pre>\n</body>\n</html>\n")
+
+
+def fallback_doc(base: str) -> dict:
+    """What to do when the corpus does not cover a query. This has to be published: a
+    consumer that only ever sees static files has no way to discover that a live path
+    exists, and would report "not in the corpus" as "does not exist"."""
+    a = f"{base}/api/{API_VERSION}"
+    return {
+        **_stamp(base, "fallback"),
+        "why": ("this API is static files on GitHub Pages. it cannot read '?q=' and cannot "
+                "fetch anything at request time, so a miss cannot be resolved by the host."),
+        "when_to_use": [
+            "terms[<term>] is absent from the term shard for its bucket",
+            "the title axis has no entry either",
+            f"see coverage in {a}/search/index.json — the term axis carries each domain's "
+            f"top {TOP_TERMS_PER_DOMAIN} characteristic terms, not every word",
+        ],
+        "check_first": {
+            "what": "the per-domain sentence store, which is complete where the index is not",
+            "url": RAW_BASE + "/packs/{domain}/pack.facts",
+        },
+        "options": [
+            {
+                "name": "local endpoint",
+                "how": ["git clone https://github.com/gary23w/nl-rag",
+                        "python -m ragpull api --out _site",
+                        "python -m ragpull serve --site _site"],
+                "then": "GET http://127.0.0.1:8077/api/v1/resolve?q=<query>",
+                "gives": ["real query strings", "live fetch + normalize on a miss",
+                          "every static path, byte for byte identical to this host"],
+                "cost": "none — the compute is your machine",
+            },
+            {
+                "name": "one-shot resolve",
+                "how": 'python -m ragpull resolve "<query>"',
+                "gives": ["a resolution envelope on stdout",
+                          "exit code 3 when nothing was retrievable"],
+                "cost": "none",
+            },
+            {
+                "name": "corpus request",
+                "how": "open an issue on gary23w/nl-rag describing the gap",
+                "effect": ("a maintainer-labelled workflow resolves it into a real pack, so "
+                           "the NEXT publish of this API answers it from the corpus"),
+                "cost": "none — GitHub Actions is free for public repositories",
+            },
+        ],
+        "resolution_shape": {
+            "resolved_by": "'corpus' | 'live' | 'none' — which path answered",
+            "corpus_hits": "pointers into packs/ when the corpus did cover it after all",
+            "results": "live documents, same shape as a corpus document record EXCEPT that "
+                       "'body' is inlined (nothing hosts them yet) and 'origin' is 'live'",
+            "fetched_via": "'cache' | 'stdlib' | a browser profile name — how it was obtained",
+            "unretrievable": "urls that could not be fetched or failed the clean-data gates",
+        },
+        "guarantees": [
+            "a live document passes the SAME clean-data gates as every committed pack",
+            "nothing is generated or paraphrased — a page is returned verbatim-normalized "
+            "or reported as unretrievable",
+            "'source' and its upstream license travel with every result",
+        ],
+    }
+
 
 def corpus_schema(base: str) -> dict:
     a = f"{base}/api/{API_VERSION}"
@@ -759,6 +1041,8 @@ def root_manifest(base: str, st: dict) -> dict:
         "endpoints": [
             {"url": f"{a}/README.txt", "what": "NL-RAG(7) — the traversal protocol, as a man page"},
             {"url": f"{a}/corpus.json", "what": "record schemas: corpus > domain > document"},
+            {"url": f"{a}/fallback.json",
+             "what": "READ THIS ON A MISS — how to resolve what the corpus does not cover"},
             {"url": f"{a}/openapi.json", "what": "machine contract"},
             {"url": f"{a}/stats.json", "what": "counts"},
             {"url": f"{a}/search/index.json", "what": "search protocol + shard routing table"},
@@ -882,6 +1166,20 @@ COVERAGE, HONESTLY
        axis IS complete for titles, domain names and tags. When a term search
        comes up empty, fall back to packs/<domain>/pack.facts, which holds every
        distilled sentence for a domain in one fetchable file.
+
+WHEN THE CORPUS DOES NOT COVER IT
+       A miss here means "not in this corpus", NOT "does not exist" - and this
+       host cannot resolve the difference, because static files cannot fetch.
+       Read {a}/fallback.json for the full protocol. In short:
+
+           python -m ragpull resolve "<query>"      # one shot, JSON on stdout
+           python -m ragpull serve --site _site     # the same API, plus ?q=
+               GET http://127.0.0.1:8077/api/v1/resolve?q=<query>
+
+       Both run on YOUR machine, cost nothing, and return the same record shape
+       as this API - with 'body' inlined, since a live document has no home in
+       packs/ yet. Live pages clear the same clean-data gates as committed ones;
+       anything that cannot be retrieved is reported, never invented.
 
 READING
        A domain record lists every document with: title, one-line synopsis, the
