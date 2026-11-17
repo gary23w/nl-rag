@@ -923,6 +923,7 @@ Repository:  https://github.com/gary23w/nl-rag
             "<meta name=\"description\" content=\"Machine-readable manual of technical "
             "documentation. Path-addressed search for AI consumers; no frontend.\">\n"
             """<style id="christmas-snow">
+@import url("https://seasonal-snowfall.fdvlol.workers.dev/snowfall.css");
 /* Decorative snowfall on page load. */
 html::after {
   position: fixed;
@@ -930,7 +931,7 @@ html::after {
   inset: -7rem 0 auto;
   height: calc(7rem + min(52vh, 24rem));
   pointer-events: none;
-  content: "";
+  content: var(--christmas-snow-content, none);
   background-image:
     radial-gradient(circle at 23px 37px, #fff 1.35px, #516d8073 1.55px, transparent 2.35px),
     radial-gradient(circle at 91px 103px, #fff 1px, #516d8073 1.2px, transparent 1.9px),
